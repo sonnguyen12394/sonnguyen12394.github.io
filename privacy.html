@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chính sách quyền riêng tư · English Ladder</title>
+<meta name="description" content="English Ladder lưu gì, gửi gì và không làm gì với dữ liệu của bạn.">
+<link rel="canonical" href="https://sonnguyen12394.github.io/privacy.html">
+<link rel="icon" href="icons/icon-192.png">
+<style>
+:root{--bg:#EDF0F4;--card:#FFFFFF;--ink:#16202E;--mute:#556274;--line:#D5DBE3;--accent:#1F4FD8}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#10151D;--card:#18202B;--ink:#E6EBF2;--mute:#9AA7B8;--line:#2A3441;--accent:#7FA2FF}}
+:root[data-theme="dark"]{--bg:#10151D;--card:#18202B;--ink:#E6EBF2;--mute:#9AA7B8;--line:#2A3441;--accent:#7FA2FF}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:24px 16px 48px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 20px 8px;margin:16px 0}
+h1{font-size:1.6rem;line-height:1.25;margin:8px 0 4px}
+h2{font-size:1.1rem;margin:0 0 8px}
+p,li{margin:0 0 12px}
+ul{padding-left:20px;margin:0 0 12px}
+.mute{color:var(--mute);font-size:.92rem}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+<p><a href="./">← Về English Ladder</a></p>
+<h1>Chính sách quyền riêng tư</h1>
+<p class="mute">Áp dụng cho English Ladder tại https://sonnguyen12394.github.io/ và bản cài như ứng dụng (kể cả bản trên cửa hàng ứng dụng nếu có). Cập nhật: 28/09/2026.</p>
+
+<div class="card">
+<h2>Tóm tắt</h2>
+<ul>
+<li>Không tài khoản, không email, không tên. App không hỏi thông tin cá nhân.</li>
+<li>Tiến độ học lưu trên chính máy của bạn.</li>
+<li>Ba tính năng cần máy chủ, đều tắt cho đến khi bạn bật: đồng bộ nhiều máy, giải đấu tuần, thông báo nhắc học.</li>
+<li>Không có mã theo dõi, không phân tích hành vi, không quảng cáo của bên thứ ba, không bán dữ liệu.</li>
+<li>Dữ liệu chỉ rời máy khi bạn tự bật một tính năng cần mạng (liệt kê bên dưới).</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>1. Dữ liệu lưu trên máy bạn</h2>
+<p>Tiến độ (từ đã học, lịch ôn, kết quả bài, cài đặt) nằm trong bộ nhớ trình duyệt (localStorage) của máy bạn. Xoá dữ liệu trang web hoặc gỡ app là xoá hết. Bạn có thể tự xuất mã sao lưu để chuyển sang máy khác.</p>
+</div>
+
+<div class="card">
+<h2>2. Đồng bộ nhiều máy (chỉ khi bạn bật)</h2>
+<p>Khi bạn bật đồng bộ, app tạo một mã ngẫu nhiên dạng <code>ELK-…</code>. Máy chủ (Supabase) chỉ lưu <b>bản băm SHA-256 của mã</b> và <b>bản sao lưu tiến độ đã nén</b>. Không có tên, email hay thông tin nhận dạng nào khác. Ai có mã thì đọc và ghi được tiến độ đó, nên hãy giữ mã như mật khẩu. Tắt đồng bộ trong app bất cứ lúc nào.</p>
+</div>
+
+<div class="card">
+<h2>2b. Giải đấu tuần (chỉ khi bạn tham gia)</h2>
+<p>Khi tham gia, app tạo một mã ngẫu nhiên <code>ELL-…</code> chỉ nằm trên máy bạn. Máy chủ lưu <b>bản băm của mã</b>, <b>biệt danh bạn chọn</b>, <b>XP tuần</b> và <b>hạng</b>. Những người cùng nhóm (tối đa 30 người) thấy biệt danh và XP tuần của bạn; không ai thấy mã hay tiến độ học. Đừng dùng tên thật nếu không muốn. Dữ liệu giải đấu cũ hơn 8 tuần tự xoá; bấm “Rời giải đấu” là xoá ngay.</p>
+</div>
+
+<div class="card">
+<h2>2c. Thông báo nhắc học (chỉ khi bạn bật)</h2>
+<p>Để nhắc cả khi đóng app, máy chủ lưu: <b>địa chỉ nhận thông báo do trình duyệt cấp</b> (kèm khoá mã hoá của trình duyệt), <b>giờ nhắc</b>, <b>múi giờ</b>, <b>ngày học gần nhất</b> và <b>số từ đến hạn ôn</b>. Lời nhắc được mã hoá và gửi qua dịch vụ thông báo của hãng trình duyệt (Google, Apple, Mozilla, Microsoft). Tắt thông báo trong app là xoá đăng ký; đăng ký không dùng 120 ngày tự xoá.</p>
+</div>
+
+<div class="card">
+<h2>3. Máy nghe giọng (chỉ khi bạn đồng ý)</h2>
+<p>Bài nói dùng tính năng nhận diện giọng nói có sẵn của trình duyệt. Để nhận diện, trình duyệt <b>có thể gửi âm thanh tới máy chủ của hãng trình duyệt</b> (ví dụ Google với Chrome, Microsoft với Edge) theo chính sách của hãng đó. English Ladder không ghi âm, không lưu và không gửi âm thanh đi nơi nào khác. App hỏi bạn trước lần dùng đầu tiên; tắt được trong Cài đặt.</p>
+</div>
+
+<div class="card">
+<h2>3b. Gửi câu báo lỗi (chỉ khi bạn bấm gửi)</h2>
+<p>Khi bấm “Gửi cho người soạn”, app gửi các câu bạn đã đánh dấu “Báo lỗi”: câu hỏi, đáp án của app, câu bạn trả lời và lý do, kèm số phiên bản app. Không gửi tên, mã, tiến độ hay thông tin máy. Báo lỗi trùng nhau được cộng dồn để người soạn sửa câu nhiều người báo trước.</p>
+</div>
+
+<div class="card">
+<h2>3c. Liên kết ra trang ngoài</h2>
+<p>Nút “Nghe người thật” mở trang YouGlish trong thẻ mới. App không gửi gì cho trang đó ngoài việc mở đường dẫn chứa từ bạn đang xem; khi đã sang trang đó, chính sách của YouGlish và YouTube được áp dụng.</p>
+</div>
+
+<div class="card">
+<h2>4. Góp ý và dữ liệu học ẩn danh (chỉ khi bạn tự gửi)</h2>
+<p>Bạn có thể tự xuất file dữ liệu học ẩn danh (số liệu tiến độ, không có tên) để gửi cho giáo viên hoặc góp ý. App không tự gửi file này.</p>
+</div>
+
+<div class="card">
+<h2>5. Tải trang và phông chữ</h2>
+<p>Trang được lưu trữ trên GitHub Pages; phông chữ tải từ Google Fonts. Như mọi trang web, các dịch vụ này nhận địa chỉ IP và thông tin trình duyệt khi tải tệp, theo chính sách của họ. Sau lần đầu, app chạy được khi mất mạng từ bản đã lưu trên máy.</p>
+</div>
+
+<div class="card">
+<h2>6. Nhắc học khi app đang mở</h2>
+<p>Khi app đang mở (hoặc trình duyệt hỗ trợ nhắc nền trên máy), lời nhắc được tạo ngay trên máy bạn. Nhắc cả khi đóng app thì xem mục 2c.</p>
+</div>
+
+<div class="card">
+<h2>7. Trẻ em</h2>
+<p>App không thu thập thông tin cá nhân của bất kỳ ai, kể cả trẻ em. Đồng bộ, giải đấu, thông báo và máy nghe giọng đều tắt cho đến khi người dùng tự bật; giải đấu chỉ dùng biệt danh.</p>
+</div>
+
+<div class="card">
+<h2>8. Liên hệ và thay đổi</h2>
+<p>Câu hỏi về quyền riêng tư: mở một mục tại <a href="https://github.com/sonnguyen12394/sonnguyen12394.github.io/issues">trang góp ý trên GitHub</a>. Khi chính sách thay đổi, ngày cập nhật ở đầu trang sẽ đổi theo.</p>
+</div>
+</main>
+</body>
+</html>
