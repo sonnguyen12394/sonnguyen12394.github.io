@@ -43,6 +43,12 @@ App là PWA đủ điều kiện đóng gói Trusted Web Activity:
 3. Đặt `.well-known/assetlinks.json` (PWABuilder tạo sẵn, chứa SHA-256 của khoá ký) lên repo này để bỏ thanh địa chỉ trong app.
 4. Tạo tài khoản Google Play Console, tải file `.aab` lên, dùng link chính sách quyền riêng tư ở trên.
 
+## Cấu trúc tệp
+
+- `index.html`: khung trang (giao diện, CSS, bộ biểu tượng SVG tự vẽ).
+- `app.js`: mã và nội dung bài học. Tách riêng để trình duyệt vừa tải vừa biên dịch (mở nhanh hơn ~44% trên 4G).
+- `sw.js`: bộ nhớ đệm để mở lại tức thì và dùng khi mất mạng. Mỗi lần phát hành: tăng `APP_VERSION` trong `app.js`, `?v=` trong `index.html`, `VERSION` và `CORE` trong `sw.js`.
+
 ## Máy chủ (Supabase)
 
 Thư mục `supabase/` chứa migration của bản v19–v20 (bảng + hàm RPC cho giải đấu tuần, thông báo nhắc học và gom câu báo lỗi; xem báo lỗi bằng `select * from el_admin.flags;`) và Edge Function `el-remind` gửi lời nhắc (pg_cron 15 phút/lần). Khoá VAPID và bí mật cron nằm trong Supabase Vault, không nằm trong repo.
