@@ -2,8 +2,19 @@
 <html lang="vi">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>English Ladder</title>
+<title>English Ladder: học tiếng Anh miễn phí A1 → C2, giải thích bằng tiếng Việt</title>
 <meta name="description" content="Biết mình làm được gì bằng tiếng Anh ở từng cấp A1 → C2, mỗi lỗi sai được giải thích bằng tiếng Việt. Mọi bài học miễn phí, không cần tài khoản.">
+<meta name="keywords" content="học tiếng Anh miễn phí, từ vựng tiếng Anh, ngữ pháp tiếng Anh, luyện thi THPT tiếng Anh, VSTEP B1 B2, IELTS từ vựng, CEFR A1 C2, app học tiếng Anh">
+<link rel="canonical" href="https://sonnguyen12394.github.io/">
+<meta name="theme-color" content="#1F4FD8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="English Ladder">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<meta property="og:url" content="https://sonnguyen12394.github.io/">
+<meta property="og:site_name" content="English Ladder">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"English Ladder","url":"https://sonnguyen12394.github.io/","inLanguage":"vi","applicationCategory":"EducationalApplication","operatingSystem":"Android, iOS, Windows, macOS (trình duyệt)","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"VND"},"description":"Học tiếng Anh A1 → C2: từ vựng, ngữ pháp, phát âm, giao tiếp, đọc, nói, viết theo khung CEFR. Mỗi lỗi sai được giải thích bằng tiếng Việt, lịch ôn riêng cho từng từ, không cần tài khoản.","educationalLevel":["A1","A2","B1","B2","C1","C2"],"audience":{"@type":"EducationalAudience","educationalRole":"student"}}</script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="English Ladder: tiếng Anh A1 → C2, giải thích bằng tiếng Việt">
 <meta property="og:description" content="Biết mình làm được gì bằng tiếng Anh ở từng cấp A1 → C2, mỗi lỗi sai được giải thích bằng tiếng Việt. Mọi bài học miễn phí, không cần tài khoản.">
@@ -412,7 +423,11 @@ details.panel>summary h3{display:inline}details.panel>summary::after{content:' �
   <nav id="nav"></nav>
   <div class="clock" id="clock"></div>
 </div></header>
-<main id="app"><p class="muted" style="padding:40px 0;text-align:center">Đang tải…</p></main>
+<main id="app"><p class="muted" style="padding:40px 0;text-align:center">Đang tải…</p>
+<noscript><section style="max-width:680px;margin:0 auto;padding:0 16px"><h1>English Ladder: học tiếng Anh miễn phí A1 → C2</h1>
+<p>Biết mình làm được gì bằng tiếng Anh ở từng cấp A1 → C2, mỗi lỗi sai được giải thích bằng tiếng Việt. Mọi bài học miễn phí, không cần tài khoản.</p>
+<ul><li>Từ vựng A1 → C2 theo unit, lịch ôn riêng cho từng từ (ôn đúng lúc sắp quên).</li><li>Ngữ pháp A1 → C2: công thức, ví dụ, lỗi người Việt hay mắc.</li><li>Phát âm: cặp âm dễ nhầm, trọng âm, ngữ điệu.</li><li>Giao tiếp: hội thoại hai giọng, đóng vai; đề nói, đề viết, bài đọc dài.</li><li>Bản đồ CEFR “Tôi có thể…”, luyện thi tốt nghiệp THPT, VSTEP B1/B2.</li></ul>
+<p>Cần bật JavaScript để dùng app.</p></section></noscript></main>
 <nav id="bnav" class="bnav" aria-label="Điều hướng chính"></nav>
 <div class="toast" id="toast" hidden></div>
 <div class="cel" id="celebrate" hidden></div>
@@ -9575,7 +9590,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 17, APP_VERSION = 17;
+const STATE_V = 17, APP_VERSION = 18;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},money:{h:5,hd:0,ht:0},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -10931,7 +10946,7 @@ function viewHelp(){
   </div></section>
   <section class="panel stack"><h3>Giải thích thuật ngữ</h3><dl class="gloss">${Object.values(GLOSSARY).map(([t,d])=>`<dt>${t}</dt><dd class="muted">${d}</dd>`).join('')}</dl></section>
   <section class="panel stack"><h3>Câu hỏi thường gặp</h3>
-    ${q('Không có mạng có dùng được không?','App không gọi server, không dùng AI; mọi bài chấm ngay trên máy. Mở ở địa chỉ chính thức trên claude.ai thì cần mạng để tải trang. Nếu mở file <code>index.html</code> tải về, hoặc bản đặt trên một trang web riêng có cài như app, thì dùng được khi mất mạng.')}
+    ${q('Không có mạng có dùng được không?','App không gọi server, không dùng AI; mọi bài chấm ngay trên máy. Mở địa chỉ chính thức '+HOME_URL+' một lần có mạng, rồi cài như app (Thêm vào Màn hình chính): từ đó dùng được khi mất mạng. Bản xem trên claude.ai thì luôn cần mạng.')}
     ${q('Mở app ở đâu?',`Luôn mở từ địa chỉ chính thức: <a href="${HOME_URL}" target="_blank" rel="noopener">${HOME_URL}</a>. Tiến độ lưu theo từng đường link; mở từ link khác là một kho tiến độ khác (chuyển bằng mã sao lưu).`)}
     ${q('Tiến độ lưu ở đâu? Đổi máy thì sao?','Lưu trong trình duyệt của máy này. Vào Cài đặt → Sao lưu để tải file hoặc sao chép mã, rồi dán vào máy mới. App nhắc sao lưu mỗi 7 ngày.')}
     ${q('Tôi gõ đúng mà app chấm sai?','Bấm “Câu của tôi cũng đúng?” ngay dưới câu đó: lần này không bị trừ điểm, và câu của bạn được ghi lại để người soạn bổ sung đáp án.')}
@@ -12941,15 +12956,18 @@ function archHtml(w){ const link=id=>`<button class="btn small" data-word="${id}
 const APP_NAME = 'English Ladder';
 // Khẩu hiệu chung (vai trò 12): màn chào, lời giới thiệu, manifest, README, thẻ og:description dùng đúng câu này (check-engine kiểm).
 const TAGLINE = 'Biết mình làm được gì bằng tiếng Anh ở từng cấp A1 → C2, mỗi lỗi sai được giải thích bằng tiếng Việt';
-const HOME_URL = 'https://claude.ai/artifact/PZekH7X8puHNsCXphcmW9x';   // địa chỉ chính thức
 const WEB_URL = 'https://sonnguyen12394.github.io/';   // bản web (repo công khai sonnguyen12394.github.io, scripts/publish-web.sh): cài như app, dùng khi mất mạng, đồng bộ, nhắc học
+// v18: địa chỉ chính thức là bản web công khai (ai cũng mở được, Google tìm thấy, đóng gói lên Google Play được).
+// Link artifact (riêng tư) vẫn chạy như bản phụ; tiến độ chuyển bằng mã sao lưu hoặc mã đồng bộ.
+const HOME_URL = WEB_URL;
+const ARTIFACT_URL = 'https://claude.ai/artifact/PZekH7X8puHNsCXphcmW9x';
 const SHARE_TEXT = `${APP_NAME}: ${TAGLINE}. Mọi bài học miễn phí, không cần tài khoản.`;
 function shareApp(){ return shareText(SHARE_BY(),'menu'); }
 const homePanel = () => `<section class="panel stack"><h3>Địa chỉ chính thức</h3>
   <p class="note">Luôn mở ${APP_NAME} từ đường link này. Tiến độ lưu theo từng đường link và từng trình duyệt: mở từ link khác (bản cũ, bản xem thử) sẽ là một kho tiến độ khác. Chuyển tiến độ bằng mã sao lưu.</p>
   <p class="num" style="overflow-wrap:anywhere"><a href="${HOME_URL}" target="_blank" rel="noopener">${HOME_URL}</a></p>
   <div class="row"><button class="btn" data-act="share">📤 Giới thiệu app cho bạn bè</button></div>
-  <p class="hint">Người nhận mở được khi chủ app đã bật chia sẻ “Anyone with the link” cho trang này.</p></section>`;
+  <p class="hint">Ai cũng mở được, trên điện thoại hay máy tính, không cần tài khoản. Trên điện thoại: mở link rồi chọn “Thêm vào Màn hình chính” / “Cài đặt ứng dụng” để dùng như app, kể cả khi mất mạng.</p></section>`;
 /* ================== BỀN VỮNG: mô hình kiểu Duolingo (vai trò 11 — Monetization) — docs/DANH-GIA-BEN-VUNG.md, docs/BEN-VUNG.md ==================
    Chủ app chọn (2026-09-27): tim + quảng cáo + gói Super. Luật giữ việc học (check-engine kiểm):
    - mọi bài học vẫn mở; tim chỉ tốn khi trả lời sai LẦN ĐẦU trong lượt luyện/kiểm tra unit và bài ngữ pháp; “Tôi chưa biết” không tốn tim;
@@ -12963,7 +12981,7 @@ const MONEY = {
   ads:{provider:''},    // quảng cáo thật: cần tài khoản mạng quảng cáo của chủ app + trang web riêng (docs/BEN-VUNG.md). Trống = quảng cáo nội bộ.
   AD_AFTER:30,          // không hiện quảng cáo trước khi người học trả lời đủ 30 câu (lượt đầu tiên sạch)
   buy:'',               // link mua Super / ủng hộ — chủ app điền (vd. trang thanh toán). Trống = “chưa mở bán”.
-  contact:'',           // email/link liên hệ cho giáo viên, trường — chủ app điền.
+  contact:'https://github.com/sonnguyen12394/sonnguyen12394.github.io/issues',   // email/link liên hệ cho giáo viên, trường — chủ app điền.
   price:'',             // giá Super, vd. '49.000đ/tháng' — chủ app đặt.
 };
 const SUPER_SALT='EL-SUPER-v1';   // mã Super kiểm trên máy: chống gõ nhầm, không chống người đọc mã nguồn (không server)
@@ -13036,7 +13054,8 @@ function viewSuper(){ const sup=isSuper(), s=MN().sup, h=hearts();
     <p class="note">App không có máy chủ nên chạy gần như không tốn tiền. Chi phí thật là <b>công giáo viên duyệt nội dung</b> (khoảng 225 giờ cho toàn bộ ${ALL_WORDS.length.toLocaleString('vi')} từ, ${GPOINTS.length} bài ngữ pháp, ${UNITS.length} bài đọc…) và công sửa lỗi. Tiền từ Super dùng trước hết cho việc này.</p>
     <p class="note">Tim chỉ tốn ở bài mới và không bao giờ dừng bạn giữa bài. Hết tim thì luyện lại từ đã học: đó cũng là cách nhớ lâu hơn.</p></section>
   <section class="panel stack"><h3>Quyền riêng tư và bản quyền</h3>
-    <p class="note">Tiến độ chỉ lưu trên máy này. App không gửi gì đi và không theo dõi bạn; quảng cáo hiện tại là quảng cáo nội bộ, không gọi mạng. Dữ liệu học ẩn danh chỉ rời máy khi bạn tự gửi (Góp ý).</p>
+    <p class="note">Tiến độ lưu trên máy này. App không theo dõi bạn; quảng cáo hiện tại là quảng cáo nội bộ, không gọi mạng. Dữ liệu chỉ rời máy khi bạn tự bật: đồng bộ nhiều máy (máy chủ chỉ giữ băm của mã và bản sao lưu nén), máy nghe giọng (trình duyệt có thể gửi âm thanh tới hãng trình duyệt để nhận diện), hoặc khi bạn tự gửi dữ liệu học ẩn danh (Góp ý).</p>
+    <p class="note"><a href="privacy.html" target="_blank" rel="noopener">Đọc chính sách quyền riêng tư đầy đủ</a></p>
     <p class="note">© ${new Date().getFullYear()} ${APP_NAME}. Giữ mọi quyền đối với mã và nội dung bài học.</p></section>
   <section class="panel stack"><h3>Giáo viên, trường học</h3><p class="note">Học sinh dùng miễn phí. Giáo viên gộp tiến độ cả lớp bằng file dữ liệu ẩn danh của học sinh.${MONEY.contact?` Liên hệ triển khai cho lớp: ${esc(MONEY.contact)}.`:''}</p><div class="row"><button class="btn" data-go="class">🏫 Công cụ lớp học</button></div></section>`; }
 // Công cụ lớp học (không server): giáo viên mở nhiều file dữ liệu ẩn danh của học sinh → bảng cả lớp. File là dữ liệu không tin cậy: chỉ đọc số, chuỗi qua esc().
@@ -13117,6 +13136,11 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:18,d:'2026-09-28',t:'Địa chỉ chính thức công khai, cài như app',big:true,items:[
+    'Địa chỉ chính thức của app giờ là https://sonnguyen12394.github.io/: ai cũng mở được, không cần tài khoản, cài lên màn hình chính để dùng cả khi mất mạng.',
+    'Đang học trên link claude.ai? Chuyển tiến độ sang bản web bằng mã sao lưu (Cài đặt → Sao lưu tiến độ) hoặc bật đồng bộ nhiều máy trên bản web.',
+    'Có trang chính sách quyền riêng tư đầy đủ (privacy.html), nói rõ dữ liệu nào rời máy và chỉ khi bạn tự bật.',
+    'Giáo viên, trường học có chỗ liên hệ công khai qua trang góp ý trên GitHub.']},
   {v:17,d:'2026-09-28',t:'Máy nghe giọng, đồng bộ nhiều máy, nhắc học',big:true,items:['Luyện nói, đóng vai, cặp âm và nói ra từ có nút 🎙: máy của trình duyệt cho biết nó nghe ra những từ nào trong câu của bạn (bật khi bạn đồng ý).','Đồng bộ tiến độ giữa điện thoại và máy tính bằng một mã đồng bộ, không cần tài khoản hay email (Cài đặt, ở bản web).','Bản web cài như app có thông báo nhắc học đúng giờ bạn chọn.','Bài viết và câu tự đặt được dò các lỗi người Việt hay mắc (thiếu “to be”, a/an, discuss about…), kèm giải thích.']},
   {v:16,d:'2026-09-27',t:'An toàn tiến độ và nhật ký thay đổi',items:['Nếu không đọc được tiến độ trên máy (dữ liệu hỏng hoặc do bản app mới hơn lưu), app giữ bản sao và hỏi bạn trước, không bao giờ ghi đè.','Có mục “Có gì mới” sau mỗi lần cập nhật và nhật ký thay đổi trong Hướng dẫn; số bản phát hành ở Cài đặt.','Nhắc nhẹ theo mùa học: mùa thi tốt nghiệp THPT, năm học mới, Tết.','Địa chỉ chính thức mới: https://claude.ai/artifact/PZekH7X8puHNsCXphcmW9x. Đang học ở link cũ? Ở link cũ vào Cài đặt → Sao lưu → Sao chép mã sao lưu, rồi dán vào ô “Chuyển tiến độ” ở màn chào của link mới.']},
   {v:15,d:'2026-09-27',t:'Giới thiệu app dễ hơn',items:['Màn chào có một câu xem thử kèm lời giải thích lỗi bằng tiếng Việt.','Gửi lời thách đấu, khoe khi qua unit, tờ giới thiệu cho lớp: tất cả kèm đường link app.','Câu hỏi tuỳ chọn “Bạn biết app qua đâu?”.']},
@@ -13593,7 +13617,7 @@ document.addEventListener('keydown',e=>{
 // Cài như app trên điện thoại (PWA) và chạy offline khi app được đặt ở một địa chỉ web thật (GitHub Pages, Netlify…).
 // Trong trình xem artifact hay khi mở file trực tiếp thì bỏ qua. Xin trình duyệt giữ dữ liệu lâu dài để tiến độ không bị tự xoá.
 try{ if(typeof location!=='undefined'&&/^https?:$/.test(location.protocol)&&!IN_VIEWER&&'serviceWorker' in navigator){
-  const l=document.createElement('link'); l.rel='manifest'; l.href='manifest.webmanifest'; document.head.appendChild(l);
+  if(!document.querySelector('link[rel="manifest"]')){ const l=document.createElement('link'); l.rel='manifest'; l.href='manifest.webmanifest'; document.head.appendChild(l); }
   navigator.serviceWorker.register('sw.js').catch(()=>{}); } }catch(e){}
 try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{}); }catch(e){}
 const _gap=st.onboarded?daysAway():0;

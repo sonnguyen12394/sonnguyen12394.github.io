@@ -1,13 +1,18 @@
 {
-  "name": "English Ladder",
+  "id": "./",
+  "name": "English Ladder: học tiếng Anh A1 → C2",
   "short_name": "English Ladder",
-  "description": "Biết mình làm được gì bằng tiếng Anh ở từng cấp A1 → C2, mỗi lỗi sai được giải thích bằng tiếng Việt. Mọi bài học miễn phí.",
+  "description": "Học tiếng Anh miễn phí từ A1 đến C2: từ vựng ôn cách quãng, ngữ pháp, nghe, nói (máy nghe giọng), đọc, viết. Biết mình làm được gì ở từng cấp, mỗi lỗi sai được giải thích bằng tiếng Việt. Dùng được khi mất mạng, không cần tài khoản.",
   "lang": "vi",
+  "dir": "ltr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#EDF0F4",
   "theme_color": "#1F4FD8",
+  "categories": ["education", "productivity"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icons/icon-192.png",
