@@ -4,7 +4,7 @@
 
 -- ---------- Giải đấu tuần ----------
 -- Mã giải đấu ELL-… (100 bit ngẫu nhiên) nằm riêng trên máy người học; máy chủ chỉ lưu băm SHA-256.
--- Mỗi tuần (theo giờ Việt Nam) người học vào một nhóm ≤ 30 người cùng hạng. Hết tuần: top 5 lên hạng, 5 người cuối (nhóm ≥ 10) xuống hạng.
+-- Mỗi tuần (theo ngày UTC như app đếm XP: tuần mới lúc 7:00 thứ Hai giờ Việt Nam) người học vào một nhóm ≤ 30 người cùng hạng. Hết tuần: top 5 lên hạng, 5 người cuối (nhóm ≥ 10) xuống hạng.
 create table if not exists public.el_league (
   id text not null,
   wk text not null,
@@ -22,7 +22,7 @@ revoke all on public.el_league from anon, authenticated;
 
 create or replace function public.el_week(off int default 0) returns text
 language sql stable set search_path = '' as $$
-  select to_char((now() at time zone 'Asia/Ho_Chi_Minh') + make_interval(days => 7 * off), 'IYYY-"W"IW')
+  select to_char((now() at time zone 'UTC') + make_interval(days => 7 * off), 'IYYY-"W"IW')
 $$;
 
 create or replace function public.el_lg_key_ok(k text) returns boolean

@@ -34,6 +34,7 @@ a{color:var(--accent)}
 <ul>
 <li>Không tài khoản, không email, không tên. App không hỏi thông tin cá nhân.</li>
 <li>Tiến độ học lưu trên chính máy của bạn.</li>
+<li>Ba tính năng cần máy chủ, đều tắt cho đến khi bạn bật: đồng bộ nhiều máy, giải đấu tuần, thông báo nhắc học.</li>
 <li>Không có mã theo dõi, không phân tích hành vi, không quảng cáo của bên thứ ba, không bán dữ liệu.</li>
 <li>Dữ liệu chỉ rời máy khi bạn tự bật một tính năng cần mạng (liệt kê bên dưới).</li>
 </ul>
@@ -47,6 +48,16 @@ a{color:var(--accent)}
 <div class="card">
 <h2>2. Đồng bộ nhiều máy (chỉ khi bạn bật)</h2>
 <p>Khi bạn bật đồng bộ, app tạo một mã ngẫu nhiên dạng <code>ELK-…</code>. Máy chủ (Supabase) chỉ lưu <b>bản băm SHA-256 của mã</b> và <b>bản sao lưu tiến độ đã nén</b>. Không có tên, email hay thông tin nhận dạng nào khác. Ai có mã thì đọc và ghi được tiến độ đó, nên hãy giữ mã như mật khẩu. Tắt đồng bộ trong app bất cứ lúc nào.</p>
+</div>
+
+<div class="card">
+<h2>2b. Giải đấu tuần (chỉ khi bạn tham gia)</h2>
+<p>Khi tham gia, app tạo một mã ngẫu nhiên <code>ELL-…</code> chỉ nằm trên máy bạn. Máy chủ lưu <b>bản băm của mã</b>, <b>biệt danh bạn chọn</b>, <b>XP tuần</b> và <b>hạng</b>. Những người cùng nhóm (tối đa 30 người) thấy biệt danh và XP tuần của bạn; không ai thấy mã hay tiến độ học. Đừng dùng tên thật nếu không muốn. Dữ liệu giải đấu cũ hơn 8 tuần tự xoá; bấm “Rời giải đấu” là xoá ngay.</p>
+</div>
+
+<div class="card">
+<h2>2c. Thông báo nhắc học (chỉ khi bạn bật)</h2>
+<p>Để nhắc cả khi đóng app, máy chủ lưu: <b>địa chỉ nhận thông báo do trình duyệt cấp</b> (kèm khoá mã hoá của trình duyệt), <b>giờ nhắc</b>, <b>múi giờ</b>, <b>ngày học gần nhất</b> và <b>số từ đến hạn ôn</b>. Lời nhắc được mã hoá và gửi qua dịch vụ thông báo của hãng trình duyệt (Google, Apple, Mozilla, Microsoft). Tắt thông báo trong app là xoá đăng ký; đăng ký không dùng 120 ngày tự xoá.</p>
 </div>
 
 <div class="card">
@@ -65,13 +76,13 @@ a{color:var(--accent)}
 </div>
 
 <div class="card">
-<h2>6. Nhắc học</h2>
-<p>Thông báo nhắc học được tạo ngay trên máy bạn, không qua máy chủ. Bạn bật, tắt hoặc chọn giờ trong app.</p>
+<h2>6. Nhắc học khi app đang mở</h2>
+<p>Khi app đang mở (hoặc trình duyệt hỗ trợ nhắc nền trên máy), lời nhắc được tạo ngay trên máy bạn. Nhắc cả khi đóng app thì xem mục 2c.</p>
 </div>
 
 <div class="card">
 <h2>7. Trẻ em</h2>
-<p>App không thu thập thông tin cá nhân của bất kỳ ai, kể cả trẻ em. Đồng bộ và máy nghe giọng đều tắt cho đến khi người dùng tự bật.</p>
+<p>App không thu thập thông tin cá nhân của bất kỳ ai, kể cả trẻ em. Đồng bộ, giải đấu, thông báo và máy nghe giọng đều tắt cho đến khi người dùng tự bật; giải đấu chỉ dùng biệt danh.</p>
 </div>
 
 <div class="card">
