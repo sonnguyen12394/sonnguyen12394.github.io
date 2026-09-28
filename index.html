@@ -9590,7 +9590,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 17, APP_VERSION = 19;
+const STATE_V = 17, APP_VERSION = 20;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},money:{h:5,hd:0,ht:0},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -10217,7 +10217,7 @@ function flagRecord(){
 function addFlag(reason){
   const rec=flagRecord(); rec.reason=FLAG_REASONS[reason];
   if(!st.flags.some(f=>f.ref===rec.ref&&f.prompt===rec.prompt&&f.reason===rec.reason)) st.flags.push(rec);
-  ui.flagOpen=false; save(); toast('Đã ghi nhận. Xem và tải danh sách trong Cài đặt.'); render();
+  ui.flagOpen=false; save(); toast('Đã ghi nhận. Gửi cho người soạn trong Cài đặt → Câu đã báo lỗi.'); render();
 }
 // “Câu của tôi cũng đúng?”: người học cho rằng câu tự gõ bị chấm sai oan. Ghi vào danh sách báo lỗi (kèm câu đã gõ)
 // để người soạn bổ sung đáp án; trong lúc luyện/ôn thì hoàn lại trạng thái trước câu này (không trừ điểm, không cộng điểm).
@@ -10514,7 +10514,7 @@ function viewDlg(){
 // Đóng vai: máy đọc lượt của vai kia; đến lượt mình thì chỉ thấy nghĩa tiếng Việt, tự nói (ghi âm nếu muốn) rồi mở câu mẫu để so.
 function startRP(id,role){ recReset(); go('rp',{rp:{id,role,i:0,shown:false}}); rpAuto(); }
 function rpAuto(){ const R=ui.rp, l=DLG[R.id].lines[R.i]; if(l&&l.s!==R.role) say(l.t,false,l.s==='B'?1:0); }
-function rpNext(){ const R=ui.rp; recReset(); R.i++; R.shown=false; render(); rpAuto(); }
+function rpNext(){ const R=ui.rp; recReset(); asrReset(); R.i++; R.shown=false; R.free=''; render(); rpAuto(); }
 function rpRate(k){ const R=ui.rp, r=st.dlg[R.id]||={best:0,n:0}; r.rp=k; r.day=today(); bump('talk'); tally(k!=='hard',selfXP('rp:'+R.id,10),true); save(); questCheck(); toast('Đã lưu. Đóng vai lại vai kia để luyện cả hai phía.'); go('dlg',{dlgId:R.id}); }
 function viewRP(){
   const R=ui.rp, d=DLG[R.id], other=R.role==='A'?'B':'A';
@@ -10524,7 +10524,7 @@ function viewRP(){
   const past=d.lines.slice(0,R.i).map(l=>dlgLine(d,l)).join(''), l=d.lines[R.i], mine=l.s===R.role;
   const recBtns=!HAS_REC?'':REC.on?'<button class="btn" data-act="recstop">■ Dừng ghi âm</button>':`<button class="btn" data-act="recstart">● Ghi âm</button>${REC.url?'<button class="btn" data-act="recplay">▶ Nghe giọng bạn</button>':''}`;
   return `${back}<section class="panel stack"><div class="dlg-ctx">${past||'<p class="hint">Bắt đầu hội thoại.</p>'}</div>
-    ${mine?`<div class="dl me"><span class="who">Bạn (${esc(spk(d,R.role))})</span><div>${R.shown?`<b lang="en">${esc(l.t)}</b> ${audioBtnV(l.t,l.s==='B'?1:0)}<br><span class="hint">So với câu bạn vừa nói: ý, từ khoá, ngữ điệu.</span>${asrBox('rp'+R.i,l.t,null,'Nói câu mẫu để máy nghe')}`:`<p>Nói bằng tiếng Anh: <b>${esc(l.vi)}</b></p>`}</div></div>
+    ${mine?`<div class="dl me"><span class="who">Bạn (${esc(spk(d,R.role))})</span><div>${R.shown?`${R.free?`<p class="hint">Câu của bạn: “<span lang="en">${esc(R.free)}</span>”</p>`:''}<b lang="en">${esc(l.t)}</b> ${audioBtnV(l.t,l.s==='B'?1:0)}<br><span class="hint">So với câu bạn vừa nói: ý, từ khoá, ngữ điệu.</span>${asrBox('rp'+R.i,l.t,null,'Nói câu mẫu để máy nghe')}`:`<p>Nói bằng tiếng Anh: <b>${esc(l.vi)}</b></p>${rpFreeHtml(R,l)}`}</div></div>
       <div class="row">${recBtns}${R.shown?`<button class="btn primary" data-act="rpnext">Tiếp</button>`:`<button class="btn primary" data-act="rpshow">Xem câu mẫu</button>`}</div>`
     :`<div class="dl ${other}"><span class="who">${esc(spk(d,l.s))}</span><div><span lang="en">${esc(l.t)}</span> ${audioBtnV(l.t,l.s==='B'?1:0)}</div></div><div class="row"><button class="btn" data-act="rpsay">${SPK} Nghe lại</button><button class="btn primary" data-act="rpnext">Tiếp</button></div>`}
   </section>`;
@@ -10737,6 +10737,7 @@ function viewWTask(){
   <form class="stack" data-form="wtask"><textarea id="wtin" class="field" rows="12" lang="en" spellcheck="true" aria-label="Bài viết" placeholder="Viết bài của bạn ở đây. Cách đoạn bằng một dòng trống.">${esc(text)}</textarea>
     <div class="spread"><span class="num muted" id="wtcount">${wc(text)} từ · yêu cầu ${t.min}–${t.max}</span><button class="btn primary">Lưu và kiểm tra</button></div></form>
   ${chk?`<section class="panel stack"><h3>Máy kiểm tra hình thức</h3><p class="hint">App không chấm nội dung (không dùng AI). Đây là những gì máy đếm và dò được; hãy tự chấm bên dưới và so với bài mẫu, hoặc gửi báo cáo cho giáo viên.</p>${chk.map(([ok,x])=>`<p>${ok?'✅':'⚠️'} ${esc(x)}</p>`).join('')}${grammarHints(text).length?'':'<p>✅ Không thấy lỗi nào trong danh sách lỗi hay gặp</p>'}${hintsHtml(text)}</section>
+  ${vocabProfileHtml(t,text)}
   <section class="panel stack"><h3>Tự chấm theo tiêu chí</h3>${rubric(WRUB,s.self,'wtr')}${cdStatus(wtDone(t.id),wtMissing(t.id))}</section>
   <section class="panel stack"><h3>Bài mẫu để đối chiếu</h3>${t.m.map(x=>`<p lang="en">${esc(x)}</p>`).join('')}</section>`:''}`;
 }
@@ -11533,6 +11534,7 @@ function viewWord(){
   const w=WORD[ui.wordId], s=W(w.id), u=UNIT_OF[w.id], k=wstat(w);
   return `<button class="btn ghost back" data-go="words">← Sổ từ</button>
   ${wordCard(w)}
+  ${ygLink(w.word)}
   <section class="panel stack"><div class="spread"><h3>Tiến độ của bạn với từ này</h3>${wbPill(k)}</div>${ladderHtml(WSTAGES,wStage(w.id),'Bậc thuộc của từ')}
     ${s.learned?`${DIMS.map(d=>{const v=s.d[d.k];return `<div class="dimrow"><span>${d.vi}</span>${meter(v??0,(v??0)>=MASTERED?'good':'')}<span class="v">${v==null?'–':pct(v)}</span></div>`;}).join('')}
       <p class="muted">Mức thuộc ${pct(mastery(w.id))} · ôn lần tới: ${when(s.due)} · khoảng cách ${s.ivl||1} ngày · độ khó với bạn: ${easeLabel(s.ease)}</p>`
@@ -12421,9 +12423,9 @@ function viewSettings(){
   ${researchPanel()}
   <div class="row"><button class="btn" data-go="feedback">💬 Góp ý cho app</button></div>
   <section class="panel stack"><div class="spread"><h3>Câu đã báo lỗi</h3><span class="pill ${st.flags.length?'warn':''}">${st.flags.length} câu</span></div>
-    <p class="note">Khi thấy một câu hỏi sai đáp án, có hai đáp án đúng hoặc sai chính tả, bấm “⚑ Báo lỗi câu này” ngay dưới phần phản hồi. Danh sách lưu trên máy này; tải file và gửi cho người soạn nội dung để sửa.</p>
+    <p class="note">Khi thấy một câu hỏi sai đáp án, có hai đáp án đúng hoặc sai chính tả, bấm “⚑ Báo lỗi câu này” ngay dưới phần phản hồi. Danh sách lưu trên máy này. Bấm “Gửi cho người soạn” để gửi ẩn danh (chỉ câu hỏi, đáp án của app, câu bạn trả lời và lý do; không tên, không tiến độ), hoặc tải file.</p>
     ${st.flags.length?`<div class="tablewrap"><table style="min-width:0"><thead><tr><th>Phần</th><th>Câu</th><th>Lý do</th></tr></thead><tbody>${st.flags.slice(-20).reverse().map(f=>`<tr><td>${esc(f.kind)}</td><td style="white-space:normal"><span lang="en">${esc(f.item)}</span>${f.prompt?`<br><span class="hint" lang="en">${esc(f.prompt)}</span>`:''}<br><span class="hint">Đáp án app: <b lang="en">${esc(f.answer)}</b></span></td><td style="white-space:normal">${esc(f.reason)}</td></tr>`).join('')}</tbody></table></div>
-    <div class="row"><button class="btn" data-act="flagsexport">Tải danh sách (.json)</button><button class="btn ghost" data-act="flagsclear">Xoá danh sách</button></div>`:''}</section>
+    <div class="row">${(()=>{ const n=st.flags.filter(f=>!f.sent).length; return n?`<button class="btn primary" data-act="flagssend">📤 Gửi ${n} câu cho người soạn</button>`:'<span class="pill good">Đã gửi hết</span>'; })()}<button class="btn" data-act="flagsexport">Tải danh sách (.json)</button><button class="btn ghost" data-act="flagsclear">Xoá danh sách</button></div>`:''}</section>
   <section class="panel stack"><h3>Nâng cao</h3>
     <div class="setrow"><span>Âm thanh khi trả lời đúng/sai, lên bậc</span><button class="btn" data-act="sfx">${st.set.sfx?'Tắt':'Bật'}</button></div>
     <div class="setrow"><span>Chế độ tập trung: ẩn XP, combo, từ vàng, màn thưởng và chuỗi ngày; giữ phản hồi đúng/sai và lời giải thích ${info('focus')}</span><button class="btn" data-act="focus" aria-pressed="${FOCUS()}">${FOCUS()?'Tắt':'Bật'}</button></div>
@@ -13094,7 +13096,7 @@ function viewSuper(){ const sup=isSuper(), s=MN().sup, h=hearts();
     <p class="note">App không có máy chủ nên chạy gần như không tốn tiền. Chi phí thật là <b>công giáo viên duyệt nội dung</b> (khoảng 225 giờ cho toàn bộ ${ALL_WORDS.length.toLocaleString('vi')} từ, ${GPOINTS.length} bài ngữ pháp, ${UNITS.length} bài đọc…) và công sửa lỗi. Tiền từ Super dùng trước hết cho việc này.</p>
     <p class="note">Tim chỉ tốn ở bài mới và không bao giờ dừng bạn giữa bài. Hết tim thì luyện lại từ đã học: đó cũng là cách nhớ lâu hơn.</p></section>
   <section class="panel stack"><h3>Quyền riêng tư và bản quyền</h3>
-    <p class="note">Tiến độ lưu trên máy này. App không theo dõi bạn; quảng cáo hiện tại là quảng cáo nội bộ, không gọi mạng. Dữ liệu chỉ rời máy khi bạn tự bật: đồng bộ nhiều máy (máy chủ chỉ giữ băm của mã và bản sao lưu nén), giải đấu tuần (biệt danh và XP tuần), thông báo nhắc học (địa chỉ nhận thông báo, giờ nhắc, ngày học gần nhất), máy nghe giọng (trình duyệt có thể gửi âm thanh tới hãng trình duyệt để nhận diện), hoặc khi bạn tự gửi dữ liệu học ẩn danh (Góp ý).</p>
+    <p class="note">Tiến độ lưu trên máy này. App không theo dõi bạn; quảng cáo hiện tại là quảng cáo nội bộ, không gọi mạng. Dữ liệu chỉ rời máy khi bạn tự bật: đồng bộ nhiều máy (máy chủ chỉ giữ băm của mã và bản sao lưu nén), giải đấu tuần (biệt danh và XP tuần), thông báo nhắc học (địa chỉ nhận thông báo, giờ nhắc, ngày học gần nhất), máy nghe giọng (trình duyệt có thể gửi âm thanh tới hãng trình duyệt để nhận diện), khi bạn tự gửi câu báo lỗi cho người soạn, hoặc khi bạn tự gửi dữ liệu học ẩn danh (Góp ý).</p>
     <p class="note"><a href="privacy.html" target="_blank" rel="noopener">Đọc chính sách quyền riêng tư đầy đủ</a></p>
     <p class="note">© ${new Date().getFullYear()} ${APP_NAME}. Giữ mọi quyền đối với mã và nội dung bài học.</p></section>
   <section class="panel stack"><h3>Giáo viên, trường học</h3><p class="note">Học sinh dùng miễn phí. Giáo viên gộp tiến độ cả lớp bằng file dữ liệu ẩn danh của học sinh.${MONEY.contact?` Liên hệ triển khai cho lớp: ${esc(MONEY.contact)}.`:''}</p><div class="row"><button class="btn" data-go="class">🏫 Công cụ lớp học</button></div></section>`; }
@@ -13176,6 +13178,11 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:20,d:'2026-09-28',t:'Nói bằng câu của mình, hồ sơ từ vựng bài viết',items:[
+    'Đóng vai: nói hoặc gõ bằng câu của chính bạn, máy so các ý chính với câu mẫu (tô xanh ý đã có, đỏ ý còn thiếu) và nhắc khi khẳng định/phủ định bị ngược.',
+    'Bài viết có hồ sơ từ vựng CEFR: bao nhiêu từ ở mỗi cấp A1–C2, độ đa dạng từ, những từ cấp cao bạn đã dùng.',
+    'Câu đã báo lỗi gửi được cho người soạn chỉ với một nút (ẩn danh), để nội dung được sửa nhanh hơn.',
+    'Sổ từ: nút nghe người thật nói từ đó trên YouGlish (mở trang ngoài).']},
   {v:19,d:'2026-09-28',t:'Luyện nghe, nói nhại, thi thử VSTEP, giải đấu tuần',big:true,items:[
     'Luyện nghe (Giao tiếp → Nghe & nói): chép chính tả cả câu, nghe chọn nghĩa, nghe rồi chọn câu đáp; chép sai được chỉ ra từng từ thiếu/thừa.',
     'Nói nhại: nghe câu mẫu rồi nói lại, máy tô từ nó nghe ra và chưa nghe ra; có chế độ ẩn chữ để luyện khó hơn.',
@@ -13457,7 +13464,7 @@ document.addEventListener('click',e=>{
     case 'fnquiz': return startFnQuiz(ui.fnId);
     case 'rp': return startRP(ui.dlgId,d.role);
     case 'rpnext': return rpNext();
-    case 'rpshow': { ui.rp.shown=true; const l=DLG[ui.rp.id].lines[ui.rp.i]; say(l.t,false,l.s==='B'?1:0); return render(); }
+    case 'rpshow': { const fk='rpf'+ui.rp.i; if(ASR.key===fk&&ASR.res&&ASR.res.heard&&!ui.rp.free) ui.rp.free=ASR.res.heard; ui.rp.shown=true; const l=DLG[ui.rp.id].lines[ui.rp.i]; say(l.t,false,l.s==='B'?1:0); return render(); }
     case 'rpsay': { const l=DLG[ui.rp.id].lines[ui.rp.i]; return say(l.t,false,l.s==='B'?1:0); }
   }
   if(d.acc!=null){ if(d.acc&&!hasAcc(d.acc)) return toast(ACC[d.acc].need!=null?`Cần ${ACC[d.acc].need} unit vững để mở phụ kiện này.`:'Phụ kiện hiếm: thỉnh thoảng rơi ra từ rương mỗi ngày.'); st.cos.acc=st.cos.acc===d.acc?'':d.acc; save(); return render(); }
@@ -13586,6 +13593,7 @@ document.addEventListener('click',e=>{
     case 'readshow': ui.read.listen=false; return render();
     case 'rsubmit': return readSubmit();
     case 'snooze': st.set.backupSnooze=today()+3; save(); return render();
+    case 'flagssend': return flagsSend();
     case 'flagsexport': return download(`bao-loi-noi-dung-${new Date().toISOString().slice(0,10)}.json`,JSON.stringify(st.flags,null,1),'application/json');
     case 'flagsclear': if(t.dataset.confirm!=='1'){ t.dataset.confirm='1'; t.textContent='Bấm lần nữa để xoá'; return; } st.flags=[]; save(); toast('Đã xoá danh sách báo lỗi.'); return render();
     case 'quit': return askOrQuit();
@@ -13626,6 +13634,8 @@ document.addEventListener('submit',e=>{
   if(f.dataset.form==='feedback') return fbSave(f);
   if(f.dataset.form==='supercode') return superActivate(f.querySelector('input').value);
   if(f.dataset.form==='lgjoin') return lgJoin(f.querySelector('input').value);
+  if(f.dataset.form==='rpfree'){ const v=f.querySelector('input').value.trim().slice(0,300); if(!v||!ui.rp) return; ui.rp.free=v; if(ASR.key==='rpf'+ui.rp.i) asrReset();
+    const r=ideaCheck(DLG[ui.rp.id].lines[ui.rp.i].t,v); evc('rpfree'); if(r&&r.p>=.6&&!r.neg) addXP(selfXP('rpf:'+ui.rp.id+':'+ui.rp.i,5)); save(); return render(); }
   if(f.dataset.form==='syncjoin'){ const v=f.querySelector('input').value; if(v.trim()) syncJoin(v); return; }
   if(f.dataset.form==='restorecode'){ const v=f.querySelector('textarea').value; if(v.trim()) restoreCode(v); return; }
   if(f.dataset.form==='gtype'){ const s=ui.gs, ex=s.q[s.i], v=f.querySelector('input').value.trim(); if(!v) return; const okk=gOk(v,ex.accept), ty=!okk&&ex.type==='gty'&&!/\s/.test(ex.ans)&&ex.ans.length>=5&&lev(gcanon(v),gcanon(ex.ans))===1; return gAnswer(okk||ty,{text:v,typo:ty}); }
@@ -13880,6 +13890,88 @@ function netTouch(){ if(Date.now()-_netAt<60000) return; _netAt=Date.now(); push
 async function pushTouch(){ if(!st.set.push||!canPush()) return; const p=pushGet(), d=ymdLocal();
   try{ if(!p||p.reg!==d) return void await pushRegister();
     if(studiedToday()&&p.seen!==d){ p.seen=d; pushSetLS(p); await syncRpc('el_push_seen',{ep:p.ep,studied:d,due:dueWords().length}); } }catch(e){} }
+
+/* ================== v20: NÓI BẰNG CÂU CỦA MÌNH (SO Ý), HỒ SƠ TỪ VỰNG CEFR, GỬI BÁO LỖI, NGHE NGƯỜI THẬT ==================
+   Không dùng AI, không dùng dữ liệu của bên thứ ba: so ý và hồ sơ từ vựng chỉ dựa trên nội dung của chính app. */
+
+// ---------- Đóng vai: người học nói/gõ câu của mình, máy so các ý chính (từ khoá) với câu mẫu ----------
+const NUMW = Object.fromEntries('zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty'.split(' ').map((w,i)=>[w,i]));
+const IDEA_SKIP = new Set("yes yeah okay well really please thanks thank sure just now let let's get got oh hmm one ones thing things why what where how who whose don't doesn't didn't can't won't isn't aren't wasn't weren't i'm it's that's there's you're we're they're i've i'll i'd".split(' '));
+const IDEA_SYN = {till:'until',movie:'film',movies:'film',vacation:'holiday',vacations:'holiday'};
+// Rút gọn từ về gốc thô (cooking/cooked/cooks → cook; studies/studied/study → studi) để so hai câu với nhau; số viết chữ → chữ số.
+function ideaStem(w){ w=w.toLowerCase().replace(/’/g,"'").replace(/'(s|re|ve|ll|d|m|t)$/,''); w=IDEA_SYN[w]||w; if(NUMW[w]!=null) return String(NUMW[w]); if(/^\d+$/.test(w)) return w;
+  let s=w; for(const x of ['ing','ed','es','s']) if(s.length-x.length>=3&&s.endsWith(x)){ s=s.slice(0,-x.length); break; }
+  if(s.length>=4&&/([b-df-hj-np-tv-z])\1$/.test(s)&&!/(ss|ll|ff|zz)$/.test(s)) s=s.slice(0,-1);
+  return s.replace(/e$/,'').replace(/y$/,'i'); }
+const ideaWords = t => (String(t).match(/[A-Za-z0-9][A-Za-z0-9'’]*/g)||[]).filter(w=>{ const k=w.toLowerCase().replace(/’/g,"'"); return !STOPW.has(k)&&!IDEA_SKIP.has(k)&&(k.length>=3||/^\d+$/.test(k)); });
+// “Why don't we…/Why not…” là lời gợi ý, không phải phủ định.
+const hasNeg = t => /\b(not|no|never|nothing|nobody|none|neither)\b|n['’]t\b/i.test(String(t).replace(/\bwhy\s+(don['’]t|not)\b/gi,''));
+function ideaCheck(model,answer){ const keys=[...new Map(ideaWords(model).map(w=>[ideaStem(w),w])).entries()], have=new Set(ideaWords(answer).map(ideaStem));
+  if(!keys.length) return null; const ks=keys.map(([k,w])=>({w,ok:have.has(k)})); return {keys:ks,p:ks.filter(k=>k.ok).length/ks.length,neg:hasNeg(model)!==hasNeg(answer)}; }
+function ideaHtml(r,ans,typed){ const good=r.p>=.6&&!r.neg, hints=typed?grammarHints(ans):[];
+  return `<div class="fb ${good?'good':r.p>=.3?'neutral':'bad'}" role="status"><strong>${good?'Đủ ý chính':r.p>=.3?'Có một phần ý':'Chưa khớp ý của câu mẫu'} · ${r.keys.filter(k=>k.ok).length}/${r.keys.length} ý</strong>
+    <p>${r.keys.map(k=>`<span class="${k.ok?'asr-ok':'asr-miss'}" lang="en">${esc(k.w)}</span>`).join(' · ')}</p>
+    ${r.neg?'<span>⚠️ Một câu khẳng định, một câu phủ định (not, never, don’t…): kiểm tra lại ý.</span>':''}
+    <span class="hint">${typed?'Bạn gõ':'Máy nghe được'}: “<span lang="en">${esc(ans)}</span>”. Máy chỉ so từ khoá của ý, không chấm ngữ pháp hay phát âm: câu khác mẫu mà đúng ý vẫn tốt.</span>
+    ${hints.map(h=>`<span class="hint">✍️ <span lang="en">${esc(h.m)}</span>: ${esc(h.why)}</span>`).join('')}</div>`; }
+function rpFreeHtml(R,l){
+  const key='rpf'+R.i, mine=ASR.key===key, heard=mine&&ASR.res&&!ASR.res.word?ASR.res.heard:'', ans=heard||R.free||'', r=ans?ideaCheck(l.t,ans):null;
+  const btn=!HAS_ASR?'':mine&&ASR.on?'<button class="btn" data-act="asrstop">■ Đang nghe… bấm khi nói xong</button>'
+    :`<button class="btn primary" data-act="asr" data-k="${key}" data-t="${esc(l.t)}">🎙 ${ans?'Nói lại':'Nói câu của bạn'}</button>`;
+  return `<div class="stack" style="gap:8px"><p class="hint">Nói hoặc gõ bằng câu của chính bạn, không cần giống mẫu. Máy so các ý chính với câu mẫu rồi bạn mở câu mẫu để học thêm.</p>
+    ${btn?`<div class="row">${btn}</div>`:''}${mine&&ASR.err?`<p class="hint" role="status">${esc(ASR.err)}</p>`:''}
+    <form data-form="rpfree" class="row" style="flex-wrap:nowrap"><input class="field" style="flex:1" lang="en" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="…hoặc gõ câu trả lời" aria-label="Câu trả lời của bạn" value="${esc(R.free||'')}"><button class="btn">Kiểm tra ý</button></form>
+    ${r?ideaHtml(r,ans,!heard):''}</div>`; }
+
+// ---------- Hồ sơ từ vựng CEFR của bài viết (dựa trên danh sách từ có gắn cấp của app) ----------
+const IRR = {went:'go',gone:'go',goes:'go',had:'have',has:'have',did:'do',done:'do',does:'do',saw:'see',seen:'see',came:'come',got:'get',gotten:'get',made:'make',took:'take',taken:'take',bought:'buy',ate:'eat',eaten:'eat',drank:'drink',drunk:'drink',
+  said:'say',told:'tell',gave:'give',given:'give',found:'find',thought:'think',met:'meet',wrote:'write',written:'write',began:'begin',begun:'begin',knew:'know',known:'know',felt:'feel',sat:'sit',stood:'stand',ran:'run',swam:'swim',swum:'swim',
+  flew:'fly',flown:'fly',slept:'sleep',spent:'spend',lost:'lose',won:'win',became:'become',brought:'bring',caught:'catch',taught:'teach',heard:'hear',paid:'pay',sold:'sell',sent:'send',built:'build',drove:'drive',driven:'drive',forgot:'forget',
+  forgotten:'forget',broke:'break',broken:'break',chose:'choose',chosen:'choose',woke:'wake',wore:'wear',worn:'wear',left:'leave',kept:'keep',meant:'mean',spoke:'speak',spoken:'speak',understood:'understand',grew:'grow',grown:'grow',
+  threw:'throw',thrown:'throw',fell:'fall',fallen:'fall',held:'hold',led:'lead',rode:'ride',ridden:'ride',sang:'sing',sung:'sing',children:'child',people:'person',men:'man',women:'woman',feet:'foot',teeth:'tooth',mice:'mouse',better:'good',best:'good',worse:'bad',worst:'bad'};
+let _lvForm=null;
+function lvForms(){ if(_lvForm) return _lvForm; const m=new Map(), put=(f,L)=>{ const o=m.get(f); if(!o||LVS.indexOf(L)<LVS.indexOf(o)) m.set(f,L); };
+  ALL_WORDS.forEach(w=>{ const f=String(w.word).toLowerCase(); if(/^[a-z][a-z'-]*$/.test(f)) put(f,UNIT_OF[w.id].level); });
+  const head=new Set(m.keys());   // từ gốc có cấp riêng thì không lấy cấp của họ từ
+  ALL_WORDS.forEach(w=>(w.family||[]).forEach(x=>{ const f=String(x).replace(/\s*\(.*$/,'').trim().toLowerCase(); if(/^[a-z][a-z'-]*$/.test(f)&&!head.has(f)) put(f,UNIT_OF[w.id].level); }));
+  return _lvForm=m; }
+function wordLevel(t){ const m=lvForms(), w=t.toLowerCase().replace(/’/g,"'").replace(/'s$/,''); if(m.has(w)) return m.get(w); if(IRR[w]&&m.has(IRR[w])) return m.get(IRR[w]);
+  const tr=[];
+  if(w.endsWith('ies')) tr.push(w.slice(0,-3)+'y'); if(w.endsWith('es')) tr.push(w.slice(0,-2)); if(w.endsWith('s')) tr.push(w.slice(0,-1));
+  if(w.endsWith('ied')) tr.push(w.slice(0,-3)+'y'); if(w.endsWith('ed')){ tr.push(w.slice(0,-2),w.slice(0,-1)); if(/(.)\1ed$/.test(w)) tr.push(w.slice(0,-3)); }
+  if(w.endsWith('ing')){ tr.push(w.slice(0,-3),w.slice(0,-3)+'e'); if(/(.)\1ing$/.test(w)) tr.push(w.slice(0,-4)); }
+  if(w.endsWith('ier')||w.endsWith('iest')) tr.push(w.replace(/i(er|est)$/,'y')); if(w.endsWith('er')) tr.push(w.slice(0,-2),w.slice(0,-1)); if(w.endsWith('est')) tr.push(w.slice(0,-3),w.slice(0,-2));
+  for(const x of tr) if(m.has(x)) return m.get(x); return null; }
+function vocabProfile(text){ const T=String(text), toks=[];
+  for(const m of T.matchAll(/[A-Za-z][A-Za-z'’-]*/g)){ const w=m[0]; if(w.length<2||STOPW.has(w.toLowerCase().replace(/’/g,"'"))) continue;
+    const before=T.slice(0,m.index).trimEnd(), name=/^[A-Z]/.test(w)&&before&&!/[.!?:"“]$/.test(before)&&!wordLevel(w);   // chữ hoa giữa câu, không có trong danh sách: tên riêng
+    if(!name) toks.push(w); }
+  const cnt={A1:0,A2:0,B1:0,B2:0,C1:0,C2:0,x:0}, types=new Map();
+  toks.forEach(w=>{ const L=wordLevel(w)||'x'; cnt[L]++; const k=w.toLowerCase(); if(!types.has(k)) types.set(k,L); });
+  return {n:toks.length,cnt,types}; }
+function vocabProfileHtml(t,text){ const p=vocabProfile(text); if(p.n<15) return '';
+  const lv=LVS.indexOf(t.lv), known=p.n-p.cnt.x, up=LVS.filter((L,i)=>i>=lv).reduce((a,L)=>a+p.cnt[L],0);
+  const adv=[...p.types].filter(([,L])=>L!=='x'&&LVS.indexOf(L)>=Math.max(lv,2)).map(([w])=>w).slice(0,24), row=(lab,n)=>`<div class="dimrow" aria-label="${lab}: ${n} lượt"><span>${lab}</span>${meter(p.n?n/p.n:0,'')}<span class="v">${pct(p.n?n/p.n:0)}</span></div>`;
+  return `<section class="panel stack"><h3>Hồ sơ từ vựng theo CEFR</h3>
+    <p class="hint">Mỗi từ nội dung (bỏ từ chức năng như the, and, is) được đối chiếu với ${ALL_WORDS.length.toLocaleString('vi')} từ có gắn cấp của app. Đây là số đếm để bạn tự điều chỉnh, không phải điểm.</p>
+    ${LVS.map(L=>row(L,p.cnt[L])).join('')}${row('Khác',p.cnt.x)}
+    <p>Từ ở cấp đề (${esc(t.lv)}) trở lên: <b class="num">${up}</b> lượt, ${pct(known?up/known:0)} số từ có trong danh sách. Độ đa dạng: ${p.types.size} từ khác nhau trên ${p.n} lượt.</p>
+    ${adv.length?`<p class="hint">Từ từ B1 trở lên bạn đã dùng: <span lang="en">${adv.map(esc).join(', ')}</span></p>`:''}
+    <p class="hint">“Khác” gồm tên riêng, từ ngoài danh sách hoặc viết sai chính tả. Muốn bài lên cấp, thay dần từ quá cơ bản bằng từ và cụm từ của cấp đề.</p></section>`; }
+
+// ---------- Gửi “Báo lỗi” cho người soạn (ẩn danh, người học tự bấm) ----------
+async function flagsSend(){ const fs=st.flags.filter(f=>!f.sent); if(!fs.length) return toast('Không có câu mới để gửi.');
+  if(IN_VIEWER) return toast('Trình xem artifact chặn kết nối mạng. Mở bản web của app để gửi.');
+  const S=(v,n)=>String(v??'').slice(0,n); let ok=0;
+  try{ for(let i=0;i<fs.length;i+=20){ const part=fs.slice(i,i+20);
+      await syncRpc('el_flag_post',{items:part.map(f=>({kind:S(f.kind,40),ref:S(f.ref,120),item:S(f.item,200),prompt:S(f.prompt,300),answer:S(f.answer,200),given:S(f.given,200),reason:S(f.reason,160)})),v:APP_VERSION});
+      part.forEach(f=>f.sent=today()); ok+=part.length; } }
+  catch(e){ save(); render(); return toast(ok?`Đã gửi ${ok} câu; phần còn lại chưa gửi được, thử lại sau.`:'Chưa gửi được. Kiểm tra mạng rồi thử lại.'); }
+  evc('flags:sent',ok); save(); render(); toast(`Đã gửi ${ok} câu cho người soạn. Cảm ơn bạn!`); }
+
+// ---------- Nghe người thật: chỉ là đường dẫn sang YouGlish (app không chứa hay sao chép nội dung của trang đó) ----------
+const ygLink = word => /^[A-Za-z][A-Za-z '-]*$/.test(word||'')&&!IN_VIEWER
+  ? `<div class="row"><a class="btn small" href="https://youglish.com/pronounce/${encodeURIComponent(word)}/english" target="_blank" rel="noopener noreferrer">▶ Nghe người thật nói “<span lang="en">${esc(word)}</span>” trên YouGlish ↗</a></div>` : '';
 
 // Cài như app trên điện thoại (PWA) và chạy offline khi app được đặt ở một địa chỉ web thật (GitHub Pages, Netlify…).
 // Trong trình xem artifact hay khi mở file trực tiếp thì bỏ qua. Xin trình duyệt giữ dữ liệu lâu dài để tiến độ không bị tự xoá.

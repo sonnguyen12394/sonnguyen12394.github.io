@@ -10,6 +10,8 @@ Học tiếng Anh A1 → C2 miễn phí, mỗi lỗi sai được giải thích 
 - Ngữ pháp, chức năng giao tiếp, hội thoại, đọc, viết, phát âm theo khung CEFR, kèm các câu "can-do": biết mình làm được gì ở từng cấp.
 - Luyện nghe: chép chính tả cả câu, nghe chọn nghĩa, nghe rồi chọn câu đáp (từ 525 câu thoại).
 - Luyện nói với máy nghe giọng của trình duyệt (tự chọn bật), nói nhại (shadowing) có tô màu từ máy nghe ra.
+- Đóng vai bằng câu của chính mình: máy so các ý chính với câu mẫu (không dùng AI).
+- Bài viết có hồ sơ từ vựng CEFR (tỉ lệ từ mỗi cấp A1–C2, độ đa dạng từ).
 - Thi thử VSTEP rút gọn (Nghe + Đọc, có tính giờ, B1→C1) và ước tính bậc.
 - Giải đấu tuần ẩn danh: nhóm 30 người, 5 hạng từ Đồng tới Kim cương.
 - Đồng bộ nhiều máy bằng mã, không cần tài khoản (tự chọn bật).
@@ -43,7 +45,7 @@ App là PWA đủ điều kiện đóng gói Trusted Web Activity:
 
 ## Máy chủ (Supabase)
 
-Thư mục `supabase/` chứa migration của bản v19 (bảng + hàm RPC cho giải đấu tuần và thông báo nhắc học) và Edge Function `el-remind` gửi lời nhắc (pg_cron 15 phút/lần). Khoá VAPID và bí mật cron nằm trong Supabase Vault, không nằm trong repo.
+Thư mục `supabase/` chứa migration của bản v19–v20 (bảng + hàm RPC cho giải đấu tuần, thông báo nhắc học và gom câu báo lỗi; xem báo lỗi bằng `select * from el_admin.flags;`) và Edge Function `el-remind` gửi lời nhắc (pg_cron 15 phút/lần). Khoá VAPID và bí mật cron nằm trong Supabase Vault, không nằm trong repo.
 
 ## Bản quyền
 
