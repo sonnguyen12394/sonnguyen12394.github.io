@@ -46,8 +46,12 @@ App là PWA đủ điều kiện đóng gói Trusted Web Activity:
 ## Cấu trúc tệp
 
 - `index.html`: khung trang (giao diện, CSS, bộ biểu tượng SVG tự vẽ).
-- `app.js`: mã và nội dung bài học. Tách riêng để trình duyệt vừa tải vừa biên dịch (mở nhanh hơn ~44% trên 4G).
-- `sw.js`: bộ nhớ đệm để mở lại tức thì và dùng khi mất mạng. Mỗi lần phát hành: tăng `APP_VERSION` trong `app.js`, `?v=` trong `index.html`, `VERSION` và `CORE` trong `sw.js`.
+- `app.js`: mã app, khung bài học của mọi cấp và chi tiết cấp A1 (đủ để mở app và học ngay).
+- `data/lv-<cấp>.<băm>.json`: chi tiết bài học A2–C2 (bài đọc, câu ví dụ, bài điền, kết hợp từ, giải thích lỗi), tải ngầm sau khi mở, cấp đang học trước. Tên có băm nội dung nên cấp không đổi thì không phải tải lại.
+- `tools/content-split.js`: `node tools/content-split.js join` ghép lại `app.js` đầy đủ để sửa nội dung; sửa xong chạy `split` trước khi phát hành.
+- `sw.js`: bộ nhớ đệm để mở lại tức thì và dùng khi mất mạng (tệp `data/` nằm ở ngăn đệm riêng, giữ qua các bản). Mỗi lần phát hành: tăng `APP_VERSION` trong `app.js`, `?v=` trong `index.html`, `VERSION` và `CORE` trong `sw.js`.
+
+Tốc độ đo được (máy tầm trung, bản v22): lần đầu dùng được sau ~1,4 s trên 4G phổ biến và ~5,8 s trên 4G rất chậm; mở lại ~1 s; dùng được khi mất mạng.
 
 ## Máy chủ (Supabase)
 

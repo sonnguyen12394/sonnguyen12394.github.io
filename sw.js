@@ -1,12 +1,17 @@
 // Service worker của English Ladder: lưu app để chạy offline. index.html lấy từ mạng trước (có bản mới thì dùng ngay),
 // mất mạng thì dùng bản đã lưu; tệp tĩnh khác lấy từ bộ nhớ trước. Đổi VERSION khi phát hành để xoá bộ nhớ cũ.
-const VERSION = 'vl-v21';
-const CORE = ['./', 'index.html', 'app.js?v=21', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];
+const VERSION = 'vl-v22';
+const CORE = ['./', 'index.html', 'app.js?v=22', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 const META = 'el-meta';   // trạng thái nhắc học do app ghi (service worker không đọc được localStorage); không xoá khi đổi bản
-self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION && k !== META).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
+const DATA = 'el-data';   // chi tiết bài học theo cấp (data/lv-<cấp>.<băm>.json): tên có băm nội dung nên giữ qua các bản; app tự dọn tệp cũ
+self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION && k !== META && k !== DATA).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
   const r = e.request; if (r.method !== 'GET') return;
+  if (/\/data\/lv-[^/]+\.json$/.test(new URL(r.url).pathname)) {
+    e.respondWith(caches.open(DATA).then(c => c.match(r).then(x => x || fetch(r).then(res => { if (res.ok) c.put(r, res.clone()); return res; }))));
+    return;
+  }
   const page = r.mode === 'navigate' || r.url.endsWith('/index.html');
   if (page) {
     e.respondWith(fetch(r).then(res => { const c = res.clone(); caches.open(VERSION).then(k => k.put(r, c)); return res; }).catch(() => caches.match(r).then(x => x || caches.match('index.html'))));
