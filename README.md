@@ -24,6 +24,7 @@ Học tiếng Anh A1 → C2 miễn phí, mỗi lỗi sai được giải thích 
 - Đồng bộ nhiều máy bằng mã, không cần tài khoản (tự chọn bật).
 - Nhắc học hằng ngày bằng thông báo (Web Push, kể cả iPhone đã cài app), chạy khi mất mạng.
 - Công cụ lớp học cho giáo viên: gộp tiến độ cả lớp từ file dữ liệu ẩn danh, không cần máy chủ.
+- Bắt đầu học bằng một chạm; hướng dẫn cài app cho iPhone, Android, máy tính; thẻ chia sẻ tiến độ; trang “Về English Ladder” (cam kết, nội dung, mã nguồn).
 
 ## Cài như ứng dụng
 

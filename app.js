@@ -1002,7 +1002,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 17, APP_VERSION = 28;
+const STATE_V = 17, APP_VERSION = 29;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},money:{h:5,hd:0,ht:0},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -4124,7 +4124,7 @@ function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); renderChrome();
   if(ui.view==='path'&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,super:viewSuper,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  const v={install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,super:viewSuper,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   document.getElementById('app').innerHTML=html;
@@ -4203,7 +4203,10 @@ function viewWelcome(){
   const step=ui.wz||0, dots=`<div class="dots" aria-label="Bước ${step+1}/3">${[0,1,2].map(i=>`<i class="${i<=step?'on':''}"></i>`).join('')}</div>`;
   const back=step?`<button class="btn ghost" data-act="wz" data-s="${step-1}">← Quay lại</button>`:'';
   if(step===0) return `<section class="stack"><span class="eyebrow">Chào mừng · bước 1/3</span>${dots}<h1>Biết mình làm được gì bằng tiếng Anh, từng cấp A1 → C2</h1>
-    <p class="muted note"><b>Mỗi lỗi sai được giải thích bằng tiếng Việt.</b> Từ vựng, ngữ pháp, nghe, nói, đọc, viết theo khung CEFR. <b>Miễn phí, không cần tài khoản</b>${CAN_OFFLINE?', dùng được khi mất mạng':''}.</p><p class="note">${promiseLine(15)}</p></section>
+    <p class="muted note"><b>Mỗi lỗi sai được giải thích bằng tiếng Việt.</b> Miễn phí mọi bài học, không cần tài khoản.</p>
+    <div class="row"><button class="btn primary" data-act="quickstart">Học ngay: bài đầu 3 phút</button></div>
+    <p class="hint">Chưa cần chọn gì, mục tiêu hỏi sau.</p>
+    <div class="row" style="gap:6px"><span class="pill">Không quảng cáo bên thứ ba</span><span class="pill">Không bán dữ liệu</span><button class="pill" data-go="about" style="cursor:pointer">Mã nguồn công khai ›</button></div></section>
   ${tryBox()}
   <section class="panel stack"><h3>Bạn là ai?</h3><p class="muted">App chọn sẵn lộ trình và cấp mục tiêu hợp với bạn (đổi được sau).</p>${whoPicker()}
     <p class="hint">Chưa hợp với trẻ dưới 10 tuổi: cần tự đọc giải thích tiếng Việt và gõ chữ tiếng Anh. Nội dung đang được giáo viên duyệt dần; thấy câu sai, bấm báo lỗi ngay trong câu hỏi.</p></section>
@@ -4212,7 +4215,7 @@ function viewWelcome(){
     <form class="stack" data-form="restorecode" style="gap:8px"><textarea class="field" rows="3" style="font:400 12px/1.4 var(--mono);width:100%" placeholder="Dán mã sao lưu (VL1:… hoặc VL2:…)" aria-label="Mã sao lưu"></textarea><div class="row"><button class="btn">Khôi phục</button></div></form></div></details>`;
   if(step===1) return `<section class="stack"><span class="eyebrow">Chào mừng · bước 2/3</span>${dots}<h1>Mục tiêu và thời gian của bạn</h1>${WHO_PITCH[st.me.who]?`<p class="muted note">${esc(WHO_PITCH[st.me.who].p)}</p>`:''}</section>
   <section class="panel stack">${profileFields()}${srcField()}</section>
-  <section class="panel stack"><h3>Dự báo</h3><p>${etaLine()}</p>
+  <section class="panel stack"><h3>Dự báo</h3><p>${etaLine()}</p><p class="note">${promiseLine(15)}</p>
     <p class="hint">Học ít mỗi ngày mà đều thì nhớ lâu hơn học dồn. Dự báo tự điều chỉnh theo nhịp học thật của bạn sau vài ngày.</p></section>
   <details class="panel"><summary>Đổi lộ trình (chủ đề)</summary><div style="margin-top:10px">${goalPicker()}</div></details>
   <div class="row">${back}<button class="btn primary" data-act="wz" data-s="2">Tiếp</button></div>`;
@@ -4693,6 +4696,13 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:29,d:'2026-09-30',t:'Dễ bắt đầu, dễ cài, minh bạch',items:[
+    'Bắt đầu học chỉ bằng một chạm: bài đầu tiên ngay, chọn mục tiêu sau.',
+    'Hướng dẫn cài app cho iPhone, Android và máy tính, kể cả khi trình duyệt không tự hiện nút cài. Giữ biểu tượng trên màn hình chính để mở nhanh vào Ôn tập, Kỹ năng, Pre-A1.',
+    'Rung nhẹ khi trả lời đúng (tắt được); Cài đặt chỉ cách cài giọng đọc tự nhiên nếu máy đang dùng giọng cơ bản.',
+    'Trang “Về English Ladder”: cam kết, nội dung hiện có, mã nguồn công khai, góp ý.',
+    'Chia sẻ thẻ tiến độ dạng ảnh (cấp CEFR, can-do, chuỗi ngày, từ đã thuộc).',
+  ]},
   {v:28,d:'2026-09-29',t:'Đủ nội dung CEFR từ Pre-A1 đến C2',big:true,items:[
     'Khởi động Pre-A1 cho người mới tinh: chữ cái, đánh vần tên, số điện thoại, email, số và giá tiền, giờ, thứ, tháng, ngày, năm, câu dùng trong lớp. Có nghe rồi chọn, nghe rồi gõ.',
     'Nghe bài nói thật từ B1 đến C2: 12 bài phỏng vấn, bài giảng, podcast, tranh luận, hai giọng. Lời thoại ẩn cho đến khi nộp bài.',
@@ -6624,6 +6634,96 @@ const _viewPath28 = viewPath; viewPath = function(){ let h=_viewPath28();
 const _viewCefr28 = viewCefr; viewCefr = function(){ const h=_viewCefr28(), L=cdLv(); if(L!=='A1') return h;
   return h+`<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>Dưới A1: Pre-A1</h3><p class="muted">Chữ cái, số, giờ, ngày tháng, câu dùng trong lớp · ${paDone()}/${PREA1.length} bài đạt.</p></div><button class="btn" data-act="palist">Khởi động Pre-A1</button></section>`; };
 GLOSSARY.cefr[1]+=' Dưới A1 còn có Pre-A1 (người mới tinh): app có phần Khởi động Pre-A1 riêng.';
+
+
+/* ================== v29: DỄ BẮT ĐẦU, DỄ CÀI, ĐÁNG TIN ==================
+   So với các app phổ biến, English Ladder thua ở trải nghiệm chứ không ở nội dung: màn chào nhiều chữ, nhiều bước;
+   chỉ hướng dẫn cài khi trình duyệt tự đề nghị; ít dấu hiệu để người mới tin app. Khối này: bắt đầu học 1 chạm,
+   hướng dẫn cài cho mọi máy, rung nhẹ khi trả lời đúng, gợi ý giọng đọc tốt hơn, trang “Về app” minh bạch, thẻ chia sẻ tiến độ. */
+
+// 1. Bắt đầu 1 chạm: bài đầu tiên ngay, mục tiêu hỏi sau (lời nhắc “Cho app biết bạn học để làm gì” đã có sau 2 ngày).
+function quickStart(){ st.onboarded=true; st.me.since??=today(); save(); evc('onb:quick'); const cu=currentUnit(); return go('learn',{unitId:cu.id,learn:{uid:cu.id,i:0}}); }
+
+// 2. Hướng dẫn cài theo từng loại máy (kể cả khi trình duyệt không tự hiện nút cài).
+const DEV = () => { const u=typeof navigator!=='undefined'?navigator.userAgent:''; return IS_IOS?'ios':/Android/i.test(u)?'android':'desktop'; };
+const INSTALL_STEPS = {
+  ios:['iPhone, iPad (Safari)',['Mở trang bằng <b>Safari</b> (Chrome trên iPhone cũng được với iOS 16.4 trở lên).','Bấm nút <b>Chia sẻ</b> (ô vuông có mũi tên lên) ở thanh dưới.','Kéo xuống, chọn <b>Thêm vào MH chính</b>, rồi bấm <b>Thêm</b>.','Mở English Ladder từ biểu tượng mới trên màn hình chính. Tiến độ được giữ lâu dài và bật được nhắc học.']],
+  android:['Điện thoại Android',['Mở trang bằng <b>Chrome</b> (hoặc Edge, Samsung Internet).','Bấm <b>⋮</b> ở góc trên bên phải.','Chọn <b>Cài đặt ứng dụng</b> hoặc <b>Thêm vào màn hình chính</b>.','Mở từ biểu tượng mới: chạy toàn màn hình, dùng được khi mất mạng.']],
+  desktop:['Máy tính (Chrome, Edge)',['Mở trang bằng Chrome hoặc Edge.','Bấm biểu tượng <b>cài đặt</b> (màn hình có mũi tên) ở cuối thanh địa chỉ, hoặc menu ⋮ → <b>Cài đặt English Ladder</b>.','App mở trong cửa sổ riêng, có trong menu Start/Launchpad.']]};
+function viewInstall(){ const me=DEV(), order=[me,...['ios','android','desktop'].filter(k=>k!==me)];
+  return `<button class="btn ghost back" data-go="more">← Tôi</button>
+  <section class="stack"><span class="eyebrow">Cài như ứng dụng</span><h1>Cài English Ladder lên máy</h1><p class="muted">Không cần cửa hàng ứng dụng, không tốn dung lượng như app thường. Sau khi cài: mở bằng một chạm, dùng khi mất mạng, nhận nhắc học.</p></section>
+  ${IS_STANDALONE()?'<p class="fb good" role="status"><strong>Bạn đang dùng bản đã cài.</strong></p>':''}
+  ${_installEvt&&!IS_STANDALONE()?'<div class="row"><button class="btn primary" data-act="install">📲 Cài ngay</button></div>':''}
+  ${order.map((k,i)=>{ const [t,steps]=INSTALL_STEPS[k]; return `<section class="panel stack"${i?'':' style="border-color:var(--accent)"'}><h3>${i?'':'👉 '}${t}${i?'':' <span class="pill accent">máy của bạn</span>'}</h3><ol style="margin:0;padding-left:20px;display:grid;gap:6px">${steps.map(s=>`<li>${s}</li>`).join('')}</ol></section>`; }).join('')}
+  <p class="hint">Tiến độ lưu theo từng trình duyệt. Đã học ở trình duyệt khác? Cài đặt → Sao lưu → sao chép mã, rồi dán ở máy này.</p>`; }
+const _learnerNudges29 = learnerNudges; learnerNudges = function(){ let h=_learnerNudges29();
+  if(!IS_STANDALONE()&&!_installEvt&&!IS_IOS&&!IN_VIEWER&&st.onboarded&&st.days.length>=1&&!st.set.installGuideHide&&!st.set.installHide)
+    h+=`<div class="spread slim"><span>📲 <b>Cài English Ladder lên máy</b> <span class="muted">mở bằng một chạm, dùng khi mất mạng.</span></span><span class="row" style="gap:4px"><button class="btn small" data-go="install">Xem cách cài</button><button class="btn small ghost" data-act="igh" aria-label="Ẩn gợi ý cài">✕</button></span></div>`;
+  return h; };
+
+// 3. Rung nhẹ khi trả lời đúng (điện thoại có rung), tắt được trong Cài đặt. Sai vẫn rung như cũ.
+const _sfx29 = sfx; sfx = function(kind){ _sfx29(kind); if(kind==='ok'&&st.set.sfx&&st.set.haptic!==false&&typeof navigator!=='undefined'&&navigator.vibrate) try{ navigator.vibrate(12); }catch(e){} };
+
+// 4. Giọng đọc: nếu máy chỉ có giọng cơ bản, chỉ cách cài giọng tự nhiên hơn (miễn phí, có sẵn trong máy).
+const voiceGood = v => !!v&&/natural|neural|premium|enhanced|google|siri|samantha|daniel|serena|karen|moira/i.test(v.name);
+const VOICE_TIP = {ios:'iPhone: Cài đặt → Trợ năng → Nội dung được đọc → Giọng nói → Tiếng Anh → chọn giọng có chữ “Nâng cao” (Enhanced), tải về, rồi mở lại app.',
+  android:'Android: cài hoặc cập nhật “Dịch vụ lời nói của Google” (Speech Services by Google) trên Play, rồi vào Cài đặt → Hỗ trợ tiếp cận → Chuyển văn bản thành giọng nói → chọn Google, tải giọng Tiếng Anh (Anh hoặc Mỹ).',
+  desktop:'Máy tính: dùng Chrome hoặc Edge (có giọng Google/Microsoft Natural). Trên Windows: Cài đặt → Thời gian và ngôn ngữ → Giọng nói → thêm giọng tiếng Anh.'};
+const _viewSettings29 = viewSettings; viewSettings = function(){ let h=_viewSettings29(); if(!HAS_TTS) return h;
+  const v=pickVoice(), tip=voiceGood(v)?`<p class="hint">Giọng đang dùng: <b>${esc(v.name)}</b>, giọng tự nhiên.</p>`:`<p class="tip">🔈 Máy bạn đang dùng giọng đọc cơ bản${v?` (${esc(v.name)})`:''}. Giọng tự nhiên nghe rõ và giống người thật hơn, miễn phí: ${esc(VOICE_TIP[DEV()])}</p>`;
+  const hap=typeof navigator!=='undefined'&&navigator.vibrate?`<div class="setrow"><label for="haptic">Rung nhẹ khi trả lời đúng</label><input type="checkbox" id="haptic" ${st.set.haptic!==false?'checked':''}></div>`:'';
+  return h.replace(/(<div class="setrow"><label for="voice">[\s\S]*?<\/select>[\s\S]*?<\/div>)/, `$1${tip}${hap}`); };
+document.addEventListener('change',e=>{ const t=e.target; if(t&&t.id==='haptic'){ st.set.haptic=t.checked; save(); if(t.checked&&navigator.vibrate) try{ navigator.vibrate(12); }catch(x){} } });
+
+// 5. Về English Ladder: minh bạch về cách app được làm, nội dung có gì, dữ liệu đi đâu.
+const REPO_URL = 'https://github.com/sonnguyen12394/sonnguyen12394.github.io';
+function contentStats(){ return [
+  [UNITS.length,'unit từ vựng',ALL_WORDS.length+' từ'],[GPOINTS.length,'bài ngữ pháp','A1 → C2'],[CANDO.length,'câu “Tôi có thể…”','theo CEFR'],
+  [DIALOGUES.length,'hội thoại','hai giọng'],[LREAD.length,'bài đọc, nghe dài','B1 → C2'],[WTASKS.length+STASKS.length,'đề viết và nói','có bài mẫu'],
+  [MEDIATION.length,'đề chuyển ý','CEFR 2020'],[PRON.length+26,'bài phát âm','âm, trọng âm, ngữ điệu'],[PREA1.length,'bài Pre-A1','người mới tinh']]; }
+function viewAbout(){ const cs=contentStats();
+  return `<button class="btn ghost back" data-go="${st.onboarded?'more':'welcome'}">← ${st.onboarded?'Tôi':'Quay lại'}</button>
+  <section class="stack"><span class="eyebrow">Minh bạch</span><h1>Về English Ladder</h1><p class="muted">App học tiếng Anh cho người Việt, theo khung năng lực châu Âu (CEFR), từ người mới tinh đến C2.</p></section>
+  <section class="panel stack"><h3>Cam kết</h3><ul style="margin:0;padding-left:20px;display:grid;gap:6px">
+    <li><b>Mọi bài học miễn phí.</b> Không khoá bài sau tường phí.</li>
+    <li><b>Không quảng cáo của bên thứ ba, không bán dữ liệu.</b> Tiến độ lưu trên máy bạn; đồng bộ nhiều máy là tuỳ chọn, bằng mã, không cần tài khoản.</li>
+    <li><b>Không dùng AI để chấm hay tạo nội dung trong app.</b> Chấm bằng quy tắc minh bạch (từ khoá, luật lỗi), nên máy chỉ dò lỗi hay gặp, không thay được giáo viên.</li>
+    <li><b>Mã nguồn công khai.</b> Ai cũng xem được app làm gì với dữ liệu của mình.</li></ul>
+    <div class="row"><a class="btn" href="${REPO_URL}" target="_blank" rel="noopener">Xem mã nguồn</a><a class="btn ghost" href="privacy.html" target="_blank" rel="noopener">Quyền riêng tư</a></div></section>
+  <section class="panel stack"><h3>Nội dung hiện có</h3><div class="units">${cs.map(([n,t,s])=>`<div class="unit morei" style="cursor:default"><span class="no num">${n}</span><span class="t"><strong>${t}</strong><span class="muted">${s}</span></span></div>`).join('')}</div>
+    <p class="hint">Mỗi bản phát hành chạy kiểm tra tự động: mọi câu hỏi có đúng một đáp án, mọi bài mẫu qua máy chấm của chính app, mô phỏng người học 365 ngày. Thấy câu sai? Bấm “Báo lỗi” ngay trong câu hỏi.</p></section>
+  <section class="panel stack"><h3>Mới cập nhật</h3>${CHANGELOG.slice(0,3).map(c=>`<details><summary><b>Bản ${c.v}</b> · ${esc(c.t)}</summary><ul style="margin:8px 0 0;padding-left:20px">${c.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></details>`).join('')}</section>
+  <section class="panel stack"><h3>Góp ý, báo lỗi</h3><p class="muted">Mở một mục trên trang góp ý công khai, hoặc bấm “Báo lỗi” trong câu hỏi.</p><div class="row"><a class="btn" href="${REPO_URL}/issues" target="_blank" rel="noopener">Trang góp ý</a><button class="btn ghost" data-go="feedback">Góp ý 1 phút</button></div></section>`; }
+
+// 6. Thẻ tiến độ để chia sẻ (ảnh). Ghi rõ không phải chứng chỉ chính thức.
+async function shareCard(){ try{
+  const c=document.createElement('canvas'); c.width=1080; c.height=1350; const g=c.getContext('2d');
+  const got=cefrGot(), lv=got.length?got[got.length-1]:null, cur=currentUnit().level, n=cdDone(), s=streak(), m=ALL_WORDS.filter(w=>isMastered(w.id)).length;
+  const grd=g.createLinearGradient(0,0,0,1350); grd.addColorStop(0,'#1F4FD8'); grd.addColorStop(1,'#12308A'); g.fillStyle=grd; g.fillRect(0,0,1080,1350);
+  const F=(w,sz)=>`${w} ${sz}px Nunito, system-ui, sans-serif`, T=(t,x,y,f,col='#fff',al='left')=>{ g.font=f; g.fillStyle=col; g.textAlign=al; g.fillText(t,x,y); };
+  T('English Ladder',80,140,F(800,56)); T('Học tiếng Anh A1 → C2',80,200,F(600,34),'#C9D6FF');
+  T(st.set.name||'Người học',80,330,F(800,64));
+  T(lv?`Đạt ${lv} theo CEFR`:`Đang học ${cur}`,80,470,F(900,110));
+  g.fillStyle='rgba(255,255,255,.12)'; [[80,580],[560,580],[80,860],[560,860]].forEach(([x,y])=>{ g.beginPath(); g.roundRect?g.roundRect(x,y,440,240,28):g.rect(x,y,440,240); g.fill(); });
+  [[`${n}`,'câu “Tôi có thể…” đạt',80,580],[`${s}`,'ngày học liên tiếp',560,580],[`${m}`,'từ đã thuộc',80,860],[`${GPOINTS.filter(p=>G(p.id).passed).length}`,'bài ngữ pháp đã qua',560,860]]
+    .forEach(([v,l,x,y])=>{ T(v,x+36,y+130,F(900,96)); T(l,x+36,y+195,F(600,32),'#DDE5FF'); });
+  T('Không phải chứng chỉ chính thức. Tiến độ tự học trên app.',80,1200,F(600,28),'#C9D6FF');
+  T(HOME_URL.replace(/^https?:\/\//,'').replace(/\/$/,''),80,1260,F(800,40));
+  const blob=await new Promise(r=>c.toBlob(r,'image/png')), file=new File([blob],'english-ladder-tien-do.png',{type:'image/png'});
+  evc('share:card');
+  if(navigator.canShare&&navigator.canShare({files:[file]})) return await navigator.share({files:[file],title:'English Ladder',text:SHARE_BY()});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=file.name; document.body.appendChild(a); a.click(); a.remove(); toast('Đã lưu ảnh tiến độ.');
+}catch(e){ if(!e||e.name!=='AbortError') toast('Không tạo được ảnh trên trình duyệt này.'); } }
+
+// Điều hướng, lối vào và mở nhanh từ biểu tượng (manifest shortcuts: ?go=review|talk|prea1)
+DETAIL_SAFE_VIEW.add('install'); DETAIL_SAFE_VIEW.add('about'); ['quickstart','igh','sharecard'].forEach(a=>DETAIL_SAFE_ACT.add(a)); DETAIL_SAFE_GO.add('install'); DETAIL_SAFE_GO.add('about');
+document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('button'); if(!t) return;
+  switch(t.dataset.act){ case 'quickstart': return quickStart(); case 'igh': st.set.installGuideHide=true; save(); return render(); case 'sharecard': return shareCard(); } });
+const _viewMore29 = viewMore; viewMore = function(){ const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
+  return _viewMore29().replace('<div class="units">',`<div class="row"><button class="btn" data-act="sharecard">📤 Chia sẻ thẻ tiến độ</button></div>\n  <div class="units">`)
+    .replace(/(<\/div>\s*)$/, `${IS_STANDALONE()?'':it('install','download','Cài lên máy','Hướng dẫn cho iPhone, Android, máy tính: mở một chạm, dùng khi mất mạng')}${it('about','info','Về English Ladder','Cam kết, nội dung hiện có, mã nguồn, góp ý')}$1`); };
+try{ const g=new URLSearchParams(location.search).get('go'); if(st.onboarded&&['review','talk','prea1','cefr'].includes(g)) setTimeout(()=>{ go(g); try{ history.replaceState(null,'',location.pathname); }catch(e){} },0); }catch(e){}
 
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
