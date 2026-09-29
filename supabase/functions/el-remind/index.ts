@@ -16,9 +16,11 @@ async function config() {
   return cfg;
 }
 
+// Lời nhắc bằng giọng Tí (giống app); câu chung đổi theo ngày để đỡ nhàm.
+const LINES = ['Tí nhớ bạn rồi đó! Một bài 5 phút là giữ được lửa 🔥', 'Hôm nay mình leo thêm một nấc nhé? Tí đợi ở nấc tiếp theo 🐶', '5 phút mỗi ngày nhớ lâu hơn cả buổi học dồn đó!'];
 const text = (due: number) => JSON.stringify({
-  title: 'English Ladder: đến giờ học',
-  body: due > 0 ? `${due} từ đến hạn ôn. 5 phút là đủ giữ chuỗi ngày.` : 'Học 5 phút để giữ chuỗi ngày và nhớ lâu.',
+  title: 'English Ladder: Tí đang đợi bạn',
+  body: due > 0 ? `${due} từ đang chờ bạn ôn. Tí giữ chỗ rồi, vào 5 phút nha 🐶` : LINES[Math.floor(Date.now() / 864e5) % 3],
 });
 
 Deno.serve(async (req) => {
