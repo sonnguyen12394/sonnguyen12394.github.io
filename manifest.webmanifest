@@ -1,6 +1,6 @@
 {
   "id": "./",
-  "name": "English Ladder: học tiếng Anh A1 → C2",
+  "name": "English Ladder: học tiếng Anh Pre-A1 → C2",
   "short_name": "English Ladder",
   "description": "Học tiếng Anh miễn phí từ A1 đến C2: từ vựng ôn cách quãng, ngữ pháp, nghe, nói (máy nghe giọng), đọc, viết. Biết mình làm được gì ở từng cấp, mỗi lỗi sai được giải thích bằng tiếng Việt. Dùng được khi mất mạng, không cần tài khoản.",
   "lang": "vi",
@@ -11,7 +11,10 @@
   "orientation": "any",
   "background_color": "#EDF0F4",
   "theme_color": "#1F4FD8",
-  "categories": ["education", "productivity"],
+  "categories": [
+    "education",
+    "productivity"
+  ],
   "prefer_related_applications": false,
   "icons": [
     {
@@ -29,6 +32,75 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ôn tập",
+      "short_name": "Ôn tập",
+      "description": "Ôn các từ đến hạn hôm nay",
+      "url": "./?go=review",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Nghe, nói, đọc, viết",
+      "short_name": "Kỹ năng",
+      "url": "./?go=talk",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Khởi động Pre-A1",
+      "short_name": "Pre-A1",
+      "url": "./?go=prea1",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icons/shot-learn.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Học từ vựng, mỗi lỗi giải thích bằng tiếng Việt"
+    },
+    {
+      "src": "icons/shot-listen.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Nghe bài nói thật: phỏng vấn, bài giảng, podcast"
+    },
+    {
+      "src": "icons/shot-cefr.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Bản đồ CEFR: biết mình làm được gì ở từng cấp"
+    },
+    {
+      "src": "icons/shot-wide.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "English Ladder trên máy tính"
     }
   ]
 }
