@@ -8,7 +8,10 @@ Học tiếng Anh A1 → C2 miễn phí, mỗi lỗi sai được giải thích 
 
 - Từ vựng A1 → C2 và danh sách từ học thuật (AWL), ôn cách quãng để nhớ lâu.
 - Ngữ pháp, chức năng giao tiếp, hội thoại, đọc, viết, phát âm theo khung CEFR, kèm các câu "can-do": biết mình làm được gì ở từng cấp.
-- Luyện nghe: chép chính tả cả câu, nghe chọn nghĩa, nghe rồi chọn câu đáp (từ 525 câu thoại).
+- Đạt cấp CEFR theo 6 nhóm năng lực (từ vựng, ngữ pháp, phát âm, chức năng, kỹ năng, dùng thực tế), không chỉ theo số từ đã học.
+- Chuyển ý Việt → Anh (mediation, CEFR 2020): 24 đề viết lại tin nhắn, thông báo, tin tức cho người nước ngoài; máy dò đủ ý chính.
+- Phản xạ hội thoại có đếm giờ; nối âm, dạng yếu, ngữ điệu, trọng âm câu; cụm động từ và thành ngữ theo cấp.
+- Luyện nghe: chép chính tả cả câu, nghe chọn nghĩa, nghe rồi chọn câu đáp, nghe cả đoạn hai giọng (ý chính, văn phong, chi tiết; chỉnh tốc độ), từ 525 câu thoại.
 - Luyện nói với máy nghe giọng của trình duyệt (tự chọn bật), nói nhại (shadowing) có tô màu từ máy nghe ra.
 - Đóng vai bằng câu của chính mình: máy so các ý chính với câu mẫu (không dùng AI).
 - Bài viết có hồ sơ từ vựng CEFR (tỉ lệ từ mỗi cấp A1–C2, độ đa dạng từ).

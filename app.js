@@ -906,10 +906,10 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 17, APP_VERSION = 24;
+const STATE_V = 17, APP_VERSION = 25;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
-function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},money:{h:5,hd:0,ht:0},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
+function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},money:{h:5,hd:0,ht:0},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
 // Mã ngẫu nhiên, không gắn với tên hay thiết bị: để gộp các file dữ liệu nghiên cứu của cùng một người học mà không biết người đó là ai.
 const newRid = () => Math.random().toString(36).slice(2,10);
 function migrate(x){
@@ -942,7 +942,7 @@ function migrate(x){
   x.srs||={k:1,n:0};
   x.nw||={};
   x.rid||=newRid(); x.me||={}; x.ev||={}; x.oral||={};
-  for(const k of ['cando','dlg','fn','pron','wtask','stask','lread','lis','shadow']) x[k]||={};
+  for(const k of ['cando','dlg','fn','pron','wtask','stask','lread','lis','shadow','rx','pv','med']) x[k]||={};
   if(!Array.isArray(x.exam)) x.exam=[];
   x.xpd||={}; x.rec||={combo:0}; x.cos||={own:[],skin:'',acc:''}; x.cos.sk||=[];
   x.xp??=0; x.freeze||={n:0,used:[],earned:0}; x.games||={speed:0,match:0,ch:[]}; x.story||={}; x.sounds||={}; x.gram||={}; x.glevels||={}; x.gwrite||={}; x.flags||=[]; x.hist||={}; x.badges||=[];
@@ -977,7 +977,7 @@ function sanitizeState(x){
   const mo=obj(x.money), sp=obj(mo.sup), sx=typeof sp.c==='string'?superRead(sp.c):null; x.money={h:Math.round(numIn(mo.h,0,MONEY.HMAX,MONEY.HMAX)),hd:Math.round(numIn(mo.hd,0,1e6,0)),ht:numIn(mo.ht,0,1e15,0),
     ...(sx?{sup:{c:sp.c.trim().toUpperCase().slice(0,24),exp:sx.exp}}:{}),...(Array.isArray(mo.ad)?{ad:mo.ad.slice(0,2).map(n=>Math.round(numIn(n,0,1e7,0)))}:{})};
   const bestBag=b=>Object.fromEntries(Object.entries(obj(b)).filter(([k,v])=>LVS.includes(k)&&v&&typeof v==='object').map(([k,v])=>[k,{best:numIn(v.best,0,1,0),n:Math.round(numIn(v.n,0,1e6,0)),...(v.day!=null?{day:Math.round(numIn(v.day,0,1e6,0))}:{})}]));
-  x.lis=bestBag(x.lis); { const h=!!obj(x.shadow).hide; x.shadow=bestBag(x.shadow); if(h) x.shadow.hide=true; }
+  x.lis=bestBag(x.lis); x.rx=bestBag(x.rx); x.pv=bestBag(x.pv); x.med=medBag(x.med); { const h=!!obj(x.shadow).hide; x.shadow=bestBag(x.shadow); if(h) x.shadow.hide=true; }
   x.exam=(Array.isArray(x.exam)?x.exam:[]).filter(e=>e&&typeof e==='object').slice(0,10).map(e=>({day:Math.round(numIn(e.day,0,1e6,0)),l:numIn(e.l,0,10,0),r:numIn(e.r,0,10,0)}));
   const ap=obj(x.app); x.app={seen:Math.round(numIn(ap.seen,0,1e4,APP_VERSION)),vh:(Array.isArray(ap.vh)?ap.vh:[]).filter(a=>Array.isArray(a)&&a.length===2).slice(-20).map(a=>[Math.round(numIn(a[0],0,1e4,0)),Math.round(numIn(a[1],0,1e6,0))])};
   const sr=obj(x.srs); x.srs={k:numIn(sr.k,SRS_K[0],SRS_K[1],1),n:Math.round(numIn(sr.n,0,1e7,0)),...(sr.p!=null?{p:numIn(sr.p,0,1,0)}:{})};
@@ -1125,8 +1125,8 @@ function pickVoice(){
 function say(text,slow,k=0){ if(!HAS_TTS) return; try{ speechSynthesis.cancel(); speechSynthesis.speak(utter(text,slow,k)); }catch(e){} }
 // Hội thoại hai giọng: người B dùng một giọng tiếng Anh khác trên máy; máy chỉ có một giọng thì hạ cao độ.
 function voiceFor(k){ const v=pickVoice(); if(!k) return {v,p:1}; const alt=voices().filter(x=>x!==v).sort((a,b)=>(/en[-_](GB|US)/i.test(b.lang)?1:0)-(/en[-_](GB|US)/i.test(a.lang)?1:0))[0]; return alt?{v:alt,p:1}:{v,p:.8}; }
-function utter(text,slow,k){ const u=new SpeechSynthesisUtterance(text), o=voiceFor(k); if(o.v){u.voice=o.v;u.lang=o.v.lang;} else u.lang='en-GB'; u.pitch=o.p; u.rate=slow?Math.min(.6,st.set.rate):st.set.rate; return u; }
-function sayLines(lines,slow){ if(!HAS_TTS) return; try{ speechSynthesis.cancel(); lines.forEach(l=>speechSynthesis.speak(utter(l.t,slow,l.s==='B'?1:0))); }catch(e){} }
+function utter(text,slow,k,mul=1){ const u=new SpeechSynthesisUtterance(text), o=voiceFor(k); if(o.v){u.voice=o.v;u.lang=o.v.lang;} else u.lang='en-GB'; u.pitch=o.p; u.rate=(slow?Math.min(.6,st.set.rate):st.set.rate)*mul; return u; }
+function sayLines(lines,slow,mul=1){ if(!HAS_TTS) return; try{ speechSynthesis.cancel(); lines.forEach(l=>speechSynthesis.speak(utter(l.t,slow,l.s==='B'?1:0,mul))); }catch(e){} }
 if(HAS_TTS) try{ speechSynthesis.onvoiceschanged=()=>{ if(ui.view==='settings') render(); }; }catch(e){}
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; }
 // Từ gần nghĩa (khai báo ở trường `near`, tính hai chiều) không bao giờ được dùng làm phương án nhiễu,
@@ -1808,8 +1808,8 @@ function viewQuiz(){
     <div class="bar ${(s.combo||0)>=3?'hot':''}"><i style="width:${(s.i/s.q.length)*100}%"></i></div></div>
   ${goldTag(s)}<section class="q">${it.tag?`<div class="row"><span class="pill accent">${esc(it.tag)}</span></div>`:''}
     ${it.q}
-    ${it.sayAll&&HAS_TTS?`<div class="row"><button class="btn" data-act="qzsayall">🎧 Nghe cả hội thoại</button></div>`:''}
-    ${it.sayAll&&(a||!HAS_TTS)&&m.lines?`<details class="panel" ${HAS_TTS?'':'open'}><summary>Lời thoại</summary>${m.lines.map(l=>`<p lang="en"><b>${esc(l.who)}:</b> ${esc(l.t)}</p>`).join('')}</details>`:''}
+    ${it.sayAll&&HAS_TTS?`<div class="row"><button class="btn" data-act="qzsayall">🎧 Nghe cả hội thoại</button><button class="btn" data-act="qzsayall" data-rx=".8">🐢 Chậm</button>${it.fast?'<button class="btn" data-act="qzsayall" data-rx="1.15">⚡ Nhanh như người bản xứ</button>':''}</div>`:''}
+    ${it.sayAll&&(a||!HAS_TTS)&&(it.lines||m.lines)?`<details class="panel" ${HAS_TTS?'':'open'}><summary>Lời thoại</summary>${(it.lines||m.lines).map(l=>`<p lang="en"><b>${esc(l.who)}:</b> ${esc(l.t)}</p>`).join('')}</details>`:''}
     ${it.say&&HAS_TTS?`<div class="row"><button class="btn" data-say="${esc(it.say)}" data-v="${it.v||0}">${SPK} Nghe</button><button class="btn" data-say="${esc(it.say)}" data-slow="1" data-v="${it.v||0}">🐢 Nghe chậm</button></div>`:''}
     ${body}${fb}</section><p class="hint kbd-hint">Phím tắt: 1–4 để chọn, Enter để tiếp tục.</p>`;
 }
@@ -1905,10 +1905,12 @@ function viewTalk(){
   let body='';
   if(T==='hoithoai') body=(ds.length?`<section class="stack"><h2>Hội thoại ${L} <span class="muted num" style="font-size:14px">${ds.filter(d=>(st.dlg[d.id]||{}).best>=.8).length}/${ds.length} đạt</span></h2><p class="hint">Nghe hội thoại hai giọng, luyện chọn câu đáp, rồi đóng vai bằng câu của chính bạn.</p><div class="units">${ds.map(d=>card(`data-dlg="${d.id}"`,'chat',`<span lang="en">${esc(d.title)}</span>`,`${esc(d.vi)} · ${esc(d.place)} · ${d.lines.length} lượt`,st.dlg[d.id])).join('')}</div></section>`:'')
     +sec(`Chức năng giao tiếp ${L}`,fs.map(f=>card(`data-fn="${f.id}"`,'chat',esc(f.vi),`<span lang="en">${esc(f.en)}</span> · ${f.exps.length} mẫu câu`,st.fn[f.id])).join(''));
-  if(T==='nghe') body=sec(`Luyện nghe ${L}`,card(`data-act="lisgo" data-lv="${L}"`,'headphones','Luyện nghe','Chép chính tả cả câu, nghe chọn nghĩa, nghe rồi chọn câu đáp · 12 câu',(st.lis||{})[L]))
+  if(T==='nghe') body=sec(`Luyện nghe ${L}`,card(`data-act="lisgo" data-lv="${L}"`,'headphones','Luyện nghe','Chép chính tả, nghe chọn nghĩa, nghe rồi đáp, nghe cả đoạn: ý chính, văn phong, chi tiết · 18 câu',(st.lis||{})[L]))
     +sec(`Nghe bài dài ${L}`,rs.map(x=>card(`data-lr="${x.id}" data-listen="1"`,'headphones',`<span lang="en">${esc(x.title)}</span>`,`Nghe cả bài (chưa hiện chữ) rồi trả lời · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
     +(rs.length?'':`<p class="hint">Bài nghe dài có từ B2. Ở ${L}, nghe thêm ở tab Hội thoại (bấm “Nghe cả hội thoại” trước khi đọc lời).</p>`)+exam;
   if(T==='noi') body=sec(`Luyện nói ${L}`,card(`data-act="shgo" data-lv="${L}"`,'mic','Nói nhại',`Nghe câu mẫu rồi nói lại; ${HAS_ASR?'máy tô từ nghe ra và chưa nghe ra':'ghi âm rồi tự so'} · ${SH_N} câu`,(st.shadow||{})[L])
+      +card(`data-act="rxgo" data-lv="${L}"`,'chat','Phản xạ hội thoại',`Đáp lời trong vài giây, chọn cách nói hợp hoàn cảnh · ${RX_N} câu`,(st.rx||{})[L])
+      +card(`data-act="csgo" data-lv="${L}"`,'ear','Nối âm, dạng yếu, ngữ điệu','Câu thoại cấp này: chỗ nối âm, từ đọc lướt, lên/xuống giọng, từ được nhấn · 10 câu',st.pron['cs-'+L])
       +card('data-go="sounds"','ear','Phát âm','Cặp âm người Việt hay nhầm, trọng âm, ngữ điệu, đuôi -s/-ed',null))
     +sec(`Nói theo đề ${L}`,ss.map(x=>{ const h=st.stask[x.id]||[]; return card(`data-stk="${x.id}"`,'mic',esc(x.vi),`<span lang="en">${esc(x.en)}</span> · chuẩn bị ${x.prep}s, nói ${x.speak}s`,h.length?`Đã nói ${h.length} lần`:null); }).join(''))
     +'<p class="hint">Muốn nói bằng câu của mình và được máy so ý? Mở một hội thoại ở tab Hội thoại rồi bấm Đóng vai.</p>';
@@ -1916,7 +1918,8 @@ function viewTalk(){
     +sec('Truyện dài kỳ',card('data-go="stories"','read','Cuốn sổ của Lan',`Đã đọc ${STORY.filter(e=>st.story[e.id]!=null).length}/${STORY.length} tập`,null))
     +(rs.length?'':`<p class="hint">Bài đọc dài có từ B2. Ở ${L}, mỗi unit từ vựng đã có một bài đọc ngắn.</p>`)+exam;
   if(T==='viet') body=sec(`Viết theo đề ${L}`,ws.map(x=>card(`data-wt="${x.id}"`,'pen',esc(x.vi),`${esc(x.genre)} · ${x.min}–${x.max} từ`,st.wtask[x.id]&&st.wtask[x.id].text?'Đã viết':null)).join(''))
-    +'<p class="hint">Viết xong, máy đếm từ, dò lỗi hay gặp và cho hồ sơ từ vựng theo cấp; bạn tự chấm theo tiêu chí và so với bài mẫu.</p>';
+    +'<p class="hint">Viết xong, máy đếm từ, dò lỗi hay gặp và cho hồ sơ từ vựng theo cấp; bạn tự chấm theo tiêu chí và so với bài mẫu.</p>'
+    +sec(`Chuyển ý Việt → Anh ${L} ${info('mediation')}`,MEDIATION.filter(m=>m.lv===L).map(m=>{ const r=(st.med||{})[m.id]; return card(`data-med="${m.id}"`,'pen',esc(m.vi),`Cho: ${esc(m.who)} · ${m.min}–${m.max} từ`,r&&r.n?{best:r.best}:null); }).join(''));
   const sug=[], dl=ds.find(d=>!((st.dlg[d.id]||{}).best>=.8));
   if(((st.lis||{})[L]||{}).day!==today()) sug.push(`<button class="btn" data-act="lisgo" data-lv="${L}">${ico('headphones')} Luyện nghe ${L}</button>`);
   if(dl) sug.push(`<button class="btn" data-dlg="${dl.id}">${ico('chat')} Hội thoại: ${esc(dl.vi)}</button>`);
@@ -2742,6 +2745,8 @@ function viewReview(){
   <section class="panel today"><div class="stack" style="gap:4px">${due.length?`<h2>${due.length} từ đến hạn hôm nay</h2><p class="muted" lang="en">${due.slice(0,12).map(w=>esc(w.word)).join(', ')}${due.length>12?'…':''}</p>`:`<h2>Không có từ đến hạn</h2><p class="muted">${upcoming.length?`Lần ôn sớm nhất: ${W(upcoming[0].id).due-today()<=1?'ngày mai':`sau ${W(upcoming[0].id).due-today()} ngày`}.`:'Học một unit để bắt đầu lịch ôn.'}</p>`}</div>
     ${due.length?`<button class="btn primary" data-act="review">Bắt đầu ôn</button>`:''}</section>
   ${ALL_WORDS.some(w=>W(w.id).learned)?`<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>🗣️ Nói ra từ ${info('oral')}</h3><p class="muted">Nhìn nghĩa, nói to từ tiếng Anh, rồi tự chấm. Luyện đúng chỗ khó nhất: biết từ khi đọc nhưng không nhớ ra khi nói.</p></div><button class="btn" data-act="oral">Luyện ${ORAL_N} từ</button></section>`:''}
+  ${(()=>{ const L=currentUnit().level, lv=pvWords(L).length>=PV_MIN?L:LVS.slice(0,LVS.indexOf(L)).reverse().find(l=>pvWords(l).length>=PV_MIN); if(!lv) return ''; const r=(st.pv||{})[lv], ws=pvWords(lv);
+    return `<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>🧩 Cụm động từ &amp; thành ngữ ${lv}</h3><p class="muted">${ws.length} cụm như <span lang="en">${ws.slice(0,3).map(w=>esc(w.word)).join(', ')}</span>. Luyện nghĩa và cách dùng trong câu.${r&&r.n?` Cao nhất: ${pct(r.best)}.`:''}</p></div><button class="btn" data-act="pvgo" data-lv="${lv}">Luyện 10 câu</button></section>`; })()}
   ${(()=>{const hw=ALL_WORDS.filter(w=>W(w.id).learned&&wstat(w)==='hard');return hw.length?`<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>${hw.length} từ hay quên</h3><p class="muted" lang="en">${hw.slice(0,12).map(w=>esc(w.word)).join(', ')}${hw.length>12?'…':''}</p></div><button class="btn" data-act="hardwords">Xem &amp; luyện trong Sổ từ</button></section>`:''})()}
   ${(()=>{const gd=dueG();return `<section class="panel today"><div class="stack" style="gap:4px"><span class="eyebrow">Ngữ pháp</span>${gd.length?`<h2>${gd.length} bài ngữ pháp đến hạn</h2><p class="muted">${gd.map(p=>esc(p.vi)).join(', ')}</p>`:`<h2>Không có bài ngữ pháp đến hạn</h2><p class="muted">Bài ngữ pháp đã học cũng được hẹn ôn theo cùng lịch giãn cách.</p>`}</div>${gd.length?`<button class="btn primary" data-act="greview">Ôn ngữ pháp</button>`:''}</section>`})()}
   <details class="panel stack"><summary><h3>Lịch ôn sắp tới và cách app hẹn ngày ôn</h3></summary>
@@ -3648,7 +3653,7 @@ function mergeState(a,b){
   x.cos={...a.cos,own:[...new Set([...(a.cos.own||[]),...(b.cos.own||[])])],sk:[...new Set([...(a.cos.sk||[]),...(b.cos.sk||[])])]};
   x.games={...a.games,speed:Math.max(a.games.speed||0,b.games.speed||0),match:[a.games.match,b.games.match].filter(Boolean).sort((p,q)=>p-q)[0]||0,ch:[...(a.games.ch||[]),...(b.games.ch||[])].sort((p,q)=>q.day-p.day).slice(0,10)};
   x.start=Math.min(a.start??1e9,b.start??1e9); x.onboarded=true; if(!(a.me&&a.me.who)&&b.me) x.me=b.me;
-  for(const k of ['story','cando','dlg','fn','pron','lread','sounds','wtask','stask','oral','gwrite','lis','shadow']) x[k]={...(b[k]||{}),...(a[k]||{})};
+  for(const k of ['story','cando','dlg','fn','pron','lread','sounds','wtask','stask','oral','gwrite','lis','shadow','rx','pv','med']) x[k]={...(b[k]||{}),...(a[k]||{})};
   { const seen=new Set(); x.exam=[...(a.exam||[]),...(b.exam||[])].filter(e=>{ const k=JSON.stringify(e); return seen.has(k)?false:seen.add(k); }).sort((p,q)=>q.day-p.day).slice(0,10); }
   x.app={seen:Math.max((a.app||{}).seen||0,(b.app||{}).seen||0),vh:((a.app||{}).vh||[]).slice()};
   { const sa=(a.money||{}).sup, sb=(b.money||{}).sup; x.money={...(a.money||{h:5,hd:0,ht:0})}; const sp=[sa,sb].filter(Boolean).sort((p,q)=>q.exp-p.exp)[0]; if(sp) x.money.sup=sp; else delete x.money.sup; }
@@ -4021,7 +4026,7 @@ function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); renderChrome();
   if(ui.view==='path'&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,super:viewSuper,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  const v={med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,super:viewSuper,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   document.getElementById('app').innerHTML=html;
@@ -4589,6 +4594,13 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:25,d:'2026-09-29',t:'Học đúng khung CEFR: đạt cấp theo 6 nhóm năng lực',big:true,items:[
+    'Đạt một cấp CEFR khi ít nhất 5/6 nhóm (từ vựng, ngữ pháp, phát âm, chức năng, kỹ năng, dùng thực tế) đạt ≥ 80%, không chỉ khi học xong từ vựng. Trang Học luôn cho biết cấp đang thiếu nhóm nào.',
+    'Mới: Chuyển ý Việt → Anh (24 đề, A1–C2): đọc tin nhắn, thông báo, tin tức tiếng Việt rồi viết lại cho người nước ngoài; máy dò đủ ý chính.',
+    'Mới: Phản xạ hội thoại có đếm giờ, và bài nối âm, dạng yếu, ngữ điệu, trọng âm câu sinh từ câu thoại đúng cấp.',
+    'Luyện nghe thêm phần nghe cả đoạn hội thoại hai giọng: ý chính, văn phong, chi tiết; nghe chậm hoặc nhanh như người bản xứ.',
+    'Mới: bộ luyện cụm động từ và thành ngữ theo cấp (ở trang Ôn tập). Kiểm tra đầu vào có thêm 10 câu ngữ pháp và nghe.',
+  ]},
   {v:24,d:'2026-09-29',t:'Học vui hơn: toàn màn hình, Tí phản ứng theo từng câu',big:true,items:[
     'Vào bài là toàn màn hình, chỉ còn câu hỏi và thanh tiến độ; nút Tiếp tục luôn ở đáy, ngay dưới ngón cái.',
     'Trả lời xong, bảng kết quả trượt lên: xanh khi đúng, đỏ khi sai kèm đáp án và một dòng lý do; ví dụ và mẹo mở khi cần. Tí nhảy mừng hoặc cổ vũ bạn.',
@@ -4673,7 +4685,7 @@ function seasonNudge(){ if(!st.onboarded) return ''; const t=today(), d=new Date
 // Học gì tiếp: câu “Tôi có thể…” chưa đạt ở cấp đang học, ưu tiên nhóm hợp với người học, rồi câu gần đạt nhất; kèm tối đa 3 bài còn thiếu.
 const WHO_GRP = {school:['voc','gra','ski'], uni:['voc','ski','gra'], work:['fun','com','ski'], life:['fun','pro','com']};
 function nextCando(L){
-  const lv=L||currentUnit().level, pri=WHO_GRP[st.me.who]||[], i0=LVS.indexOf(lv);
+  const lv=L||cefrOpen()||currentUnit().level, pri=WHO_GRP[st.me.who]||[], i0=LVS.indexOf(lv);
   for(const X of LVS.slice(i0)){
     const cs=CANDO.filter(c=>c.lv===X).map(c=>({c,pr:cdProg(c)})).filter(x=>x.pr.p<CD_DONE);
     if(!cs.length) continue;
@@ -4700,7 +4712,7 @@ function northTrend(){ const t=today(), h=st.hist||{}, ds=Object.keys(h).map(Num
 const SCOPE = {
   path:['lõi',['voc']], unit:['lõi',['voc']], learn:['lõi',['voc']], session:['lõi',['voc']], summary:['lõi',['voc']], review:['lõi',['voc']], oral:['lõi',['voc','pro']], words:['lõi',['voc']], word:['lõi',['voc']], read:['lõi',['ski','voc']],
   grammar:['lõi',['gra']], gpoint:['lõi',['gra']], gsess:['lõi',['gra']], gsum:['lõi',['gra']], cefr:['lõi',['voc','gra','pro','fun','ski','com']],
-  talk:['phụ',['fun','com']], dlg:['phụ',['fun','com']], fn:['phụ',['fun']], quiz:['phụ',['fun','pro','ski']], rp:['phụ',['fun','com']], sounds:['phụ',['pro']], sound:['phụ',['pro']],
+  med:['phụ',['com','ski']], talk:['phụ',['fun','com']], dlg:['phụ',['fun','com']], fn:['phụ',['fun']], quiz:['phụ',['fun','pro','ski']], rp:['phụ',['fun','com']], sounds:['phụ',['pro']], sound:['phụ',['pro']],
   speak:['phụ',['pro','ski']], write:['phụ',['ski']], wtask:['phụ',['ski']], stask:['phụ',['ski']], lread:['phụ',['ski']],
   games:['động lực','giữ chân'], game:['động lực','giữ chân'], stories:['động lực','giữ chân'], story1:['động lực','giữ chân'], closet:['động lực','giữ chân'],
   super:['hệ thống','bền vững'], class:['hệ thống','giáo viên'],
@@ -4890,7 +4902,7 @@ document.addEventListener('click',e=>{
     case 'qzquit': return askOrQuit();
     case 'qzagain': return qzAgain();
     case 'qzback': { const m=ui.qz.meta||{}; ui.qz=null; return go(m.back||'talk',m.backExtra||{}); }
-    case 'qzsayall': { const s=ui.qz; if(s&&s.meta.lines) sayLines(s.meta.lines); return; }
+    case 'qzsayall': { const s=ui.qz, it=s&&s.q[s.i], ls=(it&&it.lines)||(s&&s.meta.lines); if(ls) sayLines(ls,false,+(d.rx||1)); return; }
     case 'dlgplay': return sayLines(DLG[ui.dlgId].lines,d.slow==='1');
     case 'dlgvi': ui.dlgVi=!ui.dlgVi; return render();
     case 'dlgquiz': return startDlgQuiz(ui.dlgId);
@@ -5148,7 +5160,7 @@ function lisItems(L){
     const w=[...new Set(other(d,x=>x.k>0&&wcount(x.l.t)>=3&&nt(x.l.t)!==nt(nx.t)).map(x=>x.l.t))].slice(0,2); if(w.length<2) return;
     const opts=shuffle([nx.t,...w]); items.push({t:'mc',tag:'Nghe và đáp',say:l.t,v:l.s==='B'?1:0,auto:true,lang:'en',plain:'Đáp lại: “'+l.t+'”',opts,ans:opts.indexOf(nx.t),
       q:`<p class="eyebrow">Nghe ${esc(spk(d,l.s))} nói, rồi chọn câu đáp hợp nhất</p><p class="hint">${esc(d.vi)} · ${esc(d.place)}</p>`,note:'Câu vừa nghe: '+l.t+' · Câu đáp: '+nx.vi}); });
-  return shuffle(items);
+  return [...shuffle(items),...lisWhole(L)];
 }
 QZ.lis={bag:'lis',bump:'read',gen:L=>lisItems(L)};
 function startLis(L){ startQuiz('lis',L,lisItems(L),{title:'Luyện nghe '+L,label:'Luyện nghe',eyebrow:L+' · Luyện nghe',back:'talk',backExtra:{talkLv:L},backLabel:'Về Giao tiếp'}); }
@@ -5465,6 +5477,323 @@ try{ if(typeof location!=='undefined'&&/^https?:$/.test(location.protocol)&&!IN_
   if(!document.querySelector('link[rel="manifest"]')){ const l=document.createElement('link'); l.rel='manifest'; l.href='manifest.webmanifest'; document.head.appendChild(l); }
   navigator.serviceWorker.register('sw.js').catch(()=>{}); } }catch(e){}
 try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{}); }catch(e){}
+/* ================== v25: CHUYỂN ĐẠT (mediation, CEFR Companion Volume 2020) ==================
+   Đọc một văn bản tiếng Việt ngắn rồi chuyển ý sang tiếng Anh cho một người cụ thể. Không AI: mỗi ý chính có bộ từ khoá,
+   máy dò ý nào đã có trong bài. kw: nhóm bắt buộc cách nhau bằng “;”, phương án cách nhau bằng “|”.
+   Phương án là tiền tố của một từ (“delay” khớp delayed), “x$” = đúng nguyên từ, “*x” = chuỗi con, có khoảng trắng = cụm từ. */
+const MEDIATION = [
+{id:'med-a1-1',lv:'A1',vi:'Tin nhắn của mẹ',who:'Tom, bạn người Anh đang ở nhà bạn',ctx:'Tom không đọc được tin nhắn mẹ bạn gửi. Nhắn lại cho Tom bằng tiếng Anh.',reg:'i',min:8,max:40,
+ src:'Mẹ nhắn: Tối nay 7 giờ cả nhà ăn cơm. Mẹ nấu phở. Con nhớ mua bánh mì nhé.',
+ ideas:[['Ăn tối','dinner|eat'],['Lúc 7 giờ','7|seven'],['Mẹ nấu phở','pho$|noodle'],['Nhờ mua bánh mì','bread']],
+ model:'Hi Tom! Dinner is at 7 tonight. My mum is cooking pho. Can you buy some bread, please?'},
+{id:'med-a1-2',lv:'A1',vi:'Tấm biển ở bảo tàng',who:'Một khách du lịch hỏi bạn tấm biển viết gì',ctx:'Giải thích tấm biển bằng tiếng Anh thật đơn giản.',reg:'n',min:8,max:40,
+ src:'Cấm hút thuốc. Giữ yên lặng. Mở cửa từ 8 giờ đến 17 giờ.',
+ ideas:[['Cấm hút thuốc','smok'],['Giữ yên lặng','quiet|silent|noise|talk'],['Mở cửa lúc 8 giờ','8|eight'],['Đóng cửa lúc 17 giờ','5|five|17|seventeen']],
+ model:'No smoking here, and please be quiet. The museum is open from 8 a.m. to 5 p.m.'},
+{id:'med-a1-3',lv:'A1',vi:'Thực đơn quán cơm',who:'Anna, bạn người Đức đi ăn cùng bạn',ctx:'Anna hỏi thực đơn có gì. Nói lại cho Anna bằng tiếng Anh.',reg:'i',min:8,max:45,
+ src:'Cơm gà 35.000đ. Bún chả 40.000đ. Trà đá miễn phí.',
+ ideas:[['Cơm gà','chicken;rice'],['Giá 35.000đ','35|thirty-five|thirty five'],['Bún chả (bún thịt nướng)','bun$|pork|noodle'],['Giá 40.000đ','40|forty'],['Trà đá miễn phí','tea$;free|no charge|nothing']],
+ model:'There is chicken rice for 35,000 dong and bun cha, noodles with grilled pork, for 40,000 dong. The iced tea is free.'},
+{id:'med-a1-4',lv:'A1',vi:'Lời nhắn của thầy giáo',who:'Min-ji, bạn cùng lớp người Hàn',ctx:'Min-ji không đọc được lời nhắn trong nhóm lớp. Nhắn lại cho bạn ấy bằng tiếng Anh.',reg:'i',min:8,max:40,
+ src:'Thầy nhắn: Ngày mai lớp nghỉ. Thứ Hai học lại bình thường. Nhớ mang sách tiếng Anh.',
+ ideas:[['Ngày mai nghỉ học','tomorrow'],['Không có lớp','no class|no lesson|no school|off$|cancel|holiday|*n\'t|not$'],['Thứ Hai học lại','monday'],['Mang sách tiếng Anh','book']],
+ model:'Hi Min-ji! There is no class tomorrow. We have class again on Monday. Remember to bring your English book.'},
+{id:'med-a2-1',lv:'A2',vi:'Thông báo cắt nước',who:'Jack, hàng xóm người Úc',ctx:'Ban quản lý dán thông báo bằng tiếng Việt. Nhắn cho Jack biết nội dung.',reg:'n',min:15,max:60,
+ src:'Thứ Bảy này, từ 8 giờ đến 11 giờ sáng, toà nhà sẽ cắt nước để sửa đường ống. Cư dân nên trữ nước từ tối thứ Sáu.',
+ ideas:[['Thứ Bảy này','saturday'],['Cắt nước','water;off$|cut|no water|stop|turn|without'],['Từ 8 đến 11 giờ sáng','8|eight;11|eleven'],['Để sửa đường ống','pipe'],['Trữ nước từ tối thứ Sáu','friday;keep|store|save|fill|get|collect']],
+ model:'Hi Jack, just so you know: on Saturday there will be no water from 8 to 11 a.m. because they are repairing the pipes. It is a good idea to store some water on Friday evening.'},
+{id:'med-a2-2',lv:'A2',vi:'Cách uống thuốc',who:'Sarah, đồng nghiệp người Anh bị ốm',ctx:'Bạn đi khám cùng Sarah. Giải thích cách uống thuốc ghi trên hộp.',reg:'n',min:15,max:60,
+ src:'Uống 2 viên mỗi ngày, sau bữa sáng và bữa tối, trong 5 ngày. Không uống cùng rượu bia.',
+ ideas:[['Hai viên mỗi ngày','two|2;day'],['Sau bữa sáng','after;breakfast|morning'],['Sau bữa tối','dinner|evening|supper'],['Trong 5 ngày','five|5'],['Không uống rượu bia','alcohol|beer|wine|drink']],
+ model:'Take two tablets a day, one after breakfast and one after dinner, for five days. Don\'t drink alcohol or beer with this medicine.'},
+{id:'med-a2-3',lv:'A2',vi:'Tin nhắn chủ homestay',who:'Mike, khách người Mỹ bạn giới thiệu tới',ctx:'Chủ homestay nhắn cho bạn. Chuyển lời cho Mike bằng tiếng Anh.',reg:'i',min:15,max:60,
+ src:'Chìa khoá để dưới chậu cây cạnh cửa. Mật khẩu wifi là hoian2024. Trả phòng trước 12 giờ trưa nhé.',
+ ideas:[['Chìa khoá dưới chậu cây','key;plant|pot$|flower'],['Cạnh cửa','door'],['Mật khẩu wifi','password|wifi|wi-fi'],['Trả phòng trước 12 giờ trưa','12|twelve|noon|midday;check out|leave|out$|before']],
+ model:'Hi Mike! The key is under the plant pot next to the door. The wifi password is hoian2024. Please check out before 12 noon.'},
+{id:'med-a2-4',lv:'A2',vi:'Lịch tour Hạ Long',who:'Emma, bạn người Canada đi tour cùng bạn',ctx:'Lịch tour chỉ có tiếng Việt. Kể lại cho Emma những gì sẽ diễn ra.',reg:'i',min:15,max:65,
+ src:'Xe đón lúc 6 giờ sáng tại khách sạn. Đi thuyền 2 tiếng trên vịnh Hạ Long. Ăn trưa hải sản trên thuyền. Về tới Hà Nội khoảng 8 giờ tối.',
+ ideas:[['Đón lúc 6 giờ sáng','6|six'],['Tại khách sạn','hotel'],['Đi thuyền 2 tiếng','boat|ship|cruise;two|2'],['Ăn trưa hải sản','seafood|fish;lunch'],['Về Hà Nội khoảng 8 giờ tối','8|eight;back|return|arrive|get']],
+ model:'The bus picks us up at the hotel at 6 a.m. Then we take a two-hour boat trip on Ha Long Bay and have a seafood lunch on the boat. We get back to Hanoi at about 8 p.m.'},
+{id:'med-b1-1',lv:'B1',vi:'Báo giao hàng chậm',who:'Mr Tan, khách hàng ở Singapore',ctx:'Sếp nhờ bạn chuyển nội dung này thành email tiếng Anh lịch sự.',reg:'f',min:20,max:80,
+ src:'Do mưa bão, lô hàng sẽ đến chậm 3 ngày, dự kiến vào ngày 15. Chúng tôi thành thật xin lỗi và sẽ miễn phí vận chuyển cho đơn hàng này.',
+ ideas:[['Do mưa bão','storm|typhoon|weather|rain'],['Chậm 3 ngày','three|3;delay|late|later'],['Dự kiến ngày 15','15'],['Xin lỗi','sorry|apolog|regret'],['Miễn phí vận chuyển','free|no charge|waive;shipping|delivery|transport|freight']],
+ model:'Dear Mr Tan, due to a severe storm, your order will be delayed by three days and is now expected to arrive on the 15th. We sincerely apologise for the inconvenience, and shipping for this order will be free of charge.'},
+{id:'med-b1-2',lv:'B1',vi:'Tin tức cấm xe máy',who:'Leo, bạn người Ý hỏi về một tin trên báo',ctx:'Tóm tắt tin này cho Leo trong 2–3 câu tiếng Anh.',reg:'n',min:20,max:80,
+ src:'Hà Nội dự kiến cấm xe máy ở một số quận trung tâm từ năm 2030 để giảm ô nhiễm không khí. Nhiều người dân lo lắng vì xe máy là phương tiện đi lại chính của họ.',
+ ideas:[['Cấm xe máy','ban$|banned|banning|bans$|stop|not allowed|forbid|prohibit;motorbike|motorcycle|scooter|bike'],['Ở các quận trung tâm','central|centre|center|downtown|inner'],['Từ năm 2030','2030'],['Để giảm ô nhiễm không khí','pollution|air|clean'],['Nhiều người lo lắng','worr|concern|upset|unhappy|anxious'],['Vì xe máy là phương tiện chính','main|most|mainly|usual|every day|get around']],
+ model:'Hanoi plans to ban motorbikes in some central districts from 2030 to reduce air pollution. A lot of people are worried because motorbikes are their main way of getting around.'},
+{id:'med-b1-3',lv:'B1',vi:'Nội quy câu lạc bộ cầu lông',who:'Julie, thành viên mới người Pháp',ctx:'Giải thích nội quy cho Julie bằng tiếng Anh.',reg:'n',min:20,max:80,
+ src:'Thành viên phải đặt sân trước ít nhất 24 giờ. Huỷ muộn sẽ bị tính phí 50.000đ. Chỉ được mang giày thể thao đế trắng vào sân.',
+ ideas:[['Đặt sân trước 24 giờ','book|reserve;24|day'],['Huỷ muộn bị tính phí','cancel;fee$|fees$|pay|charge|lose|fine$'],['Phí 50.000đ','50|fifty'],['Giày thể thao đế trắng','shoe|trainer|sneaker;white']],
+ model:'You need to book a court at least 24 hours in advance. If you cancel late, you have to pay a fee of 50,000 dong. Also, you can only wear sports shoes with white soles on the court.'},
+{id:'med-b1-4',lv:'B1',vi:'Chuyển lời góp ý trong cuộc họp',who:'Anna, đồng nghiệp người Đức không hiểu tiếng Việt',ctx:'Anh Nam vừa góp ý về báo cáo của Anna bằng tiếng Việt. Nói lại cho Anna.',reg:'n',min:20,max:70,
+ src:'Anh Nam nói: Báo cáo của Anna tốt, nhưng phần số liệu cần cập nhật, và nên nộp trước thứ Sáu.',
+ ideas:[['Báo cáo tốt','report;good|great|well|nice|fine'],['Số liệu cần cập nhật','data|number|figure|statistic;update|new|change|check|revise'],['Nộp trước thứ Sáu','friday;submit|send|hand|finish|before']],
+ model:'Nam says your report is good, but the figures need to be updated. He suggests you submit it before Friday.'},
+{id:'med-b2-1',lv:'B2',vi:'Tóm tắt kết quả khảo sát',who:'Giáo sư Brown trong buổi họp nhóm nghiên cứu',ctx:'Tóm tắt kết quả khảo sát bằng tiếng Anh, ngắn gọn và chính xác.',reg:'f',min:25,max:100,
+ src:'Khảo sát 500 sinh viên cho thấy 68% có làm thêm, chủ yếu để trả học phí. Tuy nhiên, những bạn làm trên 20 giờ mỗi tuần có điểm trung bình thấp hơn rõ rệt.',
+ ideas:[['Khảo sát 500 sinh viên','500;student'],['68% làm thêm','68;work|job|employ'],['Chủ yếu để trả học phí','tuition|fee$|fees$|pay for|study cost'],['Làm trên 20 giờ/tuần','20|twenty'],['Điểm thấp hơn rõ rệt','lower|worse|poor|drop|less;grade|mark|result|score|gpa']],
+ model:'A survey of 500 students found that 68% have a part-time job, mainly to pay their tuition fees. However, those who work more than 20 hours a week have noticeably lower average grades.'},
+{id:'med-b2-2',lv:'B2',vi:'Chính sách làm việc tại nhà',who:'Daniel, nhân viên mới người Anh',ctx:'Email thông báo nội bộ chỉ có tiếng Việt. Giải thích chính sách cho Daniel.',reg:'n',min:25,max:100,
+ src:'Từ tháng sau, nhân viên được làm việc tại nhà 2 ngày mỗi tuần, nhưng phải có mặt ở văn phòng vào thứ Hai và trong các buổi họp với khách hàng. Trưởng nhóm sẽ duyệt lịch làm việc.',
+ ideas:[['Từ tháng sau','next month'],['Làm tại nhà 2 ngày/tuần','home|remote;two|2'],['Phải ở văn phòng thứ Hai','office;monday'],['Có mặt khi họp với khách hàng','client|customer;meeting'],['Trưởng nhóm duyệt lịch','leader|manager|head|supervisor;approve|agree|decide|sign|check|confirm']],
+ model:'From next month, we can work from home two days a week. However, we still have to be in the office on Mondays and for any meetings with clients. Our team leader will approve everyone\'s schedule.'},
+{id:'med-b2-3',lv:'B2',vi:'Hướng dẫn xét nghiệm máu',who:'Chị Linda, mẹ chồng người Mỹ của bạn',ctx:'Phòng khám đưa giấy hướng dẫn bằng tiếng Việt. Giải thích lại cho chị Linda.',reg:'n',min:25,max:90,
+ src:'Bệnh nhân cần nhịn ăn 8 tiếng trước khi xét nghiệm máu. Có thể uống nước lọc. Kết quả sẽ được gửi qua email sau 2 ngày.',
+ ideas:[['Nhịn ăn 8 tiếng','8|eight;eat|food|fast'],['Trước khi xét nghiệm máu','blood'],['Được uống nước lọc','water'],['Kết quả sau 2 ngày','result;two|2'],['Gửi qua email','email|e-mail']],
+ model:'You mustn\'t eat anything for eight hours before the blood test, but you can drink plain water. The results will be emailed to you after two days.'},
+{id:'med-b2-4',lv:'B2',vi:'Nhận xét của khách trên mạng',who:'Ông Weber, quản lý khách sạn người Đức',ctx:'Ông Weber nhờ bạn cho biết một nhận xét tiếng Việt trên mạng nói gì.',reg:'f',min:25,max:100,
+ src:'Phòng sạch, nhân viên nhiệt tình, nhưng điều hoà ồn và bữa sáng ít lựa chọn. Tôi vẫn sẽ quay lại vì vị trí rất thuận tiện.',
+ ideas:[['Phòng sạch','clean'],['Nhân viên nhiệt tình','staff|employee|receptionist;friendly|helpful|kind|nice|enthusiastic|welcoming'],['Điều hoà ồn','air con|air-con|conditioner|conditioning|ac$;noisy|noise|loud'],['Bữa sáng ít lựa chọn','breakfast;limited|few|not many|little|choice|option|variety'],['Vẫn sẽ quay lại','come back|return|again'],['Vị trí thuận tiện','location|located|place|position;convenient|great|good|central|easy|excellent']],
+ model:'The guest says the room was clean and the staff were very helpful, but the air conditioner was noisy and there wasn\'t much choice at breakfast. They would still come back because the location is very convenient.'},
+{id:'med-c1-1',lv:'C1',vi:'Tóm tắt tin kinh tế',who:'Ban lãnh đạo người nước ngoài của công ty',ctx:'Tóm tắt tin này bằng tiếng Anh, ngắn gọn, trung lập, giữ đủ ý cảnh báo.',reg:'f',min:30,max:120,
+ src:'Xuất khẩu nông sản quý I tăng 12% nhờ nhu cầu từ Trung Quốc, song các chuyên gia cảnh báo việc phụ thuộc vào một thị trường khiến doanh nghiệp dễ tổn thương nếu chính sách nhập khẩu thay đổi.',
+ ideas:[['Xuất khẩu nông sản','agricultur|farm|produce|crop;export'],['Tăng 12%','12'],['Quý I','first quarter|quarter|q1$'],['Nhờ nhu cầu từ Trung Quốc','china|chinese;demand'],['Chuyên gia cảnh báo','expert|analyst|specialist|economist;warn|caution|concern'],['Phụ thuộc vào một thị trường','depend|relian|rely|single market|one market'],['Dễ tổn thương nếu chính sách thay đổi','vulnerab|risk|expos|fragile;policy|policies|rule|regulation']],
+ model:'Agricultural exports rose by 12% in the first quarter, driven by demand from China. However, experts warn that relying on a single market leaves businesses vulnerable if import policies change.'},
+{id:'med-c1-2',lv:'C1',vi:'Chuyển lời góp ý khéo léo',who:'Oliver, nhà thiết kế người Anh làm cho khách của bạn',ctx:'Khách hàng góp ý qua điện thoại. Viết lại cho Oliver bằng tiếng Anh: đủ ý, lịch sự, giữ quan hệ.',reg:'f',min:30,max:120,
+ src:'Khách nói: Nói thật là bản thiết kế chưa đúng ý chúng tôi lắm. Màu hơi tối, logo quá nhỏ. Chúng tôi không muốn làm phiền, nhưng mong bên anh chỉnh trước thứ Tư.',
+ ideas:[['Thiết kế chưa đúng ý','design;not quite|not exactly|not what|isn\'t what|doesn\'t match|expect|hoped|looking for|wanted'],['Màu hơi tối','colour|color;dark'],['Logo quá nhỏ','logo;small|bigger|larger'],['Lời lẽ tế nhị, giữ quan hệ','appreciat|thank|don\'t want to|sorry|understand|grateful|kindly'],['Chỉnh trước thứ Tư','wednesday;revis|change|adjust|update|amend|tweak']],
+ model:'Hi Oliver, I\'ve just spoken to the client. They appreciate your work, but the design isn\'t quite what they had in mind yet: the colours feel a little dark and the logo is too small. They don\'t want to put you under pressure, but would be grateful if you could revise it by Wednesday.'},
+{id:'med-c1-3',lv:'C1',vi:'Quy trình khi có cháy',who:'Ông Kim, chuyên gia kỹ thuật người Hàn mới đến nhà máy',ctx:'Bảng quy trình an toàn chỉ có tiếng Việt. Giải thích lại cho ông Kim rõ ràng, theo đúng thứ tự.',reg:'f',min:30,max:110,
+ src:'Khi chuông báo cháy kêu: dừng máy, không dùng thang máy, tập trung ở bãi đỗ xe phía đông và báo cho tổ trưởng.',
+ ideas:[['Khi chuông báo cháy kêu','alarm'],['Dừng máy','stop|switch off|turn off|shut;machine|equipment'],['Không dùng thang máy','lift|elevator'],['Tập trung ở bãi xe phía đông','east;car park|parking|assembl'],['Báo cho tổ trưởng','supervisor|team leader|leader|manager|foreman;report|tell|inform|notify|check in']],
+ model:'If the fire alarm goes off, stop your machine immediately and do not use the lifts. Go to the assembly point in the east car park and report to your team leader.'},
+{id:'med-c1-4',lv:'C1',vi:'Tóm tắt cuộc họp cho giám đốc',who:'Bà Hughes, giám đốc người Úc vắng mặt hôm nay',ctx:'Cuộc họp diễn ra bằng tiếng Việt. Viết email tóm tắt ngắn cho bà Hughes, nêu rõ chỗ đã thống nhất và chỗ còn tranh luận.',reg:'f',min:30,max:120,
+ src:'Nhóm đồng ý tuyển thêm 2 lập trình viên, nhưng chưa thống nhất việc có dời ngày ra mắt hay không. Anh Minh muốn giữ ngày 1/10, còn chị Lan đề xuất lùi 2 tuần để kiểm thử kỹ hơn.',
+ ideas:[['Đồng ý tuyển 2 lập trình viên','hire|recruit|employ|take on;two|2;developer|programmer|engineer|coder'],['Chưa thống nhất ngày ra mắt','launch|release|go-live;agree|consensus|decid|undecid|disagree|split|open'],['Minh muốn giữ ngày 1/10','minh$;october|1 10|1st'],['Lan đề xuất lùi 2 tuần','lan$;two|2;week'],['Để kiểm thử kỹ hơn','test']],
+ model:'Dear Ms Hughes, the team agreed to hire two more developers, but there is no consensus yet on whether to move the launch date. Minh would like to keep 1 October, while Lan proposes a two-week delay to allow for more thorough testing.'},
+{id:'med-c2-1',lv:'C2',vi:'Chuyển lời nhắc khéo của chủ nhà',who:'Ben, người thuê nhà người Anh',ctx:'Bác chủ nhà nhờ bạn nói lại với Ben. Giữ đúng sắc thái: thân thiện nhưng là một lời nhắc.',reg:'n',min:30,max:110,
+ src:'Bác nói: Nhà bác thì lúc nào cũng rộng cửa, nhưng mấy đứa đi về khuya thì nhớ nhẹ nhàng giùm bác nhé, hàng xóm họ cũng có tuổi rồi.',
+ ideas:[['Luôn được chào đón','welcome|always happy|door is always open|feel at home'],['Khi về khuya','late|night'],['Nhẹ nhàng, giữ yên lặng','quiet|gentle|noise|softly|considerate|keep it down'],['Hàng xóm đã lớn tuổi','neighbo;elderly|old|older|age|getting on'],['Giữ giọng nhờ vả lịch sự','would|could|appreciate|kindly|if you|just ask']],
+ model:'She wanted me to tell you that you\'re always welcome here, but she\'d appreciate it if you could keep the noise down when you come home late at night, as the neighbours are quite elderly.'},
+{id:'med-c2-2',lv:'C2',vi:'Tóm tắt lập luận một bài xã luận',who:'Dr Evans, đồng nghiệp nghiên cứu giáo dục',ctx:'Tóm tắt lập luận của bài xã luận tiếng Việt, giữ đúng quan điểm của tác giả, không thêm ý mình.',reg:'f',min:30,max:130,
+ src:'Tác giả cho rằng miễn học phí đại học nghe có vẻ công bằng, nhưng thực chất có thể có lợi nhiều hơn cho con nhà khá giả, vốn đã có tỉ lệ vào đại học cao; ngân sách nên được dồn cho học bổng theo nhu cầu.',
+ ideas:[['Tác giả lập luận','author|writer|editorial|columnist;argu|claim|contend|suggest|maintain|believe'],['Miễn học phí đại học','free|abolish|scrap;tuition|university|fee$|fees$|higher education'],['Nghe có vẻ công bằng','fair|equitable|equal|just$'],['Thực chất có lợi hơn cho người khá giả','benefit|help|favour|favor|advantage;wealth|rich|well-off|affluent|better-off|privileged|high-income'],['Vốn đã vào đại học nhiều hơn','already;enrol|attend|go to university|participation|access|entry'],['Nên dồn ngân sách cho học bổng theo nhu cầu','scholarship|grant|bursar|aid;need|means|poor|low-income|disadvantag']],
+ model:'The author argues that abolishing university tuition fees may sound fair but would in fact mainly benefit better-off families, whose children already enrol at higher rates. Instead, public funds should be targeted at need-based scholarships.'},
+{id:'med-c2-3',lv:'C2',vi:'Giải thích điều khoản hợp đồng',who:'Chloe, bạn người Pháp sắp ký hợp đồng thuê nhà',ctx:'Diễn giải điều khoản này sang tiếng Anh dễ hiểu, không sai nghĩa pháp lý.',reg:'n',min:30,max:120,
+ src:'Bên thuê có quyền chấm dứt hợp đồng trước thời hạn nếu thông báo bằng văn bản trước 30 ngày; trong trường hợp này, tiền đặt cọc sẽ không được hoàn trả, trừ khi bên cho thuê tìm được người thuê mới.',
+ ideas:[['Được chấm dứt hợp đồng sớm','end$|terminat|leave|break|get out;early|before|contract'],['Báo bằng văn bản','writ|letter|email'],['Trước 30 ngày','30|thirty'],['Mất tiền cọc','deposit;not$|won\'t|lose|keep|forfeit|no refund|*n\'t'],['Trừ khi chủ nhà tìm được người thuê mới','unless|except|only if;tenant|someone|replacement|renter|person']],
+ model:'You can end the lease early as long as you give the landlord 30 days\' notice in writing. If you do, you will lose your deposit, unless the landlord manages to find a new tenant.'},
+{id:'med-c2-4',lv:'C2',vi:'Đổi giọng văn cho đối tác',who:'Các đối tác quốc tế trong email chung của dự án',ctx:'Giám đốc nhắn nhóm bằng giọng rất thân mật. Viết lại thành thông báo tiếng Anh trang trọng, vẫn giữ sự hào hứng và lời cảm ơn.',reg:'f',min:30,max:120,
+ src:'Mọi người ơi, dự án xong rồi, quá đỉnh! Cảm ơn cả nhà đã cày ngày cày đêm. Thứ Sáu này cả team đi liên hoan, anh bao nhé!',
+ ideas:[['Dự án đã hoàn thành','project;complet|finish|deliver|conclu|done'],['Kết quả rất tốt','excellent|outstanding|success|remarkable|impressive|delighted|proud'],['Cảm ơn mọi người','thank|grateful|gratitude|appreciat'],['Đã làm việc rất vất vả','hard work|effort|dedication|long hours|commitment|tireless'],['Liên hoan thứ Sáu','friday;celebrat|dinner|gathering|party|get-together|reception'],['Giám đốc/công ty mời','host|treat|on me|on the company|cover|invite|pleased to|expense']],
+ model:'Dear all, I am delighted to announce that the project has been successfully completed. I would like to thank the whole team for their dedication and the long hours they have put in. To celebrate, you are all invited to a team dinner this Friday, hosted by the company.'},
+];
+
+const MED = Object.fromEntries(MEDIATION.map(m=>[m.id,m]));
+const MED_OK = .8;
+// Một phương án khớp văn bản đã chuẩn hoá (nt) hay không; xem quy ước ở đầu MEDIATION.
+function medAlt(t,a){ a=a.trim().toLowerCase(); if(!a) return false;
+  if(a[0]==='*') return t.includes(nt(a.slice(1)));
+  if(a.endsWith('$')) return (' '+t+' ').includes(' '+nt(a.slice(0,-1))+' ');
+  a=nt(a);
+  if(/\s/.test(a)) return (' '+t+' ').includes(' '+a+' ')||(' '+t).includes(' '+a);
+  if(/^\d+$/.test(a)) return new RegExp('(^|\\D)'+a+'(st|nd|rd|th)?(\\D|$)').test(t);
+  return (' '+t).includes(' '+a); }
+const medIdea = (t,kw) => kw.split(';').every(g=>g.split('|').some(a=>medAlt(t,a)));
+function medCheck(m,text){ const t=nt(text), n=wcount(text), hit=m.ideas.map(([vi,kw])=>medIdea(t,kw));
+  const p=hit.filter(Boolean).length/m.ideas.length, viet=/[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i.test(text);
+  const lenOk=n>=m.min&&n<=Math.round(m.max*1.5);
+  return {hit,p,n,lenOk,viet,ok:p>=MED_OK&&lenOk&&!viet}; }
+const medDone = id => ((st.med||{})[id]||{}).best>=MED_OK;
+// Lưu: bài viết gần nhất (tối đa 2000 ký tự), điểm ý cao nhất, số lần, ngày.
+function medBag(b){ return Object.fromEntries(Object.entries(b&&typeof b==='object'?b:{}).filter(([k,v])=>/^med-[abc][12]-\d+$/.test(k)&&v&&typeof v==='object').map(([k,v])=>[k,{best:numIn(v.best,0,1,0),n:Math.round(numIn(v.n,0,1e6,0)),...(v.day!=null?{day:Math.round(numIn(v.day,0,1e6,0))}:{}),...(typeof v.text==='string'?{text:v.text.slice(0,2000)}:{})}])); }
+function viewMed(){ const m=MED[ui.medId]; if(!m) return viewTalk();
+  const r=(st.med||{})[m.id]||{}, text=ui.medText!=null?ui.medText:(r.text||''), ck=ui.medChecked&&text.trim()?medCheck(m,text):null;
+  return `<button class="btn ghost back" data-go="talk">← Kỹ năng</button>
+  <section class="stack"><span class="eyebrow">${m.lv} · Chuyển ý Việt → Anh ${info('mediation')}</span><h1>${esc(m.vi)}</h1>
+    <p class="muted"><b>Người đọc:</b> ${esc(m.who)} · <b>Văn phong:</b> ${esc(REG_VI[m.reg])}</p><p>${esc(m.ctx)}</p></section>
+  <section class="panel stack"><span class="eyebrow">Văn bản tiếng Việt</span><p style="font-size:17px">${esc(m.src)}</p></section>
+  <section class="stack"><label for="medin"><b>Bài của bạn</b> <span class="muted">(${m.min}–${m.max} từ tiếng Anh)</span></label>
+    <textarea id="medin" class="field" rows="6" lang="en" spellcheck="true" style="width:100%;font:inherit" placeholder="Viết cho ${esc(m.who.split(',')[0])}…">${esc(text)}</textarea>
+    <div class="row"><button class="btn primary" data-act="medcheck">Kiểm tra ý</button>${r.n?`<span class="muted num">Điểm ý cao nhất: ${pct(r.best||0)}</span>`:''}</div></section>
+  ${ck?`<section class="panel stack"><h3>${ck.ok?'✅ Đạt: đủ ý cho người đọc':'Chưa đạt'}</h3>
+    <p class="muted num">${ck.hit.filter(Boolean).length}/${m.ideas.length} ý · ${ck.n} từ</p>
+    ${m.ideas.map(([vi],i)=>`<p>${ck.hit[i]?'✅':'⬜'} ${esc(vi)}</p>`).join('')}
+    ${ck.viet?'<p class="why">Bài còn chữ tiếng Việt: người đọc không hiểu tiếng Việt, hãy diễn đạt bằng tiếng Anh.</p>':''}
+    ${!ck.lenOk?`<p class="why">Độ dài nên từ ${m.min} đến ${m.max} từ (bài hiện có ${ck.n} từ).</p>`:''}
+    <p class="hint">Máy chỉ dò ý chính bằng từ khoá, không chấm ngữ pháp. Ý chưa được nhận ra có thể do bạn dùng cách nói khác: đọc bài mẫu để so.</p>
+    <details><summary>Xem bài mẫu</summary><p lang="en">${esc(m.model)}</p></details></section>`:''}`;
+}
+function medSubmit(){ const m=MED[ui.medId], el=document.getElementById('medin'); if(!m||!el) return; const text=el.value; ui.medText=text; ui.medChecked=true;
+  if(!text.trim()) return render();
+  const ck=medCheck(m,text), b=st.med||(st.med={}), r=b[m.id]||(b[m.id]={best:0,n:0}), first=r.best<MED_OK&&ck.ok;
+  r.n++; r.day=today(); r.text=text.slice(0,2000); if(ck.ok) r.best=Math.max(r.best,ck.p); else r.best=Math.max(r.best,Math.min(ck.p,MED_OK-.01));
+  tally(ck.ok,xpFor('med:'+m.id,15,ck.ok)); bump('talk'); if(first) addXP(20);
+  save(); checkBadges(); questCheck(); render();
+  if(first) celebrate('🌉','Chuyển ý đạt: '+m.vi,'Người đọc đã có đủ ý chính. +20 XP.'); }
+
+/* ---------- v25: Nghe cả đoạn hội thoại: ý chính, nơi chốn, văn phong (suy luận) và chi tiết ---------- */
+function lisWhole(L,n=2){ const ds=shuffle(DIALOGUES.filter(d=>d.lv===L&&d.lines.length>=4)).slice(0,n), all=DIALOGUES.filter(d=>d.lv===L), items=[];
+  const fast=LVS.indexOf(L)>=2;
+  ds.forEach(d=>{ const lines=d.lines.map(l=>({t:l.t,s:l.s,who:spk(d,l.s)})), base={sayAll:true,lines,fast,auto:false};
+    const w=shuffle([...new Set(all.filter(x=>x.id!==d.id&&x.vi!==d.vi).map(x=>x.vi))]).slice(0,2);
+    if(w.length===2){ const opts=shuffle([d.vi,...w]); items.push({...base,t:'mc',tag:'Nghe ý chính',plain:'Ý chính: '+d.title,opts,ans:opts.indexOf(d.vi),q:'<p class="eyebrow">Nghe cả đoạn hội thoại (chưa hiện chữ)</p><p class="prompt" style="font-weight:600">Cuộc nói chuyện chủ yếu về điều gì?</p>',note:d.title}); }
+    const regs=['f','n','i'], ro=regs.map(k=>REG_VI[k]);
+    items.push({...base,t:'mc',tag:'Suy luận: văn phong',plain:'Văn phong: '+d.title,opts:ro,ans:regs.indexOf(d.reg),q:'<p class="eyebrow">Nghe cách hai người nói với nhau</p><p class="prompt" style="font-weight:600">Cuộc nói chuyện này trang trọng, trung tính hay thân mật?</p>',
+      note:`${REG_VI[d.reg]}: ${d.reg==='f'?'lời lẽ lịch sự, đầy đủ (would, could, I\'m afraid…), thường giữa người lạ, khách hàng, cấp trên.':d.reg==='i'?'câu ngắn, thân mật, có từ lóng hoặc rút gọn, thường giữa bạn bè, người nhà.':'lịch sự vừa phải, thường gặp ở cửa hàng, nơi làm việc, với người quen.'}`});
+    const x=(d.qs||[])[Math.floor(Math.random()*(d.qs||[]).length)];
+    if(x){ const opts=shuffle([x.a,...x.w]); items.push({...base,t:'mc',tag:'Nghe chi tiết',lang:'en',plain:x.q,opts,ans:opts.indexOf(x.a),q:`<p class="eyebrow">Nghe lại nếu cần rồi trả lời</p><p class="prompt" lang="en" style="font-weight:500">${esc(x.q)}</p>`}); } });
+  return items; }
+
+/* ---------- v25: Phản xạ hội thoại: nghe/đọc một lượt lời, chọn câu đáp trong thời gian giới hạn ---------- */
+const RX_N = 10, RX_SEC = {A1:15,A2:14,B1:12,B2:11,C1:10,C2:9};
+function rxItems(L){ const all=lisLines(L).filter(x=>x.k+1<x.d.lines.length&&wcount(x.l.t)>=2&&wcount(x.d.lines[x.k+1].t)>=2), items=[], used=new Set();
+  for(const {d,l,k} of shuffle(all)){ if(items.length>=RX_N-2) break; if(used.has(d.id)) continue; const nx=d.lines[k+1];
+    const w=[...new Set(shuffle(all.filter(x=>x.d.id!==d.id&&x.k>0)).map(x=>x.l.t).filter(t=>nt(t)!==nt(nx.t)&&wcount(t)>=2))].slice(0,2); if(w.length<2) continue;
+    used.add(d.id); const opts=shuffle([nx.t,...w]);
+    items.push({t:'mc',tag:'Phản xạ',timed:RX_SEC[L]||12,say:l.t,v:l.s==='B'?1:0,auto:true,lang:'en',plain:'Đáp lại: “'+l.t+'”',opts,ans:opts.indexOf(nx.t),
+      q:`<p class="eyebrow">${esc(d.place)} · ${esc(REG_VI[d.reg])}</p><div class="dlg-ctx"><p class="dl ${l.s}"><b>${esc(spk(d,l.s))}:</b> <span lang="en">${esc(l.t)}</span></p></div><p class="hint">Chọn câu đáp tự nhiên nhất trước khi hết giờ.</p>`,note:'Câu đáp: '+nx.vi}); }
+  const rq=shuffle(DIALOGUES.filter(d=>d.lv===L).flatMap(d=>d.regq||[])).slice(0,RX_N-items.length);
+  rq.forEach(g=>{ const opts=shuffle([g.a,...g.w.map(x=>x.t)]), why={}; g.w.forEach(x=>why[opts.indexOf(x.t)]=x.why);
+    items.push({t:'mc',tag:'Hợp hoàn cảnh',timed:(RX_SEC[L]||12)+4,lang:'en',plain:g.ctx,opts,ans:opts.indexOf(g.a),why,q:`<p class="eyebrow">Tình huống</p><p>${esc(g.ctx)}</p><p class="hint">Câu nào hợp nhất? Chọn trước khi hết giờ.</p>`}); });
+  return shuffle(items); }
+let _rxT=null;
+function rxArm(){ const s=ui.qz; if(ui.view!=='quiz'||!s||s.done||s.ans){ clearTimeout(_rxT); return; }
+  const it=s.q[s.i]; if(!it||!it.timed) return;
+  if(s._arm!==s.i){ s._arm=s.i; s.tStart=Date.now(); clearTimeout(_rxT); const i=s.i;
+    _rxT=setTimeout(()=>{ if(ui.qz===s&&s.i===i&&!s.ans&&!s.done){ s.late=true; qzAnswer(false,{picked:-1,diff:'⏱ Hết giờ! Trong hội thoại thật, câu đáp cần đến trong vài giây.'}); } },it.timed*1000); }
+  const q=document.querySelector('#app section.q'); if(q&&!q.querySelector('.rxbar')){ const left=Math.max(0,it.timed*1000-(Date.now()-s.tStart));
+    q.insertAdjacentHTML('afterbegin',`<div class="rxbar" role="timer" aria-label="Còn ${Math.ceil(left/1000)} giây"><i style="animation-duration:${left}ms"></i></div>`); } }
+
+/* ---------- v25: Nói nối, dạng yếu, ngữ điệu, trọng âm câu: sinh từ câu thoại đúng cấp ---------- */
+const WEAK = {to:['/tə/','/tuː/'],for:['/fə/','/fɔː/'],of:['/əv/','/ɒv/'],and:['/ən/','/ænd/'],can:['/kən/','/kæn/'],at:['/ət/','/æt/'],from:['/frəm/','/frɒm/'],was:['/wəz/','/wɒz/'],were:['/wə/','/wɜː/'],are:['/ə/','/ɑː/'],does:['/dəz/','/dʌz/'],them:['/ðəm/','/ðem/'],than:['/ðən/','/ðæn/'],as:['/əz/','/æz/'],but:['/bət/','/bʌt/']};
+const CS_FN = new Set('a an the to of and at for from is are was were in on but or as some can'.split(' '));
+const csToks = t => t.replace(/[“”]/g,'"').split(/\s+/).filter(Boolean).map(r=>({r,w:r.toLowerCase().replace(/^[^a-z']+|[^a-z']+$/g,''),end:/[.,!?;:—–-]["')]*$/.test(r)}));
+const csConsEnd = w => /[bcdfgjklmnpqrstvxz]$/.test(w)||(/[^aeiouy]e$/.test(w)&&w.length>2&&!['the','be','he','she','we','me'].includes(w));
+const csVowStart = w => /^[aeio]/.test(w)&&!/^(one|once|eu|ewe)/.test(w);
+function csItems(L){ const lines=shuffle(lisLines(L).map(x=>({t:x.l.t,v:x.l.s==='B'?1:0,vi:x.l.vi})).filter(x=>{ const n=wcount(x.t); return n>=4&&n<=18&&!/\d/.test(x.t); }));
+  const items=[], used=new Set(), want={link:3,weak:3,into:2,stress:2}, got={link:0,weak:0,into:0,stress:0};
+  const hl=(ts,is)=>ts.map((x,i)=>is.includes(i)?`<mark>${esc(x.r)}</mark>`:esc(x.r)).join(' ');
+  const base=x=>({say:x.t,v:x.v,auto:true,lang:'en',note:'Nghĩa: '+x.vi});
+  for(const x of lines){ if(used.has(x.t)) continue; const ts=csToks(x.t);
+    if(got.link<want.link){ const yes=[], no=[];
+      ts.forEach((a,i)=>{ const b=ts[i+1]; if(!b||a.end||!a.w||!b.w||/'/.test(a.w+b.w)) return; const p=a.w+'‿'+b.w;
+        if(csConsEnd(a.w)&&csVowStart(b.w)) yes.push(p); else if(csConsEnd(a.w)&&/^[bcdfgjklmnpqrstvxz]/.test(b.w)&&!/^(h|w|y)/.test(b.w)) no.push(p.replace('‿',' ')); });
+      if(yes.length===1&&no.length>=2){ const opts=shuffle([yes[0],...shuffle(no).slice(0,2)]); used.add(x.t); got.link++;
+        items.push({...base(x),t:'mc',tag:'Nối âm',plain:'Nối âm: '+x.t,opts,ans:opts.indexOf(yes[0]),q:`<p class="eyebrow">Nghe câu</p><p class="prompt" lang="en" style="font-weight:500">${esc(x.t)}</p><p class="hint">Chỗ nào phụ âm cuối nối sang nguyên âm đầu của từ sau (đọc liền như một từ)?</p>`,note:`Phụ âm cuối + nguyên âm đầu thì đọc liền: ${yes[0]}. ${x.vi}`}); continue; } }
+    if(got.weak<want.weak){ const i=ts.findIndex((a,k)=>WEAK[a.w]&&k>0&&k<ts.length-1&&!a.end&&!(a.w==='to'&&csVowStart(ts[k+1].w))&&!(a.w==='can'&&/^(not|n't)/.test(ts[k+1].w))&&a.r===a.r.toLowerCase());
+      if(i>=0){ const f=WEAK[ts[i].w], opts=shuffle([`${f[0]} (dạng yếu, đọc lướt)`,`${f[1]} (dạng mạnh, đọc rõ)`]); used.add(x.t); got.weak++;
+        items.push({...base(x),t:'mc',tag:'Dạng yếu',plain:`Dạng yếu “${ts[i].w}”: ${x.t}`,opts,ans:opts.findIndex(o=>o.startsWith(f[0])),q:`<p class="eyebrow">Nghe câu</p><p class="prompt" lang="en" style="font-weight:500">${hl(ts,[i])}</p><p class="hint">Nói tự nhiên, từ được tô thường đọc thế nào?</p>`,note:`Từ chức năng không nằm cuối câu và không được nhấn thì đọc dạng yếu ${f[0]}. Dạng mạnh ${f[1]} dùng khi từ đứng cuối câu hoặc khi muốn nhấn mạnh.`}); continue; } }
+    if(got.into<want.into&&/\?$/.test(x.t.trim())&&!/,| or /.test(x.t)){ const w0=ts[0].w, wh=/^(what|where|when|who|why|how|which|whose)$/.test(w0), yn=/^(do|does|did|are|is|was|were|can|could|will|would|have|has|should|shall|may)$/.test(w0);
+      if(wh||yn){ const opts=['↘ Xuống giọng ở cuối câu','↗ Lên giọng ở cuối câu']; used.add(x.t); got.into++;
+        items.push({...base(x),t:'mc',tag:'Ngữ điệu',plain:'Ngữ điệu: '+x.t,opts,ans:wh?0:1,q:`<p class="eyebrow">Nghe câu hỏi</p><p class="prompt" lang="en" style="font-weight:500">${esc(x.t)}</p><p class="hint">Câu hỏi này thường kết thúc bằng giọng nào?</p>`,note:wh?'Câu hỏi có từ để hỏi (what, where, how…) thường xuống giọng ở cuối.':'Câu hỏi Yes/No (Do…? Are…? Can…?) thường lên giọng ở cuối.'}); continue; } }
+    if(got.stress<want.stress&&ts.length>=5){ const fn=ts.map((a,i)=>i).filter(i=>CS_FN.has(ts[i].w)&&i>0&&i<ts.length-1&&!ts[i].end), ct=ts.map((a,i)=>i).filter(i=>ts[i].w.length>=4&&!STOPW.has(ts[i].w)&&!CS_FN.has(ts[i].w)&&!/'/.test(ts[i].w));
+      if(fn.length&&ct.length>=2){ const f=fn[Math.floor(Math.random()*fn.length)], cs=shuffle(ct).slice(0,2), opts=shuffle([ts[f].w,...cs.map(i=>ts[i].w)]); used.add(x.t); got.stress++;
+        items.push({...base(x),t:'mc',tag:'Trọng âm câu',plain:'Trọng âm câu: '+x.t,opts,ans:opts.indexOf(ts[f].w),q:`<p class="eyebrow">Nghe câu</p><p class="prompt" lang="en" style="font-weight:500">${hl(ts,[f,...cs])}</p><p class="hint">Trong ba từ được tô, từ nào thường KHÔNG được nhấn?</p>`,note:`Từ mang nghĩa (danh từ, động từ chính, tính từ, trạng từ) được nhấn; từ chức năng như “${ts[f].w}” đọc nhẹ và nhanh.`}); } }
+    if(items.length>=10) break; }
+  return shuffle(items); }
+
+/* ---------- v25: Cụm động từ và thành ngữ theo cấp ---------- */
+const pvWords = L => (CONTENT.levels.find(x=>x.id===L)||{units:[]}).units.flatMap(u=>u.words).filter(w=>/\s/.test(w.word)&&/verb|idiom|phrase|expression/i.test(w.pos||''));
+const PV_MIN = 12;
+function pvItems(L){ const ws=pvWords(L), pool=shuffle(ws).slice(0,10), items=[];
+  pool.forEach((w,i)=>{ if(i%2===0||!w.cloze){ const wr=shuffle(ws.filter(x=>x!==w&&x.vi!==w.vi)).slice(0,2).map(x=>x.vi); if(wr.length<2) return; const opts=shuffle([w.vi,...wr]);
+      items.push({t:'mc',tag:'Nghĩa cụm từ',say:w.word,auto:true,plain:w.word,opts,ans:opts.indexOf(w.vi),q:`<p class="eyebrow">Cụm từ này nghĩa là gì?</p><p class="prompt" lang="en">${esc(w.word)}</p>`,note:w.ex?'Ví dụ: '+w.ex:''}); }
+    else { const c=w.cloze, opts=shuffle([c.a,...c.w]); items.push({t:'mc',tag:'Điền cụm từ',lang:'en',plain:c.s.replace('___',c.a),opts,ans:opts.indexOf(c.a),q:`<p class="eyebrow">Điền vào chỗ trống</p><p class="prompt" lang="en" style="font-weight:500">${esc(c.s).replace('___','<b>_____</b>')}</p>`,note:`${w.word}: ${w.vi}`}); } });
+  return items; }
+
+/* ---------- v25: Kiểm tra đầu vào thêm ngữ pháp và nghe ---------- */
+function qpxLevels(){ const S=((st.me||{}).qp||{}).start||'A2', i=LVS.indexOf(S); return i>0?[LVS[i-1],S]:[S,LVS[i+1]]; }
+function qpxItems(){ const items=[];
+  for(const L of qpxLevels()){ if(!L) continue;
+    shuffle(GPOINTS.filter(p=>p.level===L&&p.mc&&p.mc.length)).slice(0,3).forEach(p=>{ const c=p.mc[Math.floor(Math.random()*p.mc.length)], opts=shuffle([c.a,...c.w]), why={};
+      Object.entries(c.why||{}).forEach(([k,v])=>{ const j=opts.indexOf(k); if(j>=0) why[j]=v; });
+      items.push({t:'mc',tag:'Ngữ pháp',lv:L,lang:'en',plain:c.s.replace('___',c.a),opts,ans:opts.indexOf(c.a),why,q:`<p class="eyebrow">Chọn từ đúng</p><p class="prompt" lang="en" style="font-weight:500">${esc(c.s).replace('___','<b>_____</b>')}</p>`}); });
+    const ls=shuffle(lisLines(L).filter(x=>wcount(x.l.t)>=4)), all=lisLines(L);
+    ls.slice(0,2).forEach(({d,l})=>{ const w=[...new Set(shuffle(all.filter(x=>x.d.id!==d.id&&x.l.vi!==l.vi)).map(x=>x.l.vi))].slice(0,2); if(w.length<2) return; const opts=shuffle([l.vi,...w]);
+      items.push({t:'mc',tag:'Nghe',lv:L,say:l.t,v:l.s==='B'?1:0,auto:true,plain:l.t,opts,ans:opts.indexOf(l.vi),q:'<p class="eyebrow">Nghe câu (chưa hiện chữ) rồi chọn nghĩa đúng</p>',note:'Câu vừa nghe: '+l.t}); }); }
+  return items; }
+function qpxResult(s){ const by={}; s.q.forEach((it,i)=>{ const r=s.res[i]; if(!r||!it.lv) return; const o=by[it.lv]||(by[it.lv]={ok:0,n:0}); o.n++; if(r.correct) o.ok++; });
+  const [lo,hi]=qpxLevels(), S=((st.me||{}).qp||{}).start||lo, rate=L=>by[L]&&by[L].n?by[L].ok/by[L].n:null;
+  let rec=S, why='Ngữ pháp và nghe khớp với kết quả từ vựng.';
+  if(S!==lo&&rate(lo)!=null&&rate(lo)<.6){ rec=lo; why=`Ngữ pháp và nghe ở ${lo} còn yếu (${pct(rate(lo))}): nên bắt đầu ở ${lo} để chắc nền.`; }
+  else if(S===lo&&rate(lo)!=null&&rate(lo)<.6&&LVS.indexOf(lo)>0){ rec=LVS[LVS.indexOf(lo)-1]; why=`Ngữ pháp và nghe ở ${lo} còn yếu (${pct(rate(lo))}): nên học lại từ ${rec}.`; }
+  else if(hi&&rate(hi)!=null&&rate(hi)>=.8) why=`Ngữ pháp và nghe ở ${hi} đã tốt (${pct(rate(hi))}): sau vài unit đầu, có thể thử thi xếp lớp ${hi}.`;
+  return {by,rec,why}; }
+
+/* ---------- v25: Đạt cấp CEFR = ít nhất 5/6 nhóm năng lực đạt ≥ 80% (không chỉ học xong từ vựng) ---------- */
+const CEFR_PASS = 5;
+const cefrGot = () => LVS.filter(L=>cdLevel(L).ok>=CEFR_PASS);
+function cefrCheck(){ const me=st.me||(st.me={}), rec=me.cefr||(me.cefr={}), nw=cefrGot().filter(L=>!rec[L]);
+  if(!nw.length) return; nw.forEach(L=>rec[L]=today()); save();
+  const L=nw[nw.length-1]; celebrate('🎓',`Bạn đạt ${L} theo CEFR`,`Ít nhất ${CEFR_PASS}/6 nhóm năng lực (từ vựng, ngữ pháp, phát âm, chức năng, kỹ năng, dùng thực tế) đạt ≥ 80%.`); }
+function cefrOpen(){ const cur=LVS.indexOf(currentUnit().level), got=cefrGot();
+  return LVS.find((L,i)=>i>=Math.max(0,cur-1)&&i<=cur&&!got.includes(L))||null; }
+function cefrStrip(){ if(!st.onboarded&&!st.stats.a) return ''; const got=cefrGot(), top=got[got.length-1], L=cefrOpen();
+  const miss=L?CD_GRP.filter(([g])=>cdGroup(L,g)<.8).map(x=>x[1]):[];
+  return `<div class="cefrstrip muted"><span>🎓 ${top?`Đạt CEFR <b>${top}</b>`:'Chưa đạt cấp CEFR nào'}</span>${L?`<button class="btn small ghost" data-act="cdgo" data-l="${L}">${L}: <b class="num">${cdLevel(L).ok}/6</b> nhóm · còn thiếu ${esc(miss.slice(0,2).join(', '))}${miss.length>2?'…':''}</button>`:''}</div>`; }
+
+/* ---------- v25: câu “Tôi có thể…” mới cho các bài luyện mới ---------- */
+LVS.forEach(L=>{ const l=L.toLowerCase(), ms=MEDIATION.filter(m=>m.lv===L).map(m=>m.id);
+  CANDO.push(
+    {id:l+'-med',lv:L,grp:'com',vi:L<'B1'?'Chuyển ý tin nhắn, biển báo tiếng Việt ngắn sang tiếng Anh cho người nước ngoài':L<'C1'?'Chuyển ý thông báo, tin tức tiếng Việt sang tiếng Anh cho người nước ngoài':'Tóm tắt, diễn giải văn bản tiếng Việt sang tiếng Anh, giữ đúng sắc thái và văn phong',en:'Mediate a Vietnamese text into English for someone else',ref:[{t:'med',v:ms,n:2}]},
+    {id:l+'-rx',lv:L,grp:'com',vi:'Đáp lời nhanh và hợp hoàn cảnh trong hội thoại '+L,en:'Respond promptly and appropriately in conversation',ref:[{t:'rx',v:[L]}]},
+    {id:l+'-cs',lv:L,grp:'pro',vi:'Nhận ra nối âm, dạng yếu, ngữ điệu và trọng âm câu trong lời thoại '+L,en:'Recognise linking, weak forms, intonation and sentence stress',ref:[{t:'cs',v:[L]}]},
+    {id:l+'-lis',lv:L,grp:'ski',vi:'Nghe hiểu ý chính, chi tiết và văn phong của hội thoại '+L,en:'Understand gist, detail and register in conversations',ref:[{t:'lis',v:[L]}]});
+  if(pvWords(L).length>=PV_MIN) CANDO.push({id:l+'-pv',lv:L,grp:'voc',vi:'Hiểu và dùng cụm động từ, thành ngữ '+L,en:'Understand and use phrasal verbs and idioms',ref:[{t:'pv',v:[L]}]}); });
+const _cdActs0 = cdActs;
+cdActs = function(r,L){ const best=o=>o&&o.best;
+  switch(r.t){
+    case 'med': return r.v.map(id=>({done:medDone(id), at:`data-med="${id}"`, t:'Chuyển ý: '+MED[id].vi}));
+    case 'rx': return r.v.map(l=>({done:cdOk(best((st.rx||{})[l])), at:`data-act="rxgo" data-lv="${l}"`, t:'Phản xạ hội thoại '+l}));
+    case 'cs': return r.v.map(l=>({done:cdOk(best(st.pron['cs-'+l])), at:`data-act="csgo" data-lv="${l}"`, t:'Nối âm, ngữ điệu '+l}));
+    case 'lis': return r.v.map(l=>({done:cdOk(best((st.lis||{})[l])), at:`data-act="lisgo" data-lv="${l}"`, t:'Luyện nghe '+l}));
+    case 'pv': return r.v.map(l=>({done:cdOk(best((st.pv||{})[l])), at:`data-act="pvgo" data-lv="${l}"`, t:'Cụm động từ, thành ngữ '+l}));
+  }
+  return _cdActs0(r,L); };
+
+QZ.rx={bag:'rx',bump:'talk',gen:L=>rxItems(L)};
+QZ.cs={bag:'pron',bump:'sound',gen:ref=>csItems(ref.slice(3))};
+QZ.pv={bag:'pv',bump:'talk',gen:L=>pvItems(L)};
+QZ.qpx={bag:'lis',bump:'read',gen:()=>qpxItems()};
+const startRx = L => startQuiz('rx',L,rxItems(L),{title:'Phản xạ hội thoại '+L,label:'Phản xạ',eyebrow:L+' · Phản xạ hội thoại',back:'talk',backExtra:{talkLv:L},backLabel:'Về Kỹ năng'});
+const startCs = L => startQuiz('cs','cs-'+L,csItems(L),{title:'Nối âm, ngữ điệu '+L,label:'Nói tự nhiên',eyebrow:L+' · Nối âm, dạng yếu, ngữ điệu',back:'talk',backExtra:{talkLv:L},backLabel:'Về Kỹ năng'});
+const startPv = L => startQuiz('pv',L,pvItems(L),{title:'Cụm từ '+L,label:'Cụm động từ & thành ngữ',eyebrow:L+' · Cụm động từ & thành ngữ',back:'review',backLabel:'Về Ôn tập'});
+const startQpx = () => startQuiz('qpx','qpx',qpxItems(),{title:'Kiểm tra thêm',label:'Kiểm tra đầu vào',eyebrow:'Ngữ pháp và nghe',back:'path',backLabel:'Về Lộ trình'});
+
+// Móc vào luồng sẵn có (không đổi hành vi cũ): bộ đếm giờ phản xạ, kết quả kiểm tra đầu vào, dải CEFR, xét đạt cấp.
+const _qzAnswer0 = qzAnswer;
+qzAnswer = function(correct,extra={}){ const s=ui.qz, it=s&&s.q[s.i];
+  if(it&&it.timed&&s.tStart&&!extra.diff){ const sec=(Date.now()-s.tStart)/1000; if(correct) extra={...extra,diff:sec<=it.timed/2?`⚡ Nhanh: ${sec.toFixed(1)} giây.`:`Trả lời sau ${sec.toFixed(1)} giây. Thử nhanh hơn ở lượt sau.`}; }
+  clearTimeout(_rxT); return _qzAnswer0(correct,extra); };
+const _qzNext0 = qzNext;
+qzNext = function(){ const s=ui.qz;
+  if(s&&s.kind==='qpx'&&s.i+1>=s.q.length){ s.i++; s.done=true; s.score=s.res.filter(x=>x.correct).length/Math.max(1,s.res.length); runActive(s.res);
+    const r=qpxResult(s), qp=(st.me.qp||(st.me.qp={})); qp.gl=Object.fromEntries(Object.entries(r.by).map(([L,o])=>[L,Math.round(100*o.ok/o.n)/100])); qp.rec=r.rec; s.qpx=r;
+    save(); render(); window.scrollTo(0,0); return; }
+  return _qzNext0(); };
+const _viewQuiz0 = viewQuiz;
+viewQuiz = function(){ const s=ui.qz;
+  if(s&&s.kind==='qpx'&&s.done&&s.qpx){ const r=s.qpx, u1=CONTENT.levels.find(x=>x.id===r.rec).units[0];
+    return `<section class="stack"><span class="eyebrow">Kiểm tra đầu vào · ngữ pháp và nghe</span><h1>Nên bắt đầu ở ${r.rec}</h1><p class="muted note">${esc(r.why)}</p></section>
+    <section class="panel stack"><h3>Theo cấp</h3>${Object.entries(r.by).map(([L,o])=>`<div class="dimrow"><span>${L}</span>${meter(o.ok/o.n,o.ok/o.n>=.6?'good':'')}<span class="v">${o.ok}/${o.n}</span></div>`).join('')}</section>
+    <div class="row endrow">${u1?`<button class="btn primary" data-unit="${u1.id}">Học ${esc(uname(u1))}</button>`:''}<button class="btn" data-go="path">Lộ trình</button></div>`; }
+  return _viewQuiz0(); };
+const _viewQPSummary0 = viewQPSummary;
+viewQPSummary = function(r){ return _viewQPSummary0(r).replace('<section class="panel stack"><h3>Theo cấp</h3>',`<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>Kiểm tra thêm ngữ pháp và nghe</h3><p class="muted">Kết quả trên chỉ đo từ vựng. Thêm 10 câu ngữ pháp và nghe (khoảng 2 phút) để gợi ý chính xác hơn.</p></div><button class="btn" data-act="qpxgo">Làm 10 câu</button></section><section class="panel stack"><h3>Theo cấp</h3>`); };
+const _hereStrip0 = hereStrip;
+hereStrip = function(){ const h=_hereStrip0(); if(!h) return h; const i=h.lastIndexOf('</section>'); return i<0?h:h.slice(0,i)+cefrStrip()+h.slice(i); };
+const _simpleStrip0 = simpleStrip;
+simpleStrip = function(){ const h=_simpleStrip0(); return h?h+cefrStrip():h; };
+const _checkBadges0 = checkBadges;
+checkBadges = function(){ const r=_checkBadges0.apply(this,arguments); try{ cefrCheck(); }catch(e){} return r; };
+const _render0 = render;
+render = function(){ _render0(); try{ rxArm(); }catch(e){} };
+DETAIL_SAFE_VIEW.add('med');
+GLOSSARY.mediation=['Chuyển ý (mediation)','Từ bản CEFR 2020, “chuyển ý” là một mảng năng lực riêng: đọc hoặc nghe một văn bản rồi truyền lại ý cho người khác bằng ngôn ngữ họ hiểu, đúng mục đích và văn phong. Ví dụ: đọc thông báo tiếng Việt rồi giải thích cho hàng xóm người nước ngoài. App dò ý chính bằng từ khoá (không dùng AI), nên hãy đọc bài mẫu để so cách diễn đạt.'];
+GLOSSARY.cefr[1]+=' Bạn được tính là đạt một cấp khi ít nhất 5/6 nhóm của cấp đó đạt, không chỉ khi học xong từ vựng.';
+document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('button'); if(!t) return; const d=t.dataset;
+  if(d.med){ ui.medText=null; ui.medChecked=!!((st.med||{})[d.med]||{}).text; return go('med',{medId:d.med}); }
+  switch(d.act){
+    case 'medcheck': return medSubmit();
+    case 'rxgo': return startRx(d.lv||talkLv());
+    case 'csgo': return startCs(d.lv||talkLv());
+    case 'pvgo': return startPv(d.lv||currentUnit().level);
+    case 'qpxgo': return startQpx();
+    case 'cdgo': ui.cdLv=d.l; return go('cefr');
+  } });
+
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
