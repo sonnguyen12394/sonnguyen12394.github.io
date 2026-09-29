@@ -1646,18 +1646,37 @@ const ACC = {
   star:{t:'Huy hiệu sao',chest:1,svg:'<path d="M32 44 l2 4 4 .5 -3 3 1 4 -4-2 -4 2 1-4 -3-3 4-.5z" fill="#E9B949"/>'},
 };
 function owl(mood='happy',size=64){
-  const eyes = mood==='sleep' ? '<path d="M18 31 q6 4 12 0 M34 31 q6 4 12 0" stroke="#1B2233" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
-    : mood==='party' ? '<circle cx="24" cy="30" r="7" fill="#fff"/><circle cx="40" cy="30" r="7" fill="#fff"/><path d="M19 31 q5-6 10 0 M35 31 q5-6 10 0" stroke="#1B2233" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
-    : `<circle cx="24" cy="30" r="7" fill="#fff"/><circle cx="40" cy="30" r="7" fill="#fff"/><circle cx="${mood==='cheer'?25:24}" cy="31" r="3.2" fill="#1B2233"/><circle cx="${mood==='cheer'?41:40}" cy="31" r="3.2" fill="#1B2233"/>`;
-  const wing = mood==='cheer'||mood==='party' ? '<path d="M13 42 q-9-8-4-20" stroke="var(--owl)" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M51 42 q9-8 4-20" stroke="var(--owl)" stroke-width="6" fill="none" stroke-linecap="round"/>'
-    : '<path d="M13 38 q-3 10 5 16" stroke="var(--owl-2)" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M51 38 q3 10 -5 16" stroke="var(--owl-2)" stroke-width="5" fill="none" stroke-linecap="round"/>';
+  // Hình vẽ tay bằng SVG (không dùng id/gradient để nhiều cú trên một trang không đụng nhau). Toạ độ mắt (24,30)/(40,30) giữ nguyên để phụ kiện khớp.
+  const up = mood==='cheer' ? -1.2 : 0;
+  const eye = x => `<g class="eye"><circle cx="${x}" cy="30" r="8" fill="#fff"/><circle cx="${x+.6}" cy="${30.6+up}" r="5" fill="#1B2233"/><circle cx="${x+2.4}" cy="${28.4+up}" r="1.9" fill="#fff"/><circle cx="${x-1.1}" cy="${32.6+up}" r=".9" fill="#fff"/></g>`;
+  const eyes = mood==='sleep' ? '<path d="M18 31 q6 4.5 12 0 M34 31 q6 4.5 12 0" stroke="#1B2233" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+    : mood==='party' ? '<circle cx="24" cy="30" r="8" fill="#fff"/><circle cx="40" cy="30" r="8" fill="#fff"/><path d="M19 32 q5-7 10 0 M35 32 q5-7 10 0" stroke="#1B2233" stroke-width="2.6" fill="none" stroke-linecap="round"/>'
+    : eye(24)+eye(40);
+  const wingDown = (l) => l ? '<path class="wl" d="M12 35 C5 41 6 52 15 57 C16 49 16 42 12 35Z" fill="var(--owl-2)"/>' : '<path class="wr" d="M52 35 C59 41 58 52 49 57 C48 49 48 42 52 35Z" fill="var(--owl-2)"/>';
+  const wingUp = (l) => l ? '<path class="wl" d="M15 43 C5 39 1 28 4 16 C11 20 16 28 19 37Z" fill="var(--owl-2)"/><path d="M6 22 l4 3 M5 27 l5 2" stroke="var(--owl)" stroke-width="1.2" stroke-linecap="round"/>'
+    : '<path class="wr" d="M49 43 C59 39 63 28 60 16 C53 20 48 28 45 37Z" fill="var(--owl-2)"/><path d="M58 22 l-4 3 M59 27 l-5 2" stroke="var(--owl)" stroke-width="1.2" stroke-linecap="round"/>';
+  const wings = mood==='party' ? wingUp(1)+wingUp(0) : mood==='cheer' ? wingDown(1)+wingUp(0) : wingDown(1)+wingDown(0);
+  const beak = mood==='party' ? '<path d="M28.6 35 Q32 33.4 35.4 35 L32 38.6Z" fill="#F5A623"/><path d="M29.6 38.6 Q32 43.4 34.4 38.6Z" fill="#E0663A"/>'
+    : '<path d="M28.6 35 Q32 33.4 35.4 35 L32 41Z" fill="#F5A623"/><path d="M30.3 38 L32 41 L33.7 38Z" fill="#D9861C"/>';
   const acc = st.cos&&ACC[st.cos.acc] ? ACC[st.cos.acc].svg : '';
-  const extra = mood==='party'&&!/hat|crown/.test(st.cos&&st.cos.acc||'') ? '<path d="M26 12 L32 0 L38 12Z" fill="#E85D9C"/><circle cx="32" cy="0.5" r="2" fill="#E9B949"/>' : mood==='sleep' ? '<text x="50" y="12" font-size="10" fill="var(--muted)" font-family="sans-serif">z z</text>' : '';
+  const extra = mood==='party' ? (!/hat|crown/.test(st.cos&&st.cos.acc||'') ? '<path d="M26 13 L32 0 L38 13Z" fill="#E85D9C"/><path d="M28.4 8 L35.6 8 M27.2 11 L36.8 11" stroke="#fff" stroke-width="1.2" opacity=".7"/><circle cx="32" cy=".5" r="2.2" fill="#E9B949"/>' : '')
+      +'<g class="confetti"><rect x="2" y="4" width="3" height="3" rx=".6" fill="#E85D9C"/><rect x="58" y="8" width="3" height="3" rx=".6" fill="#2F64D6" /><circle cx="60" cy="0" r="1.6" fill="#E9B949"/><circle cx="1" cy="12" r="1.4" fill="#23905A"/></g>'
+    : mood==='sleep' ? '<g class="zz" fill="var(--muted)" font-family="sans-serif" font-weight="800"><text x="48" y="14" font-size="9">z</text><text x="54" y="6" font-size="7">z</text></g>' : '';
   return `<svg class="owl ${mood}" width="${size}" height="${size}" viewBox="-2 -4 68 72" aria-hidden="true">
-    <path d="M15 24 L17 9 L25 19Z M49 24 L47 9 L39 19Z" fill="var(--owl)"/>
-    <ellipse cx="32" cy="38" rx="20" ry="23" fill="var(--owl)"/><ellipse cx="32" cy="45" rx="12" ry="13" fill="var(--owl-belly)"/>
-    ${wing}${eyes}<path d="M29 36 L35 36 L32 41Z" fill="#F2A33A"/><path d="M25 60 v3 M28 60 v3 M36 60 v3 M39 60 v3" stroke="#F2A33A" stroke-width="2" stroke-linecap="round"/>
-    ${acc}${extra}</svg>`;
+    <ellipse cx="32" cy="66" rx="17" ry="2.6" fill="#000" opacity=".1"/>
+    <g class="owl-b">
+    <path d="M14 23 C12 15 13 9 16 5 C19 10 22 14 26 17Z M50 23 C52 15 51 9 48 5 C45 10 42 14 38 17Z" fill="var(--owl-2)"/>
+    <path d="M32 13 C47 13 54 25 54 39 C54 53 44 62 32 62 C20 62 10 53 10 39 C10 25 17 13 32 13Z" fill="var(--owl)"/>
+    <ellipse cx="24" cy="19" rx="8" ry="3.6" fill="#fff" opacity=".13" transform="rotate(-18 24 19)"/>
+    <ellipse cx="32" cy="48" rx="13.5" ry="12.5" fill="var(--owl-belly)"/>
+    <path d="M24 45 q2 2.2 4 0 M30 45 q2 2.2 4 0 M36 45 q2 2.2 4 0 M27 50 q2 2.2 4 0 M33 50 q2 2.2 4 0 M30 55 q2 2.2 4 0" stroke="var(--owl-2)" stroke-width="1.2" fill="none" opacity=".4" stroke-linecap="round"/>
+    <circle cx="24" cy="30" r="10.8" fill="var(--owl-face)"/><circle cx="40" cy="30" r="10.8" fill="var(--owl-face)"/>
+    <path d="M22 19.5 Q32 23 42 19.5 L32 27Z" fill="var(--owl-2)" opacity=".55"/>
+    ${wings}${eyes}
+    <ellipse cx="16.5" cy="39" rx="3.3" ry="2" fill="#F2839A" opacity=".55"/><ellipse cx="47.5" cy="39" rx="3.3" ry="2" fill="#F2839A" opacity=".55"/>
+    ${beak}
+    <path d="M23 60.5 q0 2.6 -1.8 3.4 M25.5 60.8 v3.6 M28 60.5 q0 2.6 1.8 3.4 M36 60.5 q0 2.6 -1.8 3.4 M38.5 60.8 v3.6 M41 60.5 q0 2.6 1.8 3.4" stroke="#F5A623" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    ${acc}</g>${extra}</svg>`;
 }
 // Tủ đồ: phụ kiện (mở theo bậc XP hoặc rơi từ rương), màu giao diện (mở theo bậc), album từ đã thuộc theo cấp độ.
 const CHEST_DROP = 0.2;
@@ -4567,6 +4586,7 @@ const CHANGELOG = [
   {v:24,d:'2026-09-29',t:'Học vui hơn: toàn màn hình, Tí phản ứng theo từng câu',big:true,items:[
     'Vào bài là toàn màn hình, chỉ còn câu hỏi và thanh tiến độ; nút Tiếp tục luôn ở đáy, ngay dưới ngón cái.',
     'Trả lời xong, bảng kết quả trượt lên: xanh khi đúng, đỏ khi sai kèm đáp án và một dòng lý do; ví dụ và mẹo mở khi cần. Tí nhảy mừng hoặc cổ vũ bạn.',
+    'Tí được vẽ lại: mắt to lấp lánh, má hồng, biết chớp mắt, vỗ cánh khi bạn đúng, vẫy cánh cổ vũ khi bạn sai, ngáy “z z” khi ngủ.',
     'Xong bài: XP đếm lên, lửa chuỗi ngày to kèm 7 ngày gần nhất; số liệu chi tiết gọn trong một mục.',
     'Chữ tròn dễ đọc (Nunito), nút bấm nổi khối, màu tươi hơn.']},
   {v:23,d:'2026-09-29',t:'Gọn hơn: một nút để học mỗi ngày',big:true,items:[

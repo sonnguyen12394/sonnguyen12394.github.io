@@ -310,9 +310,9 @@ pre{margin:0;background:var(--surface-2);border:1px solid var(--line);border-rad
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;z-index:20;max-width:calc(100% - 32px)}
 
 /* ---- Chơi mà học ---- */
-:root{--lv-a1:#23905A;--lv-a2:#128196;--lv-b1:#2F64D6;--lv-b2:#6A4BD1;--lv-c1:#AE3C86;--lv-c2:#B06A0C;--owl:#8B6B4E;--owl-2:#6F533C;--owl-belly:#E9D8C2;--gold:#B8891F;--gold-soft:#FBF1D6}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--lv-a1:#5CCB93;--lv-a2:#4DC3D6;--lv-b1:#86A6FF;--lv-b2:#B29CFF;--lv-c1:#F08BCB;--lv-c2:#EDB55A;--owl:#A7825F;--owl-2:#8B6B4E;--owl-belly:#E9D8C2;--gold:#E9B949;--gold-soft:#3A2F12}}
-:root[data-theme="dark"]{--lv-a1:#5CCB93;--lv-a2:#4DC3D6;--lv-b1:#86A6FF;--lv-b2:#B29CFF;--lv-c1:#F08BCB;--lv-c2:#EDB55A;--owl:#A7825F;--owl-2:#8B6B4E;--owl-belly:#E9D8C2;--gold:#E9B949;--gold-soft:#3A2F12}
+:root{--lv-a1:#23905A;--lv-a2:#128196;--lv-b1:#2F64D6;--lv-b2:#6A4BD1;--lv-c1:#AE3C86;--lv-c2:#B06A0C;--owl:#8B6B4E;--owl-2:#6F533C;--owl-belly:#EFE0CB;--owl-face:#CFB08C;--gold:#B8891F;--gold-soft:#FBF1D6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--lv-a1:#5CCB93;--lv-a2:#4DC3D6;--lv-b1:#86A6FF;--lv-b2:#B29CFF;--lv-c1:#F08BCB;--lv-c2:#EDB55A;--owl:#A7825F;--owl-2:#8B6B4E;--owl-belly:#EFE0CB;--owl-face:#D8BC98;--gold:#E9B949;--gold-soft:#3A2F12}}
+:root[data-theme="dark"]{--lv-a1:#5CCB93;--lv-a2:#4DC3D6;--lv-b1:#86A6FF;--lv-b2:#B29CFF;--lv-c1:#F08BCB;--lv-c2:#EDB55A;--owl:#A7825F;--owl-2:#8B6B4E;--owl-belly:#EFE0CB;--owl-face:#D8BC98;--gold:#E9B949;--gold-soft:#3A2F12}
 :root[data-skin="forest"]{--accent:#17804F;--chart:#17804F;--accent-soft:color-mix(in srgb,#17804F 14%,#fff)}
 @media (prefers-color-scheme: dark){:root[data-skin="forest"]:not([data-theme="light"]){--accent:#5ACB8E;--chart:#5ACB8E;--accent-soft:color-mix(in srgb,#5ACB8E 22%,#161F30)}}
 :root[data-theme="dark"][data-skin="forest"]{--accent:#5ACB8E;--chart:#5ACB8E;--accent-soft:color-mix(in srgb,#5ACB8E 22%,#161F30)}
@@ -518,6 +518,25 @@ body.has-sheet .toast,body.has-act .toast{bottom:auto;top:calc(14px + env(safe-a
 .streakbig .week{display:flex;gap:6px;margin-top:4px}.streakbig .week i{font-style:normal;font-size:12px;font-weight:800;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--muted);border:2px solid var(--line)}
 .streakbig .week i.on{background:#F59E2B;border-color:#E0701A;color:#fff}
 .sumdet>summary h3{font-size:17px}
+/* v24: Tí vẽ lại: chớp mắt, thở, vỗ cánh khi mừng, vẫy khi động viên, z bay khi ngủ */
+.owl .eye,.owl .wl,.owl .wr,.owl .owl-b,.owl .zz text,.owl .confetti>*{transform-box:fill-box}
+.owl .eye{transform-origin:center;animation:blink 4.6s infinite}
+.owl .eye+.eye{animation-delay:.02s}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}95.5%{transform:scaleY(.08)}}
+.owl .owl-b{transform-origin:50% 100%;animation:breathe 3.2s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1,1)}50%{transform:scale(1.015,.985)}}
+.owl.party .wl{transform-origin:95% 90%;animation:flapl .32s ease-in-out 6 alternate}
+.owl.party .wr{transform-origin:5% 90%;animation:flapr .32s ease-in-out 6 alternate}
+@keyframes flapl{from{transform:rotate(0)}to{transform:rotate(-22deg)}}
+@keyframes flapr{from{transform:rotate(0)}to{transform:rotate(22deg)}}
+.owl.cheer .wr{transform-origin:5% 90%;animation:wave .5s ease-in-out 4 alternate}
+@keyframes wave{from{transform:rotate(-8deg)}to{transform:rotate(16deg)}}
+.owl .confetti>*{animation:conf 1.2s ease-out both}
+.owl .confetti>:nth-child(2){animation-delay:.12s}.owl .confetti>:nth-child(3){animation-delay:.24s}.owl .confetti>:nth-child(4){animation-delay:.36s}
+@keyframes conf{0%{transform:translateY(8px) scale(0);opacity:0}40%{transform:translateY(0) scale(1.2);opacity:1}100%{transform:translateY(-3px) rotate(90deg) scale(1);opacity:1}}
+.owl .zz text{animation:zz 2.4s ease-in-out infinite}.owl .zz text+text{animation-delay:.8s}
+@keyframes zz{0%{transform:translate(0,4px);opacity:0}40%{opacity:1}100%{transform:translate(3px,-4px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.owl,.owl *{animation:none!important}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.7L20 8"/><path d="M20 3v5h-5"/><path d="M20 12a8 8 0 0 1-13.7 5.7L4 16"/><path d="M4 21v-5h5"/></symbol><symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></symbol><symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4"/><path d="M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4"/><path d="M8 21h8"/><path d="M10 17h4"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol><symbol id="i-headphones" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/></symbol><symbol id="i-read" viewBox="0 0 24 24"><path d="M12 6C10 4.5 7 4 4 4v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2z"/><path d="M12 6v14"/></symbol><symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 7l3 3"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8"/><path d="M8 12h5"/></symbol><symbol id="i-ear" viewBox="0 0 24 24"><path d="M7 9a5 5 0 0 1 10 0c0 3-3 4-3 7a3 3 0 0 1-5.5 1.5"/><path d="M10 9a2 2 0 0 1 4 0"/></symbol><symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/></symbol><symbol id="i-map" viewBox="0 0 24 24"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15"/><path d="M15 6v15"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol><symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7v.5"/><path d="M12 17h.01"/></symbol><symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.5M8.2 13.2l7.6 4.5"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14a6 6 0 0 1 3.5 6"/></symbol><symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 3L3 6l2 4 3-1v12h8V9l3 1 2-4-5-3a4 4 0 0 1-8 0z"/></symbol><symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14 6a4 4 0 0 0 5 5l-9 9a2 2 0 0 1-3-3l9-9a4 4 0 0 0-2-2z"/></symbol><symbol id="i-exam" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></symbol></defs></svg>
