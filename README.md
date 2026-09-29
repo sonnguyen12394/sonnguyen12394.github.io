@@ -15,7 +15,8 @@ Học tiếng Anh A1 → C2 miễn phí, mỗi lỗi sai được giải thích 
 - Luyện nói với máy nghe giọng của trình duyệt (tự chọn bật), nói nhại (shadowing) có tô màu từ máy nghe ra.
 - Đóng vai bằng câu của chính mình: máy so các ý chính với câu mẫu (không dùng AI).
 - Bài viết có hồ sơ từ vựng CEFR (tỉ lệ từ mỗi cấp A1–C2, độ đa dạng từ).
-- Thi thử VSTEP rút gọn (Nghe + Đọc, có tính giờ, B1→C1) và ước tính bậc.
+- Thi thử VSTEP: Nghe + Đọc có tính giờ, và Viết (thư + bài luận) + Nói (3 phần) với đề tự soạn; máy chép lời, đếm tốc độ nói, dò lỗi; ước tính đủ 4 kỹ năng.
+- Nói đáp lời từ ý tiếng Việt, kiểm tra phát âm 26 cặp âm (hồ sơ âm đang lẫn), luyện nghe nhiều giọng và có tiếng ồn nền.
 - Giải đấu tuần ẩn danh: nhóm 30 người, 5 hạng từ Đồng tới Kim cương.
 - Đồng bộ nhiều máy bằng mã, không cần tài khoản (tự chọn bật).
 - Nhắc học hằng ngày bằng thông báo (Web Push, kể cả iPhone đã cài app), chạy khi mất mạng.
