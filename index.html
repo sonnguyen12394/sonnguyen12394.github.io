@@ -449,7 +449,10 @@ details.panel>summary::after{content:'';width:9px;height:9px;border-right:2px so
 details.panel[open]>summary::after{transform:rotate(225deg);margin-bottom:-2px}
 details.panel>summary>.spread{flex:1}
 details.panel[open]>summary{margin-bottom:12px}
-.me-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.me-stats .stat{display:grid;gap:2px;margin:0}.me-stats .stat span{font-size:13px}
+.me-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.me-stats.me3{grid-template-columns:repeat(3,1fr)}
+.pathbar{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit;padding:12px 16px;min-height:44px}
+.pathbar .meter{grid-column:1/-1;grid-row:2}.pathbar .pb-m{color:var(--accent);font-weight:600;font-size:14px}.pathbar .pb-t{font-weight:600}.me-stats .stat{display:grid;gap:2px;margin:0}.me-stats .stat span{font-size:13px}
 @media (max-width:640px){.me-stats{grid-template-columns:repeat(2,1fr)}
   .seg button{flex:1 1 0;min-width:0;flex-direction:column;gap:2px;padding:6px 2px;font-size:13px}.seg button .ic{width:20px;height:20px}}
 details.panel:not([open]){padding-top:10px;padding-bottom:10px}details.panel>summary h3{margin:0}
@@ -471,4 +474,4 @@ details.panel:not([open]){padding-top:10px;padding-bottom:10px}details.panel>sum
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="app.js?v=22"></script>
+<script src="app.js?v=23"></script>
