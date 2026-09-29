@@ -906,10 +906,10 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 17, APP_VERSION = 25;
+const STATE_V = 17, APP_VERSION = 26;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
-function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},money:{h:5,hd:0,ht:0},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
+function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},money:{h:5,hd:0,ht:0},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
 // Mã ngẫu nhiên, không gắn với tên hay thiết bị: để gộp các file dữ liệu nghiên cứu của cùng một người học mà không biết người đó là ai.
 const newRid = () => Math.random().toString(36).slice(2,10);
 function migrate(x){
@@ -942,7 +942,7 @@ function migrate(x){
   x.srs||={k:1,n:0};
   x.nw||={};
   x.rid||=newRid(); x.me||={}; x.ev||={}; x.oral||={};
-  for(const k of ['cando','dlg','fn','pron','wtask','stask','lread','lis','shadow','rx','pv','med']) x[k]||={};
+  for(const k of ['cando','dlg','fn','pron','wtask','stask','lread','lis','shadow','rx','pv','med','sp']) x[k]||={};
   if(!Array.isArray(x.exam)) x.exam=[];
   x.xpd||={}; x.rec||={combo:0}; x.cos||={own:[],skin:'',acc:''}; x.cos.sk||=[];
   x.xp??=0; x.freeze||={n:0,used:[],earned:0}; x.games||={speed:0,match:0,ch:[]}; x.story||={}; x.sounds||={}; x.gram||={}; x.glevels||={}; x.gwrite||={}; x.flags||=[]; x.hist||={}; x.badges||=[];
@@ -977,7 +977,7 @@ function sanitizeState(x){
   const mo=obj(x.money), sp=obj(mo.sup), sx=typeof sp.c==='string'?superRead(sp.c):null; x.money={h:Math.round(numIn(mo.h,0,MONEY.HMAX,MONEY.HMAX)),hd:Math.round(numIn(mo.hd,0,1e6,0)),ht:numIn(mo.ht,0,1e15,0),
     ...(sx?{sup:{c:sp.c.trim().toUpperCase().slice(0,24),exp:sx.exp}}:{}),...(Array.isArray(mo.ad)?{ad:mo.ad.slice(0,2).map(n=>Math.round(numIn(n,0,1e7,0)))}:{})};
   const bestBag=b=>Object.fromEntries(Object.entries(obj(b)).filter(([k,v])=>LVS.includes(k)&&v&&typeof v==='object').map(([k,v])=>[k,{best:numIn(v.best,0,1,0),n:Math.round(numIn(v.n,0,1e6,0)),...(v.day!=null?{day:Math.round(numIn(v.day,0,1e6,0))}:{})}]));
-  x.lis=bestBag(x.lis); x.rx=bestBag(x.rx); x.pv=bestBag(x.pv); x.med=medBag(x.med); { const h=!!obj(x.shadow).hide; x.shadow=bestBag(x.shadow); if(h) x.shadow.hide=true; }
+  x.lis=bestBag(x.lis); x.rx=bestBag(x.rx); x.pv=bestBag(x.pv); x.sp=bestBag(x.sp); x.med=medBag(x.med); { const h=!!obj(x.shadow).hide; x.shadow=bestBag(x.shadow); if(h) x.shadow.hide=true; }
   x.exam=(Array.isArray(x.exam)?x.exam:[]).filter(e=>e&&typeof e==='object').slice(0,10).map(e=>({day:Math.round(numIn(e.day,0,1e6,0)),l:numIn(e.l,0,10,0),r:numIn(e.r,0,10,0)}));
   const ap=obj(x.app); x.app={seen:Math.round(numIn(ap.seen,0,1e4,APP_VERSION)),vh:(Array.isArray(ap.vh)?ap.vh:[]).filter(a=>Array.isArray(a)&&a.length===2).slice(-20).map(a=>[Math.round(numIn(a[0],0,1e4,0)),Math.round(numIn(a[1],0,1e6,0))])};
   const sr=obj(x.srs); x.srs={k:numIn(sr.k,SRS_K[0],SRS_K[1],1),n:Math.round(numIn(sr.n,0,1e7,0)),...(sr.p!=null?{p:numIn(sr.p,0,1,0)}:{})};
@@ -3388,7 +3388,7 @@ async function recStart(){
     mr.onstop=()=>{ stream.getTracks().forEach(t=>t.stop()); REC.on=false;
       if(!REC.keep) return;
       if(REC.url) URL.revokeObjectURL(REC.url);
-      REC.url=URL.createObjectURL(new Blob(chunks,{type:mr.mimeType||'audio/webm'})); if(['speak','rp','stask','pronsh'].includes(ui.view)) render(); };
+      REC.url=URL.createObjectURL(new Blob(chunks,{type:mr.mimeType||'audio/webm'})); if(['speak','rp','stask','pronsh','vx','spk'].includes(ui.view)) render(); };
     mr.start(); REC.on=true; render();
   }catch(e){ REC.on=false; toast('Không mở được micro. Bạn vẫn có thể nói to rồi tự đánh giá.'); render(); }
 }
@@ -3653,7 +3653,7 @@ function mergeState(a,b){
   x.cos={...a.cos,own:[...new Set([...(a.cos.own||[]),...(b.cos.own||[])])],sk:[...new Set([...(a.cos.sk||[]),...(b.cos.sk||[])])]};
   x.games={...a.games,speed:Math.max(a.games.speed||0,b.games.speed||0),match:[a.games.match,b.games.match].filter(Boolean).sort((p,q)=>p-q)[0]||0,ch:[...(a.games.ch||[]),...(b.games.ch||[])].sort((p,q)=>q.day-p.day).slice(0,10)};
   x.start=Math.min(a.start??1e9,b.start??1e9); x.onboarded=true; if(!(a.me&&a.me.who)&&b.me) x.me=b.me;
-  for(const k of ['story','cando','dlg','fn','pron','lread','sounds','wtask','stask','oral','gwrite','lis','shadow','rx','pv','med']) x[k]={...(b[k]||{}),...(a[k]||{})};
+  for(const k of ['story','cando','dlg','fn','pron','lread','sounds','wtask','stask','oral','gwrite','lis','shadow','rx','pv','med','sp']) x[k]={...(b[k]||{}),...(a[k]||{})};
   { const seen=new Set(); x.exam=[...(a.exam||[]),...(b.exam||[])].filter(e=>{ const k=JSON.stringify(e); return seen.has(k)?false:seen.add(k); }).sort((p,q)=>q.day-p.day).slice(0,10); }
   x.app={seen:Math.max((a.app||{}).seen||0,(b.app||{}).seen||0),vh:((a.app||{}).vh||[]).slice()};
   { const sa=(a.money||{}).sup, sb=(b.money||{}).sup; x.money={...(a.money||{h:5,hd:0,ht:0})}; const sp=[sa,sb].filter(Boolean).sort((p,q)=>q.exp-p.exp)[0]; if(sp) x.money.sup=sp; else delete x.money.sup; }
@@ -4026,7 +4026,7 @@ function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); renderChrome();
   if(ui.view==='path'&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,super:viewSuper,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  const v={spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,super:viewSuper,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   document.getElementById('app').innerHTML=html;
@@ -4594,6 +4594,13 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:26,d:'2026-09-29',t:'Nói nhiều hơn, nghe như ngoài đời, thi thử đủ 4 kỹ năng',big:true,items:[
+    'Mới: Nói đáp lời: thấy ý tiếng Việt, tự nói câu tiếng Anh; máy nghe so với câu mẫu.',
+    'Mới: Kiểm tra phát âm 26 cặp âm: app lập hồ sơ các âm bạn đang lẫn và dẫn thẳng tới bài luyện.',
+    'Luyện nghe từ B1: mỗi câu một giọng khác (Anh, Mỹ, Úc, Ấn… tuỳ giọng có trên máy) và nút thêm tiếng ồn nền.',
+    'Mới: Thi thử Viết (thư + bài luận, 60 phút) và Nói (3 phần) định dạng VSTEP; máy chép lời, đếm tốc độ nói, từ nối, dò lỗi; ước tính đủ 4 kỹ năng.',
+    'Dò thêm 12 lỗi viết hay gặp (Do you can…, wait me, If it will…, two book…); bài chuyển ý cũng được dò lỗi.',
+  ]},
   {v:25,d:'2026-09-29',t:'Học đúng khung CEFR: đạt cấp theo 6 nhóm năng lực',big:true,items:[
     'Đạt một cấp CEFR khi ít nhất 5/6 nhóm (từ vựng, ngữ pháp, phát âm, chức năng, kỹ năng, dùng thực tế) đạt ≥ 80%, không chỉ khi học xong từ vựng. Trang Học luôn cho biết cấp đang thiếu nhóm nào.',
     'Mới: Chuyển ý Việt → Anh (24 đề, A1–C2): đọc tin nhắn, thông báo, tin tức tiếng Việt rồi viết lại cho người nước ngoài; máy dò đủ ý chính.',
@@ -4712,7 +4719,7 @@ function northTrend(){ const t=today(), h=st.hist||{}, ds=Object.keys(h).map(Num
 const SCOPE = {
   path:['lõi',['voc']], unit:['lõi',['voc']], learn:['lõi',['voc']], session:['lõi',['voc']], summary:['lõi',['voc']], review:['lõi',['voc']], oral:['lõi',['voc','pro']], words:['lõi',['voc']], word:['lõi',['voc']], read:['lõi',['ski','voc']],
   grammar:['lõi',['gra']], gpoint:['lõi',['gra']], gsess:['lõi',['gra']], gsum:['lõi',['gra']], cefr:['lõi',['voc','gra','pro','fun','ski','com']],
-  med:['phụ',['com','ski']], talk:['phụ',['fun','com']], dlg:['phụ',['fun','com']], fn:['phụ',['fun']], quiz:['phụ',['fun','pro','ski']], rp:['phụ',['fun','com']], sounds:['phụ',['pro']], sound:['phụ',['pro']],
+  med:['phụ',['com','ski']], spk:['phụ',['com','pro']], pdx:['phụ',['pro']], vx:['phụ',['ski']], talk:['phụ',['fun','com']], dlg:['phụ',['fun','com']], fn:['phụ',['fun']], quiz:['phụ',['fun','pro','ski']], rp:['phụ',['fun','com']], sounds:['phụ',['pro']], sound:['phụ',['pro']],
   speak:['phụ',['pro','ski']], write:['phụ',['ski']], wtask:['phụ',['ski']], stask:['phụ',['ski']], lread:['phụ',['ski']],
   games:['động lực','giữ chân'], game:['động lực','giữ chân'], stories:['động lực','giữ chân'], story1:['động lực','giữ chân'], closet:['động lực','giữ chân'],
   super:['hệ thống','bền vững'], class:['hệ thống','giáo viên'],
@@ -5792,6 +5799,271 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
     case 'pvgo': return startPv(d.lv||currentUnit().level);
     case 'qpxgo': return startQpx();
     case 'cdgo': ui.cdLv=d.l; return go('cefr');
+  } });
+
+/* ================== v26: NGHE NHIỀU GIỌNG, NÓI ĐÁP LỜI, KIỂM TRA PHÁT ÂM, THI THỬ VIẾT & NÓI VSTEP ==================
+   Không AI. Giọng các nước = giọng đọc có sẵn trên máy (chỉ dùng giọng máy có). Tiếng ồn nền tự tạo bằng Web Audio (không dùng
+   bản ghi của ai). Nói: máy nghe của trình duyệt (người học tự bật) chỉ cho biết máy nghe ra từ nào, cộng tự đánh giá.
+   Đề thi thử Viết/Nói do app tự soạn theo định dạng VSTEP công khai (bậc 3–5); không dùng đề thi thật. */
+
+// ---------- Nghe nhiều giọng tiếng Anh ----------
+const ACCENTS = [['en-GB','Anh'],['en-US','Mỹ'],['en-AU','Úc'],['en-IN','Ấn Độ'],['en-IE','Ireland'],['en-ZA','Nam Phi'],['en-CA','Canada'],['en-NZ','New Zealand']];
+const vLang = v => String(v.lang||'').replace('_','-').toLowerCase();
+function accAvail(){ const vs=voices(); return ACCENTS.filter(([c])=>vs.some(v=>vLang(v)===c.toLowerCase())); }
+function accNow(){ const s=ui.view==='quiz'&&ui.qz, it=s&&!s.done&&s.q[s.i]; return it&&it.acc||null; }
+const _lisItems1 = lisItems;
+lisItems = function(L){ const its=_lisItems1(L); if(LVS.indexOf(L)<2||st.set.accMix===false) return its;
+  const av=accAvail(); if(av.length<2) return its; const byLines=new Map();
+  its.forEach(it=>{ let a=it.lines&&byLines.get(it.lines); if(!a){ a=av[Math.floor(Math.random()*av.length)]; if(it.lines) byLines.set(it.lines,a); }
+    it.acc=a[0]; it.tag=(it.tag||'')+' · giọng '+a[1]; });
+  return its; };
+
+// ---------- Tiếng ồn nền (tự tạo): luyện nghe khi có tạp âm như quán cà phê, ngoài đường ----------
+const NOISE = {ctx:null,src:null,gain:null,on:false};
+function noiseOn(){ try{ const C=window.AudioContext||window.webkitAudioContext; if(!C) return toast('Trình duyệt này chưa tạo được tiếng ồn nền.');
+  const ctx=NOISE.ctx||(NOISE.ctx=new C()), n=ctx.sampleRate*3, buf=ctx.createBuffer(1,n,ctx.sampleRate), d=buf.getChannelData(0); let last=0;
+  for(let i=0;i<n;i++){ const w=Math.random()*2-1; last=(last+.02*w)/1.02; d[i]=last*3.2+(Math.random()<.0008?(Math.random()*2-1)*.5:0); }
+  const src=ctx.createBufferSource(); src.buffer=buf; src.loop=true; const g=ctx.createGain(); g.gain.value=.16; src.connect(g).connect(ctx.destination); src.start();
+  if(ctx.state==='suspended') ctx.resume(); Object.assign(NOISE,{src,gain:g,on:true}); }catch(e){ NOISE.on=false; } }
+function noiseOff(){ try{ NOISE.src&&NOISE.src.stop(); }catch(e){} NOISE.src=null; NOISE.on=false; }
+
+// ---------- Nói đáp lời: thấy ý tiếng Việt, tự nói câu tiếng Anh, máy nghe so với câu mẫu ----------
+const SP_N = 6;
+function spItems(L){ const maxW=LVS.indexOf(L)<2?9:14, used=new Set(), out=[];
+  for(const {d,l,k} of shuffle(lisLines(L))){ if(out.length>=SP_N) break; const nx=d.lines[k+1]; if(!nx||used.has(d.id)) continue; const n=wcount(nx.t); if(n<3||n>maxW||!nx.vi) continue;
+    used.add(d.id); out.push({place:d.place,reg:d.reg,ctx:{who:spk(d,l.s),t:l.t,v:l.s==='B'?1:0},me:spk(d,nx.s),vi:nx.vi,t:nx.t,v:nx.s==='B'?1:0}); }
+  return out; }
+function startSp(L){ const q=spItems(L); if(!q.length) return toast('Chưa có câu cho cấp này.'); asrReset(); recReset(); go('spk',{spk:{L,q,i:0,show:false,res:[],done:false}}); setTimeout(()=>{ const x=ui.spk&&ui.spk.q[0]; x&&say(x.ctx.t,false,x.ctx.v); },250); }
+function spRate(k){ const S=ui.spk, x=S.q[S.i], key='sp'+S.i, a=ASR.key===key&&ASR.res&&!ASR.res.word?ASR.res.p:null;
+  const p=a!=null?Math.max(a,k==='ok'?.8:0)*(k==='no'?.5:1):k==='ok'?1:k==='slow'?.6:0;
+  S.res.push({t:x.t,p,asr:a!=null}); tally(p>=.8,a!=null?xpFor('sp:'+nt(x.t),10,p>=.8):selfXP('sp:'+nt(x.t),4),a==null);
+  asrReset(); recReset(); S.i++; S.show=false;
+  if(S.i<S.q.length){ render(); window.scrollTo(0,0); const y=S.q[S.i]; return say(y.ctx.t,false,y.ctx.v); }
+  S.done=true; const avg=S.res.reduce((s,r)=>s+r.p,0)/S.res.length; S.avg=avg; const b=st.sp||(st.sp={}), r=b[S.L]||(b[S.L]={best:0,n:0}), first=r.best<.8&&avg>=.8;
+  r.best=Math.max(r.best,avg); r.n++; r.day=today(); bump('talk'); runActive(S.res.map(x=>({correct:x.p>=.6}))); if(first) addXP(20);
+  save(); checkBadges(); questCheck(); render(); window.scrollTo(0,0);
+  if(first) celebrate('🗣️','Nói đáp lời '+S.L+' đạt!','Bạn tự nói được câu đáp từ ý tiếng Việt. +20 XP.'); }
+function viewSpk(){ const S=ui.spk; if(!S) return viewTalk();
+  const top=`<div class="spread"><button class="btn ghost back" data-go="talk">← Kỹ năng</button><span class="num muted">🗣 Nói đáp lời ${S.L} · ${Math.min(S.i+1,S.q.length)}/${S.q.length}</span></div>`;
+  if(S.done){ const best=((st.sp||{})[S.L]||{}).best||0;
+    return `${top}<section class="panel stack" style="text-align:center;justify-items:center">${mascot(S.avg>=.8?'party':'happy',84)}<h1>${pct(S.avg)} câu nói được</h1><p class="muted">Cao nhất: ${pct(best)}. Cần ≥ 80% để đạt.</p>
+      <div class="row"><button class="btn primary" data-act="spgo" data-lv="${S.L}">Lượt khác</button><button class="btn" data-go="talk">Về Kỹ năng</button></div></section>
+      <section class="panel stack"><h3>Các câu mẫu</h3>${S.res.map(r=>`<p><span lang="en">${esc(r.t)}</span> <span class="muted num">${pct(r.p)}${r.asr?' · máy nghe':''}</span> ${HAS_TTS?`<button class="audio" data-say="${esc(r.t)}" aria-label="Nghe">${SPK}</button>`:''}</p>`).join('')}</section>`; }
+  const x=S.q[S.i], key='sp'+S.i;
+  return `${top}<section class="q"><p class="eyebrow">${esc(x.place)} · ${esc(REG_VI[x.reg])}</p>
+    <div class="dlg-ctx"><p class="dl A"><b>${esc(x.ctx.who)}:</b> <span lang="en">${esc(x.ctx.t)}</span> ${HAS_TTS?`<button class="audio" data-say="${esc(x.ctx.t)}" data-v="${x.ctx.v}" aria-label="Nghe">${SPK}</button>`:''}</p></div>
+    <p class="hint">Bạn là <b>${esc(x.me)}</b>. Hãy nói bằng tiếng Anh ý này:</p><p class="prompt" style="font-size:20px">“${esc(x.vi)}”</p>
+    ${HAS_ASR?asrBox(key,x.t,null,'Nói câu của bạn'):`<p class="hint">Nói to câu của bạn${HAS_REC?' (hoặc ghi âm)':''}, rồi xem câu mẫu để tự so.</p>`}
+    ${S.show?`<div class="panel stack"><span class="eyebrow">Câu mẫu</span><p class="prompt" lang="en" style="font-weight:600">${esc(x.t)}</p>${HAS_TTS?`<div class="row"><button class="btn" data-say="${esc(x.t)}" data-v="${x.v}">${SPK} Nghe câu mẫu</button><button class="btn" data-say="${esc(x.t)}" data-v="${x.v}" data-slow="1">🐢 Nghe chậm</button></div>`:''}
+      <p class="hint">Câu khác mẫu mà đúng ý vẫn tốt. Bạn nói được đến đâu?</p>
+      <div class="row"><button class="btn primary" data-act="sprate" data-k="ok">Nói được</button><button class="btn" data-act="sprate" data-k="slow">Gần đúng / chậm</button><button class="btn" data-act="sprate" data-k="no">Chưa nói được</button></div></div>`
+      :`<div class="row"><button class="btn primary" data-act="spshow">Xem câu mẫu</button></div>`}</section>`; }
+
+// ---------- Kiểm tra phát âm: mỗi cặp âm một từ, máy nghe ra đúng từ hay nghe thành từ kia ----------
+function startPdx(){ if(!HAS_ASR) return toast('Trình duyệt này chưa có máy nghe giọng. Hãy dùng Chrome hoặc Edge (bản web của app).');
+  const q=SOUNDS.map(set=>{ const pr=set.pairs[Math.floor(Math.random()*set.pairs.length)], k=Math.random()<.5?0:1; return {id:set.id,a:set.a,b:set.b,title:set.title,w:pr[k*2],ipa:pr[k*2+1],o:pr[(1-k)*2],oipa:pr[(1-k)*2+1],snd:k?set.b:set.a}; });
+  asrReset(); go('pdx',{pdx:{q,i:0,res:[],done:false}}); }
+function pdxNext(skip){ const P=ui.pdx, x=P.q[P.i], r=ASR.key==='pdx'+P.i&&ASR.res; P.res.push({id:x.id,k:skip||!r?'skip':r.k,w:x.w,o:x.o,heard:r&&r.heard||''}); asrReset(); P.i++;
+  if(P.i>=P.q.length){ P.done=true; const g=k=>P.res.filter(z=>z.k===k).map(z=>z.id); (st.me||(st.me={})).pdx={day:today(),bad:g('other'),unc:g('unclear'),ok:g('ok')}; evc('d:pdx'); addXP(selfXP('pdx',15)); save(); }
+  render(); window.scrollTo(0,0); }
+function viewPdx(){ const P=ui.pdx; if(!P) return viewTalk(); const top=`<div class="spread"><button class="btn ghost back" data-go="talk">← Kỹ năng</button><span class="num muted">🎯 Kiểm tra phát âm · ${Math.min(P.i+1,P.q.length)}/${P.q.length}</span></div>`;
+  if(P.done){ const by=k=>P.res.filter(z=>z.k===k), bad=by('other'), unc=by('unclear'), ok=by('ok');
+    const row=z=>{ const s=SND[z.id]; return `<button class="unit morei" data-snd="${z.id}"><span class="no">${ico('ear')}</span><span class="t"><strong>${esc(s.a)} – ${esc(s.b)} · <span lang="en">${esc(s.title)}</span></strong><span class="muted">Bạn nói “<span lang="en">${esc(z.w)}</span>”${z.k==='other'?`, máy nghe thành “<span lang="en">${esc(z.o)}</span>”`:z.heard?`, máy nghe được “<span lang="en">${esc(z.heard)}</span>”`:''} · bấm để luyện</span></span></button>`; };
+    return `${top}<section class="stack"><span class="eyebrow">Hồ sơ phát âm của bạn</span><h1>${ok.length}/${P.res.length} cặp âm máy nghe ra đúng</h1>
+      <p class="muted note">Máy nghe của trình duyệt không phải giáo viên: nó cho biết người nghe có dễ nhầm từ bạn nói không. Hãy luyện trước các cặp máy nghe thành từ kia.</p></section>
+      ${bad.length?`<section class="stack"><h2>🔴 Đang lẫn (${bad.length})</h2><div class="units">${bad.map(row).join('')}</div></section>`:''}
+      ${unc.length?`<section class="stack"><h2>🟡 Chưa rõ (${unc.length})</h2><div class="units">${unc.map(row).join('')}</div></section>`:''}
+      <section class="stack"><h2>🟢 Tốt (${ok.length})</h2><p class="muted" lang="en">${ok.map(z=>esc(z.w)).join(', ')||'—'}</p></section>
+      <div class="row"><button class="btn primary" data-act="pdxgo">Kiểm tra lại</button><button class="btn" data-go="sounds">Tất cả bài phát âm</button></div>`; }
+  const x=P.q[P.i], key='pdx'+P.i, r=ASR.key===key&&ASR.res;
+  return `${top}<section class="q"><p class="eyebrow">${esc(x.a)} – ${esc(x.b)} · cặp “${esc(x.title)}”</p><p class="prompt" lang="en" style="font-size:40px">${esc(x.w)} <span class="muted" style="font-size:20px">${esc(x.ipa)}</span></p>
+    <p class="hint">Nói to từ này. Dễ nhầm với “<span lang="en">${esc(x.o)}</span>” ${esc(x.oipa)}.</p>
+    ${HAS_TTS?`<div class="row"><button class="btn" data-say="${esc(x.w)}">${SPK} Nghe mẫu</button></div>`:''}
+    ${asrBox(key,x.w,x.o,'Nói từ này')}
+    <div class="row"><button class="btn ${r?'primary':''}" data-act="pdxnext" ${r?'':'data-skip="1"'}>${r?'Tiếp':'Bỏ qua'}</button></div></section>`; }
+
+// ---------- Viết: thêm luật dò lỗi chắc chắn sai (đã chạy trên toàn bộ câu mẫu của app: 0 chỗ bắt nhầm) ----------
+GH.push(
+  {re:/\b(?:[Dd]o|[Dd]oes|[Dd]id) (?:you|he|she|we|they|I|it) (?:can|could|must|should|will|would)\b/g, why:'Không dùng do/does/did cùng động từ khuyết thiếu: Can you…? (không “Do you can…?”).'},
+  {re:/\baccording to (?:me|my opinion)\b/gi, why:'Nói ý kiến mình dùng “In my opinion” / “I think”, không dùng “according to me”.'},
+  {re:/\b(?:make|makes|made|making) (?:my |your |his |her |our |their |the )?homework\b/gi, why:'Dùng “do homework”, không dùng “make homework”.'},
+  {re:/\b(?:have|has) (?:\w+ed|been|gone|seen|done|made|had|taken|met|visited|lived|worked|studied)\b(?:(?!\b(?:since|when|after|before|because|who|that|which|until|as)\b)[^.!?;,]){0,30}\bago\b/gi, why:'“ago” đi với quá khứ đơn: I moved here two years ago (không dùng have/has + V3).', pre:true},
+  {re:/\bwait(?:s|ed|ing)? (?:me|him|her|us|them)\b/gi, why:'“wait” cần “for”: wait for me.'},
+  {re:/\barriv(?:e|es|ed|ing) to (?:(?:the|a|my|our|your|his|her|their) )?(?:[A-Z][a-z]+|airport|station|school|office|hotel|city|country|party|meeting|home|work|class)\b/g, why:'Dùng arrive in (thành phố, nước) hoặc arrive at (nhà ga, sân bay…), không dùng “arrive to”.'},
+  {re:/\bemphasi[sz](?:e|es|ed|ing) on\b/gi, why:'“emphasise” không đi với “on”: emphasise the point (hoặc put emphasis on).'},
+  {re:/\bmention(?:s|ed|ing)? about\b/gi, why:'“mention” không đi với “about”: mention the problem.'},
+  {re:/\b(?:I'm|I am|he's|she's|we're|they're|you're) agree\b/gi, why:'“agree” là động từ: I agree, they agree (không có am/is/are).'},
+  {re:/\b(?:said|say|says) (?:me|us)\b|\b(?:said|say|says) (?:him|her) (?:that|to)\b/gi, why:'“say” không đi thẳng với người: say to me / tell me.'},
+  {re:/(?:^|[.!?]\s+)If (?:I|you|he|she|we|they|it) will (?!excuse)\w+/g, why:'Câu điều kiện loại 1: mệnh đề “if” dùng hiện tại đơn: If it rains, … (không “If it will rain”).'},
+  {re:/\b(?:two|three|four|five|six|seven|eight|nine|ten|many|several|few) (?:student|book|friend|day|week|month|year|hour|minute|country|city|problem|question|room|teacher|brother|sister|car|house|thing|person)\b(?![-’']| old\b| a (?:week|day|month|year)\b)/gi, why:'Sau số đếm hoặc many/several/few, danh từ đếm được dùng số nhiều: two books, many friends.'},
+);
+
+// ---------- Thi thử Viết & Nói VSTEP (đề tự soạn theo định dạng công khai) ----------
+const VX_W1 = [
+  {p:'Bạn nhận được email của Anna, bạn người Anh: “I\'m coming to Vietnam in December for two weeks! What will the weather be like? Which places should I visit, and what should I pack?” Viết email trả lời Anna (ít nhất 120 từ).',reg:'i'},
+  {p:'Bạn đặt mua một máy giặt trên mạng. Máy giao đến bị móp và không vắt được. Viết email cho cửa hàng: mô tả vấn đề, những gì bạn đã làm, và yêu cầu cụ thể (ít nhất 120 từ).',reg:'f'},
+  {p:'Anh John, đồng nghiệp ở văn phòng Singapore, mời bạn phát biểu 20 phút ở hội thảo tháng sau. Bạn không thể nhận lời. Viết email từ chối lịch sự, nêu lý do và đề xuất cách giúp khác (ít nhất 120 từ).',reg:'f'},
+  {p:'Bạn thấy quảng cáo một khoá tiếng Anh giao tiếp cuối tuần. Viết email cho trung tâm hỏi về lịch học, học phí, giáo viên và việc học thử (ít nhất 120 từ).',reg:'n'},
+];
+const VX_W2 = [
+  {p:'Some people think university students should have a part-time job, while others believe students should focus only on their studies. Discuss both views and give your own opinion. (ít nhất 250 từ)'},
+  {p:'Many cities are planning to ban motorbikes from their central areas to reduce traffic and pollution. To what extent do you agree or disagree with this policy? (ít nhất 250 từ)'},
+  {p:'Online learning will soon replace traditional classrooms. Do you agree or disagree? Give reasons and examples from your own experience. (ít nhất 250 từ)'},
+  {p:'Tourism brings more problems than benefits to local communities. To what extent do you agree or disagree? (ít nhất 250 từ)'},
+];
+const VX_S = [
+  {p1:[['Your hometown',['Where is your hometown?','What do you like most about it?','Has it changed much in recent years?']],['Free time',['What do you usually do in your free time?','Do you prefer spending free time alone or with friends? Why?','Is there a new hobby you would like to try?']]],
+   p2:{sit:'Your class wants to organise a weekend trip. Three options are suggested: a trip to the beach, a hiking trip in the mountains, or a visit to a museum in the city. Which option do you think is the best? Explain why and why the others are less suitable.',opts:['the beach','hiking in the mountains','a museum in the city']},
+   p3:{topic:'Reading books brings many benefits to young people.',ideas:['knowledge','relaxation','language skills'],fu:['Do young people read less than before? Why?','Should schools require students to read more books?']}},
+  {p1:[['Food',['What is your favourite dish?','Do you often cook at home?','Is street food popular where you live?']],['Transport',['How do you usually travel to work or school?','What are the traffic problems in your city?','Would you like to use public transport more? Why?']]],
+   p2:{sit:'A company wants to help its staff stay healthy. Three ideas are suggested: building a small gym in the office, giving staff free fruit every day, or offering one hour of exercise time each week. Which idea is the best? Explain your choice.',opts:['a gym in the office','free fruit every day','one hour of exercise time a week']},
+   p3:{topic:'Working from home has more advantages than disadvantages.',ideas:['saving time','work-life balance','communication problems'],fu:['What kinds of jobs cannot be done from home?','Will offices disappear in the future?']}},
+  {p1:[['Technology',['How much time do you spend on your phone each day?','What apps do you use most?','Could you live without the internet for a week?']],['Weather',['What is the weather like in your area?','Which season do you like best? Why?','How does the weather affect your mood?']]],
+   p2:{sit:'Your neighbourhood has some money to improve the area. Three ideas are suggested: building a playground for children, planting more trees, or opening a small library. Which idea is the best? Explain why.',opts:['a playground','more trees','a small library']},
+   p3:{topic:'Learning English is necessary for young Vietnamese people.',ideas:['job opportunities','studying abroad','access to information'],fu:['What is the best age to start learning English?','Will translation apps make learning languages unnecessary?']}},
+  {p1:[['Shopping',['Do you prefer shopping online or in shops? Why?','What was the last thing you bought?','Do you think people buy too many things nowadays?']],['Friends',['How often do you meet your friends?','What makes a good friend?','Is it easy to make new friends as an adult?']]],
+   p2:{sit:'A school wants to reduce plastic waste. Three solutions are suggested: banning plastic bottles on campus, giving each student a reusable bottle, or organising monthly clean-up days. Which solution is the most effective? Explain your choice.',opts:['banning plastic bottles','a reusable bottle for every student','monthly clean-up days']},
+   p3:{topic:'Social media does more harm than good.',ideas:['staying in touch','fake news','mental health'],fu:['How can parents protect children on social media?','Should there be an age limit for social media?']}},
+];
+const VX_WRUB = [['Hoàn thành yêu cầu','Trả lời đủ các ý đề hỏi, đúng người đọc và mục đích'],['Tổ chức','Bố cục rõ, chia đoạn, từ nối mạch lạc'],['Từ vựng','Đa dạng, chính xác, hợp văn phong'],['Ngữ pháp','Chính xác, cấu trúc đa dạng']];
+const VX_SRUB = [['Ngữ pháp','Chính xác, có câu phức'],['Từ vựng','Đủ và đa dạng cho chủ đề'],['Phát âm','Rõ âm cuối, trọng âm, ngữ điệu'],['Trôi chảy','Nói liền, ít ngập ngừng'],['Tổ chức ý','Có thứ tự, có ví dụ, có từ nối']];
+const VX_MIN = {w1:20,w2:40,s1:3,s2:4,s3:5}, VX_PREP = {s1:0,s2:60,s3:60}, VX_WMIN = {w1:120,w2:250};
+const vxBand = (sc,n) => { const v=sc.filter(x=>x); return v.length===n?Math.round(v.reduce((a,b)=>a+b,0)/n*2.5*2)/2:null; };   // 1–4 → thang 10, làm tròn 0,5
+function startVx(mode){ recReset(); asrReset(); vxAsrStop(); const pick=a=>Math.floor(Math.random()*a.length);
+  go('vx',{vx:mode==='w'?{mode,w1:pick(VX_W1),w2:pick(VX_W2),step:'intro',text:{w1:'',w2:''},self:{w1:[],w2:[]},end:0}:{mode,set:pick(VX_S),step:'intro',self:{},tr:{},end:0,prep:0}}); }
+function vxStep(step){ const V=ui.vx; if(V.mode==='w'&&/^w/.test(V.step)){ const el=document.getElementById('vxin'); if(el) V.text[V.step]=el.value; }
+  recStop(); vxAsrStop(); V.step=step; const m=VX_MIN[step]; V.prep=VX_PREP[step]?Date.now()+VX_PREP[step]*1000:0; V.end=m?(V.prep||Date.now())+m*60000:0; render(); window.scrollTo(0,0); vxArm(); }
+let _vxT=null;
+function vxArm(){ if(_vxT) return; _vxT=setInterval(()=>{ const V=ui.vx; if(ui.view!=='vx'||!V||!V.end){ clearInterval(_vxT); _vxT=null; return; }
+  const now=Date.now(), el=document.getElementById('vxtimer'), pre=V.prep&&now<V.prep, left=Math.max(0,(pre?V.prep:V.end)-now);
+  if(el) el.textContent=`${pre?'Chuẩn bị ':''}${Math.floor(left/60000)}:${String(Math.floor(left/1000)%60).padStart(2,'0')}`;
+  if(!pre&&V.prep&&!V.prepDone){ V.prepDone=true; toast('Hết giờ chuẩn bị: bắt đầu nói.'); }
+  if(left<=0&&!pre){ V.end=0; toast(V.mode==='w'?'Hết giờ bài này.':'Hết giờ phần này.'); if(V.mode==='w') vxStep(V.step==='w1'?'w2':'wres'); else { recStop(); vxAsrStop(); render(); } } },500); }
+// Máy chép lời khi nói dài (liên tục): chỉ để đếm tốc độ, vốn từ, từ nối và dò lỗi chắc chắn sai; không lưu âm thanh.
+const VXA = {on:false,r:null,base:'',cur:'',t0:0,dur:0,err:'',key:''};
+function vxAsrStart(key){ if(!HAS_ASR) return;
+  if(st.set.asr!==true){ ASR.pending=null; return modal({ic:'🎙',title:'Bật máy nghe giọng?',html:true,sub:'Máy của trình duyệt nghe và chép lại lời bạn nói để đếm tốc độ, vốn từ, từ nối và dò lỗi hay gặp. Đây <b>không phải</b> chấm như giám khảo.<br><br>Trình duyệt <b>có thể gửi âm thanh tới máy chủ của hãng trình duyệt</b> để nhận diện. English Ladder không lưu âm thanh. Tắt được trong Cài đặt.',buttons:[{label:'Đồng ý, bật',act:'asrok',primary:true},{label:'Không',act:'mclose'}]}); }
+  recStop(); asrReset(); vxAsrStop(); let r; try{ r=new SPEECH_REC(); }catch(e){ return toast('Trình duyệt này chưa nhận diện được giọng nói.'); }
+  r.lang='en-US'; r.continuous=true; r.interimResults=false; r.maxAlternatives=1;
+  Object.assign(VXA,{on:true,r,base:'',cur:'',t0:Date.now(),dur:0,err:'',key});
+  r.onresult=e=>{ if(VXA.r!==r) return; let t=''; for(let i=0;i<e.results.length;i++) if(e.results[i].isFinal) t+=e.results[i][0].transcript+' '; VXA.cur=t.trim(); };
+  r.onerror=e=>{ if(VXA.r!==r) return; if(e.error!=='no-speech'&&e.error!=='aborted') VXA.err=ASR_ERR[e.error]||'Máy chưa nhận diện được lần này.'; };
+  r.onend=()=>{ if(VXA.r!==r) return; VXA.base=(VXA.base+' '+VXA.cur).trim(); VXA.cur=''; if(VXA.on&&!VXA.err){ try{ r.start(); return; }catch(x){} } vxAsrDone(); };
+  try{ r.start(); }catch(e){ VXA.on=false; } render(); }
+function vxAsrStop(){ if(!VXA.r) return; const r=VXA.r; VXA.on=false; try{ r.stop(); }catch(e){} }
+function vxAsrDone(){ VXA.on=false; VXA.dur=(Date.now()-VXA.t0)/1000; const V=ui.vx; if(V&&V.tr&&VXA.key){ V.tr[VXA.key]={text:(VXA.base+' '+VXA.cur).trim(),dur:VXA.dur}; } VXA.r=null; if(ui.view==='vx') render(); }
+function vxSpeechStats(tr,L='B2'){ const text=tr.text||'', n=wcount(text), mins=Math.max(tr.dur||0,1)/60, words=nt(text).split(' ').filter(Boolean), low=' '+nt(text)+' ';
+  const links=[...new Set(linksUpTo(L).filter(l=>low.includes(' '+nt(l)+' ')))];
+  return {n,wpm:Math.round(n/mins),types:new Set(words.filter(w=>w.length>2&&!STOPW.has(w))).size,links,hints:grammarHints(text)}; }
+function vxRecRow(key){ const on=REC.on&&ui.vx&&ui.vx.recKey===key, has=REC.url&&ui.vx&&ui.vx.recKey===key;
+  return `<div class="row">${HAS_REC?(on?`<button class="btn" data-act="recstop">■ Dừng ghi âm</button>`:`<button class="btn" data-act="vxrec" data-k="${key}">🎙 Ghi âm</button>`):''}${has&&!on?`<button class="btn" data-act="recplay">▶ Nghe lại</button>`:''}
+    ${HAS_ASR?(VXA.on&&VXA.key===key?`<button class="btn primary" data-act="vxasrstop">■ Dừng chép lời</button>`:`<button class="btn" data-act="vxasr" data-k="${key}">📝 Nói để máy chép lời</button>`):''}</div>
+    ${VXA.on&&VXA.key===key?'<p class="hint" role="status">Đang nghe… nói hết phần của bạn rồi bấm Dừng.</p>':''}${VXA.err&&VXA.key===key?`<p class="hint">${esc(VXA.err)}</p>`:''}`; }
+function vxStatsHtml(tr){ if(!tr||!tr.text) return ''; const s=vxSpeechStats(tr);
+  return `<details class="panel stack" open><summary><b>Máy chép được ${s.n} từ</b> · ${s.wpm} từ/phút · ${s.types} từ khác nhau</summary><p lang="en" class="muted">${esc(tr.text)}</p>
+    <p class="hint">Tốc độ nói tự nhiên khoảng 110–150 từ/phút; dưới 70 thường là ngập ngừng nhiều. Từ nối: ${s.links.length?esc(s.links.join(', ')):'chưa nghe thấy'}.</p>
+    ${s.hints.length?`<div class="stack" style="gap:4px"><b>Lỗi hay gặp máy dò được</b>${s.hints.map(h=>`<p class="gerr"><span lang="en">${esc(h.snip)}</span><span class="hint">${esc(h.why)}</span></p>`).join('')}</div>`:''}
+    <p class="hint">Máy có thể chép sai khi phát âm chưa rõ; lỗi ở đây có khi là lỗi nghe của máy.</p></details>`; }
+const vxRub = (R,part,self) => `<div class="stack" style="gap:6px">${R.map(([t,d],i)=>`<div class="spread" style="gap:6px"><span><b>${t}</b> <span class="hint">${d}</span></span><span class="row" style="gap:4px">${[1,2,3,4].map(v=>`<button class="btn small ${self[i]===v?'primary':''}" data-act="vxself" data-p="${part}" data-i="${i}" data-v="${v}" aria-pressed="${self[i]===v}">${v}</button>`).join('')}</span></div>`).join('')}<p class="hint">1 chưa đạt · 2 gần đạt · 3 đạt · 4 tốt. Hãy chấm khắt khe, so với bài mẫu và tiêu chí.</p></div>`;
+function vxWChecks(k,text){ const n=wcount(text), paras=text.split(/\n\s*\n/).filter(x=>x.trim()).length, low=' '+nt(text)+' ', links=[...new Set(linksUpTo('B2').filter(l=>low.includes(' '+nt(l)+' ')))], hs=grammarHints(text);
+  return {n,ok:n>=VX_WMIN[k],paras,links,hs}; }
+function viewVx(){ const V=ui.vx; if(!V) return viewGames?viewGames():viewTalk();
+  const top=`<div class="spread"><button class="btn ghost back" data-act="vxquit">← Thoát</button>${V.end?`<span class="pill accent num" role="timer">⏱ <span id="vxtimer">…</span></span>`:''}</div>`;
+  if(V.mode==='w'){
+    if(V.step==='intro') return `${top}<section class="stack"><span class="eyebrow">Thi thử · định dạng VSTEP (bậc 3–5)</span><h1>Thi thử Viết</h1>
+      <p class="muted note"><b>Bài 1</b>: viết thư/email ≥ 120 từ (${VX_MIN.w1} phút). <b>Bài 2</b>: viết bài luận ≥ 250 từ (${VX_MIN.w2} phút). Bài 2 được tính gấp đôi. Hết giờ app tự chuyển bài.</p>
+      <p class="hint">Đề do app tự soạn theo định dạng VSTEP công khai. Máy kiểm tra độ dài, đoạn, từ nối và lỗi chắc chắn sai; bạn tự chấm 4 tiêu chí. Kết quả là ước tính.</p></section>
+      <div class="row"><button class="btn primary" data-act="vxstep" data-s="w1">Bắt đầu Bài 1</button></div>`;
+    if(V.step==='w1'||V.step==='w2'){ const t=V.step==='w1'?VX_W1[V.w1]:VX_W2[V.w2];
+      return `${top}<section class="stack"><span class="eyebrow">${V.step==='w1'?'Bài 1 · Thư/email':'Bài 2 · Bài luận'}</span><p style="font-size:17px">${esc(t.p)}</p></section>
+        <textarea id="vxin" class="field" rows="${V.step==='w1'?10:16}" lang="en" spellcheck="false" style="width:100%;font:inherit" aria-label="Bài viết">${esc(V.text[V.step]||'')}</textarea>
+        <p class="hint num"><span id="vxwc">${wcount(V.text[V.step]||'')}</span> từ · cần ≥ ${VX_WMIN[V.step]} · cách đoạn bằng một dòng trống</p>
+        <div class="row"><button class="btn primary" data-act="vxstep" data-s="${V.step==='w1'?'w2':'wres'}">${V.step==='w1'?'Nộp Bài 1, sang Bài 2':'Nộp bài'}</button></div>`; }
+    const part=k=>{ const text=V.text[k]||'', c=vxWChecks(k,text), t=k==='w1'?VX_W1[V.w1]:VX_W2[V.w2];
+      return `<section class="panel stack"><h3>${k==='w1'?'Bài 1 · Thư/email':'Bài 2 · Bài luận'}</h3><p class="hint">${esc(t.p)}</p>
+        <p>${c.ok?'✅':'❌'} ${c.n} từ (cần ≥ ${VX_WMIN[k]})${c.ok?'':' · thiếu độ dài thường bị trừ điểm nặng'} · ${c.paras} đoạn · từ nối: ${c.links.length?esc(c.links.join(', ')):'chưa có'}</p>
+        ${c.hs.length?`<div class="stack" style="gap:4px"><b>Lỗi chắc chắn sai máy dò được</b>${c.hs.map(h=>`<p class="gerr"><span lang="en">${esc(h.snip)}</span><span class="hint">${esc(h.why)}</span></p>`).join('')}</div>`:'<p class="hint">Máy không dò thấy lỗi hay gặp (không có nghĩa là không có lỗi).</p>'}
+        <details><summary>Bài của bạn</summary><p lang="en" style="white-space:pre-wrap">${esc(text)||'—'}</p></details>${vxRub(VX_WRUB,k,V.self[k])}</section>`; };
+    const b1=vxBand(V.self.w1,4), b2=vxBand(V.self.w2,4), cap=(b,k)=>b==null?null:vxWChecks(k,V.text[k]||'').ok?b:Math.min(b,4), f=cap(b1,'w1')!=null&&cap(b2,'w2')!=null?Math.round((cap(b1,'w1')+2*cap(b2,'w2'))/3*2)/2:null;
+    return `${top}<section class="stack"><span class="eyebrow">Kết quả thi thử Viết</span><h1>${f!=null?`Viết ≈ ${String(f).replace('.',',')}/10 · ${exLevel(f)}`:'Tự chấm để xem điểm ước tính'}</h1>
+      <p class="muted note">Điểm = (Bài 1 + 2 × Bài 2) / 3 từ phần tự chấm; bài thiếu độ dài bị giới hạn tối đa 4/10.</p></section>${part('w1')}${part('w2')}
+      <div class="row"><button class="btn primary" data-act="vxsave" ${f==null?'disabled':''}>Lưu kết quả</button><button class="btn" data-act="vxnew" data-m="w">Làm đề khác</button></div>`; }
+  const S=VX_S[V.set];
+  if(V.step==='intro') return `${top}<section class="stack"><span class="eyebrow">Thi thử · định dạng VSTEP (bậc 3–5)</span><h1>Thi thử Nói</h1>
+    <p class="muted note"><b>Phần 1</b> Giao tiếp xã hội (${VX_MIN.s1} phút) · <b>Phần 2</b> Thảo luận giải pháp (1 phút chuẩn bị, ${VX_MIN.s2} phút) · <b>Phần 3</b> Phát triển chủ đề (1 phút chuẩn bị, ${VX_MIN.s3} phút).</p>
+    <p class="hint">Mỗi phần: ghi âm để nghe lại, hoặc nói để máy chép lời (đếm tốc độ, vốn từ, từ nối, lỗi hay gặp). Rồi tự chấm 5 tiêu chí. Kết quả là ước tính.</p></section>
+    <div class="row"><button class="btn primary" data-act="vxstep" data-s="s1">Bắt đầu Phần 1</button></div>`;
+  if(/^s[123]$/.test(V.step)){ const k=V.step, nx={s1:'s2',s2:'s3',s3:'sres'}[k];
+    const body=k==='s1'?S.p1.map(([t,qs])=>`<div class="stack" style="gap:4px"><b lang="en">${esc(t)}</b>${qs.map(q=>`<p lang="en">• ${esc(q)} ${HAS_TTS?`<button class="audio" data-say="${esc(q)}" aria-label="Nghe">${SPK}</button>`:''}</p>`).join('')}</div>`).join('')
+      :k==='s2'?`<p lang="en" style="font-size:17px">${esc(S.p2.sit)}</p><div class="row" style="gap:6px">${S.p2.opts.map(o=>`<span class="pill" lang="en">${esc(o)}</span>`).join('')}</div>`
+      :`<p lang="en" style="font-size:19px;font-weight:700">${esc(S.p3.topic)}</p><div class="row" style="gap:6px">${S.p3.ideas.map(o=>`<span class="pill" lang="en">${esc(o)}</span>`).join('')}<span class="pill">+ ý của bạn</span></div><p class="hint">Câu hỏi thêm:</p>${S.p3.fu.map(q=>`<p lang="en">• ${esc(q)}</p>`).join('')}`;
+    return `${top}<section class="stack"><span class="eyebrow">Phần ${k[1]} · ${k==='s1'?'Giao tiếp xã hội':k==='s2'?'Thảo luận giải pháp':'Phát triển chủ đề'}</span>${body}</section>
+      <section class="panel stack">${vxRecRow(k)}${vxStatsHtml(V.tr[k])}</section>
+      <div class="row"><button class="btn primary" data-act="vxstep" data-s="${nx}">${nx==='sres'?'Xong, xem kết quả':'Sang Phần '+nx[1]}</button></div>`; }
+  const bs=['s1','s2','s3'].map(k=>vxBand(V.self[k]||[],5)), f=bs.every(b=>b!=null)?Math.round(bs.reduce((a,b)=>a+b,0)/3*2)/2:null;
+  return `${top}<section class="stack"><span class="eyebrow">Kết quả thi thử Nói</span><h1>${f!=null?`Nói ≈ ${String(f).replace('.',',')}/10 · ${exLevel(f)}`:'Tự chấm để xem điểm ước tính'}</h1>
+    <p class="muted note">Nghe lại bản ghi âm hoặc đọc lời máy chép, rồi chấm từng phần thật khắt khe.</p></section>
+    ${['s1','s2','s3'].map(k=>`<section class="panel stack"><h3>Phần ${k[1]}</h3>${vxStatsHtml(V.tr[k])}${vxRub(VX_SRUB,k,V.self[k]||[])}</section>`).join('')}
+    <div class="row"><button class="btn primary" data-act="vxsave" ${f==null?'disabled':''}>Lưu kết quả</button><button class="btn" data-act="vxnew" data-m="s">Làm đề khác</button></div>`; }
+function vxSave(){ const V=ui.vx, me=st.me||(st.me={}), h=me.vx||(me.vx=[]);
+  let b; if(V.mode==='w'){ const cap=(x,k)=>vxWChecks(k,V.text[k]||'').ok?x:Math.min(x,4); b=Math.round((cap(vxBand(V.self.w1,4),'w1')+2*cap(vxBand(V.self.w2,4),'w2'))/3*2)/2; }
+  else b=Math.round(['s1','s2','s3'].map(k=>vxBand(V.self[k]||[],5)).reduce((a,x)=>a+x,0)/3*2)/2;
+  h.unshift({day:today(),m:V.mode,b}); me.vx=h.slice(0,10); bump(V.mode==='w'?'read':'talk'); markActive(); addXP(selfXP('vx'+V.mode,30)); evc('vx:'+V.mode); save();
+  const e=(st.exam||[])[0], o=h.find(x=>x.m!==V.mode), all=e&&o&&today()-e.day<=30&&today()-o.day<=30?(e.l+e.r+b+o.b)/4:null;
+  modal({ic:'📝',title:`Đã lưu: ${V.mode==='w'?'Viết':'Nói'} ≈ ${String(b).replace('.',',')}/10`,sub:all!=null?`Ước tính 4 kỹ năng (30 ngày gần nhất): ${all.toFixed(1).replace('.',',')}/10 · ${exLevel(all)}.`:`Để có ước tính đủ 4 kỹ năng, làm thêm: ${[!(e&&today()-e.day<=30)&&'thi thử Nghe + Đọc',!(o&&today()-o.day<=30)&&(V.mode==='w'?'thi thử Nói':'thi thử Viết')].filter(Boolean).join(' và ')}.`}); }
+const vxLast = m => ((st.me||{}).vx||[]).find(x=>x.m===m);
+
+// ---------- Câu “Tôi có thể…”, móc nối, sự kiện ----------
+LVS.forEach(L=>CANDO.push({id:L.toLowerCase()+'-sp',lv:L,grp:'com',vi:'Tự nói câu đáp từ ý tiếng Việt trong hội thoại '+L,en:'Produce spoken replies from an idea',ref:[{t:'sp',v:[L]}]}));
+const _cdActs1 = cdActs;
+cdActs = function(r,L){ if(r.t==='sp') return r.v.map(l=>({done:cdOk(((st.sp||{})[l]||{}).best), at:`data-act="spgo" data-lv="${l}"`, t:'Nói đáp lời '+l})); return _cdActs1(r,L); };
+const _pickVoice0 = pickVoice;
+pickVoice = function(){ const a=accNow(); if(a){ const v=voices().find(v=>vLang(v)===a.toLowerCase()); if(v) return v; } return _pickVoice0(); };
+const _voiceFor0 = voiceFor;
+voiceFor = function(k){ const a=accNow(); if(!a||!k) return _voiceFor0(k); const v=pickVoice(), alt=voices().filter(x=>x!==v&&vLang(x)===a.toLowerCase())[0]; return alt?{v:alt,p:1}:_voiceFor0(k); };
+const _viewExam0 = viewExam;
+viewExam = function(){ const h=_viewExam0(), E=ui.ex; if(!E||!['intro','res'].includes(E.sec)) return h;
+  const w=vxLast('w'), s=vxLast('s');
+  return h+`<section class="panel stack"><h3>Viết và Nói (thi thử riêng)</h3><p class="muted">VSTEP thật có 4 kỹ năng. Làm thêm hai phần này để có ước tính đủ 4 kỹ năng.${w?` Viết lần gần nhất: ${String(w.b).replace('.',',')}.`:''}${s?` Nói lần gần nhất: ${String(s.b).replace('.',',')}.`:''}</p>
+    <div class="row"><button class="btn" data-act="vxnew" data-m="w">📝 Thi thử Viết (60 phút)</button><button class="btn" data-act="vxnew" data-m="s">🎙 Thi thử Nói (12 phút)</button></div></section>`; };
+const _viewMed0 = viewMed;
+viewMed = function(){ const h=_viewMed0(), m=MED[ui.medId], r=(st.med||{})[ui.medId]||{}, text=ui.medText!=null?ui.medText:(r.text||'');
+  if(!m||!ui.medChecked||!text.trim()) return h; const x=hintsHtml(text); return x?h+`<section class="panel stack">${x}</section>`:h; };
+const _viewTalk1 = viewTalk;
+viewTalk = function(){ let h=_viewTalk1(); const L=talkLv(), T=SK_TABS.some(x=>x[0]===ui.talkTab)?ui.talkTab:'hoithoai';
+  const card=(attr,ic,t,sub,pill)=>`<button class="unit morei" ${attr}><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${sub}</span>${pill?`<span class="pill ${pill[0]}" style="justify-self:start">${pill[1]}</span>`:''}</span></button>`;
+  if(T==='noi'){ const r=(st.sp||{})[L], pd=(st.me||{}).pdx, v=vxLast('s');
+    const extra=card(`data-act="spgo" data-lv="${L}"`,'mic','Nói đáp lời',`Thấy ý tiếng Việt, tự nói câu tiếng Anh; ${HAS_ASR?'máy nghe so với câu mẫu':'tự so với câu mẫu'} · ${SP_N} câu`,r?[r.best>=.8?'good':'accent',(r.best>=.8?'Đạt':'Đang luyện')+' · '+pct(r.best)]:null)
+      +(HAS_ASR?card('data-act="pdxgo"','ear','Kiểm tra phát âm (26 cặp âm)','Nói mỗi cặp một từ; app lập hồ sơ các âm bạn đang lẫn',pd?[pd.bad.length?'accent':'good',pd.bad.length?`Đang lẫn ${pd.bad.length} cặp`:'Không lẫn cặp nào']:null):'')
+      +(LVS.indexOf(L)>=2?card('data-act="vxnew" data-m="s"','mic','Thi thử Nói VSTEP','3 phần, tính giờ; ghi âm hoặc máy chép lời; tự chấm 5 tiêu chí',v?['accent','Gần nhất '+String(v.b).replace('.',',')+'/10']:null):'');
+    h=h.replace(/(<section class="stack"><h2>Luyện nói [^<]*<\/h2><div class="units">)/,'$1'+extra); }
+  if(T==='viet'&&LVS.indexOf(L)>=2){ const v=vxLast('w'); h=h.replace(/(<section class="stack"><h2>Viết theo đề [^<]*<\/h2><div class="units">)/,'$1'+card('data-act="vxnew" data-m="w"','pen','Thi thử Viết VSTEP','Thư ≥ 120 từ + bài luận ≥ 250 từ, 60 phút; máy kiểm tra, tự chấm',v?['accent','Gần nhất '+String(v.b).replace('.',',')+'/10']:null)); }
+  if(T==='nghe'&&LVS.indexOf(L)>=2){ const av=accAvail(); h=h.replace(/(<section class="stack"><h2>Luyện nghe [^<]*<\/h2>)/,`$1<p class="hint">🌍 Từ B1, mỗi câu dùng một giọng khác nhau có trên máy bạn${av.length>=2?` (${av.map(a=>a[1]).join(', ')})`:' (máy này mới có một giọng; cài thêm giọng tiếng Anh trong cài đặt điện thoại để nghe nhiều giọng hơn)'}. Trong bài nghe có nút thêm tiếng ồn nền để luyện như ngoài đời.</p>`); }
+  return h; };
+const _render1 = render;
+render = function(){ _render1(); try{
+  if(ui.view!=='quiz'&&NOISE.on) noiseOff();
+  const s=ui.view==='quiz'&&ui.qz; if(s&&s.kind==='lis'&&!s.done){ const it=s.q[s.i], a0=document.querySelector('#app section.q [data-act="qzsayall"], #app section.q [data-say]'), q=a0&&a0.closest('.row');
+    if(q&&(it.say||it.sayAll)&&LVS.indexOf(s.ref)>=1&&!document.querySelector('[data-act="noise"]')) q.insertAdjacentHTML('beforeend',`<button class="btn" data-act="noise" aria-pressed="${NOISE.on}">${NOISE.on?'🔇 Tắt tiếng ồn':'🔊 Thêm tiếng ồn nền'}</button>`); }
+  if(ui.view==='vx'){ vxArm(); const el=document.getElementById('vxin'); if(el&&!el._wc){ el._wc=1; el.addEventListener('input',()=>{ const c=document.getElementById('vxwc'); if(c) c.textContent=wcount(el.value); ui.vx.text[ui.vx.step]=el.value; }); } }
+} catch(e){} };
+DETAIL_SAFE_VIEW.add('spk'); DETAIL_SAFE_VIEW.add('pdx'); DETAIL_SAFE_VIEW.add('vx');
+document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('button'); if(!t) return; const d=t.dataset;
+  switch(d.act){
+    case 'spgo': return startSp(d.lv||talkLv());
+    case 'spshow': ui.spk.show=true; return render();
+    case 'sprate': return spRate(d.k);
+    case 'pdxgo': return startPdx();
+    case 'pdxnext': return pdxNext(d.skip==='1');
+    case 'noise': if(NOISE.on) noiseOff(); else noiseOn(); return render();
+    case 'vxnew': return startVx(d.m);
+    case 'vxstep': return vxStep(d.s);
+    case 'vxquit': recStop(); vxAsrStop(); return go('games');
+    case 'vxself': { const V=ui.vx, p=d.p; (V.self[p]||(V.self[p]=[]))[+d.i]=+d.v; return render(); }
+    case 'vxsave': return vxSave();
+    case 'vxrec': ui.vx.recKey=d.k; vxAsrStop(); return recStart();
+    case 'vxasr': return vxAsrStart(d.k);
+    case 'vxasrstop': return vxAsrStop();
   } });
 
 const _gap=st.onboarded?daysAway():0;
