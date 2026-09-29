@@ -6107,8 +6107,8 @@ function capInfo(){ if(loadHigh()&&!newCapBase()){ const L=loadToday();
 // ---------- Nút chính cân bằng: ngữ pháp và kỹ năng không được tụt quá xa từ vựng của cấp đang học ----------
 const BAL_G = .1, BAL_S = .25;
 const GRP_ACT = {pro:'Phát âm',fun:'Chức năng giao tiếp',ski:'Kỹ năng',com:'Dùng trong thực tế'};
-function balanceStep(force=false){ const cur=currentUnit(), L=cur.level, lu=UNITS.filter(u=>u.level===L), vp=lu.length?lu.filter(u=>U(u.id).passed).length/lu.length:0;
-  const got=cefrGot(), SL=LVS.slice(LVS.indexOf(L)).find(x=>!got.includes(x))||L;
+function balanceStep(force=false,SLx=null){ const cur=currentUnit(), L=cur.level, lu=UNITS.filter(u=>u.level===L), vp=lu.length?lu.filter(u=>U(u.id).passed).length/lu.length:0;
+  const got=cefrGot(), SL=SLx||LVS.slice(LVS.indexOf(L)).find(x=>!got.includes(x))||L;
   const gs=GPOINTS.filter(p=>p.level===L), gpp=gs.length?gs.filter(p=>G(p.id).passed).length/gs.length:1, ng=GPOINTS.find(p=>gUnlocked(p)&&!G(p.id).passed);
   const g = ng&&LVS.indexOf(ng.level)<=LVS.indexOf(SL)&&(force||LVS.indexOf(ng.level)<LVS.indexOf(L)||gpp<vp-BAL_G) ? {kind:'g',at:`data-gp="${ng.id}"`,t:`Ngữ pháp: ${gname(ng)} · ${ng.vi}`,why:(LVS.indexOf(ng.level)<LVS.indexOf(L)||gpp<vp-BAL_G)?`Ngữ pháp ${ng.level} đang chậm hơn từ vựng (${pct(gpp)} so với ${pct(vp)}). Học bài này để cân bằng.`:`Bài ngữ pháp tiếp theo của bạn: ngữ pháp và kỹ năng cùng từ vựng mới làm nên một cấp CEFR.`} : null;
   let s=null;
@@ -6120,10 +6120,19 @@ function balanceStep(force=false){ const cur=currentUnit(), L=cur.level, lu=UNIT
   return g||s; }
 const _mainAction0 = mainAction;
 mainAction = function(){ loadToday(); const m=_mainAction0(); if(/data-act="(resume|review)"/.test(m.btn)||/quay lại/.test(m.h)) return m;
-  const blocked=/data-act="quick"/.test(m.btn), b=balanceStep(blocked);
+  const blocked=/data-act="quick"/.test(m.btn); let b=balanceStep(blocked);
+  // Cấp đang nhắm đã hết việc làm được mà từ mới đang tạm dừng: đi trước sang kỹ năng, ngữ pháp của cấp sau (không luyện lặp vô ích).
+  if(!b&&blocked){ const got=cefrGot(), L=currentUnit().level, SL=LVS.slice(LVS.indexOf(L)).find(x=>!got.includes(x))||L; for(const X of LVS.slice(LVS.indexOf(SL)+1)){ b=balanceStep(true,X); if(b) break; } }
   if(b) return {h:b.t,p:esc(b.why)+(blocked&&loadHigh()?` ${esc(capInfo().title)}.`:''),btn:`<button class="btn primary big" ${b.at} data-bal="${b.kind}">${b.kind==='g'?'Học ngữ pháp':'Làm bài này'}</button>`};
   if(blocked&&loadHigh()) return {h:capInfo().title,p:esc(capInfo().sub),btn:`<button class="btn primary big" data-act="quick">⚡ Luyện 5 phút</button>`};
   return m; };
+let _cdE=0; const _cdMemo=new Map();
+const _cdProg0 = cdProg;
+cdProg = function(c){ const m=_cdMemo.get(c.id); if(m&&m.e===_cdE) return m.v; const v=_cdProg0(c); _cdMemo.set(c.id,{e:_cdE,v}); return v; };
+const _save27 = save;
+save = function(){ _cdE++; return _save27.apply(this,arguments); };
+const _render27 = render;
+render = function(){ _cdE++; return _render27.apply(this,arguments); };
 const _nextLine0 = nextLine;
 nextLine = function(count=true){ const n=nextCando(); if(n&&n.wait) return `<p class="muted">⏳ Các việc còn lại của “${esc(cdSay(n.c))}” đang chờ tới lượt ôn hoặc chờ mở khoá. Cứ học tiếp theo nút chính; app sẽ gợi ý lại khi làm được.</p>`; return _nextLine0(count); };
 GLOSSARY.hearts=['Tim','Mỗi ngày bạn có '+MONEY.HMAX+' tim cho bài kiểm tra (kiểm tra unit và bài ngữ pháp). Trả lời sai lần đầu một câu trong bài kiểm tra thì mất 1 tim. Học, luyện, ôn tập, đọc, giao tiếp, phát âm không bao giờ tốn tim: khi học bài mới, sai là chuyện bình thường. Hết tim thì luyện lại từ đã học để lấy 1 tim, hoặc chờ sang ngày mới.'];
