@@ -10,8 +10,10 @@ Học tiếng Anh A1 → C2 miễn phí, mỗi lỗi sai được giải thích 
 - Ngữ pháp, chức năng giao tiếp, hội thoại, đọc, viết, phát âm theo khung CEFR, kèm các câu "can-do": biết mình làm được gì ở từng cấp.
 - Đạt cấp CEFR theo 6 nhóm năng lực (từ vựng, ngữ pháp, phát âm, chức năng, kỹ năng, dùng thực tế): ≥ 5/6 nhóm đạt 80% và không nhóm nào dưới 50%.
 - Lộ trình cân bằng: nút chính xen kẽ từ vựng với ngữ pháp và kỹ năng; tự tạm dừng từ mới khi lượng ôn vượt 60% thời gian mỗi ngày (tránh “nợ ôn”); tim chỉ tính trong bài kiểm tra.
-- Chuyển ý Việt → Anh (mediation, CEFR 2020): 24 đề viết lại tin nhắn, thông báo, tin tức cho người nước ngoài; máy dò đủ ý chính.
-- Phản xạ hội thoại có đếm giờ; nối âm, dạng yếu, ngữ điệu, trọng âm câu; cụm động từ và thành ngữ theo cấp.
+- Khởi động Pre-A1 cho người mới tinh: chữ cái, đánh vần, số, giá tiền, giờ, ngày tháng, câu dùng trong lớp.
+- Chuyển ý Việt → Anh (mediation, CEFR 2020): 36 đề viết lại tin nhắn, thông báo, tin tức; giải thích phong tục, khái niệm; tổng hợp nhiều nguồn cho người nước ngoài; máy dò đủ ý chính.
+- Phản xạ hội thoại có đếm giờ; nối âm, dạng yếu, ngữ điệu, trọng âm câu; sổ cụm động từ và thành ngữ theo cấp (hơn 400 cụm).
+- Đọc và nghe dài từ B1 đến C2: bài báo, truyện ngắn, tiểu luận; phỏng vấn, bài giảng, podcast, tranh luận hai giọng.
 - Luyện nghe: chép chính tả cả câu, nghe chọn nghĩa, nghe rồi chọn câu đáp, nghe cả đoạn hai giọng (ý chính, văn phong, chi tiết; chỉnh tốc độ), từ 525 câu thoại.
 - Luyện nói với máy nghe giọng của trình duyệt (tự chọn bật), nói nhại (shadowing) có tô màu từ máy nghe ra.
 - Đóng vai bằng câu của chính mình: máy so các ý chính với câu mẫu (không dùng AI).
