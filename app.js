@@ -906,7 +906,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 17, APP_VERSION = 26;
+const STATE_V = 17, APP_VERSION = 27;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},money:{h:5,hd:0,ht:0},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -4356,7 +4356,8 @@ function learnCheckView(L){ const c=L.chk, w=WORD[c.wid], a=c.picked!=null;
     ${a?`<p class="${c.picked===c.ans?'':'hint'}">${c.picked===c.ans?'✓ Đúng rồi. Nhớ lại ngay sau khi học giúp từ bám lâu hơn đọc lại.':`Đáp án: <b lang="en">${esc(w.word)}</b>. Không sao: câu hỏi nhớ lại lúc mới học giúp bạn biết từ nào cần xem kỹ.`}</p>`:'<p class="hint">Chọn từ tiếng Anh đúng, không cần vội.</p>'}</article>`; }
 function learnCheckAnswer(k){ const L=ui.learn, c=L&&L.chk; if(!c||c.picked!=null) return; c.picked=k; grade(c,k===c.ans); sfx(k===c.ans?'ok':'bad'); render(); }
 const newToday = () => (st.nw&&st.nw.d===today()) ? st.nw.n : 0;
-const newCapHit = () => st.set.newMax>0 && newToday()>=st.set.newMax;
+const newCapBase = () => st.set.newMax>0 && newToday()>=st.set.newMax;
+const newCapHit = () => newCapBase() || loadHigh();   // v27: tạm dừng từ mới khi lượng ôn hôm nay > 60% thời gian người học có
 // Unit vững: đã qua kiểm tra VÀ ≥ 80% số từ đã nhớ đúng ở một lần ôn sau ít nhất một ngày (bậc lịch ôn ≥ 1).
 function unitSolid(u){ return u.words.filter(w=>W(w.id).stage>=1).length >= Math.ceil(.8*u.words.length); }
 function calLine(c){ if(!c) return ''; const [sn,sc]=c.sure, [gn,gc]=c.guess; if(!gn) return '';
@@ -4435,7 +4436,7 @@ const homePanel = () => `<section class="panel stack"><h3>Địa chỉ chính th
    - Super: không giới hạn tim, không quảng cáo, huy hiệu; không mở thêm bài, không đổi điểm. Không server nên mã Super kiểm trên máy (tin nhau). */
 const MONEY = {
   hearts:true, get HMAX(){ return +exp('hmax')||5; }, HREFILL_H:4,   // HMAX theo thử nghiệm 'hmax' (EXPERIMENTS, vai trò 13)
-  heartKinds:['practice','test'],
+  heartKinds:['test'],   // v27: chỉ bài kiểm tra mất tim; học và luyện bài mới thì sai là bình thường
   ads:{provider:''},    // quảng cáo thật: cần tài khoản mạng quảng cáo của chủ app + trang web riêng (docs/BEN-VUNG.md). Trống = quảng cáo nội bộ.
   AD_AFTER:30,          // không hiện quảng cáo trước khi người học trả lời đủ 30 câu (lượt đầu tiên sạch)
   buy:'',               // link mua Super / ủng hộ — chủ app điền (vd. trang thanh toán). Trống = “chưa mở bán”.
@@ -4463,8 +4464,8 @@ const heartRefillIn = () => { const m=MN(); if(!heartsOn()||hearts()>=MONEY.HMAX
 const heartPill = s => heartsOn()&&s&&MONEY.heartKinds.includes(s.kind)&&(ui.view==='session'||ui.view==='gsess') ? `<span class="num hearts" aria-label="Còn ${hearts()} tim">❤️${hearts()}</span>` : '';
 // Chặn lúc bắt đầu bài mới khi hết tim. Trả về true nếu đã chặn (hiện hộp thoại).
 function heartGate(){ if(hearts()>0) return false; evc('hgate'); const mins=Math.max(1,Math.ceil(heartRefillIn()/60e3)), hh=Math.floor(mins/60), mm=mins%60;
-  modal({ic:'💔',title:'Hết tim rồi',sub:`Bạn đã trả lời sai ${MONEY.HMAX} lần trong các bài mới. Luyện lại từ đã học để lấy 1 tim (miễn phí), hoặc chờ ${hh?hh+' giờ':''}${hh&&mm?' ':''}${mm?mm+' phút':''} để có 1 tim, tim cũng đầy lại vào ngày mai. Ôn tập, đọc, giao tiếp không tốn tim.`,
-    buttons:[{label:'💪 Luyện để lấy tim',act:'heal',primary:true},{label:'⭐ Super: không giới hạn tim',act:'gosuper'},{label:'Để sau',act:'mclose'}]});
+  modal({ic:'💔',title:'Hết tim rồi',sub:`Bạn đã trả lời sai ${MONEY.HMAX} lần trong các bài kiểm tra. Luyện lại từ đã học để lấy 1 tim (miễn phí), hoặc chờ ${hh?hh+' giờ':''}${hh&&mm?' ':''}${mm?mm+' phút':''} để có 1 tim, tim cũng đầy lại vào ngày mai. Học, luyện, ôn tập, đọc, giao tiếp không tốn tim.`,
+    buttons:[{label:'💪 Luyện để lấy tim',act:'heal',primary:true},...(MONEY.buy?[{label:'⭐ Super: không giới hạn tim',act:'gosuper'}]:[]),{label:'Để sau',act:'mclose'}]});
   return true; }
 function startHeal(){ if(ui.modal) closeModal();
   const ws=ALL_WORDS.filter(w=>(st.words[w.id]||{}).learned).sort((a,b)=>mastery(a.id)-mastery(b.id)).slice(0,6);
@@ -4594,6 +4595,12 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:27,d:'2026-09-29',t:'Lộ trình cân bằng: đạt cấp CEFR thật sự, không “nợ ôn”',big:true,items:[
+    'Nút chính giờ xen kẽ từ vựng với ngữ pháp và kỹ năng (nghe, nói, phát âm, giao tiếp) khi phần nào đang tụt lại, để bạn đạt cấp CEFR chứ không chỉ thuộc từ.',
+    'Khi lượng ôn hôm nay chiếm quá 60% số phút bạn đặt mỗi ngày, app tạm dừng từ mới và nói rõ lý do, để bài ôn những ngày sau không dồn lại.',
+    '“Còn thiếu gì” chỉ gợi ý việc làm được ngay, không còn gợi ý bài đang khoá.',
+    'Tim chỉ mất trong bài kiểm tra: học và luyện bài mới thì sai là chuyện bình thường.',
+  ]},
   {v:26,d:'2026-09-29',t:'Nói nhiều hơn, nghe như ngoài đời, thi thử đủ 4 kỹ năng',big:true,items:[
     'Mới: Nói đáp lời: thấy ý tiếng Việt, tự nói câu tiếng Anh; máy nghe so với câu mẫu.',
     'Mới: Kiểm tra phát âm 26 cặp âm: app lập hồ sơ các âm bạn đang lẫn và dẫn thẳng tới bài luyện.',
@@ -4602,7 +4609,7 @@ const CHANGELOG = [
     'Dò thêm 12 lỗi viết hay gặp (Do you can…, wait me, If it will…, two book…); bài chuyển ý cũng được dò lỗi.',
   ]},
   {v:25,d:'2026-09-29',t:'Học đúng khung CEFR: đạt cấp theo 6 nhóm năng lực',big:true,items:[
-    'Đạt một cấp CEFR khi ít nhất 5/6 nhóm (từ vựng, ngữ pháp, phát âm, chức năng, kỹ năng, dùng thực tế) đạt ≥ 80%, không chỉ khi học xong từ vựng. Trang Học luôn cho biết cấp đang thiếu nhóm nào.',
+    'Đạt một cấp CEFR khi ít nhất 5/6 nhóm (từ vựng, ngữ pháp, phát âm, chức năng, kỹ năng, dùng thực tế) đạt ≥ 80% và không nhóm nào dưới 50%, không chỉ khi học xong từ vựng. Trang Học luôn cho biết cấp đang thiếu nhóm nào.',
     'Mới: Chuyển ý Việt → Anh (24 đề, A1–C2): đọc tin nhắn, thông báo, tin tức tiếng Việt rồi viết lại cho người nước ngoài; máy dò đủ ý chính.',
     'Mới: Phản xạ hội thoại có đếm giờ, và bài nối âm, dạng yếu, ngữ điệu, trọng âm câu sinh từ câu thoại đúng cấp.',
     'Luyện nghe thêm phần nghe cả đoạn hội thoại hai giọng: ý chính, văn phong, chi tiết; nghe chậm hoặc nhanh như người bản xứ.',
@@ -4832,7 +4839,7 @@ function gNext(){
 function gAct(d){
   const p=d.g?GPT[d.g]:null, L=d.l?GRAMMAR.levels.find(x=>x.id===d.l):null;
   switch(d.act){
-    case 'gpractice': if(heartGate()) return; gLearn(p); return gStart('practice',gPracticeItems(p),p.id);
+    case 'gpractice': gLearn(p); return gStart('practice',gPracticeItems(p),p.id);
     case 'gtest': if(heartGate()) return; gLearn(p); return gStart('test',gTestItems(p),p.id);
     case 'gplace': return gStart('place',gPlaceItems(L),null,L.id);
     case 'glreview': return gStart('lrev',gLevelReviewItems(L),null,L.id);
@@ -4968,7 +4975,7 @@ document.addEventListener('click',e=>{
   if(d.rate){ recReset(); const S=ui.speak; S.rates.push(d.rate); st.speak.push({r:d.rate,w:S.items[S.i].id,day:today()}); U(S.uid).speak++; markActive(); save(); S.i++; S.step=0; return render(); }
   const u = d.u ? UNITS.find(x=>x.id===d.u) : null;
   switch(d.act){
-    case 'learn': if(heartGate()) return; if(!U(u.id).learned&&newCapHit()) return modal({ic:'🧠',title:'Hôm nay bạn đã học đủ từ mới',sub:`Bạn đã học ${newToday()} từ mới hôm nay (giới hạn ${st.set.newMax}, đổi trong Cài đặt). Học dồn nhiều từ mới một ngày thì vài hôm sau bài ôn sẽ dồn lại. Nên luyện cho chắc những từ vừa học.`,buttons:[{label:'⚡ Luyện 5 phút',act:'quick',primary:true},{label:'Vẫn học unit này',act:'learnforce',attr:`data-u="${u.id}"`}]}); return go('learn',{learn:{uid:u.id,i:0}});
+    case 'learn': if(!U(u.id).learned&&newCapHit()) return modal({ic:'🧠',...capInfo(),buttons:[{label:'⚡ Luyện 5 phút',act:'quick',primary:true},{label:'Vẫn học unit này',act:'learnforce',attr:`data-u="${u.id}"`}]}); return go('learn',{learn:{uid:u.id,i:0}});
     case 'heal': return startHeal();
     case 'gosuper': if(ui.modal) closeModal(); evc('superview'); return go('super');
     case 'goclass': return go('class');
@@ -4983,7 +4990,7 @@ document.addEventListener('click',e=>{
     case 'lnext': { const L=ui.learn; if((L.i+1)%LEARN_CHK===0&&!L.chk&&L.i+1<UNITS.find(x=>x.id===L.uid).words.length){ L.chk=learnCheck(L); return render(); } L.chk=null; L.i++; return render(); }
     case 'lprev': ui.learn.chk=null; ui.learn.i--; return render();
     case 'ldone': return learnDone(ui.learn.uid);
-    case 'practice': if(heartGate()) return; return startSession('practice',practiceItems(u.words),u.id);
+    case 'practice': return startSession('practice',practiceItems(u.words),u.id);
     case 'remedy': return startSession('remedy',practiceItems(u.words.filter(w=>mastery(w.id)<.7)),u.id);
     case 'remedy-ids': return startSession('remedy',practiceItems(d.ids.split(',').filter(Boolean).map(id=>WORD[id])),u?u.id:null);
     case 'test': if(heartGate()) return; return startSession('test',unitTestItems(u),u.id);
@@ -5719,12 +5726,14 @@ function qpxResult(s){ const by={}; s.q.forEach((it,i)=>{ const r=s.res[i]; if(!
   else if(hi&&rate(hi)!=null&&rate(hi)>=.8) why=`Ngữ pháp và nghe ở ${hi} đã tốt (${pct(rate(hi))}): sau vài unit đầu, có thể thử thi xếp lớp ${hi}.`;
   return {by,rec,why}; }
 
-/* ---------- v25: Đạt cấp CEFR = ít nhất 5/6 nhóm năng lực đạt ≥ 80% (không chỉ học xong từ vựng) ---------- */
-const CEFR_PASS = 5;
-const cefrGot = () => LVS.filter(L=>cdLevel(L).ok>=CEFR_PASS);
+/* ---------- v25: Đạt cấp CEFR = ít nhất 5/6 nhóm năng lực đạt ≥ 80% (không chỉ học xong từ vựng) ----------
+   v27: và không nhóm nào dưới 50% (mô phỏng cho thấy 5/6 cho phép “đạt B2” khi từ vựng B2 mới 0%). */
+const CEFR_PASS = 5, CEFR_FLOOR = .5;
+const cefrPass = L => { const r=cdLevel(L); return r.ok>=CEFR_PASS&&Math.min(...r.gs)>=CEFR_FLOOR; };
+const cefrGot = () => LVS.filter(cefrPass);
 function cefrCheck(){ const me=st.me||(st.me={}), rec=me.cefr||(me.cefr={}), nw=cefrGot().filter(L=>!rec[L]);
   if(!nw.length) return; nw.forEach(L=>rec[L]=today()); save();
-  const L=nw[nw.length-1]; celebrate('🎓',`Bạn đạt ${L} theo CEFR`,`Ít nhất ${CEFR_PASS}/6 nhóm năng lực (từ vựng, ngữ pháp, phát âm, chức năng, kỹ năng, dùng thực tế) đạt ≥ 80%.`); }
+  const L=nw[nw.length-1]; celebrate('🎓',`Bạn đạt ${L} theo CEFR`,`Ít nhất ${CEFR_PASS}/6 nhóm năng lực đạt ≥ 80% và không nhóm nào dưới 50% (từ vựng, ngữ pháp, phát âm, chức năng, kỹ năng, dùng thực tế) đạt ≥ 80%.`); }
 function cefrOpen(){ const cur=LVS.indexOf(currentUnit().level), got=cefrGot();
   return LVS.find((L,i)=>i>=Math.max(0,cur-1)&&i<=cur&&!got.includes(L))||null; }
 function cefrStrip(){ if(!st.onboarded&&!st.stats.a) return ''; const got=cefrGot(), top=got[got.length-1], L=cefrOpen();
@@ -5789,7 +5798,7 @@ const _render0 = render;
 render = function(){ _render0(); try{ rxArm(); }catch(e){} };
 DETAIL_SAFE_VIEW.add('med');
 GLOSSARY.mediation=['Chuyển ý (mediation)','Từ bản CEFR 2020, “chuyển ý” là một mảng năng lực riêng: đọc hoặc nghe một văn bản rồi truyền lại ý cho người khác bằng ngôn ngữ họ hiểu, đúng mục đích và văn phong. Ví dụ: đọc thông báo tiếng Việt rồi giải thích cho hàng xóm người nước ngoài. App dò ý chính bằng từ khoá (không dùng AI), nên hãy đọc bài mẫu để so cách diễn đạt.'];
-GLOSSARY.cefr[1]+=' Bạn được tính là đạt một cấp khi ít nhất 5/6 nhóm của cấp đó đạt, không chỉ khi học xong từ vựng.';
+GLOSSARY.cefr[1]+=' Bạn được tính là đạt một cấp khi ít nhất 5/6 nhóm của cấp đó đạt và không nhóm nào dưới 50%, không chỉ khi học xong từ vựng.';
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('button'); if(!t) return; const d=t.dataset;
   if(d.med){ ui.medText=null; ui.medChecked=!!((st.med||{})[d.med]||{}).text; return go('med',{medId:d.med}); }
   switch(d.act){
@@ -6065,6 +6074,60 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
     case 'vxasr': return vxAsrStart(d.k);
     case 'vxasrstop': return vxAsrStop();
   } });
+
+/* ================== v27: LỘ TRÌNH CÂN BẰNG (kết quả mô phỏng người học 1 năm) ==================
+   Mô phỏng 365 ngày × 20 phút cho thấy: nút chính chỉ dẫn tới từ vựng → sau 1 năm chưa đạt A1 CEFR; lượng ôn tăng tới mức
+   20 phút không đủ (nợ ôn); “Còn thiếu gì” có lúc gợi ý bài đang khoá. Khối này sửa ba điểm đó (cơ chế tim sửa ở MONEY). */
+
+// Việc bấm làm được ngay: unit đã mở và không phải đang chờ ôn cho “vững”; bài ngữ pháp đã mở; truyện đã mở.
+function actDoable(at){ let m=/data-unit="([^"]+)"/.exec(at);
+  if(m){ const u=UNITS.find(x=>x.id===m[1]); if(!u||!unlocked(u)) return false; const s=U(u.id); return !(s.passed&&!s.skipped&&!unitSolid(u)); }
+  m=/data-gp="([^"]+)"/.exec(at); if(m){ const p=GPOINTS.find(x=>x.id===m[1]); return !!p&&gUnlocked(p); }
+  if(/data-act="stories"/.test(at)) return false;
+  return true; }
+// “Còn thiếu gì”: chỉ gợi ý việc làm được ngay. Câu nào mọi việc còn lại đều đang khoá/chờ ôn thì bỏ qua (ghi lại để báo “đang chờ”).
+nextCando = function(L){ const lv=L||cefrOpen()||currentUnit().level, pri=WHO_GRP[st.me.who]||[], i0=LVS.indexOf(lv); let wait=null;
+  for(const X of LVS.slice(i0)){
+    const cs=CANDO.filter(c=>c.lv===X).map(c=>{ const pr=cdProg(c); if(pr.p>=CD_DONE) return null; const todo=pr.rs.filter(r=>r.p<1).flatMap(r=>r.acts.filter(a=>!a.done));
+      const ok=todo.filter(a=>actDoable(a.at)); if(!ok.length){ wait=wait||{c,p:pr.p,todo:[],wait:true}; return null; } return {c,pr,ok}; }).filter(Boolean);
+    if(!cs.length) continue;
+    cs.sort((a,b)=>(pri.includes(b.c.grp)-pri.includes(a.c.grp))||(b.pr.p-a.pr.p));
+    return {c:cs[0].c,p:cs[0].pr.p,todo:cs[0].ok.slice(0,3)}; }
+  return wait; };
+
+// ---------- Lượng ôn so với thời gian người học có ----------
+const dayMins = () => Math.max(10, +st.me.mins||20);
+function loadToday(){ const me=st.me||(st.me={}), t=today(); if(!me.load||me.load.d!==t) me.load={d:t,due:dueWords().length}; return me.load; }
+const reviewMinOf = n => Math.ceil(n*1.3/4);   // ~1,3 câu mỗi từ, ~4 câu mỗi phút (câu ôn ngắn, ~15 giây)
+function loadHigh(){ const L=loadToday(); return reviewMinOf(L.due) > .6*dayMins(); }
+function capInfo(){ if(loadHigh()&&!newCapBase()){ const L=loadToday();
+    return {title:'Hôm nay tập trung ôn, tạm dừng từ mới',sub:`Hôm nay có ${L.due} từ đến hạn, ôn mất khoảng ${reviewMinOf(L.due)} phút trong ${dayMins()} phút bạn đặt mỗi ngày. Học thêm từ mới lúc này sẽ làm bài ôn những ngày sau dồn lại (“nợ ôn”). Dành thời gian còn lại cho ngữ pháp và kỹ năng; từ mới tự mở lại khi lượng ôn nhẹ bớt. Muốn học nhiều hơn: tăng số phút mỗi ngày trong Cài đặt.`}; }
+  return {title:'Hôm nay bạn đã học đủ từ mới',sub:`Bạn đã học ${newToday()} từ mới hôm nay (giới hạn ${st.set.newMax}, đổi trong Cài đặt). Học dồn nhiều từ mới một ngày thì vài hôm sau bài ôn sẽ dồn lại. Nên luyện cho chắc những từ vừa học.`}; }
+
+// ---------- Nút chính cân bằng: ngữ pháp và kỹ năng không được tụt quá xa từ vựng của cấp đang học ----------
+const BAL_G = .1, BAL_S = .25;
+const GRP_ACT = {pro:'Phát âm',fun:'Chức năng giao tiếp',ski:'Kỹ năng',com:'Dùng trong thực tế'};
+function balanceStep(force=false){ const cur=currentUnit(), L=cur.level, lu=UNITS.filter(u=>u.level===L), vp=lu.length?lu.filter(u=>U(u.id).passed).length/lu.length:0;
+  const got=cefrGot(), SL=LVS.slice(LVS.indexOf(L)).find(x=>!got.includes(x))||L;
+  const gs=GPOINTS.filter(p=>p.level===L), gpp=gs.length?gs.filter(p=>G(p.id).passed).length/gs.length:1, ng=GPOINTS.find(p=>gUnlocked(p)&&!G(p.id).passed);
+  const g = ng&&LVS.indexOf(ng.level)<=LVS.indexOf(SL)&&(force||LVS.indexOf(ng.level)<LVS.indexOf(L)||gpp<vp-BAL_G) ? {kind:'g',at:`data-gp="${ng.id}"`,t:`Ngữ pháp: ${gname(ng)} · ${ng.vi}`,why:(LVS.indexOf(ng.level)<LVS.indexOf(L)||gpp<vp-BAL_G)?`Ngữ pháp ${ng.level} đang chậm hơn từ vựng (${pct(gpp)} so với ${pct(vp)}). Học bài này để cân bằng.`:`Bài ngữ pháp tiếp theo của bạn: ngữ pháp và kỹ năng cùng từ vựng mới làm nên một cấp CEFR.`} : null;
+  let s=null;
+  for(const [grp] of Object.entries(GRP_ACT).map(x=>[x[0],cdGroup(SL,x[0])]).sort((a,b)=>a[1]-b[1])){ const v=cdGroup(SL,grp); if(!force&&v>=Math.min(1,vp)-BAL_S) continue;
+    for(const c of CANDO.filter(c=>c.lv===SL&&c.grp===grp)){ const pr=cdProg(c); if(pr.p>=CD_DONE) continue; const a=pr.rs.filter(r=>r.p<1).flatMap(r=>r.acts.filter(x=>!x.done)).find(x=>actDoable(x.at));
+      if(a){ s={kind:'s',at:a.at,t:`${GRP_ACT[grp]}: ${a.t}`,why:(v<Math.min(1,vp)-BAL_S?`Nhóm “${GRP_ACT[grp]}” của ${SL} mới ${pct(v)} trong khi từ vựng đã ${pct(vp)}. `:`Nhóm “${GRP_ACT[grp]}” của ${SL} đang ${pct(v)}. `)+`Bài này giúp bạn đạt: “${cdSay(c)}”.`}; break; } }
+    if(s) break; }
+  if(g&&s) return (st.me.balLast==='g')?s:g;
+  return g||s; }
+const _mainAction0 = mainAction;
+mainAction = function(){ loadToday(); const m=_mainAction0(); if(/data-act="(resume|review)"/.test(m.btn)||/quay lại/.test(m.h)) return m;
+  const blocked=/data-act="quick"/.test(m.btn), b=balanceStep(blocked);
+  if(b) return {h:b.t,p:esc(b.why)+(blocked&&loadHigh()?` ${esc(capInfo().title)}.`:''),btn:`<button class="btn primary big" ${b.at} data-bal="${b.kind}">${b.kind==='g'?'Học ngữ pháp':'Làm bài này'}</button>`};
+  if(blocked&&loadHigh()) return {h:capInfo().title,p:esc(capInfo().sub),btn:`<button class="btn primary big" data-act="quick">⚡ Luyện 5 phút</button>`};
+  return m; };
+const _nextLine0 = nextLine;
+nextLine = function(count=true){ const n=nextCando(); if(n&&n.wait) return `<p class="muted">⏳ Các việc còn lại của “${esc(cdSay(n.c))}” đang chờ tới lượt ôn hoặc chờ mở khoá. Cứ học tiếp theo nút chính; app sẽ gợi ý lại khi làm được.</p>`; return _nextLine0(count); };
+GLOSSARY.hearts=['Tim','Mỗi ngày bạn có '+MONEY.HMAX+' tim cho bài kiểm tra (kiểm tra unit và bài ngữ pháp). Trả lời sai lần đầu một câu trong bài kiểm tra thì mất 1 tim. Học, luyện, ôn tập, đọc, giao tiếp, phát âm không bao giờ tốn tim: khi học bài mới, sai là chuyện bình thường. Hết tim thì luyện lại từ đã học để lấy 1 tim, hoặc chờ sang ngày mới.'];
+document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('[data-bal]'); if(t){ (st.me||(st.me={})).balLast=t.dataset.bal; save(); } },true);
 
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
