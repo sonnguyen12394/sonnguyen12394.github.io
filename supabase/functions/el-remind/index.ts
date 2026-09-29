@@ -16,11 +16,11 @@ async function config() {
   return cfg;
 }
 
-// Lời nhắc bằng giọng cú Tí (giống app); câu chung đổi theo ngày để đỡ nhàm.
-const LINES = ['Tí nhớ bạn rồi đó! Một bài 5 phút là giữ được lửa 🔥', 'Hôm nay mình leo thêm một nấc nhé? Tí đợi ở nấc tiếp theo 🦉', '5 phút mỗi ngày nhớ lâu hơn cả buổi học dồn đó!'];
+// Lời nhắc bằng giọng Tí (giống app); câu chung đổi theo ngày để đỡ nhàm.
+const LINES = ['Tí nhớ bạn rồi đó! Một bài 5 phút là giữ được lửa 🔥', 'Hôm nay mình leo thêm một nấc nhé? Tí đợi ở nấc tiếp theo 🐶', '5 phút mỗi ngày nhớ lâu hơn cả buổi học dồn đó!'];
 const text = (due: number) => JSON.stringify({
   title: 'English Ladder: Tí đang đợi bạn',
-  body: due > 0 ? `${due} từ đang chờ bạn ôn. Tí giữ chỗ rồi, vào 5 phút nha 🦉` : LINES[Math.floor(Date.now() / 864e5) % 3],
+  body: due > 0 ? `${due} từ đang chờ bạn ôn. Tí giữ chỗ rồi, vào 5 phút nha 🐶` : LINES[Math.floor(Date.now() / 864e5) % 3],
 });
 
 Deno.serve(async (req) => {

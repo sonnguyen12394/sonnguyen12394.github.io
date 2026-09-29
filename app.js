@@ -1607,7 +1607,7 @@ const goldTag = s => !FOCUS()&&s.i===s.gold&&!s.ans ? `<p class="goldtag">✨ <b
 function xpFloat(s){ const a=s.ans; if(!a||!s.last||FOCUS()) return '';
   return `<div class="row" style="gap:10px"><span class="xpf ${a.correct?'':'dim'}" aria-hidden="true">+${s.last} XP${a.correct&&s.goldHit&&s.i===s.gold?' ✨':''}</span>
     ${a.correct&&(s.combo||0)>=3?`<span class="hint">🔥 ${s.combo} câu đúng liên tiếp!</span>`:''}
-    ${!a.correct&&(s.wrongRun||0)>=2?`<span class="owlsay">${owl('cheer',40)}<span>${esc(owlLine('cheer',s.i))}</span></span>`:''}</div>`; }
+    ${!a.correct&&(s.wrongRun||0)>=2?`<span class="tisay">${mascot('cheer',40)}<span>${esc(tiLine('cheer',s.i))}</span></span>`:''}</div>`; }
 function countUp(){ if(typeof document==='undefined'||!document.querySelectorAll) return; const els=document.querySelectorAll('[data-count]'); if(!els.length) return;
   const still=typeof matchMedia!=='undefined'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   els.forEach(el=>{ const n=+el.dataset.count, pre=el.dataset.pre||'', suf=el.dataset.suf||''; if(still||!n) return; const t0=performance.now();
@@ -1619,23 +1619,23 @@ function streakBig(){ const n=ui.streakUp; if(!n) return ''; const t=today(), W=
 function rewardHero(r,o){
   if(FOCUS()) return `<section class="panel stack" aria-label="Phần thưởng lượt này"><p class="num muted">+${r.xp||0} XP${(r.wins||[]).map(c=>` · ${c.ic} ${esc(c.title)}`).join('')}</p></section>`;
   const q=questsToday(), newStar=o.stars!=null&&r.stars0!=null&&o.stars>r.stars0;
-  return `<section class="panel reward stack" aria-label="Phần thưởng lượt này">${owl(o.good?'party':'cheer',96)}
+  return `<section class="panel reward stack" aria-label="Phần thưởng lượt này">${mascot(o.good?'party':'cheer',96)}
       <span class="xpbig" data-count="${r.xp||0}" data-pre="+" data-suf=" XP">+${r.xp||0} XP</span>
       ${o.stars!=null?`<div class="row" style="gap:8px;justify-content:center">${starStr(o.stars)}${newStar?'<span class="pill good">Sao mới!</span>':''}</div>`:''}
       ${streakBig()}
-      <p class="muted" style="font-weight:700">${esc(owlLine(o.good?'party':'cheer',r.res.length))}</p>
+      <p class="muted" style="font-weight:700">${esc(tiLine(o.good?'party':'cheer',r.res.length))}</p>
       <div class="row" style="gap:4px 14px;justify-content:center"><span class="num">⚡ Đúng liền ×${r.combo||0}</span>${r.gold?'<span class="num">✨ Trúng từ vàng</span>':''}</div>
       ${(r.wins||[]).map(c=>`<p><b>${c.ic} ${esc(c.title)}</b>${c.sub?` <span class="muted">${esc(c.sub)}</span>`:''}</p>`).join('')}
       <p class="hint">🎯 Nhiệm vụ hôm nay: ${q.done.length}/${q.list.length}${chestReady()?'':''}</p>${chestReady()?'<button class="btn small" data-act="chest">🎁 Mở rương hôm nay</button>':''}
     </section>`;
 }
-// Linh vật Tí (cú), vẽ bằng SVG, 4 tâm trạng: happy, cheer, sleep, party; đeo phụ kiện trong tủ đồ (st.cos.acc).
-const OWL_LINES={
+// Linh vật Tí (chó cỏ vàng), vẽ bằng SVG, 4 tâm trạng: happy, cheer, sleep, party; đeo phụ kiện trong tủ đồ (st.cos.acc).
+const TI_LINES={
   happy:['Hôm nay mình leo thêm một nấc nhé!','Tí đợi bạn ở nấc tiếp theo nè.','Mỗi ngày một chút, lên C2 lúc nào không hay.','Học đều tay là bí quyết đấy!'],
   cheer:['Sai là bình thường, câu đó sẽ quay lại cuối lượt!','Chậm mà chắc, bạn làm được!','Thở một hơi rồi thử tiếp nào.','Câu sai hôm nay là câu đúng ngày mai.'],
   sleep:['Tí ngủ quên mất… Bạn về rồi à? Học nhẹ 5 phút nhé!','Lâu quá không gặp! Mình ôn lại chút nha.'],
   party:['Tuyệt vời!','Quá đỉnh! Thêm một nấc nữa rồi.','Bạn giỏi lên từng ngày đấy!','Tí tự hào về bạn!']};
-const owlLine = (m,k=0) => { const L=OWL_LINES[m]||OWL_LINES.happy; return L[(today()+k)%L.length]; };
+const tiLine = (m,k=0) => { const L=TI_LINES[m]||TI_LINES.happy; return L[(today()+k)%L.length]; };
 const ACC = {
   scarf:{t:'Khăn quàng',need:1,svg:'<path d="M18 49 q14 8 28 0 v5 q-14 7 -28 0z" fill="#D84A3A"/><path d="M40 52 l3 10 l4-1 l-2-10z" fill="#B83A2C"/>'},
   glasses:{t:'Kính tròn',need:5,svg:'<g fill="none" stroke="#1B2233" stroke-width="2"><circle cx="24" cy="30" r="8"/><circle cx="40" cy="30" r="8"/><path d="M32 30h0"/></g>'},
@@ -1645,37 +1645,43 @@ const ACC = {
   phones:{t:'Tai nghe',chest:1,svg:'<path d="M13 30 q0-22 19-22 q19 0 19 22" fill="none" stroke="#1B2233" stroke-width="3"/><rect x="9" y="27" width="7" height="11" rx="3" fill="#E24B3B"/><rect x="48" y="27" width="7" height="11" rx="3" fill="#E24B3B"/>'},
   star:{t:'Huy hiệu sao',chest:1,svg:'<path d="M32 44 l2 4 4 .5 -3 3 1 4 -4-2 -4 2 1-4 -3-3 4-.5z" fill="#E9B949"/>'},
 };
-function owl(mood='happy',size=64){
-  // Hình vẽ tay bằng SVG (không dùng id/gradient để nhiều cú trên một trang không đụng nhau). Toạ độ mắt (24,30)/(40,30) giữ nguyên để phụ kiện khớp.
+function mascot(mood='happy',size=64){
+  // Tí là chú chó cỏ vàng "bốn mắt" (chấm lông trên mày), một tai dựng một tai cụp, đuôi vẫy. Tự vẽ bằng SVG, không dùng id/gradient
+  // để nhiều hình trên một trang không đụng nhau. Toạ độ mắt (24,30)/(40,30) giữ nguyên để phụ kiện trong tủ đồ khớp.
   const up = mood==='cheer' ? -1.2 : 0;
-  const eye = x => `<g class="eye"><circle cx="${x}" cy="30" r="8" fill="#fff"/><circle cx="${x+.6}" cy="${30.6+up}" r="5" fill="#1B2233"/><circle cx="${x+2.4}" cy="${28.4+up}" r="1.9" fill="#fff"/><circle cx="${x-1.1}" cy="${32.6+up}" r=".9" fill="#fff"/></g>`;
-  const eyes = mood==='sleep' ? '<path d="M18 31 q6 4.5 12 0 M34 31 q6 4.5 12 0" stroke="#1B2233" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
-    : mood==='party' ? '<circle cx="24" cy="30" r="8" fill="#fff"/><circle cx="40" cy="30" r="8" fill="#fff"/><path d="M19 32 q5-7 10 0 M35 32 q5-7 10 0" stroke="#1B2233" stroke-width="2.6" fill="none" stroke-linecap="round"/>'
+  const eye = x => `<g class="eye"><circle cx="${x}" cy="30" r="5.6" fill="#2A1E16"/><circle cx="${x+1.9}" cy="${28+up}" r="2" fill="#fff"/><circle cx="${x-1.5}" cy="${32.2+up}" r=".9" fill="#fff"/></g>`;
+  const eyes = mood==='sleep' ? '<path d="M19 31 q5 4 10 0 M35 31 q5 4 10 0" stroke="#2A1E16" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+    : mood==='party' ? '<path d="M19 32 q5-7 10 0 M35 32 q5-7 10 0" stroke="#2A1E16" stroke-width="2.6" fill="none" stroke-linecap="round"/>'
     : eye(24)+eye(40);
-  const wingDown = (l) => l ? '<path class="wl" d="M12 35 C5 41 6 52 15 57 C16 49 16 42 12 35Z" fill="var(--owl-2)"/>' : '<path class="wr" d="M52 35 C59 41 58 52 49 57 C48 49 48 42 52 35Z" fill="var(--owl-2)"/>';
-  const wingUp = (l) => l ? '<path class="wl" d="M15 43 C5 39 1 28 4 16 C11 20 16 28 19 37Z" fill="var(--owl-2)"/><path d="M6 22 l4 3 M5 27 l5 2" stroke="var(--owl)" stroke-width="1.2" stroke-linecap="round"/>'
-    : '<path class="wr" d="M49 43 C59 39 63 28 60 16 C53 20 48 28 45 37Z" fill="var(--owl-2)"/><path d="M58 22 l-4 3 M59 27 l-5 2" stroke="var(--owl)" stroke-width="1.2" stroke-linecap="round"/>';
-  const wings = mood==='party' ? wingUp(1)+wingUp(0) : mood==='cheer' ? wingDown(1)+wingUp(0) : wingDown(1)+wingDown(0);
-  const beak = mood==='party' ? '<path d="M28.6 35 Q32 33.4 35.4 35 L32 38.6Z" fill="#F5A623"/><path d="M29.6 38.6 Q32 43.4 34.4 38.6Z" fill="#E0663A"/>'
-    : '<path d="M28.6 35 Q32 33.4 35.4 35 L32 41Z" fill="#F5A623"/><path d="M30.3 38 L32 41 L33.7 38Z" fill="#D9861C"/>';
+  const earR = mood==='sleep' ? '<path d="M44 13 C53 12 58 18 56 29 C55 33 50 33 49 29 C48 23 47 18 44 13Z" fill="var(--ti-2)"/>'
+    : '<path class="ear-r" d="M44 12 C54 7 61 13 59 25 C58 29 53 30 51 26 C50 21 47 17 44 12Z" fill="var(--ti-2)"/>';
+  const earL = mood==='sleep' ? '<path d="M20 13 C11 12 6 18 8 29 C9 33 14 33 15 29 C16 23 17 18 20 13Z" fill="var(--ti-2)"/>'
+    : '<path class="ear-l" d="M13 23 L11 3 L28 13Z" fill="var(--ti-2)"/><path d="M15 18.5 L14.2 9 L23.5 14.2Z" fill="#F2A7A0"/>';
+  const mouth = mood==='party' ? '<path d="M27 40.4 q5 5.6 10 0Z" fill="#7A2E2A"/><path d="M29.6 42.4 q2.4 6.6 4.8 0Z" fill="#F06A7A"/>'
+    : mood==='sleep' ? '<path d="M29.5 41.5 q2.5 1.8 5 0" stroke="#2A1E16" stroke-width="1.8" fill="none" stroke-linecap="round"/>'
+    : '<path d="M32 38.6 v2 M27.6 40.6 q4.4 3.6 4.4 0 q0 3.6 4.4 0" stroke="#2A1E16" stroke-width="1.8" fill="none" stroke-linecap="round"/>';
+  const paw = mood==='cheer' ? '<g class="paw"><path d="M46 50 C50 46 53 40 54 35" stroke="var(--ti)" stroke-width="6.4" fill="none" stroke-linecap="round"/><ellipse cx="54.4" cy="33.6" rx="4.2" ry="3.6" fill="var(--ti-belly)"/></g>' : '';
   const acc = st.cos&&ACC[st.cos.acc] ? ACC[st.cos.acc].svg : '';
-  const extra = mood==='party' ? (!/hat|crown/.test(st.cos&&st.cos.acc||'') ? '<path d="M26 13 L32 0 L38 13Z" fill="#E85D9C"/><path d="M28.4 8 L35.6 8 M27.2 11 L36.8 11" stroke="#fff" stroke-width="1.2" opacity=".7"/><circle cx="32" cy=".5" r="2.2" fill="#E9B949"/>' : '')
-      +'<g class="confetti"><rect x="2" y="4" width="3" height="3" rx=".6" fill="#E85D9C"/><rect x="58" y="8" width="3" height="3" rx=".6" fill="#2F64D6" /><circle cx="60" cy="0" r="1.6" fill="#E9B949"/><circle cx="1" cy="12" r="1.4" fill="#23905A"/></g>'
-    : mood==='sleep' ? '<g class="zz" fill="var(--muted)" font-family="sans-serif" font-weight="800"><text x="48" y="14" font-size="9">z</text><text x="54" y="6" font-size="7">z</text></g>' : '';
-  return `<svg class="owl ${mood}" width="${size}" height="${size}" viewBox="-2 -4 68 72" aria-hidden="true">
-    <ellipse cx="32" cy="66" rx="17" ry="2.6" fill="#000" opacity=".1"/>
-    <g class="owl-b">
-    <path d="M14 23 C12 15 13 9 16 5 C19 10 22 14 26 17Z M50 23 C52 15 51 9 48 5 C45 10 42 14 38 17Z" fill="var(--owl-2)"/>
-    <path d="M32 13 C47 13 54 25 54 39 C54 53 44 62 32 62 C20 62 10 53 10 39 C10 25 17 13 32 13Z" fill="var(--owl)"/>
-    <ellipse cx="24" cy="19" rx="8" ry="3.6" fill="#fff" opacity=".13" transform="rotate(-18 24 19)"/>
-    <ellipse cx="32" cy="48" rx="13.5" ry="12.5" fill="var(--owl-belly)"/>
-    <path d="M24 45 q2 2.2 4 0 M30 45 q2 2.2 4 0 M36 45 q2 2.2 4 0 M27 50 q2 2.2 4 0 M33 50 q2 2.2 4 0 M30 55 q2 2.2 4 0" stroke="var(--owl-2)" stroke-width="1.2" fill="none" opacity=".4" stroke-linecap="round"/>
-    <circle cx="24" cy="30" r="10.8" fill="var(--owl-face)"/><circle cx="40" cy="30" r="10.8" fill="var(--owl-face)"/>
-    <path d="M22 19.5 Q32 23 42 19.5 L32 27Z" fill="var(--owl-2)" opacity=".55"/>
-    ${wings}${eyes}
-    <ellipse cx="16.5" cy="39" rx="3.3" ry="2" fill="#F2839A" opacity=".55"/><ellipse cx="47.5" cy="39" rx="3.3" ry="2" fill="#F2839A" opacity=".55"/>
-    ${beak}
-    <path d="M23 60.5 q0 2.6 -1.8 3.4 M25.5 60.8 v3.6 M28 60.5 q0 2.6 1.8 3.4 M36 60.5 q0 2.6 -1.8 3.4 M38.5 60.8 v3.6 M41 60.5 q0 2.6 1.8 3.4" stroke="#F5A623" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  const extra = mood==='party' ? (!/hat|crown/.test(st.cos&&st.cos.acc||'') ? '<path d="M26 11 L32 -2 L38 11Z" fill="#E85D9C"/><path d="M28.4 6 L35.6 6 M27.4 9 L36.6 9" stroke="#fff" stroke-width="1.2" opacity=".7"/><circle cx="32" cy="-1.5" r="2.2" fill="#E9B949"/>' : '')
+      +'<g class="confetti"><rect x="2" y="30" width="3" height="3" rx=".6" fill="#E85D9C"/><rect x="58" y="36" width="3" height="3" rx=".6" fill="#2F64D6"/><circle cx="62" cy="4" r="1.6" fill="#E9B949"/><circle cx="1" cy="0" r="1.4" fill="#23905A"/></g>'
+    : mood==='sleep' ? '<g class="zz" fill="var(--muted)" font-family="sans-serif" font-weight="800"><text x="50" y="8" font-size="9">z</text><text x="56" y="0" font-size="7">z</text></g>' : '';
+  return `<svg class="ti ${mood}" width="${size}" height="${size}" viewBox="-2 -4 68 72" aria-hidden="true">
+    <ellipse cx="32" cy="66" rx="18" ry="2.6" fill="#000" opacity=".1"/>
+    <path class="tail" d="M44 56 C52 56 57 50 56 42" stroke="var(--ti-2)" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <g class="ti-b">
+    <path d="M19 47 C19 41 45 41 45 47 L46.5 60.5 C46.5 64 17.5 64 17.5 60.5Z" fill="var(--ti)"/>
+    <ellipse cx="32" cy="55" rx="8.5" ry="6.5" fill="var(--ti-belly)"/>
+    <ellipse cx="25" cy="62.4" rx="4.8" ry="2.8" fill="var(--ti-belly)"/><ellipse cx="39" cy="62.4" rx="4.8" ry="2.8" fill="var(--ti-belly)"/>
+    ${earL}
+    <ellipse cx="32" cy="29" rx="21" ry="19" fill="var(--ti)"/>
+    <ellipse cx="25" cy="16" rx="7" ry="3" fill="#fff" opacity=".18" transform="rotate(-15 25 16)"/>
+    ${earR}
+    <ellipse cx="32" cy="39.5" rx="11.5" ry="8.2" fill="var(--ti-belly)"/>
+    <ellipse cx="23.4" cy="21.6" rx="2.9" ry="1.7" fill="var(--ti-2)"/><ellipse cx="40.6" cy="21.6" rx="2.9" ry="1.7" fill="var(--ti-2)"/>
+    ${eyes}
+    <ellipse cx="15.5" cy="37" rx="3.3" ry="2" fill="#F2839A" opacity=".55"/><ellipse cx="48.5" cy="37" rx="3.3" ry="2" fill="#F2839A" opacity=".55"/>
+    <path d="M28.4 35 Q32 32.6 35.6 35 Q35.2 38.6 32 39 Q28.8 38.6 28.4 35Z" fill="#2A1E16"/><ellipse cx="30.8" cy="34.8" rx="1.3" ry=".7" fill="#fff" opacity=".6"/>
+    ${mouth}${paw}
     ${acc}</g>${extra}</svg>`;
 }
 // Tủ đồ: phụ kiện (mở theo bậc XP hoặc rơi từ rương), màu giao diện (mở theo bậc), album từ đã thuộc theo cấp độ.
@@ -1694,7 +1700,7 @@ function viewCloset(){
   const album=CONTENT.levels.filter(l=>l.units.length).map(l=>{ const ws=l.units.flatMap(u=>u.words), k=ws.filter(w=>isMastered(w.id)).length;
     return `<div class="dimrow" style="--lv:var(--lv-${l.id.toLowerCase()})"><span><b class="lvtag">${l.id}</b> ${esc(l.vi)}</span>${meter(ws.length?k/ws.length:0,'good')}<span class="v">${k}/${ws.length}</span></div>`; }).join('');
   return `<button class="btn ghost back" data-go="more">← Thêm</button>
-  <section class="panel hero"><div class="hero-in"><div class="owlbox">${owl('party',110)}</div><div class="stack" style="gap:6px"><span class="eyebrow">${esc(compTitle())} · bậc ${L}</span><h1>Tủ đồ của Tí</h1>
+  <section class="panel hero"><div class="hero-in"><div class="tibox">${mascot('party',110)}</div><div class="stack" style="gap:6px"><span class="eyebrow">${esc(compTitle())} · bậc ${L}</span><h1>Tủ đồ của Tí</h1>
     <p class="muted">Mỗi unit “vững” (nhớ đúng ở lần ôn sau) giúp mở phụ kiện và màu giao diện mới. Phụ kiện hiếm chỉ rơi ra từ rương mỗi ngày (xong 3 nhiệm vụ).</p>
     <p class="num">${Object.keys(ACC).filter(hasAcc).length}/${Object.keys(ACC).length} phụ kiện · ${Object.keys(SKINS).filter(hasSkin).length}/${Object.keys(SKINS).length} màu</p></div></div></section>
   <section class="panel stack"><h3>Phụ kiện</h3><div class="goals">${Object.entries(ACC).map(([k,a])=>accBtn(k,a)).join('')}</div></section>
@@ -1735,7 +1741,7 @@ function rung(u,isCur){
     <span class="node">${s.passed?'✓':u.no}</span>
     <span class="t"><strong lang="en">${esc(u.title)}</strong><span class="muted">${esc(u.vi)}${s.learned&&!s.passed?` · thuộc ${pct(m)}`:''}</span>
       ${s.passed?starStr(n):isCur?'<span class="pill accent">Bạn đang ở đây</span>':s.learned?'<span class="pill">Đang học</span>':''}</span>
-    ${isCur?owl('happy',46):''}</button>`;
+    ${isCur?mascot('happy',46):''}</button>`;
 }
 /* ================== GIAO TIẾP: chức năng, hội thoại, đóng vai ==================
    Dữ liệu FUNCTIONS/DIALOGUES (import-cefr.py). Mọi bài luyện chạy qua trình làm bài chung (startQuiz), nên XP, combo,
@@ -1855,7 +1861,7 @@ function rpRate(k){ const R=ui.rp, r=st.dlg[R.id]||={best:0,n:0}; r.rp=k; r.day=
 function viewRP(){
   const R=ui.rp, d=DLG[R.id], other=R.role==='A'?'B':'A';
   const back=`<div class="spread"><button class="btn ghost back" data-dlg="${d.id}">← Hội thoại</button><span class="num muted">🎭 ${esc(spk(d,R.role))} · ${Math.min(R.i+1,d.lines.length)}/${d.lines.length}</span></div>`;
-  if(R.i>=d.lines.length) return `${back}<section class="panel stack" style="text-align:center;justify-items:center">${owl('party',84)}<h1>Xong vai ${esc(spk(d,R.role))}!</h1><p class="muted">Bạn nói có trôi chảy không?</p>
+  if(R.i>=d.lines.length) return `${back}<section class="panel stack" style="text-align:center;justify-items:center">${mascot('party',84)}<h1>Xong vai ${esc(spk(d,R.role))}!</h1><p class="muted">Bạn nói có trôi chảy không?</p>
     <div class="rate"><button class="btn" data-rprate="hard">Còn vấp nhiều</button><button class="btn" data-rprate="ok">Tạm được</button><button class="btn" data-rprate="easy">Trôi chảy</button></div></section>`;
   const past=d.lines.slice(0,R.i).map(l=>dlgLine(d,l)).join(''), l=d.lines[R.i], mine=l.s===R.role;
   const recBtns=!HAS_REC?'':REC.on?'<button class="btn" data-act="recstop">■ Dừng ghi âm</button>':`<button class="btn" data-act="recstart">● Ghi âm</button>${REC.url?'<button class="btn" data-act="recplay">▶ Nghe giọng bạn</button>':''}`;
@@ -2398,7 +2404,7 @@ function todayPanel(){
   const plan=rows.slice(0,4), total=plan.reduce((a,r)=>a+r.min,0), rest=q.list.filter(k=>k!=='goal'&&!merged.includes(k));
   const mood=daysAway()>=3?'sleep':goalCount()>=goal()?'party':'happy';
   return `<section class="panel hero" aria-label="Việc chính hôm nay"><div class="hero-in">
-    <div class="owlbox">${owl(mood,76)}<span class="bubble">${esc(owlLine(mood))}</span></div>
+    <div class="tibox">${mascot(mood,76)}<span class="bubble">${esc(tiLine(mood))}</span></div>
     <div class="stack" style="gap:8px">
     <span class="eyebrow">Hôm nay · ${Math.min(goalCount(),goal())}/${goal()} câu đúng (≈ ${Math.round(goal()/2)} phút)</span>
     <h2>${m.h}</h2><p class="muted">${m.p}</p>
@@ -3171,7 +3177,7 @@ const BADGES = [
 // Gọi khi kết thúc một lượt: báo huy hiệu mới đạt (mỗi huy hiệu báo một lần).
 function checkBadges(){
   const nu=[...Object.entries(ACC).filter(([k,a])=>a.need!=null&&hasAcc(k)&&!st.badges.includes('acc:'+k)).map(([k,a])=>['acc:'+k,a.t]),...Object.entries(SKINS).filter(([k,x])=>x.need&&hasSkin(k)&&!st.badges.includes('sk:'+k)).map(([k,x])=>['sk:'+k,'màu '+x.t])];
-  if(nu.length){ st.badges.push(...nu.map(x=>x[0])); celebrate('🦉','Mở khoá trong Tủ đồ: '+nu.map(x=>x[1]).join(', '),'Nhờ các unit vững của bạn.'); }
+  if(nu.length){ st.badges.push(...nu.map(x=>x[0])); celebrate('🐶','Mở khoá trong Tủ đồ: '+nu.map(x=>x[1]).join(', '),'Nhờ các unit vững của bạn.'); }
   const got=BADGES.filter(b=>!st.badges.includes(b.id)&&b.v()>=b.n); if(!got.length) return;
   st.badges.push(...got.map(b=>b.id)); save(); got.forEach(b=>celebrate(b.ic,'Huy hiệu mới: '+b.t,`Xem tất cả huy hiệu trong tab Tiến độ.`));
 }
@@ -3281,7 +3287,7 @@ function showCel(){
   if(!c){ el.hidden=true; el.innerHTML=''; return; }
   sfx('win');
   el.innerHTML=`<div class="cel-box" role="dialog" aria-modal="true" aria-labelledby="cel-t">${[...Array(18)].map((_,i)=>`<i class="conf" style="--x:${(i*37)%100}%;--d:${(i%6)*.12}s;--c:var(--${['accent','good','warn','bad','mark','chart'][i%6]})"></i>`).join('')}
-    <div class="row" style="justify-content:center;gap:4px">${owl('party',72)}<div class="cel-ic" aria-hidden="true">${c.ic}</div></div><h2 id="cel-t">${esc(c.title)}</h2>${c.sub?`<p class="muted">${esc(c.sub)}</p>`:''}
+    <div class="row" style="justify-content:center;gap:4px">${mascot('party',72)}<div class="cel-ic" aria-hidden="true">${c.ic}</div></div><h2 id="cel-t">${esc(c.title)}</h2>${c.sub?`<p class="muted">${esc(c.sub)}</p>`:''}
     <button class="btn primary" data-act="celok" id="celok">Tiếp tục</button></div>`;
   el.hidden=false; const b=document.getElementById('celok'); b&&b.focus&&b.focus();
 }
@@ -3331,7 +3337,7 @@ function viewProgress(){
   </section>
   <section class="panel stack" aria-label="Phần thưởng"><div class="spread"><h3>Phần thưởng</h3><span class="hint">Đo sự cố gắng, không đo năng lực ${info('xp')}</span></div>
     <div class="spread"><div class="stack" style="gap:4px;flex:1 1 220px"><span class="eyebrow">Bậc ${xl.L} · ${xl.title}</span><div class="xpbar" role="progressbar" aria-valuemin="0" aria-valuemax="${xl.span}" aria-valuenow="${xl.cur}" aria-label="Điểm kinh nghiệm"><i style="width:${Math.round(100*xl.cur/xl.span)}%"></i></div><span class="num muted">${xl.cur}/${xl.span} XP tới bậc ${xl.L+1}</span></div>
-      <div class="row" style="gap:4px 14px"><span class="num muted">🧊 ${fz.n}/${FREEZE_MAX} ngày nghỉ phép ${info('freeze')}</span><button class="btn small" data-go="closet">🦉 Tủ đồ</button></div></div>
+      <div class="row" style="gap:4px 14px"><span class="num muted">🧊 ${fz.n}/${FREEZE_MAX} ngày nghỉ phép ${info('freeze')}</span><button class="btn small" data-go="closet">🐶 Tủ đồ</button></div></div>
     ${weekLine()}
   </section>
   ${recordsPanel()}
@@ -4008,7 +4014,7 @@ function lessonChrome(){ const v=ui.view, app=document.getElementById('app'); if
   const row=nb.closest('.row')||nb, box=nb.closest('section')||app, fb=box.querySelector('.fb');
   const kind=fb&&fb.classList.contains('bad')?'bad':fb&&fb.classList.contains('good')?'good':'neutral';
   const sh=document.createElement('div'); sh.className='sheet '+kind; sh.setAttribute('role','region'); sh.setAttribute('aria-label','Kết quả câu này');
-  if(kind!=='neutral'&&!FOCUS()) sh.insertAdjacentHTML('afterbegin',`<div class="sheet-owl">${owl(kind==='good'?'party':'cheer',60)}</div>`);
+  if(kind!=='neutral'&&!FOCUS()) sh.insertAdjacentHTML('afterbegin',`<div class="sheet-ti">${mascot(kind==='good'?'party':'cheer',60)}</div>`);
   if(fb) sh.appendChild(fb); const xp=box.querySelector('.xpf'); if(xp) sh.appendChild(xp); sh.appendChild(row);
   nb.classList.add('big'); app.appendChild(sh); document.body.classList.add('has-sheet'); }
 function render(){
@@ -4302,7 +4308,7 @@ function remindArm(){ clearTimeout(_remT); if(!CAN_NOTIFY||!st.set.notif) return
   const [h,m]=(st.set.remind||'20:00').split(':').map(Number), at=new Date(); at.setHours(h,m,0,0); const ms=at-Date.now();
   if(ms<0||ms>864e5) return; _remT=setTimeout(async()=>{ if(studiedToday()||Notification.permission!=='granted') return;
     try{ const reg=await navigator.serviceWorker.ready; await reg.showNotification('English Ladder: Tí đang đợi bạn',{body:remindBody(),icon:'icons/icon-192.png',tag:'el-remind'}); }catch(e){} },ms); }
-const remindBody = () => { const n=dueWords().length; return n?`${n} từ đang chờ bạn ôn. Tí giữ chỗ rồi, vào 5 phút nha 🦉`:['Tí nhớ bạn rồi đó! Một bài 5 phút là giữ được lửa 🔥','Hôm nay mình leo thêm một nấc nhé? Tí đợi ở nấc tiếp theo 🦉','5 phút mỗi ngày nhớ lâu hơn cả buổi học dồn đó!'][today()%3]; };
+const remindBody = () => { const n=dueWords().length; return n?`${n} từ đang chờ bạn ôn. Tí giữ chỗ rồi, vào 5 phút nha 🐶`:['Tí nhớ bạn rồi đó! Một bài 5 phút là giữ được lửa 🔥','Hôm nay mình leo thêm một nấc nhé? Tí đợi ở nấc tiếp theo 🐶','5 phút mỗi ngày nhớ lâu hơn cả buổi học dồn đó!'][today()%3]; };
 async function notifOn(){
   if(!CAN_NOTIFY) return; let p='default'; try{ p=await Notification.requestPermission(); }catch(e){}
   if(p!=='granted') return toast('Trình duyệt chưa cho phép thông báo. Bạn vẫn dùng được lời nhắc lịch bên dưới.');
@@ -4586,7 +4592,7 @@ const CHANGELOG = [
   {v:24,d:'2026-09-29',t:'Học vui hơn: toàn màn hình, Tí phản ứng theo từng câu',big:true,items:[
     'Vào bài là toàn màn hình, chỉ còn câu hỏi và thanh tiến độ; nút Tiếp tục luôn ở đáy, ngay dưới ngón cái.',
     'Trả lời xong, bảng kết quả trượt lên: xanh khi đúng, đỏ khi sai kèm đáp án và một dòng lý do; ví dụ và mẹo mở khi cần. Tí nhảy mừng hoặc cổ vũ bạn.',
-    'Tí được vẽ lại: mắt to lấp lánh, má hồng, biết chớp mắt, vỗ cánh khi bạn đúng, vẫy cánh cổ vũ khi bạn sai, ngáy “z z” khi ngủ.',
+    'Gặp Tí mới: chú chó cỏ vàng “bốn mắt”, một tai dựng một tai cụp. Tí chớp mắt, vẫy đuôi; bạn đúng thì vẫy đuôi tít và vểnh tai, bạn sai thì giơ chân cổ vũ.',
     'Xong bài: XP đếm lên, lửa chuỗi ngày to kèm 7 ngày gần nhất; số liệu chi tiết gọn trong một mục.',
     'Chữ tròn dễ đọc (Nunito), nút bấm nổi khối, màu tươi hơn.']},
   {v:23,d:'2026-09-29',t:'Gọn hơn: một nút để học mỗi ngày',big:true,items:[
@@ -5166,7 +5172,7 @@ function shNext(){ const S=ui.sh, x=S.q[S.i], sc=shScore();
 function viewShadow(){
   const S=ui.sh, back=`<div class="spread"><button class="btn ghost back" data-go="talk">← Giao tiếp</button><span class="num muted">🗣 Nói nhại ${S.L} · ${Math.min(S.i+1,S.q.length)}/${S.q.length}</span></div>`;
   if(S.done){ const best=((st.shadow||{})[S.L]||{}).best||0;
-    return `${back}<section class="panel stack" style="text-align:center;justify-items:center">${owl(S.avg>=.8?'party':'happy',84)}<h1>${pct(S.avg)} từ được nghe ra</h1>
+    return `${back}<section class="panel stack" style="text-align:center;justify-items:center">${mascot(S.avg>=.8?'party':'happy',84)}<h1>${pct(S.avg)} từ được nghe ra</h1>
       <p class="muted">Điểm cao nhất ${S.L}: ${pct(best)}. ${S.avg>=.8?'Rất rõ! Thử ẩn chữ để luyện nghe và nhớ câu.':'Nghe chậm từng câu, chú ý âm cuối và trọng âm, rồi làm lượt mới.'}</p></section>
       <section class="panel stack"><h3>Từng câu</h3>${S.res.map(r=>`<p><span lang="en">${esc(r.t)}</span><br><span class="hint">${r.p==null?'Bỏ qua':r.asr?`Máy nghe ra ${pct(r.p)} số từ`:`Tự chấm: ${pct(r.p)}`}</span></p>`).join('')}</section>
       <div class="row endrow"><button class="btn primary" data-act="shnew">Lượt mới</button><button class="btn" data-go="talk">Về Giao tiếp</button></div>`; }
@@ -5239,7 +5245,7 @@ function viewExam(){
   const rdHtml=(d)=>E.rd.map((b,bi)=>`<section class="panel stack"><h3>Bài ${bi+1} · ${b.lv} · <span lang="en">${esc(b.title)}</span></h3>
       ${b.text.map(p=>`<p class="reading" lang="en">${esc(p)}</p>`).join('')}${exQHtml(E,'rd',b,bi,d)}</section>`).join('');
   if(done){ const l=E.sc.lis, r=E.sc.rd;
-    return `${top}<section class="panel stack" style="text-align:center;justify-items:center">${owl(E.avg>=6?'party':'happy',84)}<span class="eyebrow">Kết quả ước tính</span><h1>${exLevel(E.avg)}</h1>
+    return `${top}<section class="panel stack" style="text-align:center;justify-items:center">${mascot(E.avg>=6?'party':'happy',84)}<span class="eyebrow">Kết quả ước tính</span><h1>${exLevel(E.avg)}</h1>
       <p class="muted">Nghe <b>${l.band}</b>/10 (${l.ok}/${l.n}) · Đọc <b>${r.band}</b>/10 (${r.ok}/${r.n}) · Trung bình ${E.avg.toFixed(2).replace('.',',')}</p>
       <p class="hint">Quy ước VSTEP: 4,0–5,5 ≈ B1 · 6,0–8,0 ≈ B2 · 8,5–10 ≈ C1. Chỉ là ước tính từ 2/4 kỹ năng.</p>
       <div class="row"><button class="btn primary" data-act="exnew">Thi đề khác</button><button class="btn" data-go="games">Về Thử thách</button></div></section>
@@ -5258,7 +5264,7 @@ const lgKeyOk = k => /^ELL-[0-9A-HJKMNP-TV-Z]{20}$/.test(k||'');
 function lgGet(){ try{ const x=JSON.parse(localStorage.getItem(LG_LS)||'null'); return x&&lgKeyOk(x.k)?x:null; }catch(e){ return null; } }
 function lgSet(x){ try{ x?localStorage.setItem(LG_LS,JSON.stringify(x)):localStorage.removeItem(LG_LS); }catch(e){} }
 const lgName = s => String(s||'').replace(/[\u0000-\u001f\u007f<>&"'`\\]/g,'').replace(/\s+/g,' ').trim().slice(0,20);
-const lgDefault = () => lgName(st.set.name)||('Cú '+(100+Math.floor(Math.random()*900)));
+const lgDefault = () => lgName(st.set.name)||('Cún '+(100+Math.floor(Math.random()*900)));
 // Tuần theo ngày UTC như today(); máy chủ cũng tính tuần theo UTC (public.el_week).
 const lgWeekStart = () => { const t=today(); return t-((new Date(t*864e5).getUTCDay()+6)%7); };
 function lgWeekXP(){ const s=lgWeekStart(); let n=0; for(const [d,x] of Object.entries(st.xpd||{})) if(+d>=s&&+d<s+7) n+=x; return Math.min(20000,Math.round(n)); }

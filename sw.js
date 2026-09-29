@@ -31,7 +31,7 @@ async function remindCheck() {
   const m = await r.json().catch(() => null); if (!m || !m.on) return;
   const now = new Date(), d = ymd(now), [h, mi] = String(m.at || '20:00').split(':').map(Number);
   if (m.studied === d || m.shown === d || now.getHours() * 60 + now.getMinutes() < h * 60 + mi) return;
-  await self.registration.showNotification('English Ladder: Tí đang đợi bạn', { body: m.due ? `${m.due} từ đang chờ bạn ôn. Tí giữ chỗ rồi, vào 5 phút nha 🦉` : 'Tí nhớ bạn rồi đó! Một bài 5 phút là giữ được lửa 🔥', icon: 'icons/icon-192.png', tag: 'el-remind' });
+  await self.registration.showNotification('English Ladder: Tí đang đợi bạn', { body: m.due ? `${m.due} từ đang chờ bạn ôn. Tí giữ chỗ rồi, vào 5 phút nha 🐶` : 'Tí nhớ bạn rồi đó! Một bài 5 phút là giữ được lửa 🔥', icon: 'icons/icon-192.png', tag: 'el-remind' });
   m.shown = d; await c.put('./__remind', new Response(JSON.stringify(m)));
 }
 // Web Push (v19): máy chủ gửi lời nhắc đã mã hoá; luôn hiện thông báo (trình duyệt yêu cầu userVisibleOnly).
