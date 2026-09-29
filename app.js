@@ -906,7 +906,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 17, APP_VERSION = 23;
+const STATE_V = 17, APP_VERSION = 24;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},money:{h:5,hd:0,ht:0},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -1058,7 +1058,7 @@ const currentUnit = () => (goalUnits()||UNITS).find(u=>unlocked(u)&&!U(u.id).pas
 const LONG_IVL = 21;
 function reviewItems(ws){ return spread(ws.flatMap(w=>{ const d=weakestDims(w.id), a=build(w,d[0]); return (W(w.id).ivl||1)>=LONG_IVL ? [a,Object.assign(build(w,d[1],{test:true}),{noSrs:true})] : [a]; })); }
 function dueWords(){ const t=today(); return ALL_WORDS.filter(w=>{const s=W(w.id);return s.learned&&s.due!=null&&s.due<=t;}); }
-function markActive(){ const t=today(); if(!st.days.includes(t)) st.days.push(t); }
+function markActive(){ const t=today(); if(!st.days.includes(t)){ st.days.push(t); try{ ui.streakUp=streak(); }catch(e){} } }
 function streak(){ const set=new Set([...st.days,...((st.freeze&&st.freeze.used)||[])]); let n=0,t=today(); if(!set.has(t)) t--; while(set.has(t)){n++;t--;} return n; }
 
 // Mastery quyết định "ôn cái gì"; SRS quyết định "khi nào ôn".
@@ -1433,7 +1433,7 @@ function gExplain(ex,given){
 
 /* ================== UI STATE ================== */
 const ui = { view:'path', unitId:null, sess:null, summary:null, learn:null, speak:null, filter:'learned', wb:{q:'',lv:'',st:'',ty:'',n:60}, openLv:{}, allUnits:{} };
-function go(view,extra={}){ if(view!=='game') stopTimer(); if(view!=='exam') exStop(); const nh=extra._nohist; delete extra._nohist; Object.assign(ui,{view},extra); if(HAS_TTS) try{speechSynthesis.cancel();}catch(e){} recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
+function go(view,extra={}){ if(view!=='game') stopTimer(); if(view!=='exam') exStop(); if(!['summary','gsum','quiz','session','gsess'].includes(view)) ui.streakUp=null; const nh=extra._nohist; delete extra._nohist; Object.assign(ui,{view},extra); if(HAS_TTS) try{speechSynthesis.cancel();}catch(e){} recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
 /* ---------- Điều hướng: nút Quay lại của điện thoại/trình duyệt, hộp thoại, lượt dở ----------
    Mỗi lần go() ghi một mục lịch sử (history.pushState) nên nút Back về đúng màn trước, không thoát app.
    Màn “tạm” (đang làm lượt, kết quả, học thẻ…) không dựng lại được khi quay lại thì về màn cha gần nhất. */
@@ -1613,20 +1613,21 @@ function countUp(){ if(typeof document==='undefined'||!document.querySelectorAll
   els.forEach(el=>{ const n=+el.dataset.count, pre=el.dataset.pre||'', suf=el.dataset.suf||''; if(still||!n) return; const t0=performance.now();
     const f=t=>{ const k=Math.min(1,(t-t0)/800); el.textContent=pre+Math.round(n*(1-Math.pow(1-k,3)))+suf; if(k<1) requestAnimationFrame(f); }; el.textContent=pre+'0'+suf; requestAnimationFrame(f); }); }
 // Màn thưởng đầu trang kết quả: XP vừa nhận (đếm tăng), sao, combo cao nhất, từ vàng, nhiệm vụ vừa tiến, gợi ý thách đấu.
+function streakBig(){ const n=ui.streakUp; if(!n) return ''; const t=today(), W=['CN','T2','T3','T4','T5','T6','T7'];
+  return `<div class="streakbig" role="status"><span class="flame">${ico('flame')}</span><b class="num">${n}</b><span>ngày liên tiếp!</span>
+    <div class="week" aria-label="7 ngày gần nhất">${[6,5,4,3,2,1,0].map(k=>{ const d=t-k; return `<i class="${st.days.includes(d)?'on':''}">${W[new Date(d*864e5).getUTCDay()]}</i>`; }).join('')}</div></div>`; }
 function rewardHero(r,o){
   if(FOCUS()) return `<section class="panel stack" aria-label="Phần thưởng lượt này"><p class="num muted">+${r.xp||0} XP${(r.wins||[]).map(c=>` · ${c.ic} ${esc(c.title)}`).join('')}</p></section>`;
   const q=questsToday(), newStar=o.stars!=null&&r.stars0!=null&&o.stars>r.stars0;
-  return `<section class="panel reward" aria-label="Phần thưởng lượt này">${owl(o.good?'party':'cheer',84)}
-    <div class="stack" style="gap:6px">
+  return `<section class="panel reward stack" aria-label="Phần thưởng lượt này">${owl(o.good?'party':'cheer',96)}
       <span class="xpbig" data-count="${r.xp||0}" data-pre="+" data-suf=" XP">+${r.xp||0} XP</span>
-      ${o.stars!=null?`<div class="row" style="gap:8px">${starStr(o.stars)}${newStar?'<span class="pill good">Sao mới!</span>':o.stars<3&&o.stars>0?'<span class="hint">Đúng hết để lấy 3 sao</span>':''}</div>`:''}
-      <div class="row" style="gap:4px 14px"><span class="num">🔥 Combo cao nhất ×${r.combo||0}</span>${r.gold?'<span class="num">✨ Trúng từ vàng</span>':''}<span class="num muted">Kỷ lục ×${st.rec.combo||0}</span></div>
+      ${o.stars!=null?`<div class="row" style="gap:8px;justify-content:center">${starStr(o.stars)}${newStar?'<span class="pill good">Sao mới!</span>':''}</div>`:''}
+      ${streakBig()}
+      <p class="muted" style="font-weight:700">${esc(owlLine(o.good?'party':'cheer',r.res.length))}</p>
+      <div class="row" style="gap:4px 14px;justify-content:center"><span class="num">⚡ Đúng liền ×${r.combo||0}</span>${r.gold?'<span class="num">✨ Trúng từ vàng</span>':''}</div>
       ${(r.wins||[]).map(c=>`<p><b>${c.ic} ${esc(c.title)}</b>${c.sub?` <span class="muted">${esc(c.sub)}</span>`:''}</p>`).join('')}
-      <p class="muted">${esc(owlLine(o.good?'party':'cheer',r.res.length))}</p>
-      <div class="stack" style="gap:4px">${q.list.map(k=>{ const Q=QUESTS[k], v=Math.min(Q.v(),Q.n()), d=q.done.includes(k); return `<span class="hint">${d?'✅':'◻️'} ${Q.t()} <span class="num">${v}/${Q.n()}</span></span>`; }).join('')}
-        ${chestReady()?'<button class="btn small" data-act="chest">🎁 Mở rương hôm nay</button>':''}</div>
-      <div class="row"><button class="btn small ghost" data-go="games">🎯 Thách bạn bè vượt điểm này</button></div>
-    </div></section>`;
+      <p class="hint">🎯 Nhiệm vụ hôm nay: ${q.done.length}/${q.list.length}${chestReady()?'':''}</p>${chestReady()?'<button class="btn small" data-act="chest">🎁 Mở rương hôm nay</button>':''}
+    </section>`;
 }
 // Linh vật Tí (cú), vẽ bằng SVG, 4 tâm trạng: happy, cheer, sleep, party; đeo phụ kiện trong tủ đồ (st.cos.acc).
 const OWL_LINES={
@@ -1772,7 +1773,7 @@ function viewQuiz(){
   if(it.t==='multi') body=`<div class="row" style="gap:6px">${it.words.map((w,i)=>{ const on=s.sel.includes(i); let c=on?'on':''; if(a) c=it.ans.includes(i)?(on?'right':'miss'):on?'wrong':'';
       return `<button class="wbtn ${c}" data-qsel="${i}" ${a?'disabled':''} lang="en" aria-pressed="${on}">${esc(w)}</button>`; }).join('')}</div>${a?'':'<div class="row"><button class="btn primary" data-act="qzcheck">Kiểm tra</button></div>'}`;
   if(it.t==='typed') body=a?`<p class="prompt" lang="en" style="font-weight:400">${esc(a.text||'—')}</p>`:`<form data-form="qz" class="row" style="flex-wrap:nowrap"><input id="qzin" class="field" style="flex:1" autocomplete="off" autocapitalize="off" spellcheck="false" lang="en" aria-label="Câu trả lời"><button class="btn primary">Kiểm tra</button></form>${it.hint?`<p class="hint">${esc(it.hint)}</p>`:''}`;
-  const fb=!a?'':`<div class="fb ${a.correct?'good':'bad'}" role="status"><strong>${a.correct?'Chính xác':'Chưa đúng'}</strong>
+  const fb=!a?'':`<div class="fb ${a.correct?'good':'bad'}" role="status"><strong>${a.correct?YAY[s.i%YAY.length]:'Chưa đúng'}</strong>
       ${a.correct&&it.t==='mc'?'':`<span>Đáp án: <b lang="en">${esc(qzRight(it))}</b></span>`}
       ${a.diff?`<p class="why">${esc(a.diff)}</p>`:''}
       ${it.t==='mc'&&!a.correct&&it.why&&it.why[a.picked]?`<p class="why"><b>Vì sao sai:</b> ${esc(it.why[a.picked])}</p>`:''}
@@ -1785,7 +1786,7 @@ function viewQuiz(){
     ${it.sayAll&&HAS_TTS?`<div class="row"><button class="btn" data-act="qzsayall">🎧 Nghe cả hội thoại</button></div>`:''}
     ${it.sayAll&&(a||!HAS_TTS)&&m.lines?`<details class="panel" ${HAS_TTS?'':'open'}><summary>Lời thoại</summary>${m.lines.map(l=>`<p lang="en"><b>${esc(l.who)}:</b> ${esc(l.t)}</p>`).join('')}</details>`:''}
     ${it.say&&HAS_TTS?`<div class="row"><button class="btn" data-say="${esc(it.say)}" data-v="${it.v||0}">${SPK} Nghe</button><button class="btn" data-say="${esc(it.say)}" data-slow="1" data-v="${it.v||0}">🐢 Nghe chậm</button></div>`:''}
-    ${body}${fb}</section><p class="hint">Phím tắt: 1–4 để chọn, Enter để tiếp tục.</p>`;
+    ${body}${fb}</section><p class="hint kbd-hint">Phím tắt: 1–4 để chọn, Enter để tiếp tục.</p>`;
 }
 
 /* ---------- Hội thoại ---------- */
@@ -2564,7 +2565,7 @@ function viewSession(){
   let fb='';
   if(a){
     if(!reveal) fb=`<div class="fb neutral" role="status"><span>Đã ghi nhận. Đáp án và câu sai hiện ở cuối bài.</span></div>`;
-    else if(a.correct) fb=`<div class="fb good" role="status"><strong>Chính xác</strong>${ex.memGap>=3&&!ex.guess?`<span>🧠 Bạn vẫn nhớ sau <b>${ex.memGap} ngày</b>: đó là bằng chứng nhớ lâu, lần ôn sau sẽ giãn xa hơn.</span>`:''}${a.typo?`<span>Chú ý chính tả: bạn gõ “<s lang="en">${esc(a.text)}</s>”, viết đúng là “<b lang="en">${esc(rightAnswer(ex))}</b>”. Lần này vẫn tính đúng.</span>`:''}${a.variant?`<span class="hint">Bạn viết “<span lang="en">${esc(a.text)}</span>”, app dùng “<span lang="en">${esc(ex.ans)}</span>”: hai cách viết Anh – Mỹ đều đúng.</span>`:''}<span lang="en">${highlight(w.ex,w)}</span><span class="hint">${esc(w.exVi||'')}</span>${ex.type==='col'?w.col.bad.map(b=>`<span class="hint">Không nói <s lang="en">${esc(b)}</s>: ${esc(explainWrong(ex,w,b))}</span>`).join(''):''}</div>`;
+    else if(a.correct) fb=`<div class="fb good" role="status"><strong>${YAY[s.i%YAY.length]}</strong>${ex.memGap>=3&&!ex.guess?`<span>🧠 Bạn vẫn nhớ sau <b>${ex.memGap} ngày</b>: đó là bằng chứng nhớ lâu, lần ôn sau sẽ giãn xa hơn.</span>`:''}${a.typo?`<span>Chú ý chính tả: bạn gõ “<s lang="en">${esc(a.text)}</s>”, viết đúng là “<b lang="en">${esc(rightAnswer(ex))}</b>”. Lần này vẫn tính đúng.</span>`:''}${a.variant?`<span class="hint">Bạn viết “<span lang="en">${esc(a.text)}</span>”, app dùng “<span lang="en">${esc(ex.ans)}</span>”: hai cách viết Anh – Mỹ đều đúng.</span>`:''}<details class="fbmore"><summary>Xem câu ví dụ</summary><span lang="en">${highlight(w.ex,w)}</span><span class="hint">${esc(w.exVi||'')}</span>${ex.type==='col'?w.col.bad.map(b=>`<span class="hint">Không nói <s lang="en">${esc(b)}</s>: ${esc(explainWrong(ex,w,b))}</span>`).join(''):''}</details></div>`;
     else {
       const right = rightAnswer(ex);
       const close = a.text!=null && nearMiss(a.text,right);
@@ -2572,10 +2573,10 @@ function viewSession(){
         ${a.text!=null?`<span>Bạn gõ: <s lang="en">${esc(a.text)}</s></span>`:''}
         <span>Đáp án: <b lang="en">${esc(right)}</b></span>
         ${(()=>{const g=a.text??(a.picked!=null?ex.opts[a.picked]:null), why=explainWrong(ex,w,g);return why?`<p class="why"><b>Vì sao “<span lang="${ex.type==='sen'||ex.type==='sns'?'vi':'en'}">${esc(g)}</span>” sai:</b> ${esc(why)}</p>`:''})()}
-        <span lang="en">${highlight(w.ex,w)}</span>
+        <details class="fbmore"><summary>Xem ví dụ và mẹo nhớ</summary><span lang="en">${highlight(w.ex,w)}</span>
         <span class="hint">${esc(w.exVi||'')}</span>
         ${tipBox(w)}
-        <span class="hint"><span lang="en">${esc(w.word)}</span> (${esc(w.pos)}): ${esc(w.vi)}.${a.appealed?'':' Câu này sẽ được hỏi lại cuối lượt.'}</span>${appealBox(a)}</div>`;
+        <span class="hint"><span lang="en">${esc(w.word)}</span> (${esc(w.pos)}): ${esc(w.vi)}.</span></details>${a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}</div>`;
     }
     fb+=xpFloat(s);
     fb+=`<div class="row"><button class="btn primary" data-act="next" id="nextbtn">${s.i+1<s.q.length?'Tiếp tục':'Xem kết quả'} <span class="hint" style="color:inherit;opacity:.7">Enter</span></button>${flagBox()}</div>`;
@@ -2583,12 +2584,11 @@ function viewSession(){
   return `<div class="sess-top ${s.kind==='test'?'boss':''}"><div class="spread"><button class="btn ghost back" data-act="quit">✕ Thoát</button><span class="row" style="gap:4px 10px">${juice(s)}<span class="num muted">${s.kind==='test'?'⚔️ ':''}${label} · ${s.i+1}/${s.q.length}</span></span></div>
     <div class="bar ${s.combo>=3?'hot':''}"><i style="width:${(s.i/s.q.length)*100}%"></i></div></div>
   ${goldTag(s)}<section class="q">
-    <div class="row"><span class="pill accent">${d.vi}</span><span class="pill">${typeName}</span></div>
     ${body}
-    ${a?'':`<div class="row" style="gap:6px">${dunnoBtn}<button class="btn small" data-act="guess" aria-pressed="${!!s.guess}" title="Đánh dấu khi bạn không chắc">🤔 Mình đang đoán</button> ${info('guess')}</div>`}
+    ${a?'':`<div class="row minor"><button class="chipbtn" data-act="dunno" title="Tính như trả lời sai, nhưng xem ngay đáp án (phím 0)">Tôi chưa biết</button><button class="chipbtn" data-act="guess" aria-pressed="${!!s.guess}" title="Đánh dấu khi bạn không chắc: lịch ôn sẽ hỏi lại sớm hơn">🤔 Mình đang đoán</button></div>`}
     ${fb}
   </section>
-  <p class="hint">Phím tắt: 1–4 để chọn, 0 = chưa biết, Enter để tiếp tục.</p>`;
+  <p class="hint kbd-hint">Phím tắt: 1–4 để chọn, 0 = chưa biết, Enter để tiếp tục.</p>`;
 }
 const KIND_LABEL={heal:'Luyện để lấy tim',quick:'Học nhanh',practice:'Luyện tập',review:'Ôn tập',test:'Thử thách cuối unit',remedy:'Luyện điểm yếu',place:'Thi vượt cấp',lrev:'Tổng kết cấp độ',qplace:'Kiểm tra nhanh trình độ'};
 const TYPE_NAME={cfs:'Phân biệt từ dễ nhầm',sns:'Nghĩa của từ trong câu',pcl:'Điền từ vào đoạn văn',fam:'Họ từ',fmt:'Họ từ · tự gõ',sen:'Câu → nghĩa',rec:'Từ → nghĩa',lis:'Nghe chọn từ',rcl:'Nghĩa → từ',rct:'Nghĩa → tự gõ từ',spl:'Chính tả',dic:'Nghe chép',ctx:'Điền chỗ trống',ctt:'Tự gõ từ vào câu',ord:'Sắp xếp câu',col:'Kết hợp từ'};
@@ -2673,8 +2673,7 @@ function viewSummary(){
   const est=L&&(r.kind==='place'||r.kind==='lrev')?levelEst(L):null;
   const lvx=lvLayer();
   return `<section class="stack">${head}</section>
-  ${u&&r.kind==='test'&&V.pass?stageBar(u):''}
-  ${(r.kind==='test'||r.kind==='place')&&V.pass?`<p class="slim">📍 ${lvx.L}: đã qua <b class="num">${lvx.passed}/${lvx.n}</b> unit${lvx.tg?` · tới ${lvx.tg}: <b class="num">${pct(lvx.tp)}</b>`:''}${(()=>{ const cd=u&&unitCando(u); return cd?` · unit này góp vào “${esc(cdSay(cd))}” (tính khi unit vững)`:''; })()}</p>`:''}
+  ${rewardHero(r,{stars:u&&r.kind==='test'?uStars(u):null,good:(r.kind==='test'||r.kind==='place'||r.kind==='lrev')?V.pass:score>=.7})}
   <div class="row" aria-label="Việc tiếp theo">
     ${r.kind==='test'&&!V.pass?`<button class="btn primary" data-act="remedy-ids" data-ids="${missed.join(',')}" data-u="${u.id}">Luyện ${missed.length} từ sai</button><button class="btn" data-act="test" data-u="${u.id}">Thi lại</button>`:''}
     ${(r.kind==='test'||r.kind==='place')&&V.pass&&nextU?`<button class="btn primary" data-unit="${nextU.id}">Sang ${uname(nextU)}</button>`:''}
@@ -2684,9 +2683,11 @@ function viewSummary(){
     ${r.kind==='place'&&V.pass&&nextLevel(L)?`<button class="btn ${nextU?'':'primary'}" data-act="place" data-l="${nextLevel(L).id}">Thi vượt cấp tiếp ${nextLevel(L).id}</button>`:''}
     ${r.kind!=='test'&&u&&!U(u.id).passed?`<button class="btn primary" data-act="test" data-u="${u.id}">Làm bài kiểm tra</button>`:''}
     ${u?`<button class="btn" data-unit="${u.id}">Về unit</button>`:''}
-    <button class="btn" data-go="path">Lộ trình</button>${msBtn(r,V.pass)}
+    <button class="btn" data-go="path">Tiếp tục</button>${msBtn(r,V.pass)}
   </div>
-  ${rewardHero(r,{stars:u&&r.kind==='test'?uStars(u):null,good:(r.kind==='test'||r.kind==='place'||r.kind==='lrev')?V.pass:score>=.7})}
+  <details class="panel stack sumdet"><summary><h3>Xem chi tiết lượt học${wrong.length?` · ${wrong.length} câu sai`:''}</h3></summary>
+  ${u&&r.kind==='test'&&V.pass?stageBar(u):''}
+  ${(r.kind==='test'||r.kind==='place')&&V.pass?`<p class="slim">📍 ${lvx.L}: đã qua <b class="num">${lvx.passed}/${lvx.n}</b> unit${lvx.tg?` · tới ${lvx.tg}: <b class="num">${pct(lvx.tp)}</b>`:''}${(()=>{ const cd=u&&unitCando(u); return cd?` · unit này góp vào “${esc(cdSay(cd))}” (tính khi unit vững)`:''; })()}</p>`:''}
   ${est?`<p class="panel">${estLine(L,est)} Làm lại bài sau vài tuần để xem vốn từ tăng thế nào.</p>`:''}
   ${calLine(r.cal)}
   <section class="stats">
@@ -2703,6 +2704,7 @@ function viewSummary(){
     return `<section class="stack"><div class="spread"><h3>Bậc thuộc từng từ</h3>${up.length?`<span class="pill good">⬆️ ${up.length} từ lên bậc</span>`:''}</div>
     <p class="hint">Mới → Đang học → Quen → Chắc → Đã thuộc. Từ lên “Quen”, “Chắc” nhờ nhớ đúng ở các lần ôn cách nhau, không nhờ luyện nhiều trong một ngày.</p>
     <div class="chips">${words.map(id=>{ const b=bs[id], a=wStage(id); return `<span class="chip ${a>=4?'m':''}" lang="en" title="Mức thuộc ${pct(r.before[id]??0)} → ${pct(mastery(id))}">${esc(WORD[id].word)} <span class="pct">${b!=null&&b!==a?WSTAGES[b]+' → ':''}${WSTAGES[a]}</span></span>`; }).join('')}</div></section>`; })()}
+  </details>
   ${adSlot(r)}
 `;
 }
@@ -3109,7 +3111,7 @@ function viewSound(){
   const opts=`<div class="opts">${q.opts.map((k,n)=>{ const o=sndWord(set,q,k); let cls='';
       if(a){ if(k===q.k) cls='right'; else if(k===a.pick) cls='wrong'; }
       return `<button class="opt ${cls}" data-spick="${k}" ${a?'disabled':''}><kbd>${n+1}</kbd><span><b lang="en" style="font:600 20px/1.2 var(--display)">${esc(o.w)}</b> <span class="ipa">/${esc(o.ipa)}/</span></span></button>`; }).join('')}</div>`;
-  const fb=!a?'':`<div class="fb ${a.correct?'good':'bad'}" role="status"><strong>${a.correct?'Chính xác':'Chưa đúng'}</strong>
+  const fb=!a?'':`<div class="fb ${a.correct?'good':'bad'}" role="status"><strong>${a.correct?YAY[s.i%YAY.length]:'Chưa đúng'}</strong>
       <span>Từ vừa đọc: <b lang="en">${esc(said.w)}</b> <span class="ipa">/${esc(said.ipa)}/</span></span>
       <span class="hint">So hai từ:</span>${sndPair(set,q.p)}
       ${a.correct?'':`<p class="why"><b>Mẹo:</b> ${esc(set.tip)}</p><span class="hint">Cặp này sẽ được hỏi lại cuối lượt.</span>`}</div>
@@ -3921,7 +3923,7 @@ function viewGSess(){
   let fb='';
   if(a){
     if(!reveal) fb=`<div class="fb neutral" role="status"><span>Đã ghi nhận. Đáp án và câu sai hiện ở cuối bài.</span></div>`;
-    else if(a.correct) fb=`<div class="fb good" role="status"><strong>Chính xác</strong>${a.typo?`<span>Chú ý chính tả: viết đúng là “<b lang="en">${esc(ex.ans)}</b>”. Lần này vẫn tính đúng.</span>`:''}<span class="hint" lang="en">${esc(p.form[0])}</span></div>`;
+    else if(a.correct) fb=`<div class="fb good" role="status"><strong>${YAY[s.i%YAY.length]}</strong>${a.typo?`<span>Chú ý chính tả: viết đúng là “<b lang="en">${esc(ex.ans)}</b>”. Lần này vẫn tính đúng.</span>`:''}<span class="hint" lang="en">${esc(p.form[0])}</span></div>`;
     else { const given=a.text??(a.picked!=null?ex.opts[a.picked]:null), why=gExplain(ex,given);
       const close=a.text!=null&&ex.accept&&lev(gcanon(a.text),gcanon(closest(a.text,ex.accept)))<=2;
       fb=`<div class="fb bad" role="status"><strong>${a.dunno?'Chưa biết — xem đáp án và nhớ lại nhé':`Chưa đúng${close?' — gần đúng, chỉ sai 1–2 chữ':''}`}</strong>${a.text!=null?`<span>Bạn viết: <s lang="en">${esc(a.text)}</s></span>`:''}
@@ -3932,8 +3934,8 @@ function viewGSess(){
   }
   return `<div class="sess-top ${s.kind==='test'?'boss':''}"><div class="spread"><button class="btn ghost back" data-act="gquit">✕ Thoát</button><span class="row" style="gap:4px 10px">${juice(s)}<span class="num muted">${s.kind==='test'?'⚔️ Thử thách cuối bài':'Ngữ pháp · '+KIND_LABEL[s.kind]} · ${s.i+1}/${s.q.length}</span></span></div>
     <div class="bar ${s.combo>=3?'hot':''}"><i style="width:${(s.i/s.q.length)*100}%"></i></div></div>
-  ${goldTag(s)}<section class="q"><div class="row"><span class="pill accent">${d.vi}</span><span class="pill">${esc(p.vi)}</span></div>${body}${a?'':dunnoBtn}${fb}</section>
-  <p class="hint">Phím tắt: 1–4 để chọn, 0 = chưa biết, Enter để tiếp tục.</p>`;
+  ${goldTag(s)}<section class="q"><p class="eyebrow">${esc(p.vi)}</p>${body}${a?'':dunnoBtn}${fb}</section>
+  <p class="hint kbd-hint">Phím tắt: 1–4 để chọn, 0 = chưa biết, Enter để tiếp tục.</p>`;
 }
 function viewGSum(){
   const r=ui.gsum, total=r.res.length, ok=r.res.filter(x=>x.correct).length, V=verdict(r.res,GDIMS), score=V.score;
@@ -3973,6 +3975,23 @@ function errorView(e){ errCount('v:'+ui.view); if(typeof globalThis!=='undefined
     <div class="row"><button class="btn primary" data-go="path">Về trang chủ</button><button class="btn" data-go="settings">Sao lưu</button><button class="btn" data-act="reload">Tải lại trang</button></div>
     <p class="hint">Lỗi đã được ghi (chỉ đếm, không kèm nội dung) vào dữ liệu học ẩn danh. Nếu lỗi lặp lại, hãy gửi dữ liệu đó trong mục Góp ý.</p></section>`; }
 if(typeof window!=='undefined'&&typeof window.addEventListener==='function'){ window.addEventListener('error',()=>errCount('js')); window.addEventListener('unhandledrejection',()=>errCount('promise')); }
+
+/* ================== v24: BÀI HỌC TOÀN MÀN HÌNH, BẢNG KẾT QUẢ TỪ ĐÁY, CÚ TÍ PHẢN ỨNG ==================
+   Chạy sau mỗi lần vẽ: trong lúc làm bài ẩn tiêu đề và thanh điều hướng; khung đúng/sai + nút Tiếp tục chuyển vào
+   bảng .sheet cố định ở đáy (cùng chỗ ngón cái mọi câu); màn kết quả có thanh việc tiếp theo cố định ở đáy. */
+const YAY = ['Tuyệt!','Chính xác!','Giỏi lắm!','Đúng rồi!','Xuất sắc!'];
+function lessonChrome(){ const v=ui.view, app=document.getElementById('app'); if(!app||!document.body) return;
+  const act=app.querySelector('[aria-label="Việc tiếp theo"], .endrow');
+  const on=['session','gsess','learn','oral','shadow'].includes(v)||(v==='quiz'&&ui.qz&&!ui.qz.done)||(v==='sound'&&ui.snd&&!ui.snd.done)||(['summary','gsum'].includes(v)||(v==='quiz'&&ui.qz&&ui.qz.done))&&!!act;
+  document.body.classList.toggle('lesson',!!on); document.body.classList.remove('has-sheet','has-act'); if(!on) return;
+  if(act&&['summary','gsum','quiz'].includes(v)){ act.classList.add('actbar'); document.body.classList.add('has-act'); }
+  const nb=app.querySelector('#nextbtn,#gnextbtn,#qznextbtn,#snextbtn'); if(!nb) return;
+  const row=nb.closest('.row')||nb, box=nb.closest('section')||app, fb=box.querySelector('.fb');
+  const kind=fb&&fb.classList.contains('bad')?'bad':fb&&fb.classList.contains('good')?'good':'neutral';
+  const sh=document.createElement('div'); sh.className='sheet '+kind; sh.setAttribute('role','region'); sh.setAttribute('aria-label','Kết quả câu này');
+  if(kind!=='neutral'&&!FOCUS()) sh.insertAdjacentHTML('afterbegin',`<div class="sheet-owl">${owl(kind==='good'?'party':'cheer',60)}</div>`);
+  if(fb) sh.appendChild(fb); const xp=box.querySelector('.xpf'); if(xp) sh.appendChild(xp); sh.appendChild(row);
+  nb.classList.add('big'); app.appendChild(sh); document.body.classList.add('has-sheet'); }
 function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); renderChrome();
@@ -3982,6 +4001,7 @@ function render(){
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   document.getElementById('app').innerHTML=html;
   countUp();
+  try{ lessonChrome(); }catch(e){}
   if(ui.view==='session'){
     const s=ui.sess, ex=s.q[s.i];
     if((ex.type==='lis'||ex.type==='dic')&&!s.ans&&s.played!==s.i){ s.played=s.i; say(ex.audio); }
@@ -4262,8 +4282,8 @@ async function remindWrite(force){
 function remindArm(){ clearTimeout(_remT); if(!CAN_NOTIFY||!st.set.notif) return;
   const [h,m]=(st.set.remind||'20:00').split(':').map(Number), at=new Date(); at.setHours(h,m,0,0); const ms=at-Date.now();
   if(ms<0||ms>864e5) return; _remT=setTimeout(async()=>{ if(studiedToday()||Notification.permission!=='granted') return;
-    try{ const reg=await navigator.serviceWorker.ready; await reg.showNotification('English Ladder: đến giờ học',{body:remindBody(),icon:'icons/icon-192.png',tag:'el-remind'}); }catch(e){} },ms); }
-const remindBody = () => { const n=dueWords().length; return n?`${n} từ đến hạn ôn. 5 phút là đủ giữ chuỗi ngày.`:'Học 5 phút để giữ chuỗi ngày và nhớ lâu.'; };
+    try{ const reg=await navigator.serviceWorker.ready; await reg.showNotification('English Ladder: Tí đang đợi bạn',{body:remindBody(),icon:'icons/icon-192.png',tag:'el-remind'}); }catch(e){} },ms); }
+const remindBody = () => { const n=dueWords().length; return n?`${n} từ đang chờ bạn ôn. Tí giữ chỗ rồi, vào 5 phút nha 🦉`:['Tí nhớ bạn rồi đó! Một bài 5 phút là giữ được lửa 🔥','Hôm nay mình leo thêm một nấc nhé? Tí đợi ở nấc tiếp theo 🦉','5 phút mỗi ngày nhớ lâu hơn cả buổi học dồn đó!'][today()%3]; };
 async function notifOn(){
   if(!CAN_NOTIFY) return; let p='default'; try{ p=await Notification.requestPermission(); }catch(e){}
   if(p!=='granted') return toast('Trình duyệt chưa cho phép thông báo. Bạn vẫn dùng được lời nhắc lịch bên dưới.');
@@ -4544,6 +4564,11 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:24,d:'2026-09-29',t:'Học vui hơn: toàn màn hình, Tí phản ứng theo từng câu',big:true,items:[
+    'Vào bài là toàn màn hình, chỉ còn câu hỏi và thanh tiến độ; nút Tiếp tục luôn ở đáy, ngay dưới ngón cái.',
+    'Trả lời xong, bảng kết quả trượt lên: xanh khi đúng, đỏ khi sai kèm đáp án và một dòng lý do; ví dụ và mẹo mở khi cần. Tí nhảy mừng hoặc cổ vũ bạn.',
+    'Xong bài: XP đếm lên, lửa chuỗi ngày to kèm 7 ngày gần nhất; số liệu chi tiết gọn trong một mục.',
+    'Chữ tròn dễ đọc (Nunito), nút bấm nổi khối, màu tươi hơn.']},
   {v:23,d:'2026-09-29',t:'Gọn hơn: một nút để học mỗi ngày',big:true,items:[
     'Trang Học chỉ còn vị trí của bạn, việc chính hôm nay và nút Bắt đầu; lộ trình các unit và việc khác mở khi bạn cần.',
     'Người mới bắt đầu với Học · Ôn tập · Tôi; Kỹ năng, Thử thách, Thi thử mở dần theo ngày học và cấp độ (hiện tất cả trong Cài đặt).',

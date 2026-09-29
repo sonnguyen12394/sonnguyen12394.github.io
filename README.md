@@ -51,7 +51,7 @@ App là PWA đủ điều kiện đóng gói Trusted Web Activity:
 - `tools/content-split.js`: `node tools/content-split.js join` ghép lại `app.js` đầy đủ để sửa nội dung; sửa xong chạy `split` trước khi phát hành.
 - `sw.js`: bộ nhớ đệm để mở lại tức thì và dùng khi mất mạng (tệp `data/` nằm ở ngăn đệm riêng, giữ qua các bản). Mỗi lần phát hành: tăng `APP_VERSION` trong `app.js`, `?v=` trong `index.html`, `VERSION` và `CORE` trong `sw.js`.
 
-Tốc độ đo được (máy tầm trung, bản v22): lần đầu dùng được sau ~1,4 s trên 4G phổ biến và ~5,8 s trên 4G rất chậm; mở lại ~1 s; dùng được khi mất mạng.
+Tốc độ đo được (máy tầm trung, bản v22; v24 chỉ thêm ~1 kB CSS nén): lần đầu dùng được sau ~1,4 s trên 4G phổ biến và ~5,8 s trên 4G rất chậm; mở lại ~1 s; dùng được khi mất mạng.
 
 ## Máy chủ (Supabase)
 

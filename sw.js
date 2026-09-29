@@ -1,7 +1,7 @@
 // Service worker của English Ladder: lưu app để chạy offline. index.html lấy từ mạng trước (có bản mới thì dùng ngay),
 // mất mạng thì dùng bản đã lưu; tệp tĩnh khác lấy từ bộ nhớ trước. Đổi VERSION khi phát hành để xoá bộ nhớ cũ.
-const VERSION = 'vl-v23';
-const CORE = ['./', 'index.html', 'app.js?v=23', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];
+const VERSION = 'vl-v24';
+const CORE = ['./', 'index.html', 'app.js?v=24', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 const META = 'el-meta';   // trạng thái nhắc học do app ghi (service worker không đọc được localStorage); không xoá khi đổi bản
 const DATA = 'el-data';   // chi tiết bài học theo cấp (data/lv-<cấp>.<băm>.json): tên có băm nội dung nên giữ qua các bản; app tự dọn tệp cũ
@@ -31,7 +31,7 @@ async function remindCheck() {
   const m = await r.json().catch(() => null); if (!m || !m.on) return;
   const now = new Date(), d = ymd(now), [h, mi] = String(m.at || '20:00').split(':').map(Number);
   if (m.studied === d || m.shown === d || now.getHours() * 60 + now.getMinutes() < h * 60 + mi) return;
-  await self.registration.showNotification('English Ladder: đến giờ học', { body: m.due ? `${m.due} từ đến hạn ôn. 5 phút là đủ giữ chuỗi ngày.` : 'Học 5 phút để giữ chuỗi ngày và nhớ lâu.', icon: 'icons/icon-192.png', tag: 'el-remind' });
+  await self.registration.showNotification('English Ladder: Tí đang đợi bạn', { body: m.due ? `${m.due} từ đang chờ bạn ôn. Tí giữ chỗ rồi, vào 5 phút nha 🦉` : 'Tí nhớ bạn rồi đó! Một bài 5 phút là giữ được lửa 🔥', icon: 'icons/icon-192.png', tag: 'el-remind' });
   m.shown = d; await c.put('./__remind', new Response(JSON.stringify(m)));
 }
 // Web Push (v19): máy chủ gửi lời nhắc đã mã hoá; luôn hiện thông báo (trình duyệt yêu cầu userVisibleOnly).
