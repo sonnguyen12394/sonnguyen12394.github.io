@@ -7388,6 +7388,84 @@ LVS.forEach(L=>{ const ids=CONV.filter(c=>c.lv===L).map(c=>c.id); if(ids.length)
 const _cdActs31c = cdActs; cdActs = function(r,L){ if(r.t==='cv') return r.v.map(id=>({done:cdOk(((st.conv ||= {})[id]||{}).best), at:`data-act="cvgo" data-id="${id}"`, t:'Hội thoại mở: '+CVI[id].vi})); return _cdActs31c(r,L); };
 const _mergeState31c = mergeState; mergeState = function(a,b){ const x=_mergeState31c(a,b); x.conv={...(b.conv||{}),...(a.conv||{})}; Object.keys(b.conv||{}).forEach(k=>{ if(a.conv&&a.conv[k]&&b.conv[k].best>a.conv[k].best) x.conv[k]=b.conv[k]; }); return x; };
 
+/* ---------- v31 (4): NGHE DÀI A1–A2 ----------
+   Trước v31 bài nghe dài bắt đầu từ B1; người học A1–A2 chỉ nghe câu rời. CEFR A1–A2 có mục nghe thông báo, hội thoại
+   ngắn về chủ đề quen thuộc, nói chậm và rõ. 6 bài mới (3 A1, 3 A2): mua vé tàu, gia đình, dự báo thời tiết, đặt bàn,
+   công việc mới, thông báo bảo tàng. Phát bằng giọng máy, một hoặc hai giọng; chữ ẩn cho tới khi nộp bài. */
+const LR_A = [
+ {id:'a1-lt01',lv:'A1',talk:'Hội thoại ở ga tàu',title:'At the Station',tvi:'Ở ga tàu',sp:{A:'Passenger',B:'Ticket seller'},lines:[
+  {s:'A',t:'Good morning. A ticket to Hai Phong, please.'},{s:'B',t:'One way or return?'},{s:'A',t:"Return, please. I'm coming back on Sunday."},
+  {s:'B',t:"OK. The next train leaves at nine fifteen. It's from platform two."},{s:'A',t:'Nine fifteen. How long is the journey?'},
+  {s:'B',t:'About two hours and thirty minutes. You arrive at eleven forty-five.'},{s:'A',t:'Great. How much is it?'},
+  {s:'B',t:'A return ticket is two hundred and forty thousand dong.'},{s:'A',t:'Can I pay by card?'},
+  {s:'B',t:"Yes, of course. Here's your ticket. Platform two is on the left, next to the café."},{s:'A',t:'Thank you very much.'},{s:'B',t:"You're welcome. Have a good trip!"}],
+  vi:['Chào buổi sáng. Cho tôi một vé đi Hải Phòng.','Một chiều hay khứ hồi ạ?','Khứ hồi. Chủ nhật tôi quay về.','Vâng. Chuyến tiếp theo chạy lúc chín giờ mười lăm, ở sân ga số hai.','Chín giờ mười lăm. Đi mất bao lâu?','Khoảng hai tiếng rưỡi. Anh đến nơi lúc mười một giờ bốn mươi lăm.','Tốt quá. Bao nhiêu tiền?','Vé khứ hồi 240.000 đồng.','Tôi trả bằng thẻ được không?','Được ạ. Vé của anh đây. Sân ga số hai ở bên trái, cạnh quán cà phê.','Cảm ơn nhiều.','Không có gì. Chúc anh đi vui!'],
+  qs:[{k:'main',q:'What does the passenger buy?',a:'A return train ticket to Hai Phong',w:['A one-way train ticket to Hai Phong','A bus ticket to Hanoi'],why:'Hành khách nói “Return, please” (khứ hồi) và đi Hải Phòng.'},
+   {k:'detail',q:'What time does the train leave?',a:'At 9:15',w:['At 11:45','At 9:50'],why:'“The next train leaves at nine fifteen.” 11:45 là giờ đến.'},
+   {k:'detail',q:'How much is the ticket?',a:'240,000 dong',w:['140,000 dong','230,000 dong'],why:'“two hundred and forty thousand dong”.'},
+   {k:'detail',q:'Where is platform two?',a:'On the left, next to the café',w:['On the right, next to the shop','Upstairs, next to the toilets'],why:'“Platform two is on the left, next to the café.”'}]},
+ {id:'a1-lt02',lv:'A1',talk:'Một bạn nhỏ kể về gia đình',title:'My Family',tvi:'Gia đình tôi',sp:{A:'Hoa'},lines:[
+  {s:'A',t:"Hi, I'm Hoa. I'm eleven years old and I live in Can Tho with my family."},
+  {s:'A',t:'There are five people in my family: my mum, my dad, my grandmother, my little brother and me.'},
+  {s:'A',t:'My dad is a doctor. He works at a big hospital.'},{s:'A',t:'My mum is a teacher at my school, so we go to school together every morning.'},
+  {s:'A',t:"My brother's name is Nam. He is six. He likes cars, and he has got a lot of toy cars."},
+  {s:'A',t:'My grandmother is seventy. She cooks very well. Her fish soup is my favourite food.'},
+  {s:'A',t:'At the weekend, we often go to the park near our house. My brother plays football and I ride my bike.'},{s:'A',t:'I love my family!'}],
+  vi:['Chào, mình là Hoa. Mình mười một tuổi và sống ở Cần Thơ với gia đình.','Nhà mình có năm người: mẹ, bố, bà, em trai và mình.','Bố mình là bác sĩ. Bố làm ở một bệnh viện lớn.','Mẹ mình là giáo viên ở trường mình, nên sáng nào hai mẹ con cũng đi học cùng nhau.','Em trai mình tên là Nam. Em sáu tuổi. Em thích ô tô và có rất nhiều ô tô đồ chơi.','Bà mình bảy mươi tuổi. Bà nấu ăn rất ngon. Canh cá của bà là món mình thích nhất.','Cuối tuần, nhà mình hay đi công viên gần nhà. Em trai đá bóng còn mình đạp xe.','Mình yêu gia đình mình!'],
+  qs:[{k:'main',q:'What is Hoa talking about?',a:'Her family',w:['Her school','Her favourite food'],why:'Cả bài Hoa kể về từng người trong gia đình.'},
+   {k:'detail',q:"What is Hoa's father's job?",a:'A doctor',w:['A teacher','A cook'],why:'“My dad is a doctor.” Mẹ mới là giáo viên.'},
+   {k:'detail',q:'How old is Nam?',a:'Six',w:['Eleven','Seventy'],why:'“He is six.” Hoa mười một tuổi, bà bảy mươi.'},
+   {k:'detail',q:'What does Hoa do in the park?',a:'She rides her bike',w:['She plays football','She cooks fish soup'],why:'“My brother plays football and I ride my bike.”'}]},
+ {id:'a1-lt03',lv:'A1',talk:'Bản tin thời tiết cuối tuần',title:'Weekend Weather',tvi:'Thời tiết cuối tuần',sp:{A:'Presenter'},lines:[
+  {s:'A',t:'Good evening. Here is the weather for the weekend.'},{s:'A',t:'On Saturday morning, it will be sunny and warm in Hanoi, about twenty-eight degrees.'},
+  {s:'A',t:'In the afternoon, there will be some clouds, but no rain.'},{s:'A',t:'On Sunday, the weather will change. It will be cloudy and windy in the morning.'},
+  {s:'A',t:'There will be heavy rain in the afternoon and evening. It will be cooler, about twenty-two degrees.'},
+  {s:'A',t:"So, if you want to go to the park, go on Saturday! And on Sunday, don't forget your umbrella."},{s:'A',t:'Have a nice weekend!'}],
+  vi:['Chào buổi tối. Sau đây là thời tiết cuối tuần.','Sáng thứ Bảy, Hà Nội nắng và ấm, khoảng hai mươi tám độ.','Buổi chiều có ít mây nhưng không mưa.','Chủ nhật thời tiết thay đổi. Buổi sáng nhiều mây và có gió.','Chiều và tối mưa to. Trời mát hơn, khoảng hai mươi hai độ.','Vậy nếu muốn đi công viên, hãy đi vào thứ Bảy! Còn Chủ nhật, đừng quên ô nhé.','Chúc cuối tuần vui vẻ!'],
+  qs:[{k:'main',q:'What is the talk about?',a:'The weather on Saturday and Sunday',w:['Things to do in the park','The weather next week'],why:'“Here is the weather for the weekend.”'},
+   {k:'detail',q:'What will the weather be like on Saturday morning?',a:'Sunny and warm',w:['Cloudy and windy','Rainy and cool'],why:'“On Saturday morning, it will be sunny and warm.”'},
+   {k:'detail',q:'When will it rain?',a:'On Sunday afternoon and evening',w:['On Saturday afternoon','On Sunday morning'],why:'“heavy rain in the afternoon and evening” của Chủ nhật; thứ Bảy “no rain”.'},
+   {k:'infer',q:'What does the presenter suggest?',a:'Going to the park on Saturday',w:['Staying at home all weekend','Going to the park on Sunday'],why:'“If you want to go to the park, go on Saturday!”'}]},
+ {id:'a2-lt01',lv:'A2',talk:'Cuộc gọi đặt bàn',title:'Booking a Table',tvi:'Đặt bàn nhà hàng',sp:{A:'Minh',B:'Restaurant'},lines:[
+  {s:'B',t:'Good afternoon, Lotus Restaurant. How can I help you?'},{s:'A',t:"Hello. I'd like to book a table for Friday evening, please."},
+  {s:'B',t:'Of course. For how many people?'},{s:'A',t:"For six. It's my father's birthday."},{s:'B',t:'Lovely. What time would you like to come?'},
+  {s:'A',t:"At seven o'clock, if possible."},{s:'B',t:"I'm sorry, we're full at seven. We have a table at half past six or at eight."},
+  {s:'A',t:'Half past six is fine. Could we sit outside, in the garden?'},{s:'B',t:'The garden is nice, but it might rain on Friday. I can give you a table next to the window instead.'},
+  {s:'A',t:"OK, that's a good idea. Also, can we bring our own birthday cake?"},{s:'B',t:"Yes, no problem. We'll keep it in the fridge for you. Can I have your name and phone number?"},
+  {s:'A',t:"It's Tran Minh, and my number is zero nine one two, three four five, six seven eight."},{s:'B',t:"Thank you, Mr Minh. So that's a table for six on Friday at six thirty. See you then!"}],
+  vi:['Chào buổi chiều, nhà hàng Lotus xin nghe. Tôi giúp gì được ạ?','Chào chị. Tôi muốn đặt bàn tối thứ Sáu.','Vâng. Cho bao nhiêu người ạ?','Sáu người. Sinh nhật bố tôi.','Hay quá. Anh muốn đến lúc mấy giờ?','Bảy giờ, nếu được.','Xin lỗi, bảy giờ kín chỗ rồi. Còn bàn lúc sáu rưỡi hoặc tám giờ.','Sáu rưỡi cũng được. Chúng tôi ngồi ngoài vườn được không?','Vườn đẹp nhưng thứ Sáu có thể mưa. Tôi xếp cho anh bàn cạnh cửa sổ nhé.','Ừ, ý hay đấy. À, chúng tôi mang bánh sinh nhật riêng được không?','Được ạ. Chúng tôi sẽ cất vào tủ lạnh giúp anh. Cho tôi xin tên và số điện thoại.','Trần Minh, số điện thoại 0912 345 678.','Cảm ơn anh Minh. Vậy là bàn sáu người, thứ Sáu lúc sáu rưỡi. Hẹn gặp anh!'],
+  qs:[{k:'main',q:'Why is Minh calling?',a:'To book a table for a birthday dinner',w:['To order a birthday cake','To change the time of his booking'],why:'“I’d like to book a table… It’s my father’s birthday.”'},
+   {k:'detail',q:'What time will they arrive?',a:'At 6:30',w:['At 7:00','At 8:00'],why:'Bảy giờ kín chỗ; Minh chọn “half past six”.'},
+   {k:'detail',q:'Where will they sit?',a:'Next to the window',w:['In the garden','Near the kitchen'],why:'Nhà hàng đề nghị “a table next to the window instead”.'},
+   {k:'infer',q:"Why doesn't the restaurant suggest the garden?",a:'Because it might rain',w:['Because the garden is full','Because the garden is closed on Fridays'],why:'“The garden is nice, but it might rain on Friday.”'}]},
+ {id:'a2-lt02',lv:'A2',talk:'Hai người bạn nói chuyện',title:'A New Job',tvi:'Công việc mới',sp:{A:'Tuan',B:'Linh'},lines:[
+  {s:'A',t:"So, Linh, how's your new job at the hotel?"},{s:'B',t:"It's great, but it's very busy. I start at six in the morning."},
+  {s:'A',t:"Six? That's early! What do you do?"},{s:'B',t:'I work at the reception desk. I check guests in and out, and I answer the phone. Sometimes I help tourists book tours.'},
+  {s:'A',t:'Do you speak English at work?'},{s:'B',t:'All the time! Most of our guests are from Korea, Australia and France, so English is really important. My English is much better now.'},
+  {s:'A',t:"What's the hardest part?"},{s:'B',t:'When guests are angry. Last week a man was very angry because his room was noisy.'},
+  {s:'B',t:'I stayed calm, said sorry and gave him a quieter room on the tenth floor. In the end, he was happy.'},
+  {s:'A',t:'Well done! Do you want to stay there for a long time?'},{s:'B',t:"Maybe two more years. After that, I'd like to open a small homestay in Sa Pa."}],
+  vi:['Linh này, công việc mới ở khách sạn thế nào?','Vui lắm, nhưng rất bận. Mình bắt đầu lúc sáu giờ sáng.','Sáu giờ á? Sớm thế! Cậu làm gì?','Mình làm ở quầy lễ tân. Mình làm thủ tục nhận và trả phòng, nghe điện thoại. Thỉnh thoảng giúp khách đặt tour.','Cậu có nói tiếng Anh ở chỗ làm không?','Suốt ngày! Phần lớn khách đến từ Hàn Quốc, Úc và Pháp, nên tiếng Anh rất quan trọng. Giờ tiếng Anh của mình tốt hơn nhiều.','Phần khó nhất là gì?','Khi khách tức giận. Tuần trước có ông khách rất bực vì phòng ồn.','Mình giữ bình tĩnh, xin lỗi và đổi cho ông ấy phòng yên tĩnh hơn ở tầng mười. Cuối cùng ông ấy vui vẻ.','Giỏi đấy! Cậu có muốn làm ở đó lâu không?','Có lẽ thêm hai năm nữa. Sau đó mình muốn mở một homestay nhỏ ở Sa Pa.'],
+  qs:[{k:'main',q:'What are Tuan and Linh talking about?',a:"Linh's new job at a hotel",w:["Linh's holiday in Sa Pa",'A problem with their hotel room'],why:'Tuấn hỏi và Linh kể về công việc mới ở khách sạn.'},
+   {k:'detail',q:'What time does Linh start work?',a:'At 6 a.m.',w:['At 8 a.m.','At 10 a.m.'],why:'“I start at six in the morning.”'},
+   {k:'detail',q:'What did Linh do for the angry guest?',a:'She gave him a quieter room',w:['She called the manager','She gave him his money back'],why:'“gave him a quieter room on the tenth floor”.'},
+   {k:'detail',q:"What are Linh's plans for the future?",a:'To open a homestay in Sa Pa',w:['To work at the hotel for ever','To study in Australia'],why:'“After that, I’d like to open a small homestay in Sa Pa.”'}]},
+ {id:'a2-lt03',lv:'A2',talk:'Thông báo ở bảo tàng',title:'Welcome to the Museum',tvi:'Chào mừng đến bảo tàng',sp:{A:'Announcer'},lines:[
+  {s:'A',t:'Welcome to the City Museum. Please listen to some important information.'},{s:'A',t:'The museum is open today from nine a.m. to five p.m. The last entry is at four thirty.'},
+  {s:'A',t:"On the ground floor, you can see our new exhibition about the history of the Red River. It's free for all visitors."},
+  {s:'A',t:'The first floor has old photos of the city, and the second floor is for children, with games and a small cinema.'},
+  {s:'A',t:'The café is on the ground floor, next to the gift shop.'},{s:'A',t:'Please do not take photos in the Red River exhibition, but you can take photos everywhere else.'},
+  {s:'A',t:"There is a free guided tour in English at eleven o'clock and at two o'clock. It lasts about forty-five minutes and starts at the main entrance."},
+  {s:'A',t:'Thank you, and enjoy your visit.'}],
+  vi:['Chào mừng đến Bảo tàng Thành phố. Xin mời nghe một số thông tin quan trọng.','Hôm nay bảo tàng mở cửa từ chín giờ sáng đến năm giờ chiều. Giờ vào cuối cùng là bốn giờ rưỡi.','Ở tầng trệt có triển lãm mới về lịch sử sông Hồng, miễn phí cho mọi khách.','Tầng một có ảnh cũ về thành phố, tầng hai dành cho trẻ em, có trò chơi và một phòng chiếu phim nhỏ.','Quán cà phê ở tầng trệt, cạnh cửa hàng quà lưu niệm.','Xin đừng chụp ảnh trong triển lãm sông Hồng; ở các khu khác thì được chụp.','Có tour hướng dẫn miễn phí bằng tiếng Anh lúc mười một giờ và hai giờ, dài khoảng bốn mươi lăm phút, xuất phát ở cửa chính.','Xin cảm ơn và chúc quý khách tham quan vui vẻ.'],
+  qs:[{k:'main',q:'What is the announcement for?',a:'To give visitors information about the museum',w:['To tell visitors that the museum is closing','To advertise the museum café'],why:'Thông báo nêu giờ mở cửa, các tầng, quy định chụp ảnh và tour.'},
+   {k:'detail',q:'What is on the second floor?',a:'Games and a cinema for children',w:['Old photos of the city','The Red River exhibition'],why:'“the second floor is for children, with games and a small cinema”.'},
+   {k:'detail',q:"Where can't visitors take photos?",a:'In the Red River exhibition',w:['In the café','On the second floor'],why:'“Please do not take photos in the Red River exhibition.”'},
+   {k:'detail',q:'When is the English tour?',a:"At 11 o'clock and 2 o'clock",w:['At 9 a.m. and 4:30 p.m.','Every hour'],why:'“at eleven o’clock and at two o’clock”.'}]}];
+LR_A.forEach(x=>{ x.text=x.lines.map(l=>l.t); LREAD.push(x); LRD[x.id]=x; });
+const _viewTalk31d = viewTalk; viewTalk = function(){ const L=talkLv(); let h=_viewTalk31d(); return ['A1','A2'].includes(L)?h.replace(`Nghe bài nói dài ${L}: phỏng vấn, bài giảng, podcast`,`Nghe dài ${L}: hội thoại, thông báo, kể chuyện`):h; };
+['A1','A2'].forEach(L=>CANDO.push({id:L.toLowerCase()+'-lrlis',lv:L,grp:'ski',vi:L==='A1'?'Nghe hiểu hội thoại, thông báo ngắn về chủ đề quen thuộc khi người nói chậm và rõ':'Nghe hiểu ý chính và chi tiết của cuộc gọi, thông báo, câu chuyện ngắn hằng ngày',en:'Understand short, clear conversations and announcements',ref:[{t:'lr',v:LR_A.filter(x=>x.lv===L).map(x=>x.id),n:2}]}));
+
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
