@@ -4124,7 +4124,7 @@ function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); renderChrome();
   if(ui.view==='path'&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,super:viewSuper,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  const v={conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,super:viewSuper,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   document.getElementById('app').innerHTML=html;
@@ -7105,6 +7105,288 @@ const _mainAction31 = mainAction; mainAction = function(){ const m=_mainAction31
 document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('button'); if(!b) return; const d=b.dataset;
   if(d.act==='lchkgo') return startLchk(d.l);
   if(d.act==='rtdel'){ (st.me.tests||[]).splice(+d.i,1); save(); return render(); } });
+
+/* ---------- v31 (3): HỘI THOẠI MỞ — NGƯỜI KIA PHẢN ỨNG THEO CÂU TRẢ LỜI CỦA BẠN ----------
+   Đóng vai cũ đi theo kịch bản thẳng: người học chỉ đọc lượt lời có sẵn. CEFR đo tương tác: nghe câu hỏi không biết trước,
+   đáp bằng lời của mình, xử lý khi hai bên chưa hiểu nhau. Ở đây mỗi lượt lời của người kia có nhiều nhánh; app nhận ra ý chính
+   trong câu trả lời (từ khoá, có/không, tên, nơi chốn) để chọn nhánh và nhắc lại điều bạn vừa nói. Chưa nhận ra thì người kia
+   hỏi lại (luyện sửa hiểu lầm); từ B1, trả lời quá ngắn thì người kia đề nghị nói thêm. Không dùng AI: nhận ý bằng từ khoá. */
+const CV_MIN = {A1:1,A2:3,B1:5,B2:8,C1:12,C2:14};   // số từ tối thiểu mỗi lượt trả lời để tính là đáp đủ ý theo cấp
+const CV_ELAB = {B1:'Could you say a bit more about that?',B2:'Could you expand on that a little?',C1:'Could you elaborate on that?',C2:'Would you care to elaborate?'};
+const YES_RE = /\b(yes|yeah|yep|yup|sure|ok|okay|of course|certainly|definitely|absolutely|please|right|correct|that's right|sounds good|why not|deal|fine)\b/i;
+const NO_RE = /\b(no|nope|not|don't|do not|doesn't|didn't|can't|cannot|won't|never|nothing|no thanks|i'm fine|i'm good|busy|sorry)\b/i;
+const CONV = [
+ {id:'a1-cv1',lv:'A1',title:'At the Café',vi:'Gọi đồ ở quán cà phê',who:'Barista',k:1,start:'n1',n:{
+  n1:{a:"Hi! Welcome to Sunny Café. What would you like to drink?",v:'Chào bạn! Chào mừng đến Sunny Café. Bạn muốn uống gì?',h:'Gọi một đồ uống: coffee, tea, juice, water…',m:'A coffee, please.',rp:'Sorry? We have coffee, tea, juice and water.',
+    o:[{k:'coffee|latte|cappuccino|espresso',n:'n2',r:'One {w}, great.'},{k:'tea|milk tea|green tea',n:'n2',r:'Tea, lovely.'},{k:'juice|orange|mango|smoothie|lemonade',n:'n2',r:'Fresh {w}, good choice.'},{k:'water',n:'n3',r:'Sure, a bottle of water.'}],d:{n:'n2',r:"OK, I'll get you a coffee."}},
+  n2:{a:'Hot or iced?',v:'Nóng hay đá?',h:'Chọn nóng (hot) hay đá (iced, cold).',m:'Iced, please.',rp:'Sorry, hot or iced?',
+    o:[{k:'hot|warm',n:'n3',r:'Hot. Nice on a rainy day.'},{k:'iced|ice|cold',n:'n3',r:"Iced. Good idea, it's hot today."}],d:{n:'n3',r:"I'll make it iced."}},
+  n3:{a:'Anything to eat? We have cake and sandwiches.',v:'Bạn ăn gì không? Có bánh ngọt và bánh mì kẹp.',h:'Có thì nói món; không thì “No, thanks.”',m:'Yes, a piece of chocolate cake, please.',rp:'Sorry? Would you like cake, a sandwich, or nothing?',
+    o:[{k:'cake|chocolate|cheesecake|cookie',n:'n4',r:'A piece of {w}. Good choice!'},{k:'sandwich|bread',n:'n4',r:'One {w}. OK!'},{k:'@no',n:'n4',r:'No problem.'},{k:'@yes',n:'n3b',r:'Great.'}],d:{n:'n4',r:'OK.'}},
+  n3b:{a:'Cake or a sandwich?',v:'Bánh ngọt hay bánh mì kẹp?',h:'Chọn một món.',m:'Cake, please.',rp:'Cake or sandwich?',
+    o:[{k:'cake|chocolate',n:'n4',r:'Cake it is!'},{k:'sandwich|bread',n:'n4',r:'A sandwich, sure.'}],d:{n:'n4',r:"I'll give you some cake."}},
+  n4:{a:'For here or to go?',v:'Dùng ở đây hay mang đi?',h:'Ở đây (for here) hay mang đi (to go, take away).',m:'For here, please.',rp:'Sorry, for here or to go?',
+    o:[{k:'here|stay|sit|inside',n:'n5',r:'OK, sit anywhere you like.'},{k:'go|take away|takeaway|take it|bag',n:'n5',r:"Sure, I'll put it in a bag."}],d:{n:'n5',r:'OK.'}},
+  n5:{a:"That's sixty-five thousand dong. Cash or card?",v:'Của bạn 65.000 đồng. Tiền mặt hay thẻ?',h:'Trả tiền mặt (cash) hay thẻ (card).',m:'Card, please. Here you are.',rp:'Sorry, cash or card?',
+    o:[{k:'cash|money',n:'end',r:"Thank you. Here's your change."},{k:'card|credit|visa|phone|app|momo|transfer',n:'end',r:'Thanks. You can pay here.'}],d:{n:'end',r:'Thank you.'}},
+  end:{a:'Your drink will be ready in two minutes. Have a nice day!',v:'Đồ uống của bạn có sau hai phút. Chúc một ngày vui!',end:true}}},
+ {id:'a1-cv2',lv:'A1',title:'A New Classmate',vi:'Làm quen bạn mới',who:'Anna',k:0,start:'n1',n:{
+  n1:{a:"Hi! I'm Anna. I'm new in this class. What's your name?",v:'Chào! Mình là Anna, mới vào lớp này. Bạn tên gì?',h:'Nói tên bạn: My name is… / I’m…',m:"Hi Anna, I'm Minh. Nice to meet you.",rp:"Sorry, what's your name?",
+    o:[{k:'@name',n:'n2',r:'Nice to meet you, {w}!'}],d:{n:'n2',r:'Nice to meet you!'}},
+  n2:{a:'Where are you from?',v:'Bạn đến từ đâu?',h:'Nói quê hoặc thành phố: I’m from…',m:"I'm from Hue, but I live in Hanoi now.",rp:'Sorry? Where are you from?',
+    o:[{k:'@place',n:'n3',r:'{w}? Cool! I want to visit {w} one day.'}],d:{n:'n3',r:'Oh, nice!'}},
+  n3:{a:'Are you a student, or do you work?',v:'Bạn đi học hay đi làm?',h:'Nói bạn học hay làm việc.',m:"I'm a student. I study IT.",rp:'Sorry, do you study or work?',
+    o:[{k:'student|study|school|university|college|class',n:'n4',r:"Me too! I'm a student here."},{k:'work|job|office|company|teacher|engineer|nurse|doctor|worker|manager|designer',n:'n4',r:"Oh, you work. That's great."}],d:{n:'n4',r:'I see.'}},
+  n4:{a:'What do you like doing in your free time?',v:'Lúc rảnh bạn thích làm gì?',h:'Nói một sở thích: I like + V-ing…',m:'I like playing football and listening to music.',rp:'Sorry? What do you like doing? Sport? Music?',
+    o:[{k:'football|soccer|badminton|basketball|volleyball|swimming|swim|running|gym|sport|tennis',n:'n5',r:'{w}? I love sport too!'},{k:'music|singing|sing|song|guitar|piano',n:'n5',r:'Music! Me too.'},{k:'reading|read|book|movie|film|game|drawing|draw|cooking|cook|travel|photo',n:'n5',r:'{w}, that sounds fun.'}],d:{n:'n5',r:'Cool.'}},
+  n5:{a:'Do you want to have lunch together after class?',v:'Bạn muốn ăn trưa cùng nhau sau giờ học không?',h:'Đồng ý (Yes, sure!) hoặc từ chối lịch sự (Sorry, I can’t…).',m:"Yes, sure! Where shall we go?",rp:'Sorry? Lunch together, yes or no?',
+    o:[{k:'@no',n:'endN',r:"Oh, that's OK."},{k:'@yes',n:'endY',r:'Great!'}],d:{n:'endY',r:'Great!'}},
+  endY:{a:'See you at twelve in the canteen, then. Bye!',v:'Vậy hẹn bạn mười hai giờ ở căng tin nhé. Tạm biệt!',end:true},
+  endN:{a:'Maybe another day. See you tomorrow!',v:'Để hôm khác vậy. Mai gặp nhé!',end:true}}},
+ {id:'a2-cv1',lv:'A2',title:'Checking In',vi:'Nhận phòng khách sạn',who:'Receptionist',k:1,start:'n1',n:{
+  n1:{a:'Good evening, welcome to the Riverside Hotel. Do you have a reservation?',v:'Chào buổi tối, chào mừng đến khách sạn Riverside. Bạn đã đặt phòng chưa?',h:'Có (Yes, I booked…) hay chưa (No, I don’t…).',m:'Yes, I booked a room online last week.',rp:'Sorry, did you book a room with us?',
+    o:[{k:'@no',n:'n2n',r:'No problem, we have rooms tonight.'},{k:'@yes|book|reservation',n:'n2y',r:'Great.'}],d:{n:'n2y',r:'OK.'}},
+  n2y:{a:'Can I have your name, please?',v:'Cho tôi xin tên bạn.',h:'Nói họ tên: It’s… / My name is…',m:'Yes, it’s Nguyen Lan.',rp:'Sorry, your name?',
+    o:[{k:'@name',n:'n3',r:'Thank you. Yes, I can see your booking.'}],d:{n:'n3',r:'Thank you.'}},
+  n3:{a:'You booked a double room for two nights. Is that right?',v:'Bạn đặt phòng đôi hai đêm. Đúng không ạ?',h:'Xác nhận hoặc sửa lại số đêm.',m:"Yes, that's right.",rp:'Sorry, is two nights correct?',
+    o:[{k:'@no|three|four|one|change',n:'n3c',r:'Oh, let me change that.'},{k:'@yes',n:'n4',r:'Perfect.'}],d:{n:'n4',r:'OK.'}},
+  n3c:{a:'How many nights do you need?',v:'Bạn cần bao nhiêu đêm?',h:'Nói số đêm: three nights…',m:'Three nights, please.',rp:'How many nights?',
+    o:[{k:'1|2|3|4|5|6|7|week',n:'n4',r:'{w} nights. Done.'}],d:{n:'n4',r:'OK, done.'}},
+  n2n:{a:'Would you like a single room or a double room?',v:'Bạn muốn phòng đơn hay phòng đôi?',h:'Chọn đơn (single) hay đôi (double).',m:"A double room, please. I'm with my friend.",rp:'Sorry? Single or double?',
+    o:[{k:'single|alone|one person|myself',n:'n2x',r:'A single room.'},{k:'double|twin|two people|friend|wife|husband|family',n:'n2x',r:'A double room.'}],d:{n:'n2x',r:'OK.'}},
+  n2x:{a:'And how many nights would you like to stay?',v:'Bạn muốn ở mấy đêm?',h:'Nói số đêm.',m:'Two nights, please.',rp:'How many nights?',
+    o:[{k:'1|2|3|4|5|6|7|week',n:'n4',r:'{w} nights, no problem.'}],d:{n:'n4',r:'OK.'}},
+  n4:{a:'Breakfast is one hundred and fifty thousand dong per person. Would you like to add breakfast?',v:'Bữa sáng 150.000 đồng mỗi người. Bạn có muốn thêm bữa sáng không?',h:'Có hoặc không, có thể hỏi thêm.',m:'Yes, please. What time is breakfast?',rp:'Sorry, breakfast: yes or no?',
+    o:[{k:'@no',n:'n5',r:'No breakfast, OK.'},{k:'@yes|breakfast',n:'n5',r:"I'll add breakfast. It's from six to ten."}],d:{n:'n5',r:'OK.'}},
+  n5:{a:'Could I see your passport or ID card, please?',v:'Cho tôi xem hộ chiếu hoặc căn cước.',h:'Đưa giấy tờ: Here you are. / Sure, here it is.',m:'Sure, here you are.',rp:'Sorry, your passport or ID, please?',
+    o:[{k:'here|sure|yes|passport|id|card|of course',n:'n6',r:'Thank you.'}],d:{n:'n6',r:'Thank you.'}},
+  n6:{a:'Here is your key. Your room is on the fifth floor. Do you have any questions?',v:'Chìa khoá của bạn đây. Phòng ở tầng năm. Bạn có câu hỏi gì không?',h:'Hỏi Wi-Fi, giờ trả phòng… hoặc “No, thank you.”',m:"What's the Wi-Fi password?",rp:'Sorry? Any questions?',
+    o:[{k:'wifi|wi-fi|password|internet',n:'endW',r:''},{k:'check out|checkout|leave|time',n:'endC',r:''},{k:'@no|thank',n:'endN',r:''}],d:{n:'endN',r:''}},
+  endW:{a:'The Wi-Fi password is on your key card. Enjoy your stay!',v:'Mật khẩu Wi-Fi ở trên thẻ chìa khoá. Chúc bạn nghỉ ngơi vui vẻ!',end:true},
+  endC:{a:'Check-out is at twelve noon. Enjoy your stay!',v:'Trả phòng lúc mười hai giờ trưa. Chúc bạn nghỉ ngơi vui vẻ!',end:true},
+  endN:{a:'Have a good night!',v:'Chúc bạn ngủ ngon!',end:true}}},
+ {id:'a2-cv2',lv:'A2',title:'How Was Your Weekend?',vi:'Cuối tuần của bạn thế nào?',who:'Tom',k:0,start:'n1',n:{
+  n1:{a:'Hey! How was your weekend?',v:'Này! Cuối tuần của bạn thế nào?',h:'Nói cuối tuần vui hay mệt: It was great / boring…',m:'It was great, thanks. How about yours?',rp:'Sorry? Was your weekend good?',
+    o:[{k:'bad|terrible|boring|tired|sick|ill|busy|awful',n:'n2',r:'Oh no, sorry to hear that.'},{k:'good|great|fun|nice|amazing|fantastic|relax|ok|okay|fine|lovely|wonderful',n:'n2',r:'Glad to hear that!'}],d:{n:'n2',r:'I see.'}},
+  n2:{a:'What did you do?',v:'Bạn đã làm gì?',h:'Kể một việc ở thì quá khứ: I stayed at home / I went to…',m:'I went to the cinema with my sister and we ate pizza.',rp:'Sorry? What did you do on the weekend?',
+    o:[{k:'stay|stayed|home|slept|sleep|rest|watch|watched|tv|movie|film|netflix',n:'n3',r:'Sounds relaxing.'},{k:'visit|visited|family|parents|grandparents|hometown|grandma',n:'n3',r:'That’s nice. Family time is important.'},{k:'went|go|café|coffee|shopping|mall|restaurant|park|beach|trip|travel|cinema|party',n:'n3',r:'Sounds fun!'},{k:'study|studied|homework|exam|work|worked',n:'n3',r:'Poor you! Studying all weekend is hard.'}],d:{n:'n3',r:'Cool.'}},
+  n3:{a:'I played badminton with my brother. Do you play any sports?',v:'Mình chơi cầu lông với anh trai. Bạn có chơi môn thể thao nào không?',h:'Có (Yes, I play…) hoặc không (Not really, but I…).',m:"Not really, but I sometimes go swimming.",rp:'Sorry? Do you play sports?',
+    o:[{k:'football|badminton|basketball|volleyball|swim|swimming|tennis|run|running|gym|yoga',n:'n4',r:'{w}! We should play together sometime.'},{k:'@no',n:'n4',r:"That's OK, not everyone likes sport."},{k:'@yes',n:'n4',r:'Great!'}],d:{n:'n4',r:'OK.'}},
+  n4:{a:"I'm going to the cinema next Saturday. Do you want to come?",v:'Thứ Bảy tới mình đi xem phim. Bạn muốn đi cùng không?',h:'Nhận lời hoặc từ chối kèm lý do.',m:"I'd love to! What time?",rp:'Sorry? The cinema next Saturday, do you want to come?',
+    o:[{k:"@no|can't|busy",n:'n5n',r:'Oh, why not?'},{k:"@yes|love|great|good idea|what time",n:'n5y',r:'Great!'}],d:{n:'n5y',r:'Great!'}},
+  n5y:{a:'The film starts at seven. Shall we meet at half past six?',v:'Phim bắt đầu lúc bảy giờ. Mình gặp lúc sáu rưỡi nhé?',h:'Đồng ý hoặc đề nghị giờ khác.',m:'Sure, half past six is fine.',rp:'Sorry, is half past six OK?',
+    o:[{k:'@no|later|seven|earlier|six|five',n:'endT',r:''},{k:'@yes',n:'endY',r:''}],d:{n:'endY',r:''}},
+  n5n:{a:'Oh, why not?',v:'Ồ, sao vậy?',h:'Nói lý do: I have to…',m:'I have to visit my grandparents on Saturday.',rp:'Sorry?',o:[{k:'@any',n:'endN',r:'I understand.'}],d:{n:'endN',r:''}},
+  endY:{a:'Perfect, see you then!',v:'Tuyệt, hẹn gặp lúc đó!',end:true},
+  endT:{a:"OK, let's meet at seven then. See you!",v:'Vậy gặp lúc bảy giờ nhé. Hẹn gặp!',end:true},
+  endN:{a:'Maybe next time then. See you on Monday!',v:'Vậy để lần sau. Thứ Hai gặp nhé!',end:true}}},
+ {id:'b1-cv1',lv:'B1',title:'A Part-time Job Interview',vi:'Phỏng vấn việc làm thêm',who:'Manager',k:1,start:'n1',n:{
+  n1:{a:'Thanks for coming. So, why do you want to work at our bookshop?',v:'Cảm ơn bạn đã đến. Vì sao bạn muốn làm ở hiệu sách của chúng tôi?',h:'Nêu 1–2 lý do: bạn thích sách, muốn học kỹ năng, cần thu nhập…',m:"I love reading, and I'd like to improve my communication skills by working with customers.",rp:"Sorry, I didn't quite catch that. Why this job?",
+    o:[{k:'book|read|reading|literature|novel',n:'n2',r:"It's great that you love books."},{k:'experience|learn|skill|customer|people|communication|communicate',n:'n2',r:'Good. This job is all about people.'},{k:'money|earn|pay|salary|fee|tuition|afford',n:'n2',r:"That's honest. Many students work here for that reason."}],d:{n:'n2',r:'I see.'}},
+  n2:{a:'Have you ever worked in a shop or with customers before?',v:'Bạn đã từng làm ở cửa hàng hay tiếp khách chưa?',h:'Có (kể ngắn: ở đâu, làm gì) hoặc chưa.',m:'Yes, I worked in a café last summer. I served drinks and took orders.',rp:'Sorry, have you worked with customers before?',
+    o:[{k:'@no|never',n:'n3n',r:"That's fine, everyone starts somewhere."},{k:'@yes|worked|café|shop|restaurant|store|summer',n:'n3y',r:'Good.'}],d:{n:'n3n',r:'OK.'}},
+  n3y:{a:'What was the most difficult part of that job?',v:'Phần khó nhất của công việc đó là gì?',h:'Kể một khó khăn và bạn đã xử lý thế nào.',m:'It was very busy at lunchtime, so I learned to stay calm and work fast.',rp:'Sorry? What was difficult?',
+    o:[{k:'@any',n:'n4',r:"That's useful experience."}],d:{n:'n4',r:''}},
+  n3n:{a:'How would you deal with an angry customer?',v:'Bạn sẽ xử lý một khách hàng đang tức giận thế nào?',h:'Nói bạn sẽ làm gì: listen, stay calm, apologise, ask the manager…',m:"I would listen carefully, stay calm and apologise, and then try to solve the problem or ask my manager.",rp:'Sorry, what would you do with an angry customer?',
+    o:[{k:'listen|calm|polite|apologise|apologize|sorry|smile|patient|manager|help|solve|explain',n:'n4',r:"That's a good approach."}],d:{n:'n4',r:'OK.'}},
+  n4:{a:'When are you available? We need people at weekends and on weekday evenings.',v:'Bạn rảnh khi nào? Chúng tôi cần người cuối tuần và các tối trong tuần.',h:'Nói lịch rảnh: at weekends, on Monday evenings…',m:"I'm free at weekends and on Tuesday and Thursday evenings.",rp:'Sorry, when are you free?',
+    o:[{k:'weekend|saturday|sunday',n:'n5',r:'Weekends are perfect for us.'},{k:'evening|night|after class|after school|monday|tuesday|wednesday|thursday|friday|weekday',n:'n5',r:'Evenings work well.'},{k:'any time|anytime|flexible|every day|whenever',n:'n5',r:"Great, you're flexible."}],d:{n:'n5',r:'OK.'}},
+  n5:{a:'What would you say is your biggest strength?',v:'Theo bạn, điểm mạnh lớn nhất của bạn là gì?',h:'Nêu một điểm mạnh và ví dụ ngắn.',m:"I'm very reliable. For example, I've never missed a class this year.",rp:'Sorry? Your biggest strength?',
+    o:[{k:'hard-working|hardworking|work hard|responsible|reliable|punctual|organised|organized|friendly|patient|fast learner|learn quickly|team|honest|careful',n:'n6',r:"That's important here."}],d:{n:'n6',r:'OK.'}},
+  n6:{a:'Do you have any questions for me?',v:'Bạn có câu hỏi nào cho tôi không?',h:'Hỏi về lương, đào tạo, ngày bắt đầu… hoặc “No, thank you.”',m:'Yes. How much is the pay, and when would I start?',rp:'Any questions?',
+    o:[{k:'salary|pay|money|how much|wage',n:'endP',r:''},{k:'training|start|when|begin',n:'endS',r:''},{k:'@no|thank',n:'endN',r:''}],d:{n:'endN',r:''}},
+  endP:{a:"The pay is twenty-five thousand dong an hour. We'll call you by Friday. Thanks for coming!",v:'Lương 25.000 đồng một giờ. Chúng tôi sẽ gọi bạn trước thứ Sáu. Cảm ơn bạn đã đến!',end:true},
+  endS:{a:"You'd start next month, with a week of training. We'll call you by Friday!",v:'Bạn sẽ bắt đầu tháng sau, có một tuần đào tạo. Chúng tôi sẽ gọi trước thứ Sáu!',end:true},
+  endN:{a:"OK. We'll call you by Friday. Thanks for coming!",v:'Được rồi. Chúng tôi sẽ gọi bạn trước thứ Sáu. Cảm ơn bạn đã đến!',end:true}}},
+ {id:'b1-cv2',lv:'B1',title:'A Problem with My Order',vi:'Khiếu nại đơn hàng',who:'Customer service',k:1,start:'n1',n:{
+  n1:{a:'Thank you for calling ShopNow. How can I help you today?',v:'Cảm ơn bạn đã gọi ShopNow. Tôi giúp gì được cho bạn?',h:'Nói vấn đề: hàng đến muộn, bị hỏng, hoặc giao nhầm.',m:"Hi, I ordered a pair of headphones last week, but they arrived broken.",rp:"I'm sorry, could you explain the problem with your order?",
+    o:[{k:"late|not arrived|haven't received|hasn't arrived|delay|still waiting|waiting|didn't arrive|not come",n:'nL',r:"I'm sorry about the delay."},{k:"broken|damaged|crack|cracked|scratch|not work|doesn't work|faulty|stopped working",n:'nD',r:"Oh, I'm sorry to hear that."},{k:'wrong|different|size|colour|color|not what i ordered|mistake',n:'nW',r:'I apologise for that.'}],d:{n:'nD',r:"I'm sorry to hear that."}},
+  nL:{a:'Could you tell me your order number, please?',v:'Bạn cho tôi số đơn hàng được không?',h:'Đọc số đơn hàng (tự nghĩ ra một số).',m:"Sure, it's 4 5 8 2 1.",rp:'Sorry, your order number?',
+    o:[{k:'@any',n:'n3',r:"Thank you. I can see it's stuck at the warehouse."}],d:{n:'n3',r:''}},
+  nD:{a:'What exactly is wrong with it?',v:'Cụ thể nó bị làm sao?',h:'Mô tả hỏng thế nào.',m:"The left side doesn't make any sound, and the box was damaged too.",rp:"Sorry, what's wrong with it exactly?",
+    o:[{k:'@any',n:'n3',r:'I see. Thank you for explaining.'}],d:{n:'n3',r:''}},
+  nW:{a:'What did you order, and what did you receive?',v:'Bạn đặt gì và nhận được gì?',h:'So sánh món đã đặt và món nhận được.',m:'I ordered a blue T-shirt in size M, but I got a red one in size L.',rp:'Sorry, what did you order and what arrived?',
+    o:[{k:'@any',n:'n3',r:"Thank you. That's clearly our mistake."}],d:{n:'n3',r:''}},
+  n3:{c:1,a:'Would you prefer a refund or a replacement?',v:'Bạn muốn hoàn tiền hay đổi hàng mới?',h:'Chọn hoàn tiền (refund) hay đổi (replacement).',m:"I'd prefer a replacement, please.",rp:'Sorry, refund or replacement?',
+    o:[{k:'refund|money back|return the money|my money',n:'n4r',r:''},{k:'replace|replacement|new one|another|exchange|send again|send a new',n:'n4p',r:''}],d:{n:'n4p',r:''}},
+  n4r:{c:1,a:"No problem. You'll get your money back within five working days. Is there anything else I can help with?",v:'Được ạ. Bạn sẽ nhận lại tiền trong năm ngày làm việc. Tôi giúp gì thêm được không?',h:'Hỏi thêm (ví dụ bồi thường) hoặc cảm ơn.',m:"No, that's all. Thank you for your help.",rp:'Anything else?',
+    o:[{k:'discount|voucher|compensation|coupon',n:'endV',r:''},{k:"@no|that's all|thank",n:'end',r:''}],d:{n:'end',r:''}},
+  n4p:{c:1,a:"Sure. We'll send a new one tomorrow, free of charge. Is there anything else I can help with?",v:'Vâng. Chúng tôi sẽ gửi món mới ngày mai, miễn phí. Tôi giúp gì thêm được không?',h:'Hỏi thêm (ví dụ bồi thường) hoặc cảm ơn.',m:"Could you give me a discount for the trouble?",rp:'Anything else?',
+    o:[{k:'discount|voucher|compensation|coupon',n:'endV',r:''},{k:"@no|that's all|thank",n:'end',r:''}],d:{n:'end',r:''}},
+  endV:{a:"I'll add a ten percent discount voucher to your account. Sorry again, and have a nice day!",v:'Tôi sẽ thêm phiếu giảm 10% vào tài khoản của bạn. Xin lỗi lần nữa, chúc một ngày tốt lành!',end:true},
+  end:{a:'Thank you for your patience. Have a nice day!',v:'Cảm ơn bạn đã kiên nhẫn. Chúc một ngày tốt lành!',end:true}}},
+ {id:'b2-cv1',lv:'B2',title:'Back to the Office?',vi:'Tranh luận: quay lại văn phòng?',who:'Sam',k:0,start:'n1',n:{
+  n1:{a:"Management wants everyone back in the office five days a week. What's your take on that?",v:'Ban giám đốc muốn mọi người lên văn phòng cả năm ngày. Bạn nghĩ sao?',h:'Nêu rõ đồng ý hay không và vì sao.',m:"Honestly, I'm not in favour of it. I think a hybrid model works better for most of us.",rp:'Sorry, are you for or against the idea?',
+    o:[{k:"disagree|bad idea|don't think|not sure|against|not in favour|prefer home|remote|flexible|flexibility|hybrid|home",n:'n2d',r:'I see.'},{k:'agree|good idea|support|makes sense|in favour|in favor|benefit|better in the office',n:'n2a',r:'Interesting.'}],d:{n:'n2d',r:'Hmm.'}},
+  n2a:{a:'So why do you think being in the office is better?',v:'Vậy vì sao bạn nghĩ lên văn phòng tốt hơn?',h:'Đưa lý do: giao tiếp, tập trung, gắn kết…',m:'Communication is much faster face to face, and new staff can learn from experienced colleagues.',rp:'Sorry, why is the office better?',
+    o:[{k:'communicate|communication|team|teamwork|collaborate|meeting|talk|face to face|in person',n:'n3a',r:"True, it's easier to sort things out face to face."},{k:'focus|distraction|productive|productivity|concentrate',n:'n3a',r:'Some people do focus better at the office.'},{k:'lonely|isolated|social|colleague|friend',n:'n3a',r:'Yes, working alone can be isolating.'}],d:{n:'n3a',r:'OK.'}},
+  n3a:{a:'But what about people who live far away? Commuting can take hours.',v:'Nhưng còn người ở xa thì sao? Đi lại có khi mất hàng giờ.',h:'Thừa nhận ý của Sam rồi đưa lập luận của bạn.',m:"That's a fair point, but the company could offer flexible hours or help with transport.",rp:'What do you think about the commute problem?',
+    o:[{k:'@any',n:'n4',r:'Fair point.'}],d:{n:'n4',r:''}},
+  n2d:{a:"So what's the main problem with being in the office every day?",v:'Vậy vấn đề chính của việc lên văn phòng mỗi ngày là gì?',h:'Đưa lý do: đi lại, chi phí, tập trung, cân bằng cuộc sống…',m:'The commute wastes a lot of time, and I actually concentrate better at home.',rp:"Sorry, what's the main problem for you?",
+    o:[{k:'commute|commuting|traffic|travel|time|far',n:'n3d',r:'The traffic is terrible, that’s true.'},{k:'cost|money|expensive|petrol|fuel|rent',n:'n3d',r:'It does cost a lot.'},{k:'focus|productive|quiet|noise|noisy|distraction',n:'n3d',r:'Offices can be noisy, I agree.'},{k:'family|child|children|kid|balance|life',n:'n3d',r:'Work-life balance really matters.'}],d:{n:'n3d',r:'I see.'}},
+  n3d:{a:"But don't you think new staff learn faster when they sit next to experienced colleagues?",v:'Nhưng bạn không nghĩ nhân viên mới học nhanh hơn khi ngồi cạnh người có kinh nghiệm sao?',h:'Thừa nhận một phần rồi phản biện.',m:"That's true to some extent, but mentoring can also happen online or on office days.",rp:'What about new staff?',
+    o:[{k:'@any',n:'n4',r:"Hmm, that's a good point."}],d:{n:'n4',r:''}},
+  n4:{a:'So what would be a fair compromise, in your opinion?',v:'Vậy theo bạn, giải pháp dung hoà hợp lý là gì?',h:'Đề xuất một giải pháp cụ thể.',m:'Maybe three days in the office and two at home, and teams could choose which days.',rp:'What compromise would you suggest?',
+    o:[{k:'hybrid|two days|three days|some days|mix|flexible|choose|depend|part of the week|few days',n:'endY',r:''}],d:{n:'endM',r:''}},
+  endY:{a:"That sounds reasonable. Let's suggest that at Monday's meeting.",v:'Nghe hợp lý đấy. Mình đề xuất ở cuộc họp thứ Hai nhé.',end:true},
+  endM:{a:"Hmm, I'll think about it. Let's discuss it at Monday's meeting.",v:'Hừm, để mình nghĩ thêm. Mình bàn ở cuộc họp thứ Hai nhé.',end:true}}},
+ {id:'b2-cv2',lv:'B2',title:'Negotiating the Rent',vi:'Thương lượng giá thuê nhà',who:'Landlord',k:1,start:'n1',n:{
+  n1:{a:'So, the rent is six million a month. How long are you planning to stay?',v:'Giá thuê sáu triệu một tháng. Bạn định ở bao lâu?',h:'Nói thời gian thuê: a year, six months…',m:"I'm planning to stay for at least a year, maybe longer.",rp:'Sorry, how long would you stay?',
+    o:[{k:'year|12|two years|long|longer|long-term',n:'n2l',r:''},{k:'month|months|few months|short|temporary|semester',n:'n2s',r:''}],d:{n:'n2s',r:''}},
+  n2l:{a:'For a one-year contract, I could lower it to five and a half million. How does that sound?',v:'Nếu hợp đồng một năm, tôi có thể giảm còn năm triệu rưỡi. Bạn thấy sao?',h:'Đồng ý, hoặc thương lượng thêm (đề xuất giá, lý do).',m:"That's better, but would you consider five million if I pay three months in advance?",rp:'So, is five and a half million OK?',
+    o:[{k:'five million|5 million|lower|discount|advance|still|too expensive|a bit high|reduce|less',n:'n3',r:''},{k:'@yes|deal|sounds good|accept|fair',n:'n4',r:'Great, we have a deal.'}],d:{n:'n3',r:''}},
+  n2s:{a:"For a short stay, I'm afraid the price stays at six million. Is that OK for you?",v:'Thuê ngắn thì tôi e là giá vẫn sáu triệu. Bạn thấy ổn không?',h:'Chấp nhận hoặc thương lượng (ví dụ: ở lâu hơn để được giảm).',m:'Could you reduce it a little if I stay for a full year instead?',rp:'So, is six million OK?',
+    o:[{k:'year|longer|reduce|lower|discount|less|too expensive|still|bit high',n:'n3',r:''},{k:'@yes|deal|fine|accept',n:'n4',r:'Great.'}],d:{n:'n3',r:''}},
+  n3:{c:1,a:"Five million is too low for me. What if I include the internet and water bills instead?",v:'Năm triệu thì thấp quá. Hay là tôi bao luôn tiền internet và nước nhé?',h:'Nhận đề nghị hoặc từ chối lịch sự.',m:"That sounds fair. OK, it's a deal.",rp:'So, bills included: is that acceptable?',
+    o:[{k:"@no|think about|not sure|can't",n:'endNo',r:''},{k:'@yes|deal|fair|sounds good|accept|works',n:'n4',r:'Wonderful.'}],d:{n:'n4',r:'Good.'}},
+  n4:{a:"Is there anything in the flat you'd like me to fix before you move in?",v:'Có gì trong căn hộ bạn muốn tôi sửa trước khi chuyển vào không?',h:'Nêu thứ cần sửa, hoặc không.',m:"Yes, the air conditioner in the bedroom is quite noisy, and the bathroom tap is leaking.",rp:'Anything to fix before you move in?',
+    o:[{k:'air conditioner|air con|aircon|fan|light|door|lock|shower|tap|leak|leaking|window|fridge|washing machine|wifi|bed',n:'end',r:"I'll get the {w} fixed this week."},{k:'@no',n:'end',r:''}],d:{n:'end',r:''}},
+  end:{a:"Then let's sign the contract on Monday.",v:'Vậy thứ Hai mình ký hợp đồng nhé.',end:true},
+  endNo:{a:'I understand. Take some time to think, and call me if you change your mind.',v:'Tôi hiểu. Bạn cứ suy nghĩ, đổi ý thì gọi tôi nhé.',end:true}}},
+ {id:'c1-cv1',lv:'C1',title:'Scholarship Interview',vi:'Phỏng vấn học bổng',who:'Panel member',k:1,start:'n1',n:{
+  n1:{a:'Welcome. Could you start by telling us why you chose this particular programme?',v:'Chào mừng bạn. Bạn có thể bắt đầu bằng việc cho biết vì sao chọn chương trình này?',h:'Nêu động lực cụ thể: chuyên ngành, giảng viên, nghiên cứu, mục tiêu nghề nghiệp.',m:"Mainly because of its focus on sustainable urban planning, which ties in closely with the research I did for my final-year project.",rp:"I'm sorry, could you say a little more about why this programme?",
+    o:[{k:'research|professor|reputation|curriculum|course|module|specialise|specialize|field|career|goal|interest|passion|project',n:'n2',r:"That's a clear motivation."}],d:{n:'n2',r:'Thank you.'}},
+  n2:{a:"Tell us about a significant challenge you've faced and how you dealt with it.",v:'Hãy kể về một thử thách lớn bạn từng gặp và cách bạn vượt qua.',h:'Kể theo trình tự: tình huống, việc bạn làm, kết quả, bài học.',m:"In my second year I had to support my family while studying full-time. I learned to plan my week carefully, and I still graduated with distinction.",rp:'Could you describe a specific challenge?',
+    o:[{k:'@any',n:'n3',r:'That shows real resilience.'}],d:{n:'n3',r:''}},
+  n3:{a:'How would you contribute to the student community here?',v:'Bạn sẽ đóng góp gì cho cộng đồng sinh viên ở đây?',h:'Nêu đóng góp cụ thể: câu lạc bộ, tình nguyện, góc nhìn văn hoá…',m:"I'd like to set up a Vietnamese culture society and volunteer as a peer mentor for first-year international students.",rp:'In what ways would you get involved?',
+    o:[{k:'club|society|volunteer|organise|organize|event|mentor|help|share|culture|vietnam|diversity|perspective|community',n:'n4',r:'We value that kind of involvement.'}],d:{n:'n4',r:'I see.'}},
+  n4:{a:'What would you say is your greatest weakness?',v:'Theo bạn, điểm yếu lớn nhất của bạn là gì?',h:'Nêu một điểm yếu thật, không quá nghiêm trọng.',m:"I tend to take on too much because I find it hard to say no to people.",rp:'What would you consider a weakness of yours?',
+    o:[{k:'perfectionist|perfectionism|detail|delegate|public speaking|presenting|time management|procrastinate|overthink|impatient|shy|confidence|say no|take on too much',n:'n5',r:'Thank you for being candid.'}],d:{n:'n5',r:'Thank you for being honest.'}},
+  n5:{a:'And how are you working on that?',v:'Và bạn đang khắc phục điều đó thế nào?',h:'Nêu hành động cụ thể bạn đang làm.',m:"I've started prioritising my tasks every Monday and I only accept new commitments if I can realistically meet them.",rp:'What steps are you taking?',
+    o:[{k:'@any',n:'end',r:"That's a thoughtful answer."}],d:{n:'end',r:''}},
+  end:{a:"Thank you very much. We'll be in touch within two weeks.",v:'Cảm ơn bạn rất nhiều. Chúng tôi sẽ liên lạc trong vòng hai tuần.',end:true}}},
+ {id:'c1-cv2',lv:'C1',title:'A Difficult Conversation',vi:'Nói chuyện với đồng đội chậm tiến độ',who:'Jordan',k:0,start:'n1',n:{
+  n1:{a:'Hey, you wanted to talk to me about something?',v:'Này, bạn muốn nói chuyện gì với mình à?',h:'Nêu vấn đề một cách khéo léo: tiến độ phần việc của Jordan.',m:"Yes, I wanted to check in about the report. I noticed your section is a bit behind, and I wondered if everything's OK.",rp:'Sorry, what did you want to talk about?',
+    o:[{k:'deadline|late|behind|delay|progress|part|section|report|project|task',n:'n2',r:"Oh… yeah, I know I'm behind. Sorry about that."}],d:{n:'n2',r:"Oh… is this about my part of the report? I know I'm behind."}},
+  n2:{a:'Is it causing problems for the rest of the team?',v:'Nó có gây khó cho cả nhóm không?',h:'Nói thật nhưng không đổ lỗi.',m:"A little, to be honest. We can't finish the analysis until your data is in, so we're under some pressure.",rp:'Is it affecting the others?',
+    o:[{k:"@no|fine|okay|not a big deal|don't worry",n:'n3',r:"That's a relief."},{k:'@yes|problem|affect|waiting|wait|pressure|stress|client|submit|can’t finish|can\'t finish',n:'n3',r:"I didn't realise it was that bad."}],d:{n:'n3',r:'I see.'}},
+  n3:{a:"To be honest, I've had a lot going on lately.",v:'Nói thật là dạo này mình gặp nhiều chuyện.',h:'Thể hiện sự đồng cảm, hỏi han.',m:"I'm sorry to hear that. Is everything alright? Is there anything I can do to help?",rp:'…',
+    o:[{k:'understand|sorry to hear|what happened|everything ok|everything okay|alright|all right|help|support|anything i can do',n:'n4',r:''}],d:{n:'n5',r:'Anyway…'}},
+  n4:{a:"Thanks for asking. My mum has been in hospital, so I've been travelling back and forth a lot.",v:'Cảm ơn bạn đã hỏi. Mẹ mình nằm viện nên mình phải đi đi về về suốt.',h:'Đáp lại chân thành, gợi ý hỗ trợ.',m:"That sounds really tough. Please don't worry, family comes first. Let's figure out a way to share the workload.",rp:'…',
+    o:[{k:'@any',n:'n5',r:'I really appreciate that.'}],d:{n:'n5',r:''}},
+  n5:{a:'So how do you think we should handle the deadline?',v:'Vậy theo bạn mình nên xử lý hạn chót thế nào?',h:'Đề xuất kế hoạch: chia lại việc, xin gia hạn, cập nhật thường xuyên…',m:"Why don't I take over the data collection, and you focus on the summary? We could also ask the manager for a two-day extension.",rp:'What would you suggest we do?',
+    o:[{k:'split|share|divide|reassign|take over|help|extension|extend|ask|manager|prioritise|prioritize|plan|schedule|check in|update',n:'endY',r:''}],d:{n:'endN',r:''}},
+  endY:{a:"That sounds like a plan. I'll update everyone this afternoon. Thanks for being so understanding.",v:'Nghe ổn đấy. Chiều nay mình cập nhật cho mọi người. Cảm ơn bạn đã thông cảm.',end:true},
+  endN:{a:"OK, let's talk to the others and decide together.",v:'Được, mình bàn với mọi người rồi cùng quyết.',end:true}}},
+ {id:'c2-cv1',lv:'C2',title:'On Air: AI in the Classroom',vi:'Trên sóng radio: AI trong lớp học',who:'Radio host',k:1,start:'n1',n:{
+  n1:{a:'Welcome to the show. Many parents worry that AI is making students lazy. Do they have a point?',v:'Chào mừng đến chương trình. Nhiều phụ huynh lo AI làm học sinh lười. Họ có lý không?',h:'Nêu quan điểm có sắc thái: đồng ý một phần, điều kiện, ngoại lệ.',m:"To some extent, yes. If AI simply does the work for students, they miss the productive struggle that learning depends on. But the tool itself isn't the problem; the way we use it is.",rp:'So, do you think the worry is justified or not?',
+    o:[{k:'exaggerate|exaggerated|overstate|overstated|myth|not necessarily|misconception|calculator|panic|overblown',n:'n2',r:"You're sceptical of that fear, then."},{k:'point|concern|valid|risk|depend|to some extent|partly|nuanced|both|degree|justified',n:'n2',r:"So it's not black and white."}],d:{n:'n2',r:'Interesting.'}},
+  n2:{a:'Could you give our listeners a concrete example?',v:'Bạn có thể đưa một ví dụ cụ thể cho thính giả không?',h:'Đưa ví dụ cụ thể, có bối cảnh và kết quả.',m:"Take essay writing. A student who asks AI for a finished essay learns very little, whereas one who uses it to question their argument often ends up thinking more deeply.",rp:'Can you give us an example?',
+    o:[{k:'@any',n:'n3',r:"That's a vivid example."}],d:{n:'n3',r:''}},
+  n3:{a:"Critics would say that's the exception rather than the rule. How would you respond?",v:'Người phản biện sẽ nói đó là ngoại lệ chứ không phải số đông. Bạn đáp thế nào?',h:'Thừa nhận phần đúng, rồi phản biện bằng lý lẽ hoặc bằng chứng.',m:"I'd concede that it isn't happening everywhere yet, but that's precisely why teachers need training in designing tasks that reward thinking rather than output.",rp:'How would you answer your critics?',
+    o:[{k:'evidence|research|study|studies|data|survey|findings|show',n:'n4',r:'So the research is on your side.'},{k:'admit|concede|fair|valid|true|grant|acknowledge',n:'n4',r:'A fair concession.'}],d:{n:'n4',r:'I see.'}},
+  n4:{a:'If you could change one thing about how schools use AI, what would it be?',v:'Nếu được thay đổi một điều về cách trường học dùng AI, bạn sẽ thay đổi gì?',h:'Đề xuất một thay đổi và lý do.',m:"I'd shift assessment towards the process: drafts, reflections and oral defences, so that using AI thoughtfully becomes part of the learning rather than a shortcut.",rp:'What one change would you make?',
+    o:[{k:'@any',n:'end',r:'A bold proposal.'}],d:{n:'end',r:''}},
+  end:{a:"We'll have to leave it there. Thank you for joining us.",v:'Chúng ta phải dừng ở đây. Cảm ơn bạn đã tham gia.',end:true}}},
+ {id:'c2-cv2',lv:'C2',title:'Closing the Deal',vi:'Đàm phán hợp tác',who:'Partner',k:0,start:'n1',n:{
+  n1:{a:"We're keen to work with you, but our budget is tighter than expected. Where do you have some flexibility?",v:'Chúng tôi rất muốn hợp tác, nhưng ngân sách eo hẹp hơn dự kiến. Bên bạn có thể linh hoạt ở đâu?',h:'Nêu chỗ có thể nhượng bộ: giá, tiến độ, phạm vi… và điều kiện.',m:"We could be flexible on the timeline. If we deliver in two phases, the upfront cost would come down considerably.",rp:'Could you be more specific about where you might move?',
+    o:[{k:'price|cost|fee|discount|rate',n:'n2',r:'Price flexibility would help us a lot.'},{k:'timeline|deadline|schedule|delivery|phase|phases|stage',n:'n2',r:'Phasing could certainly ease the budget.'},{k:'scope|feature|reduce|scale|prioritise|prioritize|essential|core',n:'n2',r:'Reducing the scope is an option.'}],d:{n:'n2',r:"I see."}},
+  n2:{a:'And what would you need from us in return?',v:'Và bên bạn cần gì từ chúng tôi để đổi lại?',h:'Nêu điều kiện đổi lại: cam kết dài hạn, thanh toán trước, giới thiệu…',m:"A two-year commitment and a thirty percent deposit would make that possible for us.",rp:'What would you want in return?',
+    o:[{k:'commitment|contract|long-term|year|years|volume|upfront|advance|deposit|exclusive|exclusivity|referral|case study',n:'n3',r:"That's something we could consider."}],d:{n:'n3',r:'Let me think about that.'}},
+  n3:{a:'Our legal team is concerned about the penalty clause. Is that negotiable?',v:'Bộ phận pháp lý của chúng tôi lo ngại điều khoản phạt. Điều đó có thương lượng được không?',h:'Giữ lập trường hoặc nhượng bộ có điều kiện.',m:"We could cap the penalties at ten percent of the contract value, provided the delays are on your side.",rp:'Is there any room to move on the penalty clause?',
+    o:[{k:'non-negotiable|firm|essential|standard|cannot change|can\'t change',n:'n4',r:"I see. That'll be harder to sell internally."},{k:'@yes|negotiable|revise|cap|limit|reduce|compromise|provided|as long as',n:'n4',r:'That would remove a major obstacle.'}],d:{n:'n4',r:'Understood.'}},
+  n4:{a:"Let's summarise where we've landed, shall we?",v:'Mình tóm tắt lại những gì đã thống nhất nhé?',h:'Tóm tắt các điểm đã thống nhất và bước tiếp theo.',m:"So, we'll deliver in two phases, you'll commit to two years with a thirty percent deposit, and penalties will be capped at ten percent. I'll send a revised draft by Wednesday.",rp:'Could you summarise the key points?',
+    o:[{k:'@any',n:'end',r:'Perfect.'}],d:{n:'end',r:''}},
+  end:{a:"Great. I'll run this past our board and get back to you by Friday.",v:'Tuyệt. Tôi sẽ trình ban lãnh đạo và phản hồi trước thứ Sáu.',end:true}}}
+];
+const CVI = Object.fromEntries(CONV.map(c=>[c.id,c]));
+st.conv ||= {};
+// Nhận ý: so gốc từ của câu trả lời với từ khoá của từng nhánh (cụm nhiều từ phải có đủ các từ); @yes, @no, @name, @place, @any là kiểu đặc biệt.
+const cvStems = t => (String(t).toLowerCase().replace(/’/g,"'").match(/[a-z0-9'-]+/g)||[]).map(ideaStem);
+const NOT_NAME = new Set(['a','an','the','fine','good','ok','okay','from','student','teacher','here','sorry','nice','happy','not','very','so','and','hi','hello','yes','no','it','is']);
+function cvName(t){ t=String(t).replace(/’/g,"'"); const m=/(?:my name is|my name's|i am|i'm|call me|it is|it's|name is|this is)\s+([A-Za-zÀ-ỹ][A-Za-zÀ-ỹ'-]+)(?:\s+([A-Z][A-Za-zÀ-ỹ'-]+))?/i.exec(t);
+  let w=m?(m[2]?m[1]+' '+m[2]:m[1]):null; if(w&&NOT_NAME.has(w.toLowerCase())) w=null;
+  if(!w){ const ws=String(t).trim().split(/\s+/); if(ws.length<=3){ const c=ws.find(x=>!NOT_NAME.has(x.toLowerCase().replace(/[^a-z]/gi,''))); if(c) w=c.replace(/[^A-Za-zÀ-ỹ'-]/g,''); } }
+  return w?w.charAt(0).toUpperCase()+w.slice(1):null; }
+function cvPlace(t){ t=String(t).replace(/’/g,"'"); const m=/(?:from|in|live in|near)\s+((?:[A-Z][A-Za-zÀ-ỹ'-]+\s?){1,3})/.exec(t)||/(?:from|in)\s+([a-zà-ỹ'-]+(?:\s[a-zà-ỹ'-]+)?)/i.exec(t);
+  const w=m?m[1].trim():null; return w&&!NOT_NAME.has(w.toLowerCase())?w.replace(/\b\w/g,c=>c.toUpperCase()):null; }
+function cvMatch(node,text){ text=String(text).replace(/’/g,"'"); const S=new Set(cvStems(text)), low=' '+String(text).toLowerCase().replace(/’/g,"'")+' ';
+  let best=null;
+  node.o.forEach((o,oi)=>{ let hit=0, w=null, pos=1e9;
+    o.k.split('|').forEach(item=>{
+      if(item==='@any'){ if(wcount(text)>=1){ hit+=.5; pos=Math.min(pos,5e8); } return; }
+      if(item==='@yes'||item==='@no'){ const re=item==='@yes'?YES_RE:NO_RE, m=re.exec(text); if(m){ hit++; pos=Math.min(pos,m.index); } return; }
+      if(item==='@name'){ const n=cvName(text); if(n){ hit++; w=w||n; pos=0; } return; }
+      if(item==='@place'){ const p=cvPlace(text); if(p){ hit++; w=w||p; pos=0; } return; }
+      const ws=item.split(' '), st_=ws.map(ideaStem); let ok=ws.length>1?low.includes(' '+item+' ')||st_.every(x=>S.has(x)):S.has(st_[0]);
+      // “I don't want coffee, I want tea”: từ khoá ngay sau từ phủ định (trong 3 từ) thì không tính
+      if(ok&&!/^@/.test(item)&&!/n't|not|no\b/.test(item)){ const toks=low.trim().split(/[^a-z0-9'-]+/).filter(Boolean), idx=toks.map((x,i)=>ideaStem(x)===st_[0]?i:-1).filter(i=>i>=0);
+        if(idx.length&&idx.every(i=>toks.slice(Math.max(0,i-3),i).some(x=>/^(not|no|never|without|don't|doesn't|didn't|won't|can't|isn't)$/.test(x)))) ok=false; }
+      if(ok){ hit++; if(!w) w=item; const i=low.indexOf(ws[0]); if(i>=0) pos=Math.min(pos,i); } });
+    if(hit&&(!best||hit>best.hit||(hit===best.hit&&pos<best.pos))) best={o,oi,hit,w,pos}; });
+  return best; }
+const cvFill = (r,w) => r.replace(/\{w\}/g, w ? (/^\d+$/.test(w)?w:w.charAt(0).toUpperCase()+w.slice(1)) : '');
+function startConv(id){ const c=CVI[id]; if(!c) return; evc('s:conv'); go('conv',{cv:{id,node:c.start,log:[],t0:Date.now(),miss:0,elab:false,show:LVS.indexOf(c.lv)<2,vi:false,hint:false,done:false,said:''}}); }
+function cvSay(){ const C=ui.cv, c=CVI[C.id], nd=c.n[C.node]; if(!HAS_TTS) return; if(C.said===C.node+':'+C.log.length) return; C.said=C.node+':'+C.log.length; const pre=C.pre?C.pre+' ':''; say(pre+nd.a,false,c.k); }
+function cvAnswer(text){ const C=ui.cv; if(!C||C.done) return; text=String(text||'').trim(); if(!text) return;
+  const c=CVI[C.id], nd=c.n[C.node], ms=Date.now()-C.t0, words=wcount(text), L=c.lv, min=CV_MIN[L];
+  const m=cvMatch(nd,text), rec={node:C.node,q:nd.a,text,ms,words,hint:!!C.hint};
+  C.hint=false; C.vi=false;
+  if(!m&&C.miss<1){ rec.ok='repair'; C.log.push(rec); C.miss++; C.pre=nd.rp||"Sorry, I didn't catch that."; C.t0=Date.now(); sfx('pop'); return render(); }
+  if(m&&words<min&&CV_ELAB[L]&&!C.elab&&!nd.c&&!/^@(yes|no|name|place)$/.test(m.o.k)){ rec.ok='short'; C.log.push(rec); C.elab=true; C.pre=CV_ELAB[L]; C.t0=Date.now(); sfx('pop'); return render(); }
+  rec.ok=m?(C.miss||C.elab?'late':'match'):'default'; C.log.push(rec); if(m) sfx('ok');
+  const go_=m?m.o:nd.d, react=cvFill(go_.r||'',m&&m.w); C.miss=0; C.elab=false; C.node=go_.n; C.pre=react; C.t0=Date.now();
+  if(c.n[C.node].end){ C.done=true; cvFinish(); } render(); }
+function cvScore(C){ const c=CVI[C.id], ans=C.log.filter(x=>x.ok!=='repair'&&x.ok!=='short'), turns=[...new Set(C.log.map(x=>x.node))].length;
+  const first=C.log.filter((x,i)=>x.ok==='match'&&(i===0||C.log[i-1].node!==x.node)).length, und=turns?first/turns:0;
+  const words=C.log.reduce((a,x)=>a+x.words,0)/Math.max(1,C.log.length), sec=C.log.reduce((a,x)=>a+x.ms,0)/Math.max(1,C.log.length)/1000;
+  const text=C.log.map(x=>x.text).join('. '), e=wcount(text)>=15?perfEst(text,'S'):null, hints=grammarHints(C.log.map(x=>x.text).join('. '));
+  const pass=und>=.7&&words>=CV_MIN[c.lv];
+  return {turns,und,words,sec,e,hints,pass,score:Math.min(1,und*(words>=CV_MIN[c.lv]?1:.75))}; }
+function cvFinish(){ const C=ui.cv, s=cvScore(C), r=(st.conv ||= {})[C.id] ||= {best:0,n:0}; r.best=Math.max(r.best,s.score); r.n++; r.day=today(); if(s.e) r.est=Math.max(r.est||0,+s.e.p.toFixed(2));
+  markActive(); bump('talk'); tally(true,selfXP('cv:'+C.id,s.pass?30:15),true); questCheck(); save(); try{ checkBadges(); }catch(e){} }
+function viewConv(){ const C=ui.cv; if(!C) return viewTalk(); const c=CVI[C.id], nd=c.n[C.node], L=c.lv;
+  const bub=(who,t,me,sub)=>`<div class="dl ${me?'me B':''}"><span class="who">${esc(who)}</span><span lang="en">${esc(t)}</span>${sub?`<span class="hint">${sub}</span>`:''}</div>`;
+  const top=`<div class="sess-top"><div class="spread"><button class="btn ghost back" data-act="cvquit">✕ Thoát</button><span class="num muted">${L} · Hội thoại mở · ${esc(c.vi)}</span></div><div class="bar"><i style="width:${Math.min(100,C.log.filter(x=>x.ok!=='repair'&&x.ok!=='short').length/Object.values(c.n).filter(n=>!n.end).length*100*1.2)}%"></i></div></div>`;
+  if(C.done){ const s=cvScore(C), fin=nd;
+    return top+`<section class="stack"><div class="dlg">${C.hist||''}${bub(c.who,(C.pre?C.pre+' ':'')+fin.a,false,esc(fin.v))}</div></section>
+    <section class="panel reward stack">${mascot(s.pass?'party':'cheer',84)}<h2>${s.pass?'Bạn đã giữ được cuộc hội thoại!':'Xong hội thoại'}</h2>
+      <div class="stats" style="width:100%"><div class="stat"><b>${pct(s.und)}</b><span>Lượt người kia hiểu ngay</span></div><div class="stat"><b>${s.words.toFixed(1)}</b><span>Từ mỗi lượt (cấp ${L} nên ≥ ${CV_MIN[L]})</span></div><div class="stat"><b>${s.sec.toFixed(1)} s</b><span>Thời gian nghĩ trung bình</span></div></div>
+      <p class="hint">${s.pass?'Đạt: người kia hiểu phần lớn câu trả lời của bạn ngay lần đầu, câu trả lời đủ dài cho cấp này.':`Cần ≥ 70% lượt được hiểu ngay${CV_MIN[L]>1?` và trung bình ≥ ${CV_MIN[L]} từ mỗi lượt`:''}. Làm lại: mỗi lần có thể rẽ nhánh khác.`}</p></section>
+    ${s.hints.length?`<section class="panel stack"><h3>Lỗi hay gặp máy dò được</h3>${s.hints.slice(0,5).map(x=>`<p class="gerr"><span lang="en">${esc(x.snip)}</span><span class="hint">${esc(x.why)}</span></p>`).join('')}</section>`:''}
+    ${s.e?estHtml(s.e,L,'S'):''}
+    <details class="panel stack"><summary><h3>Câu trả lời gợi ý cho từng lượt</h3></summary>${[...new Set(C.log.map(x=>x.node))].map(k=>`<div class="stack" style="gap:2px"><p lang="en"><b>${esc(c.who)}:</b> ${esc(c.n[k].a)}</p><p lang="en" class="muted">→ ${esc(c.n[k].m||'')}</p></div>`).join('')}</details>
+    <div class="row endrow" aria-label="Việc tiếp theo"><button class="btn primary" data-act="cvagain" data-id="${c.id}">Nói lại (có thể rẽ nhánh khác)</button><button class="btn" data-go="talk">Về Kỹ năng</button></div>`; }
+  const akey='cv:'+C.id+':'+C.log.length, mine=ASR.key===akey;
+  const line=(C.pre?C.pre+' ':'')+nd.a;
+  return top+`<section class="stack"><div class="dlg">${C.hist||''}
+      <div class="dl"><span class="who">${esc(c.who)}</span>${C.show?`<span lang="en">${esc(line)}</span>`:`<span class="hint">🎧 Nghe câu hỏi (chữ đang ẩn để luyện nghe)</span>`}${C.vi?`<span class="hint">${esc((C.pre?'':'')+nd.v)}</span>`:''}</div></div>
+    <div class="row" style="gap:6px">${HAS_TTS?`<button class="btn small" data-act="cvplay">${SPK} Nghe lại</button><button class="btn small" data-act="cvplay" data-slow="1">🐢 Chậm</button>`:''}${C.show?'':`<button class="btn small" data-act="cvshow">Hiện chữ</button>`}<button class="btn small" data-act="cvvi" aria-pressed="${C.vi}">Nghĩa</button><button class="btn small" data-act="cvhint" aria-pressed="${C.hint}">💡 Gợi ý</button></div>
+    ${C.hint?`<p class="tip"><b>Gợi ý:</b> ${esc(nd.h)}<br><span lang="en">Ví dụ: ${esc(nd.m)}</span></p>`:''}
+    <div class="stack" style="gap:8px">${HAS_ASR?`<div class="row">${mine&&ASR.on?'<button class="btn" data-act="asrstop">■ Đang nghe… bấm khi nói xong</button>':`<button class="btn primary" data-act="asr" data-k="${akey}" data-t="${esc(nd.m||nd.a)}">🎙 Nói câu trả lời</button>`}</div>${mine&&ASR.err?`<p class="hint" role="status">${esc(ASR.err)}</p>`:''}`:''}
+      <form data-form="cvans" class="row" style="flex-wrap:nowrap"><input class="field" style="flex:1" lang="en" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${HAS_ASR?'…hoặc gõ câu trả lời':'Gõ câu trả lời bằng tiếng Anh'}" aria-label="Câu trả lời của bạn"><button class="btn">Gửi</button></form>
+      <p class="hint">Trả lời bằng câu của bạn, không cần giống mẫu. ${LVS.indexOf(L)>=2?`Ở cấp ${L}, nên trả lời ít nhất ${CV_MIN[L]} từ.`:''} Máy nhận ý bằng từ khoá (không dùng AI), nên hãy nói rõ ý chính.</p></div></section>`; }
+// Lịch sử hội thoại: giữ HTML đã dựng để không phải dựng lại
+const _cvAnswer0 = cvAnswer; cvAnswer = function(text){ const C=ui.cv; if(!C||C.done) return; const c=CVI[C.id], nd=c.n[C.node];
+  const q=(C.pre?C.pre+' ':'')+nd.a, t=String(text||'').trim(); if(!t) return;
+  C.hist=(C.hist||'')+`<div class="dl"><span class="who">${esc(c.who)}</span><span lang="en">${esc(q)}</span></div><div class="dl me B"><span class="who">Bạn</span><span lang="en">${esc(t)}</span></div>`;
+  return _cvAnswer0(t); };
+DETAIL_SAFE_VIEW.add('conv'); TRANSIENT.conv='talk'; ['cvgo','cvquit','cvplay','cvshow','cvvi','cvhint','cvagain'].forEach(a=>DETAIL_SAFE_ACT.add(a));
+document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('button'); if(!b) return; const d=b.dataset;
+  switch(d.act){
+    case 'cvgo': return startConv(d.id);
+    case 'cvagain': return startConv(d.id);
+    case 'cvquit': try{ speechSynthesis.cancel(); }catch(x){} return go('talk');
+    case 'cvplay': { const C=ui.cv, c=CVI[C.id]; return say((C.pre?C.pre+' ':'')+c.n[C.node].a,d.slow==='1',c.k); }
+    case 'cvshow': ui.cv.show=true; return render();
+    case 'cvvi': ui.cv.vi=!ui.cv.vi; return render();
+    case 'cvhint': ui.cv.hint=!ui.cv.hint; return render();
+  } });
+document.addEventListener('submit',e=>{ const f=e.target; if(!f||f.dataset.form!=='cvans') return; e.preventDefault(); const v=f.querySelector('input').value; cvAnswer(v); });
+// Nói xong (máy chép một câu): dùng lời máy nghe được làm câu trả lời; tự đọc lượt lời mới của người kia.
+const _render31c = render; render = function(){ _render31c(); try{ if(ui.view!=='conv'||!ui.cv) return; const C=ui.cv, akey='cv:'+C.id+':'+C.log.length;
+  if(ASR.key===akey&&ASR.res&&!ASR.on&&ASR.res.heard&&C.took!==akey){ C.took=akey; const t=ASR.res.heard; setTimeout(()=>cvAnswer(t),0); return; }
+  document.body.classList.add('lesson');
+  if(!C.done) cvSay(); else if(C.said!=='end'){ C.said='end'; const c=CVI[C.id]; if(HAS_TTS) say((C.pre?C.pre+' ':'')+c.n[C.node].a,false,c.k); } }catch(e){} };
+const _viewRender31c = {};
+// Trang Kỹ năng · Hội thoại: hội thoại mở đứng đầu; can-do “tham gia hội thoại không theo kịch bản” mỗi cấp.
+const _viewTalk31c = viewTalk; viewTalk = function(){ let h=_viewTalk31c(); const L=talkLv(), T=SK_TABS.some(x=>x[0]===ui.talkTab)?ui.talkTab:'hoithoai'; if(T!=='hoithoai') return h;
+  const cs=CONV.filter(c=>c.lv===L); if(!cs.length) return h;
+  const sec=`<section class="stack"><h2>Hội thoại mở ${L} <span class="pill accent">mới</span></h2><p class="hint">Người kia hỏi, bạn trả lời bằng câu của mình (nói hoặc gõ). Câu chuyện rẽ theo điều bạn nói; chưa hiểu thì người kia hỏi lại.</p><div class="units">${cs.map(c=>{ const r=(st.conv ||= {})[c.id]; return `<button class="unit morei" data-act="cvgo" data-id="${c.id}"><span class="no">${ico('chat')}</span><span class="t"><strong>${esc(c.vi)}</strong><span class="muted"><span lang="en">${esc(c.title)}</span> · nói với ${esc(c.who)}</span>${r?`<span class="pill ${r.best>=.8?'good':'accent'}" style="justify-self:start">${r.best>=.8?'Đạt':'Đang luyện'} · ${pct(r.best)}</span>`:''}</span></button>`; }).join('')}</div></section>`;
+  const i=h.indexOf(`<section class="stack"><h2>Hội thoại ${L}`); return i>=0?h.slice(0,i)+sec+h.slice(i):h+sec; };
+LVS.forEach(L=>{ const ids=CONV.filter(c=>c.lv===L).map(c=>c.id); if(ids.length) CANDO.push({id:L.toLowerCase()+'-conv',lv:L,grp:'com',vi:L<'B1'?'Trả lời câu hỏi đơn giản trong hội thoại không theo kịch bản, hỏi lại khi chưa hiểu':L<'C1'?'Tham gia hội thoại không theo kịch bản, đưa ý kiến và lý do, xử lý khi chưa hiểu nhau':'Duy trì hội thoại không theo kịch bản một cách linh hoạt, lập luận, nhượng bộ và thuyết phục',en:'Take part in an unscripted conversation',ref:[{t:'cv',v:ids,n:1}]}); });
+const _cdActs31c = cdActs; cdActs = function(r,L){ if(r.t==='cv') return r.v.map(id=>({done:cdOk(((st.conv ||= {})[id]||{}).best), at:`data-act="cvgo" data-id="${id}"`, t:'Hội thoại mở: '+CVI[id].vi})); return _cdActs31c(r,L); };
+const _mergeState31c = mergeState; mergeState = function(a,b){ const x=_mergeState31c(a,b); x.conv={...(b.conv||{}),...(a.conv||{})}; Object.keys(b.conv||{}).forEach(k=>{ if(a.conv&&a.conv[k]&&b.conv[k].best>a.conv[k].best) x.conv[k]=b.conv[k]; }); return x; };
 
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
