@@ -2190,7 +2190,7 @@ function viewWTask(){
     ${phraseList(t.u)}</section>
   <form class="stack" data-form="wtask"><textarea id="wtin" class="field" rows="12" lang="en" spellcheck="true" aria-label="Bài viết" placeholder="Viết bài của bạn ở đây. Cách đoạn bằng một dòng trống.">${esc(text)}</textarea>
     <div class="spread"><span class="num muted" id="wtcount">${wc(text)} từ · yêu cầu ${t.min}–${t.max}</span><button class="btn primary">Lưu và kiểm tra</button></div></form>
-  ${chk?`<section class="panel stack"><h3>Máy kiểm tra hình thức</h3><p class="hint">Máy không hiểu nội dung (muốn chấm ý và lập luận, nhờ giám khảo AI bên dưới nếu có). Đây là những gì máy đếm và dò được; hãy tự chấm bên dưới và so với bài mẫu, hoặc gửi báo cáo cho giáo viên.</p>${chk.map(([ok,x])=>`<p>${ok?'✅':'⚠️'} ${esc(x)}</p>`).join('')}${grammarHints(text).length?'':'<p>✅ Không thấy lỗi nào trong danh sách lỗi hay gặp</p>'}${hintsHtml(text)}</section>
+  ${chk?`<section class="panel stack"><h3>Máy kiểm tra hình thức</h3><p class="hint">App không chấm nội dung (không dùng AI). Đây là những gì máy đếm và dò được; hãy tự chấm bên dưới và so với bài mẫu, hoặc gửi báo cáo cho giáo viên.</p>${chk.map(([ok,x])=>`<p>${ok?'✅':'⚠️'} ${esc(x)}</p>`).join('')}${grammarHints(text).length?'':'<p>✅ Không thấy lỗi nào trong danh sách lỗi hay gặp</p>'}${hintsHtml(text)}</section>
   ${vocabProfileHtml(t,text)}
   <section class="panel stack"><h3>Tự chấm theo tiêu chí</h3>${rubric(WRUB,s.self,'wtr')}${cdStatus(wtDone(t.id),wtMissing(t.id))}</section>
   <section class="panel stack"><h3>Bài mẫu để đối chiếu</h3>${t.m.map(x=>`<p lang="en">${esc(x)}</p>`).join('')}</section>`:''}`;
@@ -2446,7 +2446,7 @@ function viewHelp(){
   </div></section>
   <section class="panel stack"><h3>Giải thích thuật ngữ</h3><dl class="gloss">${Object.values(GLOSSARY).map(([t,d])=>`<dt>${t}</dt><dd class="muted">${d}</dd>`).join('')}</dl></section>
   <section class="panel stack"><h3>Câu hỏi thường gặp</h3>
-    ${q('Không có mạng có dùng được không?','Mọi bài chấm ngay trên máy; app chỉ gọi máy chủ khi bạn tự bật đồng bộ, giải đấu, nhắc học hoặc giám khảo AI. Mở địa chỉ chính thức '+HOME_URL+' một lần có mạng, rồi cài như app (Thêm vào Màn hình chính): từ đó dùng được khi mất mạng. Bản xem trên claude.ai thì luôn cần mạng.')}
+    ${q('Không có mạng có dùng được không?','App không gọi server, không dùng AI; mọi bài chấm ngay trên máy. Mở địa chỉ chính thức '+HOME_URL+' một lần có mạng, rồi cài như app (Thêm vào Màn hình chính): từ đó dùng được khi mất mạng. Bản xem trên claude.ai thì luôn cần mạng.')}
     ${q('Mở app ở đâu?',`Luôn mở từ địa chỉ chính thức: <a href="${HOME_URL}" target="_blank" rel="noopener">${HOME_URL}</a>. Tiến độ lưu theo từng đường link; mở từ link khác là một kho tiến độ khác (chuyển bằng mã sao lưu).`)}
     ${q('Tiến độ lưu ở đâu? Đổi máy thì sao?','Lưu trong trình duyệt của máy này. Vào Cài đặt → Sao lưu để tải file hoặc sao chép mã, rồi dán vào máy mới. App nhắc sao lưu mỗi 7 ngày.')}
     ${q('Tôi gõ đúng mà app chấm sai?','Bấm “Câu của tôi cũng đúng?” ngay dưới câu đó: lần này không bị trừ điểm, và câu của bạn được ghi lại để người soạn bổ sung đáp án.')}
@@ -6688,7 +6688,7 @@ function viewAbout(){ const cs=contentStats();
   <section class="panel stack"><h3>Cam kết</h3><ul style="margin:0;padding-left:20px;display:grid;gap:6px">
     <li><b>Mọi bài học miễn phí.</b> Không khoá bài sau tường phí.</li>
     <li><b>Không quảng cáo của bên thứ ba, không bán dữ liệu.</b> Tiến độ lưu trên máy bạn; đồng bộ nhiều máy là tuỳ chọn, bằng mã, không cần tài khoản.</li>
-    <li><b>Nội dung bài học do người soạn viết, không do AI tạo.</b> Máy chấm bằng quy tắc minh bạch (từ khoá, luật lỗi, ước tính cấp từ bài mẫu). Riêng bài viết, bài nói và hội thoại có thêm <b>giám khảo AI do bạn tự bật</b>: bài được gửi tới Anthropic để chấm, không lưu lại, có giới hạn lượt mỗi ngày.</li>
+    <li><b>Không dùng AI để chấm hay tạo nội dung trong app.</b> Chấm bằng quy tắc minh bạch (từ khoá, luật lỗi), nên máy chỉ dò lỗi hay gặp, không thay được giáo viên.</li>
     <li><b>Mã nguồn công khai.</b> Ai cũng xem được app làm gì với dữ liệu của mình.</li></ul>
     <div class="row"><a class="btn" href="${REPO_URL}" target="_blank" rel="noopener">Xem mã nguồn</a><a class="btn ghost" href="privacy.html" target="_blank" rel="noopener">Quyền riêng tư</a></div></section>
   <section class="panel stack"><h3>Nội dung hiện có</h3><div class="units">${cs.map(([n,t,s])=>`<div class="unit morei" style="cursor:default"><span class="no num">${n}</span><span class="t"><strong>${t}</strong><span class="muted">${s}</span></span></div>`).join('')}</div>
@@ -7045,9 +7045,8 @@ QZ.lchk={bag:'lchk',bump:'read',gen:L=>lchkItems(L)};
 function startLchk(L){ startQuiz('lchk',L,lchkItems(L),{title:'Kiểm tra cấp '+L,label:'Kiểm tra cấp '+L,eyebrow:L+' · Kiểm tra cấp độ',back:'cefr',backLabel:'Về bản đồ CEFR'}); }
 const lchkRec = L => (st.lchk||{})[L]||null;
 const lchkPass = L => { const r=lchkRec(L); return !!r&&r.pass; };
-const aiAt = (rec,L) => !!rec&&!rec.off&&LVS.indexOf(rec.cefr)>=LVS.indexOf(L);   // kết quả giám khảo AI (v31 phần 5) ở đúng cấp và đúng đề
-const wEvid = L => WTASKS.filter(t=>t.lv===L).some(t=>{ const s=st.wtask[t.id]; return s&&((s.estBest!=null&&s.estBest>=LVS.indexOf(L)-.5)||aiAt(s.ai,L)); });
-const sEvid = L => { const ts=STASKS.filter(t=>t.lv===L); if(ts.some(t=>aiAt(((st.me||{}).aiS||{})[t.id],L))) return 'ai'; if(ts.some(t=>(st.stask[t.id]||[]).some(h=>h.est!=null&&h.est>=LVS.indexOf(L)-.5))) return 'asr';
+const wEvid = L => WTASKS.filter(t=>t.lv===L).some(t=>{ const s=st.wtask[t.id]; return s&&s.estBest!=null&&s.estBest>=LVS.indexOf(L)-.5; });
+const sEvid = L => { const ts=STASKS.filter(t=>t.lv===L); if(ts.some(t=>(st.stask[t.id]||[]).some(h=>h.est!=null&&h.est>=LVS.indexOf(L)-.5))) return 'asr';
   return !HAS_ASR&&ts.some(t=>stDone(t.id)) ? 'self' : ''; };
 function lvVerified(L){ return lchkPass(L)&&wEvid(L)&&!!sEvid(L); }
 const cdPassOnly = L => { const r=cdLevel(L); return r.ok>=CEFR_PASS&&Math.min(...r.gs)>=CEFR_FLOOR; };
@@ -7467,70 +7466,11 @@ LR_A.forEach(x=>{ x.text=x.lines.map(l=>l.t); LREAD.push(x); LRD[x.id]=x; });
 const _viewTalk31d = viewTalk; viewTalk = function(){ const L=talkLv(); let h=_viewTalk31d(); return ['A1','A2'].includes(L)?h.replace(`Nghe bài nói dài ${L}: phỏng vấn, bài giảng, podcast`,`Nghe dài ${L}: hội thoại, thông báo, kể chuyện`):h; };
 ['A1','A2'].forEach(L=>CANDO.push({id:L.toLowerCase()+'-lrlis',lv:L,grp:'ski',vi:L==='A1'?'Nghe hiểu hội thoại, thông báo ngắn về chủ đề quen thuộc khi người nói chậm và rõ':'Nghe hiểu ý chính và chi tiết của cuộc gọi, thông báo, câu chuyện ngắn hằng ngày',en:'Understand short, clear conversations and announcements',ref:[{t:'lr',v:LR_A.filter(x=>x.lv===L).map(x=>x.id),n:2}]}));
 
-/* ---------- v31 (5): GIÁM KHẢO AI — NGƯỜI HỌC TỰ BẬT ----------
-   Máy đếm và dò lỗi không hiểu ý: không biết bài có trả lời đúng đề, lập luận có chặt không. Giám khảo AI (Claude, qua hàm
-   máy chủ el-grade của app) chấm bài viết, lời nói đã chép và hội thoại theo mô tả CEFR, trả về cấp ước tính từng tiêu chí,
-   lỗi quan trọng kèm cách sửa, bài viết lại ở cấp đề và bước tiếp theo, bằng tiếng Việt. Chỉ chạy khi người học bấm và đồng ý;
-   bài được gửi tới máy chủ của app rồi tới Anthropic để chấm, không lưu lại. Có giới hạn lượt mỗi ngày. Máy chủ chưa cấu hình
-   thì nút không hiện. */
-const AI = {on:null, busy:false, url:SYNC.url.replace(/\/rest\/v1\/rpc\/$/,'')+'/functions/v1/el-grade'};
-async function aiPing(){ if(AI.on!=null||typeof fetch==='undefined'||IN_VIEWER) return; try{ const c=new AbortController(), t=setTimeout(()=>c.abort(),5000);
-  const r=await fetch(AI.url,{signal:c.signal}); clearTimeout(t); const j=r.ok?await r.json():{}; AI.on=!!j.on; AI.cap=j.cap||5; if(AI.on&&['wtask','stask','conv'].includes(ui.view)) render(); }catch(e){ AI.on=false; } }
-const AI_CRIT = {task:'Hoàn thành yêu cầu',coherence:'Mạch lạc, liên kết',range:'Vốn từ và cấu trúc',accuracy:'Độ chính xác',fluency:'Trôi chảy',interaction:'Tương tác'};
-const aiBtn = (key) => AI.on ? `<section class="panel spread ai-cta"><span>🧑‍🏫 <b>Giám khảo AI</b> <span class="muted">chấm theo CEFR: ý, bố cục, từ vựng, ngữ pháp; chỉ lỗi quan trọng và viết lại ở cấp đề.</span></span><button class="btn ${AI.busy?'':'primary'}" data-act="aigo" data-k="${key}" ${AI.busy?'disabled':''}>${AI.busy?'Đang chấm…':'Nhờ chấm'}</button></section>` : '';
-function aiHtml(g,L){ if(!g) return ''; const li=LVS.indexOf(L), gi=LVS.indexOf(g.cefr), sc=['','chưa đạt','gần đạt','đạt','tốt'];
-  return `<section class="panel stack ai-res" aria-label="Kết quả giám khảo AI"><div class="spread"><h3>🧑‍🏫 Giám khảo AI: <span class="lvtag" style="--lv:var(--lv-${(gi>=0?g.cefr:'A1').toLowerCase()})">khoảng ${esc(g.cefr)}</span></h3><span class="pill ${g.off_task?'bad':gi>=li?'good':gi===li-1?'warn':''}">${g.off_task?'Chưa đúng đề':gi>=li?`Đạt mức đề ${L}`:`Đề ${L}`}</span></div>
-    <div class="stack" style="gap:8px">${g.criteria.map(c=>`<div class="stack" style="gap:2px"><div class="spread"><b>${esc(AI_CRIT[c.key]||c.key)}</b><span class="num muted">${esc(c.cefr)} · ${sc[Math.max(1,Math.min(4,c.score))]}</span></div><span class="hint">${esc(c.comment_vi)}</span></div>`).join('')}</div>
-    ${g.strengths_vi.length?`<div class="stack" style="gap:4px"><b>Bạn làm tốt</b>${g.strengths_vi.map(x=>`<p>✅ ${esc(x)}</p>`).join('')}</div>`:''}
-    ${g.corrections.length?`<div class="stack" style="gap:6px"><b>Sửa những lỗi quan trọng nhất</b>${g.corrections.map(c=>`<div class="gerr"><span lang="en"><s>${esc(c.original)}</s> → <b>${esc(c.corrected)}</b></span><span class="hint">${esc(c.why_vi)}</span></div>`).join('')}</div>`:''}
-    <details><summary>Bài của bạn khi viết lại ở mức ${L}</summary><p class="reading" lang="en" style="margin-top:8px;white-space:pre-line">${esc(g.improved)}</p></details>
-    ${g.next_vi.length?`<div class="stack" style="gap:4px"><b>Bước tiếp theo</b>${g.next_vi.map(x=>`<p>👉 ${esc(x)}</p>`).join('')}</div>`:''}
-    <p class="hint">Chấm bởi AI (độ tin: ${esc({low:'thấp',medium:'vừa',high:'cao'}[g.confidence]||g.confidence)}). AI cũng có thể sai; đây là ước tính để học, không phải điểm thi chính thức. ${info('ai31')}</p></section>`; }
-GLOSSARY.ai31=['Giám khảo AI','Khi bạn bấm “Nhờ chấm”, bài viết (hoặc lời bạn nói đã được máy chép, hoặc các lượt bạn trả lời trong hội thoại) cùng đề bài được gửi tới máy chủ của English Ladder, rồi tới Anthropic (công ty làm ra Claude) để chấm theo mô tả CEFR. Không gửi tên, tiến độ hay âm thanh; máy chủ của app không lưu bài, chỉ đếm số lượt chấm mỗi ngày để giới hạn chi phí. AI chấm tốt hơn máy đếm vì hiểu được ý và lập luận, nhưng vẫn có thể sai: hãy xem như ý kiến của một giáo viên, đối chiếu với bài mẫu. Kết quả AI ở đúng cấp đề được tính là bằng chứng viết, nói khi xác nhận cấp CEFR.'];
-function aiReq(key){ const [kind,id]=key.split(':');
-  if(kind==='W'){ const t=WT[id], s=st.wtask[id]||{}; return t&&s.text?{kind:'W',lv:t.lv,task:t.p,points:t.c.join('; '),text:s.text}:null; }
-  if(kind==='S'){ const S=ui.stk, t=S&&STK[S.id]; return t&&S.tr&&S.tr.text?{kind:'S',lv:t.lv,task:t.p,points:t.c.join('; '),text:S.tr.text,seconds:S.tr.dur}:null; }
-  if(kind==='C'){ const C=ui.cv, c=C&&CVI[C.id]; if(!c) return null; const turns=C.log.map(x=>`Partner: ${c.n[x.node].a}\nLearner: ${x.text}`).join('\n');
-    return {kind:'C',lv:c.lv,task:`Unscripted conversation: ${c.title}. The learner talks with ${c.who}.`,text:turns}; }
-  return null; }
-async function aiGo(key){ if(AI.busy) return; const q=aiReq(key); if(!q) return toast('Chưa có bài để chấm.');
-  if(!st.set.aiOk){ ui._aiKey=key; return modal({ic:'🧑‍🏫',title:'Nhờ giám khảo AI chấm?',html:true,sub:`Bài của bạn và đề bài sẽ được gửi tới máy chủ của English Ladder rồi tới <b>Anthropic</b> (công ty làm ra Claude) để chấm theo CEFR. Không gửi tên, tiến độ hay âm thanh; app không lưu bài. Mỗi ngày dùng được ${AI.cap||5} lượt.<br><br>AI có thể sai: xem như ý kiến của một giáo viên, không phải điểm thi.`,buttons:[{label:'Đồng ý, chấm',act:'aiok',primary:true},{label:'Không',act:'mclose'}]}); }
-  AI.busy=true; render(); evc('ai:go');
-  try{ const c=new AbortController(), tm=setTimeout(()=>c.abort(),150000);
-    const r=await fetch(AI.url,{method:'POST',signal:c.signal,headers:{'Content-Type':'application/json',apikey:SYNC.key},body:JSON.stringify({...q,rid:String(st.rid||'').replace(/[^A-Za-z0-9_-]/g,'').slice(0,40)||'anon000'})}); clearTimeout(tm);
-    const j=await r.json().catch(()=>({}));
-    if(!r.ok||!j.grade){ const e=j.error; toast(e==='limit'?`Hôm nay bạn đã dùng hết ${j.cap||AI.cap||5} lượt chấm AI. Mai quay lại nhé.`:e==='busy'?'Giám khảo AI đang quá tải, thử lại sau ít phút.':e==='too_short'?'Bài quá ngắn để chấm.':e==='off'?'Giám khảo AI đang tạm tắt.':'Chưa chấm được lần này. Thử lại sau.'); if(e==='off') AI.on=false; return; }
-    const g=j.grade, rec={day:today(),cefr:g.cefr,off:!!g.off_task,g};
-    const [kind,id]=key.split(':');
-    if(kind==='W'){ const s=st.wtask[id] ||= {}; s.ai=rec; }
-    if(kind==='S'){ ui.stk.ai=rec; const h=st.stask[id]; if(h&&h.length&&h[h.length-1].day===today()) h[h.length-1].ai={cefr:g.cefr,off:!!g.off_task}; (st.me.aiS ||= {})[id]={day:today(),cefr:g.cefr,off:!!g.off_task}; }
-    if(kind==='C'){ ui.cv.ai=rec; const r0=(st.conv ||= {})[id] ||= {best:0,n:0}; r0.ai={day:today(),cefr:g.cefr,off:!!g.off_task}; }
-    evc('ai:ok'); save(); try{ cefrCheck(); }catch(e){} sfx(LVS.indexOf(g.cefr)>=LVS.indexOf(q.lv)&&!g.off_task?'win':'pop');
-  }catch(e){ toast('Mất kết nối tới giám khảo AI. Kiểm tra mạng rồi thử lại.'); }
-  finally{ AI.busy=false; render(); } }
-// Gắn nút và kết quả vào đề viết, đề nói (sau khi máy chép lời), hội thoại mở (khi xong).
-const _viewWTask31e = viewWTask; viewWTask = function(){ let h=_viewWTask31e(); const t=WT[ui.wtId], s=st.wtask[t.id]||{}; if(!ui.wtChecked||!s.text) return h;
-  const a='<section class="panel stack"><h3>Tự chấm theo tiêu chí</h3>';
-  return h.replace(a, (s.ai&&s.ai.g?aiHtml(s.ai.g,t.lv):'')+aiBtn('W:'+t.id)+a); };
-const _viewSTask31e = viewSTask; viewSTask = function(){ let h=_viewSTask31e(); const S=ui.stk, t=STK[S.id]; if(S.phase!=='rate'||!S.tr||!S.tr.text) return h;
-  const a='<section class="panel stack"><h3>Tự chấm theo tiêu chí';
-  return h.replace(a,(S.ai?aiHtml(S.ai.g,t.lv):'')+aiBtn('S:'+t.id)+a); };
-const _viewConv31e = viewConv; viewConv = function(){ let h=_viewConv31e(); const C=ui.cv; if(!C||!C.done) return h; const c=CVI[C.id];
-  const a='<details class="panel stack"><summary><h3>Câu trả lời gợi ý cho từng lượt</h3>';
-  return h.replace(a,(C.ai?aiHtml(C.ai.g,c.lv):'')+aiBtn('C:'+c.id)+a); };
-// Bằng chứng xác nhận cấp: kết quả AI ở đúng cấp đề (và đúng đề) cũng được tính.
-document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('button'); if(!b) return; const d=b.dataset;
-  if(d.act==='aigo') return aiGo(d.k);
-  if(d.act==='aiok'){ st.set.aiOk=true; save(); closeModal(); const k=ui._aiKey; ui._aiKey=null; return k&&aiGo(k); } });
-['aigo','aiok'].forEach(a=>DETAIL_SAFE_ACT.add(a));
-setTimeout(aiPing,1500);
-
 CHANGELOG.unshift({v:31,d:'2026-10-01',t:'Đo đúng cấp CEFR, nói và tương tác thật',items:[
   'Ước tính cấp CEFR cho bài viết và bài nói (máy chép lời khi bạn nói), kèm việc cần làm để lên cấp và kiểm tra bài có bám đề không.',
   'Xác nhận cấp CEFR bằng bài làm: bài kiểm tra cấp độ (nghe, đọc, từ vựng, ngữ pháp), một bài viết và một bài nói ở đúng cấp. Nhãn đổi thành “Ước tính CEFR”; cấp đã đạt theo cách tính cũ cần làm các bước xác nhận này. Ghi được điểm thi thật để so.',
   'Hội thoại mở: 12 tình huống, người kia phản ứng theo điều bạn nói (nói hoặc gõ), hỏi lại khi chưa hiểu.',
-  'Bài nghe dài cho A1 và A2.',
-  'Giám khảo AI do bạn tự bật: chấm bài viết, bài nói, hội thoại theo CEFR, chỉ lỗi quan trọng và viết lại ở cấp đề.']});
+  'Bài nghe dài cho A1 và A2.']});
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
