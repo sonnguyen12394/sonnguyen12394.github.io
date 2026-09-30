@@ -6932,6 +6932,91 @@ const _render32 = render; render = function(){ _render32(); try{
 
 CHANGELOG[0].items.push('Cảm xúc: âm thanh mới (chuông khi đúng, cao dần theo chuỗi đúng; tiếng trầm nhẹ khi sai; nhạc mừng khi xong bài), Tí nhảy ra cổ vũ khi đúng liền 3, 5, 10 câu và giữa bài, pháo giấy khi xong bài, chạm vào Tí ở trang chủ. Tắt được bằng nút âm thanh hoặc chế độ tập trung.');
 
+/* ================== v31: CEFR — ƯỚC TÍNH CẤP CỦA BÀI VIẾT, BÀI NÓI; ĐỀ NÓI CÓ MÁY CHÉP LỜI ==================
+   Trước v31: đề viết chỉ đếm hình thức; đề nói chỉ ghi âm rồi tự chấm (máy chép lời chỉ có ở Thi thử).
+   Ước tính cấp dựa trên 5 đặc trưng tăng đều theo cấp trong 96 bài mẫu đã gắn cấp của chính app: độ đa dạng từ (Guiraud),
+   độ dài câu, tỉ lệ từ B1 trở lên, cấp của từ nối, mật độ mệnh đề phụ; trừ theo mật độ lỗi hay gặp. Trên chính các bài mẫu:
+   bài viết đúng cấp 75%, lệch ≤ 1 cấp 98%; bài nói (bỏ dấu câu như lời máy chép) đúng cấp 54%, lệch ≤ 1 cấp 100%.
+   Là ước tính thô để tự điều chỉnh, không phải điểm thi. */
+const SUBC = /\b(because|although|though|which|who|whom|whose|that|if|when|while|whereas|unless|since|until|so that|in order to|despite|whether|where)\b/gi;
+const EST_ANCH = {   // trung bình mỗi đặc trưng theo cấp A1…C2 (W: 48 bài viết mẫu, S: 48 câu trả lời nói mẫu)
+  W:{guir:[4.07,5.33,6.97,7.7,9.58,10.43],asl:[7.68,9.01,14.22,15.2,18.56,19.63],b1:[.01,.03,.09,.11,.25,.27],lk:[.13,.88,2.38,3.13,3.88,4],sub:[.11,.22,.45,.49,.69,.69]},
+  S:{guir:[3.99,4.96,6.01,6.92,8.16,8.09],b1:[.01,.02,.05,.1,.2,.24],sub:[1.84,2.92,4.16,4.01,4.38,5.02]}};   // lời chép thường không có dấu câu: bài nói không dùng độ dài câu, mệnh đề phụ tính trên 100 từ
+function estPos(v,a){ const m=a.map((x,i)=>[x,i]).sort((p,q)=>p[0]-q[0]||p[1]-q[1]);
+  if(v<=m[0][0]) return Math.max(0,m[0][1]-(m[0][0]-v)/Math.max(.001,m[1][0]-m[0][0]));
+  for(let i=1;i<m.length;i++) if(v<=m[i][0]) return m[i-1][1]+(v-m[i-1][0])/Math.max(.001,m[i][0]-m[i-1][0])*(m[i][1]-m[i-1][1]);
+  return m[m.length-1][1]; }
+const EST_S_BIAS = .6;   // bài nói bị ước tính thấp đều ~0,64 bậc trên câu trả lời mẫu đã bỏ dấu câu (như lời máy chép)
+function perfEst(text,k='W'){ text=String(text||'').trim(); const n=wcount(text); if(n<15) return null;
+  const sents=text.split(/(?<=[.!?])\s+/).filter(x=>x.trim()), vp=vocabProfile(text), known=Math.max(1,vp.n-vp.cnt.x), low=' '+nt(text)+' ';
+  const f={guir:vp.types.size/Math.sqrt(Math.max(1,vp.n)), asl:n/Math.max(1,sents.length), b1:LVS.slice(2).reduce((a,x)=>a+vp.cnt[x],0)/known,
+    lk:LVS.map(L=>LINKS[L].some(l=>low.includes(' '+nt(l)+' '))).lastIndexOf(true), sub:(text.match(SUBC)||[]).length/(k==='S'?n/100:Math.max(1,sents.length))};
+  const A=EST_ANCH[k], ps={}; Object.keys(A).forEach(x=>ps[x]=estPos(f[x],A[x]));
+  const hints=grammarHints(text), err=hints.length/n*100, pen=Math.min(1.5,err*.25);
+  const p=Math.max(0,Math.min(5,Object.values(ps).reduce((a,b)=>a+b,0)/Object.keys(ps).length+(k==='S'?EST_S_BIAS:0)-pen));
+  return {p,L:LVS[Math.round(p)],f,ps,err,pen,n,k}; }
+const EST_TIP = {
+  guir:(e,T)=>`Từ còn lặp nhiều (${e.f.guir.toFixed(1)} điểm đa dạng; bài mẫu ${T} khoảng ${EST_ANCH[e.k].guir[LVS.indexOf(T)]}). Thay từ lặp bằng từ đồng nghĩa, thêm chi tiết cụ thể.`,
+  asl:(e,T)=>`Câu còn ngắn (trung bình ${e.f.asl.toFixed(0)} từ; bài mẫu ${T} khoảng ${Math.round(EST_ANCH[e.k].asl[LVS.indexOf(T)])} từ). Nối hai câu ngắn thành một bằng because, although, which, when…`,
+  b1:(e,T)=>`Ít từ từ B1 trở lên (${pct(e.f.b1)} số từ). Dùng từ của các unit cấp ${T} thay cho từ quá cơ bản (good, bad, big, thing…).`,
+  lk:(e,T)=>`Từ nối còn đơn giản. Thử: ${LINKS[T].slice(0,5).join(', ')}.`,
+  sub:(e,T)=>`Ít mệnh đề phụ. Thêm mệnh đề với which, who, although, if, while để câu có nhiều tầng ý.`};
+// Bám đề: từ khoá nội dung của đề (tiếng Anh) có xuất hiện trong bài không. Máy không hiểu ý, nhưng bài không chạm từ khoá nào của đề thường là lạc đề.
+function topicCheck(t,text){ const keys=[...new Map(ideaWords(t.p+' '+t.en).map(w=>[ideaStem(w),w])).entries()], have=new Set(ideaWords(text).map(ideaStem));
+  if(!keys.length) return null; const hit=keys.filter(([k])=>have.has(k)).map(([,w])=>w); return {hit,n:keys.length,off:hit.length<2&&hit.length/keys.length<.25}; }
+const topicHtml = tc => !tc?'':tc.off?`<p class="fb bad" role="status"><strong>Có thể lạc đề</strong><span>Bài gần như không dùng từ khoá nào của đề (${tc.hit.length}/${tc.n}). Đọc lại đề: bài cần trả lời đúng câu hỏi, không chỉ đúng ngữ pháp.</span></p>`
+  :`<p class="hint">🎯 Bám đề: dùng ${tc.hit.length}/${tc.n} từ khoá của đề (<span lang="en">${esc(tc.hit.slice(0,8).join(', '))}</span>). Máy chỉ so từ khoá, bạn tự kiểm tra đã trả lời đủ ý đề hỏi.</p>`;
+function estHtml(e,T,k,tc){ if(!e) return '';
+  const ti=LVS.indexOf(T), gi=Math.round(e.p), tips=Object.keys(e.ps).filter(x=>e.ps[x]<ti-.4).sort((a,b)=>e.ps[a]-e.ps[b]).slice(0,3).map(x=>EST_TIP[x](e,T));
+  if(e.pen>=.5) tips.push(`Máy dò được lỗi hay gặp (khoảng ${e.err.toFixed(1)} lỗi/100 từ), kéo mức ước tính xuống ${e.pen.toFixed(1)} bậc: xem các lỗi ở trên và sửa.`);
+  const verdict=tc&&tc.off?'Kiểm tra lại đề':gi>=ti?`Đạt mức đề ${T} 🎉`:gi===ti-1?`Gần mức đề ${T}`:`Còn cách mức đề ${T} ${ti-gi} bậc`;
+  return `<section class="panel stack est" aria-label="Ước tính cấp CEFR"><div class="spread"><h3>Ước tính cấp của bài ${k==='S'?'nói':'viết'}: <span class="lvtag" style="--lv:var(--lv-${e.L.toLowerCase()})">khoảng ${e.L}</span></h3><span class="pill ${tc&&tc.off?'bad':gi>=ti?'good':gi===ti-1?'warn':''}">${verdict}</span></div>${topicHtml(tc)}
+    <div class="estbar" role="img" aria-label="Thang A1 đến C2, bài của bạn ở khoảng ${e.L}, đề ở ${T}">${LVS.map((L,i)=>`<span class="${i===gi?'on':''} ${i===ti?'tg':''}">${L}</span>`).join('')}</div>
+    ${tips.length?`<div class="stack" style="gap:6px"><b>${gi>=ti?'Để bài tốt hơn nữa':`Để lên mức ${T}`}</b>${tips.map(x=>`<p>• ${esc(x)}</p>`).join('')}</div>`:`<p>✅ Các đặc trưng chính đã ở mức ${T} trở lên.</p>`}
+    <p class="hint">Ước tính thô từ ${e.n} từ, dựa trên 5 đặc trưng đo được (độ đa dạng từ, độ dài câu, từ cấp B1+, từ nối, mệnh đề phụ) so với bài mẫu từng cấp của app, trừ theo lỗi máy dò được. Máy không hiểu nội dung: bài lạc đề vẫn có thể được ước tính cao. Sai lệch thường ±1 cấp. ${info('est30')}</p></section>`; }
+GLOSSARY.est30=['Ước tính cấp bài viết, bài nói','App đo 5 đặc trưng tăng đều theo cấp trong 96 bài mẫu đã gắn cấp (A1–C2): độ đa dạng từ, độ dài câu trung bình, tỉ lệ từ từ B1 trở lên, cấp của từ nối và mật độ mệnh đề phụ (because, which, although…). Mỗi đặc trưng được đặt lên thang A1–C2 theo bài mẫu, lấy trung bình, rồi trừ theo số lỗi hay gặp máy dò được. Trên chính các bài mẫu, bài viết được ước tính đúng cấp 75% và lệch không quá một cấp 98%; bài nói (lời chép không có dấu câu) đúng cấp 54% và lệch không quá một cấp 100%. Máy không hiểu ý: không biết bài có trả lời đúng đề, có lập luận hay không. Hãy dùng như gương soi để chỉnh bài, không phải điểm thi.'];
+
+// Đề viết: thêm ước tính cấp sau phần máy kiểm tra; lưu mức ước tính cao nhất để đo cấp CEFR.
+const _viewWTask31 = viewWTask; viewWTask = function(){ const h=_viewWTask31(), t=WT[ui.wtId], s=st.wtask[t.id]||{}, text=ui.wtText??s.text??'';
+  if(!ui.wtChecked||!text) return h; const a='<section class="panel stack"><h3>Tự chấm theo tiêu chí</h3>';
+  return h.replace(a, estHtml(perfEst(text,'W'),t.lv,'W',topicCheck(t,text))+a); };
+const _wtSave31 = wtSave; wtSave = function(text){ const t=WT[ui.wtId], e=perfEst(text,'W'); _wtSave31(text); const s=st.wtask[t.id]; if(s&&e){ s.est=+e.p.toFixed(2); s.estBest=Math.max(s.estBest||0,s.est); save(); } };
+
+// Đề nói: máy chép lời lúc nói (nếu người học đã bật), rồi phân tích: tốc độ, từ nối, lỗi, ý so với câu mẫu, ước tính cấp;
+// gợi ý sẵn điểm tự chấm (trừ Phát âm: máy không chấm được, người học tự đánh giá khi nghe lại).
+const stMode = S => S.mode || (HAS_ASR&&st.set.asr===true ? 'asr' : 'rec');
+const _stPhase31 = stPhase; stPhase = function(ph){ const S=ui.stk; if(!S) return;
+  if(ph==='speak'&&stMode(S)==='asr'&&HAS_ASR&&st.set.asr===true){ const t=STK[S.id]; S.phase='speak'; S.end=Date.now()+t.speak*1000; S.left=t.speak; S.tr=null; S.self=[]; S.auto=false; vxAsrStart('stk'); render(); stTick(); return; }
+  if(ph==='rate'&&VXA.on&&VXA.key==='stk') vxAsrStop();
+  return _stPhase31(ph); };
+const _vxAsrDone31 = vxAsrDone; vxAsrDone = function(){ const key=VXA.key, text=(VXA.base+' '+VXA.cur).trim(), dur=(Date.now()-VXA.t0)/1000; _vxAsrDone31();
+  if(key==='stk'&&ui.stk){ ui.stk.tr={text,dur}; if(ui.view==='stask') render(); } };
+function stSuggest(S,t){ const tr=S.tr; if(!tr||!tr.text) return null; const s=vxSpeechStats(tr,t.lv), e=perfEst(tr.text,'S'), ti=LVS.indexOf(t.lv), tc=topicCheck(t,tr.text);
+  const lvScore=p=>p==null?2:p>=ti+.5?4:p>=ti-.4?3:p>=ti-1.2?2:1;
+  const flu=s.wpm>=110?4:s.wpm>=85?3:s.wpm>=60?2:1, acc=!s.n?1:s.hints.length/s.n*100<=1?4:s.hints.length/s.n*100<=3?3:s.hints.length/s.n*100<=6?2:1;
+  const coh=tc&&tc.off?1:Math.min(4,1+(s.links.length>=3?1:0)+(s.links.length>=1?1:0)+(tc&&tc.hit.length>=3?1:0));
+  return {s,e,tc,self:[flu,lvScore(e&&e.p),acc,0,coh]}; }
+const _viewSTask31 = viewSTask; viewSTask = function(){ const S=ui.stk, t=STK[S.id];
+  if(S.phase==='rate'&&!S.auto&&!S.self.filter(Boolean).length){ const g0=stSuggest(S,t); if(g0){ S.self=g0.self.slice(); S.auto=true; } }
+  let h=_viewSTask31();
+  if(S.phase==='brief'&&HAS_ASR){ const on=stMode(S)==='asr'&&st.set.asr===true;
+    h=h.replace('<div class="row"><button class="btn primary big" data-act="stprep">',`<section class="panel spread slim"><span>📝 <b>Máy chép lời để tự phân tích</b> <span class="muted">tốc độ nói, từ nối, lỗi hay gặp, ý so với câu mẫu, ước tính cấp.</span></span>${st.set.asr===true?`<button class="btn small" data-act="stmode" aria-pressed="${on}">${on?'Đang bật':'Đang tắt'}</button>`:`<button class="btn small" data-act="stasr">Bật</button>`}</section>\n    <div class="row"><button class="btn primary big" data-act="stprep">`); }
+  if(S.phase==='speak'&&VXA.on&&VXA.key==='stk') h=h.replace('<span class="eyebrow">Đang nói','<span class="eyebrow">Đang nói · 📝 máy đang chép lời');
+  if(S.phase==='rate'){ const a='<section class="panel stack"><h3>Tự chấm theo tiêu chí</h3>';
+    if(VXA.on&&VXA.key==='stk') h=h.replace(a,'<p class="hint" role="status">Đang lấy lời máy chép…</p>'+a);
+    const g=stSuggest(S,t);
+    if(g){ h=h.replace(a,`${vxStatsHtml(S.tr)}
+        <section class="panel stack"><h3>Đề yêu cầu nói</h3>${t.c.map(c=>`<p>• ${esc(c)}</p>`).join('')}<p class="hint">Tự kiểm tra bạn đã nói đủ các ý này; so thêm với câu trả lời mẫu ở trên.</p></section>
+        ${estHtml(g.e,t.lv,'S',g.tc)}`+a.replace('</h3>',` <span class="pill accent">máy gợi ý sẵn</span></h3><p class="hint">Máy điền trước 4 tiêu chí từ lời chép (trôi chảy theo tốc độ nói, vốn từ theo ước tính cấp, chính xác theo lỗi dò được, mạch lạc theo từ nối và ý). <b>Phát âm</b> bạn tự chấm khi nghe lại. Bấm để sửa nếu máy chấm chưa đúng.</p>`)); }
+    else if(!VXA.on&&stMode(S)==='asr'&&S.tr&&!S.tr.text) h=h.replace(a,'<p class="hint">Máy chưa chép được lời lần này (micro, mạng, hoặc nói nhỏ). Hãy tự chấm, hoặc bấm Nói lại.</p>'+a); }
+  return h; };
+const _stSave31 = stSave; stSave = function(){ const S=ui.stk, t=STK[S.id], e=S.tr&&S.tr.text?perfEst(S.tr.text,'S'):null, s=S.tr&&S.tr.text?vxSpeechStats(S.tr,t.lv):null; _stSave31();
+  const h=st.stask[t.id]; const last=h&&h[h.length-1]; if(last&&e){ last.est=+e.p.toFixed(2); last.wpm=s.wpm; save(); } };
+document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('button'); if(!b||!ui.stk) return; const d=b.dataset;
+  if(d.act==='stmode'){ ui.stk.mode=stMode(ui.stk)==='asr'?'rec':'asr'; return render(); }
+  if(d.act==='stasr') return modal({ic:'🎙',title:'Bật máy chép lời?',html:true,sub:'Khi bạn nói, máy nghe giọng của trình duyệt chép lại lời để app đếm tốc độ, vốn từ, từ nối, dò lỗi hay gặp và ước tính cấp. Đây <b>không phải</b> chấm như giám khảo.<br><br>Trình duyệt <b>có thể gửi âm thanh tới máy chủ của hãng trình duyệt</b> để nhận diện. English Ladder không lưu âm thanh. Tắt được trong Cài đặt.',buttons:[{label:'Đồng ý, bật',act:'stasryes',primary:true},{label:'Không',act:'mclose'}]});
+  if(d.act==='stasryes'){ st.set.asr=true; ui.stk.mode='asr'; save(); closeModal(); return render(); } });
+
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
