@@ -4082,7 +4082,7 @@ function viewGSum(){
     ${missed.length&&r.kind!=='place'?`<button class="btn primary" data-act="gremedy" data-ids="${missed.join(',')}">Luyện lại ${missed.length} bài có câu sai</button>`:''}
     ${r.kind==='test'&&!V.pass?`<button class="btn" data-act="gtest" data-g="${p.id}">Thi lại</button>`:''}
     ${(r.kind==='test'||r.kind==='place')&&V.pass&&nextP?`<button class="btn primary" data-gp="${nextP.id}">Sang ${gname(nextP)}</button>`:''}
-    ${r.kind==='place'&&V.pass&&(()=>{const i=GRAMMAR.levels.indexOf(L), n=GRAMMAR.levels.slice(i+1).find(x=>x.points.length);return n?`<button class="btn" data-act="gplace" data-l="${n.id}">Thi vượt cấp ngữ pháp ${n.id}</button>`:''})()}
+    ${r.kind==='place'&&V.pass?(()=>{const i=GRAMMAR.levels.indexOf(L), n=GRAMMAR.levels.slice(i+1).find(x=>x.points.length);return n?`<button class="btn" data-act="gplace" data-l="${n.id}">Thi vượt cấp ngữ pháp ${n.id}</button>`:''})():''}
     ${r.kind==='review'&&dueG().length?`<button class="btn" data-act="greview">Ôn tiếp ${dueG().length} bài</button>`:''}
     ${r.kind==='practice'&&p&&!G(p.id).passed?`<button class="btn primary" data-act="gtest" data-g="${p.id}">Làm bài kiểm tra</button>`:''}
     ${p?`<button class="btn" data-gp="${p.id}">Về bài học</button>`:''}<button class="btn" data-go="grammar">Ngữ pháp</button>${msBtn(r,V.pass)}</div>
@@ -6812,6 +6812,42 @@ CHANGELOG.unshift({v:30,d:'2026-10-01',t:'Dễ dùng hơn, gọn hơn',items:[
   'Thẻ từ gọn trong một màn hình: từ, phát âm, nghĩa, một câu ví dụ, lưu ý. Kết hợp từ, từ cùng gốc, ví dụ thêm nằm trong “Xem thêm”. App tự đọc từ mới (tắt được trong Cài đặt).',
   'Học thẻ và luyện tập dùng chung một khung: nút ✕, thanh tiến độ, nút Tiếp tục luôn ở đáy. Câu nhớ nhanh có bảng đúng/sai và Tí như phần luyện; bấm Enter, ←, 1–4 trên máy tính.',
   'Trang chủ gọn cho người mới; sửa dòng tiến độ CEFR bị vỡ; sửa phiên âm sai của “it”, “ought”, “healthcare”, “mainland”.']});
+
+/* ================== v31: MỘT NÚT CHÍNH MỖI MÀN, KẾT QUẢ GỌN, NGỮ PHÁP VÀ UNIT BỚT RỐI ==================
+   Nối tiếp v30 cho các màn còn lại: màn kết quả chỉ giữ một nút chính và gom số liệu vào “Xem chi tiết”; trang unit đưa
+   bước tiếp theo lên đầu thành nút chính; danh sách bài bỏ “Mức thuộc 0%” và nhãn “Học trước” ở bài chưa học. */
+const METER0 = /<span class="m"><span>Mức thuộc 0%<\/span><div class="meter [^"]*"><i style="width:0%"><\/i><\/div><\/span>/g;
+
+// 1. Kết quả ngữ pháp: số liệu, bảng câu sai, mức thuộc vào “Xem chi tiết” (như kết quả từ vựng).
+const _viewGSum31 = viewGSum; viewGSum = function(){ const h=_viewGSum31(), i=h.indexOf('<section class="stats">'); if(i<0) return h;
+  const a=h.indexOf('<aside class="panel adslot"',i), j=a<0?h.length:a, wrong=(ui.gsum.res||[]).filter(x=>!x.correct).length;
+  return h.slice(0,i)+`<details class="panel stack sumdet"><summary><h3>Xem chi tiết lượt học${wrong?` · ${wrong} câu sai`:''}</h3></summary>${h.slice(i,j)}</details>`+h.slice(j); };
+
+// 2. Trang unit: bước tiếp theo thành nút chính ở đầu trang; nút trong từng bước là nút phụ; phần học thêm thu gọn.
+const UNIT_NEXT = {learn:'Học 10 từ mới',practice:'Luyện tập',test:'Vào thử thách cuối unit'};
+const _viewUnit31 = viewUnit; viewUnit = function(){ let h=_viewUnit31();
+  const m=/<div class="row slim" style="gap:8px"><span>👉 Bước tiếp theo: <b>[^<]*<\/b><\/span><button class="btn small" (data-act="(learn|practice|test)" data-u="[^"]+")>Làm ngay<\/button><\/div>/.exec(h);
+  if(m){ const nx=`<div class="nextstep">${m[2]==='learn'?`<span class="nx-ti">${mascot('happy',56)}</span>`:''}<button class="btn primary big" ${m[1]}>${UNIT_NEXT[m[2]]}</button></div>`;
+    const k=h.indexOf('<section class="steps">'); h=h.replace(m[0],'');
+    const k2=h.indexOf('<section class="steps">'); h=h.slice(0,k2)+nx+h.slice(k2).replace(/<section class="steps">([\s\S]*?)<\/section>/,(s,x)=>`<section class="steps">${x.replace(/class="btn primary"/g,'class="btn"')}</section>`); }
+  const extra=[/<section class="stack"><h3>Ngữ pháp nên học cùng<\/h3>[\s\S]*?<\/div><\/section>/, /<section class="stack"><h3>Dùng từ của unit này trong giao tiếp<\/h3>[\s\S]*?<\/div><\/section>/].map(re=>{ const x=re.exec(h); if(x) h=h.replace(x[0],''); return x?x[0].replace('<section class="stack"><h3>','<section class="stack" style="gap:8px"><h3 style="font-size:15px">'):''; }).join('');
+  if(extra) h=h.replace('<section class="stack">\n    <div class="spread"><h2>Từ trong unit</h2>',`<details class="panel stack"><summary><h3>Học thêm cùng unit này</h3></summary><div class="stack">${extra}</div></details>\n  <section class="stack">\n    <div class="spread"><h2>Từ trong unit</h2>`);
+  return h; };
+
+// 3. Danh sách bài (ngữ pháp, từ vựng dạng danh sách): bài chưa học không hiện “Mức thuộc 0%”.
+const _viewGPath31 = viewGPath; viewGPath = function(){ let h=_viewGPath31().replace(METER0,'');
+  const o='<section class="panel today"><div class="stack" style="gap:6px">', i=h.indexOf(o), j=i<0?-1:h.indexOf('</div></section>',i);
+  if(i>=0&&j>=0&&!FOCUS()) h=h.slice(0,i)+`<section class="panel hero"><div class="hero-in"><div class="tibox">${mascot(dueG().length?'cheer':'happy',72)}</div><div class="stack" style="gap:6px">`+h.slice(i+o.length,j)+'</div></div></section>'+h.slice(j+'</div></section>'.length);
+  return h; };
+const _viewPath31 = viewPath; viewPath = function(){ return _viewPath31().replace(METER0,''); };
+
+// 4. Kỹ năng: gợi ý đầu tiên của hôm nay là nút chính.
+const _viewTalk31 = viewTalk; viewTalk = function(){ return _viewTalk31().replace(/(<h3>Gợi ý hôm nay · [^<]*<\/h3><div class="row"><button class=")btn(?=")/,'$1btn primary'); };
+
+// 5. Thanh việc tiếp theo ở đáy (kết quả, học thẻ, màn chào): chỉ nút đầu tiên là nút chính.
+const _render31 = render; render = function(){ _render31(); try{ document.querySelectorAll('#app .actbar').forEach(bar=>[...bar.querySelectorAll('.btn.primary')].slice(1).forEach(b=>b.classList.remove('primary'))); }catch(e){} };
+
+CHANGELOG[0].items.push('Mỗi màn chỉ còn một nút chính: màn kết quả gom số liệu vào “Xem chi tiết”, trang unit đưa bước tiếp theo lên đầu, danh sách bài bớt số 0%. Sửa chữ thừa hiện nhầm trên màn kết quả ngữ pháp.');
 
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
