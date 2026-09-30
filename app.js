@@ -6849,6 +6849,89 @@ const _render31 = render; render = function(){ _render31(); try{ document.queryS
 
 CHANGELOG[0].items.push('Mỗi màn chỉ còn một nút chính: màn kết quả gom số liệu vào “Xem chi tiết”, trang unit đưa bước tiếp theo lên đầu, danh sách bài bớt số 0%. Sửa chữ thừa hiện nhầm trên màn kết quả ngữ pháp.');
 
+/* ================== v32: CẢM XÚC — ÂM THANH, TÍ CỔ VŨ, CHUYỂN ĐỘNG, ĂN MỪNG ==================
+   Âm thanh cũ là sóng sin trơn 0,18 giây; Tí chỉ đứng ở góc bảng kết quả; thanh tiến độ nhảy cóc; xong bài không có nhạc.
+   Khối này tự tổng hợp âm thanh (Web Audio, không tải tệp): chuông hai nốt khi đúng (cao dần theo chuỗi đúng), “bụp” trầm nhẹ
+   khi sai (không trách phạt), nhạc mừng xong bài, tiếng lấp lánh khi chuỗi ngày tăng, tiếng sủa khi chạm Tí.
+   Tí nhảy ra cổ vũ ở mốc 3/5/10 câu đúng liền và giữa bài; thanh tiến độ chạy mượt; câu hỏi, thẻ từ trượt vào; pháo giấy khi xong bài.
+   Tôn trọng: tắt âm thanh (st.set.sfx), chế độ tập trung (FOCUS), giảm chuyển động của máy. Không có lời trách, không doạ mất chuỗi. */
+const STILL = () => typeof matchMedia!=='undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+let _mix=null;
+function acOut(){ if(!(window.AudioContext||window.webkitAudioContext)) return null;
+  _ac ||= new (window.AudioContext||window.webkitAudioContext)(); if(_ac.state==='suspended') try{ _ac.resume(); }catch(e){}
+  if(!_mix){ const c=_ac.createDynamicsCompressor(); c.threshold.value=-18; c.knee.value=12; c.ratio.value=4; const g=_ac.createGain(); g.gain.value=1.8; c.connect(g).connect(_ac.destination); _mix=c; }
+  return _mix; }
+// Một nốt có nhiều hoạ âm (tỉ lệ tần số, biên độ): hoạ âm hơi lệch (2,76; 4,1) cho tiếng chuông; đường bao tấn công nhanh, tắt dần.
+function note(f,t,d,{type='sine',g=.1,part=[[1,1]],a=.006,to=0}={}){ const out=acOut(); if(!out) return; const t0=_ac.currentTime+t;
+  part.forEach(([k,amp])=>{ const o=_ac.createOscillator(), v=_ac.createGain(); o.type=type; o.frequency.setValueAtTime(f*k,t0); if(to) o.frequency.exponentialRampToValueAtTime(to*k,t0+d*.8);
+    v.gain.setValueAtTime(.0001,t0); v.gain.exponentialRampToValueAtTime(Math.max(.0002,g*amp),t0+a); v.gain.exponentialRampToValueAtTime(.0001,t0+d);
+    o.connect(v).connect(out); o.start(t0); o.stop(t0+d+.05); }); }
+const BELL=[[1,1],[2,.32],[2.76,.12],[4.1,.05]], SOFT=[[1,1],[2,.18]];
+const SFX = {
+  ok(up){ const f=880*Math.pow(2,up*2/12); note(f,0,.42,{g:.085,part:BELL}); note(f*1.26,.075,.55,{g:.085,part:BELL}); },
+  bad(){ note(330,0,.2,{type:'triangle',g:.11,part:SOFT}); note(247,.09,.3,{type:'triangle',g:.1,part:SOFT}); },
+  win(){ [523.25,659.25,783.99].forEach((f,i)=>note(f,i*.1,.3,{g:.07,part:BELL})); [1046.5,1318.5,1568].forEach(f=>note(f,.32,1.1,{g:.05,part:BELL})); },
+  streak(){ [1318.5,1568,1760,2093,2637].forEach((f,i)=>note(f,i*.06,.35,{g:.04,part:BELL})); note(783.99,.3,.9,{g:.05,part:BELL}); },
+  combo(){ [1568,2093,2637].forEach((f,i)=>note(f,i*.07,.3,{g:.045,part:BELL})); },
+  pop(){ note(520,0,.16,{g:.07,to:900,part:SOFT}); },
+  woof(){ note(520,0,.13,{type:'triangle',g:.1,to:330,part:SOFT}); note(560,.17,.12,{type:'triangle',g:.09,to:360,part:SOFT}); } };
+sfx = function(kind){
+  if(!st.set.sfx||typeof window==='undefined') return;
+  const vib=typeof navigator!=='undefined'&&navigator.vibrate;
+  if(vib&&kind==='bad') try{ navigator.vibrate(60); }catch(e){}
+  if(vib&&kind==='ok'&&st.set.haptic!==false) try{ navigator.vibrate(12); }catch(e){}
+  try{ const S=runOf(), up=kind==='ok'&&S?Math.min(8,Math.max(0,(S.combo||1)-1)):0; (SFX[kind]||SFX.pop)(up); }catch(e){} };
+
+// Tí nhảy ra cổ vũ (ở góc trên, không che câu hỏi, không cần bấm, tự ẩn sau ~2,4 giây; trình đọc màn hình đọc lời Tí).
+const COMBO_SAY = {3:['3 câu liền! Vào guồng rồi đó 🔥','Ba câu liền, chuẩn luôn!'],5:['5 câu liền! Không cản nổi 🔥','Năm câu liền, Tí phục bạn luôn!'],10:['10 câu liền! Quá đỉnh 🏆','Mười câu liền! Bạn là cao thủ rồi!'],15:['15 câu liền! Siêu thật sự ⚡'],20:['20 câu liền! Huyền thoại 👑']};
+const HALF_SAY = ['Nửa chặng rồi, cố lên!','Đi được nửa đường rồi đó!','Qua nửa bài rồi, giữ nhịp nhé!'];
+function tiPop(mood,text,snd='pop'){ if(FOCUS()||typeof document==='undefined') return; document.querySelectorAll('.tipop').forEach(x=>x.remove());
+  const el=document.createElement('div'); el.className='tipop'+(STILL()?' still':''); el.setAttribute('role','status');
+  el.innerHTML=`${mascot(mood,64)}<span class="tipop-b">${esc(text)}</span>`; const sh=document.querySelector('.sheet'); el.style.bottom=`${(sh?sh.offsetHeight:0)+14}px`;
+  document.body.appendChild(el); sfx(snd);
+  setTimeout(()=>el.classList.add('out'),2300); setTimeout(()=>el.remove(),2700); }
+function cheerCheck(){ const S=runOf(); if(!S||S.done||!S.q) return;
+  const a=S.ans, n=S.q.length;
+  if(a&&a.correct&&COMBO_SAY[S.combo]&&S._popAt!==S.i){ S._popAt=S.i; const L=COMBO_SAY[S.combo], i=S.i; setTimeout(()=>{ if(runOf()===S&&S.i===i&&S.ans) tiPop('party',L[i%L.length],'combo'); },350); return; }
+  if(!a&&n>=8&&S.i===Math.floor(n/2)&&!S._half){ S._half=1; tiPop('happy',HALF_SAY[n%HALF_SAY.length]); } }
+
+// Chuyển động: thanh tiến độ chạy từ vị trí cũ tới mới (kèm vệt sáng); câu hỏi mới và thẻ từ mới trượt vào.
+let _barKey='', _barW=null, _qKey='';
+function motion(){ const bar=document.querySelector('#app .sess-top .bar i'), S=runOf(), L=ui.view==='learn'&&ui.learn;
+  const key=ui.view+':'+(S?S.q&&S.q.length:L?L.uid:''); if(key!==_barKey){ _barKey=key; _barW=null; }
+  if(bar){ const w=parseFloat(bar.style.width)||0; if(_barW!=null&&w>_barW&&!STILL()){ bar.style.transition='none'; bar.style.width=_barW+'%'; void bar.offsetWidth; bar.style.transition=''; bar.style.width=w+'%'; bar.classList.add('shine'); } _barW=w; }
+  const qk=S?key+':'+S.i:L?key+':'+L.i+':'+(L.chk?'c':''):''; if(qk&&qk!==_qKey){ _qKey=qk; const el=document.querySelector('#app section.q, #app .card.lite'); if(el&&!(S&&S.ans)&&!(L&&L.chk&&L.chk.picked!=null)) el.classList.add('enter'); } }
+
+// Xong bài: pháo giấy toàn màn hình + nhạc mừng (kết quả tốt), tiếng lấp lánh nếu chuỗi ngày vừa tăng. Mỗi màn kết quả một lần.
+let _celFor=null;
+function confetti(){ if(FOCUS()||STILL()||typeof document==='undefined') return; const c=document.createElement('canvas'), W=innerWidth, H=innerHeight, dpr=Math.min(2,devicePixelRatio||1);
+  c.className='confetti'; c.width=W*dpr; c.height=H*dpr; document.body.appendChild(c); const g=c.getContext('2d'); if(!g){ c.remove(); return; } g.scale(dpr,dpr);
+  const cs=getComputedStyle(document.documentElement), cols=['--accent','--good','--warn','--bad','--mark','--ti'].map(v=>cs.getPropertyValue(v).trim()||'#1F4FD8');
+  const ps=[...Array(110)].map((_,i)=>({x:W/2+(Math.random()-.5)*W*.3,y:H*.35,vx:(Math.random()-.5)*13,vy:-Math.random()*13-4,r:Math.random()*6.28,vr:(Math.random()-.5)*.3,w:6+Math.random()*6,h:8+Math.random()*8,c:cols[i%cols.length]}));
+  const t0=performance.now(); const f=t=>{ const k=(t-t0)/1800; g.clearRect(0,0,W,H);
+    ps.forEach(p=>{ p.vy+=.35; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.r+=p.vr; g.save(); g.globalAlpha=Math.max(0,1-k*k); g.translate(p.x,p.y); g.rotate(p.r); g.fillStyle=p.c; g.fillRect(-p.w/2,-p.h/2,p.w,p.h*Math.abs(Math.cos(p.r*2))); g.restore(); });
+    if(k<1) requestAnimationFrame(f); else c.remove(); }; requestAnimationFrame(f); }
+function endCheck(){ const r=ui.view==='summary'?ui.summary:ui.view==='gsum'?ui.gsum:ui.view==='quiz'&&ui.qz&&ui.qz.done?ui.qz:null;
+  if(!r||_celFor===r) return; _celFor=r; const good=!!document.querySelector('#app .reward .ti.party');
+  if(good){ sfx('win'); confetti(); } else sfx('pop');
+  if(ui.streakUp) setTimeout(()=>sfx('streak'),900); }
+
+// Chạm vào Tí (trang chủ, ngữ pháp): Tí nhảy, sủa, nói câu khác. Dùng được bằng bàn phím (Enter/Space).
+const TAP_SAY = ['Gâu! Học tiếp nào!','Tí thích học cùng bạn!','Hôm nay mình học từ gì nhỉ?','Gâu gâu! Cố lên!','Bạn giỏi lắm đó!','Chạm nữa là Tí nhột đó 🐾'];
+let _tap=0, _popKey='';
+function tiTap(box){ const svg=box.querySelector('svg.ti'); if(!svg) return; const sz=+svg.getAttribute('width')||72; svg.outerHTML=mascot('party',sz); sfx('woof');
+  const b=box.querySelector('.bubble'); if(b) b.textContent=TAP_SAY[_tap++%TAP_SAY.length];
+  clearTimeout(box._t); box._t=setTimeout(()=>{ const s=box.querySelector('svg.ti'); if(s) s.outerHTML=mascot('happy',sz); },1600); }
+document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('#app .hero .tibox'); if(b) tiTap(b); });
+document.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('#app .hero .tibox')){ e.preventDefault(); tiTap(e.target); } });
+
+const _render32 = render; render = function(){ _render32(); try{
+  document.querySelectorAll('#app .hero .tibox').forEach(b=>{ b.tabIndex=0; b.setAttribute('role','button'); b.setAttribute('aria-label','Chạm vào Tí'); });
+  const pk=ui.view+':'+((runOf()||{}).i??''); if(pk!==_popKey){ _popKey=pk; document.querySelectorAll('.tipop').forEach(x=>x.remove()); }
+  motion(); cheerCheck(); endCheck(); }catch(e){} };
+
+CHANGELOG[0].items.push('Cảm xúc: âm thanh mới (chuông khi đúng, cao dần theo chuỗi đúng; tiếng trầm nhẹ khi sai; nhạc mừng khi xong bài), Tí nhảy ra cổ vũ khi đúng liền 3, 5, 10 câu và giữa bài, pháo giấy khi xong bài, chạm vào Tí ở trang chủ. Tắt được bằng nút âm thanh hoặc chế độ tập trung.');
+
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
