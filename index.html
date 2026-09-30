@@ -546,6 +546,53 @@ body.has-sheet .toast,body.has-act .toast{bottom:auto;top:calc(14px + env(safe-a
 @keyframes rxdown{from{transform:scaleX(1)}to{transform:scaleX(0)}}
 .cefrstrip{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;flex-basis:100%}
 .cefrstrip .btn{font-weight:600}
+/* ===== v30: bớt chữ in hoa, thẻ có khối, header một dòng, màn chào một nút, học thẻ cùng khung với luyện tập ===== */
+.eyebrow{text-transform:none;letter-spacing:0;font-size:13.5px;font-weight:800}
+.pill{text-transform:none;letter-spacing:0;font-size:12.5px}
+.panel,.card,.unit,.q{box-shadow:0 2px 0 var(--line)}
+body.lesson .q,.rung .t{box-shadow:none}
+.card{border-radius:20px}
+.cefrstrip .btn{display:inline-block;text-align:left;white-space:normal;line-height:1.35}
+.linkbtn{background:none;border:0;padding:0;font:inherit;color:var(--accent);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:640px){
+  .top-in{flex-wrap:nowrap;padding:8px 16px;gap:10px}
+  .brand small{display:none}
+  .clock{white-space:nowrap}
+  .hero .row>.btn.primary.big{flex:1 1 100%;justify-content:center;min-height:54px}
+}
+/* Màn chào */
+body.bare .top,body.bare #bnav{display:none}
+body.has-bar main{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+.hello{display:grid;justify-items:center;text-align:center;gap:12px;padding:24px 0 4px}
+.hello h1{font-size:30px;max-width:16ch}
+.hello .muted{font-size:17px;max-width:34ch}
+.hello-ti .ti{animation:hop .8s ease-out}
+.hello-trust{text-align:center}
+.hello-more{max-width:560px;width:100%;justify-self:center}
+.hello-more>summary{font-weight:700;color:var(--accent)}
+.hello-act{flex-direction:column;align-items:stretch}
+.hello-act>.btn{flex:0 0 auto;justify-content:center;min-height:52px;font-size:16px;max-width:560px;width:100%;margin:0 auto}
+.hello-act>.btn.primary{flex:0 0 auto;min-height:56px;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:.02em;order:0}
+/* Thẻ từ gọn */
+.card.lite{gap:14px;padding:22px 20px}
+.card.lite .head{align-items:center;gap:10px 14px}
+.card.lite .word{font-size:42px}
+.card.lite .sub{gap:6px 12px}
+.card.lite .vi-big{font-size:22px;font-weight:800}
+.exrow{display:flex;gap:10px;align-items:flex-start}
+.exrow .vi{padding-left:17px}
+details.more>summary{font-size:15px;padding:6px 0}
+details.more[open]>summary{margin-bottom:12px}
+details.more .fields{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+/* Thanh nút đáy của học thẻ: nút lùi nhỏ bên trái, nút chính chiếm phần còn lại */
+.learnbar{flex-wrap:nowrap}
+.learnbar>.btn.primary{flex:1 1 auto;order:0;justify-content:center;min-height:54px;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.learnbar>.stepback{flex:0 0 auto;min-width:56px;justify-content:center;font-size:20px}
+.actbar>*{max-width:720px}
+body.lesson .toast{bottom:auto;top:calc(14px + env(safe-area-inset-top,0px))}
+body.lesson main{max-width:720px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .sheet .big{color:var(--bg)}}
+:root[data-theme="dark"] .sheet .big{color:var(--bg)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.7L20 8"/><path d="M20 3v5h-5"/><path d="M20 12a8 8 0 0 1-13.7 5.7L4 16"/><path d="M4 21v-5h5"/></symbol><symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></symbol><symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4"/><path d="M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4"/><path d="M8 21h8"/><path d="M10 17h4"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol><symbol id="i-headphones" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/></symbol><symbol id="i-read" viewBox="0 0 24 24"><path d="M12 6C10 4.5 7 4 4 4v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2z"/><path d="M12 6v14"/></symbol><symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 7l3 3"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8"/><path d="M8 12h5"/></symbol><symbol id="i-ear" viewBox="0 0 24 24"><path d="M7 9a5 5 0 0 1 10 0c0 3-3 4-3 7a3 3 0 0 1-5.5 1.5"/><path d="M10 9a2 2 0 0 1 4 0"/></symbol><symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/></symbol><symbol id="i-map" viewBox="0 0 24 24"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15"/><path d="M15 6v15"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol><symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7.5h.01"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7v.5"/><path d="M12 17h.01"/></symbol><symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.5M8.2 13.2l7.6 4.5"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14a6 6 0 0 1 3.5 6"/></symbol><symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 3L3 6l2 4 3-1v12h8V9l3 1 2-4-5-3a4 4 0 0 1-8 0z"/></symbol><symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14 6a4 4 0 0 0 5 5l-9 9a2 2 0 0 1-3-3l9-9a4 4 0 0 0-2-2z"/></symbol><symbol id="i-exam" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></symbol></defs></svg>
@@ -564,4 +611,4 @@ body.has-sheet .toast,body.has-act .toast{bottom:auto;top:calc(14px + env(safe-a
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="app.js?v=29"></script>
+<script src="app.js?v=30"></script>
