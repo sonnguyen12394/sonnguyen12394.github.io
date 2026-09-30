@@ -4124,7 +4124,7 @@ function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); renderChrome();
   if(ui.view==='path'&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,super:viewSuper,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  const v={ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,super:viewSuper,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   document.getElementById('app').innerHTML=html;
@@ -7046,7 +7046,7 @@ function startLchk(L){ startQuiz('lchk',L,lchkItems(L),{title:'Kiểm tra cấp 
 const lchkRec = L => (st.lchk||{})[L]||null;
 const lchkPass = L => { const r=lchkRec(L); return !!r&&r.pass; };
 const wEvid = L => WTASKS.filter(t=>t.lv===L).some(t=>{ const s=st.wtask[t.id]; return s&&s.estBest!=null&&s.estBest>=LVS.indexOf(L)-.5; });
-const sEvid = L => { const ts=STASKS.filter(t=>t.lv===L); if(ts.some(t=>(st.stask[t.id]||[]).some(h=>h.est!=null&&h.est>=LVS.indexOf(L)-.5))) return 'asr';
+const sEvid = L => { const ts=STASKS.filter(t=>t.lv===L), ei=(st.ei||{})[L]; if(ei&&ei.asr&&ei.best>=EI_PASS) return 'ei'; if(ts.some(t=>(st.stask[t.id]||[]).some(h=>h.est!=null&&h.est>=LVS.indexOf(L)-.5))) return 'asr';
   return !HAS_ASR&&ts.some(t=>stDone(t.id)) ? 'self' : ''; };
 function lvVerified(L){ return lchkPass(L)&&wEvid(L)&&!!sEvid(L); }
 const cdPassOnly = L => { const r=cdLevel(L); return r.ok>=CEFR_PASS&&Math.min(...r.gs)>=CEFR_FLOOR; };
@@ -7066,7 +7066,7 @@ function lchkSteps(L){ const r=lchkRec(L), se=sEvid(L), li=LVS.indexOf(L), wt=WT
     ${row(cdPassOnly(L),`Học đủ “Tôi có thể…” ${L}`,`${R.ok}/6 nhóm đạt ≥ 80% (cần ≥ ${CEFR_PASS}, không nhóm nào dưới ${pct(CEFR_FLOOR)})`,`<a class="btn small" href="#cdgroups">Xem</a>`)}
     ${row(lchkPass(L),`Bài kiểm tra cấp ${L}`,r?`Lần gần nhất ${pct(r.score)} · ${Object.entries(r.sec||{}).map(([k,v])=>`${LCHK[k][0]} ${pct(v)}`).join(' · ')}. Cần mỗi phần ≥ ${pct(LCHK_SEC)}, tổng ≥ ${pct(LCHK_ALL)}.`:`20 câu mới: nghe, đọc, từ vựng và ngữ pháp · khoảng 10 phút. Cần mỗi phần ≥ ${pct(LCHK_SEC)}, tổng ≥ ${pct(LCHK_ALL)}.`,`<button class="btn small primary" data-act="lchkgo" data-l="${L}">${r?'Làm lại':'Làm bài'}</button>`)}
     ${row(wEvid(L),`Viết ở mức ${L}`,`Một đề viết ${L} được ước tính ở mức ${L} (đề có sẵn: ${wt.length}).`,`<button class="btn small" data-wt="${(wt.find(t=>!(st.wtask[t.id]||{}).estBest)||wt[0]||{}).id||''}">Viết một đề</button>`)}
-    ${row(!!se,`Nói ở mức ${L}`,se==='self'?'Máy này không chép lời được: đang dùng điểm tự chấm (≥ 3 mọi tiêu chí).':`Một đề nói ${L} được ước tính ở mức ${L} từ lời máy chép${HAS_ASR?'':' (máy này không chép lời được: tự chấm đủ 5 tiêu chí ≥ 3 để thay)'}.`,`<button class="btn small" data-stk="${(stk[0]||{}).id||''}">Nói một đề</button>`)}
+    ${row(!!se,`Nói ở mức ${L}`,se==='ei'?`Đạt bài nhắc lại câu ${L} (${pct(st.ei[L].best)}).`:se==='self'?'Máy này không chép lời được: đang dùng điểm tự chấm (≥ 3 mọi tiêu chí).':`Đạt bài <b>nhắc lại câu ${L}</b> (≥ ${pct(EI_PASS)}, máy chấm khách quan), hoặc một đề nói ${L} được ước tính ở mức ${L}${HAS_ASR?'':' (máy này không chép lời được: tự chấm đủ 5 tiêu chí ≥ 3 để thay)'}.`,`<button class="btn small primary" data-act="eigo" data-lv="${L}">Nhắc lại câu</button>`)}
   </section>`; }
 GLOSSARY.verify31=['Xác nhận cấp CEFR','Trước đây app coi bạn “đạt” một cấp khi làm xong đủ bài trong app. Nhưng làm xong bài không có nghĩa là dùng được tiếng Anh ở cấp đó. Nay app cần thêm bằng chứng từ bài làm: bài kiểm tra cấp độ (câu mới, không gợi ý), một bài viết và một bài nói được ước tính ở đúng cấp. Kết quả ghi là “Ước tính CEFR”, vì app không phải kỳ thi chuẩn hoá. Muốn có chứng chỉ, hãy thi VSTEP, IELTS, Cambridge…; ghi điểm thi thật vào app để đối chiếu.'];
 // Điểm thi thật: người học tự ghi để so với ước tính của app (và, nếu tự nguyện gửi dữ liệu học, để app hiệu chỉnh).
@@ -7465,6 +7465,72 @@ const LR_A = [
 LR_A.forEach(x=>{ x.text=x.lines.map(l=>l.t); LREAD.push(x); LRD[x.id]=x; });
 const _viewTalk31d = viewTalk; viewTalk = function(){ const L=talkLv(); let h=_viewTalk31d(); return ['A1','A2'].includes(L)?h.replace(`Nghe bài nói dài ${L}: phỏng vấn, bài giảng, podcast`,`Nghe dài ${L}: hội thoại, thông báo, kể chuyện`):h; };
 ['A1','A2'].forEach(L=>CANDO.push({id:L.toLowerCase()+'-lrlis',lv:L,grp:'ski',vi:L==='A1'?'Nghe hiểu hội thoại, thông báo ngắn về chủ đề quen thuộc khi người nói chậm và rõ':'Nghe hiểu ý chính và chi tiết của cuộc gọi, thông báo, câu chuyện ngắn hằng ngày',en:'Understand short, clear conversations and announcements',ref:[{t:'lr',v:LR_A.filter(x=>x.lv===L).map(x=>x.id),n:2}]}));
+
+/* ================== v32: ĐO NÓI, VIẾT, TƯƠNG TÁC THẬT MÀ KHÔNG DÙNG AI ==================
+   Máy không hiểu ý câu trả lời tự do. Thay vì đoán ý, v32 dùng ba cách đo đã được kiểm chứng mà máy chấm khách quan được:
+   (1) nhắc lại câu (elicited imitation) cho nói; (2) người thật chấm theo mô tả CEFR qua đường link (không cần máy chủ);
+   (3) bài thiếu thông tin cho hai người: phải nói với nhau mới điền đúng được. */
+
+/* ---------- 1. Nhắc lại câu (elicited imitation) ----------
+   Nghe một câu một lần (chữ ẩn), chờ 2 giây, rồi nói lại nguyên câu. Muốn nhắc lại đúng câu dài, người nói phải hiểu và tự
+   dựng lại được câu bằng ngữ pháp và từ vựng của mình; nhớ âm thanh thuần tuý chỉ được khoảng 5–7 từ. Nghiên cứu về ngôn ngữ
+   thứ hai (Ortega 2000; Wu & Ortega 2013) cho thấy điểm nhắc lại câu tương quan cao với trình độ nói. Máy chép lời so từng từ;
+   thang 0–4 mỗi câu như cách chấm của phương pháp này. */
+const EI_N = 8, EI_PASS = .7, EI_WAIT = 2000;
+const EI_LEN = {A1:[4,7],A2:[6,9],B1:[8,12],B2:[10,15],C1:[12,18],C2:[14,22]};
+function eiItems(L){ const [lo,hi]=EI_LEN[L], ok=t=>{ const n=wcount(t); return n>=lo&&n<=hi&&!/[“”"()…]/.test(t); };
+  const pool=[...UNITS.filter(u=>u.level===L).flatMap(u=>u.words).map(w=>({t:w.ex,vi:w.exVi,v:0})).filter(x=>x.t&&ok(x.t)),
+    ...lisLines(L).filter(x=>ok(x.l.t)).map(x=>({t:x.l.t,vi:x.l.vi,v:x.l.s==='B'?1:0}))];
+  const seen=new Set(), out=[]; for(const x of shuffle(pool)){ const k=nt(x.t); if(seen.has(k)) continue; seen.add(k); out.push(x); if(out.length>=EI_N) break; }
+  return out.sort((a,b)=>wcount(a.t)-wcount(b.t)); }   // ngắn trước, dài sau
+const eiPts = p => p>=.999?4:p>=.9?3:p>=.7?2:p>=.4?1:0;
+function startEi(L){ const q=eiItems(L); if(q.length<4) return toast('Chưa đủ câu cho cấp này.'); evc('s:ei'); go('ei',{ei:{L,q,i:0,res:[],phase:'intro',plays:0}}); }
+function eiPlay(){ const E=ui.ei, x=E&&!E.done&&E.q[E.i]; if(!x||ui.view!=='ei'||E.plays>=2) return; E.plays++; E.phase='listen'; asrReset(); say(x.t,false,x.v); render();
+  const ms=Math.max(1500,wcount(x.t)*420/(st.set.rate||.9))+EI_WAIT; clearTimeout(E._t); E._t=setTimeout(()=>{ if(ui.ei===E&&E.phase==='listen'){ E.phase='say'; render(); } },ms); }
+function eiScore(){ const E=ui.ei; if(ASR.key==='ei'+E.i&&ASR.res&&!ASR.res.word) return {p:ASR.res.p,asr:true,heard:ASR.res.heard}; return E.self!=null?{p:E.self,asr:false}:null; }
+function eiNext(){ const E=ui.ei, x=E.q[E.i], sc=eiScore(); E.res.push({t:x.t,p:sc?sc.p:0,asr:!!(sc&&sc.asr),pts:eiPts(sc?sc.p:0),n:wcount(x.t)});
+  asrReset(); E.i++; E.plays=0; E.self=null; E.phase='listen0';
+  if(E.i<E.q.length){ render(); return; }
+  E.done=true; const asr=E.res.every(r=>r.asr), avg=E.res.reduce((a,r)=>a+r.pts,0)/(4*E.res.length); E.avg=avg;
+  const b=st.ei ||= {}, r=b[E.L] ||= {best:0,n:0,asr:false}; if(asr){ r.best=Math.max(r.best,avg); r.asr=true; } else r.self=Math.max(r.self||0,avg); r.n++; r.day=today();
+  markActive(); bump('talk'); tally(avg>=EI_PASS,selfXP('ei:'+E.L,avg>=EI_PASS?25:10),true); questCheck(); save(); try{ cefrCheck(); }catch(e){} render(); }
+function viewEi(){ const E=ui.ei; if(!E) return viewTalk(); const L=E.L, n=E.q.length;
+  const top=`<div class="sess-top"><div class="spread"><button class="btn ghost back" data-act="eiquit">✕ Thoát</button><span class="num muted">${L} · Nhắc lại câu · ${Math.min(E.i+1,n)}/${n}</span></div><div class="bar"><i style="width:${(E.i/n)*100}%"></i></div></div>`;
+  if(E.phase==='intro') return top+`<section class="stack"><span class="eyebrow">Kiểm tra nói ${L}</span><h1>Nghe rồi nhắc lại nguyên câu</h1>
+    <p class="muted note">Mỗi câu chỉ nghe được tối đa 2 lần, chữ ẩn. Nghe xong chờ 2 giây rồi nói lại <b>đúng nguyên câu</b>. Câu dài dần. Muốn nhắc lại đúng câu dài, bạn phải hiểu và tự dựng lại câu, không chỉ nhớ âm thanh, nên đây là cách đo khả năng nói ${L} mà máy chấm khách quan được. ${info('ei32')}</p>
+    ${HAS_ASR?'':'<p class="tip">Máy này không chép lời được: bạn tự so với câu gốc và tự chấm. Kết quả tự chấm không tính để xác nhận cấp.</p>'}
+    <div class="row"><button class="btn primary big" data-act="eistart">Bắt đầu ${n} câu</button></div></section>`;
+  if(E.done){ const asr=E.res.every(r=>r.asr), pass=E.avg>=EI_PASS;
+    return top+`<section class="panel reward stack">${mascot(pass?'party':'cheer',84)}<h2>${pct(E.avg)} · ${pass?`Đạt nói ${L}`:`Chưa đạt ${L}`}</h2><p class="muted">${pass?'Bạn nhắc lại đúng phần lớn các câu, kể cả câu dài: dấu hiệu bạn xử lý được ngữ pháp và từ vựng cấp này khi nói.':`Cần ≥ ${pct(EI_PASS)}. Câu dài bị sót từ thường vì chưa nắm cấu trúc: luyện “Nói nhại” rồi làm lại.`}${asr?'':' (Tự chấm: không tính để xác nhận cấp.)'}</p></section>
+    <section class="panel stack"><h3>Từng câu</h3>${E.res.map(r=>`<div class="spread" style="gap:6px"><span lang="en">${esc(r.t)}</span><span class="num ${r.pts>=3?'good':''}">${r.pts}/4</span></div>`).join('')}<p class="hint">4 = đúng hết · 3 = sót ≤ 10% · 2 = sót ≤ 30% · 1 = nói được một phần · 0 = gần như không.</p></section>
+    <div class="row endrow" aria-label="Việc tiếp theo"><button class="btn primary" data-act="eiagain" data-lv="${L}">Làm lại (câu mới)</button><button class="btn" data-go="cefr">Bản đồ CEFR</button></div>`; }
+  const x=E.q[E.i], key='ei'+E.i, sc=eiScore(), mine=ASR.key===key;
+  return top+`<section class="q"><p class="eyebrow">Câu ${E.i+1} · ${wcount(x.t)} từ</p>
+    <div class="row">${HAS_TTS?`<button class="btn ${E.plays?'':'primary'}" data-act="eiplay" ${E.plays>=2||(E.phase==='listen')?'disabled':''}>${SPK} ${E.plays?`Nghe lại (còn ${2-E.plays})`:'Nghe câu'}</button>`:''}</div>
+    ${E.phase==='listen'?'<p class="hint" role="status">Đang nghe… chờ 2 giây sau khi nghe xong rồi nói.</p>':''}
+    ${E.phase==='say'||sc?`${HAS_ASR?`<div class="row">${mine&&ASR.on?'<button class="btn" data-act="asrstop">■ Đang nghe bạn nói… bấm khi xong</button>':`<button class="btn ${sc?'':'primary'}" data-act="asr" data-k="${key}" data-t="${esc(x.t)}">🎙 ${sc?'Nói lại':'Nhắc lại câu'}</button>`}</div>${mine&&ASR.err?`<p class="hint" role="status">${esc(ASR.err)}</p>`:''}`
+      :`<details><summary>Xem câu gốc để tự so</summary><p lang="en">${esc(x.t)}</p></details><div class="row" style="gap:6px">${[[1,'Đúng hết'],[.9,'Sót 1 từ'],[.7,'Sót vài từ'],[.4,'Được một phần'],[0,'Không nói được']].map(([v,l])=>`<button class="btn small ${E.self===v?'primary':''}" data-act="eiself" data-v="${v}">${l}</button>`).join('')}</div>`}`:''}
+    ${sc?`<div class="fb ${sc.p>=.9?'good':sc.p>=.7?'neutral':'bad'}" role="status"><strong>${eiPts(sc.p)}/4 · máy nghe ra ${pct(sc.p)} số từ</strong>${sc.asr?`<p>${ASR.res.words.map((w,i)=>`<span class="${ASR.res.hit.includes(i)?'asr-ok':'asr-miss'}" lang="en">${esc(w)}</span>`).join(' ')}</p>`:''}<span class="hint" lang="vi">${esc(x.vi||'')}</span></div>
+      <div class="row"><button class="btn primary" data-act="einext" id="nextbtn">${E.i+1<n?'Câu tiếp':'Xem kết quả'}</button></div>`:''}</section>`; }
+GLOSSARY.ei32=['Nhắc lại câu (elicited imitation)','Bạn nghe một câu (chữ ẩn) rồi nói lại nguyên câu. Trí nhớ âm thanh thuần tuý chỉ giữ được khoảng 5–7 từ; câu dài hơn thì phải hiểu nghĩa và tự dựng lại câu bằng ngữ pháp, từ vựng của chính mình. Vì vậy điểm nhắc lại câu dài dần theo cấp phản ánh khả năng xử lý ngôn ngữ khi nói, và nhiều nghiên cứu (Ortega 2000; Wu & Ortega 2013) thấy nó tương quan cao với trình độ nói. Máy chép lời so từng từ với câu gốc, không cần hiểu ý, nên chấm được khách quan mà không cần AI. Mỗi câu 0–4 điểm; đạt khi trung bình ≥ 70%.'];
+DETAIL_SAFE_VIEW.add('ei'); TRANSIENT.ei='talk';
+document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('button'); if(!b) return; const d=b.dataset;
+  switch(d.act){
+    case 'eigo': return startEi(d.lv||talkLv());
+    case 'eiagain': return startEi(d.lv);
+    case 'eistart': ui.ei.phase='listen0'; render(); return eiPlay();
+    case 'eiplay': return eiPlay();
+    case 'eiself': ui.ei.self=+d.v; return render();
+    case 'einext': return eiNext();
+    case 'eiquit': clearTimeout(ui.ei&&ui.ei._t); try{ speechSynthesis.cancel(); }catch(x){} return go('talk');
+  } });
+// Tự phát câu khi sang câu mới; bài học toàn màn hình.
+const _render32a = render; render = function(){ _render32a(); try{ if(ui.view!=='ei'||!ui.ei) return; document.body.classList.add('lesson'); const E=ui.ei;
+  if(E.phase==='listen0'&&!E.done&&E.plays===0&&E.autoFor!==E.i){ E.autoFor=E.i; setTimeout(()=>{ if(ui.ei===E&&E.plays===0) eiPlay(); },350); } }catch(e){} };
+// Trang Kỹ năng · Nói: thẻ “Nhắc lại câu”.
+const _viewTalk32a = viewTalk; viewTalk = function(){ let h=_viewTalk32a(); const L=talkLv(), T=SK_TABS.some(x=>x[0]===ui.talkTab)?ui.talkTab:'hoithoai'; if(T!=='noi') return h;
+  const r=(st.ei||{})[L], card=`<button class="unit morei" data-act="eigo" data-lv="${L}"><span class="no">${ico('mic')}</span><span class="t"><strong>Nhắc lại câu · kiểm tra nói ${L}</strong><span class="muted">Nghe một câu (chữ ẩn) rồi nói lại nguyên câu; câu dài dần · ${EI_N} câu</span>${r&&r.asr?`<span class="pill ${r.best>=EI_PASS?'good':'accent'}" style="justify-self:start">${r.best>=EI_PASS?'Đạt':'Đang luyện'} · ${pct(r.best)}</span>`:''}</span></button>`;
+  const k=`<h2>Luyện nói ${L}</h2><div class="units">`; return h.includes(k)?h.replace(k,k+card):h; };
 
 CHANGELOG.unshift({v:31,d:'2026-10-01',t:'Đo đúng cấp CEFR, nói và tương tác thật',items:[
   'Ước tính cấp CEFR cho bài viết và bài nói (máy chép lời khi bạn nói), kèm việc cần làm để lên cấp và kiểm tra bài có bám đề không.',
