@@ -25,6 +25,10 @@ Học tiếng Anh A1 → C2 miễn phí, mỗi lỗi sai được giải thích 
 - Nhắc học hằng ngày bằng thông báo (Web Push, kể cả iPhone đã cài app), chạy khi mất mạng.
 - Công cụ lớp học cho giáo viên: gộp tiến độ cả lớp từ file dữ liệu ẩn danh, không cần máy chủ.
 - Dễ dùng như trò chơi: màn chào một nút, thẻ từ gọn trong một màn hình (chi tiết trong “Xem thêm”), học thẻ và luyện tập chung một khung với nút chính luôn ở đáy, bảng đúng/sai có Tí phản ứng, tự đọc từ mới, phím tắt khi học trên máy tính.
+- Ước tính cấp CEFR của bài viết, bài nói từ 5 đặc trưng hiệu chỉnh trên bài mẫu; đề nói có máy chép lời và phân tích tự động; kiểm tra bám đề.
+- Xác nhận cấp CEFR bằng bài làm: đủ nhóm “Tôi có thể…”, bài kiểm tra cấp độ (nghe, đọc, từ vựng, ngữ pháp), một bài viết và một bài nói ở đúng cấp; ghi điểm thi thật để đối chiếu.
+- Hội thoại mở (12 tình huống A1–C2): người kia rẽ nhánh theo câu trả lời nói hoặc gõ của bạn, hỏi lại khi chưa hiểu.
+- Giám khảo AI (tự bật, có giới hạn lượt): chấm bài viết, bài nói, hội thoại theo CEFR, chỉ lỗi và viết lại ở cấp đề. Cần đặt `ANTHROPIC_API_KEY` cho hàm `el-grade`.
 - Bắt đầu học bằng một chạm; hướng dẫn cài app cho iPhone, Android, máy tính; thẻ chia sẻ tiến độ; trang “Về English Ladder” (cam kết, nội dung, mã nguồn).
 
 ## Cài như ứng dụng
@@ -64,7 +68,7 @@ Tốc độ đo được (máy tầm trung, bản v22; v24 chỉ thêm ~1 kB CSS
 
 ## Máy chủ (Supabase)
 
-Thư mục `supabase/` chứa migration của bản v19–v20 (bảng + hàm RPC cho giải đấu tuần, thông báo nhắc học và gom câu báo lỗi; xem báo lỗi bằng `select * from el_admin.flags;`) và Edge Function `el-remind` gửi lời nhắc (pg_cron 15 phút/lần). Khoá VAPID và bí mật cron nằm trong Supabase Vault, không nằm trong repo.
+Thư mục `supabase/` chứa migration của bản v19–v20 và v31 (đếm lượt chấm AI, `el_grade_use`) (bảng + hàm RPC cho giải đấu tuần, thông báo nhắc học và gom câu báo lỗi; xem báo lỗi bằng `select * from el_admin.flags;`) và Edge Function `el-remind` gửi lời nhắc (pg_cron 15 phút/lần), `el-grade` chấm bài bằng Claude (khoá `ANTHROPIC_API_KEY` và giới hạn `GRADE_CAP_USER`, `GRADE_CAP_IP`, `GRADE_CAP_DAY` đặt trong Secrets của Edge Functions; thiếu khoá thì app ẩn tính năng). Khoá VAPID và bí mật cron nằm trong Supabase Vault, không nằm trong repo.
 
 ## Bản quyền
 
