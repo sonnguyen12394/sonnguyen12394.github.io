@@ -7527,7 +7527,7 @@ setTimeout(aiPing,1500);
 
 CHANGELOG.unshift({v:31,d:'2026-10-01',t:'Đo đúng cấp CEFR, nói và tương tác thật',items:[
   'Ước tính cấp CEFR cho bài viết và bài nói (máy chép lời khi bạn nói), kèm việc cần làm để lên cấp và kiểm tra bài có bám đề không.',
-  'Xác nhận cấp CEFR bằng bài làm: bài kiểm tra cấp độ (nghe, đọc, từ vựng, ngữ pháp), một bài viết và một bài nói ở đúng cấp. Nhãn đổi thành “Ước tính CEFR”; ghi được điểm thi thật để so.',
+  'Xác nhận cấp CEFR bằng bài làm: bài kiểm tra cấp độ (nghe, đọc, từ vựng, ngữ pháp), một bài viết và một bài nói ở đúng cấp. Nhãn đổi thành “Ước tính CEFR”; cấp đã đạt theo cách tính cũ cần làm các bước xác nhận này. Ghi được điểm thi thật để so.',
   'Hội thoại mở: 12 tình huống, người kia phản ứng theo điều bạn nói (nói hoặc gõ), hỏi lại khi chưa hiểu.',
   'Bài nghe dài cho A1 và A2.',
   'Giám khảo AI do bạn tự bật: chấm bài viết, bài nói, hội thoại theo CEFR, chỉ lỗi quan trọng và viết lại ở cấp đề.']});
