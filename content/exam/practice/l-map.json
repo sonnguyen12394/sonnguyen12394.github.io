@@ -560,7 +560,7 @@
       },
       {
         "sp": "Presenter",
-        "t": "If you need a cash machine, the bank is on the north side of High Street, just past the crossroads with Church Road, on the east side."
+        "t": "If you need a cash machine, the bank is on the north side of High Street, just east of the crossroads with Church Road."
       },
       {
         "sp": "Presenter",
@@ -579,7 +579,7 @@
       "Với những ai đến Ashford dự lễ hội, đây là hướng dẫn nhanh về trung tâm thị trấn. Nếu đến bằng tàu, nhà ga ở đầu phía tây phố High. Phố High chạy về phía đông, và xa hơn về phía nam có một con phố thứ hai chạy song song, Mill Lane. Đường Church cắt qua cả hai theo hướng bắc nam.",
       "Khu chợ, mở mọi ngày trong lễ hội, nằm ở phía đông đường Church, giữa hai con phố.",
       "Nhiều người sẽ cần bưu điện. Trước đây nó ở cạnh nhà ga, nhưng đã chuyển tới toà nhà mới ngay trên đường Church, phía tây, đối diện thẳng khu chợ.",
-      "Nếu cần máy rút tiền, ngân hàng ở phía bắc phố High, ngay qua ngã tư với đường Church, ở phía đông.",
+      "Nếu cần máy rút tiền, ngân hàng ở phía bắc phố High, ngay phía đông ngã tư với đường Church.",
       "Thư viện có triển lãm miễn phí về lịch sử thị trấn. Nó nằm giữa phố High và Mill Lane, phía tây đường Church, nhưng lùi vào một chút so với đường, phía sau bưu điện.",
       "Rạp chiếu phim ở phía nam Mill Lane, ngay phía đông đường Church. Và nếu lái xe, bãi đỗ lớn nhất ở cuối phía đông Mill Lane, phía nam."
     ],
@@ -647,7 +647,7 @@
         "b": 7,
         "ev": {
           "p": 3,
-          "s": "the bank is on the north side of High Street, just past the crossroads with Church Road, on the east side"
+          "s": "the bank is on the north side of High Street, just east of the crossroads with Church Road"
         },
         "why": "Phía bắc phố High, phía đông đường Church: B.",
         "wrong": {
@@ -703,7 +703,7 @@
     ],
     "audio": {
       "file": "a/l-map-04.mp3",
-      "dur": 74.6,
+      "dur": 73.6,
       "voices": [
         "af_nicole"
       ],

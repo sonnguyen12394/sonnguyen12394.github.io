@@ -220,7 +220,16 @@
           "Thursday": "Thứ Năm anh không đi được."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-form-01.mp3",
+      "dur": 77.2,
+      "voices": [
+        "bf_emma",
+        "bm_george"
+      ],
+      "slow": "a/l-form-01.slow.mp3"
+    }
   },
   {
     "id": "l-form-02",
@@ -440,7 +449,16 @@
           "8": "Tám là giá gửi bưu điện (tám bảng)."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-form-02.mp3",
+      "dur": 73.2,
+      "voices": [
+        "bm_lewis",
+        "bf_isabella"
+      ],
+      "slow": "a/l-form-02.slow.mp3"
+    }
   },
   {
     "id": "l-form-03",
@@ -657,7 +675,16 @@
           "harbour": "Bến cảng là chỗ có bãi đỗ xe công cộng."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-form-03.mp3",
+      "dur": 79.3,
+      "voices": [
+        "bf_emma",
+        "am_michael"
+      ],
+      "slow": "a/l-form-03.slow.mp3"
+    }
   },
   {
     "id": "l-form-04",
@@ -865,7 +892,16 @@
           "textbook": "Sách giáo khoa đã tính trong học phí, không cần mang."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-form-04.mp3",
+      "dur": 72.7,
+      "voices": [
+        "bm_george",
+        "bf_isabella"
+      ],
+      "slow": "a/l-form-04.slow.mp3"
+    }
   },
   {
     "id": "l-form-05",
@@ -1076,7 +1112,16 @@
           "buzzer": "Chuông bộ đàm là chuyện vào nhà, không phải việc cần sửa trong bếp."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-form-05.mp3",
+      "dur": 74.5,
+      "voices": [
+        "bm_lewis",
+        "af_sarah"
+      ],
+      "slow": "a/l-form-05.slow.mp3"
+    }
   },
   {
     "id": "l-form-06",
@@ -1293,6 +1338,15 @@
           "weekend": "Không được nhắc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-form-06.mp3",
+      "dur": 82.2,
+      "voices": [
+        "af_nicole",
+        "bm_george"
+      ],
+      "slow": "a/l-form-06.slow.mp3"
+    }
   }
 ]

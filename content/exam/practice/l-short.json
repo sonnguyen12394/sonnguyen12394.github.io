@@ -58,6 +58,7 @@
         "ans": {
           "accept": [
             "red barn",
+            "big red barn",
             "barn"
           ]
         },
@@ -156,7 +157,15 @@
           "information desk": "Bàn thông tin là nơi báo lạc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-short-01.mp3",
+      "dur": 41.7,
+      "voices": [
+        "bf_emma"
+      ],
+      "slow": "a/l-short-01.slow.mp3"
+    }
   },
   {
     "id": "l-short-02",
@@ -218,7 +227,7 @@
         "ans": {
           "accept": [
             "meal voucher",
-            "a meal voucher"
+            "free meal voucher"
           ]
         },
         "limit": 3,
@@ -276,7 +285,10 @@
         "ans": {
           "accept": [
             "radio",
-            "by radio"
+            "by radio",
+            "on the radio",
+            "on their radio",
+            "on your radio"
           ]
         },
         "limit": 3,
@@ -295,7 +307,10 @@
         "q": "Who should volunteers ask for a waterproof jacket?",
         "ans": {
           "accept": [
-            "team leader"
+            "team leader",
+            "their team leader",
+            "the team leader",
+            "your team leader"
           ]
         },
         "limit": 3,
@@ -309,7 +324,15 @@
           "coordinator": "Người điều phối là người đang nói, không phải người phát áo."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-short-02.mp3",
+      "dur": 40.7,
+      "voices": [
+        "am_adam"
+      ],
+      "slow": "a/l-short-02.slow.mp3"
+    }
   },
   {
     "id": "l-short-03",
@@ -351,7 +374,7 @@
       },
       {
         "sp": "Mia",
-        "t": "The train's too expensive for eight of us, so I've asked about hiring a minibus. Dr Patel said she could drive."
+        "t": "The train's too expensive for eight of us, so I've asked about hiring a minibus, which works out much cheaper. And our lecturer, Dr Patel, that's P-A-T-E-L, said she could drive."
       },
       {
         "sp": "Jack",
@@ -373,7 +396,7 @@
       "Cũng phải. Đo bằng cách nào?",
       "Hội đồng địa phương đã cắm các mốc kim loại dọc đỉnh vách. Tụi mình chỉ cần ghi khoảng cách từ mỗi mốc tới mép vách rồi so với số liệu năm ngoái.",
       "Nghe đơn giản. Còn đi lại thì sao?",
-      "Tàu hoả quá đắt cho tám người, nên mình đã hỏi thuê một xe buýt nhỏ. Cô Patel nói cô có thể lái.",
+      "Tàu hoả quá đắt cho tám người, nên mình đã hỏi thuê một xe buýt nhỏ, rẻ hơn nhiều. Và giảng viên của tụi mình, cô Patel, đánh vần P-A-T-E-L, nói cô có thể lái.",
       "Tuyệt. Rủi ro lớn nhất là gì?",
       "Chắc chắn là thuỷ triều. Một phần bãi biển bị cô lập khi triều lên, nên tụi mình phải xem giờ thuỷ triều trước khi xuống đó."
     ],
@@ -455,7 +478,8 @@
         "ans": {
           "accept": [
             "Dr Patel",
-            "Patel"
+            "Patel",
+            "Dr. Patel"
           ]
         },
         "limit": 3,
@@ -489,7 +513,16 @@
           "cliffs": "Vách đá là thứ được đo."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-short-03.mp3",
+      "dur": 51.5,
+      "voices": [
+        "bf_isabella",
+        "bm_lewis"
+      ],
+      "slow": "a/l-short-03.slow.mp3"
+    }
   },
   {
     "id": "l-short-04",
@@ -637,7 +670,8 @@
         "q": "What was the first item scanned in a shop?",
         "ans": {
           "accept": [
-            "chewing gum"
+            "chewing gum",
+            "gum"
           ]
         },
         "limit": 3,
@@ -652,7 +686,15 @@
           "1974": "Đó là năm, không phải sản phẩm."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-short-04.mp3",
+      "dur": 63.5,
+      "voices": [
+        "am_michael"
+      ],
+      "slow": "a/l-short-04.slow.mp3"
+    }
   },
   {
     "id": "l-short-05",
@@ -674,7 +716,7 @@
       },
       {
         "sp": "Elena",
-        "t": "Honestly, by accident. I was studying marine biology and I bought an underwater camera to record coral for my research. I quickly realised I enjoyed taking the pictures more than analysing them."
+        "t": "Honestly, by accident. I was studying marine biology at the time. For my research, I bought an underwater camera to record coral, and I quickly realised I enjoyed taking the pictures more than analysing them."
       },
       {
         "sp": "Interviewer",
@@ -707,7 +749,7 @@
     },
     "vi": [
       "Hôm nay tôi trò chuyện với nhiếp ảnh gia động vật hoang dã Elena Varga. Elena, chị bắt đầu thế nào?",
-      "Thật lòng mà nói là tình cờ. Tôi học sinh học biển và mua một máy ảnh dưới nước để ghi lại san hô cho nghiên cứu. Tôi nhanh chóng nhận ra mình thích chụp ảnh hơn là phân tích chúng.",
+      "Thật lòng mà nói là tình cờ. Lúc đó tôi đang học sinh học biển. Để nghiên cứu, tôi mua một máy ảnh dưới nước để ghi lại san hô, và nhanh chóng nhận ra mình thích chụp ảnh hơn là phân tích chúng.",
       "Phần khó nhất của nghề là gì?",
       "Người ta nghĩ là nguy hiểm, nhưng thật ra là chờ đợi. Để chụp báo tuyết, tôi ở trên núi mười một tuần và chỉ thấy con vật trong ba ngày.",
       "Chị tránh làm động vật hoảng sợ bằng cách nào?",
@@ -759,7 +801,7 @@
         "b": 7,
         "ev": {
           "p": 1,
-          "s": "I bought an underwater camera to record coral for my research"
+          "s": "I bought an underwater camera to record coral"
         },
         "why": "Chị chụp san hô (coral).",
         "wrong": {
@@ -792,7 +834,9 @@
         "q": "What does she use to stay hidden from animals?",
         "ans": {
           "accept": [
-            "hides"
+            "hides",
+            "small shelters",
+            "shelters"
           ]
         },
         "limit": 3,
@@ -828,7 +872,16 @@
           "equipment": "Thiết bị đắt tiền được nói là ít quan trọng hơn."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-short-05.mp3",
+      "dur": 54.4,
+      "voices": [
+        "bm_george",
+        "af_bella"
+      ],
+      "slow": "a/l-short-05.slow.mp3"
+    }
   },
   {
     "id": "l-short-06",
@@ -991,6 +1044,14 @@
           "6.45": "Đó là giờ khởi hành."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-short-06.mp3",
+      "dur": 42.3,
+      "voices": [
+        "bf_emma"
+      ],
+      "slow": "a/l-short-06.slow.mp3"
+    }
   }
 ]

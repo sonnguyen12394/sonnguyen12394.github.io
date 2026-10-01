@@ -178,7 +178,15 @@
           "E": "Không được nhắc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq2-01.mp3",
+      "dur": 56.3,
+      "voices": [
+        "bf_isabella"
+      ],
+      "slow": "a/l-mcq2-01.slow.mp3"
+    }
   },
   {
     "id": "l-mcq2-02",
@@ -384,7 +392,16 @@
           "D": "Không được nhắc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq2-02.mp3",
+      "dur": 62.7,
+      "voices": [
+        "bm_lewis",
+        "bf_emma"
+      ],
+      "slow": "a/l-mcq2-02.slow.mp3"
+    }
   },
   {
     "id": "l-mcq2-03",
@@ -563,7 +580,15 @@
         },
         "trap": "'grew slowly' xuất hiện trong bài nhưng như một điều tích cực."
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq2-03.mp3",
+      "dur": 58.8,
+      "voices": [
+        "am_michael"
+      ],
+      "slow": "a/l-mcq2-03.slow.mp3"
+    }
   },
   {
     "id": "l-mcq2-04",
@@ -745,7 +770,15 @@
           "C": "Không được nói."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq2-04.mp3",
+      "dur": 62.1,
+      "voices": [
+        "bm_lewis"
+      ],
+      "slow": "a/l-mcq2-04.slow.mp3"
+    }
   },
   {
     "id": "l-mcq2-05",
@@ -903,7 +936,7 @@
       },
       {
         "id": "l-mcq2-05-3",
-        "q": "Which TWO types of workplace were NOT well represented, according to Zoe?",
+        "q": "Which TWO types of workplace does Zoe say the trial did not cover?",
         "opts": [
           {
             "k": "A",
@@ -941,9 +974,19 @@
           "D": "Không được nhắc.",
           "E": "Phần lớn là doanh nghiệp văn phòng."
         },
-        "trap": "Câu hỏi có 'NOT'; nhà hàng có tham gia nên bị loại."
+        "trap": "Ravi nói vài nhà hàng có tham gia, nên nhà hàng bị loại."
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq2-05.mp3",
+      "dur": 62,
+      "voices": [
+        "af_nicole",
+        "bf_isabella",
+        "bm_george"
+      ],
+      "slow": "a/l-mcq2-05.slow.mp3"
+    }
   },
   {
     "id": "l-mcq2-06",
@@ -1142,6 +1185,15 @@
         },
         "trap": "'Spending money' được nhắc nhưng là 'optional'."
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq2-06.mp3",
+      "dur": 55,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ],
+      "slow": "a/l-mcq2-06.slow.mp3"
+    }
   }
 ]

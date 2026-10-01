@@ -152,7 +152,15 @@
           "book": "Sách là thứ phải mua."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-sentence-01.mp3",
+      "dur": 52.4,
+      "voices": [
+        "bf_emma"
+      ],
+      "slow": "a/l-sentence-01.slow.mp3"
+    }
   },
   {
     "id": "l-sentence-02",
@@ -331,7 +339,17 @@
           "halls": "Ký túc xá là nơi đã nghiên cứu."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-sentence-02.mp3",
+      "dur": 55.2,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "bf_isabella"
+      ],
+      "slow": "a/l-sentence-02.slow.mp3"
+    }
   },
   {
     "id": "l-sentence-03",
@@ -345,7 +363,7 @@
     "band": 6.5,
     "mode": "practice",
     "title": "Lecture: The History of Glass",
-    "instr": "Complete the summary below. Write NO MORE THAN ONE WORD for each answer.",
+    "instr": "Complete the sentences below. Write NO MORE THAN TWO WORDS for each answer.",
     "script": [
       {
         "sp": "Lecturer",
@@ -397,7 +415,7 @@
             "beads"
           ]
         },
-        "limit": 1,
+        "limit": 2,
         "b": 6,
         "ev": {
           "p": 0,
@@ -416,7 +434,7 @@
             "skill"
           ]
         },
-        "limit": 1,
+        "limit": 2,
         "b": 6.5,
         "ev": {
           "p": 1,
@@ -429,13 +447,15 @@
       },
       {
         "id": "l-sentence-03-3",
-        "q": "The invention of ___ made glass containers cheaper.",
+        "q": "The discovery of ___ made glass containers cheaper.",
         "ans": {
           "accept": [
-            "glassblowing"
+            "glassblowing",
+            "glass-blowing",
+            "glass blowing"
           ]
         },
-        "limit": 1,
+        "limit": 2,
         "b": 6.5,
         "ev": {
           "p": 1,
@@ -454,7 +474,7 @@
             "churches"
           ]
         },
-        "limit": 1,
+        "limit": 2,
         "b": 6,
         "ev": {
           "p": 2,
@@ -473,7 +493,7 @@
             "tin"
           ]
         },
-        "limit": 1,
+        "limit": 2,
         "b": 7,
         "ev": {
           "p": 3,
@@ -484,7 +504,15 @@
           "glass": "Thứ nổi là thuỷ tinh; thứ bên dưới là thiếc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-sentence-03.mp3",
+      "dur": 68.1,
+      "voices": [
+        "bm_lewis"
+      ],
+      "slow": "a/l-sentence-03.slow.mp3"
+    }
   },
   {
     "id": "l-sentence-04",
@@ -639,7 +667,15 @@
           "budget": "Ngân sách là giải pháp được đề xuất, không phải nguyên nhân trực tiếp."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-sentence-04.mp3",
+      "dur": 56.6,
+      "voices": [
+        "af_sarah"
+      ],
+      "slow": "a/l-sentence-04.slow.mp3"
+    }
   },
   {
     "id": "l-sentence-05",
@@ -681,7 +717,7 @@
       },
       {
         "sp": "Hannah",
-        "t": "I thought the sample was quite small, and all the volunteers were university students, so we can't be sure the results apply to older people. I'd also like to see whether the benefit lasts for more than a day."
+        "t": "I thought the sample was quite small. Another problem is that all the volunteers were university students, so we can't be sure the results apply to older people. I'd also like to see whether the benefit lasts for more than a day."
       },
       {
         "sp": "Tutor",
@@ -699,7 +735,7 @@
       "Các nhà nghiên cứu có giải thích vì sao không?",
       "Họ đo hoạt động não trong giấc ngủ và thấy những đợt hoạt động gọi là thoi ngủ. Ai có càng nhiều thoi ngủ thì điểm kiểm tra càng cao.",
       "Em có thấy điểm yếu nào trong nghiên cứu không?",
-      "Em nghĩ mẫu khá nhỏ, và mọi tình nguyện viên đều là sinh viên đại học, nên ta không chắc kết quả áp dụng cho người lớn tuổi. Em cũng muốn xem lợi ích có kéo dài hơn một ngày không.",
+      "Em nghĩ mẫu khá nhỏ. Một vấn đề nữa là mọi tình nguyện viên đều là sinh viên đại học, nên ta không chắc kết quả áp dụng cho người lớn tuổi. Em cũng muốn xem lợi ích có kéo dài hơn một ngày không.",
       "Ý hay. Đó sẽ là một nghiên cứu tiếp nối thú vị."
     ],
     "allow": [
@@ -715,7 +751,7 @@
     "items": [
       {
         "id": "l-sentence-05-1",
-        "q": "Volunteers had to learn words from an ___ language.",
+        "q": "Volunteers learned words from a language that was ___ to them.",
         "ans": {
           "accept": [
             "unfamiliar"
@@ -810,7 +846,16 @@
           "older people": "Người lớn tuổi là nhóm chưa được nghiên cứu."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-sentence-05.mp3",
+      "dur": 55.6,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ],
+      "slow": "a/l-sentence-05.slow.mp3"
+    }
   },
   {
     "id": "l-sentence-06",
@@ -872,7 +917,8 @@
         "q": "The workshop is in a former ___ behind the market.",
         "ans": {
           "accept": [
-            "garage"
+            "garage",
+            "old garage"
           ]
         },
         "limit": 2,
@@ -965,6 +1011,14 @@
           "experience": "Bài nói rõ không cần kinh nghiệm."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-sentence-06.mp3",
+      "dur": 58.2,
+      "voices": [
+        "am_michael"
+      ],
+      "slow": "a/l-sentence-06.slow.mp3"
+    }
   }
 ]

@@ -161,7 +161,15 @@
           "G": "Không nói cần kinh nghiệm."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-matching-01.mp3",
+      "dur": 39.8,
+      "voices": [
+        "am_adam"
+      ],
+      "slow": "a/l-matching-01.slow.mp3"
+    }
   },
   {
     "id": "l-matching-02",
@@ -342,7 +350,16 @@
           "A": "Làm bài luận khác biệt là kho lưu trữ."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-matching-02.mp3",
+      "dur": 52,
+      "voices": [
+        "bm_lewis",
+        "bf_isabella"
+      ],
+      "slow": "a/l-matching-02.slow.mp3"
+    }
   },
   {
     "id": "l-matching-03",
@@ -511,7 +528,15 @@
           "C": "Hồ sâu là Vườn Nhật."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-matching-03.mp3",
+      "dur": 49.4,
+      "voices": [
+        "bf_emma"
+      ],
+      "slow": "a/l-matching-03.slow.mp3"
+    }
   },
   {
     "id": "l-matching-04",
@@ -691,7 +716,17 @@
           "E": "Không giải thích được lý do là quan sát."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-matching-04.mp3",
+      "dur": 61,
+      "voices": [
+        "bm_george",
+        "am_michael",
+        "bf_isabella"
+      ],
+      "slow": "a/l-matching-04.slow.mp3"
+    }
   },
   {
     "id": "l-matching-05",
@@ -865,7 +900,15 @@
           "D": "Lau kính là Mary Anderson."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-matching-05.mp3",
+      "dur": 64.7,
+      "voices": [
+        "af_sarah"
+      ],
+      "slow": "a/l-matching-05.slow.mp3"
+    }
   },
   {
     "id": "l-matching-06",
@@ -1029,6 +1072,14 @@
           "D": "Không được nói."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-matching-06.mp3",
+      "dur": 45.3,
+      "voices": [
+        "bm_lewis"
+      ],
+      "slow": "a/l-matching-06.slow.mp3"
+    }
   }
 ]

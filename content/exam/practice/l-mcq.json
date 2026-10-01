@@ -228,7 +228,16 @@
           "B": "\"half past six\" là giờ bắt đầu, không phải độ dài."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-01.mp3",
+      "dur": 56,
+      "voices": [
+        "bf_isabella",
+        "bm_lewis"
+      ],
+      "slow": "a/l-mcq-01.slow.mp3"
+    }
   },
   {
     "id": "l-mcq-02",
@@ -434,7 +443,15 @@
           "C": "Người nói không nhận đăng ký."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-02.mp3",
+      "dur": 55.2,
+      "voices": [
+        "bf_emma"
+      ],
+      "slow": "a/l-mcq-02.slow.mp3"
+    }
   },
   {
     "id": "l-mcq-03",
@@ -655,7 +672,16 @@
           "C": "Gia sư đồng ý với đề tài đã chọn."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-03.mp3",
+      "dur": 60.5,
+      "voices": [
+        "bm_george",
+        "am_adam"
+      ],
+      "slow": "a/l-mcq-03.slow.mp3"
+    }
   },
   {
     "id": "l-mcq-04",
@@ -857,7 +883,15 @@
           "B": "Bài nói rõ \"isn't actually faster\"."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-04.mp3",
+      "dur": 63.9,
+      "voices": [
+        "af_sarah"
+      ],
+      "slow": "a/l-mcq-04.slow.mp3"
+    }
   },
   {
     "id": "l-mcq-05",
@@ -1081,7 +1115,17 @@
           "C": "Không được nói."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-05.mp3",
+      "dur": 61.1,
+      "voices": [
+        "bm_lewis",
+        "bf_emma",
+        "am_michael"
+      ],
+      "slow": "a/l-mcq-05.slow.mp3"
+    }
   },
   {
     "id": "l-mcq-06",
@@ -1288,6 +1332,14 @@
           "B": "Nhà nghỉ là điểm nghỉ, không phải chỗ hẹn khi lạc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-06.mp3",
+      "dur": 54.3,
+      "voices": [
+        "bm_george"
+      ],
+      "slow": "a/l-mcq-06.slow.mp3"
+    }
   }
 ]

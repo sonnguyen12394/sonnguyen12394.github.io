@@ -23,7 +23,7 @@
       },
       {
         "sp": "Librarian",
-        "t": "Next, download our app onto your phone or tablet. When you open it for the first time, it will ask for your card number and a PIN. The PIN is the last four numbers of your phone number, unless you've changed it."
+        "t": "Next, download our app onto your phone or tablet. When you open it for the first time, it will ask for your card number and a PIN. The PIN is the last four digits of your phone number, unless you've changed it."
       },
       {
         "sp": "Librarian",
@@ -188,7 +188,7 @@
       },
       {
         "sp": "Teacher",
-        "t": "Pour the pulp into a shallow tray. Then slide a wooden frame covered with a fine metal screen under the pulp and lift it out slowly, so that a thin layer of fibres stays on the screen."
+        "t": "Pour the pulp into a shallow tray and stir it gently with your hand so that the fibres spread evenly. Then slide a wooden frame covered with a fine metal screen under the pulp and lift it out slowly, so that a thin layer of fibres stays on the screen."
       },
       {
         "sp": "Teacher",
@@ -202,7 +202,7 @@
       "Hôm nay chúng ta sẽ tự làm giấy từ báo cũ. Thầy giải thích quy trình trước khi các em bắt đầu.",
       "Đầu tiên, xé báo thành mẩu nhỏ, cỡ con tem, rồi cho vào một xô nước ấm. Để ngâm qua đêm cho sợi giấy mềm ra.",
       "Sáng hôm sau, cho giấy ướt vào máy xay cùng thêm nước và xay đến khi thành chất lỏng sệt màu xám. Thứ này gọi là bột giấy.",
-      "Đổ bột giấy vào một khay nông. Rồi luồn một khung gỗ căng lưới kim loại mịn xuống dưới bột giấy và nhấc lên từ từ, để một lớp sợi mỏng đọng lại trên lưới.",
+      "Đổ bột giấy vào một khay nông và khuấy nhẹ bằng tay để sợi giấy dàn đều. Rồi luồn một khung gỗ căng lưới kim loại mịn xuống dưới bột giấy và nhấc lên từ từ, để một lớp sợi mỏng đọng lại trên lưới.",
       "Úp khung lên một miếng vải và ép mạnh bằng bọt biển để vắt càng nhiều nước càng tốt. Cuối cùng, để tờ giấy khô. Trời ấm thì mất khoảng một ngày. Có người là tờ giấy cho phẳng hơn, nhưng xin đừng làm vậy trong lớp."
     ],
     "allow": [
@@ -315,7 +315,7 @@
     ],
     "audio": {
       "file": "a/l-flow-02.mp3",
-      "dur": 52.1,
+      "dur": 55.9,
       "voices": [
         "bm_george"
       ],
@@ -525,7 +525,7 @@
       },
       {
         "sp": "Lecturer",
-        "t": "The nibs are ground into a thick paste called cocoa liquor, although, confusingly, it contains no alcohol. Sugar and milk are then added, and the mixture is stirred for hours in a process called conching, which gives chocolate its smooth texture."
+        "t": "The nibs are ground into a thick paste called cocoa liquor, although, confusingly, it contains no alcohol. Sugar and milk powder are then added, and the mixture is stirred for hours in a process called conching, which gives chocolate its smooth texture."
       }
     ],
     "voices": {
@@ -536,7 +536,7 @@
       "Quả được bổ ra và hạt, phủ một lớp cơm trắng, được chất đống dưới lá chuối khoảng một tuần. Giai đoạn này gọi là lên men, và cực kỳ quan trọng: không có nó, hạt không bao giờ có hương sô-cô-la.",
       "Tiếp theo, hạt được trải ra phơi nắng. Nông dân đảo hạt thường xuyên bằng cào gỗ. Khi khô, hạt được đóng bao và chở tới các nhà máy, phần lớn ở châu Âu và Bắc Mỹ.",
       "Ở nhà máy, hạt được rang để hương đậm hơn, rồi đập vỡ để bỏ vỏ. Phần còn lại, phần lõi của hạt, gọi là nhân cacao.",
-      "Nhân được nghiền thành bột nhão đặc gọi là cocoa liquor, dù gây nhầm lẫn, nó không chứa cồn. Sau đó thêm đường và sữa, và hỗn hợp được khuấy hàng giờ trong quy trình gọi là conching, tạo độ mịn cho sô-cô-la."
+      "Nhân được nghiền thành bột nhão đặc gọi là cocoa liquor, dù gây nhầm lẫn, nó không chứa cồn. Sau đó thêm đường và sữa bột, và hỗn hợp được khuấy hàng giờ trong quy trình gọi là conching, tạo độ mịn cho sô-cô-la."
     ],
     "allow": [
       "cacao",
@@ -656,7 +656,7 @@
     ],
     "audio": {
       "file": "a/l-flow-04.mp3",
-      "dur": 60,
+      "dur": 60.4,
       "voices": [
         "bm_lewis"
       ],
@@ -745,7 +745,8 @@
         "q": "Sent to experts; identities hidden on both sides (___ review)",
         "ans": {
           "accept": [
-            "double-blind"
+            "double-blind",
+            "double blind"
           ]
         },
         "limit": 2,
@@ -858,7 +859,7 @@
       },
       {
         "sp": "Officer",
-        "t": "Then enter the visitor's car registration. Please check it carefully, because if it's wrong, the parking officers won't be able to match the car to the permit and your visitor may get a fine."
+        "t": "Then enter the registration number of your visitor's car. Please check it carefully, because if it's wrong, the parking officers won't be able to match the car to the permit and your visitor may get a fine."
       },
       {
         "sp": "Officer",
@@ -873,7 +874,7 @@
       "Đầu tiên, kiểm tra xem phố nhà bạn có nằm trong khu cần giấy phép không. Bạn có thể xem trên bản đồ của hội đồng thành phố, hoặc tìm biển xanh ở đầu phố.",
       "Nếu có, đăng nhập vào tài khoản cư dân trên trang web của hội đồng. Bạn cần số tài khoản, in trên hoá đơn thuế nhà đất.",
       "Chọn số ngày khách cần. Mỗi cư dân được mua tối đa sáu mươi ngày một năm, và mỗi ngày giá hai bảng.",
-      "Sau đó nhập biển số xe của khách. Hãy kiểm tra kỹ, vì nếu sai, nhân viên kiểm soát đỗ xe sẽ không đối chiếu được xe với giấy phép và khách của bạn có thể bị phạt.",
+      "Sau đó nhập số đăng ký (biển số) xe của khách. Hãy kiểm tra kỹ, vì nếu sai, nhân viên kiểm soát đỗ xe sẽ không đối chiếu được xe với giấy phép và khách của bạn có thể bị phạt.",
       "Không còn giấy phép bằng giấy nữa. Khi đã trả tiền, bạn sẽ nhận xác nhận qua tin nhắn, và chỉ cần vậy."
     ],
     "allow": [
@@ -946,9 +947,10 @@
       },
       {
         "id": "l-flow-06-4",
-        "q": "Enter the visitor's car ___ carefully",
+        "q": "Enter the car's ___ carefully",
         "ans": {
           "accept": [
+            "registration number",
             "registration"
           ]
         },
@@ -956,7 +958,7 @@
         "b": 6,
         "ev": {
           "p": 4,
-          "s": "Then enter the visitor's car registration."
+          "s": "Then enter the registration number of your visitor's car."
         },
         "why": "Nhập biển số xe (registration).",
         "wrong": {
@@ -986,7 +988,7 @@
     ],
     "audio": {
       "file": "a/l-flow-06.mp3",
-      "dur": 47.4,
+      "dur": 48.1,
       "voices": [
         "bm_george"
       ],
