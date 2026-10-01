@@ -1002,7 +1002,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 17, APP_VERSION = 32;
+const STATE_V = 17, APP_VERSION = 33;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},money:{h:5,hd:0,ht:0},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -2327,14 +2327,14 @@ function viewCefr(){ const html=viewCefr0();
 function viewCefr0(){
   const L=cdLv(), R=cdLevel(L), V=cefrVocab(L), cs=CANDO.filter(c=>c.lv===L);
   const heat=x=>`<span class="cdh ${x>=.8?'ok':x>0?'mid':''}" title="${pct(x)}">${Math.round(x*100)}</span>`;
-  return `<section class="stack"><span class="eyebrow">Khung năng lực châu Âu · 6 cấp × 6 nhóm kiến thức</span><h1>Bản đồ CEFR ${info('cefr')}</h1>
+  return `<section class="stack"><span class="eyebrow">Khung năng lực châu Âu · 6 cấp × 4 kỹ năng, cộng nền tảng</span><h1>Bản đồ CEFR ${info('cefr')}</h1>
     <p class="muted note">Mỗi cấp có các câu <b>“Tôi có thể…”</b> (can-do). Thanh tiến độ tính từ bài bạn đã <b>đạt</b> trong app; nút “Tôi tự tin làm được” là <b>bạn tự đánh giá</b>, dùng để đối chiếu, không cộng vào điểm.</p></section>
   <section class="panel stack" aria-label="Tổng quan các cấp"><h3>Tổng quan</h3>
-    <div class="cdmap" role="table"><div role="row"><span role="columnheader"></span>${CD_GRP.map(([g,n,ic])=>`<span role="columnheader" title="${n}">${ic}</span>`).join('')}</div>
-    ${LVS.map(l=>{ const r=cdLevel(l); return `<div role="row" ${l===L?'class="cur"':''}><button class="btn small ${l===L?'primary':''}" data-cdlv="${l}" role="rowheader">${l}</button>${r.gs.map(heat).join('')}</div>`; }).join('')}</div>
-    <p class="muted" style="font-size:13px">${CD_GRP.map(([g,n,ic])=>`${ic} ${n}`).join(' · ')}. Số = % tiến độ; xanh = đạt (≥ 80%).</p></section>
-  <section class="panel stack" style="--lv:var(--lv-${L.toLowerCase()})"><div class="spread"><h2>Cấp ${L}</h2><span class="pill ${R.ok===6?'good':'accent'}">${R.ok}/6 nhóm đạt</span></div>
-    <div class="stack" style="gap:6px">${CD_GRP.map(([g,n,ic],i)=>`<div class="cdbar"><span>${ic} ${n}</span>${meter(R.gs[i],R.gs[i]>=.8?'good':'')}<b class="num">${pct(R.gs[i])}</b></div>`).join('')}</div>
+    <div class="cdmap" role="table"><div role="row"><span role="columnheader"></span>${CD_GRP.map(([g,n,ic],i)=>(i===4?'<span class="cdsep" aria-hidden="true"></span>':'')+`<span role="columnheader" title="${n}">${ic}</span>`).join('')}</div>
+    ${LVS.map(l=>{ const r=cdLevel(l); return `<div role="row" ${l===L?'class="cur"':''}><button class="btn small ${l===L?'primary':''}" data-cdlv="${l}" role="rowheader">${l}</button>${r.gs.map((x,i)=>(i===4?'<span class="cdsep" aria-hidden="true"></span>':'')+heat(x)).join('')}</div>`; }).join('')}</div>
+    <p class="muted" style="font-size:13px"><b>Kỹ năng:</b> ${CD_GRP.slice(0,4).map(([g,n,ic])=>`${ic} ${n}`).join(' · ')}. <b>Nền tảng:</b> ${CD_GRP.slice(4).map(([g,n,ic])=>`${ic} ${n}`).join(' · ')}. Số = % tiến độ; xanh = đạt (≥ 80%).</p></section>
+  <section class="panel stack" style="--lv:var(--lv-${L.toLowerCase()})"><div class="spread"><h2>Cấp ${L}</h2><span class="pill ${R.ok===4?'good':'accent'}">${R.ok}/4 kỹ năng đạt</span></div>
+    <div class="stack" style="gap:6px">${CD_GRP.map(([g,n,ic],i)=>(i===4?'<span class="eyebrow" style="margin-top:6px">Nền tảng · hỗ trợ, không tính vào cấp kỹ năng</span>':'')+`<div class="cdbar"><span>${ic} ${n}</span>${meter(R.gs[i],R.gs[i]>=.8?'good':'')}<b class="num">${pct(R.gs[i])}</b></div>`).join('')}</div>
     <p class="muted" style="font-size:14px">🔤 Vốn từ: app có <b class="num">${V.app.toLocaleString('vi')}</b> từ đến hết ${L}; CEFR ${L} cần khoảng <b class="num">${V.need[0].toLocaleString('vi')}–${V.need[1].toLocaleString('vi')}</b> từ ${info('vocabsize')}; bạn đã qua <b class="num">${V.mine.toLocaleString('vi')}</b> từ. Từ học thuật (AWL) đến hết ${L}: <b class="num">${V.awl}</b> từ ${info('awl')}.</p></section>
   ${CD_GRP.map(([g,n,ic])=>{ const gc=cs.filter(c=>c.grp===g); return `<section class="stack"><h2>${ic} ${n}</h2><div class="stack" style="gap:10px">${gc.map(c=>{ const P=cdProg(c), me=st.cando[c.id], next=P.rs.flatMap(x=>x.acts.filter(a=>!a.done)).slice(0,3);
       return `<article class="panel stack cd" style="gap:8px"><div class="spread" style="align-items:flex-start"><div class="stack" style="gap:2px;flex:1 1 220px"><strong>Tôi có thể ${esc(c.vi.charAt(0).toLowerCase()+c.vi.slice(1))}</strong><span class="muted" lang="en" style="font-size:13px">I can ${esc(c.en.charAt(0).toLowerCase()+c.en.slice(1))}</span></div><span class="pill ${P.p>=.8?'good':'accent'} num">${pct(P.p)}</span></div>
@@ -2393,7 +2393,7 @@ function viewMore(){
 const GLOSSARY={
   hearts:['Tim','Mỗi ngày bạn có 5 tim cho các bài mới (luyện tập, kiểm tra unit và bài ngữ pháp). Trả lời sai lần đầu một câu thì mất 1 tim; “Tôi chưa biết” không mất tim. Hết tim vẫn làm xong bài đang dở; muốn bắt đầu bài mới thì luyện lại từ đã học để lấy 1 tim, chờ (1 tim mỗi 4 giờ) hoặc sang ngày mới. Ôn tập, đọc, giao tiếp, phát âm, trò chơi không bao giờ tốn tim. Gói Super bỏ giới hạn tim.'],
   memory:['Trí nhớ của bạn','Tỉ lệ từ bạn tự gõ ra đúng khi ôn đến hạn, chia theo khoảng cách từ lần gặp trước (1 ngày, 3 ngày, 1 tuần…). Chỉ tính câu tự gõ (nhớ ra), không tính trắc nghiệm vì có thể đoán trúng. App dùng chính con số này để chỉnh lịch ôn riêng cho bạn: thấp hơn khoảng 87% thì ôn dày hơn, cao hơn thì giãn ra. “Phút học thật” là tổng thời gian bạn trả lời câu hỏi (mỗi câu tính tối đa 1 phút, bỏ lúc rời màn hình).'],
-  cefr:['Bản đồ CEFR','CEFR là khung năng lực ngoại ngữ châu Âu, 6 cấp A1 → C2. Mỗi cấp được mô tả bằng các câu “Tôi có thể…” thuộc 6 nhóm: từ vựng, ngữ pháp, phát âm, chức năng giao tiếp, bốn kỹ năng và dùng trong thực tế. App nối mỗi câu với các bài cụ thể; bạn đạt đủ bài thì câu đó đầy thanh. Một nhóm được coi là đạt khi tiến độ trung bình ≥ 80%.'],
+  cefr:['Bản đồ CEFR','CEFR là khung năng lực ngoại ngữ châu Âu, 6 cấp A1 → C2. Mỗi cấp được mô tả bằng các câu “Tôi có thể…” thuộc một trong 4 kỹ năng (nghe, nói, đọc, viết) hoặc phần nền tảng (từ vựng, ngữ pháp, phát âm). App nối mỗi câu với các bài cụ thể; bạn đạt đủ bài thì câu đó đầy thanh. Một kỹ năng được coi là học đủ ở một cấp khi tiến độ trung bình các câu của nó ≥ 80%.'],
   awl:['Từ học thuật (AWL)','Academic Word List (Coxhead, 2000): 570 họ từ hay gặp trong sách, bài báo khoa học và đề thi học thuật (IELTS, VSTEP) mà không nằm trong 2.000 từ thông dụng nhất. Chia 10 danh sách con, 1 là hay gặp nhất. Lọc các từ này trong Sổ từ; mục tiêu “Thi chứng chỉ” học các unit nhiều từ học thuật trước.'],
   vocabsize:['Vốn từ theo cấp','Con số theo nghiên cứu của Milton & Alexiou (2009): số từ gốc (lemma) người học ở mỗi cấp CEFR thường nhận biết được. Đây là ước lượng tham khảo, không phải điều kiện thi.'],
   due:['Đến hạn ôn','Mỗi từ có một ngày hẹn ôn. Ôn đúng lúc sắp quên thì nhớ lâu nhất. Khoảng cách bắt đầu 1, 3, 7 ngày rồi giãn dần (tối đa 1 năm) nếu bạn vẫn nhớ; gõ sai thì từ quay lại ôn sớm hơn.'],
@@ -2961,7 +2961,7 @@ ${memLine(true)?`<p><b>Trí nhớ khi ôn đến hạn (câu tự gõ):</b> ${es
 <h2>30 từ yếu nhất</h2>${weak?`<table><tr><th>Từ</th><th>Nghĩa</th><th>Unit</th><th>Mức thuộc</th><th>Kỹ năng yếu nhất</th><th>Độ khó</th></tr>${weak}</table>`:'<p class="m">Chưa học từ nào.</p>'}
 <h2>Ngữ pháp</h2><table><tr><th>Cấp</th><th>Bài đã qua</th><th>Đã nắm</th><th>Tổng kết cấp</th></tr>${gram}</table>
 <h2>Phát âm (phân biệt cặp âm)</h2><p>${snd||'<span class="m">Chưa luyện.</span>'}</p>
-<h2>Bản đồ CEFR (can-do)</h2><table><tr><th>Cấp</th>${CD_GRP.map(([g,n])=>`<th>${n}</th>`).join('')}<th>Nhóm đạt</th></tr>${LVS.map(l=>{ const r=cdLevel(l); return `<tr><td><b>${l}</b></td>${r.gs.map(x=>`<td>${pct(x)}</td>`).join('')}<td>${r.ok}/6</td></tr>`; }).join('')}</table>
+<h2>Bản đồ CEFR (can-do)</h2><table><tr><th>Cấp</th>${CD_GRP.map(([g,n])=>`<th>${n}</th>`).join('')}<th>Kỹ năng đạt</th></tr>${LVS.map(l=>{ const r=cdLevel(l); return `<tr><td><b>${l}</b></td>${r.gs.map(x=>`<td>${pct(x)}</td>`).join('')}<td>${r.ok}/4</td></tr>`; }).join('')}</table>
 <p class="m">Tiến độ tính từ bài đã đạt trong app. Người học tự đánh giá “tự tin làm được”: ${(()=>{ const ms=CANDO.filter(c=>st.cando[c.id]); return ms.length?ms.map(c=>`${c.lv} · ${esc(c.vi)}`).join('; '):'chưa đánh dấu mục nào'; })()}.</p>
 <h2>Giao tiếp</h2><p>Hội thoại đạt: ${DIALOGUES.filter(d=>cdOk((st.dlg[d.id]||{}).best)).length}/${DIALOGUES.length} · đã đóng vai: ${DIALOGUES.filter(d=>(st.dlg[d.id]||{}).rp).length} · chức năng đạt: ${FUNCTIONS.filter(f=>cdOk((st.fn[f.id]||{}).best)).length}/${FUNCTIONS.length} · bài đọc dài đạt: ${LREAD.filter(x=>cdOk((st.lread[x.id]||{}).best)).length}/${LREAD.length} · đề nói đã làm: ${STASKS.filter(x=>(st.stask[x.id]||[]).length).length}/${STASKS.length}</p>
 ${(()=>{ const ws=WTASKS.filter(t=>st.wtask[t.id]&&st.wtask[t.id].text); return ws.length?`<h2>Bài viết theo đề (nhờ giáo viên chấm theo 4 tiêu chí CEFR)</h2>${ws.map(t=>{ const x=st.wtask[t.id]; return `<h3 style="font-size:15px">${t.lv} · ${esc(t.en)} (${esc(t.genre)}, ${t.min}–${t.max} từ)</h3><p class="m">${esc(t.p)}</p><div style="white-space:pre-wrap;border:1px solid #D6DCE6;padding:8px">${esc(x.text)}</div>${x.self&&x.self.length?`<p class="m">Tự chấm (1–4): ${WRUB.map((r,i)=>`${r[0]} ${x.self[i]||'—'}`).join(' · ')}</p>`:''}`; }).join('')}`:''; })()}
@@ -3435,7 +3435,7 @@ function viewProgress(){
   <section class="panel stack" aria-label="Ba tầng tiến độ"><h3>Ba tầng tiến độ</h3>
     <div class="stack" style="gap:4px"><span class="eyebrow">1 · Hôm nay</span><p><b class="num">${Math.min(goalCount(),goal())}/${goal()}</b> câu đúng · 🔥 <b class="num">${streak()}</b> ngày liên tiếp · 🧠 nhớ lại được <b class="num">${recalledN()}</b> từ ${info('recalled')}</p></div>
     <div class="stack" style="gap:4px"><span class="eyebrow">2 · Unit đang học · ${esc(uname(cur))} · <span lang="en">${esc(cur.title)}</span></span>${stageBar(cur)}</div>
-    <div class="stack" style="gap:4px"><span class="eyebrow">3 · Cấp ${lx.L}</span><p>Đã qua <b class="num">${lx.passed}/${lx.n}</b> unit · vững <b class="num">${lx.solid}</b> · nhóm năng lực đạt <b class="num">${cl.ok}/6</b> ${info('cefr')} <button class="btn small ghost" data-go="cefr">Bản đồ CEFR</button></p>${northLine()}${cdDone()||Object.values(st.hist||{}).some(h=>h[2])?northTrend():'<p class="hint">Biểu đồ 8 tuần hiện khi bạn đạt câu “Tôi có thể…” đầu tiên (các unit liên quan vững, hoặc thi vượt cấp).</p>'}${nextLine(false)}</div>
+    <div class="stack" style="gap:4px"><span class="eyebrow">3 · Cấp ${lx.L}</span><p>Đã qua <b class="num">${lx.passed}/${lx.n}</b> unit · vững <b class="num">${lx.solid}</b> · kỹ năng đạt <b class="num">${cl.ok}/4</b> ${info('cefr')} <button class="btn small ghost" data-go="cefr">Bản đồ CEFR</button></p>${northLine()}${cdDone()||Object.values(st.hist||{}).some(h=>h[2])?northTrend():'<p class="hint">Biểu đồ 8 tuần hiện khi bạn đạt câu “Tôi có thể…” đầu tiên (các unit liên quan vững, hoặc thi vượt cấp).</p>'}${nextLine(false)}</div>
     <p>${etaLine()}</p>${oral.length?`<p class="muted">🗣️ Nói ra được ngay ít nhất một lần: <b>${oralOk}</b>/${oral.length} từ đã luyện nói ${info('oral')}</p>`:''}
   </section>
   <section class="panel stack" aria-label="Phần thưởng"><div class="spread"><h3>Phần thưởng</h3><span class="hint">Đo sự cố gắng, không đo năng lực ${info('xp')}</span></div>
@@ -5895,7 +5895,7 @@ function qpxResult(s){ const by={}; s.q.forEach((it,i)=>{ const r=s.res[i]; if(!
 /* ---------- v25: Đạt cấp CEFR = ít nhất 5/6 nhóm năng lực đạt ≥ 80% (không chỉ học xong từ vựng) ----------
    v27: và không nhóm nào dưới 50% (mô phỏng cho thấy 5/6 cho phép “đạt B2” khi từ vựng B2 mới 0%). */
 const CEFR_PASS = 5, CEFR_FLOOR = .5;
-const cefrPass = L => { const r=cdLevel(L); return r.ok>=CEFR_PASS&&Math.min(...r.gs)>=CEFR_FLOOR&&lvVerified(L); };   // v31: cần thêm bằng chứng bài làm (lvVerified)
+let cefrPass = L => { const r=cdLevel(L); return r.ok>=CEFR_PASS&&Math.min(...r.gs)>=CEFR_FLOOR&&lvVerified(L); };   // v31: cần thêm bằng chứng bài làm (lvVerified)
 const cefrGot = () => LVS.filter(cefrPass);
 function cefrCheck(){ const me=st.me||(st.me={}), rec=me.cefr||(me.cefr={}), nw=cefrGot().filter(L=>!rec[L]);
   if(!nw.length) return; nw.forEach(L=>rec[L]=today()); save();
@@ -5964,7 +5964,7 @@ const _render0 = render;
 render = function(){ _render0(); try{ rxArm(); }catch(e){} };
 DETAIL_SAFE_VIEW.add('med');
 GLOSSARY.mediation=['Chuyển ý (mediation)','Từ bản CEFR 2020, “chuyển ý” là một mảng năng lực riêng: đọc hoặc nghe một văn bản rồi truyền lại ý cho người khác bằng ngôn ngữ họ hiểu, đúng mục đích và văn phong. Ví dụ: đọc thông báo tiếng Việt rồi giải thích cho hàng xóm người nước ngoài. App dò ý chính bằng từ khoá (không dùng AI), nên hãy đọc bài mẫu để so cách diễn đạt.'];
-GLOSSARY.cefr[1]+=' Bạn được tính là đạt một cấp khi ít nhất 5/6 nhóm của cấp đó đạt và không nhóm nào dưới 50%, không chỉ khi học xong từ vựng.';
+GLOSSARY.cefr[1]+=' Mỗi kỹ năng (nghe, nói, đọc, viết) có cấp riêng, như cách các kỳ thi chuẩn báo điểm: một kỹ năng đạt cấp khi bạn học đủ ≥ 80% câu “Tôi có thể…” của kỹ năng đó ở cấp ấy và có bài làm chứng minh. Từ vựng, ngữ pháp, phát âm là nền tảng, hiện riêng để bạn biết còn thiếu gì.';
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('button'); if(!t) return; const d=t.dataset;
   if(d.med){ ui.medText=null; ui.medChecked=!!((st.med||{})[d.med]||{}).text; return go('med',{medId:d.med}); }
   switch(d.act){
@@ -7049,7 +7049,7 @@ const wEvid = L => WTASKS.filter(t=>t.lv===L).some(t=>{ const s=st.wtask[t.id]; 
 const sEvid = L => { const ts=STASKS.filter(t=>t.lv===L), ei=(st.ei||{})[L]; if(ei&&ei.asr&&ei.best>=EI_PASS) return 'ei'; if(ts.some(t=>(st.stask[t.id]||[]).some(h=>h.est!=null&&h.est>=LVS.indexOf(L)-.5))) return 'asr';
   return !HAS_ASR&&ts.some(t=>stDone(t.id)) ? 'self' : ''; };
 function lvVerified(L){ return lchkPass(L)&&wEvid(L)&&!!sEvid(L); }
-const cdPassOnly = L => { const r=cdLevel(L); return r.ok>=CEFR_PASS&&Math.min(...r.gs)>=CEFR_FLOOR; };
+let cdPassOnly = L => { const r=cdLevel(L); return r.ok>=CEFR_PASS&&Math.min(...r.gs)>=CEFR_FLOOR; };
 // Kết quả kiểm tra: điểm từng phần, lưu lại để xác nhận cấp.
 const _qzNext31 = qzNext; qzNext = function(){ const s=ui.qz; if(s&&QZ[s.kind]) st[QZ[s.kind].bag] ||= {};
   if(s&&s.kind==='lchk'&&s.i+1>=s.q.length&&!s.done){ s.i++; s.done=true; s.score=s.res.filter(x=>x.correct).length/Math.max(1,s.res.length); runActive(s.res);
@@ -7072,19 +7072,19 @@ GLOSSARY.verify31=['Xác nhận cấp CEFR','Trước đây app coi bạn “đ�
 // Điểm thi thật: người học tự ghi để so với ước tính của app (và, nếu tự nguyện gửi dữ liệu học, để app hiệu chỉnh).
 const TEST_KINDS30 = ['VSTEP','IELTS','TOEIC','Cambridge (KET/PET/FCE/CAE/CPE)','Aptis','TOEFL iBT','Khác'];
 function realTests(){ const ts=(st.me.tests||[]); const got=cefrGot(), top=got[got.length-1];
-  return `<section class="panel stack" aria-label="Điểm thi thật"><h3>Điểm thi thật của bạn</h3><p class="hint">Ghi kết quả kỳ thi chính thức bạn đã thi để so với ước tính của app${top?` (hiện: ${top})`:''}. Chỉ lưu trên máy bạn; chỉ gửi đi khi bạn tự tải dữ liệu học.</p>
+  return `<section class="panel stack" aria-label="Điểm thi thật"><h3>Điểm thi thật của bạn</h3><p class="hint">Ghi kết quả kỳ thi chính thức bạn đã thi để so với ước tính của app (hiện: ${skProfileStr()}). Chỉ lưu trên máy bạn; chỉ gửi đi khi bạn tự tải dữ liệu học.</p>
     ${ts.map((x,i)=>`<div class="spread slim"><span><b>${esc(x.k)}</b> · ${esc(x.s)}${x.cefr?` · tương đương <b>${esc(x.cefr)}</b>`:''} <span class="muted">· ${esc(x.m||'')} · app lúc đó: ${esc(x.app||'—')}</span></span><button class="btn small ghost" data-act="rtdel" data-i="${i}" aria-label="Xoá">✕</button></div>`).join('')}
     <form class="stack" data-form="realtest" style="gap:8px"><div class="row" style="gap:6px"><select name="k" aria-label="Kỳ thi">${TEST_KINDS30.map(k=>`<option>${esc(k)}</option>`).join('')}</select>
       <input class="field" name="s" style="flex:1 1 120px;font-size:16px" placeholder="Điểm (vd 6.5, B1, 750)" aria-label="Điểm"><select name="c" aria-label="Tương đương CEFR"><option value="">CEFR?</option>${LVS.map(L=>`<option>${L}</option>`).join('')}</select>
       <input class="field" name="m" type="month" style="width:auto;font-size:16px" aria-label="Tháng thi"></div><div class="row"><button class="btn">Lưu kết quả thi</button></div></form></section>`; }
 document.addEventListener('submit',e=>{ const f=e.target; if(!f||f.dataset.form!=='realtest') return; e.preventDefault(); const v=n=>(f.elements[n]&&f.elements[n].value||'').trim();
-  if(!v('s')) return toast('Nhập điểm thi.'); const got=cefrGot(); (st.me.tests ||= []).push({k:v('k'),s:v('s').slice(0,20),cefr:v('c'),m:v('m'),app:got[got.length-1]||currentUnit().level+' (đang học)',day:today()}); save(); toast('Đã lưu kết quả thi.'); render(); });
+  if(!v('s')) return toast('Nhập điểm thi.'); const got=cefrGot(); (st.me.tests ||= []).push({k:v('k'),s:v('s').slice(0,20),cefr:v('c'),m:v('m'),app:skProfileStr(),day:today()}); save(); toast('Đã lưu kết quả thi.'); render(); });
 const _mergeState31 = mergeState; mergeState = function(a,b){ const x=_mergeState31(a,b); const A=a.lchk||{}, B=b.lchk||{};
   x.lchk=Object.fromEntries([...new Set([...Object.keys(A),...Object.keys(B)])].map(L=>{ const p=A[L], q=B[L]; return [L, !p?q:!q?p:{...(q.day>p.day?q:p),pass:!!(p.pass||q.pass)}]; }));
   if(b.me&&b.me.tests&&!(a.me&&a.me.tests)) (x.me ||= {}).tests=b.me.tests; return x; };
 const _researchData31 = researchData; researchData = function(){ const d=_researchData31(); try{ d.tests=(st.me.tests||[]).map(x=>({k:x.k,s:x.s,cefr:x.cefr,m:x.m,app:x.app})); d.lchk=st.lchk; d.est={w:Object.fromEntries(Object.entries(st.wtask).filter(([,s])=>s.estBest!=null).map(([k,s])=>[k,s.estBest])),s:Object.fromEntries(Object.entries(st.stask).map(([k,h])=>[k,Math.max(...h.map(x=>x.est??-1))]).filter(([,v])=>v>=0))}; }catch(e){} return d; };
 // Bản đồ CEFR: khối xác nhận cấp ngay dưới tiến độ của cấp đang xem; điểm thi thật ở cuối.
-const _viewCefr31 = viewCefr; viewCefr = function(){ let h=_viewCefr31(); const L=cdLv(), i=h.indexOf('<section class="stack"><h2>');
+const _viewCefr31 = viewCefr; viewCefr = function(){ let h=_viewCefr31(); const L=cdLv(), d=h.indexOf('<details class="panel stack" data-cdg'), i=d>=0?d:h.indexOf('<section class="stack"><h2>');
   if(i>=0) h=h.slice(0,i)+lchkSteps(L)+'<span id="cdgroups"></span>'+h.slice(i); else h+=lchkSteps(L);
   return h+realTests(); };
 // Kết quả bài kiểm tra cấp: điểm từng phần và bước còn thiếu.
@@ -7098,10 +7098,13 @@ const _viewQuiz31 = viewQuiz; viewQuiz = function(){ const s=ui.qz; if(!(s&&s.ki
   <div class="row endrow" aria-label="Việc tiếp theo"><button class="btn primary" data-go="cefr">Về bản đồ CEFR</button><button class="btn" data-act="qzagain">Làm lại</button></div>`; };
 // Nút chính: đủ nhóm năng lực mà chưa xác nhận thì gợi ý bước xác nhận còn thiếu.
 const _mainAction31 = mainAction; mainAction = function(){ const m=_mainAction31(); if(/data-act="(resume|review)"/.test(m.btn)) return m;
-  const L=LVS.find(x=>cdPassOnly(x)&&!lvVerified(x)); if(!L) return m;
-  if(!lchkPass(L)) return {h:`Xác nhận cấp ${L}: bài kiểm tra`,p:`Bạn đã học đủ các nhóm năng lực ${L}. Làm bài kiểm tra 20 câu (nghe, đọc, từ vựng, ngữ pháp) để app ước tính cấp dựa trên bài làm.`,btn:`<button class="btn primary big" data-act="lchkgo" data-l="${L}">Làm bài kiểm tra ${L}</button>`};
-  if(!wEvid(L)){ const t=WTASKS.find(x=>x.lv===L); return {h:`Xác nhận cấp ${L}: viết một bài`,p:`Một bài viết ${L} được ước tính ở mức ${L} là bằng chứng bạn viết được ở cấp này.`,btn:`<button class="btn primary big" data-wt="${t.id}">Viết: ${esc(t.vi)}</button>`}; }
-  const t=STASKS.find(x=>x.lv===L); return {h:`Xác nhận cấp ${L}: nói một đề`,p:`Một bài nói ${L} được ước tính ở mức ${L} là bằng chứng bạn nói được ở cấp này.`,btn:`<button class="btn primary big" data-stk="${t.id}">Nói: ${esc(t.vi)}</button>`}; };
+  // v33: theo từng kỹ năng — kỹ năng đã học đủ bài ở cấp L mà chưa có bằng chứng bài làm thì gợi ý đúng bằng chứng của kỹ năng đó.
+  for(const L of LVS) for(const [k,n] of SK4){ if(cdGroup(L,k)<CD_DONE||SK_EV[k](L)) continue;
+    const test={h:`Xác nhận ${n} ${L}: bài kiểm tra`,p:`Bạn đã học đủ bài ${n.toLowerCase()} ${L}. Bài kiểm tra cấp ${L} chấm riêng từng kỹ năng; phần ${n.toLowerCase()} đạt ≥ ${pct(LCHK_SEC)} là bằng chứng cho kỹ năng này.`,btn:`<button class="btn primary big" data-act="lchkgo" data-l="${L}">Làm bài kiểm tra ${L}</button>`};
+    if(k!=='spk'&&(lchkSec(L,k)??0)<LCHK_SEC) return test;
+    if(k==='wr'){ const t=WTASKS.find(x=>x.lv===L); if(t) return {h:`Xác nhận Viết ${L}: viết một bài`,p:`Một bài viết ${L} được ước tính ở mức ${L} là bằng chứng bạn viết được ở cấp này.`,btn:`<button class="btn primary big" data-wt="${t.id}">Viết: ${esc(t.vi)}</button>`}; }
+    if(k==='spk') return {h:`Xác nhận Nói ${L}: nhắc lại câu`,p:`Nghe rồi nói lại ${EI_N} câu ${L}; máy so từng từ. Đạt ≥ ${pct(EI_PASS)} là bằng chứng bạn nói được ở cấp này.`,btn:`<button class="btn primary big" data-act="eigo" data-lv="${L}">Nhắc lại câu ${L}</button>`}; }
+  return m; };
 document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('button'); if(!b) return; const d=b.dataset;
   if(d.act==='lchkgo') return startLchk(d.l);
   if(d.act==='rtdel'){ (st.me.tests||[]).splice(+d.i,1); save(); return render(); } });
@@ -7777,6 +7780,95 @@ const _viewConv32e = viewConv; viewConv = function(){ let h=_viewConv32e(); cons
   else if(HAS_ASR) h=h.replace('Máy nhận ý bằng từ khoá','Bấm 🎙 nói ngay sau khi nghe để đo phản xạ. Máy nhận ý bằng từ khoá');
   return h; };
 
+/* ---------- v33: BỐN KỸ NĂNG TÁCH RIÊNG ----------
+   Trước: 6 nhóm trộn hai chiều khác nhau: thành phần ngôn ngữ (từ vựng, ngữ pháp, phát âm) và việc dùng ngôn ngữ (“chức năng giao tiếp”,
+   “dùng trong thực tế”, “bốn kỹ năng” gộp một nhóm). Một cấp CEFR chung che mất kỹ năng yếu, trong khi CEFR và các kỳ thi chuẩn
+   (Cambridge, Aptis, VSTEP, IELTS) báo cấp theo từng kỹ năng: một người có thể đọc B2 mà nói A2.
+   Nay: mỗi câu “Tôi có thể…” thuộc đúng một trong 4 kỹ năng theo việc người học thật sự làm trong bài (chọn câu đáp sau khi nghe = Nghe,
+   chuyển ý Việt → Anh bằng chữ = Viết…), hoặc thuộc nền tảng (từ vựng, ngữ pháp, phát âm). Mỗi kỹ năng có cấp riêng:
+   học đủ ≥ 80% câu của kỹ năng ở cấp đó + bằng chứng bài làm của chính kỹ năng đó. Nền tảng hiện riêng, không chặn cấp kỹ năng. */
+const SK4=[['lis','Nghe','🎧'],['spk','Nói','🗣'],['rd','Đọc','📖'],['wr','Viết','✍️']], FOUND3=[['voc','Từ vựng','🔤'],['gra','Ngữ pháp','📐'],['pro','Phát âm','👂']];
+const SK_IDS=SK4.map(x=>x[0]);
+CD_GRP.splice(0,CD_GRP.length,...SK4,...FOUND3);
+const SK_REF={w:'wr',cw:'wr',med:'wr', s:'spk',sp:'spk',cv:'spk',f:'spk',d:'spk',rp:'spk',ei:'spk', rd:'rd',sto:'rd', ls:'lis',lis:'lis',rx:'lis',cs:'lis'};
+const skOfRef = r => r.t==='lr' ? (r.v.every(id=>LRD[id]&&LRD[id].lines)?'lis':'rd') : SK_REF[r.t];
+(function(){ const add=[];
+  CANDO.forEach(c=>{ c.grp0=c.grp; const ts=c.ref.map(r=>r.t);
+    // “Đọc và nghe hiểu…” (B2–C2): tách thành hai câu, mỗi câu một kỹ năng
+    if(c.grp0==='ski'&&ts.join()==='rd,ls'){ const b2=c.lv==='B2';
+      add.push({id:c.id+'-l',lv:c.lv,grp:'lis',grp0:'ski',vi:b2?'Nghe hiểu bài nói về chủ đề cụ thể lẫn trừu tượng':'Nghe hiểu mọi bài nghe của cấp, kể cả nội dung trừu tượng',en:b2?'Understand talks on concrete and abstract topics':'Understand level recordings, including abstract content',ref:[c.ref[1]]});
+      c.ref=[c.ref[0]]; c.vi=c.vi.replace('Đọc và nghe hiểu','Đọc hiểu'); c.en=c.en.replace('Read and listen to','Read'); c.grp='rd'; return; }
+    if(['voc','gra','pro'].includes(c.grp0)){ if(ts.includes('cw')) c.grp='wr'; else if(ts.every(t=>t==='cs')) c.grp='lis'; return; }
+    if(ts.includes('pa')){ c.grp='voc'; return; }
+    c.grp=c.ref.map(skOfRef).find(Boolean)||'spk'; });
+  CANDO.push(...add); })();
+cdLevel = function(L){ const gs=CD_GRP.map(([g])=>cdGroup(L,g)), sk=gs.slice(0,4); return {gs, ok:sk.filter(x=>x>=CD_DONE).length, p:sk.reduce((a,b)=>a+b,0)/4}; };
+// Bằng chứng của từng kỹ năng. Bài kiểm tra cấp chấm riêng từng phần; lấy điểm cao nhất của mỗi phần qua các lần làm.
+const lchkSec = (L,k) => { const r=lchkRec(L); if(!r) return null; const v=Math.max((r.best||{})[k]??-1,(r.sec||{})[k]??-1); return v<0?null:v; };
+const SK_EV = {lis:L=>(lchkSec(L,'lis')??0)>=LCHK_SEC, rd:L=>(lchkSec(L,'rd')??0)>=LCHK_SEC, wr:L=>(lchkSec(L,'wr')??0)>=LCHK_SEC&&wEvid(L), spk:L=>!!sEvid(L)};
+const skPass = (k,L) => cdGroup(L,k)>=CD_DONE&&SK_EV[k](L);
+const skLv = k => [...LVS].reverse().find(L=>skPass(k,L))||null;
+const skProfile = () => SK4.map(([k,n,ic])=>({k,n,ic,L:skLv(k)}));
+const skProfileStr = () => skProfile().map(x=>`${x.n} ${x.L||'—'}`).join(' · ');
+cefrPass = L => SK_IDS.every(k=>skPass(k,L));          // “đạt cấp L đồng đều” = cả 4 kỹ năng đạt L
+cdPassOnly = L => SK_IDS.every(k=>cdGroup(L,k)>=CD_DONE);
+lvVerified = function(L){ return SK_IDS.every(k=>SK_EV[k](L)); };
+const _qzNext33 = qzNext; qzNext = function(){ const s=ui.qz, fin=!!(s&&s.kind==='lchk'&&s.i+1>=s.q.length&&!s.done), p=fin&&st.lchk&&st.lchk[s.ref];
+  const prev=p?{...(p.sec||{}),...(p.best||{})}:{}; const r=_qzNext33();
+  if(fin){ const x=st.lchk[s.ref]; if(x){ const b={...prev}; Object.entries(x.sec||{}).forEach(([k,v])=>b[k]=Math.max(b[k]||0,v)); x.best=b; save(); try{ cefrCheck(); }catch(e){} render(); } }
+  return r; };
+const _mergeState33 = mergeState; mergeState = function(a,b){ const x=_mergeState33(a,b); try{ Object.keys(x.lchk||{}).forEach(L=>{ const p=(a.lchk||{})[L]||{}, q=(b.lchk||{})[L]||{}, o={};
+  [p.best,p.sec,q.best,q.sec].forEach(m=>Object.entries(m||{}).forEach(([k,v])=>o[k]=Math.max(o[k]||0,v))); x.lchk[L].best=o; });
+  const A=(a.me||{}).cefrSk, B=(b.me||{}).cefrSk; if(A||B){ const o={}; SK_IDS.forEach(k=>o[k]={...((B||{})[k]||{}),...((A||{})[k]||{})}); (x.me ||= {}).cefrSk=o; } }catch(e){} return x; };
+// Mừng khi một kỹ năng lên cấp. Lần đầu chạy bản này: ghi nhận im lặng các cấp đã có (không bắn pháo hoa hàng loạt).
+cefrCheck = function(){ const me=st.me||(st.me={}), rec=me.cefr||(me.cefr={}), first=!me.cefrSk, sk=me.cefrSk||(me.cefrSk={}), nw=[];
+  SK4.forEach(([k,n,ic])=>{ const r=sk[k] ||= {}; LVS.forEach(L=>{ if(!r[L]&&skPass(k,L)){ r[L]=today(); nw.push([n,L]); } }); });
+  cefrGot().forEach(L=>{ if(!rec[L]){ rec[L]=today(); } });
+  if(!nw.length) return; save(); if(first) return; const x=nw[nw.length-1];
+  celebrate('🎓',`Ước tính CEFR · ${x[0]} ${x[1]}`,`Kỹ năng ${x[0].toLowerCase()} đạt ${x[1]}: bạn học đủ ≥ 80% câu “Tôi có thể…” ${x[0].toLowerCase()} ${x[1]} và có bài làm chứng minh. Hồ sơ hiện tại: ${skProfileStr()}.`); };
+cefrStrip = function(){ if(!st.onboarded&&!st.stats.a) return ''; const P=skProfile(), L=cefrOpen();
+  const weak=L?SK4.map(([k,n])=>({k,n,v:cdGroup(L,k),ok:skPass(k,L)})).filter(x=>!x.ok).sort((a,b)=>a.v-b.v)[0]:null;
+  return `<div class="cefrstrip muted"><span>🎓 Ước tính CEFR: ${P.map(x=>`${x.n} <b>${x.L||'—'}</b>`).join(' · ')}</span>${weak?`<button class="btn small ghost" data-act="cdgo" data-l="${L}">${L}: ${weak.n.toLowerCase()} chậm nhất · ${pct(weak.v)}</button>`:''}</div>`; };
+cefrLine = function(){ const L=currentUnit().level, r=cdLevel(L);
+  return `<div class="spread" style="gap:6px"><span class="muted">🧭 ${L}: ${SK4.map(([k,n],i)=>`${n} <b class="num">${pct(r.gs[i])}</b>`).join(' · ')}</span><button class="btn small ghost" data-go="cefr">Bản đồ CEFR</button></div>${northLine()}${nextLine()}`; };
+// Xác nhận cấp: một khối cho mỗi kỹ năng, mỗi khối nói rõ còn thiếu gì và nút làm ngay.
+lchkSteps = function(L){ const wt=WTASKS.filter(t=>t.lv===L), r=lchkRec(L), se=sEvid(L), sec=k=>{ const v=lchkSec(L,k); return v==null?'chưa làm':pct(v); };
+  const ck=(ok,t)=>`<li class="${ok?'ok':''}"><span aria-hidden="true">${ok?'✓':'○'}</span> ${t}</li>`;
+  const testBtn=`<button class="btn small primary" data-act="lchkgo" data-l="${L}">${r?'Làm lại bài kiểm tra':'Làm bài kiểm tra'} ${L}</button>`;
+  const rows=SK4.map(([k,n,ic])=>{ const g=cdGroup(L,k), gOk=g>=CD_DONE, ok=gOk&&SK_EV[k](L), it=[ck(gOk,`Học đủ bài ${n.toLowerCase()} ${L}: ${pct(g)} (cần ≥ 80%)`)]; let btn='';
+    if(k==='lis'||k==='rd'){ const e=SK_EV[k](L); it.push(ck(e,`Phần ${n} của bài kiểm tra: ${sec(k)} (cần ≥ ${pct(LCHK_SEC)})`)); if(!e) btn=testBtn; }
+    if(k==='wr'){ const a=(lchkSec(L,'wr')??0)>=LCHK_SEC, b=wEvid(L); it.push(ck(a,`Phần Viết câu của bài kiểm tra: ${sec('wr')} (cần ≥ ${pct(LCHK_SEC)})`),ck(b,`Một đề viết ${L} được ước tính ở mức ${L}`));
+      if(!a) btn=testBtn; else if(!b&&wt.length) btn=`<button class="btn small primary" data-wt="${(wt.find(t=>!(st.wtask[t.id]||{}).estBest)||wt[0]).id}">Viết một đề</button>`; }
+    if(k==='spk'){ it.push(ck(!!se,se==='ei'?`Nhắc lại câu ${L}: ${pct(st.ei[L].best)}`:se==='asr'?`Một đề nói ${L} được ước tính ở mức ${L}`:se==='self'?'Đề nói tự chấm đủ (máy này không chép lời được)':`Nhắc lại câu ${L} ≥ ${pct(EI_PASS)}, hoặc một đề nói ${L} được ước tính ở mức ${L}`)); if(!se) btn=`<button class="btn small primary" data-act="eigo" data-lv="${L}">Nhắc lại câu ${L}</button>`; }
+    if(!gOk) btn=`<button class="btn small" data-act="cdsk" data-g="${k}">Xem bài ${n.toLowerCase()} còn thiếu</button>`+btn;
+    return `<div class="skrow ${ok?'done':''}"><div class="spread"><b>${ic} ${n} ${L}</b>${ok?'<span class="pill good">Đạt ✓</span>':''}</div><ul class="sklist">${it.join('')}</ul>${ok?'':`<div class="row" style="gap:6px">${btn}</div>`}</div>`; }).join('');
+  const lg=lchkSec(L,'lang');
+  return `<section class="panel stack lchk" aria-label="Xác nhận cấp ${L} theo kỹ năng"><h3>Xác nhận cấp ${L} theo từng kỹ năng</h3>
+    <p class="hint">Mỗi kỹ năng được tính riêng, như kỳ thi chuẩn: bạn có thể đạt Đọc ${L} trước Nói ${L}. Bài kiểm tra cấp ${L} chấm riêng từng phần. Đây là ước tính của app, không phải chứng chỉ. ${info('verify31')}</p>
+    <div class="skgrid">${rows}</div>
+    <p class="hint">Nền tảng trong bài kiểm tra: từ vựng & ngữ pháp ${lg==null?'chưa làm':pct(lg)} (để chẩn đoán, không chặn cấp kỹ năng).</p></section>`; };
+GLOSSARY.verify31=['Xác nhận cấp CEFR theo kỹ năng','Làm xong bài không có nghĩa là dùng được tiếng Anh ở cấp đó, nên mỗi kỹ năng cần bằng chứng từ bài làm của chính nó. Nghe, Đọc: phần tương ứng của bài kiểm tra cấp (câu mới, không gợi ý) ≥ 60%. Viết: phần viết câu của bài kiểm tra ≥ 60% và một bài viết được ước tính ở đúng cấp. Nói: bài nhắc lại câu đạt, hoặc một bài nói được ước tính ở đúng cấp. Kết quả ghi là “Ước tính CEFR”, vì app không phải kỳ thi chuẩn hoá.'];
+// Bản đồ CEFR: hồ sơ cấp theo kỹ năng ngay đầu trang.
+const _viewCefr33 = viewCefr; viewCefr = function(){ let h=_viewCefr33(); const P=skProfile(), i=h.indexOf('<section class="panel stack" aria-label="Tổng quan các cấp">');
+  const idx=P.map(x=>x.L?LVS.indexOf(x.L):-1), lo=Math.min(...idx), hi=Math.max(...idx), weak=P.filter((x,j)=>idx[j]===lo).map(x=>x.n.toLowerCase());
+  const card=`<section class="panel stack" aria-label="Cấp theo từng kỹ năng"><h3>Cấp ước tính theo từng kỹ năng</h3><div class="skprof">${P.map(x=>`<div class="stat"><b>${x.L||'—'}</b><span>${x.ic} ${x.n}</span></div>`).join('')}</div>
+    <p class="hint">${hi<0?'Chưa kỹ năng nào đạt cấp. Mỗi kỹ năng có cấp riêng; xem bên dưới còn thiếu gì.':hi>lo?`Các kỹ năng lệch nhau là bình thường. Kỹ năng thấp nhất: <b>${weak.join(', ')}</b>; nút chính trang Học ưu tiên bài cho kỹ năng đang chậm.`:'Bốn kỹ năng đang đều nhau.'}</p></section>`;
+  return i>=0?h.slice(0,i)+card+h.slice(i):card+h; };
+const _viewQuiz33 = viewQuiz; viewQuiz = function(){ let h=_viewQuiz33(); const s=ui.qz; if(!(s&&s.kind==='lchk'&&s.done)) return h; const sec=(st.lchk[s.ref]||{}).sec||{};
+  const sk=SK4.filter(([k])=>sec[k]!=null), ok=sk.filter(([k])=>sec[k]>=LCHK_SEC).map(x=>x[1]), no=sk.filter(([k])=>sec[k]<LCHK_SEC).map(x=>x[1]);
+  h=h.replace(/<h1>[\s\S]*?<\/h1>/,`<h1>${ok.length?`Đạt phần ${ok.join(', ')}`:'Chưa đạt phần kỹ năng nào'}${no.length?` · chưa đạt ${no.join(', ')}`:''}</h1>`);
+  return h.replace(`Cần mỗi phần ≥ ${pct(LCHK_SEC)} và tổng ≥ ${pct(LCHK_ALL)}.`,`Mỗi kỹ năng tính riêng: phần đạt ≥ ${pct(LCHK_SEC)} là bằng chứng cho kỹ năng đó. Từ vựng & ngữ pháp là phần chẩn đoán nền tảng.`); };
+LCHK.wr[0]='Viết câu'; LCHK.lang[0]='Từ vựng & ngữ pháp (nền tảng)';
+// Nút chính cân bằng và ưu tiên theo mục tiêu: theo kỹ năng thay cho nhóm cũ.
+Object.keys(GRP_ACT).forEach(k=>delete GRP_ACT[k]); Object.assign(GRP_ACT,{lis:'Nghe',spk:'Nói',rd:'Đọc',wr:'Viết',pro:'Phát âm'});
+Object.assign(WHO_GRP,{school:['voc','gra','rd'], uni:['rd','wr','lis'], work:['spk','wr','lis'], life:['spk','lis','pro']});
+{ const V={read:['rd'],write:['wr'],wtask:['wr'],stask:['spk'],speak:['spk'],lread:['rd','lis'],vx:['lis'],quiz:['lis','rd'],med:['wr']};
+  Object.entries(SCOPE).forEach(([v,x])=>{ if(!Array.isArray(x[1])) return; x[1]=[...new Set(x[1].flatMap(g=>g==='ski'?(V[v]||SK_IDS):g==='fun'||g==='com'?(v==='med'?['wr']:['spk']):[g]))]; }); }
+SCOPE.cefr=['lõi',CD_GRP.map(x=>x[0])];
+document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('button[data-act="cdsk"]'); if(!b) return; const g=CD_GRP.find(x=>x[0]===b.dataset.g); if(!g) return;
+  const key=g[2]+' '+g[1]; ui.cdOpen={...(ui.cdOpen||{}),[key]:true}; render(); setTimeout(()=>{ const d=document.querySelector(`details[data-cdg="${CSS.escape(key)}"]`); if(d) d.scrollIntoView({block:'start',behavior:'smooth'}); },30); });
+DETAIL_SAFE_ACT.add('cdsk');
+
 CHANGELOG.unshift({v:31,d:'2026-10-01',t:'Đo đúng cấp CEFR, nói và tương tác thật',items:[
   'Ước tính cấp CEFR cho bài viết và bài nói (máy chép lời khi bạn nói), kèm việc cần làm để lên cấp và kiểm tra bài có bám đề không.',
   'Xác nhận cấp CEFR bằng bài làm: bài kiểm tra cấp độ (nghe, đọc, từ vựng, ngữ pháp), một bài viết và một bài nói ở đúng cấp. Nhãn đổi thành “Ước tính CEFR”; cấp đã đạt theo cách tính cũ cần làm các bước xác nhận này. Ghi được điểm thi thật để so.',
@@ -7787,6 +7879,10 @@ CHANGELOG.unshift({v:32,d:'2026-10-01',t:'Đo kỹ năng thật mà không cần
   'Viết câu có kiểm soát: nối câu và viết lại câu với từ khoá cho sẵn, máy chấm đúng sai rõ ràng. Có thêm trong bài kiểm tra cấp độ.',
   'Hội thoại mở tăng lên 24 tình huống (4 mỗi cấp).',
   'Đo phản xạ nói trong hội thoại: tính thời gian bạn bắt đầu nói sau khi nghe xong câu hỏi, so với mục tiêu từng cấp.']});
+CHANGELOG.unshift({v:33,d:'2026-10-01',t:'Bốn kỹ năng tách riêng, mỗi kỹ năng một cấp',big:true,items:[
+  'Bản đồ CEFR chia theo 4 kỹ năng: Nghe, Nói, Đọc, Viết, cộng phần nền tảng (từ vựng, ngữ pháp, phát âm). Trước đây 4 kỹ năng nằm chung một nhóm.',
+  'Mỗi kỹ năng có cấp ước tính riêng, như cách các kỳ thi chuẩn báo điểm. Bạn có thể đạt Đọc B1 trong khi Nói còn A2, và app cho thấy kỹ năng nào đang chậm.',
+  'Xác nhận cấp theo từng kỹ năng: bài kiểm tra cấp chấm riêng từng phần, mỗi kỹ năng có danh sách việc còn thiếu và nút làm ngay.']});
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
