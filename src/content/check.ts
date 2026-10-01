@@ -105,6 +105,10 @@ function checkItem(g: Group, it: Item, src: string[], bad: (w: string, m: string
       if (new Set(keys).size !== keys.length) bad(w, 'khoá phương án bị trùng');
       const ts = it.opts.map(o => squash(o.t));
       if (new Set(ts).size !== ts.length) bad(w, 'hai phương án có nội dung giống nhau');
+      // Câu hỏi bỏ lửng (không có "?") thì mọi phương án phải nối tiếp được câu đó: viết thường hoặc là số.
+      // v42: đổi phương án mà quên câu hỏi đã sinh ra "…it may / Within one generation".
+      if (!/[?:]\s*$|___/.test(it.q)) for (const o of it.opts) if (/^[A-Z]/.test(o.t) && !/^(I|[A-Z][a-z]+(?= [A-Z])|[A-Z]{2,}|[A-Z]\w*'s)\b/.test(o.t))
+        bad(w, `câu hỏi bỏ lửng nhưng phương án ${o.k} viết hoa đầu câu — không nối tiếp được câu hỏi`);
     }
     const ans = kind === 'choice' ? [it.ans as string] : (it.ans as string[]);
     for (const a of ans) if (!keys.includes(a)) bad(w, `đáp án "${a}" không có trong phương án`);
@@ -162,13 +166,13 @@ export function checkAll(groups: Group[], list: Record<string, string> | null): 
 }
 
 // Vị trí đáp án đúng phải rải đều (người soạn hay vô thức đặt đáp án ở B/C; thí sinh tinh ý sẽ khai thác).
-// Chỉ xét câu có phương án riêng (it.opts) — danh sách dùng chung (tiêu đề, đoạn, khung từ) do nội dung quyết định.
+// Xét mọi chế độ, kể cả bài kiểm tra đầu vào (v42: pl-r từng có 0/48 đáp án ở vị trí D). Chỉ xét câu có phương án riêng (it.opts) — danh sách dùng chung (tiêu đề, đoạn, khung từ) do nội dung quyết định.
 // Mỗi dạng ≥ 12 câu: mỗi vị trí phải xuất hiện ít nhất một lần và không vị trí nào chiếm quá 1/n + 15 điểm %;
 // câu chọn nhiều: không tổ hợp nào chiếm quá 25%.
 export function checkKeyBalance(groups: Group[]): Issue[] {
   const out: Issue[] = [];
   const by = new Map<string, Item[]>();
-  for (const g of groups) if (g.mode === 'practice') for (const it of g.items) if (it.opts) by.set(g.qtype, [...(by.get(g.qtype) ?? []), it]);
+  for (const g of groups) for (const it of g.items) if (it.opts) by.set(g.qtype, [...(by.get(g.qtype) ?? []), it]);
   for (const [q, its] of by) {
     const single = its.filter(it => typeof it.ans === 'string'), multi = its.filter(it => Array.isArray(it.ans));
     if (single.length >= 12) {

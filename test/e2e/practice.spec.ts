@@ -96,3 +96,19 @@ test('bài nghe luyện tập: tệp âm thanh có thật, bản chậm, bản c
   expect(axe.violations.map(v => `${v.id}: ${v.nodes.length}`)).toEqual([]);
   expect(errors).toEqual([]);
 });
+
+test('máy chậm: bài học nền chưa tải xong vẫn chọn kỳ thi và chấm bài Ôn thi được (v42: cú bấm bị giữ rồi mất trên WebKit)', async ({ page, errors }) => {
+  await page.route('**/data/lv-*.json', () => { /* treo: mô phỏng mạng chậm, không bao giờ trả */ });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Bắt đầu ôn thi' }).click();
+  await page.getByRole('button', { name: /IELTS Academic/ }).click();
+  await page.getByRole('button', { name: 'Để sau' }).click();
+  await page.getByRole('button', { name: /Luyện theo dạng câu hỏi/ }).click();
+  await page.locator('li', { hasText: 'Đúng / Sai / Không có thông tin' }).getByRole('button', { name: 'Học & luyện' }).click();
+  await page.getByRole('button', { name: 'Làm bộ đầu tiên' }).click();
+  for (const fs of await page.locator('form[data-xform="setcheck"] fieldset').all()) await fs.locator('input').first().check();
+  await page.getByRole('button', { name: 'Chấm bài' }).click();
+  await expect(page.getByText(/Kết quả: \d\/5/)).toBeVisible();
+  await expect(page.getByText('Đang tải thêm bài học')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});

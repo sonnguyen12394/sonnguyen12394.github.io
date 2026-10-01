@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 41;
+const STATE_V = 18, APP_VERSION = 42;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -5478,7 +5478,7 @@ async function detailStart(){ if(detailAll()) return;
   detailDone(); }
 function detailDone(){ const w=DETAIL.waiting; DETAIL.waiting=null;
   if(w){ closeModal(); if(w.form&&w.form.isConnected) w.form.requestSubmit(); else if(w.el&&w.el.isConnected) w.el.click(); }
-  else if(!['welcome','settings'].includes(ui.view)) render();   // cập nhật số liệu và màn đang chờ
+  else if(!['welcome','settings','thi'].includes(ui.view)) render();   // cập nhật số liệu và màn đang chờ; tab Ôn thi không dùng CONTENT — vẽ lại sẽ xoá ô người học đang nhập
   detailWarm(); }
 // Trang mở lần đầu chưa do service worker quản lý: khi nó quản lý rồi, yêu cầu lại các tệp (lấy từ bộ nhớ HTTP) để nó lưu cho lúc mất mạng.
 function detailWarm(){ try{ if(!navigator.serviceWorker||IN_VIEWER) return;
@@ -5493,6 +5493,8 @@ const DETAIL_SAFE_VIEW = new Set(['welcome','path','review','talk','games','more
 const DETAIL_SAFE_GO = new Set(['path','review','talk','games','more','settings','help','grammar','closet','class','feedback','league','words']);
 const DETAIL_SAFE_ACT = new Set(['showmap','allfeat','wz','who','mclose','celok','install','installhide','share','listview','goalall','tomap','notifon','notifoff','asrok','syncjoinok','detailretry','lgrefresh','lgleave','lgleaveok','flagssend','flagsexport','whatsnew','dlgvi','dlgplay','qzsayall']);
 function detailNeeds(t){ if(detailAll()) return false; const d=t.dataset||{};
+  // Tab Ôn thi (mô-đun x/exam) không dùng CONTENT: giữ lại cú bấm ở đây thì trên máy chậm cú bấm có thể mất hẳn (v42, WebKit CI).
+  if(d.x||ui.view==='thi'||(t.closest&&t.closest('[data-xform]'))) return false;
   if(d.go) return !DETAIL_SAFE_GO.has(d.go);
   if(d.act) return !DETAIL_SAFE_ACT.has(d.act);
   if(d.info||d.trypick!=null||d.tlv||d.ttab||d.say||d.cdlv||d.ptab) return false;
@@ -7954,6 +7956,11 @@ CHANGELOG.unshift({v:37,d:'2026-10-01',t:'Kiểm tra đầu vào thích ứng 15
   'Kho 96 câu mới (48 Đọc, 48 Nghe) từ band 3 đến 8,5; mỗi câu giải thích bằng tiếng Việt vì sao đúng, vì sao từng phương án sai và câu nào chứa đáp án.',
   'Bài nghe là tệp âm thanh tạo sẵn giọng Anh và Mỹ, phát một lần như thi thật; lời thoại và bản dịch hiện sau khi làm xong. Không nghe được thì bỏ qua phần Nghe.',
   'Nút Báo lỗi ở mọi câu khi xem lại.']});
+CHANGELOG.unshift({v:42,d:'2026-10-01',t:'Câu trắc nghiệm không còn đoán được bằng mẹo',items:[
+  'Viết lại phương án và một phần bài đọc, lời thoại của 278 câu trắc nghiệm, kể cả bài kiểm tra đầu vào: phương án sai đều hợp lý và chỉ sai vì một chi tiết trong bài, đáp án không còn là câu dài nhất, ôn hoà nhất hay "điển hình" nhất.',
+  'Trước đây, chỉ nhìn câu hỏi và phương án (không đọc bài) đã đoán đúng khoảng 79%; nay còn 52%, và ở các dạng Nghe chỉ còn 23–41%. Nhờ vậy band ước tính từ bài kiểm tra đầu vào sát thực lực hơn.',
+  'Vị trí đáp án đúng trong bài kiểm tra đầu vào được rải đều (trước đây không câu nào ở D).',
+  'Luật kiểm tra tự động mới chặn lỗi tái diễn; hướng dẫn soạn câu và phép thử "không có bài" được ghi thành quy trình.']});
 CHANGELOG.unshift({v:41,d:'2026-10-01',t:'Đủ 26/26 dạng: 8 dạng Nghe IELTS và 4 dạng VSTEP',big:true,items:[
   'Thêm 8 dạng Nghe IELTS (điền form, câu, sơ đồ quy trình, trả lời ngắn, trắc nghiệm một và hai đáp án, nối, bản đồ) và 4 dạng VSTEP (Đọc; Nghe phần 1, 2, 3). Mỗi dạng có bài học tiếng Việt và từ 30 câu luyện có giải thích.',
   'Mỗi bài nghe có bản tốc độ thi, bản chậm và bản có tiếng ồn nền (tạo ngay trên máy, không tốn thêm dung lượng tải). Giọng Anh và Mỹ; chưa có giọng Úc vì bộ giọng đọc chưa hỗ trợ.',
@@ -7977,7 +7984,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.506e9cd98f.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.af108cc50a.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),

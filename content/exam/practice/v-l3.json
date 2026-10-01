@@ -18,19 +18,19 @@
       },
       {
         "sp": "Speaker",
-        "t": "Most adults need between seven and nine hours of sleep a night, but surveys show that around a third of people regularly get less than seven. Teenagers need even more, about nine hours, yet many of them sleep much less because of homework and phones."
+        "t": "Most adults need between seven and nine hours of sleep a night, but surveys show that around two in five people regularly get less than seven. Teenagers need even more, about nine hours, yet many of them sleep much less because their schools start so early in the morning."
       },
       {
         "sp": "Speaker",
-        "t": "Why does sleep matter so much? First, it helps us learn. While we sleep, the brain stores the information we took in during the day. Second, it protects our health. People who sleep too little are more likely to catch colds and to put on weight."
+        "t": "Why does sleep matter so much? First, it cleans the brain. While we sleep, the brain clears away waste chemicals that build up while we are awake. Second, it protects our health. People who sleep too little are more likely to catch colds and to put on weight."
       },
       {
         "sp": "Speaker",
-        "t": "So how can we sleep better? The most important thing is to go to bed and get up at the same time every day, even at weekends. It also helps to avoid screens for an hour before bed, because the light from phones makes it harder to fall asleep."
+        "t": "So how can we sleep better? The most important thing is to keep your bedroom cool, at about eighteen degrees. Going to bed at the same time every day also helps. It also helps to avoid screens for an hour before bed, because the light from phones makes it harder to fall asleep."
       },
       {
         "sp": "Speaker",
-        "t": "Finally, many people drink coffee in the afternoon to stay awake. My advice is simple: have your last coffee before lunch. Small changes like these can make a big difference."
+        "t": "Finally, many people drink coffee in the afternoon to stay awake. My advice is simple: have your last coffee by two in the afternoon. Small changes like these can make a big difference."
       }
     ],
     "voices": {
@@ -38,10 +38,10 @@
     },
     "vi": [
       "Chào buổi sáng mọi người. Hôm nay tôi muốn nói về điều tất cả chúng ta đều làm nhưng ít khi nghĩ tới: giấc ngủ.",
-      "Phần lớn người lớn cần ngủ từ bảy đến chín tiếng mỗi đêm, nhưng khảo sát cho thấy khoảng một phần ba người thường xuyên ngủ ít hơn bảy tiếng. Thanh thiếu niên cần nhiều hơn, khoảng chín tiếng, nhưng nhiều em ngủ ít hơn hẳn vì bài tập về nhà và điện thoại.",
-      "Vì sao giấc ngủ quan trọng như vậy? Thứ nhất, nó giúp ta học. Trong lúc ngủ, não lưu lại thông tin ta tiếp nhận trong ngày. Thứ hai, nó bảo vệ sức khoẻ. Người ngủ quá ít dễ bị cảm lạnh và tăng cân hơn.",
-      "Vậy làm sao ngủ ngon hơn? Quan trọng nhất là đi ngủ và thức dậy cùng giờ mỗi ngày, kể cả cuối tuần. Tránh màn hình một tiếng trước khi ngủ cũng giúp ích, vì ánh sáng từ điện thoại làm khó ngủ hơn.",
-      "Cuối cùng, nhiều người uống cà phê buổi chiều để tỉnh táo. Lời khuyên của tôi đơn giản: uống ly cà phê cuối cùng trước bữa trưa. Những thay đổi nhỏ như vậy có thể tạo khác biệt lớn."
+      "Phần lớn người lớn cần ngủ từ bảy đến chín tiếng mỗi đêm, nhưng khảo sát cho thấy khoảng hai trên năm người thường xuyên ngủ ít hơn bảy tiếng. Thanh thiếu niên cần nhiều hơn, khoảng chín tiếng, nhưng nhiều em ngủ ít hơn hẳn vì trường học bắt đầu quá sớm vào buổi sáng.",
+      "Vì sao giấc ngủ quan trọng như vậy? Thứ nhất, nó làm sạch não. Trong lúc ngủ, não loại bỏ các chất thải tích tụ khi ta thức. Thứ hai, nó bảo vệ sức khoẻ. Người ngủ quá ít dễ bị cảm lạnh và tăng cân hơn.",
+      "Vậy làm sao ngủ ngon hơn? Quan trọng nhất là giữ phòng ngủ mát, khoảng mười tám độ. Đi ngủ cùng giờ mỗi ngày cũng có ích. Tránh màn hình một tiếng trước khi ngủ cũng giúp ích, vì ánh sáng từ điện thoại làm khó ngủ hơn.",
+      "Cuối cùng, nhiều người uống cà phê buổi chiều để tỉnh táo. Lời khuyên của tôi đơn giản: uống ly cà phê cuối cùng trước hai giờ chiều. Những thay đổi nhỏ như vậy có thể tạo khác biệt lớn."
     ],
     "items": [
       {
@@ -50,32 +50,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "about a third"
+            "t": "about two in five"
           },
           {
             "k": "B",
-            "t": "about two thirds"
+            "t": "about half"
           },
           {
             "k": "C",
-            "t": "about a quarter"
+            "t": "about one in five"
           },
           {
             "k": "D",
-            "t": "about half"
+            "t": "about a third"
           }
         ],
         "ans": "A",
         "b": 5,
         "ev": {
           "p": 1,
-          "s": "around a third of people regularly get less than seven"
+          "s": "surveys show that around two in five people regularly get less than seven"
         },
-        "why": "Khoảng một phần ba.",
+        "why": "Khoảng hai trên năm người thường xuyên ngủ ít hơn bảy tiếng.",
         "wrong": {
-          "B": "Không được nói.",
-          "C": "Không được nói.",
-          "D": "Không được nói."
+          "B": "Con số là hai trên năm.",
+          "C": "Con số là hai trên năm.",
+          "D": "Con số là hai trên năm."
         }
       },
       {
@@ -88,28 +88,28 @@
           },
           {
             "k": "B",
-            "t": "They do homework and use phones."
+            "t": "Their schools start very early."
           },
           {
             "k": "C",
-            "t": "They go to bed too early."
+            "t": "They have part-time jobs."
           },
           {
             "k": "D",
-            "t": "They have part-time jobs after school."
+            "t": "They do homework and use phones."
           }
         ],
         "ans": "B",
         "b": 5,
         "ev": {
           "p": 1,
-          "s": "many of them sleep much less because of homework and phones"
+          "s": "because their schools start so early in the morning"
         },
-        "why": "Vì bài tập và điện thoại.",
+        "why": "Vì trường học bắt đầu quá sớm vào buổi sáng.",
         "wrong": {
-          "A": "Cà phê được nhắc ở phần khác, cho người lớn.",
-          "C": "Bài nói các em ngủ ít, không phải ngủ sớm.",
-          "D": "Không được nói."
+          "A": "Không được nhắc.",
+          "C": "Không được nhắc.",
+          "D": "Bài này không nói bài tập hay điện thoại."
         }
       },
       {
@@ -118,32 +118,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "It burns fat."
+            "t": "It produces new cells."
           },
           {
             "k": "B",
-            "t": "It rests completely."
+            "t": "It stores information from the day."
           },
           {
             "k": "C",
-            "t": "It produces new cells to replace old ones."
+            "t": "It rests completely."
           },
           {
             "k": "D",
-            "t": "It stores information from the day."
+            "t": "It clears away waste chemicals."
           }
         ],
         "ans": "D",
         "b": 5,
         "ev": {
           "p": 2,
-          "s": "While we sleep, the brain stores the information we took in during the day."
+          "s": "the brain clears away waste chemicals that build up while we are awake"
         },
-        "why": "Não lưu lại thông tin trong ngày.",
+        "why": "Trong lúc ngủ, não loại bỏ chất thải tích tụ khi thức.",
         "wrong": {
-          "A": "Tăng cân được nhắc như tác hại của ngủ ít, không phải hoạt động của não.",
-          "B": "Không được nói.",
-          "C": "Không được nói."
+          "A": "Không được nhắc.",
+          "B": "Bài này không nói lưu thông tin.",
+          "C": "Ngược ý: não làm việc (làm sạch) khi ngủ."
         }
       },
       {
@@ -152,32 +152,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "avoid screens for an hour before bed"
-          },
-          {
-            "k": "B",
-            "t": "drink less coffee"
-          },
-          {
-            "k": "C",
             "t": "keep regular sleeping times"
           },
           {
+            "k": "B",
+            "t": "avoid screens before bed"
+          },
+          {
+            "k": "C",
+            "t": "keep the bedroom cool"
+          },
+          {
             "k": "D",
-            "t": "exercise more"
+            "t": "drink less coffee"
           }
         ],
         "ans": "C",
         "b": 5.5,
         "ev": {
           "p": 3,
-          "s": "The most important thing is to go to bed and get up at the same time every day"
+          "s": "The most important thing is to keep your bedroom cool"
         },
-        "why": "Đi ngủ và dậy cùng giờ mỗi ngày.",
+        "why": "Quan trọng nhất là giữ phòng ngủ mát, khoảng 18 độ.",
         "wrong": {
-          "A": "Tránh màn hình chỉ \"also helps\", không phải quan trọng nhất.",
-          "B": "Lời khuyên phụ ở phần cuối.",
-          "D": "Không được nhắc."
+          "A": "Đi ngủ cùng giờ chỉ \"also helps\", không phải quan trọng nhất.",
+          "B": "Có ích nhưng không phải quan trọng nhất.",
+          "D": "Có lời khuyên về cà phê, nhưng không phải quan trọng nhất."
         },
         "trap": "Có nhiều lời khuyên; câu hỏi hỏi điều 'most important'."
       },
@@ -187,11 +187,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "in the afternoon"
+            "t": "by six in the evening"
           },
           {
             "k": "B",
-            "t": "in the evening"
+            "t": "before lunch"
           },
           {
             "k": "C",
@@ -199,26 +199,26 @@
           },
           {
             "k": "D",
-            "t": "before lunch"
+            "t": "by two in the afternoon"
           }
         ],
         "ans": "D",
         "b": 5,
         "ev": {
           "p": 4,
-          "s": "have your last coffee before lunch"
+          "s": "have your last coffee by two in the afternoon"
         },
-        "why": "Ly cuối trước bữa trưa.",
+        "why": "Uống ly cuối trước hai giờ chiều.",
         "wrong": {
-          "A": "Buổi chiều là thói quen bị khuyên tránh.",
-          "B": "Không được nói.",
-          "C": "Không được nói."
+          "A": "Muộn hơn lời khuyên.",
+          "B": "Bài này không nói trước bữa trưa.",
+          "C": "Muộn hơn lời khuyên."
         }
       }
     ],
     "audio": {
       "file": "a/v-l3-01.mp3",
-      "dur": 55,
+      "dur": 59.7,
       "voices": [
         "bf_emma"
       ],
@@ -252,11 +252,11 @@
       },
       {
         "sp": "Presenter",
-        "t": "Food safety is another concern. Surveys suggest that most customers are less worried about hygiene than about rising prices, but the authorities have introduced training courses for vendors, and those who complete them receive a certificate they can display."
+        "t": "Food safety is another concern. Surveys suggest that most customers are less worried about hygiene than about rising prices, but the authorities have introduced training courses for vendors, and those who complete them get a discount on their market fees."
       },
       {
         "sp": "Presenter",
-        "t": "Interestingly, social media has changed the business too. A single popular video can bring long queues to a stall that was almost unknown the week before. Some vendors welcome this, but others complain that their regular customers can no longer get a seat."
+        "t": "Interestingly, social media has changed the business too. A single popular video can bring long queues to a stall that was almost unknown the week before. Some vendors welcome this, but others complain that the long queues block the pavement and lead to fines from the police."
       },
       {
         "sp": "Presenter",
@@ -270,8 +270,8 @@
       "Chào mừng đến với Chuyện ẩm thực. Hôm nay chúng ta tìm hiểu ẩm thực đường phố Hà Nội, thứ thu hút hàng nghìn du khách mỗi năm và là phần quan trọng của kinh tế thành phố.",
       "Ẩm thực đường phố Hà Nội có lịch sử lâu đời. Nhiều món nổi tiếng như phở và bún chả ban đầu được những người bán hàng gánh bếp trên đòn gánh tre bán dạo. Một số gia đình đã bán cùng một món ở cùng một góc phố qua ba, bốn thế hệ.",
       "Tuy nhiên những năm gần đây, thành phố phải đối mặt câu hỏi khó: làm sao giữ vỉa hè thông thoáng cho người đi bộ mà vẫn bảo vệ lối sống hàng nghìn gia đình đang trông vào. Một số phố nay có quy định về chỗ người bán được kê ghế, và vài khu chợ đã được cải tạo.",
-      "An toàn thực phẩm là mối lo khác. Khảo sát cho thấy phần lớn khách ít lo về vệ sinh hơn là giá tăng, nhưng chính quyền đã mở các khoá tập huấn cho người bán, và ai hoàn thành sẽ được cấp chứng nhận để treo.",
-      "Điều thú vị là mạng xã hội cũng đã thay đổi việc kinh doanh. Một video nổi tiếng có thể khiến một hàng gần như vô danh tuần trước có hàng dài người xếp. Một số người bán hoan nghênh, nhưng người khác phàn nàn khách quen giờ không còn chỗ ngồi.",
+      "An toàn thực phẩm là mối lo khác. Khảo sát cho thấy phần lớn khách ít lo về vệ sinh hơn là giá tăng, nhưng chính quyền đã mở các khoá tập huấn cho người bán, và ai hoàn thành được giảm phí chợ.",
+      "Điều thú vị là mạng xã hội cũng đã thay đổi việc kinh doanh. Một video nổi tiếng có thể khiến một hàng gần như vô danh tuần trước có hàng dài người xếp. Một số người bán hoan nghênh, nhưng người khác phàn nàn hàng người dài chắn vỉa hè và khiến họ bị công an phạt.",
       "Vậy tương lai của ẩm thực đường phố có thể phụ thuộc vào việc tìm thế cân bằng: giữ truyền thống mà vẫn thích nghi với thành phố đang thay đổi."
     ],
     "allow": [
@@ -403,11 +403,11 @@
           },
           {
             "k": "B",
-            "t": "a discount on stall fees"
+            "t": "a certificate to display"
           },
           {
             "k": "C",
-            "t": "a document they can display"
+            "t": "a discount on market fees"
           },
           {
             "k": "D",
@@ -418,13 +418,13 @@
         "b": 5.5,
         "ev": {
           "p": 3,
-          "s": "those who complete them receive a certificate they can display"
+          "s": "those who complete them get a discount on their market fees"
         },
-        "why": "Nhận giấy chứng nhận để trưng ra.",
+        "why": "Người hoàn thành được giảm phí chợ.",
         "wrong": {
-          "A": "Quảng cáo liên quan mạng xã hội, không phải khoá học.",
-          "B": "Không được nói.",
-          "D": "Không được nói."
+          "A": "Không được nhắc.",
+          "B": "Bài này không nói chứng nhận.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -433,11 +433,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "Regular customers cannot find seats."
+            "t": "Queues lead to fines from the police."
           },
           {
             "k": "B",
-            "t": "It increases their costs."
+            "t": "It does not bring new customers."
           },
           {
             "k": "C",
@@ -445,26 +445,26 @@
           },
           {
             "k": "D",
-            "t": "It does not bring them any new customers."
+            "t": "Regular customers cannot find seats."
           }
         ],
         "ans": "A",
         "b": 6.5,
         "ev": {
           "p": 4,
-          "s": "others complain that their regular customers can no longer get a seat"
+          "s": "the long queues block the pavement and lead to fines from the police"
         },
-        "why": "Khách quen không còn chỗ ngồi.",
+        "why": "Hàng người dài chắn vỉa hè khiến họ bị phạt.",
         "wrong": {
-          "B": "Không được nói.",
-          "C": "Không được nói.",
-          "D": "Ngược lại, mang tới hàng dài khách."
+          "B": "Ngược ý: video mang lại hàng dài khách.",
+          "C": "Không được nhắc.",
+          "D": "Bài này không nói chỗ ngồi."
         }
       }
     ],
     "audio": {
       "file": "a/v-l3-02.mp3",
-      "dur": 78.5,
+      "dur": 79.6,
       "voices": [
         "bm_lewis"
       ],
@@ -506,7 +506,7 @@
       },
       {
         "sp": "Lecturer",
-        "t": "Another is spacing. Studying a topic for one hour on three different days is more effective than studying it for three hours on one day. Next week we'll look at why we forget, and what that tells us about memory."
+        "t": "Another is spacing. Studying a topic for one hour on three different days is more effective than studying it for three hours on one day. Next week we'll look at how sleep affects memory, and what that means for exam preparation."
       }
     ],
     "voices": {
@@ -518,7 +518,7 @@
       "Nếu ta chú ý, thông tin chuyển vào trí nhớ ngắn hạn, đôi khi gọi là trí nhớ làm việc. Nó rất hạn chế. Phần lớn người chỉ giữ được khoảng bảy đơn vị, như các chữ số của số điện thoại, trong khoảng hai mươi giây.",
       "Để giữ thông tin lâu hơn, nó phải được chuyển vào trí nhớ dài hạn, nơi có sức chứa gần như vô hạn. Chìa khoá cho việc chuyển này không đơn giản là lặp lại, như nhiều sinh viên tin, mà là kết nối thông tin mới với điều bạn đã biết.",
       "Vậy điều này có ý nghĩa gì với việc học? Một kỹ thuật được nghiên cứu ủng hộ mạnh mẽ gọi là luyện truy xuất. Thay vì đọc đi đọc lại ghi chép, hãy gấp sách và cố viết ra mọi thứ bạn nhớ. Cảm giác khó hơn, nhưng cho kết quả thi tốt hơn nhiều.",
-      "Một kỹ thuật khác là giãn cách. Học một chủ đề một tiếng vào ba ngày khác nhau hiệu quả hơn học ba tiếng trong một ngày. Tuần sau ta sẽ tìm hiểu vì sao ta quên, và điều đó cho biết gì về trí nhớ."
+      "Một kỹ thuật khác là giãn cách. Học một chủ đề một tiếng vào ba ngày khác nhau hiệu quả hơn học ba tiếng trong một ngày. Tuần sau ta sẽ tìm hiểu giấc ngủ ảnh hưởng đến trí nhớ thế nào, và điều đó có ý nghĩa gì với việc ôn thi."
     ],
     "items": [
       {
@@ -664,11 +664,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "why we forget"
+            "t": "sleep and memory"
           },
           {
             "k": "B",
-            "t": "exam techniques"
+            "t": "the history of memory research"
           },
           {
             "k": "C",
@@ -676,26 +676,26 @@
           },
           {
             "k": "D",
-            "t": "sensory memory"
+            "t": "why we forget"
           }
         ],
         "ans": "A",
         "b": 6,
         "ev": {
           "p": 5,
-          "s": "Next week we'll look at why we forget"
+          "s": "Next week we'll look at how sleep affects memory"
         },
-        "why": "Vì sao ta quên.",
+        "why": "Tuần sau: giấc ngủ ảnh hưởng đến trí nhớ thế nào.",
         "wrong": {
-          "B": "Không được nói.",
+          "B": "Không được nhắc.",
           "C": "Đã nói hôm nay.",
-          "D": "Đã nói hôm nay."
+          "D": "Không được nhắc."
         }
       }
     ],
     "audio": {
       "file": "a/v-l3-03.mp3",
-      "dur": 71.2,
+      "dur": 72.2,
       "voices": [
         "af_sarah"
       ],
@@ -721,7 +721,7 @@
       },
       {
         "sp": "Speaker",
-        "t": "Supporters argue that it offers flexibility. Workers can choose when and how much they work, which suits students, parents with young children and people looking for a second income. For many, it has also provided an entry point into the labour market when other jobs were scarce."
+        "t": "Supporters argue that it offers flexibility. Workers can choose when and how much they work, which suits students, retired people and people looking for a second income. For many, it has also provided an entry point into the labour market when other jobs were scarce."
       },
       {
         "sp": "Speaker",
@@ -745,7 +745,7 @@
     },
     "vi": [
       "Hôm nay tôi muốn xem xét cái thường gọi là nền kinh tế việc làm tự do: công việc sắp xếp qua ứng dụng, như giao đồ ăn, gọi xe và các việc tự do trực tuyến.",
-      "Người ủng hộ cho rằng nó mang lại sự linh hoạt. Người lao động chọn được khi nào và làm bao nhiêu, hợp với sinh viên, cha mẹ có con nhỏ và người tìm thu nhập phụ. Với nhiều người, nó còn là cửa vào thị trường lao động khi việc làm khác khan hiếm.",
+      "Người ủng hộ cho rằng nó mang lại sự linh hoạt. Người lao động chọn được khi nào và làm bao nhiêu, hợp với sinh viên, người đã nghỉ hưu và người tìm thu nhập phụ. Với nhiều người, nó còn là cửa vào thị trường lao động khi việc làm khác khan hiếm.",
       "Tuy nhiên, người phê phán chỉ ra sự linh hoạt này thường có cái giá. Người làm việc tự do thường được xếp là tự doanh, nghĩa là không có lương ốm, lương nghỉ phép hay lương hưu. Và vì thu nhập phụ thuộc nhu cầu, nó có thể chênh lệch đáng kể giữa các tuần.",
       "Có lẽ vấn đề thú vị nhất là vai trò của thuật toán. Ứng dụng quyết định ai nhận việc nào, và người lao động thường không biết quyết định được đưa ra thế nào. Nhiều nghiên cứu thấy tài xế từ chối vài chuyến có thể nhận ít lời mời hơn sau đó, làm giảm sự tự do mà hệ thống tuyên bố mang lại.",
       "Các chính phủ đang bắt đầu phản ứng. Ở một số nước, toà án đã phán quyết một số người làm việc tự do phải được đối xử như nhân viên. Nước khác thử nghiệm một nhóm trung gian bảo đảm một số quyền lợi mà không xoá bỏ hoàn toàn sự linh hoạt.",
@@ -754,36 +754,36 @@
     "items": [
       {
         "id": "v-l3-04-1",
-        "q": "According to supporters, who benefits especially from gig work?",
+        "q": "According to supporters, who does gig work especially suit?",
         "opts": [
           {
             "k": "A",
-            "t": "full-time employees"
+            "t": "people who want a pension"
           },
           {
             "k": "B",
-            "t": "large companies"
+            "t": "full-time workers"
           },
           {
             "k": "C",
-            "t": "older workers close to retirement"
+            "t": "parents with young children"
           },
           {
             "k": "D",
-            "t": "parents who need flexible hours"
+            "t": "retired people"
           }
         ],
         "ans": "D",
         "b": 6.5,
         "ev": {
           "p": 1,
-          "s": "which suits students, parents with young children and people looking for a second income"
+          "s": "which suits students, retired people and people looking for a second income"
         },
-        "why": "Sinh viên, cha mẹ có con nhỏ, người tìm thu nhập phụ: người cần giờ linh hoạt.",
+        "why": "Hợp với sinh viên, người đã nghỉ hưu và người tìm thu nhập phụ.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Không được nói.",
-          "C": "Không được nhắc."
+          "A": "Ngược ý: người làm tự do không có lương hưu.",
+          "B": "Không được nhắc.",
+          "C": "Bài này không nhắc cha mẹ."
         }
       },
       {
@@ -822,36 +822,36 @@
       },
       {
         "id": "v-l3-04-3",
-        "q": "What point does the speaker make about algorithms?",
+        "q": "According to studies, what may happen to drivers who decline a few jobs?",
         "opts": [
           {
             "k": "A",
-            "t": "They are completely fair."
+            "t": "They may lose their account."
           },
           {
             "k": "B",
-            "t": "Workers understand them well."
+            "t": "They may have to pay a fine."
           },
           {
             "k": "C",
-            "t": "They may limit workers' freedom."
+            "t": "They may get fewer offers."
           },
           {
             "k": "D",
-            "t": "They have been banned in some countries."
+            "t": "They may get lower ratings."
           }
         ],
         "ans": "C",
-        "b": 7.5,
+        "b": 7,
         "ev": {
           "p": 3,
-          "s": "which reduces the freedom the system claims to provide"
+          "s": "drivers who decline a few jobs may receive fewer offers afterwards"
         },
-        "why": "Thuật toán có thể làm giảm sự tự do của người lao động.",
+        "why": "Họ có thể nhận ít lời mời hơn sau đó.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Ngược lại, họ thường không biết.",
-          "D": "Không được nói."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -926,7 +926,7 @@
     ],
     "audio": {
       "file": "a/v-l3-04.mp3",
-      "dur": 89.1,
+      "dur": 88.6,
       "voices": [
         "am_michael"
       ],
@@ -1188,34 +1188,34 @@
     "script": [
       {
         "sp": "Speaker",
-        "t": "Hello everyone. I'm here to share my experience of volunteering abroad, and to give you some advice if you're thinking of doing the same."
+        "t": "Hello everyone. I'm Mai, and I'm here to share my experience of volunteering abroad, and to give you some advice if you're thinking of doing the same."
       },
       {
         "sp": "Speaker",
-        "t": "After university, I spent six months in a small village in Laos, teaching English at a primary school. I chose the programme because it was run by a local organisation rather than an international company, so more of the money went to the community."
+        "t": "After university, I spent six months in a small village in Laos, teaching English at a primary school. I chose the programme because it was the only one that let volunteers design their own project instead of following a fixed plan."
       },
       {
         "sp": "Speaker",
-        "t": "The first few weeks were difficult. I couldn't speak the language, and I found the food very different. What helped most was living with a local family. They taught me some basic phrases, and by the end I could have simple conversations."
+        "t": "The first few weeks were difficult. I couldn't speak the language, and I found the food very different. What helped most was joining the village football team. We played every evening, and that's how I learned my first phrases."
       },
       {
         "sp": "Speaker",
-        "t": "I learned that good intentions aren't enough. Some volunteers arrive expecting to change everything in a few weeks. In reality, the most useful thing I did was to train two local teachers, who are still running the English classes today."
+        "t": "I learned that good intentions aren't enough. Some volunteers arrive with bags full of gifts, which can cause jealousy between families. In reality, the most useful thing I did was to help the school set up a small library, which the children still use today."
       },
       {
         "sp": "Speaker",
-        "t": "So my advice is this: choose a programme that lasts at least three months, find out who runs it and where the money goes, and focus on skills you can pass on to local people. And be patient with yourself."
+        "t": "So my advice is this: choose a programme that lasts at least eight weeks, find out who runs it and where the money goes, and leave something behind that local people can keep using. And be patient with yourself."
       }
     ],
     "voices": {
       "Speaker": "bf_isabella"
     },
     "vi": [
-      "Chào mọi người. Tôi đến để chia sẻ trải nghiệm làm tình nguyện ở nước ngoài, và cho vài lời khuyên nếu các bạn định làm điều tương tự.",
-      "Sau đại học, tôi ở sáu tháng tại một ngôi làng nhỏ ở Lào, dạy tiếng Anh ở một trường tiểu học. Tôi chọn chương trình này vì nó do một tổ chức địa phương điều hành chứ không phải công ty quốc tế, nên nhiều tiền hơn đến được với cộng đồng.",
-      "Vài tuần đầu rất khó khăn. Tôi không nói được tiếng địa phương, và thấy đồ ăn rất khác. Điều giúp tôi nhiều nhất là sống cùng một gia đình địa phương. Họ dạy tôi vài câu cơ bản, và đến cuối tôi đã nói chuyện đơn giản được.",
-      "Tôi học được rằng ý tốt thôi chưa đủ. Một số tình nguyện viên đến với mong muốn thay đổi mọi thứ trong vài tuần. Thực tế, việc có ích nhất tôi làm là đào tạo hai giáo viên địa phương, những người đến nay vẫn dạy các lớp tiếng Anh.",
-      "Vậy lời khuyên của tôi là: chọn chương trình kéo dài ít nhất ba tháng, tìm hiểu ai điều hành và tiền đi đâu, và tập trung vào những kỹ năng có thể truyền lại cho người địa phương. Và hãy kiên nhẫn với bản thân."
+      "Chào mọi người. Tôi là Mai, tôi đến để chia sẻ trải nghiệm làm tình nguyện ở nước ngoài, và cho vài lời khuyên nếu các bạn định làm điều tương tự.",
+      "Sau đại học, tôi ở sáu tháng tại một ngôi làng nhỏ ở Lào, dạy tiếng Anh ở một trường tiểu học. Tôi chọn chương trình này vì đó là chương trình duy nhất cho tình nguyện viên tự thiết kế dự án thay vì làm theo một kế hoạch có sẵn.",
+      "Vài tuần đầu rất khó khăn. Tôi không nói được tiếng địa phương, và thấy đồ ăn rất khác. Điều giúp tôi nhiều nhất là tham gia đội bóng đá của làng. Chúng tôi chơi mỗi tối, và đó là cách tôi học được những câu đầu tiên.",
+      "Tôi học được rằng ý tốt thôi chưa đủ. Một số tình nguyện viên đến với túi đầy quà, điều có thể gây ghen tị giữa các gia đình. Thực tế, việc có ích nhất tôi làm là giúp trường lập một thư viện nhỏ, mà bọn trẻ đến nay vẫn dùng.",
+      "Vậy lời khuyên của tôi là: chọn chương trình kéo dài ít nhất tám tuần, tìm hiểu ai điều hành và tiền đi đâu, và để lại thứ gì đó người địa phương có thể tiếp tục dùng. Và hãy kiên nhẫn với bản thân."
     ],
     "items": [
       {
@@ -1224,32 +1224,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "More of its money stayed in the community."
+            "t": "She could design her own project."
           },
           {
             "k": "B",
-            "t": "It offered a shorter placement."
+            "t": "It was the cheapest one."
           },
           {
             "k": "C",
-            "t": "It cost less than other programmes."
+            "t": "It was run by a local organisation."
           },
           {
             "k": "D",
-            "t": "Her university had recommended it to her."
+            "t": "Her university recommended it."
           }
         ],
         "ans": "A",
         "b": 6,
         "ev": {
           "p": 1,
-          "s": "so more of the money went to the community"
+          "s": "it was the only one that let volunteers design their own project"
         },
-        "why": "Do tổ chức địa phương điều hành nên nhiều tiền hơn đến với cộng đồng.",
+        "why": "Đó là chương trình duy nhất cho tình nguyện viên tự thiết kế dự án.",
         "wrong": {
-          "B": "Cô ở sáu tháng; không nói ngắn hơn.",
-          "C": "Không được nói.",
-          "D": "Không được nói."
+          "B": "Không được nhắc.",
+          "C": "Bài này không nói tổ chức địa phương.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1258,32 +1258,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "cooking her own food"
-          },
-          {
-            "k": "B",
             "t": "meeting other volunteers"
           },
           {
+            "k": "B",
+            "t": "taking language classes"
+          },
+          {
             "k": "C",
-            "t": "living with a local family"
+            "t": "joining the village football team"
           },
           {
             "k": "D",
-            "t": "taking language classes at a school"
+            "t": "living with a local family"
           }
         ],
         "ans": "C",
         "b": 6,
         "ev": {
           "p": 2,
-          "s": "What helped most was living with a local family."
+          "s": "What helped most was joining the village football team."
         },
-        "why": "Sống cùng gia đình địa phương.",
+        "why": "Tham gia đội bóng của làng, chơi mỗi tối và học câu đầu tiên.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Không được nói.",
-          "D": "Không được nói."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "D": "Bài này không nói ở với gia đình."
         }
       },
       {
@@ -1292,32 +1292,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "spending too much money"
+            "t": "not learning the language"
           },
           {
             "k": "B",
-            "t": "expecting to change things quickly"
+            "t": "bringing too many gifts"
           },
           {
             "k": "C",
-            "t": "staying too long"
+            "t": "expecting to change things quickly"
           },
           {
             "k": "D",
-            "t": "not learning the local language before arriving"
+            "t": "staying too short a time"
           }
         ],
         "ans": "B",
         "b": 6.5,
         "ev": {
           "p": 3,
-          "s": "Some volunteers arrive expecting to change everything in a few weeks."
+          "s": "Some volunteers arrive with bags full of gifts, which can cause jealousy between families."
         },
-        "why": "Mong thay đổi mọi thứ trong vài tuần.",
+        "why": "Mang quá nhiều quà có thể gây ghen tị giữa các gia đình.",
         "wrong": {
-          "A": "Không được nói.",
-          "C": "Cô khuyên ở lâu.",
-          "D": "Không được nói là lỗi của họ."
+          "A": "Không được nhắc.",
+          "C": "Bài này không nêu lỗi đó.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1326,7 +1326,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "teaching children English"
+            "t": "training local teachers"
           },
           {
             "k": "B",
@@ -1334,24 +1334,24 @@
           },
           {
             "k": "C",
-            "t": "building a school"
+            "t": "teaching children English"
           },
           {
             "k": "D",
-            "t": "preparing local staff to teach"
+            "t": "helping to set up a library"
           }
         ],
         "ans": "D",
         "b": 6.5,
         "ev": {
           "p": 3,
-          "s": "the most useful thing I did was to train two local teachers"
+          "s": "the most useful thing I did was to help the school set up a small library"
         },
-        "why": "Đào tạo hai giáo viên địa phương.",
+        "why": "Việc có ích nhất là giúp trường lập thư viện nhỏ.",
         "wrong": {
-          "A": "Cô dạy tiếng Anh, nhưng điều có ích nhất là đào tạo giáo viên.",
-          "B": "Không được nói.",
-          "C": "Không được nói."
+          "A": "Bài này không nói đào tạo giáo viên.",
+          "B": "Không được nhắc.",
+          "C": "Cô dạy tiếng Anh, nhưng việc có ích nhất là lập thư viện."
         },
         "trap": "Dạy tiếng Anh là việc chính nhưng không phải 'most useful'."
       },
@@ -1361,7 +1361,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "at least three months"
+            "t": "at least eight weeks"
           },
           {
             "k": "B",
@@ -1373,26 +1373,26 @@
           },
           {
             "k": "D",
-            "t": "at least one month"
+            "t": "at least three months"
           }
         ],
         "ans": "A",
         "b": 5.5,
         "ev": {
           "p": 4,
-          "s": "choose a programme that lasts at least three months"
+          "s": "choose a programme that lasts at least eight weeks"
         },
-        "why": "Ít nhất ba tháng.",
+        "why": "Ít nhất tám tuần.",
         "wrong": {
-          "B": "Không được nói.",
+          "B": "Không được nhắc.",
           "C": "Sáu tháng là thời gian cô ở.",
-          "D": "Không được nói."
+          "D": "Con số là tám tuần."
         }
       }
     ],
     "audio": {
       "file": "a/v-l3-06.mp3",
-      "dur": 56.6,
+      "dur": 57.1,
       "voices": [
         "bf_isabella"
       ],

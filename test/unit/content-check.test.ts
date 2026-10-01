@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { checkGroup, checkKeyBalance, levelReport, suggestVariants } from '../../src/content/check.ts';
+import { checkGroup, checkKeyBalance, checkLengthCue, levelReport, suggestVariants } from '../../src/content/check.ts';
 import { levelOf, tokens, candidates } from '../../src/content/lemma.ts';
 import type { Group } from '../../src/exam/content.ts';
 
@@ -110,4 +110,36 @@ test('suggestVariants: gợi ý từ bổ nghĩa đứng trước đáp án, b�
   assert.equal(suggestVariants([g('What?', ['silver'], "so I'll take silver.")]).length, 0);           // động từ
   assert.equal(suggestVariants([g('When?', ['spring'], 'We came in the spring.')]).length, 0);           // mạo từ
   assert.equal(suggestVariants([g('What?', ['meal voucher'], 'You get a free meal voucher.', 2)]).length, 0); // vượt giới hạn
+});
+
+test('checkKeyBalance xét cả bài kiểm tra đầu vào (v42: từng 0/48 đáp án ở D mà không bị bắt)', () => {
+  const mk = (keys: string[]): Group => ({
+    id: 'pl-r-01', kind: 'reading', exams: ['ielts-ac'], qtype: 'pl-r', level: 'B1', band: 5, mode: 'place', title: 'T', instr: 'Choose.',
+    paras: ['x'], items: keys.map((k, i) => ({ id: `p${i}`, q: 'Q?', b: 5, ev: { p: 0, s: 'xxx' }, why: 'vì thế', opts: ['A', 'B', 'C', 'D'].map(o => ({ k: o, t: o + i })), ans: k })),
+  });
+  assert.match(checkKeyBalance([mk(['B', 'C', 'A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C', 'B'])]).map(i => i.msg).join(' | '), /3\/4 vị trí/);
+});
+
+test('checkLengthCue: chặn khi đáp án thường là phương án dài nhất', () => {
+  const mk = (cued: number): Group => ({
+    id: 'v-r-01', kind: 'reading', exams: ['vstep'], qtype: 'v-r', level: 'B1', band: 5, mode: 'practice', title: 'T', instr: 'Choose.',
+    paras: ['x'], items: Array.from({ length: 12 }, (_, i) => ({ id: `c${i}`, q: 'Q?', b: 5, ev: { p: 0, s: 'xxx' }, why: 'vì thế',
+      opts: [{ k: 'A', t: i < cued ? 'a much longer key option' : 'key' }, { k: 'B', t: 'short one' }, { k: 'C', t: 'short two' }, { k: 'D', t: i < cued ? 'short' : 'a much longer wrong option' }], ans: 'A' })),
+  });
+  assert.equal(checkLengthCue([mk(9)]).length, 1);
+  assert.deepEqual(checkLengthCue([mk(3)]), []);
+});
+
+test('câu hỏi bỏ lửng: phương án phải nối tiếp được (v42: "…it may / Within one generation")', () => {
+  const g = (q: string, opts: string[]): Group => ({
+    id: 'r-mcq-09', kind: 'reading', exams: ['ielts-ac'], qtype: 'r-mcq', level: 'B2', band: 6, mode: 'practice', title: 'T', instr: 'Choose.',
+    paras: [para], items: [{ id: 'r-mcq-09-1', q, b: 6, ev: { p: 0, s: 'the number of cyclists has doubled' }, why: 'Số người đi xe đạp tăng gấp đôi.',
+      opts: opts.map((t, i) => ({ k: 'ABCD'[i]!, t })), ans: 'A', wrong: { B: 'Không được nhắc trong bài.', C: 'Không được nhắc trong bài.', D: 'Không được nhắc trong bài.' } }],
+  });
+  const bad = checkGroup(g('According to the text, the number of cyclists', ['has doubled.', 'Has fallen.', 'has stayed the same.', 'has tripled.']), list).map(i => i.msg).join(' | ');
+  assert.match(bad, /bỏ lửng/);
+  const ok = checkGroup(g('What does the text say about cyclists?', ['Their number has doubled.', 'Their number has fallen.', 'It stayed the same.', 'It has tripled.']), list).map(i => i.msg);
+  assert.ok(!ok.some(m => /bỏ lửng/.test(m)));
+  const names = checkGroup(g('The council says that', ['it will study the problem.', 'Malcolm McLean was right.', 'drivers are wrong.', 'lanes are cheap.']), list).map(i => i.msg);
+  assert.ok(!names.some(m => /bỏ lửng/.test(m)));   // tên riêng (hai từ viết hoa liền nhau) được phép
 });
