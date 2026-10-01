@@ -42,7 +42,7 @@
           },
           {
             "k": "C",
-            "t": "The bicycles became too expensive."
+            "t": "The bicycles in the shops became too expensive."
           },
           {
             "k": "D",
@@ -68,7 +68,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "They were paid for by local shops."
+            "t": "They were paid for by shops in the town centre."
           },
           {
             "k": "B",
@@ -251,7 +251,7 @@
           },
           {
             "k": "D",
-            "t": "were asked to by local museums."
+            "t": "had been asked to by the local museums."
           }
         ],
         "ans": "B",
@@ -278,7 +278,7 @@
           },
           {
             "k": "B",
-            "t": "Hives on roofs may be dangerous for people."
+            "t": "Hives on roofs may be dangerous for people below."
           },
           {
             "k": "C",
@@ -346,7 +346,7 @@
           },
           {
             "k": "B",
-            "t": "the number of hives had started to fall."
+            "t": "the number of hives in the city had started to fall."
           },
           {
             "k": "C",
@@ -389,7 +389,7 @@
           },
           {
             "k": "D",
-            "t": "Moving hives from roofs to gardens."
+            "t": "Moving hives from the roofs of buildings into gardens."
           }
         ],
         "ans": "B",
@@ -483,7 +483,7 @@
           },
           {
             "k": "D",
-            "t": "To test whether more sleep improved memory."
+            "t": "To test whether two extra nights of sleep improved memory."
           }
         ],
         "ans": "C",
@@ -586,7 +586,7 @@
           },
           {
             "k": "D",
-            "t": "Students should sleep instead of studying."
+            "t": "Students should sleep more instead of studying late."
           }
         ],
         "ans": "C",
@@ -638,7 +638,7 @@
           },
           {
             "k": "B",
-            "t": "Ships were too small for most goods."
+            "t": "Ships were too small to carry most kinds of goods."
           },
           {
             "k": "C",
@@ -680,7 +680,7 @@
           },
           {
             "k": "D",
-            "t": "He designed the first purpose-built container ship."
+            "t": "He designed the very first purpose-built container ship."
           }
         ],
         "ans": "C",
@@ -703,7 +703,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "The goods were carried from New Jersey to Texas."
+            "t": "The goods were carried all the way from New Jersey to Texas by sea."
           },
           {
             "k": "B",
@@ -771,7 +771,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "led to the first international trade agreement."
+            "t": "led directly to the first international trade agreement."
           },
           {
             "k": "B",
@@ -873,7 +873,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "improve the accuracy of volunteers."
+            "t": "improve the accuracy of the data that volunteers collect."
           },
           {
             "k": "B",
@@ -942,7 +942,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "They ask experts to check every answer."
+            "t": "They ask professional experts to check every single answer."
           },
           {
             "k": "B",
@@ -988,7 +988,7 @@
           },
           {
             "k": "D",
-            "t": "It is of lower quality than expert work."
+            "t": "It is generally of lower quality than work done by experts."
           }
         ],
         "ans": "A",
@@ -1083,7 +1083,7 @@
           },
           {
             "k": "C",
-            "t": "children find them too difficult to learn."
+            "t": "children find them much too difficult to learn at school."
           },
           {
             "k": "D",
@@ -1109,7 +1109,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "disappear from the family within a few months."
+            "t": "disappear completely from the family within a few months."
           },
           {
             "k": "B",
@@ -1147,7 +1147,7 @@
           },
           {
             "k": "B",
-            "t": "Teachers write new books in the language."
+            "t": "Teachers write new books and stories in the language."
           },
           {
             "k": "C",
@@ -1185,7 +1185,7 @@
           },
           {
             "k": "C",
-            "t": "Children who speak two languages earn more."
+            "t": "Children who speak two languages earn more money later."
           },
           {
             "k": "D",

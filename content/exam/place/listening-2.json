@@ -340,7 +340,7 @@
           },
           {
             "k": "D",
-            "t": "Use the printed journals instead"
+            "t": "Use the printed copies of the journals in the library instead"
           }
         ],
         "ans": "C",
@@ -428,7 +428,7 @@
           },
           {
             "k": "B",
-            "t": "She does not like the company."
+            "t": "She does not like the company that has offered her the job."
           },
           {
             "k": "C",
@@ -458,7 +458,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "Accept the job in Singapore"
+            "t": "Accept the job in Singapore and move there next year"
           },
           {
             "k": "B",
@@ -672,7 +672,7 @@
           },
           {
             "k": "C",
-            "t": "The courses were too expensive."
+            "t": "The courses cost more than they had expected to pay."
           },
           {
             "k": "D",
@@ -710,7 +710,7 @@
           },
           {
             "k": "D",
-            "t": "Most learners intend to finish their courses."
+            "t": "Most learners intend to finish their courses from the start."
           }
         ],
         "ans": "C",
@@ -779,7 +779,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "Smells are processed more slowly than sounds."
+            "t": "Smells are processed more slowly by the brain than sounds and images are."
           },
           {
             "k": "B",
@@ -825,7 +825,7 @@
           },
           {
             "k": "D",
-            "t": "They cannot be checked against records."
+            "t": "They cannot be checked against any written records or photos."
           }
         ],
         "ans": "C",
@@ -899,7 +899,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "They became much longer on all routes."
+            "t": "They became much longer on all routes and stayed that way."
           },
           {
             "k": "B",
@@ -941,7 +941,7 @@
           },
           {
             "k": "C",
-            "t": "The planner ignored the critics' concerns."
+            "t": "The planner ignored the critics' concerns completely from the beginning."
           },
           {
             "k": "D",
@@ -1017,7 +1017,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "To show they are the most reliable historical source"
+            "t": "To show that they are the most reliable source that historians can use"
           },
           {
             "k": "B",
@@ -1059,7 +1059,7 @@
           },
           {
             "k": "C",
-            "t": "Without evidence, history cannot be studied."
+            "t": "Without written evidence, the history of a period cannot be studied at all."
           },
           {
             "k": "D",
@@ -1260,7 +1260,7 @@
           },
           {
             "k": "C",
-            "t": "The sales team needs more space."
+            "t": "The sales team needs more space for its growing number of staff."
           },
           {
             "k": "D",

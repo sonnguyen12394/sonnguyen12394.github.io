@@ -1,0 +1,25 @@
+{
+  "id": "l-map",
+  "lesson": [
+    "Đề cho bản đồ hoặc sơ đồ mặt bằng có các vị trí đánh chữ A, B, C… và danh sách tên địa điểm. Người nói mô tả đường đi hoặc vị trí; bạn chọn chữ cái cho từng địa điểm.",
+    "Thường là Phần 2. Các địa điểm được hỏi theo thứ tự lời nói. Mốc có sẵn trên bản đồ (lối vào, bãi đỗ xe, hồ) là điểm xuất phát của mô tả.",
+    "Cần nắm chắc từ chỉ vị trí và hướng: opposite, next to, behind, in the corner, on your left, at the end of, beyond, go past, turn right."
+  ],
+  "steps": [
+    "Xem bản đồ trước: tìm lối vào, hướng (bắc/nam), các mốc đã có tên.",
+    "Đặt mình ở vị trí người nói ('as you come in through the main gate…') và xoay bản đồ trong đầu nếu cần.",
+    "Lần theo từng chỉ dẫn bằng ngón tay/bút chì trên bản đồ.",
+    "Chọn chữ cái khớp với vị trí cuối cùng được mô tả."
+  ],
+  "tips": [
+    "'on your left/right' tính theo hướng người đi, không theo trang giấy.",
+    "'opposite' = đối diện qua đường/lối đi; 'next to' = ngay bên cạnh.",
+    "Mỗi địa điểm thường chỉ có một chữ cái; gạch bỏ chữ đã dùng."
+  ],
+  "traps": [
+    "Nhầm trái/phải khi người nói đi ngược hướng trang giấy.",
+    "Chọn vị trí người nói nhắc rồi sửa ('it used to be there, but now…').",
+    "Bỏ qua một bước chỉ đường nên lệch cả các câu sau."
+  ],
+  "time": "khoảng 30–40 giây xem trước bản đồ"
+}

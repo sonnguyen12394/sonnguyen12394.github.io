@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { checkGroup, checkKeyBalance, levelReport } from '../../src/content/check.ts';
+import { checkGroup, checkKeyBalance, levelReport, suggestVariants } from '../../src/content/check.ts';
 import { levelOf, tokens, candidates } from '../../src/content/lemma.ts';
 import type { Group } from '../../src/exam/content.ts';
 
@@ -98,4 +98,16 @@ test('checkKeyBalance: chặn khi đáp án dồn về một vị trí, cho qua 
   assert.deepEqual(checkKeyBalance([mk(['A', 'B', 'C', 'D', 'B', 'A', 'D', 'C', 'C', 'D', 'A', 'B'])]), []);
   assert.equal(checkKeyBalance([mk(['B,D', 'B,D', 'A,C', 'B,D', 'C,E', 'A,B'], true)]).length, 1);
   assert.deepEqual(checkKeyBalance([mk(['B,D', 'A,E', 'A,C', 'B,C', 'C,E', 'A,B'], true)]), []);
+});
+
+test('suggestVariants: gợi ý từ bổ nghĩa đứng trước đáp án, bỏ qua mạo từ/động từ/đã chấp nhận', () => {
+  const g = (q: string, accept: string[], line: string, limit = 3): Group => ({
+    id: 'l-short-01', kind: 'listening', exams: ['ielts-ac'], qtype: 'l-short', level: 'B1', band: 5, mode: 'practice', title: 'T', instr: 'Answer.',
+    script: [{ sp: 'A', t: line }], items: [{ id: 'x1', q, ans: { accept }, limit, b: 5, ev: { p: 0, s: line.slice(0, 5) }, why: 'vì vậy' }],
+  });
+  assert.match(suggestVariants([g('Where?', ['red barn'], 'It starts from the big red barn today.')])[0]!.msg, /big red barn/);
+  assert.equal(suggestVariants([g('Where?', ['red barn', 'big red barn'], 'It starts from the big red barn.')]).length, 0);
+  assert.equal(suggestVariants([g('What?', ['silver'], "so I'll take silver.")]).length, 0);           // động từ
+  assert.equal(suggestVariants([g('When?', ['spring'], 'We came in the spring.')]).length, 0);           // mạo từ
+  assert.equal(suggestVariants([g('What?', ['meal voucher'], 'You get a free meal voucher.', 2)]).length, 0); // vượt giới hạn
 });

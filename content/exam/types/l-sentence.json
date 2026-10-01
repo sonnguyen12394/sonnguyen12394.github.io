@@ -1,0 +1,25 @@
+{
+  "id": "l-sentence",
+  "lesson": [
+    "Đề cho các câu hoặc một đoạn tóm tắt có chỗ trống, đã diễn đạt lại nội dung bài nghe. Bạn điền từ NGHE ĐƯỢC, không quá số từ cho phép.",
+    "Thường gặp ở Phần 3–4 (thảo luận, bài giảng). Câu trong đề không giống hệt lời nói, nên phải nghe ý chứ không chờ đúng từ khoá.",
+    "Từ cần điền đúng ngữ pháp với câu: thường là danh từ, đôi khi tính từ hoặc động từ."
+  ],
+  "steps": [
+    "Đọc trước các câu, gạch chân từ khoá và đoán loại từ cần điền.",
+    "Nghĩ trước cách diễn đạt khác của từ khoá (decline → fall, drop).",
+    "Khi nghe, bám theo thứ tự câu; nếu lỡ một câu, chuyển ngay sang câu tiếp.",
+    "Viết đúng từ nghe được, rồi kiểm tra ngữ pháp và số từ."
+  ],
+  "tips": [
+    "Từ khoá trong câu thường được nói ngay TRƯỚC đáp án.",
+    "Nghe cả các từ chỉ mức độ, phủ định (not, only, rarely): chúng quyết định từ nào khớp.",
+    "Danh từ số nhiều: nghe kỹ âm -s cuối."
+  ],
+  "traps": [
+    "Điền từ đồng nghĩa của mình thay vì từ nghe được.",
+    "Điền từ nghe đầu tiên mà không đợi người nói chốt ý.",
+    "Viết quá số từ vì chép cả cụm."
+  ],
+  "time": "khoảng 30 giây xem trước mỗi nhóm câu"
+}

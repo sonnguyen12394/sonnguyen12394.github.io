@@ -308,6 +308,8 @@ pre{margin:0;background:var(--surface-2);border:1px solid var(--line);border-rad
 .quest.done span.t{color:var(--muted);text-decoration:line-through}
 .warnt{color:var(--warn);font-weight:600}
 .btn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+/* Nút chính đang bật giữ màu nút chính: nền nhạt + chữ trắng (accent-ink) không đủ tương phản (WCAG 1.4.3) */
+.btn.primary[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;z-index:20;max-width:calc(100% - 32px)}
 
 /* ---- Chơi mà học ---- */
@@ -657,4 +659,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="app.js?v=40" defer></script>
+<script src="app.js?v=41" defer></script>

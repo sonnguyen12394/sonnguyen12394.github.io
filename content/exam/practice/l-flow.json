@@ -1,0 +1,998 @@
+[
+  {
+    "id": "l-flow-01",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-flow",
+    "level": "B1",
+    "band": 5,
+    "mode": "practice",
+    "title": "How to Borrow a Library E-book",
+    "instr": "Complete the flow-chart below. Write NO MORE THAN TWO WORDS for each answer.",
+    "script": [
+      {
+        "sp": "Librarian",
+        "t": "A lot of people have been asking how to borrow e-books from the library, so I'll go through it step by step."
+      },
+      {
+        "sp": "Librarian",
+        "t": "First, you need a library card. If you don't have one, you can get one free at the front desk; just bring something with your address on it, such as a bank letter."
+      },
+      {
+        "sp": "Librarian",
+        "t": "Next, download our app onto your phone or tablet. When you open it for the first time, it will ask for your card number and a PIN. The PIN is the last four digits of your phone number, unless you've changed it."
+      },
+      {
+        "sp": "Librarian",
+        "t": "Then search for the book you want. If it's available, just press 'borrow'. If someone else has it, you can join the waiting list, and you'll get an email when it's your turn."
+      },
+      {
+        "sp": "Librarian",
+        "t": "You can keep each e-book for three weeks. After that, it disappears from your device automatically, so you never have to worry about late fees."
+      }
+    ],
+    "voices": {
+      "Librarian": "bf_isabella"
+    },
+    "vi": [
+      "Nhiều người hỏi cách mượn sách điện tử của thư viện, nên tôi sẽ hướng dẫn từng bước.",
+      "Đầu tiên, bạn cần thẻ thư viện. Nếu chưa có, bạn có thể làm miễn phí ở quầy lễ tân; chỉ cần mang một giấy tờ có địa chỉ của bạn, như thư ngân hàng.",
+      "Tiếp theo, tải ứng dụng của chúng tôi về điện thoại hoặc máy tính bảng. Lần đầu mở, nó sẽ hỏi số thẻ và mã PIN. Mã PIN là bốn số cuối số điện thoại của bạn, trừ khi bạn đã đổi.",
+      "Sau đó tìm cuốn sách bạn muốn. Nếu còn, chỉ cần bấm 'mượn'. Nếu người khác đang mượn, bạn có thể vào danh sách chờ và sẽ nhận email khi đến lượt.",
+      "Bạn được giữ mỗi sách điện tử ba tuần. Sau đó, sách tự biến mất khỏi thiết bị, nên bạn không bao giờ phải lo phí trả muộn."
+    ],
+    "allow": [
+      "e-book",
+      "e-books",
+      "PIN",
+      "tablet",
+      "automatically",
+      "fees"
+    ],
+    "items": [
+      {
+        "id": "l-flow-01-1",
+        "q": "Get a library card at the ___ (bring proof of address)",
+        "ans": {
+          "accept": [
+            "front desk"
+          ]
+        },
+        "limit": 2,
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "you can get one free at the front desk"
+        },
+        "why": "Làm thẻ ở quầy lễ tân (front desk).",
+        "wrong": {
+          "bank": "Thư ngân hàng chỉ là giấy tờ chứng minh địa chỉ."
+        }
+      },
+      {
+        "id": "l-flow-01-2",
+        "q": "Download the ___ to a phone or tablet",
+        "ans": {
+          "accept": [
+            "app"
+          ]
+        },
+        "limit": 2,
+        "b": 5,
+        "ev": {
+          "p": 2,
+          "s": "download our app onto your phone or tablet"
+        },
+        "why": "Tải ứng dụng (app).",
+        "wrong": {
+          "e-book": "Sách là thứ mượn sau."
+        }
+      },
+      {
+        "id": "l-flow-01-3",
+        "q": "Log in with card number and ___",
+        "ans": {
+          "accept": [
+            "PIN",
+            "a PIN"
+          ]
+        },
+        "limit": 2,
+        "b": 5,
+        "ev": {
+          "p": 2,
+          "s": "it will ask for your card number and a PIN"
+        },
+        "why": "Đăng nhập bằng số thẻ và mã PIN.",
+        "wrong": {
+          "phone number": "Mã PIN lấy từ số điện thoại nhưng thứ cần nhập là PIN."
+        }
+      },
+      {
+        "id": "l-flow-01-4",
+        "q": "If the book is not available, join the ___",
+        "ans": {
+          "accept": [
+            "waiting list"
+          ]
+        },
+        "limit": 2,
+        "b": 5.5,
+        "ev": {
+          "p": 3,
+          "s": "you can join the waiting list"
+        },
+        "why": "Vào danh sách chờ (waiting list).",
+        "wrong": {
+          "email": "Email là thông báo khi đến lượt."
+        }
+      },
+      {
+        "id": "l-flow-01-5",
+        "q": "Keep for ___; the book then disappears automatically",
+        "ans": {
+          "accept": [
+            "three weeks",
+            "3 weeks"
+          ]
+        },
+        "limit": 2,
+        "b": 5,
+        "ev": {
+          "p": 4,
+          "s": "You can keep each e-book for three weeks."
+        },
+        "why": "Giữ ba tuần (three weeks).",
+        "wrong": {
+          "late fees": "Bài nói không có phí trả muộn."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/l-flow-01.mp3",
+      "dur": 43.6,
+      "voices": [
+        "bf_isabella"
+      ],
+      "slow": "a/l-flow-01.slow.mp3"
+    }
+  },
+  {
+    "id": "l-flow-02",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-flow",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Making Paper from Recycled Material",
+    "instr": "Complete the flow-chart below. Write NO MORE THAN ONE WORD for each answer.",
+    "script": [
+      {
+        "sp": "Teacher",
+        "t": "Today we're going to make our own paper from old newspapers. Let me explain the process before you start."
+      },
+      {
+        "sp": "Teacher",
+        "t": "First, tear the newspaper into small pieces, about the size of a stamp, and put them in a bucket of warm water. Leave them to soak overnight so that the fibres soften."
+      },
+      {
+        "sp": "Teacher",
+        "t": "The next morning, put the wet paper into a blender with more water and mix it until it becomes a thick, grey liquid. This is called pulp."
+      },
+      {
+        "sp": "Teacher",
+        "t": "Pour the pulp into a shallow tray and stir it gently with your hand so that the fibres spread evenly. Then slide a wooden frame covered with a fine metal screen under the pulp and lift it out slowly, so that a thin layer of fibres stays on the screen."
+      },
+      {
+        "sp": "Teacher",
+        "t": "Turn the frame over onto a piece of cloth and press it firmly with a sponge to remove as much water as possible. Finally, leave the sheet to dry. In warm weather, this takes about a day. Some people iron the sheet to make it flatter, but please don't do that in class."
+      }
+    ],
+    "voices": {
+      "Teacher": "bm_george"
+    },
+    "vi": [
+      "Hôm nay chúng ta sẽ tự làm giấy từ báo cũ. Thầy giải thích quy trình trước khi các em bắt đầu.",
+      "Đầu tiên, xé báo thành mẩu nhỏ, cỡ con tem, rồi cho vào một xô nước ấm. Để ngâm qua đêm cho sợi giấy mềm ra.",
+      "Sáng hôm sau, cho giấy ướt vào máy xay cùng thêm nước và xay đến khi thành chất lỏng sệt màu xám. Thứ này gọi là bột giấy.",
+      "Đổ bột giấy vào một khay nông và khuấy nhẹ bằng tay để sợi giấy dàn đều. Rồi luồn một khung gỗ căng lưới kim loại mịn xuống dưới bột giấy và nhấc lên từ từ, để một lớp sợi mỏng đọng lại trên lưới.",
+      "Úp khung lên một miếng vải và ép mạnh bằng bọt biển để vắt càng nhiều nước càng tốt. Cuối cùng, để tờ giấy khô. Trời ấm thì mất khoảng một ngày. Có người là tờ giấy cho phẳng hơn, nhưng xin đừng làm vậy trong lớp."
+    ],
+    "allow": [
+      "fibres",
+      "soak",
+      "blender",
+      "pulp",
+      "shallow",
+      "tray",
+      "sponge",
+      "iron"
+    ],
+    "items": [
+      {
+        "id": "l-flow-02-1",
+        "q": "Tear newspaper into small pieces and soak in warm water ___",
+        "ans": {
+          "accept": [
+            "overnight"
+          ]
+        },
+        "limit": 1,
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "Leave them to soak overnight so that the fibres soften."
+        },
+        "why": "Ngâm qua đêm (overnight).",
+        "wrong": {
+          "bucket": "Xô là đồ đựng, không phải thời gian ngâm."
+        }
+      },
+      {
+        "id": "l-flow-02-2",
+        "q": "Mix in a ___ to make pulp",
+        "ans": {
+          "accept": [
+            "blender"
+          ]
+        },
+        "limit": 1,
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "put the wet paper into a blender with more water"
+        },
+        "why": "Xay trong máy xay (blender).",
+        "wrong": {
+          "bucket": "Xô dùng để ngâm."
+        }
+      },
+      {
+        "id": "l-flow-02-3",
+        "q": "Pour pulp into a shallow ___",
+        "ans": {
+          "accept": [
+            "tray"
+          ]
+        },
+        "limit": 1,
+        "b": 6,
+        "ev": {
+          "p": 3,
+          "s": "Pour the pulp into a shallow tray and stir it gently"
+        },
+        "why": "Đổ bột giấy vào khay nông (tray).",
+        "wrong": {
+          "frame": "Khung được luồn xuống sau đó."
+        }
+      },
+      {
+        "id": "l-flow-02-4",
+        "q": "Lift out a layer of fibres using a frame with a metal ___",
+        "ans": {
+          "accept": [
+            "screen"
+          ]
+        },
+        "limit": 1,
+        "b": 6.5,
+        "ev": {
+          "p": 3,
+          "s": "a wooden frame covered with a fine metal screen"
+        },
+        "why": "Khung gỗ căng lưới kim loại (screen).",
+        "wrong": {
+          "cloth": "Vải dùng ở bước úp khung."
+        }
+      },
+      {
+        "id": "l-flow-02-5",
+        "q": "Press with a ___ to remove water, then leave to dry",
+        "ans": {
+          "accept": [
+            "sponge"
+          ]
+        },
+        "limit": 1,
+        "b": 6,
+        "ev": {
+          "p": 4,
+          "s": "press it firmly with a sponge"
+        },
+        "why": "Ép bằng bọt biển (sponge).",
+        "wrong": {
+          "iron": "Bàn là bị dặn là không dùng trong lớp."
+        },
+        "trap": "'iron' được nhắc nhưng bị cấm."
+      }
+    ],
+    "audio": {
+      "file": "a/l-flow-02.mp3",
+      "dur": 55.9,
+      "voices": [
+        "bm_george"
+      ],
+      "slow": "a/l-flow-02.slow.mp3"
+    }
+  },
+  {
+    "id": "l-flow-03",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-flow",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "practice",
+    "title": "Applying for a Research Grant",
+    "instr": "Complete the flow-chart below. Write NO MORE THAN TWO WORDS for each answer.",
+    "script": [
+      {
+        "sp": "Officer",
+        "t": "Several of you have asked about applying for the university's small research grants, so here's how the process works."
+      },
+      {
+        "sp": "Officer",
+        "t": "The first step is to discuss your idea with your supervisor. They'll need to sign the form to confirm that the project is realistic, so don't leave this until the last minute."
+      },
+      {
+        "sp": "Officer",
+        "t": "Then you write a proposal of no more than two pages. It must include a clear research question and a detailed budget. Applications without a budget are rejected automatically."
+      },
+      {
+        "sp": "Officer",
+        "t": "You submit the proposal online through the research office website. The deadline is the end of October, and late applications cannot be accepted."
+      },
+      {
+        "sp": "Officer",
+        "t": "After that, each proposal is read by a panel of three academics from different departments. If they think it's promising, you'll be invited to a short interview, which usually lasts about fifteen minutes."
+      },
+      {
+        "sp": "Officer",
+        "t": "Successful applicants hear the result in December, and the money is available from January."
+      }
+    ],
+    "voices": {
+      "Officer": "af_nicole"
+    },
+    "vi": [
+      "Nhiều bạn hỏi về việc xin các khoản tài trợ nghiên cứu nhỏ của trường, nên đây là quy trình.",
+      "Bước đầu tiên là bàn ý tưởng với người hướng dẫn. Họ cần ký vào đơn để xác nhận dự án khả thi, nên đừng để đến phút chót.",
+      "Sau đó bạn viết đề xuất không quá hai trang. Nó phải có câu hỏi nghiên cứu rõ ràng và dự toán chi tiết. Đơn không có dự toán sẽ bị loại tự động.",
+      "Bạn nộp đề xuất trực tuyến qua trang web của phòng nghiên cứu. Hạn chót là cuối tháng Mười, và không nhận đơn muộn.",
+      "Sau đó, mỗi đề xuất được một hội đồng ba giảng viên từ các khoa khác nhau đọc. Nếu họ thấy hứa hẹn, bạn sẽ được mời phỏng vấn ngắn, thường khoảng mười lăm phút.",
+      "Người được chọn nhận kết quả vào tháng Mười Hai, và tiền có từ tháng Một."
+    ],
+    "allow": [
+      "grant",
+      "grants",
+      "supervisor",
+      "proposal",
+      "budget",
+      "panel",
+      "academics",
+      "applicants",
+      "submit",
+      "deadline",
+      "realistic",
+      "promising"
+    ],
+    "items": [
+      {
+        "id": "l-flow-03-1",
+        "q": "Discuss idea with ___ (who must sign the form)",
+        "ans": {
+          "accept": [
+            "supervisor",
+            "your supervisor"
+          ]
+        },
+        "limit": 2,
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "The first step is to discuss your idea with your supervisor."
+        },
+        "why": "Bàn với người hướng dẫn (supervisor).",
+        "wrong": {
+          "panel": "Hội đồng đọc đề xuất ở bước sau."
+        }
+      },
+      {
+        "id": "l-flow-03-2",
+        "q": "Write a two-page proposal with a research question and a detailed ___",
+        "ans": {
+          "accept": [
+            "budget"
+          ]
+        },
+        "limit": 2,
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "It must include a clear research question and a detailed budget."
+        },
+        "why": "Đề xuất cần dự toán chi tiết (budget).",
+        "wrong": {
+          "form": "Đơn là thứ người hướng dẫn ký."
+        }
+      },
+      {
+        "id": "l-flow-03-3",
+        "q": "Submit online via the ___ website",
+        "ans": {
+          "accept": [
+            "research office"
+          ]
+        },
+        "limit": 2,
+        "b": 6.5,
+        "ev": {
+          "p": 3,
+          "s": "You submit the proposal online through the research office website."
+        },
+        "why": "Nộp qua trang web của phòng nghiên cứu (research office).",
+        "wrong": {
+          "university": "Quá chung; bài nêu rõ phòng nghiên cứu."
+        }
+      },
+      {
+        "id": "l-flow-03-4",
+        "q": "Proposal read by a ___ of three academics",
+        "ans": {
+          "accept": [
+            "panel"
+          ]
+        },
+        "limit": 2,
+        "b": 6.5,
+        "ev": {
+          "p": 4,
+          "s": "each proposal is read by a panel of three academics"
+        },
+        "why": "Một hội đồng (panel) ba giảng viên đọc.",
+        "wrong": {
+          "department": "Các khoa là nơi giảng viên đến từ."
+        }
+      },
+      {
+        "id": "l-flow-03-5",
+        "q": "Shortlisted applicants attend a short ___",
+        "ans": {
+          "accept": [
+            "interview"
+          ]
+        },
+        "limit": 2,
+        "b": 6,
+        "ev": {
+          "p": 4,
+          "s": "you'll be invited to a short interview"
+        },
+        "why": "Được mời phỏng vấn (interview) ngắn.",
+        "wrong": {
+          "December": "Tháng Mười Hai là lúc có kết quả."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/l-flow-03.mp3",
+      "dur": 64,
+      "voices": [
+        "af_nicole"
+      ],
+      "slow": "a/l-flow-03.slow.mp3"
+    }
+  },
+  {
+    "id": "l-flow-04",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-flow",
+    "level": "C1",
+    "band": 7,
+    "mode": "practice",
+    "title": "Lecture: How Chocolate Is Produced",
+    "instr": "Complete the flow-chart below. Write NO MORE THAN ONE WORD for each answer.",
+    "script": [
+      {
+        "sp": "Lecturer",
+        "t": "Let's follow cacao from the farm to the factory. Cacao pods grow directly on the trunk of the tree, and they are harvested by hand, usually with a long knife, because machines would damage the tree."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "The pods are cut open and the beans, which are covered in a white pulp, are piled up under banana leaves for about a week. This stage is called fermentation, and it's absolutely crucial: without it, the beans never develop a chocolate flavour."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Next, the beans are spread out in the sun to dry. Farmers turn them regularly with wooden rakes. Once dry, they're packed into sacks and shipped to factories, mostly in Europe and North America."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "At the factory, the beans are roasted, which deepens the flavour, and then cracked so that the shells can be removed. What's left, the inner part of the bean, is called the nib."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "The nibs are ground into a thick paste called cocoa liquor, although, confusingly, it contains no alcohol. Sugar and milk powder are then added, and the mixture is stirred for hours in a process called conching, which gives chocolate its smooth texture."
+      }
+    ],
+    "voices": {
+      "Lecturer": "bm_lewis"
+    },
+    "vi": [
+      "Hãy theo hạt cacao từ trang trại tới nhà máy. Quả cacao mọc trực tiếp trên thân cây, và được thu hoạch bằng tay, thường với một con dao dài, vì máy móc sẽ làm hại cây.",
+      "Quả được bổ ra và hạt, phủ một lớp cơm trắng, được chất đống dưới lá chuối khoảng một tuần. Giai đoạn này gọi là lên men, và cực kỳ quan trọng: không có nó, hạt không bao giờ có hương sô-cô-la.",
+      "Tiếp theo, hạt được trải ra phơi nắng. Nông dân đảo hạt thường xuyên bằng cào gỗ. Khi khô, hạt được đóng bao và chở tới các nhà máy, phần lớn ở châu Âu và Bắc Mỹ.",
+      "Ở nhà máy, hạt được rang để hương đậm hơn, rồi đập vỡ để bỏ vỏ. Phần còn lại, phần lõi của hạt, gọi là nhân cacao.",
+      "Nhân được nghiền thành bột nhão đặc gọi là cocoa liquor, dù gây nhầm lẫn, nó không chứa cồn. Sau đó thêm đường và sữa bột, và hỗn hợp được khuấy hàng giờ trong quy trình gọi là conching, tạo độ mịn cho sô-cô-la."
+    ],
+    "allow": [
+      "cacao",
+      "pods",
+      "harvested",
+      "pulp",
+      "fermentation",
+      "rakes",
+      "sacks",
+      "roasted",
+      "nib",
+      "nibs",
+      "cocoa",
+      "liquor",
+      "conching",
+      "texture",
+      "crucial",
+      "confusingly",
+      "trunk"
+    ],
+    "items": [
+      {
+        "id": "l-flow-04-1",
+        "q": "Pods are harvested by hand with a ___",
+        "ans": {
+          "accept": [
+            "knife"
+          ]
+        },
+        "limit": 1,
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "they are harvested by hand, usually with a long knife"
+        },
+        "why": "Thu hoạch bằng dao (knife).",
+        "wrong": {
+          "machines": "Máy móc bị tránh vì làm hại cây."
+        }
+      },
+      {
+        "id": "l-flow-04-2",
+        "q": "Beans are covered with banana leaves for a week (___)",
+        "ans": {
+          "accept": [
+            "fermentation"
+          ]
+        },
+        "limit": 1,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "This stage is called fermentation"
+        },
+        "why": "Giai đoạn này gọi là lên men (fermentation).",
+        "wrong": {
+          "pulp": "Cơm trắng là lớp bọc hạt."
+        }
+      },
+      {
+        "id": "l-flow-04-3",
+        "q": "Beans are dried in the sun and turned with wooden ___",
+        "ans": {
+          "accept": [
+            "rakes"
+          ]
+        },
+        "limit": 1,
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "Farmers turn them regularly with wooden rakes."
+        },
+        "why": "Đảo bằng cào gỗ (rakes).",
+        "wrong": {
+          "sacks": "Bao dùng để đóng gói sau khi khô."
+        }
+      },
+      {
+        "id": "l-flow-04-4",
+        "q": "At the factory, beans are roasted and cracked; ___ are removed",
+        "ans": {
+          "accept": [
+            "shells"
+          ]
+        },
+        "limit": 1,
+        "b": 7,
+        "ev": {
+          "p": 3,
+          "s": "cracked so that the shells can be removed"
+        },
+        "why": "Đập vỡ để bỏ vỏ (shells).",
+        "wrong": {
+          "nibs": "Nhân là phần giữ lại."
+        }
+      },
+      {
+        "id": "l-flow-04-5",
+        "q": "Mixture is stirred for hours (conching) to make it ___",
+        "ans": {
+          "accept": [
+            "smooth"
+          ]
+        },
+        "limit": 1,
+        "b": 7.5,
+        "ev": {
+          "p": 4,
+          "s": "which gives chocolate its smooth texture"
+        },
+        "why": "Conching làm sô-cô-la mịn (smooth).",
+        "wrong": {
+          "sweet": "Đường làm ngọt, nhưng mục đích của khuấy là độ mịn."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/l-flow-04.mp3",
+      "dur": 60.4,
+      "voices": [
+        "bm_lewis"
+      ],
+      "slow": "a/l-flow-04.slow.mp3"
+    }
+  },
+  {
+    "id": "l-flow-05",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-flow",
+    "level": "C1",
+    "band": 7.5,
+    "mode": "practice",
+    "title": "Seminar: Reviewing an Academic Article",
+    "instr": "Complete the flow-chart below. Write NO MORE THAN TWO WORDS for each answer.",
+    "script": [
+      {
+        "sp": "Tutor",
+        "t": "Several of you have asked how journals decide whether to publish an article, so let me outline the peer review process."
+      },
+      {
+        "sp": "Tutor",
+        "t": "When an author submits an article, it first goes to the editor, who decides whether it fits the journal's subject area. A surprising number are rejected at this stage, without being sent to reviewers at all."
+      },
+      {
+        "sp": "Tutor",
+        "t": "If the editor thinks it's suitable, the article is sent to two or three experts in the field. In most journals, the reviewers don't know who wrote the article, and the author doesn't know who the reviewers are. This is called double-blind review."
+      },
+      {
+        "sp": "Tutor",
+        "t": "The reviewers write reports recommending whether the article should be accepted, revised or rejected. It's very rare for an article to be accepted with no changes at all; the usual outcome is a request for revisions."
+      },
+      {
+        "sp": "Tutor",
+        "t": "The author then has to respond to each comment, explaining what they've changed. This can go back and forth several times. Once the editor is satisfied, the article goes to a copy editor, who checks the language and formatting before publication."
+      }
+    ],
+    "voices": {
+      "Tutor": "af_sarah"
+    },
+    "vi": [
+      "Nhiều em hỏi các tạp chí quyết định đăng một bài như thế nào, nên tôi sẽ phác hoạ quy trình bình duyệt.",
+      "Khi tác giả nộp bài, bài đến tay biên tập viên trước, người quyết định nó có hợp lĩnh vực của tạp chí không. Số bài bị loại ở bước này nhiều đến bất ngờ, không hề được gửi cho người bình duyệt.",
+      "Nếu biên tập viên thấy phù hợp, bài được gửi cho hai hoặc ba chuyên gia trong ngành. Ở phần lớn tạp chí, người bình duyệt không biết ai viết bài, và tác giả không biết người bình duyệt là ai. Gọi là bình duyệt ẩn danh hai chiều.",
+      "Người bình duyệt viết báo cáo đề xuất bài nên được chấp nhận, sửa hay từ chối. Rất hiếm khi bài được chấp nhận mà không sửa gì; kết quả thường gặp là yêu cầu chỉnh sửa.",
+      "Tác giả sau đó phải trả lời từng nhận xét, giải thích đã sửa gì. Việc này có thể qua lại nhiều lần. Khi biên tập viên hài lòng, bài chuyển cho biên tập viên bản thảo, người kiểm tra ngôn ngữ và định dạng trước khi xuất bản."
+    ],
+    "allow": [
+      "peer",
+      "journal",
+      "journals",
+      "reviewers",
+      "double-blind",
+      "revisions",
+      "revised",
+      "formatting",
+      "editor",
+      "publication"
+    ],
+    "items": [
+      {
+        "id": "l-flow-05-1",
+        "q": "Editor checks whether the article fits the journal's ___",
+        "ans": {
+          "accept": [
+            "subject area"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "who decides whether it fits the journal's subject area"
+        },
+        "why": "Biên tập viên xem bài có hợp lĩnh vực (subject area).",
+        "wrong": {
+          "language": "Ngôn ngữ được kiểm ở bước cuối."
+        }
+      },
+      {
+        "id": "l-flow-05-2",
+        "q": "Sent to experts; identities hidden on both sides (___ review)",
+        "ans": {
+          "accept": [
+            "double-blind",
+            "double blind"
+          ]
+        },
+        "limit": 2,
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "This is called double-blind review."
+        },
+        "why": "Gọi là bình duyệt ẩn danh hai chiều (double-blind).",
+        "wrong": {
+          "peer": "Bình duyệt (peer review) là tên chung của cả quy trình."
+        }
+      },
+      {
+        "id": "l-flow-05-3",
+        "q": "Reviewers write ___ with a recommendation",
+        "ans": {
+          "accept": [
+            "reports"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 3,
+          "s": "The reviewers write reports recommending whether the article should be accepted"
+        },
+        "why": "Người bình duyệt viết báo cáo (reports).",
+        "wrong": {
+          "comments": "Nhận xét là thứ tác giả phải trả lời."
+        }
+      },
+      {
+        "id": "l-flow-05-4",
+        "q": "Most common outcome: a request for ___",
+        "ans": {
+          "accept": [
+            "revisions"
+          ]
+        },
+        "limit": 2,
+        "b": 7.5,
+        "ev": {
+          "p": 3,
+          "s": "the usual outcome is a request for revisions"
+        },
+        "why": "Kết quả thường gặp là yêu cầu chỉnh sửa (revisions).",
+        "wrong": {
+          "acceptance": "Được chấp nhận ngay là rất hiếm."
+        }
+      },
+      {
+        "id": "l-flow-05-5",
+        "q": "Finally, a ___ checks language and formatting",
+        "ans": {
+          "accept": [
+            "copy editor"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 4,
+          "s": "the article goes to a copy editor"
+        },
+        "why": "Biên tập viên bản thảo (copy editor) kiểm ngôn ngữ, định dạng.",
+        "wrong": {
+          "editor": "Biên tập viên chính quyết định ở các bước trước; bước cuối là copy editor."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/l-flow-05.mp3",
+      "dur": 56.5,
+      "voices": [
+        "af_sarah"
+      ],
+      "slow": "a/l-flow-05.slow.mp3"
+    }
+  },
+  {
+    "id": "l-flow-06",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-flow",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Getting a Visitor Parking Permit",
+    "instr": "Complete the flow-chart below. Write NO MORE THAN TWO WORDS for each answer.",
+    "script": [
+      {
+        "sp": "Officer",
+        "t": "If friends or family are coming to stay with you, here's how to get a visitor parking permit for our area."
+      },
+      {
+        "sp": "Officer",
+        "t": "First, check that your street is in a permit zone. You can see this on the council's map, or look for the blue signs at the end of the street."
+      },
+      {
+        "sp": "Officer",
+        "t": "If it is, log in to your resident account on the council website. You'll need your account number, which is printed on your council tax bill."
+      },
+      {
+        "sp": "Officer",
+        "t": "Choose how many days your visitor needs. Each resident can buy up to sixty days a year, and each day costs two pounds."
+      },
+      {
+        "sp": "Officer",
+        "t": "Then enter the registration number of your visitor's car. Please check it carefully, because if it's wrong, the parking officers won't be able to match the car to the permit and your visitor may get a fine."
+      },
+      {
+        "sp": "Officer",
+        "t": "There's no paper permit any more. Once you've paid, you'll receive a confirmation by text message, and that's all you need."
+      }
+    ],
+    "voices": {
+      "Officer": "bm_george"
+    },
+    "vi": [
+      "Nếu bạn bè hay người thân đến ở với bạn, đây là cách xin giấy phép đỗ xe cho khách trong khu vực của chúng tôi.",
+      "Đầu tiên, kiểm tra xem phố nhà bạn có nằm trong khu cần giấy phép không. Bạn có thể xem trên bản đồ của hội đồng thành phố, hoặc tìm biển xanh ở đầu phố.",
+      "Nếu có, đăng nhập vào tài khoản cư dân trên trang web của hội đồng. Bạn cần số tài khoản, in trên hoá đơn thuế nhà đất.",
+      "Chọn số ngày khách cần. Mỗi cư dân được mua tối đa sáu mươi ngày một năm, và mỗi ngày giá hai bảng.",
+      "Sau đó nhập số đăng ký (biển số) xe của khách. Hãy kiểm tra kỹ, vì nếu sai, nhân viên kiểm soát đỗ xe sẽ không đối chiếu được xe với giấy phép và khách của bạn có thể bị phạt.",
+      "Không còn giấy phép bằng giấy nữa. Khi đã trả tiền, bạn sẽ nhận xác nhận qua tin nhắn, và chỉ cần vậy."
+    ],
+    "allow": [
+      "permit",
+      "council",
+      "registration",
+      "resident",
+      "confirmation"
+    ],
+    "items": [
+      {
+        "id": "l-flow-06-1",
+        "q": "Check the street is in a permit zone (council map or blue ___)",
+        "ans": {
+          "accept": [
+            "signs"
+          ]
+        },
+        "limit": 2,
+        "b": 5.5,
+        "ev": {
+          "p": 1,
+          "s": "look for the blue signs at the end of the street"
+        },
+        "why": "Xem biển xanh (signs) ở đầu phố.",
+        "wrong": {
+          "map": "Bản đồ là cách thứ nhất; câu cần thứ màu xanh."
+        }
+      },
+      {
+        "id": "l-flow-06-2",
+        "q": "Log in using the account number from your council ___",
+        "ans": {
+          "accept": [
+            "tax bill"
+          ]
+        },
+        "limit": 2,
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "which is printed on your council tax bill"
+        },
+        "why": "Số tài khoản in trên hoá đơn thuế (tax bill).",
+        "wrong": {
+          "website": "Trang web là nơi đăng nhập."
+        }
+      },
+      {
+        "id": "l-flow-06-3",
+        "q": "Choose number of days: maximum ___ per year",
+        "ans": {
+          "accept": [
+            "sixty days",
+            "60 days",
+            "sixty",
+            "60"
+          ]
+        },
+        "limit": 2,
+        "b": 6,
+        "ev": {
+          "p": 3,
+          "s": "Each resident can buy up to sixty days a year"
+        },
+        "why": "Tối đa sáu mươi ngày (sixty days) mỗi năm.",
+        "wrong": {
+          "two pounds": "Hai bảng là giá mỗi ngày."
+        }
+      },
+      {
+        "id": "l-flow-06-4",
+        "q": "Enter the car's ___ carefully",
+        "ans": {
+          "accept": [
+            "registration number",
+            "registration"
+          ]
+        },
+        "limit": 2,
+        "b": 6,
+        "ev": {
+          "p": 4,
+          "s": "Then enter the registration number of your visitor's car."
+        },
+        "why": "Nhập biển số xe (registration).",
+        "wrong": {
+          "fine": "Tiền phạt là hậu quả nếu nhập sai."
+        }
+      },
+      {
+        "id": "l-flow-06-5",
+        "q": "Receive confirmation by ___",
+        "ans": {
+          "accept": [
+            "text message",
+            "text"
+          ]
+        },
+        "limit": 2,
+        "b": 5.5,
+        "ev": {
+          "p": 5,
+          "s": "you'll receive a confirmation by text message"
+        },
+        "why": "Nhận xác nhận qua tin nhắn (text message).",
+        "wrong": {
+          "paper permit": "Không còn giấy phép bằng giấy."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/l-flow-06.mp3",
+      "dur": 48.1,
+      "voices": [
+        "bm_george"
+      ],
+      "slow": "a/l-flow-06.slow.mp3"
+    }
+  }
+]

@@ -199,11 +199,11 @@
           },
           {
             "k": "C",
-            "t": "On Friday morning"
+            "t": "On Friday after school"
           },
           {
             "k": "D",
-            "t": "On Saturday"
+            "t": "On Saturday morning"
           }
         ],
         "ans": "B",
@@ -426,7 +426,7 @@
           },
           {
             "k": "D",
-            "t": "Classes only"
+            "t": "Membership for classes only"
           }
         ],
         "ans": "B",
@@ -654,7 +654,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "It is too expensive."
+            "t": "It costs more than she wants to pay."
           },
           {
             "k": "B",
@@ -666,7 +666,7 @@
           },
           {
             "k": "D",
-            "t": "It is full."
+            "t": "There are no places left on it."
           }
         ],
         "ans": "B",
@@ -781,7 +781,7 @@
           },
           {
             "k": "D",
-            "t": "At the weekend"
+            "t": "At some point at the weekend"
           }
         ],
         "ans": "C",
@@ -902,11 +902,11 @@
           },
           {
             "k": "C",
-            "t": "The bus company would not allow it."
+            "t": "The bus company would not give them permission."
           },
           {
             "k": "D",
-            "t": "People would not want to talk."
+            "t": "People at the station would not want to talk to them."
           }
         ],
         "ans": "B",
@@ -940,7 +940,7 @@
           },
           {
             "k": "D",
-            "t": "Count the number of bus users"
+            "t": "Count the number of people using the buses each day"
           }
         ],
         "ans": "C",
@@ -1030,7 +1030,7 @@
           },
           {
             "k": "D",
-            "t": "New varieties need more rain."
+            "t": "New coffee varieties need much more rain than older ones."
           }
         ],
         "ans": "A",
@@ -1300,7 +1300,7 @@
           },
           {
             "k": "B",
-            "t": "Call the bus driver"
+            "t": "Call the driver of the bus she took"
           },
           {
             "k": "C",
@@ -1427,7 +1427,7 @@
           },
           {
             "k": "D",
-            "t": "Every month"
+            "t": "Once every month"
           }
         ],
         "ans": "C",

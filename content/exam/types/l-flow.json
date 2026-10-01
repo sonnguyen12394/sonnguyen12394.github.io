@@ -1,0 +1,25 @@
+{
+  "id": "l-flow",
+  "lesson": [
+    "Đề cho sơ đồ các bước của một quy trình (làm sản phẩm, thủ tục, thí nghiệm) với chỗ trống. Bạn điền từ nghe được, không quá số từ cho phép.",
+    "Các bước đi theo thứ tự lời nói, nối bằng mũi tên. Người nói thường dùng từ chỉ trình tự: first, next, after that, once…, finally.",
+    "Thường gặp ở Phần 2 và Phần 4."
+  ],
+  "steps": [
+    "Đọc toàn bộ sơ đồ trước: nó mô tả quy trình gì, bắt đầu và kết thúc ở đâu.",
+    "Đoán loại từ cho từng chỗ trống (thường là danh từ: vật liệu, dụng cụ, nơi chốn).",
+    "Khi nghe, bám theo từ chỉ trình tự để biết đang ở bước nào.",
+    "Điền đúng từ nghe được, kiểm tra số từ."
+  ],
+  "tips": [
+    "Từ chỉ trình tự (then, after, before) là mốc để không bị lạc.",
+    "Bước có sẵn trong sơ đồ giúp định vị: nghe thấy bước đó thì bước tiếp theo là chỗ trống.",
+    "Động từ trong sơ đồ (is heated, is mixed) gợi ý danh từ cần điền."
+  ],
+  "traps": [
+    "Điền bước đứng trước hoặc sau bước được hỏi.",
+    "Bị người nói nhắc một vật liệu rồi nói 'but we no longer use it' mà vẫn điền.",
+    "Mất dấu khi người nói quay lại giải thích một bước cũ."
+  ],
+  "time": "khoảng 30 giây xem trước"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "l-form",
+  "lesson": [
+    "Thường là Phần 1 của bài thi: một cuộc hội thoại đời sống (đặt phòng, đăng ký khoá học, báo mất đồ). Bạn điền thông tin vào mẫu đơn, ghi chú hoặc bảng: tên, số điện thoại, ngày, giá, địa chỉ.",
+    "Đáp án là từ nghe được, không quá số từ cho phép, viết đúng chính tả. Tên riêng thường được ĐÁNH VẦN từng chữ cái; số điện thoại đọc từng chữ số ('oh' = 0, 'double six' = 66).",
+    "Bẫy đặc trưng: người nói nói một thông tin rồi tự sửa ('It's the 15th… no, sorry, the 16th'). Đáp án là thông tin cuối cùng."
+  ],
+  "steps": [
+    "Trong thời gian được xem trước, đọc mẫu đơn và đoán loại thông tin cho từng chỗ trống (số, ngày, tên, nghề…).",
+    "Để ý từ đứng trước chỗ trống trong mẫu đơn (Name, Postcode, Cost): người nói thường nhắc gần như nguyên văn từ đó.",
+    "Khi nghe đánh vần, viết ngay từng chữ cái; khi nghe số, viết bằng chữ số.",
+    "Nghe hết câu trước khi chốt: người nói hay sửa lại.",
+    "Cuối phần, kiểm tra chính tả, số ít/số nhiều và giới hạn từ."
+  ],
+  "tips": [
+    "Học cách đọc chữ cái tiếng Anh (đặc biệt A/E/I, G/J, B/V) và các cách đọc số: 'double', 'oh', ngày tháng 'the twenty-first of March'.",
+    "Giá tiền: viết số và đơn vị nếu đơn vị chưa có trong mẫu đơn (£15).",
+    "Thông tin trong mẫu đơn đi theo thứ tự lời nói."
+  ],
+  "traps": [
+    "Viết thông tin bị người nói sửa lại (con số đầu tiên).",
+    "Sai chính tả tên được đánh vần vì nhầm âm chữ cái (E và I, G và J).",
+    "Viết '15' khi người nói nói 'fifty' (15 và 50 dễ nhầm: nghe trọng âm ở cuối 'fif-TEEN')."
+  ],
+  "time": "khoảng 30–40 giây xem trước mỗi phần"
+}

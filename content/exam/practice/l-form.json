@@ -1,0 +1,1352 @@
+[
+  {
+    "id": "l-form-01",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-form",
+    "level": "B1",
+    "band": 5,
+    "mode": "practice",
+    "title": "Joining a Sports Centre",
+    "instr": "Complete the form below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.",
+    "script": [
+      {
+        "sp": "Receptionist",
+        "t": "Good morning, Riverside Sports Centre. How can I help you?"
+      },
+      {
+        "sp": "Daniel",
+        "t": "Hi, I'd like to join the centre, please. Can I do that over the phone?"
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Yes, of course. I'll just fill in the form for you. What's your surname?"
+      },
+      {
+        "sp": "Daniel",
+        "t": "It's Hartley. That's H-A-R-T-L-E-Y."
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Thank you. And your first name?"
+      },
+      {
+        "sp": "Daniel",
+        "t": "Daniel."
+      },
+      {
+        "sp": "Receptionist",
+        "t": "And what's your date of birth, Daniel?"
+      },
+      {
+        "sp": "Daniel",
+        "t": "The fourteenth of March, 1996."
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Great. Which type of membership would you like? We have gold, which includes the pool and all classes, or silver, which is just the gym."
+      },
+      {
+        "sp": "Daniel",
+        "t": "I was going to choose gold, but I don't really swim, so I'll take silver."
+      },
+      {
+        "sp": "Receptionist",
+        "t": "OK, silver. That's twenty-five pounds a month. Sorry, I mean twenty-two pounds. The price went down in January."
+      },
+      {
+        "sp": "Daniel",
+        "t": "Even better. Do you need anything else from me?"
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Yes, how did you hear about us?"
+      },
+      {
+        "sp": "Daniel",
+        "t": "A colleague told me about it. She comes here every week."
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Lovely. And would you like to book a free induction session with a trainer? The next one is on Thursday evening."
+      },
+      {
+        "sp": "Daniel",
+        "t": "Thursday's difficult for me. Is there anything at the weekend?"
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Yes, there's one on Saturday morning at nine."
+      },
+      {
+        "sp": "Daniel",
+        "t": "Perfect, I'll come then."
+      }
+    ],
+    "voices": {
+      "Receptionist": "bf_emma",
+      "Daniel": "bm_george"
+    },
+    "vi": [
+      "Xin chào, Trung tâm Thể thao Riverside nghe. Tôi có thể giúp gì cho anh?",
+      "Chào chị, tôi muốn đăng ký làm hội viên. Tôi đăng ký qua điện thoại được không?",
+      "Được chứ. Tôi sẽ điền phiếu giúp anh. Họ của anh là gì?",
+      "Là Hartley. Đánh vần H-A-R-T-L-E-Y.",
+      "Cảm ơn anh. Còn tên?",
+      "Daniel.",
+      "Ngày sinh của anh là ngày nào, Daniel?",
+      "Ngày mười bốn tháng Ba năm 1996.",
+      "Tốt. Anh muốn loại thẻ hội viên nào? Chúng tôi có thẻ vàng, gồm bể bơi và mọi lớp tập, hoặc thẻ bạc, chỉ phòng gym.",
+      "Tôi định chọn thẻ vàng, nhưng tôi không bơi mấy, nên tôi lấy thẻ bạc.",
+      "Vâng, thẻ bạc. Giá hai mươi lăm bảng một tháng. Xin lỗi, ý tôi là hai mươi hai bảng. Giá đã giảm từ tháng Một.",
+      "Càng tốt. Chị cần tôi cung cấp gì nữa không?",
+      "Có, anh biết đến trung tâm qua đâu?",
+      "Một đồng nghiệp kể cho tôi. Cô ấy tới đây hằng tuần.",
+      "Hay quá. Anh có muốn đặt một buổi hướng dẫn miễn phí với huấn luyện viên không? Buổi gần nhất là tối thứ Năm.",
+      "Thứ Năm tôi khó đi. Cuối tuần có buổi nào không?",
+      "Có, có một buổi sáng thứ Bảy lúc chín giờ.",
+      "Tuyệt, tôi sẽ đến buổi đó."
+    ],
+    "allow": [
+      "Hartley",
+      "induction",
+      "Riverside"
+    ],
+    "items": [
+      {
+        "id": "l-form-01-1",
+        "q": "Surname: ___",
+        "ans": {
+          "accept": [
+            "Hartley"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 3,
+          "s": "It's Hartley. That's H-A-R-T-L-E-Y."
+        },
+        "why": "Tên được đánh vần H-A-R-T-L-E-Y: Hartley.",
+        "wrong": {
+          "Hartly": "Thiếu chữ E: nghe kỹ từng chữ cái khi đánh vần."
+        },
+        "tag": "đánh vần"
+      },
+      {
+        "id": "l-form-01-2",
+        "q": "Type of membership: ___",
+        "ans": {
+          "accept": [
+            "silver"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 9,
+          "s": "I was going to choose gold, but I don't really swim, so I'll take silver."
+        },
+        "why": "Anh định chọn vàng nhưng đổi sang bạc (silver).",
+        "wrong": {
+          "gold": "Đó là lựa chọn ban đầu, bị đổi sau \"but\"."
+        },
+        "trap": "Thông tin đầu tiên (gold) bị người nói đổi."
+      },
+      {
+        "id": "l-form-01-3",
+        "q": "Monthly cost: £___",
+        "ans": {
+          "accept": [
+            "22",
+            "twenty-two"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5.5,
+        "ev": {
+          "p": 10,
+          "s": "Sorry, I mean twenty-two pounds."
+        },
+        "why": "Lễ tân nói 25 rồi sửa thành 22 bảng.",
+        "wrong": {
+          "25": "Con số bị lễ tân sửa ngay sau đó (\"Sorry, I mean…\")."
+        },
+        "trap": "Người nói tự sửa con số: đáp án là con số sau cùng."
+      },
+      {
+        "id": "l-form-01-4",
+        "q": "Heard about the centre from: a ___",
+        "ans": {
+          "accept": [
+            "colleague"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 13,
+          "s": "A colleague told me about it."
+        },
+        "why": "Một đồng nghiệp (colleague) kể cho anh.",
+        "wrong": {
+          "friend": "Không phải từ trong bài nghe."
+        }
+      },
+      {
+        "id": "l-form-01-5",
+        "q": "Induction session: ___ morning at 9",
+        "ans": {
+          "accept": [
+            "Saturday"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 16,
+          "s": "Yes, there's one on Saturday morning at nine."
+        },
+        "why": "Buổi hướng dẫn sáng thứ Bảy (Saturday).",
+        "wrong": {
+          "Thursday": "Thứ Năm anh không đi được."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/l-form-01.mp3",
+      "dur": 77.2,
+      "voices": [
+        "bf_emma",
+        "bm_george"
+      ],
+      "slow": "a/l-form-01.slow.mp3"
+    }
+  },
+  {
+    "id": "l-form-02",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-form",
+    "level": "B1",
+    "band": 5.5,
+    "mode": "practice",
+    "title": "Lost Property",
+    "instr": "Complete the form below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.",
+    "script": [
+      {
+        "sp": "Officer",
+        "t": "Lost property office, City Railways. How can I help?"
+      },
+      {
+        "sp": "Amelia",
+        "t": "Hello. I left my bag on a train yesterday and I'm hoping someone found it."
+      },
+      {
+        "sp": "Officer",
+        "t": "I'll take some details. Can I have your name?"
+      },
+      {
+        "sp": "Amelia",
+        "t": "Amelia Okoro. O-K-O-R-O."
+      },
+      {
+        "sp": "Officer",
+        "t": "Thanks. Which train were you on?"
+      },
+      {
+        "sp": "Amelia",
+        "t": "The 6.15 from Leeds to York. I got off at York and forgot the bag on the luggage rack."
+      },
+      {
+        "sp": "Officer",
+        "t": "Can you describe the bag?"
+      },
+      {
+        "sp": "Amelia",
+        "t": "It's a small backpack, dark green, with a leather strap on the front."
+      },
+      {
+        "sp": "Officer",
+        "t": "And what was inside?"
+      },
+      {
+        "sp": "Amelia",
+        "t": "A laptop, which is the most important thing, a book and an umbrella. Oh, and my glasses. No, wait, I'm wearing my glasses now. So just the laptop, the book and the umbrella."
+      },
+      {
+        "sp": "Officer",
+        "t": "OK. And what's the best number to contact you on?"
+      },
+      {
+        "sp": "Amelia",
+        "t": "My mobile is 07733 418906."
+      },
+      {
+        "sp": "Officer",
+        "t": "Let me read that back: 07733 418906."
+      },
+      {
+        "sp": "Amelia",
+        "t": "That's right."
+      },
+      {
+        "sp": "Officer",
+        "t": "And if we find it, would you like to collect it, or shall we post it to you? Posting costs eight pounds."
+      },
+      {
+        "sp": "Amelia",
+        "t": "I'll collect it. Where would I go?"
+      },
+      {
+        "sp": "Officer",
+        "t": "Our office is at York station, next to the ticket machines on platform three."
+      }
+    ],
+    "voices": {
+      "Officer": "bm_lewis",
+      "Amelia": "bf_isabella"
+    },
+    "vi": [
+      "Phòng đồ thất lạc, Đường sắt Thành phố. Tôi giúp được gì?",
+      "Xin chào. Hôm qua tôi để quên túi trên tàu và mong có ai đó nhặt được.",
+      "Tôi sẽ ghi một số thông tin. Cho tôi xin tên chị?",
+      "Amelia Okoro. O-K-O-R-O.",
+      "Cảm ơn chị. Chị đi chuyến tàu nào?",
+      "Chuyến 6 giờ 15 từ Leeds đi York. Tôi xuống ở York và quên túi trên giá hành lý.",
+      "Chị tả cái túi được không?",
+      "Đó là một ba lô nhỏ, màu xanh lá sẫm, có một quai da ở phía trước.",
+      "Bên trong có gì?",
+      "Một máy tính xách tay, đây là thứ quan trọng nhất, một cuốn sách và một cái ô. À, và kính của tôi. Khoan đã, tôi đang đeo kính đây. Vậy chỉ có máy tính, cuốn sách và cái ô.",
+      "Vâng. Số nào tiện liên lạc với chị nhất?",
+      "Số di động của tôi là 07733 418906.",
+      "Tôi đọc lại nhé: 07733 418906.",
+      "Đúng rồi.",
+      "Nếu tìm thấy, chị muốn đến lấy hay để chúng tôi gửi bưu điện? Gửi bưu điện tốn tám bảng.",
+      "Tôi sẽ đến lấy. Tôi đến đâu?",
+      "Văn phòng chúng tôi ở ga York, cạnh các máy bán vé ở sân ga số ba."
+    ],
+    "allow": [
+      "Okoro",
+      "backpack",
+      "luggage",
+      "rack",
+      "laptop"
+    ],
+    "items": [
+      {
+        "id": "l-form-02-1",
+        "q": "Name: Amelia ___",
+        "ans": {
+          "accept": [
+            "Okoro"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 3,
+          "s": "Amelia Okoro. O-K-O-R-O."
+        },
+        "why": "Họ được đánh vần: Okoro.",
+        "wrong": {
+          "Okora": "Chữ cuối là O, không phải A."
+        },
+        "tag": "đánh vần"
+      },
+      {
+        "id": "l-form-02-2",
+        "q": "Train: the 6.15 from ___ to York",
+        "ans": {
+          "accept": [
+            "Leeds"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 5,
+          "s": "The 6.15 from Leeds to York."
+        },
+        "why": "Chuyến từ Leeds tới York.",
+        "wrong": {
+          "York": "York là ga đến, đã có trong phiếu."
+        }
+      },
+      {
+        "id": "l-form-02-3",
+        "q": "Bag: small ___, dark green",
+        "ans": {
+          "accept": [
+            "backpack"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5.5,
+        "ev": {
+          "p": 7,
+          "s": "It's a small backpack, dark green, with a leather strap on the front."
+        },
+        "why": "Một ba lô nhỏ (backpack).",
+        "wrong": {
+          "leather strap": "Đó là chi tiết trên túi, không phải loại túi."
+        }
+      },
+      {
+        "id": "l-form-02-4",
+        "q": "Contents: laptop, book and ___",
+        "ans": {
+          "accept": [
+            "umbrella",
+            "an umbrella"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 9,
+          "s": "So just the laptop, the book and the umbrella."
+        },
+        "why": "Chị nhắc kính rồi rút lại; đồ còn lại là cái ô (umbrella).",
+        "wrong": {
+          "glasses": "Chị nhận ra mình đang đeo kính, nên kính không nằm trong túi."
+        },
+        "trap": "Người nói thêm 'glasses' rồi rút lại."
+      },
+      {
+        "id": "l-form-02-5",
+        "q": "Collect from: office next to the ticket machines on platform ___",
+        "ans": {
+          "accept": [
+            "3",
+            "three"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 16,
+          "s": "next to the ticket machines on platform three"
+        },
+        "why": "Sân ga số ba (3).",
+        "wrong": {
+          "8": "Tám là giá gửi bưu điện (tám bảng)."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/l-form-02.mp3",
+      "dur": 73.2,
+      "voices": [
+        "bm_lewis",
+        "bf_isabella"
+      ],
+      "slow": "a/l-form-02.slow.mp3"
+    }
+  },
+  {
+    "id": "l-form-03",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-form",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Booking a Holiday Cottage",
+    "instr": "Complete the form below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.",
+    "script": [
+      {
+        "sp": "Agent",
+        "t": "Coastal Cottages, Sophie speaking."
+      },
+      {
+        "sp": "Mr Lin",
+        "t": "Hello, I'm calling about the cottage in Porthleven that I saw on your website. I'd like to book it for a week in August."
+      },
+      {
+        "sp": "Agent",
+        "t": "Lovely. Which dates were you thinking of?"
+      },
+      {
+        "sp": "Mr Lin",
+        "t": "From Saturday the ninth to Saturday the sixteenth."
+      },
+      {
+        "sp": "Agent",
+        "t": "Let me check. Yes, that's available. How many people will be staying?"
+      },
+      {
+        "sp": "Mr Lin",
+        "t": "Two adults and three children. Oh, and our dog. Is that a problem?"
+      },
+      {
+        "sp": "Agent",
+        "t": "Dogs are welcome at that cottage, but there's an extra charge of thirty pounds for the week."
+      },
+      {
+        "sp": "Mr Lin",
+        "t": "That's fine. What's the total price?"
+      },
+      {
+        "sp": "Agent",
+        "t": "The cottage is 840 pounds for the week in August, plus the thirty for the dog, so 870 in total."
+      },
+      {
+        "sp": "Mr Lin",
+        "t": "And is there parking?"
+      },
+      {
+        "sp": "Agent",
+        "t": "There's space for one car in the driveway. If you have two cars, the second one would have to go in the public car park by the harbour."
+      },
+      {
+        "sp": "Mr Lin",
+        "t": "Just one car. Can I ask about the beach? Is it far?"
+      },
+      {
+        "sp": "Agent",
+        "t": "It's about a ten-minute walk downhill. Quite steep coming back up, though!"
+      },
+      {
+        "sp": "Mr Lin",
+        "t": "Good to know. How do I pay?"
+      },
+      {
+        "sp": "Agent",
+        "t": "We need a deposit of 200 pounds now to hold the booking, and the rest six weeks before you arrive."
+      },
+      {
+        "sp": "Mr Lin",
+        "t": "OK. And what time can we arrive on the Saturday?"
+      },
+      {
+        "sp": "Agent",
+        "t": "Any time after four o'clock. The key will be in a box by the front door; we'll text you the code the day before."
+      }
+    ],
+    "voices": {
+      "Agent": "bf_emma",
+      "Mr Lin": "am_michael"
+    },
+    "vi": [
+      "Coastal Cottages, Sophie nghe.",
+      "Xin chào, tôi gọi về căn nhà ở Porthleven tôi thấy trên trang web. Tôi muốn đặt một tuần vào tháng Tám.",
+      "Hay quá. Anh định đi ngày nào?",
+      "Từ thứ Bảy ngày mùng chín tới thứ Bảy ngày mười sáu.",
+      "Để tôi kiểm tra. Vâng, còn trống. Bao nhiêu người sẽ ở?",
+      "Hai người lớn và ba trẻ em. À, và con chó của chúng tôi. Có vấn đề gì không?",
+      "Căn nhà đó chào đón chó, nhưng có phụ phí ba mươi bảng một tuần.",
+      "Được. Tổng giá là bao nhiêu?",
+      "Căn nhà giá 840 bảng một tuần vào tháng Tám, cộng ba mươi cho chó, vậy tổng cộng 870.",
+      "Có chỗ đỗ xe không?",
+      "Có chỗ cho một xe ở lối vào nhà. Nếu anh có hai xe, xe thứ hai phải đỗ ở bãi đỗ xe công cộng cạnh bến cảng.",
+      "Chỉ một xe thôi. Cho tôi hỏi về bãi biển. Có xa không?",
+      "Khoảng mười phút đi bộ xuống dốc. Nhưng đi lên lại khá dốc đấy!",
+      "Biết vậy là tốt. Tôi thanh toán thế nào?",
+      "Chúng tôi cần đặt cọc 200 bảng bây giờ để giữ chỗ, phần còn lại sáu tuần trước khi anh đến.",
+      "Vâng. Thứ Bảy chúng tôi đến lúc mấy giờ được?",
+      "Bất kỳ lúc nào sau bốn giờ. Chìa khoá để trong hộp cạnh cửa trước; chúng tôi sẽ nhắn mã cho anh hôm trước."
+    ],
+    "allow": [
+      "Porthleven",
+      "driveway",
+      "harbour",
+      "steep",
+      "deposit"
+    ],
+    "items": [
+      {
+        "id": "l-form-03-1",
+        "q": "Number of guests: 2 adults, 3 children and a ___",
+        "ans": {
+          "accept": [
+            "dog"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5.5,
+        "ev": {
+          "p": 5,
+          "s": "Two adults and three children. Oh, and our dog."
+        },
+        "why": "Ngoài người còn có con chó (dog).",
+        "wrong": {
+          "car": "Xe là chuyện đỗ xe sau đó."
+        }
+      },
+      {
+        "id": "l-form-03-2",
+        "q": "Total price: £___",
+        "ans": {
+          "accept": [
+            "870"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 8,
+          "s": "so 870 in total"
+        },
+        "why": "Giá nhà 840 cộng 30 tiền chó: tổng 870 bảng.",
+        "wrong": {
+          "840": "Đó là giá căn nhà chưa cộng phí cho chó."
+        },
+        "trap": "Câu hỏi hỏi TỔNG giá."
+      },
+      {
+        "id": "l-form-03-3",
+        "q": "Parking: one car in the ___",
+        "ans": {
+          "accept": [
+            "driveway"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 10,
+          "s": "There's space for one car in the driveway."
+        },
+        "why": "Một xe đỗ ở lối vào nhà (driveway).",
+        "wrong": {
+          "car park": "Bãi đỗ xe công cộng chỉ dành cho xe thứ hai."
+        }
+      },
+      {
+        "id": "l-form-03-4",
+        "q": "Deposit: £___",
+        "ans": {
+          "accept": [
+            "200"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5.5,
+        "ev": {
+          "p": 14,
+          "s": "We need a deposit of 200 pounds now to hold the booking"
+        },
+        "why": "Đặt cọc 200 bảng.",
+        "wrong": {
+          "30": "Ba mươi là phí cho chó."
+        }
+      },
+      {
+        "id": "l-form-03-5",
+        "q": "Key: in a box by the ___",
+        "ans": {
+          "accept": [
+            "front door"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 16,
+          "s": "The key will be in a box by the front door"
+        },
+        "why": "Chìa khoá trong hộp cạnh cửa trước (front door).",
+        "wrong": {
+          "harbour": "Bến cảng là chỗ có bãi đỗ xe công cộng."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/l-form-03.mp3",
+      "dur": 79.3,
+      "voices": [
+        "bf_emma",
+        "am_michael"
+      ],
+      "slow": "a/l-form-03.slow.mp3"
+    }
+  },
+  {
+    "id": "l-form-04",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-form",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Enrolling on an Evening Course",
+    "instr": "Complete the form below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.",
+    "script": [
+      {
+        "sp": "Adviser",
+        "t": "Westfield College, enrolment office. How can I help?"
+      },
+      {
+        "sp": "Priya",
+        "t": "Hi, I'd like to sign up for one of your evening courses."
+      },
+      {
+        "sp": "Adviser",
+        "t": "Which course are you interested in?"
+      },
+      {
+        "sp": "Priya",
+        "t": "I was looking at the photography course, but it's full, isn't it? So I'd like to do Spanish for beginners instead."
+      },
+      {
+        "sp": "Adviser",
+        "t": "Yes, photography is full, I'm afraid. Spanish for beginners runs on Tuesday evenings from seven to nine. Can I take your full name?"
+      },
+      {
+        "sp": "Priya",
+        "t": "Priya Sharma."
+      },
+      {
+        "sp": "Adviser",
+        "t": "And your address?"
+      },
+      {
+        "sp": "Priya",
+        "t": "It's 42 Mill Lane, and the postcode is BR3 7TQ."
+      },
+      {
+        "sp": "Adviser",
+        "t": "BR3 7TQ. Thanks. Do you have an email address?"
+      },
+      {
+        "sp": "Priya",
+        "t": "Yes, it's priya.sharma at mailbox dot com."
+      },
+      {
+        "sp": "Adviser",
+        "t": "Lovely. Now, the course fee is 180 pounds for ten weeks, but if you're a student or over sixty you get a discount."
+      },
+      {
+        "sp": "Priya",
+        "t": "I'm not a student any more, unfortunately. Is there anything I need to bring?"
+      },
+      {
+        "sp": "Adviser",
+        "t": "Just a notebook. The textbook is included in the fee, so you don't need to buy it."
+      },
+      {
+        "sp": "Priya",
+        "t": "Oh, that's good. And when does it start?"
+      },
+      {
+        "sp": "Adviser",
+        "t": "The first class is on the twenty-third of September, in room 14 in the library building."
+      }
+    ],
+    "voices": {
+      "Adviser": "bm_george",
+      "Priya": "bf_isabella"
+    },
+    "vi": [
+      "Trường Westfield, phòng tuyển sinh. Tôi giúp được gì?",
+      "Chào chị, tôi muốn đăng ký một khoá học buổi tối.",
+      "Chị quan tâm khoá nào?",
+      "Tôi đã xem khoá nhiếp ảnh, nhưng khoá đó hết chỗ rồi phải không? Vậy tôi muốn học tiếng Tây Ban Nha cho người mới bắt đầu.",
+      "Vâng, rất tiếc khoá nhiếp ảnh đã đầy. Tiếng Tây Ban Nha cho người mới học vào tối thứ Ba từ bảy đến chín giờ. Cho tôi xin họ tên đầy đủ?",
+      "Priya Sharma.",
+      "Địa chỉ của chị?",
+      "Số 42 Mill Lane, mã bưu chính là BR3 7TQ.",
+      "BR3 7TQ. Cảm ơn. Chị có địa chỉ email không?",
+      "Có, là priya.sharma a còng mailbox chấm com.",
+      "Tốt. Học phí là 180 bảng cho mười tuần, nhưng nếu chị là sinh viên hoặc trên sáu mươi tuổi thì được giảm giá.",
+      "Tiếc là tôi không còn là sinh viên. Tôi cần mang gì không?",
+      "Chỉ cần một cuốn vở. Sách giáo khoa đã tính trong học phí, nên chị không cần mua.",
+      "Ồ, tốt quá. Khi nào khoá học bắt đầu?",
+      "Buổi đầu tiên vào ngày hai mươi ba tháng Chín, ở phòng 14 trong toà nhà thư viện."
+    ],
+    "allow": [
+      "enrolment",
+      "Westfield",
+      "Sharma",
+      "Priya",
+      "postcode",
+      "textbook"
+    ],
+    "items": [
+      {
+        "id": "l-form-04-1",
+        "q": "Course: ___ for beginners",
+        "ans": {
+          "accept": [
+            "Spanish"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5.5,
+        "ev": {
+          "p": 3,
+          "s": "So I'd like to do Spanish for beginners instead."
+        },
+        "why": "Chị học tiếng Tây Ban Nha (Spanish) vì khoá nhiếp ảnh đã đầy.",
+        "wrong": {
+          "photography": "Khoá nhiếp ảnh đã hết chỗ."
+        },
+        "trap": "Lựa chọn đầu tiên (photography) không còn chỗ."
+      },
+      {
+        "id": "l-form-04-2",
+        "q": "Day: ___ evenings, 7–9 pm",
+        "ans": {
+          "accept": [
+            "Tuesday"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 4,
+          "s": "Spanish for beginners runs on Tuesday evenings from seven to nine."
+        },
+        "why": "Học tối thứ Ba (Tuesday).",
+        "wrong": {
+          "Thursday": "Không có trong bài; nghe kỹ \"Tues-\"."
+        }
+      },
+      {
+        "id": "l-form-04-3",
+        "q": "Address: 42 ___",
+        "ans": {
+          "accept": [
+            "Mill Lane"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5.5,
+        "ev": {
+          "p": 7,
+          "s": "It's 42 Mill Lane, and the postcode is BR3 7TQ."
+        },
+        "why": "Địa chỉ 42 Mill Lane.",
+        "wrong": {
+          "Mill Road": "Bài nói \"Lane\", không phải \"Road\"."
+        }
+      },
+      {
+        "id": "l-form-04-4",
+        "q": "Fee: £___ for ten weeks",
+        "ans": {
+          "accept": [
+            "180"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5.5,
+        "ev": {
+          "p": 10,
+          "s": "the course fee is 180 pounds for ten weeks"
+        },
+        "why": "Học phí 180 bảng.",
+        "wrong": {
+          "80": "Nghe thiếu \"a hundred and\"."
+        }
+      },
+      {
+        "id": "l-form-04-5",
+        "q": "Bring: a ___",
+        "ans": {
+          "accept": [
+            "notebook"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 12,
+          "s": "Just a notebook. The textbook is included in the fee"
+        },
+        "why": "Chỉ cần mang vở (notebook); sách giáo khoa đã có sẵn.",
+        "wrong": {
+          "textbook": "Sách giáo khoa đã tính trong học phí, không cần mang."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/l-form-04.mp3",
+      "dur": 72.7,
+      "voices": [
+        "bm_george",
+        "bf_isabella"
+      ],
+      "slow": "a/l-form-04.slow.mp3"
+    }
+  },
+  {
+    "id": "l-form-05",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-form",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "practice",
+    "title": "Reporting a Problem with a Flat",
+    "instr": "Complete the notes below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.",
+    "script": [
+      {
+        "sp": "Agent",
+        "t": "Parkview Lettings, Tom speaking."
+      },
+      {
+        "sp": "Mrs Ruiz",
+        "t": "Hello, I'm renting one of your flats and I need to report a problem. It's flat 5B, 17 Chestnut Avenue."
+      },
+      {
+        "sp": "Agent",
+        "t": "Can I have your name, please?"
+      },
+      {
+        "sp": "Mrs Ruiz",
+        "t": "Carmen Ruiz. R-U-I-Z."
+      },
+      {
+        "sp": "Agent",
+        "t": "Thanks, Mrs Ruiz. What's the problem?"
+      },
+      {
+        "sp": "Mrs Ruiz",
+        "t": "The heating isn't working. I thought it was the boiler at first, but the boiler's fine. It's the radiator in the bedroom; it's completely cold."
+      },
+      {
+        "sp": "Agent",
+        "t": "When did you first notice it?"
+      },
+      {
+        "sp": "Mrs Ruiz",
+        "t": "On Monday. No, actually, it was Sunday night, because I remember it was very cold when I went to bed."
+      },
+      {
+        "sp": "Agent",
+        "t": "OK. I'll send a plumber. Would morning or afternoon be better?"
+      },
+      {
+        "sp": "Mrs Ruiz",
+        "t": "I work in the mornings, so the afternoon, please. After two o'clock."
+      },
+      {
+        "sp": "Agent",
+        "t": "Fine. Our plumber, Mr Davies, can come on Wednesday afternoon. Is there anything he needs to know to get in?"
+      },
+      {
+        "sp": "Mrs Ruiz",
+        "t": "Yes, the main door code is 4471, that's four, four, seven, one. And please ask him to knock on the door of the flat, because the buzzer doesn't always work."
+      },
+      {
+        "sp": "Agent",
+        "t": "I'll tell him. Is there anything else wrong in the flat?"
+      },
+      {
+        "sp": "Mrs Ruiz",
+        "t": "One small thing: a window in the kitchen won't close properly. It's not urgent."
+      },
+      {
+        "sp": "Agent",
+        "t": "I'll ask him to look at that too while he's there."
+      }
+    ],
+    "voices": {
+      "Agent": "bm_lewis",
+      "Mrs Ruiz": "af_sarah"
+    },
+    "vi": [
+      "Parkview Lettings, Tom nghe.",
+      "Xin chào, tôi đang thuê một căn hộ của công ty và cần báo một sự cố. Đó là căn 5B, số 17 Chestnut Avenue.",
+      "Cho tôi xin tên chị?",
+      "Carmen Ruiz. R-U-I-Z.",
+      "Cảm ơn chị Ruiz. Có vấn đề gì?",
+      "Hệ thống sưởi không chạy. Lúc đầu tôi tưởng là nồi hơi, nhưng nồi hơi vẫn ổn. Là cái lò sưởi trong phòng ngủ; nó lạnh ngắt.",
+      "Chị phát hiện lần đầu khi nào?",
+      "Hôm thứ Hai. À không, thật ra là tối Chủ nhật, vì tôi nhớ lúc đi ngủ trời rất lạnh.",
+      "Vâng. Tôi sẽ cử thợ sửa ống nước. Buổi sáng hay chiều thì tiện hơn?",
+      "Tôi làm việc buổi sáng, nên buổi chiều nhé. Sau hai giờ.",
+      "Được. Thợ của chúng tôi, anh Davies, có thể đến chiều thứ Tư. Anh ấy cần biết gì để vào nhà không?",
+      "Có, mã cửa chính là 4471, tức là bốn, bốn, bảy, một. Và nhờ anh ấy gõ cửa căn hộ, vì chuông bộ đàm không phải lúc nào cũng kêu.",
+      "Tôi sẽ nói với anh ấy. Trong căn hộ còn hỏng gì nữa không?",
+      "Một việc nhỏ: một cửa sổ trong bếp không đóng kín được. Không gấp đâu.",
+      "Tôi sẽ nhờ anh ấy xem luôn khi đến."
+    ],
+    "allow": [
+      "Parkview",
+      "Chestnut",
+      "Ruiz",
+      "boiler",
+      "radiator",
+      "plumber",
+      "buzzer",
+      "Davies",
+      "lettings"
+    ],
+    "items": [
+      {
+        "id": "l-form-05-1",
+        "q": "Address: Flat 5B, 17 ___ Avenue",
+        "ans": {
+          "accept": [
+            "Chestnut"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "It's flat 5B, 17 Chestnut Avenue."
+        },
+        "why": "Địa chỉ 17 Chestnut Avenue.",
+        "wrong": {
+          "Chesnut": "Thiếu chữ T."
+        }
+      },
+      {
+        "id": "l-form-05-2",
+        "q": "Problem: the ___ in the bedroom is cold",
+        "ans": {
+          "accept": [
+            "radiator"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6.5,
+        "ev": {
+          "p": 5,
+          "s": "It's the radiator in the bedroom; it's completely cold."
+        },
+        "why": "Cái lò sưởi (radiator) trong phòng ngủ bị lạnh.",
+        "wrong": {
+          "boiler": "Nồi hơi vẫn ổn; người nói đã loại trừ."
+        },
+        "trap": "Người nói nghĩ là 'boiler' rồi sửa."
+      },
+      {
+        "id": "l-form-05-3",
+        "q": "First noticed: ___ night",
+        "ans": {
+          "accept": [
+            "Sunday"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 7,
+          "s": "No, actually, it was Sunday night"
+        },
+        "why": "Chị nói thứ Hai rồi sửa thành tối Chủ nhật (Sunday).",
+        "wrong": {
+          "Monday": "Bị sửa ngay sau \"No, actually\"."
+        }
+      },
+      {
+        "id": "l-form-05-4",
+        "q": "Main door code: ___",
+        "ans": {
+          "accept": [
+            "4471"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5.5,
+        "ev": {
+          "p": 11,
+          "s": "the main door code is 4471"
+        },
+        "why": "Mã cửa 4471.",
+        "wrong": {
+          "4417": "Đảo thứ tự số; nghe kỹ \"double four… seven one\"."
+        }
+      },
+      {
+        "id": "l-form-05-5",
+        "q": "Also check: a ___ in the kitchen",
+        "ans": {
+          "accept": [
+            "window"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 13,
+          "s": "a window in the kitchen won't close properly"
+        },
+        "why": "Một cửa sổ (window) trong bếp không đóng được.",
+        "wrong": {
+          "buzzer": "Chuông bộ đàm là chuyện vào nhà, không phải việc cần sửa trong bếp."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/l-form-05.mp3",
+      "dur": 74.5,
+      "voices": [
+        "bm_lewis",
+        "af_sarah"
+      ],
+      "slow": "a/l-form-05.slow.mp3"
+    }
+  },
+  {
+    "id": "l-form-06",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-form",
+    "level": "C1",
+    "band": 7,
+    "mode": "practice",
+    "title": "Insurance Claim",
+    "instr": "Complete the form below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.",
+    "script": [
+      {
+        "sp": "Adviser",
+        "t": "Good afternoon, HomeSafe Insurance claims line. Could I start with your policy number?"
+      },
+      {
+        "sp": "Mr Novak",
+        "t": "Yes, it's HS493017."
+      },
+      {
+        "sp": "Adviser",
+        "t": "Thank you, Mr Novak. What would you like to claim for?"
+      },
+      {
+        "sp": "Mr Novak",
+        "t": "Water damage. A pipe burst in the flat upstairs while I was away, and the water came through my ceiling."
+      },
+      {
+        "sp": "Adviser",
+        "t": "I'm sorry to hear that. When did this happen?"
+      },
+      {
+        "sp": "Mr Novak",
+        "t": "I got back on the third of February and found it then, but my upstairs neighbour says the pipe burst on the first."
+      },
+      {
+        "sp": "Adviser",
+        "t": "We'll record the date of the incident as the first, then. Which rooms were affected?"
+      },
+      {
+        "sp": "Mr Novak",
+        "t": "Mainly the living room. The hallway got a little wet, but there's no real damage there."
+      },
+      {
+        "sp": "Adviser",
+        "t": "And what items were damaged?"
+      },
+      {
+        "sp": "Mr Novak",
+        "t": "The sofa is ruined, and the carpet. The television was close, but it seems to be working, so I won't include that."
+      },
+      {
+        "sp": "Adviser",
+        "t": "Do you have an estimate for the cost of repairs?"
+      },
+      {
+        "sp": "Mr Novak",
+        "t": "A builder came yesterday and said the ceiling would cost around 1,500 pounds. I'll get a second quote as well."
+      },
+      {
+        "sp": "Adviser",
+        "t": "That's sensible. We'll also need photographs of the damage. Could you email them to us?"
+      },
+      {
+        "sp": "Mr Novak",
+        "t": "I took some on my phone, so yes."
+      },
+      {
+        "sp": "Adviser",
+        "t": "Lastly, we'll send an assessor to look at the flat. What's the best day for a visit?"
+      },
+      {
+        "sp": "Mr Novak",
+        "t": "Any weekday except Friday."
+      }
+    ],
+    "voices": {
+      "Adviser": "af_nicole",
+      "Mr Novak": "bm_george"
+    },
+    "vi": [
+      "Chào buổi chiều, đường dây bồi thường của Bảo hiểm HomeSafe. Anh cho tôi xin số hợp đồng bảo hiểm trước?",
+      "Vâng, là HS493017.",
+      "Cảm ơn anh Novak. Anh muốn yêu cầu bồi thường cho việc gì?",
+      "Hư hại do nước. Một đường ống bị vỡ ở căn hộ tầng trên khi tôi đi vắng, và nước thấm qua trần nhà tôi.",
+      "Rất tiếc về chuyện đó. Việc này xảy ra khi nào?",
+      "Tôi về hôm mùng ba tháng Hai và phát hiện lúc đó, nhưng hàng xóm tầng trên nói ống vỡ hôm mùng một.",
+      "Vậy chúng tôi sẽ ghi ngày xảy ra sự cố là mùng một. Những phòng nào bị ảnh hưởng?",
+      "Chủ yếu là phòng khách. Hành lang bị ướt một chút, nhưng không hư hại gì thật sự.",
+      "Những đồ đạc nào bị hỏng?",
+      "Bộ sofa hỏng hẳn, cả tấm thảm nữa. Cái tivi ở gần nhưng có vẻ vẫn chạy, nên tôi không tính nó.",
+      "Anh có ước tính chi phí sửa chữa không?",
+      "Một thợ xây đến hôm qua và nói trần nhà khoảng 1.500 bảng. Tôi cũng sẽ lấy thêm một báo giá nữa.",
+      "Hợp lý. Chúng tôi cũng cần ảnh chụp hư hại. Anh gửi email cho chúng tôi được không?",
+      "Tôi có chụp bằng điện thoại, nên được.",
+      "Cuối cùng, chúng tôi sẽ cử một chuyên viên giám định đến xem căn hộ. Ngày nào tiện nhất?",
+      "Ngày thường nào cũng được, trừ thứ Sáu."
+    ],
+    "allow": [
+      "HomeSafe",
+      "Novak",
+      "assessor",
+      "estimate",
+      "quote",
+      "hallway"
+    ],
+    "items": [
+      {
+        "id": "l-form-06-1",
+        "q": "Date of incident: ___ February",
+        "ans": {
+          "accept": [
+            "1st",
+            "first",
+            "1"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6.5,
+        "ev": {
+          "p": 6,
+          "s": "We'll record the date of the incident as the first, then."
+        },
+        "why": "Ngày xảy ra sự cố được ghi là mùng một (first), ngày ống vỡ.",
+        "wrong": {
+          "3rd": "Mùng ba là ngày anh về và phát hiện, không phải ngày xảy ra sự cố."
+        },
+        "trap": "Hai ngày được nhắc; câu hỏi hỏi ngày xảy ra sự cố."
+      },
+      {
+        "id": "l-form-06-2",
+        "q": "Room affected: ___",
+        "ans": {
+          "accept": [
+            "living room"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6.5,
+        "ev": {
+          "p": 7,
+          "s": "Mainly the living room."
+        },
+        "why": "Chủ yếu là phòng khách (living room).",
+        "wrong": {
+          "hallway": "Hành lang chỉ hơi ướt, không hư hại thật sự."
+        }
+      },
+      {
+        "id": "l-form-06-3",
+        "q": "Damaged items: sofa and ___",
+        "ans": {
+          "accept": [
+            "carpet",
+            "the carpet"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 7,
+        "ev": {
+          "p": 9,
+          "s": "The sofa is ruined, and the carpet."
+        },
+        "why": "Sofa và thảm (carpet) bị hỏng.",
+        "wrong": {
+          "television": "Tivi vẫn chạy nên anh không tính."
+        }
+      },
+      {
+        "id": "l-form-06-4",
+        "q": "Estimate for ceiling: £___",
+        "ans": {
+          "accept": [
+            "1,500",
+            "1500"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 7,
+        "ev": {
+          "p": 11,
+          "s": "said the ceiling would cost around 1,500 pounds"
+        },
+        "why": "Ước tính trần nhà khoảng 1.500 bảng.",
+        "wrong": {
+          "500": "Thiếu \"one thousand\"."
+        }
+      },
+      {
+        "id": "l-form-06-5",
+        "q": "Assessor visit: any weekday except ___",
+        "ans": {
+          "accept": [
+            "Friday"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6.5,
+        "ev": {
+          "p": 15,
+          "s": "Any weekday except Friday."
+        },
+        "why": "Mọi ngày thường trừ thứ Sáu (Friday).",
+        "wrong": {
+          "weekend": "Không được nhắc."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/l-form-06.mp3",
+      "dur": 82.2,
+      "voices": [
+        "af_nicole",
+        "bm_george"
+      ],
+      "slow": "a/l-form-06.slow.mp3"
+    }
+  }
+]

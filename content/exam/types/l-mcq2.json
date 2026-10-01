@@ -1,0 +1,25 @@
+{
+  "id": "l-mcq2",
+  "lesson": [
+    "Đề cho 5 phương án A–E và yêu cầu chọn HAI. Mỗi đáp án đúng được 1 điểm riêng; thứ tự ghi không quan trọng.",
+    "Người nói thường nhắc gần hết các phương án, nhưng bác bỏ hoặc chỉ nhắc qua 3 phương án. Hai đáp án đúng có thể nằm cách xa nhau trong đoạn nghe.",
+    "Hay gặp ở Phần 2 và Phần 3 (người nói liệt kê lợi ích, vấn đề, lý do)."
+  ],
+  "steps": [
+    "Đọc câu hỏi, gạch chân đối tượng chính xác (lợi ích CHO AI, vấn đề CỦA CÁI GÌ).",
+    "Đọc 5 phương án, nhớ từ khoá của từng cái.",
+    "Khi nghe, đánh dấu ✓ (người nói xác nhận) hoặc ✗ (bác bỏ / chỉ là khả năng) cạnh từng phương án.",
+    "Chọn đúng hai phương án có ✓."
+  ],
+  "tips": [
+    "Câu như 'some people think X, but in our experience…' thường bác bỏ X.",
+    "Đáp án đúng thường được nói bằng từ đồng nghĩa.",
+    "Không bỏ trống: chọn đủ hai."
+  ],
+  "traps": [
+    "Chọn phương án được nhắc nhưng bị bác.",
+    "Dừng nghe sau đáp án thứ nhất và đoán đáp án thứ hai.",
+    "Nhầm đối tượng (lợi ích cho nhân viên với lợi ích cho khách)."
+  ],
+  "time": "khoảng 1 phút xem trước mỗi câu"
+}

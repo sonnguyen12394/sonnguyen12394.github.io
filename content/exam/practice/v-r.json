@@ -1,0 +1,1155 @@
+[
+  {
+    "id": "v-r-01",
+    "kind": "reading",
+    "exams": [
+      "vstep"
+    ],
+    "qtype": "v-r",
+    "level": "B1",
+    "band": 5,
+    "mode": "practice",
+    "title": "A New Life in the City",
+    "instr": "Read the passage and choose the best answer, A, B, C or D, for each question.",
+    "paras": [
+      "When Lan moved from her small village to Hanoi to study at university, she expected city life to be exciting. For the first few weeks, it was. She enjoyed the busy streets, the many cafés and the chance to meet people from all over the country. However, after about a month, she began to feel lonely. Her new classmates were friendly, but they already had their own groups of friends, and she missed her family more than she had imagined.",
+      "Lan's biggest problem was that she did not know how to fill her free time. At home, she had always helped her parents on their farm after school, so she had never needed to look for activities. In the city, she spent most evenings alone in her small rented room, watching videos on her phone. She also found the city expensive. Food and transport cost far more than in her village, and she worried about spending her parents' money.",
+      "Things changed when a student from her dormitory invited her to join a volunteer group. Every Saturday morning, the group taught English to children in a poor neighbourhood. Lan was nervous at first because she did not think her English was good enough. But the children were so happy to learn that she soon forgot her worries. Through the group, she also made close friends who shared her interests.",
+      "Now in her second year, Lan says that volunteering taught her an important lesson. Instead of waiting for others to invite her, she started to take the first step herself. She joined the university photography club and found a part-time job in a bookshop, which helps her pay for her own living costs. She still misses her village, but she visits it during every holiday, and she no longer feels like a stranger in the city."
+    ],
+    "vi": [
+      "Khi Lan chuyển từ ngôi làng nhỏ lên Hà Nội học đại học, cô nghĩ cuộc sống thành phố sẽ thú vị. Vài tuần đầu đúng là vậy. Cô thích những con phố đông đúc, nhiều quán cà phê và cơ hội gặp người từ khắp nơi. Tuy nhiên, khoảng một tháng sau, cô bắt đầu thấy cô đơn. Bạn cùng lớp thân thiện, nhưng họ đã có nhóm bạn riêng, và cô nhớ gia đình hơn cô tưởng.",
+      "Vấn đề lớn nhất của Lan là không biết làm gì vào thời gian rảnh. Ở nhà, cô luôn giúp bố mẹ làm ruộng sau giờ học, nên chưa bao giờ phải tìm hoạt động. Ở thành phố, cô dành hầu hết các buổi tối một mình trong căn phòng thuê nhỏ, xem video trên điện thoại. Cô cũng thấy thành phố đắt đỏ. Đồ ăn và đi lại đắt hơn nhiều so với ở làng, và cô lo tiêu tiền của bố mẹ.",
+      "Mọi thứ thay đổi khi một sinh viên trong ký túc xá mời cô tham gia một nhóm tình nguyện. Mỗi sáng thứ Bảy, nhóm dạy tiếng Anh cho trẻ em ở một khu nghèo. Lúc đầu Lan lo lắng vì nghĩ tiếng Anh của mình chưa đủ tốt. Nhưng bọn trẻ vui được học đến mức cô sớm quên đi nỗi lo. Qua nhóm, cô còn kết bạn thân với những người có chung sở thích.",
+      "Giờ đã là năm hai, Lan nói hoạt động tình nguyện dạy cô một bài học quan trọng. Thay vì chờ người khác mời, cô bắt đầu tự bước bước đầu tiên. Cô vào câu lạc bộ nhiếp ảnh của trường và tìm được việc làm thêm ở một hiệu sách, giúp cô tự trang trải chi phí sinh hoạt. Cô vẫn nhớ làng, nhưng về thăm vào mọi kỳ nghỉ, và không còn cảm thấy mình là người lạ ở thành phố."
+    ],
+    "allow": [
+      "Hanoi",
+      "dormitory",
+      "volunteer",
+      "volunteering",
+      "neighbourhood",
+      "photography"
+    ],
+    "items": [
+      {
+        "id": "v-r-01-1",
+        "q": "What is the passage mainly about?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "the problems of living in a big city"
+          },
+          {
+            "k": "B",
+            "t": "why so many young people leave their home villages"
+          },
+          {
+            "k": "C",
+            "t": "the importance of learning English"
+          },
+          {
+            "k": "D",
+            "t": "how a student adapted to life in a new city"
+          }
+        ],
+        "ans": "D",
+        "b": 5,
+        "ev": {
+          "p": 3,
+          "s": "she no longer feels like a stranger in the city"
+        },
+        "why": "Cả bài kể quá trình Lan từ cô đơn đến thích nghi với cuộc sống thành phố.",
+        "wrong": {
+          "A": "Khó khăn chỉ là phần đầu; bài kể cả cách cô vượt qua.",
+          "B": "Bài không bàn lý do người trẻ rời làng.",
+          "C": "Dạy tiếng Anh chỉ là một chi tiết."
+        }
+      },
+      {
+        "id": "v-r-01-2",
+        "q": "How did Lan feel during her first few weeks in Hanoi?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "excited"
+          },
+          {
+            "k": "B",
+            "t": "homesick"
+          },
+          {
+            "k": "C",
+            "t": "lonely"
+          },
+          {
+            "k": "D",
+            "t": "worried about money"
+          }
+        ],
+        "ans": "A",
+        "b": 4.5,
+        "ev": {
+          "p": 0,
+          "s": "For the first few weeks, it was."
+        },
+        "why": "Vài tuần đầu thành phố thú vị đúng như cô nghĩ ('it was' = it was exciting).",
+        "wrong": {
+          "B": "Nhớ nhà đến sau đó.",
+          "C": "Cô thấy cô đơn sau khoảng một tháng.",
+          "D": "Lo tiền được nói ở đoạn 2, không gắn với vài tuần đầu."
+        },
+        "trap": "Câu 'it was' là cách nói tắt của 'it was exciting'."
+      },
+      {
+        "id": "v-r-01-3",
+        "q": "The word \"they\" in paragraph 1 refers to",
+        "opts": [
+          {
+            "k": "A",
+            "t": "people from all over the country"
+          },
+          {
+            "k": "B",
+            "t": "her new classmates"
+          },
+          {
+            "k": "C",
+            "t": "her family"
+          },
+          {
+            "k": "D",
+            "t": "the cafés"
+          }
+        ],
+        "ans": "B",
+        "b": 5,
+        "ev": {
+          "p": 0,
+          "s": "Her new classmates were friendly, but they already had their own groups of friends"
+        },
+        "why": "'they' chỉ chủ ngữ của mệnh đề trước: her new classmates.",
+        "wrong": {
+          "A": "Cụm này ở câu trước, không phải chủ ngữ gần nhất.",
+          "C": "Gia đình được nhắc sau, ở mệnh đề khác.",
+          "D": "Quán cà phê không có nhóm bạn."
+        }
+      },
+      {
+        "id": "v-r-01-4",
+        "q": "According to paragraph 2, why did Lan not know what to do in her free time?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "She had no money left over for any activities."
+          },
+          {
+            "k": "B",
+            "t": "Her room was too small."
+          },
+          {
+            "k": "C",
+            "t": "She had always worked on the farm at home."
+          },
+          {
+            "k": "D",
+            "t": "She did not like watching videos."
+          }
+        ],
+        "ans": "C",
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "At home, she had always helped her parents on their farm after school, so she had never needed to look for activities."
+        },
+        "why": "Ở nhà cô luôn làm ruộng nên chưa từng phải tìm hoạt động.",
+        "wrong": {
+          "A": "Chi phí được nhắc nhưng không phải lý do không biết làm gì.",
+          "B": "Phòng nhỏ chỉ là chi tiết bối cảnh.",
+          "D": "Ngược lại, cô xem video hầu hết buổi tối."
+        }
+      },
+      {
+        "id": "v-r-01-5",
+        "q": "Which of the following worried Lan about life in the city?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "the quality of the food"
+          },
+          {
+            "k": "B",
+            "t": "the cost of living"
+          },
+          {
+            "k": "C",
+            "t": "the distance to the university"
+          },
+          {
+            "k": "D",
+            "t": "the noise of the traffic"
+          }
+        ],
+        "ans": "B",
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "Food and transport cost far more than in her village, and she worried about spending her parents' money."
+        },
+        "why": "Cô lo chi phí đắt đỏ (đồ ăn, đi lại).",
+        "wrong": {
+          "A": "Bài nói giá đồ ăn, không nói chất lượng.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
+        }
+      },
+      {
+        "id": "v-r-01-6",
+        "q": "Who invited Lan to join the volunteer group?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "a child in the neighbourhood"
+          },
+          {
+            "k": "B",
+            "t": "a teacher"
+          },
+          {
+            "k": "C",
+            "t": "a classmate"
+          },
+          {
+            "k": "D",
+            "t": "a student from her dormitory"
+          }
+        ],
+        "ans": "D",
+        "b": 4.5,
+        "ev": {
+          "p": 2,
+          "s": "a student from her dormitory invited her to join a volunteer group"
+        },
+        "why": "Một sinh viên trong ký túc xá mời cô.",
+        "wrong": {
+          "A": "Trẻ em là người được dạy.",
+          "B": "Không được nhắc.",
+          "C": "Bạn cùng lớp được nhắc ở đoạn 1, không mời cô."
+        }
+      },
+      {
+        "id": "v-r-01-7",
+        "q": "Why was Lan nervous at first about volunteering?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "She had never worked with children."
+          },
+          {
+            "k": "B",
+            "t": "The neighbourhood was dangerous."
+          },
+          {
+            "k": "C",
+            "t": "She doubted her English ability."
+          },
+          {
+            "k": "D",
+            "t": "She did not know anyone in the group."
+          }
+        ],
+        "ans": "C",
+        "b": 5,
+        "ev": {
+          "p": 2,
+          "s": "Lan was nervous at first because she did not think her English was good enough."
+        },
+        "why": "Cô nghĩ tiếng Anh của mình chưa đủ tốt.",
+        "wrong": {
+          "A": "Không được nói.",
+          "B": "Bài nói khu nghèo, không nói nguy hiểm.",
+          "D": "Không được nói là lý do lo lắng."
+        }
+      },
+      {
+        "id": "v-r-01-8",
+        "q": "The word \"worries\" in paragraph 3 is closest in meaning to",
+        "opts": [
+          {
+            "k": "A",
+            "t": "concerns"
+          },
+          {
+            "k": "B",
+            "t": "neighbours"
+          },
+          {
+            "k": "C",
+            "t": "hopes"
+          },
+          {
+            "k": "D",
+            "t": "lessons"
+          }
+        ],
+        "ans": "A",
+        "b": 4.5,
+        "ev": {
+          "p": 2,
+          "s": "she soon forgot her worries"
+        },
+        "why": "'worries' = nỗi lo = 'concerns'.",
+        "wrong": {
+          "B": "Không liên quan.",
+          "C": "Hy vọng là nghĩa trái chiều.",
+          "D": "Bài học không cùng nghĩa."
+        }
+      },
+      {
+        "id": "v-r-01-9",
+        "q": "What lesson did Lan learn from volunteering?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to take action herself instead of waiting"
+          },
+          {
+            "k": "B",
+            "t": "to spend more of her free time with her family"
+          },
+          {
+            "k": "C",
+            "t": "to save money"
+          },
+          {
+            "k": "D",
+            "t": "to study harder"
+          }
+        ],
+        "ans": "A",
+        "b": 5.5,
+        "ev": {
+          "p": 3,
+          "s": "Instead of waiting for others to invite her, she started to take the first step herself."
+        },
+        "why": "Thay vì chờ người khác mời, cô tự chủ động.",
+        "wrong": {
+          "B": "Không được nói.",
+          "C": "Việc làm thêm giúp trang trải nhưng không phải bài học từ tình nguyện.",
+          "D": "Không được nói."
+        }
+      },
+      {
+        "id": "v-r-01-10",
+        "q": "It can be inferred from the last paragraph that Lan",
+        "opts": [
+          {
+            "k": "A",
+            "t": "dislikes her part-time job"
+          },
+          {
+            "k": "B",
+            "t": "wants to return to her village permanently"
+          },
+          {
+            "k": "C",
+            "t": "has stopped visiting her family"
+          },
+          {
+            "k": "D",
+            "t": "has become more independent"
+          }
+        ],
+        "ans": "D",
+        "b": 6,
+        "ev": {
+          "p": 3,
+          "s": "which helps her pay for her own living costs"
+        },
+        "why": "Cô tự kiếm tiền trang trải, chủ động kết bạn, tham gia câu lạc bộ: suy ra cô tự lập hơn.",
+        "wrong": {
+          "A": "Không được nói.",
+          "B": "Cô nhớ làng nhưng không còn thấy lạ ở thành phố; không có ý muốn về hẳn.",
+          "C": "Ngược lại, cô về thăm mọi kỳ nghỉ."
+        },
+        "trap": "Câu suy luận: chọn điều chắc chắn rút ra từ nhiều chi tiết, không phải điều bài nói thẳng."
+      }
+    ]
+  },
+  {
+    "id": "v-r-02",
+    "kind": "reading",
+    "exams": [
+      "vstep"
+    ],
+    "qtype": "v-r",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "The Hidden Cost of Fast Fashion",
+    "instr": "Read the passage and choose the best answer, A, B, C or D, for each question.",
+    "paras": [
+      "Over the past twenty years, the way people buy clothes has changed dramatically. Large retailers now introduce new designs every few weeks rather than once a season, and prices have fallen so low that a T-shirt can cost less than a cup of coffee. This business model, known as 'fast fashion', has made trendy clothing available to almost everyone. Globally, the number of garments produced each year has roughly doubled since 2000.",
+      "However, the environmental cost of this success is considerable. Producing a single pair of jeans can require several thousand litres of water, mostly to grow the cotton. Dyeing and finishing fabrics often release chemicals into rivers, particularly in countries where environmental laws are weak or poorly enforced. Synthetic materials such as polyester, which now make up the majority of new clothing, are made from oil and shed tiny plastic fibres every time they are washed.",
+      "The problem is made worse by the fact that clothes are worn for shorter periods than before. Surveys suggest that many consumers wear some items only a handful of times before throwing them away. Although charity shops accept unwanted clothing, they can sell only a small proportion of it. Much of the rest is exported to developing countries, where it may end up in landfill sites or be burned.",
+      "There are signs that attitudes are beginning to shift. Second-hand clothing websites have grown rapidly, especially among young people, and some brands now offer repair services or take back old garments for recycling. Critics argue, however, that these initiatives remain small compared with the overall volume of production. In their view, real change will require governments to make producers responsible for the waste their products create.",
+      "For individual shoppers, experts suggest a simple rule: before buying anything new, ask whether you will wear it at least thirty times. Choosing fewer, better-made clothes may cost more at first, but it is likely to save money, and resources, in the long run."
+    ],
+    "vi": [
+      "Trong hai mươi năm qua, cách người ta mua quần áo đã thay đổi mạnh mẽ. Các nhà bán lẻ lớn nay ra mẫu mới vài tuần một lần thay vì mỗi mùa, và giá giảm thấp đến mức một chiếc áo phông có thể rẻ hơn một cốc cà phê. Mô hình kinh doanh này, gọi là 'thời trang nhanh', đã đưa quần áo hợp mốt đến gần như mọi người. Trên toàn cầu, số quần áo sản xuất mỗi năm đã tăng gần gấp đôi kể từ năm 2000.",
+      "Tuy nhiên, cái giá môi trường của thành công này là đáng kể. Làm một chiếc quần jeans có thể cần vài nghìn lít nước, chủ yếu để trồng bông. Nhuộm và hoàn thiện vải thường thải hoá chất ra sông, đặc biệt ở những nước luật môi trường yếu hoặc thực thi kém. Vật liệu tổng hợp như polyester, nay chiếm phần lớn quần áo mới, được làm từ dầu mỏ và thải ra những sợi nhựa nhỏ mỗi lần giặt.",
+      "Vấn đề càng tệ hơn vì quần áo được mặc trong thời gian ngắn hơn trước. Các khảo sát cho thấy nhiều người tiêu dùng chỉ mặc vài món đúng vài lần rồi vứt đi. Dù cửa hàng từ thiện nhận quần áo không dùng nữa, họ chỉ bán được một phần nhỏ. Phần lớn còn lại được xuất sang các nước đang phát triển, nơi chúng có thể kết thúc ở bãi rác hoặc bị đốt.",
+      "Có dấu hiệu thái độ đang bắt đầu thay đổi. Các trang web quần áo cũ đã tăng trưởng nhanh, nhất là trong giới trẻ, và một số hãng nay có dịch vụ sửa chữa hoặc thu lại quần áo cũ để tái chế. Tuy nhiên, người phê phán cho rằng các sáng kiến này vẫn nhỏ so với tổng lượng sản xuất. Theo họ, thay đổi thật sự đòi hỏi chính phủ buộc nhà sản xuất chịu trách nhiệm về rác thải sản phẩm của họ tạo ra.",
+      "Với người mua sắm cá nhân, các chuyên gia gợi ý một quy tắc đơn giản: trước khi mua đồ mới, hãy tự hỏi mình có mặc nó ít nhất ba mươi lần không. Chọn ít quần áo hơn nhưng may tốt hơn có thể tốn hơn lúc đầu, nhưng nhiều khả năng sẽ tiết kiệm tiền, và tài nguyên, về lâu dài."
+    ],
+    "allow": [
+      "garments",
+      "dyeing",
+      "polyester",
+      "synthetic",
+      "enforced",
+      "landfill",
+      "initiatives",
+      "fibres",
+      "retailers",
+      "trendy",
+      "consumers",
+      "handful"
+    ],
+    "items": [
+      {
+        "id": "v-r-02-1",
+        "q": "What is the main purpose of the passage?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to compare cotton and polyester"
+          },
+          {
+            "k": "B",
+            "t": "to discuss the effects of fast fashion and possible responses"
+          },
+          {
+            "k": "C",
+            "t": "to advertise second-hand clothing websites"
+          },
+          {
+            "k": "D",
+            "t": "to describe how the fashion industry has developed over the last century"
+          }
+        ],
+        "ans": "B",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "However, the environmental cost of this success is considerable."
+        },
+        "why": "Bài nêu tác hại môi trường của thời trang nhanh rồi các giải pháp.",
+        "wrong": {
+          "A": "So sánh vật liệu không phải mục đích chính.",
+          "C": "Trang web đồ cũ chỉ là một ví dụ ở đoạn 4.",
+          "D": "Bài không kể lịch sử ngành."
+        }
+      },
+      {
+        "id": "v-r-02-2",
+        "q": "According to paragraph 1, which is TRUE about fast fashion?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Prices have stayed about the same."
+          },
+          {
+            "k": "B",
+            "t": "Most fast fashion is bought by people with high incomes."
+          },
+          {
+            "k": "C",
+            "t": "About twice as many garments are made now as in 2000."
+          },
+          {
+            "k": "D",
+            "t": "New designs appear about once a season."
+          }
+        ],
+        "ans": "C",
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "the number of garments produced each year has roughly doubled since 2000"
+        },
+        "why": "\"roughly doubled since 2000\": số quần áo làm ra tăng khoảng gấp đôi.",
+        "wrong": {
+          "A": "Giá đã giảm rất thấp.",
+          "B": "Đến được gần như mọi người.",
+          "D": "Mẫu mới ra vài tuần một lần, không phải mỗi mùa."
+        }
+      },
+      {
+        "id": "v-r-02-3",
+        "q": "The word \"considerable\" in paragraph 2 is closest in meaning to",
+        "opts": [
+          {
+            "k": "A",
+            "t": "significant"
+          },
+          {
+            "k": "B",
+            "t": "questionable"
+          },
+          {
+            "k": "C",
+            "t": "careful"
+          },
+          {
+            "k": "D",
+            "t": "short-lived"
+          }
+        ],
+        "ans": "A",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "the environmental cost of this success is considerable"
+        },
+        "why": "'considerable' = đáng kể = 'significant'.",
+        "wrong": {
+          "B": "Không cùng nghĩa.",
+          "C": "\"considerate\" mới gần nghĩa \"careful\"; đây là bẫy hình thức từ.",
+          "D": "Không cùng nghĩa."
+        },
+        "trap": "Đừng nhầm 'considerable' (đáng kể) với 'considerate' (chu đáo)."
+      },
+      {
+        "id": "v-r-02-4",
+        "q": "Why does the writer mention a pair of jeans?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to compare prices of different clothes"
+          },
+          {
+            "k": "B",
+            "t": "to explain how cotton is dyed"
+          },
+          {
+            "k": "C",
+            "t": "to give an example of a synthetic material like polyester"
+          },
+          {
+            "k": "D",
+            "t": "to show how much water clothing production uses"
+          }
+        ],
+        "ans": "D",
+        "b": 6.5,
+        "ev": {
+          "p": 1,
+          "s": "Producing a single pair of jeans can require several thousand litres of water"
+        },
+        "why": "Quần jeans là ví dụ cho lượng nước lớn cần để sản xuất quần áo.",
+        "wrong": {
+          "A": "Giá cả không được nhắc ở đây.",
+          "B": "Nhuộm được nói ở câu sau, không gắn với jeans.",
+          "C": "Jeans làm từ bông, không phải vật liệu tổng hợp."
+        }
+      },
+      {
+        "id": "v-r-02-5",
+        "q": "According to paragraph 2, synthetic materials such as polyester",
+        "opts": [
+          {
+            "k": "A",
+            "t": "are mainly produced where laws are weak"
+          },
+          {
+            "k": "B",
+            "t": "are easy to recycle into new garments"
+          },
+          {
+            "k": "C",
+            "t": "now make up most new clothing"
+          },
+          {
+            "k": "D",
+            "t": "need more water than cotton"
+          }
+        ],
+        "ans": "C",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "which now make up the majority of new clothing"
+        },
+        "why": "\"the majority of new clothing\" = phần lớn quần áo mới.",
+        "wrong": {
+          "A": "Luật yếu được nhắc khi nói về nhuộm vải, không phải nơi sản xuất polyester.",
+          "B": "Không được nói; bài chỉ nói chúng rụng sợi nhựa khi giặt.",
+          "D": "Nước chủ yếu dùng để trồng bông, không phải cho vải tổng hợp."
+        }
+      },
+      {
+        "id": "v-r-02-6",
+        "q": "The word \"it\" in \"sell only a small proportion of it\" (paragraph 3) refers to",
+        "opts": [
+          {
+            "k": "A",
+            "t": "a small proportion"
+          },
+          {
+            "k": "B",
+            "t": "unwanted clothing"
+          },
+          {
+            "k": "C",
+            "t": "a survey"
+          },
+          {
+            "k": "D",
+            "t": "a charity shop"
+          }
+        ],
+        "ans": "B",
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "Although charity shops accept unwanted clothing, they can sell only a small proportion of it."
+        },
+        "why": "'it' chỉ 'unwanted clothing' (danh từ không đếm được, số ít).",
+        "wrong": {
+          "A": "\"proportion of it\" — it không thể chỉ chính proportion.",
+          "C": "Khảo sát ở câu khác.",
+          "D": "Cửa hàng là \"they\"."
+        }
+      },
+      {
+        "id": "v-r-02-7",
+        "q": "What happens to many of the clothes that charity shops cannot sell?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "They are recycled into new clothes."
+          },
+          {
+            "k": "B",
+            "t": "They are sent to other countries."
+          },
+          {
+            "k": "C",
+            "t": "They are given to students."
+          },
+          {
+            "k": "D",
+            "t": "They are returned to the brands."
+          }
+        ],
+        "ans": "B",
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "Much of the rest is exported to developing countries"
+        },
+        "why": "Phần lớn được xuất sang nước đang phát triển.",
+        "wrong": {
+          "A": "Không được nói ở đây.",
+          "C": "Không được nhắc.",
+          "D": "Thu lại quần áo cũ là dịch vụ của một số hãng (đoạn 4), không phải đồ cửa hàng từ thiện."
+        }
+      },
+      {
+        "id": "v-r-02-8",
+        "q": "What do critics think about brands' repair and recycling schemes?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "They are too small to solve the problem."
+          },
+          {
+            "k": "B",
+            "t": "They have already changed the whole industry."
+          },
+          {
+            "k": "C",
+            "t": "They are popular with older people."
+          },
+          {
+            "k": "D",
+            "t": "They are too expensive."
+          }
+        ],
+        "ans": "A",
+        "b": 6.5,
+        "ev": {
+          "p": 3,
+          "s": "Critics argue, however, that these initiatives remain small compared with the overall volume of production."
+        },
+        "why": "Các sáng kiến còn nhỏ so với tổng sản lượng.",
+        "wrong": {
+          "B": "Người phê phán nói sáng kiến còn nhỏ, chưa đổi được ngành.",
+          "C": "Bài nói giới trẻ dùng web đồ cũ, không nói người lớn tuổi.",
+          "D": "Không được nói."
+        }
+      },
+      {
+        "id": "v-r-02-9",
+        "q": "According to critics, real change requires",
+        "opts": [
+          {
+            "k": "A",
+            "t": "charity shops to sell more of what they receive"
+          },
+          {
+            "k": "B",
+            "t": "consumers to buy only second-hand clothes"
+          },
+          {
+            "k": "C",
+            "t": "rules making brands responsible for their waste"
+          },
+          {
+            "k": "D",
+            "t": "more brands to offer repair services"
+          }
+        ],
+        "ans": "C",
+        "b": 6.5,
+        "ev": {
+          "p": 3,
+          "s": "real change will require governments to make producers responsible for the waste their products create"
+        },
+        "why": "Chính phủ buộc nhà sản xuất chịu trách nhiệm về rác thải.",
+        "wrong": {
+          "A": "Không được nói.",
+          "B": "Không ai đề nghị chỉ mua đồ cũ.",
+          "D": "Dịch vụ sửa chữa là sáng kiến mà critics cho là còn quá nhỏ."
+        }
+      },
+      {
+        "id": "v-r-02-10",
+        "q": "What does the writer suggest about buying fewer, better-made clothes?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "It is cheaper from the start."
+          },
+          {
+            "k": "B",
+            "t": "It is recommended by fashion brands."
+          },
+          {
+            "k": "C",
+            "t": "It is only possible for rich people."
+          },
+          {
+            "k": "D",
+            "t": "It saves money over time."
+          }
+        ],
+        "ans": "D",
+        "b": 6,
+        "ev": {
+          "p": 4,
+          "s": "may cost more at first, but it is likely to save money, and resources, in the long run"
+        },
+        "why": "Tốn hơn lúc đầu nhưng tiết kiệm về lâu dài.",
+        "wrong": {
+          "A": "Bài nói tốn hơn lúc đầu.",
+          "B": "Lời khuyên đến từ chuyên gia, không phải các hãng.",
+          "C": "Không được nói."
+        }
+      }
+    ]
+  },
+  {
+    "id": "v-r-03",
+    "kind": "reading",
+    "exams": [
+      "vstep"
+    ],
+    "qtype": "v-r",
+    "level": "C1",
+    "band": 7,
+    "mode": "practice",
+    "title": "Rethinking Intelligence",
+    "instr": "Read the passage and choose the best answer, A, B, C or D, for each question.",
+    "paras": [
+      "For much of the twentieth century, intelligence was regarded as a single, fixed quantity that could be measured by a standardised test and summarised in one number, the IQ score. Schools used such scores to place children in different streams, and employers sometimes relied on them when selecting staff. The underlying assumption was that people were born with a certain amount of intelligence that would remain largely unchanged throughout their lives.",
+      "This view began to be challenged in the 1980s, most famously by the psychologist Howard Gardner. Gardner argued that traditional tests captured only a narrow range of abilities, chiefly linguistic and logical-mathematical skills, while ignoring others such as musical, spatial and interpersonal intelligence. A gifted musician or a skilled diplomat, he pointed out, might perform poorly on an IQ test and yet display remarkable abilities in their own field.",
+      "Gardner's theory proved enormously popular with teachers, many of whom redesigned lessons to appeal to different 'intelligences'. Among researchers, however, its reception was far more cautious. Critics noted that the various intelligences Gardner proposed tend to be correlated with one another, which is what one would expect if they partly reflected a common underlying ability. Moreover, there is little evidence that matching teaching methods to supposed types of intelligence actually improves learning.",
+      "A different challenge came from research on how abilities change over time. Studies have found that average scores on IQ tests rose substantially in many countries during the twentieth century, by roughly three points per decade, a phenomenon known as the Flynn effect. Since human genes could not have changed so quickly, the rise must have been driven by environmental factors, such as better nutrition, longer schooling and more complex everyday environments. This finding undermined the notion that intelligence is simply inherited and unchangeable.",
+      "Today, most psychologists adopt a middle position. They accept that general reasoning ability is real and measurable, and that it predicts certain outcomes, such as academic success, reasonably well. At the same time, they emphasise that it is shaped by experience and that it represents only one of many qualities, including creativity, persistence and social skill, that determine how well people do in life."
+    ],
+    "vi": [
+      "Trong phần lớn thế kỷ 20, trí thông minh được coi là một đại lượng duy nhất, cố định, có thể đo bằng bài kiểm tra chuẩn hoá và tóm gọn trong một con số, điểm IQ. Trường học dùng điểm này để xếp trẻ vào các lớp khác nhau, và nhà tuyển dụng đôi khi dựa vào nó khi chọn nhân viên. Giả định nền tảng là con người sinh ra với một lượng trí thông minh nhất định và lượng đó phần lớn giữ nguyên suốt đời.",
+      "Quan niệm này bắt đầu bị thách thức vào thập niên 1980, nổi tiếng nhất là bởi nhà tâm lý học Howard Gardner. Gardner cho rằng các bài kiểm tra truyền thống chỉ nắm bắt một phạm vi hẹp các năng lực, chủ yếu là ngôn ngữ và logic-toán học, mà bỏ qua những năng lực khác như âm nhạc, không gian và giao tiếp. Ông chỉ ra rằng một nhạc sĩ tài năng hay một nhà ngoại giao giỏi có thể làm bài IQ kém nhưng lại thể hiện năng lực xuất sắc trong lĩnh vực của mình.",
+      "Thuyết của Gardner cực kỳ được giáo viên ưa chuộng, nhiều người thiết kế lại bài học để phù hợp với các 'loại trí thông minh' khác nhau. Tuy nhiên, giới nghiên cứu đón nhận nó thận trọng hơn nhiều. Người phê phán lưu ý rằng các loại trí thông minh Gardner đề xuất có xu hướng tương quan với nhau, đúng như dự đoán nếu chúng phần nào phản ánh một năng lực chung bên dưới. Hơn nữa, có rất ít bằng chứng cho thấy việc điều chỉnh cách dạy theo các loại trí thông minh giả định thật sự cải thiện việc học.",
+      "Một thách thức khác đến từ nghiên cứu về sự thay đổi năng lực theo thời gian. Các nghiên cứu thấy điểm IQ trung bình tăng đáng kể ở nhiều nước trong thế kỷ 20, khoảng ba điểm mỗi thập kỷ, hiện tượng gọi là hiệu ứng Flynn. Vì gen người không thể thay đổi nhanh như vậy, sự gia tăng hẳn do các yếu tố môi trường, như dinh dưỡng tốt hơn, đi học lâu hơn và môi trường sống hằng ngày phức tạp hơn. Phát hiện này làm lung lay quan niệm rằng trí thông minh đơn thuần do di truyền và không thể thay đổi.",
+      "Ngày nay, phần lớn nhà tâm lý học chọn quan điểm trung dung. Họ chấp nhận rằng năng lực suy luận chung là có thật và đo được, và nó dự báo khá tốt một số kết quả như thành công trong học tập. Đồng thời, họ nhấn mạnh rằng nó được định hình bởi trải nghiệm và chỉ là một trong nhiều phẩm chất, gồm sáng tạo, kiên trì và kỹ năng xã hội, quyết định một người thành công đến đâu trong cuộc sống."
+    ],
+    "allow": [
+      "standardised",
+      "IQ",
+      "Gardner",
+      "linguistic",
+      "spatial",
+      "interpersonal",
+      "diplomat",
+      "correlated",
+      "underlying",
+      "Flynn",
+      "phenomenon",
+      "nutrition",
+      "undermined",
+      "notion",
+      "inherited",
+      "persistence",
+      "streams",
+      "logical-mathematical",
+      "reception"
+    ],
+    "items": [
+      {
+        "id": "v-r-03-1",
+        "q": "What was the traditional view of intelligence described in paragraph 1?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "It was a single ability that did not change much."
+          },
+          {
+            "k": "B",
+            "t": "It could not be measured."
+          },
+          {
+            "k": "C",
+            "t": "It could be improved through education."
+          },
+          {
+            "k": "D",
+            "t": "It included musical, spatial and social skills as well."
+          }
+        ],
+        "ans": "A",
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "people were born with a certain amount of intelligence that would remain largely unchanged throughout their lives"
+        },
+        "why": "Quan niệm cũ: một đại lượng duy nhất, cố định suốt đời.",
+        "wrong": {
+          "B": "Quan niệm cũ cho rằng đo được bằng IQ.",
+          "C": "Ngược với quan niệm \"unchanged\".",
+          "D": "Đó là ý của Gardner sau này."
+        }
+      },
+      {
+        "id": "v-r-03-2",
+        "q": "The word \"streams\" in paragraph 1 is closest in meaning to",
+        "opts": [
+          {
+            "k": "A",
+            "t": "subjects on the school timetable"
+          },
+          {
+            "k": "B",
+            "t": "groups based on ability"
+          },
+          {
+            "k": "C",
+            "t": "types of test"
+          },
+          {
+            "k": "D",
+            "t": "rivers"
+          }
+        ],
+        "ans": "B",
+        "b": 7.5,
+        "ev": {
+          "p": 0,
+          "s": "Schools used such scores to place children in different streams"
+        },
+        "why": "Trong ngữ cảnh trường học, 'streams' là các nhóm/lớp xếp theo năng lực.",
+        "wrong": {
+          "A": "Môn học là \"subjects\".",
+          "C": "Bài kiểm tra là thứ dùng để xếp, không phải \"streams\".",
+          "D": "Nghĩa thông dụng nhưng sai ngữ cảnh."
+        },
+        "trap": "Câu từ vựng: chọn nghĩa trong ngữ cảnh, không phải nghĩa thông dụng nhất (dòng suối)."
+      },
+      {
+        "id": "v-r-03-3",
+        "q": "Why does Gardner mention a gifted musician or a skilled diplomat?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to prove that musicians have high IQs"
+          },
+          {
+            "k": "B",
+            "t": "to argue that diplomacy should be taught in schools"
+          },
+          {
+            "k": "C",
+            "t": "to compare two professions"
+          },
+          {
+            "k": "D",
+            "t": "to show that IQ tests miss important abilities"
+          }
+        ],
+        "ans": "D",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "might perform poorly on an IQ test and yet display remarkable abilities in their own field"
+        },
+        "why": "Ví dụ cho thấy IQ bỏ sót những năng lực quan trọng.",
+        "wrong": {
+          "A": "Ngược lại: họ có thể làm bài IQ kém.",
+          "B": "Không được đề xuất.",
+          "C": "Không phải mục đích so sánh nghề."
+        }
+      },
+      {
+        "id": "v-r-03-4",
+        "q": "How did researchers generally respond to Gardner's theory?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "with great enthusiasm"
+          },
+          {
+            "k": "B",
+            "t": "by rejecting IQ tests completely"
+          },
+          {
+            "k": "C",
+            "t": "with more caution than teachers"
+          },
+          {
+            "k": "D",
+            "t": "by testing it in schools"
+          }
+        ],
+        "ans": "C",
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "Among researchers, however, its reception was far more cautious."
+        },
+        "why": "Giới nghiên cứu thận trọng hơn nhiều so với giáo viên.",
+        "wrong": {
+          "A": "Đó là phản ứng của giáo viên.",
+          "B": "Không được nói.",
+          "D": "Không được nói."
+        }
+      },
+      {
+        "id": "v-r-03-5",
+        "q": "According to critics, the fact that Gardner's intelligences are correlated suggests that",
+        "opts": [
+          {
+            "k": "A",
+            "t": "teachers should use different methods for each child"
+          },
+          {
+            "k": "B",
+            "t": "they may partly reflect a general ability"
+          },
+          {
+            "k": "C",
+            "t": "IQ tests are useless"
+          },
+          {
+            "k": "D",
+            "t": "they are completely separate"
+          }
+        ],
+        "ans": "B",
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "which is what one would expect if they partly reflected a common underlying ability"
+        },
+        "why": "Tương quan gợi ý chúng phần nào phản ánh một năng lực chung.",
+        "wrong": {
+          "A": "Câu tiếp theo nói không có bằng chứng phương pháp đó hiệu quả.",
+          "C": "Không được nói.",
+          "D": "Ngược ý; tương quan cho thấy chúng không hoàn toàn tách biệt."
+        }
+      },
+      {
+        "id": "v-r-03-6",
+        "q": "What does the passage say about matching teaching to types of intelligence?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "There is little evidence that it helps."
+          },
+          {
+            "k": "B",
+            "t": "It improves learning mainly for younger children."
+          },
+          {
+            "k": "C",
+            "t": "It was the main recommendation in Gardner's work."
+          },
+          {
+            "k": "D",
+            "t": "It works best when combined with IQ testing."
+          }
+        ],
+        "ans": "A",
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "there is little evidence that matching teaching methods to supposed types of intelligence actually improves learning"
+        },
+        "why": "Ít bằng chứng cho thấy nó cải thiện việc học.",
+        "wrong": {
+          "B": "Bài không nói về trẻ nhỏ; bài nói gần như không có bằng chứng.",
+          "C": "Bài không nói đó là khuyến nghị chính của Gardner.",
+          "D": "Không được nói."
+        }
+      },
+      {
+        "id": "v-r-03-7",
+        "q": "What is the main function of paragraph 4?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to describe the history of the Flynn effect in detail"
+          },
+          {
+            "k": "B",
+            "t": "to support Gardner's theory with new data"
+          },
+          {
+            "k": "C",
+            "t": "to give more evidence against the old view"
+          },
+          {
+            "k": "D",
+            "t": "to explain how IQ tests are designed"
+          }
+        ],
+        "ans": "C",
+        "b": 7.5,
+        "ev": {
+          "p": 3,
+          "s": "This finding undermined the notion that intelligence is simply inherited and unchangeable."
+        },
+        "why": "Đoạn 4 đưa thêm bằng chứng (hiệu ứng Flynn) chống lại quan niệm trí thông minh cố định, di truyền.",
+        "wrong": {
+          "A": "Hiệu ứng Flynn là bằng chứng được dùng, không phải đối tượng kể lịch sử.",
+          "B": "Đoạn 4 là một thách thức KHÁC (\"A different challenge\"), không phải dữ liệu cho Gardner.",
+          "D": "Đoạn này không nói cách thiết kế bài kiểm tra."
+        },
+        "trap": "Câu hỏi chức năng: hỏi đoạn văn làm gì trong lập luận, không hỏi nội dung chi tiết."
+      },
+      {
+        "id": "v-r-03-8",
+        "q": "Which best describes the writer's attitude towards Gardner's theory?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "doubtful about all forms of intelligence testing"
+          },
+          {
+            "k": "B",
+            "t": "generally supportive of using it in schools"
+          },
+          {
+            "k": "C",
+            "t": "more interested in its history than its value"
+          },
+          {
+            "k": "D",
+            "t": "balanced, seeing strengths and weaknesses"
+          }
+        ],
+        "ans": "D",
+        "b": 8,
+        "ev": {
+          "p": 2,
+          "s": "Gardner's theory proved enormously popular with teachers"
+        },
+        "why": "Tác giả ghi nhận sức hút và lý lẽ của thuyết nhưng nêu phản bác của giới nghiên cứu: thái độ cân bằng.",
+        "wrong": {
+          "A": "Đoạn cuối chấp nhận năng lực chung là có thật và đo được.",
+          "B": "Tác giả nêu rằng gần như không có bằng chứng việc dạy theo \"trí thông minh\" giúp học tốt hơn.",
+          "C": "Tác giả đánh giá giá trị của thuyết (bằng chứng, phản bác), không chỉ kể lịch sử."
+        }
+      },
+      {
+        "id": "v-r-03-9",
+        "q": "The word \"undermined\" in paragraph 4 is closest in meaning to",
+        "opts": [
+          {
+            "k": "A",
+            "t": "explained"
+          },
+          {
+            "k": "B",
+            "t": "repeated"
+          },
+          {
+            "k": "C",
+            "t": "weakened"
+          },
+          {
+            "k": "D",
+            "t": "supported"
+          }
+        ],
+        "ans": "C",
+        "b": 7,
+        "ev": {
+          "p": 3,
+          "s": "This finding undermined the notion that intelligence is simply inherited and unchangeable."
+        },
+        "why": "'undermined' = làm suy yếu = 'weakened'.",
+        "wrong": {
+          "A": "Không cùng nghĩa.",
+          "B": "Không cùng nghĩa.",
+          "D": "Nghĩa trái ngược."
+        }
+      },
+      {
+        "id": "v-r-03-10",
+        "q": "Which statement best describes the view of most psychologists today?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "IQ scores are useful mainly for selecting staff."
+          },
+          {
+            "k": "B",
+            "t": "General ability is real but only one factor in success."
+          },
+          {
+            "k": "C",
+            "t": "Gardner's separate intelligences are now widely measured."
+          },
+          {
+            "k": "D",
+            "t": "Intelligence is mostly inherited, though schooling helps a little."
+          }
+        ],
+        "ans": "B",
+        "b": 7.5,
+        "ev": {
+          "p": 4,
+          "s": "it represents only one of many qualities, including creativity, persistence and social skill"
+        },
+        "why": "Năng lực suy luận chung có thật, đo được, nhưng chỉ là một trong nhiều phẩm chất quyết định thành công.",
+        "wrong": {
+          "A": "Việc dùng IQ để tuyển người là chuyện thế kỷ 20 (đoạn 1), không phải quan điểm hiện nay.",
+          "C": "Bài không nói các trí thông minh của Gardner được đo rộng rãi.",
+          "D": "Họ nhấn mạnh nó được định hình bởi trải nghiệm, không phải chủ yếu do di truyền."
+        }
+      }
+    ]
+  }
+]

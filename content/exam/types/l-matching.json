@@ -1,0 +1,25 @@
+{
+  "id": "l-matching",
+  "lesson": [
+    "Đề cho một danh sách (A, B, C…) như ý kiến, đặc điểm, nơi chốn, và một loạt mục (người, ngày, địa điểm). Bạn nối mỗi mục với lựa chọn đúng. Danh sách lựa chọn thường nhiều hơn số mục.",
+    "Các mục đi theo thứ tự lời nói, nhưng các lựa chọn thì không. Người nói diễn đạt lại ý của lựa chọn bằng từ khác.",
+    "Hay gặp ở Phần 2 (giới thiệu các khu, hoạt động) và Phần 3 (nhận xét về các nguồn tài liệu)."
+  ],
+  "steps": [
+    "Đọc trước danh sách lựa chọn, ghi nhớ từ khoá; đọc các mục để biết thứ tự.",
+    "Khi người nói chuyển sang mục mới (thường nhắc tên mục), tập trung vào phần mô tả ngay sau.",
+    "So mô tả với danh sách lựa chọn theo NGHĨA.",
+    "Mục nào chưa chắc, đánh dấu để quay lại khi đã loại bớt lựa chọn."
+  ],
+  "tips": [
+    "Tên mục thường được nói rõ, là mốc để biết đang nói tới mục nào.",
+    "Một lựa chọn có thể bị nhắc cho mục A nhưng lại là đáp án của mục B.",
+    "Học cách diễn đạt khác: 'not suitable for' = 'avoid', 'popular' = 'in high demand'."
+  ],
+  "traps": [
+    "Chọn lựa chọn vì trùng một từ.",
+    "Nhầm sang mục kế tiếp vì không nhận ra người nói đã chuyển mục.",
+    "Nghĩ mỗi lựa chọn chỉ dùng một lần khi đề không nói vậy."
+  ],
+  "time": "khoảng 30–40 giây xem trước"
+}

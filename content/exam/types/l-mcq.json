@@ -1,0 +1,25 @@
+{
+  "id": "l-mcq",
+  "lesson": [
+    "Mỗi câu có câu hỏi và 3 phương án A, B, C; chọn một. Các câu đi theo thứ tự lời nói.",
+    "Thường cả ba phương án đều được NHẮC trong bài nghe, nhưng chỉ một khớp đúng câu hỏi. Hai phương án sai bị người nói bác bỏ, chỉ là kế hoạch cũ, hoặc nói về người/thời điểm khác.",
+    "Khác bài đọc: bạn chỉ nghe một lần, nên phải đọc trước câu hỏi thật kỹ."
+  ],
+  "steps": [
+    "Đọc trước câu hỏi và phương án, gạch chân điểm khác nhau giữa 3 phương án.",
+    "Khi nghe, đánh dấu phương án nào được nhắc và người nói đồng ý hay bác bỏ.",
+    "Chờ người nói chốt ý trước khi chọn; đừng chọn ngay khi nghe trùng từ.",
+    "Nếu lỡ câu, đoán và chuyển tiếp ngay."
+  ],
+  "tips": [
+    "Nghe từ chuyển ý: but, however, actually, in the end, that's not possible.",
+    "Câu hỏi về ý kiến ('What does the speaker think…') cần thái độ, không phải sự việc.",
+    "Phương án được nhắc đầu tiên thường là bẫy."
+  ],
+  "traps": [
+    "Chọn phương án nghe thấy đầu tiên.",
+    "Chọn phương án lặp nguyên văn từ trong bài nghe.",
+    "Nhầm người nói: ý của người A gán cho người B."
+  ],
+  "time": "khoảng 1 phút xem trước mỗi nhóm câu"
+}
