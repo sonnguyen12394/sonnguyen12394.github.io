@@ -5208,7 +5208,7 @@ document.addEventListener('submit',e=>{
   const f=e.target;
   if(f.dataset.form==='chjoin'){ const v=f.querySelector('textarea').value; try{ const o=chRead(v); evc('chin'); return startCh(o.L,o.seed,{s:o.s,n:String(o.n||'Bạn bè').slice(0,24)}); }catch(e){ return toast('Mã thách đấu không đúng. Hãy dán toàn bộ mã (bắt đầu bằng VLT1:).'); } }
   if(f.dataset.form==='wtask'){ const v=f.querySelector('textarea').value; if(!v.trim()) return toast('Bài viết còn trống.'); return wtSave(v); }
-  if(f.dataset.form==='qz'){ const s=ui.qz, it=s.q[s.i], v=f.querySelector('input').value.trim(); if(!v||s.ans) return; const ok=gOk(v,it.accept); return qzAnswer(ok,{text:v,diff:it.diff&&!ok?wordDiff(v,closest(v,it.accept)):''}); }
+  if(f.dataset.form==='qz'){ const s=ui.qz, it=s.q[s.i], v=f.querySelector('input').value.trim(); if(!v||s.ans) return; if(it.check){ const ck=it.check(v); return qzAnswer(ck.ok,{text:v,diff:ck.ok?'':ck.why}); } const ok=gOk(v,it.accept); return qzAnswer(ok,{text:v,diff:it.diff&&!ok?wordDiff(v,closest(v,it.accept)):''}); }   // v32: câu hỏi có hàm chấm riêng (nối câu)
   if(f.dataset.form==='feedback') return fbSave(f);
   if(f.dataset.form==='supercode') return superActivate(f.querySelector('input').value);
   if(f.dataset.form==='lgjoin') return lgJoin(f.querySelector('input').value);
@@ -7051,7 +7051,7 @@ const sEvid = L => { const ts=STASKS.filter(t=>t.lv===L), ei=(st.ei||{})[L]; if(
 function lvVerified(L){ return lchkPass(L)&&wEvid(L)&&!!sEvid(L); }
 const cdPassOnly = L => { const r=cdLevel(L); return r.ok>=CEFR_PASS&&Math.min(...r.gs)>=CEFR_FLOOR; };
 // Kết quả kiểm tra: điểm từng phần, lưu lại để xác nhận cấp.
-const _qzNext31 = qzNext; qzNext = function(){ const s=ui.qz;
+const _qzNext31 = qzNext; qzNext = function(){ const s=ui.qz; if(s&&QZ[s.kind]) st[QZ[s.kind].bag] ||= {};
   if(s&&s.kind==='lchk'&&s.i+1>=s.q.length&&!s.done){ s.i++; s.done=true; s.score=s.res.filter(x=>x.correct).length/Math.max(1,s.res.length); runActive(s.res);
     const by={}; s.q.forEach((it,i)=>{ const r=s.res[i]; if(!r) return; const o=by[it.sk] ||= {ok:0,n:0}; o.n++; if(r.correct) o.ok++; });
     const sec=Object.fromEntries(Object.entries(by).map(([k,o])=>[k,Math.round(100*o.ok/o.n)/100])), pass=s.score>=LCHK_ALL&&Object.values(sec).every(x=>x>=LCHK_SEC);
@@ -7531,6 +7531,84 @@ const _render32a = render; render = function(){ _render32a(); try{ if(ui.view!==
 const _viewTalk32a = viewTalk; viewTalk = function(){ let h=_viewTalk32a(); const L=talkLv(), T=SK_TABS.some(x=>x[0]===ui.talkTab)?ui.talkTab:'hoithoai'; if(T!=='noi') return h;
   const r=(st.ei||{})[L], card=`<button class="unit morei" data-act="eigo" data-lv="${L}"><span class="no">${ico('mic')}</span><span class="t"><strong>Nhắc lại câu · kiểm tra nói ${L}</strong><span class="muted">Nghe một câu (chữ ẩn) rồi nói lại nguyên câu; câu dài dần · ${EI_N} câu</span>${r&&r.asr?`<span class="pill ${r.best>=EI_PASS?'good':'accent'}" style="justify-self:start">${r.best>=EI_PASS?'Đạt':'Đang luyện'} · ${pct(r.best)}</span>`:''}</span></button>`;
   const k=`<h2>Luyện nói ${L}</h2><div class="units">`; return h.includes(k)?h.replace(k,k+card):h; };
+
+/* ---------- 2. Viết có kiểm soát: máy chấm khách quan ----------
+   Bài viết tự do máy không chấm được ý. Nhưng năng lực viết câu (ghép ý bằng từ nối, đổi cấu trúc mà giữ nghĩa) chấm được
+   khách quan, giống dạng “key word transformation” của Cambridge B1–C2. Hai dạng:
+   - Nối câu (A1–B1): ghép hai câu bằng từ nối cho sẵn. Đạt khi có từ nối, giữ ≥ 75% ý của hai câu, không có lỗi hay gặp.
+   - Viết lại câu với từ khoá (A2–C2): điền 2–5 từ có chứa từ khoá để câu mới cùng nghĩa câu gốc; so với danh sách đáp án. */
+const CW_COMB = {
+ A1:[['I have a cat.','I have a dog.','and','I have a cat and a dog.'],['She likes tea.',"She doesn't like coffee.",'but',"She likes tea, but she doesn't like coffee."],
+  ['I am hungry.',"I didn't eat breakfast.",'because',"I am hungry because I didn't eat breakfast."],['It is raining.','We stay at home.','so','It is raining, so we stay at home.'],
+  ['Do you want tea?','Do you want juice?','or','Do you want tea or juice?'],['My brother is tall.','He plays basketball.','and','My brother is tall and he plays basketball.']],
+ A2:[['I finished my homework.','I watched TV.','after','After I finished my homework, I watched TV.'],['He was tired.','He went to bed early.','so','He was tired, so he went to bed early.'],
+  ['I was walking home.','It started to rain.','when','When I was walking home, it started to rain.'],['Wash your hands.','You eat.','before','Wash your hands before you eat.'],
+  ['The shop was closed.','We went to the market.','so','The shop was closed, so we went to the market.'],['I like this phone.','It is too expensive.','but','I like this phone, but it is too expensive.']],
+ B1:[['The hotel was cheap.','It was very clean.','although','Although the hotel was cheap, it was very clean.'],['I met a woman.','She works at the bank.','who','I met a woman who works at the bank.'],
+  ['We bought a new laptop.','It was on sale.','which','We bought a new laptop, which was on sale.'],["You won't pass the exam.",'You study harder.','unless',"You won't pass the exam unless you study harder."],
+  ['I saved money.','I could buy a bike.','so that','I saved money so that I could buy a bike.'],['My mother was cooking.','My father was reading.','while','My mother was cooking while my father was reading.']]};
+// [câu gốc, TỪ KHOÁ, phần đầu, phần cuối, [đáp án…], giải thích]
+const CW_TR = {
+ A2:[['The bus is cheaper than the train.','EXPENSIVE','The train','the bus.',['is more expensive than'],'So sánh hơn với tính từ dài: more + adj + than.'],
+  ['Nobody in my class is taller than Minh.','TALLEST','Minh','in my class.',['is the tallest','is the tallest student','is the tallest person','is the tallest boy'],'So sánh nhất: the + adj-est.'],
+  ["It isn't necessary to bring food.",'HAVE','You','bring food.',["don't have to","do not have to"],'Không cần làm gì: don’t have to + V.'],
+  ['I started working here two years ago.','FOR','I have','two years.',['worked here for','been working here for'],'Hiện tại hoàn thành + for + khoảng thời gian.'],
+  ["Let's go to the beach.",'WHY','','go to the beach?',["why don't we",'why not'],'Gợi ý: Why don’t we + V? / Why not + V?'],
+  ['This is my first visit to Hue.','NEVER','I','Hue before.',['have never visited','have never been to',"'ve never been to","'ve never visited"],'Chưa từng: have never + V3.']],
+ B1:[['Somebody stole my bike yesterday.','WAS','My bike','yesterday.',['was stolen'],'Bị động quá khứ đơn: was/were + V3.'],
+  ['“I am tired,” said Lan.','THAT','Lan said','tired.',['that she was'],'Câu tường thuật: lùi thì am → was, I → she.'],
+  ["I don't have enough money, so I can't buy it.",'IF','I would buy it','enough money.',['if i had'],'Câu điều kiện loại 2: If + quá khứ đơn, would + V.'],
+  ["It's a pity I can't speak French.",'WISH','I','speak French.',['wish i could'],'Ước điều trái hiện tại: wish + could/quá khứ đơn.'],
+  ['The film was so boring that I fell asleep.','SUCH','It was','film that I fell asleep.',['such a boring'],'such + a + adj + N + that…'],
+  ['You must not use your phone in class.','ALLOWED','You','use your phone in class.',['are not allowed to',"aren't allowed to"],'Không được phép: be not allowed to + V.']],
+ B2:[["I'm sure he didn't take the money.","CAN'T",'He','the money.',["can't have taken",'cannot have taken'],'Suy đoán chắc chắn điều không xảy ra trong quá khứ: can’t have + V3.'],
+  ['They are building a new bridge.','BEING','A new bridge','.',['is being built'],'Bị động tiếp diễn: is/are being + V3.'],
+  ['I regret not studying harder.','WISH','I','harder.',['wish i had studied',"wish i'd studied"],'Ước điều trái quá khứ: wish + quá khứ hoàn thành.'],
+  ["It's not worth repairing this old phone.",'POINT',"There's",'this old phone.',['no point repairing','no point in repairing'],'There’s no point (in) + V-ing.'],
+  ["She didn't come because she was ill.",'DUE',"She didn't come",'illness.',['due to her'],'due to + danh từ/cụm danh từ (không theo sau là mệnh đề).'],
+  ['People say that he is very rich.','SAID','He','very rich.',['is said to be'],'Bị động với động từ tường thuật: S + is said to + V.']],
+ C1:[['I had no idea that the shop had closed.','REALISE','Little','the shop had closed.',['did i realise that','did i realize that','did i realise','did i realize'],'Đảo ngữ với Little: Little + trợ động từ + S + V.'],
+  ['As soon as she arrived, the meeting started.','SOONER','No','the meeting started.',['sooner had she arrived than'],'No sooner had S + V3 than…'],
+  ['It was wrong of you to shout at him.',"SHOULDN'T",'You','at him.',["shouldn't have shouted",'should not have shouted'],'Trách điều đã làm: shouldn’t have + V3.'],
+  ['He is likely to win the election.','CHANCES','The','the election are high.',['chances of him winning','chances of his winning'],'The chances of + O/sở hữu + V-ing.'],
+  ['I only understood the problem after reading the report.','UNTIL','It was not','the report that I understood the problem.',['until i read','until i had read',"until i'd read",'until after i read','until i had read'],'Câu chẻ: It was not until… that…'],
+  ['They postponed the concert because of the storm.','PUT','The concert','because of the storm.',['was put off'],'put off = hoãn; bị động: was put off.']],
+ C2:[['Although she is extremely talented, she is very modest.','AS','Talented','is, she is very modest.',['as she'],'Adj + as + S + be, … (nhượng bộ trang trọng).'],
+  ['The government did not consult the public at any stage.','WAS','At no stage','consulted.',['was the public'],'Đảo ngữ sau cụm phủ định: At no stage + trợ động từ + S.'],
+  ['His behaviour surprised everyone.','CAME','His behaviour','everyone.',['came as a surprise to'],'come as a surprise to sb.'],
+  ['It is said that the painting is worth millions.','REPUTED','The painting','millions.',['is reputed to be worth'],'be reputed to be: được cho là.'],
+  ["I didn't mean to offend you.",'INTENTION','I had','you.',['no intention of offending'],'have no intention of + V-ing.'],
+  ['She succeeded only because she worked hard.','OWES','She','hard work.',['owes her success to her','owes her success to'],'owe sth to sth/sb: có được nhờ.']]};
+function cwComb([a,b,use,m]){ const need=[...new Set(ideaWords(a+' '+b).map(ideaStem))].filter(x=>!use.split(' ').map(ideaStem).includes(x));
+  return {t:'typed',sk:'wr',tag:'Nối câu',plain:a+' + '+b,accept:[m],
+    q:`<p class="eyebrow">Nối hai câu thành một, dùng “<b lang="en">${esc(use)}</b>”</p><p class="prompt sent" lang="en">${esc(a)}<br>${esc(b)}</p>`,
+    hint:'Viết cả câu. Có nhiều cách đúng: máy kiểm từ nối, ý của hai câu và lỗi hay gặp.',
+    check:v=>{ const low=' '+nt(v)+' ', has=low.includes(' '+nt(use)+' '), S=new Set(ideaWords(v).map(ideaStem)), cov=need.length?need.filter(x=>S.has(x)).length/need.length:1, errs=grammarHints(v), long=wcount(v)>wcount(a)+wcount(b)+4;
+      const ok=has&&cov>=.75&&!errs.length&&!long; return {ok,why:!has?`Chưa dùng “${use}”.`:cov<.75?'Câu mới thiếu ý của một trong hai câu.':errs.length?errs[0].why:long?'Câu dài quá: ghép gọn, bỏ chủ ngữ lặp nếu được.':''}; },
+    note:'Còn nhiều cách nối đúng khác; đáp án trên là một cách.'}; }
+function cwTr([s,k,pre,post,ans,why]){ const full=ans.flatMap(x=>[x,(pre+' '+x+' '+post).trim()]);
+  return {t:'typed',sk:'wr',tag:'Viết lại câu',plain:s,accept:full,diff:true,
+    q:`<p class="eyebrow">Viết lại câu cho cùng nghĩa, dùng từ khoá <b lang="en">${esc(k)}</b> (không đổi từ khoá)</p><p class="prompt sent" lang="en">${esc(s)}</p><p class="reading" lang="en">${esc(pre)} <span class="blank"></span> ${esc(post)}</p>`,
+    hint:'Gõ 2–5 từ cho chỗ trống, có chứa từ khoá.',note:why}; }
+function cwItems(L,n=8){ const c=(CW_COMB[L]||[]).map(cwComb), t=(CW_TR[L]||[]).map(cwTr); return shuffle([...c,...t]).slice(0,n); }
+st.cw ||= {};
+QZ.cw={bag:'cw',bump:'read',gen:L=>cwItems(L)};
+function startCw(L){ const its=cwItems(L); if(!its.length) return toast('Chưa có bài cho cấp này.'); (st.cw ||= {}); startQuiz('cw',L,its,{title:'Viết câu '+L,label:'Viết câu',eyebrow:L+' · Viết có kiểm soát',back:'talk',backExtra:{talkTab:'viet',talkLv:L},backLabel:'Về Kỹ năng'}); }
+// Kỹ năng · Viết: thẻ “Viết câu” đứng đầu.
+const _viewTalk32c = viewTalk; viewTalk = function(){ let h=_viewTalk32c(); const L=talkLv(), T=SK_TABS.some(x=>x[0]===ui.talkTab)?ui.talkTab:'hoithoai'; if(T!=='viet'||!(CW_COMB[L]||CW_TR[L])) return h;
+  const r=(st.cw||{})[L], n=(CW_COMB[L]||[]).length+(CW_TR[L]||[]).length;
+  const sec=`<section class="stack"><h2>Viết câu ${L} <span class="pill accent">máy chấm</span></h2><p class="hint">${CW_COMB[L]?'Nối hai câu bằng từ nối cho sẵn':''}${CW_COMB[L]&&CW_TR[L]?'; ':''}${CW_TR[L]?'viết lại câu cùng nghĩa với từ khoá cho sẵn (dạng bài thi Cambridge)':''}. Đúng sai rõ ràng, có giải thích.</p><div class="units"><button class="unit morei" data-act="cwgo" data-lv="${L}"><span class="no">${ico('pen')}</span><span class="t"><strong>Viết câu ${L}</strong><span class="muted">8 câu ngẫu nhiên từ ${n} câu</span>${r?`<span class="pill ${r.best>=.8?'good':'accent'}" style="justify-self:start">${r.best>=.8?'Đạt':'Đang luyện'} · ${pct(r.best)}</span>`:''}</span></button></div></section>`;
+  const i=h.indexOf('<section class="stack"><h2>Viết theo đề'); return i>=0?h.slice(0,i)+sec+h.slice(i):h+sec; };
+document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('button'); if(b&&b.dataset.act==='cwgo') startCw(b.dataset.lv); });
+DETAIL_SAFE_ACT.add('cwgo');
+// Bài kiểm tra cấp độ: thêm phần “Viết câu” (4 câu) cho mọi cấp.
+LCHK.wr=['Viết câu',4];
+const _lchkItems32c = lchkItems; lchkItems = function(L){ const its=_lchkItems32c(L), w=cwItems(L,4); return [...its.filter(x=>x.sk==='lang'),...w,...its.filter(x=>x.sk!=='lang')]; };
+QZ.lchk.gen=L=>lchkItems(L);
+// Câu “Tôi có thể…” cho viết câu ở mỗi cấp.
+LVS.forEach(L=>CANDO.push({id:L.toLowerCase()+'-cw',lv:L,grp:'gra',vi:L<'B1'?'Viết câu đúng, nối ý bằng từ nối đơn giản':L<'C1'?'Viết lại câu bằng cấu trúc khác mà giữ nguyên nghĩa':'Dùng cấu trúc nâng cao (đảo ngữ, câu chẻ, bị động phức) để diễn đạt chính xác',en:'Write accurate sentences and paraphrase with different structures',ref:[{t:'cw',v:[L]}]}));
+const _cdActs32c = cdActs; cdActs = function(r,L){ if(r.t==='cw') return r.v.map(l=>({done:cdOk(((st.cw||{})[l]||{}).best), at:`data-act="cwgo" data-lv="${l}"`, t:'Viết câu '+l})); return _cdActs32c(r,L); };
+const _mergeState32c = mergeState; mergeState = function(a,b){ const x=_mergeState32c(a,b); x.cw={...(b.cw||{}),...(a.cw||{})}; x.ei={...(b.ei||{}),...(a.ei||{})}; return x; };
 
 CHANGELOG.unshift({v:31,d:'2026-10-01',t:'Đo đúng cấp CEFR, nói và tương tác thật',items:[
   'Ước tính cấp CEFR cho bài viết và bài nói (máy chép lời khi bạn nói), kèm việc cần làm để lên cấp và kiểm tra bài có bám đề không.',
