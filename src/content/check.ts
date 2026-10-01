@@ -39,10 +39,12 @@ export function levelReport(g: Group, list: Record<string, string>): LevelReport
   const overWords = new Set<string>();
   for (const t of tokens(text)) {
     if (t.proper) continue;
-    total++;
     const w = t.w.toLowerCase();
-    if (allow.has(w)) continue;
     const L = levelOf(w, list);
+    // Từ viết hoa không có trong danh sách (kể cả ở đầu câu, như tên người ký thư) là tên riêng.
+    if (L === null && /^[A-Z]/.test(t.w)) continue;
+    total++;
+    if (allow.has(w)) continue;
     if (L === null || LEVELS.indexOf(L) > cap) { over++; overWords.add(w); }
   }
   return { total, over, overWords: [...overWords].sort(), ratio: total ? over / total : 0 };

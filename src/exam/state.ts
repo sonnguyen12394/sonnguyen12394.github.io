@@ -5,7 +5,7 @@
 import type { ExamId } from './scales.ts';
 import type { Card } from './fsrs.ts';
 
-export const X_V = 1;
+export const X_V = 2;
 
 export interface Attempt {
   id: string;            // id bài (đề thi thử, bộ luyện, bài kiểm tra đầu vào)
@@ -34,6 +34,23 @@ export interface RealScore {
   L: number | null; R: number | null; W: number | null; S: number | null;
 }
 
+// Một câu đã trả lời (để ước tính band từng kỹ năng). b, g lưu kèm phòng khi câu bị gỡ khỏi kho.
+export interface Resp {
+  i: string;             // id câu
+  c: 0 | 1;              // đúng/sai
+  d: number;             // ngày
+  s: 'L' | 'R';
+  b: number;             // độ khó (band) lúc làm
+  g: number;             // xác suất đoán mò
+}
+
+export interface Consent {
+  on: boolean;           // đồng ý gửi thống kê ẩn danh
+  adult: boolean;        // từ 16 tuổi trở lên
+  parent: boolean;       // dưới 16: cha mẹ/người giám hộ đã đồng ý
+  day: number;           // ngày đồng ý (hoặc rút lại)
+}
+
 export interface XState {
   v: number;
   exam: ExamId | '';
@@ -43,14 +60,18 @@ export interface XState {
   attempts: Attempt[];
   nb: Record<string, NbEntry>;
   real: RealScore[];
-  share: boolean;             // đồng ý gửi thống kê ẩn danh (mặc định không)
+  share: boolean;             // đồng ý gửi thống kê ẩn danh (mặc định không); xem consent
+  consent: Consent | null;
+  resp: Resp[];               // các câu Nghe/Đọc đã trả lời gần đây
+  sent: number;               // số lượt đã gửi ẩn danh (để người học biết)
 }
 
 export const EXAMS: ExamId[] = ['ielts-ac', 'ielts-gt', 'vstep'];
 export const ATTEMPT_MAX = 400;
+export const RESP_MAX = 800;
 
 export function freshX(): XState {
-  return { v: X_V, exam: '', target: null, date: null, mins: 30, attempts: [], nb: {}, real: [], share: false };
+  return { v: X_V, exam: '', target: null, date: null, mins: 30, attempts: [], nb: {}, real: [], share: false, consent: null, resp: [], sent: 0 };
 }
 
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
@@ -64,7 +85,7 @@ const skill = (v: unknown): Attempt['skill'] => (['L', 'R', 'W', 'S'].includes(v
 export function migrateX(raw: unknown): XState {
   const x = obj(raw);
   if (typeof x.v !== 'number') return freshX();
-  // (chưa có bản cũ hơn X_V = 1)
+  if (x.v === 1) { x.resp = []; x.consent = null; x.sent = 0; x.v = 2; }   // v1 → v2: nhật ký câu trả lời để ước tính band, đồng ý chia sẻ có kiểm tuổi
   return sanitizeX(x);
 }
 
@@ -75,7 +96,6 @@ export function sanitizeX(raw: unknown): XState {
   out.date = numOrNull(x.date, 0, 1e6);
   if (out.date !== null) out.date = Math.round(out.date);
   out.mins = Math.round(num(x.mins, 5, 600, 30));
-  out.share = x.share === true;
   out.attempts = (Array.isArray(x.attempts) ? x.attempts : []).map(obj).filter(a => idOk(a.id) && exam(a.exam)).slice(-ATTEMPT_MAX).map(a => {
     const total = Math.round(num(a.total, 1, 1000, 1));
     const at: Attempt = {
@@ -99,6 +119,14 @@ export function sanitizeX(raw: unknown): XState {
     if (typeof v.tag === 'string' && v.tag.length <= 24) e.tag = v.tag;
     out.nb[k] = e;
   }
+  const cs = obj(x.consent);
+  out.consent = x.consent && typeof x.consent === 'object'
+    ? { on: cs.on === true, adult: cs.adult === true, parent: cs.parent === true, day: Math.round(num(cs.day, 0, 1e6, 0)) } : null;
+  out.share = !!out.consent && out.consent.on && (out.consent.adult || out.consent.parent);
+  out.sent = Math.round(num(x.sent, 0, 1e7, 0));
+  out.resp = (Array.isArray(x.resp) ? x.resp : []).map(obj).filter(r => idOk(r.i)).slice(-RESP_MAX).map(r => ({
+    i: r.i as string, c: r.c === 1 ? 1 : 0, d: Math.round(num(r.d, 0, 1e6, 0)), s: r.s === 'L' ? 'L' : 'R', b: num(r.b, 0, 9, 5.5), g: num(r.g, 0, 0.5, 0),
+  }));
   out.real = (Array.isArray(x.real) ? x.real : []).map(obj).filter(r => exam(r.exam)).slice(-20).map(r => ({
     exam: exam(r.exam) as ExamId, day: Math.round(num(r.day, 0, 1e6, 0)),
     L: numOrNull(r.L, 0, 10), R: numOrNull(r.R, 0, 10), W: numOrNull(r.W, 0, 10), S: numOrNull(r.S, 0, 10),
@@ -117,9 +145,13 @@ export function mergeX(a0: unknown, b0: unknown): XState {
   for (const [k, e] of Object.entries(a.nb)) { const o = nb[k]; if (!o || e.last >= o.last) nb[k] = e; }
   const rs = new Set<string>();
   const real = [...a.real, ...b.real].filter(r => { const k = JSON.stringify(r); return rs.has(k) ? false : (rs.add(k), true); }).slice(-20);
+  const ks = new Set<string>();
+  const resp = [...a.resp, ...b.resp].filter(r => { const k = `${r.i}|${r.d}|${r.c}`; return ks.has(k) ? false : (ks.add(k), true); })
+    .sort((p, q) => p.d - q.d).slice(-RESP_MAX);
   return {
     ...a,
     exam: a.exam || b.exam, target: a.target ?? b.target, date: a.date ?? b.date,
-    share: a.share, attempts, nb, real,   // đồng ý gửi thống kê là của từng máy
+    share: a.share, consent: a.consent, sent: a.sent,   // đồng ý gửi thống kê là của từng máy
+    attempts, nb, real, resp,
   };
 }

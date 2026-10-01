@@ -6,6 +6,7 @@
 
 ## Có gì
 
+- **Band ước tính (v36):** Nghe, Đọc, Viết, Nói kèm khoảng sai số (độ tin cậy 80%), cấp CEFR, quy đổi IELTS ↔ VSTEP; ghi điểm thi thật; trang độ chính xác (công bố khi đủ 100 cặp mỗi kỹ năng); chia sẻ thống kê ẩn danh tự chọn, có kiểm tuổi.
 - **Ôn thi (v35):** chọn IELTS Academic, IELTS General Training hoặc VSTEP; trang “Cách tính điểm và nguồn” với bảng đổi số câu đúng → band (nguồn IDP/ielts.org), thang VSTEP theo Quyết định 729/QĐ-BGDĐT, CEFR ↔ IELTS ↔ VSTEP, mô hình ước tính và giới hạn của app.
 
 - Từ vựng A1 → C2 và danh sách từ học thuật (AWL), ôn cách quãng để nhớ lâu.
@@ -90,7 +91,7 @@ Tăng `APP_VERSION` trong `app.js` khi phát hành; `npm run build` tự cập n
 
 ## Máy chủ (Supabase)
 
-Thư mục `supabase/` chứa migration của bản v19–v20 (bảng + hàm RPC cho giải đấu tuần, thông báo nhắc học và gom câu báo lỗi; xem báo lỗi bằng `select * from el_admin.flags;`) và Edge Function `el-remind` gửi lời nhắc (pg_cron 15 phút/lần). Khoá VAPID và bí mật cron nằm trong Supabase Vault, không nằm trong repo.
+Thư mục `supabase/` chứa migration của bản v19–v20 và v36 (`el_resp`, `el_item_stat`, `el_pair`: lượt trả lời ẩn danh, thống kê câu tính sẵn mỗi giờ, cặp ước tính – điểm thật; chỉ nhận khi người học đồng ý), (bảng + hàm RPC cho giải đấu tuần, thông báo nhắc học và gom câu báo lỗi; xem báo lỗi bằng `select * from el_admin.flags;`) và Edge Function `el-remind` gửi lời nhắc (pg_cron 15 phút/lần). Khoá VAPID và bí mật cron nằm trong Supabase Vault, không nằm trong repo.
 
 ## Bản quyền
 
