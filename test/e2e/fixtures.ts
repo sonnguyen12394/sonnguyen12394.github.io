@@ -7,6 +7,8 @@ export const test = base.extend<{ errors: string[] }>({
     page.on('pageerror', e => errors.push(String(e)));
     page.on('console', m => { if (m.type() === 'error' && !/fonts\.(googleapis|gstatic)|ERR_FAILED|net::/.test(m.text())) errors.push(m.text()); });
     await page.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+    // Không gọi máy chủ thật trong test: mọi hàm Supabase trả về danh sách rỗng.
+    await page.route(/supabase\.co/, r => r.fulfill({ status: 200, contentType: 'application/json', body: '[]' }));
     await use(errors);
   },
 });

@@ -21,6 +21,36 @@ function setLine(file, re, line) {
   if (out !== s) writeFileSync(P(file), out);
 }
 
+// 0. Nội dung ôn thi: content/exam/**/*.json → data/exam/<gói>.<băm>.json (tải dần theo gói) + src/exam/gen/index.json
+//    (danh sách gói và tham số từng câu, đóng vào mô-đun để ước tính band mà không phải tải gói). Kiểm nội dung ở tools/content-check.ts.
+const QSKILL = q => (q.startsWith('l-') || /^v-l/.test(q) ? 'L' : 'R');
+function walk(d) { if (!existsSync(d)) return []; return readdirSync(d, { withFileTypes: true }).flatMap(e => e.isDirectory() ? walk(join(d, e.name)) : e.name.endsWith('.json') ? [join(d, e.name)] : []).sort(); }
+const groups = walk(P('content/exam')).flatMap(f => { const d = JSON.parse(readFileSync(f, 'utf8')); return Array.isArray(d) ? d : [d]; })
+  .filter(g => g && g.id && Array.isArray(g.items)).sort((a, b) => (a.id < b.id ? -1 : 1));
+const packOf = g => g.mode === 'place' ? 'place' : g.mode === 'mock' ? 'm-' + (/^m-([a-z0-9]+)-/.exec(g.id) || [, 'x'])[1] : 'p-' + g.qtype;
+const packs = {};
+for (const g of groups) (packs[packOf(g)] ||= []).push(g);
+mkdirSync(P('data/exam'), { recursive: true });
+const index = { packs: {}, items: {} };
+const keep = new Set();
+for (const [name, gs] of Object.entries(packs).sort(([a], [b]) => (a < b ? -1 : 1))) {
+  const body = Buffer.from(JSON.stringify(gs));
+  const file = `data/exam/${name}.${hash(body)}.json`;
+  keep.add(file.slice('data/exam/'.length));
+  if (!existsSync(P(file))) writeFileSync(P(file), body);
+  index.packs[name] = { file, groups: gs.length, items: gs.reduce((n, g) => n + g.items.length, 0), qtypes: [...new Set(gs.map(g => g.qtype))].sort(), exams: [...new Set(gs.flatMap(g => g.exams))].sort() };
+  for (const g of gs) for (const it of g.items) index.items[it.id] = [it.b, guessOf(g, it), QSKILL(g.qtype), g.qtype];
+}
+function guessOf(g, it) {
+  if (typeof it.ans === 'string') { const n = (it.opts || g.options || []).length; return n ? Math.round(100 / n) / 100 : 0; }
+  if (Array.isArray(it.ans)) return 0.1;
+  return 0;
+}
+for (const f of readdirSync(P('data/exam'))) if (!keep.has(f)) unlinkSync(P('data/exam/' + f));
+mkdirSync(P('src/exam/gen'), { recursive: true });
+const idxText = JSON.stringify(index) + '\n';
+if (!existsSync(P('src/exam/gen/index.json')) || readFileSync(P('src/exam/gen/index.json'), 'utf8') !== idxText) writeFileSync(P('src/exam/gen/index.json'), idxText);
+
 // 1. Mô-đun ôn thi
 const r = await build({
   entryPoints: [P('src/exam/main.ts')], bundle: true, format: 'esm', target: 'es2020',
@@ -43,4 +73,4 @@ setLine('sw.js', /^const VERSION = .*$/m, `const VERSION = 'vl-v${ver}';`);
 setLine('sw.js', /^const CORE = .*$/m, `const CORE = ['./', 'index.html', 'app.js?v=${ver}', '${examName}', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];`);
 setLine('index.html', /<script src="app\.js\?v=\d+"( defer)?><\/script>/, `<script src="app.js?v=${ver}" defer></script>`);
 
-console.log(`build: ${examName} (${(code.length / 1024).toFixed(1)} KB), bản ${ver}`);
+console.log(`build: ${examName} (${(code.length / 1024).toFixed(1)} KB), bản ${ver}; nội dung ${groups.length} nhóm, ${Object.keys(index.items).length} câu, ${Object.keys(index.packs).length} gói`);

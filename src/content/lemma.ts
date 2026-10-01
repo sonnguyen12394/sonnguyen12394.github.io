@@ -6,7 +6,7 @@ i me my mine you your yours he him his she her hers it its we us our ours they t
 be am is are was were been being have has had having do does did done doing will would shall should can could may might must
 not no yes to of in on at for with from by about as into onto over under up down out off than too very also just only all any some
 each every both either neither other another such much many more most few less least own same so one two three four five six seven eight nine ten
-first second third last next mr mrs ms dr st etc ok okay oh well let`.split(/\s+/));
+first second third last next mr mrs ms dr st etc ok okay oh well let am pm`.split(/\s+/));
 
 // Động từ bất quy tắc và dạng đặc biệt → từ gốc.
 const IRREG: Record<string, string> = {
