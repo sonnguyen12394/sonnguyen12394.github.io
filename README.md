@@ -6,6 +6,7 @@
 
 ## Có gì
 
+- **Kế hoạch và sổ lỗi sai (v38):** lịch từng ngày tới ngày thi (`src/exam/plan.ts`), cảnh báo không kịp kèm đề xuất; sổ lỗi sai ôn theo FSRS-5 (`src/exam/notebook.ts`).
 - **Kiểm tra đầu vào (v37):** Đọc + Nghe thích ứng ≤ 15 phút (mô hình 3PL, ≤ 12 câu mỗi kỹ năng), kho 96 câu band 3–8,5 có giải thích tiếng Việt từng phương án; âm thanh tạo sẵn (`tools/audio.cjs`, Kokoro giọng Anh/Mỹ) trong `a/`. Soát độc lập: `tools/review-export.mjs` → phiên AI khác tự làm → `tools/review-compare.mjs`.
 - **Band ước tính (v36):** Nghe, Đọc, Viết, Nói kèm khoảng sai số (độ tin cậy 80%), cấp CEFR, quy đổi IELTS ↔ VSTEP; ghi điểm thi thật; trang độ chính xác (công bố khi đủ 100 cặp mỗi kỹ năng); chia sẻ thống kê ẩn danh tự chọn, có kiểm tuổi.
 - **Ôn thi (v35):** chọn IELTS Academic, IELTS General Training hoặc VSTEP; trang “Cách tính điểm và nguồn” với bảng đổi số câu đúng → band (nguồn IDP/ielts.org), thang VSTEP theo Quyết định 729/QĐ-BGDĐT, CEFR ↔ IELTS ↔ VSTEP, mô hình ước tính và giới hạn của app.

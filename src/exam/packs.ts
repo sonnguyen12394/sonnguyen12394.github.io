@@ -44,3 +44,13 @@ export async function cleanCache(): Promise<void> {
     for (const k of await c.keys()) { const path = new URL(k.url).pathname; if (/\/data\/exam\//.test(path) && !keep.has(path)) await c.delete(k); }
   } catch { /* không có bộ nhớ đệm: bỏ qua */ }
 }
+
+// Gói chứa một câu (để nạp lại khi ôn sổ lỗi sai): kiểm tra đầu vào, đề thi thử (m-<đề>-…) hoặc gói luyện theo dạng.
+export function packOfItem(id: string): string | undefined {
+  const r = IDX.items[id];
+  if (!r) return undefined;
+  if (id.startsWith('pl-')) return 'place';
+  const m = /^m-([a-z0-9]+)-/.exec(id);
+  if (m) return 'm-' + m[1];
+  return 'p-' + r[3];
+}

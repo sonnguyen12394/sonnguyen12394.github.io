@@ -15,6 +15,9 @@ export interface Host {
   rpc(fn: string, body: unknown): Promise<unknown>; // gọi hàm Supabase (chỉ khi người học đã đồng ý)
   learnerCefr(): Record<'L' | 'S' | 'R' | 'W', string | null>;   // cấp CEFR theo kỹ năng từ phần học nền tảng
   online(): boolean;
+  minutes(): Record<string, number>;                // phút học thật theo ngày (chung cho cả app)
+  addMinutes(m: number): void;                      // cộng phút học của phần ôn thi vào hôm nay
+  markActive(): void;                               // tính hôm nay là ngày có học (chuỗi ngày)
 }
 
 export interface FlagRec {
