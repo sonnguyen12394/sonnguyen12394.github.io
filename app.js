@@ -7607,8 +7607,8 @@ const _viewTalk32c = viewTalk; viewTalk = function(){ let h=_viewTalk32c(); cons
 document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('button'); if(b&&b.dataset.act==='cwgo') startCw(b.dataset.lv); });
 DETAIL_SAFE_ACT.add('cwgo');
 // Bài kiểm tra cấp độ: thêm phần “Viết câu” (4 câu) cho mọi cấp.
-LCHK.wr=['Viết câu',4];
-const _lchkItems32c = lchkItems; lchkItems = function(L){ const its=_lchkItems32c(L), w=cwItems(L,4); return [...its.filter(x=>x.sk==='lang'),...w,...its.filter(x=>x.sk!=='lang')]; };
+LCHK.wr=['Viết câu',6];   // v34: kho ≥ 16 câu mỗi cấp nên rút 6
+const _lchkItems32c = lchkItems; lchkItems = function(L){ const its=_lchkItems32c(L), w=cwItems(L,LCHK.wr[1]); return [...its.filter(x=>x.sk==='lang'),...w,...its.filter(x=>x.sk!=='lang')]; };
 QZ.lchk.gen=L=>lchkItems(L);
 // Câu “Tôi có thể…” cho viết câu ở mỗi cấp.
 LVS.forEach(L=>CANDO.push({id:L.toLowerCase()+'-cw',lv:L,grp:'gra',vi:L<'B1'?'Viết câu đúng, nối ý bằng từ nối đơn giản':L<'C1'?'Viết lại câu bằng cấu trúc khác mà giữ nguyên nghĩa':'Dùng cấu trúc nâng cao (đảo ngữ, câu chẻ, bị động phức) để diễn đạt chính xác',en:'Write accurate sentences and paraphrase with different structures',ref:[{t:'cw',v:[L]}]}));
@@ -7961,6 +7961,64 @@ LR_R.forEach(x=>{ LREAD.push(x); LRD[x.id]=x; });
     {id:'a2-rdlife1',lv:'A2',grp:'rd',grp0:'ski',vi:'Đọc thông báo, quảng cáo, lịch trình và tìm đúng chi tiết',en:'Find specific details in notices, adverts and schedules',ref:[{t:'lr',v:ids('A2',[1,2,6]),n:2}]},
     {id:'a2-rdlife2',lv:'A2',grp:'rd',grp0:'ski',vi:'Hiểu email cá nhân, hướng dẫn trên nhãn sản phẩm và bài đánh giá ngắn',en:'Understand personal emails, product instructions and short reviews',ref:[{t:'lr',v:ids('A2',[3,4,5]),n:2}]}); }
 
+/* ---------- v34 (2): KHO VIẾT CÂU ≥ 16 CÂU MỖI CẤP ----------
+   Trước: A1 6 câu, B2–C2 6 câu, nên bài kiểm tra cấp (rút 4 câu) và bài luyện (8 câu) gặp lại câu cũ sau 1–2 lần, học thuộc được.
+   Nay mỗi cấp ≥ 16 câu. Câu viết lại liệt kê các biến thể đúng (viết tắt, cách nói tương đương) để không chấm sai người viết đúng. */
+CW_COMB.A1.push(
+ ['I like apples.','I like bananas.','and','I like apples and bananas.'],['He is poor.','He is happy.','but','He is poor, but he is happy.'],
+ ['I am tired.','I go to bed.','so','I am tired, so I go to bed.'],['She is happy.','It is her birthday.','because','She is happy because it is her birthday.'],
+ ['Is your bag red?','Is your bag blue?','or','Is your bag red or blue?'],['My house is small.','It has a nice garden.','but','My house is small, but it has a nice garden.'],
+ ['We have a car.',"We don't drive it to work.",'but',"We have a car, but we don't drive it to work."],['The room is dark.','I turn on the light.','so','The room is dark, so I turn on the light.'],
+ ['Tom can swim.','Tom can ride a bike.','and','Tom can swim and ride a bike.'],['I drink water.','I am thirsty.','because','I drink water because I am thirsty.']);
+CW_COMB.A2.push(
+ ['I will call you.','I arrive at the airport.','when','I will call you when I arrive at the airport.'],['I brushed my teeth.','I went to bed.','before','I brushed my teeth before I went to bed.'],
+ ['You can stay with us.','You come to Hanoi.','if','You can stay with us if you come to Hanoi.'],['She was late.','She missed the bus.','because','She was late because she missed the bus.']);
+CW_COMB.B1.push(
+ ['That is the man.','His car was stolen.','whose','That is the man whose car was stolen.'],['This is the café.','We first met there.','where','This is the café where we first met.'],
+ ['Take an umbrella.','It may rain later.','in case','Take an umbrella in case it rains later.'],['He was very tired.','He kept working.','even though','Even though he was very tired, he kept working.']);
+CW_COMB.B2=[
+ ['It was raining heavily.','We went for a walk.','despite','We went for a walk despite the heavy rain.'],['She finished her report.','She went home.','having','Having finished her report, she went home.'],
+ ['My brother loves sport.','I prefer reading.','whereas','My brother loves sport, whereas I prefer reading.'],['He left early.','He wanted to avoid the traffic.','in order to','He left early in order to avoid the traffic.']];
+CW_TR.A2.push(
+ ['The coffee is too hot to drink.','ENOUGH','The coffee','to drink.',["isn't cool enough","is not cool enough","isn't cold enough","is not cold enough"],'not + tính từ + enough = chưa đủ … để (tương đương too + tính từ trái nghĩa).'],
+ ['My sister can play the piano well.','ABLE','My sister','play the piano well.',['is able to'],'can = be able to + V.'],
+ ['Whose book is this?','BELONG','Who does','to?',['this book belong'],'belong to sb: thuộc về ai.'],
+ ['It took us two hours to get there.','SPENT','We','getting there.',['spent two hours'],'spend + thời gian + V-ing.']);
+CW_TR.B1.push(
+ ['I last saw him in May.','SINCE',"I haven't",'May.',['seen him since'],'Hiện tại hoàn thành phủ định + since + mốc thời gian.'],
+ ['Can you tell me where the station is?','KNOW','Do you','the station is?',['know where'],'Câu hỏi gián tiếp: Do you know where + S + V? (không đảo trợ động từ).'],
+ ['It is not necessary for you to come early.','NEED','You','come early.',["don't need to","do not need to","needn't","need not"],'don’t need to / needn’t + V = không cần.'],
+ ['“Please close the door,” the teacher said to me.','ASKED','The teacher','close the door.',['asked me to'],'Tường thuật lời yêu cầu: ask sb to + V.']);
+CW_TR.B2.push(
+ ["I'm sure she has forgotten the meeting.",'MUST','She','the meeting.',['must have forgotten'],'Suy đoán chắc chắn về quá khứ: must have + V3.'],
+ ['He started learning English when he was six.','SINCE','He has been','he was six.',['learning english since'],'have been + V-ing + since: kéo dài từ quá khứ đến nay.'],
+ ['“Why don’t you see a doctor?” she said to me.','ADVISED','She','see a doctor.',['advised me to'],'Tường thuật lời khuyên: advise sb to + V.'],
+ ["I didn't go to the party because I wasn't invited.",'HAD','I would have gone to the party','invited.',['if i had been','had i been'],'Điều kiện loại 3: if + had + V3, would have + V3 (hoặc đảo ngữ Had I been…).'],
+ ['It was such a difficult test that nobody passed.','SO','The test','nobody passed.',['was so difficult that','was so difficult'],'so + tính từ + (that) = such + a + tính từ + danh từ + that.'],
+ ['They made me wait for an hour.','MADE','I','wait for an hour.',['was made to'],'Bị động của make sb do: be made to + V (có “to”).']);
+CW_TR.C1.push(
+ ['I had never seen such a beautiful view.','NEVER','','such a beautiful view.',['never had i seen','never before had i seen'],'Đảo ngữ với Never: Never + had + S + V3.'],
+ ['You can borrow my car, but you must bring it back by six.','LONG','You can borrow my car','you bring it back by six.',['as long as','so long as'],'as long as / so long as = miễn là.'],
+ ["It's possible that he missed the train.",'MAY','He','the train.',['may have missed'],'may have + V3: có lẽ đã (suy đoán quá khứ).'],
+ ['She is proud of her achievements.','PRIDE','She','her achievements.',['takes pride in','takes great pride in','takes a lot of pride in'],'take pride in sth = tự hào về.'],
+ ["I'd rather you didn't smoke here.",'PREFER','I would','smoke here.',['prefer you not to',"prefer it if you didn't",'prefer it if you did not'],'would prefer sb not to + V / would prefer it if + quá khứ đơn.'],
+ ['They will probably cancel the match.','LIKELY','The match','cancelled.',['is likely to be','is very likely to be'],'be likely to + V; bị động: to be + V3.'],
+ ["He didn't apologise at all.",'EVEN','He','apologise.',["didn't even","did not even"],'not even: thậm chí không.'],
+ ["I couldn't have finished the project without your help.",'BEEN',"If it hadn't","your help, I couldn't have finished the project.",['been for'],'If it hadn’t been for + danh từ: nếu không nhờ có.'],
+ ['The meeting was cancelled because the manager was ill.','ACCOUNT','The meeting was cancelled',"the manager's illness.",['on account of'],'on account of = because of + danh từ.'],
+ ['People believe that the castle was built in 1200.','BELIEVED','The castle','built in 1200.',['is believed to have been'],'Bị động với động từ tường thuật, việc đã xảy ra: is believed to have been + V3.']);
+CW_TR.C2.push(
+ ['He only realised his mistake when it was too late.','DID','Only when it was too late','his mistake.',['did he realise','did he realize'],'Đảo ngữ sau Only when…: trợ động từ + S + V.'],
+ ["I don't mind whether we go out or stay in.",'DIFFERENCE','It makes','whether we go out or stay in.',['no difference to me','no difference'],'It makes no difference (to me) whether… = với tôi thế nào cũng được.'],
+ ['She was about to leave when he arrived.','VERGE','She was','leaving when he arrived.',['on the verge of'],'on the verge of + V-ing = sắp sửa.'],
+ ['The plan will certainly fail.','BOUND','The plan','fail.',['is bound to'],'be bound to + V: chắc chắn sẽ.'],
+ ["The news shocked me so much that I couldn't speak.",'LOSS','I was','after hearing the news.',['at a loss for words'],'be at a loss for words: sững sờ không nói nên lời.'],
+ ["It's a shame I didn't take more photos.",'ONLY','If','more photos.',['only i had taken',"only i'd taken"],'If only + quá khứ hoàn thành: tiếc nuối điều đã không làm.'],
+ ["The company's profits fell sharply last year.",'SHARP','There',"in the company's profits last year.",['was a sharp fall','was a sharp drop','was a sharp decline','was a sharp decrease'],'Danh từ hoá: There was a sharp fall in… (văn trang trọng).'],
+ ['He is unlikely to change his mind.','CHANCE','There is little','his mind.',['chance of him changing','chance of his changing','chance that he will change','chance he will change'],'There is little chance of + V-ing / that + mệnh đề.'],
+ ['You should not, under any circumstances, open this door.','ACCOUNT','On no','open this door.',['account should you'],'On no account + trợ động từ + S + V = tuyệt đối không.'],
+ ['We had only just sat down when the phone rang.','HARDLY','','when the phone rang.',['hardly had we sat down'],'Hardly had S + V3 when… = vừa mới … thì.']);
+
 CHANGELOG.unshift({v:31,d:'2026-10-01',t:'Đo đúng cấp CEFR, nói và tương tác thật',items:[
   'Ước tính cấp CEFR cho bài viết và bài nói (máy chép lời khi bạn nói), kèm việc cần làm để lên cấp và kiểm tra bài có bám đề không.',
   'Xác nhận cấp CEFR bằng bài làm: bài kiểm tra cấp độ (nghe, đọc, từ vựng, ngữ pháp), một bài viết và một bài nói ở đúng cấp. Nhãn đổi thành “Ước tính CEFR”; cấp đã đạt theo cách tính cũ cần làm các bước xác nhận này. Ghi được điểm thi thật để so.',
@@ -7977,7 +8035,8 @@ CHANGELOG.unshift({v:33,d:'2026-10-01',t:'Bốn kỹ năng tách riêng, mỗi k
   'Xác nhận cấp theo từng kỹ năng: bài kiểm tra cấp chấm riêng từng phần, mỗi kỹ năng có danh sách việc còn thiếu và nút làm ngay.']});
 CHANGELOG.unshift({v:34,d:'2026-10-01',t:'Đọc đời thường A1–A2, bài kiểm tra cấp tin cậy hơn',items:[
   'Đọc văn bản đời thường A1–A2: 12 bài gồm biển báo, thực đơn, lịch xe buýt, tin nhắn, bưu thiếp, hướng dẫn, thông báo, quảng cáo, email, nhãn thuốc, đánh giá, lịch trình tour. Mỗi bài có câu hỏi và bản dịch.',
-  'Bài kiểm tra cấp tăng từ 24 lên 30 câu: Nghe 10 (một nửa nghe cả hội thoại), Đọc 10 (từ nhiều bài), Viết câu 4, nền tảng 6. Kết quả từng kỹ năng nhờ vậy ổn định hơn.']});
+  'Bài kiểm tra cấp tăng từ 24 lên 32 câu: Nghe 10 (một nửa nghe cả hội thoại), Đọc 10 (từ nhiều bài), Viết câu 6, nền tảng 6. Kết quả từng kỹ năng nhờ vậy ổn định hơn.',
+  'Kho viết câu (nối câu, viết lại câu với từ khoá) từ 6–12 lên 16–20 câu mỗi cấp, nên làm lại không gặp lại câu cũ ngay.']});
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
