@@ -1,0 +1,1447 @@
+[
+  {
+    "id": "pl-l-13",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "A2",
+    "band": 4,
+    "mode": "place",
+    "title": "Doctor's appointment",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Receptionist": "bf_emma",
+      "Man": "bm_lewis"
+    },
+    "script": [
+      {
+        "sp": "Man",
+        "t": "Hello, I'd like to see a doctor, please. I've had a bad headache for three days."
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Dr Patel is busy this morning, but she can see you at two fifteen this afternoon."
+      },
+      {
+        "sp": "Man",
+        "t": "Two fifteen is fine. Thank you."
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Please come ten minutes early and bring your health card."
+      }
+    ],
+    "vi": [
+      "Chào chị, tôi muốn gặp bác sĩ. Tôi bị đau đầu nặng ba ngày rồi.",
+      "Bác sĩ Patel bận sáng nay, nhưng bà có thể khám cho anh lúc hai giờ mười lăm chiều nay.",
+      "Hai giờ mười lăm được ạ. Cảm ơn chị.",
+      "Anh vui lòng đến sớm mười phút và mang thẻ bảo hiểm y tế."
+    ],
+    "items": [
+      {
+        "id": "pl-l-13-a",
+        "q": "What is the man's problem?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "He has a headache."
+          },
+          {
+            "k": "B",
+            "t": "He has a cold."
+          },
+          {
+            "k": "C",
+            "t": "He hurt his back."
+          },
+          {
+            "k": "D",
+            "t": "He has a stomach ache."
+          }
+        ],
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "I've had a bad headache for three days."
+        },
+        "why": "Anh ấy bị đau đầu (headache) ba ngày.",
+        "wrong": {
+          "B": "Không nói bị cảm.",
+          "C": "Không nói đau lưng.",
+          "D": "Không nói đau bụng."
+        }
+      },
+      {
+        "id": "pl-l-13-b",
+        "q": "What time should the man arrive?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "At 2.00"
+          },
+          {
+            "k": "B",
+            "t": "At 2.05"
+          },
+          {
+            "k": "C",
+            "t": "At 2.15"
+          },
+          {
+            "k": "D",
+            "t": "At 3.00"
+          }
+        ],
+        "ans": "B",
+        "b": 4.5,
+        "ev": {
+          "p": 3,
+          "s": "Please come ten minutes early"
+        },
+        "why": "Lịch khám lúc 2 giờ 15, phải đến sớm 10 phút, nên đến lúc 2 giờ 05. Câu này cần tính, không có con số nguyên văn.",
+        "wrong": {
+          "A": "Đến lúc 2 giờ là sớm 15 phút, không phải 10 phút.",
+          "C": "2 giờ 15 là giờ khám, không phải giờ phải có mặt. Bẫy: chọn con số nghe được.",
+          "D": "Không có mốc 3 giờ."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-13.mp3",
+      "dur": 16.5,
+      "voices": [
+        "bf_emma",
+        "bm_lewis"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-14",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B1",
+    "band": 5,
+    "mode": "place",
+    "title": "Apartment viewing",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Agent": "am_adam",
+      "Woman": "af_nicole"
+    },
+    "script": [
+      {
+        "sp": "Agent",
+        "t": "So this is the living room. As you can see, it gets a lot of light in the afternoon."
+      },
+      {
+        "sp": "Woman",
+        "t": "It's lovely. But I noticed the kitchen is quite small."
+      },
+      {
+        "sp": "Agent",
+        "t": "It is, but the rent is lower than most places in this area. It's eight hundred a month, and that includes water and internet."
+      },
+      {
+        "sp": "Woman",
+        "t": "And electricity?"
+      },
+      {
+        "sp": "Agent",
+        "t": "No, you'd pay that separately. The flat is available from the first of June."
+      }
+    ],
+    "vi": [
+      "Đây là phòng khách. Như chị thấy, buổi chiều phòng rất sáng.",
+      "Đẹp quá. Nhưng tôi thấy bếp khá nhỏ.",
+      "Đúng vậy, nhưng tiền thuê thấp hơn hầu hết các chỗ trong khu này. Tám trăm một tháng, đã gồm nước và internet.",
+      "Còn tiền điện?",
+      "Không, tiền điện chị trả riêng. Căn hộ trống từ ngày một tháng Sáu."
+    ],
+    "items": [
+      {
+        "id": "pl-l-14-a",
+        "q": "What does the woman not like about the flat?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "The living room is dark."
+          },
+          {
+            "k": "B",
+            "t": "The kitchen is small."
+          },
+          {
+            "k": "C",
+            "t": "The rent is high."
+          },
+          {
+            "k": "D",
+            "t": "There is no internet."
+          }
+        ],
+        "ans": "B",
+        "b": 4.5,
+        "ev": {
+          "p": 1,
+          "s": "But I noticed the kitchen is quite small."
+        },
+        "why": "Cô ấy chê bếp khá nhỏ.",
+        "wrong": {
+          "A": "Phòng khách rất sáng.",
+          "C": "Tiền thuê thấp hơn hầu hết các chỗ trong khu.",
+          "D": "Tiền thuê đã gồm internet."
+        }
+      },
+      {
+        "id": "pl-l-14-b",
+        "q": "What is NOT included in the rent?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Water"
+          },
+          {
+            "k": "B",
+            "t": "Internet"
+          },
+          {
+            "k": "C",
+            "t": "Electricity"
+          },
+          {
+            "k": "D",
+            "t": "The kitchen"
+          }
+        ],
+        "ans": "C",
+        "b": 5,
+        "ev": {
+          "p": 4,
+          "s": "No, you'd pay that separately."
+        },
+        "why": "Hỏi về tiền điện thì người môi giới nói \"No, you'd pay that separately\" = trả riêng.",
+        "wrong": {
+          "A": "Nước đã gồm trong tiền thuê.",
+          "B": "Internet đã gồm trong tiền thuê.",
+          "D": "Bếp là một phần của căn hộ, không phải khoản phí."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-14.mp3",
+      "dur": 22.4,
+      "voices": [
+        "am_adam",
+        "af_nicole"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-15",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B2",
+    "band": 6,
+    "mode": "place",
+    "title": "Library induction",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Librarian": "af_sky"
+    },
+    "script": [
+      {
+        "sp": "Librarian",
+        "t": "Welcome to the university library. Before you start your assignments, there are a few things you should know."
+      },
+      {
+        "sp": "Librarian",
+        "t": "First, most journals are now available online, so you rarely need to visit the third floor where the printed copies are kept."
+      },
+      {
+        "sp": "Librarian",
+        "t": "Second, the quiet study rooms on the second floor must be booked in advance through the website, and you can book a maximum of three hours a day."
+      },
+      {
+        "sp": "Librarian",
+        "t": "Finally, if you can't find a book you need, don't buy it. Fill in a request form, and we'll try to get a copy from another library."
+      }
+    ],
+    "vi": [
+      "Chào mừng các bạn đến thư viện trường. Trước khi bắt đầu làm bài, có vài điều các bạn nên biết.",
+      "Thứ nhất, phần lớn tạp chí nay đã có bản trực tuyến, nên các bạn hiếm khi cần lên tầng ba, nơi giữ bản in.",
+      "Thứ hai, các phòng học yên tĩnh ở tầng hai phải đặt trước trên trang web, và mỗi ngày đặt tối đa ba giờ.",
+      "Cuối cùng, nếu không tìm thấy cuốn sách cần, đừng mua. Hãy điền phiếu yêu cầu, chúng tôi sẽ cố mượn bản từ thư viện khác."
+    ],
+    "items": [
+      {
+        "id": "pl-l-15-a",
+        "q": "How can students use a quiet study room?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Just arrive and use any free room"
+          },
+          {
+            "k": "B",
+            "t": "Book online beforehand"
+          },
+          {
+            "k": "C",
+            "t": "Ask at the third floor desk"
+          },
+          {
+            "k": "D",
+            "t": "Fill in a request form"
+          }
+        ],
+        "ans": "B",
+        "b": 5.5,
+        "ev": {
+          "p": 2,
+          "s": "must be booked in advance through the website"
+        },
+        "why": "Phòng học yên tĩnh phải đặt trước trên trang web.",
+        "wrong": {
+          "A": "Phải đặt trước, không đến là dùng.",
+          "C": "Tầng ba là nơi giữ tạp chí bản in.",
+          "D": "Phiếu yêu cầu dùng để mượn sách từ thư viện khác."
+        }
+      },
+      {
+        "id": "pl-l-15-b",
+        "q": "What does the librarian advise students to do if a book is not available?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Buy their own copy"
+          },
+          {
+            "k": "B",
+            "t": "Look for it online"
+          },
+          {
+            "k": "C",
+            "t": "Ask the library to borrow it from elsewhere"
+          },
+          {
+            "k": "D",
+            "t": "Use the printed journals instead"
+          }
+        ],
+        "ans": "C",
+        "b": 6,
+        "ev": {
+          "p": 3,
+          "s": "Fill in a request form, and we'll try to get a copy from another library."
+        },
+        "why": "Điền phiếu yêu cầu để thư viện mượn bản từ thư viện khác.",
+        "wrong": {
+          "A": "\"don't buy it\" = đừng mua.",
+          "B": "Bản trực tuyến được nhắc cho tạp chí, không phải cho sách thiếu.",
+          "D": "Tạp chí in không thay cho sách thiếu."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-15.mp3",
+      "dur": 27,
+      "voices": [
+        "af_sky"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-16",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B2",
+    "band": 6,
+    "mode": "place",
+    "title": "Changing jobs",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Tom": "bm_george",
+      "Hoa": "bf_isabella"
+    },
+    "script": [
+      {
+        "sp": "Tom",
+        "t": "I heard you've been offered a job in Singapore. Are you going to take it?"
+      },
+      {
+        "sp": "Hoa",
+        "t": "I'm still thinking about it. The salary is much better, and it's a great company."
+      },
+      {
+        "sp": "Tom",
+        "t": "So what's stopping you?"
+      },
+      {
+        "sp": "Hoa",
+        "t": "Mainly my parents. They're getting older, and I'd only be able to visit them two or three times a year. Money isn't everything."
+      },
+      {
+        "sp": "Tom",
+        "t": "Could you ask the company if you could work from Vietnam for part of the year?"
+      },
+      {
+        "sp": "Hoa",
+        "t": "That's actually not a bad idea. I'll ask them tomorrow."
+      }
+    ],
+    "vi": [
+      "Nghe nói cậu được mời làm việc ở Singapore. Cậu có nhận không?",
+      "Mình vẫn đang nghĩ. Lương tốt hơn nhiều, và đó là một công ty rất tốt.",
+      "Vậy điều gì làm cậu chần chừ?",
+      "Chủ yếu là bố mẹ mình. Bố mẹ đang già đi, và mình chỉ về thăm được hai, ba lần một năm. Tiền không phải là tất cả.",
+      "Cậu có thể hỏi công ty cho làm việc từ Việt Nam một phần trong năm không?",
+      "Ý đó thật ra không tồi. Mai mình sẽ hỏi họ."
+    ],
+    "items": [
+      {
+        "id": "pl-l-16-a",
+        "q": "What is Hoa's main reason for not accepting the job yet?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "The salary is too low."
+          },
+          {
+            "k": "B",
+            "t": "She does not like the company."
+          },
+          {
+            "k": "C",
+            "t": "She is worried about being far from her parents."
+          },
+          {
+            "k": "D",
+            "t": "She cannot get a visa."
+          }
+        ],
+        "ans": "C",
+        "b": 6,
+        "ev": {
+          "p": 3,
+          "s": "Mainly my parents."
+        },
+        "why": "\"Mainly my parents\": bố mẹ đang già và cô chỉ về thăm được vài lần một năm.",
+        "wrong": {
+          "A": "Lương \"much better\" = tốt hơn nhiều.",
+          "B": "Cô khen \"a great company\".",
+          "D": "Không nhắc đến thị thực."
+        }
+      },
+      {
+        "id": "pl-l-16-b",
+        "q": "What will Hoa do tomorrow?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Accept the job in Singapore"
+          },
+          {
+            "k": "B",
+            "t": "Ask if she can work remotely for some of the year"
+          },
+          {
+            "k": "C",
+            "t": "Visit her parents"
+          },
+          {
+            "k": "D",
+            "t": "Refuse the offer"
+          }
+        ],
+        "ans": "B",
+        "b": 6.5,
+        "ev": {
+          "p": 5,
+          "s": "That's actually not a bad idea. I'll ask them tomorrow."
+        },
+        "why": "Cô đồng ý với ý của Tom và sẽ hỏi công ty cho làm việc từ Việt Nam một phần trong năm.",
+        "wrong": {
+          "A": "Cô chưa quyết định nhận việc.",
+          "C": "Không nói mai về thăm bố mẹ.",
+          "D": "Cô không nói sẽ từ chối."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-16.mp3",
+      "dur": 28.6,
+      "voices": [
+        "bm_george",
+        "bf_isabella"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-17",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "place",
+    "title": "Talk: a local campaign",
+    "instr": "Listen to part of a talk and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Speaker": "am_michael"
+    },
+    "script": [
+      {
+        "sp": "Speaker",
+        "t": "Many people believe that recycling is the answer to plastic pollution. Unfortunately, only a small proportion of plastic is actually recycled, and some types can't be recycled at all."
+      },
+      {
+        "sp": "Speaker",
+        "t": "That's why our campaign focuses on reducing the amount of plastic we use in the first place."
+      },
+      {
+        "sp": "Speaker",
+        "t": "In our town, we persuaded twenty cafés to give a discount to customers who bring their own cups. Within six months, the number of paper cups with plastic lids thrown away in the town centre fell by almost half."
+      }
+    ],
+    "vi": [
+      "Nhiều người tin rằng tái chế là lời giải cho ô nhiễm nhựa. Đáng tiếc là chỉ một phần nhỏ nhựa thật sự được tái chế, và một số loại hoàn toàn không tái chế được.",
+      "Vì vậy chiến dịch của chúng tôi tập trung vào việc giảm lượng nhựa ta dùng ngay từ đầu.",
+      "Ở thị trấn của chúng tôi, chúng tôi thuyết phục được hai mươi quán cà phê giảm giá cho khách tự mang cốc. Trong vòng sáu tháng, số cốc giấy có nắp nhựa bị vứt ở trung tâm thị trấn giảm gần một nửa."
+    ],
+    "items": [
+      {
+        "id": "pl-l-17-a",
+        "q": "What is the main aim of the speaker's campaign?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "To recycle more types of plastic"
+          },
+          {
+            "k": "B",
+            "t": "To use less plastic"
+          },
+          {
+            "k": "C",
+            "t": "To close cafés that use plastic"
+          },
+          {
+            "k": "D",
+            "t": "To replace paper cups with plastic ones"
+          }
+        ],
+        "ans": "B",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "our campaign focuses on reducing the amount of plastic we use in the first place"
+        },
+        "why": "Chiến dịch tập trung giảm lượng nhựa sử dụng ngay từ đầu.",
+        "wrong": {
+          "A": "Người nói chỉ ra tái chế KHÔNG phải lời giải đủ. Bẫy: ý được nêu để bác bỏ.",
+          "C": "Họ hợp tác với quán cà phê, không đóng cửa quán.",
+          "D": "Ngược với mục tiêu."
+        }
+      },
+      {
+        "id": "pl-l-17-b",
+        "q": "What was the result of the café discount?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Twenty new cafés opened."
+          },
+          {
+            "k": "B",
+            "t": "Cafés sold half as many drinks."
+          },
+          {
+            "k": "C",
+            "t": "Far fewer disposable cups were thrown away."
+          },
+          {
+            "k": "D",
+            "t": "Customers stopped using plastic lids at home."
+          }
+        ],
+        "ans": "C",
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "the number of paper cups with plastic lids thrown away in the town centre fell by almost half"
+        },
+        "why": "Số cốc giấy có nắp nhựa bị vứt giảm gần một nửa: ít cốc dùng một lần bị vứt hơn nhiều.",
+        "wrong": {
+          "A": "Hai mươi là số quán tham gia, không phải quán mới mở.",
+          "B": "Giảm một nửa là số cốc bị vứt, không phải số đồ uống bán ra.",
+          "D": "Không nói về thói quen ở nhà."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-17.mp3",
+      "dur": 32,
+      "voices": [
+        "am_michael"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-18",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "C1",
+    "band": 7,
+    "mode": "place",
+    "title": "Seminar: online learning",
+    "instr": "Listen to part of a seminar and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Tutor": "bf_emma",
+      "Student": "am_adam"
+    },
+    "script": [
+      {
+        "sp": "Tutor",
+        "t": "So, what did you find in your research on online courses?"
+      },
+      {
+        "sp": "Student",
+        "t": "Well, the completion rates were surprisingly low. In most of the studies I looked at, fewer than one in ten people who enrolled actually finished."
+      },
+      {
+        "sp": "Tutor",
+        "t": "Did that mean the courses themselves were poor?"
+      },
+      {
+        "sp": "Student",
+        "t": "Not necessarily. Many people signed up just to look at one or two topics, so they never intended to finish. When researchers looked only at learners who said they planned to complete the course, the figure was much higher, around forty percent."
+      },
+      {
+        "sp": "Tutor",
+        "t": "That's an important distinction. It suggests that completion rates on their own can be quite misleading."
+      }
+    ],
+    "vi": [
+      "Vậy em tìm được gì trong nghiên cứu về các khoá học trực tuyến?",
+      "Dạ, tỉ lệ hoàn thành thấp đến bất ngờ. Trong phần lớn các nghiên cứu em xem, chưa đến một phần mười người đăng ký thật sự học xong.",
+      "Như vậy có nghĩa là bản thân các khoá học kém sao?",
+      "Không hẳn ạ. Nhiều người đăng ký chỉ để xem một hai chủ đề, nên họ chưa bao giờ có ý định học xong. Khi các nhà nghiên cứu chỉ xét người học nói rằng họ định hoàn thành khoá học, con số cao hơn nhiều, khoảng bốn mươi phần trăm.",
+      "Đó là một phân biệt quan trọng. Nó cho thấy chỉ nhìn tỉ lệ hoàn thành có thể khá sai lệch."
+    ],
+    "items": [
+      {
+        "id": "pl-l-18-a",
+        "q": "According to the student, why did many people not finish the courses?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "The courses were badly designed."
+          },
+          {
+            "k": "B",
+            "t": "They only wanted to study part of the course."
+          },
+          {
+            "k": "C",
+            "t": "The courses were too expensive."
+          },
+          {
+            "k": "D",
+            "t": "They did not have enough time."
+          }
+        ],
+        "ans": "B",
+        "b": 7,
+        "ev": {
+          "p": 3,
+          "s": "Many people signed up just to look at one or two topics, so they never intended to finish."
+        },
+        "why": "Nhiều người đăng ký chỉ để xem một hai chủ đề, không định học hết: họ chỉ muốn học một phần.",
+        "wrong": {
+          "A": "Sinh viên trả lời \"Not necessarily\" khi được hỏi khoá học có kém không.",
+          "C": "Không nhắc đến học phí.",
+          "D": "Không nhắc đến thiếu thời gian."
+        }
+      },
+      {
+        "id": "pl-l-18-b",
+        "q": "What point does the tutor make at the end?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Online courses should be shorter."
+          },
+          {
+            "k": "B",
+            "t": "Forty percent is a disappointing figure."
+          },
+          {
+            "k": "C",
+            "t": "Completion rates alone may give a false picture."
+          },
+          {
+            "k": "D",
+            "t": "Most learners intend to finish their courses."
+          }
+        ],
+        "ans": "C",
+        "b": 7.5,
+        "ev": {
+          "p": 4,
+          "s": "completion rates on their own can be quite misleading"
+        },
+        "why": "\"misleading\" = gây hiểu sai; chỉ nhìn tỉ lệ hoàn thành có thể cho bức tranh sai.",
+        "wrong": {
+          "A": "Giảng viên không đề nghị rút ngắn khoá học.",
+          "B": "Giảng viên không đánh giá con số 40%.",
+          "D": "Sinh viên nói nhiều người KHÔNG định học xong."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-18.mp3",
+      "dur": 33.8,
+      "voices": [
+        "bf_emma",
+        "am_adam"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-19",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "C1",
+    "band": 7.5,
+    "mode": "place",
+    "title": "Lecture: memory and smell",
+    "instr": "Listen to part of a lecture and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Lecturer": "af_sarah"
+    },
+    "script": [
+      {
+        "sp": "Lecturer",
+        "t": "It's often observed that smells can bring back memories with remarkable intensity, more so than sights or sounds."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "One explanation lies in the structure of the brain. Signals from the nose travel directly to areas involved in emotion and memory, whereas information from the eyes and ears passes through other regions first."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "It's worth noting, though, that memories triggered by smell are not necessarily more accurate. People feel very confident about them, but when researchers have checked the details against records, they've been just as likely to contain errors as other memories."
+      }
+    ],
+    "vi": [
+      "Người ta thường nhận thấy mùi hương có thể gợi lại ký ức mạnh mẽ đáng kinh ngạc, mạnh hơn hình ảnh hay âm thanh.",
+      "Một cách giải thích nằm ở cấu trúc của não. Tín hiệu từ mũi đi thẳng đến những vùng liên quan đến cảm xúc và trí nhớ, còn thông tin từ mắt và tai đi qua những vùng khác trước.",
+      "Tuy nhiên cần lưu ý rằng ký ức do mùi gợi lên không hẳn chính xác hơn. Người ta rất tự tin về chúng, nhưng khi các nhà nghiên cứu đối chiếu chi tiết với hồ sơ, chúng cũng hay sai như những ký ức khác."
+    ],
+    "items": [
+      {
+        "id": "pl-l-19-a",
+        "q": "How does the lecturer explain the strength of smell memories?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Smells are processed more slowly than sounds."
+          },
+          {
+            "k": "B",
+            "t": "Smell signals go straight to brain areas linked to emotion and memory."
+          },
+          {
+            "k": "C",
+            "t": "People notice smells more than sights."
+          },
+          {
+            "k": "D",
+            "t": "Smell memories are formed in childhood."
+          }
+        ],
+        "ans": "B",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "Signals from the nose travel directly to areas involved in emotion and memory"
+        },
+        "why": "Tín hiệu từ mũi đi thẳng đến vùng não liên quan đến cảm xúc và trí nhớ.",
+        "wrong": {
+          "A": "Bài không nói mùi được xử lý chậm hơn.",
+          "C": "Bài không so sánh mức độ chú ý.",
+          "D": "Không nhắc đến tuổi thơ."
+        }
+      },
+      {
+        "id": "pl-l-19-b",
+        "q": "What does research show about memories triggered by smell?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "They are more accurate than other memories."
+          },
+          {
+            "k": "B",
+            "t": "People are less sure about them."
+          },
+          {
+            "k": "C",
+            "t": "They contain as many mistakes as other memories."
+          },
+          {
+            "k": "D",
+            "t": "They cannot be checked against records."
+          }
+        ],
+        "ans": "C",
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "they've been just as likely to contain errors as other memories"
+        },
+        "why": "\"just as likely to contain errors\" = cũng hay sai như những ký ức khác.",
+        "wrong": {
+          "A": "Giảng viên nói chúng KHÔNG hẳn chính xác hơn.",
+          "B": "Ngược lại, người ta rất tự tin về chúng.",
+          "D": "Các nhà nghiên cứu đã đối chiếu với hồ sơ."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-19.mp3",
+      "dur": 33,
+      "voices": [
+        "af_sarah"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-20",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "C1",
+    "band": 8,
+    "mode": "place",
+    "title": "Discussion: city cycling policy",
+    "instr": "Listen to a discussion and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Host": "bm_lewis",
+      "Planner": "af_nicole"
+    },
+    "script": [
+      {
+        "sp": "Host",
+        "t": "Your city introduced protected cycle lanes three years ago. Critics said they would cause traffic chaos. Did they?"
+      },
+      {
+        "sp": "Planner",
+        "t": "In the first few months, journey times for drivers did increase slightly on a couple of routes. But that settled down quite quickly, partly because some people who used to drive short distances switched to cycling."
+      },
+      {
+        "sp": "Host",
+        "t": "So the critics were simply wrong?"
+      },
+      {
+        "sp": "Planner",
+        "t": "I wouldn't put it that way. Their concerns were reasonable, and we adjusted traffic lights in response to them. What we underestimated was how many people wanted to cycle but felt unsafe doing so without a physical barrier."
+      }
+    ],
+    "vi": [
+      "Thành phố của chị làm làn xe đạp có rào chắn từ ba năm trước. Người phản đối nói nó sẽ gây hỗn loạn giao thông. Có đúng vậy không?",
+      "Trong vài tháng đầu, thời gian di chuyển của người lái ô tô có tăng chút ít trên một vài tuyến. Nhưng tình hình ổn định khá nhanh, một phần vì một số người trước đây lái xe đi quãng ngắn đã chuyển sang đạp xe.",
+      "Vậy là người phản đối đơn giản là đã sai?",
+      "Tôi sẽ không nói như vậy. Lo ngại của họ có lý, và chúng tôi đã chỉnh đèn giao thông để đáp lại. Điều chúng tôi đánh giá thấp là có bao nhiêu người muốn đạp xe nhưng thấy không an toàn khi không có rào chắn."
+    ],
+    "items": [
+      {
+        "id": "pl-l-20-a",
+        "q": "What happened to driving times after the cycle lanes were introduced?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "They became much longer on all routes."
+          },
+          {
+            "k": "B",
+            "t": "They rose a little at first, then returned to normal."
+          },
+          {
+            "k": "C",
+            "t": "They became shorter immediately."
+          },
+          {
+            "k": "D",
+            "t": "They have continued to increase."
+          }
+        ],
+        "ans": "B",
+        "b": 7.5,
+        "ev": {
+          "p": 1,
+          "s": "journey times for drivers did increase slightly on a couple of routes. But that settled down quite quickly"
+        },
+        "why": "Lúc đầu thời gian tăng chút ít trên vài tuyến, rồi \"settled down quite quickly\" = ổn định lại khá nhanh.",
+        "wrong": {
+          "A": "Chỉ tăng chút ít (slightly) trên vài tuyến, không phải nhiều và trên mọi tuyến.",
+          "C": "Ban đầu tăng chứ không giảm ngay.",
+          "D": "Tình hình đã ổn định."
+        }
+      },
+      {
+        "id": "pl-l-20-b",
+        "q": "What is the planner's attitude to the critics?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "The planner thinks the critics were completely wrong."
+          },
+          {
+            "k": "B",
+            "t": "The planner accepts that the critics' worries were sensible."
+          },
+          {
+            "k": "C",
+            "t": "The planner ignored the critics' concerns."
+          },
+          {
+            "k": "D",
+            "t": "The planner agrees the lanes should be removed."
+          }
+        ],
+        "ans": "B",
+        "b": 8,
+        "ev": {
+          "p": 3,
+          "s": "Their concerns were reasonable, and we adjusted traffic lights in response to them."
+        },
+        "why": "\"Their concerns were reasonable\" = lo ngại của họ có lý; chị còn chỉnh đèn giao thông để đáp lại.",
+        "wrong": {
+          "A": "Chị bác câu hỏi \"đã sai\" (I wouldn't put it that way).",
+          "C": "Chị đã điều chỉnh đèn giao thông theo lo ngại của họ.",
+          "D": "Chị không đề nghị bỏ làn xe đạp."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-20.mp3",
+      "dur": 40.1,
+      "voices": [
+        "bm_lewis",
+        "af_nicole"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-21",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "C2",
+    "band": 8.5,
+    "mode": "place",
+    "title": "Lecture: evidence in history",
+    "instr": "Listen to part of a lecture and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Lecturer": "bm_george"
+    },
+    "script": [
+      {
+        "sp": "Lecturer",
+        "t": "When we read a historical document, it's tempting to treat it as a window onto the past. A more cautious view is that it's a window onto what its author wanted, or was able, to record."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Consider the tax records of a medieval town. They tell us a great deal about who owned property, but almost nothing about those who owned none, who were, in many places, the majority."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "The absence of evidence, in other words, is itself a kind of evidence. Historians who ignore it risk mistaking the experience of a privileged few for the life of an entire society."
+      }
+    ],
+    "vi": [
+      "Khi đọc một tài liệu lịch sử, ta dễ coi nó như một ô cửa nhìn vào quá khứ. Một cách nhìn thận trọng hơn là nó là ô cửa nhìn vào những gì tác giả muốn, hoặc có thể, ghi lại.",
+      "Hãy xem sổ thuế của một thị trấn thời trung cổ. Chúng cho biết rất nhiều về người có tài sản, nhưng gần như không nói gì về những người không có gì, mà ở nhiều nơi họ lại là số đông.",
+      "Nói cách khác, sự thiếu vắng bằng chứng tự nó là một loại bằng chứng. Nhà sử học nào bỏ qua điều đó có nguy cơ nhầm trải nghiệm của một nhóm nhỏ có đặc quyền với cuộc sống của cả một xã hội."
+    ],
+    "allow": [
+      "medieval"
+    ],
+    "items": [
+      {
+        "id": "pl-l-21-a",
+        "q": "Why does the lecturer mention medieval tax records?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "To show they are the most reliable historical source"
+          },
+          {
+            "k": "B",
+            "t": "To illustrate how records can leave out large groups of people"
+          },
+          {
+            "k": "C",
+            "t": "To explain how taxes were collected"
+          },
+          {
+            "k": "D",
+            "t": "To prove that most people owned property"
+          }
+        ],
+        "ans": "B",
+        "b": 8,
+        "ev": {
+          "p": 1,
+          "s": "but almost nothing about those who owned none, who were, in many places, the majority"
+        },
+        "why": "Sổ thuế là ví dụ cho việc tài liệu bỏ sót cả một nhóm lớn: người không có tài sản, mà họ lại là số đông.",
+        "wrong": {
+          "A": "Giảng viên dùng ví dụ để chỉ ra giới hạn của tài liệu, không phải độ tin cậy.",
+          "C": "Bài không giải thích cách thu thuế.",
+          "D": "Ngược lại, ở nhiều nơi số đông không có tài sản."
+        }
+      },
+      {
+        "id": "pl-l-21-b",
+        "q": "What does the lecturer mean by 'the absence of evidence is itself a kind of evidence'?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Historians should only trust written records."
+          },
+          {
+            "k": "B",
+            "t": "What is missing from the records tells us something about the past."
+          },
+          {
+            "k": "C",
+            "t": "Without evidence, history cannot be studied."
+          },
+          {
+            "k": "D",
+            "t": "Privileged people kept better records."
+          }
+        ],
+        "ans": "B",
+        "b": 8.5,
+        "ev": {
+          "p": 2,
+          "s": "The absence of evidence, in other words, is itself a kind of evidence."
+        },
+        "why": "Việc tài liệu thiếu vắng một nhóm người tự nó cho ta biết điều gì đó về quá khứ (ai được ghi lại, ai bị bỏ qua).",
+        "wrong": {
+          "A": "Giảng viên cảnh báo không coi tài liệu viết như ô cửa nhìn thẳng vào quá khứ.",
+          "C": "Ý ngược lại: thiếu vắng cũng là bằng chứng để nghiên cứu.",
+          "D": "Có thể đúng ngoài đời nhưng không phải ý nghĩa của câu này. Bẫy: suy luận vượt bài."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-21.mp3",
+      "dur": 33.5,
+      "voices": [
+        "bm_george"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-22",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "A2",
+    "band": 4.5,
+    "mode": "place",
+    "title": "Cooking class phone call",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Woman": "af_bella",
+      "Teacher": "bm_lewis"
+    },
+    "script": [
+      {
+        "sp": "Woman",
+        "t": "Hello, I saw your advertisement for Vietnamese cooking classes. Is there still space on the Saturday course?"
+      },
+      {
+        "sp": "Teacher",
+        "t": "I'm afraid Saturday is full, but we have a few places on Sunday afternoon."
+      },
+      {
+        "sp": "Woman",
+        "t": "Sunday is fine. Do I need to bring any ingredients?"
+      },
+      {
+        "sp": "Teacher",
+        "t": "No, we provide everything. Just bring a box so you can take home what you cook."
+      }
+    ],
+    "vi": [
+      "Xin chào, tôi thấy quảng cáo lớp nấu món Việt của anh. Lớp thứ Bảy còn chỗ không?",
+      "Rất tiếc lớp thứ Bảy đã đầy, nhưng chiều Chủ nhật còn vài chỗ.",
+      "Chủ nhật cũng được. Tôi có cần mang nguyên liệu không?",
+      "Không, chúng tôi chuẩn bị hết. Chị chỉ cần mang một cái hộp để đem về món mình nấu."
+    ],
+    "items": [
+      {
+        "id": "pl-l-22-a",
+        "q": "Which class will the woman join?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Saturday morning"
+          },
+          {
+            "k": "B",
+            "t": "Saturday afternoon"
+          },
+          {
+            "k": "C",
+            "t": "Sunday afternoon"
+          },
+          {
+            "k": "D",
+            "t": "Sunday morning"
+          }
+        ],
+        "ans": "C",
+        "b": 4,
+        "ev": {
+          "p": 1,
+          "s": "we have a few places on Sunday afternoon"
+        },
+        "why": "Lớp thứ Bảy đã đầy, còn chỗ chiều Chủ nhật và cô đồng ý.",
+        "wrong": {
+          "A": "Lớp thứ Bảy đã đầy.",
+          "B": "Lớp thứ Bảy đã đầy.",
+          "D": "Chỗ trống là buổi chiều, không phải buổi sáng."
+        }
+      },
+      {
+        "id": "pl-l-22-b",
+        "q": "What should the woman bring?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Some ingredients"
+          },
+          {
+            "k": "B",
+            "t": "A container"
+          },
+          {
+            "k": "C",
+            "t": "A recipe"
+          },
+          {
+            "k": "D",
+            "t": "Nothing at all"
+          }
+        ],
+        "ans": "B",
+        "b": 4.5,
+        "ev": {
+          "p": 3,
+          "s": "Just bring a box so you can take home what you cook."
+        },
+        "why": "\"a box\" = một cái hộp (container) để đem món đã nấu về.",
+        "wrong": {
+          "A": "Lớp chuẩn bị mọi nguyên liệu.",
+          "C": "Không nhắc đến công thức.",
+          "D": "Cô vẫn cần mang hộp. Bẫy: câu \"we provide everything\" dễ làm chọn đáp án này."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-22.mp3",
+      "dur": 20.3,
+      "voices": [
+        "af_bella",
+        "bm_lewis"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-23",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "place",
+    "title": "Workplace announcement",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Manager": "am_michael"
+    },
+    "script": [
+      {
+        "sp": "Manager",
+        "t": "Just a quick update on the office move. The new building won't be ready until the end of March, which is a month later than we expected."
+      },
+      {
+        "sp": "Manager",
+        "t": "Until then, the sales team will continue working here, but the design team will move temporarily to the meeting rooms on the fifth floor, as their current space is needed for storage."
+      },
+      {
+        "sp": "Manager",
+        "t": "I know this isn't ideal, so we've agreed that anyone who prefers to work from home two days a week during this period can do so."
+      }
+    ],
+    "vi": [
+      "Cập nhật nhanh về việc chuyển văn phòng. Toà nhà mới sẽ chưa xong cho đến cuối tháng Ba, muộn hơn một tháng so với dự kiến.",
+      "Từ giờ đến lúc đó, nhóm kinh doanh tiếp tục làm việc ở đây, còn nhóm thiết kế tạm chuyển lên các phòng họp ở tầng năm, vì chỗ làm hiện tại của họ cần dùng làm kho.",
+      "Tôi biết như vậy không lý tưởng, nên chúng ta đã thống nhất rằng ai muốn làm việc tại nhà hai ngày một tuần trong thời gian này đều được."
+    ],
+    "items": [
+      {
+        "id": "pl-l-23-a",
+        "q": "Why does the design team have to move?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "The new building is ready."
+          },
+          {
+            "k": "B",
+            "t": "Their current area will be used to store things."
+          },
+          {
+            "k": "C",
+            "t": "The sales team needs more space."
+          },
+          {
+            "k": "D",
+            "t": "The fifth floor is quieter."
+          }
+        ],
+        "ans": "B",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "as their current space is needed for storage"
+        },
+        "why": "Chỗ làm hiện tại của nhóm thiết kế cần dùng làm kho (storage).",
+        "wrong": {
+          "A": "Toà nhà mới chưa xong.",
+          "C": "Nhóm kinh doanh chỉ tiếp tục làm ở đây, không cần thêm chỗ.",
+          "D": "Không nhắc tầng năm yên tĩnh hơn."
+        }
+      },
+      {
+        "id": "pl-l-23-b",
+        "q": "What has the company agreed to?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Staff may work at home for part of the week."
+          },
+          {
+            "k": "B",
+            "t": "The move will happen in February."
+          },
+          {
+            "k": "C",
+            "t": "The sales team will move to the fifth floor."
+          },
+          {
+            "k": "D",
+            "t": "Everyone must work from home."
+          }
+        ],
+        "ans": "A",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "anyone who prefers to work from home two days a week during this period can do so"
+        },
+        "why": "Ai muốn có thể làm ở nhà hai ngày một tuần: làm ở nhà một phần thời gian trong tuần.",
+        "wrong": {
+          "B": "Toà nhà xong cuối tháng Ba, muộn hơn dự kiến một tháng.",
+          "C": "Nhóm lên tầng năm là nhóm thiết kế.",
+          "D": "Đây là lựa chọn tự nguyện (prefers), không bắt buộc."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-23.mp3",
+      "dur": 27.7,
+      "voices": [
+        "am_michael"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-24",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "C1",
+    "band": 7,
+    "mode": "place",
+    "title": "Interview: a young farmer",
+    "instr": "Listen to part of an interview and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Interviewer": "bf_isabella",
+      "Farmer": "am_adam"
+    },
+    "script": [
+      {
+        "sp": "Interviewer",
+        "t": "You left a well-paid job in the city to become a farmer. What made you decide?"
+      },
+      {
+        "sp": "Farmer",
+        "t": "People assume I was unhappy in the city, but that wasn't really it. My grandfather's land was going to be sold, and I couldn't bear the idea of it disappearing."
+      },
+      {
+        "sp": "Interviewer",
+        "t": "And has it been what you expected?"
+      },
+      {
+        "sp": "Farmer",
+        "t": "The physical work is harder than I imagined, but what surprised me most was the amount of paperwork. I spend almost as much time on permits and accounts as I do in the fields."
+      }
+    ],
+    "vi": [
+      "Anh bỏ một công việc lương cao ở thành phố để làm nông. Điều gì khiến anh quyết định vậy?",
+      "Người ta nghĩ tôi không vui ở thành phố, nhưng thật ra không phải. Đất của ông tôi sắp bị bán, và tôi không chịu nổi ý nghĩ nó biến mất.",
+      "Và mọi thứ có như anh mong đợi không?",
+      "Việc chân tay vất vả hơn tôi tưởng, nhưng điều làm tôi bất ngờ nhất là lượng giấy tờ. Tôi dành gần ngang thời gian cho giấy phép và sổ sách như thời gian ở ngoài đồng."
+    ],
+    "items": [
+      {
+        "id": "pl-l-24-a",
+        "q": "Why did the man become a farmer?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "He was unhappy in the city."
+          },
+          {
+            "k": "B",
+            "t": "He wanted to keep his family's land."
+          },
+          {
+            "k": "C",
+            "t": "Farming paid better than his city job."
+          },
+          {
+            "k": "D",
+            "t": "His grandfather asked him to."
+          }
+        ],
+        "ans": "B",
+        "b": 6.5,
+        "ev": {
+          "p": 1,
+          "s": "My grandfather's land was going to be sold, and I couldn't bear the idea of it disappearing."
+        },
+        "why": "Đất của ông sắp bị bán và anh không muốn nó mất đi: anh muốn giữ đất của gia đình.",
+        "wrong": {
+          "A": "Anh nói đó là điều người ta tưởng, \"but that wasn't really it\". Bẫy: ý được nêu để bác bỏ.",
+          "C": "Việc ở thành phố là việc lương cao.",
+          "D": "Không nói ông bảo anh về."
+        }
+      },
+      {
+        "id": "pl-l-24-b",
+        "q": "What surprised the man most about farming?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "How hard the physical work is"
+          },
+          {
+            "k": "B",
+            "t": "How much administrative work there is"
+          },
+          {
+            "k": "C",
+            "t": "How little time he spends in the fields"
+          },
+          {
+            "k": "D",
+            "t": "How expensive permits are"
+          }
+        ],
+        "ans": "B",
+        "b": 7.5,
+        "ev": {
+          "p": 3,
+          "s": "what surprised me most was the amount of paperwork"
+        },
+        "why": "\"paperwork\" (giấy phép, sổ sách) = công việc hành chính; đây là điều làm anh bất ngờ NHẤT.",
+        "wrong": {
+          "A": "Việc chân tay vất vả hơn tưởng, nhưng không phải điều bất ngờ nhất. Bẫy: hai ý trong một câu, câu hỏi hỏi \"most\".",
+          "C": "Anh dành gần ngang thời gian, không nói rất ít thời gian ở ngoài đồng.",
+          "D": "Không nhắc đến giá giấy phép."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-24.mp3",
+      "dur": 26.1,
+      "voices": [
+        "bf_isabella",
+        "am_adam"
+      ]
+    }
+  }
+]

@@ -3,6 +3,7 @@ import { test, expect, openApp } from './fixtures.ts';
 async function toIelts(page: import('@playwright/test').Page) {
   await openApp(page);
   await page.getByRole('button', { name: /IELTS Academic/ }).click();
+  await page.getByRole('button', { name: 'Để sau' }).click();
   await expect(page.getByRole('heading', { name: 'Ôn IELTS Academic' })).toBeVisible();
 }
 

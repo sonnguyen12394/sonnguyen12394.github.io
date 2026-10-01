@@ -17,6 +17,7 @@ export interface QTypeInfo {
 
 const I = ['ielts-ac', 'ielts-gt'] as ExamId[];
 const V = ['vstep'] as ExamId[];
+const ALL = ['ielts-ac', 'ielts-gt', 'vstep'] as ExamId[];
 
 // Danh mục dạng câu hỏi theo định dạng công khai của IELTS (British Council, IDP, Cambridge) và VSTEP (Quyết định 729).
 export const QTYPES: QTypeInfo[] = [
@@ -46,6 +47,9 @@ export const QTYPES: QTypeInfo[] = [
   { id: 'v-l2', vi: 'VSTEP Nghe phần 2: hội thoại', en: 'Part 2: conversations', skill: 'L', exams: V, kind: 'choice', guess: 0.25 },
   { id: 'v-l3', vi: 'VSTEP Nghe phần 3: bài nói, bài giảng', en: 'Part 3: talks & lectures', skill: 'L', exams: V, kind: 'choice', guess: 0.25 },
   { id: 'v-r', vi: 'VSTEP Đọc: trắc nghiệm theo bài đọc', en: 'Reading passages', skill: 'R', exams: V, kind: 'choice', guess: 0.25 },
+  // Kiểm tra đầu vào: bài ngắn, trắc nghiệm 4 phương án, dùng chung cho mọi kỳ thi (đo năng lực Nghe/Đọc trên thang band)
+  { id: 'pl-r', vi: 'Đọc hiểu ngắn (kiểm tra đầu vào)', en: 'Short reading', skill: 'R', exams: ALL, kind: 'choice', guess: 0.25 },
+  { id: 'pl-l', vi: 'Nghe hiểu ngắn (kiểm tra đầu vào)', en: 'Short listening', skill: 'L', exams: ALL, kind: 'choice', guess: 0.25 },
 ];
 
 export const QT: Record<string, QTypeInfo> = Object.fromEntries(QTYPES.map(q => [q.id, q]));
