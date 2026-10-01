@@ -18,6 +18,12 @@ import { viewPlaceIntro, viewPlaceRun, viewPlaceResult, FLAG_REASONS, type PRun 
 import { newPlacement, advance, answerGroup, results, remainingMs, type PSkill } from './placement.ts';
 import { sendAttempt } from './net.ts';
 import type { Group } from './content.ts';
+import { viewPlan } from './views/plan.ts';
+import { viewNb, viewNbRun, type NbRun } from './views/nb.ts';
+import { addWrong, reviewed, dueList } from './notebook.ts';
+import { packOfItem } from './packs.ts';
+import { markItem } from './score.ts';
+import { back, card } from './views/ui.ts';
 
 export const MODULE_VERSION = 1;
 
@@ -63,10 +69,14 @@ export function init(host: Host): ExamModule {
     const x = X(), day = host.today(), secs = Math.round((Date.now() - run.t0) / 1000), exam = x.exam || 'ielts-ac';
     const items: Record<string, 0 | 1> = {};
     for (const sec of run.st.sections) {
-      for (const a of sec.answers) { x.resp.push({ i: a.id, c: a.correct ? 1 : 0, d: day, s: sec.skill, b: a.b, g: a.g }); items[a.id] = a.correct ? 1 : 0; }
+      for (const a of sec.answers) {
+        x.resp.push({ i: a.id, c: a.correct ? 1 : 0, d: day, s: sec.skill, b: a.b, g: a.g }); items[a.id] = a.correct ? 1 : 0;
+        if (!a.correct) addWrong(x, a.id, run.groups[a.group]?.qtype ?? '', day);
+      }
       const r = run.res.find(q => q.skill === sec.skill);
       if (r) x.attempts.push({ id: `place-${sec.skill.toLowerCase()}`, kind: 'place', exam, day, skill: sec.skill, correct: sec.answers.filter(a => a.correct).length, total: sec.answers.length, band: r.band, se: r.se, secs, wrong: sec.answers.filter(a => !a.correct).map(a => a.id) });
     }
+    host.addMinutes(secs / 60); host.markActive();
     host.save();
     void sendAttempt(host, x, exam, 'place', items);
     host.go('place-result');
@@ -101,7 +111,38 @@ export function init(host: Host): ExamModule {
     }
   }
 
+  // ---------- Sổ lỗi sai ----------
+  let nb: NbRun | null = null, nbLoading = false, nbErr = '', nbT0 = 0;
+  async function nbStart(): Promise<void> {
+    const x = X(), ids = dueList(x, host.today(), hiddenItems()).map(e => e.id).slice(0, 20);
+    if (!ids.length) return;
+    nbLoading = true; nbErr = ''; host.render();
+    try {
+      const packs = [...new Set(ids.map(packOfItem).filter((p): p is string => !!p))];
+      const gs = (await Promise.all(packs.map(loadPack))).flat();
+      const have = new Set(gs.flatMap(g => g.items.map(i => i.id)));
+      nb = { queue: ids.filter(i => have.has(i)), i: 0, groups: Object.fromEntries(gs.map(g => [g.id, g])), answered: null, right: 0 };
+      nbLoading = false; nbT0 = Date.now();
+      if (!nb.queue.length) { nbErr = 'Các câu đến hạn không còn trong kho (đã sửa hoặc gỡ).'; host.render(); return; }
+      host.go('nb-run');
+    } catch { nbLoading = false; nbErr = 'Chưa tải được câu hỏi (cần mạng ở lần đầu).'; host.render(); }
+  }
+  function nbFinish(): void {
+    if (!nb) return;
+    host.addMinutes((Date.now() - nbT0) / 60000); host.markActive(); host.save();
+    host.toast(`Xong: đúng ${nb.right}/${nb.queue.length} câu. Câu sai sẽ quay lại sớm.`);
+    nb = null; host.go('nb');
+  }
+
   const routes: Record<string, (c: Ctx) => string> = {
+    plan: viewPlan,
+    nb: c => viewNb(c, nbLoading, nbErr),
+    'nb-run': c => (nb ? viewNbRun(c, nb) : viewNb(c, nbLoading, nbErr)),
+    practice: c => `<section class="stack"><span class="eyebrow">Ôn thi · Luyện theo dạng câu</span><h1>Luyện theo dạng câu hỏi</h1>
+      <p class="muted">Phần luyện từng dạng câu IELTS/VSTEP (bài học, mẹo, ≥ 30 câu mỗi dạng) đang được soạn cho bản tới. Trong lúc chờ, bạn có thể:</p></section>
+      <div class="units">${card('data-go="talk"', 'read', 'Bài đọc, bài nghe theo cấp', 'Phần Kỹ năng của app: đọc dài, nghe hai giọng, chép chính tả', c.host.ico)}
+      ${card('data-x="route" data-r="nb"', 'repeat', 'Ôn sổ lỗi sai', 'Làm lại câu đã sai đúng lúc sắp quên', c.host.ico)}
+      ${c.x.exam === 'vstep' ? card('data-act="exgo"', 'exam', 'Thi thử VSTEP rút gọn', 'Nghe + Đọc có tính giờ', c.host.ico) : ''}</div>${back()}`,
     place: c => viewPlaceIntro(c, placeLoading, placeErr),
     'place-run': c => (run && !run.st.finished ? viewPlaceRun(c, run) : viewPlaceIntro(c, placeLoading, placeErr)),
     'place-result': c => viewPlaceResult(c, run),
@@ -128,6 +169,16 @@ export function init(host: Host): ExamModule {
     examreset() { X().exam = ''; host.save(); host.go('hub'); },
     route(el) { host.go(el.dataset.r || 'hub'); },
     placestart() { void placeStart(); },
+    nbstart() { void nbStart(); },
+    nbnext() { if (!nb) return; nb.i++; nb.answered = null; if (nb.i >= nb.queue.length) nbFinish(); else host.go('nb-run'); },
+    nbflag(el) {
+      if (!nb) return;
+      const id = el.dataset.i || '', reason = FLAG_REASONS[Number(el.dataset.r)] ?? FLAG_REASONS[0]!;
+      const g = Object.values(nb.groups).find(q => q.items.some(i => i.id === id)), it = g?.items.find(i => i.id === id);
+      if (!g || !it) return;
+      host.flag({ kind: 'Ôn thi', ref: id, item: g.title, prompt: it.q, answer: String(it.ans), given: nb.answered?.given ?? '', reason });
+      host.toast('Đã ghi nhận. Gửi cho người soạn trong Cài đặt → Câu đã báo lỗi.');
+    },
     placeplay() {
       const a = document.getElementById('xaudio') as HTMLAudioElement | null, st = document.getElementById('xaudiost');
       if (!a || !run || run.plays >= 1) return;
@@ -157,6 +208,16 @@ export function init(host: Host): ExamModule {
   };
 
   const forms: Record<string, (f: HTMLFormElement, submitter: HTMLButtonElement | null) => void> = {
+    nbanswer(f) {
+      if (!nb || nb.answered) return;
+      const id = nb.queue[nb.i]!, g = Object.values(nb.groups).find(q => q.items.some(i => i.id === id)), it = g?.items.find(i => i.id === id);
+      if (!g || !it) return;
+      const given = new FormData(f).get('a');
+      if (given === null) { host.toast('Chọn một phương án trước.'); return; }
+      const m = markItem(it, g, String(given)), ok = m.got === m.of;
+      nb.answered = { given: String(given), correct: ok }; if (ok) nb.right++;
+      reviewed(X(), id, ok, host.today()); host.save(); host.render();
+    },
     placenext(f) {
       const d = new FormData(f), given: Record<string, string | undefined> = {};
       for (const [k, v] of d.entries()) given[k] = String(v);

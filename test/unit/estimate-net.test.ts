@@ -55,7 +55,7 @@ test('nâng cấp tiến độ ôn thi v1 → v2 giữ dữ liệu cũ, đồng 
 function host(calls: Array<[string, unknown]>, reply: (fn: string) => unknown = () => true): Host {
   return {
     state: () => ({}), save: () => {}, render: () => {}, go: () => {}, today: () => 100, toast: () => {}, esc: s => String(s), ico: () => '',
-    say: () => {}, flag: () => {}, learnerCefr: () => ({ L: null, S: null, R: null, W: null }), online: () => true,
+    say: () => {}, flag: () => {}, learnerCefr: () => ({ L: null, S: null, R: null, W: null }), online: () => true, minutes: () => ({}), addMinutes: () => {}, markActive: () => {},
     rpc: async (fn, body) => { calls.push([fn, body]); return reply(fn); },
   };
 }

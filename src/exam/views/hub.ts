@@ -4,6 +4,9 @@ import type { Ctx } from '../main.ts';
 import type { ExamId } from '../scales.ts';
 import { estimatePanel } from './estimate.ts';
 import { fmt, dayVi } from './ui.ts';
+import { planFor, todayPanel } from './plan.ts';
+import { dueList } from '../notebook.ts';
+import { hiddenItems } from '../net.ts';
 
 export const EXAM_NAME: Record<ExamId, string> = {
   'ielts-ac': 'IELTS Academic',
@@ -33,8 +36,11 @@ export function viewHub(c: Ctx): string {
   const when = x.date === null ? 'chưa có ngày thi' : x.date >= today ? `thi ngày ${dayVi(x.date)} (còn ${x.date - today} ngày)` : `đã thi ngày ${dayVi(x.date)}`;
   return `<section class="stack"><span class="eyebrow">Ôn thi · ${esc(EXAM_NAME[x.exam])}</span><h1>Ôn ${esc(EXAM_NAME[x.exam])}</h1>
       <p class="muted">${esc(goal)} · ${esc(when)} · ${x.mins} phút/ngày <button class="linkbtn" data-x="route" data-r="settings" aria-label="Đổi mục tiêu, ngày thi, thời gian">Đổi</button></p></section>
+    ${todayPanel(c, planFor(c))}
     ${estimatePanel(c)}
     <div class="units">
+      ${card('data-x="route" data-r="plan"', 'map', 'Kế hoạch tới ngày thi', 'Lịch từng ngày, ưu tiên kỹ năng xa mục tiêu; cảnh báo khi không kịp', ico)}
+      ${card('data-x="route" data-r="nb"', 'repeat', `Sổ lỗi sai${dueList(x, today, hiddenItems()).length ? ` · ${dueList(x, today, hiddenItems()).length} câu đến hạn` : ''}`, 'Câu đã sai tự vào sổ, ôn lại đúng lúc sắp quên', ico)}
       ${card('data-x="route" data-r="place"', 'chart', x.attempts.some(a => a.kind === 'place') ? 'Làm lại kiểm tra đầu vào' : 'Kiểm tra đầu vào (≤ 15 phút)', 'Đọc + Nghe thích ứng, ra band ước tính kèm sai số; xem lại từng câu có giải thích', ico)}
       ${isV ? card('data-act="exgo"', 'exam', 'Thi thử Nghe + Đọc (rút gọn)', 'Có tính giờ, ước tính điểm từng kỹ năng theo thang 10', ico) : ''}
       ${isV ? card('data-act="vxnew" data-m="w"', 'pen', 'Thi thử Viết', 'Thư ≥ 120 từ và bài luận ≥ 250 từ, 60 phút', ico) : ''}

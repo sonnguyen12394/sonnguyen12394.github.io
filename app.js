@@ -1002,7 +1002,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 37;
+const STATE_V = 18, APP_VERSION = 38;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -7953,10 +7953,15 @@ CHANGELOG.unshift({v:37,d:'2026-10-01',t:'Kiểm tra đầu vào thích ứng 15
   'Kho 96 câu mới (48 Đọc, 48 Nghe) từ band 3 đến 8,5; mỗi câu giải thích bằng tiếng Việt vì sao đúng, vì sao từng phương án sai và câu nào chứa đáp án.',
   'Bài nghe là tệp âm thanh tạo sẵn giọng Anh và Mỹ, phát một lần như thi thật; lời thoại và bản dịch hiện sau khi làm xong. Không nghe được thì bỏ qua phần Nghe.',
   'Nút Báo lỗi ở mọi câu khi xem lại.']});
+CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và sổ lỗi sai',items:[
+  'Kế hoạch tới ngày thi: chia việc từng ngày theo số phút bạn có, kỹ năng xa mục tiêu nhất được nhiều thời gian nhất, đề thi thử mỗi tuần trong 6 tuần cuối.',
+  'Cảnh báo khi không kịp (số giờ cần lớn hơn số giờ còn lại, hoặc 7 ngày qua học dưới 60% kế hoạch) kèm đề xuất cụ thể: tăng phút, lùi ngày thi hoặc chọn mục tiêu vừa sức. Số giờ ước tính dựa trên giờ học có hướng dẫn Cambridge công bố cho từng cấp CEFR.',
+  'Sổ lỗi sai: câu sai tự vào sổ, ôn lại đúng lúc sắp quên bằng thuật toán FSRS-5, xem giải thích ngay sau mỗi câu, nhóm theo dạng câu hỏi.',
+  'Trang Ôn thi có khối “Hôm nay” với việc cần làm và nút bắt đầu.']});
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.6f33ee454a.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.d6277ab9ec.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -7964,6 +7969,9 @@ const XHOST = {
   rpc:(fn,body)=>syncRpc(fn,body),
   learnerCefr:()=>({L:skLv('lis'),S:skLv('spk'),R:skLv('rd'),W:skLv('wr')}),
   online:()=>typeof navigator==='undefined'||navigator.onLine!==false,
+  minutes:()=>({...(EV().am||{})}),
+  addMinutes:m=>{ if(!(m>0)) return; const a=EV().am||(EV().am={}), d=today(); a[d]=+((a[d]||0)+Math.min(m,600)).toFixed(2); },
+  markActive:()=>markActive(),
 };
 let _xmP=null, _xmErr='';
 function xmLoad(){ if(XM) return Promise.resolve(XM);
