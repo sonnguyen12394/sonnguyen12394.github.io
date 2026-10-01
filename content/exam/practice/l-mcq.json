@@ -171,7 +171,7 @@
       },
       {
         "id": "l-mcq-01-4",
-        "q": "How much will Anna's ten-class card cost?",
+        "q": "How much will Anna pay?",
         "opts": [
           {
             "k": "A",
@@ -228,7 +228,16 @@
           "B": "\"half past six\" là giờ bắt đầu, không phải độ dài."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-01.mp3",
+      "dur": 56.2,
+      "voices": [
+        "bf_isabella",
+        "bm_lewis"
+      ],
+      "slow": "a/l-mcq-01.slow.mp3"
+    }
   },
   {
     "id": "l-mcq-02",
@@ -434,7 +443,15 @@
           "C": "Không được nhắc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-02.mp3",
+      "dur": 51.5,
+      "voices": [
+        "bf_emma"
+      ],
+      "slow": "a/l-mcq-02.slow.mp3"
+    }
   },
   {
     "id": "l-mcq-03",
@@ -655,7 +672,16 @@
           "C": "Bài này không nói dàn ý."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-03.mp3",
+      "dur": 53.6,
+      "voices": [
+        "bm_george",
+        "am_adam"
+      ],
+      "slow": "a/l-mcq-03.slow.mp3"
+    }
   },
   {
     "id": "l-mcq-04",
@@ -665,8 +691,8 @@
       "ielts-gt"
     ],
     "qtype": "l-mcq",
-    "level": "B2",
-    "band": 6.5,
+    "level": "C1",
+    "band": 7,
     "mode": "practice",
     "title": "Lecture: The Psychology of Queues",
     "instr": "Choose the correct letter, A, B or C.",
@@ -857,7 +883,15 @@
           "B": "Bài nói rõ \"isn't actually faster\"."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-04.mp3",
+      "dur": 63.9,
+      "voices": [
+        "af_sarah"
+      ],
+      "slow": "a/l-mcq-04.slow.mp3"
+    }
   },
   {
     "id": "l-mcq-05",
@@ -867,8 +901,8 @@
       "ielts-gt"
     ],
     "qtype": "l-mcq",
-    "level": "B2",
-    "band": 6.5,
+    "level": "C1",
+    "band": 7.5,
     "mode": "practice",
     "title": "Discussion: Evaluating a Group Project",
     "instr": "Choose the correct letter, A, B or C.",
@@ -1007,7 +1041,7 @@
           },
           {
             "k": "C",
-            "t": "put the posters in safer places"
+            "t": "put them in safer places"
           }
         ],
         "ans": "C",
@@ -1081,7 +1115,17 @@
           "C": "Bài này không nói hạn chế."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-05.mp3",
+      "dur": 54.6,
+      "voices": [
+        "bm_lewis",
+        "bf_emma",
+        "am_michael"
+      ],
+      "slow": "a/l-mcq-05.slow.mp3"
+    }
   },
   {
     "id": "l-mcq-06",
@@ -1091,8 +1135,8 @@
       "ielts-gt"
     ],
     "qtype": "l-mcq",
-    "level": "B1",
-    "band": 5,
+    "level": "B2",
+    "band": 6,
     "mode": "practice",
     "title": "A Guided Walk in the Forest",
     "instr": "Choose the correct letter, A, B or C.",
@@ -1288,6 +1332,14 @@
           "B": "Không được nhắc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-mcq-06.mp3",
+      "dur": 50.8,
+      "voices": [
+        "bm_george"
+      ],
+      "slow": "a/l-mcq-06.slow.mp3"
+    }
   }
 ]

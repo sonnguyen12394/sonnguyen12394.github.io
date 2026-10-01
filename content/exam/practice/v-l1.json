@@ -138,7 +138,17 @@
           "D": "Không được nhắc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l1-01.mp3",
+      "dur": 34.2,
+      "voices": [
+        "bf_emma",
+        "am_michael",
+        "af_bella"
+      ],
+      "slow": "a/v-l1-01.slow.mp3"
+    }
   },
   {
     "id": "v-l1-02",
@@ -279,7 +289,17 @@
           "D": "Không được nhắc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l1-02.mp3",
+      "dur": 31.9,
+      "voices": [
+        "bm_george",
+        "bf_isabella",
+        "af_sarah"
+      ],
+      "slow": "a/v-l1-02.slow.mp3"
+    }
   },
   {
     "id": "v-l1-03",
@@ -420,7 +440,17 @@
           "D": "Nắng là buổi sáng."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l1-03.mp3",
+      "dur": 26.1,
+      "voices": [
+        "bf_emma",
+        "bm_lewis",
+        "am_adam"
+      ],
+      "slow": "a/v-l1-03.slow.mp3"
+    }
   },
   {
     "id": "v-l1-04",
@@ -561,7 +591,17 @@
           "C": "Triển lãm vũ trụ miễn phí."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l1-04.mp3",
+      "dur": 35.2,
+      "voices": [
+        "bm_george",
+        "am_michael",
+        "af_nicole"
+      ],
+      "slow": "a/v-l1-04.slow.mp3"
+    }
   },
   {
     "id": "v-l1-05",
@@ -702,7 +742,17 @@
           "D": "Không được nhắc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l1-05.mp3",
+      "dur": 32.4,
+      "voices": [
+        "bf_isabella",
+        "af_sarah",
+        "af_sky"
+      ],
+      "slow": "a/v-l1-05.slow.mp3"
+    }
   },
   {
     "id": "v-l1-06",
@@ -843,7 +893,17 @@
           "C": "Không được nhắc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l1-06.mp3",
+      "dur": 30.7,
+      "voices": [
+        "bm_lewis",
+        "am_adam",
+        "bf_emma"
+      ],
+      "slow": "a/v-l1-06.slow.mp3"
+    }
   },
   {
     "id": "v-l1-07",
@@ -985,7 +1045,17 @@
           "D": "Anh vẫn ở ba đêm."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l1-07.mp3",
+      "dur": 35.3,
+      "voices": [
+        "bf_isabella",
+        "bm_george",
+        "af_nicole"
+      ],
+      "slow": "a/v-l1-07.slow.mp3"
+    }
   },
   {
     "id": "v-l1-08",
@@ -1126,7 +1196,17 @@
           "D": "Không được nhắc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l1-08.mp3",
+      "dur": 34.3,
+      "voices": [
+        "bm_lewis",
+        "am_michael",
+        "bf_emma"
+      ],
+      "slow": "a/v-l1-08.slow.mp3"
+    }
   },
   {
     "id": "v-l1-09",
@@ -1267,7 +1347,17 @@
           "D": "Không được nói."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l1-09.mp3",
+      "dur": 36.7,
+      "voices": [
+        "af_sarah",
+        "bm_george",
+        "am_adam"
+      ],
+      "slow": "a/v-l1-09.slow.mp3"
+    }
   },
   {
     "id": "v-l1-10",
@@ -1409,6 +1499,16 @@
           "D": "Cần trước cuộc họp."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l1-10.mp3",
+      "dur": 35.4,
+      "voices": [
+        "bf_isabella",
+        "bm_lewis",
+        "am_michael"
+      ],
+      "slow": "a/v-l1-10.slow.mp3"
+    }
   }
 ]

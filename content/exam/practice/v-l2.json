@@ -197,7 +197,16 @@
           "D": "Thứ Bảy là ngày sinh nhật mẹ."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l2-01.mp3",
+      "dur": 48.3,
+      "voices": [
+        "bf_emma",
+        "bm_george"
+      ],
+      "slow": "a/v-l2-01.slow.mp3"
+    }
   },
   {
     "id": "v-l2-02",
@@ -402,7 +411,16 @@
         },
         "trap": "Khách gợi ý 'call me', nhưng câu trả lời là 'text message'."
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l2-02.mp3",
+      "dur": 49.8,
+      "voices": [
+        "bf_isabella",
+        "am_michael"
+      ],
+      "slow": "a/v-l2-02.slow.mp3"
+    }
   },
   {
     "id": "v-l2-03",
@@ -606,7 +624,16 @@
           "D": "Không được nhắc."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l2-03.mp3",
+      "dur": 64.3,
+      "voices": [
+        "af_sarah",
+        "bm_lewis"
+      ],
+      "slow": "a/v-l2-03.slow.mp3"
+    }
   },
   {
     "id": "v-l2-04",
@@ -810,7 +837,16 @@
           "D": "Ý xin khách gia hạn bị bỏ."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l2-04.mp3",
+      "dur": 46,
+      "voices": [
+        "bf_emma",
+        "am_adam"
+      ],
+      "slow": "a/v-l2-04.slow.mp3"
+    }
   },
   {
     "id": "v-l2-05",
@@ -1014,7 +1050,16 @@
           "D": "Thứ Hai là lúc thang máy chạy lại."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l2-05.mp3",
+      "dur": 55.5,
+      "voices": [
+        "bm_george",
+        "af_nicole"
+      ],
+      "slow": "a/v-l2-05.slow.mp3"
+    }
   },
   {
     "id": "v-l2-06",
@@ -1219,7 +1264,16 @@
         },
         "trap": "Ngày đề xuất đầu tiên (18) bị đổi."
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l2-06.mp3",
+      "dur": 55.4,
+      "voices": [
+        "bf_isabella",
+        "am_michael"
+      ],
+      "slow": "a/v-l2-06.slow.mp3"
+    }
   },
   {
     "id": "v-l2-07",
@@ -1418,7 +1472,16 @@
           "C": "Không được nói."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l2-07.mp3",
+      "dur": 50.1,
+      "voices": [
+        "bm_lewis",
+        "af_sky"
+      ],
+      "slow": "a/v-l2-07.slow.mp3"
+    }
   },
   {
     "id": "v-l2-08",
@@ -1613,6 +1676,16 @@
           "D": "Không được nói."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l2-08.mp3",
+      "dur": 65.1,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "bf_emma"
+      ],
+      "slow": "a/v-l2-08.slow.mp3"
+    }
   }
 ]
