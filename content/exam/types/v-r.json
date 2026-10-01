@@ -1,0 +1,27 @@
+{
+  "id": "v-r",
+  "lesson": [
+    "Phần Đọc VSTEP có 4 bài đọc, mỗi bài 10 câu trắc nghiệm 4 phương án (A–D), tổng 40 câu trong 60 phút. Độ khó tăng dần: bài đầu khoảng bậc 3 (B1), bài cuối khoảng bậc 5 (C1).",
+    "Câu hỏi thường gồm: ý chính của bài/đoạn, chi tiết, suy luận (implied, inferred), nghĩa của từ trong ngữ cảnh, từ quy chiếu ('it', 'they' chỉ cái gì), thái độ/mục đích của tác giả.",
+    "Khác IELTS: mọi câu đều là trắc nghiệm, không phải viết đáp án, nên kỹ năng loại trừ phương án sai rất quan trọng. Trung bình chỉ có khoảng 1,5 phút cho mỗi câu, kể cả thời gian đọc bài."
+  ],
+  "steps": [
+    "Đọc lướt câu hỏi trước để biết bài hỏi gì, rồi đọc lướt bài khoảng 1–2 phút để nắm ý chính từng đoạn.",
+    "Làm câu chi tiết và từ vựng trước: chúng thường theo thứ tự đoạn và có từ khoá dễ tìm.",
+    "Câu 'nghĩa của từ': đọc cả câu chứa từ và câu trước, sau; thay từng phương án vào xem câu có còn đúng nghĩa không.",
+    "Câu 'từ quy chiếu': tìm danh từ đứng trước hợp số ít/nhiều và nghĩa.",
+    "Làm câu ý chính và mục đích tác giả sau cùng, khi đã hiểu cả bài."
+  ],
+  "tips": [
+    "Phương án đúng gần như luôn diễn đạt lại bài bằng từ khác; phương án lặp nguyên văn hay là bẫy.",
+    "Câu suy luận: chọn điều bài ngụ ý chắc chắn, không chọn điều 'có thể đúng ngoài đời'.",
+    "Phân bổ thời gian: khoảng 12–13 phút mỗi bài, bài cuối khó nhất nên để dành thêm vài phút.",
+    "Không bỏ trống: sai không bị trừ điểm."
+  ],
+  "traps": [
+    "Chọn phương án đúng ngoài đời nhưng bài không nói.",
+    "Đọc kỹ từng chữ cả bài đầu nên hết giờ ở bài cuối.",
+    "Với câu từ vựng, chọn nghĩa thông dụng nhất của từ thay vì nghĩa trong ngữ cảnh."
+  ],
+  "time": "khoảng 12–15 phút mỗi bài đọc"
+}

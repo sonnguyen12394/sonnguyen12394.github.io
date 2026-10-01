@@ -16,7 +16,7 @@
     },
     {
       "id": "pl-r-01-b", "q": "A nine-year-old girl wants to swim. What must she do?",
-      "opts": [{"k": "A", "t": "Buy a locker"}, {"k": "B", "t": "Use the app"}, {"k": "C", "t": "Come with an adult"}, {"k": "D", "t": "Come before 6 am"}],
+      "opts": [{"k": "A", "t": "Buy a locker at the desk"}, {"k": "B", "t": "Book through the app"}, {"k": "C", "t": "Come with an adult"}, {"k": "D", "t": "Come before 6 am"}],
       "ans": "C", "b": 3.5,
       "ev": {"p": 0, "s": "Children under 10 must swim with an adult."},
       "why": "Bé 9 tuổi là dưới 10 tuổi, nên phải bơi cùng người lớn.",
@@ -33,7 +33,7 @@
   "items": [
     {
       "id": "pl-r-02-a", "q": "Why can't Tom go to the cinema tonight?",
-      "opts": [{"k": "A", "t": "He is ill."}, {"k": "B", "t": "He has to take care of his brother."}, {"k": "C", "t": "He has no money for tickets."}, {"k": "D", "t": "The film is not on tonight."}],
+      "opts": [{"k": "A", "t": "He is feeling ill and needs to rest."}, {"k": "B", "t": "He has to take care of his brother."}, {"k": "C", "t": "He has no money for tickets."}, {"k": "D", "t": "The film is not showing at the cinema tonight."}],
       "ans": "B", "b": 3.5,
       "ev": {"p": 0, "s": "My mother is ill and I have to look after my little brother."},
       "why": "\"look after my little brother\" = trông em trai, tức là phải chăm em (take care of his brother).",
@@ -83,7 +83,7 @@
   "items": [
     {
       "id": "pl-r-04-a", "q": "Why is English needed for this job?",
-      "opts": [{"k": "A", "t": "The shop sells only English books."}, {"k": "B", "t": "Many customers come from other countries."}, {"k": "C", "t": "The training is in English."}, {"k": "D", "t": "The letter must be in English."}],
+      "opts": [{"k": "A", "t": "The shop sells only English books."}, {"k": "B", "t": "Many customers come from other countries."}, {"k": "C", "t": "All of the staff training is given in English."}, {"k": "D", "t": "The letter must be in English."}],
       "ans": "B", "b": 4.5,
       "ev": {"p": 0, "s": "able to speak basic English, because many of our customers are tourists"},
       "why": "Cần tiếng Anh vì nhiều khách là khách du lịch (tourists), tức là đến từ nước khác.",
@@ -91,7 +91,7 @@
     },
     {
       "id": "pl-r-04-b", "q": "Which person can apply?",
-      "opts": [{"k": "A", "t": "Someone who has never worked in a shop"}, {"k": "B", "t": "Someone who can only work mornings"}, {"k": "C", "t": "Someone who wants a full-time job"}, {"k": "D", "t": "Someone who applies on 25 May"}],
+      "opts": [{"k": "A", "t": "Someone who has never worked in a shop"}, {"k": "B", "t": "Someone who can only work mornings"}, {"k": "C", "t": "Someone who wants a full-time job"}, {"k": "D", "t": "Someone who sends an application on 25 May"}],
       "ans": "A", "b": 5,
       "ev": {"p": 0, "s": "Experience is useful but not necessary, as we will give you full training."},
       "why": "Kinh nghiệm \"không bắt buộc\" (not necessary), nên người chưa từng làm ở cửa hàng vẫn ứng tuyển được.",
@@ -133,7 +133,7 @@
   "items": [
     {
       "id": "pl-r-06-a", "q": "What will happen during the exam period?",
-      "opts": [{"k": "A", "t": "The café will stay open later."}, {"k": "B", "t": "The library will close at 6 pm."}, {"k": "C", "t": "The library will open longer than usual."}, {"k": "D", "t": "Students can borrow only five books."}],
+      "opts": [{"k": "A", "t": "The café will stay open later."}, {"k": "B", "t": "The library will close earlier, at 6 pm."}, {"k": "C", "t": "The library will open longer than usual."}, {"k": "D", "t": "Students will be able to borrow only five books."}],
       "ans": "C", "b": 5,
       "ev": {"p": 0, "s": "During the exam period the building will stay open until midnight"},
       "why": "Mùa thi thư viện mở đến nửa đêm, tức là mở lâu hơn bình thường.",
@@ -141,7 +141,7 @@
     },
     {
       "id": "pl-r-06-b", "q": "What happens if a student returns a book late?",
-      "opts": [{"k": "A", "t": "They must pay a fine."}, {"k": "B", "t": "They cannot borrow books for a period of time."}, {"k": "C", "t": "They can borrow only five books."}, {"k": "D", "t": "They must return it within one week."}],
+      "opts": [{"k": "A", "t": "They must pay a fine for each late day."}, {"k": "B", "t": "They cannot borrow books for a period of time."}, {"k": "C", "t": "They can borrow no more than five books at once."}, {"k": "D", "t": "They must return it within one week."}],
       "ans": "B", "b": 5.5,
       "ev": {"p": 0, "s": "If you return a book late, you will not be able to borrow anything for the next ten days."},
       "why": "Trả muộn thì không được mượn gì trong 10 ngày, tức là bị cấm mượn một thời gian.",
@@ -158,7 +158,7 @@
   "items": [
     {
       "id": "pl-r-07-a", "q": "What problem does the text describe?",
-      "opts": [{"k": "A", "t": "Night markets are closing because nobody visits them."}, {"k": "B", "t": "Some markets now serve tourists more than local people."}, {"k": "C", "t": "Street food at night markets is unsafe."}, {"k": "D", "t": "City councils want to ban souvenir stalls completely."}],
+      "opts": [{"k": "A", "t": "Night markets are closing because nobody visits them."}, {"k": "B", "t": "Some markets now serve tourists more than local people."}, {"k": "C", "t": "Street food sold at night markets has become unsafe to eat."}, {"k": "D", "t": "City councils want to ban souvenir stalls completely."}],
       "ans": "B", "b": 5.5,
       "ev": {"p": 0, "s": "some markets have become so crowded with tourists that local people have stopped going"},
       "why": "Chợ quá đông khách du lịch, người dân thôi không đi, đồ gia dụng bị thay bằng đồ lưu niệm: chợ phục vụ khách du lịch nhiều hơn người địa phương.",
@@ -166,7 +166,7 @@
     },
     {
       "id": "pl-r-07-b", "q": "Why do some councils limit new souvenir stalls?",
-      "opts": [{"k": "A", "t": "To protect the traditional nature of the markets"}, {"k": "B", "t": "To make prices higher"}, {"k": "C", "t": "To attract more tourists"}, {"k": "D", "t": "To make room for food stalls"}],
+      "opts": [{"k": "A", "t": "To protect the traditional nature of the markets"}, {"k": "B", "t": "To allow stall holders to make prices higher"}, {"k": "C", "t": "To attract more tourists"}, {"k": "D", "t": "To make more room for food stalls in the markets"}],
       "ans": "A", "b": 6,
       "ev": {"p": 0, "s": "so that the markets can keep their original character"},
       "why": "\"keep their original character\" = giữ nét ban đầu, tức là bảo vệ tính truyền thống của chợ.",
@@ -191,7 +191,7 @@
     },
     {
       "id": "pl-r-08-b", "q": "Why do new employees find remote work hard, according to the text?",
-      "opts": [{"k": "A", "t": "They cannot easily get help from experienced staff."}, {"k": "B", "t": "They are given too many reports to write."}, {"k": "C", "t": "They have more interruptions at home."}, {"k": "D", "t": "They do not receive any formal training."}],
+      "opts": [{"k": "A", "t": "They cannot easily get help from experienced staff."}, {"k": "B", "t": "They are given too many reports to write at home each week."}, {"k": "C", "t": "They have more interruptions at home."}, {"k": "D", "t": "They do not receive any formal training."}],
       "ans": "A", "b": 6.5,
       "ev": {"p": 0, "s": "they miss the informal learning that happens when they can simply turn to a more experienced person and ask a question"},
       "why": "Họ mất cơ hội \"quay sang hỏi người có kinh nghiệm hơn\", tức là khó nhận giúp đỡ từ nhân viên lâu năm.",
@@ -208,7 +208,7 @@
   "items": [
     {
       "id": "pl-r-09-a", "q": "What is the main point of the text?",
-      "opts": [{"k": "A", "t": "Trees are mainly useful because they look attractive."}, {"k": "B", "t": "Cities should plant as many trees as possible."}, {"k": "C", "t": "Trees bring real benefits, but the type of tree matters."}, {"k": "D", "t": "Trees cause more problems than they solve."}],
+      "opts": [{"k": "A", "t": "Trees are mainly useful because they look attractive."}, {"k": "B", "t": "Cities should plant as many trees as possible."}, {"k": "C", "t": "Trees bring real benefits, but the type of tree matters."}, {"k": "D", "t": "Trees in cities cause more problems than they actually solve."}],
       "ans": "C", "b": 6.5,
       "ev": {"p": 0, "s": "experts recommend choosing species carefully rather than simply planting as many trees as possible"},
       "why": "Bài nêu lợi ích thiết thực (làm mát, hút nước mưa) rồi nêu vấn đề và kết luận nên chọn loài cây cẩn thận: lợi ích có thật nhưng loại cây quan trọng.",
@@ -233,7 +233,7 @@
   "items": [
     {
       "id": "pl-r-10-a", "q": "What happens during deep sleep, according to the text?",
-      "opts": [{"k": "A", "t": "The brain stops working completely."}, {"k": "B", "t": "New information is stored for the long term."}, {"k": "C", "t": "People forget unimportant words."}, {"k": "D", "t": "The brain learns new lists of words."}],
+      "opts": [{"k": "A", "t": "The brain stops working completely for several hours."}, {"k": "B", "t": "New information is stored for the long term."}, {"k": "C", "t": "People forget the words that are not important to them."}, {"k": "D", "t": "The brain learns new lists of words."}],
       "ans": "B", "b": 6,
       "ev": {"p": 0, "s": "During deep sleep, information learned during the day is replayed and moved into long-term memory."},
       "why": "Thông tin học trong ngày được \"moved into long-term memory\" = chuyển vào trí nhớ dài hạn, tức là được lưu lâu dài.",
@@ -258,7 +258,7 @@
   "items": [
     {
       "id": "pl-r-11-a", "q": "A passenger with a Saver ticket misses the 9 am train. What must she do?",
-      "opts": [{"k": "A", "t": "Take the next train on the same day"}, {"k": "B", "t": "Ask for a refund"}, {"k": "C", "t": "Pay for another ticket at the normal price"}, {"k": "D", "t": "Pay a small administration fee"}],
+      "opts": [{"k": "A", "t": "Take the next train on the same day"}, {"k": "B", "t": "Ask for a refund"}, {"k": "C", "t": "Pay for another ticket at the normal price"}, {"k": "D", "t": "Pay a small administration fee to change the ticket"}],
       "ans": "C", "b": 6,
       "ev": {"p": 0, "s": "If you miss your train, you must buy a new ticket at the full price."},
       "why": "Vé tiết kiệm lỡ tàu thì phải mua vé mới giá đầy đủ (full price = normal price).",
@@ -266,7 +266,7 @@
     },
     {
       "id": "pl-r-11-b", "q": "What is true about bicycles?",
-      "opts": [{"k": "A", "t": "They travel free."}, {"k": "B", "t": "Passengers need to book a space before travelling."}, {"k": "C", "t": "They are allowed only with Flexible tickets."}, {"k": "D", "t": "Each train has unlimited space for them."}],
+      "opts": [{"k": "A", "t": "They travel free."}, {"k": "B", "t": "Passengers need to book a space before travelling."}, {"k": "C", "t": "They are allowed only for passengers with Flexible tickets."}, {"k": "D", "t": "Each train has unlimited space for passengers to bring them."}],
       "ans": "B", "b": 5.5,
       "ev": {"p": 0, "s": "Passengers travelling with bicycles must reserve a space in advance"},
       "why": "\"reserve a space in advance\" = đặt chỗ trước khi đi.",
@@ -291,7 +291,7 @@
     },
     {
       "id": "pl-r-12-b", "q": "What is the critics' main concern?",
-      "opts": [{"k": "A", "t": "Office workers will lose their jobs."}, {"k": "B", "t": "Staff will not be able to finish their work."}, {"k": "C", "t": "The results may not apply to every type of job."}, {"k": "D", "t": "Sickness rates will increase."}],
+      "opts": [{"k": "A", "t": "Office workers will lose their jobs."}, {"k": "B", "t": "Staff will not be able to finish all of their work in time."}, {"k": "C", "t": "The results may not apply to every type of job."}, {"k": "D", "t": "Sickness rates will increase."}],
       "ans": "C", "b": 7,
       "ev": {"p": 0, "s": "the model may be much harder to apply in hospitals, schools or factories"},
       "why": "Người phản đối nói thử nghiệm chủ yếu với nhân viên văn phòng và khó áp dụng ở bệnh viện, trường học, nhà máy: kết quả có thể không đúng với mọi loại công việc.",

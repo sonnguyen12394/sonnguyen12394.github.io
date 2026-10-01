@@ -18,6 +18,8 @@ export const LENGTH: Record<string, Record<string, [number, number]>> = {
   reading: { place: [50, 320], practice: [150, 1000], mock: [280, 1050] },
   listening: { place: [20, 320], practice: [120, 1100], mock: [150, 1300] },
 };
+// Ngoại lệ theo dạng câu (bộ luyện): Phần 1 Nghe VSTEP là các thông báo ngắn ~30–40 từ, mỗi bộ gồm 3 đoạn.
+export const QLENGTH: Record<string, [number, number]> = { 'v-l1': [60, 400] };
 
 // Số câu điền nằm nguyên văn trong bài (IELTS: "Choose NO MORE THAN … WORDS from the passage").
 const FROM_TEXT = new Set(['r-sentence', 'r-summary', 'r-notes', 'r-diagram', 'r-short', 'l-form', 'l-sentence', 'l-flow', 'l-short']);
@@ -69,7 +71,7 @@ export function checkGroup(g: Group, list: Record<string, string> | null): Issue
     if (g.paras) bad(g.id, 'bài nghe không dùng paras');
   }
   const n = wordCount(src.join(' '));
-  const [lo, hi] = LENGTH[g.kind]![g.mode]!;
+  const [lo, hi] = (g.mode === 'practice' && QLENGTH[g.qtype]) || LENGTH[g.kind]![g.mode]!;
   if (n < lo || n > hi) bad(g.id, `độ dài ${n} từ, chuẩn ${lo}–${hi} từ cho ${g.kind}/${g.mode}`);
   if (g.vi && g.vi.length !== src.length) bad(g.id, `bản dịch có ${g.vi.length} dòng, bài có ${src.length} dòng`);
   if (g.options) {
@@ -155,6 +157,7 @@ export function checkAll(groups: Group[], list: Record<string, string> | null): 
     out.push(...checkGroup(g, list));
   }
   out.push(...checkKeyBalance(groups));
+  out.push(...checkLengthCue(groups));
   return out;
 }
 
@@ -182,6 +185,54 @@ export function checkKeyBalance(groups: Group[]): Issue[] {
       const max = Math.max(...combo.values()) / multi.length;
       if (max > 0.25) out.push({ where: q, msg: `một tổ hợp vị trí đáp án chiếm ${Math.round(max * 100)}% số câu chọn nhiều — cần rải đều` });
     }
+  }
+  return out;
+}
+
+// Gợi ý (không chặn CI): đáp án điền thường có thể kèm từ bổ nghĩa đứng ngay trước nó trong bài ("big red barn",
+// "free meal voucher"). Nếu thêm từ đó vẫn trong giới hạn từ mà chưa được chấp nhận, người học viết đúng sẽ bị chấm sai.
+// Bên soát độc lập đã ba lần phát hiện kiểu thiếu này, nên kiểm tự động để người soạn cân nhắc.
+const NOT_MODIFIER = new Set(('the a an this that these those my your his her its our their some any each every no ' +
+  'in on at to from by with for of about into onto over under near after before behind beside between through ' +
+  'is are was were be been being am has have had do does did will would can could should must may might ' +
+  'and or but so as than then it they we you i he she them us me him called known like such just only very ' +
+  "it's that's there's here's mean take put use record buy get see find bring brought produce wear keep make out up down off around worth enough " +
+  'where when which who what how why there here also even still now about approximately actually really hand').split(' '));
+export function suggestVariants(groups: Group[]): Issue[] {
+  const out: Issue[] = [];
+  for (const g of groups) {
+    if (!FROM_TEXT.has(g.qtype)) continue;
+    const src = sourceText(g);
+    for (const it of g.items) {
+      if (answerKind(it, g) !== 'text') continue;
+      const acc = (it.ans as TextAnswer).accept, line = src[it.ev.p] ?? '';
+      const accN = new Set(acc.map(norm)), stem = norm(it.q);
+      for (const a of acc) {
+        const m = new RegExp(`(?:^|[^A-Za-z'’-])([A-Za-z][A-Za-z'’-]*) (${a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})(?![A-Za-z])`, 'i').exec(line);
+        if (!m) continue;
+        const prev = m[1]!.toLowerCase().replace(/[’]/g, "'"), cand = `${m[1]} ${m[2]}`;
+        if (NOT_MODIFIER.has(prev) || /(?:ing|ed|ly)$/.test(prev) || accN.has(norm(cand)) || stem.includes(prev + ' ___') || !withinLimit(cand, it.limit, it.num)) continue;
+        out.push({ where: `${g.id}/${it.id}`, msg: `cân nhắc chấp nhận "${cand}" (trong bài có, vẫn trong giới hạn từ)` });
+        break;
+      }
+    }
+  }
+  return out;
+}
+
+// Đáp án đúng không được hay là phương án DÀI NHẤT: người soạn thường viết đáp án chính xác, đầy đủ hơn nên dài hơn,
+// thí sinh tinh ý đoán được mà không cần đọc/nghe (bên soát VSTEP phát hiện ~60% so với ~25% ngẫu nhiên).
+// Mỗi dạng (≥ 12 câu có phương án riêng): tỉ lệ câu mà đáp án là phương án dài nhất duy nhất ≤ 1/n + 15 điểm %.
+export function checkLengthCue(groups: Group[]): Issue[] {
+  const out: Issue[] = [];
+  const by = new Map<string, Item[]>();
+  for (const g of groups) for (const it of g.items) if (it.opts && typeof it.ans === 'string') by.set(g.qtype, [...(by.get(g.qtype) ?? []), it]);
+  for (const [q, its] of by) {
+    if (its.length < 12) continue;
+    const n = Math.round(its.reduce((s, it) => s + it.opts!.length, 0) / its.length);
+    const cued = its.filter(it => { const L = it.opts!.map(o => o.t.length), m = Math.max(...L); return L.filter(x => x === m).length === 1 && it.opts![L.indexOf(m)]!.k === it.ans; });
+    const share = cued.length / its.length;
+    if (share > 1 / n + 0.15) out.push({ where: q, msg: `đáp án là phương án dài nhất ở ${Math.round(share * 100)}% số câu (ngẫu nhiên ≈ ${Math.round(100 / n)}%) — cân lại độ dài: ${cued.slice(0, 8).map(it => it.id).join(', ')}${cued.length > 8 ? '…' : ''}` });
   }
   return out;
 }

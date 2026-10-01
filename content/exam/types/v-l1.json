@@ -1,0 +1,25 @@
+{
+  "id": "v-l1",
+  "lesson": [
+    "Phần 1 Nghe VSTEP có 8 câu: mỗi câu là một thông báo, hướng dẫn hoặc tin nhắn ngắn (ở sân bay, nhà ga, trường học, cửa hàng, điện thoại), kèm một câu hỏi 4 phương án. Mỗi đoạn chỉ được nghe MỘT lần.",
+    "Câu hỏi thường hỏi thông tin cụ thể: giờ, địa điểm, việc người nghe cần làm, lý do thay đổi.",
+    "Vì đoạn rất ngắn, thông tin quan trọng có thể chỉ nói một lần; thường có thông tin gây nhiễu (giờ cũ và giờ mới, cổng cũ và cổng mới)."
+  ],
+  "steps": [
+    "Trước khi nghe, đọc câu hỏi và 4 phương án, gạch chân điểm khác nhau (giờ nào, nơi nào).",
+    "Đoán tình huống từ câu hỏi (thông báo chuyến bay, tin nhắn thoại…).",
+    "Khi nghe, chú ý từ chỉ thay đổi: 'instead', 'has been changed', 'no longer', 'please note'.",
+    "Chọn ngay khi đoạn kết thúc rồi chuyển sang đọc câu tiếp theo."
+  ],
+  "tips": [
+    "Thông tin sau 'but', 'however', 'instead' thường là đáp án.",
+    "Các phương án sai thường là thông tin cũ hoặc thông tin về người/việc khác cũng được nhắc trong đoạn.",
+    "Tận dụng thời gian giữa các đoạn để đọc trước câu tiếp theo."
+  ],
+  "traps": [
+    "Chọn giờ/địa điểm nghe thấy đầu tiên, trong khi đó là thông tin cũ.",
+    "Mải nghĩ câu trước nên lỡ đoạn sau.",
+    "Nhầm số: 15/50, 13/30 (nghe trọng âm)."
+  ],
+  "time": "khoảng 30 giây mỗi đoạn"
+}

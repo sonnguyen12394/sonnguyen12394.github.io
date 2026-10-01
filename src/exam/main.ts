@@ -25,6 +25,7 @@ import { packOfItem } from './packs.ts';
 import { markItem } from './score.ts';
 import { viewPracticeList, viewType, viewSet, type PracticeRun, type TypeLesson } from './views/practice.ts';
 import { readGiven } from './views/items.ts';
+import { attachNoise, detachNoise, unlockAudio } from './noise.ts';
 import { QT } from './content.ts';
 import { ieltsBand } from './scales.ts';
 
@@ -215,7 +216,9 @@ export function init(host: Host): ExamModule {
       if (!prun) return;
       const f = document.querySelector('form[data-xform="setcheck"]') as HTMLFormElement | null;
       if (f && !prun.marks) prun.given = readGiven(f, prun.g.items, prun.g);
-      prun.ver = (el.dataset.v as PracticeRun['ver']) || 'file'; host.render();
+      prun.ver = (el.dataset.v as PracticeRun['ver']) || 'file';
+      if (prun.ver === 'noise') unlockAudio();   // trong thao tác bấm: iOS mới cho Web Audio chạy
+      host.render();
     },
     setflag(el) {
       if (!prun) return;
@@ -343,6 +346,8 @@ export function init(host: Host): ExamModule {
     render,
     after(route: string) {
       stopTimer();
+      const sa = document.getElementById('xsetaudio') as HTMLAudioElement | null;
+      if (route === 'set' && prun?.ver === 'noise' && sa) attachNoise(sa); else detachNoise();
       if (route === 'place-run' && run && !run.st.finished) {
         timer = setInterval(() => {
           const sec = run?.st.sections[run.st.i], el = document.getElementById('xtimer');

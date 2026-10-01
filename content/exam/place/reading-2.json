@@ -129,7 +129,7 @@
           },
           {
             "k": "D",
-            "t": "To find out if they are ill"
+            "t": "To find out whether any of the cats are ill"
           }
         ],
         "ans": "A",
@@ -220,7 +220,7 @@
           },
           {
             "k": "D",
-            "t": "Contact the seller"
+            "t": "Contact the seller to explain the problem"
           }
         ],
         "ans": "B",
@@ -246,7 +246,7 @@
           },
           {
             "k": "B",
-            "t": "Send it back within 30 days"
+            "t": "Send the item back within 30 days"
           },
           {
             "k": "C",
@@ -312,7 +312,7 @@
           },
           {
             "k": "C",
-            "t": "Their cities have banned motorbikes."
+            "t": "Their cities have recently banned all motorbikes."
           },
           {
             "k": "D",
@@ -441,7 +441,7 @@
           },
           {
             "k": "D",
-            "t": "The products lose all their quality."
+            "t": "The products lose all of their quality after being returned."
           }
         ],
         "ans": "C",
@@ -490,7 +490,7 @@
           },
           {
             "k": "B",
-            "t": "They make faster progress in the first year."
+            "t": "They make much faster progress in their first year of study."
           },
           {
             "k": "C",
@@ -589,7 +589,7 @@
           },
           {
             "k": "D",
-            "t": "It shows that a person lacks imagination."
+            "t": "It shows that a person lacks imagination and new ideas."
           }
         ],
         "ans": "B",
@@ -623,7 +623,7 @@
           },
           {
             "k": "D",
-            "t": "Creative exercises are not reliable."
+            "t": "The creative exercises used in the studies are not reliable."
           }
         ],
         "ans": "B",
@@ -710,7 +710,7 @@
           },
           {
             "k": "C",
-            "t": "They use only data from professional astronomers."
+            "t": "They use only data collected by professional astronomers."
           },
           {
             "k": "D",
@@ -767,7 +767,7 @@
           },
           {
             "k": "C",
-            "t": "They are more expensive than economic statistics."
+            "t": "They are more expensive to collect than economic statistics."
           },
           {
             "k": "D",
@@ -793,7 +793,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "They should replace economic growth as the main measure."
+            "t": "They should replace economic growth as the main measure of progress for governments."
           },
           {
             "k": "B",
@@ -867,7 +867,7 @@
           },
           {
             "k": "D",
-            "t": "To explain why music is easier to translate than literature"
+            "t": "To explain why music is easier to translate than literature, and so needs fewer translators"
           }
         ],
         "ans": "B",
@@ -897,7 +897,7 @@
           },
           {
             "k": "C",
-            "t": "Readers do not interpret texts in their own language."
+            "t": "Readers do not usually interpret texts written in their own language."
           },
           {
             "k": "D",
@@ -992,7 +992,7 @@
           },
           {
             "k": "D",
-            "t": "They will have to work alone after 7 pm."
+            "t": "They will have to work alone in the office after 7 pm."
           }
         ],
         "ans": "C",
@@ -1049,7 +1049,7 @@
           },
           {
             "k": "D",
-            "t": "Entrance tickets are too expensive."
+            "t": "Entrance tickets to the terraces are too expensive."
           }
         ],
         "ans": "B",
@@ -1083,7 +1083,7 @@
           },
           {
             "k": "D",
-            "t": "To reduce the number of visitors"
+            "t": "To reduce the number of visitors to the area"
           }
         ],
         "ans": "A",

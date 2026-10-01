@@ -8,6 +8,7 @@ import { IDX } from '../packs.ts';
 import type { Given, Mark } from '../score.ts';
 import { itemInput, feedback } from './items.ts';
 import { back, figure, SKILL_VI } from './ui.ts';
+import { noiseSupported } from '../noise.ts';
 import { FLAG_REASONS } from './place.ts';
 
 export interface TypeLesson { id: string; lesson: string[]; steps: string[]; tips: string[]; traps: string[]; time?: string }
@@ -38,7 +39,7 @@ export function viewPracticeList(c: Ctx): string {
   };
   const ready = types.filter(q => typeCount(q.id).items).length;
   return `<section class="stack"><span class="eyebrow">Ôn thi · Luyện theo dạng câu</span><h1>Luyện từng dạng câu hỏi</h1>
-    <p class="muted">Mỗi dạng có bài học, các bước làm, mẹo và bẫy hay gặp, rồi bộ câu luyện có giải thích từng phương án. Đã có ${ready}/${types.length} dạng; các dạng còn lại đang soạn.</p></section>
+    <p class="muted">Mỗi dạng có bài học, các bước làm, mẹo và bẫy hay gặp, rồi bộ câu luyện có giải thích từng phương án. ${ready === types.length ? `Đủ cả ${types.length} dạng của đề.` : `Đã có ${ready}/${types.length} dạng; các dạng còn lại đang soạn.`}</p></section>
   ${(['R', 'L'] as const).map(k => `<section class="panel stack"><h3>${SKILL_VI[k]}</h3><ul class="sklist">${types.filter(q => q.skill === k).map(row).join('')}</ul></section>`).join('')}
   ${back()}`;
 }
@@ -65,9 +66,9 @@ export function viewSet(c: Ctx, r: PracticeRun): string {
   if (g.kind === 'reading') {
     text = `${(g.paras ?? []).map((p, i) => `<p lang="en" class="reading">${esc(p)}</p>${done && g.vi?.[i] ? `<p class="hint" lang="vi">${esc(g.vi[i])}</p>` : ''}`).join('')}`;
   } else {
-    const a = g.audio, src = r.ver === 'slow' ? a?.slow : r.ver === 'noise' ? a?.noise : a?.file;
+    const a = g.audio, src = r.ver === 'slow' ? a?.slow : a?.file;   // bản ồn: phát tệp thường + trộn ồn (noise.ts)
     text = `<audio id="xsetaudio" controls preload="metadata" src="${esc(src ?? a?.file ?? '')}"></audio>
-      <div class="row" role="radiogroup" aria-label="Phiên bản bài nghe" style="gap:6px">${([['file', 'Tốc độ thi'], ['slow', 'Chậm'], ['noise', 'Có tiếng ồn']] as const).filter(([k]) => k === 'file' || a?.[k]).map(([k, l]) => `<button class="btn small${r.ver === k ? ' primary' : ''}" data-x="setver" data-v="${k}" aria-pressed="${r.ver === k}">${l}</button>`).join('')}</div>
+      <div class="row" role="radiogroup" aria-label="Phiên bản bài nghe" style="gap:6px">${([['file', 'Tốc độ thi'], ['slow', 'Chậm'], ['noise', 'Có tiếng ồn']] as const).filter(([k]) => k === 'file' || (k === 'noise' ? noiseSupported() : a?.[k])).map(([k, l]) => `<button class="btn small${r.ver === k ? ' primary' : ''}" data-x="setver" data-v="${k}" aria-pressed="${r.ver === k}">${l}</button>`).join('')}</div>
       <p class="hint">Khi luyện, bạn được nghe lại. Thi thật chỉ nghe một lần.</p>
       ${done ? `<details open><summary>Lời thoại và bản dịch</summary>${(g.script ?? []).map((l, i) => `<p lang="en"><b>${esc(l.sp)}:</b> ${esc(l.t)}${g.vi?.[i] ? `<br><span class="hint" lang="vi">${esc(g.vi[i])}</span>` : ''}</p>`).join('')}</details>` : ''}`;
   }

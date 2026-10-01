@@ -1,0 +1,1034 @@
+[
+  {
+    "id": "l-matching-01",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-matching",
+    "level": "B1",
+    "band": 5,
+    "mode": "practice",
+    "title": "Activities at a Summer Camp",
+    "instr": "What does the speaker say about each activity? Choose FIVE answers from the list, A–G.",
+    "script": [
+      {
+        "sp": "Leader",
+        "t": "Hello, everyone. Let me tell you about the activities you can choose this week."
+      },
+      {
+        "sp": "Leader",
+        "t": "First, horse riding. It's our most popular activity, so if you want to do it, put your name down today, because places are limited."
+      },
+      {
+        "sp": "Leader",
+        "t": "Then there's kayaking on the lake. You don't need any experience, but you must be able to swim fifty metres, and we'll check that on Monday."
+      },
+      {
+        "sp": "Leader",
+        "t": "Rock climbing takes place at the climbing wall in the sports hall, so it goes ahead whatever the weather. Lots of campers prefer it when it rains."
+      },
+      {
+        "sp": "Leader",
+        "t": "Our photography course is new this year. You'll need your own camera; a phone is fine."
+      },
+      {
+        "sp": "Leader",
+        "t": "And finally, orienteering. That's finding your way through the forest with a map. It's quite tiring, as you'll walk about ten kilometres, so wear good shoes."
+      }
+    ],
+    "voices": {
+      "Leader": "am_adam"
+    },
+    "vi": [
+      "Chào mọi người. Để tôi giới thiệu các hoạt động các em có thể chọn tuần này.",
+      "Đầu tiên, cưỡi ngựa. Đây là hoạt động được yêu thích nhất, nên nếu muốn tham gia, hãy ghi tên ngay hôm nay, vì số chỗ có hạn.",
+      "Tiếp theo là chèo thuyền kayak trên hồ. Không cần kinh nghiệm, nhưng phải bơi được năm mươi mét, và chúng tôi sẽ kiểm tra vào thứ Hai.",
+      "Leo núi diễn ra ở tường leo trong nhà thi đấu, nên vẫn diễn ra dù thời tiết thế nào. Nhiều trại sinh thích nó khi trời mưa.",
+      "Khoá nhiếp ảnh năm nay mới mở. Các em cần mang máy ảnh riêng; điện thoại cũng được.",
+      "Và cuối cùng, chạy định hướng. Đó là tìm đường xuyên rừng bằng bản đồ. Khá mệt, vì các em sẽ đi bộ khoảng mười ki-lô-mét, nên hãy đi giày tốt."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "participants will be tested first"
+      },
+      {
+        "k": "B",
+        "t": "it may be cancelled if it rains"
+      },
+      {
+        "k": "C",
+        "t": "book early"
+      },
+      {
+        "k": "D",
+        "t": "it takes place indoors"
+      },
+      {
+        "k": "E",
+        "t": "bring your own equipment"
+      },
+      {
+        "k": "F",
+        "t": "it is physically demanding"
+      },
+      {
+        "k": "G",
+        "t": "previous experience is needed"
+      }
+    ],
+    "allow": [
+      "kayaking",
+      "orienteering",
+      "campers",
+      "limited"
+    ],
+    "items": [
+      {
+        "id": "l-matching-01-1",
+        "q": "horse riding",
+        "ans": "C",
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "put your name down today, because places are limited"
+        },
+        "why": "Cưỡi ngựa được ưa nhất, phải đăng ký sớm vì ít chỗ.",
+        "wrong": {
+          "A": "Kiểm tra bơi là của kayak.",
+          "F": "Mệt vì đi bộ xa là của chạy định hướng."
+        }
+      },
+      {
+        "id": "l-matching-01-2",
+        "q": "kayaking",
+        "ans": "A",
+        "b": 5.5,
+        "ev": {
+          "p": 2,
+          "s": "you must be able to swim fifty metres, and we'll check that on Monday"
+        },
+        "why": "Kayak cần kiểm tra khả năng bơi.",
+        "wrong": {
+          "G": "Kayak không cần kinh nghiệm, ngược với \"experience needed\".",
+          "C": "Đăng ký sớm là của cưỡi ngựa."
+        }
+      },
+      {
+        "id": "l-matching-01-3",
+        "q": "rock climbing",
+        "ans": "D",
+        "b": 5.5,
+        "ev": {
+          "p": 3,
+          "s": "so it goes ahead whatever the weather"
+        },
+        "why": "Leo núi trong nhà, diễn ra dù thời tiết thế nào.",
+        "wrong": {
+          "B": "Không có hoạt động nào nói bị huỷ khi mưa.",
+          "E": "Thiết bị riêng là của nhiếp ảnh."
+        }
+      },
+      {
+        "id": "l-matching-01-4",
+        "q": "photography",
+        "ans": "E",
+        "b": 5,
+        "ev": {
+          "p": 4,
+          "s": "You'll need your own camera"
+        },
+        "why": "Nhiếp ảnh cần mang máy ảnh riêng.",
+        "wrong": {
+          "D": "Diễn ra mọi thời tiết là của leo núi.",
+          "A": "Kiểm tra trước là của kayak."
+        }
+      },
+      {
+        "id": "l-matching-01-5",
+        "q": "orienteering",
+        "ans": "F",
+        "b": 5.5,
+        "ev": {
+          "p": 5,
+          "s": "It's quite tiring, as you'll walk about ten kilometres"
+        },
+        "why": "Chạy định hướng mệt vì đi bộ khoảng 10 km.",
+        "wrong": {
+          "C": "Ít chỗ là của cưỡi ngựa.",
+          "G": "Không nói cần kinh nghiệm."
+        }
+      }
+    ]
+  },
+  {
+    "id": "l-matching-02",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-matching",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Opinions on Study Resources",
+    "instr": "What does Lucy think of each resource? Choose FIVE answers from the list, A–F.",
+    "script": [
+      {
+        "sp": "Sam",
+        "t": "Lucy, you got a great mark in the history module. Which resources did you find most useful?"
+      },
+      {
+        "sp": "Lucy",
+        "t": "Well, the main textbook was useful, but it's very long. I only read the chapters the lecturer recommended; reading it all would have taken forever."
+      },
+      {
+        "sp": "Sam",
+        "t": "What about the online lectures?"
+      },
+      {
+        "sp": "Lucy",
+        "t": "They were good, but the sound quality was terrible in some of them. I had to turn on the subtitles to follow."
+      },
+      {
+        "sp": "Sam",
+        "t": "Did you use the university archive?"
+      },
+      {
+        "sp": "Lucy",
+        "t": "Yes, and that was the best part. I found original letters from the 1920s that nobody else in the class used, and I think that's why my essay stood out."
+      },
+      {
+        "sp": "Sam",
+        "t": "And the study group?"
+      },
+      {
+        "sp": "Lucy",
+        "t": "Honestly, I stopped going after a few weeks. It turned into a social event and we didn't get much work done."
+      },
+      {
+        "sp": "Sam",
+        "t": "Last one: the past exam papers."
+      },
+      {
+        "sp": "Lucy",
+        "t": "Essential. The same types of questions came up every year, so practising them helped me plan my answers."
+      }
+    ],
+    "voices": {
+      "Sam": "bm_lewis",
+      "Lucy": "bf_isabella"
+    },
+    "vi": [
+      "Lucy, cậu được điểm cao môn lịch sử. Tài liệu nào cậu thấy hữu ích nhất?",
+      "À, giáo trình chính hữu ích, nhưng rất dài. Mình chỉ đọc các chương giảng viên gợi ý; đọc hết chắc mất cả đời.",
+      "Còn bài giảng trực tuyến?",
+      "Cũng tốt, nhưng chất lượng âm thanh tệ ở một vài bài. Mình phải bật phụ đề mới theo được.",
+      "Cậu có dùng kho lưu trữ của trường không?",
+      "Có, và đó là phần hay nhất. Mình tìm được những bức thư gốc từ thập niên 1920 mà không ai khác trong lớp dùng, và mình nghĩ đó là lý do bài luận của mình nổi bật.",
+      "Còn nhóm học?",
+      "Thật lòng, mình thôi đi sau vài tuần. Nó thành buổi giao lưu và tụi mình chẳng làm được bao nhiêu.",
+      "Cái cuối: đề thi các năm trước.",
+      "Thiết yếu. Năm nào cũng ra những dạng câu hỏi giống nhau, nên luyện chúng giúp mình lên dàn ý câu trả lời."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "it made her work different from others'"
+      },
+      {
+        "k": "B",
+        "t": "it had technical problems"
+      },
+      {
+        "k": "C",
+        "t": "it was hard to access"
+      },
+      {
+        "k": "D",
+        "t": "she used only part of it"
+      },
+      {
+        "k": "E",
+        "t": "it was a waste of time"
+      },
+      {
+        "k": "F",
+        "t": "it helped her prepare answers"
+      }
+    ],
+    "allow": [
+      "module",
+      "subtitles",
+      "archive",
+      "essay"
+    ],
+    "items": [
+      {
+        "id": "l-matching-02-1",
+        "q": "the textbook",
+        "ans": "D",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "I only read the chapters the lecturer recommended"
+        },
+        "why": "Giáo trình dài nên Lucy chỉ đọc một phần được gợi ý.",
+        "wrong": {
+          "B": "Âm thanh kém là của bài giảng trực tuyến.",
+          "E": "Lucy nói giáo trình hữu ích, không phải lãng phí thời gian."
+        }
+      },
+      {
+        "id": "l-matching-02-2",
+        "q": "online lectures",
+        "ans": "B",
+        "b": 6,
+        "ev": {
+          "p": 3,
+          "s": "the sound quality was terrible in some of them"
+        },
+        "why": "Chất lượng âm thanh kém ở vài bài.",
+        "wrong": {
+          "D": "Chỉ dùng một phần là giáo trình.",
+          "F": "Không nói về giúp lên kế hoạch câu trả lời."
+        }
+      },
+      {
+        "id": "l-matching-02-3",
+        "q": "the university archive",
+        "ans": "A",
+        "b": 6.5,
+        "ev": {
+          "p": 5,
+          "s": "I think that's why my essay stood out"
+        },
+        "why": "Kho lưu trữ giúp bài luận khác biệt.",
+        "wrong": {
+          "F": "Lên dàn ý là đề thi cũ.",
+          "C": "Không có ý bị bỏ qua."
+        }
+      },
+      {
+        "id": "l-matching-02-4",
+        "q": "the study group",
+        "ans": "E",
+        "b": 6.5,
+        "ev": {
+          "p": 7,
+          "s": "It turned into a social event and we didn't get much work done."
+        },
+        "why": "Nhóm học thành buổi giao lưu, không làm được việc: lãng phí thời gian.",
+        "wrong": {
+          "C": "Không tài liệu nào được nói là khó tiếp cận.",
+          "A": "Làm bài luận nổi bật là kho lưu trữ."
+        }
+      },
+      {
+        "id": "l-matching-02-5",
+        "q": "past exam papers",
+        "ans": "F",
+        "b": 6,
+        "ev": {
+          "p": 9,
+          "s": "practising them helped me plan my answers"
+        },
+        "why": "Đề cũ giúp lên dàn ý câu trả lời.",
+        "wrong": {
+          "D": "Chỉ dùng một phần là giáo trình.",
+          "A": "Làm bài luận khác biệt là kho lưu trữ."
+        }
+      }
+    ]
+  },
+  {
+    "id": "l-matching-03",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-matching",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "practice",
+    "title": "Areas of a Botanical Garden",
+    "instr": "Which feature does the guide mention for each area of the garden? Choose FIVE answers from the list, A–G.",
+    "script": [
+      {
+        "sp": "Guide",
+        "t": "Welcome to the Royal Botanical Garden. Let me give you a quick overview of the main areas."
+      },
+      {
+        "sp": "Guide",
+        "t": "Right next to the entrance is the Rose Garden. It's at its best in June, but even now in September there are still a few flowers. It was redesigned last year, and the new layout has been very popular."
+      },
+      {
+        "sp": "Guide",
+        "t": "Beyond that is the Tropical Glasshouse. It's kept at twenty-eight degrees all year, so you might want to take your coat off before you go in."
+      },
+      {
+        "sp": "Guide",
+        "t": "The Japanese Garden is our quietest area. We ask visitors not to bring food in there, and children must stay with an adult because of the deep pond."
+      },
+      {
+        "sp": "Guide",
+        "t": "The Herb Garden is where many of our school groups go, because each plant has a sign explaining how it has been used in medicine and cooking."
+      },
+      {
+        "sp": "Guide",
+        "t": "Finally, the Woodland Walk at the far end. It's the oldest part of the garden, with some trees more than three hundred years old. The path can be muddy, though, so it's not suitable for wheelchairs."
+      }
+    ],
+    "voices": {
+      "Guide": "bf_emma"
+    },
+    "vi": [
+      "Chào mừng đến Vườn Thực vật Hoàng gia. Để tôi giới thiệu nhanh các khu chính.",
+      "Ngay cạnh lối vào là Vườn Hồng. Đẹp nhất vào tháng Sáu, nhưng giờ là tháng Chín vẫn còn vài bông. Nó được thiết kế lại năm ngoái, và bố cục mới rất được ưa chuộng.",
+      "Xa hơn là Nhà kính Nhiệt đới. Nhiệt độ giữ ở hai mươi tám độ quanh năm, nên các bạn có thể muốn cởi áo khoác trước khi vào.",
+      "Vườn Nhật là khu yên tĩnh nhất. Chúng tôi đề nghị khách không mang đồ ăn vào, và trẻ em phải đi cùng người lớn vì có hồ nước sâu.",
+      "Vườn Thảo mộc là nơi nhiều đoàn học sinh đến, vì mỗi cây có biển giải thích cây được dùng thế nào trong y học và nấu ăn.",
+      "Cuối cùng là Lối đi trong rừng ở cuối vườn. Đây là phần cổ nhất của khu vườn, có cây hơn ba trăm năm tuổi. Nhưng đường có thể lầy lội, nên không phù hợp với xe lăn."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "you will feel warm there"
+      },
+      {
+        "k": "B",
+        "t": "it is closed in winter"
+      },
+      {
+        "k": "C",
+        "t": "children need supervision"
+      },
+      {
+        "k": "D",
+        "t": "guided tours are available"
+      },
+      {
+        "k": "E",
+        "t": "it has recently changed"
+      },
+      {
+        "k": "F",
+        "t": "it is difficult for some visitors to access"
+      },
+      {
+        "k": "G",
+        "t": "it provides educational information"
+      }
+    ],
+    "allow": [
+      "botanical",
+      "glasshouse",
+      "tropical",
+      "layout",
+      "herb",
+      "wheelchairs",
+      "muddy",
+      "redesigned"
+    ],
+    "items": [
+      {
+        "id": "l-matching-03-1",
+        "q": "Rose Garden",
+        "ans": "E",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "It was redesigned last year"
+        },
+        "why": "Vườn Hồng được thiết kế lại năm ngoái (đã thay đổi gần đây).",
+        "wrong": {
+          "C": "Có hồ sâu là Vườn Nhật.",
+          "G": "Thông tin giáo dục là Vườn Thảo mộc."
+        },
+        "trap": "Thông tin về tháng Sáu/tháng Chín là chi tiết gây nhiễu; điểm khớp danh sách là 'redesigned'."
+      },
+      {
+        "id": "l-matching-03-2",
+        "q": "Tropical Glasshouse",
+        "ans": "A",
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "It's kept at twenty-eight degrees all year, so you might want to take your coat off"
+        },
+        "why": "Nhà kính ấm quanh năm, nên cởi áo khoác.",
+        "wrong": {
+          "F": "Khó đi với xe lăn là Lối đi trong rừng.",
+          "E": "Thiết kế lại là Vườn Hồng."
+        }
+      },
+      {
+        "id": "l-matching-03-3",
+        "q": "Japanese Garden",
+        "ans": "C",
+        "b": 6.5,
+        "ev": {
+          "p": 3,
+          "s": "children must stay with an adult because of the deep pond"
+        },
+        "why": "Trẻ em phải đi cùng người lớn vì hồ sâu.",
+        "wrong": {
+          "D": "Không khu nào được nói có tham quan có hướng dẫn.",
+          "A": "Nhiệt độ cao là Nhà kính."
+        }
+      },
+      {
+        "id": "l-matching-03-4",
+        "q": "Herb Garden",
+        "ans": "G",
+        "b": 6.5,
+        "ev": {
+          "p": 4,
+          "s": "each plant has a sign explaining how it has been used in medicine and cooking"
+        },
+        "why": "Biển giải thích công dụng: hữu ích cho học tập.",
+        "wrong": {
+          "E": "Thiết kế lại là Vườn Hồng.",
+          "B": "Không có khu nào được nói là đóng cửa."
+        }
+      },
+      {
+        "id": "l-matching-03-5",
+        "q": "Woodland Walk",
+        "ans": "F",
+        "b": 6.5,
+        "ev": {
+          "p": 5,
+          "s": "it's not suitable for wheelchairs"
+        },
+        "why": "Không phù hợp với xe lăn.",
+        "wrong": {
+          "D": "Không được nhắc; người hướng dẫn chỉ nói khu này cổ nhất.",
+          "C": "Hồ sâu là Vườn Nhật."
+        }
+      }
+    ]
+  },
+  {
+    "id": "l-matching-04",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-matching",
+    "level": "C1",
+    "band": 7,
+    "mode": "practice",
+    "title": "Seminar: Evaluating Research Methods",
+    "instr": "What is the main problem with each research method, according to the students? Choose FIVE answers from the list, A–G.",
+    "script": [
+      {
+        "sp": "Tutor",
+        "t": "For your project on commuting habits, you considered several research methods. Let's go through the problems you identified."
+      },
+      {
+        "sp": "Amir",
+        "t": "We started with an online questionnaire. It's cheap and quick, but the people who answer tend to be those with strong opinions, so the sample isn't representative."
+      },
+      {
+        "sp": "Kate",
+        "t": "Then we thought about face-to-face interviews at the station. They give much richer answers, but each one takes about twenty minutes, so we could only manage a handful."
+      },
+      {
+        "sp": "Amir",
+        "t": "We also looked at travel diaries, where people record every journey for a week. The data is detailed, but many people stop filling them in after two or three days."
+      },
+      {
+        "sp": "Kate",
+        "t": "Observation was interesting. We could count how many people cycled, for example, but we couldn't find out why they chose to cycle, which is what we really wanted to know."
+      },
+      {
+        "sp": "Amir",
+        "t": "And finally, using the transport company's ticket data. That would have been ideal, but the company wouldn't share it because of privacy rules."
+      },
+      {
+        "sp": "Tutor",
+        "t": "So in the end you combined a questionnaire with a few interviews?"
+      },
+      {
+        "sp": "Kate",
+        "t": "Exactly."
+      }
+    ],
+    "voices": {
+      "Tutor": "bm_george",
+      "Amir": "am_michael",
+      "Kate": "bf_isabella"
+    },
+    "vi": [
+      "Với dự án về thói quen đi làm, các em đã cân nhắc nhiều phương pháp nghiên cứu. Hãy điểm qua những vấn đề các em nhận ra.",
+      "Tụi em bắt đầu với bảng hỏi trực tuyến. Nó rẻ và nhanh, nhưng người trả lời thường là những người có ý kiến mạnh, nên mẫu không mang tính đại diện.",
+      "Rồi tụi em nghĩ tới phỏng vấn trực tiếp ở nhà ga. Câu trả lời phong phú hơn nhiều, nhưng mỗi cuộc mất khoảng hai mươi phút, nên tụi em chỉ làm được vài cuộc.",
+      "Tụi em cũng xem nhật ký đi lại, người ta ghi mọi chuyến đi trong một tuần. Dữ liệu chi tiết, nhưng nhiều người thôi ghi sau hai, ba ngày.",
+      "Quan sát thì thú vị. Ví dụ tụi em đếm được bao nhiêu người đạp xe, nhưng không biết vì sao họ chọn đạp xe, mà đó là điều tụi em thật sự muốn biết.",
+      "Và cuối cùng, dùng dữ liệu vé của công ty vận tải. Đó sẽ là lý tưởng, nhưng công ty không chia sẻ vì quy định bảo mật.",
+      "Vậy rốt cuộc các em kết hợp bảng hỏi với vài cuộc phỏng vấn?",
+      "Chính xác ạ."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "it is too expensive"
+      },
+      {
+        "k": "B",
+        "t": "the results are biased"
+      },
+      {
+        "k": "C",
+        "t": "it takes too much time"
+      },
+      {
+        "k": "D",
+        "t": "participants give up"
+      },
+      {
+        "k": "E",
+        "t": "it does not explain behaviour"
+      },
+      {
+        "k": "F",
+        "t": "the data is not available"
+      },
+      {
+        "k": "G",
+        "t": "the questions are confusing"
+      }
+    ],
+    "allow": [
+      "commuting",
+      "questionnaire",
+      "representative",
+      "diaries",
+      "handful",
+      "observation",
+      "privacy",
+      "biased"
+    ],
+    "items": [
+      {
+        "id": "l-matching-04-1",
+        "q": "online questionnaire",
+        "ans": "B",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "so the sample isn't representative"
+        },
+        "why": "Người trả lời là người có ý kiến mạnh: kết quả bị lệch.",
+        "wrong": {
+          "C": "Tốn thời gian là phỏng vấn.",
+          "E": "Không giải thích được lý do là quan sát."
+        }
+      },
+      {
+        "id": "l-matching-04-2",
+        "q": "interviews",
+        "ans": "C",
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "each one takes about twenty minutes, so we could only manage a handful"
+        },
+        "why": "Mỗi cuộc mất 20 phút, chỉ làm được vài cuộc: quá tốn thời gian.",
+        "wrong": {
+          "D": "Bỏ dở giữa chừng là nhật ký.",
+          "B": "Mẫu lệch là bảng hỏi."
+        }
+      },
+      {
+        "id": "l-matching-04-3",
+        "q": "travel diaries",
+        "ans": "D",
+        "b": 7,
+        "ev": {
+          "p": 3,
+          "s": "many people stop filling them in after two or three days"
+        },
+        "why": "Nhiều người thôi ghi: người tham gia bỏ dở.",
+        "wrong": {
+          "C": "Tốn thời gian của người nghiên cứu là phỏng vấn.",
+          "A": "Không được nhắc về chi phí."
+        }
+      },
+      {
+        "id": "l-matching-04-4",
+        "q": "observation",
+        "ans": "E",
+        "b": 7.5,
+        "ev": {
+          "p": 4,
+          "s": "we couldn't find out why they chose to cycle"
+        },
+        "why": "Không tìm ra lý do: không giải thích được hành vi.",
+        "wrong": {
+          "B": "Mẫu lệch là bảng hỏi.",
+          "F": "Không truy cập được là dữ liệu vé."
+        }
+      },
+      {
+        "id": "l-matching-04-5",
+        "q": "ticket data",
+        "ans": "F",
+        "b": 7,
+        "ev": {
+          "p": 5,
+          "s": "the company wouldn't share it because of privacy rules"
+        },
+        "why": "Công ty không chia sẻ: không lấy được dữ liệu.",
+        "wrong": {
+          "A": "Không được nói là đắt.",
+          "E": "Không giải thích được lý do là quan sát."
+        }
+      }
+    ]
+  },
+  {
+    "id": "l-matching-05",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-matching",
+    "level": "C1",
+    "band": 7.5,
+    "mode": "practice",
+    "title": "A Radio Programme about Inventors",
+    "instr": "Which achievement is each inventor known for, according to the presenter? Choose FIVE answers from the list, A–G.",
+    "script": [
+      {
+        "sp": "Presenter",
+        "t": "In today's programme we're looking at inventors whose names are less famous than their inventions."
+      },
+      {
+        "sp": "Presenter",
+        "t": "Let's start with Mary Anderson. In 1903, after a trip to New York in which the driver kept stopping to clear snow from the glass, she designed a device operated from inside the car to clean the windscreen."
+      },
+      {
+        "sp": "Presenter",
+        "t": "Next, Percy Shaw. Driving home at night along an unlit road, he noticed how the eyes of a cat reflected his headlights. That gave him the idea for small reflectors set into the road surface to mark the centre of the road."
+      },
+      {
+        "sp": "Presenter",
+        "t": "Then there's Bette Nesmith Graham, who worked as a secretary. She was frustrated by typing errors that couldn't be removed, so she mixed white paint in her kitchen to cover them. Her correction fluid made her a fortune."
+      },
+      {
+        "sp": "Presenter",
+        "t": "Garrett Morgan is often wrongly credited with inventing the first traffic light. In fact, traffic lights already existed. What he did was add a third, warning signal, so that drivers knew the light was about to change."
+      },
+      {
+        "sp": "Presenter",
+        "t": "And finally, Josephine Cochrane, who was tired of servants breaking her expensive plates. She built a machine that used water pressure to wash them, the first successful dishwasher."
+      }
+    ],
+    "voices": {
+      "Presenter": "af_sarah"
+    },
+    "vi": [
+      "Trong chương trình hôm nay, chúng ta tìm hiểu những nhà phát minh có tên kém nổi tiếng hơn phát minh của họ.",
+      "Hãy bắt đầu với Mary Anderson. Năm 1903, sau chuyến đi New York mà tài xế liên tục dừng lại để gạt tuyết khỏi kính, bà thiết kế một thiết bị điều khiển từ trong xe để lau kính chắn gió.",
+      "Tiếp theo, Percy Shaw. Lái xe về nhà ban đêm trên con đường không đèn, ông để ý mắt một con mèo phản chiếu đèn pha. Điều đó cho ông ý tưởng về những tấm phản quang nhỏ gắn vào mặt đường để đánh dấu tim đường.",
+      "Rồi có Bette Nesmith Graham, một thư ký. Bực vì lỗi đánh máy không xoá được, bà trộn sơn trắng trong bếp để che chúng. Dung dịch xoá của bà làm bà giàu to.",
+      "Garrett Morgan thường bị gán nhầm là người phát minh đèn giao thông đầu tiên. Thực ra đèn giao thông đã có. Điều ông làm là thêm tín hiệu thứ ba, tín hiệu cảnh báo, để tài xế biết đèn sắp đổi.",
+      "Và cuối cùng, Josephine Cochrane, người chán cảnh người hầu làm vỡ đĩa đắt tiền. Bà chế tạo một cỗ máy dùng áp lực nước để rửa đĩa, chiếc máy rửa bát thành công đầu tiên."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "creating the first traffic light"
+      },
+      {
+        "k": "B",
+        "t": "making roads safer at night"
+      },
+      {
+        "k": "C",
+        "t": "inventing the typewriter"
+      },
+      {
+        "k": "D",
+        "t": "helping drivers see in bad weather"
+      },
+      {
+        "k": "E",
+        "t": "improving an existing invention"
+      },
+      {
+        "k": "F",
+        "t": "correcting mistakes in documents"
+      },
+      {
+        "k": "G",
+        "t": "protecting fragile objects"
+      }
+    ],
+    "allow": [
+      "windscreen",
+      "reflectors",
+      "reflected",
+      "headlights",
+      "unlit",
+      "Nesmith",
+      "secretary",
+      "fluid",
+      "credited",
+      "dishwasher",
+      "Cochrane",
+      "servants",
+      "fortune"
+    ],
+    "items": [
+      {
+        "id": "l-matching-05-1",
+        "q": "Mary Anderson",
+        "ans": "D",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "she designed a device operated from inside the car to clean the windscreen"
+        },
+        "why": "Thiết bị lau kính chắn gió (cải thiện tầm nhìn trong thời tiết xấu).",
+        "wrong": {
+          "B": "Đánh dấu đường ban đêm là Percy Shaw.",
+          "A": "Đèn giao thông đầu tiên là phương án sai về Morgan."
+        }
+      },
+      {
+        "id": "l-matching-05-2",
+        "q": "Percy Shaw",
+        "ans": "B",
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "small reflectors set into the road surface to mark the centre of the road"
+        },
+        "why": "Tấm phản quang đánh dấu tim đường ban đêm.",
+        "wrong": {
+          "D": "Lau kính là Mary Anderson.",
+          "E": "Tín hiệu cảnh báo là Garrett Morgan."
+        }
+      },
+      {
+        "id": "l-matching-05-3",
+        "q": "Bette Nesmith Graham",
+        "ans": "F",
+        "b": 7,
+        "ev": {
+          "p": 3,
+          "s": "Her correction fluid made her a fortune."
+        },
+        "why": "Dung dịch xoá lỗi đánh máy.",
+        "wrong": {
+          "G": "Bảo vệ đồ dễ vỡ là Josephine Cochrane.",
+          "C": "Không ai được nói là phát minh máy đánh chữ."
+        }
+      },
+      {
+        "id": "l-matching-05-4",
+        "q": "Garrett Morgan",
+        "ans": "E",
+        "b": 7.5,
+        "ev": {
+          "p": 4,
+          "s": "What he did was add a third, warning signal"
+        },
+        "why": "Thêm tín hiệu cảnh báo thứ ba cho đèn giao thông.",
+        "wrong": {
+          "A": "Bài nói rõ ông KHÔNG phát minh đèn giao thông đầu tiên.",
+          "B": "Đánh dấu đường là Percy Shaw."
+        },
+        "trap": "Phương án A là điều người ta 'wrongly credited' cho ông."
+      },
+      {
+        "id": "l-matching-05-5",
+        "q": "Josephine Cochrane",
+        "ans": "G",
+        "b": 7,
+        "ev": {
+          "p": 5,
+          "s": "She built a machine that used water pressure to wash them"
+        },
+        "why": "Máy rửa bát, bảo vệ đĩa khỏi bị vỡ.",
+        "wrong": {
+          "F": "Dung dịch xoá là Bette Graham.",
+          "D": "Lau kính là Mary Anderson."
+        }
+      }
+    ]
+  },
+  {
+    "id": "l-matching-06",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "l-matching",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Choosing Accommodation for a Conference",
+    "instr": "Which comment does the organiser make about each hotel? Choose FIVE answers from the list, A–F.",
+    "script": [
+      {
+        "sp": "Organiser",
+        "t": "OK, I've looked at five hotels for the conference delegates. Let me go through them."
+      },
+      {
+        "sp": "Organiser",
+        "t": "The Grand is the most luxurious, with a spa and a rooftop restaurant, but at two hundred pounds a night it's well above our budget."
+      },
+      {
+        "sp": "Organiser",
+        "t": "The Riverside is reasonably priced, but it's forty minutes from the conference centre by bus, which would be a problem in the mornings."
+      },
+      {
+        "sp": "Organiser",
+        "t": "The Station Hotel is cheap and very convenient, right opposite the centre. The only issue is that it's fully booked on the first night."
+      },
+      {
+        "sp": "Organiser",
+        "t": "The Garden Inn is small and quiet and the staff are very helpful. However, it only has twelve rooms, so it can't take the whole group."
+      },
+      {
+        "sp": "Organiser",
+        "t": "And finally, the Park Hotel. It recently changed owners and has been completely renovated. Reviews from guests have been excellent since then, so I'd recommend it."
+      }
+    ],
+    "voices": {
+      "Organiser": "bm_lewis"
+    },
+    "vi": [
+      "Vâng, tôi đã xem năm khách sạn cho đại biểu hội nghị. Để tôi điểm qua.",
+      "The Grand sang trọng nhất, có spa và nhà hàng trên sân thượng, nhưng hai trăm bảng một đêm là vượt xa ngân sách.",
+      "The Riverside giá phải chăng, nhưng cách trung tâm hội nghị bốn mươi phút đi xe buýt, sẽ là vấn đề vào buổi sáng.",
+      "The Station Hotel rẻ và rất tiện, ngay đối diện trung tâm. Vấn đề duy nhất là đêm đầu tiên đã kín phòng.",
+      "The Garden Inn nhỏ, yên tĩnh và nhân viên rất nhiệt tình. Tuy nhiên chỉ có mười hai phòng, nên không nhận được cả đoàn.",
+      "Và cuối cùng, Park Hotel. Gần đây đổi chủ và đã được cải tạo toàn bộ. Đánh giá của khách từ đó đến nay rất tốt, nên tôi giới thiệu nó."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "too far from the venue"
+      },
+      {
+        "k": "B",
+        "t": "too small for the group"
+      },
+      {
+        "k": "C",
+        "t": "too expensive"
+      },
+      {
+        "k": "D",
+        "t": "too noisy"
+      },
+      {
+        "k": "E",
+        "t": "not available on one date"
+      },
+      {
+        "k": "F",
+        "t": "recommended by the speaker"
+      }
+    ],
+    "allow": [
+      "delegates",
+      "luxurious",
+      "spa",
+      "rooftop",
+      "renovated",
+      "venue",
+      "conference"
+    ],
+    "items": [
+      {
+        "id": "l-matching-06-1",
+        "q": "The Grand",
+        "ans": "C",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "at two hundred pounds a night it's well above our budget"
+        },
+        "why": "Quá đắt so với ngân sách.",
+        "wrong": {
+          "A": "Xa trung tâm là Riverside.",
+          "F": "Được khuyên là Park Hotel."
+        }
+      },
+      {
+        "id": "l-matching-06-2",
+        "q": "The Riverside",
+        "ans": "A",
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "it's forty minutes from the conference centre by bus"
+        },
+        "why": "Quá xa trung tâm hội nghị.",
+        "wrong": {
+          "C": "Quá đắt là The Grand.",
+          "B": "Thiếu phòng là Garden Inn."
+        }
+      },
+      {
+        "id": "l-matching-06-3",
+        "q": "The Station Hotel",
+        "ans": "E",
+        "b": 6.5,
+        "ev": {
+          "p": 3,
+          "s": "it's fully booked on the first night"
+        },
+        "why": "Không còn phòng đêm đầu tiên.",
+        "wrong": {
+          "A": "Ngược lại, rất tiện, đối diện trung tâm.",
+          "B": "Thiếu phòng cho cả đoàn là Garden Inn; Station chỉ kín một đêm."
+        },
+        "trap": "B và E đều nói về phòng: B là quá nhỏ cho cả đoàn, E là hết phòng một đêm."
+      },
+      {
+        "id": "l-matching-06-4",
+        "q": "The Garden Inn",
+        "ans": "B",
+        "b": 6.5,
+        "ev": {
+          "p": 4,
+          "s": "it only has twelve rooms, so it can't take the whole group"
+        },
+        "why": "Quá nhỏ cho cả đoàn.",
+        "wrong": {
+          "E": "Hết phòng đêm đầu là Station Hotel.",
+          "D": "Không có khách sạn nào bị nói là ồn."
+        }
+      },
+      {
+        "id": "l-matching-06-5",
+        "q": "The Park Hotel",
+        "ans": "F",
+        "b": 6,
+        "ev": {
+          "p": 5,
+          "s": "so I'd recommend it"
+        },
+        "why": "Người tổ chức giới thiệu khách sạn này.",
+        "wrong": {
+          "C": "Không nói đắt.",
+          "D": "Không được nói."
+        }
+      }
+    ]
+  }
+]

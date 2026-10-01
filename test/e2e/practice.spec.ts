@@ -8,7 +8,7 @@ test('luyện theo dạng: danh sách → bài học → làm bộ → chấm c�
   await page.getByRole('button', { name: 'Để sau' }).click();
   await page.getByRole('button', { name: /Luyện theo dạng câu hỏi/ }).click();
   await expect(page.getByRole('heading', { name: 'Luyện từng dạng câu hỏi' })).toBeVisible();
-  await expect(page.getByText('đang soạn').first()).toBeVisible();
+  await expect(page.getByText(/Đủ cả \d+ dạng của đề/)).toBeVisible();
   await page.locator('li', { hasText: 'Đúng / Sai / Không có thông tin' }).getByRole('button', { name: 'Học & luyện' }).click();
   await expect(page.getByRole('heading', { name: 'Đúng / Sai / Không có thông tin' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Bẫy người Việt hay mắc' })).toBeVisible();
@@ -63,6 +63,35 @@ test('điền nhãn sơ đồ: hình SVG hiện, có tên cho trình đọc màn
   await page.getByRole('button', { name: 'Chấm bài' }).click();
   await expect(page.getByText('Kết quả: 4/5')).toBeVisible();   // "stones" sai (bài viết "gravel"), "Sand" đúng dù viết hoa
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+  const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+  expect(axe.violations.map(v => `${v.id}: ${v.nodes.length}`)).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
+test('bài nghe luyện tập: tệp âm thanh có thật, bản chậm, bản có tiếng ồn tạo trên máy, chấm câu điền, WCAG AA', async ({ page, errors }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Bắt đầu ôn thi' }).click();
+  await page.getByRole('button', { name: /IELTS Academic/ }).click();
+  await page.getByRole('button', { name: 'Để sau' }).click();
+  await page.getByRole('button', { name: /Luyện theo dạng câu hỏi/ }).click();
+  await page.locator('li', { hasText: 'Điền mẫu đơn' }).getByRole('button', { name: 'Học & luyện' }).click();
+  await page.getByRole('button', { name: 'Làm bộ đầu tiên' }).click();
+  const audio = page.locator('#xsetaudio');
+  const src = await audio.getAttribute('src');
+  expect(src).toMatch(/^a\/l-form-\d+\.mp3$/);
+  expect((await page.request.get('/' + src)).status()).toBe(200);
+  await page.getByRole('button', { name: 'Chậm' }).click();
+  await expect(page.locator('#xsetaudio')).toHaveAttribute('src', /\.slow\.mp3$/);
+  expect((await page.request.get('/' + (await page.locator('#xsetaudio').getAttribute('src')))).status()).toBe(200);
+  await page.getByRole('button', { name: 'Có tiếng ồn' }).click();
+  await expect(page.getByRole('button', { name: 'Có tiếng ồn' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#xsetaudio')).toHaveAttribute('src', src!);
+  const inputs = page.locator('form[data-xform="setcheck"] input.field');
+  await expect(inputs).toHaveCount(5);
+  await inputs.first().fill('Hartley');
+  await page.getByRole('button', { name: 'Chấm bài' }).click();
+  await expect(page.getByText(/Kết quả: \d\/5/)).toBeVisible();
+  await expect(page.getByText('Lời thoại và bản dịch')).toBeVisible();
   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
   expect(axe.violations.map(v => `${v.id}: ${v.nodes.length}`)).toEqual([]);
   expect(errors).toEqual([]);

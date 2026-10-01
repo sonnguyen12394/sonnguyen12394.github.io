@@ -5,7 +5,7 @@ import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv from 'ajv';
-import { checkAll, levelReport } from '../src/content/check.ts';
+import { checkAll, levelReport, suggestVariants } from '../src/content/check.ts';
 import { QT } from '../src/exam/content.ts';
 import type { Group } from '../src/exam/content.ts';
 
@@ -64,6 +64,7 @@ const issues = checkAll(groups, list);
 // Mỗi dạng câu có bài luyện phải có bài học (6.2)
 for (const q of new Set(groups.filter(g => g.mode === 'practice').map(g => g.qtype))) if (!typeIds.has(q)) issues.push({ where: q, msg: 'dạng câu có bài luyện nhưng chưa có bài học (content/exam/types)' });
 for (const i of issues) console.error(`✗ ${i.where}: ${i.msg}`);
+for (const i of suggestVariants(groups)) console.warn(`⚠ ${i.where}: ${i.msg}`);
 const items = groups.reduce((s, g) => s + g.items.length, 0);
 const worst = groups.map(g => ({ id: g.id, r: levelReport(g, list).ratio })).sort((p, q) => q.r - p.r)[0];
 console.log(`content: ${groups.length} nhóm, ${items} câu; ${schemaErr + issues.length} lỗi${worst ? `; tỉ lệ từ vượt cấp cao nhất ${(worst.r * 100).toFixed(1)}% (${worst.id})` : ''}`);

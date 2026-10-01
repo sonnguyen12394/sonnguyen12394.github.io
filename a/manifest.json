@@ -1,4 +1,52 @@
 {
+ "a/l-form-01.mp3": {
+  "h": "5f919e1041b2a566",
+  "dur": 77.3
+ },
+ "a/l-form-01.slow.mp3": {
+  "h": "222da93f1fb398e0",
+  "dur": 93.7
+ },
+ "a/l-form-02.mp3": {
+  "h": "01d2c852a849c3dc",
+  "dur": 73.2
+ },
+ "a/l-form-02.slow.mp3": {
+  "h": "43a5330a7b431da0",
+  "dur": 89.7
+ },
+ "a/l-form-03.mp3": {
+  "h": "81394e0dc94e6a4c",
+  "dur": 79.3
+ },
+ "a/l-form-03.slow.mp3": {
+  "h": "43c17cdb1172116a",
+  "dur": 97.2
+ },
+ "a/l-form-04.mp3": {
+  "h": "c99fb7414a3c24ea",
+  "dur": 74.5
+ },
+ "a/l-form-04.slow.mp3": {
+  "h": "2fca2999c4d29820",
+  "dur": 90.7
+ },
+ "a/l-form-05.mp3": {
+  "h": "a15661776852b445",
+  "dur": 73.3
+ },
+ "a/l-form-05.slow.mp3": {
+  "h": "2903b76c7b000d95",
+  "dur": 88.2
+ },
+ "a/l-form-06.mp3": {
+  "h": "36f621b5ed9cce78",
+  "dur": 81.1
+ },
+ "a/l-form-06.slow.mp3": {
+  "h": "2151d0724abb9469",
+  "dur": 99.9
+ },
  "a/pl-l-01.mp3": {
   "h": "d1367d8e829781c8",
   "dur": 13.2

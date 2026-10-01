@@ -29,7 +29,11 @@ function engine() {
 }
 
 // Đọc chữ số, ký hiệu theo kiểu người nói trong đề (giữ nguyên chính tả trong lời thoại hiển thị).
-const speakable = t => t.replace(/£(\d+)/g, '$1 pounds').replace(/\$(\d+)/g, '$1 dollars').replace(/(\d)\s?%/g, '$1 percent');
+const speakable = t => t.replace(/£(\d+)/g, '$1 pounds').replace(/\$(\d+)/g, '$1 dollars').replace(/(\d)\s?%/g, '$1 percent')
+  // Đánh vần như trong đề Nghe: "B-R-O-W-N" → từng chữ cái, có ngắt nhẹ.
+  .replace(/\b([A-Z](?:-[A-Z]){2,})\b/g, m => m.split('-').join(', '))
+  // Số điện thoại / mã số viết liền ≥ 5 chữ số (thường cách nhau bằng dấu cách): đọc từng chữ số, "0" là "oh".
+  .replace(/\b\d(?:[ \d]*\d){4,}\b/g, m => m.replace(/ /g, '').split('').map(d => (d === '0' ? 'oh' : d)).join(' '));
 
 function synth(lines, voices, speed) {
   const { sherpa, t } = engine(), sr = 24000, out = [];
@@ -61,6 +65,7 @@ function encode(samples, sr, sherpa, file, noise) {
 const manPath = path.join(ROOT, 'a/manifest.json');
 fs.mkdirSync(path.join(ROOT, 'a'), { recursive: true });
 const man = fs.existsSync(manPath) ? JSON.parse(fs.readFileSync(manPath, 'utf8')) : {};
+const saveMan = () => fs.writeFileSync(manPath, JSON.stringify(Object.fromEntries(Object.entries(man).sort()), null, 1) + '\n');
 let made = 0;
 for (const f of walk(path.join(ROOT, 'content/exam'))) {
   const data = JSON.parse(fs.readFileSync(f, 'utf8')), arr = Array.isArray(data) ? data : [data];
@@ -68,13 +73,21 @@ for (const f of walk(path.join(ROOT, 'content/exam'))) {
   for (const g of arr) {
     if (g.kind !== 'listening' || !g.script || (want.size && !want.has(g.id))) continue;
     if (!g.voices) throw new Error(`${g.id}: thiếu "voices" (người nói → giọng)`);
-    const variants = [['file', 1, false, ''], ...(SLOW || g.mode === 'practice' ? [['slow', 0.8, false, '.slow']] : []), ...(NOISE || g.mode === 'practice' ? [['noise', 1, true, '.noise']] : [])];
+    // Bộ luyện: bản thường + bản chậm (Kokoro nói chậm tự nhiên hơn kéo giãn). Bản có tiếng ồn tạo ngay trên máy người học
+    // (Web Audio, src/exam/views/practice.ts) để không lưu thêm một tệp cho mỗi bài; --noise vẫn tạo tệp nếu cần.
+    const variants = [['file', 1, false, ''], ...(SLOW || g.mode === 'practice' ? [['slow', 0.8, false, '.slow']] : []), ...(NOISE ? [['noise', 1, true, '.noise']] : [])];
     for (const [key, speed, noise, suf] of variants) {
       const rel = `a/${g.id}${suf}.mp3`, h = crypto.createHash('sha256').update(JSON.stringify([g.script, g.voices, speed, noise, 'kokoro-int8-v0.19', 32])).digest('hex').slice(0, 16);
-      if (man[rel] && man[rel].h === h && fs.existsSync(path.join(ROOT, rel))) { if (key === 'file' && (!g.audio || g.audio.file !== rel)) { g.audio = { file: rel, dur: man[rel].dur, voices: [...new Set(Object.values(g.voices))] }; changed = true; } continue; }
+      if (man[rel] && man[rel].h === h && fs.existsSync(path.join(ROOT, rel))) {
+        // Tệp đã có và lời thoại không đổi: chỉ gắn lại đường dẫn vào nội dung (kể cả bản chậm) nếu JSON bị soạn lại.
+        if (key === 'file' && (!g.audio || g.audio.file !== rel)) { g.audio = { ...(g.audio || {}), file: rel, dur: man[rel].dur, voices: [...new Set(Object.values(g.voices))] }; changed = true; }
+        if (key !== 'file' && (!g.audio || g.audio[key] !== rel)) { g.audio = { ...(g.audio || {}), [key]: rel }; changed = true; }
+        continue;
+      }
       const { samples, sr, sherpa } = synth(g.script, g.voices, speed);
       const dur = Math.round(encode(samples, sr, sherpa, path.join(ROOT, rel), noise) * 10) / 10;
       man[rel] = { h, dur };
+      saveMan();   // ghi ngay: dừng giữa chừng không mất băm của các tệp đã tạo
       made++;
       if (key === 'file') g.audio = { ...(g.audio || {}), file: rel, dur, voices: [...new Set(Object.values(g.voices))] };
       else g.audio = { ...(g.audio || {}), [key]: rel };
@@ -84,5 +97,5 @@ for (const f of walk(path.join(ROOT, 'content/exam'))) {
   }
   if (changed) fs.writeFileSync(f, JSON.stringify(Array.isArray(data) ? arr : arr[0], null, 2) + '\n');
 }
-fs.writeFileSync(manPath, JSON.stringify(Object.fromEntries(Object.entries(man).sort()), null, 1) + '\n');
+saveMan();
 console.log(`audio: tạo ${made} tệp`);
