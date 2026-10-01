@@ -215,7 +215,15 @@
           "C": "Không được nói."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l3-01.mp3",
+      "dur": 55,
+      "voices": [
+        "bf_emma"
+      ],
+      "slow": "a/v-l3-01.slow.mp3"
+    }
   },
   {
     "id": "v-l3-02",
@@ -453,7 +461,15 @@
           "D": "Ngược lại, mang tới hàng dài khách."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l3-02.mp3",
+      "dur": 78.5,
+      "voices": [
+        "bm_lewis"
+      ],
+      "slow": "a/v-l3-02.slow.mp3"
+    }
   },
   {
     "id": "v-l3-03",
@@ -676,7 +692,15 @@
           "D": "Đã nói hôm nay."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l3-03.mp3",
+      "dur": 71.2,
+      "voices": [
+        "af_sarah"
+      ],
+      "slow": "a/v-l3-03.slow.mp3"
+    }
   },
   {
     "id": "v-l3-04",
@@ -899,7 +923,15 @@
         },
         "trap": "Ý kiến riêng được báo hiệu bằng 'In my view'."
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l3-04.mp3",
+      "dur": 89.1,
+      "voices": [
+        "am_michael"
+      ],
+      "slow": "a/v-l3-04.slow.mp3"
+    }
   },
   {
     "id": "v-l3-05",
@@ -1131,7 +1163,15 @@
           "C": "Không được nói; chúng chỉ giúp hồi phục nhanh hơn."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l3-05.mp3",
+      "dur": 79.9,
+      "voices": [
+        "bm_george"
+      ],
+      "slow": "a/v-l3-05.slow.mp3"
+    }
   },
   {
     "id": "v-l3-06",
@@ -1349,6 +1389,14 @@
           "D": "Không được nói."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/v-l3-06.mp3",
+      "dur": 56.6,
+      "voices": [
+        "bf_isabella"
+      ],
+      "slow": "a/v-l3-06.slow.mp3"
+    }
   }
 ]
