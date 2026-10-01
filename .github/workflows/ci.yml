@@ -1,0 +1,58 @@
+# CI của English Ladder (yêu cầu 10.3): chạy trên mỗi PR và mỗi lần đẩy lên main. Chưa đạt thì không gộp.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Kiểm kiểu, test đơn vị, kiểm nội dung, build khớp mã nguồn
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run content
+      - name: Tệp build đã commit khớp mã nguồn
+        run: npm run fresh
+
+  e2e:
+    name: Test giao diện (Chrome Android, Safari iOS, máy tính, offline)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npx playwright test
+        env: { CI: '1' }
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with: { name: playwright-report, path: playwright-report, retention-days: 7 }
+
+  lighthouse:
+    name: Lighthouse ≥ 90 cả 4 mục
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run lh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: lighthouse, path: .lh, retention-days: 7 }

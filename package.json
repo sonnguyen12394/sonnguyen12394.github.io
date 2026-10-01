@@ -1,0 +1,33 @@
+{
+  "name": "english-ladder",
+  "private": true,
+  "version": "35.0.0",
+  "description": "English Ladder: ôn VSTEP và IELTS miễn phí, giải thích bằng tiếng Việt",
+  "license": "UNLICENSED",
+  "type": "module",
+  "engines": {
+    "node": ">=22.6"
+  },
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "check": "tsc -p tsconfig.json",
+    "test": "node --experimental-strip-types --no-warnings --test \"test/unit/**/*.test.ts\"",
+    "content": "node --experimental-strip-types --no-warnings tools/content-check.ts",
+    "fresh": "node tools/build.mjs && node tools/wordlist.mjs && git diff --exit-code -- app.js sw.js index.html x data/exam content/wordlist.json",
+    "e2e": "playwright test",
+    "lh": "node tools/lighthouse.mjs",
+    "serve": "node tools/serve.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.10.2",
+    "@playwright/test": "1.56.1",
+    "@types/node": "22.15.30",
+    "ajv": "8.17.1",
+    "esbuild": "0.25.10",
+    "lighthouse": "12.8.2",
+    "typescript": "5.9.3"
+  },
+  "overrides": {
+    "playwright-core": "1.56.1"
+  }
+}
