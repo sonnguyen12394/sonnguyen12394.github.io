@@ -39,6 +39,7 @@ export function viewHub(c: Ctx): string {
     ${todayPanel(c, planFor(c))}
     ${estimatePanel(c)}
     <div class="units">
+      ${card('data-x="route" data-r="practice"', 'read', 'Luyện theo dạng câu hỏi', 'Bài học, mẹo, bẫy hay gặp và bộ câu luyện có giải thích cho từng dạng câu Nghe, Đọc', ico)}
       ${card('data-x="route" data-r="plan"', 'map', 'Kế hoạch tới ngày thi', 'Lịch từng ngày, ưu tiên kỹ năng xa mục tiêu; cảnh báo khi không kịp', ico)}
       ${card('data-x="route" data-r="nb"', 'repeat', `Sổ lỗi sai${dueList(x, today, hiddenItems()).length ? ` · ${dueList(x, today, hiddenItems()).length} câu đến hạn` : ''}`, 'Câu đã sai tự vào sổ, ôn lại đúng lúc sắp quên', ico)}
       ${card('data-x="route" data-r="place"', 'chart', x.attempts.some(a => a.kind === 'place') ? 'Làm lại kiểm tra đầu vào' : 'Kiểm tra đầu vào (≤ 15 phút)', 'Đọc + Nghe thích ứng, ra band ước tính kèm sai số; xem lại từng câu có giải thích', ico)}

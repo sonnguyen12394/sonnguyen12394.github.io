@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { checkGroup, levelReport } from '../../src/content/check.ts';
+import { checkGroup, checkKeyBalance, levelReport } from '../../src/content/check.ts';
 import { levelOf, tokens, candidates } from '../../src/content/lemma.ts';
 import type { Group } from '../../src/exam/content.ts';
 
@@ -80,4 +80,22 @@ test('tách từ và tìm dạng gốc', () => {
   assert.equal(levelOf('went', list), 'A1');
   assert.equal(levelOf('the', list), 'A1');
   assert.equal(levelOf('xyzzyq', list), null);
+});
+
+test('checkKeyBalance: chặn khi đáp án dồn về một vị trí, cho qua khi rải đều', () => {
+  const mk = (keys: string[], multi = false): Group => ({
+    id: 'r-mcq-01', kind: 'reading', exams: ['ielts-ac'], qtype: multi ? 'r-mcq2' : 'r-mcq', level: 'B2', band: 6, mode: 'practice', title: 'T', instr: 'Choose.',
+    paras: ['x'], items: keys.map((k, i) => ({
+      id: `q${i}`, q: 'Q', b: 6, ev: { p: 0, s: 'xxx' }, why: 'vì thế',
+      opts: ['A', 'B', 'C', 'D', 'E'].slice(0, multi ? 5 : 4).map(o => ({ k: o, t: o + i })),
+      ans: multi ? k.split(',') : k,
+    })),
+  });
+  const skew = mk(['B', 'B', 'B', 'C', 'B', 'A', 'B', 'C', 'B', 'A', 'B', 'C']);
+  const msgs = checkKeyBalance([skew]).map(i => i.msg).join(' | ');
+  assert.match(msgs, /chỉ nằm ở 3\/4 vị trí/);
+  assert.match(msgs, /58%/);
+  assert.deepEqual(checkKeyBalance([mk(['A', 'B', 'C', 'D', 'B', 'A', 'D', 'C', 'C', 'D', 'A', 'B'])]), []);
+  assert.equal(checkKeyBalance([mk(['B,D', 'B,D', 'A,C', 'B,D', 'C,E', 'A,B'], true)]).length, 1);
+  assert.deepEqual(checkKeyBalance([mk(['B,D', 'A,E', 'A,C', 'B,C', 'C,E', 'A,B'], true)]), []);
 });

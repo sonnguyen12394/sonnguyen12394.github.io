@@ -13,3 +13,6 @@ export const dayVi = (d: number): string => { const t = new Date(d * 86400000); 
 export const SKILL_VI: Record<'L' | 'R' | 'W' | 'S', string> = { L: 'Nghe', R: 'Đọc', W: 'Viết', S: 'Nói' };
 
 export const back = (label = 'Về trang Ôn thi', r = 'hub'): string => `<div class="row"><button class="btn" data-x="route" data-r="${r}">${label}</button></div>`;
+
+// Hình của nhóm (sơ đồ, bản đồ): SVG tĩnh do build nhúng sau khi kiểm (không script, có <title>), nên chèn thẳng.
+export const figure = (g: { svg?: string }): string => g.svg ? `<figure class="xfig" style="margin:0;max-width:560px">${g.svg}</figure>` : '';

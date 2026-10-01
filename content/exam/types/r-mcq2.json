@@ -1,0 +1,26 @@
+{
+  "id": "r-mcq2",
+  "lesson": [
+    "Đề cho 5 phương án (A–E) và yêu cầu chọn HAI (đôi khi 7 phương án, chọn BA). Mỗi đáp án đúng được 1 điểm riêng, nên chọn đúng một trong hai vẫn được 1 điểm. Thứ tự ghi đáp án không quan trọng.",
+    "Câu hỏi thường là 'Which TWO advantages / problems / reasons… are mentioned?'. Hai đáp án đúng thường nằm rải ở các chỗ khác nhau trong cùng một đoạn hoặc hai đoạn liền nhau.",
+    "Các phương án sai thường nói về đúng chủ đề nhưng: bài không nhắc, bài nói ngược lại, hoặc là ý của người/nhóm khác chứ không phải đối tượng được hỏi."
+  ],
+  "steps": [
+    "Đọc câu hỏi, gạch chân đối tượng chính xác được hỏi (ví dụ: lợi ích CHO NÔNG DÂN, không phải cho người mua).",
+    "Đọc lướt 5 phương án, ghi nhớ từ khoá của từng phương án.",
+    "Tìm phần bài nói về đối tượng đó, đọc cả đoạn chứ không dừng ở đáp án đầu tiên.",
+    "Đánh dấu Đ/S/? cạnh từng phương án; chỉ chọn những phương án có câu trong bài làm bằng chứng.",
+    "Kiểm tra: đã chọn đúng số lượng (TWO hoặc THREE) chưa. Chọn thừa thì mất điểm."
+  ],
+  "tips": [
+    "Không bỏ trống: chọn đủ số đáp án, vì mỗi đáp án được chấm riêng.",
+    "Phương án đúng thường dùng từ đồng nghĩa; phương án lặp nguyên văn nhiều từ của bài hay là bẫy.",
+    "Đọc kỹ từ phủ định và giới hạn trong bài (not, only, rather than, instead of): chúng biến một ý được nhắc thành ý bị bác bỏ."
+  ],
+  "traps": [
+    "Chọn một phương án vì bài CÓ nhắc tới nó, nhưng bài lại nói nó không đúng ('It is not because… ').",
+    "Nhầm đối tượng: lợi ích của nhóm A bị gán cho nhóm B.",
+    "Dừng lại khi tìm được đáp án đầu tiên rồi đoán đáp án thứ hai."
+  ],
+  "time": "khoảng 2 phút mỗi câu chọn hai"
+}

@@ -2,13 +2,15 @@
 
 import type { Ctx } from '../main.ts';
 import type { Group } from '../content.ts';
-import { QT, itemOptions } from '../content.ts';
+import { QT } from '../content.ts';
+import type { Given, Mark } from '../score.ts';
+import { itemInput, feedback } from './items.ts';
 import { groups, dueList, mastered } from '../notebook.ts';
 import { hiddenItems } from '../net.ts';
-import { back, dayVi } from './ui.ts';
+import { back, dayVi, figure } from './ui.ts';
 import { FLAG_REASONS } from './place.ts';
 
-export interface NbRun { queue: string[]; i: number; groups: Record<string, Group>; answered: { given: string | undefined; correct: boolean } | null; right: number }
+export interface NbRun { queue: string[]; i: number; groups: Record<string, Group>; answered: { given: Given; mark: Mark } | null; right: number }
 
 export function viewNb(c: Ctx, loading: boolean, err: string): string {
   const { x, host } = c, esc = host.esc, today = host.today(), due = dueList(x, today, hiddenItems());
@@ -29,16 +31,14 @@ export function viewNbRun(c: Ctx, r: NbRun): string {
   const esc = c.host.esc, id = r.queue[r.i];
   const g = id ? Object.values(r.groups).find(q => q.items.some(i => i.id === id)) : undefined, it = g?.items.find(i => i.id === id);
   if (!g || !it) return `<p class="muted" role="status">Đang tải…</p>`;
-  const a = r.answered, opts = itemOptions(it, g);
-  const text = g.kind === 'reading'
+  const a = r.answered;
+  const text = figure(g) + (g.kind === 'reading'
     ? (g.paras ?? []).map(p => `<p lang="en" class="reading">${esc(p)}</p>`).join('')
     : `${g.audio?.file ? `<audio controls preload="none" src="${esc(g.audio.file)}"></audio>` : ''}
-       <details${a ? ' open' : ''}><summary>Lời thoại${a ? '' : ' (mở khi cần)'}</summary>${(g.script ?? []).map(l => `<p lang="en"><b>${esc(l.sp)}:</b> ${esc(l.t)}</p>`).join('')}</details>`;
-  const qa = `<form class="panel stack" data-xform="nbanswer"><fieldset class="stack" style="border:0;padding:0;margin:0;gap:6px"><legend><b lang="en">${esc(it.q)}</b></legend>
-    ${opts.map(o => `<label class="chip"><input type="radio" name="a" value="${esc(o.k)}"${a?.given === o.k ? ' checked' : ''}${a ? ' disabled' : ''}> <b>${esc(o.k)}</b> <span lang="en">${esc(o.t)}</span>${a && o.k === it.ans ? ' <span class="pill good">đáp án</span>' : ''}</label>`).join('')}</fieldset>
-    ${a ? `<p role="status"><b>${a.correct ? '✓ Đúng rồi.' : '✕ Chưa đúng.'}</b> ${esc(it.why)}</p>
-      ${a.given && !a.correct && it.wrong?.[a.given] ? `<p><b>Vì sao ${esc(a.given)} sai:</b> ${esc(it.wrong[a.given])}</p>` : ''}
-      <p class="hint">Câu chứa đáp án: <span lang="en">“${esc(it.ev.s)}”</span></p>
+       <details${a ? ' open' : ''}><summary>Lời thoại${a ? '' : ' (mở khi cần)'}</summary>${(g.script ?? []).map(l => `<p lang="en"><b>${esc(l.sp)}:</b> ${esc(l.t)}</p>`).join('')}</details>`);
+  const opts = g.options && !it.opts ? `<ul class="sklist">${g.options.map(o => `<li><b>${esc(o.k)}</b> <span lang="en">${esc(o.t)}</span></li>`).join('')}</ul>` : '';
+  const qa = `<form class="panel stack" data-xform="nbanswer">${opts}${itemInput(it, g, a?.given, esc, !!a)}
+    ${a ? `${feedback(it, g, a.given, a.mark.got, a.mark.of, esc)}
       <div class="row" style="gap:6px"><span class="hint">Báo lỗi:</span>${FLAG_REASONS.map((t, k) => `<button type="button" class="btn small ghost" data-x="nbflag" data-i="${esc(it.id)}" data-r="${k}">${esc(t)}</button>`).join('')}</div>
       <div class="row"><button type="button" class="btn primary" data-x="nbnext">${r.i + 1 < r.queue.length ? 'Câu tiếp' : 'Xong'}</button></div>`
       : '<div class="row"><button class="btn primary">Kiểm tra</button></div>'}</form>`;

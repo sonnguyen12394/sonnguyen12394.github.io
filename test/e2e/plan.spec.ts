@@ -27,9 +27,9 @@ test('sổ lỗi sai: câu sai tự vào sổ, ôn lại có giải thích ngay,
   await expect(page.getByText(/Sổ lỗi sai · câu 1\//)).toBeVisible();
   const total = Number((await page.getByText(/Sổ lỗi sai · câu 1\//).textContent())!.match(/\/(\d+)/)![1]);
   for (let k = 0; k < total; k++) {
-    await page.locator('form[data-xform="nbanswer"] input[type=radio]').first().check();
+    await page.locator('form[data-xform="nbanswer"] input').first().check();
     await page.getByRole('button', { name: 'Kiểm tra' }).click();
-    await expect(page.getByText(/Đúng rồi|Chưa đúng/)).toBeVisible();
+    await expect(page.getByText(/✓ Đúng|✕ Sai|◐ Đúng/)).toBeVisible();
     await page.getByRole('button', { name: /Câu tiếp|Xong/ }).click();
   }
   await expect(page.locator('#toast')).toContainText('Xong: đúng');

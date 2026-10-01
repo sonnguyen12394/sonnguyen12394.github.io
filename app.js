@@ -898,6 +898,7 @@ const STORY = [
 {"id":"a1-com-pa","lv":"A1","grp":"com","vi":"Đánh vần tên, đọc số điện thoại, giá tiền, giờ và ngày tháng; hỏi lại khi chưa hiểu","en":"Spell names, say numbers, prices, times and dates; ask for repetition","ref":[{"t":"pa","v":["pa-abc","pa-spell","pa-num","pa-num2","pa-time","pa-date","pa-class"],"n":5}]},
 {"id":"a1-pro7","lv":"A1","grp":"pro","vi":"Phân biệt và nói rõ số -teen và -ty (13/30…)","en":"Distinguish -teen and -ty numbers","ref":[{"t":"p","v":["p-a1-numbers"]}]},
 {"id":"b1-ski7","lv":"B1","grp":"ski","vi":"Đọc bài dài vừa phải (blog, tin, hướng dẫn, trải nghiệm) và nắm ý chính, chi tiết","en":"Read medium-length texts for gist and detail","ref":[{"t":"lr","v":["b1-lr01","b1-lr02","b1-lr03","b1-lr04","b1-lr05","b1-lr06"],"n":4}]},
+{"id":"b1-ski9","lv":"B1","grp":"ski","vi":"Đọc lướt văn bản thực dụng (hướng dẫn, thông tin dịch vụ, quy định) để tìm đúng thông tin cần: điều kiện, thời hạn, con số","en":"Scan practical texts to find specific information such as conditions, deadlines and figures","ref":[{"t":"lr","v":["b1-lr04","b1-lr05"],"n":2}]},
 {"id":"b1-ski8","lv":"B1","grp":"ski","vi":"Nghe phỏng vấn, lời giới thiệu và podcast ngắn về chủ đề quen thuộc","en":"Understand interviews, announcements and short podcasts","ref":[{"t":"lr","v":["b1-lt01","b1-lt02","b1-lt03"],"n":2}]},
 {"id":"b2-ski8","lv":"B2","grp":"ski","vi":"Nghe bài giảng, phỏng vấn chuyên gia và thảo luận dài, nắm lập luận chính","en":"Follow lectures, expert interviews and extended discussions","ref":[{"t":"lr","v":["b2-lt01","b2-lt02","b2-lt03"],"n":2}]},
 {"id":"c1-ski8","lv":"C1","grp":"ski","vi":"Nghe bài giảng và tranh luận phức tạp, nhận ra thái độ và hàm ý người nói","en":"Understand complex lectures and debates, including attitude and implication","ref":[{"t":"lr","v":["c1-lt01","c1-lt02","c1-lt03"],"n":2}]},
@@ -1002,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 38;
+const STATE_V = 18, APP_VERSION = 39;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -7953,6 +7954,11 @@ CHANGELOG.unshift({v:37,d:'2026-10-01',t:'Kiểm tra đầu vào thích ứng 15
   'Kho 96 câu mới (48 Đọc, 48 Nghe) từ band 3 đến 8,5; mỗi câu giải thích bằng tiếng Việt vì sao đúng, vì sao từng phương án sai và câu nào chứa đáp án.',
   'Bài nghe là tệp âm thanh tạo sẵn giọng Anh và Mỹ, phát một lần như thi thật; lời thoại và bản dịch hiện sau khi làm xong. Không nghe được thì bỏ qua phần Nghe.',
   'Nút Báo lỗi ở mọi câu khi xem lại.']});
+CHANGELOG.unshift({v:39,d:'2026-10-01',t:'Luyện theo từng dạng câu hỏi Đọc IELTS',items:[
+  'Mục mới “Luyện theo dạng câu hỏi”: mỗi dạng có bài học tiếng Việt (cách làm từng bước, mẹo, bẫy người Việt hay mắc, thời gian gợi ý) và bộ câu luyện có giải thích vì sao đúng, vì sao từng phương án sai.',
+  '8 dạng Đọc IELTS đã đủ ≥ 30 câu: Đúng/Sai/Không có thông tin, Có/Không/Không có thông tin, chọn tiêu đề, trắc nghiệm một đáp án, chọn hai đáp án, tìm đoạn chứa thông tin, nối đặc điểm, nối nửa câu. Các dạng còn lại ghi rõ “đang soạn”.',
+  'Mọi câu được một phiên AI độc lập tự làm lại không xem đáp án (khớp 227/228); câu còn tranh cãi đã được viết lại. Vị trí đáp án đúng được rải đều và kiểm tự động.',
+  'Câu sai trong bộ luyện tự vào sổ lỗi sai; xem bản dịch tiếng Việt của bài sau khi chấm.']});
 CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và sổ lỗi sai',items:[
   'Kế hoạch tới ngày thi: chia việc từng ngày theo số phút bạn có, kỹ năng xa mục tiêu nhất được nhiều thời gian nhất, đề thi thử mỗi tuần trong 6 tuần cuối.',
   'Cảnh báo khi không kịp (số giờ cần lớn hơn số giờ còn lại, hoặc 7 ngày qua học dưới 60% kế hoạch) kèm đề xuất cụ thể: tăng phút, lùi ngày thi hoặc chọn mục tiêu vừa sức. Số giờ ước tính dựa trên giờ học có hướng dẫn Cambridge công bố cho từng cấp CEFR.',
@@ -7961,7 +7967,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.d6277ab9ec.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.5782f36bcd.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),

@@ -1,0 +1,861 @@
+[
+  {
+    "id": "r-info-01",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-info",
+    "level": "B1",
+    "band": 5,
+    "mode": "practice",
+    "title": "The History of the Sandwich",
+    "instr": "The text has six paragraphs, A–F. Which paragraph contains the following information? You may use any letter more than once.",
+    "paras": [
+      "A The sandwich is one of the most popular foods in the world, but its name comes from a single person. John Montagu, the fourth Earl of Sandwich, lived in England in the eighteenth century. He is said to have asked for meat between two pieces of bread so that he could eat without leaving his work.",
+      "B People had of course eaten bread with other food long before this. In the Middle East, flat bread was often wrapped around meat or vegetables, and in medieval Europe thick slices of old bread were used as plates. After the meal, the bread, full of juice from the meat, was sometimes given to poor people or to dogs.",
+      "C The sandwich became really popular in the nineteenth century, when more people worked in factories and offices. Workers needed a meal that was cheap, easy to carry and quick to eat. Sandwiches were perfect, and many families made them at home every morning.",
+      "D In 1928, a machine that could slice bread was sold for the first time in the United States. Sliced bread made sandwiches even easier to prepare, and sales of bread rose quickly. The machine was so successful that people still say that a new idea is 'the best thing since sliced bread'.",
+      "E Today, the sandwich industry is very large. In Britain alone, people buy more than three billion ready-made sandwiches every year. Supermarkets, coffee shops and petrol stations all sell them, and the most popular filling is still chicken.",
+      "F However, some people are worried about the environment. Most ready-made sandwiches come in plastic boxes that are difficult to recycle. Some companies are now testing paper packaging, and a few shops give a discount to customers who bring their own box."
+    ],
+    "vi": [
+      "A Bánh mì kẹp là một trong những món ăn phổ biến nhất thế giới, nhưng tên của nó đến từ một người. John Montagu, Bá tước Sandwich thứ tư, sống ở Anh vào thế kỷ 18. Người ta kể ông đã yêu cầu kẹp thịt giữa hai lát bánh mì để có thể ăn mà không phải rời công việc.",
+      "B Tất nhiên người ta đã ăn bánh mì với món khác từ lâu trước đó. Ở Trung Đông, bánh mì dẹt thường được cuộn quanh thịt hoặc rau, và ở châu Âu thời trung cổ, những lát bánh mì cũ dày được dùng làm đĩa. Sau bữa ăn, bánh mì ngấm nước thịt đôi khi được cho người nghèo hoặc cho chó.",
+      "C Bánh mì kẹp thật sự phổ biến vào thế kỷ 19, khi nhiều người làm việc trong nhà máy và văn phòng hơn. Người lao động cần bữa ăn rẻ, dễ mang và ăn nhanh. Bánh mì kẹp rất phù hợp, và nhiều gia đình tự làm ở nhà mỗi sáng.",
+      "D Năm 1928, máy cắt lát bánh mì lần đầu được bán ở Mỹ. Bánh mì cắt lát giúp làm bánh kẹp dễ hơn nữa, và doanh số bánh mì tăng nhanh. Chiếc máy thành công tới mức người ta vẫn nói một ý tưởng mới là 'thứ tuyệt nhất kể từ bánh mì cắt lát'.",
+      "E Ngày nay, ngành bánh mì kẹp rất lớn. Chỉ riêng ở Anh, người ta mua hơn ba tỉ chiếc bánh kẹp làm sẵn mỗi năm. Siêu thị, quán cà phê và trạm xăng đều bán, và nhân được ưa thích nhất vẫn là thịt gà.",
+      "F Tuy nhiên, một số người lo về môi trường. Phần lớn bánh kẹp làm sẵn đựng trong hộp nhựa khó tái chế. Một số công ty đang thử bao bì giấy, và vài cửa hàng giảm giá cho khách mang hộp riêng."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "Paragraph A"
+      },
+      {
+        "k": "B",
+        "t": "Paragraph B"
+      },
+      {
+        "k": "C",
+        "t": "Paragraph C"
+      },
+      {
+        "k": "D",
+        "t": "Paragraph D"
+      },
+      {
+        "k": "E",
+        "t": "Paragraph E"
+      },
+      {
+        "k": "F",
+        "t": "Paragraph F"
+      }
+    ],
+    "allow": [
+      "earl",
+      "medieval",
+      "recycle",
+      "packaging",
+      "ready-made"
+    ],
+    "items": [
+      {
+        "id": "r-info-01-1",
+        "q": "a saying that is still used today",
+        "ans": "D",
+        "b": 5,
+        "ev": {
+          "p": 3,
+          "s": "people still say that a new idea is 'the best thing since sliced bread'"
+        },
+        "why": "Đoạn D nhắc câu nói 'the best thing since sliced bread' mà người ta vẫn dùng.",
+        "wrong": {
+          "A": "Đoạn A nói về nguồn gốc cái tên, không phải câu nói.",
+          "E": "Đoạn E nói về quy mô ngành hiện nay."
+        }
+      },
+      {
+        "id": "r-info-01-2",
+        "q": "a reason why workers liked sandwiches",
+        "ans": "C",
+        "b": 4.5,
+        "ev": {
+          "p": 2,
+          "s": "Workers needed a meal that was cheap, easy to carry and quick to eat."
+        },
+        "why": "Đoạn C nói người lao động cần bữa ăn rẻ, dễ mang, ăn nhanh: lý do họ thích bánh kẹp.",
+        "wrong": {
+          "A": "Đoạn A nói lý do Bá tước muốn ăn bánh kẹp, không nói về người lao động.",
+          "D": "Đoạn D nói bánh mì cắt lát làm bánh kẹp dễ hơn, không phải lý do người lao động thích."
+        }
+      },
+      {
+        "id": "r-info-01-3",
+        "q": "an example of bread being used instead of a dish",
+        "ans": "B",
+        "b": 5.5,
+        "ev": {
+          "p": 1,
+          "s": "thick slices of old bread were used as plates"
+        },
+        "why": "Đoạn B: lát bánh mì cũ dày được dùng làm đĩa (plates = dish).",
+        "wrong": {
+          "A": "Đoạn A không nói về đĩa.",
+          "F": "Đoạn F nói về hộp đựng, không phải dùng bánh mì làm đĩa."
+        },
+        "trap": "Đoạn F nói về bao bì đựng bánh, dễ nhầm với 'dish'; nhưng câu hỏi là bánh mì được dùng thay đĩa."
+      },
+      {
+        "id": "r-info-01-4",
+        "q": "a figure showing how many sandwiches are sold",
+        "ans": "E",
+        "b": 4.5,
+        "ev": {
+          "p": 4,
+          "s": "people buy more than three billion ready-made sandwiches every year"
+        },
+        "why": "Đoạn E có con số hơn ba tỉ chiếc bánh kẹp mỗi năm.",
+        "wrong": {
+          "D": "Đoạn D nói doanh số bánh mì tăng nhưng không có con số bánh kẹp.",
+          "A": "Đoạn A không có số liệu bán hàng."
+        }
+      },
+      {
+        "id": "r-info-01-5",
+        "q": "a way that some shops are trying to reduce waste",
+        "ans": "F",
+        "b": 5,
+        "ev": {
+          "p": 5,
+          "s": "a few shops give a discount to customers who bring their own box"
+        },
+        "why": "Đoạn F: một số cửa hàng giảm giá cho khách mang hộp riêng để bớt rác nhựa.",
+        "wrong": {
+          "E": "Đoạn E nhắc cửa hàng bán bánh kẹp nhưng không nói giảm rác.",
+          "B": "Đoạn B nói bánh mì thừa được cho người nghèo, không phải cách cửa hàng giảm rác ngày nay."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-info-02",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-info",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Night Lights and Wildlife",
+    "instr": "The text has six paragraphs, A–F. Which paragraph contains the following information? You may use any letter more than once.",
+    "paras": [
+      "A For most of history, the night sky over towns was dark enough to see thousands of stars. Today, around eighty per cent of people in Europe and North America live under skies so bright that the Milky Way is no longer visible. Satellite images show that the area of the Earth's surface lit at night grew by about two per cent a year between 2012 and 2016.",
+      "B Artificial light has a serious effect on many animals. Baby sea turtles, which hatch on beaches at night, find the sea by moving towards the brightest horizon. Near brightly lit roads and hotels, they often crawl inland instead and die. In Florida, thousands of young turtles are lost in this way every year.",
+      "C Insects are affected too. Moths and other flying insects circle street lights until they are exhausted or eaten. A study in Switzerland found that plants near street lights received far fewer visits from night-flying insects than plants in dark areas, producing around thirteen per cent less fruit.",
+      "D Birds that migrate at night use the stars to find their way, and bright buildings can confuse them. In New York, an annual memorial event in which powerful lights are pointed into the sky was found to trap tens of thousands of birds, which circled the lights for hours. Organisers now switch the lights off for twenty minutes whenever large numbers of birds gather.",
+      "E Solutions are often simple and cheap. Lights can be pointed downwards rather than upwards, switched off when not needed, or fitted with sensors so that they come on only when someone is nearby. Warmer, orange-coloured lights also attract fewer insects than the blue-white LEDs that many cities have installed to save energy.",
+      "F Some places have gone further. Several towns have been officially recognised as 'dark sky places' for protecting their night skies, and they now attract tourists who come specifically to look at the stars. Local businesses say that this kind of tourism brings visitors outside the busy summer season."
+    ],
+    "vi": [
+      "A Trong phần lớn lịch sử, bầu trời đêm trên các thị trấn đủ tối để thấy hàng nghìn ngôi sao. Ngày nay, khoảng 80% người dân châu Âu và Bắc Mỹ sống dưới bầu trời sáng tới mức không còn thấy dải Ngân Hà. Ảnh vệ tinh cho thấy diện tích bề mặt Trái Đất được chiếu sáng ban đêm tăng khoảng 2% mỗi năm từ 2012 tới 2016.",
+      "B Ánh sáng nhân tạo ảnh hưởng nghiêm trọng tới nhiều loài động vật. Rùa biển con nở trên bãi biển vào ban đêm tìm ra biển bằng cách di chuyển về phía chân trời sáng nhất. Gần đường và khách sạn sáng đèn, chúng thường bò vào đất liền và chết. Ở Florida, hàng nghìn rùa con chết theo cách này mỗi năm.",
+      "C Côn trùng cũng bị ảnh hưởng. Bướm đêm và các côn trùng bay khác lượn quanh đèn đường tới khi kiệt sức hoặc bị ăn thịt. Một nghiên cứu ở Thuỵ Sĩ thấy cây gần đèn đường được côn trùng bay đêm ghé thăm ít hơn nhiều so với cây ở chỗ tối, và ra ít quả hơn khoảng 13%.",
+      "D Chim di cư ban đêm dùng các vì sao để định hướng, và toà nhà sáng đèn có thể làm chúng mất phương hướng. Ở New York, một sự kiện tưởng niệm hằng năm chiếu những luồng đèn mạnh lên trời bị phát hiện đã giữ chân hàng chục nghìn con chim, chúng bay vòng quanh đèn hàng giờ. Ban tổ chức giờ tắt đèn hai mươi phút mỗi khi có nhiều chim tụ lại.",
+      "E Giải pháp thường đơn giản và rẻ. Đèn có thể chiếu xuống thay vì chiếu lên, tắt khi không cần, hoặc lắp cảm biến để chỉ bật khi có người gần đó. Đèn màu cam ấm hơn cũng thu hút ít côn trùng hơn đèn LED trắng xanh mà nhiều thành phố đã lắp để tiết kiệm điện.",
+      "F Một số nơi đã đi xa hơn. Nhiều thị trấn được công nhận chính thức là 'nơi bầu trời tối' vì bảo vệ bầu trời đêm, và nay thu hút khách du lịch đến chỉ để ngắm sao. Doanh nghiệp địa phương nói kiểu du lịch này mang khách tới ngoài mùa hè đông đúc."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "Paragraph A"
+      },
+      {
+        "k": "B",
+        "t": "Paragraph B"
+      },
+      {
+        "k": "C",
+        "t": "Paragraph C"
+      },
+      {
+        "k": "D",
+        "t": "Paragraph D"
+      },
+      {
+        "k": "E",
+        "t": "Paragraph E"
+      },
+      {
+        "k": "F",
+        "t": "Paragraph F"
+      }
+    ],
+    "allow": [
+      "moths",
+      "migrate",
+      "hatch",
+      "horizon",
+      "satellite",
+      "LEDs",
+      "installed",
+      "memorial"
+    ],
+    "items": [
+      {
+        "id": "r-info-02-1",
+        "q": "an economic benefit of reducing light",
+        "ans": "F",
+        "b": 6,
+        "ev": {
+          "p": 5,
+          "s": "Local businesses say that this kind of tourism brings visitors outside the busy summer season."
+        },
+        "why": "Đoạn F: du lịch ngắm sao mang khách tới ngoài mùa cao điểm, có lợi cho doanh nghiệp địa phương.",
+        "wrong": {
+          "E": "Đoạn E nói giải pháp rẻ, nhưng không nói lợi ích kinh tế.",
+          "A": "Đoạn A chỉ mô tả mức độ ô nhiễm ánh sáng."
+        }
+      },
+      {
+        "id": "r-info-02-2",
+        "q": "a measurement of how quickly lighting has spread",
+        "ans": "A",
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "grew by about two per cent a year between 2012 and 2016"
+        },
+        "why": "Đoạn A: diện tích được chiếu sáng tăng khoảng 2% mỗi năm.",
+        "wrong": {
+          "C": "Đoạn C có con số 13% nhưng là lượng quả giảm.",
+          "B": "Đoạn B có số rùa chết, không phải tốc độ lan của ánh sáng."
+        },
+        "trap": "Có nhiều con số trong bài; phải khớp loại thông tin: tốc độ lan rộng của ánh sáng."
+      },
+      {
+        "id": "r-info-02-3",
+        "q": "an effect of artificial light on plants",
+        "ans": "C",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "producing around thirteen per cent less fruit"
+        },
+        "why": "Đoạn C: cây gần đèn đường ít côn trùng ghé nên ra ít quả hơn.",
+        "wrong": {
+          "E": "Đoạn E nói về côn trùng và màu đèn, không nói về cây.",
+          "B": "Đoạn B nói về rùa biển."
+        }
+      },
+      {
+        "id": "r-info-02-4",
+        "q": "an example of an event changing its practice to protect animals",
+        "ans": "D",
+        "b": 6.5,
+        "ev": {
+          "p": 3,
+          "s": "Organisers now switch the lights off for twenty minutes whenever large numbers of birds gather."
+        },
+        "why": "Đoạn D: ban tổ chức sự kiện ở New York tắt đèn khi chim tụ lại.",
+        "wrong": {
+          "E": "Đoạn E nêu giải pháp chung, không phải một sự kiện cụ thể.",
+          "F": "Đoạn F nói về thị trấn, không phải sự kiện."
+        }
+      },
+      {
+        "id": "r-info-02-5",
+        "q": "a comparison between different colours of light",
+        "ans": "E",
+        "b": 6,
+        "ev": {
+          "p": 4,
+          "s": "Warmer, orange-coloured lights also attract fewer insects than the blue-white LEDs"
+        },
+        "why": "Đoạn E so sánh đèn màu cam với đèn LED trắng xanh.",
+        "wrong": {
+          "C": "Đoạn C nói côn trùng bị đèn đường hút nhưng không so sánh màu đèn.",
+          "A": "Đoạn A không nói màu ánh sáng."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-info-03",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-info",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "practice",
+    "title": "Learning a Second Language as an Adult",
+    "instr": "The text has six paragraphs, A–F. Which paragraph contains the following information? You may use any letter more than once.",
+    "paras": [
+      "A It is widely believed that children learn languages more easily than adults. There is some truth in this: people who begin learning a language before the age of about ten are much more likely to develop a native-like accent. However, the advantage of youth is smaller and more complicated than many people assume.",
+      "B In fact, in the early stages, adults often learn faster than children. They can use their knowledge of grammar in their first language, apply study strategies and understand explanations. Studies of families who moved to a new country found that parents initially made quicker progress than their children, although the children usually caught up and overtook them within a few years.",
+      "C One reason children eventually do better is the amount of contact they have with the new language. Children at school may spend six or seven hours a day surrounded by it, playing and making friends. Adults, by contrast, often work in jobs where they can use their first language and spend their free time with people from their own country.",
+      "D Motivation also plays a role, though not always in the way expected. Adults who learn a language because they want to belong to a new community tend to make more progress than those who learn it only for their job. Fear of making mistakes, which children rarely feel, can make adults reluctant to speak.",
+      "E Brain research suggests that the adult brain remains able to learn new sounds and words throughout life, though it may need more practice. A study of people learning Mandarin in their sixties found that, after nine months of classes, their ability to hear differences between tones was similar to that of younger learners.",
+      "F For adult learners, then, the message is encouraging. Regular contact with the language, a real reason to use it and a willingness to make mistakes may matter more than age. Teachers recommend that adults find opportunities to speak, even if their accent never sounds completely native."
+    ],
+    "vi": [
+      "A Nhiều người tin rằng trẻ em học ngôn ngữ dễ hơn người lớn. Điều này có phần đúng: người bắt đầu học một ngôn ngữ trước khoảng mười tuổi có khả năng cao hơn nhiều sẽ có giọng như người bản ngữ. Tuy nhiên, lợi thế của tuổi trẻ nhỏ hơn và phức tạp hơn nhiều người nghĩ.",
+      "B Thực tế, ở giai đoạn đầu, người lớn thường học nhanh hơn trẻ em. Họ dùng được hiểu biết ngữ pháp trong tiếng mẹ đẻ, áp dụng chiến lược học và hiểu được lời giải thích. Nghiên cứu các gia đình chuyển tới nước mới thấy cha mẹ lúc đầu tiến bộ nhanh hơn con cái, dù trẻ thường đuổi kịp và vượt cha mẹ trong vài năm.",
+      "C Một lý do trẻ em cuối cùng giỏi hơn là lượng tiếp xúc với ngôn ngữ mới. Trẻ ở trường có thể ở giữa ngôn ngữ đó sáu, bảy giờ mỗi ngày, chơi và kết bạn. Ngược lại, người lớn thường làm những công việc có thể dùng tiếng mẹ đẻ và dành thời gian rảnh với người cùng nước.",
+      "D Động lực cũng đóng vai trò, dù không phải lúc nào cũng theo cách người ta nghĩ. Người lớn học ngôn ngữ vì muốn thuộc về một cộng đồng mới thường tiến bộ hơn người chỉ học vì công việc. Sợ mắc lỗi, điều trẻ em ít khi cảm thấy, có thể khiến người lớn ngại nói.",
+      "E Nghiên cứu về não cho thấy não người lớn vẫn có khả năng học âm và từ mới suốt đời, dù có thể cần luyện tập nhiều hơn. Một nghiên cứu những người học tiếng Quan Thoại ở tuổi sáu mươi thấy sau chín tháng học, khả năng nghe phân biệt thanh điệu của họ tương đương người học trẻ hơn.",
+      "F Vậy với người lớn học ngoại ngữ, thông điệp là đáng khích lệ. Tiếp xúc thường xuyên với ngôn ngữ, có lý do thật để dùng nó và sẵn lòng mắc lỗi có thể quan trọng hơn tuổi tác. Giáo viên khuyên người lớn tìm cơ hội để nói, dù giọng có thể không bao giờ giống hẳn người bản ngữ."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "Paragraph A"
+      },
+      {
+        "k": "B",
+        "t": "Paragraph B"
+      },
+      {
+        "k": "C",
+        "t": "Paragraph C"
+      },
+      {
+        "k": "D",
+        "t": "Paragraph D"
+      },
+      {
+        "k": "E",
+        "t": "Paragraph E"
+      },
+      {
+        "k": "F",
+        "t": "Paragraph F"
+      }
+    ],
+    "allow": [
+      "Mandarin",
+      "native-like",
+      "overtook"
+    ],
+    "items": [
+      {
+        "id": "r-info-03-1",
+        "q": "evidence that older learners can still develop listening skills",
+        "ans": "E",
+        "b": 6.5,
+        "ev": {
+          "p": 4,
+          "s": "their ability to hear differences between tones was similar to that of younger learners"
+        },
+        "why": "Đoạn E: người học ở tuổi sáu mươi nghe phân biệt thanh điệu tương đương người trẻ.",
+        "wrong": {
+          "A": "Đoạn A nói về giọng nói (accent), không phải nghe.",
+          "B": "Đoạn B nói người lớn học nhanh lúc đầu, không có bằng chứng về kỹ năng nghe."
+        }
+      },
+      {
+        "id": "r-info-03-2",
+        "q": "a contrast between how children and adults spend their day",
+        "ans": "C",
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "Adults, by contrast, often work in jobs where they can use their first language"
+        },
+        "why": "Đoạn C so sánh trẻ ở trường sáu, bảy giờ mỗi ngày với người lớn làm việc bằng tiếng mẹ đẻ.",
+        "wrong": {
+          "B": "Đoạn B so sánh tốc độ học, không nói cách dùng thời gian trong ngày.",
+          "D": "Đoạn D so sánh động lực, không phải sinh hoạt hằng ngày."
+        }
+      },
+      {
+        "id": "r-info-03-3",
+        "q": "an area in which young learners do have a clear advantage",
+        "ans": "A",
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "people who begin learning a language before the age of about ten are much more likely to develop a native-like accent"
+        },
+        "why": "Đoạn A: bắt đầu trước khoảng mười tuổi thì dễ có giọng như người bản ngữ: lợi thế rõ của người học trẻ.",
+        "wrong": {
+          "C": "Đoạn C giải thích vì sao trẻ cuối cùng giỏi hơn, nhưng đó là do môi trường, không phải lợi thế của tuổi.",
+          "F": "Đoạn F nhắc giọng người lớn có thể không giống bản ngữ, nhưng ý chính là lời khuyên."
+        }
+      },
+      {
+        "id": "r-info-03-4",
+        "q": "a reason why some adults avoid speaking",
+        "ans": "D",
+        "b": 6,
+        "ev": {
+          "p": 3,
+          "s": "Fear of making mistakes, which children rarely feel, can make adults reluctant to speak."
+        },
+        "why": "Đoạn D: sợ mắc lỗi khiến người lớn ngại nói.",
+        "wrong": {
+          "F": "Đoạn F khuyên sẵn lòng mắc lỗi, không giải thích vì sao người lớn né nói.",
+          "C": "Đoạn C nói người lớn ít tiếp xúc, không nói họ tránh nói."
+        }
+      },
+      {
+        "id": "r-info-03-5",
+        "q": "a change in which family members were learning faster",
+        "ans": "B",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "parents initially made quicker progress than their children, although the children usually caught up and overtook them within a few years"
+        },
+        "why": "Đoạn B: lúc đầu cha mẹ tiến bộ nhanh hơn, vài năm sau con cái đuổi kịp và vượt.",
+        "wrong": {
+          "C": "Đoạn C nói lý do trẻ giỏi hơn, không mô tả diễn biến theo thời gian trong gia đình.",
+          "A": "Đoạn A nói chung về độ tuổi, không nói về gia đình."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-info-04",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-info",
+    "level": "C1",
+    "band": 7,
+    "mode": "practice",
+    "title": "The Rise of the Electric Bicycle",
+    "instr": "The text has six paragraphs, A–F. Which paragraph contains the following information? You may use any letter more than once.",
+    "paras": [
+      "A Electric bicycles, or e-bikes, have become one of the fastest-growing forms of transport in many countries. In Germany and the Netherlands, more e-bikes are now sold each year than conventional bicycles, and in China, where the trend began, there are estimated to be more than two hundred million on the roads.",
+      "B The appeal of the e-bike lies largely in the way it removes the obstacles that discourage people from cycling. A small motor, which only works while the rider is pedalling, makes hills and headwinds manageable and allows riders to arrive at work without being exhausted or needing a shower. Older riders, in particular, report that e-bikes have allowed them to keep cycling into their seventies.",
+      "C Health researchers were initially concerned that e-bikes would simply replace ordinary bicycles and reduce physical activity. A study across seven European cities found the opposite: e-bike owners travelled further and more often than conventional cyclists, so that their total weekly exercise was about the same. Moreover, many had previously travelled by car rather than by bicycle.",
+      "D Safety is a more complicated issue. Because e-bikes travel faster than most riders expect, accidents at junctions have increased in some areas. Several countries limit the motor's assistance to twenty-five kilometres per hour, while faster models must be registered and insured like mopeds.",
+      "E The environmental case is strong but not unlimited. An e-bike produces only a fraction of the emissions of a car over its lifetime, but its battery requires lithium and other materials whose extraction can damage the environment. Recycling schemes for e-bike batteries remain rare, although some manufacturers have started to offer them.",
+      "F Governments are increasingly recognising e-bikes as a serious form of transport. France and Sweden have offered subsidies of several hundred euros towards the purchase of an e-bike, and some employers lend them to staff. Transport planners suggest that the most effective support, however, would be safe, separated cycle lanes, without which many potential riders will never feel confident on the roads."
+    ],
+    "vi": [
+      "A Xe đạp điện (e-bike) đã thành một trong những phương tiện tăng trưởng nhanh nhất ở nhiều nước. Ở Đức và Hà Lan, mỗi năm số xe đạp điện bán ra nay nhiều hơn xe đạp thường, và ở Trung Quốc, nơi xu hướng bắt đầu, ước tính có hơn hai trăm triệu chiếc trên đường.",
+      "B Sức hút của xe đạp điện phần lớn nằm ở chỗ nó gỡ bỏ những trở ngại khiến người ta ngại đạp xe. Một động cơ nhỏ, chỉ chạy khi người lái đang đạp, khiến dốc và gió ngược trở nên dễ đối phó, và cho phép người lái tới chỗ làm mà không kiệt sức hay phải tắm. Người lớn tuổi nói riêng cho biết xe đạp điện giúp họ tiếp tục đạp xe ở tuổi bảy mươi.",
+      "C Các nhà nghiên cứu sức khoẻ ban đầu lo xe đạp điện chỉ thay thế xe đạp thường và làm giảm vận động. Một nghiên cứu ở bảy thành phố châu Âu thấy điều ngược lại: người có xe đạp điện đi xa hơn và thường xuyên hơn người đạp xe thường, nên tổng lượng vận động mỗi tuần gần như bằng nhau. Hơn nữa, nhiều người trước đó đi ô tô chứ không phải xe đạp.",
+      "D An toàn là vấn đề phức tạp hơn. Vì xe đạp điện đi nhanh hơn phần lớn người lái nghĩ, tai nạn ở giao lộ đã tăng ở một số nơi. Nhiều nước giới hạn mức trợ lực của động cơ ở 25 km/h, còn loại nhanh hơn phải đăng ký và mua bảo hiểm như xe gắn máy.",
+      "E Lập luận về môi trường mạnh nhưng có giới hạn. Một chiếc xe đạp điện thải ra chỉ một phần nhỏ lượng khí thải của ô tô trong suốt vòng đời, nhưng pin của nó cần lithium và các vật liệu khác mà việc khai thác có thể hại môi trường. Chương trình tái chế pin xe đạp điện vẫn hiếm, dù một số nhà sản xuất đã bắt đầu cung cấp.",
+      "F Các chính phủ ngày càng công nhận xe đạp điện là phương tiện giao thông nghiêm túc. Pháp và Thuỵ Điển đã hỗ trợ vài trăm euro khi mua xe đạp điện, và một số chủ doanh nghiệp cho nhân viên mượn xe. Tuy nhiên, các nhà quy hoạch giao thông cho rằng hỗ trợ hiệu quả nhất sẽ là làn xe đạp an toàn, tách biệt; thiếu nó, nhiều người có thể đi xe sẽ không bao giờ thấy tự tin trên đường."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "Paragraph A"
+      },
+      {
+        "k": "B",
+        "t": "Paragraph B"
+      },
+      {
+        "k": "C",
+        "t": "Paragraph C"
+      },
+      {
+        "k": "D",
+        "t": "Paragraph D"
+      },
+      {
+        "k": "E",
+        "t": "Paragraph E"
+      },
+      {
+        "k": "F",
+        "t": "Paragraph F"
+      }
+    ],
+    "allow": [
+      "e-bike",
+      "e-bikes",
+      "pedalling",
+      "headwinds",
+      "mopeds",
+      "lithium",
+      "subsidies",
+      "emissions",
+      "extraction"
+    ],
+    "items": [
+      {
+        "id": "r-info-04-1",
+        "q": "a mention of a group of people for whom e-bikes extend their cycling years",
+        "ans": "B",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "Older riders, in particular, report that e-bikes have allowed them to keep cycling into their seventies."
+        },
+        "why": "Đoạn B: người lớn tuổi tiếp tục đạp xe tới tuổi bảy mươi nhờ xe đạp điện.",
+        "wrong": {
+          "C": "Đoạn C nói về người đi ô tô chuyển sang, không nói về độ tuổi.",
+          "F": "Đoạn F nói nhân viên được mượn xe, không nói kéo dài thời gian đạp xe."
+        }
+      },
+      {
+        "id": "r-info-04-2",
+        "q": "a finding that went against researchers' expectations",
+        "ans": "C",
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "A study across seven European cities found the opposite"
+        },
+        "why": "Đoạn C: các nhà nghiên cứu lo vận động giảm, nhưng nghiên cứu cho kết quả ngược lại.",
+        "wrong": {
+          "D": "Đoạn D nói tốc độ vượt dự đoán của NGƯỜI LÁI, không phải của nhà nghiên cứu.",
+          "A": "Đoạn A chỉ nêu số liệu bán hàng."
+        },
+        "trap": "Đoạn D cũng có ý 'không như dự đoán' (faster than most riders expect), nhưng là dự đoán của người lái, không phải kết quả nghiên cứu."
+      },
+      {
+        "id": "r-info-04-3",
+        "q": "a drawback related to the materials used in e-bikes",
+        "ans": "E",
+        "b": 7,
+        "ev": {
+          "p": 4,
+          "s": "its battery requires lithium and other materials whose extraction can damage the environment"
+        },
+        "why": "Đoạn E: pin cần lithium, khai thác có thể hại môi trường.",
+        "wrong": {
+          "D": "Đoạn D nói về an toàn, không về vật liệu.",
+          "A": "Đoạn A không nói về vật liệu."
+        }
+      },
+      {
+        "id": "r-info-04-4",
+        "q": "examples of financial help for buyers",
+        "ans": "F",
+        "b": 6.5,
+        "ev": {
+          "p": 5,
+          "s": "France and Sweden have offered subsidies of several hundred euros towards the purchase of an e-bike"
+        },
+        "why": "Đoạn F: Pháp và Thuỵ Điển hỗ trợ vài trăm euro khi mua xe.",
+        "wrong": {
+          "D": "Đoạn D nói phải mua bảo hiểm, không phải hỗ trợ tiền.",
+          "E": "Đoạn E nói chương trình tái chế, không phải hỗ trợ người mua."
+        }
+      },
+      {
+        "id": "r-info-04-5",
+        "q": "a rule that separates e-bikes from more powerful vehicles",
+        "ans": "D",
+        "b": 7.5,
+        "ev": {
+          "p": 3,
+          "s": "faster models must be registered and insured like mopeds"
+        },
+        "why": "Đoạn D: giới hạn trợ lực 25 km/h; xe nhanh hơn phải đăng ký như xe gắn máy, tức là quy định phân biệt hai loại.",
+        "wrong": {
+          "B": "Đoạn B nói động cơ chỉ chạy khi đạp, đó là đặc điểm kỹ thuật, không phải quy định.",
+          "F": "Đoạn F nói chính sách hỗ trợ, không phải quy định phân loại."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-info-05",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-info",
+    "level": "C1",
+    "band": 7.5,
+    "mode": "practice",
+    "title": "The Placebo Effect",
+    "instr": "The text has six paragraphs, A–F. Which paragraph contains the following information? You may use any letter more than once.",
+    "paras": [
+      "A A placebo is a treatment with no active ingredient, such as a sugar pill, given to a patient who believes it may be real medicine. Since the 1950s, new drugs have been tested against placebos in controlled trials, and it has become clear that a substantial proportion of patients in placebo groups report genuine improvements in their symptoms.",
+      "B The size of the effect depends heavily on what is being measured. Placebos have little or no influence on objective conditions such as the growth of tumours or the level of sugar in the blood. They have their strongest effects on symptoms that are experienced subjectively, particularly pain, nausea and fatigue.",
+      "C Curiously, the appearance of a treatment matters. In several studies, patients reported more relief from two placebo pills than from one, and from capsules than from tablets. Injections tend to produce larger effects than pills, and in one study a placebo labelled with a well-known brand name worked better than the same pill without a label.",
+      "D Brain imaging has begun to reveal the mechanisms involved. When patients expect pain relief, their brains release natural painkilling chemicals, and activity decreases in regions associated with the experience of pain. In a striking experiment, the effect of a placebo painkiller was largely cancelled when patients were secretly given a drug that blocks these natural chemicals.",
+      "E The use of placebos in ordinary medicine raises ethical difficulties, since it appears to require doctors to deceive their patients. However, a number of recent trials have tested so-called 'open-label' placebos, in which patients are told plainly that they are receiving inactive pills. Surprisingly, many still reported significant improvement, particularly in conditions such as irritable bowel syndrome.",
+      "F Researchers stress that placebos are not a substitute for effective treatment. Their real lesson, many argue, concerns the context in which care is given: a doctor's warmth, the time spent listening to a patient and the patient's confidence in the treatment can all influence how much benefit is felt."
+    ],
+    "vi": [
+      "A Giả dược là cách điều trị không có hoạt chất, như viên đường, đưa cho bệnh nhân tin rằng đó có thể là thuốc thật. Từ thập niên 1950, thuốc mới được thử nghiệm so với giả dược trong các thử nghiệm có đối chứng, và ngày càng rõ là một tỉ lệ đáng kể bệnh nhân trong nhóm giả dược báo cáo triệu chứng cải thiện thật sự.",
+      "B Mức độ tác động phụ thuộc rất nhiều vào thứ được đo. Giả dược hầu như không ảnh hưởng tới các tình trạng khách quan như sự phát triển của khối u hay lượng đường trong máu. Chúng có tác dụng mạnh nhất với các triệu chứng cảm nhận chủ quan, đặc biệt là đau, buồn nôn và mệt mỏi.",
+      "C Điều lạ là hình thức của cách điều trị có ý nghĩa. Trong một số nghiên cứu, bệnh nhân thấy đỡ hơn với hai viên giả dược so với một viên, và với viên nang so với viên nén. Tiêm thường cho hiệu quả lớn hơn uống, và trong một nghiên cứu, viên giả dược in tên một thương hiệu nổi tiếng có tác dụng hơn đúng viên đó khi không có nhãn.",
+      "D Chụp ảnh não đã bắt đầu cho thấy cơ chế liên quan. Khi bệnh nhân chờ đợi được giảm đau, não họ tiết ra các chất giảm đau tự nhiên, và hoạt động giảm ở những vùng liên quan tới cảm giác đau. Trong một thí nghiệm đáng chú ý, tác dụng của thuốc giảm đau giả dược gần như mất hết khi bệnh nhân bị bí mật cho dùng một loại thuốc chặn các chất tự nhiên này.",
+      "E Dùng giả dược trong y khoa thông thường đặt ra khó khăn về đạo đức, vì dường như bác sĩ phải lừa dối bệnh nhân. Tuy nhiên, một số thử nghiệm gần đây đã thử giả dược 'nhãn mở', trong đó bệnh nhân được nói rõ là đang dùng viên không có hoạt chất. Đáng ngạc nhiên, nhiều người vẫn báo cáo cải thiện đáng kể, đặc biệt với các bệnh như hội chứng ruột kích thích.",
+      "F Các nhà nghiên cứu nhấn mạnh giả dược không thay thế được cách điều trị hiệu quả. Theo nhiều người, bài học thật sự của chúng là về bối cảnh chăm sóc: sự ân cần của bác sĩ, thời gian lắng nghe bệnh nhân và niềm tin của bệnh nhân vào cách điều trị đều có thể ảnh hưởng tới mức độ cảm thấy được lợi."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "Paragraph A"
+      },
+      {
+        "k": "B",
+        "t": "Paragraph B"
+      },
+      {
+        "k": "C",
+        "t": "Paragraph C"
+      },
+      {
+        "k": "D",
+        "t": "Paragraph D"
+      },
+      {
+        "k": "E",
+        "t": "Paragraph E"
+      },
+      {
+        "k": "F",
+        "t": "Paragraph F"
+      }
+    ],
+    "allow": [
+      "placebo",
+      "placebos",
+      "tumours",
+      "nausea",
+      "fatigue",
+      "capsules",
+      "tablets",
+      "injections",
+      "painkilling",
+      "painkiller",
+      "irritable",
+      "bowel",
+      "syndrome",
+      "subjectively",
+      "imaging",
+      "open-label"
+    ],
+    "items": [
+      {
+        "id": "r-info-05-1",
+        "q": "a description of an experiment that prevented the placebo from working",
+        "ans": "D",
+        "b": 7.5,
+        "ev": {
+          "p": 3,
+          "s": "the effect of a placebo painkiller was largely cancelled when patients were secretly given a drug that blocks these natural chemicals"
+        },
+        "why": "Đoạn D: cho thuốc chặn chất giảm đau tự nhiên thì tác dụng giả dược gần như mất.",
+        "wrong": {
+          "E": "Đoạn E mô tả thử nghiệm mà giả dược VẪN có tác dụng.",
+          "C": "Đoạn C so sánh hình thức thuốc, không có thí nghiệm làm mất tác dụng."
+        }
+      },
+      {
+        "id": "r-info-05-2",
+        "q": "types of illness on which placebos have almost no effect",
+        "ans": "B",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "Placebos have little or no influence on objective conditions such as the growth of tumours or the level of sugar in the blood."
+        },
+        "why": "Đoạn B: giả dược hầu như không ảnh hưởng tới khối u hay đường huyết.",
+        "wrong": {
+          "E": "Đoạn E nói bệnh mà giả dược nhãn mở có tác dụng.",
+          "A": "Đoạn A nói chung rằng giả dược có tác dụng, không nêu loại bệnh không tác dụng."
+        }
+      },
+      {
+        "id": "r-info-05-3",
+        "q": "an example of a product name making a difference",
+        "ans": "C",
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "a placebo labelled with a well-known brand name worked better than the same pill without a label"
+        },
+        "why": "Đoạn C: viên có tên thương hiệu nổi tiếng hiệu quả hơn viên không nhãn.",
+        "wrong": {
+          "E": "Đoạn E nói về \"open-label\" (nói rõ là giả dược), không phải tên thương hiệu.",
+          "F": "Đoạn F nói niềm tin vào điều trị, không nhắc tên sản phẩm."
+        },
+        "trap": "'Open-label' ở đoạn E chứa chữ 'label' nhưng nghĩa là nói thật với bệnh nhân, không phải nhãn hiệu."
+      },
+      {
+        "id": "r-info-05-4",
+        "q": "a way of avoiding a moral problem with placebos",
+        "ans": "E",
+        "b": 7.5,
+        "ev": {
+          "p": 4,
+          "s": "patients are told plainly that they are receiving inactive pills"
+        },
+        "why": "Đoạn E: khó khăn đạo đức là lừa dối; giả dược nhãn mở nói thật với bệnh nhân nên tránh được vấn đề này.",
+        "wrong": {
+          "F": "Đoạn F nói về bối cảnh chăm sóc, không giải quyết vấn đề lừa dối.",
+          "A": "Đoạn A định nghĩa giả dược, không bàn đạo đức."
+        }
+      },
+      {
+        "id": "r-info-05-5",
+        "q": "factors in the doctor–patient relationship that may affect results",
+        "ans": "F",
+        "b": 7,
+        "ev": {
+          "p": 5,
+          "s": "a doctor's warmth, the time spent listening to a patient and the patient's confidence in the treatment"
+        },
+        "why": "Đoạn F: sự ân cần, thời gian lắng nghe, niềm tin của bệnh nhân.",
+        "wrong": {
+          "C": "Đoạn C nói hình thức viên thuốc, không phải quan hệ bác sĩ–bệnh nhân.",
+          "D": "Đoạn D nói cơ chế trong não."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-info-06",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-info",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Libraries in the Digital Age",
+    "instr": "The text has six paragraphs, A–F. Which paragraph contains the following information? You may use any letter more than once.",
+    "paras": [
+      "A When the internet became widely available in the 1990s, many people predicted that public libraries would soon disappear. If information could be found online in seconds, why would anyone visit a building full of books? Thirty years later, libraries still exist, but the way they are used has changed dramatically.",
+      "B In many countries, the number of books borrowed has fallen steadily. In England, loans dropped by around forty per cent between 2005 and 2019. At the same time, however, the number of people attending events in libraries, such as reading groups for children and computer classes for older people, has risen.",
+      "C For people without a computer or internet access at home, the library has become essential. Job seekers use library computers to write applications, and many government services, from tax forms to housing applications, are now available only online. Librarians report spending a large part of their day helping visitors with these tasks.",
+      "D Some libraries have introduced services that would have seemed strange in the past. Users in some cities can borrow tools, musical instruments and even fishing equipment. Others offer 'makerspaces' with 3D printers and sewing machines, where people can learn practical skills and work on projects together.",
+      "E Despite these changes, libraries face serious financial pressure. Between 2010 and 2019, nearly eight hundred libraries in the United Kingdom closed, and many others now depend on volunteers to stay open. Critics argue that volunteers, however enthusiastic, cannot replace trained librarians.",
+      "F Supporters say that libraries are one of the few public places where anyone can spend time without having to buy anything. In a society where more and more people live alone, they argue, this role as a free, warm and welcoming space may be the library's most important function in the future."
+    ],
+    "vi": [
+      "A Khi internet trở nên phổ biến vào thập niên 1990, nhiều người dự đoán thư viện công cộng sẽ sớm biến mất. Nếu có thể tìm thông tin trên mạng trong vài giây, ai lại tới một toà nhà đầy sách? Ba mươi năm sau, thư viện vẫn còn, nhưng cách người ta dùng chúng đã thay đổi lớn.",
+      "B Ở nhiều nước, số sách được mượn giảm đều. Ở Anh, lượt mượn giảm khoảng 40% từ 2005 tới 2019. Tuy nhiên, cùng lúc đó số người tham gia sự kiện ở thư viện, như nhóm đọc sách cho trẻ em và lớp máy tính cho người lớn tuổi, đã tăng.",
+      "C Với người không có máy tính hay internet ở nhà, thư viện đã thành nơi thiết yếu. Người tìm việc dùng máy tính thư viện để viết đơn, và nhiều dịch vụ của chính phủ, từ tờ khai thuế tới đơn xin nhà ở, nay chỉ làm được trên mạng. Thủ thư cho biết họ dành phần lớn thời gian trong ngày giúp khách làm những việc này.",
+      "D Một số thư viện có những dịch vụ mà trước đây sẽ có vẻ lạ. Ở một số thành phố, người dùng có thể mượn dụng cụ, nhạc cụ và cả đồ câu cá. Nơi khác có 'xưởng sáng tạo' với máy in 3D và máy khâu, nơi mọi người học kỹ năng thực hành và cùng làm dự án.",
+      "E Dù có những thay đổi đó, thư viện chịu áp lực tài chính nặng nề. Từ 2010 tới 2019, gần tám trăm thư viện ở Anh đóng cửa, và nhiều thư viện khác nay phải dựa vào tình nguyện viên để mở cửa. Người phê phán cho rằng tình nguyện viên, dù nhiệt tình đến đâu, không thể thay thủ thư được đào tạo.",
+      "F Người ủng hộ nói thư viện là một trong số ít nơi công cộng ai cũng có thể ở mà không phải mua gì. Họ cho rằng trong một xã hội ngày càng nhiều người sống một mình, vai trò là không gian miễn phí, ấm áp và thân thiện có thể là chức năng quan trọng nhất của thư viện trong tương lai."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "Paragraph A"
+      },
+      {
+        "k": "B",
+        "t": "Paragraph B"
+      },
+      {
+        "k": "C",
+        "t": "Paragraph C"
+      },
+      {
+        "k": "D",
+        "t": "Paragraph D"
+      },
+      {
+        "k": "E",
+        "t": "Paragraph E"
+      },
+      {
+        "k": "F",
+        "t": "Paragraph F"
+      }
+    ],
+    "allow": [
+      "makerspaces",
+      "librarians",
+      "loans"
+    ],
+    "items": [
+      {
+        "id": "r-info-06-1",
+        "q": "a prediction that turned out to be wrong",
+        "ans": "A",
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "many people predicted that public libraries would soon disappear"
+        },
+        "why": "Đoạn A: người ta dự đoán thư viện sẽ biến mất, nhưng ba mươi năm sau thư viện vẫn còn.",
+        "wrong": {
+          "F": "Đoạn F nói về vai trò trong tương lai, không phải dự đoán đã sai.",
+          "E": "Đoạn E nói thư viện đóng cửa, không nói dự đoán."
+        }
+      },
+      {
+        "id": "r-info-06-2",
+        "q": "examples of unusual items that can be borrowed",
+        "ans": "D",
+        "b": 5.5,
+        "ev": {
+          "p": 3,
+          "s": "Users in some cities can borrow tools, musical instruments and even fishing equipment."
+        },
+        "why": "Đoạn D: mượn dụng cụ, nhạc cụ, đồ câu cá.",
+        "wrong": {
+          "B": "Đoạn B nói lượt mượn sách giảm, không nêu đồ vật lạ.",
+          "C": "Đoạn C nói dùng máy tính, không phải mượn đồ."
+        }
+      },
+      {
+        "id": "r-info-06-3",
+        "q": "a concern about people without professional training",
+        "ans": "E",
+        "b": 6.5,
+        "ev": {
+          "p": 4,
+          "s": "Critics argue that volunteers, however enthusiastic, cannot replace trained librarians."
+        },
+        "why": "Đoạn E: tình nguyện viên không thay được thủ thư được đào tạo.",
+        "wrong": {
+          "C": "Đoạn C nói thủ thư giúp khách, không lo về người không được đào tạo.",
+          "D": "Đoạn D nói người dùng học kỹ năng, không phải lo ngại."
+        }
+      },
+      {
+        "id": "r-info-06-4",
+        "q": "a reason why some people depend on libraries for official tasks",
+        "ans": "C",
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "many government services, from tax forms to housing applications, are now available only online"
+        },
+        "why": "Đoạn C: dịch vụ chính phủ chỉ có trên mạng; người không có internet phải dùng máy tính thư viện.",
+        "wrong": {
+          "B": "Đoạn B nhắc lớp máy tính cho người lớn tuổi, nhưng không nói về thủ tục chính thức.",
+          "F": "Đoạn F nói thư viện là nơi miễn phí, không nói thủ tục."
+        }
+      },
+      {
+        "id": "r-info-06-5",
+        "q": "a figure showing a decrease in traditional library use",
+        "ans": "B",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "loans dropped by around forty per cent between 2005 and 2019"
+        },
+        "why": "Đoạn B: lượt mượn sách giảm khoảng 40%.",
+        "wrong": {
+          "E": "Đoạn E có con số tám trăm thư viện đóng cửa: đó là số thư viện, không phải mức sử dụng.",
+          "A": "Đoạn A không có số liệu sử dụng."
+        },
+        "trap": "Đoạn E cũng có con số giảm (thư viện đóng cửa), nhưng câu hỏi hỏi mức sử dụng truyền thống (mượn sách)."
+      }
+    ]
+  }
+]
