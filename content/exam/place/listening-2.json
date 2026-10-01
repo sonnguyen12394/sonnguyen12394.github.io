@@ -113,7 +113,7 @@
     ],
     "audio": {
       "file": "a/pl-l-13.mp3",
-      "dur": 16.5,
+      "dur": 17.7,
       "voices": [
         "bf_emma",
         "bm_lewis"
@@ -359,7 +359,7 @@
     ],
     "audio": {
       "file": "a/pl-l-15.mp3",
-      "dur": 27,
+      "dur": 27.5,
       "voices": [
         "af_sky"
       ]
@@ -489,7 +489,7 @@
     ],
     "audio": {
       "file": "a/pl-l-16.mp3",
-      "dur": 28.6,
+      "dur": 26.3,
       "voices": [
         "bm_george",
         "bf_isabella"
@@ -569,7 +569,7 @@
       },
       {
         "id": "pl-l-17-b",
-        "q": "What was the result of the café discount?",
+        "q": "What was the result of the cafés' switch to new cups?",
         "opts": [
           {
             "k": "A",
@@ -604,7 +604,7 @@
     ],
     "audio": {
       "file": "a/pl-l-17.mp3",
-      "dur": 32,
+      "dur": 33.3,
       "voices": [
         "am_michael"
       ]
@@ -964,7 +964,7 @@
     ],
     "audio": {
       "file": "a/pl-l-20.mp3",
-      "dur": 40.1,
+      "dur": 36.5,
       "voices": [
         "bm_lewis",
         "af_nicole"
@@ -1317,7 +1317,7 @@
     ],
     "audio": {
       "file": "a/pl-l-23.mp3",
-      "dur": 27.7,
+      "dur": 29.1,
       "voices": [
         "am_michael"
       ]
@@ -1437,7 +1437,7 @@
     ],
     "audio": {
       "file": "a/pl-l-24.mp3",
-      "dur": 26.1,
+      "dur": 24.1,
       "voices": [
         "bf_isabella",
         "am_adam"

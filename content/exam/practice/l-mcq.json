@@ -51,7 +51,7 @@
       },
       {
         "sp": "Trainer",
-        "t": "It's eight pounds per class, or you can buy a card for ten classes for sixty pounds, which saves you twenty."
+        "t": "It's eight pounds per class, or you can buy a card for ten classes for seventy pounds, which saves you ten."
       },
       {
         "sp": "Anna",
@@ -72,7 +72,7 @@
       "Tôi có cần mang gì không?",
       "Chúng tôi có thảm, chị chỉ cần mang chai nước và mặc đồ thoải mái. Khăn có ở quầy lễ tân, giá một bảng.",
       "Mỗi buổi giá bao nhiêu?",
-      "Tám bảng mỗi buổi, hoặc chị có thể mua thẻ mười buổi giá sáu mươi bảng, tiết kiệm được hai mươi.",
+      "Tám bảng mỗi buổi, hoặc chị có thể mua thẻ mười buổi giá bảy mươi bảng, tiết kiệm được mười.",
       "Vậy tôi lấy thẻ."
     ],
     "allow": [
@@ -171,7 +171,7 @@
       },
       {
         "id": "l-mcq-01-4",
-        "q": "How much will Anna pay?",
+        "q": "How much will Anna's ten-class card cost?",
         "opts": [
           {
             "k": "A",
@@ -179,7 +179,7 @@
           },
           {
             "k": "B",
-            "t": "£60"
+            "t": "£70"
           },
           {
             "k": "C",
@@ -190,12 +190,12 @@
         "b": 5.5,
         "ev": {
           "p": 9,
-          "s": "or you can buy a card for ten classes for sixty pounds"
+          "s": "a card for ten classes for seventy pounds"
         },
-        "why": "Chị mua thẻ mười buổi giá 60 bảng.",
+        "why": "Anna mua thẻ mười buổi giá 70 bảng.",
         "wrong": {
-          "A": "Tám bảng là giá một buổi lẻ.",
-          "C": "Tám mươi bảng là giá mười buổi lẻ (thẻ giúp tiết kiệm hai mươi)."
+          "A": "8 bảng là giá một buổi.",
+          "C": "80 bảng là giá mười buổi lẻ."
         },
         "trap": "Phải nghe tới câu cuối: chị chọn thẻ."
       },
@@ -228,16 +228,7 @@
           "B": "\"half past six\" là giờ bắt đầu, không phải độ dài."
         }
       }
-    ],
-    "audio": {
-      "file": "a/l-mcq-01.mp3",
-      "dur": 56,
-      "voices": [
-        "bf_isabella",
-        "bm_lewis"
-      ],
-      "slow": "a/l-mcq-01.slow.mp3"
-    }
+    ]
   },
   {
     "id": "l-mcq-02",
@@ -259,23 +250,23 @@
       },
       {
         "sp": "Speaker",
-        "t": "Many people think the best thing they can do is buy new appliances. In fact, the biggest savings usually come from heating, which accounts for more than half of the average household's energy use."
+        "t": "Many people think the best thing they can do is buy new appliances. In fact, in this area the biggest savings usually come from hot water, which accounts for almost half of the average household's energy use."
       },
       {
         "sp": "Speaker",
-        "t": "Turning your thermostat down by just one degree can reduce your heating bill by around ten per cent, and most people don't even notice the difference."
+        "t": "Fitting a simple timer to your shower can cut your hot water use by around fifteen per cent, and most families get used to it within a week."
       },
       {
         "sp": "Speaker",
-        "t": "Draughts are another major problem. Gaps around doors and windows let warm air escape. You can buy strips to seal them very cheaply, and it's a job most people can do themselves in an afternoon."
+        "t": "Draughts are another major problem. Gaps around doors and windows let warm air escape. Sealing them properly is harder than it looks, so it's usually worth paying a professional to do it."
       },
       {
         "sp": "Speaker",
-        "t": "What about solar panels? They can be worthwhile, but they're expensive to install and take many years to pay for themselves, so I'd only recommend them once you've done the cheaper things first."
+        "t": "What about solar panels? They're cheaper than ever, and if your roof faces south, I'd recommend them straight away."
       },
       {
         "sp": "Speaker",
-        "t": "Finally, our council is offering free home energy checks this winter. An adviser will visit your house and give you a personal report. The number to call is on the leaflet you were given at the door."
+        "t": "Finally, our council is offering free home energy checks this winter. An adviser will visit your house and give you a personal report. You can book one at the library desk on your way out tonight."
       }
     ],
     "voices": {
@@ -283,11 +274,11 @@
     },
     "vi": [
       "Chào buổi tối. Tối nay tôi sẽ nói về những cách đơn giản để giảm hoá đơn năng lượng ở nhà.",
-      "Nhiều người nghĩ điều tốt nhất có thể làm là mua thiết bị mới. Thật ra, tiết kiệm lớn nhất thường đến từ sưởi ấm, chiếm hơn một nửa lượng năng lượng của một hộ trung bình.",
-      "Hạ máy điều nhiệt chỉ một độ có thể giảm khoảng mười phần trăm hoá đơn sưởi, và hầu hết mọi người thậm chí không nhận ra khác biệt.",
-      "Gió lùa là một vấn đề lớn khác. Khe hở quanh cửa ra vào và cửa sổ làm hơi ấm thoát ra. Bạn có thể mua dải bịt kín rất rẻ, và đa số người tự làm được trong một buổi chiều.",
-      "Còn pin mặt trời thì sao? Chúng có thể đáng, nhưng lắp đặt đắt và mất nhiều năm mới hoàn vốn, nên tôi chỉ khuyên dùng sau khi đã làm những việc rẻ hơn trước.",
-      "Cuối cùng, hội đồng thành phố đang miễn phí kiểm tra năng lượng tại nhà mùa đông này. Một chuyên viên sẽ đến nhà và đưa bạn báo cáo riêng. Số điện thoại có trên tờ rơi các bạn nhận ở cửa."
+      "Nhiều người nghĩ điều tốt nhất có thể làm là mua thiết bị mới. Thật ra, ở khu vực này tiết kiệm lớn nhất thường đến từ nước nóng, chiếm gần một nửa lượng năng lượng của một hộ trung bình.",
+      "Lắp một bộ hẹn giờ đơn giản cho vòi sen có thể giảm khoảng mười lăm phần trăm lượng nước nóng dùng, và đa số gia đình quen chỉ trong một tuần.",
+      "Gió lùa là một vấn đề lớn khác. Khe hở quanh cửa ra vào và cửa sổ làm hơi ấm thoát ra. Bịt kín đúng cách khó hơn bạn tưởng, nên thường đáng thuê thợ chuyên nghiệp làm.",
+      "Còn pin mặt trời thì sao? Chúng rẻ hơn bao giờ hết, và nếu mái nhà bạn quay về hướng nam, tôi khuyên lắp ngay.",
+      "Cuối cùng, hội đồng thành phố đang miễn phí kiểm tra năng lượng tại nhà mùa đông này. Một chuyên viên sẽ đến nhà và đưa bạn báo cáo riêng. Các bạn có thể đăng ký ở quầy thư viện khi ra về tối nay."
     ],
     "allow": [
       "appliances",
@@ -303,57 +294,57 @@
         "opts": [
           {
             "k": "A",
-            "t": "reducing heating"
+            "t": "using less hot water"
           },
           {
             "k": "B",
-            "t": "using less electricity for lighting"
+            "t": "buying new appliances"
           },
           {
             "k": "C",
-            "t": "buying new appliances"
+            "t": "reducing heating"
           }
         ],
         "ans": "A",
         "b": 6,
         "ev": {
           "p": 1,
-          "s": "In fact, the biggest savings usually come from heating"
+          "s": "the biggest savings usually come from hot water"
         },
-        "why": "Tiết kiệm lớn nhất đến từ sưởi ấm.",
+        "why": "Tiết kiệm lớn nhất đến từ nước nóng.",
         "wrong": {
-          "B": "Chiếu sáng không được nhắc.",
-          "C": "Đó là điều \"many people think\", bị \"In fact\" bác bỏ."
+          "B": "Đó là điều nhiều người nghĩ, không đúng.",
+          "C": "Bài này không nói sưởi ấm."
         },
         "trap": "Ý của 'many people' được nêu trước rồi bị sửa bằng 'In fact'."
       },
       {
         "id": "l-mcq-02-2",
-        "q": "What does the speaker say about turning the thermostat down by one degree?",
+        "q": "What does the speaker say about shower timers?",
         "opts": [
           {
             "k": "A",
-            "t": "Most people notice it."
+            "t": "Most families dislike them."
           },
           {
             "k": "B",
-            "t": "It saves about ten per cent on heating."
+            "t": "They cut hot water use by about 15%."
           },
           {
             "k": "C",
-            "t": "It is not worth the small saving it makes."
+            "t": "They are expensive to fit."
           }
         ],
         "ans": "B",
         "b": 6,
         "ev": {
           "p": 2,
-          "s": "can reduce your heating bill by around ten per cent"
+          "s": "can cut your hot water use by around fifteen per cent"
         },
-        "why": "Giảm khoảng 10% hoá đơn sưởi.",
+        "why": "Hẹn giờ vòi sen giảm khoảng 15% nước nóng.",
         "wrong": {
-          "A": "Bài nói hầu hết mọi người không nhận ra.",
-          "C": "Ngược ý; người nói khuyên làm."
+          "A": "Ngược ý: đa số quen trong một tuần.",
+          "C": "Ngược ý: là bộ hẹn giờ đơn giản."
         }
       },
       {
@@ -362,7 +353,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "It needs a professional."
+            "t": "It is cheap and easy to do yourself."
           },
           {
             "k": "B",
@@ -370,19 +361,19 @@
           },
           {
             "k": "C",
-            "t": "It is cheap and easy."
+            "t": "It is best done by a professional."
           }
         ],
         "ans": "C",
         "b": 6,
         "ev": {
           "p": 3,
-          "s": "You can buy strips to seal them very cheaply, and it's a job most people can do themselves"
+          "s": "it's usually worth paying a professional to do it"
         },
-        "why": "Rẻ và tự làm được.",
+        "why": "Bịt kín đúng cách khó, nên thuê thợ.",
         "wrong": {
-          "A": "Đa số tự làm được, không cần thợ.",
-          "B": "Không được nói."
+          "A": "Ngược ý: khó hơn bạn tưởng.",
+          "B": "Không được nhắc."
         }
       },
       {
@@ -391,7 +382,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "only after cheaper changes."
+            "t": "straight away if the roof faces south."
           },
           {
             "k": "B",
@@ -399,19 +390,19 @@
           },
           {
             "k": "C",
-            "t": "for every household that can afford them."
+            "t": "only after cheaper changes."
           }
         ],
         "ans": "A",
         "b": 6.5,
         "ev": {
           "p": 4,
-          "s": "so I'd only recommend them once you've done the cheaper things first"
+          "s": "if your roof faces south, I'd recommend them straight away"
         },
-        "why": "Chỉ nên lắp sau khi làm các việc rẻ hơn.",
+        "why": "Mái quay hướng nam thì nên lắp ngay.",
         "wrong": {
-          "B": "Nhà mới không được nhắc.",
-          "C": "Người nói nói chúng đắt, không khuyên cho mọi nhà."
+          "B": "Không được nhắc.",
+          "C": "Bài này không nói đợi làm việc rẻ trước."
         }
       },
       {
@@ -420,11 +411,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "by visiting the council offices in person"
+            "t": "by phoning a number on a leaflet"
           },
           {
             "k": "B",
-            "t": "by phoning a number on a leaflet"
+            "t": "at the library desk tonight"
           },
           {
             "k": "C",
@@ -435,23 +426,15 @@
         "b": 6,
         "ev": {
           "p": 5,
-          "s": "The number to call is on the leaflet you were given at the door."
+          "s": "You can book one at the library desk on your way out tonight."
         },
-        "why": "Gọi số điện thoại trên tờ rơi.",
+        "why": "Đăng ký ở quầy thư viện khi ra về tối nay.",
         "wrong": {
-          "A": "Hội đồng tổ chức nhưng bài không nói đến tận nơi.",
-          "C": "Người nói không nhận đăng ký."
+          "A": "Bài này không nói tờ rơi.",
+          "C": "Không được nhắc."
         }
       }
-    ],
-    "audio": {
-      "file": "a/l-mcq-02.mp3",
-      "dur": 55.2,
-      "voices": [
-        "bf_emma"
-      ],
-      "slow": "a/l-mcq-02.slow.mp3"
-    }
+    ]
   },
   {
     "id": "l-mcq-03",
@@ -481,7 +464,7 @@
       },
       {
         "sp": "Omar",
-        "t": "There's already a huge amount of research on it, so I'm not sure I could say anything new. Also, getting permission to interview teenagers takes months."
+        "t": "It's a great topic, but I'd need ethical approval to interview teenagers, and that can take several months."
       },
       {
         "sp": "Tutor",
@@ -489,19 +472,19 @@
       },
       {
         "sp": "Omar",
-        "t": "My uncle owns a bookshop, so I could get access to real sales data, which most students wouldn't have. That's the main attraction."
+        "t": "I've worked in my uncle's bookshop every summer, so I understand the business from the inside. That's the main attraction."
       },
       {
         "sp": "Tutor",
-        "t": "That would be a real strength. My only worry is that you might rely too much on one shop. You'd need to include several businesses to make the findings useful."
+        "t": "That would be a real strength. My only worry is that the topic is too wide. Small shops sell very different things."
       },
       {
         "sp": "Omar",
-        "t": "I've thought about that. The local business association has offered to put me in touch with other shop owners."
+        "t": "I've thought about that. I'll focus only on independent bookshops in this city."
       },
       {
         "sp": "Tutor",
-        "t": "Excellent. Then I think that's the better choice. For next week, could you write a one-page outline of your research questions?"
+        "t": "Excellent. Then I think that's the better choice. For next week, could you make a list of ten bookshops you could contact?"
       }
     ],
     "voices": {
@@ -512,12 +495,12 @@
       "Omar, em đã chọn được đề tài cho luận văn chưa?",
       "Em đã thu hẹp còn hai. Một là về việc dùng mạng xã hội ở thanh thiếu niên, và một là về cách các cửa hàng nhỏ cạnh tranh với các nhà bán lẻ trực tuyến.",
       "Cả hai đều thú vị. Em lo gì về đề tài mạng xã hội?",
-      "Đã có rất nhiều nghiên cứu về nó, nên em không chắc mình nói được gì mới. Hơn nữa, xin phép phỏng vấn thanh thiếu niên mất hàng tháng.",
+      "Đề tài rất hay, nhưng em cần được hội đồng đạo đức duyệt mới phỏng vấn thanh thiếu niên được, mà việc đó có thể mất vài tháng.",
       "Lo vậy là hợp lý. Còn đề tài cửa hàng?",
-      "Chú em có một hiệu sách, nên em có thể tiếp cận số liệu bán hàng thật, điều phần lớn sinh viên không có. Đó là điểm hấp dẫn chính.",
-      "Đó sẽ là điểm mạnh thật sự. Thầy chỉ lo em dựa quá nhiều vào một cửa hàng. Em cần đưa vào nhiều cửa hàng để kết quả hữu ích.",
-      "Em đã nghĩ tới điều đó. Hiệp hội doanh nghiệp địa phương đã đề nghị giới thiệu em với các chủ cửa hàng khác.",
-      "Rất tốt. Vậy thầy nghĩ đó là lựa chọn tốt hơn. Tuần tới, em viết một trang dàn ý các câu hỏi nghiên cứu nhé?"
+      "Hè nào em cũng làm ở hiệu sách của chú, nên em hiểu việc kinh doanh từ bên trong. Đó là điểm hấp dẫn chính.",
+      "Đó sẽ là điểm mạnh thật sự. Thầy chỉ lo đề tài quá rộng. Các cửa hàng nhỏ bán những thứ rất khác nhau.",
+      "Em đã nghĩ tới điều đó. Em sẽ chỉ tập trung vào các hiệu sách độc lập trong thành phố.",
+      "Rất tốt. Vậy thầy nghĩ đó là lựa chọn tốt hơn. Tuần tới, em lập danh sách mười hiệu sách em có thể liên hệ nhé?"
     ],
     "allow": [
       "dissertation",
@@ -533,27 +516,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "It has been studied a lot already."
+            "t": "Getting approval would take months."
           },
           {
             "k": "B",
-            "t": "It is not very interesting."
+            "t": "It has been studied a lot already."
           },
           {
             "k": "C",
-            "t": "It would require expensive recording equipment."
+            "t": "It is not very interesting."
           }
         ],
         "ans": "A",
         "b": 6.5,
         "ev": {
           "p": 3,
-          "s": "There's already a huge amount of research on it, so I'm not sure I could say anything new."
+          "s": "I'd need ethical approval to interview teenagers, and that can take several months"
         },
-        "why": "Đã có rất nhiều nghiên cứu, khó nói được điều mới.",
+        "why": "Cần được duyệt về đạo đức, có thể mất vài tháng.",
         "wrong": {
-          "B": "Gia sư nói cả hai đều thú vị.",
-          "C": "Thiết bị không được nhắc; khó khăn phụ là xin phép phỏng vấn."
+          "B": "Bài này không nói đã có nhiều nghiên cứu.",
+          "C": "Ngược ý: Omar nói đề tài rất hay."
         }
       },
       {
@@ -566,23 +549,23 @@
           },
           {
             "k": "B",
-            "t": "He has worked in a shop."
+            "t": "He can get real sales data."
           },
           {
             "k": "C",
-            "t": "He can obtain real data."
+            "t": "He has worked in a shop."
           }
         ],
         "ans": "C",
         "b": 6.5,
         "ev": {
           "p": 5,
-          "s": "I could get access to real sales data, which most students wouldn't have."
+          "s": "I've worked in my uncle's bookshop every summer"
         },
-        "why": "Em có thể có số liệu bán hàng thật.",
+        "why": "Hè nào anh cũng làm ở hiệu sách của chú, nên hiểu từ bên trong.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Chú em có hiệu sách; không nói em làm ở đó."
+          "A": "Không được nhắc.",
+          "B": "Bài này không nói số liệu bán hàng."
         }
       },
       {
@@ -591,27 +574,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "The topic is too wide."
+            "t": "His uncle might not share data."
           },
           {
             "k": "B",
-            "t": "Omar's uncle might not agree to share his data."
+            "t": "He might depend on one business."
           },
           {
             "k": "C",
-            "t": "Omar might depend on one business."
+            "t": "The topic is too wide."
           }
         ],
         "ans": "C",
         "b": 7,
         "ev": {
           "p": 6,
-          "s": "My only worry is that you might rely too much on one shop."
+          "s": "My only worry is that the topic is too wide."
         },
-        "why": "Lo em dựa quá nhiều vào một cửa hàng.",
+        "why": "Thầy lo đề tài quá rộng.",
         "wrong": {
-          "A": "Ngược lại, lo đề tài hẹp vào một cửa hàng.",
-          "B": "Không có ý chú không đồng ý."
+          "A": "Không được nhắc.",
+          "B": "Bài này không nói dựa vào một cửa hàng."
         }
       },
       {
@@ -624,23 +607,23 @@
           },
           {
             "k": "B",
-            "t": "with help from a business association"
+            "t": "by focusing on local bookshops"
           },
           {
             "k": "C",
-            "t": "by interviewing customers in several bookshops"
+            "t": "with help from a business association"
           }
         ],
         "ans": "B",
         "b": 7,
         "ev": {
           "p": 7,
-          "s": "The local business association has offered to put me in touch with other shop owners."
+          "s": "I'll focus only on independent bookshops in this city."
         },
-        "why": "Hiệp hội doanh nghiệp giới thiệu chủ cửa hàng khác.",
+        "why": "Chỉ tập trung vào hiệu sách độc lập trong thành phố.",
         "wrong": {
-          "A": "Số liệu trực tuyến không được nhắc.",
-          "C": "Khách hàng không được nhắc."
+          "A": "Không được nhắc.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -649,39 +632,30 @@
         "opts": [
           {
             "k": "A",
-            "t": "write an outline"
+            "t": "make a list of bookshops"
           },
           {
             "k": "B",
-            "t": "contact shop owners"
+            "t": "choose a different topic"
           },
           {
             "k": "C",
-            "t": "choose a different topic"
+            "t": "write an outline"
           }
         ],
         "ans": "A",
         "b": 6,
         "ev": {
           "p": 8,
-          "s": "could you write a one-page outline of your research questions"
+          "s": "could you make a list of ten bookshops you could contact?"
         },
-        "why": "Viết một trang dàn ý.",
+        "why": "Lập danh sách mười hiệu sách có thể liên hệ.",
         "wrong": {
-          "B": "Liên hệ chủ cửa hàng là kế hoạch, không phải bài tập tuần tới.",
-          "C": "Gia sư đồng ý với đề tài đã chọn."
+          "B": "Thầy đã đồng ý đề tài.",
+          "C": "Bài này không nói dàn ý."
         }
       }
-    ],
-    "audio": {
-      "file": "a/l-mcq-03.mp3",
-      "dur": 60.5,
-      "voices": [
-        "bm_george",
-        "am_adam"
-      ],
-      "slow": "a/l-mcq-03.slow.mp3"
-    }
+    ]
   },
   {
     "id": "l-mcq-04",
@@ -691,8 +665,8 @@
       "ielts-gt"
     ],
     "qtype": "l-mcq",
-    "level": "C1",
-    "band": 7,
+    "level": "B2",
+    "band": 6.5,
     "mode": "practice",
     "title": "Lecture: The Psychology of Queues",
     "instr": "Choose the correct letter, A, B or C.",
@@ -883,15 +857,7 @@
           "B": "Bài nói rõ \"isn't actually faster\"."
         }
       }
-    ],
-    "audio": {
-      "file": "a/l-mcq-04.mp3",
-      "dur": 63.9,
-      "voices": [
-        "af_sarah"
-      ],
-      "slow": "a/l-mcq-04.slow.mp3"
-    }
+    ]
   },
   {
     "id": "l-mcq-05",
@@ -901,8 +867,8 @@
       "ielts-gt"
     ],
     "qtype": "l-mcq",
-    "level": "C1",
-    "band": 7.5,
+    "level": "B2",
+    "band": 6.5,
     "mode": "practice",
     "title": "Discussion: Evaluating a Group Project",
     "instr": "Choose the correct letter, A, B or C.",
@@ -913,7 +879,7 @@
       },
       {
         "sp": "Sara",
-        "t": "Overall, well. The idea of letting students choose smaller portions worked better than we expected. Waste fell by about a quarter in the first month."
+        "t": "Overall, well. The idea of letting students choose smaller portions worked better than we expected. Waste fell by about a third in the first month."
       },
       {
         "sp": "Tutor",
@@ -921,15 +887,15 @@
       },
       {
         "sp": "Kofi",
-        "t": "Honestly, we're not sure they made any difference. We put them up at the same time as the portion change, so we can't separate the two effects."
+        "t": "Honestly, we're not sure they made any difference. Most of them were taken down by the cleaners after two days."
       },
       {
         "sp": "Tutor",
-        "t": "That's an important point about your method. What would you do differently?"
+        "t": "That's a pity. What would you do differently?"
       },
       {
         "sp": "Sara",
-        "t": "We should have introduced one change at a time. Or used two canteens: one with posters and one without."
+        "t": "We should have put them somewhere the cleaners couldn't reach, like inside the menu boards."
       },
       {
         "sp": "Tutor",
@@ -937,11 +903,11 @@
       },
       {
         "sp": "Kofi",
-        "t": "That was the hardest part. We divided the tasks clearly at the start, but we didn't set deadlines, so the data analysis was all done in the last few days."
+        "t": "That was the hardest part. We set clear deadlines, but two of us were ill in the same week, so the data analysis was all done in the last few days."
       },
       {
         "sp": "Tutor",
-        "t": "Well, for your final report, I'd like you to focus on the limitations as much as the results. Examiners value honesty about what a study can and can't show."
+        "t": "Well, for your final report, I'd like you to include photos of the canteen before and after the change. Examiners like to see the evidence."
       }
     ],
     "voices": {
@@ -951,14 +917,14 @@
     },
     "vi": [
       "Hãy xem lại dự án nhóm về giảm lãng phí thức ăn ở nhà ăn. Sara, em thấy nó thế nào?",
-      "Nhìn chung tốt ạ. Ý tưởng cho sinh viên chọn suất nhỏ hiệu quả hơn tụi em nghĩ. Lãng phí giảm khoảng một phần tư trong tháng đầu.",
+      "Nhìn chung tốt ạ. Ý tưởng cho sinh viên chọn suất nhỏ hiệu quả hơn tụi em nghĩ. Lãng phí giảm khoảng một phần ba trong tháng đầu.",
       "Ấn tượng đấy. Còn những tấm áp phích các em dán?",
-      "Thật lòng, tụi em không chắc chúng có tác dụng gì. Tụi em dán cùng lúc với thay đổi suất ăn, nên không tách được hai tác động.",
-      "Đó là điểm quan trọng về phương pháp. Các em sẽ làm gì khác đi?",
-      "Lẽ ra tụi em nên đưa vào từng thay đổi một. Hoặc dùng hai nhà ăn: một có áp phích, một không.",
+      "Thật lòng, tụi em không chắc chúng có tác dụng gì. Phần lớn bị người dọn vệ sinh gỡ xuống sau hai ngày.",
+      "Tiếc thật. Các em sẽ làm gì khác đi?",
+      "Lẽ ra tụi em nên dán ở chỗ người dọn vệ sinh không với tới, như bên trong bảng thực đơn.",
       "Chính xác. Còn làm việc nhóm thì sao?",
-      "Đó là phần khó nhất. Tụi em chia việc rõ ràng ngay từ đầu, nhưng không đặt hạn, nên phần phân tích dữ liệu bị dồn vào vài ngày cuối.",
-      "Với báo cáo cuối, thầy muốn các em tập trung vào hạn chế cũng nhiều như kết quả. Giám khảo đánh giá cao sự trung thực về những gì một nghiên cứu có thể và không thể chỉ ra."
+      "Đó là phần khó nhất. Tụi em đặt hạn rõ ràng, nhưng hai bạn ốm cùng một tuần, nên phần phân tích dữ liệu bị dồn vào vài ngày cuối.",
+      "Với báo cáo cuối, thầy muốn các em đưa ảnh nhà ăn trước và sau thay đổi. Giám khảo thích thấy bằng chứng."
     ],
     "allow": [
       "canteen",
@@ -975,27 +941,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "Waste fell by about 25%."
+            "t": "Waste fell by about a third."
           },
           {
             "k": "B",
-            "t": "Waste fell by half."
+            "t": "Waste fell by about 25%."
           },
           {
             "k": "C",
-            "t": "It had no clear effect on waste."
+            "t": "Waste fell by half."
           }
         ],
         "ans": "A",
         "b": 7,
         "ev": {
           "p": 1,
-          "s": "Waste fell by about a quarter in the first month."
+          "s": "Waste fell by about a third in the first month."
         },
-        "why": "Giảm khoảng một phần tư = 25%.",
+        "why": "Lãng phí giảm khoảng một phần ba.",
         "wrong": {
-          "B": "Một nửa không được nói.",
-          "C": "\"No clear effect\" là chuyện áp phích."
+          "B": "Con số là một phần ba.",
+          "C": "Con số là một phần ba."
         }
       },
       {
@@ -1004,27 +970,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "They were introduced together with another change."
+            "t": "They were removed after two days."
           },
           {
             "k": "B",
-            "t": "They were taken down far too early to have any effect."
+            "t": "Few students read them."
           },
           {
             "k": "C",
-            "t": "Few students read them."
+            "t": "They were introduced with another change."
           }
         ],
         "ans": "A",
         "b": 7.5,
         "ev": {
           "p": 3,
-          "s": "We put them up at the same time as the portion change, so we can't separate the two effects."
+          "s": "Most of them were taken down by the cleaners after two days."
         },
-        "why": "Dán cùng lúc với thay đổi khác nên không tách được tác động.",
+        "why": "Phần lớn bị gỡ sau hai ngày.",
         "wrong": {
-          "B": "Không được nói.",
-          "C": "Không được nói."
+          "B": "Không được nhắc.",
+          "C": "Bài này không nói vậy."
         }
       },
       {
@@ -1037,23 +1003,23 @@
           },
           {
             "k": "B",
-            "t": "asked students for opinions"
+            "t": "tested changes separately"
           },
           {
             "k": "C",
-            "t": "tested changes separately"
+            "t": "put the posters in safer places"
           }
         ],
         "ans": "C",
         "b": 7,
         "ev": {
           "p": 5,
-          "s": "We should have introduced one change at a time."
+          "s": "We should have put them somewhere the cleaners couldn't reach"
         },
-        "why": "Lẽ ra phải đưa vào từng thay đổi một.",
+        "why": "Dán ở chỗ người dọn không với tới.",
         "wrong": {
-          "A": "Không được đề xuất.",
-          "B": "Không được nhắc."
+          "A": "Không được nhắc.",
+          "B": "Bài này không nói thử riêng từng thay đổi."
         }
       },
       {
@@ -1066,23 +1032,23 @@
           },
           {
             "k": "B",
-            "t": "There were no deadlines."
+            "t": "Two members were ill at once."
           },
           {
             "k": "C",
-            "t": "One member did most of the work."
+            "t": "There were no deadlines."
           }
         ],
         "ans": "B",
         "b": 7,
         "ev": {
           "p": 7,
-          "s": "We divided the tasks clearly at the start, but we didn't set deadlines"
+          "s": "two of us were ill in the same week"
         },
-        "why": "Không đặt hạn chót nên dồn việc cuối.",
+        "why": "Hai bạn ốm cùng một tuần.",
         "wrong": {
-          "A": "Ngược lại, việc được chia rõ.",
-          "C": "Không được nói."
+          "A": "Không được nhắc.",
+          "C": "Ngược ý: họ có đặt hạn rõ ràng."
         },
         "trap": "Phương án A dùng lại cụm 'divided the tasks clearly' nhưng đảo nghĩa."
       },
@@ -1092,40 +1058,30 @@
         "opts": [
           {
             "k": "A",
-            "t": "more detailed results from the first month"
+            "t": "more detailed results"
           },
           {
             "k": "B",
-            "t": "a discussion of the study's limitations"
+            "t": "photos of the canteen"
           },
           {
             "k": "C",
-            "t": "a shorter conclusion"
+            "t": "a discussion of limitations"
           }
         ],
         "ans": "B",
         "b": 7,
         "ev": {
           "p": 8,
-          "s": "I'd like you to focus on the limitations as much as the results"
+          "s": "I'd like you to include photos of the canteen before and after the change"
         },
-        "why": "Tập trung vào hạn chế của nghiên cứu.",
+        "why": "Thầy muốn ảnh nhà ăn trước và sau thay đổi.",
         "wrong": {
-          "A": "Gia sư muốn hạn chế được chú ý ngang với kết quả, không phải kết quả chi tiết hơn.",
-          "C": "Không được nói."
+          "A": "Không được nhắc.",
+          "C": "Bài này không nói hạn chế."
         }
       }
-    ],
-    "audio": {
-      "file": "a/l-mcq-05.mp3",
-      "dur": 61.1,
-      "voices": [
-        "bm_lewis",
-        "bf_emma",
-        "am_michael"
-      ],
-      "slow": "a/l-mcq-05.slow.mp3"
-    }
+    ]
   },
   {
     "id": "l-mcq-06",
@@ -1135,8 +1091,8 @@
       "ielts-gt"
     ],
     "qtype": "l-mcq",
-    "level": "B2",
-    "band": 6,
+    "level": "B1",
+    "band": 5,
     "mode": "practice",
     "title": "A Guided Walk in the Forest",
     "instr": "Choose the correct letter, A, B or C.",
@@ -1147,7 +1103,7 @@
       },
       {
         "sp": "Ranger",
-        "t": "We'll be walking for about two hours. The path is mostly flat, but there's one steep section near the waterfall, so please take care there."
+        "t": "We'll be walking for about two hours. The path is mostly flat, but it can be muddy near the old bridge, so please take care there."
       },
       {
         "sp": "Ranger",
@@ -1155,15 +1111,15 @@
       },
       {
         "sp": "Ranger",
-        "t": "Please stay on the paths. This time of year, birds are nesting on the ground in some areas, and walking through them can damage the nests."
+        "t": "Please stay on the paths. We've planted thousands of young trees this year, and they're very easy to step on."
       },
       {
         "sp": "Ranger",
-        "t": "We'll stop for a break at the old forest lodge, where there are toilets. Unfortunately the café there is closed for repairs, so I hope you've all brought something to eat."
+        "t": "We'll stop for a break at the old forest lodge, where there are toilets and a café. The café only takes cash, so I hope you've brought some with you."
       },
       {
         "sp": "Ranger",
-        "t": "And if anyone gets separated from the group, don't try to find us. Just go back to the car park and wait at the information board."
+        "t": "And if anyone gets separated from the group, don't try to find us. Just phone the number on the back of your ticket, and we'll come and find you."
       }
     ],
     "voices": {
@@ -1171,11 +1127,11 @@
     },
     "vi": [
       "Chào buổi sáng mọi người, chào mừng đến rừng Elmwood. Tôi là Tom, và tôi sẽ dẫn chuyến đi bộ hôm nay.",
-      "Chúng ta sẽ đi khoảng hai tiếng. Đường phần lớn bằng phẳng, nhưng có một đoạn dốc gần thác nước, nên hãy cẩn thận ở đó.",
+      "Chúng ta sẽ đi khoảng hai tiếng. Đường phần lớn bằng phẳng, nhưng gần cây cầu cũ có thể lầy lội, nên hãy cẩn thận ở đó.",
       "Khu rừng nổi tiếng với sóc đỏ. Chỉ còn vài nơi ở Anh có thể thấy chúng, vì sóc xám đã thay thế chúng gần như khắp nơi. Cơ hội tốt nhất là sáng sớm, nên hãy để ý.",
-      "Xin đi đúng đường mòn. Mùa này chim làm tổ trên mặt đất ở một số khu, và đi xuyên qua có thể làm hỏng tổ.",
-      "Chúng ta sẽ nghỉ ở nhà nghỉ rừng cũ, có nhà vệ sinh. Tiếc là quán cà phê ở đó đóng cửa sửa chữa, nên mong mọi người đã mang đồ ăn.",
-      "Và nếu ai bị lạc khỏi nhóm, đừng cố tìm chúng tôi. Cứ quay về bãi đỗ xe và đợi ở bảng thông tin."
+      "Xin đi đúng đường mòn. Năm nay chúng tôi đã trồng hàng nghìn cây non, và rất dễ giẫm phải.",
+      "Chúng ta sẽ nghỉ ở nhà nghỉ rừng cũ, có nhà vệ sinh và quán cà phê. Quán chỉ nhận tiền mặt, nên mong mọi người có mang theo.",
+      "Và nếu ai bị lạc khỏi nhóm, đừng cố tìm chúng tôi. Cứ gọi số điện thoại ở mặt sau vé, chúng tôi sẽ đến tìm."
     ],
     "allow": [
       "squirrels",
@@ -1193,27 +1149,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "in the main car park"
+            "t": "in the car park"
           },
           {
             "k": "B",
-            "t": "near the lodge"
+            "t": "near the waterfall"
           },
           {
             "k": "C",
-            "t": "near the waterfall"
+            "t": "near the old bridge"
           }
         ],
         "ans": "C",
         "b": 5.5,
         "ev": {
           "p": 1,
-          "s": "there's one steep section near the waterfall, so please take care there"
+          "s": "it can be muddy near the old bridge, so please take care there"
         },
-        "why": "Đoạn dốc gần thác nước.",
+        "why": "Gần cây cầu cũ có thể lầy lội.",
         "wrong": {
-          "A": "Bãi đỗ xe là nơi đợi khi bị lạc.",
-          "B": "Nhà nghỉ là chỗ nghỉ chân."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc."
         }
       },
       {
@@ -1251,27 +1207,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "to protect birds' nests"
+            "t": "to protect young trees"
           },
           {
             "k": "B",
-            "t": "because some areas are dangerous"
+            "t": "to avoid getting lost"
           },
           {
             "k": "C",
-            "t": "to avoid getting lost"
+            "t": "to protect birds' nests"
           }
         ],
         "ans": "A",
         "b": 6,
         "ev": {
           "p": 3,
-          "s": "walking through them can damage the nests"
+          "s": "We've planted thousands of young trees this year, and they're very easy to step on."
         },
-        "why": "Để không làm hỏng tổ chim.",
+        "why": "Năm nay trồng nhiều cây non, rất dễ giẫm phải.",
         "wrong": {
-          "B": "Nguy hiểm chỉ được nhắc ở đoạn dốc.",
-          "C": "Lạc là chuyện khác, ở đoạn cuối."
+          "B": "Không được nhắc.",
+          "C": "Bài này không nói tổ chim."
         }
       },
       {
@@ -1280,27 +1236,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "It sells good food."
-          },
-          {
-            "k": "B",
             "t": "It is closed."
           },
           {
+            "k": "B",
+            "t": "It only takes cash."
+          },
+          {
             "k": "C",
-            "t": "It opens early."
+            "t": "It sells good food."
           }
         ],
         "ans": "B",
         "b": 5.5,
         "ev": {
           "p": 4,
-          "s": "Unfortunately the café there is closed for repairs"
+          "s": "The café only takes cash"
         },
-        "why": "Quán đóng cửa sửa chữa.",
+        "why": "Quán chỉ nhận tiền mặt.",
         "wrong": {
-          "A": "Ngược ý; vì quán đóng nên phải mang đồ ăn.",
-          "C": "Không được nói."
+          "A": "Quán vẫn mở.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -1309,7 +1265,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "phone the ranger"
+            "t": "wait at the information board"
           },
           {
             "k": "B",
@@ -1317,29 +1273,21 @@
           },
           {
             "k": "C",
-            "t": "wait at the information board"
+            "t": "phone the number on their ticket"
           }
         ],
         "ans": "C",
         "b": 6,
         "ev": {
           "p": 5,
-          "s": "Just go back to the car park and wait at the information board."
+          "s": "Just phone the number on the back of your ticket"
         },
-        "why": "Quay về bãi đỗ xe, đợi ở bảng thông tin.",
+        "why": "Gọi số ở mặt sau vé, nhóm sẽ đến tìm.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Nhà nghỉ là điểm nghỉ, không phải chỗ hẹn khi lạc."
+          "A": "Bài này không nói bảng thông tin.",
+          "B": "Không được nhắc."
         }
       }
-    ],
-    "audio": {
-      "file": "a/l-mcq-06.mp3",
-      "dur": 54.3,
-      "voices": [
-        "bm_george"
-      ],
-      "slow": "a/l-mcq-06.slow.mp3"
-    }
+    ]
   }
 ]

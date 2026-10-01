@@ -204,7 +204,7 @@
     "items": [
       {
         "id": "pl-r-15-a",
-        "q": "How long do many shops accept complaints about broken items?",
+        "q": "Within how long after delivery do many shops accept complaints about broken items?",
         "opts": [
           {
             "k": "A",
@@ -395,7 +395,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "They throw food away on its 'best before' date."
+            "t": "They throw food away once the 'best before' date passes."
           },
           {
             "k": "B",
@@ -425,7 +425,7 @@
       },
       {
         "id": "pl-r-17-b",
-        "q": "Why do supermarkets remove products before they become unsafe?",
+        "q": "Why do supermarkets remove products from their shelves early?",
         "opts": [
           {
             "k": "A",

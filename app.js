@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 41;
+const STATE_V = 18, APP_VERSION = 42;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -7954,6 +7954,11 @@ CHANGELOG.unshift({v:37,d:'2026-10-01',t:'Kiểm tra đầu vào thích ứng 15
   'Kho 96 câu mới (48 Đọc, 48 Nghe) từ band 3 đến 8,5; mỗi câu giải thích bằng tiếng Việt vì sao đúng, vì sao từng phương án sai và câu nào chứa đáp án.',
   'Bài nghe là tệp âm thanh tạo sẵn giọng Anh và Mỹ, phát một lần như thi thật; lời thoại và bản dịch hiện sau khi làm xong. Không nghe được thì bỏ qua phần Nghe.',
   'Nút Báo lỗi ở mọi câu khi xem lại.']});
+CHANGELOG.unshift({v:42,d:'2026-10-01',t:'Câu trắc nghiệm không còn đoán được bằng mẹo',items:[
+  'Viết lại phương án và một phần bài đọc, lời thoại của 278 câu trắc nghiệm, kể cả bài kiểm tra đầu vào: phương án sai đều hợp lý và chỉ sai vì một chi tiết trong bài, đáp án không còn là câu dài nhất, ôn hoà nhất hay "điển hình" nhất.',
+  'Trước đây, chỉ nhìn câu hỏi và phương án (không đọc bài) đã đoán đúng khoảng 79%; nay còn khoảng một nửa và thấp hơn nhiều ở các dạng Nghe. Nhờ vậy band ước tính từ bài kiểm tra đầu vào sát thực lực hơn.',
+  'Vị trí đáp án đúng trong bài kiểm tra đầu vào được rải đều (trước đây không câu nào ở D).',
+  'Luật kiểm tra tự động mới chặn lỗi tái diễn; hướng dẫn soạn câu và phép thử "không có bài" được ghi thành quy trình.']});
 CHANGELOG.unshift({v:41,d:'2026-10-01',t:'Đủ 26/26 dạng: 8 dạng Nghe IELTS và 4 dạng VSTEP',big:true,items:[
   'Thêm 8 dạng Nghe IELTS (điền form, câu, sơ đồ quy trình, trả lời ngắn, trắc nghiệm một và hai đáp án, nối, bản đồ) và 4 dạng VSTEP (Đọc; Nghe phần 1, 2, 3). Mỗi dạng có bài học tiếng Việt và từ 30 câu luyện có giải thích.',
   'Mỗi bài nghe có bản tốc độ thi, bản chậm và bản có tiếng ồn nền (tạo ngay trên máy, không tốn thêm dung lượng tải). Giọng Anh và Mỹ; chưa có giọng Úc vì bộ giọng đọc chưa hỗ trợ.',

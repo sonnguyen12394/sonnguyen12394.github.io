@@ -129,7 +129,7 @@
           "B": "Mỗi chuyến vẫn mất tiền.",
           "D": "Có thể lấy xe ở bất kỳ trạm nào trong 150 trạm."
         },
-        "trap": "Thấy số 'thirty minutes' trùng với bài nên chọn B; đọc kỹ thì 30 phút là phần miễn phí, không phải giới hạn."
+        "trap": "Thấy số 'thirty minutes' trùng với bài nên chọn C; đọc kỹ thì 30 phút là phần miễn phí, không phải giới hạn."
       },
       {
         "id": "r-mcq-01-4",
@@ -164,7 +164,7 @@
           "C": "Ban đầu giảm, không tăng.",
           "D": "Doanh số có giảm trong năm đầu."
         },
-        "trap": "Phương án B lấy ý từ câu 'worried at first'; chú ý thời gian: câu hỏi hỏi 'now'."
+        "trap": "Phương án C lấy ý từ câu 'worried at first'; chú ý thời gian: câu hỏi hỏi 'now'."
       },
       {
         "id": "r-mcq-01-5",
@@ -266,7 +266,7 @@
           "C": "Bảo tàng chỉ là nơi đặt tổ.",
           "D": "Khách sạn chỉ là nơi đặt tổ; không nói bán mật."
         },
-        "trap": "Phương án A và C dùng lại từ hotels, museums của bài để gây nhiễu."
+        "trap": "Phương án A và D dùng lại từ hotels, museums của bài để gây nhiễu."
       },
       {
         "id": "r-mcq-02-2",
@@ -350,7 +350,7 @@
           },
           {
             "k": "C",
-            "t": "need a special licence."
+            "t": "require a special licence."
           },
           {
             "k": "D",
@@ -369,7 +369,7 @@
           "C": "Không được nhắc.",
           "D": "Không được nhắc."
         },
-        "trap": "Đảo chủ thể: 'fallen' đi với lượng thức ăn, 'rose' đi với số tổ. Phương án B gắn 'fall' cho số tổ."
+        "trap": "Đảo chủ thể: 'fallen' đi với lượng thức ăn, 'rose' đi với số tổ. Phương án A gắn 'fall' cho số tổ."
       },
       {
         "id": "r-mcq-02-5",

@@ -22,7 +22,7 @@
       },
       {
         "sp": "Woman",
-        "t": "Hmm, Mum doesn't really like seafood. And it's quite expensive. What about having a party at home instead? We could invite the neighbours and her friends from work."
+        "t": "Mum loves seafood, but that restaurant is closed for repairs until next month. What about having a party at home instead? We could invite the neighbours and her friends from work."
       },
       {
         "sp": "Man",
@@ -38,11 +38,11 @@
       },
       {
         "sp": "Woman",
-        "t": "She mentioned she wanted a new handbag, but I think she'd prefer something we've made ourselves. Why don't we put together a photo album of the family?"
+        "t": "She mentioned she wanted a new handbag, but she's always talked about learning to make pottery. Why don't we pay for a pottery class?"
       },
       {
         "sp": "Man",
-        "t": "Perfect. I'll collect the old photos from Grandma's house on Wednesday."
+        "t": "Perfect. I'll book it online on Wednesday, when I get paid."
       }
     ],
     "voices": {
@@ -52,17 +52,17 @@
     "vi": [
       "Chào Nam. Em đã nghĩ làm gì cho sinh nhật mẹ thứ Bảy tới chưa?",
       "Em định đặt bàn ở nhà hàng hải sản mới trong trung tâm.",
-      "Hừm, mẹ không thích hải sản lắm. Mà cũng khá đắt. Hay mình tổ chức tiệc ở nhà? Mình có thể mời hàng xóm và bạn cùng công ty của mẹ.",
+      "Mẹ rất thích hải sản, nhưng nhà hàng đó đóng cửa sửa chữa đến tháng sau. Hay mình tổ chức tiệc ở nhà? Mình có thể mời hàng xóm và bạn cùng công ty của mẹ.",
       "Ý hay đấy. Chắc mẹ sẽ thích hơn. Nhưng ai nấu?",
       "Chị nấu các món chính nếu em mua bánh. Gần công ty em có một tiệm bánh ngon phải không?",
       "Vâng, tiệm bánh Hoa. Em sẽ đặt một chiếc bánh sô-cô-la. Còn quà thì sao?",
-      "Mẹ có nhắc muốn một chiếc túi xách mới, nhưng chị nghĩ mẹ sẽ thích thứ gì đó tự tay mình làm hơn. Sao mình không làm một cuốn album ảnh gia đình?",
-      "Tuyệt. Em sẽ lấy ảnh cũ ở nhà bà vào thứ Tư."
+      "Mẹ có nhắc muốn một chiếc túi xách mới, nhưng mẹ lúc nào cũng nói muốn học làm gốm. Sao mình không đăng ký cho mẹ một lớp làm gốm?",
+      "Tuyệt. Em sẽ đặt lớp trên mạng vào thứ Tư, khi em nhận lương."
     ],
     "items": [
       {
         "id": "v-l2-01-1",
-        "q": "Why does the woman not want to go to the restaurant?",
+        "q": "Why can't they have the party at the seafood restaurant?",
         "opts": [
           {
             "k": "A",
@@ -70,28 +70,28 @@
           },
           {
             "k": "B",
-            "t": "It does not open on Saturday evenings."
+            "t": "It is too expensive."
           },
           {
             "k": "C",
-            "t": "Their mother doesn't like seafood."
+            "t": "It is closed for repairs."
           },
           {
             "k": "D",
-            "t": "It is too far away."
+            "t": "Their mother doesn't like seafood."
           }
         ],
         "ans": "C",
         "b": 4.5,
         "ev": {
           "p": 2,
-          "s": "Mum doesn't really like seafood. And it's quite expensive."
+          "s": "that restaurant is closed for repairs until next month"
         },
-        "why": "Mẹ không thích hải sản (và nó đắt).",
+        "why": "Nhà hàng đóng cửa sửa chữa đến tháng sau.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Không được nói.",
-          "D": "Không được nói."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "D": "Ngược ý: mẹ rất thích hải sản."
         }
       },
       {
@@ -134,38 +134,38 @@
         "opts": [
           {
             "k": "A",
-            "t": "a photo album"
+            "t": "a pottery class"
           },
           {
             "k": "B",
-            "t": "a handbag"
+            "t": "a photo album"
           },
           {
             "k": "C",
-            "t": "a meal at a restaurant"
+            "t": "a cake"
           },
           {
             "k": "D",
-            "t": "a cake"
+            "t": "a handbag"
           }
         ],
         "ans": "A",
         "b": 5,
         "ev": {
           "p": 6,
-          "s": "Why don't we put together a photo album of the family?"
+          "s": "Why don't we pay for a pottery class?"
         },
-        "why": "Album ảnh gia đình.",
+        "why": "Họ quyết định đăng ký cho mẹ một lớp làm gốm.",
         "wrong": {
-          "B": "Mẹ có nhắc túi xách nhưng họ chọn quà tự làm.",
-          "C": "Đi ăn ngoài đã bị bỏ.",
-          "D": "Bánh là cho bữa tiệc."
+          "B": "Không được nhắc.",
+          "C": "Bánh là đồ cho bữa tiệc, không phải quà.",
+          "D": "Mẹ có nhắc túi xách, nhưng họ chọn lớp làm gốm."
         },
         "trap": "Túi xách được nhắc trước rồi bị gạt bằng 'but'."
       },
       {
         "id": "v-l2-01-4",
-        "q": "When will the man go to his grandmother's house?",
+        "q": "When will the man book the class?",
         "opts": [
           {
             "k": "A",
@@ -177,36 +177,27 @@
           },
           {
             "k": "C",
-            "t": "on Saturday morning"
+            "t": "on Friday"
           },
           {
             "k": "D",
-            "t": "on Sunday"
+            "t": "on Saturday morning"
           }
         ],
         "ans": "B",
         "b": 4.5,
         "ev": {
           "p": 7,
-          "s": "I'll collect the old photos from Grandma's house on Wednesday."
+          "s": "I'll book it online on Wednesday"
         },
-        "why": "Anh lấy ảnh ở nhà bà vào thứ Tư.",
+        "why": "Anh sẽ đặt lớp vào thứ Tư, khi nhận lương.",
         "wrong": {
           "A": "Không được nhắc.",
-          "C": "Thứ Bảy là sinh nhật.",
-          "D": "Không được nhắc."
+          "C": "Không được nhắc.",
+          "D": "Thứ Bảy là ngày sinh nhật mẹ."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l2-01.mp3",
-      "dur": 49.9,
-      "voices": [
-        "bf_emma",
-        "bm_george"
-      ],
-      "slow": "a/v-l2-01.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l2-02",
@@ -227,7 +218,7 @@
       },
       {
         "sp": "Customer",
-        "t": "Yes, I bought this phone here two weeks ago, and the battery doesn't last more than half a day. I'd like to change it for a new one."
+        "t": "Yes, I bought this phone here in your summer sale two weeks ago, and the screen goes black every time I make a call. I'd like to change it for a new one."
       },
       {
         "sp": "Assistant",
@@ -239,7 +230,7 @@
       },
       {
         "sp": "Assistant",
-        "t": "Thank you. I'm afraid we can't exchange it after seven days, but it's still under guarantee, so we can send it away to be repaired. It usually takes about ten days."
+        "t": "Thank you. I'm afraid we can't exchange phones that were bought in a sale, but it's still under guarantee, so we can send it away to be repaired. It usually takes about ten days."
       },
       {
         "sp": "Customer",
@@ -247,7 +238,7 @@
       },
       {
         "sp": "Assistant",
-        "t": "We can lend you a phone while yours is being repaired. It's an older model, but it works well. You just need to leave a deposit of five hundred thousand dong, which we'll return when you bring it back."
+        "t": "We can repair it here in the shop instead, and it'll be ready by Friday. There's a charge of two hundred thousand dong for the faster service."
       },
       {
         "sp": "Customer",
@@ -255,7 +246,7 @@
       },
       {
         "sp": "Assistant",
-        "t": "We'll send you a text message. And remember to back up your photos before you leave it with us."
+        "t": "We'll send you an email. And remember to back up your photos before you leave it with us."
       }
     ],
     "voices": {
@@ -264,14 +255,14 @@
     },
     "vi": [
       "Chào buổi sáng. Tôi giúp gì được cho anh?",
-      "Vâng, tôi mua chiếc điện thoại này ở đây hai tuần trước, và pin không dùng quá nửa ngày. Tôi muốn đổi máy mới.",
+      "Vâng, tôi mua chiếc điện thoại này ở đây trong đợt giảm giá mùa hè hai tuần trước, và cứ gọi điện là màn hình tối đen. Tôi muốn đổi máy mới.",
       "Rất tiếc về chuyện đó. Anh có hoá đơn không?",
       "Tôi có trong email. Đây.",
-      "Cảm ơn anh. Tiếc là chúng tôi không đổi máy sau bảy ngày, nhưng máy vẫn còn bảo hành, nên chúng tôi có thể gửi đi sửa. Thường mất khoảng mười ngày.",
+      "Cảm ơn anh. Tiếc là chúng tôi không đổi máy mua trong đợt giảm giá, nhưng máy vẫn còn bảo hành, nên chúng tôi có thể gửi đi sửa. Thường mất khoảng mười ngày.",
       "Mười ngày? Tôi cần điện thoại để làm việc. Chị có cách nào không?",
-      "Chúng tôi có thể cho anh mượn một chiếc trong lúc sửa máy. Đó là mẫu cũ hơn nhưng dùng tốt. Anh chỉ cần đặt cọc năm trăm nghìn đồng, chúng tôi sẽ trả lại khi anh mang máy trả.",
+      "Chúng tôi có thể sửa ngay tại cửa hàng, thứ Sáu là xong. Dịch vụ nhanh này mất phí hai trăm nghìn đồng.",
       "Được. Khi nào sửa xong chị gọi cho tôi nhé?",
-      "Chúng tôi sẽ nhắn tin. Và nhớ sao lưu ảnh trước khi để máy lại đây nhé."
+      "Chúng tôi sẽ gửi email. Và nhớ sao lưu ảnh trước khi để máy lại đây nhé."
     ],
     "items": [
       {
@@ -280,32 +271,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "The camera doesn't work."
+            "t": "It won't charge."
           },
           {
             "k": "B",
-            "t": "It won't turn on."
+            "t": "The camera doesn't work."
           },
           {
             "k": "C",
-            "t": "The battery runs out quickly."
+            "t": "The screen goes black during calls."
           },
           {
             "k": "D",
-            "t": "The screen cracked after a few days."
+            "t": "The battery runs out quickly."
           }
         ],
         "ans": "C",
         "b": 4.5,
         "ev": {
           "p": 1,
-          "s": "the battery doesn't last more than half a day"
+          "s": "the screen goes black every time I make a call"
         },
-        "why": "Pin không dùng quá nửa ngày.",
+        "why": "Cứ gọi điện là màn hình tối đen.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Không được nói.",
-          "D": "Không được nói."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -314,32 +305,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "More than seven days have passed."
+            "t": "It was bought in a sale."
           },
           {
             "k": "B",
-            "t": "This model is no longer sold in the shop."
+            "t": "The guarantee has ended."
           },
           {
             "k": "C",
-            "t": "The customer has no receipt."
+            "t": "More than seven days have passed."
           },
           {
             "k": "D",
-            "t": "The guarantee has ended."
+            "t": "The customer has no receipt."
           }
         ],
         "ans": "A",
         "b": 5,
         "ev": {
           "p": 4,
-          "s": "we can't exchange it after seven days"
+          "s": "we can't exchange phones that were bought in a sale"
         },
-        "why": "Đã quá bảy ngày.",
+        "why": "Cửa hàng không đổi máy mua trong đợt giảm giá.",
         "wrong": {
-          "B": "Không được nói.",
-          "C": "Anh có hoá đơn trong email.",
-          "D": "Vẫn còn bảo hành."
+          "B": "Máy vẫn còn bảo hành.",
+          "C": "Bài này không nói hạn bảy ngày.",
+          "D": "Anh có hoá đơn trong email."
         }
       },
       {
@@ -348,15 +339,15 @@
         "opts": [
           {
             "k": "A",
-            "t": "a cheaper repair"
+            "t": "a new phone"
           },
           {
             "k": "B",
-            "t": "a phone to borrow"
+            "t": "a faster repair for a fee"
           },
           {
             "k": "C",
-            "t": "a brand-new phone of the same model"
+            "t": "a phone to borrow"
           },
           {
             "k": "D",
@@ -367,18 +358,18 @@
         "b": 5,
         "ev": {
           "p": 6,
-          "s": "We can lend you a phone while yours is being repaired."
+          "s": "We can repair it here in the shop instead, and it'll be ready by Friday."
         },
-        "why": "Cho mượn điện thoại trong lúc sửa.",
+        "why": "Sửa ngay tại cửa hàng, xong trước thứ Sáu, mất phí dịch vụ nhanh.",
         "wrong": {
-          "A": "Không được nhắc.",
-          "C": "Không đổi máy mới được.",
+          "A": "Không đổi máy mới được.",
+          "C": "Không được nhắc.",
           "D": "Không được nhắc."
         }
       },
       {
         "id": "v-l2-02-4",
-        "q": "How will the customer know his phone is ready?",
+        "q": "How will the customer know the phone is ready?",
         "opts": [
           {
             "k": "A",
@@ -390,37 +381,28 @@
           },
           {
             "k": "C",
-            "t": "by email"
+            "t": "by text message"
           },
           {
             "k": "D",
-            "t": "by text message"
+            "t": "by email"
           }
         ],
         "ans": "D",
         "b": 4.5,
         "ev": {
           "p": 8,
-          "s": "We'll send you a text message."
+          "s": "We'll send you an email."
         },
-        "why": "Cửa hàng nhắn tin.",
+        "why": "Cửa hàng sẽ gửi email.",
         "wrong": {
-          "A": "Khách hỏi gọi điện nhưng cửa hàng nói sẽ nhắn tin.",
-          "B": "Không cần.",
-          "C": "Email là nơi lưu hoá đơn."
+          "A": "Khách hỏi gọi điện nhưng cửa hàng nói gửi email.",
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc."
         },
         "trap": "Khách gợi ý 'call me', nhưng câu trả lời là 'text message'."
       }
-    ],
-    "audio": {
-      "file": "a/v-l2-02.mp3",
-      "dur": 51,
-      "voices": [
-        "bf_isabella",
-        "am_michael"
-      ],
-      "slow": "a/v-l2-02.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l2-03",
@@ -441,11 +423,11 @@
       },
       {
         "sp": "Hieu",
-        "t": "Not yet. The full-time course is only one year, which is attractive, but I'd have to give up my job."
+        "t": "Not yet. The full-time course is only one year, which is attractive, but the classes are in the daytime, and that's when I look after my daughter."
       },
       {
         "sp": "Advisor",
-        "t": "That's true. The part-time course takes two years, with classes on Tuesday and Thursday evenings and some Saturdays. Many of our part-time students say they can apply what they learn at work straight away."
+        "t": "That's true. The part-time course takes two years, with classes on Tuesday and Thursday evenings and some Saturdays. Many of our part-time students say the best thing is meeting people from very different industries."
       },
       {
         "sp": "Hieu",
@@ -461,7 +443,7 @@
       },
       {
         "sp": "Advisor",
-        "t": "There's no written test, but you'll need to attend an interview, and you'll need an IELTS score of at least 6.0 because some modules are taught in English."
+        "t": "There's no interview, but you'll need to write a short essay about a business you admire, and you'll need an IELTS score of at least 6.0 because some modules are taught in English."
       },
       {
         "sp": "Hieu",
@@ -469,7 +451,7 @@
       },
       {
         "sp": "Advisor",
-        "t": "You can fill in the form on our website. The deadline for the September intake is the fifteenth of July."
+        "t": "You can fill in the form on our website. The deadline for the September intake is the twenty-first of June."
       }
     ],
     "voices": {
@@ -478,14 +460,14 @@
     },
     "vi": [
       "Hiếu, em quan tâm các khoá kinh doanh của trường. Em đã chọn giữa chương trình toàn thời gian và bán thời gian chưa?",
-      "Chưa ạ. Khoá toàn thời gian chỉ một năm, rất hấp dẫn, nhưng em sẽ phải nghỉ việc.",
-      "Đúng vậy. Khoá bán thời gian mất hai năm, học tối thứ Ba, thứ Năm và vài ngày thứ Bảy. Nhiều học viên bán thời gian nói họ áp dụng được ngay những gì học vào công việc.",
+      "Chưa ạ. Khoá toàn thời gian chỉ một năm, rất hấp dẫn, nhưng lớp học vào ban ngày, mà đó là lúc em trông con gái.",
+      "Đúng vậy. Khoá bán thời gian mất hai năm, học tối thứ Ba, thứ Năm và vài ngày thứ Bảy. Nhiều học viên bán thời gian nói điều tuyệt nhất là được gặp người từ những ngành rất khác nhau.",
       "Đó là lợi thế thật. Còn chi phí thì sao?",
       "Tổng học phí như nhau, nhưng học viên bán thời gian được trả làm bốn đợt thay vì một.",
       "Vâng, vậy đỡ hơn. Có bài thi đầu vào không ạ?",
-      "Không có bài thi viết, nhưng em cần dự phỏng vấn, và cần IELTS tối thiểu 6.0 vì một số học phần dạy bằng tiếng Anh.",
+      "Không có phỏng vấn, nhưng em cần viết một bài luận ngắn về một doanh nghiệp em ngưỡng mộ, và cần IELTS tối thiểu 6.0 vì một số học phần dạy bằng tiếng Anh.",
       "Em có 6.5 nên ổn. Em nghĩ khoá bán thời gian hợp với em hơn. Em đăng ký thế nào ạ?",
-      "Em điền biểu mẫu trên trang web. Hạn chót cho khoá tháng Chín là ngày mười lăm tháng Bảy."
+      "Em điền biểu mẫu trên trang web. Hạn chót cho khoá tháng Chín là ngày hai mươi mốt tháng Sáu."
     ],
     "items": [
       {
@@ -494,32 +476,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "He would have to leave his job."
+            "t": "He looks after his daughter then."
           },
           {
             "k": "B",
-            "t": "Some of its modules are taught in English."
+            "t": "It takes too long."
           },
           {
             "k": "C",
-            "t": "It is too expensive."
+            "t": "It costs too much."
           },
           {
             "k": "D",
-            "t": "It is too long."
+            "t": "He would have to leave his job."
           }
         ],
         "ans": "A",
         "b": 5,
         "ev": {
           "p": 1,
-          "s": "but I'd have to give up my job"
+          "s": "the classes are in the daytime, and that's when I look after my daughter"
         },
-        "why": "Phải nghỉ việc.",
+        "why": "Lớp học ban ngày, đúng lúc anh trông con gái.",
         "wrong": {
-          "B": "Không phải mối lo của khoá toàn thời gian.",
-          "C": "Học phí như nhau.",
-          "D": "Một năm là điểm hấp dẫn."
+          "B": "Khoá toàn thời gian chỉ một năm, anh thấy hấp dẫn.",
+          "C": "Học phí hai khoá như nhau.",
+          "D": "Bài này không nói nghỉ việc."
         }
       },
       {
@@ -528,7 +510,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "It is cheaper."
+            "t": "Learning can be used at work at once."
           },
           {
             "k": "B",
@@ -536,24 +518,24 @@
           },
           {
             "k": "C",
-            "t": "Learning can be used at work at once."
+            "t": "Students meet people from other industries."
           },
           {
             "k": "D",
-            "t": "There are no classes at the weekend at all."
+            "t": "It is cheaper."
           }
         ],
         "ans": "C",
         "b": 5.5,
         "ev": {
           "p": 2,
-          "s": "they can apply what they learn at work straight away"
+          "s": "the best thing is meeting people from very different industries"
         },
-        "why": "Áp dụng ngay vào công việc.",
+        "why": "Gặp người từ những ngành rất khác nhau.",
         "wrong": {
-          "A": "Học phí như nhau.",
-          "B": "Mất hai năm.",
-          "D": "Có vài ngày thứ Bảy."
+          "A": "Bài này không nêu lợi ích đó.",
+          "B": "Khoá bán thời gian mất hai năm.",
+          "D": "Tổng học phí như nhau."
         }
       },
       {
@@ -562,32 +544,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "pay the full fee at once"
+            "t": "take a maths test"
           },
           {
             "k": "B",
-            "t": "take a written test"
+            "t": "attend an interview"
           },
           {
             "k": "C",
-            "t": "work for a business"
+            "t": "pay the full fee at once"
           },
           {
             "k": "D",
-            "t": "attend an interview"
+            "t": "write a short essay"
           }
         ],
         "ans": "D",
         "b": 5.5,
         "ev": {
           "p": 6,
-          "s": "you'll need to attend an interview"
+          "s": "you'll need to write a short essay about a business you admire"
         },
-        "why": "Phải dự phỏng vấn.",
+        "why": "Cần viết bài luận ngắn về một doanh nghiệp mình ngưỡng mộ.",
         "wrong": {
-          "A": "Bán thời gian trả bốn đợt.",
-          "B": "Không có bài thi viết.",
-          "C": "Không được nói."
+          "A": "Không được nhắc.",
+          "B": "Ngược ý: \"There's no interview\".",
+          "C": "Học viên bán thời gian được trả làm bốn đợt."
         }
       },
       {
@@ -596,44 +578,35 @@
         "opts": [
           {
             "k": "A",
-            "t": "the end of July"
+            "t": "1 September"
           },
           {
             "k": "B",
-            "t": "15 July"
+            "t": "21 June"
           },
           {
             "k": "C",
-            "t": "September"
+            "t": "the end of June"
           },
           {
             "k": "D",
-            "t": "15 June"
+            "t": "15 July"
           }
         ],
         "ans": "B",
         "b": 5,
         "ev": {
           "p": 8,
-          "s": "The deadline for the September intake is the fifteenth of July."
+          "s": "The deadline for the September intake is the twenty-first of June."
         },
-        "why": "Ngày 15 tháng Bảy.",
+        "why": "Hạn chót là ngày 21 tháng Sáu.",
         "wrong": {
-          "A": "Không được nhắc.",
-          "C": "Tháng Chín là lúc khoá bắt đầu.",
+          "A": "Tháng Chín là lúc khoá học bắt đầu.",
+          "C": "Không được nhắc.",
           "D": "Không được nhắc."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l2-03.mp3",
-      "dur": 60.2,
-      "voices": [
-        "af_sarah",
-        "bm_lewis"
-      ],
-      "slow": "a/v-l2-03.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l2-04",
@@ -658,7 +631,7 @@
       },
       {
         "sp": "Linh",
-        "t": "The designs were supposed to be ready by Friday, but Tam has been off sick all week, and he's the only one who knows the software well."
+        "t": "The designs were supposed to be ready by Friday, but Tam has flown to Da Nang for his sister's wedding, and he's the only one who knows the software well."
       },
       {
         "sp": "Duc",
@@ -666,11 +639,11 @@
       },
       {
         "sp": "Linh",
-        "t": "I thought about that, but they've already said the launch date can't change. I don't want to give them the impression we're unreliable."
+        "t": "I thought about that, but they've already given us one extra week. I don't think we can ask again."
       },
       {
         "sp": "Duc",
-        "t": "Then what about asking Phuong from the marketing team? She used to work as a designer before she joined us."
+        "t": "Then what about asking Phuong from the marketing team? She used to teach that software at a training centre before she joined us."
       },
       {
         "sp": "Linh",
@@ -692,10 +665,10 @@
     "vi": [
       "Đức, anh có chút thời gian không? Em lo về dự án cho khách hàng Nhật.",
       "Có chứ. Có vấn đề gì?",
-      "Các bản thiết kế lẽ ra phải xong trước thứ Sáu, nhưng Tâm nghỉ ốm cả tuần, mà anh ấy là người duy nhất rành phần mềm.",
+      "Các bản thiết kế lẽ ra phải xong trước thứ Sáu, nhưng Tâm đã bay vào Đà Nẵng dự đám cưới chị gái, mà anh ấy là người duy nhất rành phần mềm.",
       "Mình có thể xin khách thêm thời gian không?",
-      "Em đã nghĩ đến, nhưng họ đã nói ngày ra mắt không thể đổi. Em không muốn họ nghĩ mình không đáng tin.",
-      "Vậy nhờ Phương bên phòng marketing thì sao? Cô ấy từng làm thiết kế trước khi vào công ty mình.",
+      "Em đã nghĩ đến, nhưng họ đã cho mình thêm một tuần rồi. Em nghĩ mình không thể xin nữa.",
+      "Vậy nhờ Phương bên phòng marketing thì sao? Cô ấy từng dạy phần mềm đó ở một trung tâm đào tạo trước khi vào công ty mình.",
       "Thật à? Em không biết đấy. Anh nghĩ quản lý của cô ấy có cho cô ấy giúp không?",
       "Chắc được, nếu chỉ vài ngày. Chiều nay anh sẽ nói với anh ấy.",
       "Cảm ơn anh, tốt quá. Em sẽ chuẩn bị đủ tệp để sáng mai cô ấy bắt đầu luôn."
@@ -707,32 +680,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "A key colleague is ill."
+            "t": "A key colleague is at a wedding."
           },
           {
             "k": "B",
-            "t": "The client changed the plan."
+            "t": "A key colleague is ill."
           },
           {
             "k": "C",
-            "t": "The deadline was too short."
+            "t": "The software is not working."
           },
           {
             "k": "D",
-            "t": "The software is not working."
+            "t": "The client changed the plan."
           }
         ],
         "ans": "A",
         "b": 5.5,
         "ev": {
           "p": 2,
-          "s": "Tam has been off sick all week, and he's the only one who knows the software well"
+          "s": "Tam has flown to Da Nang for his sister's wedding"
         },
-        "why": "Tâm, người duy nhất rành phần mềm, nghỉ ốm.",
+        "why": "Tâm vào Đà Nẵng dự đám cưới chị gái.",
         "wrong": {
-          "B": "Không được nói.",
-          "C": "Không được nói.",
-          "D": "Phần mềm không hỏng; vấn đề là người dùng được nó."
+          "B": "Tâm không ốm.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -741,7 +714,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "The client is very angry."
+            "t": "She doesn't want to look unreliable."
           },
           {
             "k": "B",
@@ -749,24 +722,24 @@
           },
           {
             "k": "C",
-            "t": "The designs are almost finished and only need checking."
+            "t": "The client is very angry."
           },
           {
             "k": "D",
-            "t": "She doesn't want the company to look unreliable."
+            "t": "They already gave the team extra time."
           }
         ],
         "ans": "D",
         "b": 6,
         "ev": {
           "p": 4,
-          "s": "I don't want to give them the impression we're unreliable."
+          "s": "they've already given us one extra week"
         },
-        "why": "Không muốn khách nghĩ mình không đáng tin (và ngày ra mắt không đổi được).",
+        "why": "Khách đã cho thêm một tuần rồi.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Không được nói.",
-          "C": "Không được nói."
+          "A": "Bài này không nêu lý do đó.",
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -775,32 +748,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "She knows the Japanese client."
-          },
-          {
-            "k": "B",
-            "t": "She has experience as a designer."
-          },
-          {
-            "k": "C",
             "t": "She is Tam's manager."
           },
           {
+            "k": "B",
+            "t": "She used to teach the software."
+          },
+          {
+            "k": "C",
+            "t": "She knows the client."
+          },
+          {
             "k": "D",
-            "t": "She already works in the company's design team."
+            "t": "She used to work as a designer."
           }
         ],
         "ans": "B",
         "b": 6,
         "ev": {
           "p": 5,
-          "s": "She used to work as a designer before she joined us."
+          "s": "She used to teach that software at a training centre before she joined us."
         },
-        "why": "Cô từng làm thiết kế.",
+        "why": "Phương từng dạy phần mềm đó ở trung tâm đào tạo.",
         "wrong": {
-          "A": "Không được nói.",
-          "C": "Không được nói.",
-          "D": "Cô ở phòng marketing."
+          "A": "Không được nhắc.",
+          "C": "Không được nhắc.",
+          "D": "Bài này không nói cô làm thiết kế."
         }
       },
       {
@@ -837,16 +810,7 @@
           "D": "Ý xin khách gia hạn bị bỏ."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l2-04.mp3",
-      "dur": 45.3,
-      "voices": [
-        "bf_emma",
-        "am_adam"
-      ],
-      "slow": "a/v-l2-04.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l2-05",
@@ -867,7 +831,7 @@
       },
       {
         "sp": "Thu",
-        "t": "It's very bright. But is there a lift? My mother will visit quite often, and she can't manage stairs."
+        "t": "It's very bright. But is there a lift? I've got a baby, and carrying the pushchair up five floors would be hard."
       },
       {
         "sp": "Agent",
@@ -887,15 +851,15 @@
       },
       {
         "sp": "Agent",
-        "t": "I understand. If you sign a contract for a full year rather than six months, I think the owner would accept one month's deposit."
+        "t": "I understand. If you pay three months' rent in advance, I think the owner would accept one month's deposit."
       },
       {
         "sp": "Thu",
-        "t": "That sounds reasonable. I was planning to stay at least a year anyway. When could I move in?"
+        "t": "That sounds reasonable. I can do that. When could I move in?"
       },
       {
         "sp": "Agent",
-        "t": "The current tenant leaves at the end of this month, and the flat will be cleaned, so from the third of next month."
+        "t": "The current tenant leaves at the end of this month, and the flat will be cleaned, so from the tenth of next month."
       }
     ],
     "voices": {
@@ -904,14 +868,14 @@
     },
     "vi": [
       "Đây là căn hộ. Nó ở tầng năm, nên nhìn ra hồ rất đẹp.",
-      "Sáng sủa quá. Nhưng có thang máy không? Mẹ tôi sẽ đến thăm khá thường xuyên, và bà không leo cầu thang được.",
+      "Sáng sủa quá. Nhưng có thang máy không? Tôi có con nhỏ, và bê xe đẩy lên năm tầng thì vất vả lắm.",
       "Có thang máy, dù tuần này đang sửa. Chắc thứ Hai là chạy lại được.",
       "Vâng. Tiền thuê là sáu triệu một tháng phải không?",
       "Đúng vậy, gồm tiền nước, nhưng điện và internet trả riêng. Chủ nhà yêu cầu đặt cọc hai tháng tiền thuê.",
       "Hai tháng? Nhiều hơn tôi nghĩ. Phần lớn chỗ khác chỉ một tháng.",
-      "Tôi hiểu. Nếu chị ký hợp đồng cả năm thay vì sáu tháng, tôi nghĩ chủ nhà sẽ chấp nhận cọc một tháng.",
-      "Nghe hợp lý. Dù sao tôi cũng định ở ít nhất một năm. Khi nào tôi chuyển vào được?",
-      "Người thuê hiện tại chuyển đi cuối tháng này, và căn hộ sẽ được dọn dẹp, nên từ mùng ba tháng sau."
+      "Tôi hiểu. Nếu chị trả trước ba tháng tiền thuê, tôi nghĩ chủ nhà sẽ chấp nhận cọc một tháng.",
+      "Nghe hợp lý. Tôi làm vậy được. Khi nào tôi chuyển vào được?",
+      "Người thuê hiện tại chuyển đi cuối tháng này, và căn hộ sẽ được dọn dẹp, nên từ mùng mười tháng sau."
     ],
     "items": [
       {
@@ -920,32 +884,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "She is afraid of lifts."
+            "t": "Her mother cannot climb stairs."
           },
           {
             "k": "B",
-            "t": "She has heavy furniture."
+            "t": "She is afraid of lifts."
           },
           {
             "k": "C",
-            "t": "The flat is on the top floor of the building."
+            "t": "She has heavy furniture."
           },
           {
             "k": "D",
-            "t": "Her mother cannot climb stairs."
+            "t": "She has a baby in a pushchair."
           }
         ],
         "ans": "D",
         "b": 5.5,
         "ev": {
           "p": 1,
-          "s": "My mother will visit quite often, and she can't manage stairs."
+          "s": "I've got a baby, and carrying the pushchair up five floors would be hard."
         },
-        "why": "Mẹ cô không leo cầu thang được.",
+        "why": "Cô có con nhỏ, bê xe đẩy lên năm tầng rất vất vả.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Không được nói.",
-          "C": "Tầng năm, không nói là tầng trên cùng."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -988,32 +952,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "by paying in cash"
-          },
-          {
-            "k": "B",
-            "t": "by paying a higher rent each month"
-          },
-          {
-            "k": "C",
             "t": "by signing a one-year contract"
           },
           {
-            "k": "D",
+            "k": "B",
             "t": "by moving in later"
+          },
+          {
+            "k": "C",
+            "t": "by paying rent in advance"
+          },
+          {
+            "k": "D",
+            "t": "by paying in cash"
           }
         ],
         "ans": "C",
         "b": 6.5,
         "ev": {
           "p": 6,
-          "s": "If you sign a contract for a full year rather than six months, I think the owner would accept one month's deposit."
+          "s": "If you pay three months' rent in advance"
         },
-        "why": "Ký hợp đồng một năm.",
+        "why": "Trả trước ba tháng tiền thuê thì chủ nhà nhận cọc một tháng.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Không được nói.",
-          "D": "Không được nói."
+          "A": "Bài này không nói hợp đồng một năm.",
+          "B": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1022,44 +986,35 @@
         "opts": [
           {
             "k": "A",
-            "t": "at the very end of this month"
-          },
-          {
-            "k": "B",
             "t": "on the third of next month"
           },
           {
+            "k": "B",
+            "t": "on the tenth of next month"
+          },
+          {
             "k": "C",
-            "t": "next Monday"
+            "t": "at the end of this month"
           },
           {
             "k": "D",
-            "t": "in six months"
+            "t": "next Monday"
           }
         ],
         "ans": "B",
         "b": 5.5,
         "ev": {
           "p": 8,
-          "s": "so from the third of next month"
+          "s": "so from the tenth of next month"
         },
-        "why": "Từ mùng ba tháng sau.",
+        "why": "Từ mùng mười tháng sau.",
         "wrong": {
-          "A": "Cuối tháng là lúc người thuê cũ đi.",
-          "C": "Thứ Hai là lúc thang máy chạy lại.",
-          "D": "Không được nói."
+          "A": "Không được nhắc.",
+          "C": "Cuối tháng là lúc người thuê cũ chuyển đi.",
+          "D": "Thứ Hai là lúc thang máy chạy lại."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l2-05.mp3",
-      "dur": 57.6,
-      "voices": [
-        "bm_george",
-        "af_nicole"
-      ],
-      "slow": "a/v-l2-05.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l2-06",
@@ -1080,7 +1035,7 @@
       },
       {
         "sp": "Khoa",
-        "t": "I'd be happy to do the research on solar power. I wrote an essay on it last term, so I've already got lots of material."
+        "t": "I'd be happy to do the research on solar power. My uncle installs solar panels, so I can interview him."
       },
       {
         "sp": "Mai",
@@ -1088,7 +1043,7 @@
       },
       {
         "sp": "Khoa",
-        "t": "Maybe we should both work on that, since it's the biggest section. We could each read two or three reports and then compare notes."
+        "t": "Maybe we should ask Hung to do that part. He's studying law, so he already knows a lot about it."
       },
       {
         "sp": "Mai",
@@ -1096,7 +1051,7 @@
       },
       {
         "sp": "Khoa",
-        "t": "Right. This time let's use mainly charts and photos, and keep the words for what we say."
+        "t": "Right. This time let's put all the text in a handout, and keep the slides for the most important numbers."
       },
       {
         "sp": "Mai",
@@ -1104,11 +1059,11 @@
       },
       {
         "sp": "Khoa",
-        "t": "I've got a part-time shift that evening. Could we do the seventeenth instead?"
+        "t": "I've got a part-time shift that evening. Could we do the nineteenth instead?"
       },
       {
         "sp": "Mai",
-        "t": "Sure, the seventeenth is fine."
+        "t": "Sure, the nineteenth is fine."
       }
     ],
     "voices": {
@@ -1117,14 +1072,14 @@
     },
     "vi": [
       "Khoa, mình cần quyết định chia việc thế nào cho bài thuyết trình về năng lượng tái tạo.",
-      "Mình sẵn lòng tìm hiểu về điện mặt trời. Mình đã viết tiểu luận về nó kỳ trước, nên có sẵn nhiều tài liệu.",
+      "Mình sẵn lòng tìm hiểu về điện mặt trời. Chú mình lắp tấm pin mặt trời, nên mình có thể phỏng vấn chú.",
       "Tuyệt. Vậy mình làm phần điện gió. Nhưng ai sẽ nói về chính sách của chính phủ? Đó là phần cô bảo quan trọng nhất.",
-      "Có lẽ cả hai cùng làm phần đó, vì nó là phần lớn nhất. Mỗi người đọc hai, ba báo cáo rồi so ghi chú.",
+      "Có lẽ mình nhờ Hùng làm phần đó. Cậu ấy học luật nên đã biết khá nhiều.",
       "Ý hay. Còn trang chiếu thì sao? Lần trước trang chiếu của tụi mình quá nhiều chữ.",
-      "Đúng. Lần này dùng chủ yếu biểu đồ và ảnh, còn chữ để dành cho phần nói.",
+      "Đúng. Lần này để hết chữ vào tài liệu phát tay, còn trang chiếu chỉ để những con số quan trọng nhất.",
       "Đồng ý. Và mình nên tập cùng nhau ít nhất một lần. Thuyết trình vào ngày hai mươi, vậy gặp nhau ngày mười tám nhé?",
-      "Tối hôm đó mình có ca làm thêm. Ngày mười bảy được không?",
-      "Được, ngày mười bảy ổn."
+      "Tối hôm đó mình có ca làm thêm. Ngày mười chín được không?",
+      "Được, ngày mười chín ổn."
     ],
     "items": [
       {
@@ -1133,32 +1088,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "He already has material on it."
+            "t": "His uncle installs solar panels."
           },
           {
             "k": "B",
-            "t": "It is the easiest topic."
+            "t": "Mai asked him to."
           },
           {
             "k": "C",
-            "t": "It is the most important topic."
+            "t": "He already has material on it."
           },
           {
             "k": "D",
-            "t": "Mai asked him to."
+            "t": "It is the easiest topic."
           }
         ],
         "ans": "A",
         "b": 6,
         "ev": {
           "p": 1,
-          "s": "I wrote an essay on it last term, so I've already got lots of material."
+          "s": "My uncle installs solar panels, so I can interview him."
         },
-        "why": "Anh đã có sẵn tài liệu từ tiểu luận trước.",
+        "why": "Chú của Khoa lắp tấm pin mặt trời, có thể phỏng vấn.",
         "wrong": {
-          "B": "Không được nói.",
-          "C": "Phần quan trọng nhất là chính sách.",
-          "D": "Anh tự chọn."
+          "B": "Không được nhắc.",
+          "C": "Bài này không nói có sẵn tài liệu.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1167,11 +1122,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "Mai will do it alone."
+            "t": "They will both work on it."
           },
           {
             "k": "B",
-            "t": "Khoa will do it alone."
+            "t": "Mai will do it alone."
           },
           {
             "k": "C",
@@ -1179,20 +1134,20 @@
           },
           {
             "k": "D",
-            "t": "They will both work on it."
+            "t": "They will ask Hung to do it."
           }
         ],
         "ans": "D",
         "b": 6,
         "ev": {
           "p": 3,
-          "s": "Maybe we should both work on that, since it's the biggest section."
+          "s": "Maybe we should ask Hung to do that part."
         },
-        "why": "Cả hai cùng làm.",
+        "why": "Nhờ Hùng (học luật) làm phần chính sách.",
         "wrong": {
-          "A": "Mai không làm phần này một mình.",
-          "B": "Khoa không làm phần này một mình.",
-          "C": "Không được nói."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "C": "Cô giáo chỉ được nhắc là nói phần này quan trọng nhất."
         }
       },
       {
@@ -1205,11 +1160,11 @@
           },
           {
             "k": "B",
-            "t": "to put more text on each slide"
+            "t": "to show mostly photos and charts"
           },
           {
             "k": "C",
-            "t": "to show mostly visuals, not text"
+            "t": "to put the text in a handout"
           },
           {
             "k": "D",
@@ -1220,13 +1175,13 @@
         "b": 6,
         "ev": {
           "p": 5,
-          "s": "This time let's use mainly charts and photos"
+          "s": "let's put all the text in a handout"
         },
-        "why": "Chủ yếu biểu đồ và ảnh, ít chữ.",
+        "why": "Để hết chữ vào tài liệu phát tay, trang chiếu chỉ để số liệu quan trọng.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Ngược lại, lần trước quá nhiều chữ.",
-          "D": "Không được nói."
+          "A": "Vẫn có trang chiếu cho số liệu.",
+          "B": "Bài này không nói ảnh và biểu đồ.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1235,45 +1190,36 @@
         "opts": [
           {
             "k": "A",
-            "t": "on the 21st"
-          },
-          {
-            "k": "B",
-            "t": "on the 17th"
-          },
-          {
-            "k": "C",
             "t": "on the 20th"
           },
           {
-            "k": "D",
+            "k": "B",
+            "t": "on the 19th"
+          },
+          {
+            "k": "C",
             "t": "on the 18th"
+          },
+          {
+            "k": "D",
+            "t": "on the 17th"
           }
         ],
         "ans": "B",
         "b": 6.5,
         "ev": {
-          "p": 8,
-          "s": "Sure, the seventeenth is fine."
+          "p": 7,
+          "s": "Could we do the nineteenth instead?"
         },
-        "why": "Ngày mười bảy.",
+        "why": "Họ tập ngày 19.",
         "wrong": {
-          "A": "Không được nhắc.",
-          "C": "Ngày hai mươi là ngày thuyết trình.",
-          "D": "Ngày mười tám Khoa bận ca làm."
+          "A": "Ngày 20 là ngày thuyết trình.",
+          "C": "Ngày 18 Khoa có ca làm thêm.",
+          "D": "Không được nhắc."
         },
         "trap": "Ngày đề xuất đầu tiên (18) bị đổi."
       }
-    ],
-    "audio": {
-      "file": "a/v-l2-06.mp3",
-      "dur": 57,
-      "voices": [
-        "bf_isabella",
-        "am_michael"
-      ],
-      "slow": "a/v-l2-06.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l2-07",
@@ -1294,7 +1240,7 @@
       },
       {
         "sp": "Vy",
-        "t": "Better than I expected, actually. I was really nervous about the technical questions, but they were mostly about projects I'd already done, so I could talk about them confidently."
+        "t": "Better than I expected, actually. I was really nervous about the technical questions, but they were mostly about a programming language I use every day in my current job, so I could answer confidently."
       },
       {
         "sp": "Friend",
@@ -1302,7 +1248,7 @@
       },
       {
         "sp": "Vy",
-        "t": "The hardest part was when they asked me to describe a time I'd failed. I hadn't prepared for that, and I think my answer was a bit vague."
+        "t": "The hardest part was when they asked me to describe a time I'd failed. I hadn't prepared for that, and I think I talked for far too long."
       },
       {
         "sp": "Friend",
@@ -1310,7 +1256,7 @@
       },
       {
         "sp": "Vy",
-        "t": "They mentioned a range, but said the final figure would depend on experience. What surprised me was that they offer two days a week working from home, which would save me hours of commuting."
+        "t": "They mentioned a range, but said the final figure would depend on experience. What surprised me was that they pay for a language course for every employee each year."
       },
       {
         "sp": "Friend",
@@ -1327,11 +1273,11 @@
     },
     "vi": [
       "Phỏng vấn thế nào rồi?",
-      "Thật ra tốt hơn mình nghĩ. Mình rất lo các câu hỏi chuyên môn, nhưng chủ yếu là về những dự án mình đã làm, nên mình nói về chúng tự tin được.",
+      "Thật ra tốt hơn mình nghĩ. Mình rất lo các câu hỏi chuyên môn, nhưng chủ yếu là về một ngôn ngữ lập trình mình dùng hằng ngày ở chỗ làm hiện tại, nên mình trả lời tự tin được.",
       "Tuyệt quá. Có chỗ nào khó không?",
-      "Khó nhất là khi họ bảo mình kể một lần thất bại. Mình chưa chuẩn bị câu đó, và mình nghĩ câu trả lời hơi chung chung.",
+      "Khó nhất là khi họ bảo mình kể một lần thất bại. Mình chưa chuẩn bị câu đó, và mình nghĩ mình nói quá dài.",
       "Ai cũng vấp câu đó. Họ nói gì về lương?",
-      "Họ có nêu một khoảng, nhưng nói con số cuối cùng phụ thuộc kinh nghiệm. Điều làm mình bất ngờ là họ cho làm ở nhà hai ngày một tuần, giúp mình đỡ hàng giờ đi lại.",
+      "Họ có nêu một khoảng, nhưng nói con số cuối cùng phụ thuộc kinh nghiệm. Điều làm mình bất ngờ là năm nào họ cũng trả tiền một khoá ngoại ngữ cho mỗi nhân viên.",
       "Đó là lợi thế lớn. Khi nào họ báo kết quả?",
       "Họ nói trong vòng một tuần, nhưng họ phỏng vấn vài ứng viên khác nữa, nên mình cố không hy vọng quá. Trong lúc chờ, mình sẽ gửi họ một email ngắn cảm ơn vì đã dành thời gian."
     ],
@@ -1342,15 +1288,15 @@
         "opts": [
           {
             "k": "A",
-            "t": "She had studied the company's products."
-          },
-          {
-            "k": "B",
             "t": "They were about her previous projects."
           },
           {
+            "k": "B",
+            "t": "They were about a tool she uses daily."
+          },
+          {
             "k": "C",
-            "t": "They were very easy."
+            "t": "She had studied the company's products."
           },
           {
             "k": "D",
@@ -1361,13 +1307,13 @@
         "b": 6.5,
         "ev": {
           "p": 1,
-          "s": "they were mostly about projects I'd already done"
+          "s": "they were mostly about a programming language I use every day in my current job"
         },
-        "why": "Câu hỏi về những dự án cô đã làm.",
+        "why": "Câu hỏi về ngôn ngữ lập trình cô dùng hằng ngày.",
         "wrong": {
-          "A": "Không được nói.",
-          "C": "Không nói dễ; cô từng lo lắng.",
-          "D": "Không được nói."
+          "A": "Bài này không nói dự án cũ.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1376,7 +1322,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "It impressed the interviewers."
+            "t": "It was not clear enough."
           },
           {
             "k": "B",
@@ -1384,24 +1330,24 @@
           },
           {
             "k": "C",
-            "t": "It was not clear enough."
+            "t": "It was too long."
           },
           {
             "k": "D",
-            "t": "It was too long."
+            "t": "It impressed the interviewers."
           }
         ],
         "ans": "C",
         "b": 7,
         "ev": {
           "p": 3,
-          "s": "I think my answer was a bit vague"
+          "s": "I think I talked for far too long"
         },
-        "why": "Câu trả lời hơi chung chung (không rõ ràng).",
+        "why": "Vy nghĩ mình nói quá dài.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Cô chưa chuẩn bị.",
-          "D": "Không được nói."
+          "A": "Bài này không nói thiếu rõ ràng.",
+          "B": "Ngược ý: cô chưa chuẩn bị câu đó.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1410,32 +1356,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "the chance to work from home"
+            "t": "a free language course every year"
           },
           {
             "k": "B",
-            "t": "the short commute"
-          },
-          {
-            "k": "C",
             "t": "the high salary"
           },
           {
+            "k": "C",
+            "t": "the chance to work from home"
+          },
+          {
             "k": "D",
-            "t": "the number of paid holidays each year"
+            "t": "the short commute"
           }
         ],
         "ans": "A",
         "b": 7,
         "ev": {
           "p": 5,
-          "s": "they offer two days a week working from home"
+          "s": "they pay for a language course for every employee each year"
         },
-        "why": "Được làm ở nhà hai ngày mỗi tuần.",
+        "why": "Năm nào công ty cũng trả tiền một khoá ngoại ngữ cho nhân viên.",
         "wrong": {
-          "B": "Ngược lại, đi làm mất hàng giờ.",
-          "C": "Lương phụ thuộc kinh nghiệm, không nói cao.",
-          "D": "Không được nói."
+          "B": "Lương phụ thuộc kinh nghiệm; không phải điều bất ngờ.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1472,16 +1418,7 @@
           "C": "Không được nói."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l2-07.mp3",
-      "dur": 49.8,
-      "voices": [
-        "bm_lewis",
-        "af_sky"
-      ],
-      "slow": "a/v-l2-07.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l2-08",
@@ -1490,8 +1427,8 @@
       "vstep"
     ],
     "qtype": "v-l2",
-    "level": "C1",
-    "band": 7.5,
+    "level": "B2",
+    "band": 6.5,
     "mode": "practice",
     "title": "Debating a Car-Free Day",
     "instr": "You will hear a conversation. Choose the best answer, A, B, C or D, for each question. You will hear the recording once.",
@@ -1510,7 +1447,7 @@
       },
       {
         "sp": "Lien",
-        "t": "I understand Mr Hai's concern, but the evidence from other cities is quite encouraging. When streets are closed to cars, the number of people walking past shops usually rises, and many businesses actually see higher sales."
+        "t": "I understand Mr Hai's concern, but the evidence from other cities is quite encouraging. When streets are closed to cars, the number of people walking past shops usually rises, although it can take a year or two before businesses see higher sales."
       },
       {
         "sp": "Hai",
@@ -1534,7 +1471,7 @@
       "Hôm nay chúng ta bàn về kế hoạch của thành phố tổ chức ngày không ô tô mỗi tháng một lần ở phố cổ. Ông Hải, ông có nhà hàng ở đó. Ông nghĩ sao?",
       "Thẳng thắn mà nói, tôi lo. Nhiều khách của tôi lái xe từ ngoại ô vào, và nếu không đỗ xe gần được, họ sẽ đi chỗ khác. Một ngày không ô tô mỗi tháng nghe có vẻ không nhiều, nhưng với doanh nghiệp nhỏ có thể là mất một khoản thu đáng kể.",
       "Bà Liên, bà ở một nhóm môi trường. Bà trả lời thế nào?",
-      "Tôi hiểu nỗi lo của ông Hải, nhưng bằng chứng từ các thành phố khác khá đáng khích lệ. Khi đường cấm ô tô, số người đi bộ qua cửa hàng thường tăng, và nhiều doanh nghiệp thực ra bán được nhiều hơn.",
+      "Tôi hiểu nỗi lo của ông Hải, nhưng bằng chứng từ các thành phố khác khá đáng khích lệ. Khi đường cấm ô tô, số người đi bộ qua cửa hàng thường tăng, dù có thể mất một, hai năm doanh nghiệp mới bán được nhiều hơn.",
       "Có thể đúng với các cửa hàng bán đồ lưu niệm cho khách du lịch, nhưng nhà hàng sống nhờ khách quen đến ăn tối.",
       "Đó là ý xác đáng. Có lẽ thành phố có thể bố trí xe buýt đưa đón miễn phí từ các bãi đỗ xe lớn bên ngoài phố cổ. Như vậy sẽ giải quyết được chuyện đi lại.",
       "Nếu có xe đưa đón đáng tin cậy, tôi sẽ sẵn lòng ủng hộ thử nghiệm hơn. Nhưng thành phố cần trao đổi với chủ doanh nghiệp trước khi quyết định cuối cùng."
@@ -1576,36 +1513,36 @@
       },
       {
         "id": "v-l2-08-2",
-        "q": "According to Ms Lien, what usually happens when streets are closed to cars?",
+        "q": "According to Ms Lien, how long can it take before businesses see higher sales?",
         "opts": [
           {
             "k": "A",
-            "t": "Businesses lose money."
+            "t": "a few weeks"
           },
           {
             "k": "B",
-            "t": "More people walk past shops."
+            "t": "a year or two"
           },
           {
             "k": "C",
-            "t": "Tourists stay away."
+            "t": "five years"
           },
           {
             "k": "D",
-            "t": "Traffic gets worse elsewhere."
+            "t": "about six months"
           }
         ],
         "ans": "B",
         "b": 7,
         "ev": {
           "p": 3,
-          "s": "the number of people walking past shops usually rises"
+          "s": "although it can take a year or two before businesses see higher sales"
         },
-        "why": "Số người đi bộ qua cửa hàng tăng.",
+        "why": "Có thể mất một, hai năm.",
         "wrong": {
-          "A": "Ngược ý; nhiều nơi bán được nhiều hơn.",
-          "C": "Không được nói.",
-          "D": "Không được nói."
+          "A": "Không được nhắc.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1676,16 +1613,6 @@
           "D": "Không được nói."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l2-08.mp3",
-      "dur": 64.4,
-      "voices": [
-        "bm_george",
-        "am_adam",
-        "bf_emma"
-      ],
-      "slow": "a/v-l2-08.slow.mp3"
-    }
+    ]
   }
 ]

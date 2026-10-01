@@ -22,7 +22,7 @@
       },
       {
         "sp": "Message",
-        "t": "Hi Nam, it's Hoa. I can't meet you at the cinema at seven tonight. My bus is late. Can we meet at eight instead, outside the bookshop next to the cinema? Call me back if that's a problem."
+        "t": "Hi Nam, it's Hoa. I can't meet you at the cinema at seven tonight. My bus is late. Can we meet at eight instead, at the noodle shop opposite the cinema? Call me back if that's a problem."
       }
     ],
     "voices": {
@@ -33,7 +33,7 @@
     "vi": [
       "Xin chú ý. Chuyến tàu 10 giờ 15 đi Hải Phòng sẽ khởi hành từ sân ga số 4, không phải sân ga số 2 như trên bảng. Hành khách đi Hải Phòng xin đến sân ga số 4.",
       "Chào cả lớp. Bài kiểm tra ngày mai được dời từ thứ Năm sang thứ Sáu, vì phòng máy tính đang sửa. Các em hãy dùng thêm một ngày để ôn chương năm và sáu.",
-      "Chào Nam, Hoa đây. Tớ không gặp cậu ở rạp chiếu phim lúc bảy giờ tối nay được. Xe buýt của tớ đến muộn. Mình gặp lúc tám giờ nhé, ở ngoài hiệu sách cạnh rạp? Gọi lại cho tớ nếu không được."
+      "Chào Nam, Hoa đây. Tớ không gặp cậu ở rạp chiếu phim lúc bảy giờ tối nay được. Xe buýt của tớ đến muộn. Mình gặp lúc tám giờ nhé, ở quán phở đối diện rạp? Gọi lại cho tớ nếu không được."
     ],
     "items": [
       {
@@ -110,11 +110,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "outside the bookshop"
+            "t": "at the noodle shop opposite the cinema"
           },
           {
             "k": "B",
-            "t": "at Nam's house"
+            "t": "inside the cinema"
           },
           {
             "k": "C",
@@ -122,33 +122,23 @@
           },
           {
             "k": "D",
-            "t": "inside the cinema"
+            "t": "outside the bookshop"
           }
         ],
         "ans": "A",
         "b": 4.5,
         "ev": {
           "p": 2,
-          "s": "outside the bookshop next to the cinema"
+          "s": "at the noodle shop opposite the cinema"
         },
-        "why": "Gặp ở ngoài hiệu sách cạnh rạp.",
+        "why": "Hoa hẹn ở quán phở đối diện rạp.",
         "wrong": {
-          "B": "Không được nhắc.",
-          "C": "Xe buýt là lý do đến muộn.",
-          "D": "Rạp là địa điểm cũ."
+          "B": "Hẹn ở quán đối diện rạp, không phải trong rạp.",
+          "C": "Xe buýt của Hoa đến muộn; không hẹn ở bến.",
+          "D": "Không được nhắc."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l1-01.mp3",
-      "dur": 34.3,
-      "voices": [
-        "bf_emma",
-        "am_michael",
-        "af_bella"
-      ],
-      "slow": "a/v-l1-01.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l1-02",
@@ -173,7 +163,7 @@
       },
       {
         "sp": "Doctor",
-        "t": "Hello, this is the City Health Clinic calling for Mrs Lan. Your appointment on Monday has been cancelled because Dr Phong is away. Please call us on 0243 812 556 to choose a new time."
+        "t": "Hello, this is the City Health Clinic calling for Mrs Lan. Your appointment on Monday has been cancelled because Dr Phong is away. Please come in on Tuesday at the same time instead, and Dr Mai will see you."
       }
     ],
     "voices": {
@@ -184,7 +174,7 @@
     "vi": [
       "Chào quý khách. Chỉ hôm nay, toàn bộ quần áo trẻ em ở tầng hai giảm nửa giá. Ưu đãi kết thúc khi cửa hàng đóng cửa lúc chín giờ.",
       "Đây là tin nhắn cho hành khách Trần Minh Đức, bay đi Đà Nẵng. Xin mời đến quầy thông tin gần cổng 12, nơi hộ chiếu của anh đang chờ.",
-      "Xin chào, Phòng khám Sức khoẻ Thành phố gọi cho chị Lan. Lịch hẹn thứ Hai của chị bị huỷ vì bác sĩ Phong đi vắng. Xin gọi cho chúng tôi theo số 0243 812 556 để chọn giờ mới."
+      "Xin chào, Phòng khám Sức khoẻ Thành phố gọi cho chị Lan. Lịch hẹn thứ Hai của chị bị huỷ vì bác sĩ Phong đi vắng. Xin chị đến vào thứ Ba cùng giờ, bác sĩ Mai sẽ khám cho chị."
     ],
     "items": [
       {
@@ -261,45 +251,35 @@
         "opts": [
           {
             "k": "A",
-            "t": "see Dr Phong at home"
-          },
-          {
-            "k": "B",
             "t": "wait for another call"
           },
           {
+            "k": "B",
+            "t": "go on Monday as planned"
+          },
+          {
             "k": "C",
-            "t": "call the clinic to make a new appointment"
+            "t": "go to the clinic on Tuesday"
           },
           {
             "k": "D",
-            "t": "go to the clinic on Monday as originally planned"
+            "t": "call the clinic for a new time"
           }
         ],
         "ans": "C",
         "b": 5,
         "ev": {
           "p": 2,
-          "s": "Please call us on 0243 812 556 to choose a new time."
+          "s": "Please come in on Tuesday at the same time instead"
         },
-        "why": "Gọi lại phòng khám để chọn giờ mới.",
+        "why": "Đến vào thứ Ba cùng giờ, bác sĩ Mai sẽ khám.",
         "wrong": {
-          "A": "Bác sĩ đi vắng.",
-          "B": "Chị phải tự gọi, không chờ.",
-          "D": "Lịch thứ Hai đã bị huỷ."
+          "A": "Không được nhắc.",
+          "B": "Lịch thứ Hai đã bị huỷ.",
+          "D": "Không được nhắc."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l1-02.mp3",
-      "dur": 32.6,
-      "voices": [
-        "bm_george",
-        "bf_isabella",
-        "af_sarah"
-      ],
-      "slow": "a/v-l1-02.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l1-03",
@@ -316,11 +296,11 @@
     "script": [
       {
         "sp": "Library",
-        "t": "The library will close early today, at four o'clock, for staff training. Books due back today can be returned tomorrow without a fine."
+        "t": "The library will close early today, at four o'clock, for staff training. Books due back today can be left in the box by the front door."
       },
       {
         "sp": "Guide",
-        "t": "Welcome aboard. Our boat trip around the bay takes about two hours. Please keep your life jacket on at all times, and don't stand near the front of the boat while we are moving."
+        "t": "Welcome aboard. Our boat trip around the bay takes about two hours. Please stay in your seat while we are moving, and keep your bags under the seat."
       },
       {
         "sp": "Radio",
@@ -333,8 +313,8 @@
       "Radio": "am_adam"
     },
     "vi": [
-      "Thư viện hôm nay đóng cửa sớm, lúc bốn giờ, để tập huấn nhân viên. Sách đến hạn trả hôm nay có thể trả vào ngày mai mà không bị phạt.",
-      "Chào mừng quý khách lên thuyền. Chuyến đi thuyền quanh vịnh mất khoảng hai tiếng. Xin luôn mặc áo phao, và đừng đứng gần mũi thuyền khi thuyền đang chạy.",
+      "Thư viện hôm nay đóng cửa sớm, lúc bốn giờ, để tập huấn nhân viên. Sách đến hạn trả hôm nay có thể bỏ vào thùng cạnh cửa chính.",
+      "Chào mừng quý khách lên thuyền. Chuyến đi thuyền quanh vịnh mất khoảng hai tiếng. Xin ngồi yên tại chỗ khi thuyền đang chạy, và để túi dưới ghế.",
       "Và bây giờ là thời tiết. Sáng nay trời nắng, nhưng chiều có mưa to, nên hãy mang ô nếu bạn ra ngoài muộn. Nhiệt độ sẽ lên tới hai mươi tám độ."
     ],
     "items": [
@@ -348,7 +328,7 @@
           },
           {
             "k": "B",
-            "t": "return them before four o'clock only"
+            "t": "return them tomorrow without a fine"
           },
           {
             "k": "C",
@@ -356,20 +336,20 @@
           },
           {
             "k": "D",
-            "t": "return them tomorrow without paying"
+            "t": "leave them in the box by the door"
           }
         ],
         "ans": "D",
         "b": 5,
         "ev": {
           "p": 0,
-          "s": "Books due back today can be returned tomorrow without a fine."
+          "s": "Books due back today can be left in the box by the front door."
         },
-        "why": "Trả ngày mai không bị phạt.",
+        "why": "Bỏ sách vào thùng cạnh cửa chính.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Không bắt buộc trả trước bốn giờ.",
-          "C": "Không bị phạt."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -378,32 +358,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "stand at the front"
-          },
-          {
-            "k": "B",
             "t": "wear a life jacket"
           },
           {
+            "k": "B",
+            "t": "stay in their seats"
+          },
+          {
             "k": "C",
-            "t": "stay inside"
+            "t": "stand at the front"
           },
           {
             "k": "D",
-            "t": "take photos"
+            "t": "keep away from the windows"
           }
         ],
         "ans": "B",
         "b": 4.5,
         "ev": {
           "p": 1,
-          "s": "Please keep your life jacket on at all times"
+          "s": "Please stay in your seat while we are moving"
         },
-        "why": "Luôn mặc áo phao.",
+        "why": "Ngồi yên tại chỗ khi thuyền chạy.",
         "wrong": {
-          "A": "Ngược lại, không đứng ở mũi thuyền.",
-          "C": "Không được nói.",
-          "D": "Không được nói."
+          "A": "Bài này không nói áo phao.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -440,17 +420,7 @@
           "D": "Nắng là buổi sáng."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l1-03.mp3",
-      "dur": 27.5,
-      "voices": [
-        "bf_emma",
-        "bm_lewis",
-        "am_adam"
-      ],
-      "slow": "a/v-l1-03.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l1-04",
@@ -471,11 +441,11 @@
       },
       {
         "sp": "Message",
-        "t": "Hello, this is Minh from Sunrise Furniture. Your new sofa will be delivered on Saturday morning, not Friday as we said before. Someone needs to be at home between nine and twelve."
+        "t": "Hello, this is Minh from Sunrise Furniture. Your new sofa will be delivered on Saturday afternoon, not Friday as we said before. Someone needs to be at home between two and five."
       },
       {
         "sp": "Museum",
-        "t": "Visitors are reminded that the dinosaur exhibition on the ground floor is free, but tickets are needed for the space exhibition upstairs. Tickets can be bought at the main entrance."
+        "t": "Visitors are reminded that the space exhibition upstairs is free, but tickets are needed for the dinosaur exhibition on the ground floor. Tickets can be bought at the main entrance."
       }
     ],
     "voices": {
@@ -485,8 +455,8 @@
     },
     "vi": [
       "Toàn thể nhân viên chú ý. Chuông báo cháy sẽ được thử lúc mười một giờ sáng nay. Các bạn không cần rời khỏi toà nhà. Việc thử kéo dài khoảng năm phút.",
-      "Xin chào, tôi là Minh ở Nội thất Sunrise. Bộ sofa mới của anh chị sẽ được giao vào sáng thứ Bảy, không phải thứ Sáu như đã nói trước đó. Cần có người ở nhà từ chín đến mười hai giờ.",
-      "Xin nhắc khách tham quan rằng triển lãm khủng long ở tầng trệt miễn phí, nhưng cần vé cho triển lãm vũ trụ ở tầng trên. Vé mua ở lối vào chính."
+      "Xin chào, tôi là Minh ở Nội thất Sunrise. Bộ sofa mới của anh chị sẽ được giao vào chiều thứ Bảy, không phải thứ Sáu như đã nói trước đó. Cần có người ở nhà từ hai đến năm giờ.",
+      "Xin nhắc khách tham quan rằng triển lãm vũ trụ ở tầng trên miễn phí, nhưng cần vé cho triển lãm khủng long ở tầng trệt. Vé mua ở lối vào chính."
     ],
     "items": [
       {
@@ -529,32 +499,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "Saturday afternoon"
+            "t": "Friday afternoon"
           },
           {
             "k": "B",
-            "t": "Saturday morning"
+            "t": "Saturday afternoon"
           },
           {
             "k": "C",
-            "t": "Friday morning"
+            "t": "Saturday morning"
           },
           {
             "k": "D",
-            "t": "Friday afternoon"
+            "t": "Friday morning"
           }
         ],
         "ans": "B",
         "b": 5,
         "ev": {
           "p": 1,
-          "s": "Your new sofa will be delivered on Saturday morning, not Friday as we said before."
+          "s": "Your new sofa will be delivered on Saturday afternoon, not Friday"
         },
-        "why": "Sáng thứ Bảy.",
+        "why": "Giao chiều thứ Bảy, không phải thứ Sáu.",
         "wrong": {
-          "A": "Giao buổi sáng (9–12 giờ).",
-          "C": "Thứ Sáu là lịch cũ.",
-          "D": "Không được nói."
+          "A": "Thứ Sáu là lịch cũ.",
+          "C": "Giao buổi chiều.",
+          "D": "Thứ Sáu là lịch cũ."
         }
       },
       {
@@ -563,45 +533,35 @@
         "opts": [
           {
             "k": "A",
-            "t": "both exhibitions"
-          },
-          {
-            "k": "B",
             "t": "neither exhibition"
           },
           {
+            "k": "B",
+            "t": "the space exhibition"
+          },
+          {
             "k": "C",
-            "t": "the dinosaur exhibition"
+            "t": "both exhibitions"
           },
           {
             "k": "D",
-            "t": "the space exhibition"
+            "t": "the dinosaur exhibition"
           }
         ],
         "ans": "D",
         "b": 5,
         "ev": {
           "p": 2,
-          "s": "tickets are needed for the space exhibition upstairs"
+          "s": "tickets are needed for the dinosaur exhibition on the ground floor"
         },
-        "why": "Triển lãm vũ trụ cần vé.",
+        "why": "Cần vé cho triển lãm khủng long.",
         "wrong": {
-          "A": "Chỉ một triển lãm cần vé.",
-          "B": "Có một triển lãm cần vé.",
-          "C": "Khủng long miễn phí."
+          "A": "Triển lãm khủng long cần vé.",
+          "B": "Triển lãm vũ trụ miễn phí.",
+          "C": "Triển lãm vũ trụ miễn phí."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l1-04.mp3",
-      "dur": 35.2,
-      "voices": [
-        "bm_george",
-        "am_michael",
-        "af_nicole"
-      ],
-      "slow": "a/v-l1-04.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l1-05",
@@ -626,7 +586,7 @@
       },
       {
         "sp": "Message",
-        "t": "Hi, it's Linh. I've left my laptop charger in the meeting room on the third floor. Could you bring it to the café downstairs when you come for lunch? Thanks!"
+        "t": "Hi, it's Linh. I've left my laptop charger in the meeting room on the third floor. Could you put it in my desk drawer when you come back from lunch? Thanks!"
       }
     ],
     "voices": {
@@ -637,7 +597,7 @@
     "vi": [
       "Hành khách chuyến bay VN 245 đi Thành phố Hồ Chí Minh xin lưu ý việc lên máy bay bị hoãn bốn mươi lăm phút do thời tiết xấu. Giờ lên máy bay mới là 3 giờ 15. Chúng tôi xin lỗi vì sự bất tiện.",
       "Bài tập về nhà tuần này, cô muốn các em viết một bài nhận xét về một bộ phim các em xem gần đây. Khoảng hai trăm từ, và các em gửi email cho cô thay vì nộp bản giấy.",
-      "Chào, Linh đây. Mình để quên sạc máy tính trong phòng họp ở tầng ba. Bạn mang nó xuống quán cà phê ở dưới khi đi ăn trưa được không? Cảm ơn!"
+      "Chào, Linh đây. Mình để quên sạc máy tính trong phòng họp ở tầng ba. Bạn để nó vào ngăn kéo bàn mình khi ăn trưa xong quay lại được không? Cảm ơn!"
     ],
     "items": [
       {
@@ -714,15 +674,15 @@
         "opts": [
           {
             "k": "A",
-            "t": "meet her on the third floor"
+            "t": "buy her lunch"
           },
           {
             "k": "B",
-            "t": "bring her charger"
+            "t": "put the charger in her drawer"
           },
           {
             "k": "C",
-            "t": "buy her lunch"
+            "t": "bring the charger to the café"
           },
           {
             "k": "D",
@@ -733,26 +693,16 @@
         "b": 5,
         "ev": {
           "p": 2,
-          "s": "Could you bring it to the café downstairs when you come for lunch?"
+          "s": "Could you put it in my desk drawer"
         },
-        "why": "Mang sạc máy tính xuống quán cà phê.",
+        "why": "Để sạc vào ngăn kéo bàn của Linh.",
         "wrong": {
-          "A": "Tầng ba là nơi để quên.",
-          "C": "Ăn trưa chỉ là lúc gặp.",
-          "D": "Cô cần sạc, không cần máy."
+          "A": "Không được nhắc.",
+          "C": "Linh không nhờ mang xuống quán.",
+          "D": "Không được nhắc."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l1-05.mp3",
-      "dur": 33,
-      "voices": [
-        "bf_isabella",
-        "af_sarah",
-        "af_sky"
-      ],
-      "slow": "a/v-l1-05.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l1-06",
@@ -769,15 +719,15 @@
     "script": [
       {
         "sp": "Council",
-        "t": "Residents are advised that Nguyen Trai Street will be closed to traffic from Monday to Wednesday next week while the road is resurfaced. Buses will use Le Loi Street instead, and the stop outside the post office will not be in use."
+        "t": "Residents are advised that the pavements on Nguyen Trai Street will be repaired from Monday to Wednesday next week. Buses will run as normal, but they will not stop between the bank and the market."
       },
       {
         "sp": "Coach",
-        "t": "Right, team, listen up. Because of the heat, today's training will start at five in the evening instead of three. Make sure you bring at least two bottles of water."
+        "t": "Right, team, listen up. Because of the heat, today's training will start at six in the evening instead of three. Make sure you bring at least two bottles of water."
       },
       {
         "sp": "Message",
-        "t": "Good morning, this is a reminder from Green Valley Dental. Your check-up is tomorrow at 10.30. Please arrive ten minutes early to complete a form, and bring a list of any medicines you are taking."
+        "t": "Good morning, this is a reminder from Green Valley Dental. Your check-up is tomorrow at 10.30. Please arrive ten minutes early, because we need to take an X-ray before your check-up."
       }
     ],
     "voices": {
@@ -786,9 +736,9 @@
       "Message": "bf_emma"
     },
     "vi": [
-      "Xin thông báo đến cư dân: đường Nguyễn Trãi sẽ cấm xe từ thứ Hai đến thứ Tư tuần sau để trải lại mặt đường. Xe buýt sẽ đi đường Lê Lợi thay thế, và điểm dừng trước bưu điện sẽ không hoạt động.",
-      "Nào cả đội, nghe này. Vì trời nóng, buổi tập hôm nay bắt đầu lúc năm giờ chiều thay vì ba giờ. Nhớ mang ít nhất hai chai nước.",
-      "Chào buổi sáng, đây là lời nhắc từ Nha khoa Green Valley. Lịch khám của anh chị là ngày mai lúc 10 giờ 30. Xin đến sớm mười phút để điền phiếu, và mang danh sách các loại thuốc đang dùng."
+      "Xin thông báo đến cư dân: vỉa hè đường Nguyễn Trãi sẽ được sửa từ thứ Hai đến thứ Tư tuần sau. Xe buýt vẫn chạy bình thường, nhưng sẽ không dừng ở đoạn từ ngân hàng đến chợ.",
+      "Nào cả đội, nghe này. Vì trời nóng, buổi tập hôm nay bắt đầu lúc sáu giờ chiều thay vì ba giờ. Nhớ mang ít nhất hai chai nước.",
+      "Chào buổi sáng, đây là lời nhắc từ Nha khoa Green Valley. Lịch khám của anh chị là ngày mai lúc 10 giờ 30. Xin đến sớm mười phút, vì chúng tôi cần chụp X-quang trước khi khám."
     ],
     "items": [
       {
@@ -797,7 +747,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "They will stop running."
+            "t": "They will take a different street."
           },
           {
             "k": "B",
@@ -805,24 +755,24 @@
           },
           {
             "k": "C",
-            "t": "They will take a different street."
+            "t": "They will skip some stops."
           },
           {
             "k": "D",
-            "t": "They will stop outside the post office."
+            "t": "They will stop running."
           }
         ],
         "ans": "C",
         "b": 6,
         "ev": {
           "p": 0,
-          "s": "Buses will use Le Loi Street instead"
+          "s": "they will not stop between the bank and the market"
         },
-        "why": "Xe buýt đi đường Lê Lợi thay thế.",
+        "why": "Xe vẫn chạy nhưng không dừng ở đoạn từ ngân hàng đến chợ.",
         "wrong": {
-          "A": "Xe buýt vẫn chạy.",
-          "B": "Không được nói.",
-          "D": "Điểm dừng bưu điện sẽ không hoạt động."
+          "A": "Xe vẫn chạy bình thường.",
+          "B": "Không được nhắc.",
+          "D": "Xe vẫn chạy."
         }
       },
       {
@@ -835,11 +785,11 @@
           },
           {
             "k": "B",
-            "t": "at seven"
+            "t": "at five"
           },
           {
             "k": "C",
-            "t": "at five"
+            "t": "at six"
           },
           {
             "k": "D",
@@ -850,9 +800,9 @@
         "b": 5.5,
         "ev": {
           "p": 1,
-          "s": "today's training will start at five in the evening instead of three"
+          "s": "today's training will start at six in the evening instead of three"
         },
-        "why": "Bắt đầu lúc năm giờ chiều.",
+        "why": "Buổi tập bắt đầu lúc sáu giờ chiều.",
         "wrong": {
           "A": "Không được nhắc.",
           "B": "Không được nhắc.",
@@ -865,45 +815,35 @@
         "opts": [
           {
             "k": "A",
-            "t": "to get medicine"
-          },
-          {
-            "k": "B",
-            "t": "to pay the bill"
-          },
-          {
-            "k": "C",
             "t": "to see a different dentist"
           },
           {
-            "k": "D",
+            "k": "B",
             "t": "to fill in a form"
+          },
+          {
+            "k": "C",
+            "t": "to pay the bill"
+          },
+          {
+            "k": "D",
+            "t": "to have an X-ray"
           }
         ],
         "ans": "D",
         "b": 6,
         "ev": {
           "p": 2,
-          "s": "Please arrive ten minutes early to complete a form"
+          "s": "because we need to take an X-ray before your check-up"
         },
-        "why": "Đến sớm để điền phiếu.",
+        "why": "Cần chụp X-quang trước khi khám.",
         "wrong": {
-          "A": "Mang danh sách thuốc, không phải lấy thuốc.",
-          "B": "Không được nhắc.",
+          "A": "Không được nhắc.",
+          "B": "Bài này không nói điền phiếu.",
           "C": "Không được nhắc."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l1-06.mp3",
-      "dur": 33.5,
-      "voices": [
-        "bm_lewis",
-        "am_adam",
-        "bf_emma"
-      ],
-      "slow": "a/v-l1-06.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l1-07",
@@ -924,7 +864,7 @@
       },
       {
         "sp": "University",
-        "t": "Students who wish to change their course must complete the online form by the end of next week. Late requests will only be accepted with a letter from your tutor."
+        "t": "Students who wish to change their course must complete the online form by the end of next week. Late requests will only be accepted with a note from a doctor."
       },
       {
         "sp": "Message",
@@ -938,7 +878,7 @@
     },
     "vi": [
       "Chào buổi tối quý khách. Do có sự kiện riêng, nhà hàng khách sạn tối nay đóng cửa. Bữa tối sẽ phục vụ ở quầy bar ngoài vườn thay thế, từ bảy đến mười giờ.",
-      "Sinh viên muốn đổi khoá học phải điền biểu mẫu trực tuyến trước cuối tuần sau. Yêu cầu muộn chỉ được chấp nhận khi có thư của giáo viên hướng dẫn.",
+      "Sinh viên muốn đổi khoá học phải điền biểu mẫu trực tuyến trước cuối tuần sau. Yêu cầu muộn chỉ được chấp nhận khi có giấy của bác sĩ.",
       "Chào Tuấn, Mai ở công ty du lịch đây. Khách sạn anh đặt ở Huế hết phòng đêm đầu tiên, nên chúng tôi đã chuyển anh sang một khách sạn tương tự gần đó cho đêm đó, không tính thêm phí. Hai đêm còn lại không đổi."
     ],
     "items": [
@@ -982,15 +922,15 @@
         "opts": [
           {
             "k": "A",
-            "t": "a letter from a tutor"
+            "t": "a note from a doctor"
           },
           {
             "k": "B",
-            "t": "a note from a parent"
+            "t": "a copy of the timetable"
           },
           {
             "k": "C",
-            "t": "a copy of the timetable"
+            "t": "a letter from a tutor"
           },
           {
             "k": "D",
@@ -1001,13 +941,13 @@
         "b": 5.5,
         "ev": {
           "p": 1,
-          "s": "Late requests will only be accepted with a letter from your tutor."
+          "s": "Late requests will only be accepted with a note from a doctor."
         },
-        "why": "Cần thư của giáo viên hướng dẫn.",
+        "why": "Cần giấy của bác sĩ.",
         "wrong": {
           "B": "Không được nhắc.",
-          "C": "Không được nhắc.",
-          "D": "Biểu mẫu trực tuyến là yêu cầu chung, không phải giấy tờ thêm cho yêu cầu muộn."
+          "C": "Bài này không nói thư giáo viên.",
+          "D": "Biểu mẫu trực tuyến là yêu cầu chung, không phải giấy tờ thêm."
         },
         "trap": "Biểu mẫu được nhắc trước; câu hỏi hỏi riêng trường hợp nộp muộn."
       },
@@ -1045,17 +985,7 @@
           "D": "Anh vẫn ở ba đêm."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l1-07.mp3",
-      "dur": 35.2,
-      "voices": [
-        "bf_isabella",
-        "bm_george",
-        "af_nicole"
-      ],
-      "slow": "a/v-l1-07.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l1-08",
@@ -1080,7 +1010,7 @@
       },
       {
         "sp": "Teacher",
-        "t": "Before you leave, a quick reminder about the school trip on Friday. We'll meet at the main gate at seven fifteen, not in the classroom. The bus will leave at seven thirty sharp."
+        "t": "Before you leave, a quick reminder about the school trip on Friday. We'll meet in the sports hall at seven fifteen, not in the classroom. The bus will leave at seven thirty sharp."
       }
     ],
     "voices": {
@@ -1091,7 +1021,7 @@
     "vi": [
       "Quý khách chú ý. Chúng tôi phải thu hồi một lô nước cam mang nhãn hiệu riêng vì có vấn đề với bao bì. Nếu đã mua sản phẩm này, xin mang trả ở quầy chăm sóc khách hàng để được hoàn tiền đầy đủ. Không cần hoá đơn.",
       "Từ tháng sau, phòng gym sẽ mở cửa lúc năm rưỡi sáng thay vì sáu giờ, để hội viên có thêm thời gian trước giờ làm. Giờ mở cửa buổi tối giữ nguyên.",
-      "Trước khi về, cô nhắc nhanh về chuyến đi của trường vào thứ Sáu. Chúng ta gặp ở cổng chính lúc bảy giờ mười lăm, không phải trong lớp. Xe buýt khởi hành đúng bảy rưỡi."
+      "Trước khi về, cô nhắc nhanh về chuyến đi của trường vào thứ Sáu. Chúng ta gặp ở nhà thể thao lúc bảy giờ mười lăm, không phải trong lớp. Xe buýt khởi hành đúng bảy rưỡi."
     ],
     "items": [
       {
@@ -1168,11 +1098,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "in the school hall"
+            "t": "in the classroom"
           },
           {
             "k": "B",
-            "t": "at the main gate"
+            "t": "in the sports hall"
           },
           {
             "k": "C",
@@ -1180,33 +1110,23 @@
           },
           {
             "k": "D",
-            "t": "in the classroom"
+            "t": "at the main gate"
           }
         ],
         "ans": "B",
         "b": 5.5,
         "ev": {
           "p": 2,
-          "s": "We'll meet at the main gate at seven fifteen, not in the classroom."
+          "s": "We'll meet in the sports hall at seven fifteen, not in the classroom."
         },
-        "why": "Gặp ở cổng chính.",
+        "why": "Gặp ở nhà thể thao.",
         "wrong": {
-          "A": "Không được nói.",
-          "C": "Không được nói.",
-          "D": "Bị phủ định: \"not in the classroom\"."
+          "A": "Ngược ý: \"not in the classroom\".",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l1-08.mp3",
-      "dur": 34.4,
-      "voices": [
-        "bm_lewis",
-        "am_michael",
-        "bf_emma"
-      ],
-      "slow": "a/v-l1-08.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l1-09",
@@ -1223,7 +1143,7 @@
     "script": [
       {
         "sp": "Council",
-        "t": "The city council is inviting residents to comment on plans for a new cycle path along the river. The plans can be viewed at the town hall or on the council website, and comments must be received by the thirtieth of June."
+        "t": "The city council is inviting residents to vote for one of three designs for a new cycle path along the river. The designs can be viewed at the town hall or on the council website, and votes must be received by the thirtieth of June."
       },
       {
         "sp": "Lecturer",
@@ -1240,7 +1160,7 @@
       "Radio": "am_adam"
     },
     "vi": [
-      "Hội đồng thành phố mời cư dân góp ý về kế hoạch làm đường xe đạp mới dọc sông. Có thể xem kế hoạch ở toà thị chính hoặc trên trang web của hội đồng, và ý kiến phải gửi đến trước ngày ba mươi tháng Sáu.",
+      "Hội đồng thành phố mời cư dân bỏ phiếu chọn một trong ba thiết kế đường xe đạp mới dọc sông. Có thể xem các thiết kế ở toà thị chính hoặc trên trang web của hội đồng, và phiếu phải gửi đến trước ngày ba mươi tháng Sáu.",
       "Thay đổi nhỏ trong lịch học: bài giảng về marketing tuần tới sẽ dạy trực tuyến, vì tôi đi dự hội nghị. Buổi thảo luận thứ Năm vẫn diễn ra ở phòng 204 như thường lệ.",
       "Tài xế đi về phía bắc trên đường cao tốc chiều nay có thể bị chậm tới một tiếng sau một vụ tai nạn gần lối ra Phủ Lý. Cảnh sát khuyên tài xế đi quốc lộ cũ nếu có thể."
     ],
@@ -1251,7 +1171,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "build a cycle path"
+            "t": "attend a public meeting"
           },
           {
             "k": "B",
@@ -1259,24 +1179,24 @@
           },
           {
             "k": "C",
-            "t": "attend a public meeting at the town hall on 30 June"
+            "t": "help build the path"
           },
           {
             "k": "D",
-            "t": "give their opinions on a plan"
+            "t": "vote for a design"
           }
         ],
         "ans": "D",
         "b": 6,
         "ev": {
           "p": 0,
-          "s": "The city council is inviting residents to comment on plans for a new cycle path"
+          "s": "inviting residents to vote for one of three designs for a new cycle path"
         },
-        "why": "Góp ý về kế hoạch.",
+        "why": "Bỏ phiếu chọn một trong ba thiết kế.",
         "wrong": {
-          "A": "Hội đồng làm đường, không phải cư dân.",
-          "B": "Không phải yêu cầu.",
-          "C": "30/6 là hạn gửi ý kiến, không phải cuộc họp."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -1347,17 +1267,7 @@
           "D": "Không được nói."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l1-09.mp3",
-      "dur": 36.4,
-      "voices": [
-        "af_sarah",
-        "bm_george",
-        "am_adam"
-      ],
-      "slow": "a/v-l1-09.slow.mp3"
-    }
+    ]
   },
   {
     "id": "v-l1-10",
@@ -1374,11 +1284,11 @@
     "script": [
       {
         "sp": "Company",
-        "t": "Following feedback from customers, our helpline will now be open on Sundays from nine to one. However, please note that technical support will continue to be available only on weekdays."
+        "t": "Following feedback from customers, technical support will now be open on Sundays from nine to one. However, please note that the general helpline will continue to be available only on weekdays."
       },
       {
         "sp": "Museum",
-        "t": "Due to the large number of visitors expected for the new exhibition, entry will be by timed ticket only. Tickets must be booked online in advance; they will not be sold at the door."
+        "t": "Due to the large number of visitors expected for the new exhibition, entry will be by timed ticket only. Tickets can only be bought at the museum shop on the day of your visit; they will not be sold online."
       },
       {
         "sp": "Message",
@@ -1391,8 +1301,8 @@
       "Message": "am_michael"
     },
     "vi": [
-      "Sau phản hồi của khách hàng, đường dây hỗ trợ giờ sẽ mở vào Chủ nhật từ chín đến một giờ. Tuy nhiên, xin lưu ý hỗ trợ kỹ thuật vẫn chỉ có vào ngày thường.",
-      "Do dự kiến có rất đông khách tới triển lãm mới, chỉ vào cửa bằng vé theo khung giờ. Vé phải đặt trực tuyến trước; không bán tại cửa.",
+      "Sau phản hồi của khách hàng, hỗ trợ kỹ thuật giờ sẽ mở vào Chủ nhật từ chín đến một giờ. Tuy nhiên, xin lưu ý đường dây hỗ trợ chung vẫn chỉ có vào ngày thường.",
+      "Do dự kiến có rất đông khách tới triển lãm mới, chỉ vào cửa bằng vé theo khung giờ. Vé chỉ bán ở cửa hàng của bảo tàng vào ngày tham quan; không bán trực tuyến.",
       "Chào Hạnh, Quân đây. Cuộc họp với khách hàng đã được đưa lên thứ Ba, nên anh không cần báo cáo vào thứ Năm nữa. Em gửi cho anh trước tối thứ Hai được không? Xin lỗi vì báo gấp."
     ],
     "items": [
@@ -1402,15 +1312,15 @@
         "opts": [
           {
             "k": "A",
-            "t": "both the helpline and technical support"
+            "t": "the general helpline"
           },
           {
             "k": "B",
-            "t": "technical support"
+            "t": "both the helpline and technical support"
           },
           {
             "k": "C",
-            "t": "the general helpline"
+            "t": "technical support"
           },
           {
             "k": "D",
@@ -1421,13 +1331,13 @@
         "b": 6.5,
         "ev": {
           "p": 0,
-          "s": "our helpline will now be open on Sundays from nine to one"
+          "s": "technical support will now be open on Sundays from nine to one"
         },
-        "why": "Đường dây hỗ trợ chung mở Chủ nhật.",
+        "why": "Hỗ trợ kỹ thuật mở Chủ nhật; đường dây chung chỉ ngày thường.",
         "wrong": {
-          "A": "Chỉ đường dây chung.",
-          "B": "Hỗ trợ kỹ thuật chỉ ngày thường.",
-          "D": "Có đường dây mở."
+          "A": "Đường dây chung chỉ ngày thường.",
+          "B": "Đường dây chung chỉ ngày thường.",
+          "D": "Không được nhắc."
         },
         "trap": "'However' báo hiệu ngoại lệ: hỗ trợ kỹ thuật không có Chủ nhật."
       },
@@ -1437,32 +1347,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "from the museum shop"
+            "t": "from a travel agent"
           },
           {
             "k": "B",
-            "t": "by phone on the day of the visit"
+            "t": "by phone the day before"
           },
           {
             "k": "C",
-            "t": "at the door"
+            "t": "by booking online in advance"
           },
           {
             "k": "D",
-            "t": "by booking online beforehand"
+            "t": "from the museum shop on the day"
           }
         ],
         "ans": "D",
         "b": 6.5,
         "ev": {
           "p": 1,
-          "s": "Tickets must be booked online in advance"
+          "s": "Tickets can only be bought at the museum shop on the day of your visit"
         },
-        "why": "Đặt trực tuyến trước.",
+        "why": "Chỉ bán ở cửa hàng bảo tàng vào ngày tham quan.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Không được nói.",
-          "C": "Không bán tại cửa."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "C": "Ngược ý: không bán trực tuyến."
         }
       },
       {
@@ -1499,16 +1409,6 @@
           "D": "Cần trước cuộc họp."
         }
       }
-    ],
-    "audio": {
-      "file": "a/v-l1-10.mp3",
-      "dur": 33.8,
-      "voices": [
-        "bf_isabella",
-        "bm_lewis",
-        "am_michael"
-      ],
-      "slow": "a/v-l1-10.slow.mp3"
-    }
+    ]
   }
 ]
