@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sonnguyen12394.github.io/content/schema/group.schema.json",
+  "title": "Nhóm câu hỏi ôn thi (một bài đọc hoặc một đoạn nghe)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "kind", "exams", "qtype", "level", "band", "mode", "title", "instr", "items"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,63}$" },
+    "kind": { "enum": ["reading", "listening"] },
+    "exams": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["ielts-ac", "ielts-gt", "vstep"] } },
+    "qtype": { "type": "string" },
+    "level": { "enum": ["A1", "A2", "B1", "B2", "C1", "C2"] },
+    "band": { "type": "number", "minimum": 1, "maximum": 9 },
+    "mode": { "enum": ["place", "practice", "mock"] },
+    "title": { "type": "string", "minLength": 2, "maxLength": 120 },
+    "instr": { "type": "string", "minLength": 5, "maxLength": 400 },
+    "paras": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "script": { "type": "array", "minItems": 1, "items": {
+      "type": "object", "additionalProperties": false, "required": ["sp", "t"],
+      "properties": { "sp": { "type": "string", "minLength": 1, "maxLength": 30 }, "t": { "type": "string", "minLength": 1 } } } },
+    "voices": { "type": "object", "additionalProperties": { "type": "string" } },
+    "audio": { "type": "object", "additionalProperties": false, "required": ["file", "dur", "voices"],
+      "properties": { "file": { "type": "string" }, "slow": { "type": "string" }, "noise": { "type": "string" },
+        "dur": { "type": "number", "exclusiveMinimum": 0 }, "voices": { "type": "array", "items": { "type": "string" } } } },
+    "vi": { "type": "array", "items": { "type": "string" } },
+    "options": { "$ref": "#/definitions/options" },
+    "figure": { "type": "string" },
+    "allow": { "type": "array", "items": { "type": "string" } },
+    "tips": { "type": "array", "items": { "type": "string" } },
+    "items": { "type": "array", "minItems": 1, "items": {
+      "type": "object", "additionalProperties": false, "required": ["id", "q", "ans", "b", "ev", "why"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,63}$" },
+        "q": { "type": "string", "minLength": 1 },
+        "opts": { "$ref": "#/definitions/options" },
+        "ans": { "oneOf": [
+          { "type": "string", "minLength": 1 },
+          { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string" } },
+          { "type": "object", "additionalProperties": false, "required": ["accept"],
+            "properties": { "accept": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } } } } ] },
+        "limit": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "num": { "type": "boolean" },
+        "b": { "type": "number", "minimum": 1, "maximum": 9 },
+        "ev": { "type": "object", "additionalProperties": false, "required": ["p", "s"],
+          "properties": { "p": { "type": "integer", "minimum": 0 }, "s": { "type": "string", "minLength": 3 } } },
+        "why": { "type": "string", "minLength": 10 },
+        "wrong": { "type": "object", "additionalProperties": { "type": "string", "minLength": 5 } },
+        "trap": { "type": "string" },
+        "tag": { "type": "string" }
+      } } }
+  },
+  "definitions": {
+    "options": { "type": "array", "minItems": 2, "items": {
+      "type": "object", "additionalProperties": false, "required": ["k", "t"],
+      "properties": { "k": { "type": "string", "minLength": 1, "maxLength": 12 }, "t": { "type": "string", "minLength": 1 } } } }
+  }
+}

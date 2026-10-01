@@ -1,10 +1,12 @@
 # English Ladder
 
-Học tiếng Anh A1 → C2 miễn phí, mỗi lỗi sai được giải thích bằng tiếng Việt.
+Ôn VSTEP và IELTS miễn phí 100% cho người Việt tự học: band ước tính từng kỹ năng kèm sai số, kế hoạch tới ngày thi, giải thích bằng tiếng Việt. Nền tảng tiếng Anh A1 → C2 đi kèm. Không quảng cáo, không gói trả phí, không cần tài khoản.
 
 👉 **https://sonnguyen12394.github.io/**
 
 ## Có gì
+
+- **Ôn thi (v35):** chọn IELTS Academic, IELTS General Training hoặc VSTEP; trang “Cách tính điểm và nguồn” với bảng đổi số câu đúng → band (nguồn IDP/ielts.org), thang VSTEP theo Quyết định 729/QĐ-BGDĐT, CEFR ↔ IELTS ↔ VSTEP, mô hình ước tính và giới hạn của app.
 
 - Từ vựng A1 → C2 và danh sách từ học thuật (AWL), ôn cách quãng để nhớ lâu.
 - Ngữ pháp, chức năng giao tiếp, hội thoại, đọc, viết, phát âm theo khung CEFR, kèm các câu "can-do": biết mình làm được gì ở từng cấp.
@@ -61,13 +63,30 @@ App là PWA đủ điều kiện đóng gói Trusted Web Activity:
 
 ## Cấu trúc tệp
 
-- `index.html`: khung trang (giao diện, CSS, bộ biểu tượng SVG tự vẽ).
-- `app.js`: mã app, khung bài học của mọi cấp và chi tiết cấp A1 (đủ để mở app và học ngay).
-- `data/lv-<cấp>.<băm>.json`: chi tiết bài học A2–C2 (bài đọc, câu ví dụ, bài điền, kết hợp từ, giải thích lỗi), tải ngầm sau khi mở, cấp đang học trước. Tên có băm nội dung nên cấp không đổi thì không phải tải lại.
-- `tools/content-split.js`: `node tools/content-split.js join` ghép lại `app.js` đầy đủ để sửa nội dung; sửa xong chạy `split` trước khi phát hành.
-- `sw.js`: bộ nhớ đệm để mở lại tức thì và dùng khi mất mạng (tệp `data/` nằm ở ngăn đệm riêng, giữ qua các bản). Mỗi lần phát hành: tăng `APP_VERSION` trong `app.js`, `?v=` trong `index.html`, `VERSION` và `CORE` trong `sw.js`.
+- `index.html`: khung trang (CSS, biểu tượng SVG, màn chào vẽ sẵn để mở nhanh).
+- `app.js`: app hiện có (học nền tảng A1–C2, ôn tập, kỹ năng, thi thử VSTEP rút gọn), khung bài học mọi cấp và chi tiết A1.
+- `src/exam/`: **phần ôn thi IELTS/VSTEP viết mới bằng TypeScript**, chia mô-đun: `scales.ts` (bảng quy đổi có nguồn), `irt.ts` (ước tính band thích ứng), `stats.ts` (phân tích câu hỏi), `fsrs.ts` (lịch ôn FSRS-5), `score.ts` (máy chấm), `state.ts` (tiến độ có phiên bản), `views/` (màn hình). Build ra `x/exam.<băm>.js`, `app.js` nạp động qua `XHOST`.
+- `src/content/`: kiểm nội dung tự động (lược đồ, đáp án, giải thích tiếng Việt, câu trích, máy chấm, cấp từ vựng).
+- `content/exam/`: nội dung ôn thi (JSON, theo `content/schema/group.schema.json`); `content/wordlist.json`: từ → cấp CEFR (tạo từ app.js).
+- `data/lv-<cấp>.<băm>.json`: chi tiết bài học A2–C2, tải theo cấp.
+- `sw.js`: chạy offline. `tools/`: build, máy chủ test, Lighthouse, kiểm nội dung, tách/ghép nội dung (`content-split.cjs`).
+- `test/unit`: test đơn vị (node:test). `test/e2e`: test giao diện Playwright (Chrome Android, Safari iOS, máy tính, offline, trợ năng WCAG AA).
 
-Tốc độ đo được (máy tầm trung, bản v22; v24 chỉ thêm ~1 kB CSS nén): lần đầu dùng được sau ~1,4 s trên 4G phổ biến và ~5,8 s trên 4G rất chậm; mở lại ~1 s; dùng được khi mất mạng.
+## Phát triển
+
+```
+npm ci
+npm run build     # build mô-đun ôn thi, đồng bộ số bản sang sw.js và index.html
+npm run check     # kiểm kiểu TypeScript
+npm test          # test đơn vị
+npm run content   # kiểm nội dung (8.3, 8.4)
+npm run e2e       # test giao diện (cần trình duyệt Playwright)
+npm run lh        # Lighthouse, cần ≥ 90 cả 4 mục
+```
+
+Tăng `APP_VERSION` trong `app.js` khi phát hành; `npm run build` tự cập nhật `sw.js` và `index.html`. CI (`.github/workflows/ci.yml`) chạy mọi bước trên trên mỗi PR, kể cả kiểm tệp build đã commit khớp mã nguồn (`npm run fresh`).
+
+Đo Lighthouse (điện thoại giả lập, 4G chậm, bản v35): Performance 97, Accessibility 100, Best Practices 100, SEO 100; FCP 0,8 s, LCP 1,6 s, CLS 0.
 
 ## Máy chủ (Supabase)
 
@@ -75,4 +94,4 @@ Thư mục `supabase/` chứa migration của bản v19–v20 (bảng + hàm RPC
 
 ## Bản quyền
 
-Xem LICENSE (giữ mọi quyền).
+Xem LICENSE (giữ mọi quyền đối với mã và nội dung).

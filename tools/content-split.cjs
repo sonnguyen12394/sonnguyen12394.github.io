@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Tách/ghép nội dung bài học của English Ladder (v22).
-//   node tools/content-split.js split   app.js đầy đủ → app.js (khung mọi cấp + chi tiết A1) + data/lv-<cấp>.<băm>.json
-//   node tools/content-split.js join    ngược lại: ghép data/*.json vào app.js để có lại bản đầy đủ (sửa nội dung rồi split lại)
+//   node tools/content-split.cjs split   app.js đầy đủ → app.js (khung mọi cấp + chi tiết A1) + data/lv-<cấp>.<băm>.json
+//   node tools/content-split.cjs join    ngược lại: ghép data/*.json vào app.js để có lại bản đầy đủ (sửa nội dung rồi split lại)
 // Khung (luôn nằm trong app.js): unit {id,no,title,vi,words}, từ {id,word,pos,ipa,pic,vi,forms,family,…}.
 // Chi tiết (tải sau, theo cấp): unit {reading,guided}, từ {en,ex,exVi,ex2,ex2Vi,cloze,col,why,tip}.
 const fs = require('fs'), path = require('path'), vm = require('vm'), crypto = require('crypto');
@@ -59,5 +59,5 @@ if (cmd === 'split') {
   fs.writeFileSync(APP, out);
   console.log('join ok (app.js đầy đủ; nhớ chạy split trước khi phát hành)');
 } else {
-  console.log('Dùng: node tools/content-split.js split|join');
+  console.log('Dùng: node tools/content-split.cjs split|join');
 }
