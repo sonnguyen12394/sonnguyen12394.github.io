@@ -7956,7 +7956,7 @@ CHANGELOG.unshift({v:37,d:'2026-10-01',t:'Kiểm tra đầu vào thích ứng 15
   'Nút Báo lỗi ở mọi câu khi xem lại.']});
 CHANGELOG.unshift({v:42,d:'2026-10-01',t:'Câu trắc nghiệm không còn đoán được bằng mẹo',items:[
   'Viết lại phương án và một phần bài đọc, lời thoại của 278 câu trắc nghiệm, kể cả bài kiểm tra đầu vào: phương án sai đều hợp lý và chỉ sai vì một chi tiết trong bài, đáp án không còn là câu dài nhất, ôn hoà nhất hay "điển hình" nhất.',
-  'Trước đây, chỉ nhìn câu hỏi và phương án (không đọc bài) đã đoán đúng khoảng 79%; nay còn khoảng một nửa và thấp hơn nhiều ở các dạng Nghe. Nhờ vậy band ước tính từ bài kiểm tra đầu vào sát thực lực hơn.',
+  'Trước đây, chỉ nhìn câu hỏi và phương án (không đọc bài) đã đoán đúng khoảng 79%; nay còn 52%, và ở các dạng Nghe chỉ còn 23–41%. Nhờ vậy band ước tính từ bài kiểm tra đầu vào sát thực lực hơn.',
   'Vị trí đáp án đúng trong bài kiểm tra đầu vào được rải đều (trước đây không câu nào ở D).',
   'Luật kiểm tra tự động mới chặn lỗi tái diễn; hướng dẫn soạn câu và phép thử "không có bài" được ghi thành quy trình.']});
 CHANGELOG.unshift({v:41,d:'2026-10-01',t:'Đủ 26/26 dạng: 8 dạng Nghe IELTS và 4 dạng VSTEP',big:true,items:[
