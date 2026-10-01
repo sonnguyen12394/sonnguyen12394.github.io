@@ -28,6 +28,7 @@ test('mã sao lưu mang theo phần ôn thi và khôi phục được', async ({
   await openApp(page);
   await navTo(page, 'Ôn thi');
   await page.getByRole('button', { name: /VSTEP/ }).click();
+  await page.getByRole('button', { name: 'Để sau' }).click();
   await expect(page.getByRole('heading', { name: /Ôn VSTEP/ })).toBeVisible();
   const code = await page.evaluate(async () => {
     // @ts-expect-error hàm toàn cục của app.js

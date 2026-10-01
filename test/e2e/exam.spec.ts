@@ -5,6 +5,7 @@ test('tab Ôn thi: chọn kỳ thi, xem cách tính điểm có nguồn', async 
   await navTo(page, 'Ôn thi');
   await expect(page.getByRole('heading', { name: 'Bạn ôn thi gì?' })).toBeVisible();
   await page.getByRole('button', { name: /IELTS Academic/ }).click();
+  await page.getByRole('button', { name: 'Để sau' }).click();
   await expect(page.getByRole('heading', { name: 'Ôn IELTS Academic' })).toBeVisible();
   await page.getByRole('button', { name: /Cách tính điểm và nguồn/ }).click();
   await expect(page.getByRole('heading', { name: 'Cách tính điểm và nguồn' })).toBeVisible();
@@ -27,6 +28,7 @@ test('VSTEP: thi thử có sẵn trong tab Ôn thi, không bị khoá', async ({
   await openApp(page);
   await navTo(page, 'Ôn thi');
   await page.getByRole('button', { name: /VSTEP/ }).click();
+  await page.getByRole('button', { name: 'Để sau' }).click();
   await page.getByRole('button', { name: /Thi thử Nghe \+ Đọc/ }).click();
   await expect(page.getByRole('heading', { name: /Thi thử VSTEP/ })).toBeVisible();
   expect(errors).toEqual([]);

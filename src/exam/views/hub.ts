@@ -35,6 +35,7 @@ export function viewHub(c: Ctx): string {
       <p class="muted">${esc(goal)} · ${esc(when)} · ${x.mins} phút/ngày <button class="linkbtn" data-x="route" data-r="settings" aria-label="Đổi mục tiêu, ngày thi, thời gian">Đổi</button></p></section>
     ${estimatePanel(c)}
     <div class="units">
+      ${card('data-x="route" data-r="place"', 'chart', x.attempts.some(a => a.kind === 'place') ? 'Làm lại kiểm tra đầu vào' : 'Kiểm tra đầu vào (≤ 15 phút)', 'Đọc + Nghe thích ứng, ra band ước tính kèm sai số; xem lại từng câu có giải thích', ico)}
       ${isV ? card('data-act="exgo"', 'exam', 'Thi thử Nghe + Đọc (rút gọn)', 'Có tính giờ, ước tính điểm từng kỹ năng theo thang 10', ico) : ''}
       ${isV ? card('data-act="vxnew" data-m="w"', 'pen', 'Thi thử Viết', 'Thư ≥ 120 từ và bài luận ≥ 250 từ, 60 phút', ico) : ''}
       ${isV ? card('data-act="vxnew" data-m="s"', 'mic', 'Thi thử Nói', '3 phần, tính giờ, máy chép lời', ico) : ''}

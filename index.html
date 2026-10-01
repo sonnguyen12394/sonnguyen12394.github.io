@@ -107,7 +107,7 @@ a.btn{text-decoration:none;color:var(--ink)}
 @media (max-width:400px){.cdbar{grid-template-columns:1fr 44px}.cdbar .meter{grid-column:1/-1;grid-row:2}}
 
 .pill{display:inline-flex;align-items:center;gap:5px;font:600 11px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:5px 8px;border-radius:5px;background:var(--surface-2);color:var(--muted);white-space:nowrap}
-.pill.good{background:var(--good-soft);color:var(--good)}
+.pill.good{background:var(--good-soft);color:var(--good);color:color-mix(in srgb,var(--good) 75%,var(--ink))}
 .pill.accent{background:var(--accent-soft);color:var(--accent)}
 .pill.warn{background:var(--warn-soft);color:var(--warn)}
 .pill.bad{background:var(--bad-soft);color:var(--bad)}
@@ -657,4 +657,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="app.js?v=36" defer></script>
+<script src="app.js?v=37" defer></script>

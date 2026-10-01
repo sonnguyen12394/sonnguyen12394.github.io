@@ -13,7 +13,11 @@ import { isoToDay } from './views/ui.ts';
 import { profile } from './estimate.ts';
 import { refresh, sendPairs, hiddenItems } from './net.ts';
 import { vstepToBand } from './scales.ts';
-import { itemParams, cleanCache } from './packs.ts';
+import { itemParams, cleanCache, loadPack } from './packs.ts';
+import { viewPlaceIntro, viewPlaceRun, viewPlaceResult, FLAG_REASONS, type PRun } from './views/place.ts';
+import { newPlacement, advance, answerGroup, results, remainingMs, type PSkill } from './placement.ts';
+import { sendAttempt } from './net.ts';
+import type { Group } from './content.ts';
 
 export const MODULE_VERSION = 1;
 
@@ -48,7 +52,59 @@ export function init(host: Host): ExamModule {
   // app không liên lạc máy chủ khi chưa được phép (yêu cầu 3.3).
   if (X().share) void refresh(host);
 
+  // ---------- Kiểm tra đầu vào ----------
+  let run: PRun | null = null, placeLoading = false, placeErr = '', timer: ReturnType<typeof setInterval> | null = null;
+  const stopTimer = (): void => { if (timer) { clearInterval(timer); timer = null; } };
+
+  function placeFinish(): void {
+    if (!run) return;
+    stopTimer();
+    run.res = results(run.st);
+    const x = X(), day = host.today(), secs = Math.round((Date.now() - run.t0) / 1000), exam = x.exam || 'ielts-ac';
+    const items: Record<string, 0 | 1> = {};
+    for (const sec of run.st.sections) {
+      for (const a of sec.answers) { x.resp.push({ i: a.id, c: a.correct ? 1 : 0, d: day, s: sec.skill, b: a.b, g: a.g }); items[a.id] = a.correct ? 1 : 0; }
+      const r = run.res.find(q => q.skill === sec.skill);
+      if (r) x.attempts.push({ id: `place-${sec.skill.toLowerCase()}`, kind: 'place', exam, day, skill: sec.skill, correct: sec.answers.filter(a => a.correct).length, total: sec.answers.length, band: r.band, se: r.se, secs, wrong: sec.answers.filter(a => !a.correct).map(a => a.id) });
+    }
+    host.save();
+    void sendAttempt(host, x, exam, 'place', items);
+    host.go('place-result');
+  }
+
+  function placeNext(given: Record<string, string | undefined>): void {
+    if (!run) return;
+    const g = run.st.cur ? run.groups[run.st.cur] : undefined;
+    if (g) answerGroup(run.st, g, given, hiddenItems());
+    const next = advance(run.st, pools(), hiddenItems(), Date.now());
+    run.given = {}; run.plays = 0; run.audioErr = '';
+    if (!next) return placeFinish();
+    host.go('place-run');
+  }
+
+  let poolCache: Record<PSkill, Group[]> | null = null;
+  const pools = (): Record<PSkill, Group[]> => poolCache!;
+
+  async function placeStart(): Promise<void> {
+    placeLoading = true; placeErr = ''; host.render();
+    try {
+      const gs = await loadPack('place'), exam = X().exam || 'ielts-ac';
+      const mine = gs.filter(g => g.exams.includes(exam));
+      poolCache = { R: mine.filter(g => g.kind === 'reading'), L: mine.filter(g => g.kind === 'listening') };
+      const st = newPlacement(['R', 'L'], Date.now());
+      run = { st, groups: Object.fromEntries(mine.map(g => [g.id, g])), given: {}, plays: 0, audioErr: '', t0: Date.now(), res: null };
+      placeLoading = false;
+      if (!advance(st, poolCache, hiddenItems(), Date.now())) { placeErr = 'Chưa có câu hỏi cho kỳ thi này.'; host.render(); return; }
+      host.go('place-run');
+    } catch {
+      placeLoading = false; placeErr = 'Chưa tải được câu hỏi (cần mạng ở lần đầu). Kiểm tra mạng rồi thử lại.'; host.render();
+    }
+  }
+
   const routes: Record<string, (c: Ctx) => string> = {
+    place: c => viewPlaceIntro(c, placeLoading, placeErr),
+    'place-run': c => (run && !run.st.finished ? viewPlaceRun(c, run) : viewPlaceIntro(c, placeLoading, placeErr)),
+    'place-result': c => viewPlaceResult(c, run),
     hub: viewHub,
     scales: viewScales,
     settings: viewSettings,
@@ -66,14 +122,46 @@ export function init(host: Host): ExamModule {
     exam(el) {
       const v = el.dataset.v as ExamId;
       if (!EXAM_NAME[v]) return;
-      X().exam = v; host.save(); host.toast(`Đã chọn ${EXAM_NAME[v]}.`); host.go('hub');
+      const x = X(), first = !x.attempts.some(a => a.kind === 'place');
+      x.exam = v; host.save(); host.toast(`Đã chọn ${EXAM_NAME[v]}.`); host.go(first ? 'place' : 'hub');
     },
     examreset() { X().exam = ''; host.save(); host.go('hub'); },
     route(el) { host.go(el.dataset.r || 'hub'); },
+    placestart() { void placeStart(); },
+    placeplay() {
+      const a = document.getElementById('xaudio') as HTMLAudioElement | null, st = document.getElementById('xaudiost');
+      if (!a || !run || run.plays >= 1) return;
+      a.onplaying = () => { if (run) run.plays = 1; const b = document.querySelector('[data-x="placeplay"]') as HTMLButtonElement | null; if (b) { b.disabled = true; b.textContent = 'Đang phát…'; b.classList.remove('primary'); } if (st) st.textContent = 'Đang phát. Bạn vẫn chọn đáp án được trong lúc nghe.'; };
+      a.onended = () => { const b = document.querySelector('[data-x="placeplay"]') as HTMLButtonElement | null; if (b) b.textContent = 'Đã nghe'; if (st) st.textContent = 'Đã nghe xong. Chọn đáp án rồi bấm Câu tiếp.'; };
+      a.onerror = () => { if (run && run.plays < 1) { run.audioErr = 'Không tải được âm thanh (mất mạng hoặc trình duyệt chặn).'; host.render(); } };
+      a.play().catch(() => { if (run && run.plays < 1) { run.audioErr = 'Trình duyệt chưa phát được âm thanh. Bấm Thử tải lại, hoặc kiểm tra âm lượng.'; host.render(); } });
+    },
+    placeretry() { if (run) { run.audioErr = ''; host.render(); } },
+    placeskipl() {
+      if (!run) return;
+      const sec = run.st.sections[run.st.i];
+      if (sec && sec.skill === 'L') { sec.done = true; run.st.cur = null; }
+      const next = advance(run.st, pools(), hiddenItems(), Date.now());
+      if (!next) placeFinish(); else host.go('place-run');
+    },
+    placeflag(el) {
+      if (!run) return;
+      const id = el.dataset.i || '', reason = FLAG_REASONS[Number(el.dataset.r)] ?? FLAG_REASONS[0]!;
+      const g = Object.values(run.groups).find(q => q.items.some(i => i.id === id)), it = g?.items.find(i => i.id === id);
+      if (!g || !it) return;
+      const given = run.st.sections.flatMap(s => s.answers).find(a => a.id === id)?.given ?? '';
+      host.flag({ kind: 'Ôn thi', ref: id, item: g.title, prompt: it.q, answer: String(it.ans), given, reason });
+      host.toast('Đã ghi nhận. Gửi cho người soạn trong Cài đặt → Câu đã báo lỗi.');
+    },
     netrefresh() { void refresh(host, true).then(ok => { host.toast(ok ? 'Đã tải số liệu mới.' : 'Chưa tải được (mất mạng?).'); host.render(); }); },
   };
 
   const forms: Record<string, (f: HTMLFormElement, submitter: HTMLButtonElement | null) => void> = {
+    placenext(f) {
+      const d = new FormData(f), given: Record<string, string | undefined> = {};
+      for (const [k, v] of d.entries()) given[k] = String(v);
+      placeNext(given);
+    },
     settings(f) {
       const d = new FormData(f), x = X();
       const ex = String(d.get('exam') || '') as ExamId;
@@ -135,7 +223,24 @@ export function init(host: Host): ExamModule {
   return {
     version: MODULE_VERSION,
     render,
-    after() { /* các màn có hẹn giờ/âm thanh sẽ khởi động ở đây */ },
+    after(route: string) {
+      stopTimer();
+      if (route === 'place-run' && run && !run.st.finished) {
+        timer = setInterval(() => {
+          const sec = run?.st.sections[run.st.i], el = document.getElementById('xtimer');
+          if (!run || !sec || run.st.finished) return stopTimer();
+          const left = remainingMs(sec, Date.now());
+          if (el) { const s = Math.ceil(left / 1000); el.textContent = `Còn ${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }
+          if (left <= 0) {   // hết giờ: chấm phần đã chọn của bài đang làm rồi chuyển kỹ năng
+            stopTimer();
+            const f = document.querySelector('form[data-xform="placenext"]') as HTMLFormElement | null, given: Record<string, string | undefined> = {};
+            if (f) for (const [k, v] of new FormData(f).entries()) given[k] = String(v);
+            host.toast('Hết giờ phần này.');
+            placeNext(given);
+          }
+        }, 1000);
+      }
+    },
     sanitize: sanitizeX,
     merge: mergeX,
   };

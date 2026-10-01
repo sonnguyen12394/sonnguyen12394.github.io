@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { skillEstimate, profile, gaps, MIN_N } from '../../src/exam/estimate.ts';
 import { freshX, migrateX, sanitizeX, type Resp } from '../../src/exam/state.ts';
 import { pCorrect } from '../../src/exam/irt.ts';
-import { hiddenItems, sendAttempt, sendPairs, refresh } from '../../src/exam/net.ts';
+import { hiddenItems, sendAttempt, sendPairs, refresh, APP_V } from '../../src/exam/net.ts';
 import type { Host } from '../../src/exam/host.ts';
 
 // localStorage giả cho môi trường Node
@@ -68,7 +68,7 @@ test('không đồng ý thì không gửi gì; đồng ý thì chỉ gửi id c�
   assert.equal(calls.length, 0);
   x.share = true;
   await sendAttempt(host(calls), x, 'ielts-ac', 'set', { 'q-1': 1, 'q-2': 0 });
-  assert.deepEqual(calls[0], ['el_resp_post', { exam: 'ielts-ac', kind: 'set', items: { 'q-1': 1, 'q-2': 0 }, v: 36 }]);
+  assert.deepEqual(calls[0], ['el_resp_post', { exam: 'ielts-ac', kind: 'set', items: { 'q-1': 1, 'q-2': 0 }, v: APP_V }]);
   assert.equal(x.sent, 1);
 });
 

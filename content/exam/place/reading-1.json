@@ -1,0 +1,302 @@
+[
+{
+  "id": "pl-r-01", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "A2", "band": 3.5, "mode": "place",
+  "title": "Swimming pool notice", "allow": ["lockers", "dong"],
+  "instr": "Read the notice and answer the questions.",
+  "paras": ["CITY SWIMMING POOL. Open every day from 6 am to 9 pm. On Mondays the pool closes at 5 pm for cleaning. Children under 10 must swim with an adult. Please take a shower before you go into the water. Lockers cost 10,000 dong. You can buy a ticket at the front desk or on our app."],
+  "vi": ["HỒ BƠI THÀNH PHỐ. Mở cửa hằng ngày từ 6 giờ sáng đến 9 giờ tối. Thứ Hai hồ đóng cửa lúc 5 giờ chiều để vệ sinh. Trẻ dưới 10 tuổi phải bơi cùng người lớn. Vui lòng tắm trước khi xuống nước. Tủ khoá giá 10.000 đồng. Bạn có thể mua vé ở quầy lễ tân hoặc trên ứng dụng của chúng tôi."],
+  "items": [
+    {
+      "id": "pl-r-01-a", "q": "When does the pool close on Monday?",
+      "opts": [{"k": "A", "t": "At 6 am"}, {"k": "B", "t": "At 5 pm"}, {"k": "C", "t": "At 9 pm"}, {"k": "D", "t": "It does not open"}],
+      "ans": "B", "b": 3,
+      "ev": {"p": 0, "s": "On Mondays the pool closes at 5 pm for cleaning."},
+      "why": "Thông báo ghi rõ thứ Hai hồ đóng cửa lúc 5 giờ chiều để vệ sinh.",
+      "wrong": {"A": "6 giờ sáng là giờ mở cửa, không phải giờ đóng cửa.", "C": "9 giờ tối là giờ đóng cửa của các ngày khác, không phải thứ Hai.", "D": "Hồ vẫn mở vào thứ Hai, chỉ đóng sớm hơn."}
+    },
+    {
+      "id": "pl-r-01-b", "q": "A nine-year-old girl wants to swim. What must she do?",
+      "opts": [{"k": "A", "t": "Buy a locker"}, {"k": "B", "t": "Use the app"}, {"k": "C", "t": "Come with an adult"}, {"k": "D", "t": "Come before 6 am"}],
+      "ans": "C", "b": 3.5,
+      "ev": {"p": 0, "s": "Children under 10 must swim with an adult."},
+      "why": "Bé 9 tuổi là dưới 10 tuổi, nên phải bơi cùng người lớn.",
+      "wrong": {"A": "Tủ khoá là dịch vụ có trả phí, không bắt buộc.", "B": "Ứng dụng chỉ là một cách mua vé, không bắt buộc.", "D": "Hồ mở cửa lúc 6 giờ sáng, không thể đến trước giờ đó."}
+    }
+  ]
+},
+{
+  "id": "pl-r-02", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "A2", "band": 3.5, "mode": "place",
+  "title": "A message from Tom",
+  "instr": "Read the message and answer the questions.",
+  "paras": ["Hi Mai, I'm sorry but I can't meet you at the cinema tonight. My mother is ill and I have to look after my little brother. Can we go on Saturday afternoon instead? The film is on at 2 pm and 4.30 pm. I can buy the tickets online. Please text me back. Tom"],
+  "vi": ["Chào Mai, mình xin lỗi nhưng tối nay mình không gặp bạn ở rạp chiếu phim được. Mẹ mình bị ốm và mình phải trông em trai. Chiều thứ Bảy mình đi thay được không? Phim chiếu lúc 2 giờ và 4 giờ 30 chiều. Mình có thể mua vé trên mạng. Nhắn lại cho mình nhé. Tom"],
+  "items": [
+    {
+      "id": "pl-r-02-a", "q": "Why can't Tom go to the cinema tonight?",
+      "opts": [{"k": "A", "t": "He is ill."}, {"k": "B", "t": "He has to take care of his brother."}, {"k": "C", "t": "He has no money for tickets."}, {"k": "D", "t": "The film is not on tonight."}],
+      "ans": "B", "b": 3.5,
+      "ev": {"p": 0, "s": "My mother is ill and I have to look after my little brother."},
+      "why": "\"look after my little brother\" = trông em trai, tức là phải chăm em (take care of his brother).",
+      "wrong": {"A": "Người bị ốm là mẹ của Tom, không phải Tom. Đây là bẫy dùng lại từ \"ill\".", "C": "Tom còn đề nghị tự mua vé trên mạng, không nói thiếu tiền.", "D": "Tin nhắn không nói phim không chiếu tối nay."}
+    },
+    {
+      "id": "pl-r-02-b", "q": "What does Tom want Mai to do?",
+      "opts": [{"k": "A", "t": "Buy the tickets online"}, {"k": "B", "t": "Call his mother"}, {"k": "C", "t": "Reply to his message"}, {"k": "D", "t": "Meet him at 2 am"}],
+      "ans": "C", "b": 4,
+      "ev": {"p": 0, "s": "Please text me back."},
+      "why": "\"Please text me back\" = nhắn lại cho mình, tức là trả lời tin nhắn.",
+      "wrong": {"A": "Tom nói chính Tom sẽ mua vé (I can buy the tickets online).", "B": "Tom không nhờ Mai gọi cho mẹ mình.", "D": "Phim chiếu lúc 2 giờ chiều (pm), không phải 2 giờ sáng."}
+    }
+  ]
+},
+{
+  "id": "pl-r-03", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "A2", "band": 4, "mode": "place",
+  "title": "Weekend market",
+  "instr": "Read the advertisement and answer the questions.",
+  "paras": ["Green Street Market is back! Every Sunday from 7 am until noon you can buy fresh fruit, vegetables and flowers from local farmers. This month there is also a cooking class for children at 10 am. The class is free, but there are only 15 places, so please book early at the information table. Bring your own bags: the market does not give plastic bags any more."],
+  "vi": ["Chợ phố Green trở lại! Mỗi Chủ nhật từ 7 giờ sáng đến trưa, bạn có thể mua trái cây, rau và hoa tươi của nông dân địa phương. Tháng này còn có lớp nấu ăn cho trẻ em lúc 10 giờ sáng. Lớp miễn phí nhưng chỉ có 15 chỗ, vì vậy hãy đăng ký sớm ở bàn thông tin. Hãy mang túi của bạn: chợ không phát túi nhựa nữa."],
+  "items": [
+    {
+      "id": "pl-r-03-a", "q": "What is true about the cooking class?",
+      "opts": [{"k": "A", "t": "It is for adults."}, {"k": "B", "t": "It costs money."}, {"k": "C", "t": "The number of children is limited."}, {"k": "D", "t": "It happens every week of the year."}],
+      "ans": "C", "b": 4,
+      "ev": {"p": 0, "s": "The class is free, but there are only 15 places, so please book early at the information table."},
+      "why": "\"only 15 places\" = chỉ có 15 chỗ, tức là số trẻ được tham gia có giới hạn.",
+      "wrong": {"A": "Lớp dành cho trẻ em (for children).", "B": "Lớp miễn phí (The class is free).", "D": "Lớp chỉ có trong tháng này (This month), không phải cả năm."}
+    },
+    {
+      "id": "pl-r-03-b", "q": "What should shoppers bring?",
+      "opts": [{"k": "A", "t": "Their own bags"}, {"k": "B", "t": "Plastic bags from home"}, {"k": "C", "t": "Flowers"}, {"k": "D", "t": "A booking form"}],
+      "ans": "A", "b": 4,
+      "ev": {"p": 0, "s": "Bring your own bags: the market does not give plastic bags any more."},
+      "why": "Quảng cáo dặn mang túi của mình (Bring your own bags) vì chợ không phát túi nhựa nữa.",
+      "wrong": {"B": "Bài nói chợ không phát túi nhựa, không yêu cầu mang túi nhựa từ nhà. Đây là bẫy dùng lại từ \"plastic bags\".", "C": "Hoa là thứ bán ở chợ, không phải thứ cần mang.", "D": "Đăng ký lớp làm ở bàn thông tin, không cần mang mẫu đơn."}
+    }
+  ]
+},
+{
+  "id": "pl-r-04", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "B1", "band": 4.5, "mode": "place",
+  "title": "Job advertisement",
+  "instr": "Read the advertisement and answer the questions.",
+  "paras": ["Part-time sales assistant wanted for a busy bookshop in the city centre. You will work three evenings a week and every other Saturday. You need to be friendly, good with numbers and able to speak basic English, because many of our customers are tourists. Experience is useful but not necessary, as we will give you full training. To apply, send your CV and a short letter explaining why you love books to jobs@readmore.vn before 20 May."],
+  "vi": ["Cần tuyển nhân viên bán hàng bán thời gian cho một hiệu sách đông khách ở trung tâm thành phố. Bạn sẽ làm ba buổi tối mỗi tuần và cách một thứ Bảy làm một lần. Bạn cần thân thiện, giỏi tính toán và nói được tiếng Anh cơ bản, vì nhiều khách của chúng tôi là khách du lịch. Có kinh nghiệm thì tốt nhưng không bắt buộc, vì chúng tôi sẽ đào tạo đầy đủ. Để ứng tuyển, hãy gửi CV và một lá thư ngắn giải thích vì sao bạn yêu sách tới jobs@readmore.vn trước ngày 20 tháng 5."],
+  "items": [
+    {
+      "id": "pl-r-04-a", "q": "Why is English needed for this job?",
+      "opts": [{"k": "A", "t": "The shop sells only English books."}, {"k": "B", "t": "Many customers come from other countries."}, {"k": "C", "t": "The training is in English."}, {"k": "D", "t": "The letter must be in English."}],
+      "ans": "B", "b": 4.5,
+      "ev": {"p": 0, "s": "able to speak basic English, because many of our customers are tourists"},
+      "why": "Cần tiếng Anh vì nhiều khách là khách du lịch (tourists), tức là đến từ nước khác.",
+      "wrong": {"A": "Bài không nói hiệu sách chỉ bán sách tiếng Anh.", "C": "Bài nói sẽ đào tạo đầy đủ nhưng không nói đào tạo bằng tiếng Anh.", "D": "Bài không yêu cầu viết thư bằng tiếng Anh."}
+    },
+    {
+      "id": "pl-r-04-b", "q": "Which person can apply?",
+      "opts": [{"k": "A", "t": "Someone who has never worked in a shop"}, {"k": "B", "t": "Someone who can only work mornings"}, {"k": "C", "t": "Someone who wants a full-time job"}, {"k": "D", "t": "Someone who applies on 25 May"}],
+      "ans": "A", "b": 5,
+      "ev": {"p": 0, "s": "Experience is useful but not necessary, as we will give you full training."},
+      "why": "Kinh nghiệm \"không bắt buộc\" (not necessary), nên người chưa từng làm ở cửa hàng vẫn ứng tuyển được.",
+      "wrong": {"B": "Công việc làm vào buổi tối và thứ Bảy, không phải buổi sáng.", "C": "Đây là việc bán thời gian (part-time).", "D": "Hạn nộp là trước ngày 20 tháng 5, nên ngày 25 là quá hạn."}
+    }
+  ]
+},
+{
+  "id": "pl-r-05", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "B1", "band": 5, "mode": "place",
+  "title": "Learning to cook online",
+  "instr": "Read the text and answer the questions.",
+  "paras": ["When Linh moved to Ho Chi Minh City for university, she could not cook at all. At first she ate instant noodles almost every night, but after a few weeks she felt tired and started to worry about her health. A friend suggested free cooking videos on the internet. Linh chose simple recipes with only five or six ingredients and practised one new dish each weekend. Six months later, she not only cooks for herself but also invites friends for dinner once a month. She says the hardest part was not the cooking itself but planning what to buy, so she now writes a shopping list every Sunday."],
+  "vi": ["Khi chuyển vào TP. Hồ Chí Minh học đại học, Linh hoàn toàn không biết nấu ăn. Lúc đầu cô ăn mì gói gần như mỗi tối, nhưng sau vài tuần cô thấy mệt và bắt đầu lo cho sức khoẻ. Một người bạn gợi ý các video dạy nấu ăn miễn phí trên mạng. Linh chọn những công thức đơn giản chỉ có năm, sáu nguyên liệu và tập một món mới mỗi cuối tuần. Sáu tháng sau, cô không chỉ tự nấu cho mình mà còn mời bạn bè ăn tối mỗi tháng một lần. Cô nói phần khó nhất không phải là nấu mà là lên kế hoạch mua gì, vì vậy giờ cô viết danh sách đi chợ vào mỗi Chủ nhật."],
+  "items": [
+    {
+      "id": "pl-r-05-a", "q": "Why did Linh decide to learn to cook?",
+      "opts": [{"k": "A", "t": "Her friends asked her to make dinner."}, {"k": "B", "t": "She was concerned about her health."}, {"k": "C", "t": "Instant noodles were too expensive."}, {"k": "D", "t": "Her university offered a free course."}],
+      "ans": "B", "b": 5,
+      "ev": {"p": 0, "s": "after a few weeks she felt tired and started to worry about her health"},
+      "why": "\"started to worry about her health\" = bắt đầu lo cho sức khoẻ, đồng nghĩa với \"concerned about her health\".",
+      "wrong": {"A": "Việc mời bạn ăn tối xảy ra sau khi đã biết nấu, không phải lý do bắt đầu học.", "C": "Bài không nói mì gói đắt.", "D": "Video miễn phí là trên mạng do bạn gợi ý, không phải khoá học của trường."}
+    },
+    {
+      "id": "pl-r-05-b", "q": "According to Linh, what was the most difficult thing?",
+      "opts": [{"k": "A", "t": "Following the videos"}, {"k": "B", "t": "Cooking for friends"}, {"k": "C", "t": "Deciding what food to buy"}, {"k": "D", "t": "Finding recipes with few ingredients"}],
+      "ans": "C", "b": 5.5,
+      "ev": {"p": 0, "s": "She says the hardest part was not the cooking itself but planning what to buy"},
+      "why": "\"the hardest part was ... planning what to buy\" = phần khó nhất là lên kế hoạch mua gì.",
+      "wrong": {"A": "Bài không nói xem video khó.", "B": "Nấu cho bạn bè là kết quả tốt, không được nói là khó.", "D": "Linh chủ động chọn công thức ít nguyên liệu, bài không nói việc tìm chúng khó. Bẫy: câu nói \"not the cooking itself\" loại trừ chính việc nấu."}
+    }
+  ]
+},
+{
+  "id": "pl-r-06", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "B1", "band": 5, "mode": "place",
+  "title": "Library rules change",
+  "instr": "Read the email and answer the questions.",
+  "paras": ["Dear students, from 1 March the library will change its opening hours. During the exam period the building will stay open until midnight, but the café on the ground floor will still close at 6 pm. Students may now borrow up to eight books at a time instead of five. However, books that other students have reserved must be returned within one week. If you return a book late, you will not be able to borrow anything for the next ten days. We hope these changes will help you study. Library Services"],
+  "vi": ["Các bạn sinh viên thân mến, từ ngày 1 tháng 3 thư viện sẽ đổi giờ mở cửa. Trong mùa thi, toà nhà sẽ mở đến nửa đêm, nhưng quán cà phê ở tầng trệt vẫn đóng cửa lúc 6 giờ chiều. Sinh viên giờ có thể mượn tối đa tám cuốn mỗi lần thay vì năm. Tuy nhiên, sách đã có sinh viên khác đặt trước phải trả trong vòng một tuần. Nếu trả sách muộn, bạn sẽ không được mượn gì trong mười ngày tiếp theo. Chúng tôi mong những thay đổi này giúp các bạn học tốt. Dịch vụ Thư viện"],
+  "items": [
+    {
+      "id": "pl-r-06-a", "q": "What will happen during the exam period?",
+      "opts": [{"k": "A", "t": "The café will stay open later."}, {"k": "B", "t": "The library will close at 6 pm."}, {"k": "C", "t": "The library will open longer than usual."}, {"k": "D", "t": "Students can borrow only five books."}],
+      "ans": "C", "b": 5,
+      "ev": {"p": 0, "s": "During the exam period the building will stay open until midnight"},
+      "why": "Mùa thi thư viện mở đến nửa đêm, tức là mở lâu hơn bình thường.",
+      "wrong": {"A": "Quán cà phê \"still close at 6 pm\" = vẫn đóng lúc 6 giờ, không mở muộn hơn.", "B": "6 giờ chiều là giờ đóng của quán cà phê, không phải thư viện.", "D": "Năm cuốn là quy định cũ; giờ được mượn tám cuốn."}
+    },
+    {
+      "id": "pl-r-06-b", "q": "What happens if a student returns a book late?",
+      "opts": [{"k": "A", "t": "They must pay a fine."}, {"k": "B", "t": "They cannot borrow books for a period of time."}, {"k": "C", "t": "They can borrow only five books."}, {"k": "D", "t": "They must return it within one week."}],
+      "ans": "B", "b": 5.5,
+      "ev": {"p": 0, "s": "If you return a book late, you will not be able to borrow anything for the next ten days."},
+      "why": "Trả muộn thì không được mượn gì trong 10 ngày, tức là bị cấm mượn một thời gian.",
+      "wrong": {"A": "Email không nhắc đến tiền phạt. Nhiều người chọn theo kiến thức thực tế thay vì theo bài.", "C": "Con số năm cuốn là quy định cũ, không liên quan đến trả muộn.", "D": "\"within one week\" áp dụng cho sách người khác đặt trước, không phải hình phạt khi trả muộn."}
+    }
+  ]
+},
+{
+  "id": "pl-r-07", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "B1", "band": 5.5, "mode": "place",
+  "title": "Night markets",
+  "instr": "Read the text and answer the questions.",
+  "paras": ["Night markets are popular in many Asian cities, but they are not only places to shop. For many families they are a cheap way to spend an evening together, eating street food and meeting neighbours. In recent years, however, some markets have become so crowded with tourists that local people have stopped going. Prices have risen, and traditional stalls selling household goods have been replaced by shops selling souvenirs. Some city councils now limit the number of new souvenir stalls so that the markets can keep their original character."],
+  "vi": ["Chợ đêm phổ biến ở nhiều thành phố châu Á, nhưng chúng không chỉ là nơi mua sắm. Với nhiều gia đình, đó là cách rẻ để cùng nhau qua một buổi tối, ăn đồ ăn đường phố và gặp hàng xóm. Tuy nhiên, những năm gần đây, một số chợ đông khách du lịch đến mức người dân địa phương thôi không đi nữa. Giá cả tăng, và các sạp truyền thống bán đồ gia dụng đã bị thay bằng các cửa hàng bán đồ lưu niệm. Một số chính quyền thành phố nay hạn chế số sạp lưu niệm mới để chợ giữ được nét ban đầu."],
+  "items": [
+    {
+      "id": "pl-r-07-a", "q": "What problem does the text describe?",
+      "opts": [{"k": "A", "t": "Night markets are closing because nobody visits them."}, {"k": "B", "t": "Some markets now serve tourists more than local people."}, {"k": "C", "t": "Street food at night markets is unsafe."}, {"k": "D", "t": "City councils want to ban souvenir stalls completely."}],
+      "ans": "B", "b": 5.5,
+      "ev": {"p": 0, "s": "some markets have become so crowded with tourists that local people have stopped going"},
+      "why": "Chợ quá đông khách du lịch, người dân thôi không đi, đồ gia dụng bị thay bằng đồ lưu niệm: chợ phục vụ khách du lịch nhiều hơn người địa phương.",
+      "wrong": {"A": "Ngược lại, chợ quá đông (crowded), không phải vắng khách.", "C": "Bài không nói đồ ăn đường phố mất an toàn.", "D": "Chính quyền chỉ hạn chế số sạp lưu niệm MỚI (limit the number of new...), không cấm hoàn toàn."}
+    },
+    {
+      "id": "pl-r-07-b", "q": "Why do some councils limit new souvenir stalls?",
+      "opts": [{"k": "A", "t": "To protect the traditional nature of the markets"}, {"k": "B", "t": "To make prices higher"}, {"k": "C", "t": "To attract more tourists"}, {"k": "D", "t": "To make room for food stalls"}],
+      "ans": "A", "b": 6,
+      "ev": {"p": 0, "s": "so that the markets can keep their original character"},
+      "why": "\"keep their original character\" = giữ nét ban đầu, tức là bảo vệ tính truyền thống của chợ.",
+      "wrong": {"B": "Giá tăng là vấn đề, không phải mục tiêu của chính quyền.", "C": "Thu hút thêm khách du lịch đi ngược lại mục đích.", "D": "Bài không nói hạn chế sạp lưu niệm để nhường chỗ cho sạp đồ ăn."}
+    }
+  ]
+},
+{
+  "id": "pl-r-08", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "B2", "band": 6, "mode": "place",
+  "title": "Working from home",
+  "instr": "Read the text and answer the questions.",
+  "paras": ["Since many companies began allowing staff to work from home, researchers have tried to measure whether people are more or less productive. The results are mixed. Workers who do tasks that require long periods of concentration, such as writing reports or analysing data, often get more done at home because there are fewer interruptions. In contrast, employees whose work depends on quick discussions with colleagues tend to find remote work slower. Several studies also suggest that new employees suffer most, since they miss the informal learning that happens when they can simply turn to a more experienced person and ask a question."],
+  "vi": ["Từ khi nhiều công ty cho nhân viên làm việc tại nhà, các nhà nghiên cứu đã cố đo xem người ta làm việc hiệu quả hơn hay kém đi. Kết quả không đồng nhất. Người làm những việc cần tập trung lâu, như viết báo cáo hay phân tích dữ liệu, thường làm được nhiều hơn ở nhà vì ít bị ngắt quãng. Ngược lại, nhân viên có công việc phụ thuộc vào những cuộc trao đổi nhanh với đồng nghiệp thường thấy làm từ xa chậm hơn. Một số nghiên cứu cũng cho thấy nhân viên mới chịu thiệt nhiều nhất, vì họ mất đi việc học không chính thức diễn ra khi chỉ cần quay sang hỏi một người có kinh nghiệm hơn."],
+  "items": [
+    {
+      "id": "pl-r-08-a", "q": "Which worker is most likely to be more productive at home?",
+      "opts": [{"k": "A", "t": "A manager who holds many short meetings"}, {"k": "B", "t": "An analyst who studies large sets of figures"}, {"k": "C", "t": "A new employee learning the job"}, {"k": "D", "t": "A salesperson who talks to colleagues all day"}],
+      "ans": "B", "b": 6,
+      "ev": {"p": 0, "s": "Workers who do tasks that require long periods of concentration, such as writing reports or analysing data, often get more done at home"},
+      "why": "Người làm việc cần tập trung lâu như phân tích dữ liệu (analysing data) làm được nhiều hơn ở nhà. \"studies large sets of figures\" là cách nói khác của phân tích dữ liệu.",
+      "wrong": {"A": "Việc phụ thuộc vào trao đổi nhanh thì làm từ xa chậm hơn.", "C": "Nhân viên mới chịu thiệt nhiều nhất khi làm ở nhà.", "D": "Công việc phải trao đổi với đồng nghiệp liên tục thì làm từ xa chậm hơn."}
+    },
+    {
+      "id": "pl-r-08-b", "q": "Why do new employees find remote work hard, according to the text?",
+      "opts": [{"k": "A", "t": "They cannot easily get help from experienced staff."}, {"k": "B", "t": "They are given too many reports to write."}, {"k": "C", "t": "They have more interruptions at home."}, {"k": "D", "t": "They do not receive any formal training."}],
+      "ans": "A", "b": 6.5,
+      "ev": {"p": 0, "s": "they miss the informal learning that happens when they can simply turn to a more experienced person and ask a question"},
+      "why": "Họ mất cơ hội \"quay sang hỏi người có kinh nghiệm hơn\", tức là khó nhận giúp đỡ từ nhân viên lâu năm.",
+      "wrong": {"B": "Bài không nói nhân viên mới phải viết nhiều báo cáo.", "C": "Bài nói ở nhà ÍT bị ngắt quãng hơn (fewer interruptions).", "D": "Bài nói họ mất việc học KHÔNG chính thức (informal), không nói về đào tạo chính thức."}
+    }
+  ]
+},
+{
+  "id": "pl-r-09", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "B2", "band": 6.5, "mode": "place",
+  "title": "Urban trees",
+  "instr": "Read the text and answer the questions.",
+  "paras": ["City planners have long valued trees for their beauty, but recent studies show that their benefits are far more practical. A large tree can lower the temperature of the street below it by several degrees, which reduces the need for air conditioning in nearby buildings. Trees also absorb rain, helping to prevent flooding after heavy storms. Nevertheless, planting trees is not always straightforward. Roots can damage pipes and pavements, and some species drop leaves that block drains. For this reason, experts recommend choosing species carefully rather than simply planting as many trees as possible."],
+  "vi": ["Các nhà quy hoạch đô thị từ lâu đã coi trọng cây xanh vì vẻ đẹp, nhưng các nghiên cứu gần đây cho thấy lợi ích của cây thiết thực hơn nhiều. Một cây lớn có thể làm nhiệt độ con phố bên dưới giảm vài độ, nhờ vậy giảm nhu cầu dùng điều hoà ở các toà nhà gần đó. Cây cũng hút nước mưa, giúp ngăn ngập lụt sau những trận bão lớn. Tuy vậy, trồng cây không phải lúc nào cũng đơn giản. Rễ cây có thể làm hỏng đường ống và vỉa hè, và một số loài rụng lá làm tắc cống. Vì lý do này, các chuyên gia khuyên nên chọn loài cây cẩn thận thay vì chỉ trồng càng nhiều cây càng tốt."],
+  "items": [
+    {
+      "id": "pl-r-09-a", "q": "What is the main point of the text?",
+      "opts": [{"k": "A", "t": "Trees are mainly useful because they look attractive."}, {"k": "B", "t": "Cities should plant as many trees as possible."}, {"k": "C", "t": "Trees bring real benefits, but the type of tree matters."}, {"k": "D", "t": "Trees cause more problems than they solve."}],
+      "ans": "C", "b": 6.5,
+      "ev": {"p": 0, "s": "experts recommend choosing species carefully rather than simply planting as many trees as possible"},
+      "why": "Bài nêu lợi ích thiết thực (làm mát, hút nước mưa) rồi nêu vấn đề và kết luận nên chọn loài cây cẩn thận: lợi ích có thật nhưng loại cây quan trọng.",
+      "wrong": {"A": "Bài nói lợi ích \"thiết thực hơn nhiều\" so với vẻ đẹp, nên vẻ đẹp không phải lợi ích chính.", "B": "Chuyên gia khuyên KHÔNG chỉ trồng càng nhiều càng tốt.", "D": "Bài nêu vấn đề nhưng không kết luận cây gây hại nhiều hơn lợi."}
+    },
+    {
+      "id": "pl-r-09-b", "q": "The word 'straightforward' in the text is closest in meaning to",
+      "opts": [{"k": "A", "t": "simple"}, {"k": "B", "t": "expensive"}, {"k": "C", "t": "popular"}, {"k": "D", "t": "quick"}],
+      "ans": "A", "b": 6,
+      "ev": {"p": 0, "s": "Nevertheless, planting trees is not always straightforward."},
+      "why": "\"straightforward\" = đơn giản, dễ làm. Câu sau liệt kê các khó khăn (rễ làm hỏng ống, lá làm tắc cống), khớp với nghĩa \"không đơn giản\".",
+      "wrong": {"B": "Bài không nói về chi phí.", "C": "\"phổ biến\" không hợp với các khó khăn được liệt kê ngay sau.", "D": "\"nhanh\" không phải nghĩa của straightforward; các khó khăn nêu ra là về độ phức tạp, không phải thời gian."}
+    }
+  ]
+},
+{
+  "id": "pl-r-10", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "B2", "band": 6.5, "mode": "place",
+  "title": "Sleep and memory",
+  "instr": "Read the text and answer the questions.",
+  "paras": ["Students who stay up late before an exam may be harming their chances of success. Research on memory shows that sleep is not simply a period of rest for the brain. During deep sleep, information learned during the day is replayed and moved into long-term memory. In one experiment, two groups learned the same list of words in the evening. The group that slept for eight hours recalled about 20 per cent more words the next morning than the group that stayed awake. The researchers concluded that a final night of revision is less effective than a good night's sleep, especially for material that must be remembered for weeks rather than hours."],
+  "vi": ["Học sinh thức khuya trước kỳ thi có thể đang làm giảm khả năng thành công của mình. Nghiên cứu về trí nhớ cho thấy giấc ngủ không chỉ là lúc não nghỉ ngơi. Trong giấc ngủ sâu, thông tin học được trong ngày được phát lại và chuyển vào trí nhớ dài hạn. Trong một thí nghiệm, hai nhóm học cùng một danh sách từ vào buổi tối. Nhóm ngủ tám tiếng nhớ được nhiều hơn khoảng 20% số từ vào sáng hôm sau so với nhóm thức trắng. Các nhà nghiên cứu kết luận rằng ôn bài thêm một đêm cuối kém hiệu quả hơn một giấc ngủ ngon, nhất là với kiến thức phải nhớ trong nhiều tuần chứ không phải vài giờ."],
+  "items": [
+    {
+      "id": "pl-r-10-a", "q": "What happens during deep sleep, according to the text?",
+      "opts": [{"k": "A", "t": "The brain stops working completely."}, {"k": "B", "t": "New information is stored for the long term."}, {"k": "C", "t": "People forget unimportant words."}, {"k": "D", "t": "The brain learns new lists of words."}],
+      "ans": "B", "b": 6,
+      "ev": {"p": 0, "s": "During deep sleep, information learned during the day is replayed and moved into long-term memory."},
+      "why": "Thông tin học trong ngày được \"moved into long-term memory\" = chuyển vào trí nhớ dài hạn, tức là được lưu lâu dài.",
+      "wrong": {"A": "Bài nói giấc ngủ \"không chỉ là lúc não nghỉ ngơi\", não vẫn hoạt động.", "C": "Bài không nói quên những từ không quan trọng.", "D": "Não củng cố cái đã học trong ngày, không học danh sách từ mới khi ngủ."}
+    },
+    {
+      "id": "pl-r-10-b", "q": "What advice would the researchers most likely give a student the night before an exam?",
+      "opts": [{"k": "A", "t": "Revise until late to remember more words."}, {"k": "B", "t": "Learn a new list of words in the evening."}, {"k": "C", "t": "Go to bed instead of studying all night."}, {"k": "D", "t": "Sleep for no more than eight hours."}],
+      "ans": "C", "b": 7,
+      "ev": {"p": 0, "s": "The researchers concluded that a final night of revision is less effective than a good night's sleep"},
+      "why": "Kết luận: ôn thêm một đêm kém hiệu quả hơn ngủ ngon, nên lời khuyên là đi ngủ thay vì học xuyên đêm. Câu hỏi suy luận (most likely), không có nguyên văn.",
+      "wrong": {"A": "Ngược với kết luận của nghiên cứu.", "B": "Việc học danh sách từ buổi tối là cách làm thí nghiệm, không phải lời khuyên.", "D": "Tám tiếng là thời gian ngủ của nhóm thí nghiệm, không phải giới hạn tối đa. Bẫy dùng lại con số."}
+    }
+  ]
+},
+{
+  "id": "pl-r-11", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "B2", "band": 6, "mode": "place",
+  "title": "Train ticket conditions",
+  "instr": "Read the ticket conditions and answer the questions.",
+  "paras": ["Saver tickets are valid only on the train shown on your ticket. If you miss your train, you must buy a new ticket at the full price. Flexible tickets cost more but can be used on any train on the same day, and they can be refunded up to 24 hours before departure, minus a small administration fee. Passengers travelling with bicycles must reserve a space in advance, as the number of bicycle spaces on each train is limited. Children under four travel free if they do not occupy a seat."],
+  "vi": ["Vé tiết kiệm chỉ có giá trị trên chuyến tàu ghi trên vé. Nếu lỡ tàu, bạn phải mua vé mới với giá đầy đủ. Vé linh hoạt đắt hơn nhưng dùng được trên bất kỳ chuyến nào trong cùng ngày, và có thể hoàn tiền tới 24 giờ trước giờ khởi hành, trừ một khoản phí hành chính nhỏ. Hành khách mang xe đạp phải đặt chỗ trước, vì số chỗ để xe đạp trên mỗi chuyến tàu có hạn. Trẻ dưới bốn tuổi đi miễn phí nếu không chiếm ghế."],
+  "items": [
+    {
+      "id": "pl-r-11-a", "q": "A passenger with a Saver ticket misses the 9 am train. What must she do?",
+      "opts": [{"k": "A", "t": "Take the next train on the same day"}, {"k": "B", "t": "Ask for a refund"}, {"k": "C", "t": "Pay for another ticket at the normal price"}, {"k": "D", "t": "Pay a small administration fee"}],
+      "ans": "C", "b": 6,
+      "ev": {"p": 0, "s": "If you miss your train, you must buy a new ticket at the full price."},
+      "why": "Vé tiết kiệm lỡ tàu thì phải mua vé mới giá đầy đủ (full price = normal price).",
+      "wrong": {"A": "Đi chuyến khác trong ngày là quyền của vé linh hoạt, không phải vé tiết kiệm.", "B": "Hoàn tiền áp dụng cho vé linh hoạt.", "D": "Phí hành chính nhỏ là khi hoàn vé linh hoạt."}
+    },
+    {
+      "id": "pl-r-11-b", "q": "What is true about bicycles?",
+      "opts": [{"k": "A", "t": "They travel free."}, {"k": "B", "t": "Passengers need to book a space before travelling."}, {"k": "C", "t": "They are allowed only with Flexible tickets."}, {"k": "D", "t": "Each train has unlimited space for them."}],
+      "ans": "B", "b": 5.5,
+      "ev": {"p": 0, "s": "Passengers travelling with bicycles must reserve a space in advance"},
+      "why": "\"reserve a space in advance\" = đặt chỗ trước khi đi.",
+      "wrong": {"A": "Điều kiện đi miễn phí là của trẻ dưới bốn tuổi, không phải xe đạp.", "C": "Bài không gắn xe đạp với loại vé nào.", "D": "Số chỗ để xe đạp có hạn (limited)."}
+    }
+  ]
+},
+{
+  "id": "pl-r-12", "kind": "reading", "exams": ["ielts-ac", "ielts-gt", "vstep"], "qtype": "pl-r", "level": "B2", "band": 6.5, "mode": "place",
+  "title": "The four-day week",
+  "instr": "Read the text and answer the questions.",
+  "paras": ["A growing number of companies are experimenting with a four-day working week without reducing salaries. Supporters argue that staff who have an extra day off return to work more rested and focused, so they achieve the same amount in less time. Early trials in several countries have reported lower rates of sickness and fewer people leaving their jobs. Critics, however, point out that most trials have involved office workers, and that the model may be much harder to apply in hospitals, schools or factories, where someone must be present for a fixed number of hours."],
+  "vi": ["Ngày càng nhiều công ty thử nghiệm tuần làm việc bốn ngày mà không giảm lương. Người ủng hộ cho rằng nhân viên được nghỉ thêm một ngày sẽ quay lại làm việc khoẻ khoắn và tập trung hơn, nên làm được khối lượng như cũ trong thời gian ngắn hơn. Các thử nghiệm đầu tiên ở một số nước cho thấy tỉ lệ nghỉ ốm thấp hơn và ít người nghỉ việc hơn. Tuy nhiên, người phản đối chỉ ra rằng phần lớn các thử nghiệm là với nhân viên văn phòng, và mô hình này có thể khó áp dụng hơn nhiều ở bệnh viện, trường học hay nhà máy, nơi luôn phải có người có mặt trong một số giờ cố định."],
+  "items": [
+    {
+      "id": "pl-r-12-a", "q": "What have early trials of the four-day week found?",
+      "opts": [{"k": "A", "t": "Salaries went down."}, {"k": "B", "t": "Fewer employees resigned."}, {"k": "C", "t": "Hospitals benefited the most."}, {"k": "D", "t": "Workers became more tired."}],
+      "ans": "B", "b": 6,
+      "ev": {"p": 0, "s": "Early trials in several countries have reported lower rates of sickness and fewer people leaving their jobs."},
+      "why": "\"fewer people leaving their jobs\" = ít người nghỉ việc hơn, đồng nghĩa với \"fewer employees resigned\".",
+      "wrong": {"A": "Thử nghiệm giữ nguyên lương (without reducing salaries).", "C": "Bệnh viện được nêu là nơi KHÓ áp dụng.", "D": "Ngược lại, nhân viên khoẻ khoắn hơn (more rested)."}
+    },
+    {
+      "id": "pl-r-12-b", "q": "What is the critics' main concern?",
+      "opts": [{"k": "A", "t": "Office workers will lose their jobs."}, {"k": "B", "t": "Staff will not be able to finish their work."}, {"k": "C", "t": "The results may not apply to every type of job."}, {"k": "D", "t": "Sickness rates will increase."}],
+      "ans": "C", "b": 7,
+      "ev": {"p": 0, "s": "the model may be much harder to apply in hospitals, schools or factories"},
+      "why": "Người phản đối nói thử nghiệm chủ yếu với nhân viên văn phòng và khó áp dụng ở bệnh viện, trường học, nhà máy: kết quả có thể không đúng với mọi loại công việc.",
+      "wrong": {"A": "Không ai nói nhân viên văn phòng mất việc.", "B": "Đây không phải lập luận của người phản đối trong bài.", "D": "Tỉ lệ nghỉ ốm giảm trong thử nghiệm; người phản đối không nói nó sẽ tăng."}
+    }
+  ]
+}
+]

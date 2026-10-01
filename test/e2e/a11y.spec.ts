@@ -15,6 +15,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await scan();
     await page.getByRole('button', { name: /IELTS Academic/ }).click();
     await scan();
+    await page.getByRole('button', { name: 'Để sau' }).click();
+    await scan();
     await page.getByRole('button', { name: /Cách tính điểm và nguồn/ }).click();
     await scan();
     await noHorizontalScroll(page);
@@ -32,5 +34,33 @@ test('dùng được bằng bàn phím: Tab tới tab Ôn thi và Enter mở', a
   await page.keyboard.press('Tab');
   const focused = await page.evaluate(() => document.activeElement?.tagName);
   expect(focused).toBe('BUTTON');
+  expect(errors).toEqual([]);
+});
+
+test('trợ năng WCAG AA: màn làm bài và kết quả kiểm tra đầu vào', async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Bắt đầu ôn thi' }).click();
+  await page.getByRole('button', { name: /IELTS Academic/ }).click();
+  const scan = async () => {
+    const r = await new AxeBuilder({ page }).include('#app').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+    expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
+  };
+  await scan();
+  await page.getByRole('button', { name: 'Bắt đầu kiểm tra' }).click();
+  await expect(page.getByText(/Kiểm tra đầu vào · Đọc/)).toBeVisible();
+  await scan();
+  await noHorizontalScroll(page);
+  for (let k = 0; k < 8 && await page.getByText(/Kiểm tra đầu vào · Đọc/).isVisible(); k++) {
+    for (const fs of await page.locator('form[data-xform="placenext"] fieldset').all()) await fs.locator('input[type=radio]').first().check();
+    await page.getByRole('button', { name: 'Câu tiếp' }).click();
+  }
+  await expect(page.getByText(/Kiểm tra đầu vào · Nghe/)).toBeVisible();
+  await scan();
+  await page.getByRole('button', { name: /Không nghe được\? Bỏ qua phần Nghe/ }).click();
+  await expect(page.getByRole('heading', { name: 'Kết quả của bạn' })).toBeVisible();
+  await page.locator('details > summary').first().click();
+  await scan();
+  await noHorizontalScroll(page);
   expect(errors).toEqual([]);
 });

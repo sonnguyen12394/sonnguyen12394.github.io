@@ -1,0 +1,1455 @@
+[
+  {
+    "id": "pl-l-01",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "A2",
+    "band": 3.5,
+    "mode": "place",
+    "title": "At the train station",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Announcer": "bf_emma"
+    },
+    "script": [
+      {
+        "sp": "Announcer",
+        "t": "Good morning. The 9.15 train to Oxford will leave from platform 4, not platform 2."
+      },
+      {
+        "sp": "Announcer",
+        "t": "This train is about ten minutes late today. Please do not leave your bags alone in the station. Thank you."
+      }
+    ],
+    "vi": [
+      "Chào buổi sáng. Chuyến tàu 9 giờ 15 đi Oxford sẽ khởi hành từ sân ga số 4, không phải sân ga số 2.",
+      "Hôm nay chuyến tàu này trễ khoảng mười phút. Vui lòng không để hành lý một mình trong nhà ga. Xin cảm ơn."
+    ],
+    "items": [
+      {
+        "id": "pl-l-01-a",
+        "q": "Which platform does the Oxford train leave from?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Platform 2"
+          },
+          {
+            "k": "B",
+            "t": "Platform 4"
+          },
+          {
+            "k": "C",
+            "t": "Platform 9"
+          },
+          {
+            "k": "D",
+            "t": "Platform 15"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "will leave from platform 4, not platform 2"
+        },
+        "why": "Thông báo nói tàu đi từ sân ga số 4, \"not platform 2\".",
+        "wrong": {
+          "A": "Sân ga 2 là sân ga mà thông báo nói tàu KHÔNG đi từ đó.",
+          "C": "Số 9 nằm trong giờ tàu (9.15), không phải sân ga.",
+          "D": "Số 15 nằm trong giờ tàu (9.15), không phải sân ga."
+        }
+      },
+      {
+        "id": "pl-l-01-b",
+        "q": "What is the problem with the train today?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "It is cancelled."
+          },
+          {
+            "k": "B",
+            "t": "It is full."
+          },
+          {
+            "k": "C",
+            "t": "It is late."
+          },
+          {
+            "k": "D",
+            "t": "It is going to London."
+          }
+        ],
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "This train is about ten minutes late today."
+        },
+        "why": "\"about ten minutes late\" = trễ khoảng mười phút.",
+        "wrong": {
+          "A": "Tàu không bị huỷ, chỉ trễ.",
+          "B": "Không nhắc đến tàu đầy.",
+          "D": "Tàu đi Oxford, không phải London."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-01.mp3",
+      "dur": 13.2,
+      "voices": [
+        "bf_emma"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-02",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "A2",
+    "band": 3.5,
+    "mode": "place",
+    "title": "Buying a birthday present",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Anna": "af_sarah",
+      "Ben": "am_adam"
+    },
+    "script": [
+      {
+        "sp": "Anna",
+        "t": "Ben, it's Mum's birthday on Friday. What can we buy her?"
+      },
+      {
+        "sp": "Ben",
+        "t": "She likes reading. What about a book?"
+      },
+      {
+        "sp": "Anna",
+        "t": "She has too many books. I think she needs a new bag. Her old one is broken."
+      },
+      {
+        "sp": "Ben",
+        "t": "Good idea. Let's go to the shop after school tomorrow."
+      }
+    ],
+    "vi": [
+      "Ben ơi, thứ Sáu là sinh nhật mẹ. Mình mua gì tặng mẹ nhỉ?",
+      "Mẹ thích đọc sách. Một cuốn sách thì sao?",
+      "Mẹ có quá nhiều sách rồi. Chị nghĩ mẹ cần một cái túi mới. Cái cũ hỏng rồi.",
+      "Ý hay đấy. Chiều mai tan học mình đi cửa hàng nhé."
+    ],
+    "items": [
+      {
+        "id": "pl-l-02-a",
+        "q": "What will they buy for their mother?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "A book"
+          },
+          {
+            "k": "B",
+            "t": "A bag"
+          },
+          {
+            "k": "C",
+            "t": "A cake"
+          },
+          {
+            "k": "D",
+            "t": "Flowers"
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "I think she needs a new bag."
+        },
+        "why": "Anna đề nghị mua túi mới vì túi cũ hỏng, Ben đồng ý (Good idea).",
+        "wrong": {
+          "A": "Ben gợi ý sách nhưng Anna bác vì mẹ có quá nhiều sách. Bẫy: từ được nhắc trước rồi bị loại.",
+          "C": "Không nhắc đến bánh.",
+          "D": "Không nhắc đến hoa."
+        }
+      },
+      {
+        "id": "pl-l-02-b",
+        "q": "When will they go to the shop?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Today after school"
+          },
+          {
+            "k": "B",
+            "t": "Tomorrow after school"
+          },
+          {
+            "k": "C",
+            "t": "On Friday morning"
+          },
+          {
+            "k": "D",
+            "t": "On Saturday"
+          }
+        ],
+        "ans": "B",
+        "b": 4,
+        "ev": {
+          "p": 3,
+          "s": "Let's go to the shop after school tomorrow."
+        },
+        "why": "\"after school tomorrow\" = chiều mai sau giờ học.",
+        "wrong": {
+          "A": "Họ đi ngày mai, không phải hôm nay.",
+          "C": "Thứ Sáu là ngày sinh nhật, không phải ngày đi mua.",
+          "D": "Không nhắc đến thứ Bảy."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-02.mp3",
+      "dur": 16.5,
+      "voices": [
+        "af_sarah",
+        "am_adam"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-03",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "A2",
+    "band": 4,
+    "mode": "place",
+    "title": "Booking a table",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Waiter": "bm_george",
+      "Woman": "bf_isabella"
+    },
+    "script": [
+      {
+        "sp": "Waiter",
+        "t": "Hello, Green Garden restaurant. How can I help you?"
+      },
+      {
+        "sp": "Woman",
+        "t": "Hi. I'd like to book a table for six people on Saturday evening, please."
+      },
+      {
+        "sp": "Waiter",
+        "t": "I'm sorry, we're full at seven o'clock. We have a table at eight thirty."
+      },
+      {
+        "sp": "Woman",
+        "t": "That's a bit late, but OK. Can we sit outside in the garden?"
+      },
+      {
+        "sp": "Waiter",
+        "t": "Yes, of course. Can I have your name?"
+      }
+    ],
+    "vi": [
+      "Xin chào, nhà hàng Green Garden. Tôi giúp gì được ạ?",
+      "Chào anh. Tôi muốn đặt bàn cho sáu người vào tối thứ Bảy.",
+      "Rất tiếc, lúc bảy giờ chúng tôi kín chỗ. Chúng tôi còn một bàn lúc tám giờ rưỡi.",
+      "Hơi muộn, nhưng được. Chúng tôi ngồi ngoài vườn được không?",
+      "Vâng, dĩ nhiên. Cho tôi xin tên chị?"
+    ],
+    "items": [
+      {
+        "id": "pl-l-03-a",
+        "q": "What time is the table booked for?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "6.00"
+          },
+          {
+            "k": "B",
+            "t": "7.00"
+          },
+          {
+            "k": "C",
+            "t": "8.00"
+          },
+          {
+            "k": "D",
+            "t": "8.30"
+          }
+        ],
+        "ans": "D",
+        "b": 4,
+        "ev": {
+          "p": 2,
+          "s": "We have a table at eight thirty."
+        },
+        "why": "Bảy giờ đã kín, nhà hàng còn bàn lúc tám giờ rưỡi và người phụ nữ đồng ý.",
+        "wrong": {
+          "A": "Sáu là số người, không phải giờ.",
+          "B": "Bảy giờ đã kín chỗ. Bẫy: giờ được nhắc rồi bị loại.",
+          "C": "Giờ là tám giờ rưỡi, không phải tám giờ đúng."
+        }
+      },
+      {
+        "id": "pl-l-03-b",
+        "q": "Where does the woman want to sit?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Near the window"
+          },
+          {
+            "k": "B",
+            "t": "In the garden"
+          },
+          {
+            "k": "C",
+            "t": "Near the kitchen"
+          },
+          {
+            "k": "D",
+            "t": "Upstairs"
+          }
+        ],
+        "ans": "B",
+        "b": 4,
+        "ev": {
+          "p": 3,
+          "s": "Can we sit outside in the garden?"
+        },
+        "why": "Cô ấy hỏi ngồi ngoài vườn và nhà hàng đồng ý.",
+        "wrong": {
+          "A": "Không nhắc đến cửa sổ.",
+          "C": "Không nhắc đến nhà bếp.",
+          "D": "Không nhắc đến tầng trên."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-03.mp3",
+      "dur": 22.4,
+      "voices": [
+        "bm_george",
+        "bf_isabella"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-04",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B1",
+    "band": 4.5,
+    "mode": "place",
+    "title": "Sports centre membership",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Receptionist": "af_nicole",
+      "Man": "am_michael"
+    },
+    "script": [
+      {
+        "sp": "Man",
+        "t": "Hi, I'm interested in joining the sports centre. How much is it?"
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Full membership is forty dollars a month. That includes the gym, the pool and all classes."
+      },
+      {
+        "sp": "Man",
+        "t": "I only want to use the pool, really."
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Then the swim-only option is better for you. It's twenty-five dollars a month, and students get ten percent off."
+      },
+      {
+        "sp": "Man",
+        "t": "Great, I'm a student. Do I need to bring anything?"
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Just a photo for your card and your student ID."
+      }
+    ],
+    "vi": [
+      "Chào chị, tôi muốn đăng ký trung tâm thể thao. Giá bao nhiêu ạ?",
+      "Thẻ hội viên đầy đủ là bốn mươi đô mỗi tháng, gồm phòng tập, hồ bơi và tất cả các lớp.",
+      "Thật ra tôi chỉ muốn dùng hồ bơi thôi.",
+      "Vậy gói chỉ bơi hợp với anh hơn. Gói này hai mươi lăm đô mỗi tháng, sinh viên được giảm mười phần trăm.",
+      "Tuyệt, tôi là sinh viên. Tôi có cần mang gì không?",
+      "Chỉ cần một tấm ảnh để làm thẻ và thẻ sinh viên của anh."
+    ],
+    "items": [
+      {
+        "id": "pl-l-04-a",
+        "q": "Which option is best for the man?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Full membership"
+          },
+          {
+            "k": "B",
+            "t": "Swim-only membership"
+          },
+          {
+            "k": "C",
+            "t": "Gym-only membership"
+          },
+          {
+            "k": "D",
+            "t": "Classes only"
+          }
+        ],
+        "ans": "B",
+        "b": 4.5,
+        "ev": {
+          "p": 3,
+          "s": "Then the swim-only option is better for you."
+        },
+        "why": "Anh ấy chỉ muốn dùng hồ bơi nên nhân viên gợi ý gói chỉ bơi.",
+        "wrong": {
+          "A": "Gói đầy đủ gồm cả phòng tập và lớp học, anh không cần.",
+          "C": "Không có gói chỉ phòng tập trong hội thoại.",
+          "D": "Không có gói chỉ lớp học trong hội thoại."
+        }
+      },
+      {
+        "id": "pl-l-04-b",
+        "q": "What does the man need to bring?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Forty dollars in cash"
+          },
+          {
+            "k": "B",
+            "t": "A swimming cap"
+          },
+          {
+            "k": "C",
+            "t": "A photo and his student card"
+          },
+          {
+            "k": "D",
+            "t": "A letter from his university"
+          }
+        ],
+        "ans": "C",
+        "b": 5,
+        "ev": {
+          "p": 5,
+          "s": "Just a photo for your card and your student ID."
+        },
+        "why": "\"a photo ... and your student ID\" = một tấm ảnh và thẻ sinh viên.",
+        "wrong": {
+          "A": "Bốn mươi đô là giá gói đầy đủ, không phải thứ phải mang.",
+          "B": "Không nhắc đến mũ bơi.",
+          "D": "Chỉ cần thẻ sinh viên, không cần thư của trường."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-04.mp3",
+      "dur": 29.9,
+      "voices": [
+        "af_nicole",
+        "am_michael"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-05",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B1",
+    "band": 5,
+    "mode": "place",
+    "title": "Museum tour",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Guide": "bm_lewis"
+    },
+    "script": [
+      {
+        "sp": "Guide",
+        "t": "Welcome to the City Museum. Our tour today will take about an hour."
+      },
+      {
+        "sp": "Guide",
+        "t": "We'll start on the ground floor with the history of the river, then go up to the second floor to see the paintings. The first floor is closed this week because they're repairing the roof."
+      },
+      {
+        "sp": "Guide",
+        "t": "You're welcome to take photos, but please don't use a flash, as it can damage the old paintings. The café is next to the main entrance, and it's open until five."
+      }
+    ],
+    "vi": [
+      "Chào mừng các bạn đến Bảo tàng Thành phố. Chuyến tham quan hôm nay mất khoảng một giờ.",
+      "Chúng ta bắt đầu ở tầng trệt với lịch sử con sông, rồi lên tầng hai xem tranh. Tầng một đóng cửa tuần này vì đang sửa mái.",
+      "Các bạn được chụp ảnh nhưng vui lòng không dùng đèn flash vì có thể làm hỏng tranh cổ. Quán cà phê ở cạnh lối vào chính và mở đến năm giờ."
+    ],
+    "items": [
+      {
+        "id": "pl-l-05-a",
+        "q": "Why is the first floor closed?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "There is a special exhibition."
+          },
+          {
+            "k": "B",
+            "t": "Work is being done on the roof."
+          },
+          {
+            "k": "C",
+            "t": "The paintings are being cleaned."
+          },
+          {
+            "k": "D",
+            "t": "It is used for a café."
+          }
+        ],
+        "ans": "B",
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "The first floor is closed this week because they're repairing the roof."
+        },
+        "why": "\"repairing the roof\" = đang sửa mái nhà.",
+        "wrong": {
+          "A": "Không nhắc đến triển lãm đặc biệt.",
+          "C": "Tranh ở tầng hai và không được nói là đang lau chùi.",
+          "D": "Quán cà phê ở cạnh lối vào chính."
+        }
+      },
+      {
+        "id": "pl-l-05-b",
+        "q": "What are visitors asked not to do?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Take photos"
+          },
+          {
+            "k": "B",
+            "t": "Eat in the café"
+          },
+          {
+            "k": "C",
+            "t": "Use a flash"
+          },
+          {
+            "k": "D",
+            "t": "Go to the second floor"
+          }
+        ],
+        "ans": "C",
+        "b": 5,
+        "ev": {
+          "p": 2,
+          "s": "please don't use a flash"
+        },
+        "why": "Khách được chụp ảnh nhưng không dùng đèn flash vì có thể làm hỏng tranh cổ.",
+        "wrong": {
+          "A": "Khách ĐƯỢC chụp ảnh (You're welcome to take photos). Bẫy: nghe thấy \"photos\" rồi chọn ngay.",
+          "B": "Quán cà phê mở cửa đến năm giờ, không cấm.",
+          "D": "Đoàn sẽ lên tầng hai xem tranh."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-05.mp3",
+      "dur": 23.4,
+      "voices": [
+        "bm_lewis"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-06",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B1",
+    "band": 5,
+    "mode": "place",
+    "title": "Choosing a course",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Linh": "af_bella",
+      "Advisor": "bm_george"
+    },
+    "script": [
+      {
+        "sp": "Linh",
+        "t": "I'd like to take an evening course, but I'm not sure which one. I work until six every day."
+      },
+      {
+        "sp": "Advisor",
+        "t": "Well, the photography course starts at six thirty on Tuesdays and Thursdays, so that might be difficult."
+      },
+      {
+        "sp": "Linh",
+        "t": "Yes, my office is quite far from here."
+      },
+      {
+        "sp": "Advisor",
+        "t": "Then I'd suggest the Spanish course. It's on Wednesday evenings from seven thirty, and you can also join online if you're busy."
+      },
+      {
+        "sp": "Linh",
+        "t": "Online sounds useful. I'll sign up for that one."
+      }
+    ],
+    "vi": [
+      "Tôi muốn học một khoá buổi tối nhưng chưa biết chọn khoá nào. Ngày nào tôi cũng làm đến sáu giờ.",
+      "À, khoá nhiếp ảnh bắt đầu lúc sáu giờ rưỡi thứ Ba và thứ Năm, nên có thể khó cho chị.",
+      "Vâng, văn phòng tôi khá xa đây.",
+      "Vậy tôi gợi ý khoá tiếng Tây Ban Nha. Khoá học vào tối thứ Tư từ bảy giờ rưỡi, và chị cũng có thể học trực tuyến nếu bận.",
+      "Học trực tuyến nghe có ích đấy. Tôi sẽ đăng ký khoá đó."
+    ],
+    "items": [
+      {
+        "id": "pl-l-06-a",
+        "q": "Why might the photography course be difficult for Linh?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "It is too expensive."
+          },
+          {
+            "k": "B",
+            "t": "It starts soon after she finishes work."
+          },
+          {
+            "k": "C",
+            "t": "It is only online."
+          },
+          {
+            "k": "D",
+            "t": "It is full."
+          }
+        ],
+        "ans": "B",
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "the photography course starts at six thirty on Tuesdays and Thursdays, so that might be difficult"
+        },
+        "why": "Linh làm đến sáu giờ và văn phòng xa, khoá nhiếp ảnh bắt đầu lúc sáu rưỡi: quá sát giờ tan làm.",
+        "wrong": {
+          "A": "Không nhắc đến giá.",
+          "C": "Học trực tuyến là lựa chọn của khoá tiếng Tây Ban Nha.",
+          "D": "Không nói khoá đã đầy."
+        }
+      },
+      {
+        "id": "pl-l-06-b",
+        "q": "Which course does Linh choose?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Photography on Tuesdays and Thursdays"
+          },
+          {
+            "k": "B",
+            "t": "Spanish on Wednesday evenings"
+          },
+          {
+            "k": "C",
+            "t": "Spanish on Saturday mornings"
+          },
+          {
+            "k": "D",
+            "t": "She decides not to take a course."
+          }
+        ],
+        "ans": "B",
+        "b": 5.5,
+        "ev": {
+          "p": 3,
+          "s": "It's on Wednesday evenings from seven thirty"
+        },
+        "why": "Linh đăng ký khoá tiếng Tây Ban Nha học tối thứ Tư (I'll sign up for that one).",
+        "wrong": {
+          "A": "Khoá nhiếp ảnh khó với lịch của cô.",
+          "C": "Khoá tiếng Tây Ban Nha học tối thứ Tư, không phải sáng thứ Bảy.",
+          "D": "Cô có đăng ký một khoá."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-06.mp3",
+      "dur": 26.8,
+      "voices": [
+        "af_bella",
+        "bm_george"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-07",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B1",
+    "band": 5.5,
+    "mode": "place",
+    "title": "Radio weather report",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Presenter": "af_sky"
+    },
+    "script": [
+      {
+        "sp": "Presenter",
+        "t": "And now the weather. Tomorrow morning will start dry and quite cold in the north, with temperatures around twelve degrees."
+      },
+      {
+        "sp": "Presenter",
+        "t": "Heavy rain will reach the coast by lunchtime and move inland during the afternoon, so if you're driving home after work, expect wet roads and slower traffic."
+      },
+      {
+        "sp": "Presenter",
+        "t": "The good news is that the weekend looks much brighter, with sunshine on both Saturday and Sunday."
+      }
+    ],
+    "vi": [
+      "Và sau đây là thời tiết. Sáng mai miền bắc khô ráo và khá lạnh, nhiệt độ khoảng mười hai độ.",
+      "Mưa to sẽ đến vùng ven biển vào giờ trưa và vào sâu đất liền trong buổi chiều, nên nếu bạn lái xe về nhà sau giờ làm, hãy chuẩn bị đường ướt và giao thông chậm hơn.",
+      "Tin vui là cuối tuần trông sáng sủa hơn nhiều, có nắng cả thứ Bảy và Chủ nhật."
+    ],
+    "items": [
+      {
+        "id": "pl-l-07-a",
+        "q": "When will the rain reach areas away from the coast?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "In the morning"
+          },
+          {
+            "k": "B",
+            "t": "At lunchtime"
+          },
+          {
+            "k": "C",
+            "t": "In the afternoon"
+          },
+          {
+            "k": "D",
+            "t": "At the weekend"
+          }
+        ],
+        "ans": "C",
+        "b": 5.5,
+        "ev": {
+          "p": 1,
+          "s": "Heavy rain will reach the coast by lunchtime and move inland during the afternoon"
+        },
+        "why": "\"move inland during the afternoon\" = vào sâu đất liền (xa bờ biển) trong buổi chiều.",
+        "wrong": {
+          "A": "Buổi sáng khô ráo.",
+          "B": "Giờ trưa là lúc mưa đến VÙNG VEN BIỂN. Bẫy: hai mốc thời gian trong cùng một câu.",
+          "D": "Cuối tuần có nắng."
+        }
+      },
+      {
+        "id": "pl-l-07-b",
+        "q": "What does the presenter warn drivers about?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Ice on the roads in the morning"
+          },
+          {
+            "k": "B",
+            "t": "Roads being closed at the weekend"
+          },
+          {
+            "k": "C",
+            "t": "Wet roads and delays on the way home"
+          },
+          {
+            "k": "D",
+            "t": "Strong sunshine making it hard to see"
+          }
+        ],
+        "ans": "C",
+        "b": 5.5,
+        "ev": {
+          "p": 1,
+          "s": "expect wet roads and slower traffic"
+        },
+        "why": "Người lái xe về sau giờ làm nên chuẩn bị đường ướt và giao thông chậm.",
+        "wrong": {
+          "A": "Buổi sáng lạnh (12 độ) nhưng không nói có băng.",
+          "B": "Không nói đóng đường.",
+          "D": "Nắng là tin vui cuối tuần, không phải lời cảnh báo."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-07.mp3",
+      "dur": 20.8,
+      "voices": [
+        "af_sky"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-08",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B2",
+    "band": 6,
+    "mode": "place",
+    "title": "Group project planning",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Mai": "bf_emma",
+      "Jack": "am_adam"
+    },
+    "script": [
+      {
+        "sp": "Mai",
+        "t": "So, for our project on public transport, I thought we could interview people at the bus station."
+      },
+      {
+        "sp": "Jack",
+        "t": "That's a good idea, but we'd only get people who already use buses. If we want to know why people don't use public transport, we need to ask them too."
+      },
+      {
+        "sp": "Mai",
+        "t": "True. Maybe an online survey would reach more of them."
+      },
+      {
+        "sp": "Jack",
+        "t": "Exactly. We could do both: a few interviews for detail, and the survey for numbers."
+      },
+      {
+        "sp": "Mai",
+        "t": "OK. I'll write the survey questions, and you can contact the bus company about the interviews."
+      }
+    ],
+    "vi": [
+      "Với dự án về giao thông công cộng, mình nghĩ chúng ta có thể phỏng vấn người ở bến xe buýt.",
+      "Ý hay, nhưng như vậy chỉ gặp người đã đi xe buýt. Nếu muốn biết vì sao người ta không dùng giao thông công cộng thì phải hỏi cả họ.",
+      "Đúng. Có lẽ khảo sát trực tuyến sẽ tiếp cận được nhiều người như vậy hơn.",
+      "Chính xác. Mình làm cả hai: vài cuộc phỏng vấn để có chi tiết, và khảo sát để có số liệu.",
+      "Được. Mình viết câu hỏi khảo sát, còn cậu liên hệ công ty xe buýt về các cuộc phỏng vấn."
+    ],
+    "items": [
+      {
+        "id": "pl-l-08-a",
+        "q": "What is Jack's concern about interviewing people at the bus station?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "It would take too much time."
+          },
+          {
+            "k": "B",
+            "t": "They would only hear from current bus users."
+          },
+          {
+            "k": "C",
+            "t": "The bus company would not allow it."
+          },
+          {
+            "k": "D",
+            "t": "People would not want to talk."
+          }
+        ],
+        "ans": "B",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "we'd only get people who already use buses"
+        },
+        "why": "Jack lo chỉ gặp được người đã đi xe buýt, trong khi họ cần biết vì sao người khác không đi.",
+        "wrong": {
+          "A": "Jack không nói tốn thời gian.",
+          "C": "Việc liên hệ công ty xe buýt là để sắp xếp phỏng vấn, không có ý họ không cho phép.",
+          "D": "Không ai nói người ta không muốn nói chuyện."
+        }
+      },
+      {
+        "id": "pl-l-08-b",
+        "q": "What will Mai do next?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Contact the bus company"
+          },
+          {
+            "k": "B",
+            "t": "Interview people at the station"
+          },
+          {
+            "k": "C",
+            "t": "Prepare questions for the online survey"
+          },
+          {
+            "k": "D",
+            "t": "Count the number of bus users"
+          }
+        ],
+        "ans": "C",
+        "b": 6,
+        "ev": {
+          "p": 4,
+          "s": "I'll write the survey questions"
+        },
+        "why": "Mai nói mình sẽ viết câu hỏi khảo sát.",
+        "wrong": {
+          "A": "Liên hệ công ty xe buýt là việc của Jack. Bẫy: nhầm người làm.",
+          "B": "Phỏng vấn sẽ làm sau, và Mai không nhận việc này.",
+          "D": "Không có việc đếm người đi xe buýt."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-08.mp3",
+      "dur": 29.2,
+      "voices": [
+        "bf_emma",
+        "am_adam"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-09",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "place",
+    "title": "Lecture: coffee farming",
+    "instr": "Listen to part of a lecture and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Lecturer": "bm_george"
+    },
+    "script": [
+      {
+        "sp": "Lecturer",
+        "t": "Today I want to look at how climate change is affecting coffee farming. Coffee plants, particularly the Arabica variety, are very sensitive to temperature."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "As average temperatures rise, many farms at lower altitudes are becoming unsuitable, and farmers are being forced to move further up the mountains."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "But this isn't a simple solution. Higher land is often covered by forest, so moving farms upwards can lead to the loss of important natural habitats."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "That's why some researchers are focusing instead on developing new varieties that can tolerate more heat."
+      }
+    ],
+    "vi": [
+      "Hôm nay tôi muốn xem biến đổi khí hậu đang ảnh hưởng đến việc trồng cà phê thế nào. Cây cà phê, nhất là giống Arabica, rất nhạy cảm với nhiệt độ.",
+      "Khi nhiệt độ trung bình tăng, nhiều trang trại ở độ cao thấp trở nên không còn phù hợp, và nông dân buộc phải dời lên cao hơn trên núi.",
+      "Nhưng đây không phải giải pháp đơn giản. Đất cao thường có rừng che phủ, nên dời trang trại lên cao có thể làm mất những môi trường sống tự nhiên quan trọng.",
+      "Vì vậy một số nhà nghiên cứu lại tập trung phát triển giống mới chịu nóng tốt hơn."
+    ],
+    "allow": [
+      "arabica",
+      "altitudes"
+    ],
+    "items": [
+      {
+        "id": "pl-l-09-a",
+        "q": "Why are some farmers moving their coffee farms?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "The land at lower levels is becoming too warm."
+          },
+          {
+            "k": "B",
+            "t": "Forests provide better soil."
+          },
+          {
+            "k": "C",
+            "t": "Mountain land is cheaper."
+          },
+          {
+            "k": "D",
+            "t": "New varieties need more rain."
+          }
+        ],
+        "ans": "A",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "As average temperatures rise, many farms at lower altitudes are becoming unsuitable"
+        },
+        "why": "Nhiệt độ tăng khiến trang trại ở độ cao thấp không còn phù hợp: đất thấp đang trở nên quá nóng.",
+        "wrong": {
+          "B": "Rừng được nhắc như môi trường sống bị mất, không phải đất tốt hơn.",
+          "C": "Không nhắc đến giá đất.",
+          "D": "Giống mới được phát triển để chịu nóng, không nói về mưa."
+        }
+      },
+      {
+        "id": "pl-l-09-b",
+        "q": "What problem does the lecturer mention about moving farms higher?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Coffee grows more slowly there."
+          },
+          {
+            "k": "B",
+            "t": "It may destroy forest habitats."
+          },
+          {
+            "k": "C",
+            "t": "Farmers cannot reach the land."
+          },
+          {
+            "k": "D",
+            "t": "Arabica cannot grow in cold places."
+          }
+        ],
+        "ans": "B",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "moving farms upwards can lead to the loss of important natural habitats"
+        },
+        "why": "Đất cao thường có rừng, nên dời trang trại lên có thể làm mất môi trường sống tự nhiên.",
+        "wrong": {
+          "A": "Không nói cà phê mọc chậm hơn.",
+          "C": "Không nói nông dân không tới được.",
+          "D": "Bài nói Arabica nhạy cảm với nhiệt độ, không nói không trồng được ở nơi lạnh."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-09.mp3",
+      "dur": 34.7,
+      "voices": [
+        "bm_george"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-10",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "place",
+    "title": "Volunteer orientation",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Coordinator": "af_sarah"
+    },
+    "script": [
+      {
+        "sp": "Coordinator",
+        "t": "Thanks for volunteering at the festival. Most of you will be working at the information tents, answering questions about times and locations."
+      },
+      {
+        "sp": "Coordinator",
+        "t": "If someone asks you something you can't answer, don't guess. Send them to the main tent by the north gate, where staff have the full programme."
+      },
+      {
+        "sp": "Coordinator",
+        "t": "Your shifts are four hours long. You'll get a meal voucher for each shift, but please collect it before you start, because the office closes at six."
+      }
+    ],
+    "vi": [
+      "Cảm ơn các bạn đã tình nguyện ở lễ hội. Phần lớn các bạn sẽ làm ở các lều thông tin, trả lời câu hỏi về giờ giấc và địa điểm.",
+      "Nếu có ai hỏi điều bạn không trả lời được, đừng đoán. Hãy chỉ họ đến lều chính cạnh cổng bắc, nơi nhân viên có chương trình đầy đủ.",
+      "Mỗi ca làm dài bốn tiếng. Bạn nhận một phiếu ăn cho mỗi ca, nhưng hãy lấy phiếu trước khi bắt đầu, vì văn phòng đóng cửa lúc sáu giờ."
+    ],
+    "items": [
+      {
+        "id": "pl-l-10-a",
+        "q": "What should volunteers do if they don't know an answer?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Give the best answer they can"
+          },
+          {
+            "k": "B",
+            "t": "Phone the office"
+          },
+          {
+            "k": "C",
+            "t": "Direct the person to the main tent"
+          },
+          {
+            "k": "D",
+            "t": "Look at the programme in their tent"
+          }
+        ],
+        "ans": "C",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "Send them to the main tent by the north gate"
+        },
+        "why": "Không trả lời được thì chỉ người hỏi đến lều chính cạnh cổng bắc.",
+        "wrong": {
+          "A": "\"don't guess\" = đừng đoán.",
+          "B": "Không nói gọi điện cho văn phòng.",
+          "D": "Chương trình đầy đủ nằm ở lều chính, không phải lều của tình nguyện viên."
+        }
+      },
+      {
+        "id": "pl-l-10-b",
+        "q": "Why should volunteers collect meal vouchers early?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "There are not enough vouchers."
+          },
+          {
+            "k": "B",
+            "t": "The office is not open late."
+          },
+          {
+            "k": "C",
+            "t": "Meals are served before shifts."
+          },
+          {
+            "k": "D",
+            "t": "Vouchers expire after four hours."
+          }
+        ],
+        "ans": "B",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "please collect it before you start, because the office closes at six"
+        },
+        "why": "Văn phòng đóng cửa lúc sáu giờ, nên phải lấy phiếu trước khi vào ca.",
+        "wrong": {
+          "A": "Không nói thiếu phiếu.",
+          "C": "Không nói bữa ăn phục vụ trước ca.",
+          "D": "Bốn tiếng là độ dài một ca, không phải hạn của phiếu. Bẫy dùng lại con số."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-10.mp3",
+      "dur": 24.2,
+      "voices": [
+        "af_sarah"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-11",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B1",
+    "band": 4.5,
+    "mode": "place",
+    "title": "Lost phone",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Officer": "am_michael",
+      "Girl": "af_bella"
+    },
+    "script": [
+      {
+        "sp": "Girl",
+        "t": "Excuse me, I think I left my phone on the bus this morning."
+      },
+      {
+        "sp": "Officer",
+        "t": "OK. Which bus were you on?"
+      },
+      {
+        "sp": "Girl",
+        "t": "Number 32, the one that goes to the university. I got off at about eight."
+      },
+      {
+        "sp": "Officer",
+        "t": "What does the phone look like?"
+      },
+      {
+        "sp": "Girl",
+        "t": "It's black, with a green case. There's a photo of a cat on the back."
+      },
+      {
+        "sp": "Officer",
+        "t": "Let me check. Yes, a driver brought one in an hour ago. Can you tell me the password to prove it's yours?"
+      }
+    ],
+    "vi": [
+      "Xin lỗi, tôi nghĩ tôi để quên điện thoại trên xe buýt sáng nay.",
+      "Được. Bạn đi xe số mấy?",
+      "Số 32, xe đi đến trường đại học. Tôi xuống xe khoảng tám giờ.",
+      "Điện thoại trông thế nào?",
+      "Màu đen, ốp màu xanh lá. Mặt sau có ảnh một con mèo.",
+      "Để tôi xem. Có, một tài xế mang đến một chiếc cách đây một giờ. Bạn đọc mật khẩu để chứng minh là của bạn nhé?"
+    ],
+    "items": [
+      {
+        "id": "pl-l-11-a",
+        "q": "What colour is the phone case?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Black"
+          },
+          {
+            "k": "B",
+            "t": "Green"
+          },
+          {
+            "k": "C",
+            "t": "White"
+          },
+          {
+            "k": "D",
+            "t": "Blue"
+          }
+        ],
+        "ans": "B",
+        "b": 4.5,
+        "ev": {
+          "p": 4,
+          "s": "It's black, with a green case."
+        },
+        "why": "Điện thoại màu đen nhưng ốp (case) màu xanh lá.",
+        "wrong": {
+          "A": "Màu đen là màu điện thoại, không phải ốp. Bẫy: hai màu trong một câu.",
+          "C": "Không nhắc đến màu trắng.",
+          "D": "Không nhắc đến màu xanh dương."
+        }
+      },
+      {
+        "id": "pl-l-11-b",
+        "q": "What does the officer ask the girl to do?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Come back in an hour"
+          },
+          {
+            "k": "B",
+            "t": "Call the bus driver"
+          },
+          {
+            "k": "C",
+            "t": "Give the phone's password"
+          },
+          {
+            "k": "D",
+            "t": "Show a photo of her cat"
+          }
+        ],
+        "ans": "C",
+        "b": 5,
+        "ev": {
+          "p": 5,
+          "s": "Can you tell me the password to prove it's yours?"
+        },
+        "why": "Nhân viên yêu cầu cô đọc mật khẩu để chứng minh điện thoại là của cô.",
+        "wrong": {
+          "A": "\"an hour ago\" là lúc tài xế mang điện thoại đến, không phải lời hẹn quay lại.",
+          "B": "Tài xế đã mang điện thoại đến rồi.",
+          "D": "Ảnh con mèo là đặc điểm của điện thoại, không phải thứ được yêu cầu."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-11.mp3",
+      "dur": 25.1,
+      "voices": [
+        "am_michael",
+        "af_bella"
+      ]
+    }
+  },
+  {
+    "id": "pl-l-12",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B1",
+    "band": 5.5,
+    "mode": "place",
+    "title": "Recycling instructions",
+    "instr": "Listen and answer the questions. You will hear the recording once.",
+    "voices": {
+      "Speaker": "bf_isabella"
+    },
+    "script": [
+      {
+        "sp": "Speaker",
+        "t": "From next month, the way we collect rubbish in this area is changing. Paper and cardboard should go in the blue bin, and glass and plastic bottles in the green bin."
+      },
+      {
+        "sp": "Speaker",
+        "t": "Food waste will now be collected every week, but the other bins will only be emptied every two weeks."
+      },
+      {
+        "sp": "Speaker",
+        "t": "Please rinse bottles before you put them in the bin. Dirty bottles cannot be recycled and will be thrown away."
+      }
+    ],
+    "vi": [
+      "Từ tháng sau, cách thu gom rác ở khu vực này sẽ thay đổi. Giấy và bìa các-tông bỏ vào thùng xanh dương, chai thuỷ tinh và chai nhựa bỏ vào thùng xanh lá.",
+      "Rác thực phẩm nay được thu mỗi tuần, nhưng các thùng khác chỉ được đổ hai tuần một lần.",
+      "Vui lòng tráng chai trước khi bỏ vào thùng. Chai bẩn không tái chế được và sẽ bị vứt đi."
+    ],
+    "allow": [
+      "rinse",
+      "cardboard"
+    ],
+    "items": [
+      {
+        "id": "pl-l-12-a",
+        "q": "Which bin is for plastic bottles?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "The blue bin"
+          },
+          {
+            "k": "B",
+            "t": "The green bin"
+          },
+          {
+            "k": "C",
+            "t": "The food waste bin"
+          },
+          {
+            "k": "D",
+            "t": "Any bin"
+          }
+        ],
+        "ans": "B",
+        "b": 5,
+        "ev": {
+          "p": 0,
+          "s": "glass and plastic bottles in the green bin"
+        },
+        "why": "Chai thuỷ tinh và chai nhựa bỏ vào thùng xanh lá (green).",
+        "wrong": {
+          "A": "Thùng xanh dương dành cho giấy và bìa.",
+          "C": "Thùng rác thực phẩm không dành cho chai.",
+          "D": "Mỗi loại rác có thùng riêng."
+        }
+      },
+      {
+        "id": "pl-l-12-b",
+        "q": "How often will the blue and green bins be emptied?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Every day"
+          },
+          {
+            "k": "B",
+            "t": "Every week"
+          },
+          {
+            "k": "C",
+            "t": "Every two weeks"
+          },
+          {
+            "k": "D",
+            "t": "Every month"
+          }
+        ],
+        "ans": "C",
+        "b": 5.5,
+        "ev": {
+          "p": 1,
+          "s": "the other bins will only be emptied every two weeks"
+        },
+        "why": "Ngoài rác thực phẩm, \"the other bins\" (thùng xanh dương, xanh lá) chỉ đổ hai tuần một lần.",
+        "wrong": {
+          "A": "Không có thùng nào đổ mỗi ngày.",
+          "B": "Mỗi tuần là lịch thu rác thực phẩm. Bẫy: hai tần suất trong một câu.",
+          "D": "\"next month\" là lúc bắt đầu thay đổi, không phải tần suất."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/pl-l-12.mp3",
+      "dur": 21,
+      "voices": [
+        "bf_isabella"
+      ]
+    }
+  }
+]

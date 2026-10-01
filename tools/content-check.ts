@@ -31,6 +31,7 @@ for (const f of walk(DIR)) {
     if (!validate(g)) { schemaErr++; console.error(`✗ ${rel} ${(g as { id?: string }).id ?? ''}: sai lược đồ ${ajv.errorsText(validate.errors)}`); continue; }
     groups.push(g as Group);
     const a = (g as Group).audio;
+    if ((g as Group).kind === 'listening' && !a) { schemaErr++; console.error(`✗ ${(g as Group).id}: bài nghe chưa có âm thanh (chạy tools/audio.cjs)`); }
     if (a) for (const p of [a.file, a.slow, a.noise]) if (p && !existsSync(join(ROOT, p))) { schemaErr++; console.error(`✗ ${(g as Group).id}: thiếu tệp âm thanh ${p}`); }
   }
 }
