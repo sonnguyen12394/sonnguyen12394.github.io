@@ -1,0 +1,816 @@
+[
+  {
+    "id": "r-sentence-01",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-sentence",
+    "level": "B1",
+    "band": 5,
+    "mode": "practice",
+    "title": "A Town Without Plastic Bags",
+    "instr": "Complete the sentences below. Choose NO MORE THAN THREE WORDS from the text for each answer.",
+    "paras": [
+      "In 2015, the small Welsh town of Aberford decided to stop using plastic bags. The idea came from a group of secondary school students, who had collected rubbish on the local beach and found that most of it was plastic. They asked shop owners to stop giving out bags, and within a year almost every shop had agreed.",
+      "Instead of plastic bags, shops now offer paper bags for a small charge, or sell cloth bags that can be used many times. The cloth bags were designed by a local artist and show a picture of the town's old harbour. They have become so popular that tourists often buy them as souvenirs.",
+      "The project has not been easy for everyone. Some older residents found it hard to remember to bring their own bags, so the town hall set up a 'bag library' where people can borrow a bag and return it on their next visit. Five years later, the beach is much cleaner, and several nearby towns have copied the idea."
+    ],
+    "vi": [
+      "Năm 2015, thị trấn nhỏ Aberford ở xứ Wales quyết định ngừng dùng túi ni lông. Ý tưởng đến từ một nhóm học sinh trung học, các em đã nhặt rác ở bãi biển địa phương và thấy phần lớn là nhựa. Các em đề nghị chủ cửa hàng ngừng phát túi, và trong vòng một năm gần như mọi cửa hàng đã đồng ý.",
+      "Thay cho túi ni lông, cửa hàng giờ có túi giấy với giá nhỏ, hoặc bán túi vải dùng được nhiều lần. Túi vải do một nghệ sĩ địa phương thiết kế, in hình bến cảng cũ của thị trấn. Chúng được ưa chuộng tới mức du khách thường mua làm quà lưu niệm.",
+      "Dự án không dễ với tất cả mọi người. Một số cư dân lớn tuổi khó nhớ mang túi riêng, nên toà thị chính lập một 'thư viện túi' nơi mọi người có thể mượn túi và trả lại lần tới. Năm năm sau, bãi biển sạch hơn nhiều, và nhiều thị trấn lân cận đã làm theo."
+    ],
+    "allow": [
+      "Welsh",
+      "souvenirs",
+      "harbour"
+    ],
+    "items": [
+      {
+        "id": "r-sentence-01-1",
+        "q": "The plan to stop using plastic bags was suggested by ___.",
+        "ans": {
+          "accept": [
+            "secondary school students",
+            "school students",
+            "students"
+          ]
+        },
+        "limit": 3,
+        "b": 4.5,
+        "ev": {
+          "p": 0,
+          "s": "The idea came from a group of secondary school students"
+        },
+        "why": "Ý tưởng đến từ một nhóm học sinh trung học (secondary school students).",
+        "wrong": {
+          "a group of students": "Bốn từ, vượt giới hạn ba từ; chỉ cần \"students\" hoặc \"secondary school students\"."
+        }
+      },
+      {
+        "id": "r-sentence-01-2",
+        "q": "While cleaning the beach, the students discovered that most of the rubbish was ___.",
+        "ans": {
+          "accept": [
+            "plastic"
+          ]
+        },
+        "limit": 3,
+        "b": 4.5,
+        "ev": {
+          "p": 0,
+          "s": "found that most of it was plastic"
+        },
+        "why": "Các em thấy phần lớn rác là nhựa (plastic).",
+        "wrong": {
+          "plastic bags": "Bài nói \"most of it was plastic\", không nói phần lớn là túi ni lông."
+        }
+      },
+      {
+        "id": "r-sentence-01-3",
+        "q": "Shoppers who want a paper bag must pay a ___.",
+        "ans": {
+          "accept": [
+            "small charge",
+            "charge"
+          ]
+        },
+        "limit": 3,
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "shops now offer paper bags for a small charge"
+        },
+        "why": "Túi giấy có giá nhỏ: 'a small charge'.",
+        "wrong": {
+          "fee": "Không có trong bài; phải chép đúng từ trong bài (charge)."
+        }
+      },
+      {
+        "id": "r-sentence-01-4",
+        "q": "The cloth bags show an image of the town's ___.",
+        "ans": {
+          "accept": [
+            "old harbour",
+            "harbour",
+            "old harbor",
+            "harbor"
+          ]
+        },
+        "limit": 3,
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "show a picture of the town's old harbour"
+        },
+        "why": "Túi vải in hình bến cảng cũ: 'old harbour' (viết kiểu Mỹ 'harbor' cũng được chấp nhận).",
+        "wrong": {
+          "local artist": "Nghệ sĩ là người thiết kế túi, không phải hình in trên túi."
+        }
+      },
+      {
+        "id": "r-sentence-01-5",
+        "q": "For people who forget their bags, the town hall created a ___.",
+        "ans": {
+          "accept": [
+            "bag library"
+          ]
+        },
+        "limit": 3,
+        "b": 5.5,
+        "ev": {
+          "p": 2,
+          "s": "the town hall set up a 'bag library' where people can borrow a bag"
+        },
+        "why": "'bag library' là nơi mượn túi.",
+        "wrong": {
+          "town hall": "Toà thị chính là chủ thể đã lập ra; câu hỏi cần thứ được lập ra."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-sentence-02",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-sentence",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "The Secret Life of Octopuses",
+    "instr": "Complete the sentences below. Choose NO MORE THAN TWO WORDS from the text for each answer.",
+    "paras": [
+      "Octopuses are among the most intelligent animals without a backbone. An octopus has around five hundred million nerve cells, a number similar to that of a dog, but two-thirds of these are located in its arms rather than its brain. As a result, each arm can taste, touch and even make simple decisions without instructions from the centre.",
+      "In laboratories, octopuses have learned to open screw-top jars to reach food inside, and some have escaped from their tanks at night to steal fish from neighbouring tanks. Researchers have also observed that individual octopuses respond differently to different people: one aquarium octopus regularly sprayed water at a particular staff member it seemed to dislike.",
+      "Perhaps their most remarkable skill is camouflage. Special cells in their skin allow octopuses to change colour in less than a second, and some species can also change the texture of their skin to look like rock or seaweed. Surprisingly, scientists believe that octopuses are colour-blind, and how they match their surroundings so accurately remains a mystery.",
+      "Despite their intelligence, most octopuses live for only one or two years. Females usually stop eating after laying their eggs and die soon after the young hatch."
+    ],
+    "vi": [
+      "Bạch tuộc là một trong những loài thông minh nhất trong số động vật không xương sống. Một con bạch tuộc có khoảng năm trăm triệu tế bào thần kinh, xấp xỉ một con chó, nhưng hai phần ba số này nằm ở các xúc tu thay vì ở não. Vì vậy mỗi xúc tu có thể nếm, sờ và thậm chí tự đưa ra quyết định đơn giản mà không cần chỉ dẫn từ trung tâm.",
+      "Trong phòng thí nghiệm, bạch tuộc đã học cách mở lọ nắp vặn để lấy thức ăn bên trong, và một số con đã trốn khỏi bể vào ban đêm để trộm cá ở bể bên cạnh. Các nhà nghiên cứu cũng thấy từng con bạch tuộc phản ứng khác nhau với những người khác nhau: một con bạch tuộc ở thuỷ cung thường xuyên phun nước vào một nhân viên mà nó có vẻ không ưa.",
+      "Có lẽ kỹ năng đáng kinh ngạc nhất của chúng là nguỵ trang. Những tế bào đặc biệt trên da cho phép bạch tuộc đổi màu trong chưa đầy một giây, và vài loài còn đổi được kết cấu da để trông như đá hoặc rong biển. Đáng ngạc nhiên là các nhà khoa học tin bạch tuộc bị mù màu, và chúng hoà lẫn với môi trường chính xác như vậy bằng cách nào vẫn là điều bí ẩn.",
+      "Dù thông minh, phần lớn bạch tuộc chỉ sống một hoặc hai năm. Con cái thường ngừng ăn sau khi đẻ trứng và chết ngay sau khi con non nở."
+    ],
+    "allow": [
+      "octopuses",
+      "octopus",
+      "backbone",
+      "camouflage",
+      "seaweed",
+      "colour-blind",
+      "aquarium",
+      "screw-top",
+      "hatch",
+      "texture"
+    ],
+    "items": [
+      {
+        "id": "r-sentence-02-1",
+        "q": "Most of an octopus's nerve cells are found in its ___.",
+        "ans": {
+          "accept": [
+            "arms"
+          ]
+        },
+        "limit": 2,
+        "b": 5.5,
+        "ev": {
+          "p": 0,
+          "s": "two-thirds of these are located in its arms rather than its brain"
+        },
+        "why": "Hai phần ba tế bào thần kinh nằm ở xúc tu (arms).",
+        "wrong": {
+          "brain": "Bài nói ở xúc tu \"rather than its brain\" (thay vì não)."
+        }
+      },
+      {
+        "id": "r-sentence-02-2",
+        "q": "Octopuses in laboratories have been able to open ___ to get food.",
+        "ans": {
+          "accept": [
+            "screw-top jars",
+            "jars"
+          ]
+        },
+        "limit": 2,
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "octopuses have learned to open screw-top jars to reach food inside"
+        },
+        "why": "Mở lọ nắp vặn: 'screw-top jars' (từ có gạch nối tính là một từ, nên vừa hai từ).",
+        "wrong": {
+          "screw top jars": "Thiếu gạch nối thành ba từ, vượt giới hạn; chép đúng \"screw-top\"."
+        }
+      },
+      {
+        "id": "r-sentence-02-3",
+        "q": "One octopus in an aquarium would spray water at a ___ it did not like.",
+        "ans": {
+          "accept": [
+            "staff member"
+          ]
+        },
+        "limit": 2,
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "regularly sprayed water at a particular staff member it seemed to dislike"
+        },
+        "why": "Con bạch tuộc phun nước vào một nhân viên ('staff member').",
+        "wrong": {
+          "particular staff member": "Ba từ, vượt giới hạn hai từ."
+        }
+      },
+      {
+        "id": "r-sentence-02-4",
+        "q": "Octopuses can change the ___ of their skin as well as its colour.",
+        "ans": {
+          "accept": [
+            "texture"
+          ]
+        },
+        "limit": 2,
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "some species can also change the texture of their skin to look like rock or seaweed"
+        },
+        "why": "Một số loài đổi được kết cấu da (texture).",
+        "wrong": {
+          "special cells": "Đó là thứ giúp đổi màu, không phải thứ bị thay đổi."
+        }
+      },
+      {
+        "id": "r-sentence-02-5",
+        "q": "Female octopuses stop ___ once they have laid eggs.",
+        "ans": {
+          "accept": [
+            "eating"
+          ]
+        },
+        "limit": 2,
+        "b": 6,
+        "ev": {
+          "p": 3,
+          "s": "Females usually stop eating after laying their eggs"
+        },
+        "why": "Con cái ngừng ăn (stop eating) sau khi đẻ trứng.",
+        "wrong": {
+          "eat": "Sau \"stop\" cần dạng -ing, và bài viết \"eating\"."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-sentence-03",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-sentence",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "practice",
+    "title": "The First Public Museums",
+    "instr": "Complete the sentences below. Choose NO MORE THAN TWO WORDS AND/OR A NUMBER from the text for each answer.",
+    "paras": [
+      "Before the eighteenth century, most collections of art and natural objects in Europe belonged to kings, nobles and wealthy scholars. They were displayed in private rooms known as 'cabinets of curiosities', and visitors could see them only by personal invitation.",
+      "The Ashmolean Museum in Oxford, which opened in 1683, is often described as the first public museum in Britain. Visitors were admitted on payment of a small fee, although early accounts complain that guides hurried people through the rooms and did not allow them to touch anything.",
+      "The British Museum, founded in 1753, took a different approach. Entry was free, but visitors had to apply in writing for a ticket and were taken round in small groups at fixed times. It was only in the nineteenth century, as railways made travel cheaper, that museums began to attract large numbers of working people.",
+      "Museum directors at the time hoped that their collections would educate the public and improve behaviour. Some even argued that a visit to a museum on Sunday afternoon was a healthy alternative to spending the day in a pub."
+    ],
+    "vi": [
+      "Trước thế kỷ 18, phần lớn bộ sưu tập nghệ thuật và hiện vật tự nhiên ở châu Âu thuộc về vua, quý tộc và học giả giàu có. Chúng được trưng bày trong những căn phòng riêng gọi là 'tủ đồ kỳ lạ', và khách chỉ được xem khi được mời riêng.",
+      "Bảo tàng Ashmolean ở Oxford, mở cửa năm 1683, thường được coi là bảo tàng công cộng đầu tiên ở Anh. Khách được vào khi trả một khoản phí nhỏ, dù các ghi chép thời đó than phiền người hướng dẫn đưa khách đi vội qua các phòng và không cho chạm vào thứ gì.",
+      "Bảo tàng Anh, thành lập năm 1753, làm theo cách khác. Vào cửa miễn phí, nhưng khách phải gửi đơn xin vé bằng văn bản và được dẫn đi theo nhóm nhỏ vào giờ cố định. Phải đến thế kỷ 19, khi đường sắt làm việc đi lại rẻ hơn, bảo tàng mới bắt đầu thu hút đông đảo người lao động.",
+      "Giám đốc bảo tàng thời đó hy vọng bộ sưu tập sẽ giáo dục công chúng và cải thiện hành vi. Một số còn cho rằng đi bảo tàng chiều Chủ nhật là lựa chọn lành mạnh thay cho việc ở cả ngày trong quán rượu."
+    ],
+    "allow": [
+      "nobles",
+      "scholars",
+      "curiosities",
+      "Ashmolean",
+      "pub"
+    ],
+    "items": [
+      {
+        "id": "r-sentence-03-1",
+        "q": "Early private collections could only be visited if the owner gave a ___.",
+        "ans": {
+          "accept": [
+            "personal invitation",
+            "invitation"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "visitors could see them only by personal invitation"
+        },
+        "why": "Chỉ được xem khi được mời riêng (personal invitation).",
+        "wrong": {
+          "ticket": "Vé là cách của Bảo tàng Anh sau này, không phải bộ sưu tập riêng."
+        }
+      },
+      {
+        "id": "r-sentence-03-2",
+        "q": "The Ashmolean Museum first opened in ___.",
+        "ans": {
+          "accept": [
+            "1683"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "which opened in 1683"
+        },
+        "why": "Bảo tàng Ashmolean mở cửa năm 1683.",
+        "wrong": {
+          "1753": "Năm thành lập Bảo tàng Anh."
+        }
+      },
+      {
+        "id": "r-sentence-03-3",
+        "q": "Visitors to the Ashmolean were not permitted to ___ the objects.",
+        "ans": {
+          "accept": [
+            "touch"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "did not allow them to touch anything"
+        },
+        "why": "Khách không được chạm (touch) vào hiện vật.",
+        "wrong": {
+          "see": "Khách được xem nhưng bị đưa đi vội; điều bị cấm là chạm vào."
+        }
+      },
+      {
+        "id": "r-sentence-03-4",
+        "q": "People wanting to visit the British Museum had to apply in writing for a ___.",
+        "ans": {
+          "accept": [
+            "ticket"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "visitors had to apply in writing for a ticket"
+        },
+        "why": "Khách phải gửi đơn bằng văn bản để xin vé (ticket).",
+        "wrong": {
+          "small fee": "Vào Bảo tàng Anh miễn phí; phí nhỏ là của Bảo tàng Ashmolean."
+        }
+      },
+      {
+        "id": "r-sentence-03-5",
+        "q": "Museum visits by working people increased in the nineteenth century because ___ made journeys cheaper.",
+        "ans": {
+          "accept": [
+            "railways"
+          ]
+        },
+        "limit": 2,
+        "num": true,
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "as railways made travel cheaper"
+        },
+        "why": "Đường sắt (railways) làm việc đi lại rẻ hơn.",
+        "wrong": {
+          "railway": "Bài viết số nhiều \"railways\"."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-sentence-04",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-sentence",
+    "level": "C1",
+    "band": 7,
+    "mode": "practice",
+    "title": "Why Bridges Sway",
+    "instr": "Complete the sentences below. Choose NO MORE THAN TWO WORDS from the text for each answer.",
+    "paras": [
+      "When the Millennium Bridge opened in London in June 2000, thousands of people crossed it on the first day. Within minutes, the bridge began to move from side to side, and pedestrians found themselves walking with their feet wide apart to keep their balance. The bridge was closed after only two days.",
+      "Engineers soon identified the cause. When a bridge moves slightly sideways, people walking on it instinctively adjust their steps to match the movement. If enough people do this at the same time, their footsteps push the bridge further in the same direction, creating a feedback loop. This effect, known as synchronous lateral excitation, had been observed before, but it had never been included in the standard design rules for footbridges.",
+      "The solution was not to make the bridge stiffer, which would have spoiled its elegant shape, but to fit it with dampers that absorb movement, rather like the shock absorbers in a car. Ninety-one dampers were installed beneath the deck at a cost of five million pounds.",
+      "The bridge reopened in 2002 and has carried millions of people without problems since. Its story is now taught to engineering students as an example of how a structure can behave in ways that its designers did not predict."
+    ],
+    "vi": [
+      "Khi Cầu Thiên Niên Kỷ ở London khánh thành tháng Sáu năm 2000, hàng nghìn người đi qua cầu ngày đầu tiên. Chỉ trong vài phút, cây cầu bắt đầu lắc sang hai bên, và người đi bộ phải dạng chân ra để giữ thăng bằng. Cây cầu bị đóng cửa chỉ sau hai ngày.",
+      "Các kỹ sư sớm tìm ra nguyên nhân. Khi một cây cầu lắc nhẹ sang ngang, người đi trên cầu theo bản năng chỉnh bước chân cho khớp với chuyển động. Nếu đủ nhiều người làm vậy cùng lúc, bước chân của họ đẩy cây cầu lắc thêm theo cùng hướng, tạo thành vòng phản hồi. Hiệu ứng này, gọi là kích thích ngang đồng bộ, từng được quan sát trước đó nhưng chưa bao giờ được đưa vào quy tắc thiết kế tiêu chuẩn cho cầu đi bộ.",
+      "Giải pháp không phải là làm cầu cứng hơn, vì như thế sẽ làm hỏng dáng thanh mảnh của nó, mà là lắp các bộ giảm chấn hấp thụ chuyển động, giống như giảm xóc của ô tô. Chín mươi mốt bộ giảm chấn được lắp dưới mặt cầu với chi phí năm triệu bảng.",
+      "Cây cầu mở lại năm 2002 và từ đó đã đưa hàng triệu người qua lại mà không gặp sự cố. Câu chuyện của nó nay được dạy cho sinh viên kỹ thuật như một ví dụ cho thấy công trình có thể hoạt động theo cách mà người thiết kế không lường trước."
+    ],
+    "allow": [
+      "pedestrians",
+      "instinctively",
+      "synchronous",
+      "lateral",
+      "excitation",
+      "footbridges",
+      "dampers",
+      "absorb",
+      "absorbers",
+      "elegant",
+      "stiffer"
+    ],
+    "items": [
+      {
+        "id": "r-sentence-04-1",
+        "q": "On the opening day, people on the bridge walked with their ___ wide apart.",
+        "ans": {
+          "accept": [
+            "feet"
+          ]
+        },
+        "limit": 2,
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "walking with their feet wide apart to keep their balance"
+        },
+        "why": "Người đi bộ dạng chân (feet wide apart) để giữ thăng bằng.",
+        "wrong": {
+          "balance": "Giữ thăng bằng là mục đích, không phải thứ dạng ra."
+        }
+      },
+      {
+        "id": "r-sentence-04-2",
+        "q": "Pedestrians automatically change their ___ when a bridge moves sideways.",
+        "ans": {
+          "accept": [
+            "steps"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "people walking on it instinctively adjust their steps to match the movement"
+        },
+        "why": "Người đi bộ theo bản năng chỉnh bước chân: 'instinctively adjust their steps' → 'automatically change their steps'.",
+        "wrong": {
+          "footsteps": "Bài dùng \"footsteps\" ở câu sau với nghĩa khác (bước chân đẩy cầu); câu này khớp với \"adjust their steps\"."
+        },
+        "tag": "paraphrase"
+      },
+      {
+        "id": "r-sentence-04-3",
+        "q": "The effect had never been part of the standard ___ for footbridges.",
+        "ans": {
+          "accept": [
+            "design rules"
+          ]
+        },
+        "limit": 2,
+        "b": 7.5,
+        "ev": {
+          "p": 1,
+          "s": "it had never been included in the standard design rules for footbridges"
+        },
+        "why": "Hiệu ứng chưa được đưa vào quy tắc thiết kế tiêu chuẩn (standard design rules); câu đề đã có 'standard'.",
+        "wrong": {
+          "standard design rules": "Lặp chữ \"standard\" đã có trong câu, thành ba từ, vượt giới hạn."
+        }
+      },
+      {
+        "id": "r-sentence-04-4",
+        "q": "Engineers rejected making the bridge stiffer because this would have damaged its ___.",
+        "ans": {
+          "accept": [
+            "elegant shape",
+            "shape"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "which would have spoiled its elegant shape"
+        },
+        "why": "Làm cầu cứng hơn sẽ làm hỏng dáng thanh mảnh (elegant shape).",
+        "wrong": {
+          "deck": "Mặt cầu là nơi lắp bộ giảm chấn, không phải lý do từ chối."
+        }
+      },
+      {
+        "id": "r-sentence-04-5",
+        "q": "The devices fitted to the bridge work in a similar way to a car's ___.",
+        "ans": {
+          "accept": [
+            "shock absorbers"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "rather like the shock absorbers in a car"
+        },
+        "why": "Bộ giảm chấn giống giảm xóc ô tô (shock absorbers).",
+        "wrong": {
+          "dampers": "Đây là tên chính các thiết bị trên cầu; câu hỏi cần thứ được so sánh ở ô tô."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-sentence-05",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-sentence",
+    "level": "C1",
+    "band": 7.5,
+    "mode": "practice",
+    "title": "The Language of Bees",
+    "instr": "Complete the sentences below. Choose NO MORE THAN TWO WORDS from the text for each answer.",
+    "paras": [
+      "In the 1940s, the Austrian scientist Karl von Frisch made one of the most surprising discoveries in animal behaviour. He showed that honeybees returning to the hive communicate the location of food to other bees through a series of movements that he called the 'waggle dance'.",
+      "During the dance, the bee runs forward in a straight line while shaking its body from side to side, then circles back to its starting point and repeats the movement. The angle of the straight run relative to the vertical indicates the direction of the food relative to the sun, while the duration of the waggle indicates distance: roughly one second for every kilometre.",
+      "Von Frisch's conclusions were initially met with scepticism. Critics argued that bees might simply be following the smell of the food carried by the dancer. The question was not settled until 2005, when researchers attached tiny radar devices to bees and tracked their flights, confirming that they flew in the direction indicated by the dance.",
+      "The dance is not perfectly precise, and bees appear to treat it as a rough guide, using smell and landmarks to locate flowers once they are close. Nevertheless, it remains the only known example of an animal other than humans using symbols to refer to distant objects."
+    ],
+    "vi": [
+      "Vào thập niên 1940, nhà khoa học người Áo Karl von Frisch có một trong những phát hiện đáng ngạc nhiên nhất về hành vi động vật. Ông chỉ ra rằng ong mật trở về tổ truyền đạt vị trí thức ăn cho những con ong khác qua một chuỗi chuyển động mà ông gọi là 'điệu nhảy lắc'.",
+      "Trong lúc nhảy, con ong chạy thẳng về phía trước đồng thời lắc mình sang hai bên, rồi vòng lại điểm xuất phát và lặp lại. Góc của đường chạy thẳng so với phương thẳng đứng cho biết hướng của thức ăn so với mặt trời, còn thời gian lắc cho biết khoảng cách: khoảng một giây cho mỗi ki-lô-mét.",
+      "Kết luận của von Frisch ban đầu bị nghi ngờ. Người phản bác cho rằng ong có thể chỉ đi theo mùi thức ăn mà con ong nhảy mang theo. Câu hỏi chỉ được giải quyết năm 2005, khi các nhà nghiên cứu gắn thiết bị radar nhỏ lên ong và theo dõi đường bay, xác nhận chúng bay theo hướng mà điệu nhảy chỉ ra.",
+      "Điệu nhảy không hoàn toàn chính xác, và ong dường như coi nó là chỉ dẫn gần đúng, dùng mùi và cột mốc để tìm hoa khi đã tới gần. Dù vậy, đây vẫn là ví dụ duy nhất được biết về một loài khác ngoài con người dùng ký hiệu để chỉ các vật ở xa."
+    ],
+    "allow": [
+      "honeybees",
+      "hive",
+      "waggle",
+      "scepticism",
+      "radar",
+      "landmarks",
+      "vertical",
+      "precise",
+      "duration"
+    ],
+    "items": [
+      {
+        "id": "r-sentence-05-1",
+        "q": "The direction of the food is shown by the ___ of the bee's straight run.",
+        "ans": {
+          "accept": [
+            "angle"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "The angle of the straight run relative to the vertical indicates the direction of the food"
+        },
+        "why": "Góc (angle) của đường chạy thẳng cho biết hướng.",
+        "wrong": {
+          "duration": "Thời gian lắc cho biết khoảng cách, không phải hướng."
+        }
+      },
+      {
+        "id": "r-sentence-05-2",
+        "q": "Each second of waggling represents a distance of about one ___.",
+        "ans": {
+          "accept": [
+            "kilometre",
+            "kilometer",
+            "km"
+          ]
+        },
+        "limit": 2,
+        "b": 6.5,
+        "ev": {
+          "p": 1,
+          "s": "roughly one second for every kilometre"
+        },
+        "why": "Mỗi giây lắc ứng với khoảng một ki-lô-mét (kilometre).",
+        "wrong": {
+          "second": "Giây là đơn vị thời gian của điệu lắc; câu hỏi cần đơn vị khoảng cách."
+        }
+      },
+      {
+        "id": "r-sentence-05-3",
+        "q": "Some scientists believed that bees found food by following its ___.",
+        "ans": {
+          "accept": [
+            "smell"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "bees might simply be following the smell of the food carried by the dancer"
+        },
+        "why": "Người phản bác cho rằng ong đi theo mùi (smell) thức ăn.",
+        "wrong": {
+          "dancer": "Con ong nhảy mang mùi; thứ được đi theo là mùi."
+        }
+      },
+      {
+        "id": "r-sentence-05-4",
+        "q": "In 2005, ___ were used to follow the bees' flights.",
+        "ans": {
+          "accept": [
+            "radar devices"
+          ]
+        },
+        "limit": 2,
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "researchers attached tiny radar devices to bees and tracked their flights"
+        },
+        "why": "Thiết bị radar (radar devices) gắn lên ong để theo dõi đường bay.",
+        "wrong": {
+          "tiny radar devices": "Ba từ, vượt giới hạn hai từ."
+        }
+      },
+      {
+        "id": "r-sentence-05-5",
+        "q": "Near the flowers, bees rely on smell and ___ to find them.",
+        "ans": {
+          "accept": [
+            "landmarks"
+          ]
+        },
+        "limit": 2,
+        "b": 7.5,
+        "ev": {
+          "p": 3,
+          "s": "using smell and landmarks to locate flowers once they are close"
+        },
+        "why": "Khi tới gần, ong dùng mùi và cột mốc (landmarks).",
+        "wrong": {
+          "symbols": "Ký hiệu là cách điệu nhảy truyền thông tin, không phải thứ dùng khi tới gần hoa."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-sentence-06",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-sentence",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Learning to Sleep in Space",
+    "instr": "Complete the sentences below. Choose NO MORE THAN TWO WORDS from the text for each answer.",
+    "paras": [
+      "Astronauts on the International Space Station see around sixteen sunrises and sunsets every day, as the station circles the Earth every ninety minutes. Without the normal pattern of day and night, many astronauts find it difficult to sleep, and surveys suggest that around half regularly take sleeping pills.",
+      "There is no up or down in space, so astronauts can sleep in any position. Most use a small private cabin about the size of a telephone box, where they zip themselves into a sleeping bag attached to the wall. This stops them from floating around and bumping into equipment during the night.",
+      "Noise is another problem. Fans run constantly to move air around the station, because in weightless conditions the carbon dioxide that astronauts breathe out can collect around their faces. Many crew members wear earplugs to block out the sound.",
+      "To help astronauts keep a regular routine, the station's lights were replaced in 2016 with LEDs that change colour during the day. Bluish light in the morning helps people feel alert, while warmer light in the evening prepares the body for rest."
+    ],
+    "vi": [
+      "Các phi hành gia trên Trạm Vũ trụ Quốc tế thấy khoảng mười sáu lần mặt trời mọc và lặn mỗi ngày, vì trạm bay quanh Trái Đất mỗi chín mươi phút. Không có nhịp ngày đêm bình thường, nhiều phi hành gia khó ngủ, và khảo sát cho thấy khoảng một nửa thường xuyên dùng thuốc ngủ.",
+      "Trong không gian không có trên hay dưới, nên phi hành gia ngủ được ở mọi tư thế. Phần lớn dùng một buồng riêng nhỏ cỡ bốt điện thoại, nơi họ kéo khoá chui vào túi ngủ gắn trên tường. Điều này giúp họ không trôi lơ lửng và va vào thiết bị trong đêm.",
+      "Tiếng ồn là một vấn đề khác. Quạt chạy liên tục để lưu thông không khí trong trạm, vì trong điều kiện không trọng lượng, khí CO2 phi hành gia thở ra có thể tụ quanh mặt họ. Nhiều thành viên phi hành đoàn đeo nút tai để chặn tiếng ồn.",
+      "Để giúp phi hành gia giữ thói quen đều đặn, đèn của trạm được thay năm 2016 bằng đèn LED đổi màu trong ngày. Ánh sáng xanh vào buổi sáng giúp tỉnh táo, còn ánh sáng ấm vào buổi tối giúp cơ thể chuẩn bị nghỉ ngơi."
+    ],
+    "allow": [
+      "astronauts",
+      "sunrises",
+      "sunsets",
+      "weightless",
+      "earplugs",
+      "LEDs",
+      "bluish",
+      "alert",
+      "cabin",
+      "zip"
+    ],
+    "items": [
+      {
+        "id": "r-sentence-06-1",
+        "q": "About half of astronauts often use ___ to help them sleep.",
+        "ans": {
+          "accept": [
+            "sleeping pills",
+            "pills"
+          ]
+        },
+        "limit": 2,
+        "b": 5.5,
+        "ev": {
+          "p": 0,
+          "s": "around half regularly take sleeping pills"
+        },
+        "why": "Khoảng một nửa thường dùng thuốc ngủ (sleeping pills).",
+        "wrong": {
+          "sleep pills": "Sai dạng từ; bài viết \"sleeping pills\"."
+        }
+      },
+      {
+        "id": "r-sentence-06-2",
+        "q": "Each sleeping cabin is roughly as big as a ___.",
+        "ans": {
+          "accept": [
+            "telephone box"
+          ]
+        },
+        "limit": 2,
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "about the size of a telephone box"
+        },
+        "why": "Buồng ngủ cỡ bốt điện thoại (telephone box).",
+        "wrong": {
+          "sleeping bag": "Túi ngủ nằm trong buồng, không phải để so sánh kích thước."
+        }
+      },
+      {
+        "id": "r-sentence-06-3",
+        "q": "Sleeping bags are fixed to the ___ of the cabin.",
+        "ans": {
+          "accept": [
+            "wall"
+          ]
+        },
+        "limit": 2,
+        "b": 5.5,
+        "ev": {
+          "p": 1,
+          "s": "a sleeping bag attached to the wall"
+        },
+        "why": "Túi ngủ gắn trên tường (wall).",
+        "wrong": {
+          "equipment": "Thiết bị là thứ họ có thể va vào khi trôi."
+        }
+      },
+      {
+        "id": "r-sentence-06-4",
+        "q": "Fans are needed because ___ can build up near astronauts' faces.",
+        "ans": {
+          "accept": [
+            "carbon dioxide"
+          ]
+        },
+        "limit": 2,
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "the carbon dioxide that astronauts breathe out can collect around their faces"
+        },
+        "why": "Khí CO2 (carbon dioxide) có thể tụ quanh mặt.",
+        "wrong": {
+          "air": "Quạt lưu thông không khí; thứ tụ lại là carbon dioxide."
+        }
+      },
+      {
+        "id": "r-sentence-06-5",
+        "q": "Lights with a ___ colour are used in the morning to make people more awake.",
+        "ans": {
+          "accept": [
+            "bluish"
+          ]
+        },
+        "limit": 2,
+        "b": 6.5,
+        "ev": {
+          "p": 3,
+          "s": "Bluish light in the morning helps people feel alert"
+        },
+        "why": "Ánh sáng xanh (bluish) buổi sáng giúp tỉnh táo.",
+        "wrong": {
+          "warmer": "Ánh sáng ấm dùng buổi tối để chuẩn bị nghỉ ngơi."
+        }
+      }
+    ]
+  }
+]

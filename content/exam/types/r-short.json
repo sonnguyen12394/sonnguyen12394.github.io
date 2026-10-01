@@ -1,0 +1,26 @@
+{
+  "id": "r-short",
+  "lesson": [
+    "Đề đặt câu hỏi Wh- (What, Which, Where, When, How many…) và bạn trả lời ngắn bằng từ LẤY NGUYÊN TỪ BÀI, không quá số từ cho phép. Không cần viết thành câu.",
+    "Các câu hỏi đi theo thứ tự bài. Từ để hỏi cho biết ngay loại đáp án: When → thời gian, How many → số, Who → người/nhóm, What → vật/sự việc.",
+    "Câu hỏi diễn đạt lại ý trong bài, nên phải tìm theo nghĩa; tên riêng và số trong câu hỏi là mốc tìm nhanh nhất."
+  ],
+  "steps": [
+    "Đọc câu hỏi, gạch chân từ để hỏi và từ khoá; xác định loại đáp án.",
+    "Tìm chỗ trong bài bằng từ khoá hoặc tên riêng/số.",
+    "Đọc kỹ câu đó, tìm đúng cụm trả lời câu hỏi.",
+    "Chép cụm ngắn nhất trả lời đủ ý, trong giới hạn từ.",
+    "Kiểm tra lại: đáp án có trả lời đúng từ để hỏi không (hỏi 'where' mà ghi thời gian là sai)."
+  ],
+  "tips": [
+    "Không chép lại phần đã có trong câu hỏi.",
+    "Nếu câu hỏi hỏi 'Which TWO…', viết đủ hai ý, mỗi ý ở chỗ được yêu cầu.",
+    "Số có thể viết bằng chữ số (12 thay cho twelve) nếu đề cho 'AND/OR A NUMBER'."
+  ],
+  "traps": [
+    "Viết câu đầy đủ, vượt giới hạn từ.",
+    "Trả lời bằng thông tin đúng nhưng không phải thứ câu hỏi hỏi (hỏi mục đích, ghi phương pháp).",
+    "Dùng từ của mình thay cho từ trong bài."
+  ],
+  "time": "khoảng 1 phút mỗi câu"
+}

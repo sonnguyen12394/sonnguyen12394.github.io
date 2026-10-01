@@ -52,7 +52,7 @@ for (const f of walk(DIR).filter(p => !p.includes('/types/'))) {
         const svg = readFileSync(fp, 'utf8');
         // cùng luật với tools/build.mjs: chỉ SVG tĩnh, có <title> cho trình đọc màn hình (WCAG 1.1.1)
         if (/<script|<foreignObject|\son\w+\s*=|(?:href|src)\s*=\s*["'](?!#)/i.test(svg)) { schemaErr++; console.error(`✗ ${fig}.svg: có script/thuộc tính sự kiện/liên kết ngoài`); }
-        if (!/<title>[^<]{5,}<\/title>/.test(svg)) { schemaErr++; console.error(`✗ ${fig}.svg: thiếu <title> mô tả hình`); }
+        if (!/<title[^>]*>[^<]{5,}<\/title>/.test(svg)) { schemaErr++; console.error(`✗ ${fig}.svg: thiếu <title> mô tả hình`); }
       }
     }
   }

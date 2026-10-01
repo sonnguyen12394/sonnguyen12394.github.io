@@ -12,12 +12,12 @@ Tạo bởi `node tools/coverage.mjs`. Chỉ tiêu mỗi dạng: có bài học 
 | Đọc | Tìm đoạn chứa thông tin (Matching information) | IELTS | ✓ | 30/30 |  | 5 | 15 | 10 |  | — | ✓ |
 | Đọc | Nối đặc điểm (người, mốc thời gian…) (Matching features) | IELTS | ✓ | 30/30 |  | 5 | 15 | 10 |  | — | ✓ |
 | Đọc | Nối nửa câu (Matching sentence endings) | IELTS | ✓ | 30/30 |  | 5 | 15 | 10 |  | — | ✓ |
-| Đọc | Hoàn thành câu (Sentence completion) | IELTS | — | 0/30 |  |  |  |  |  | — | — |
-| Đọc | Hoàn thành tóm tắt (lấy từ bài) (Summary completion) | IELTS | — | 0/30 |  |  |  |  |  | — | — |
-| Đọc | Hoàn thành tóm tắt (chọn từ khung) (Summary completion (from a list)) | IELTS | — | 0/30 |  |  |  |  |  | — | — |
-| Đọc | Hoàn thành ghi chú / bảng / sơ đồ quy trình (Note / table / flow-chart completion) | IELTS | — | 0/30 |  |  |  |  |  | — | — |
-| Đọc | Điền nhãn sơ đồ (Diagram label completion) | IELTS | — | 0/30 |  |  |  |  |  | — | — |
-| Đọc | Trả lời ngắn (Short-answer questions) | IELTS | — | 0/30 |  |  |  |  |  | — | — |
+| Đọc | Hoàn thành câu (Sentence completion) | IELTS | ✓ | 30/30 |  | 5 | 15 | 10 |  | — | ✓ |
+| Đọc | Hoàn thành tóm tắt (lấy từ bài) (Summary completion) | IELTS | ✓ | 30/30 |  | 5 | 15 | 10 |  | — | ✓ |
+| Đọc | Hoàn thành tóm tắt (chọn từ khung) (Summary completion (from a list)) | IELTS | ✓ | 30/30 |  | 5 | 15 | 10 |  | — | ✓ |
+| Đọc | Hoàn thành ghi chú / bảng / sơ đồ quy trình (Note / table / flow-chart completion) | IELTS | ✓ | 30/30 |  | 5 | 15 | 10 |  | — | ✓ |
+| Đọc | Điền nhãn sơ đồ (Diagram label completion) | IELTS | ✓ | 30/30 |  | 5 | 15 | 10 |  | — | ✓ |
+| Đọc | Trả lời ngắn (Short-answer questions) | IELTS | ✓ | 30/30 |  | 5 | 15 | 10 |  | — | ✓ |
 | Nghe | Điền mẫu đơn / ghi chú / bảng (Form / note / table completion) | IELTS | — | 0/30 |  |  |  |  |  | 0/0 | — |
 | Nghe | Hoàn thành câu / tóm tắt (Sentence / summary completion) | IELTS | — | 0/30 |  |  |  |  |  | 0/0 | — |
 | Nghe | Sơ đồ quy trình (Flow-chart completion) | IELTS | — | 0/30 |  |  |  |  |  | 0/0 | — |
@@ -31,4 +31,4 @@ Tạo bởi `node tools/coverage.mjs`. Chỉ tiêu mỗi dạng: có bài học 
 | Nghe | VSTEP Nghe phần 3: bài nói, bài giảng (Part 3: talks & lectures) | VSTEP | — | 0/30 |  |  |  |  |  | 0/0 | — |
 | Đọc | VSTEP Đọc: trắc nghiệm theo bài đọc (Reading passages) | VSTEP | — | 0/30 |  |  |  |  |  | — | — |
 
-Đạt 8/26 dạng. Kiểm tra đầu vào: 96 câu. Đề thi thử: 0 câu.
+Đạt 14/26 dạng. Kiểm tra đầu vào: 96 câu. Đề thi thử: 0 câu.

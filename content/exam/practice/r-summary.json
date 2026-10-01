@@ -1,0 +1,808 @@
+[
+  {
+    "id": "r-summary-01",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary",
+    "level": "B1",
+    "band": 5,
+    "mode": "practice",
+    "title": "The Tea Clipper Races",
+    "instr": "Complete the summary below. Choose NO MORE THAN TWO WORDS from the text for each answer.",
+    "paras": [
+      "In the middle of the nineteenth century, tea was the most popular drink in Britain, and most of it came from China. Merchants paid the highest prices for the first tea of each new season, so ship owners competed to bring it to London as quickly as possible.",
+      "The ships they used were called clippers. They were long and narrow, with very tall masts that could carry a large area of sail. A good clipper could make the journey from China to London in around one hundred days, much faster than ordinary cargo ships.",
+      "The most famous race took place in 1866, when several clippers left China on the same day. After more than three months at sea, two of them arrived in London on the same tide, just minutes apart. Newspapers followed the race closely, and people bet large sums of money on the winner.",
+      "The age of the clipper ended suddenly. The Suez Canal opened in 1869, creating a much shorter route that sailing ships could not easily use, and steamships soon took over the tea trade."
+    ],
+    "vi": [
+      "Giữa thế kỷ 19, trà là đồ uống phổ biến nhất ở Anh, và phần lớn trà đến từ Trung Quốc. Thương nhân trả giá cao nhất cho mẻ trà đầu tiên của mỗi vụ mới, nên chủ tàu đua nhau đưa trà về London càng nhanh càng tốt.",
+      "Những con tàu họ dùng được gọi là tàu clipper. Chúng dài và hẹp, với cột buồm rất cao có thể mang diện tích buồm lớn. Một tàu clipper tốt có thể đi từ Trung Quốc tới London trong khoảng một trăm ngày, nhanh hơn nhiều so với tàu chở hàng thông thường.",
+      "Cuộc đua nổi tiếng nhất diễn ra năm 1866, khi nhiều tàu clipper rời Trung Quốc cùng ngày. Sau hơn ba tháng trên biển, hai trong số đó cập London cùng một con nước, chỉ cách nhau vài phút. Báo chí theo dõi sát cuộc đua, và người ta đặt cược nhiều tiền vào tàu thắng.",
+      "Thời đại tàu clipper kết thúc đột ngột. Kênh đào Suez mở năm 1869, tạo ra tuyến đường ngắn hơn nhiều mà tàu buồm khó dùng, và tàu hơi nước nhanh chóng chiếm lĩnh việc buôn trà."
+    ],
+    "allow": [
+      "clippers",
+      "clipper",
+      "merchants",
+      "masts",
+      "Suez",
+      "steamships",
+      "cargo",
+      "tide"
+    ],
+    "items": [
+      {
+        "id": "r-summary-01-1",
+        "q": "Because merchants would pay most for the first tea of the ___, ships raced to London.",
+        "ans": {
+          "accept": [
+            "new season",
+            "season"
+          ]
+        },
+        "limit": 2,
+        "b": 5,
+        "ev": {
+          "p": 0,
+          "s": "Merchants paid the highest prices for the first tea of each new season"
+        },
+        "why": "Mẻ trà đầu tiên của mỗi vụ mới (new season) được trả giá cao nhất.",
+        "wrong": {
+          "each new season": "Ba từ, vượt giới hạn hai từ."
+        }
+      },
+      {
+        "id": "r-summary-01-2",
+        "q": "Clippers were long, narrow ships with very tall ___.",
+        "ans": {
+          "accept": [
+            "masts"
+          ]
+        },
+        "limit": 2,
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "with very tall masts that could carry a large area of sail"
+        },
+        "why": "Tàu clipper có cột buồm (masts) rất cao.",
+        "wrong": {
+          "sail": "Buồm là thứ cột buồm mang; câu tóm tắt nói \"very tall\", khớp với \"masts\"."
+        }
+      },
+      {
+        "id": "r-summary-01-3",
+        "q": "They were much quicker than ordinary ___.",
+        "ans": {
+          "accept": [
+            "cargo ships",
+            "ships"
+          ]
+        },
+        "limit": 2,
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "much faster than ordinary cargo ships"
+        },
+        "why": "Nhanh hơn tàu chở hàng thông thường (cargo ships).",
+        "wrong": {
+          "steamships": "Tàu hơi nước là thứ thay thế clipper sau năm 1869, không phải thứ được so sánh ở đây."
+        }
+      },
+      {
+        "id": "r-summary-01-4",
+        "q": "In 1866, two ships reached London only ___ apart.",
+        "ans": {
+          "accept": [
+            "minutes"
+          ]
+        },
+        "limit": 2,
+        "b": 5.5,
+        "ev": {
+          "p": 2,
+          "s": "two of them arrived in London on the same tide, just minutes apart"
+        },
+        "why": "Hai tàu cập bến chỉ cách nhau vài phút (minutes).",
+        "wrong": {
+          "three months": "Đó là thời gian trên biển."
+        }
+      },
+      {
+        "id": "r-summary-01-5",
+        "q": "The clipper era ended after the opening of the ___ in 1869.",
+        "ans": {
+          "accept": [
+            "Suez Canal"
+          ]
+        },
+        "limit": 2,
+        "b": 5,
+        "ev": {
+          "p": 3,
+          "s": "The Suez Canal opened in 1869"
+        },
+        "why": "Kênh đào Suez (Suez Canal) mở năm 1869.",
+        "wrong": {
+          "shorter route": "Tuyến ngắn hơn là kết quả của việc mở kênh; câu tóm tắt cần tên công trình được mở."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-summary-02",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Microplastics in the Ocean",
+    "instr": "Complete the summary below. Choose NO MORE THAN THREE WORDS from the text for each answer.",
+    "paras": [
+      "Microplastics are pieces of plastic smaller than five millimetres. Some are produced deliberately, such as the tiny beads that were once added to face washes and toothpaste. Most, however, are created when larger objects such as bottles and fishing nets break down under the effect of sunlight and waves.",
+      "A major source that many people are unaware of is clothing. Synthetic fabrics such as polyester release thousands of microscopic fibres every time they are washed. These fibres are too small to be caught by most washing-machine filters, and many pass through water treatment plants into rivers and the sea.",
+      "Microplastics have now been found in every ocean, from the surface to the deepest trenches, and in the stomachs of fish, seabirds and whales. Because they are eaten by small creatures at the bottom of the food chain, they can be passed on to larger animals, and eventually to humans who eat seafood.",
+      "The effects on human health are not yet well understood. Some scientists are concerned that chemicals attached to the plastic may be harmful, but others point out that the quantities people swallow are very small. Several countries have banned microbeads in cosmetics, and some manufacturers are developing washing-machine filters that can trap fibres."
+    ],
+    "vi": [
+      "Vi nhựa là những mảnh nhựa nhỏ hơn năm mi-li-mét. Một số được sản xuất có chủ ý, như các hạt nhỏ từng được thêm vào sữa rửa mặt và kem đánh răng. Tuy nhiên, phần lớn hình thành khi những vật lớn hơn như chai và lưới đánh cá bị vỡ vụn dưới tác động của ánh nắng và sóng.",
+      "Một nguồn lớn mà nhiều người không biết là quần áo. Vải tổng hợp như polyester thải ra hàng nghìn sợi siêu nhỏ mỗi lần giặt. Những sợi này quá nhỏ để bộ lọc của phần lớn máy giặt giữ lại, và nhiều sợi đi qua nhà máy xử lý nước vào sông và biển.",
+      "Vi nhựa nay đã được tìm thấy ở mọi đại dương, từ mặt nước tới những rãnh sâu nhất, và trong dạ dày của cá, chim biển và cá voi. Vì chúng bị các sinh vật nhỏ ở đáy chuỗi thức ăn ăn vào, chúng có thể truyền sang động vật lớn hơn, và cuối cùng tới con người ăn hải sản.",
+      "Tác động tới sức khoẻ con người chưa được hiểu rõ. Một số nhà khoa học lo các hoá chất bám trên nhựa có thể gây hại, nhưng người khác chỉ ra lượng người ta nuốt vào rất nhỏ. Nhiều nước đã cấm hạt vi nhựa trong mỹ phẩm, và một số nhà sản xuất đang phát triển bộ lọc máy giặt giữ được sợi."
+    ],
+    "allow": [
+      "microplastics",
+      "microbeads",
+      "polyester",
+      "synthetic",
+      "fibres",
+      "microscopic",
+      "trenches",
+      "seabirds",
+      "cosmetics",
+      "seafood",
+      "millimetres",
+      "deliberately"
+    ],
+    "items": [
+      {
+        "id": "r-summary-02-1",
+        "q": "Most microplastics form when larger items are broken down by sunlight and ___.",
+        "ans": {
+          "accept": [
+            "waves"
+          ]
+        },
+        "limit": 3,
+        "b": 5.5,
+        "ev": {
+          "p": 0,
+          "s": "break down under the effect of sunlight and waves"
+        },
+        "why": "Vật lớn vỡ vụn do ánh nắng và sóng (waves).",
+        "wrong": {
+          "fishing nets": "Lưới đánh cá là vật bị vỡ, không phải tác nhân."
+        }
+      },
+      {
+        "id": "r-summary-02-2",
+        "q": "Washing clothes made from ___ such as polyester releases tiny fibres.",
+        "ans": {
+          "accept": [
+            "synthetic fabrics"
+          ]
+        },
+        "limit": 3,
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "Synthetic fabrics such as polyester release thousands of microscopic fibres"
+        },
+        "why": "Vải tổng hợp (synthetic fabrics) như polyester thải sợi nhỏ.",
+        "wrong": {
+          "clothing": "Câu tóm tắt có \"such as polyester\" nên cần loại vải cụ thể."
+        }
+      },
+      {
+        "id": "r-summary-02-3",
+        "q": "Many fibres are not stopped by washing-machine filters and pass through ___ into rivers.",
+        "ans": {
+          "accept": [
+            "water treatment plants",
+            "treatment plants"
+          ]
+        },
+        "limit": 3,
+        "b": 6.5,
+        "ev": {
+          "p": 1,
+          "s": "many pass through water treatment plants into rivers and the sea"
+        },
+        "why": "Sợi đi qua nhà máy xử lý nước (water treatment plants).",
+        "wrong": {
+          "filters": "Bộ lọc máy giặt không giữ được sợi; câu cần nơi sợi đi qua sau đó."
+        }
+      },
+      {
+        "id": "r-summary-02-4",
+        "q": "Microplastics enter the food chain through small creatures and can finally reach people who eat ___.",
+        "ans": {
+          "accept": [
+            "seafood"
+          ]
+        },
+        "limit": 3,
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "eventually to humans who eat seafood"
+        },
+        "why": "Cuối cùng tới người ăn hải sản (seafood).",
+        "wrong": {
+          "fish": "Bài nhắc cá là con vật có vi nhựa trong dạ dày; thứ người ăn được nêu là \"seafood\"."
+        }
+      },
+      {
+        "id": "r-summary-02-5",
+        "q": "To reduce the problem, some countries have banned ___ in cosmetics.",
+        "ans": {
+          "accept": [
+            "microbeads"
+          ]
+        },
+        "limit": 3,
+        "b": 6,
+        "ev": {
+          "p": 3,
+          "s": "Several countries have banned microbeads in cosmetics"
+        },
+        "why": "Nhiều nước cấm hạt vi nhựa (microbeads) trong mỹ phẩm.",
+        "wrong": {
+          "beads": "Thiếu chữ: bài dùng đúng từ \"microbeads\" khi nói về lệnh cấm."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-summary-03",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "practice",
+    "title": "How Glaciers Shape the Land",
+    "instr": "Complete the summary below. Choose NO MORE THAN ONE WORD from the text for each answer.",
+    "paras": [
+      "A glacier is a large mass of ice that forms over many years as snow builds up faster than it melts. As new layers press down on the old snow, it slowly turns into dense ice. When the ice becomes thick enough, its own weight causes it to move downhill, usually at a speed of a few centimetres to a few metres a day.",
+      "As a glacier moves, it acts like a giant piece of sandpaper. Rocks frozen into the base of the ice scrape the ground beneath, wearing away the surface and leaving long scratches that geologists can still see thousands of years later. Over time, glaciers can turn narrow river valleys into wide, U-shaped valleys with steep sides.",
+      "Glaciers also carry enormous amounts of rock and soil. When the ice finally melts, this material is left behind in large heaps called moraines. Some of the rocks are carried hundreds of kilometres before being dropped, and huge boulders can be found sitting alone in fields far from any similar rock.",
+      "Most of the landscapes of northern Europe and North America were shaped in this way during the last ice age, which ended around eleven thousand years ago."
+    ],
+    "vi": [
+      "Sông băng là một khối băng lớn hình thành qua nhiều năm khi tuyết tích tụ nhanh hơn tan. Khi các lớp mới đè lên lớp tuyết cũ, tuyết dần biến thành băng đặc. Khi băng đủ dày, chính trọng lượng của nó khiến nó trượt xuống dốc, thường với tốc độ vài xăng-ti-mét tới vài mét mỗi ngày.",
+      "Khi sông băng di chuyển, nó giống một tờ giấy nhám khổng lồ. Đá bị đóng băng ở đáy khối băng cào mặt đất bên dưới, mài mòn bề mặt và để lại những vết xước dài mà nhà địa chất vẫn thấy được hàng nghìn năm sau. Theo thời gian, sông băng có thể biến thung lũng sông hẹp thành thung lũng rộng hình chữ U với sườn dốc.",
+      "Sông băng còn mang theo lượng đá và đất khổng lồ. Khi băng cuối cùng tan, vật liệu này bị bỏ lại thành những đống lớn gọi là băng tích. Một số tảng đá được mang đi hàng trăm ki-lô-mét trước khi bị thả xuống, và có thể thấy những tảng đá khổng lồ nằm trơ trọi giữa cánh đồng, xa mọi loại đá tương tự.",
+      "Phần lớn cảnh quan ở Bắc Âu và Bắc Mỹ được tạo hình theo cách này trong kỷ băng hà gần nhất, kết thúc khoảng mười một nghìn năm trước."
+    ],
+    "allow": [
+      "glacier",
+      "glaciers",
+      "sandpaper",
+      "geologists",
+      "moraines",
+      "boulders",
+      "dense",
+      "scrape",
+      "heaps",
+      "U-shaped",
+      "centimetres"
+    ],
+    "items": [
+      {
+        "id": "r-summary-03-1",
+        "q": "A glacier forms when snow collects more quickly than it ___.",
+        "ans": {
+          "accept": [
+            "melts"
+          ]
+        },
+        "limit": 1,
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "as snow builds up faster than it melts"
+        },
+        "why": "Tuyết tích tụ nhanh hơn tan (melts).",
+        "wrong": {
+          "builds": "Tích tụ là vế đầu; vế sau cần hành động đối lập."
+        }
+      },
+      {
+        "id": "r-summary-03-2",
+        "q": "Once the ice is thick enough, its ___ makes it move downhill.",
+        "ans": {
+          "accept": [
+            "weight"
+          ]
+        },
+        "limit": 1,
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "its own weight causes it to move downhill"
+        },
+        "why": "Chính trọng lượng (weight) khiến băng trượt xuống.",
+        "wrong": {
+          "layers": "Các lớp làm tuyết thành băng đặc, không phải thứ làm băng di chuyển."
+        }
+      },
+      {
+        "id": "r-summary-03-3",
+        "q": "Rocks in the bottom of the glacier leave ___ in the ground below.",
+        "ans": {
+          "accept": [
+            "scratches"
+          ]
+        },
+        "limit": 1,
+        "b": 6.5,
+        "ev": {
+          "p": 1,
+          "s": "leaving long scratches that geologists can still see"
+        },
+        "why": "Đá ở đáy băng để lại vết xước (scratches).",
+        "wrong": {
+          "sandpaper": "Giấy nhám là phép so sánh, không phải thứ để lại trên mặt đất."
+        }
+      },
+      {
+        "id": "r-summary-03-4",
+        "q": "Material left when a glacier melts forms large piles known as ___.",
+        "ans": {
+          "accept": [
+            "moraines"
+          ]
+        },
+        "limit": 1,
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "this material is left behind in large heaps called moraines"
+        },
+        "why": "Đống vật liệu gọi là băng tích (moraines).",
+        "wrong": {
+          "heaps": "Đây là từ thường; câu tóm tắt hỏi tên gọi (\"known as\")."
+        }
+      },
+      {
+        "id": "r-summary-03-5",
+        "q": "Large ___ may be found far away from rocks of the same kind.",
+        "ans": {
+          "accept": [
+            "boulders"
+          ]
+        },
+        "limit": 1,
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "huge boulders can be found sitting alone in fields far from any similar rock"
+        },
+        "why": "Những tảng đá lớn (boulders) nằm xa loại đá tương tự.",
+        "wrong": {
+          "fields": "Cánh đồng là nơi đá nằm, không phải thứ được tìm thấy."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-summary-04",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary",
+    "level": "C1",
+    "band": 7,
+    "mode": "practice",
+    "title": "The Decline of Handwriting",
+    "instr": "Complete the summary below. Choose NO MORE THAN TWO WORDS from the text for each answer.",
+    "paras": [
+      "In many countries, the teaching of joined-up handwriting has been reduced or abandoned. In the United States, a set of national education standards introduced in 2010 made no mention of it, and several states stopped requiring schools to teach it. Supporters of the change argue that time is better spent on keyboard skills, which pupils will use far more often as adults.",
+      "Researchers in psychology, however, have raised concerns. In one widely reported study, students who took lecture notes by hand remembered the content better than those who typed. The researchers suggested that because writing by hand is slower, students are forced to summarise ideas in their own words, whereas typists tend to copy what they hear word for word.",
+      "Other studies have found that young children who practise forming letters by hand recognise them more quickly than children who learn by typing. Brain scans show that handwriting activates areas associated with reading, an effect that appears to be weaker when children use a keyboard.",
+      "Few researchers argue for abandoning keyboards. The more common recommendation is balance: children should continue to learn to write by hand in the early years, when it appears to support reading, while keyboard skills are introduced gradually."
+    ],
+    "vi": [
+      "Ở nhiều nước, việc dạy viết chữ liền nét đã bị giảm bớt hoặc bỏ hẳn. Ở Mỹ, bộ chuẩn giáo dục quốc gia ban hành năm 2010 không nhắc tới nó, và nhiều bang ngừng yêu cầu trường dạy. Người ủng hộ thay đổi cho rằng thời gian nên dành cho kỹ năng bàn phím, thứ học sinh sẽ dùng nhiều hơn hẳn khi trưởng thành.",
+      "Tuy nhiên, các nhà nghiên cứu tâm lý học đã nêu lo ngại. Trong một nghiên cứu được đưa tin rộng rãi, sinh viên ghi bài giảng bằng tay nhớ nội dung tốt hơn sinh viên gõ máy. Các nhà nghiên cứu cho rằng vì viết tay chậm hơn, sinh viên buộc phải tóm tắt ý bằng lời của mình, trong khi người gõ có xu hướng chép nguyên văn những gì nghe được.",
+      "Các nghiên cứu khác thấy trẻ nhỏ tập viết chữ bằng tay nhận ra chữ cái nhanh hơn trẻ học bằng cách gõ. Ảnh chụp não cho thấy viết tay kích hoạt các vùng liên quan tới việc đọc, một hiệu ứng có vẻ yếu hơn khi trẻ dùng bàn phím.",
+      "Ít nhà nghiên cứu đòi bỏ bàn phím. Khuyến nghị phổ biến hơn là cân bằng: trẻ nên tiếp tục học viết tay trong những năm đầu, khi nó có vẻ hỗ trợ việc đọc, còn kỹ năng bàn phím được đưa vào dần dần."
+    ],
+    "allow": [
+      "joined-up",
+      "summarise"
+    ],
+    "items": [
+      {
+        "id": "r-summary-04-1",
+        "q": "Those in favour of teaching less handwriting say pupils need ___ more in adult life.",
+        "ans": {
+          "accept": [
+            "keyboard skills"
+          ]
+        },
+        "limit": 2,
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "time is better spent on keyboard skills, which pupils will use far more often as adults"
+        },
+        "why": "Người ủng hộ nói học sinh cần kỹ năng bàn phím (keyboard skills) nhiều hơn khi trưởng thành.",
+        "wrong": {
+          "typing": "Không có ở đoạn này; phải chép cụm trong bài."
+        }
+      },
+      {
+        "id": "r-summary-04-2",
+        "q": "In one study, students who wrote ___ by hand recalled more of the material.",
+        "ans": {
+          "accept": [
+            "lecture notes",
+            "notes"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "students who took lecture notes by hand remembered the content better"
+        },
+        "why": "Sinh viên ghi bài giảng bằng tay (lecture notes) nhớ tốt hơn.",
+        "wrong": {
+          "lectures": "Bài giảng là thứ được ghi; thứ được viết tay là ghi chép (notes)."
+        }
+      },
+      {
+        "id": "r-summary-04-3",
+        "q": "Because handwriting is slower, students have to ___ ideas rather than copying them.",
+        "ans": {
+          "accept": [
+            "summarise",
+            "summarize"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "students are forced to summarise ideas in their own words"
+        },
+        "why": "Viết tay chậm nên phải tóm tắt (summarise) ý.",
+        "wrong": {
+          "copy": "Chép nguyên văn là điều người gõ máy làm."
+        }
+      },
+      {
+        "id": "r-summary-04-4",
+        "q": "Children who practise writing letters can ___ them faster.",
+        "ans": {
+          "accept": [
+            "recognise",
+            "recognize"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "recognise them more quickly than children who learn by typing"
+        },
+        "why": "Trẻ tập viết tay nhận ra (recognise) chữ nhanh hơn.",
+        "wrong": {
+          "reading": "Việc đọc là vùng não được kích hoạt, không phải động từ cần điền."
+        }
+      },
+      {
+        "id": "r-summary-04-5",
+        "q": "Most experts recommend ___, with handwriting taught first and keyboards introduced gradually.",
+        "ans": {
+          "accept": [
+            "balance"
+          ]
+        },
+        "limit": 2,
+        "b": 7.5,
+        "ev": {
+          "p": 3,
+          "s": "The more common recommendation is balance"
+        },
+        "why": "Khuyến nghị phổ biến là cân bằng (balance).",
+        "wrong": {
+          "keyboards": "Ít nhà nghiên cứu đòi bỏ bàn phím, nhưng khuyến nghị chung là cân bằng, không phải bàn phím."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-summary-05",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary",
+    "level": "C1",
+    "band": 7.5,
+    "mode": "practice",
+    "title": "The Mystery of Easter Island",
+    "instr": "Complete the summary below. Choose NO MORE THAN TWO WORDS from the text for each answer.",
+    "paras": [
+      "When European ships reached Easter Island in 1722, they found a small population living on a treeless island dominated by nearly a thousand enormous stone statues. For much of the twentieth century, the dominant explanation was one of ecological collapse: the islanders, it was argued, had cut down all the trees to move the statues, triggering soil erosion, food shortages and warfare.",
+      "Recent research has challenged this account. Studies of the island's soil suggest that much of the deforestation was caused by rats, which arrived with the first settlers and ate the seeds of the palm trees, preventing new growth. Archaeologists have also found little evidence of large-scale violence before European contact.",
+      "Moreover, experiments have shown that the statues could have been moved upright by small teams using ropes, rocking them from side to side so that they appeared to 'walk'. This method would have required neither large numbers of workers nor large quantities of wood.",
+      "According to this revised view, the population collapse occurred mainly after 1722, when diseases brought by Europeans and the slave raids of the 1860s reduced the islanders to just over a hundred people. Easter Island, some researchers now argue, is less a warning about environmental self-destruction than a story of survival in a difficult environment."
+    ],
+    "vi": [
+      "Khi tàu châu Âu tới Đảo Phục Sinh năm 1722, họ thấy một cộng đồng nhỏ sống trên hòn đảo trơ trụi cây cối, nổi bật với gần một nghìn bức tượng đá khổng lồ. Trong phần lớn thế kỷ 20, cách giải thích chủ đạo là sụp đổ sinh thái: người ta cho rằng dân đảo đã chặt hết cây để di chuyển tượng, gây xói mòn đất, thiếu lương thực và chiến tranh.",
+      "Nghiên cứu gần đây thách thức cách giải thích này. Các nghiên cứu đất trên đảo cho thấy phần lớn nạn mất rừng là do chuột, đến cùng những người định cư đầu tiên và ăn hạt cây cọ, ngăn cây mới mọc. Các nhà khảo cổ cũng thấy rất ít bằng chứng bạo lực quy mô lớn trước khi tiếp xúc với người châu Âu.",
+      "Hơn nữa, thí nghiệm cho thấy tượng có thể được di chuyển ở tư thế đứng bởi những nhóm nhỏ dùng dây thừng, đung đưa tượng sang hai bên để nó có vẻ 'bước đi'. Cách này không cần nhiều người lẫn nhiều gỗ.",
+      "Theo cách nhìn mới này, dân số sụp đổ chủ yếu sau năm 1722, khi bệnh tật do người châu Âu mang tới và các cuộc bắt nô lệ thập niên 1860 làm dân đảo chỉ còn hơn một trăm người. Một số nhà nghiên cứu nay cho rằng Đảo Phục Sinh không hẳn là lời cảnh báo về tự huỷ hoại môi trường, mà là câu chuyện sống sót trong môi trường khắc nghiệt."
+    ],
+    "allow": [
+      "ecological",
+      "erosion",
+      "deforestation",
+      "archaeologists",
+      "warfare",
+      "settlers",
+      "treeless",
+      "raids",
+      "revised",
+      "triggering",
+      "upright"
+    ],
+    "items": [
+      {
+        "id": "r-summary-05-1",
+        "q": "The traditional theory held that cutting down trees led to soil erosion, a lack of food and ___.",
+        "ans": {
+          "accept": [
+            "warfare"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 0,
+          "s": "triggering soil erosion, food shortages and warfare"
+        },
+        "why": "Thuyết cũ: chặt cây dẫn tới xói mòn, thiếu lương thực và chiến tranh (warfare).",
+        "wrong": {
+          "violence": "Từ này ở đoạn 2 khi nói ít bằng chứng bạo lực; câu tóm tắt về thuyết cũ dùng \"warfare\"."
+        }
+      },
+      {
+        "id": "r-summary-05-2",
+        "q": "New studies suggest that ___ were largely responsible for the loss of forest.",
+        "ans": {
+          "accept": [
+            "rats"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "much of the deforestation was caused by rats"
+        },
+        "why": "Chuột (rats) là nguyên nhân chính làm mất rừng.",
+        "wrong": {
+          "first settlers": "Người định cư mang chuột tới, nhưng thủ phạm ăn hạt là chuột."
+        }
+      },
+      {
+        "id": "r-summary-05-3",
+        "q": "These animals prevented trees from growing back by eating their ___.",
+        "ans": {
+          "accept": [
+            "seeds"
+          ]
+        },
+        "limit": 2,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "ate the seeds of the palm trees, preventing new growth"
+        },
+        "why": "Chuột ăn hạt (seeds) cây cọ.",
+        "wrong": {
+          "palm trees": "Cây cọ là cây bị ảnh hưởng; thứ bị ăn là hạt."
+        }
+      },
+      {
+        "id": "r-summary-05-4",
+        "q": "The statues may have been moved by small groups with ___, without much wood.",
+        "ans": {
+          "accept": [
+            "ropes"
+          ]
+        },
+        "limit": 2,
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "could have been moved upright by small teams using ropes"
+        },
+        "why": "Nhóm nhỏ dùng dây thừng (ropes).",
+        "wrong": {
+          "workers": "Bài nói không cần nhiều người; câu hỏi cần công cụ."
+        }
+      },
+      {
+        "id": "r-summary-05-5",
+        "q": "Most of the population loss came after 1722 as a result of ___ and slave raids.",
+        "ans": {
+          "accept": [
+            "diseases"
+          ]
+        },
+        "limit": 2,
+        "b": 7.5,
+        "ev": {
+          "p": 3,
+          "s": "when diseases brought by Europeans and the slave raids of the 1860s reduced the islanders"
+        },
+        "why": "Bệnh tật (diseases) và các cuộc bắt nô lệ làm dân số sụp đổ.",
+        "wrong": {
+          "Europeans": "Người châu Âu mang bệnh tới; câu cần thứ gây mất dân số, đứng cạnh \"slave raids\"."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-summary-06",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Community Fridges",
+    "instr": "Complete the summary below. Choose NO MORE THAN TWO WORDS from the text for each answer.",
+    "paras": [
+      "Every year, households and shops throw away millions of tonnes of food that is still safe to eat. Community fridges are one simple response to this problem. They are ordinary refrigerators placed in public spaces, such as libraries or community centres, where anyone can leave food they do not need and anyone can take it for free.",
+      "The first community fridge in Britain opened in 2016 in the town of Frome. Within a year it was receiving around ten thousand items of food each month, mostly from local supermarkets and cafés at the end of the day. There are now more than five hundred community fridges across the country.",
+      "Each fridge is managed by a team of volunteers, who check the temperature twice a day and remove any food that has passed its use-by date. Some foods, such as raw meat and fish, are not accepted for safety reasons.",
+      "Organisers say that the fridges are used by a wide range of people, not only those on low incomes. Many users simply dislike seeing good food wasted, and the fridges have become a place where neighbours meet and talk."
+    ],
+    "vi": [
+      "Mỗi năm, các hộ gia đình và cửa hàng vứt bỏ hàng triệu tấn thực phẩm vẫn còn ăn được. Tủ lạnh cộng đồng là một cách đơn giản để giải quyết vấn đề này. Đó là những chiếc tủ lạnh bình thường đặt ở nơi công cộng, như thư viện hay nhà văn hoá, nơi ai cũng có thể để lại đồ ăn không cần và ai cũng có thể lấy miễn phí.",
+      "Tủ lạnh cộng đồng đầu tiên ở Anh mở năm 2016 ở thị trấn Frome. Trong vòng một năm, nó nhận khoảng mười nghìn món thực phẩm mỗi tháng, phần lớn từ siêu thị và quán cà phê địa phương vào cuối ngày. Hiện có hơn năm trăm tủ lạnh cộng đồng trên cả nước.",
+      "Mỗi tủ do một nhóm tình nguyện viên quản lý, họ kiểm tra nhiệt độ hai lần mỗi ngày và bỏ đi thực phẩm đã quá hạn sử dụng. Một số thực phẩm như thịt và cá sống không được nhận vì lý do an toàn.",
+      "Người tổ chức nói tủ lạnh được nhiều kiểu người dùng, không chỉ người thu nhập thấp. Nhiều người dùng đơn giản là không thích thấy đồ ăn ngon bị lãng phí, và các tủ lạnh đã thành nơi hàng xóm gặp gỡ, trò chuyện."
+    ],
+    "allow": [
+      "refrigerators",
+      "use-by",
+      "organisers"
+    ],
+    "items": [
+      {
+        "id": "r-summary-06-1",
+        "q": "Community fridges are kept in public places such as libraries and ___.",
+        "ans": {
+          "accept": [
+            "community centres",
+            "community centers"
+          ]
+        },
+        "limit": 2,
+        "b": 5.5,
+        "ev": {
+          "p": 0,
+          "s": "such as libraries or community centres"
+        },
+        "why": "Đặt ở thư viện hoặc nhà văn hoá (community centres).",
+        "wrong": {
+          "shops": "Cửa hàng là nơi vứt bỏ thực phẩm, không phải nơi đặt tủ."
+        }
+      },
+      {
+        "id": "r-summary-06-2",
+        "q": "Most of the food in the Frome fridge came from supermarkets and ___.",
+        "ans": {
+          "accept": [
+            "cafés",
+            "cafes"
+          ]
+        },
+        "limit": 2,
+        "b": 5.5,
+        "ev": {
+          "p": 1,
+          "s": "mostly from local supermarkets and cafés at the end of the day"
+        },
+        "why": "Phần lớn từ siêu thị và quán cà phê (cafés).",
+        "wrong": {
+          "households": "Hộ gia đình được nhắc ở đoạn 1 khi nói về lãng phí chung."
+        }
+      },
+      {
+        "id": "r-summary-06-3",
+        "q": "Volunteers check the fridge's ___ two times a day.",
+        "ans": {
+          "accept": [
+            "temperature"
+          ]
+        },
+        "limit": 2,
+        "b": 5.5,
+        "ev": {
+          "p": 2,
+          "s": "who check the temperature twice a day"
+        },
+        "why": "Tình nguyện viên kiểm tra nhiệt độ (temperature) hai lần mỗi ngày.",
+        "wrong": {
+          "use-by date": "Hạn sử dụng được kiểm để bỏ đồ ăn, nhưng thứ kiểm \"hai lần mỗi ngày\" là nhiệt độ."
+        }
+      },
+      {
+        "id": "r-summary-06-4",
+        "q": "For safety reasons, raw meat and ___ cannot be left in the fridges.",
+        "ans": {
+          "accept": [
+            "fish"
+          ]
+        },
+        "limit": 2,
+        "b": 5,
+        "ev": {
+          "p": 2,
+          "s": "such as raw meat and fish, are not accepted for safety reasons"
+        },
+        "why": "Thịt và cá (fish) sống không được nhận.",
+        "wrong": {
+          "raw fish": "Câu đề đã có \"raw\" ở trước; viết \"raw fish\" là lặp, vẫn hiểu nhưng không cần."
+        }
+      },
+      {
+        "id": "r-summary-06-5",
+        "q": "As well as reducing waste, the fridges give ___ a place to meet.",
+        "ans": {
+          "accept": [
+            "neighbours",
+            "neighbors"
+          ]
+        },
+        "limit": 2,
+        "b": 6,
+        "ev": {
+          "p": 3,
+          "s": "the fridges have become a place where neighbours meet and talk"
+        },
+        "why": "Tủ lạnh thành nơi hàng xóm (neighbours) gặp gỡ.",
+        "wrong": {
+          "volunteers": "Tình nguyện viên quản lý tủ; người gặp nhau là hàng xóm."
+        }
+      }
+    ]
+  }
+]

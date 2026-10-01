@@ -120,6 +120,13 @@ function checkItem(g: Group, it: Item, src: string[], bad: (w: string, m: string
   } else {
     const acc = (it.ans as TextAnswer).accept;
     if (it.limit === undefined) bad(w, 'câu điền phải ghi giới hạn số từ (limit)');
+    // Giới hạn trong lời dẫn (thí sinh đọc) phải khớp giới hạn máy chấm dùng.
+    const m = /(?:NO MORE THAN|ONLY) (ONE|TWO|THREE|FOUR|FIVE) WORDS?( AND\/OR A NUMBER)?/.exec(g.instr);
+    if (m) {
+      const n = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'].indexOf(m[1]!) + 1;
+      if (it.limit !== n) bad(w, `limit = ${it.limit} nhưng lời dẫn ghi ${m[1]} WORD(S)`);
+      if (!!m[2] !== !!it.num) bad(w, `lời dẫn ${m[2] ? 'có' : 'không có'} "AND/OR A NUMBER" nhưng num = ${!!it.num}`);
+    }
     for (const a of acc) {
       if (!withinLimit(a, it.limit, it.num)) bad(w, `đáp án chấp nhận "${a}" vượt giới hạn từ`);
       if (markItem(it, g, a).got !== 1) bad(w, `máy chấm không nhận đáp án chấp nhận "${a}"`);
