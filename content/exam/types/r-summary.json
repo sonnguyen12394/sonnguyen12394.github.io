@@ -1,0 +1,26 @@
+{
+  "id": "r-summary",
+  "lesson": [
+    "Đề cho một đoạn tóm tắt (một phần hoặc cả bài) có các chỗ trống. Bạn điền từ LẤY NGUYÊN TỪ BÀI, không quá số từ cho phép. Đoạn tóm tắt diễn đạt lại bài, nên gần như không câu nào giống hệt câu trong bài.",
+    "Tóm tắt thường chỉ bao một hoặc hai đoạn của bài, và các chỗ trống thường đi theo thứ tự trong phần đó. Tìm đúng phần bài được tóm tắt là bước quan trọng nhất.",
+    "Khác với dạng 'chọn từ khung' (summary from a list): ở dạng này bạn tự tìm từ trong bài, nên chính tả và số từ phải chính xác."
+  ],
+  "steps": [
+    "Đọc tiêu đề và câu đầu của tóm tắt để biết nó nói về phần nào của bài.",
+    "Đọc cả đoạn tóm tắt một lượt, đoán loại từ cho từng chỗ trống.",
+    "Tìm phần bài tương ứng; với mỗi chỗ trống, tìm câu trong bài có cùng ý với câu tóm tắt.",
+    "Chép từ đúng như trong bài, kiểm tra ngữ pháp và số từ.",
+    "Đọc lại cả đoạn tóm tắt đã điền xem có liền mạch và đúng nghĩa không."
+  ],
+  "tips": [
+    "Từ ngay trước và sau chỗ trống (giới từ, mạo từ, động từ) cho biết rất nhiều về từ cần điền.",
+    "Nếu tìm được hai từ có vẻ hợp, chọn từ khớp chính xác ý của câu tóm tắt, không chỉ khớp chủ đề.",
+    "Tóm tắt có thể gộp hai câu trong bài thành một: đọc rộng ra một chút quanh chỗ tìm được."
+  ],
+  "traps": [
+    "Điền từ đúng nghĩa nhưng do mình tự nghĩ, không có trong bài.",
+    "Điền từ ở phần bài khác (cùng chủ đề) chứ không phải phần được tóm tắt.",
+    "Sai số ít/số nhiều so với bài."
+  ],
+  "time": "khoảng 1 phút mỗi chỗ trống"
+}

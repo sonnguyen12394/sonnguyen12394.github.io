@@ -1,0 +1,876 @@
+[
+  {
+    "id": "r-summary-box-01",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary-box",
+    "level": "B1",
+    "band": 5,
+    "mode": "practice",
+    "title": "The Story of Chocolate",
+    "instr": "Complete the summary using the list of words, A–H, below.",
+    "paras": [
+      "Chocolate is made from the seeds of the cacao tree, which grows only in hot, wet regions near the equator. More than three thousand years ago, people in Central America were already using cacao seeds to make a drink. It was very different from modern hot chocolate: it was cold, bitter and often mixed with chilli.",
+      "When Spanish explorers brought cacao to Europe in the sixteenth century, it was at first an expensive luxury enjoyed only by the rich. Europeans added sugar to make it sweet, and chocolate houses became fashionable meeting places in cities such as London.",
+      "Solid chocolate bars did not appear until the nineteenth century, when new machines made it possible to produce chocolate cheaply and in large quantities. Today, most of the world's cacao is grown on small farms in West Africa, but many farmers earn very little from it. Some chocolate companies now pay farmers a higher price in return for better working conditions."
+    ],
+    "vi": [
+      "Sô-cô-la được làm từ hạt của cây cacao, loài cây chỉ mọc ở vùng nóng ẩm gần xích đạo. Hơn ba nghìn năm trước, người dân Trung Mỹ đã dùng hạt cacao để làm đồ uống. Nó rất khác sô-cô-la nóng ngày nay: nó lạnh, đắng và thường trộn với ớt.",
+      "Khi các nhà thám hiểm Tây Ban Nha mang cacao tới châu Âu vào thế kỷ 16, ban đầu nó là món xa xỉ đắt tiền chỉ người giàu được thưởng thức. Người châu Âu thêm đường cho ngọt, và các quán sô-cô-la thành nơi gặp gỡ thời thượng ở những thành phố như London.",
+      "Thanh sô-cô-la rắn phải đến thế kỷ 19 mới xuất hiện, khi máy móc mới cho phép sản xuất sô-cô-la rẻ và với số lượng lớn. Ngày nay, phần lớn cacao thế giới được trồng ở các trang trại nhỏ tại Tây Phi, nhưng nhiều nông dân kiếm được rất ít từ nó. Một số công ty sô-cô-la nay trả nông dân giá cao hơn để đổi lấy điều kiện lao động tốt hơn."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "sweet"
+      },
+      {
+        "k": "B",
+        "t": "dry"
+      },
+      {
+        "k": "C",
+        "t": "humid"
+      },
+      {
+        "k": "D",
+        "t": "cold"
+      },
+      {
+        "k": "E",
+        "t": "bitter"
+      },
+      {
+        "k": "F",
+        "t": "costly"
+      },
+      {
+        "k": "G",
+        "t": "cheap"
+      },
+      {
+        "k": "H",
+        "t": "healthy"
+      }
+    ],
+    "allow": [
+      "cacao",
+      "equator",
+      "chilli",
+      "explorers",
+      "luxury"
+    ],
+    "items": [
+      {
+        "id": "r-summary-box-01-1",
+        "q": "The cacao tree needs a ___ climate.",
+        "ans": "C",
+        "b": 4.5,
+        "ev": {
+          "p": 0,
+          "s": "which grows only in hot, wet regions near the equator"
+        },
+        "why": "Cây cacao chỉ mọc ở vùng nóng ẩm (hot, wet) → khí hậu nóng ẩm (humid).",
+        "wrong": {
+          "D": "Bài nói vùng nóng, ngược với lạnh.",
+          "B": "Khô (dry) ngược với \"wet\"."
+        }
+      },
+      {
+        "id": "r-summary-box-01-2",
+        "q": "The first chocolate drinks had a ___ taste.",
+        "ans": "E",
+        "b": 5,
+        "ev": {
+          "p": 0,
+          "s": "it was cold, bitter and often mixed with chilli"
+        },
+        "why": "Đồ uống đầu tiên đắng (bitter).",
+        "wrong": {
+          "A": "Ngọt là do người châu Âu thêm đường sau này.",
+          "D": "\"cold\" là nhiệt độ, không phải vị; và \"cool\" không phải từ trong khung mô tả vị."
+        }
+      },
+      {
+        "id": "r-summary-box-01-3",
+        "q": "In sixteenth-century Europe, chocolate was a ___ product.",
+        "ans": "F",
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "it was at first an expensive luxury enjoyed only by the rich"
+        },
+        "why": "Ban đầu là món xa xỉ đắt tiền (costly).",
+        "wrong": {
+          "G": "Rẻ (cheap) là chuyện thế kỷ 19 khi có máy móc.",
+          "H": "Bài không nói về sức khoẻ."
+        },
+        "trap": "'cheap' có thật trong bài nhưng ở đoạn 3, thời kỳ khác."
+      },
+      {
+        "id": "r-summary-box-01-4",
+        "q": "Europeans made it ___ by adding sugar.",
+        "ans": "A",
+        "b": 4.5,
+        "ev": {
+          "p": 1,
+          "s": "Europeans added sugar to make it sweet"
+        },
+        "why": "Thêm đường để ngọt (sweet).",
+        "wrong": {
+          "E": "Đắng là vị ban đầu trước khi thêm đường.",
+          "C": "Không nói về độ ẩm."
+        }
+      },
+      {
+        "id": "r-summary-box-01-5",
+        "q": "Machines in the nineteenth century made chocolate ___.",
+        "ans": "G",
+        "b": 5,
+        "ev": {
+          "p": 2,
+          "s": "new machines made it possible to produce chocolate cheaply and in large quantities"
+        },
+        "why": "Máy móc giúp sản xuất rẻ (cheap).",
+        "wrong": {
+          "F": "Đắt là tình trạng thế kỷ 16.",
+          "H": "Bài không nói sô-cô-la tốt cho sức khoẻ."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-summary-box-02",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary-box",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Why Cities Are Warmer",
+    "instr": "Complete the summary using the list of words, A–H, below.",
+    "paras": [
+      "On a summer evening, the centre of a large city can be several degrees warmer than the surrounding countryside. This difference, known as the urban heat island effect, is caused mainly by the materials cities are made of. Concrete, brick and dark roads absorb the sun's heat during the day and release it slowly at night, so city streets cool down much more gradually than fields.",
+      "The lack of plants makes the problem worse. In the countryside, trees and grass cool the air as water evaporates from their leaves, but in cities much of the ground is covered. Heat from cars, air conditioners and factories adds further warmth.",
+      "Higher temperatures are not just uncomfortable. During heatwaves, death rates rise sharply in cities, especially among older people. Cities are therefore trying to reduce the effect by planting trees, creating parks and painting roofs white so that they reflect sunlight instead of absorbing it."
+    ],
+    "vi": [
+      "Vào buổi tối mùa hè, trung tâm một thành phố lớn có thể ấm hơn vùng nông thôn xung quanh vài độ. Sự chênh lệch này, gọi là hiệu ứng đảo nhiệt đô thị, chủ yếu do vật liệu xây nên thành phố. Bê tông, gạch và đường nhựa sẫm màu hấp thụ nhiệt mặt trời ban ngày và toả ra chậm vào ban đêm, nên đường phố nguội đi chậm hơn nhiều so với cánh đồng.",
+      "Thiếu cây xanh làm vấn đề tệ hơn. Ở nông thôn, cây và cỏ làm mát không khí khi nước bốc hơi từ lá, nhưng ở thành phố phần lớn mặt đất bị phủ kín. Nhiệt từ ô tô, máy điều hoà và nhà máy làm ấm thêm.",
+      "Nhiệt độ cao hơn không chỉ gây khó chịu. Trong các đợt nắng nóng, tỉ lệ tử vong ở thành phố tăng mạnh, nhất là ở người lớn tuổi. Vì vậy các thành phố đang cố giảm hiệu ứng này bằng cách trồng cây, làm công viên và sơn mái nhà màu trắng để phản chiếu ánh nắng thay vì hấp thụ."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "population"
+      },
+      {
+        "k": "B",
+        "t": "dangerous"
+      },
+      {
+        "k": "C",
+        "t": "plants"
+      },
+      {
+        "k": "D",
+        "t": "materials"
+      },
+      {
+        "k": "E",
+        "t": "quickly"
+      },
+      {
+        "k": "F",
+        "t": "height"
+      },
+      {
+        "k": "G",
+        "t": "slowly"
+      },
+      {
+        "k": "H",
+        "t": "return"
+      }
+    ],
+    "allow": [
+      "evaporates",
+      "heatwaves",
+      "absorb",
+      "absorbing",
+      "concrete",
+      "brick",
+      "conditioners",
+      "reflect"
+    ],
+    "items": [
+      {
+        "id": "r-summary-box-02-1",
+        "q": "Cities stay warmer than the countryside mainly because of their building ___.",
+        "ans": "D",
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "is caused mainly by the materials cities are made of"
+        },
+        "why": "Nguyên nhân chính là vật liệu (materials) xây dựng thành phố.",
+        "wrong": {
+          "A": "Dân số không được nêu là nguyên nhân chính.",
+          "F": "Chiều cao toà nhà không được nhắc."
+        }
+      },
+      {
+        "id": "r-summary-box-02-2",
+        "q": "At night, city streets lose heat ___.",
+        "ans": "G",
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "release it slowly at night"
+        },
+        "why": "Đường phố toả nhiệt chậm (slowly) vào ban đêm.",
+        "wrong": {
+          "E": "Ngược với \"slowly\" và \"much more gradually\".",
+          "B": "Không phải trạng từ mô tả tốc độ toả nhiệt."
+        },
+        "trap": "'quickly' (E) là bẫy trái nghĩa."
+      },
+      {
+        "id": "r-summary-box-02-3",
+        "q": "In rural areas, ___ help to cool the air.",
+        "ans": "C",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "trees and grass cool the air as water evaporates from their leaves"
+        },
+        "why": "Cây và cỏ (plants) làm mát không khí.",
+        "wrong": {
+          "H": "Mái trắng là giải pháp ở thành phố, không phải ở nông thôn.",
+          "D": "Vật liệu xây dựng làm nóng, không làm mát."
+        }
+      },
+      {
+        "id": "r-summary-box-02-4",
+        "q": "Heatwaves are particularly ___ for elderly people.",
+        "ans": "B",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "death rates rise sharply in cities, especially among older people"
+        },
+        "why": "Tỉ lệ tử vong tăng, nhất là người lớn tuổi: nắng nóng đặc biệt nguy hiểm (dangerous).",
+        "wrong": {
+          "E": "Không ghép được về nghĩa.",
+          "G": "Không ghép được về nghĩa."
+        }
+      },
+      {
+        "id": "r-summary-box-02-5",
+        "q": "Painting roofs white helps because they then ___ sunlight.",
+        "ans": "H",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "painting roofs white so that they reflect sunlight instead of absorbing it"
+        },
+        "why": "Mái trắng phản chiếu (return = 'reflect', trả ánh nắng lại) thay vì hấp thụ.",
+        "wrong": {
+          "D": "Không phải động từ.",
+          "C": "Không phải động từ."
+        },
+        "trap": "'return' ở đây là cách nói khác của 'reflect'."
+      }
+    ]
+  },
+  {
+    "id": "r-summary-box-03",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary-box",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "practice",
+    "title": "The Science of Habits",
+    "instr": "Complete the summary using the list of words, A–H, below.",
+    "paras": [
+      "Psychologists estimate that around forty per cent of our daily actions are habits rather than conscious decisions. A habit forms when a behaviour is repeated many times in the same situation, until the situation itself triggers the behaviour automatically. Brushing your teeth after breakfast, for example, requires almost no thought because the setting acts as a cue.",
+      "How long does it take to form a habit? A popular claim says twenty-one days, but a study at University College London found that the average was sixty-six days, with a very wide range from eighteen days to more than eight months. Simple actions, such as drinking a glass of water, became automatic far sooner than demanding ones, such as doing fifty sit-ups.",
+      "Encouragingly, the same study found that missing a single day did not seriously damage the process. Researchers therefore advise people not to give up after a mistake, and to attach new habits to existing routines, such as reading for ten minutes immediately after dinner."
+    ],
+    "vi": [
+      "Các nhà tâm lý học ước tính khoảng 40% hành động hằng ngày là thói quen chứ không phải quyết định có ý thức. Thói quen hình thành khi một hành vi lặp lại nhiều lần trong cùng hoàn cảnh, tới mức chính hoàn cảnh tự động kích hoạt hành vi. Ví dụ, đánh răng sau bữa sáng hầu như không cần suy nghĩ vì bối cảnh đóng vai trò tín hiệu.",
+      "Mất bao lâu để hình thành thói quen? Một tuyên bố phổ biến nói hai mươi mốt ngày, nhưng một nghiên cứu ở Đại học College London thấy trung bình là sáu mươi sáu ngày, với khoảng rất rộng từ mười tám ngày tới hơn tám tháng. Hành động đơn giản như uống một cốc nước trở thành tự động sớm hơn nhiều so với hành động khó như gập bụng năm mươi lần.",
+      "Đáng mừng là nghiên cứu đó cũng thấy bỏ lỡ một ngày không làm hỏng quá trình đáng kể. Vì vậy các nhà nghiên cứu khuyên đừng bỏ cuộc sau một lần sai, và gắn thói quen mới vào nếp sinh hoạt sẵn có, như đọc sách mười phút ngay sau bữa tối."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "signal"
+      },
+      {
+        "k": "B",
+        "t": "difficult"
+      },
+      {
+        "k": "C",
+        "t": "deliberate"
+      },
+      {
+        "k": "D",
+        "t": "confirmed"
+      },
+      {
+        "k": "E",
+        "t": "automatic"
+      },
+      {
+        "k": "F",
+        "t": "reward"
+      },
+      {
+        "k": "G",
+        "t": "inaccurate"
+      },
+      {
+        "k": "H",
+        "t": "error"
+      }
+    ],
+    "allow": [
+      "cue",
+      "sit-ups",
+      "conscious",
+      "demanding",
+      "routines",
+      "triggers"
+    ],
+    "items": [
+      {
+        "id": "r-summary-box-03-1",
+        "q": "Nearly half of what we do each day is ___ rather than planned.",
+        "ans": "E",
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "around forty per cent of our daily actions are habits rather than conscious decisions"
+        },
+        "why": "Khoảng 40% hành động là thói quen, tức là tự động (automatic), không phải có chủ ý.",
+        "wrong": {
+          "A": "Không ghép được về nghĩa (đây là danh từ chỉ tín hiệu).",
+          "C": "Có ý thức (deliberate) là điều ngược lại."
+        },
+        "trap": "'conscious decisions' trong bài khớp với 'deliberate' (C), là vế bị phủ định."
+      },
+      {
+        "id": "r-summary-box-03-2",
+        "q": "A habit develops when a particular ___ starts the behaviour without thought.",
+        "ans": "A",
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "the setting acts as a cue"
+        },
+        "why": "Bối cảnh đóng vai trò tín hiệu (signal) kích hoạt hành vi.",
+        "wrong": {
+          "F": "Phần thưởng không được nhắc.",
+          "H": "Lỗi là chủ đề của đoạn 3."
+        }
+      },
+      {
+        "id": "r-summary-box-03-3",
+        "q": "The claim that habits take twenty-one days to form appears to be ___.",
+        "ans": "G",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "a study at University College London found that the average was sixty-six days"
+        },
+        "why": "Nghiên cứu thấy trung bình là 66 ngày, nên tuyên bố 21 ngày là không chính xác (inaccurate).",
+        "wrong": {
+          "D": "Bài không nói con số này được khẳng định.",
+          "B": "Không có ý là phức tạp."
+        }
+      },
+      {
+        "id": "r-summary-box-03-4",
+        "q": "Habits involving ___ actions took longer to become automatic.",
+        "ans": "B",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "far sooner than demanding ones, such as doing fifty sit-ups"
+        },
+        "why": "Hành động khó (difficult = 'demanding') mất nhiều thời gian hơn.",
+        "wrong": {
+          "D": "Không ghép được về nghĩa.",
+          "E": "Tự động là kết quả, không phải loại hành động."
+        }
+      },
+      {
+        "id": "r-summary-box-03-5",
+        "q": "Missing one day was found to make little difference, so people should not stop after a ___.",
+        "ans": "H",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "Researchers therefore advise people not to give up after a mistake"
+        },
+        "why": "Đừng bỏ cuộc sau một lần sai (error = 'mistake').",
+        "wrong": {
+          "F": "Không ghép được về nghĩa.",
+          "A": "Tín hiệu không phải thứ khiến người ta bỏ cuộc."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-summary-box-04",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary-box",
+    "level": "C1",
+    "band": 7,
+    "mode": "practice",
+    "title": "The Return of the Wolf to Yellowstone",
+    "instr": "Complete the summary using the list of words, A–H, below.",
+    "paras": [
+      "Wolves were eliminated from Yellowstone National Park in the United States by the 1920s, as part of a government programme to protect farm animals. In their absence, the number of elk, a large deer, increased dramatically, and the animals grazed heavily on young trees along the rivers.",
+      "In 1995, wolves were reintroduced to the park. Scientists soon reported changes that went far beyond the wolves' prey. Elk began to avoid open river valleys where they could easily be hunted, and willow and aspen trees started to recover. Some researchers argued that the returning trees stabilised riverbanks and provided habitat for beavers and songbirds, a chain of effects known as a 'trophic cascade'.",
+      "More recent studies have questioned how strong this cascade really was. Elk numbers were also reduced by hunting outside the park and by severe winters, and in many places trees have recovered only partially. Most ecologists now accept that wolves had a real effect, but they describe it as one factor among several rather than the single cause of the park's recovery."
+    ],
+    "vi": [
+      "Chó sói bị loại bỏ khỏi Vườn quốc gia Yellowstone ở Mỹ vào những năm 1920, trong một chương trình của chính phủ nhằm bảo vệ vật nuôi. Khi không có chúng, số nai sừng tấm (một loài hươu lớn) tăng mạnh, và chúng gặm trụi cây non dọc các con sông.",
+      "Năm 1995, chó sói được thả lại vào vườn. Các nhà khoa học sớm báo cáo những thay đổi vượt xa con mồi của sói. Nai bắt đầu tránh các thung lũng sông trống trải nơi chúng dễ bị săn, và cây liễu, cây dương bắt đầu hồi phục. Một số nhà nghiên cứu cho rằng cây mọc lại làm ổn định bờ sông và tạo nơi sống cho hải ly và chim hót, một chuỗi tác động gọi là 'thác dinh dưỡng'.",
+      "Các nghiên cứu gần đây đặt câu hỏi chuỗi tác động này mạnh đến đâu. Số nai còn giảm do săn bắn ngoài vườn và mùa đông khắc nghiệt, và ở nhiều nơi cây chỉ hồi phục một phần. Phần lớn nhà sinh thái học nay chấp nhận sói có tác động thật, nhưng mô tả nó là một yếu tố trong nhiều yếu tố chứ không phải nguyên nhân duy nhất của sự hồi phục."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "trees"
+      },
+      {
+        "k": "B",
+        "t": "crowded"
+      },
+      {
+        "k": "C",
+        "t": "deer"
+      },
+      {
+        "k": "D",
+        "t": "damage"
+      },
+      {
+        "k": "E",
+        "t": "weaker"
+      },
+      {
+        "k": "F",
+        "t": "livestock"
+      },
+      {
+        "k": "G",
+        "t": "recovery"
+      },
+      {
+        "k": "H",
+        "t": "exposed"
+      }
+    ],
+    "allow": [
+      "elk",
+      "grazed",
+      "willow",
+      "aspen",
+      "stabilised",
+      "riverbanks",
+      "beavers",
+      "songbirds",
+      "trophic",
+      "cascade",
+      "ecologists",
+      "reintroduced",
+      "eliminated",
+      "habitat",
+      "prey"
+    ],
+    "items": [
+      {
+        "id": "r-summary-box-04-1",
+        "q": "Wolves were removed from Yellowstone in order to protect ___.",
+        "ans": "F",
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "as part of a government programme to protect farm animals"
+        },
+        "why": "Chương trình bảo vệ vật nuôi (livestock = 'farm animals').",
+        "wrong": {
+          "C": "Hươu nai tăng lên khi không có sói, không phải thứ được bảo vệ.",
+          "A": "Cây không phải mục đích của chương trình."
+        }
+      },
+      {
+        "id": "r-summary-box-04-2",
+        "q": "Without wolves, elk caused serious ___ to young trees.",
+        "ans": "D",
+        "b": 7,
+        "ev": {
+          "p": 0,
+          "s": "the animals grazed heavily on young trees along the rivers"
+        },
+        "why": "Nai gặm trụi cây non: gây thiệt hại (damage).",
+        "wrong": {
+          "G": "Sự hồi phục là chuyện sau 1995.",
+          "E": "Không ghép được về nghĩa."
+        }
+      },
+      {
+        "id": "r-summary-box-04-3",
+        "q": "After 1995, elk began to stay away from ___ areas near rivers.",
+        "ans": "H",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "Elk began to avoid open river valleys where they could easily be hunted"
+        },
+        "why": "Nai tránh thung lũng sông trống trải (exposed = 'open', nơi dễ bị săn).",
+        "wrong": {
+          "B": "Bài không nói khu vực đông đúc.",
+          "E": "Không ghép được về nghĩa."
+        }
+      },
+      {
+        "id": "r-summary-box-04-4",
+        "q": "Recent research suggests the cascade was ___ than first claimed.",
+        "ans": "E",
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "More recent studies have questioned how strong this cascade really was."
+        },
+        "why": "Nghiên cứu mới nghi ngờ mức độ mạnh, nên tác động yếu hơn (weaker) so với tuyên bố ban đầu.",
+        "wrong": {
+          "B": "Không ghép được về nghĩa.",
+          "G": "Không phải tính từ so sánh."
+        },
+        "trap": "Câu hỏi về mức độ; 'questioned how strong' nghĩa là có thể không mạnh như vậy."
+      },
+      {
+        "id": "r-summary-box-04-5",
+        "q": "Most ecologists now see wolves as only one cause of the park's ___.",
+        "ans": "G",
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "rather than the single cause of the park's recovery"
+        },
+        "why": "Sói chỉ là một nguyên nhân của sự hồi phục (recovery).",
+        "wrong": {
+          "D": "Thiệt hại là do nai trước 1995.",
+          "F": "Vật nuôi không liên quan tới câu này."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-summary-box-05",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary-box",
+    "level": "C1",
+    "band": 7.5,
+    "mode": "practice",
+    "title": "The Paradox of Choice",
+    "instr": "Complete the summary using the list of words, A–H, below.",
+    "paras": [
+      "It seems obvious that having more choice makes people happier. In a well-known experiment, however, the psychologists Sheena Iyengar and Mark Lepper set up a table of jams in a supermarket. When twenty-four varieties were on display, more shoppers stopped to look, but only three per cent bought a jar. When only six varieties were offered, thirty per cent made a purchase.",
+      "The researchers argued that a large number of options can be paralysing: comparing many alternatives requires effort, and people worry about making the wrong decision. Even after choosing, they may feel less satisfied, because they keep thinking about the options they rejected.",
+      "Later attempts to repeat the jam study, however, have produced mixed results. An analysis of fifty experiments found that, on average, the size of the effect was close to zero. Choice seems to overwhelm people only under particular conditions, such as when the options are hard to compare or when people have no clear preference beforehand."
+    ],
+    "vi": [
+      "Có vẻ hiển nhiên là có nhiều lựa chọn hơn làm người ta hạnh phúc hơn. Tuy nhiên, trong một thí nghiệm nổi tiếng, hai nhà tâm lý học Sheena Iyengar và Mark Lepper đặt một bàn mứt trong siêu thị. Khi bày hai mươi bốn loại, nhiều khách dừng lại xem hơn, nhưng chỉ 3% mua một lọ. Khi chỉ có sáu loại, 30% đã mua.",
+      "Các nhà nghiên cứu cho rằng quá nhiều lựa chọn có thể làm tê liệt: so sánh nhiều phương án đòi hỏi nỗ lực, và người ta lo chọn sai. Ngay cả sau khi chọn, họ có thể kém hài lòng hơn, vì cứ nghĩ về những lựa chọn đã bỏ.",
+      "Tuy nhiên, những lần lặp lại thí nghiệm mứt sau này cho kết quả lẫn lộn. Một phân tích năm mươi thí nghiệm thấy trung bình độ lớn của hiệu ứng gần bằng không. Sự lựa chọn có vẻ chỉ làm người ta choáng ngợp trong những điều kiện nhất định, như khi các phương án khó so sánh hoặc khi người ta không có ưu tiên rõ ràng từ trước."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "satisfaction"
+      },
+      {
+        "k": "B",
+        "t": "powerful"
+      },
+      {
+        "k": "C",
+        "t": "attention"
+      },
+      {
+        "k": "D",
+        "t": "remember"
+      },
+      {
+        "k": "E",
+        "t": "profit"
+      },
+      {
+        "k": "F",
+        "t": "decide"
+      },
+      {
+        "k": "G",
+        "t": "non-existent"
+      },
+      {
+        "k": "H",
+        "t": "preference"
+      }
+    ],
+    "allow": [
+      "Iyengar",
+      "Lepper",
+      "paralysing",
+      "overwhelm",
+      "preference",
+      "beforehand",
+      "purchase"
+    ],
+    "items": [
+      {
+        "id": "r-summary-box-05-1",
+        "q": "In the jam experiment, the larger display attracted more ___ but led to fewer sales.",
+        "ans": "C",
+        "b": 7,
+        "ev": {
+          "p": 0,
+          "s": "more shoppers stopped to look, but only three per cent bought a jar"
+        },
+        "why": "Bàn lớn thu hút nhiều sự chú ý (attention) hơn nhưng bán được ít hơn.",
+        "wrong": {
+          "E": "Lợi nhuận không được nhắc; doanh số giảm.",
+          "A": "Không ghép được về nghĩa."
+        }
+      },
+      {
+        "id": "r-summary-box-05-2",
+        "q": "According to the researchers, too many options can make people unable to ___.",
+        "ans": "F",
+        "b": 7.5,
+        "ev": {
+          "p": 1,
+          "s": "a large number of options can be paralysing"
+        },
+        "why": "'paralysing' = làm tê liệt, không thể quyết định (decide).",
+        "wrong": {
+          "H": "Không phải động từ phù hợp sau \"unable to\".",
+          "D": "Bài không nói người ta không nhớ được."
+        }
+      },
+      {
+        "id": "r-summary-box-05-3",
+        "q": "After making a choice, people may experience reduced ___.",
+        "ans": "A",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "they may feel less satisfied"
+        },
+        "why": "Kém hài lòng (less satisfied) = sự hài lòng (satisfaction) giảm.",
+        "wrong": {
+          "C": "Sự chú ý không phải điều giảm sau khi chọn.",
+          "G": "Không ghép được về nghĩa."
+        }
+      },
+      {
+        "id": "r-summary-box-05-4",
+        "q": "When many studies were combined, the effect was found to be almost ___.",
+        "ans": "G",
+        "b": 8,
+        "ev": {
+          "p": 2,
+          "s": "on average, the size of the effect was close to zero"
+        },
+        "why": "Hiệu ứng trung bình gần bằng không (non-existent).",
+        "wrong": {
+          "B": "Ngược với \"close to zero\".",
+          "E": "Không ghép được về nghĩa."
+        }
+      },
+      {
+        "id": "r-summary-box-05-5",
+        "q": "Choice appears to cause problems mainly when people lack a clear ___ before choosing.",
+        "ans": "H",
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "when people have no clear preference beforehand"
+        },
+        "why": "Không có ưu tiên rõ ràng (preference) từ trước.",
+        "wrong": {
+          "F": "Là động từ, không ghép sau \"a clear\".",
+          "C": "Không khớp nghĩa với câu trong bài."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-summary-box-06",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-summary-box",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Volunteering Abroad",
+    "instr": "Complete the summary using the list of words, A–H, below.",
+    "paras": [
+      "Each year, hundreds of thousands of young people travel to developing countries to volunteer, often for just a few weeks. Many pay large fees to companies that arrange placements in schools, orphanages or building projects. The experience is usually advertised as a chance to 'make a difference' while seeing the world.",
+      "Critics argue that short-term volunteering can do more harm than good. Volunteers without training may take jobs that local people could do, and children in orphanages can suffer when caregivers keep arriving and leaving. In some countries, orphanages have even been set up mainly to attract paying visitors.",
+      "Supporters respond that well-organised programmes can be valuable, especially when volunteers have useful skills and stay for longer periods. Experts recommend that people choose organisations that work closely with local communities and are open about how fees are spent. Some also suggest that young people consider volunteering in their own country first, where they understand the language and culture."
+    ],
+    "vi": [
+      "Mỗi năm, hàng trăm nghìn người trẻ tới các nước đang phát triển làm tình nguyện, thường chỉ vài tuần. Nhiều người trả phí cao cho các công ty sắp xếp chỗ làm ở trường học, trại trẻ mồ côi hay công trình xây dựng. Trải nghiệm này thường được quảng cáo là cơ hội 'tạo nên khác biệt' trong khi đi khắp thế giới.",
+      "Người phê phán cho rằng tình nguyện ngắn hạn có thể hại nhiều hơn lợi. Tình nguyện viên không được đào tạo có thể lấy mất việc mà người địa phương làm được, và trẻ em ở trại mồ côi có thể bị tổn thương khi người chăm sóc liên tục đến rồi đi. Ở một số nước, trại mồ côi thậm chí được lập ra chủ yếu để thu hút khách trả tiền.",
+      "Người ủng hộ đáp lại rằng các chương trình được tổ chức tốt có thể có giá trị, nhất là khi tình nguyện viên có kỹ năng hữu ích và ở lâu hơn. Chuyên gia khuyên nên chọn tổ chức làm việc chặt chẽ với cộng đồng địa phương và minh bạch về cách dùng phí. Một số người còn gợi ý người trẻ nên cân nhắc làm tình nguyện ở chính nước mình trước, nơi họ hiểu ngôn ngữ và văn hoá."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "small"
+      },
+      {
+        "k": "B",
+        "t": "constant"
+      },
+      {
+        "k": "C",
+        "t": "short"
+      },
+      {
+        "k": "D",
+        "t": "high"
+      },
+      {
+        "k": "E",
+        "t": "local"
+      },
+      {
+        "k": "F",
+        "t": "honest"
+      },
+      {
+        "k": "G",
+        "t": "foreign"
+      },
+      {
+        "k": "H",
+        "t": "longer"
+      }
+    ],
+    "allow": [
+      "orphanages",
+      "caregivers",
+      "placements",
+      "volunteering",
+      "well-organised"
+    ],
+    "items": [
+      {
+        "id": "r-summary-box-06-1",
+        "q": "Many volunteers pay ___ fees to companies that organise their trips.",
+        "ans": "D",
+        "b": 5.5,
+        "ev": {
+          "p": 0,
+          "s": "Many pay large fees to companies that arrange placements"
+        },
+        "why": "Trả phí lớn (high = 'large').",
+        "wrong": {
+          "A": "Ngược nghĩa với \"large\".",
+          "G": "Không ghép được về nghĩa."
+        }
+      },
+      {
+        "id": "r-summary-box-06-2",
+        "q": "Critics say that untrained volunteers may take work away from ___ people.",
+        "ans": "E",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "Volunteers without training may take jobs that local people could do"
+        },
+        "why": "Lấy mất việc của người địa phương (local).",
+        "wrong": {
+          "H": "Không ghép được về nghĩa.",
+          "B": "Không ghép được về nghĩa."
+        }
+      },
+      {
+        "id": "r-summary-box-06-3",
+        "q": "Children can be harmed by the ___ arrival and departure of carers.",
+        "ans": "B",
+        "b": 6.5,
+        "ev": {
+          "p": 1,
+          "s": "children in orphanages can suffer when caregivers keep arriving and leaving"
+        },
+        "why": "Người chăm sóc liên tục (constant = 'keep arriving and leaving') đến rồi đi.",
+        "wrong": {
+          "C": "Không có ý ngắn hạn đi với \"arrival\".",
+          "F": "Không có ý minh bạch."
+        }
+      },
+      {
+        "id": "r-summary-box-06-4",
+        "q": "Supporters believe programmes are more useful when volunteers stay for a ___ time.",
+        "ans": "H",
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "especially when volunteers have useful skills and stay for longer periods"
+        },
+        "why": "Ở lâu hơn (longer).",
+        "wrong": {
+          "C": "Ngắn hạn là điều bị phê phán.",
+          "A": "Không ghép được về nghĩa."
+        },
+        "trap": "'short' (C) là bẫy trái nghĩa với 'longer periods'."
+      },
+      {
+        "id": "r-summary-box-06-5",
+        "q": "Experts advise choosing organisations that are ___ about their use of fees.",
+        "ans": "F",
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "are open about how fees are spent"
+        },
+        "why": "Minh bạch (honest = 'open') về cách dùng phí.",
+        "wrong": {
+          "D": "Không ghép được về nghĩa.",
+          "E": "Không ghép được về nghĩa."
+        }
+      }
+    ]
+  }
+]

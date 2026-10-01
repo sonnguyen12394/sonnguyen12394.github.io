@@ -1,0 +1,26 @@
+{
+  "id": "r-sentence",
+  "lesson": [
+    "Đề cho các câu có chỗ trống, đã diễn đạt lại ý trong bài. Bạn điền từ LẤY NGUYÊN TỪ BÀI, không quá số từ cho phép (ví dụ NO MORE THAN TWO WORDS). Các câu đi theo thứ tự bài.",
+    "Viết quá số từ là sai dù ý đúng. Từ phải đúng chính tả như trong bài; số có thể viết bằng chữ số. Câu hoàn chỉnh phải đúng ngữ pháp.",
+    "Từ cần điền gần như luôn là danh từ, đôi khi là tính từ hoặc động từ; xem từ đứng trước và sau chỗ trống để đoán loại từ."
+  ],
+  "steps": [
+    "Đọc giới hạn từ trong lời dẫn và khoanh lại (ONE WORD / TWO WORDS / AND/OR A NUMBER).",
+    "Đọc câu, đoán loại từ cần điền (danh từ số ít/nhiều, tính từ, số).",
+    "Dùng từ khoá trong câu để tìm chỗ trong bài; câu trong đề là cách diễn đạt khác của câu trong bài.",
+    "Chép đúng từ trong bài vào chỗ trống, đọc lại cả câu xem có đúng ngữ pháp và nghĩa không.",
+    "Đếm số từ; từ có gạch nối (well-known) tính là một từ."
+  ],
+  "tips": [
+    "Không đổi dạng từ: nếu bài viết 'storage', đừng viết 'store'.",
+    "Mạo từ a/an/the thường không cần; nếu thêm làm quá số từ thì bỏ đi.",
+    "Danh từ số nhiều: kiểm tra câu đề (động từ 'are', từ 'several') để biết có cần -s không."
+  ],
+  "traps": [
+    "Tự nghĩ từ đồng nghĩa thay vì chép từ trong bài.",
+    "Chép cả cụm dài hơn giới hạn vì sợ thiếu.",
+    "Sai chính tả khi chép, hoặc quên -s số nhiều: bị tính sai cả câu."
+  ],
+  "time": "khoảng 1 phút mỗi câu"
+}

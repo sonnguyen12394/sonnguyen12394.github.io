@@ -1,0 +1,26 @@
+{
+  "id": "r-summary-box",
+  "lesson": [
+    "Đề cho đoạn tóm tắt có chỗ trống và một khung từ/cụm từ đánh chữ A, B, C… (nhiều hơn số chỗ trống). Bạn chọn chữ cái của từ phù hợp. Từ trong khung thường KHÔNG giống từ trong bài: chúng là từ đồng nghĩa hoặc cách nói khác.",
+    "Vì chỉ cần chọn, chính tả không phải lo; nhưng khung từ được làm để nhiều từ đều đúng ngữ pháp, nên phải hiểu nghĩa câu trong bài.",
+    "Các từ nhiễu trong khung thường là: từ trái nghĩa với đáp án, từ đúng chủ đề nhưng sai chi tiết, hoặc từ lấy nguyên văn từ bài nhưng ở chỗ khác."
+  ],
+  "steps": [
+    "Đọc lướt khung từ, chia nhóm theo loại từ (danh từ, tính từ, động từ).",
+    "Đọc câu tóm tắt, xác định loại từ cần điền và nghĩa dự đoán (tốt/xấu, tăng/giảm).",
+    "Tìm câu tương ứng trong bài, đọc kỹ để hiểu ý.",
+    "Chọn từ trong khung diễn đạt đúng ý đó; loại các từ trái nghĩa hoặc sai chi tiết.",
+    "Đọc lại cả đoạn tóm tắt với các từ đã chọn."
+  ],
+  "tips": [
+    "Để ý cặp từ trái nghĩa trong khung (increase/decrease, cheap/expensive): thường một trong hai là đáp án.",
+    "Từ trong khung lặp đúng từ của bài không chắc là đáp án; đề hay dùng nó làm bẫy.",
+    "Mỗi từ thường chỉ dùng một lần; gạch bỏ từ đã chọn."
+  ],
+  "traps": [
+    "Chọn theo ngữ pháp mà không kiểm tra nghĩa.",
+    "Chọn từ trái nghĩa vì đọc sót 'not', 'less', 'rarely' trong bài.",
+    "Chọn từ vì nó xuất hiện y nguyên trong bài."
+  ],
+  "time": "khoảng 1 phút mỗi chỗ trống"
+}

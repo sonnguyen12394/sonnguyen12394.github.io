@@ -52,7 +52,10 @@ for (const f of walk(DIR).filter(p => !p.includes('/types/'))) {
         const svg = readFileSync(fp, 'utf8');
         // cùng luật với tools/build.mjs: chỉ SVG tĩnh, có <title> cho trình đọc màn hình (WCAG 1.1.1)
         if (/<script|<foreignObject|\son\w+\s*=|(?:href|src)\s*=\s*["'](?!#)/i.test(svg)) { schemaErr++; console.error(`✗ ${fig}.svg: có script/thuộc tính sự kiện/liên kết ngoài`); }
-        if (!/<title>[^<]{5,}<\/title>/.test(svg)) { schemaErr++; console.error(`✗ ${fig}.svg: thiếu <title> mô tả hình`); }
+        if (!/<title[^>]*>[^<]{5,}<\/title>/.test(svg)) { schemaErr++; console.error(`✗ ${fig}.svg: thiếu <title> mô tả hình`); }
+        // Người dùng trình đọc màn hình chỉ có <desc>: mỗi nhãn số được hỏi phải được định vị trong đó (WCAG 1.1.1).
+        const desc = /<desc[^>]*>([^<]*)<\/desc>/.exec(svg)?.[1] ?? '';
+        for (const it of (g as Group).items) if (/^\d+$/.test(it.q) && !new RegExp(`(?:number|numbered) ${it.q}\\b`, 'i').test(desc)) { schemaErr++; console.error(`✗ ${fig}.svg: <desc> không nói vị trí nhãn ${it.q} (${it.id})`); }
       }
     }
   }

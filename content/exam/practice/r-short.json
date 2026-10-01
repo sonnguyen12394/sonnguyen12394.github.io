@@ -1,0 +1,846 @@
+[
+  {
+    "id": "r-short-01",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-short",
+    "level": "B1",
+    "band": 5,
+    "mode": "practice",
+    "title": "The Island Postman",
+    "instr": "Answer the questions below. Choose NO MORE THAN THREE WORDS AND/OR A NUMBER from the text for each answer.",
+    "paras": [
+      "For thirty-two years, Ewan MacLeod delivered letters to the small Scottish island of Fara. The island has no bridge to the mainland, so every morning Ewan collected the post from the town of Kirkby and crossed the water in a small boat. The journey took about forty minutes in good weather.",
+      "Fara has only sixty-five residents, and Ewan knew them all by name. As well as letters, he often brought medicine from the chemist and newspapers for older residents who could not travel easily. In winter, storms sometimes made the crossing impossible, and the island could go without post for a week.",
+      "When Ewan retired last spring, the islanders held a party for him in the village hall. Today the post arrives by a small plane twice a week, which is faster but, residents say, much less friendly. Ewan himself still visits the island every summer to see his old friends."
+    ],
+    "vi": [
+      "Suốt ba mươi hai năm, Ewan MacLeod đưa thư tới hòn đảo nhỏ Fara của Scotland. Đảo không có cầu nối với đất liền, nên mỗi sáng Ewan nhận thư ở thị trấn Kirkby và vượt biển bằng một chiếc thuyền nhỏ. Chuyến đi mất khoảng bốn mươi phút khi thời tiết tốt.",
+      "Fara chỉ có sáu mươi lăm cư dân, và Ewan biết tên tất cả. Ngoài thư, ông thường mang thuốc từ hiệu thuốc và báo cho cư dân lớn tuổi không đi lại dễ dàng. Mùa đông, bão đôi khi khiến không thể vượt biển, và đảo có thể không có thư cả tuần.",
+      "Khi Ewan nghỉ hưu mùa xuân năm ngoái, dân đảo tổ chức tiệc cho ông ở nhà văn hoá làng. Ngày nay thư đến bằng một chiếc máy bay nhỏ hai lần mỗi tuần, nhanh hơn nhưng, theo cư dân, kém thân thiện hơn nhiều. Bản thân Ewan vẫn thăm đảo mỗi mùa hè để gặp bạn cũ."
+    ],
+    "allow": [
+      "postman",
+      "mainland",
+      "chemist",
+      "islanders",
+      "retired"
+    ],
+    "items": [
+      {
+        "id": "r-short-01-1",
+        "q": "How long did Ewan work as the island's postman?",
+        "ans": {
+          "accept": [
+            "thirty-two years",
+            "32 years"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 4.5,
+        "ev": {
+          "p": 0,
+          "s": "For thirty-two years, Ewan MacLeod delivered letters"
+        },
+        "why": "Ông đưa thư ba mươi hai năm (thirty-two years / 32 years).",
+        "wrong": {
+          "forty minutes": "Đó là thời gian mỗi chuyến đi."
+        }
+      },
+      {
+        "id": "r-short-01-2",
+        "q": "Where did Ewan pick up the post each day?",
+        "ans": {
+          "accept": [
+            "Kirkby",
+            "town of Kirkby"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 0,
+          "s": "every morning Ewan collected the post from the town of Kirkby"
+        },
+        "why": "Ông nhận thư ở thị trấn Kirkby.",
+        "wrong": {
+          "mainland": "Quá chung; bài nêu rõ tên thị trấn."
+        }
+      },
+      {
+        "id": "r-short-01-3",
+        "q": "Apart from letters and newspapers, what did Ewan often bring?",
+        "ans": {
+          "accept": [
+            "medicine"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "he often brought medicine from the chemist"
+        },
+        "why": "Ông thường mang thuốc (medicine).",
+        "wrong": {
+          "chemist": "Hiệu thuốc là nơi lấy thuốc, không phải thứ mang tới."
+        }
+      },
+      {
+        "id": "r-short-01-4",
+        "q": "What sometimes stopped Ewan from crossing in winter?",
+        "ans": {
+          "accept": [
+            "storms"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "In winter, storms sometimes made the crossing impossible"
+        },
+        "why": "Bão (storms) khiến không thể vượt biển.",
+        "wrong": {
+          "winter": "Mùa đông là thời điểm, không phải nguyên nhân."
+        }
+      },
+      {
+        "id": "r-short-01-5",
+        "q": "How does the post reach the island now?",
+        "ans": {
+          "accept": [
+            "small plane",
+            "by small plane",
+            "plane"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 5,
+        "ev": {
+          "p": 2,
+          "s": "Today the post arrives by a small plane twice a week"
+        },
+        "why": "Thư đến bằng máy bay nhỏ (small plane).",
+        "wrong": {
+          "boat": "Thuyền là cách cũ của Ewan."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-short-02",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-short",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Desert Locusts",
+    "instr": "Answer the questions below. Choose NO MORE THAN THREE WORDS AND/OR A NUMBER from the text for each answer.",
+    "paras": [
+      "The desert locust is normally a shy insect that lives alone in the dry regions of Africa, the Middle East and South Asia. After heavy rain, however, plants grow quickly and locusts breed in large numbers. When they are crowded together, they change colour from green to yellow and black, and begin to move in huge groups called swarms.",
+      "A single swarm can contain up to eighty million locusts per square kilometre and travel up to 150 kilometres in a day. Each insect eats roughly its own weight in plants every day, so a large swarm can destroy crops that would feed thousands of people.",
+      "The most serious outbreak in recent decades began in 2019, after unusual cyclones brought heavy rain to the Arabian Peninsula. Swarms spread to East Africa, where Kenya experienced its worst invasion for seventy years. Today, scientists use satellite data on rainfall and vegetation to predict where swarms may form, so that they can be controlled before they grow too large."
+    ],
+    "vi": [
+      "Châu chấu sa mạc bình thường là loài côn trùng nhút nhát sống đơn độc ở các vùng khô của châu Phi, Trung Đông và Nam Á. Tuy nhiên, sau mưa lớn, cây cối mọc nhanh và châu chấu sinh sản số lượng lớn. Khi bị dồn đông lại, chúng đổi màu từ xanh lá sang vàng đen và bắt đầu di chuyển thành những đàn khổng lồ.",
+      "Một đàn có thể chứa tới tám mươi triệu con mỗi ki-lô-mét vuông và đi tới 150 ki-lô-mét mỗi ngày. Mỗi con ăn lượng cây xấp xỉ trọng lượng của chính nó mỗi ngày, nên một đàn lớn có thể phá huỷ hoa màu đủ nuôi hàng nghìn người.",
+      "Đợt bùng phát nghiêm trọng nhất trong những thập kỷ gần đây bắt đầu năm 2019, sau khi các cơn bão xoáy bất thường mang mưa lớn tới bán đảo Ả Rập. Các đàn lan sang Đông Phi, nơi Kenya hứng chịu đợt xâm lấn tồi tệ nhất trong bảy mươi năm. Ngày nay, các nhà khoa học dùng dữ liệu vệ tinh về lượng mưa và thảm thực vật để dự đoán nơi đàn có thể hình thành, để kiểm soát trước khi chúng quá lớn."
+    ],
+    "allow": [
+      "locust",
+      "locusts",
+      "breed",
+      "swarm",
+      "swarms",
+      "outbreak",
+      "cyclones",
+      "peninsula",
+      "Arabian",
+      "satellite",
+      "vegetation",
+      "invasion"
+    ],
+    "items": [
+      {
+        "id": "r-short-02-1",
+        "q": "What weather causes locust numbers to rise?",
+        "ans": {
+          "accept": [
+            "heavy rain"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 5.5,
+        "ev": {
+          "p": 0,
+          "s": "After heavy rain, however, plants grow quickly and locusts breed in large numbers"
+        },
+        "why": "Sau mưa lớn (heavy rain), châu chấu sinh sản nhiều.",
+        "wrong": {
+          "cyclones": "Bão xoáy năm 2019 mang mưa lớn; câu hỏi chung về thời tiết làm tăng số lượng là \"heavy rain\"."
+        }
+      },
+      {
+        "id": "r-short-02-2",
+        "q": "What colours do crowded locusts turn?",
+        "ans": {
+          "accept": [
+            "yellow and black"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "they change colour from green to yellow and black"
+        },
+        "why": "Chúng đổi sang vàng và đen (yellow and black).",
+        "wrong": {
+          "green": "Xanh lá là màu ban đầu."
+        }
+      },
+      {
+        "id": "r-short-02-3",
+        "q": "How far can a swarm travel in one day?",
+        "ans": {
+          "accept": [
+            "150 kilometres",
+            "150 kilometers",
+            "150 km"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "travel up to 150 kilometres in a day"
+        },
+        "why": "Đàn có thể đi tới 150 ki-lô-mét mỗi ngày.",
+        "wrong": {
+          "eighty million": "Đó là số con mỗi ki-lô-mét vuông."
+        }
+      },
+      {
+        "id": "r-short-02-4",
+        "q": "Which country suffered its worst invasion for seventy years?",
+        "ans": {
+          "accept": [
+            "Kenya"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "where Kenya experienced its worst invasion for seventy years"
+        },
+        "why": "Kenya chịu đợt xâm lấn tồi tệ nhất trong bảy mươi năm.",
+        "wrong": {
+          "East Africa": "Đó là khu vực; câu hỏi hỏi quốc gia."
+        }
+      },
+      {
+        "id": "r-short-02-5",
+        "q": "Besides rainfall, what do satellites provide data on?",
+        "ans": {
+          "accept": [
+            "vegetation"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "scientists use satellite data on rainfall and vegetation"
+        },
+        "why": "Dữ liệu vệ tinh về lượng mưa và thảm thực vật (vegetation).",
+        "wrong": {
+          "swarms": "Vệ tinh giúp dự đoán đàn hình thành, không đo trực tiếp đàn."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-short-03",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-short",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "practice",
+    "title": "The First Lighthouse Keepers",
+    "instr": "Answer the questions below. Choose NO MORE THAN THREE WORDS from the text for each answer.",
+    "paras": [
+      "Before electric lights and automatic systems, every lighthouse needed people to look after it. Keepers lived in or beside the tower, often with their families, and their most important job was to keep the lamp burning from sunset to sunrise. In the early nineteenth century, most lamps burned whale oil, which produced a great deal of smoke.",
+      "The glass around the lamp therefore had to be cleaned several times every night. Keepers also had to wind up the clockwork machine that turned the light, so that ships could recognise each lighthouse by its own pattern of flashes. On rock lighthouses far out at sea, keepers worked in teams of three and could be cut off for weeks when the weather was bad.",
+      "The job slowly disappeared during the twentieth century. In Britain, the last lighthouse to lose its keepers was North Foreland in Kent, which became fully automatic in 1998. Many former keepers' cottages are now rented out to holidaymakers."
+    ],
+    "vi": [
+      "Trước khi có đèn điện và hệ thống tự động, mọi ngọn hải đăng đều cần người trông coi. Người giữ đèn sống trong hoặc cạnh tháp, thường cùng gia đình, và việc quan trọng nhất là giữ đèn cháy từ hoàng hôn tới bình minh. Đầu thế kỷ 19, phần lớn đèn đốt dầu cá voi, tạo ra rất nhiều khói.",
+      "Vì vậy kính quanh đèn phải được lau nhiều lần mỗi đêm. Người giữ đèn còn phải lên dây cót cho cỗ máy đồng hồ làm đèn xoay, để tàu nhận ra mỗi ngọn hải đăng bằng kiểu chớp riêng. Ở hải đăng trên đá xa ngoài biển, người giữ đèn làm việc theo nhóm ba người và có thể bị cô lập hàng tuần khi thời tiết xấu.",
+      "Nghề này dần biến mất trong thế kỷ 20. Ở Anh, hải đăng cuối cùng không còn người giữ là North Foreland ở Kent, trở nên hoàn toàn tự động năm 1998. Nhiều căn nhà cũ của người giữ đèn nay được cho khách du lịch thuê."
+    ],
+    "allow": [
+      "lighthouse",
+      "lighthouses",
+      "keepers",
+      "whale",
+      "clockwork",
+      "flashes",
+      "holidaymakers",
+      "cottages",
+      "automatic"
+    ],
+    "items": [
+      {
+        "id": "r-short-03-1",
+        "q": "What fuel did most lamps use in the early 1800s?",
+        "ans": {
+          "accept": [
+            "whale oil"
+          ]
+        },
+        "limit": 3,
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "most lamps burned whale oil"
+        },
+        "why": "Phần lớn đèn đốt dầu cá voi (whale oil).",
+        "wrong": {
+          "oil": "Thiếu thông tin; bài nói rõ loại dầu."
+        }
+      },
+      {
+        "id": "r-short-03-2",
+        "q": "What made the glass around the lamp dirty?",
+        "ans": {
+          "accept": [
+            "smoke"
+          ]
+        },
+        "limit": 3,
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "which produced a great deal of smoke"
+        },
+        "why": "Dầu cá voi tạo nhiều khói (smoke), nên kính phải lau thường xuyên. Đây là câu nối hai đoạn.",
+        "wrong": {
+          "whale oil": "Dầu là nguyên nhân gốc, nhưng thứ làm bẩn kính là khói."
+        },
+        "trap": "Đáp án nằm ở cuối đoạn 1, còn chữ 'cleaned' ở đầu đoạn 2: đọc liền hai đoạn."
+      },
+      {
+        "id": "r-short-03-3",
+        "q": "What did ships use to identify each lighthouse?",
+        "ans": {
+          "accept": [
+            "pattern of flashes",
+            "flashes"
+          ]
+        },
+        "limit": 3,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "so that ships could recognise each lighthouse by its own pattern of flashes"
+        },
+        "why": "Tàu nhận ra hải đăng bằng kiểu chớp riêng (pattern of flashes).",
+        "wrong": {
+          "clockwork machine": "Cỗ máy làm đèn xoay, không phải thứ tàu nhìn."
+        }
+      },
+      {
+        "id": "r-short-03-4",
+        "q": "How many keepers worked together on rock lighthouses?",
+        "ans": {
+          "accept": [
+            "three",
+            "3"
+          ]
+        },
+        "limit": 3,
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "keepers worked in teams of three"
+        },
+        "why": "Nhóm ba người (three).",
+        "wrong": {
+          "weeks": "Đó là thời gian bị cô lập."
+        }
+      },
+      {
+        "id": "r-short-03-5",
+        "q": "Who are many former keepers' cottages rented to today?",
+        "ans": {
+          "accept": [
+            "holidaymakers"
+          ]
+        },
+        "limit": 3,
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "Many former keepers' cottages are now rented out to holidaymakers"
+        },
+        "why": "Nhà được cho khách du lịch (holidaymakers) thuê.",
+        "wrong": {
+          "families": "Gia đình người giữ đèn từng sống ở đó trước kia."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-short-04",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-short",
+    "level": "C1",
+    "band": 7,
+    "mode": "practice",
+    "title": "Reading the Rings of Trees",
+    "instr": "Answer the questions below. Choose NO MORE THAN THREE WORDS AND/OR A NUMBER from the text for each answer.",
+    "paras": [
+      "Every year, most trees in temperate climates add a new layer of wood beneath their bark. In spring, when water is plentiful, the tree produces wide, pale cells; later in the season the cells become smaller and darker. Together these form a single visible ring, so counting the rings reveals the age of the tree.",
+      "The width of each ring also records the conditions of that year. In warm, wet years, rings are wide; in years of drought or cold, they are narrow. By matching patterns of wide and narrow rings across many trees, including ancient timber preserved in buildings and bogs, researchers have built continuous records stretching back more than twelve thousand years. This science is called dendrochronology.",
+      "Its uses go far beyond studying climate. Tree rings have been used to date wooden objects such as Viking ships and old violins, sometimes exposing forgeries. Because a tree takes in carbon from the atmosphere, ring records are also used to calibrate radiocarbon dating, making it far more accurate."
+    ],
+    "vi": [
+      "Mỗi năm, phần lớn cây ở vùng khí hậu ôn đới thêm một lớp gỗ mới dưới vỏ. Vào mùa xuân, khi nhiều nước, cây tạo các tế bào rộng, màu nhạt; cuối mùa, tế bào nhỏ và sẫm hơn. Cùng nhau chúng tạo thành một vòng nhìn thấy được, nên đếm vòng sẽ biết tuổi cây.",
+      "Độ rộng mỗi vòng còn ghi lại điều kiện của năm đó. Năm ấm và ẩm, vòng rộng; năm hạn hán hoặc lạnh, vòng hẹp. Bằng cách khớp các kiểu vòng rộng, hẹp giữa nhiều cây, kể cả gỗ cổ còn giữ trong công trình và đầm lầy, các nhà nghiên cứu đã xây dựng bộ ghi chép liên tục kéo dài hơn mười hai nghìn năm. Ngành khoa học này gọi là niên đại học vòng cây.",
+      "Ứng dụng của nó vượt xa việc nghiên cứu khí hậu. Vòng cây đã được dùng để xác định niên đại đồ gỗ như tàu Viking và đàn vĩ cầm cổ, đôi khi vạch trần đồ giả. Vì cây hấp thụ carbon từ khí quyển, bộ ghi vòng cây còn dùng để hiệu chỉnh phương pháp xác định niên đại bằng carbon phóng xạ, giúp nó chính xác hơn nhiều."
+    ],
+    "allow": [
+      "temperate",
+      "bark",
+      "drought",
+      "timber",
+      "bogs",
+      "dendrochronology",
+      "forgeries",
+      "calibrate",
+      "radiocarbon",
+      "Viking",
+      "violins",
+      "plentiful"
+    ],
+    "items": [
+      {
+        "id": "r-short-04-1",
+        "q": "When does a tree produce wide, pale cells?",
+        "ans": {
+          "accept": [
+            "in spring",
+            "spring"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "In spring, when water is plentiful, the tree produces wide, pale cells"
+        },
+        "why": "Vào mùa xuân (spring).",
+        "wrong": {
+          "later": "Cuối mùa tế bào nhỏ và sẫm hơn."
+        }
+      },
+      {
+        "id": "r-short-04-2",
+        "q": "Apart from cold, what condition produces narrow rings?",
+        "ans": {
+          "accept": [
+            "drought"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "in years of drought or cold, they are narrow"
+        },
+        "why": "Hạn hán (drought) hoặc lạnh làm vòng hẹp; câu hỏi đã loại 'cold'.",
+        "wrong": {
+          "warm": "Ấm và ẩm làm vòng rộng."
+        }
+      },
+      {
+        "id": "r-short-04-3",
+        "q": "Apart from buildings, where has ancient timber been preserved?",
+        "ans": {
+          "accept": [
+            "bogs",
+            "in bogs"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "including ancient timber preserved in buildings and bogs"
+        },
+        "why": "Gỗ cổ còn giữ trong đầm lầy (bogs).",
+        "wrong": {
+          "buildings": "Đã có trong câu hỏi."
+        }
+      },
+      {
+        "id": "r-short-04-4",
+        "q": "What is the minimum length of time covered by the continuous tree-ring records?",
+        "ans": {
+          "accept": [
+            "twelve thousand years",
+            "12,000 years",
+            "12000 years"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "continuous records stretching back more than twelve thousand years"
+        },
+        "why": "Hơn mười hai nghìn năm (twelve thousand years).",
+        "wrong": {
+          "twelve thousand": "Thiếu đơn vị \"years\"."
+        }
+      },
+      {
+        "id": "r-short-04-5",
+        "q": "What musical instruments have been dated using tree rings?",
+        "ans": {
+          "accept": [
+            "old violins",
+            "violins"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "such as Viking ships and old violins"
+        },
+        "why": "Đàn vĩ cầm cổ (violins).",
+        "wrong": {
+          "Viking ships": "Tàu Viking không phải nhạc cụ."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-short-05",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-short",
+    "level": "C1",
+    "band": 7.5,
+    "mode": "practice",
+    "title": "The Great Stink of 1858",
+    "instr": "Answer the questions below. Choose NO MORE THAN THREE WORDS AND/OR A NUMBER from the text for each answer.",
+    "paras": [
+      "In the hot summer of 1858, the smell from the River Thames in London became so overpowering that it was known as 'the Great Stink'. For decades, the city's waste had flowed directly into the river, which was also a major source of drinking water. Parliament, whose building stood on the riverbank, tried to block the smell by hanging curtains soaked in chemicals over its windows.",
+      "At the time, most doctors believed that diseases such as cholera were spread by bad air, known as 'miasma'. The physician John Snow had argued in 1854 that cholera was carried by contaminated water, after tracing an outbreak to a single public water pump, but his theory was not widely accepted.",
+      "Ironically, it was fear of the smell rather than of the water that finally produced action. Within weeks, Parliament approved funding for a new sewer system designed by the engineer Joseph Bazalgette. Completed over the following two decades, it carried waste east of the city through more than 1,700 kilometres of street sewers, and cholera outbreaks in London soon came to an end."
+    ],
+    "vi": [
+      "Trong mùa hè nóng năm 1858, mùi từ sông Thames ở London nồng nặc tới mức được gọi là 'Đại Xú Khí'. Suốt nhiều thập kỷ, chất thải của thành phố đổ thẳng xuống sông, cũng là nguồn nước uống chính. Quốc hội, có toà nhà nằm bên bờ sông, đã cố chặn mùi bằng cách treo rèm tẩm hoá chất lên cửa sổ.",
+      "Thời đó, phần lớn bác sĩ tin rằng những bệnh như dịch tả lây qua không khí xấu, gọi là 'khí độc'. Bác sĩ John Snow đã lập luận năm 1854 rằng dịch tả lây qua nước bẩn, sau khi lần ra một ổ dịch từ một vòi nước công cộng, nhưng giả thuyết của ông chưa được chấp nhận rộng rãi.",
+      "Trớ trêu thay, chính nỗi sợ mùi chứ không phải nỗi sợ nước cuối cùng mới dẫn tới hành động. Trong vài tuần, Quốc hội duyệt kinh phí cho hệ thống cống mới do kỹ sư Joseph Bazalgette thiết kế. Hoàn thành trong hai thập kỷ sau đó, nó đưa chất thải về phía đông thành phố qua hơn 1.700 ki-lô-mét cống đường phố, và các đợt dịch tả ở London sớm chấm dứt."
+    ],
+    "allow": [
+      "Thames",
+      "overpowering",
+      "stink",
+      "cholera",
+      "miasma",
+      "physician",
+      "contaminated",
+      "outbreak",
+      "pump",
+      "sewer",
+      "sewers",
+      "Bazalgette",
+      "ironically",
+      "riverbank",
+      "soaked"
+    ],
+    "items": [
+      {
+        "id": "r-short-05-1",
+        "q": "What did Parliament hang over its windows to block the smell?",
+        "ans": {
+          "accept": [
+            "curtains"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "tried to block the smell by hanging curtains soaked in chemicals over its windows"
+        },
+        "why": "Treo rèm (curtains) tẩm hoá chất.",
+        "wrong": {
+          "chemicals": "Hoá chất tẩm vào rèm; thứ được treo là rèm."
+        }
+      },
+      {
+        "id": "r-short-05-2",
+        "q": "According to most doctors at the time, what spread cholera?",
+        "ans": {
+          "accept": [
+            "bad air",
+            "miasma"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "most doctors believed that diseases such as cholera were spread by bad air"
+        },
+        "why": "Phần lớn bác sĩ tin dịch tả lây qua không khí xấu (bad air / miasma).",
+        "wrong": {
+          "contaminated water": "Đó là giả thuyết của John Snow, chưa được chấp nhận rộng rãi."
+        },
+        "trap": "Câu hỏi hỏi ý của 'most doctors', không phải ý đúng theo khoa học hiện nay."
+      },
+      {
+        "id": "r-short-05-3",
+        "q": "What did John Snow trace a cholera outbreak to?",
+        "ans": {
+          "accept": [
+            "public water pump",
+            "water pump",
+            "pump"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "after tracing an outbreak to a single public water pump"
+        },
+        "why": "Ông lần ra ổ dịch từ một vòi nước công cộng (public water pump).",
+        "wrong": {
+          "single public water pump": "Bốn từ, vượt giới hạn ba từ."
+        }
+      },
+      {
+        "id": "r-short-05-4",
+        "q": "Who designed London's new sewer system?",
+        "ans": {
+          "accept": [
+            "Joseph Bazalgette",
+            "Bazalgette"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "a new sewer system designed by the engineer Joseph Bazalgette"
+        },
+        "why": "Kỹ sư Joseph Bazalgette thiết kế.",
+        "wrong": {
+          "John Snow": "Snow là bác sĩ nghiên cứu dịch tả."
+        }
+      },
+      {
+        "id": "r-short-05-5",
+        "q": "What is the minimum total length of the street sewers?",
+        "ans": {
+          "accept": [
+            "1,700 kilometres",
+            "1700 kilometres",
+            "1,700 km",
+            "1700 km",
+            "1,700 kilometers",
+            "1700 kilometers"
+          ]
+        },
+        "limit": 3,
+        "num": true,
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "through more than 1,700 kilometres of street sewers"
+        },
+        "why": "Hơn 1.700 ki-lô-mét (1,700 kilometres).",
+        "wrong": {
+          "two decades": "Đó là thời gian xây."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-short-06",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-short",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "A Guide to Camping Safely",
+    "instr": "Answer the questions below. Choose NO MORE THAN THREE WORDS from the text for each answer.",
+    "paras": [
+      "Before going camping, always check the weather forecast for the area and tell someone at home where you are going and when you expect to return. Choose a tent that is suitable for the season: a light summer tent will not keep you warm in autumn mountain conditions.",
+      "When choosing a place to put up your tent, avoid the bottom of valleys, where cold air collects at night and the ground can flood after rain. Never camp directly under large trees, as branches can fall in strong winds. A flat, slightly raised piece of ground is ideal.",
+      "Cooking requires particular care. Stoves should always be used outside the tent, because they produce carbon monoxide, a gas that has no smell and can be deadly in a closed space. Finally, keep food in sealed containers away from your sleeping area, especially in places where wild animals such as bears are found."
+    ],
+    "vi": [
+      "Trước khi đi cắm trại, luôn xem dự báo thời tiết khu vực và báo cho người ở nhà biết bạn đi đâu và khi nào dự định về. Chọn lều phù hợp với mùa: lều mùa hè nhẹ sẽ không giữ ấm trong điều kiện núi mùa thu.",
+      "Khi chọn chỗ dựng lều, tránh đáy thung lũng, nơi không khí lạnh tụ lại ban đêm và mặt đất có thể ngập sau mưa. Không bao giờ cắm trại ngay dưới cây lớn, vì cành có thể rơi khi gió mạnh. Một mảnh đất bằng phẳng, hơi cao là lý tưởng.",
+      "Nấu ăn cần đặc biệt cẩn thận. Bếp phải luôn dùng bên ngoài lều, vì chúng tạo ra khí CO, loại khí không mùi và có thể gây chết người trong không gian kín. Cuối cùng, giữ thức ăn trong hộp kín cách xa chỗ ngủ, nhất là ở nơi có thú hoang như gấu."
+    ],
+    "allow": [
+      "forecast",
+      "carbon",
+      "monoxide",
+      "stoves",
+      "sealed",
+      "bears",
+      "deadly"
+    ],
+    "items": [
+      {
+        "id": "r-short-06-1",
+        "q": "What should campers check before leaving home?",
+        "ans": {
+          "accept": [
+            "weather forecast"
+          ]
+        },
+        "limit": 3,
+        "b": 5.5,
+        "ev": {
+          "p": 0,
+          "s": "always check the weather forecast for the area"
+        },
+        "why": "Kiểm tra dự báo thời tiết (weather forecast).",
+        "wrong": {
+          "tent": "Lều là thứ cần chọn, không phải thứ cần kiểm tra."
+        }
+      },
+      {
+        "id": "r-short-06-2",
+        "q": "What collects at the bottom of valleys at night?",
+        "ans": {
+          "accept": [
+            "cold air"
+          ]
+        },
+        "limit": 3,
+        "b": 5.5,
+        "ev": {
+          "p": 1,
+          "s": "avoid the bottom of valleys, where cold air collects at night"
+        },
+        "why": "Không khí lạnh (cold air) tụ ở đáy thung lũng.",
+        "wrong": {
+          "rain": "Mưa có thể làm ngập, nhưng thứ tụ lại ban đêm là không khí lạnh."
+        }
+      },
+      {
+        "id": "r-short-06-3",
+        "q": "Why is it dangerous to camp under large trees?",
+        "ans": {
+          "accept": [
+            "branches can fall",
+            "falling branches",
+            "branches"
+          ]
+        },
+        "limit": 3,
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "as branches can fall in strong winds"
+        },
+        "why": "Cành có thể rơi (branches can fall) khi gió mạnh.",
+        "wrong": {
+          "strong winds": "Gió mạnh là điều kiện; mối nguy là cành rơi."
+        }
+      },
+      {
+        "id": "r-short-06-4",
+        "q": "What gas do camping stoves produce?",
+        "ans": {
+          "accept": [
+            "carbon monoxide"
+          ]
+        },
+        "limit": 3,
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "because they produce carbon monoxide"
+        },
+        "why": "Khí CO (carbon monoxide).",
+        "wrong": {
+          "carbon dioxide": "Bài nói carbon monoxide, khí không mùi gây chết người."
+        }
+      },
+      {
+        "id": "r-short-06-5",
+        "q": "What should food be kept in?",
+        "ans": {
+          "accept": [
+            "sealed containers"
+          ]
+        },
+        "limit": 3,
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "keep food in sealed containers away from your sleeping area"
+        },
+        "why": "Giữ thức ăn trong hộp kín (sealed containers).",
+        "wrong": {
+          "tent": "Bài nói để xa chỗ ngủ, không để trong lều."
+        }
+      }
+    ]
+  }
+]

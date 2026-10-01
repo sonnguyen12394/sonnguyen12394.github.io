@@ -46,3 +46,24 @@ test('chọn HAI đáp án: mỗi đáp án một điểm, trang luyện đạt 
   expect(axe.violations.map(v => `${v.id}: ${v.nodes.length}`)).toEqual([]);
   expect(errors).toEqual([]);
 });
+
+test('điền nhãn sơ đồ: hình SVG hiện, có tên cho trình đọc màn hình, chấm câu điền, không cuộn ngang ở 390px', async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Bắt đầu ôn thi' }).click();
+  await page.getByRole('button', { name: /IELTS Academic/ }).click();
+  await page.getByRole('button', { name: 'Để sau' }).click();
+  await page.getByRole('button', { name: /Luyện theo dạng câu hỏi/ }).click();
+  await page.locator('li', { hasText: 'Điền nhãn sơ đồ' }).getByRole('button', { name: 'Học & luyện' }).click();
+  await page.getByRole('button', { name: 'Làm bộ đầu tiên' }).click();
+  await expect(page.getByRole('img', { name: 'Diagram of a home-made water filter' })).toBeVisible();
+  const inputs = page.locator('form[data-xform="setcheck"] input.field');
+  await expect(inputs).toHaveCount(5);
+  for (const [i, v] of ['cotton cloth', 'Sand', 'charcoal', 'stones', 'cap'].entries()) await inputs.nth(i).fill(v);
+  await page.getByRole('button', { name: 'Chấm bài' }).click();
+  await expect(page.getByText('Kết quả: 4/5')).toBeVisible();   // "stones" sai (bài viết "gravel"), "Sand" đúng dù viết hoa
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+  const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+  expect(axe.violations.map(v => `${v.id}: ${v.nodes.length}`)).toEqual([]);
+  expect(errors).toEqual([]);
+});

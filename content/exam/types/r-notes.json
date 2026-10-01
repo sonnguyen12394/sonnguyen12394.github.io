@@ -1,0 +1,26 @@
+{
+  "id": "r-notes",
+  "lesson": [
+    "Đề cho phần ghi chú, bảng hoặc sơ đồ quy trình (flow-chart) tóm tắt một phần bài, có chỗ trống. Bạn điền từ LẤY NGUYÊN TỪ BÀI, không quá số từ cho phép.",
+    "Ghi chú và bảng thường có tiêu đề cột/mục (Cause, Effect, Date, Location…) cho biết loại thông tin cần điền. Sơ đồ quy trình đi theo thứ tự các bước trong bài.",
+    "Ghi chú viết rút gọn, không cần câu đầy đủ, nhưng từ điền vẫn phải khớp ngữ pháp với phần chữ quanh chỗ trống."
+  ],
+  "steps": [
+    "Đọc tiêu đề ghi chú/bảng để biết phần bài liên quan.",
+    "Xem cấu trúc: các mục, các cột, thứ tự các bước; đoán loại thông tin cho từng chỗ trống (số, tên, vật liệu, lý do).",
+    "Dùng từ khoá trong ghi chú để tìm chỗ trong bài; với sơ đồ quy trình, đi theo thứ tự các bước.",
+    "Chép từ đúng như trong bài, kiểm tra giới hạn từ.",
+    "Với bảng: đọc theo cả hàng và cột để chắc chắn đúng ô."
+  ],
+  "tips": [
+    "Thông tin trong bảng thường nằm rải ở nhiều đoạn; đừng nghĩ tất cả nằm cùng một chỗ.",
+    "Từ gạch đầu dòng trước chỗ trống (by, using, made of) cho biết rất rõ loại từ cần.",
+    "Số liệu: chép đúng đơn vị nếu đơn vị chưa có sẵn trong ghi chú."
+  ],
+  "traps": [
+    "Điền lại thông tin đã có sẵn trong ghi chú, làm thừa từ.",
+    "Đọc nhầm hàng/cột của bảng.",
+    "Trong sơ đồ quy trình, điền bước đứng trước hoặc sau bước được hỏi."
+  ],
+  "time": "khoảng 1 phút mỗi chỗ trống"
+}

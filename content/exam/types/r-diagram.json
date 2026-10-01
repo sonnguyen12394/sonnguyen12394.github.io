@@ -1,0 +1,26 @@
+{
+  "id": "r-diagram",
+  "lesson": [
+    "Đề cho một sơ đồ (máy móc, công trình, quy trình tự nhiên…) có các nhãn đánh số còn trống. Bạn điền tên bộ phận LẤY NGUYÊN TỪ BÀI, không quá số từ cho phép.",
+    "Phần bài mô tả sơ đồ thường nằm gọn trong một hoặc hai đoạn, và các nhãn thường (không phải luôn) đi theo thứ tự mô tả trong bài.",
+    "Đáp án gần như luôn là danh từ: tên một bộ phận, vật liệu hoặc chất."
+  ],
+  "steps": [
+    "Nhìn sơ đồ: nó là gì, các bộ phận nào đã có tên, nhãn trống nằm ở đâu (trên, dưới, bên trong, nối với gì).",
+    "Tìm đoạn bài mô tả vật trong sơ đồ (thường có nhiều từ chỉ vị trí: above, below, inside, attached to).",
+    "Dùng các nhãn đã có làm mốc, đọc từ chỉ vị trí để xác định nhãn trống.",
+    "Chép tên bộ phận đúng như trong bài, kiểm tra giới hạn từ.",
+    "Kiểm tra cả sơ đồ lần cuối: mỗi nhãn có hợp lý với vị trí không."
+  ],
+  "tips": [
+    "Học các từ chỉ vị trí và chuyển động: at the base, on top of, surrounded by, passes through, is connected to.",
+    "Nhãn đã có trong sơ đồ là manh mối mạnh: tìm chúng trong bài trước.",
+    "Nếu sơ đồ là quy trình, đi theo mũi tên."
+  ],
+  "traps": [
+    "Điền tên một bộ phận đã có nhãn sẵn.",
+    "Nhầm vị trí trên/dưới, trong/ngoài vì đọc lướt từ chỉ vị trí.",
+    "Điền chức năng của bộ phận (to heat water) thay vì tên của nó."
+  ],
+  "time": "khoảng 1 phút mỗi nhãn"
+}
