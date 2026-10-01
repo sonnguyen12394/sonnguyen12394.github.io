@@ -23,7 +23,10 @@ import { viewNb, viewNbRun, type NbRun } from './views/nb.ts';
 import { addWrong, reviewed, dueList } from './notebook.ts';
 import { packOfItem } from './packs.ts';
 import { markItem } from './score.ts';
-import { back, card } from './views/ui.ts';
+import { viewPracticeList, viewType, viewSet, type PracticeRun, type TypeLesson } from './views/practice.ts';
+import { readGiven } from './views/items.ts';
+import { QT } from './content.ts';
+import { ieltsBand } from './scales.ts';
 
 export const MODULE_VERSION = 1;
 
@@ -111,6 +114,45 @@ export function init(host: Host): ExamModule {
     }
   }
 
+  // ---------- Luyện theo dạng câu ----------
+  let lessons: Record<string, TypeLesson> | null = null, lessonsP: Promise<void> | null = null, prun: PracticeRun | null = null, setErr = '';
+  function loadLessons(): Promise<void> {
+    return lessonsP ??= (loadPack('types') as unknown as Promise<TypeLesson[]>).then(ts => { lessons = Object.fromEntries(ts.map(t => [t.id, t])); host.render(); })
+      .catch(() => { lessonsP = null; lessons = {}; setErr = 'Chưa tải được bài học (cần mạng ở lần đầu).'; host.render(); });
+  }
+  async function setStart(qid: string): Promise<void> {
+    setErr = '';
+    try {
+      const gs = (await loadPack('p-' + qid)).filter(g => g.exams.includes(X().exam || 'ielts-ac'));
+      if (!gs.length) { setErr = 'Chưa có bộ câu cho dạng này ở kỳ thi bạn chọn.'; host.render(); return; }
+      const done = new Map<string, number>();
+      for (const a of X().attempts) if (a.kind === 'set') done.set(a.id, a.day);
+      const fresh = gs.filter(g => !done.has(g.id));
+      const g = fresh[0] ?? gs.slice().sort((p, q) => (done.get(p.id) ?? 0) - (done.get(q.id) ?? 0))[0]!;
+      prun = { qid, g, given: {}, marks: null, t0: Date.now(), ver: 'file' };
+      host.go('set');
+    } catch { setErr = 'Chưa tải được bộ câu (cần mạng ở lần đầu).'; host.render(); }
+  }
+  function setCheck(f: HTMLFormElement): void {
+    if (!prun || prun.marks) return;
+    const g = prun.g, x = X(), day = host.today(), skill = QT[g.qtype]?.skill ?? 'R';
+    prun.given = readGiven(f, g.items, g);
+    prun.marks = Object.fromEntries(g.items.map(it => [it.id, markItem(it, g, prun!.given[it.id])]));
+    const items: Record<string, 0 | 1> = {};
+    let got = 0, of = 0;
+    for (const it of g.items) {
+      const m = prun.marks[it.id]!, ok = m.got === m.of;
+      got += m.got; of += m.of; items[it.id] = ok ? 1 : 0;
+      x.resp.push({ i: it.id, c: ok ? 1 : 0, d: day, s: skill, b: it.b, g: QT[g.qtype]?.guess ?? 0 });
+      if (!ok) addWrong(x, it.id, g.qtype, day, it.tag);
+    }
+    const secs = Math.round((Date.now() - prun.t0) / 1000), exam = x.exam || 'ielts-ac';
+    x.attempts.push({ id: g.id, kind: 'set', exam, day, skill, correct: got, total: of, band: exam === 'vstep' ? 0 : ieltsBand(exam, skill, got, of).band, secs, wrong: g.items.filter(it => items[it.id] === 0).map(it => it.id) });
+    host.addMinutes(secs / 60); host.markActive(); host.save();
+    void sendAttempt(host, x, exam, 'set', items);
+    host.render();
+  }
+
   // ---------- Sổ lỗi sai ----------
   let nb: NbRun | null = null, nbLoading = false, nbErr = '', nbT0 = 0;
   async function nbStart(): Promise<void> {
@@ -138,11 +180,9 @@ export function init(host: Host): ExamModule {
     plan: viewPlan,
     nb: c => viewNb(c, nbLoading, nbErr),
     'nb-run': c => (nb ? viewNbRun(c, nb) : viewNb(c, nbLoading, nbErr)),
-    practice: c => `<section class="stack"><span class="eyebrow">Ôn thi · Luyện theo dạng câu</span><h1>Luyện theo dạng câu hỏi</h1>
-      <p class="muted">Phần luyện từng dạng câu IELTS/VSTEP (bài học, mẹo, ≥ 30 câu mỗi dạng) đang được soạn cho bản tới. Trong lúc chờ, bạn có thể:</p></section>
-      <div class="units">${card('data-go="talk"', 'read', 'Bài đọc, bài nghe theo cấp', 'Phần Kỹ năng của app: đọc dài, nghe hai giọng, chép chính tả', c.host.ico)}
-      ${card('data-x="route" data-r="nb"', 'repeat', 'Ôn sổ lỗi sai', 'Làm lại câu đã sai đúng lúc sắp quên', c.host.ico)}
-      ${c.x.exam === 'vstep' ? card('data-act="exgo"', 'exam', 'Thi thử VSTEP rút gọn', 'Nghe + Đọc có tính giờ', c.host.ico) : ''}</div>${back()}`,
+    practice: viewPracticeList,
+    type: c => { const q = c.route.split('/')[1] ?? ''; if (!lessons && !lessonsP) void loadLessons(); return viewType(c, q, lessons?.[q], !lessons, setErr); },
+    set: c => (prun ? viewSet(c, prun) : viewPracticeList(c)),
     place: c => viewPlaceIntro(c, placeLoading, placeErr),
     'place-run': c => (run && !run.st.finished ? viewPlaceRun(c, run) : viewPlaceIntro(c, placeLoading, placeErr)),
     'place-result': c => viewPlaceResult(c, run),
@@ -170,13 +210,29 @@ export function init(host: Host): ExamModule {
     route(el) { host.go(el.dataset.r || 'hub'); },
     placestart() { void placeStart(); },
     nbstart() { void nbStart(); },
+    setstart(el) { void setStart(el.dataset.q || ''); },
+    setver(el) {
+      if (!prun) return;
+      const f = document.querySelector('form[data-xform="setcheck"]') as HTMLFormElement | null;
+      if (f && !prun.marks) prun.given = readGiven(f, prun.g.items, prun.g);
+      prun.ver = (el.dataset.v as PracticeRun['ver']) || 'file'; host.render();
+    },
+    setflag(el) {
+      if (!prun) return;
+      const id = el.dataset.i || '', it = prun.g.items.find(i => i.id === id), reason = FLAG_REASONS[Number(el.dataset.r)] ?? FLAG_REASONS[0]!;
+      if (!it) return;
+      const gv = prun.given[id];
+      host.flag({ kind: 'Ôn thi', ref: id, item: prun.g.title, prompt: it.q, answer: JSON.stringify(it.ans).slice(0, 200), given: Array.isArray(gv) ? gv.join(',') : gv ?? '', reason });
+      host.toast('Đã ghi nhận. Gửi cho người soạn trong Cài đặt → Câu đã báo lỗi.');
+    },
     nbnext() { if (!nb) return; nb.i++; nb.answered = null; if (nb.i >= nb.queue.length) nbFinish(); else host.go('nb-run'); },
     nbflag(el) {
       if (!nb) return;
       const id = el.dataset.i || '', reason = FLAG_REASONS[Number(el.dataset.r)] ?? FLAG_REASONS[0]!;
       const g = Object.values(nb.groups).find(q => q.items.some(i => i.id === id)), it = g?.items.find(i => i.id === id);
       if (!g || !it) return;
-      host.flag({ kind: 'Ôn thi', ref: id, item: g.title, prompt: it.q, answer: String(it.ans), given: nb.answered?.given ?? '', reason });
+      const gv = nb.answered?.given;
+      host.flag({ kind: 'Ôn thi', ref: id, item: g.title, prompt: it.q, answer: JSON.stringify(it.ans).slice(0, 200), given: Array.isArray(gv) ? gv.join(',') : gv ?? '', reason });
       host.toast('Đã ghi nhận. Gửi cho người soạn trong Cài đặt → Câu đã báo lỗi.');
     },
     placeplay() {
@@ -208,14 +264,15 @@ export function init(host: Host): ExamModule {
   };
 
   const forms: Record<string, (f: HTMLFormElement, submitter: HTMLButtonElement | null) => void> = {
+    setcheck(f) { setCheck(f); },
     nbanswer(f) {
       if (!nb || nb.answered) return;
       const id = nb.queue[nb.i]!, g = Object.values(nb.groups).find(q => q.items.some(i => i.id === id)), it = g?.items.find(i => i.id === id);
       if (!g || !it) return;
-      const given = new FormData(f).get('a');
-      if (given === null) { host.toast('Chọn một phương án trước.'); return; }
-      const m = markItem(it, g, String(given)), ok = m.got === m.of;
-      nb.answered = { given: String(given), correct: ok }; if (ok) nb.right++;
+      const given = readGiven(f, [it], g)[id];
+      if (given === undefined) { host.toast('Hãy trả lời trước khi kiểm tra.'); return; }
+      const m = markItem(it, g, given), ok = m.got === m.of;
+      nb.answered = { given, mark: m }; if (ok) nb.right++;
       reviewed(X(), id, ok, host.today()); host.save(); host.render();
     },
     placenext(f) {

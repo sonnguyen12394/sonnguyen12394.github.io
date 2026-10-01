@@ -62,6 +62,7 @@ export function checkGroup(g: Group, list: Record<string, string> | null): Issue
     if ((qt.skill === 'R') !== (g.kind === 'reading')) bad(g.id, `dạng ${g.qtype} không khớp loại bài ${g.kind}`);
   }
   const src = sourceText(g);
+  if (g.mode === 'practice' && !g.id.startsWith(g.qtype + '-')) bad(g.id, `id bộ luyện phải bắt đầu bằng id dạng câu "${g.qtype}-"`);
   if (g.kind === 'reading' && !g.paras?.length) bad(g.id, 'bài đọc thiếu nội dung (paras)');
   if (g.kind === 'listening') {
     if (!g.script?.length) bad(g.id, 'bài nghe thiếu lời thoại (script)');
@@ -145,6 +146,35 @@ export function checkAll(groups: Group[], list: Record<string, string> | null): 
       iids.set(it.id, g.id);
     }
     out.push(...checkGroup(g, list));
+  }
+  out.push(...checkKeyBalance(groups));
+  return out;
+}
+
+// Vị trí đáp án đúng phải rải đều (người soạn hay vô thức đặt đáp án ở B/C; thí sinh tinh ý sẽ khai thác).
+// Chỉ xét câu có phương án riêng (it.opts) — danh sách dùng chung (tiêu đề, đoạn, khung từ) do nội dung quyết định.
+// Mỗi dạng ≥ 12 câu: mỗi vị trí phải xuất hiện ít nhất một lần và không vị trí nào chiếm quá 1/n + 15 điểm %;
+// câu chọn nhiều: không tổ hợp nào chiếm quá 25%.
+export function checkKeyBalance(groups: Group[]): Issue[] {
+  const out: Issue[] = [];
+  const by = new Map<string, Item[]>();
+  for (const g of groups) if (g.mode === 'practice') for (const it of g.items) if (it.opts) by.set(g.qtype, [...(by.get(g.qtype) ?? []), it]);
+  for (const [q, its] of by) {
+    const single = its.filter(it => typeof it.ans === 'string'), multi = its.filter(it => Array.isArray(it.ans));
+    if (single.length >= 12) {
+      const n = Math.round(single.reduce((s, it) => s + it.opts!.length, 0) / single.length);
+      const pos = new Map<number, number>();
+      for (const it of single) { const i = it.opts!.findIndex(o => o.k === it.ans); pos.set(i, (pos.get(i) ?? 0) + 1); }
+      const max = Math.max(...pos.values()) / single.length;
+      if (pos.size < n) out.push({ where: q, msg: `đáp án đúng chỉ nằm ở ${pos.size}/${n} vị trí phương án — cần rải đều` });
+      if (max > 1 / n + 0.15) out.push({ where: q, msg: `một vị trí phương án là đáp án ở ${Math.round(max * 100)}% số câu — cần rải đều` });
+    }
+    if (multi.length >= 6) {
+      const combo = new Map<string, number>();
+      for (const it of multi) { const k = it.opts!.map((o, i) => (it.ans as string[]).includes(o.k) ? i : -1).filter(i => i >= 0).join(','); combo.set(k, (combo.get(k) ?? 0) + 1); }
+      const max = Math.max(...combo.values()) / multi.length;
+      if (max > 0.25) out.push({ where: q, msg: `một tổ hợp vị trí đáp án chiếm ${Math.round(max * 100)}% số câu chọn nhiều — cần rải đều` });
+    }
   }
   return out;
 }

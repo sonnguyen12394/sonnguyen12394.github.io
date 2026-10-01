@@ -1,0 +1,26 @@
+{
+  "id": "r-mcq",
+  "lesson": [
+    "Mỗi câu có một câu hỏi hoặc một câu chưa hoàn chỉnh và 4 phương án A–D; chỉ một phương án đúng. Các câu đi theo thứ tự của bài.",
+    "Ba phương án sai thường được làm theo ba kiểu: (1) dùng đúng từ trong bài nhưng nói sai ý, (2) đúng ngoài đời nhưng bài không nói, (3) đúng với một phần khác của bài nhưng không trả lời câu hỏi này.",
+    "Phương án đúng gần như luôn diễn đạt lại (paraphrase) ý trong bài, hiếm khi lặp nguyên văn."
+  ],
+  "steps": [
+    "Đọc phần câu hỏi (chưa đọc phương án), gạch chân từ khoá để biết cần tìm gì.",
+    "Tìm đoạn chứa thông tin, đọc kỹ 2–3 câu quanh đó và tự trả lời trong đầu.",
+    "Đọc 4 phương án, chọn phương án khớp với câu trả lời của bạn về NGHĨA.",
+    "Loại từng phương án sai bằng một lý do cụ thể trong bài (sai chủ thể, sai mức độ, bài không nói).",
+    "Câu hỏi về mục đích cả bài ('The writer's main purpose…') nên làm sau cùng."
+  ],
+  "tips": [
+    "Cẩn thận với phương án lặp nhiều từ của bài nhất: đó thường là bẫy.",
+    "Câu hỏi 'According to the writer…' cần ý của tác giả, không phải ý của người được trích.",
+    "Phương án có từ tuyệt đối (always, never, all, only) chỉ đúng khi bài cũng nói tuyệt đối như vậy."
+  ],
+  "traps": [
+    "Chọn phương án đúng sự thật ngoài đời nhưng bài không hề nói.",
+    "Chọn phương án nói đúng một chi tiết của đoạn nhưng không trả lời đúng câu hỏi (ví dụ hỏi nguyên nhân, phương án nêu kết quả).",
+    "Đọc phương án trước khi hiểu bài, dễ bị phương án nghe hợp lý dẫn dắt."
+  ],
+  "time": "khoảng 1–1,5 phút mỗi câu"
+}

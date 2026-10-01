@@ -1,0 +1,26 @@
+{
+  "id": "r-info",
+  "lesson": [
+    "Bài có các đoạn đánh chữ A, B, C…; mỗi câu hỏi mô tả một THÔNG TIN (một ví dụ, một lý do, một con số, một so sánh…), bạn tìm đoạn chứa thông tin đó. Một đoạn có thể được dùng nhiều lần, có đoạn không được dùng ('NB You may use any letter more than once').",
+    "Khác với chọn tiêu đề: câu hỏi nói về một CHI TIẾT nhỏ trong đoạn, không phải ý chính của cả đoạn. Các câu hỏi KHÔNG theo thứ tự bài.",
+    "Câu hỏi thường bắt đầu bằng danh từ chỉ loại thông tin: 'a reference to…', 'an example of…', 'a description of…', 'a comparison between…', 'the reason why…'. Hãy để ý loại thông tin đó."
+  ],
+  "steps": [
+    "Đọc hết các câu hỏi trước, gạch chân loại thông tin (example, reason, comparison) và từ khoá nội dung.",
+    "Đọc bài theo từng đoạn; đọc xong mỗi đoạn, quét lại danh sách câu hỏi xem đoạn đó chứa thông tin nào.",
+    "Ưu tiên câu có từ khoá dễ thấy (tên riêng, con số, năm) trước.",
+    "Với câu còn lại, tìm cách diễn đạt khác của ý; đừng chỉ tìm từ trùng.",
+    "Ghi chữ cái đoạn ngay khi tìm được, để không phải đọc lại."
+  ],
+  "tips": [
+    "Dạng này tốn thời gian vì không theo thứ tự; nhiều người làm nó SAU các dạng khác của cùng bài, khi đã quen nội dung.",
+    "'A reference to' chỉ cần đoạn nhắc tới, có thể chỉ một cụm từ; 'an explanation of' cần cả lời giải thích.",
+    "Đoạn chứa từ khoá giống câu hỏi chưa chắc là đáp án: kiểm tra đúng loại thông tin (ví dụ hay lý do?)."
+  ],
+  "traps": [
+    "Chọn đoạn có ý chính giống câu hỏi, trong khi chi tiết được hỏi nằm ở đoạn khác.",
+    "Nghĩ mỗi đoạn chỉ dùng một lần nên bỏ đáp án đúng vì 'đã dùng rồi'.",
+    "Bỏ qua loại thông tin: câu hỏi cần 'a prediction about the future' nhưng đoạn chọn chỉ nói về hiện tại."
+  ],
+  "time": "khoảng 1,5 phút mỗi câu"
+}

@@ -6,6 +6,7 @@ import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv from 'ajv';
 import { checkAll, levelReport } from '../src/content/check.ts';
+import { QT } from '../src/exam/content.ts';
 import type { Group } from '../src/exam/content.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -20,9 +21,19 @@ const ajv = new Ajv({ allErrors: true });
 const validate = ajv.compile(JSON.parse(readFileSync(join(ROOT, 'content/schema/group.schema.json'), 'utf8')));
 const list = JSON.parse(readFileSync(join(ROOT, 'content/wordlist.json'), 'utf8')) as Record<string, string>;
 
+const validateType = ajv.compile(JSON.parse(readFileSync(join(ROOT, 'content/schema/type.schema.json'), 'utf8')));
 const groups: Group[] = [];
 let schemaErr = 0;
-for (const f of walk(DIR)) {
+const VI = /[ăâđêôơưàáạảãằắặẳẵầấậẩẫèéẹẻẽềếệểễìíịỉĩòóọỏõồốộổỗờớợởỡùúụủũừứựửữỳýỵỷỹ]/i;
+const typeIds = new Set<string>();
+for (const f of walk(join(DIR, 'types'))) {
+  const t = JSON.parse(readFileSync(f, 'utf8')) as { id: string; lesson: string[]; steps: string[]; tips: string[]; traps: string[] };
+  if (!validateType(t)) { schemaErr++; console.error(`✗ ${relative(ROOT, f)}: sai lược đồ ${ajv.errorsText(validateType.errors)}`); continue; }
+  if (!QT[t.id]) { schemaErr++; console.error(`✗ ${relative(ROOT, f)}: dạng câu "${t.id}" không có trong danh mục`); }
+  for (const s of [...t.lesson, ...t.steps, ...t.tips, ...t.traps]) if (!VI.test(s)) { schemaErr++; console.error(`✗ ${t.id}: câu bài học phải bằng tiếng Việt: ${s.slice(0, 40)}`); }
+  typeIds.add(t.id);
+}
+for (const f of walk(DIR).filter(p => !p.includes('/types/'))) {
   const rel = relative(ROOT, f);
   let data: unknown;
   try { data = JSON.parse(readFileSync(f, 'utf8')); } catch (e) { console.error(`✗ ${rel}: JSON hỏng (${(e as Error).message})`); schemaErr++; continue; }
@@ -33,9 +44,22 @@ for (const f of walk(DIR)) {
     const a = (g as Group).audio;
     if ((g as Group).kind === 'listening' && !a) { schemaErr++; console.error(`✗ ${(g as Group).id}: bài nghe chưa có âm thanh (chạy tools/audio.cjs)`); }
     if (a) for (const p of [a.file, a.slow, a.noise]) if (p && !existsSync(join(ROOT, p))) { schemaErr++; console.error(`✗ ${(g as Group).id}: thiếu tệp âm thanh ${p}`); }
+    const fig = (g as Group).figure;
+    if (fig) {
+      const fp = join(ROOT, 'content/fig', fig + '.svg');
+      if (!existsSync(fp)) { schemaErr++; console.error(`✗ ${(g as Group).id}: thiếu hình content/fig/${fig}.svg`); }
+      else {
+        const svg = readFileSync(fp, 'utf8');
+        // cùng luật với tools/build.mjs: chỉ SVG tĩnh, có <title> cho trình đọc màn hình (WCAG 1.1.1)
+        if (/<script|<foreignObject|\son\w+\s*=|(?:href|src)\s*=\s*["'](?!#)/i.test(svg)) { schemaErr++; console.error(`✗ ${fig}.svg: có script/thuộc tính sự kiện/liên kết ngoài`); }
+        if (!/<title>[^<]{5,}<\/title>/.test(svg)) { schemaErr++; console.error(`✗ ${fig}.svg: thiếu <title> mô tả hình`); }
+      }
+    }
   }
 }
 const issues = checkAll(groups, list);
+// Mỗi dạng câu có bài luyện phải có bài học (6.2)
+for (const q of new Set(groups.filter(g => g.mode === 'practice').map(g => g.qtype))) if (!typeIds.has(q)) issues.push({ where: q, msg: 'dạng câu có bài luyện nhưng chưa có bài học (content/exam/types)' });
 for (const i of issues) console.error(`✗ ${i.where}: ${i.msg}`);
 const items = groups.reduce((s, g) => s + g.items.length, 0);
 const worst = groups.map(g => ({ id: g.id, r: levelReport(g, list).ratio })).sort((p, q) => q.r - p.r)[0];

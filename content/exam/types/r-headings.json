@@ -1,0 +1,26 @@
+{
+  "id": "r-headings",
+  "lesson": [
+    "Đề cho một danh sách tiêu đề (i, ii, iii…) nhiều hơn số đoạn; bạn chọn tiêu đề phù hợp với Ý CHÍNH của từng đoạn. Mỗi tiêu đề dùng một lần, các tiêu đề thừa là phương án nhiễu.",
+    "Tiêu đề tóm tắt cả đoạn, không phải một chi tiết trong đoạn. Một tiêu đề nhắc đúng một chi tiết nhỏ của đoạn thường là bẫy; tiêu đề đúng bao quát được mọi câu chính của đoạn.",
+    "Dạng này thường đứng TRƯỚC các câu hỏi khác của bài và không theo thứ tự trong danh sách tiêu đề, nên làm nó trước sẽ giúp bạn hiểu cấu trúc cả bài."
+  ],
+  "steps": [
+    "Đọc lướt danh sách tiêu đề, gạch chân từ khoá phân biệt (cause, effect, solution, history, comparison, future…).",
+    "Đọc câu đầu và câu cuối của đoạn, rồi đọc lướt phần giữa để xác định đoạn làm gì: nêu vấn đề, giải thích nguyên nhân, đưa ví dụ, so sánh, đề xuất.",
+    "Tự tóm tắt đoạn trong 5–7 chữ, rồi so với các tiêu đề.",
+    "Làm đoạn dễ trước, gạch bỏ tiêu đề đã dùng; đoạn khó để sau khi còn ít lựa chọn.",
+    "Kiểm tra lại: tiêu đề có phủ được cả đoạn không, hay chỉ một câu?"
+  ],
+  "tips": [
+    "Chú ý chức năng của đoạn: một đoạn toàn ví dụ về khó khăn thì tiêu đề thường có chữ problems/challenges, không phải benefits.",
+    "Câu chủ đề thường ở đầu đoạn, nhưng đôi khi câu đầu chỉ chuyển ý ('However…'); khi đó ý chính nằm ở câu thứ hai.",
+    "Tiêu đề có số nhiều (reasons, methods) cần đoạn nêu nhiều lý do/cách, không phải một."
+  ],
+  "traps": [
+    "Chọn tiêu đề vì thấy trùng một từ với đoạn. Đề thường cố ý lặp từ của một chi tiết phụ trong tiêu đề sai.",
+    "Chọn tiêu đề đúng về chủ đề nhưng sai chức năng: đoạn nói về nguyên nhân, tiêu đề lại nói về hậu quả.",
+    "Đọc cả đoạn quá kỹ rồi hết giờ: chỉ cần ý chính, không cần hiểu từng chi tiết."
+  ],
+  "time": "khoảng 1–1,5 phút mỗi đoạn"
+}

@@ -113,7 +113,8 @@ export interface Group {
   audio?: Audio;
   vi?: string[];          // bản dịch tiếng Việt, khớp số đoạn/dòng
   options?: Option[];     // phương án dùng chung (danh sách tiêu đề, khung từ, nhãn bản đồ…)
-  figure?: string;        // id hình (bản đồ, sơ đồ) vẽ bằng SVG từ dữ liệu
+  figure?: string;        // id hình (bản đồ, sơ đồ): content/fig/<id>.svg
+  svg?: string;           // SVG của hình, do build nhúng vào gói (không có trong tệp nội dung)
   voices?: Record<string, string>;   // người nói → giọng Kokoro dùng khi tạo âm thanh
   allow?: string[];       // từ vượt cấp được phép (thuật ngữ của chủ đề), người soạn phải liệt kê rõ
   items: Item[];

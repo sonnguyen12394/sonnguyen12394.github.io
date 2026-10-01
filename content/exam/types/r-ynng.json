@@ -1,0 +1,25 @@
+{
+  "id": "r-ynng",
+  "lesson": [
+    "Giống True/False/Not Given nhưng hỏi về QUAN ĐIỂM hoặc NHẬN ĐỊNH của tác giả, không phải sự thật. YES: tác giả đồng ý với mệnh đề. NO: tác giả nghĩ ngược lại. NOT GIVEN: không thể biết tác giả nghĩ gì về điều đó.",
+    "Bài dạng này thường là bài nghị luận: tác giả nêu ý kiến của người khác rồi đưa ra ý kiến riêng. Phải tách được đâu là ý kiến của 'some people', 'critics', 'supporters' và đâu là ý kiến của chính tác giả.",
+    "Tín hiệu ý kiến của tác giả: I believe, in my view, it seems clear that, unfortunately, surprisingly, rightly, wrongly, it would be a mistake to…; các trạng từ thái độ như 'rightly' hay 'wrongly' rất quan trọng."
+  ],
+  "steps": [
+    "Đọc mệnh đề và xác định nó nói về quan điểm nào (khen, chê, dự đoán, đánh giá).",
+    "Tìm đoạn liên quan; đánh dấu câu nào là ý của người khác, câu nào là ý của tác giả.",
+    "So thái độ: tác giả đồng tình (YES), phản bác (NO), hay không bày tỏ ý kiến về điểm đó (NOT GIVEN).",
+    "Chú ý từ chỉ mức độ và thái độ: 'entirely', 'partly', 'rightly', 'naively'."
+  ],
+  "tips": [
+    "Câu tác giả kể lại ý kiến người khác ('Many argue that…') KHÔNG phải ý của tác giả, trừ khi tác giả nói mình đồng ý.",
+    "Từ 'however', 'yet', 'but' thường mở đầu ý kiến thật của tác giả sau khi nêu ý người khác.",
+    "Tính từ, trạng từ đánh giá (misleading, sensible, rightly) cho biết thái độ nhanh nhất."
+  ],
+  "traps": [
+    "Lấy ý kiến của nhóm người được nhắc trong bài làm ý của tác giả.",
+    "Chọn NO khi tác giả chỉ không nhắc tới điểm đó: không nhắc là NOT GIVEN.",
+    "Bỏ qua mức độ: tác giả đồng ý một phần ('partly true') nhưng mệnh đề nói 'completely'."
+  ],
+  "time": "khoảng 1 phút mỗi câu"
+}

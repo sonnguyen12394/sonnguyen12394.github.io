@@ -1,0 +1,27 @@
+{
+  "id": "r-tfng",
+  "lesson": [
+    "Dạng này cho một loạt mệnh đề; bạn so từng mệnh đề với THÔNG TIN trong bài. TRUE: bài nói đúng như vậy (thường bằng cách diễn đạt khác). FALSE: bài nói ngược lại, tức là có thông tin mâu thuẫn. NOT GIVEN: bài không nói đủ để biết đúng hay sai.",
+    "Các câu hỏi đi theo thứ tự xuất hiện trong bài, nên câu 3 nằm sau câu 2. Điểm mấu chốt là phân biệt FALSE và NOT GIVEN: FALSE cần một câu trong bài nói điều ngược lại; NOT GIVEN là khi bài nhắc tới chủ đề nhưng không nói gì về chi tiết được hỏi.",
+    "Dạng TRUE/FALSE/NOT GIVEN hỏi về thông tin (sự thật). Dạng YES/NO/NOT GIVEN tương tự nhưng hỏi về quan điểm của tác giả."
+  ],
+  "steps": [
+    "Đọc mệnh đề, gạch chân từ khoá khó đổi (tên riêng, số, năm) và từ khoá chính (động từ, tính từ chỉ mức độ).",
+    "Dùng tên riêng/số để tìm đúng đoạn, rồi đọc kỹ 1–2 câu quanh đó.",
+    "So từng phần của mệnh đề với câu trong bài: chủ thể, hành động, mức độ (all/some, always/often), thời gian.",
+    "Khớp hết → TRUE. Có phần mâu thuẫn rõ ràng → FALSE. Bài không nói về phần được hỏi → NOT GIVEN.",
+    "Không dùng hiểu biết bên ngoài: chỉ dựa vào chữ trong bài."
+  ],
+  "tips": [
+    "Để ý từ chỉ mức độ: all, most, some, only, always, never, mainly. Đổi một từ như vậy là đủ để mệnh đề thành FALSE.",
+    "So sánh (more than, the first, the largest) và quan hệ nguyên nhân (because, led to) rất hay bị thay đổi trong mệnh đề.",
+    "Nếu tìm mãi không thấy chỗ nào nói về chi tiết đó, nhiều khả năng là NOT GIVEN; đừng mất quá 1 phút cho một câu.",
+    "Bài dùng từ đồng nghĩa: 'rose sharply' trong bài có thể thành 'increased quickly' trong mệnh đề."
+  ],
+  "traps": [
+    "Chọn FALSE khi bài chỉ im lặng về chi tiết: người Việt hay nghĩ 'bài không nói tức là sai'. Không nói là NOT GIVEN.",
+    "Chọn TRUE vì mệnh đề đúng ngoài đời. Điều đúng ngoài đời mà bài không nói vẫn là NOT GIVEN.",
+    "Thấy trùng nhiều từ với bài nên chọn TRUE, trong khi một từ nhỏ (only, not, before) làm nghĩa khác đi."
+  ],
+  "time": "khoảng 1 phút mỗi câu"
+}

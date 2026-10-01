@@ -33,3 +33,12 @@ test('mọi màn mở được, không lỗi', async ({ page, errors }) => {
   expect(ok).toBe(true);
   expect(errors).toEqual([]);
 });
+
+test('bản đồ CEFR: mỗi ô cấp × kỹ năng có ≥ 4 câu "Tôi có thể…" (6.1)', async ({ page }) => {
+  test.skip(test.info().project.name !== 'desktop-chrome', 'một trình duyệt là đủ');
+  await page.goto('/');
+  await page.waitForFunction(() => (window as any).ELREADY);
+  const m = await page.evaluate(() => { const out: Record<string, number> = {}; for (const c of (window as any).eval('CANDO')) out[c.lv + '|' + c.grp] = (out[c.lv + '|' + c.grp] || 0) + 1; return out; });
+  const thin = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].flatMap(L => ['lis', 'spk', 'rd', 'wr', 'voc', 'gra', 'pro'].map(k => [`${L}|${k}`, m[`${L}|${k}`] ?? 0] as const)).filter(([, n]) => n < 4);
+  expect(thin).toEqual([]);
+});

@@ -1,0 +1,26 @@
+{
+  "id": "r-endings",
+  "lesson": [
+    "Đề cho một số nửa câu đầu (theo thứ tự bài) và một danh sách nửa câu sau A, B, C… nhiều hơn số câu. Bạn ghép để được câu đúng với nội dung bài.",
+    "Danh sách nửa sau thường cố ý được viết để nhiều phương án ghép vào đều đúng ngữ pháp, nên ngữ pháp chỉ giúp loại bớt, không đủ để chọn. Phải dựa vào nghĩa trong bài.",
+    "Các nửa câu đầu đi theo thứ tự bài, nên khi tìm được câu 1 ở đoạn B thì câu 2 thường ở đoạn B hoặc sau đó."
+  ],
+  "steps": [
+    "Đọc nửa đầu, gạch chân từ khoá, dùng nó để tìm chỗ trong bài.",
+    "Đọc kỹ câu trong bài và tự hoàn thành câu bằng lời của mình trước khi nhìn danh sách.",
+    "Tìm trong danh sách nửa sau có cùng nghĩa với câu bạn tự hoàn thành.",
+    "Kiểm tra ngữ pháp và nghĩa của cả câu ghép: chủ ngữ, thì, số ít/nhiều có khớp không.",
+    "Gạch bỏ nửa sau đã dùng (mỗi nửa sau chỉ dùng một lần)."
+  ],
+  "tips": [
+    "Nửa sau sai thường ghép từ hai ý thật trong bài nhưng sai quan hệ (sai nguyên nhân–kết quả, sai chủ thể).",
+    "Để ý từ nối ở đầu nửa sau (because, so that, unless, despite): chúng phải khớp quan hệ ý trong bài.",
+    "Nếu hai nửa sau đều có vẻ hợp, quay lại bài và so từ chỉ mức độ (some/most/always)."
+  ],
+  "traps": [
+    "Chọn nửa sau chỉ vì nó đúng ngữ pháp và nghe hợp lý.",
+    "Chọn nửa sau đúng với một đoạn khác của bài, không phải đoạn mà nửa đầu nói tới.",
+    "Bỏ qua phủ định trong nửa đầu ('did not…', 'failed to…') làm đảo nghĩa cả câu."
+  ],
+  "time": "khoảng 1–1,5 phút mỗi câu"
+}

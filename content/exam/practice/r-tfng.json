@@ -1,0 +1,722 @@
+[
+  {
+    "id": "r-tfng-01",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-tfng",
+    "level": "B1",
+    "band": 5,
+    "mode": "practice",
+    "title": "The Community Library Project",
+    "instr": "Do the following statements agree with the information given in the text? Write TRUE, FALSE or NOT GIVEN.",
+    "options": [
+      {
+        "k": "TRUE",
+        "t": "TRUE"
+      },
+      {
+        "k": "FALSE",
+        "t": "FALSE"
+      },
+      {
+        "k": "NOT GIVEN",
+        "t": "NOT GIVEN"
+      }
+    ],
+    "paras": [
+      "Five years ago, the small town of Hillford had no public library. The nearest one was forty kilometres away, and only a few families had cars. A retired teacher, Margaret Cole, decided to change this. She started by putting a bookshelf in the window of her own house and inviting neighbours to borrow and return books for free.",
+      "Within six months, the shelf had become too small. The town council offered Margaret an empty room above the post office, and volunteers painted the walls and built new shelves. Most of the first books were donated by local people, although a bookshop in the city also gave several boxes of children's books.",
+      "Today the library opens five days a week and has more than four thousand books. It is still run entirely by volunteers. Margaret says the biggest change is not the number of books but the number of children who now read in their free time. Next year the library hopes to add a small computer area, but it is still looking for money to pay for it."
+    ],
+    "vi": [
+      "Năm năm trước, thị trấn nhỏ Hillford không có thư viện công cộng. Thư viện gần nhất cách bốn mươi cây số, và chỉ vài gia đình có ô tô. Một giáo viên đã nghỉ hưu, Margaret Cole, quyết định thay đổi điều này. Bà bắt đầu bằng việc đặt một giá sách ở cửa sổ nhà mình và mời hàng xóm mượn, trả sách miễn phí.",
+      "Trong vòng sáu tháng, giá sách đã trở nên quá nhỏ. Hội đồng thị trấn cho Margaret một căn phòng trống phía trên bưu điện, tình nguyện viên sơn tường và đóng giá mới. Phần lớn sách đầu tiên do người dân địa phương tặng, dù một hiệu sách ở thành phố cũng tặng vài thùng sách thiếu nhi.",
+      "Ngày nay thư viện mở cửa năm ngày một tuần và có hơn bốn nghìn cuốn sách. Thư viện vẫn hoàn toàn do tình nguyện viên vận hành. Margaret nói thay đổi lớn nhất không phải số sách mà là số trẻ em giờ đọc sách trong thời gian rảnh. Năm tới thư viện hy vọng có thêm một khu máy tính nhỏ, nhưng vẫn đang tìm tiền để chi trả."
+    ],
+    "items": [
+      {
+        "id": "r-tfng-01-1",
+        "q": "Before the library opened, people in Hillford had to travel a long way to borrow books.",
+        "ans": "TRUE",
+        "b": 4.5,
+        "ev": {
+          "p": 0,
+          "s": "The nearest one was forty kilometres away"
+        },
+        "why": "Thư viện gần nhất cách bốn mươi cây số: \"a long way\" là cách nói khác của khoảng cách xa đó.",
+        "wrong": {
+          "FALSE": "Không có chỗ nào nói thư viện ở gần.",
+          "NOT GIVEN": "Bài có nói rõ khoảng cách 40 km tới thư viện gần nhất."
+        }
+      },
+      {
+        "id": "r-tfng-01-2",
+        "q": "Margaret Cole charged a small fee for borrowing books from her window.",
+        "ans": "FALSE",
+        "b": 4.5,
+        "ev": {
+          "p": 0,
+          "s": "inviting neighbours to borrow and return books for free"
+        },
+        "why": "Bài nói mượn sách miễn phí (for free), trái với \"charged a small fee\".",
+        "wrong": {
+          "TRUE": "Mệnh đề ngược với \"for free\".",
+          "NOT GIVEN": "Bài có nói rõ là miễn phí, nên có thông tin để kết luận."
+        }
+      },
+      {
+        "id": "r-tfng-01-3",
+        "q": "All of the first books came from people who lived in Hillford.",
+        "ans": "FALSE",
+        "b": 5.5,
+        "ev": {
+          "p": 1,
+          "s": "Most of the first books were donated by local people, although a bookshop in the city also gave several boxes of children's books."
+        },
+        "why": "Bài nói PHẦN LỚN (most) sách do người địa phương tặng, và một hiệu sách ở thành phố cũng tặng. Vậy \"all\" là sai.",
+        "wrong": {
+          "TRUE": "Bẫy từ chỉ mức độ: \"most\" trong bài khác \"all\" trong mệnh đề.",
+          "NOT GIVEN": "Bài có nói về nguồn sách, kể cả nguồn ngoài thị trấn."
+        },
+        "tag": "mức độ"
+      },
+      {
+        "id": "r-tfng-01-4",
+        "q": "Some of the people who work at the library are paid.",
+        "ans": "FALSE",
+        "b": 5.5,
+        "ev": {
+          "p": 2,
+          "s": "It is still run entirely by volunteers."
+        },
+        "why": "\"run entirely by volunteers\" = hoàn toàn do tình nguyện viên vận hành, nên không ai được trả lương.",
+        "wrong": {
+          "TRUE": "\"entirely by volunteers\" mâu thuẫn với việc có người được trả lương.",
+          "NOT GIVEN": "Bài nói rõ thư viện hoàn toàn do tình nguyện viên làm."
+        }
+      },
+      {
+        "id": "r-tfng-01-5",
+        "q": "The library has already received the money it needs for a computer area.",
+        "ans": "FALSE",
+        "b": 5,
+        "ev": {
+          "p": 2,
+          "s": "but it is still looking for money to pay for it"
+        },
+        "why": "Bài nói thư viện vẫn đang tìm tiền (still looking for money), tức là CHƯA có tiền.",
+        "wrong": {
+          "TRUE": "Ngược với \"still looking for money\".",
+          "NOT GIVEN": "Bài có nói về tiền cho khu máy tính."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-tfng-02",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-tfng",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "Night Shifts and Health",
+    "instr": "Do the following statements agree with the information given in the text? Write TRUE, FALSE or NOT GIVEN.",
+    "options": [
+      {
+        "k": "TRUE",
+        "t": "TRUE"
+      },
+      {
+        "k": "FALSE",
+        "t": "FALSE"
+      },
+      {
+        "k": "NOT GIVEN",
+        "t": "NOT GIVEN"
+      }
+    ],
+    "paras": [
+      "Around one in five workers in industrial countries regularly works at night, in jobs ranging from nursing and transport to factory production. For decades, researchers have tried to understand how this affects the body. The human body follows a daily rhythm controlled by an internal clock, which tells us when to sleep, eat and be active. Working at night forces people to stay awake when this clock expects rest.",
+      "Studies have linked long-term night work to a higher risk of several health problems, including poor sleep, weight gain and heart disease. However, researchers point out that it is difficult to prove that night work itself is the cause. Night workers may differ from day workers in other ways, for example in their diet or how much they exercise.",
+      "Some employers are now trying to reduce the effects. One hospital in Denmark changed its schedules so that nurses work no more than three night shifts in a row, after finding that longer runs of night work left staff more tired. Other companies provide bright lighting during night shifts, which can help workers feel more alert. Experts agree, however, that no single change can completely remove the risks."
+    ],
+    "vi": [
+      "Khoảng một phần năm người lao động ở các nước công nghiệp thường xuyên làm việc ban đêm, trong các nghề từ y tá, vận tải đến sản xuất ở nhà máy. Hàng chục năm nay, các nhà nghiên cứu cố tìm hiểu điều này ảnh hưởng tới cơ thể thế nào. Cơ thể người theo một nhịp hằng ngày do đồng hồ sinh học điều khiển, báo cho ta khi nào ngủ, ăn và hoạt động. Làm đêm buộc người ta thức khi đồng hồ này chờ được nghỉ.",
+      "Các nghiên cứu cho thấy làm đêm lâu dài đi kèm nguy cơ cao hơn về nhiều vấn đề sức khoẻ, như ngủ kém, tăng cân và bệnh tim. Tuy nhiên, các nhà nghiên cứu chỉ ra rằng khó chứng minh chính làm đêm là nguyên nhân. Người làm đêm có thể khác người làm ngày ở những điểm khác, chẳng hạn chế độ ăn hay mức tập thể dục.",
+      "Một số chủ lao động đang cố giảm tác động. Một bệnh viện ở Đan Mạch đổi lịch để y tá làm không quá ba ca đêm liên tiếp, sau khi nhận thấy chuỗi ca đêm dài hơn làm nhân viên mệt hơn. Các công ty khác bố trí ánh sáng mạnh trong ca đêm, có thể giúp người lao động tỉnh táo hơn. Tuy vậy, các chuyên gia đồng ý rằng không một thay đổi nào có thể loại bỏ hoàn toàn rủi ro."
+    ],
+    "allow": [
+      "denmark"
+    ],
+    "items": [
+      {
+        "id": "r-tfng-02-1",
+        "q": "Most workers in industrial countries work at night.",
+        "ans": "FALSE",
+        "b": 5.5,
+        "ev": {
+          "p": 0,
+          "s": "Around one in five workers in industrial countries regularly works at night"
+        },
+        "why": "Khoảng một phần năm (20%) người lao động làm đêm, không phải phần lớn (most).",
+        "wrong": {
+          "TRUE": "\"one in five\" là thiểu số, không phải \"most\".",
+          "NOT GIVEN": "Bài có con số cụ thể nên có thể kết luận."
+        },
+        "tag": "mức độ"
+      },
+      {
+        "id": "r-tfng-02-2",
+        "q": "Research has proved that night work directly causes heart disease.",
+        "ans": "FALSE",
+        "b": 6.5,
+        "ev": {
+          "p": 1,
+          "s": "it is difficult to prove that night work itself is the cause"
+        },
+        "why": "Bài chỉ nói làm đêm \"đi kèm\" (linked) nguy cơ bệnh tim và khó chứng minh làm đêm là nguyên nhân. Mệnh đề nói \"đã chứng minh trực tiếp gây ra\" nên mâu thuẫn.",
+        "wrong": {
+          "TRUE": "Bẫy: \"linked to\" (có liên quan) khác \"causes\" (gây ra).",
+          "NOT GIVEN": "Bài có nói rõ là khó chứng minh quan hệ nhân quả."
+        },
+        "tag": "nguyên nhân"
+      },
+      {
+        "id": "r-tfng-02-3",
+        "q": "Night workers may have different eating habits from day workers.",
+        "ans": "TRUE",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "Night workers may differ from day workers in other ways, for example in their diet"
+        },
+        "why": "\"differ ... in their diet\" = khác về chế độ ăn, tức là thói quen ăn uống khác.",
+        "wrong": {
+          "FALSE": "Bài nói đúng điều này.",
+          "NOT GIVEN": "Có câu nhắc rõ đến chế độ ăn (diet)."
+        }
+      },
+      {
+        "id": "r-tfng-02-4",
+        "q": "The Danish hospital changed its schedules for reasons unconnected with staff health.",
+        "ans": "FALSE",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "after finding that longer runs of night work left staff more tired"
+        },
+        "why": "Bệnh viện đổi lịch vì thấy chuỗi ca đêm dài làm nhân viên mệt hơn: lý do liên quan trực tiếp tới sức khoẻ nhân viên, nên mệnh đề sai.",
+        "wrong": {
+          "TRUE": "Lý do trong bài chính là nhân viên mệt mỏi, tức là có liên quan tới sức khoẻ.",
+          "NOT GIVEN": "Bài nêu rõ lý do đổi lịch (nhân viên mệt hơn), mâu thuẫn với mệnh đề."
+        },
+        "tag": "nguyên nhân"
+      },
+      {
+        "id": "r-tfng-02-5",
+        "q": "Bright lighting is the most popular method used by employers to help night workers.",
+        "ans": "NOT GIVEN",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "Other companies provide bright lighting during night shifts"
+        },
+        "why": "Bài nói một số công ty dùng ánh sáng mạnh, nhưng không so sánh xem cách nào phổ biến nhất.",
+        "wrong": {
+          "TRUE": "Bài không nói ánh sáng mạnh là cách phổ biến NHẤT. Bẫy so sánh nhất.",
+          "FALSE": "Bài cũng không nói cách khác phổ biến hơn, nên không có thông tin mâu thuẫn."
+        },
+        "tag": "so sánh"
+      }
+    ]
+  },
+  {
+    "id": "r-tfng-03",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-tfng",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "The Return of the River Otter",
+    "instr": "Do the following statements agree with the information given in the text? Write TRUE, FALSE or NOT GIVEN.",
+    "options": [
+      {
+        "k": "TRUE",
+        "t": "TRUE"
+      },
+      {
+        "k": "FALSE",
+        "t": "FALSE"
+      },
+      {
+        "k": "NOT GIVEN",
+        "t": "NOT GIVEN"
+      }
+    ],
+    "paras": [
+      "By the 1970s, otters had almost disappeared from the rivers of England. Their numbers had fallen sharply in the previous twenty years, mainly because of chemicals used on farms. These chemicals were washed into rivers, where they built up in the fish that otters eat. The chemicals rarely killed adult otters directly; instead, many otters were unable to have young.",
+      "Once the most harmful chemicals were banned, the situation slowly improved. Rivers also became cleaner as factories were made to treat their waste. A national survey in 2010 found signs of otters in every county of England for the first time in decades.",
+      "Not everyone has welcomed their return. Some owners of fishing lakes say that otters eat expensive fish, and a few have built fences to keep them out. Conservation groups argue that the damage is small and that fences are a reasonable solution. They also point out that otters are a sign of a healthy river, since they cannot survive where there are not enough fish."
+    ],
+    "vi": [
+      "Đến thập niên 1970, rái cá gần như biến mất khỏi các con sông ở Anh. Số lượng của chúng giảm mạnh trong hai mươi năm trước đó, chủ yếu do hoá chất dùng trong nông nghiệp. Hoá chất bị rửa trôi xuống sông, tích tụ trong loài cá mà rái cá ăn. Hoá chất hiếm khi giết trực tiếp rái cá trưởng thành; thay vào đó, nhiều rái cá không sinh con được.",
+      "Khi các hoá chất độc hại nhất bị cấm, tình hình dần cải thiện. Sông cũng sạch hơn vì các nhà máy buộc phải xử lý chất thải. Một khảo sát toàn quốc năm 2010 tìm thấy dấu vết rái cá ở mọi hạt của nước Anh, lần đầu tiên sau nhiều thập kỷ.",
+      "Không phải ai cũng hoan nghênh sự trở lại của chúng. Một số chủ hồ câu cá nói rái cá ăn những con cá đắt tiền, và vài người đã dựng hàng rào ngăn chúng. Các nhóm bảo tồn cho rằng thiệt hại là nhỏ và hàng rào là giải pháp hợp lý. Họ cũng chỉ ra rằng rái cá là dấu hiệu của một dòng sông khoẻ mạnh, vì chúng không sống được ở nơi không đủ cá."
+    ],
+    "allow": [
+      "otters",
+      "otter",
+      "county"
+    ],
+    "items": [
+      {
+        "id": "r-tfng-03-1",
+        "q": "Farm chemicals were the main reason for the fall in otter numbers.",
+        "ans": "TRUE",
+        "b": 5.5,
+        "ev": {
+          "p": 0,
+          "s": "mainly because of chemicals used on farms"
+        },
+        "why": "\"mainly because of chemicals used on farms\" = lý do chính là hoá chất nông nghiệp.",
+        "wrong": {
+          "FALSE": "Bài nói đúng như mệnh đề.",
+          "NOT GIVEN": "Bài nêu rõ lý do chính."
+        }
+      },
+      {
+        "id": "r-tfng-03-2",
+        "q": "The chemicals killed most adult otters directly.",
+        "ans": "FALSE",
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "The chemicals rarely killed adult otters directly"
+        },
+        "why": "Bài nói hoá chất HIẾM KHI (rarely) giết trực tiếp rái cá trưởng thành; tác hại chính là làm rái cá không sinh con được.",
+        "wrong": {
+          "TRUE": "Ngược với \"rarely killed … directly\".",
+          "NOT GIVEN": "Bài nói rõ hoá chất hiếm khi giết trực tiếp rái cá trưởng thành."
+        },
+        "tag": "nguyên nhân"
+      },
+      {
+        "id": "r-tfng-03-3",
+        "q": "By 2010, there was evidence of otters in all parts of England.",
+        "ans": "TRUE",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "found signs of otters in every county of England"
+        },
+        "why": "\"every county of England\" = mọi hạt của nước Anh, tức là mọi vùng.",
+        "wrong": {
+          "FALSE": "Bài nói đúng như vậy.",
+          "NOT GIVEN": "Có thông tin khảo sát năm 2010."
+        }
+      },
+      {
+        "id": "r-tfng-03-4",
+        "q": "Most owners of fishing lakes have built fences to keep otters out.",
+        "ans": "FALSE",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "a few have built fences to keep them out"
+        },
+        "why": "Bài nói \"a few\" (vài người) dựng hàng rào, không phải phần lớn (most).",
+        "wrong": {
+          "TRUE": "Bẫy mức độ: \"a few\" khác \"most\".",
+          "NOT GIVEN": "Bài có thông tin về số người dựng hàng rào."
+        },
+        "tag": "mức độ"
+      },
+      {
+        "id": "r-tfng-03-5",
+        "q": "The government pays lake owners for fish eaten by otters.",
+        "ans": "NOT GIVEN",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "Some owners of fishing lakes say that otters eat expensive fish"
+        },
+        "why": "Bài nói rái cá ăn cá đắt tiền, nhưng không nhắc tới việc chính phủ bồi thường.",
+        "wrong": {
+          "TRUE": "Không có câu nào nói chính phủ trả tiền.",
+          "FALSE": "Cũng không có câu nào nói chính phủ KHÔNG trả tiền, nên không có mâu thuẫn."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-tfng-04",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-tfng",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "practice",
+    "title": "Learning by Teaching",
+    "instr": "Do the following statements agree with the information given in the text? Write TRUE, FALSE or NOT GIVEN.",
+    "options": [
+      {
+        "k": "TRUE",
+        "t": "TRUE"
+      },
+      {
+        "k": "FALSE",
+        "t": "FALSE"
+      },
+      {
+        "k": "NOT GIVEN",
+        "t": "NOT GIVEN"
+      }
+    ],
+    "paras": [
+      "Teachers have long noticed that they understand a subject better after teaching it. Psychologists call this the 'protégé effect'. In a well-known study, two groups of university students read the same text. The first group was told that they would be tested on it, while the second group was told that they would have to teach it to another student. In fact, neither group taught anyone; both simply took a test.",
+      "The students who expected to teach performed better. They remembered more of the main ideas and organised the information more clearly. The researchers suggested that preparing to teach changes the way people read: they look for the structure of the material and ask themselves questions, rather than trying to memorise isolated facts.",
+      "Later studies found that actually teaching produced even stronger effects than only preparing to teach, particularly when the 'teacher' had to answer questions. However, the benefits were smaller when students simply read their notes aloud to a camera. This suggests that explaining ideas in one's own words, not just speaking, is what matters."
+    ],
+    "vi": [
+      "Giáo viên từ lâu nhận thấy mình hiểu một môn sâu hơn sau khi dạy nó. Các nhà tâm lý học gọi đây là 'hiệu ứng người được dìu dắt'. Trong một nghiên cứu nổi tiếng, hai nhóm sinh viên đọc cùng một bài. Nhóm đầu được báo sẽ bị kiểm tra, nhóm thứ hai được báo sẽ phải dạy lại cho một sinh viên khác. Thực ra không nhóm nào dạy ai cả; cả hai chỉ làm bài kiểm tra.",
+      "Sinh viên chờ được dạy làm bài tốt hơn. Họ nhớ được nhiều ý chính hơn và sắp xếp thông tin rõ ràng hơn. Các nhà nghiên cứu cho rằng chuẩn bị để dạy thay đổi cách người ta đọc: họ tìm cấu trúc của tài liệu và tự đặt câu hỏi, thay vì cố học thuộc những chi tiết rời rạc.",
+      "Các nghiên cứu sau đó thấy rằng thực sự dạy cho hiệu quả còn mạnh hơn chỉ chuẩn bị dạy, nhất là khi 'người dạy' phải trả lời câu hỏi. Tuy nhiên, lợi ích nhỏ hơn khi sinh viên chỉ đọc to ghi chép của mình trước máy quay. Điều này cho thấy điều quan trọng là giải thích ý bằng lời của chính mình, không chỉ là nói."
+    ],
+    "allow": [
+      "protégé"
+    ],
+    "items": [
+      {
+        "id": "r-tfng-04-1",
+        "q": "In the study, the second group of students taught the text to other students.",
+        "ans": "FALSE",
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "In fact, neither group taught anyone; both simply took a test."
+        },
+        "why": "Nhóm hai chỉ ĐƯỢC BÁO sẽ phải dạy, nhưng thực tế không nhóm nào dạy ai (neither group taught anyone).",
+        "wrong": {
+          "TRUE": "Bẫy: nhầm điều được báo trước với điều thực sự xảy ra.",
+          "NOT GIVEN": "Bài nói rõ không nhóm nào dạy."
+        }
+      },
+      {
+        "id": "r-tfng-04-2",
+        "q": "Students who expected to teach organised what they had learned more effectively.",
+        "ans": "TRUE",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "They remembered more of the main ideas and organised the information more clearly."
+        },
+        "why": "\"organised the information more clearly\" = sắp xếp thông tin rõ hơn, tức là hiệu quả hơn.",
+        "wrong": {
+          "FALSE": "Bài nói đúng điều này.",
+          "NOT GIVEN": "Có câu nói rõ."
+        }
+      },
+      {
+        "id": "r-tfng-04-3",
+        "q": "The researchers believed that the students who expected to teach memorised more separate facts.",
+        "ans": "FALSE",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "rather than trying to memorise isolated facts"
+        },
+        "why": "Các nhà nghiên cứu cho rằng nhóm này tìm cấu trúc và tự hỏi \"thay vì\" học thuộc chi tiết rời rạc, ngược với mệnh đề.",
+        "wrong": {
+          "TRUE": "\"rather than\" cho thấy điều ngược lại.",
+          "NOT GIVEN": "Bài nói rõ họ KHÔNG chú trọng học thuộc chi tiết rời."
+        }
+      },
+      {
+        "id": "r-tfng-04-4",
+        "q": "Answering questions increased the benefit of teaching.",
+        "ans": "TRUE",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "particularly when the 'teacher' had to answer questions"
+        },
+        "why": "Hiệu quả mạnh hơn \"particularly when\" phải trả lời câu hỏi, tức là trả lời câu hỏi làm tăng lợi ích.",
+        "wrong": {
+          "FALSE": "Bài nói đúng như vậy.",
+          "NOT GIVEN": "Có nhắc rõ đến việc trả lời câu hỏi."
+        }
+      },
+      {
+        "id": "r-tfng-04-5",
+        "q": "Students who read their notes aloud to a camera got no benefit at all.",
+        "ans": "FALSE",
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "the benefits were smaller when students simply read their notes aloud to a camera"
+        },
+        "why": "Bài nói lợi ích NHỎ HƠN (smaller), không phải hoàn toàn không có (no benefit at all).",
+        "wrong": {
+          "TRUE": "Bẫy mức độ: \"smaller\" khác \"none\".",
+          "NOT GIVEN": "Bài có so sánh mức lợi ích."
+        },
+        "tag": "mức độ"
+      }
+    ]
+  },
+  {
+    "id": "r-tfng-05",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-tfng",
+    "level": "C1",
+    "band": 7,
+    "mode": "practice",
+    "title": "The Economics of Free Museums",
+    "instr": "Do the following statements agree with the information given in the text? Write TRUE, FALSE or NOT GIVEN.",
+    "options": [
+      {
+        "k": "TRUE",
+        "t": "TRUE"
+      },
+      {
+        "k": "FALSE",
+        "t": "FALSE"
+      },
+      {
+        "k": "NOT GIVEN",
+        "t": "NOT GIVEN"
+      }
+    ],
+    "paras": [
+      "In 2001 the British government abolished entrance charges at its national museums. Visitor numbers rose dramatically: some museums that had previously charged saw attendance more than double within a few years, while others saw much smaller increases. Supporters of the policy argued that it had opened museums to people who would never have paid to enter.",
+      "The evidence for this claim, however, is mixed. Surveys suggest that a large share of the additional visits came from people who already visited museums regularly and simply came more often. The proportion of visitors from lower-income groups increased only modestly. Critics therefore question whether free entry is the most effective way to widen participation, given that it costs the government a considerable sum each year.",
+      "Defenders of the policy reply that attendance figures miss the point. Free entry, they say, allows people to visit for twenty minutes during a lunch break, or to return repeatedly to a single gallery, in ways that a fee discourages. Museum shops and cafés have also benefited from the larger crowds, partly offsetting the loss of ticket income."
+    ],
+    "vi": [
+      "Năm 2001, chính phủ Anh bỏ phí vào cửa ở các bảo tàng quốc gia. Lượng khách tăng vọt: một số bảo tàng trước đây thu phí có lượng khách tăng hơn gấp đôi chỉ trong vài năm, trong khi các bảo tàng khác tăng ít hơn nhiều. Người ủng hộ chính sách cho rằng nó đã mở cửa bảo tàng cho những người lẽ ra không bao giờ trả tiền để vào.",
+      "Tuy nhiên, bằng chứng cho nhận định này không đồng nhất. Khảo sát cho thấy phần lớn lượt khách tăng thêm đến từ những người vốn đã hay đi bảo tàng và chỉ đến nhiều hơn. Tỉ lệ khách thuộc nhóm thu nhập thấp chỉ tăng nhẹ. Vì vậy người phê phán đặt câu hỏi liệu miễn phí vào cửa có phải cách hiệu quả nhất để mở rộng sự tham gia, khi mỗi năm nó tốn của chính phủ một khoản đáng kể.",
+      "Người bảo vệ chính sách đáp rằng số liệu lượt khách không nói lên điều cốt lõi. Theo họ, miễn phí cho phép người ta ghé hai mươi phút trong giờ nghỉ trưa, hoặc quay lại nhiều lần một phòng trưng bày, theo cách mà phí vào cửa ngăn cản. Cửa hàng và quán cà phê của bảo tàng cũng hưởng lợi từ lượng khách đông hơn, bù lại một phần tiền vé bị mất."
+    ],
+    "items": [
+      {
+        "id": "r-tfng-05-1",
+        "q": "Attendance at every national museum doubled after charges were removed.",
+        "ans": "FALSE",
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "some museums that had previously charged saw attendance more than double within a few years"
+        },
+        "why": "Chỉ MỘT SỐ (some) bảo tàng có lượng khách hơn gấp đôi, các bảo tàng khác tăng ít hơn nhiều (much smaller increases): không phải mọi bảo tàng (every).",
+        "wrong": {
+          "TRUE": "Bẫy mức độ: \"some\" khác \"every\".",
+          "NOT GIVEN": "Bài có nói về mức tăng."
+        },
+        "tag": "mức độ"
+      },
+      {
+        "id": "r-tfng-05-2",
+        "q": "Many of the extra visits were made by people who were already regular museum visitors.",
+        "ans": "TRUE",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "a large share of the additional visits came from people who already visited museums regularly"
+        },
+        "why": "\"a large share of the additional visits\" = phần lớn lượt khách tăng thêm, đến từ người vốn hay đi bảo tàng.",
+        "wrong": {
+          "FALSE": "Bài nói đúng như vậy.",
+          "NOT GIVEN": "Có thông tin khảo sát rõ ràng."
+        }
+      },
+      {
+        "id": "r-tfng-05-3",
+        "q": "The number of visitors from lower-income groups fell after 2001.",
+        "ans": "FALSE",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "The proportion of visitors from lower-income groups increased only modestly."
+        },
+        "why": "Tỉ lệ khách thu nhập thấp TĂNG nhẹ, không giảm.",
+        "wrong": {
+          "TRUE": "Ngược với \"increased\".",
+          "NOT GIVEN": "Bài có nói về nhóm thu nhập thấp."
+        }
+      },
+      {
+        "id": "r-tfng-05-4",
+        "q": "Critics believe the government should spend the money on school trips to museums instead.",
+        "ans": "NOT GIVEN",
+        "b": 7.5,
+        "ev": {
+          "p": 1,
+          "s": "Critics therefore question whether free entry is the most effective way to widen participation"
+        },
+        "why": "Người phê phán nghi ngờ hiệu quả của chính sách, nhưng bài không nói họ đề xuất chi tiền cho chuyến tham quan của trường học.",
+        "wrong": {
+          "TRUE": "Bài không nêu đề xuất thay thế nào.",
+          "FALSE": "Bài cũng không nói họ phản đối ý đó, nên không có mâu thuẫn."
+        }
+      },
+      {
+        "id": "r-tfng-05-5",
+        "q": "Income from museum shops and cafés has fully replaced the money lost from tickets.",
+        "ans": "FALSE",
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "partly offsetting the loss of ticket income"
+        },
+        "why": "\"partly offsetting\" = bù lại MỘT PHẦN, không phải bù hoàn toàn (fully).",
+        "wrong": {
+          "TRUE": "Bẫy mức độ: \"partly\" khác \"fully\".",
+          "NOT GIVEN": "Bài có nói mức bù."
+        },
+        "tag": "mức độ"
+      }
+    ]
+  },
+  {
+    "id": "r-tfng-06",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-tfng",
+    "level": "C1",
+    "band": 7.5,
+    "mode": "practice",
+    "title": "Desert Locusts",
+    "instr": "Do the following statements agree with the information given in the text? Write TRUE, FALSE or NOT GIVEN.",
+    "options": [
+      {
+        "k": "TRUE",
+        "t": "TRUE"
+      },
+      {
+        "k": "FALSE",
+        "t": "FALSE"
+      },
+      {
+        "k": "NOT GIVEN",
+        "t": "NOT GIVEN"
+      }
+    ],
+    "paras": [
+      "For most of their lives, desert locusts behave much like ordinary grasshoppers: they live alone and avoid one another. Under certain conditions, however, they undergo a remarkable transformation. When heavy rain produces a sudden growth of plants in dry regions, locust numbers increase rapidly. As the vegetation later dries out, the insects are forced into small areas, and frequent contact with one another triggers changes in their colour, behaviour and even brain chemistry.",
+      "In this social phase, locusts gather in enormous groups that can travel more than a hundred kilometres in a day. A single large swarm may contain billions of insects and eat as much food in a day as several million people. Swarms have caused severe crop losses across Africa and Asia, most recently in 2020.",
+      "Control efforts rely mainly on early detection. If young locusts are found before they form swarms, they can be treated in a relatively small area. Once swarms have formed, they are far harder and more expensive to control. For this reason, several countries share data from satellites that measure rainfall and plant growth, allowing teams to predict where outbreaks are likely to begin."
+    ],
+    "vi": [
+      "Phần lớn cuộc đời, châu chấu sa mạc cư xử gần như cào cào thông thường: sống đơn độc và tránh nhau. Tuy nhiên, trong một số điều kiện, chúng biến đổi đáng kinh ngạc. Khi mưa lớn làm cây cỏ mọc đột ngột ở vùng khô hạn, số lượng châu chấu tăng nhanh. Khi cây cỏ sau đó khô đi, côn trùng bị dồn vào những vùng nhỏ, và việc tiếp xúc thường xuyên với nhau làm thay đổi màu sắc, hành vi và cả chất hoá học trong não chúng.",
+      "Trong giai đoạn bầy đàn này, châu chấu tụ thành những đàn khổng lồ có thể di chuyển hơn một trăm cây số mỗi ngày. Một đàn lớn có thể chứa hàng tỉ con và mỗi ngày ăn lượng thức ăn bằng vài triệu người. Các đàn châu chấu đã gây mất mùa nghiêm trọng khắp châu Phi và châu Á, gần đây nhất là năm 2020.",
+      "Việc kiểm soát chủ yếu dựa vào phát hiện sớm. Nếu tìm thấy châu chấu non trước khi chúng hợp thành đàn, có thể xử lý trên một vùng tương đối nhỏ. Khi đàn đã hình thành, việc kiểm soát khó và tốn kém hơn nhiều. Vì vậy một số nước chia sẻ dữ liệu vệ tinh đo lượng mưa và sự phát triển của cây cỏ, giúp các đội dự đoán nơi dịch có khả năng bắt đầu."
+    ],
+    "allow": [
+      "locusts",
+      "grasshoppers",
+      "swarm",
+      "swarms",
+      "vegetation"
+    ],
+    "items": [
+      {
+        "id": "r-tfng-06-1",
+        "q": "Desert locusts usually live in large groups.",
+        "ans": "FALSE",
+        "b": 6.5,
+        "ev": {
+          "p": 0,
+          "s": "they live alone and avoid one another"
+        },
+        "why": "Phần lớn cuộc đời, chúng sống đơn độc và tránh nhau; sống thành đàn chỉ xảy ra trong một số điều kiện.",
+        "wrong": {
+          "TRUE": "Bẫy: đàn lớn là giai đoạn đặc biệt, không phải thói quen thường ngày.",
+          "NOT GIVEN": "Bài nói rõ chúng thường sống đơn độc."
+        }
+      },
+      {
+        "id": "r-tfng-06-2",
+        "q": "The change into the social phase can begin when food becomes harder to find after a period of rain.",
+        "ans": "TRUE",
+        "b": 7.5,
+        "ev": {
+          "p": 0,
+          "s": "As the vegetation later dries out, the insects are forced into small areas, and frequent contact with one another triggers changes"
+        },
+        "why": "Sau mưa, cây cỏ khô đi (thức ăn khó tìm hơn), châu chấu bị dồn lại và tiếp xúc nhiều, kích hoạt biến đổi. Mệnh đề diễn đạt lại đúng trình tự đó.",
+        "wrong": {
+          "FALSE": "Bài mô tả đúng trình tự này.",
+          "NOT GIVEN": "Có câu giải thích điều kiện bắt đầu biến đổi."
+        },
+        "tag": "nguyên nhân"
+      },
+      {
+        "id": "r-tfng-06-3",
+        "q": "Locusts in the social phase have a different colour from solitary locusts.",
+        "ans": "TRUE",
+        "b": 7,
+        "ev": {
+          "p": 0,
+          "s": "triggers changes in their colour, behaviour and even brain chemistry"
+        },
+        "why": "Biến đổi gồm cả màu sắc (colour), nên châu chấu giai đoạn bầy đàn khác màu châu chấu sống đơn độc.",
+        "wrong": {
+          "FALSE": "Bài nói đúng như vậy.",
+          "NOT GIVEN": "Có nhắc rõ đến màu sắc."
+        }
+      },
+      {
+        "id": "r-tfng-06-4",
+        "q": "The 2020 outbreak was the most serious ever recorded.",
+        "ans": "NOT GIVEN",
+        "b": 7.5,
+        "ev": {
+          "p": 1,
+          "s": "Swarms have caused severe crop losses across Africa and Asia, most recently in 2020."
+        },
+        "why": "Bài chỉ nói 2020 là lần GẦN ĐÂY NHẤT, không nói là nghiêm trọng nhất.",
+        "wrong": {
+          "TRUE": "Bẫy: \"most recently\" (gần đây nhất) khác \"most serious\" (nghiêm trọng nhất).",
+          "FALSE": "Bài cũng không nói có đợt khác nghiêm trọng hơn."
+        },
+        "tag": "so sánh"
+      },
+      {
+        "id": "r-tfng-06-5",
+        "q": "Treating locusts is cheaper after swarms have formed.",
+        "ans": "FALSE",
+        "b": 7,
+        "ev": {
+          "p": 2,
+          "s": "Once swarms have formed, they are far harder and more expensive to control."
+        },
+        "why": "Khi đàn đã hình thành, kiểm soát khó và TỐN KÉM HƠN nhiều, ngược với \"cheaper\".",
+        "wrong": {
+          "TRUE": "Ngược với \"more expensive\".",
+          "NOT GIVEN": "Bài so sánh rõ chi phí."
+        }
+      }
+    ]
+  }
+]

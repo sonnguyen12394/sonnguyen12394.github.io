@@ -1,0 +1,859 @@
+[
+  {
+    "id": "r-endings-01",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-endings",
+    "level": "B1",
+    "band": 5,
+    "mode": "practice",
+    "title": "The Lunchbox Project",
+    "instr": "Complete each sentence with the correct ending, A–G. Two endings are not needed.",
+    "paras": [
+      "Two years ago, Green Park Primary School noticed that many children were bringing unhealthy lunches from home. Teachers often saw crisps, sweets and sugary drinks, but very little fruit or vegetables. The school decided to start the Lunchbox Project to help families make better choices.",
+      "First, the school sent every family a booklet with simple, cheap lunch ideas. Then it invited parents to free cooking classes on Saturday mornings, where they learned to make sandwiches, salads and healthy snacks. About a third of all families came to at least one class.",
+      "The school also made some new rules. Sweets and fizzy drinks are no longer allowed in lunchboxes, but children may bring a small cake on Fridays. Water is now available free in every classroom.",
+      "After one year, teachers counted what children had in their lunchboxes again. The number of lunches with fruit had doubled, and fizzy drinks had almost disappeared. Teachers also said that children seemed less tired in afternoon lessons, although the school admits that this is difficult to measure."
+    ],
+    "vi": [
+      "Hai năm trước, Trường Tiểu học Green Park nhận thấy nhiều trẻ mang bữa trưa không lành mạnh từ nhà. Giáo viên thường thấy khoai tây chiên, kẹo và đồ uống có đường, nhưng rất ít trái cây hoặc rau. Nhà trường quyết định bắt đầu Dự án Hộp cơm trưa để giúp các gia đình lựa chọn tốt hơn.",
+      "Đầu tiên, nhà trường gửi mỗi gia đình một cuốn sách nhỏ với các ý tưởng bữa trưa đơn giản, rẻ. Sau đó trường mời phụ huynh tới lớp nấu ăn miễn phí vào sáng thứ Bảy, nơi họ học làm bánh kẹp, sa-lát và đồ ăn vặt lành mạnh. Khoảng một phần ba số gia đình đã tới ít nhất một buổi học.",
+      "Nhà trường cũng đặt ra vài quy định mới. Kẹo và nước có ga không còn được phép mang theo, nhưng trẻ có thể mang một chiếc bánh ngọt nhỏ vào thứ Sáu. Nước uống giờ có miễn phí ở mọi lớp học.",
+      "Sau một năm, giáo viên lại đếm những gì trẻ mang trong hộp cơm. Số bữa trưa có trái cây tăng gấp đôi, và nước có ga gần như biến mất. Giáo viên cũng nói trẻ có vẻ ít mệt hơn trong các tiết buổi chiều, dù nhà trường thừa nhận điều này khó đo lường."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "is hard to measure accurately."
+      },
+      {
+        "k": "B",
+        "t": "to bring a small cake once a week."
+      },
+      {
+        "k": "C",
+        "t": "because many children were eating badly at lunchtime."
+      },
+      {
+        "k": "D",
+        "t": "to choose their own fizzy drinks."
+      },
+      {
+        "k": "E",
+        "t": "learned to prepare healthy food."
+      },
+      {
+        "k": "F",
+        "t": "because parents asked for help."
+      },
+      {
+        "k": "G",
+        "t": "was twice as high as before."
+      }
+    ],
+    "allow": [
+      "lunchbox",
+      "lunchboxes",
+      "crisps",
+      "fizzy",
+      "sugary",
+      "snacks"
+    ],
+    "items": [
+      {
+        "id": "r-endings-01-1",
+        "q": "The school started the Lunchbox Project",
+        "ans": "C",
+        "b": 4.5,
+        "ev": {
+          "p": 0,
+          "s": "The school decided to start the Lunchbox Project to help families make better choices."
+        },
+        "why": "Trường bắt đầu dự án vì nhiều trẻ mang bữa trưa không lành mạnh, để giúp gia đình chọn tốt hơn.",
+        "wrong": {
+          "A": "Lớp nấu ăn là hoạt động của dự án, không phải lý do bắt đầu.",
+          "F": "Bài không nói dự án bắt đầu vì phụ huynh yêu cầu."
+        }
+      },
+      {
+        "id": "r-endings-01-2",
+        "q": "Parents who went to the Saturday classes",
+        "ans": "E",
+        "b": 5,
+        "ev": {
+          "p": 1,
+          "s": "where they learned to make sandwiches, salads and healthy snacks"
+        },
+        "why": "Phụ huynh tới lớp thứ Bảy học làm bánh kẹp, sa-lát và đồ ăn vặt lành mạnh.",
+        "wrong": {
+          "B": "Bánh ngọt vào thứ Sáu là quy định cho trẻ, không liên quan lớp học.",
+          "G": "Tăng gấp đôi là số bữa trưa có trái cây, không nói về phụ huynh đi học nấu ăn."
+        }
+      },
+      {
+        "id": "r-endings-01-3",
+        "q": "Children are allowed",
+        "ans": "B",
+        "b": 5,
+        "ev": {
+          "p": 2,
+          "s": "children may bring a small cake on Fridays"
+        },
+        "why": "Trẻ được mang một chiếc bánh ngọt nhỏ vào thứ Sáu.",
+        "wrong": {
+          "D": "Bài không nói về việc trẻ được chọn đồ uống có ga.",
+          "E": "Học làm món ăn là việc của phụ huynh."
+        },
+        "trap": "Phương án D đúng ngữ pháp nhưng ngược quy định (nước có ga bị cấm)."
+      },
+      {
+        "id": "r-endings-01-4",
+        "q": "After a year, the number of lunches with fruit",
+        "ans": "G",
+        "b": 4.5,
+        "ev": {
+          "p": 3,
+          "s": "The number of lunches with fruit had doubled"
+        },
+        "why": "Số bữa trưa có trái cây tăng gấp đôi.",
+        "wrong": {
+          "C": "Đó là lý do bắt đầu dự án.",
+          "D": "Không ghép được về nghĩa với số bữa trưa."
+        }
+      },
+      {
+        "id": "r-endings-01-5",
+        "q": "The school says that children's energy in the afternoon",
+        "ans": "A",
+        "b": 6,
+        "ev": {
+          "p": 3,
+          "s": "although the school admits that this is difficult to measure"
+        },
+        "why": "Nhà trường thừa nhận việc trẻ ít mệt hơn buổi chiều là khó đo lường.",
+        "wrong": {
+          "G": "Tăng gấp đôi là số bữa trưa có trái cây.",
+          "C": "Không phải lý do bắt đầu dự án."
+        },
+        "trap": "Giáo viên nói trẻ có vẻ ít mệt hơn, nhưng câu hỏi hỏi điều NHÀ TRƯỜNG nói: khó đo lường."
+      }
+    ]
+  },
+  {
+    "id": "r-endings-02",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-endings",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "The Return of the Red Kite",
+    "instr": "Complete each sentence with the correct ending, A–G. Two endings are not needed.",
+    "paras": [
+      "The red kite, a large bird of prey with a forked tail, was once common across Britain. In the Middle Ages it was even protected in London, because it helped to keep the streets clean by eating waste. Attitudes changed in later centuries, when the bird came to be seen as a threat to farm animals.",
+      "During the nineteenth century, red kites were shot and poisoned in huge numbers by gamekeepers, who wanted to protect birds raised for hunting. By the 1930s, only a few pairs survived in a remote part of Wales. Although local people protected these nests, the population grew extremely slowly, partly because the Welsh birds were closely related to one another.",
+      "In 1989, conservation organisations began a reintroduction programme in England and Scotland. Young birds were brought from Spain and Sweden, kept in large cages for a few weeks so that they could get used to their surroundings, and then released.",
+      "The project has been one of the most successful of its kind in Europe. There are now more than six thousand breeding pairs in Britain, and the birds can be seen from motorways in many parts of southern England. Their recovery has also brought economic benefits: in some areas, feeding stations where visitors can watch kites attract tens of thousands of tourists each year."
+    ],
+    "vi": [
+      "Diều đỏ, một loài chim săn mồi lớn có đuôi chẻ, từng phổ biến khắp nước Anh. Thời Trung Cổ nó còn được bảo vệ ở London vì giúp giữ đường phố sạch bằng cách ăn rác. Thái độ thay đổi trong những thế kỷ sau, khi loài chim này bị coi là mối đe doạ với vật nuôi.",
+      "Trong thế kỷ 19, diều đỏ bị những người giữ khu săn bắn và đầu độc với số lượng rất lớn, vì họ muốn bảo vệ các loài chim nuôi để săn. Tới thập niên 1930, chỉ vài cặp sống sót ở một vùng hẻo lánh của xứ Wales. Dù người dân địa phương bảo vệ tổ của chúng, quần thể tăng cực kỳ chậm, một phần vì các con chim ở Wales có họ hàng gần với nhau.",
+      "Năm 1989, các tổ chức bảo tồn bắt đầu chương trình tái thả ở Anh và Scotland. Chim non được đưa từ Tây Ban Nha và Thuỵ Điển về, nuôi trong lồng lớn vài tuần để quen môi trường xung quanh, rồi được thả ra.",
+      "Dự án là một trong những dự án thành công nhất thuộc loại này ở châu Âu. Hiện có hơn sáu nghìn cặp sinh sản ở Anh, và có thể thấy chúng từ đường cao tốc ở nhiều vùng miền nam nước Anh. Sự phục hồi của chúng còn mang lại lợi ích kinh tế: ở một số vùng, các điểm cho ăn nơi du khách có thể ngắm diều đỏ thu hút hàng chục nghìn khách mỗi năm."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "because they were blamed for spreading disease."
+      },
+      {
+        "k": "B",
+        "t": "because local people destroyed their nests."
+      },
+      {
+        "k": "C",
+        "t": "because the birds were closely related."
+      },
+      {
+        "k": "D",
+        "t": "because they removed rubbish from the streets."
+      },
+      {
+        "k": "E",
+        "t": "so that they could become familiar with the area."
+      },
+      {
+        "k": "F",
+        "t": "because people travel to see them being fed."
+      },
+      {
+        "k": "G",
+        "t": "in order to protect birds kept for hunting."
+      }
+    ],
+    "allow": [
+      "kite",
+      "kites",
+      "forked",
+      "gamekeepers",
+      "reintroduction",
+      "medieval",
+      "motorways",
+      "prey"
+    ],
+    "items": [
+      {
+        "id": "r-endings-02-1",
+        "q": "In medieval London, red kites were valued",
+        "ans": "D",
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "because it helped to keep the streets clean by eating waste"
+        },
+        "why": "Diều đỏ được bảo vệ vì giúp đường phố sạch bằng cách ăn rác.",
+        "wrong": {
+          "A": "Bài không nói diều đỏ lây bệnh.",
+          "F": "Thu hút du khách là chuyện hiện nay."
+        },
+        "trap": "Thời Trung Cổ diều được quý; thái độ coi chúng là mối đe doạ là của những thế kỷ sau. Chú ý mốc thời gian."
+      },
+      {
+        "id": "r-endings-02-2",
+        "q": "Gamekeepers killed red kites",
+        "ans": "G",
+        "b": 6,
+        "ev": {
+          "p": 1,
+          "s": "who wanted to protect birds raised for hunting"
+        },
+        "why": "Người giữ khu săn bắn giết diều đỏ để bảo vệ chim nuôi để săn.",
+        "wrong": {
+          "A": "Bài không nói diều đỏ lây bệnh.",
+          "C": "Có họ hàng gần là đặc điểm của chim ở Wales."
+        }
+      },
+      {
+        "id": "r-endings-02-3",
+        "q": "The Welsh population of red kites increased slowly",
+        "ans": "C",
+        "b": 6.5,
+        "ev": {
+          "p": 1,
+          "s": "partly because the Welsh birds were closely related to one another"
+        },
+        "why": "Quần thể Wales tăng chậm một phần vì các con chim có họ hàng gần.",
+        "wrong": {
+          "B": "Bài nói người dân địa phương bảo vệ tổ, ngược với phương án B.",
+          "E": "Giữ trong lồng là cách làm của chương trình tái thả năm 1989."
+        },
+        "trap": "Phương án B ghép hợp ngữ pháp nhưng ngược ý: người dân bảo vệ tổ chứ không phá tổ."
+      },
+      {
+        "id": "r-endings-02-4",
+        "q": "Before being released, the young birds were kept in cages",
+        "ans": "E",
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "so that they could get used to their surroundings"
+        },
+        "why": "Chim non được nuôi trong lồng vài tuần để quen môi trường xung quanh.",
+        "wrong": {
+          "C": "Họ hàng gần là lý do quần thể Wales tăng chậm.",
+          "D": "Giữ phố sạch là chuyện thời Trung Cổ."
+        }
+      },
+      {
+        "id": "r-endings-02-5",
+        "q": "Today, red kites bring money to some areas",
+        "ans": "F",
+        "b": 6.5,
+        "ev": {
+          "p": 3,
+          "s": "feeding stations where visitors can watch kites attract tens of thousands of tourists each year"
+        },
+        "why": "Điểm cho ăn thu hút hàng chục nghìn du khách: lợi ích kinh tế.",
+        "wrong": {
+          "D": "Giữ phố sạch là lý do được quý trọng thời Trung Cổ.",
+          "G": "Bảo vệ chim săn là lý do diều bị giết."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-endings-03",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-endings",
+    "level": "B2",
+    "band": 6.5,
+    "mode": "practice",
+    "title": "Why Music Gives Us Chills",
+    "instr": "Complete each sentence with the correct ending, A–G. Two endings are not needed.",
+    "paras": [
+      "Many people have experienced a sudden chill or shiver while listening to a favourite piece of music. Researchers call this response 'frisson', and surveys suggest that between half and two-thirds of the population experience it at least occasionally.",
+      "Brain scans show that during frisson, the brain releases dopamine, a chemical associated with pleasure and reward. Interestingly, dopamine is also released in the seconds before the peak moment, when listeners who know the piece are expecting it. This suggests that anticipation is an important part of the experience.",
+      "The musical moments most likely to produce chills are those that break expectations in some way: a sudden change in volume, a new instrument entering, or an unexpected change of key. A singer's voice rising to a high note after a quiet passage is a particularly common trigger.",
+      "Not everyone is equally sensitive. A study by researchers at the University of Southern California found that people who regularly experience frisson had more connections between the part of the brain that processes sound and the parts involved in emotion. Personality also seems to matter: people who score highly on 'openness to experience' report chills more often."
+    ],
+    "vi": [
+      "Nhiều người từng có cảm giác ớn lạnh hoặc rùng mình đột ngột khi nghe một bản nhạc yêu thích. Các nhà nghiên cứu gọi phản ứng này là 'frisson', và khảo sát cho thấy từ một nửa tới hai phần ba dân số có trải nghiệm này ít nhất thỉnh thoảng.",
+      "Ảnh chụp não cho thấy khi có frisson, não tiết ra dopamine, một chất liên quan tới niềm vui và phần thưởng. Điều thú vị là dopamine cũng được tiết ra vài giây trước khoảnh khắc cao trào, khi người nghe đã biết bản nhạc đang chờ đợi nó. Điều này gợi ý sự chờ đợi là phần quan trọng của trải nghiệm.",
+      "Những khoảnh khắc âm nhạc dễ gây ớn lạnh nhất là những lúc phá vỡ sự chờ đợi theo cách nào đó: âm lượng đổi đột ngột, một nhạc cụ mới vào, hay chuyển giọng bất ngờ. Giọng ca sĩ vút lên nốt cao sau một đoạn nhẹ nhàng là yếu tố kích hoạt đặc biệt phổ biến.",
+      "Không phải ai cũng nhạy như nhau. Một nghiên cứu của các nhà khoa học Đại học Nam California thấy người thường có frisson có nhiều kết nối hơn giữa phần não xử lý âm thanh và các phần liên quan tới cảm xúc. Tính cách dường như cũng có ảnh hưởng: người có điểm cao về 'cởi mở với trải nghiệm' báo cáo ớn lạnh thường xuyên hơn."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "are usually trained musicians."
+      },
+      {
+        "k": "B",
+        "t": "tends to be caused by familiar, predictable melodies."
+      },
+      {
+        "k": "C",
+        "t": "if the listener is already familiar with the music."
+      },
+      {
+        "k": "D",
+        "t": "that contains something unexpected."
+      },
+      {
+        "k": "E",
+        "t": "are more likely to experience chills."
+      },
+      {
+        "k": "F",
+        "t": "is experienced by a large part of the population."
+      },
+      {
+        "k": "G",
+        "t": "have stronger links between areas of the brain."
+      }
+    ],
+    "allow": [
+      "frisson",
+      "dopamine",
+      "anticipation",
+      "shiver",
+      "trigger"
+    ],
+    "items": [
+      {
+        "id": "r-endings-03-1",
+        "q": "Surveys show that frisson",
+        "ans": "F",
+        "b": 6,
+        "ev": {
+          "p": 0,
+          "s": "between half and two-thirds of the population experience it at least occasionally"
+        },
+        "why": "Từ một nửa tới hai phần ba dân số có trải nghiệm này: rất nhiều người, dù không phải ai cũng có.",
+        "wrong": {
+          "A": "Bài không nói chỉ nhạc sĩ mới có.",
+          "C": "Dopamine được tiết ra, không phải frisson tạo ra trước cao trào."
+        }
+      },
+      {
+        "id": "r-endings-03-2",
+        "q": "Dopamine is released even before the peak moment",
+        "ans": "C",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "when listeners who know the piece are expecting it"
+        },
+        "why": "Dopamine tiết ra trước cao trào khi người nghe đã biết bản nhạc và đang chờ đợi.",
+        "wrong": {
+          "D": "Thay đổi âm lượng là yếu tố kích hoạt, không phải điều kiện để dopamine tiết ra trước.",
+          "G": "Kết nối não là đặc điểm của người nhạy cảm."
+        },
+        "trap": "Đọc kỹ điều kiện 'listeners who know the piece': phải quen bản nhạc mới chờ đợi được."
+      },
+      {
+        "id": "r-endings-03-3",
+        "q": "Chills are most often caused by music",
+        "ans": "D",
+        "b": 6.5,
+        "ev": {
+          "p": 2,
+          "s": "those that break expectations in some way"
+        },
+        "why": "Khoảnh khắc dễ gây ớn lạnh nhất là lúc phá vỡ sự chờ đợi.",
+        "wrong": {
+          "B": "Bài không nói nhạc quen thuộc, dễ đoán gây ớn lạnh nhiều hơn; ngược lại là bất ngờ.",
+          "E": "Bài nói nốt cao sau đoạn nhẹ, không nói nhạc to suốt bài."
+        }
+      },
+      {
+        "id": "r-endings-03-4",
+        "q": "People who often feel frisson",
+        "ans": "G",
+        "b": 7,
+        "ev": {
+          "p": 3,
+          "s": "had more connections between the part of the brain that processes sound and the parts involved in emotion"
+        },
+        "why": "Người thường có frisson có nhiều kết nối hơn giữa vùng xử lý âm thanh và vùng cảm xúc.",
+        "wrong": {
+          "A": "Bài không nói họ là nhạc sĩ.",
+          "F": "Đây là kết quả khảo sát chung về tỉ lệ dân số."
+        }
+      },
+      {
+        "id": "r-endings-03-5",
+        "q": "People who are open to new experiences",
+        "ans": "E",
+        "b": 6.5,
+        "ev": {
+          "p": 3,
+          "s": "people who score highly on 'openness to experience' report chills more often"
+        },
+        "why": "Người cởi mở với trải nghiệm báo cáo ớn lạnh thường xuyên hơn.",
+        "wrong": {
+          "G": "Kết nối não là phát hiện riêng của nghiên cứu Nam California, không phải về tính cách.",
+          "A": "Bài không nói về nhạc sĩ."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-endings-04",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-endings",
+    "level": "C1",
+    "band": 7,
+    "mode": "practice",
+    "title": "The Economics of Free Software",
+    "instr": "Complete each sentence with the correct ending, A–G. Two endings are not needed.",
+    "paras": [
+      "Much of the software that runs the modern internet was written by volunteers and given away for free. Open-source programs, whose code anyone may read, modify and share, power the majority of web servers and most of the world's smartphones. To many economists, the willingness of skilled programmers to contribute without payment was initially puzzling.",
+      "Surveys of contributors suggest a mixture of motives. Some are driven by enjoyment of the work itself or a belief that knowledge should be shared. Others contribute because publicly visible code serves as evidence of their skills, which can lead to better-paid employment. Increasingly, however, contributors are paid by companies that depend on open-source software and want it to be improved.",
+      "This dependence has created a problem. Many widely used projects are maintained by a handful of unpaid volunteers, and when they lose interest or simply run out of time, serious security weaknesses may remain unnoticed. In 2014, a flaw discovered in a piece of encryption software used by around two-thirds of websites revealed that the project had been run largely by one full-time developer.",
+      "Since then, several foundations have been established to channel money from large technology companies to critical projects. Critics argue that such funding remains far below the value these companies receive, and that the burden of maintaining basic infrastructure still falls disproportionately on individuals."
+    ],
+    "vi": [
+      "Phần lớn phần mềm vận hành internet hiện đại do tình nguyện viên viết và cho miễn phí. Các chương trình mã nguồn mở, mà ai cũng được đọc, sửa và chia sẻ mã, chạy phần lớn máy chủ web và hầu hết điện thoại thông minh trên thế giới. Với nhiều nhà kinh tế, việc các lập trình viên giỏi sẵn lòng đóng góp mà không được trả tiền ban đầu là điều khó hiểu.",
+      "Các khảo sát người đóng góp cho thấy nhiều động cơ đan xen. Có người được thúc đẩy bởi niềm vui với chính công việc hoặc niềm tin rằng tri thức nên được chia sẻ. Người khác đóng góp vì mã công khai là bằng chứng kỹ năng, có thể đưa tới việc làm lương cao hơn. Tuy nhiên, ngày càng nhiều người đóng góp được trả lương bởi các công ty phụ thuộc vào phần mềm mã nguồn mở và muốn nó được cải thiện.",
+      "Sự phụ thuộc này tạo ra một vấn đề. Nhiều dự án được dùng rộng rãi chỉ do vài tình nguyện viên không lương duy trì, và khi họ mất hứng thú hoặc đơn giản là hết thời gian, các lỗ hổng bảo mật nghiêm trọng có thể không ai phát hiện. Năm 2014, một lỗi được phát hiện trong phần mềm mã hoá được khoảng hai phần ba số trang web sử dụng cho thấy dự án chủ yếu do một lập trình viên toàn thời gian vận hành.",
+      "Từ đó, nhiều quỹ được lập ra để chuyển tiền từ các công ty công nghệ lớn tới những dự án then chốt. Người phê phán cho rằng khoản tài trợ đó vẫn thấp hơn rất nhiều so với giá trị các công ty này nhận được, và gánh nặng duy trì hạ tầng cơ bản vẫn đè nặng một cách không tương xứng lên các cá nhân."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "is used by companies to hide security flaws."
+      },
+      {
+        "k": "B",
+        "t": "were willing to work without being paid."
+      },
+      {
+        "k": "C",
+        "t": "when the people maintaining a project stop working on it."
+      },
+      {
+        "k": "D",
+        "t": "because it can help them to find well-paid jobs."
+      },
+      {
+        "k": "E",
+        "t": "now receive payment from businesses."
+      },
+      {
+        "k": "F",
+        "t": "because two-thirds of websites use the software."
+      },
+      {
+        "k": "G",
+        "t": "is much less than companies gain from the software."
+      }
+    ],
+    "allow": [
+      "open-source",
+      "encryption",
+      "infrastructure",
+      "disproportionately",
+      "servers",
+      "flaw",
+      "flaws",
+      "modify",
+      "puzzling",
+      "smartphones"
+    ],
+    "items": [
+      {
+        "id": "r-endings-04-1",
+        "q": "Economists were at first surprised that programmers",
+        "ans": "B",
+        "b": 7,
+        "ev": {
+          "p": 0,
+          "s": "the willingness of skilled programmers to contribute without payment was initially puzzling"
+        },
+        "why": "Nhà kinh tế thấy khó hiểu khi lập trình viên giỏi đóng góp mà không được trả tiền.",
+        "wrong": {
+          "E": "Được công ty trả lương là xu hướng sau này, không phải điều khiến nhà kinh tế ngạc nhiên.",
+          "D": "Tìm việc lương cao là một động cơ, không phải điều gây ngạc nhiên."
+        }
+      },
+      {
+        "id": "r-endings-04-2",
+        "q": "Some contributors share their code publicly",
+        "ans": "D",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "publicly visible code serves as evidence of their skills, which can lead to better-paid employment"
+        },
+        "why": "Mã công khai là bằng chứng kỹ năng, giúp có việc lương cao hơn.",
+        "wrong": {
+          "B": "Làm không lương là điều gây ngạc nhiên ở đoạn 1, không phải lý do chia sẻ mã công khai.",
+          "G": "Khoản tài trợ là chủ đề của đoạn 4."
+        }
+      },
+      {
+        "id": "r-endings-04-3",
+        "q": "A growing number of contributors",
+        "ans": "E",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "Increasingly, however, contributors are paid by companies that depend on open-source software"
+        },
+        "why": "Ngày càng nhiều người đóng góp được các công ty trả lương.",
+        "wrong": {
+          "B": "Đóng góp không lương là tình hình ban đầu, không phải xu hướng tăng.",
+          "C": "Mất hứng thú nói về một số tình nguyện viên duy trì dự án."
+        },
+        "trap": "Phương án B và E đối lập nhau; 'Increasingly' đi với 'are paid'."
+      },
+      {
+        "id": "r-endings-04-4",
+        "q": "Security problems may go undetected",
+        "ans": "C",
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "when they lose interest or simply run out of time, serious security weaknesses may remain unnoticed"
+        },
+        "why": "Lỗ hổng có thể không được phát hiện khi các tình nguyện viên mất hứng thú hoặc hết thời gian.",
+        "wrong": {
+          "F": "Hai phần ba trang web dùng phần mềm đó, không phải lý do lỗi không được phát hiện.",
+          "A": "Bài không nói các công ty giấu lỗi."
+        }
+      },
+      {
+        "id": "r-endings-04-5",
+        "q": "According to critics, the money provided by foundations",
+        "ans": "G",
+        "b": 7.5,
+        "ev": {
+          "p": 3,
+          "s": "such funding remains far below the value these companies receive"
+        },
+        "why": "Người phê phán: khoản tài trợ thấp hơn nhiều so với giá trị công ty nhận được.",
+        "wrong": {
+          "A": "Bài không nói công ty giấu lỗi.",
+          "E": "Trả lương cho người đóng góp là ý của đoạn 2."
+        }
+      }
+    ]
+  },
+  {
+    "id": "r-endings-05",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-endings",
+    "level": "C1",
+    "band": 7.5,
+    "mode": "practice",
+    "title": "Measuring National Happiness",
+    "instr": "Complete each sentence with the correct ending, A–G. Two endings are not needed.",
+    "paras": [
+      "For most of the twentieth century, governments measured national progress mainly through gross domestic product (GDP), the total value of goods and services produced. Yet as early as 1968, the American politician Robert Kennedy observed that GDP measures everything 'except that which makes life worthwhile'.",
+      "Since the 1970s, Bhutan has officially pursued 'Gross National Happiness', assessing policies against their effect on wellbeing as well as on economic output. More recently, countries including the United Kingdom and New Zealand have begun to collect data on life satisfaction, and New Zealand introduced a 'wellbeing budget' in 2019 that directed spending towards mental health and child poverty.",
+      "Measuring happiness, however, presents considerable difficulties. Surveys usually ask people to rate their lives on a scale from nought to ten, but responses can be influenced by trivial factors such as the weather on the day of the survey or the order in which questions are asked. Cultural differences in how people describe their feelings also make international comparisons uncertain.",
+      "Supporters respond that GDP is itself far from perfect: it counts spending on cleaning up pollution as growth, while ignoring unpaid work such as caring for relatives. Wellbeing measures, they argue, are not intended to replace GDP but to ensure that policies are judged by a broader range of outcomes."
+    ],
+    "vi": [
+      "Trong phần lớn thế kỷ 20, các chính phủ đo sự tiến bộ quốc gia chủ yếu bằng tổng sản phẩm quốc nội (GDP), tổng giá trị hàng hoá và dịch vụ được tạo ra. Thế nhưng ngay từ năm 1968, chính trị gia Mỹ Robert Kennedy đã nhận xét rằng GDP đo mọi thứ 'trừ những gì làm cuộc sống đáng sống'.",
+      "Từ thập niên 1970, Bhutan chính thức theo đuổi 'Tổng Hạnh phúc Quốc gia', đánh giá chính sách theo tác động tới hạnh phúc chứ không chỉ sản lượng kinh tế. Gần đây hơn, nhiều nước gồm Anh và New Zealand đã bắt đầu thu thập dữ liệu về mức hài lòng với cuộc sống, và New Zealand đưa ra 'ngân sách hạnh phúc' năm 2019, hướng chi tiêu vào sức khoẻ tâm thần và nghèo đói ở trẻ em.",
+      "Tuy nhiên, đo hạnh phúc gặp nhiều khó khăn đáng kể. Khảo sát thường yêu cầu người dân chấm điểm cuộc sống từ không tới mười, nhưng câu trả lời có thể bị ảnh hưởng bởi những yếu tố vụn vặt như thời tiết hôm khảo sát hay thứ tự câu hỏi. Khác biệt văn hoá trong cách mô tả cảm xúc cũng khiến việc so sánh giữa các nước không chắc chắn.",
+      "Người ủng hộ đáp lại rằng bản thân GDP cũng còn xa mới hoàn hảo: nó tính chi tiêu dọn dẹp ô nhiễm là tăng trưởng, trong khi bỏ qua công việc không lương như chăm sóc người thân. Họ cho rằng các thước đo hạnh phúc không nhằm thay thế GDP mà để bảo đảm chính sách được đánh giá bằng nhiều kết quả rộng hơn."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "can be affected by unimportant details."
+      },
+      {
+        "k": "B",
+        "t": "should be used alongside GDP, not instead of it."
+      },
+      {
+        "k": "C",
+        "t": "measures only unpaid work such as caring."
+      },
+      {
+        "k": "D",
+        "t": "focused on mental health and poor children."
+      },
+      {
+        "k": "E",
+        "t": "because people express emotions differently."
+      },
+      {
+        "k": "F",
+        "t": "ignored what matters most in life."
+      },
+      {
+        "k": "G",
+        "t": "are usually scored from one to five."
+      }
+    ],
+    "allow": [
+      "GDP",
+      "Bhutan",
+      "wellbeing",
+      "trivial"
+    ],
+    "items": [
+      {
+        "id": "r-endings-05-1",
+        "q": "Robert Kennedy suggested that GDP",
+        "ans": "F",
+        "b": 7,
+        "ev": {
+          "p": 0,
+          "s": "GDP measures everything 'except that which makes life worthwhile'"
+        },
+        "why": "Kennedy nói GDP đo mọi thứ trừ điều làm cuộc sống đáng sống: bỏ sót điều quan trọng nhất.",
+        "wrong": {
+          "C": "Ngược với bài: GDP bỏ qua công việc không lương (đoạn 4).",
+          "B": "Kennedy không nói GDP nên được dùng cùng thước đo khác."
+        }
+      },
+      {
+        "id": "r-endings-05-2",
+        "q": "New Zealand's 2019 budget",
+        "ans": "D",
+        "b": 7,
+        "ev": {
+          "p": 1,
+          "s": "directed spending towards mental health and child poverty"
+        },
+        "why": "Ngân sách hạnh phúc năm 2019 hướng chi tiêu vào sức khoẻ tâm thần và nghèo đói ở trẻ em.",
+        "wrong": {
+          "B": "Bài không nói New Zealand bỏ GDP.",
+          "G": "Khảo sát chấm điểm từ 0 đến 10 là phương pháp chung, không phải nội dung ngân sách."
+        }
+      },
+      {
+        "id": "r-endings-05-3",
+        "q": "Answers to happiness surveys",
+        "ans": "A",
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "responses can be influenced by trivial factors such as the weather on the day of the survey"
+        },
+        "why": "Câu trả lời bị ảnh hưởng bởi yếu tố vụn vặt như thời tiết.",
+        "wrong": {
+          "E": "Khác biệt văn hoá làm khó so sánh giữa các nước, không phải câu trả lời phụ thuộc chi tiêu.",
+          "G": "Không ghép được về nghĩa."
+        }
+      },
+      {
+        "id": "r-endings-05-4",
+        "q": "Comparing happiness between countries is difficult",
+        "ans": "E",
+        "b": 7.5,
+        "ev": {
+          "p": 2,
+          "s": "Cultural differences in how people describe their feelings also make international comparisons uncertain."
+        },
+        "why": "Khác biệt văn hoá trong cách mô tả cảm xúc khiến so sánh quốc tế không chắc chắn.",
+        "wrong": {
+          "A": "Thời tiết ảnh hưởng tới từng câu trả lời, không phải lý do chính khiến so sánh giữa các nước khó.",
+          "C": "Bài nói GDP bỏ qua công việc không lương, ngược với phương án này."
+        }
+      },
+      {
+        "id": "r-endings-05-5",
+        "q": "Supporters argue that wellbeing measures",
+        "ans": "B",
+        "b": 8,
+        "ev": {
+          "p": 3,
+          "s": "Wellbeing measures, they argue, are not intended to replace GDP"
+        },
+        "why": "Người ủng hộ: thước đo hạnh phúc không nhằm thay GDP mà bổ sung, để đánh giá chính sách rộng hơn.",
+        "wrong": {
+          "F": "Bỏ sót điều quan trọng là ý của Kennedy về GDP.",
+          "D": "Đó là nội dung ngân sách New Zealand."
+        },
+        "trap": "Phương án B có cấu trúc phủ định 'should be used alongside GDP, not instead of it'; khớp với 'not intended to replace'."
+      }
+    ]
+  },
+  {
+    "id": "r-endings-06",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "qtype": "r-endings",
+    "level": "B2",
+    "band": 6,
+    "mode": "practice",
+    "title": "How Hotels Save Water",
+    "instr": "Complete each sentence with the correct ending, A–G. Two endings are not needed.",
+    "paras": [
+      "Hotels use large amounts of water. A typical guest in a city hotel uses between two and three times as much water as a person at home, mainly because of daily laundry, large swimming pools and extensive gardens. In regions where water is scarce, this can cause tension with local communities.",
+      "One of the simplest ways to reduce use is to change towels and sheets less often. Many hotels now leave a card in the room explaining that towels will only be replaced if guests leave them on the floor. Studies show that the message works better when it says that most other guests have chosen to reuse their towels, rather than simply asking guests to protect the environment.",
+      "Other changes involve technology. Low-flow showers and taps can cut water use by around a third without guests noticing any difference. Some hotels also collect rainwater for their gardens or treat water from showers and basins so that it can be used again for toilets.",
+      "However, hotels must be careful not to annoy guests. A survey of travellers found that most supported water-saving measures but disliked showers with very weak pressure. Hotel managers say the key is to make savings in ways that guests do not see."
+    ],
+    "vi": [
+      "Khách sạn dùng rất nhiều nước. Một vị khách thông thường ở khách sạn thành phố dùng nước gấp hai tới ba lần một người ở nhà, chủ yếu vì giặt là hằng ngày, bể bơi lớn và vườn rộng. Ở những vùng khan hiếm nước, điều này có thể gây căng thẳng với cộng đồng địa phương.",
+      "Một trong những cách đơn giản nhất để giảm lượng nước là thay khăn và ga giường ít hơn. Nhiều khách sạn giờ để một tấm thẻ trong phòng giải thích rằng khăn chỉ được thay nếu khách để trên sàn. Nghiên cứu cho thấy thông điệp hiệu quả hơn khi nói phần lớn khách khác đã chọn dùng lại khăn, thay vì chỉ đề nghị khách bảo vệ môi trường.",
+      "Những thay đổi khác dùng đến công nghệ. Vòi sen và vòi nước tiết kiệm có thể giảm lượng nước khoảng một phần ba mà khách không nhận thấy khác biệt. Một số khách sạn còn hứng nước mưa để tưới vườn hoặc xử lý nước từ vòi sen và bồn rửa để dùng lại cho nhà vệ sinh.",
+      "Tuy nhiên, khách sạn phải cẩn thận để không làm khách khó chịu. Một khảo sát khách du lịch thấy phần lớn ủng hộ các biện pháp tiết kiệm nước nhưng không thích vòi sen có áp lực quá yếu. Các nhà quản lý khách sạn nói mấu chốt là tiết kiệm theo cách khách không nhìn thấy."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "when they mention what other guests do."
+      },
+      {
+        "k": "B",
+        "t": "so that it can be used to flush toilets."
+      },
+      {
+        "k": "C",
+        "t": "because of laundry, pools and gardens."
+      },
+      {
+        "k": "D",
+        "t": "without guests realising."
+      },
+      {
+        "k": "E",
+        "t": "when they ask guests to protect nature."
+      },
+      {
+        "k": "F",
+        "t": "because they take longer showers."
+      },
+      {
+        "k": "G",
+        "t": "but do not like weak showers."
+      }
+    ],
+    "allow": [
+      "laundry",
+      "low-flow",
+      "basins",
+      "scarce",
+      "reuse",
+      "flush"
+    ],
+    "items": [
+      {
+        "id": "r-endings-06-1",
+        "q": "Hotel guests use more water than people at home",
+        "ans": "C",
+        "b": 5.5,
+        "ev": {
+          "p": 0,
+          "s": "mainly because of daily laundry, large swimming pools and extensive gardens"
+        },
+        "why": "Khách sạn dùng nhiều nước chủ yếu vì giặt là hằng ngày, bể bơi lớn, vườn rộng.",
+        "wrong": {
+          "F": "Bài không nói khách tắm lâu hơn.",
+          "A": "Đó là kết quả nghiên cứu về thông điệp trên thẻ."
+        }
+      },
+      {
+        "id": "r-endings-06-2",
+        "q": "Towel messages are more effective",
+        "ans": "A",
+        "b": 6.5,
+        "ev": {
+          "p": 1,
+          "s": "the message works better when it says that most other guests have chosen to reuse their towels"
+        },
+        "why": "Thông điệp hiệu quả hơn khi nói phần lớn khách khác đã dùng lại khăn.",
+        "wrong": {
+          "E": "Lời đề nghị bảo vệ môi trường kém hiệu quả hơn, theo nghiên cứu.",
+          "G": "Bài không nói giảm giá phòng."
+        },
+        "trap": "Phương án E nhắc lại cách viết cũ mà bài nói là KÉM hiệu quả hơn."
+      },
+      {
+        "id": "r-endings-06-3",
+        "q": "Low-flow showers can reduce water use",
+        "ans": "D",
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "Low-flow showers and taps can cut water use by around a third without guests noticing any difference"
+        },
+        "why": "Giảm khoảng một phần ba mà khách không nhận thấy khác biệt.",
+        "wrong": {
+          "B": "Dùng lại nước cho nhà vệ sinh là cách xử lý nước khác.",
+          "F": "Không ghép được về nghĩa."
+        }
+      },
+      {
+        "id": "r-endings-06-4",
+        "q": "Some hotels clean used water",
+        "ans": "B",
+        "b": 6,
+        "ev": {
+          "p": 2,
+          "s": "treat water from showers and basins so that it can be used again for toilets"
+        },
+        "why": "Xử lý nước từ vòi sen, bồn rửa để dùng lại cho nhà vệ sinh.",
+        "wrong": {
+          "D": "Không làm khách thấy khác biệt là ý về vòi sen tiết kiệm.",
+          "C": "Đó là lý do khách sạn dùng nhiều nước."
+        }
+      },
+      {
+        "id": "r-endings-06-5",
+        "q": "Most travellers support saving water",
+        "ans": "G",
+        "b": 6.5,
+        "ev": {
+          "p": 3,
+          "s": "most supported water-saving measures but disliked showers with very weak pressure"
+        },
+        "why": "Phần lớn ủng hộ tiết kiệm nước nhưng không thích vòi sen áp lực yếu.",
+        "wrong": {
+          "A": "Đó là kết quả về thông điệp trên thẻ khăn.",
+          "E": "Không nói khách muốn được đề nghị bảo vệ môi trường."
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "id": "r-features",
+  "lesson": [
+    "Đề cho một danh sách (thường là tên người, đôi khi là thời kỳ, địa điểm, sản phẩm) đánh chữ A, B, C…, và một loạt mệnh đề. Bạn nối mỗi mệnh đề với người/mốc nói hoặc làm điều đó. Có thể có lựa chọn không được dùng, hoặc được dùng nhiều lần.",
+    "Câu hỏi KHÔNG theo thứ tự bài, nhưng tên người thì dễ tìm. Mỗi người thường được nhắc ở một hoặc hai chỗ trong bài, và ý kiến của họ được diễn đạt lại trong mệnh đề.",
+    "Khó nhất là khi bài nhắc một người nhiều lần, hoặc khi hai người có ý kiến gần giống nhau nhưng khác ở một chi tiết."
+  ],
+  "steps": [
+    "Đọc lướt bài, khoanh tròn mọi chỗ có tên trong danh sách (cả họ, cả 'she/he/the researcher' ngay sau đó).",
+    "Đọc ý kiến/phát hiện của từng người, tóm tắt bằng vài chữ bên lề.",
+    "Đọc từng mệnh đề, so với bản tóm tắt; chọn người có ý khớp về NGHĨA.",
+    "Kiểm tra chi tiết phân biệt: hai người cùng nói về một chủ đề nhưng một người ủng hộ, một người phản đối.",
+    "Đánh dấu lựa chọn đã dùng nhưng nhớ có thể dùng lại nếu đề cho phép."
+  ],
+  "tips": [
+    "Làm theo người (đọc từng người trong bài rồi tìm mệnh đề khớp) thường nhanh hơn làm theo mệnh đề.",
+    "Chú ý đại từ: 'she later argued…' vẫn là ý của người được nhắc trước đó.",
+    "Mệnh đề thường đổi động từ: 'claimed' trong bài có thể thành 'suggested' hoặc 'believed' trong câu hỏi."
+  ],
+  "traps": [
+    "Gán ý cho người được nhắc gần nhất, trong khi câu đó là trích lời người khác.",
+    "Hai người cùng nghiên cứu một chủ đề: chọn người đúng chủ đề nhưng sai kết luận.",
+    "Bỏ qua mốc thời gian: mệnh đề hỏi 'first suggested', nhưng người bạn chọn chỉ phát triển ý đó sau này."
+  ],
+  "time": "khoảng 1–1,5 phút mỗi câu"
+}
