@@ -25,6 +25,13 @@ Học tiếng Anh A1 → C2 miễn phí, mỗi lỗi sai được giải thích 
 - Nhắc học hằng ngày bằng thông báo (Web Push, kể cả iPhone đã cài app), chạy khi mất mạng.
 - Công cụ lớp học cho giáo viên: gộp tiến độ cả lớp từ file dữ liệu ẩn danh, không cần máy chủ.
 - Dễ dùng như trò chơi: màn chào một nút, thẻ từ gọn trong một màn hình (chi tiết trong “Xem thêm”), học thẻ và luyện tập chung một khung với nút chính luôn ở đáy, bảng đúng/sai có Tí phản ứng, tự đọc từ mới, phím tắt khi học trên máy tính.
+- Đọc văn bản đời thường A1–A2 (biển báo, thực đơn, lịch giờ, tin nhắn, email, thông báo, quảng cáo, nhãn thuốc…); bài kiểm tra cấp 32 câu; kho viết câu 16–20 câu mỗi cấp, chấm riêng từng kỹ năng.
+- Bản đồ CEFR theo 4 kỹ năng (Nghe, Nói, Đọc, Viết) cộng nền tảng (từ vựng, ngữ pháp, phát âm); mỗi kỹ năng có cấp ước tính riêng và bằng chứng xác nhận riêng.
+- Ước tính cấp CEFR của bài viết, bài nói từ 5 đặc trưng hiệu chỉnh trên bài mẫu; đề nói có máy chép lời và phân tích tự động; kiểm tra bám đề.
+- Xác nhận cấp CEFR bằng bài làm: đủ nhóm “Tôi có thể…”, bài kiểm tra cấp độ (nghe, đọc, từ vựng, ngữ pháp), một bài viết và một bài nói ở đúng cấp; ghi điểm thi thật để đối chiếu.
+- Hội thoại mở (24 tình huống A1–C2): người kia rẽ nhánh theo câu trả lời nói hoặc gõ của bạn, hỏi lại khi chưa hiểu; đo phản xạ nói (thời gian bắt đầu nói sau câu hỏi).
+- Nhắc lại câu (elicited imitation): nghe rồi nói lại, máy so từng từ — bằng chứng nói khách quan cho cấp CEFR.
+- Viết câu có kiểm soát: nối câu và viết lại câu với từ khoá, chấm đúng/sai bằng máy, không cần AI hay người chấm.
 - Bắt đầu học bằng một chạm; hướng dẫn cài app cho iPhone, Android, máy tính; thẻ chia sẻ tiến độ; trang “Về English Ladder” (cam kết, nội dung, mã nguồn).
 
 ## Cài như ứng dụng
