@@ -5478,7 +5478,7 @@ async function detailStart(){ if(detailAll()) return;
   detailDone(); }
 function detailDone(){ const w=DETAIL.waiting; DETAIL.waiting=null;
   if(w){ closeModal(); if(w.form&&w.form.isConnected) w.form.requestSubmit(); else if(w.el&&w.el.isConnected) w.el.click(); }
-  else if(!['welcome','settings'].includes(ui.view)) render();   // cập nhật số liệu và màn đang chờ
+  else if(!['welcome','settings','thi'].includes(ui.view)) render();   // cập nhật số liệu và màn đang chờ; tab Ôn thi không dùng CONTENT — vẽ lại sẽ xoá ô người học đang nhập
   detailWarm(); }
 // Trang mở lần đầu chưa do service worker quản lý: khi nó quản lý rồi, yêu cầu lại các tệp (lấy từ bộ nhớ HTTP) để nó lưu cho lúc mất mạng.
 function detailWarm(){ try{ if(!navigator.serviceWorker||IN_VIEWER) return;
@@ -5493,6 +5493,8 @@ const DETAIL_SAFE_VIEW = new Set(['welcome','path','review','talk','games','more
 const DETAIL_SAFE_GO = new Set(['path','review','talk','games','more','settings','help','grammar','closet','class','feedback','league','words']);
 const DETAIL_SAFE_ACT = new Set(['showmap','allfeat','wz','who','mclose','celok','install','installhide','share','listview','goalall','tomap','notifon','notifoff','asrok','syncjoinok','detailretry','lgrefresh','lgleave','lgleaveok','flagssend','flagsexport','whatsnew','dlgvi','dlgplay','qzsayall']);
 function detailNeeds(t){ if(detailAll()) return false; const d=t.dataset||{};
+  // Tab Ôn thi (mô-đun x/exam) không dùng CONTENT: giữ lại cú bấm ở đây thì trên máy chậm cú bấm có thể mất hẳn (v42, WebKit CI).
+  if(d.x||ui.view==='thi'||(t.closest&&t.closest('[data-xform]'))) return false;
   if(d.go) return !DETAIL_SAFE_GO.has(d.go);
   if(d.act) return !DETAIL_SAFE_ACT.has(d.act);
   if(d.info||d.trypick!=null||d.tlv||d.ttab||d.say||d.cdlv||d.ptab) return false;
