@@ -244,7 +244,7 @@
       },
       {
         "id": "r-notes-02-5",
-        "q": "TBM — disadvantage: very expensive; up to a ___ to design and build",
+        "q": "TBM — disadvantage: very expensive; can take a ___ to design and build",
         "ans": {
           "accept": [
             "year"
@@ -341,7 +341,7 @@
       },
       {
         "id": "r-notes-03-3",
-        "q": "1831: given an ___ place on HMS Beagle",
+        "q": "1831: recommended for an ___ place on HMS Beagle",
         "ans": {
           "accept": [
             "unpaid"

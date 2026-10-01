@@ -196,7 +196,7 @@
       },
       {
         "k": "H",
-        "t": "send back"
+        "t": "return"
       }
     ],
     "allow": [
@@ -280,12 +280,12 @@
           "p": 2,
           "s": "painting roofs white so that they reflect sunlight instead of absorbing it"
         },
-        "why": "Mái trắng phản chiếu (send back) ánh nắng thay vì hấp thụ.",
+        "why": "Mái trắng phản chiếu (return = 'reflect', trả ánh nắng lại) thay vì hấp thụ.",
         "wrong": {
           "D": "Không phải động từ.",
           "C": "Không phải động từ."
         },
-        "trap": "Phương án 'send back' là cách nói khác của 'reflect'."
+        "trap": "'return' ở đây là cách nói khác của 'reflect'."
       }
     ]
   },
@@ -624,7 +624,7 @@
       },
       {
         "k": "D",
-        "t": "compare"
+        "t": "remember"
       },
       {
         "k": "E",
@@ -680,9 +680,8 @@
         "why": "'paralysing' = làm tê liệt, không thể quyết định (decide).",
         "wrong": {
           "H": "Không phải động từ phù hợp sau \"unable to\".",
-          "D": "Bài không nói không thể so sánh; so sánh tốn công."
-        },
-        "trap": "'compare' (D) dùng lại từ của bài, nhưng bài nói so sánh tốn công, không nói không thể so sánh."
+          "D": "Bài không nói người ta không nhớ được."
+        }
       },
       {
         "id": "r-summary-box-05-3",

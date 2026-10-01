@@ -334,7 +334,7 @@
       },
       {
         "id": "r-short-03-2",
-        "q": "Why did the glass need cleaning so often?",
+        "q": "What made the glass around the lamp dirty?",
         "ans": {
           "accept": [
             "smoke"
@@ -515,7 +515,7 @@
       },
       {
         "id": "r-short-04-4",
-        "q": "How far back do continuous tree-ring records go?",
+        "q": "What is the minimum length of time covered by the continuous tree-ring records?",
         "ans": {
           "accept": [
             "twelve thousand years",
@@ -647,7 +647,8 @@
         "ans": {
           "accept": [
             "public water pump",
-            "water pump"
+            "water pump",
+            "pump"
           ]
         },
         "limit": 3,
@@ -685,7 +686,7 @@
       },
       {
         "id": "r-short-05-5",
-        "q": "How long are the street sewers in total?",
+        "q": "What is the minimum total length of the street sewers?",
         "ans": {
           "accept": [
             "1,700 kilometres",
