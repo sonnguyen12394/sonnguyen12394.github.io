@@ -12,6 +12,18 @@ export const test = base.extend<{ errors: string[] }>({
     await use(errors);
   },
 });
+
+// Khi test hỏng: in màn hình đang hiện (route ôn thi, tiêu đề, chữ đầu trang) ra log CI để chẩn đoán được
+// cả khi không tải được báo cáo (lỗi chỉ xảy ra lúc chạy song song, khó tái hiện tại máy).
+test.afterEach(async ({ page }, info) => {
+  if (info.status === info.expectedStatus) return;
+  const snap = await page.evaluate(() => {
+    const s = JSON.parse(localStorage.getItem('vocab-ladder-v1') || '{}');
+    const main = (document.querySelector('#app main, main, #app') as HTMLElement | null)?.innerText ?? '';
+    return { url: location.href, exam: s.x?.exam, attempts: s.x?.attempts?.length, modal: !document.querySelector('#modal')?.hasAttribute('hidden'), text: main.replace(/\s+/g, ' ').slice(0, 400) };
+  }).catch(e => ({ error: String(e) }));
+  console.log(`[chẩn đoán] ${info.project.name} › ${info.title}: ${JSON.stringify(snap)}`);
+});
 export { expect };
 
 // Mở app. Người mới gặp màn chào: bấm "Bắt đầu ôn thi" (vào thẳng tab Ôn thi). Trả về khi thanh điều hướng đã hiện.
