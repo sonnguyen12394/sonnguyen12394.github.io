@@ -24,22 +24,22 @@
       },
       {
         "sp": "Receptionist",
-        "t": "Dr Patel is busy this morning, but she can see you at two fifteen this afternoon."
+        "t": "Dr Patel is busy this morning, but she can see you at twenty to three this afternoon."
       },
       {
         "sp": "Man",
-        "t": "Two fifteen is fine. Thank you."
+        "t": "Twenty to three is fine. Thank you."
       },
       {
         "sp": "Receptionist",
-        "t": "Please come ten minutes early and bring your health card."
+        "t": "Please come fifteen minutes early to fill in a form, and bring your health card."
       }
     ],
     "vi": [
       "Chào chị, tôi muốn gặp bác sĩ. Tôi bị đau đầu nặng ba ngày rồi.",
-      "Bác sĩ Patel bận sáng nay, nhưng bà có thể khám cho anh lúc hai giờ mười lăm chiều nay.",
-      "Hai giờ mười lăm được ạ. Cảm ơn chị.",
-      "Anh vui lòng đến sớm mười phút và mang thẻ bảo hiểm y tế."
+      "Bác sĩ Patel bận sáng nay, nhưng bà có thể khám cho anh lúc ba giờ kém hai mươi chiều nay.",
+      "Ba giờ kém hai mươi được ạ. Cảm ơn chị.",
+      "Anh vui lòng đến sớm mười lăm phút để điền phiếu, và mang thẻ bảo hiểm y tế."
     ],
     "items": [
       {
@@ -48,32 +48,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "He has a headache."
+            "t": "He has a high temperature."
           },
           {
             "k": "B",
-            "t": "He has a cold."
+            "t": "He has a sore throat."
           },
           {
             "k": "C",
-            "t": "He hurt his back."
+            "t": "He has a headache."
           },
           {
             "k": "D",
-            "t": "He has a stomach ache."
+            "t": "He hurt his back."
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 3.5,
         "ev": {
           "p": 0,
           "s": "I've had a bad headache for three days."
         },
-        "why": "Anh ấy bị đau đầu (headache) ba ngày.",
+        "why": "Anh bị đau đầu ba ngày.",
         "wrong": {
-          "B": "Không nói bị cảm.",
-          "C": "Không nói đau lưng.",
-          "D": "Không nói đau bụng."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -82,32 +82,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "At 2.00"
+            "t": "At 2.30"
           },
           {
             "k": "B",
-            "t": "At 2.05"
+            "t": "At 2.25"
           },
           {
             "k": "C",
-            "t": "At 2.15"
+            "t": "At 2.40"
           },
           {
             "k": "D",
-            "t": "At 3.00"
+            "t": "At 2.15"
           }
         ],
         "ans": "B",
         "b": 4.5,
         "ev": {
           "p": 3,
-          "s": "Please come ten minutes early"
+          "s": "Please come fifteen minutes early"
         },
-        "why": "Lịch khám lúc 2 giờ 15, phải đến sớm 10 phút, nên đến lúc 2 giờ 05. Câu này cần tính, không có con số nguyên văn.",
+        "why": "Hẹn 2 giờ 40 (ba giờ kém hai mươi), đến sớm 15 phút: 2 giờ 25.",
         "wrong": {
-          "A": "Đến lúc 2 giờ là sớm 15 phút, không phải 10 phút.",
-          "C": "2 giờ 15 là giờ khám, không phải giờ phải có mặt. Bẫy: chọn con số nghe được.",
-          "D": "Không có mốc 3 giờ."
+          "A": "Chỉ sớm 10 phút.",
+          "C": "2 giờ 40 là giờ hẹn, nhưng cần đến sớm 15 phút.",
+          "D": "Sớm 25 phút."
         }
       }
     ],
@@ -178,28 +178,28 @@
           },
           {
             "k": "B",
-            "t": "The kitchen is small."
-          },
-          {
-            "k": "C",
             "t": "The rent is high."
           },
           {
+            "k": "C",
+            "t": "It is far from the city centre."
+          },
+          {
             "k": "D",
-            "t": "There is no internet."
+            "t": "The kitchen is small."
           }
         ],
-        "ans": "B",
+        "ans": "D",
         "b": 4.5,
         "ev": {
           "p": 1,
           "s": "But I noticed the kitchen is quite small."
         },
-        "why": "Cô ấy chê bếp khá nhỏ.",
+        "why": "Cô nhận xét bếp khá nhỏ.",
         "wrong": {
-          "A": "Phòng khách rất sáng.",
-          "C": "Tiền thuê thấp hơn hầu hết các chỗ trong khu.",
-          "D": "Tiền thuê đã gồm internet."
+          "A": "Phòng khách nhiều ánh sáng buổi chiều.",
+          "B": "Tiền thuê thấp hơn phần lớn nơi khác.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -208,32 +208,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "Water"
-          },
-          {
-            "k": "B",
-            "t": "Internet"
-          },
-          {
-            "k": "C",
             "t": "Electricity"
           },
           {
+            "k": "B",
+            "t": "Gas"
+          },
+          {
+            "k": "C",
+            "t": "Internet"
+          },
+          {
             "k": "D",
-            "t": "The kitchen"
+            "t": "Water"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 5,
         "ev": {
           "p": 4,
           "s": "No, you'd pay that separately."
         },
-        "why": "Hỏi về tiền điện thì người môi giới nói \"No, you'd pay that separately\" = trả riêng.",
+        "why": "Điện trả riêng.",
         "wrong": {
-          "A": "Nước đã gồm trong tiền thuê.",
-          "B": "Internet đã gồm trong tiền thuê.",
-          "D": "Bếp là một phần của căn hộ, không phải khoản phí."
+          "B": "Không được nhắc.",
+          "C": "Internet đã gồm trong tiền thuê.",
+          "D": "Nước đã gồm trong tiền thuê."
         }
       }
     ],
@@ -274,7 +274,7 @@
       },
       {
         "sp": "Librarian",
-        "t": "Second, the quiet study rooms on the second floor must be booked in advance through the website, and you can book a maximum of three hours a day."
+        "t": "Second, the quiet study rooms on the second floor can't be booked. Just use any room that's free, but you can stay for a maximum of three hours."
       },
       {
         "sp": "Librarian",
@@ -284,7 +284,7 @@
     "vi": [
       "Chào mừng các bạn đến thư viện trường. Trước khi bắt đầu làm bài, có vài điều các bạn nên biết.",
       "Thứ nhất, phần lớn tạp chí nay đã có bản trực tuyến, nên các bạn hiếm khi cần lên tầng ba, nơi giữ bản in.",
-      "Thứ hai, các phòng học yên tĩnh ở tầng hai phải đặt trước trên trang web, và mỗi ngày đặt tối đa ba giờ.",
+      "Thứ hai, các phòng học yên tĩnh ở tầng hai không đặt trước được. Cứ dùng phòng nào còn trống, nhưng chỉ được ở tối đa ba giờ.",
       "Cuối cùng, nếu không tìm thấy cuốn sách cần, đừng mua. Hãy điền phiếu yêu cầu, chúng tôi sẽ cố mượn bản từ thư viện khác."
     ],
     "items": [
@@ -294,15 +294,15 @@
         "opts": [
           {
             "k": "A",
-            "t": "Just arrive and use any free room"
+            "t": "Book online in advance"
           },
           {
             "k": "B",
-            "t": "Book online beforehand"
+            "t": "Use any free room for up to three hours"
           },
           {
             "k": "C",
-            "t": "Ask at the third floor desk"
+            "t": "Ask at the second-floor desk"
           },
           {
             "k": "D",
@@ -313,13 +313,13 @@
         "b": 5.5,
         "ev": {
           "p": 2,
-          "s": "must be booked in advance through the website"
+          "s": "Just use any room that's free, but you can stay for a maximum of three hours."
         },
-        "why": "Phòng học yên tĩnh phải đặt trước trên trang web.",
+        "why": "Phòng không đặt trước được; dùng phòng trống, tối đa ba giờ.",
         "wrong": {
-          "A": "Phải đặt trước, không đến là dùng.",
-          "C": "Tầng ba là nơi giữ tạp chí bản in.",
-          "D": "Phiếu yêu cầu dùng để mượn sách từ thư viện khác."
+          "A": "Ngược ý: \"can't be booked\".",
+          "C": "Không được nhắc.",
+          "D": "Phiếu yêu cầu dùng khi thiếu sách."
         }
       },
       {
@@ -332,28 +332,28 @@
           },
           {
             "k": "B",
-            "t": "Look for it online"
+            "t": "Use the printed journals on the third floor"
           },
           {
             "k": "C",
-            "t": "Ask the library to borrow it from elsewhere"
+            "t": "Look for an online version"
           },
           {
             "k": "D",
-            "t": "Use the printed copies of the journals in the library instead"
+            "t": "Ask for it from another library"
           }
         ],
-        "ans": "C",
+        "ans": "D",
         "b": 6,
         "ev": {
           "p": 3,
           "s": "Fill in a request form, and we'll try to get a copy from another library."
         },
-        "why": "Điền phiếu yêu cầu để thư viện mượn bản từ thư viện khác.",
+        "why": "Điền phiếu yêu cầu để thư viện mượn từ thư viện khác.",
         "wrong": {
-          "A": "\"don't buy it\" = đừng mua.",
-          "B": "Bản trực tuyến được nhắc cho tạp chí, không phải cho sách thiếu.",
-          "D": "Tạp chí in không thay cho sách thiếu."
+          "A": "Ngược ý: \"don't buy it\".",
+          "B": "Tạp chí in là chuyện khác.",
+          "C": "Bản online được nhắc cho tạp chí, không phải sách thiếu."
         }
       }
     ],
@@ -398,11 +398,11 @@
       },
       {
         "sp": "Hoa",
-        "t": "Mainly my parents. They're getting older, and I'd only be able to visit them two or three times a year. Money isn't everything."
+        "t": "Mainly my partner. He's just started his own business here, and he can't leave it for at least a year."
       },
       {
         "sp": "Tom",
-        "t": "Could you ask the company if you could work from Vietnam for part of the year?"
+        "t": "Could you ask the company if you could start next year instead?"
       },
       {
         "sp": "Hoa",
@@ -413,8 +413,8 @@
       "Nghe nói cậu được mời làm việc ở Singapore. Cậu có nhận không?",
       "Mình vẫn đang nghĩ. Lương tốt hơn nhiều, và đó là một công ty rất tốt.",
       "Vậy điều gì làm cậu chần chừ?",
-      "Chủ yếu là bố mẹ mình. Bố mẹ đang già đi, và mình chỉ về thăm được hai, ba lần một năm. Tiền không phải là tất cả.",
-      "Cậu có thể hỏi công ty cho làm việc từ Việt Nam một phần trong năm không?",
+      "Chủ yếu là bạn đời của mình. Anh ấy vừa mở công ty riêng ở đây, và ít nhất một năm nữa mới rời đi được.",
+      "Cậu có thể hỏi công ty cho bắt đầu vào năm sau không?",
       "Ý đó thật ra không tồi. Mai mình sẽ hỏi họ."
     ],
     "items": [
@@ -424,32 +424,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "The salary is too low."
+            "t": "The salary is lower than she hoped."
           },
           {
             "k": "B",
-            "t": "She does not like the company that has offered her the job."
+            "t": "She is not sure about the company."
           },
           {
             "k": "C",
-            "t": "She is worried about being far from her parents."
+            "t": "Her partner cannot leave his business."
           },
           {
             "k": "D",
-            "t": "She cannot get a visa."
+            "t": "She does not want to leave her parents."
           }
         ],
         "ans": "C",
         "b": 6,
         "ev": {
           "p": 3,
-          "s": "Mainly my parents."
+          "s": "Mainly my partner. He's just started his own business here, and he can't leave it for at least a year."
         },
-        "why": "\"Mainly my parents\": bố mẹ đang già và cô chỉ về thăm được vài lần một năm.",
+        "why": "Bạn đời của Hoa vừa mở công ty, ít nhất một năm nữa mới rời được.",
         "wrong": {
-          "A": "Lương \"much better\" = tốt hơn nhiều.",
-          "B": "Cô khen \"a great company\".",
-          "D": "Không nhắc đến thị thực."
+          "A": "Lương tốt hơn nhiều.",
+          "B": "Cô khen công ty tốt.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -458,32 +458,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "Accept the job in Singapore and move there next year"
+            "t": "Ask if she can start next year"
           },
           {
             "k": "B",
-            "t": "Ask if she can work remotely for some of the year"
+            "t": "Accept the job and move now"
           },
           {
             "k": "C",
-            "t": "Visit her parents"
+            "t": "Talk to her partner about it"
           },
           {
             "k": "D",
-            "t": "Refuse the offer"
+            "t": "Ask to work from Vietnam part of the year"
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 6.5,
         "ev": {
-          "p": 5,
-          "s": "That's actually not a bad idea. I'll ask them tomorrow."
+          "p": 4,
+          "s": "Could you ask the company if you could start next year instead?"
         },
-        "why": "Cô đồng ý với ý của Tom và sẽ hỏi công ty cho làm việc từ Việt Nam một phần trong năm.",
+        "why": "Hoa sẽ hỏi công ty cho bắt đầu vào năm sau.",
         "wrong": {
-          "A": "Cô chưa quyết định nhận việc.",
-          "C": "Không nói mai về thăm bố mẹ.",
-          "D": "Cô không nói sẽ từ chối."
+          "B": "Cô chưa quyết nhận.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       }
     ],
@@ -516,21 +516,21 @@
     "script": [
       {
         "sp": "Speaker",
-        "t": "Many people believe that recycling is the answer to plastic pollution. Unfortunately, only a small proportion of plastic is actually recycled, and some types can't be recycled at all."
+        "t": "Many people believe that recycling is the answer to plastic pollution. Unfortunately, only a small proportion of plastic is actually recycled, because many products mix several types of plastic that are hard to separate."
       },
       {
         "sp": "Speaker",
-        "t": "That's why our campaign focuses on reducing the amount of plastic we use in the first place."
+        "t": "That's why our campaign focuses on persuading companies to use just one type of plastic, which makes recycling much easier."
       },
       {
         "sp": "Speaker",
-        "t": "In our town, we persuaded twenty cafés to give a discount to customers who bring their own cups. Within six months, the number of paper cups with plastic lids thrown away in the town centre fell by almost half."
+        "t": "In our town, we persuaded twenty cafés to switch to cups made from a single plastic. Within six months, the number of cups going to landfill fell by almost half."
       }
     ],
     "vi": [
-      "Nhiều người tin rằng tái chế là lời giải cho ô nhiễm nhựa. Đáng tiếc là chỉ một phần nhỏ nhựa thật sự được tái chế, và một số loại hoàn toàn không tái chế được.",
-      "Vì vậy chiến dịch của chúng tôi tập trung vào việc giảm lượng nhựa ta dùng ngay từ đầu.",
-      "Ở thị trấn của chúng tôi, chúng tôi thuyết phục được hai mươi quán cà phê giảm giá cho khách tự mang cốc. Trong vòng sáu tháng, số cốc giấy có nắp nhựa bị vứt ở trung tâm thị trấn giảm gần một nửa."
+      "Nhiều người tin rằng tái chế là lời giải cho ô nhiễm nhựa. Đáng tiếc là chỉ một phần nhỏ nhựa thật sự được tái chế, vì nhiều sản phẩm trộn nhiều loại nhựa khó tách rời.",
+      "Vì vậy chiến dịch của chúng tôi tập trung thuyết phục các công ty chỉ dùng một loại nhựa, giúp tái chế dễ hơn nhiều.",
+      "Ở thị trấn của chúng tôi, chúng tôi thuyết phục được hai mươi quán cà phê chuyển sang cốc làm từ một loại nhựa. Trong vòng sáu tháng, số cốc bị đưa ra bãi rác giảm gần một nửa."
     ],
     "items": [
       {
@@ -539,32 +539,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "To recycle more types of plastic"
+            "t": "To cut the use of plastic"
           },
           {
             "k": "B",
-            "t": "To use less plastic"
+            "t": "To ban plastic bags in shops"
           },
           {
             "k": "C",
-            "t": "To close cafés that use plastic"
+            "t": "To clean up local beaches"
           },
           {
             "k": "D",
-            "t": "To replace paper cups with plastic ones"
+            "t": "To make plastic easier to recycle"
           }
         ],
-        "ans": "B",
+        "ans": "D",
         "b": 6,
         "ev": {
           "p": 1,
-          "s": "our campaign focuses on reducing the amount of plastic we use in the first place"
+          "s": "our campaign focuses on persuading companies to use just one type of plastic, which makes recycling much easier"
         },
-        "why": "Chiến dịch tập trung giảm lượng nhựa sử dụng ngay từ đầu.",
+        "why": "Thuyết phục công ty chỉ dùng một loại nhựa để tái chế dễ hơn.",
         "wrong": {
-          "A": "Người nói chỉ ra tái chế KHÔNG phải lời giải đủ. Bẫy: ý được nêu để bác bỏ.",
-          "C": "Họ hợp tác với quán cà phê, không đóng cửa quán.",
-          "D": "Ngược với mục tiêu."
+          "A": "Chiến dịch không nhằm giảm lượng nhựa dùng.",
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -577,28 +577,28 @@
           },
           {
             "k": "B",
-            "t": "Cafés sold half as many drinks."
+            "t": "Cafés sold fewer drinks."
           },
           {
             "k": "C",
-            "t": "Far fewer disposable cups were thrown away."
+            "t": "Fewer cups went to landfill."
           },
           {
             "k": "D",
-            "t": "Customers stopped using plastic lids at home."
+            "t": "More customers brought their own cups."
           }
         ],
         "ans": "C",
         "b": 7,
         "ev": {
           "p": 2,
-          "s": "the number of paper cups with plastic lids thrown away in the town centre fell by almost half"
+          "s": "the number of cups going to landfill fell by almost half"
         },
-        "why": "Số cốc giấy có nắp nhựa bị vứt giảm gần một nửa: ít cốc dùng một lần bị vứt hơn nhiều.",
+        "why": "Số cốc đưa ra bãi rác giảm gần một nửa.",
         "wrong": {
-          "A": "Hai mươi là số quán tham gia, không phải quán mới mở.",
-          "B": "Giảm một nửa là số cốc bị vứt, không phải số đồ uống bán ra.",
-          "D": "Không nói về thói quen ở nhà."
+          "A": "Hai mươi quán đã có sẵn, chỉ đổi loại cốc.",
+          "B": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       }
     ],
@@ -664,19 +664,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "The courses were badly designed."
+            "t": "The courses were too expensive."
           },
           {
             "k": "B",
-            "t": "They only wanted to study part of the course."
+            "t": "Many only wanted to study part of a course."
           },
           {
             "k": "C",
-            "t": "The courses cost more than they had expected to pay."
+            "t": "Many did not have enough time."
           },
           {
             "k": "D",
-            "t": "They did not have enough time."
+            "t": "The courses were badly designed."
           }
         ],
         "ans": "B",
@@ -685,11 +685,11 @@
           "p": 3,
           "s": "Many people signed up just to look at one or two topics, so they never intended to finish."
         },
-        "why": "Nhiều người đăng ký chỉ để xem một hai chủ đề, không định học hết: họ chỉ muốn học một phần.",
+        "why": "Nhiều người đăng ký chỉ để xem một vài chủ đề.",
         "wrong": {
-          "A": "Sinh viên trả lời \"Not necessarily\" khi được hỏi khoá học có kém không.",
-          "C": "Không nhắc đến học phí.",
-          "D": "Không nhắc đến thiếu thời gian."
+          "A": "Không được nhắc.",
+          "C": "Không được nhắc.",
+          "D": "Sinh viên nói không hẳn khoá học kém."
         }
       },
       {
@@ -698,32 +698,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "Online courses should be shorter."
+            "t": "Completion rates alone can be misleading."
           },
           {
             "k": "B",
-            "t": "Forty percent is a disappointing figure."
+            "t": "Forty percent is still a low figure."
           },
           {
             "k": "C",
-            "t": "Completion rates alone may give a false picture."
+            "t": "Course designers should set clearer goals."
           },
           {
             "k": "D",
-            "t": "Most learners intend to finish their courses from the start."
+            "t": "Online courses should be shorter."
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 7.5,
         "ev": {
           "p": 4,
           "s": "completion rates on their own can be quite misleading"
         },
-        "why": "\"misleading\" = gây hiểu sai; chỉ nhìn tỉ lệ hoàn thành có thể cho bức tranh sai.",
+        "why": "Gia sư kết luận chỉ nhìn tỉ lệ hoàn thành thì dễ hiểu sai.",
         "wrong": {
-          "A": "Giảng viên không đề nghị rút ngắn khoá học.",
-          "B": "Giảng viên không đánh giá con số 40%.",
-          "D": "Sinh viên nói nhiều người KHÔNG định học xong."
+          "B": "Gia sư không đánh giá con số 40%.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       }
     ],
@@ -779,32 +779,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "Smells are processed more slowly by the brain than sounds and images are."
+            "t": "Smell memories are usually formed in childhood."
           },
           {
             "k": "B",
-            "t": "Smell signals go straight to brain areas linked to emotion and memory."
+            "t": "Smells are processed more slowly than sights and sounds."
           },
           {
             "k": "C",
-            "t": "People notice smells more than sights."
+            "t": "Smell signals go directly to areas for emotion and memory."
           },
           {
             "k": "D",
-            "t": "Smell memories are formed in childhood."
+            "t": "People pay more attention to smells than to sights."
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 7,
         "ev": {
           "p": 1,
           "s": "Signals from the nose travel directly to areas involved in emotion and memory"
         },
-        "why": "Tín hiệu từ mũi đi thẳng đến vùng não liên quan đến cảm xúc và trí nhớ.",
+        "why": "Tín hiệu từ mũi đi thẳng đến vùng cảm xúc và trí nhớ.",
         "wrong": {
-          "A": "Bài không nói mùi được xử lý chậm hơn.",
-          "C": "Bài không so sánh mức độ chú ý.",
-          "D": "Không nhắc đến tuổi thơ."
+          "A": "Không được nhắc.",
+          "B": "Không nói xử lý chậm hơn; thông tin mắt và tai đi qua vùng khác trước.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -813,32 +813,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "They are more accurate than other memories."
+            "t": "They fade more quickly than other memories."
           },
           {
             "k": "B",
-            "t": "People are less sure about them."
+            "t": "People feel less sure about them."
           },
           {
             "k": "C",
-            "t": "They contain as many mistakes as other memories."
+            "t": "They are more accurate than other memories."
           },
           {
             "k": "D",
-            "t": "They cannot be checked against any written records or photos."
+            "t": "They are no more accurate than others."
           }
         ],
-        "ans": "C",
+        "ans": "D",
         "b": 7.5,
         "ev": {
           "p": 2,
           "s": "they've been just as likely to contain errors as other memories"
         },
-        "why": "\"just as likely to contain errors\" = cũng hay sai như những ký ức khác.",
+        "why": "Đối chiếu với hồ sơ, chúng sai không kém các ký ức khác.",
         "wrong": {
-          "A": "Giảng viên nói chúng KHÔNG hẳn chính xác hơn.",
-          "B": "Ngược lại, người ta rất tự tin về chúng.",
-          "D": "Các nhà nghiên cứu đã đối chiếu với hồ sơ."
+          "A": "Không được nhắc.",
+          "B": "Ngược ý: người ta rất tự tin về chúng.",
+          "C": "Ngược ý: \"not necessarily more accurate\"."
         }
       }
     ],
@@ -875,7 +875,7 @@
       },
       {
         "sp": "Planner",
-        "t": "In the first few months, journey times for drivers did increase slightly on a couple of routes. But that settled down quite quickly, partly because some people who used to drive short distances switched to cycling."
+        "t": "In the first few months, journey times for drivers hardly changed at all. Then, after about a year, they actually fell on a couple of routes, partly because some people who used to drive short distances switched to cycling."
       },
       {
         "sp": "Host",
@@ -883,14 +883,14 @@
       },
       {
         "sp": "Planner",
-        "t": "I wouldn't put it that way. Their concerns were reasonable, and we adjusted traffic lights in response to them. What we underestimated was how many people wanted to cycle but felt unsafe doing so without a physical barrier."
+        "t": "Mostly, yes, but one of their concerns was fair: deliveries to small shops did become harder, so we added loading areas on side streets."
       }
     ],
     "vi": [
       "Thành phố của chị làm làn xe đạp có rào chắn từ ba năm trước. Người phản đối nói nó sẽ gây hỗn loạn giao thông. Có đúng vậy không?",
-      "Trong vài tháng đầu, thời gian di chuyển của người lái ô tô có tăng chút ít trên một vài tuyến. Nhưng tình hình ổn định khá nhanh, một phần vì một số người trước đây lái xe đi quãng ngắn đã chuyển sang đạp xe.",
+      "Trong vài tháng đầu, thời gian di chuyển của người lái ô tô gần như không đổi. Rồi sau khoảng một năm, nó còn giảm trên một vài tuyến, một phần vì một số người trước đây lái xe đi quãng ngắn đã chuyển sang đạp xe.",
       "Vậy là người phản đối đơn giản là đã sai?",
-      "Tôi sẽ không nói như vậy. Lo ngại của họ có lý, và chúng tôi đã chỉnh đèn giao thông để đáp lại. Điều chúng tôi đánh giá thấp là có bao nhiêu người muốn đạp xe nhưng thấy không an toàn khi không có rào chắn."
+      "Phần lớn là vậy, nhưng có một lo ngại của họ là đúng: việc giao hàng cho các cửa hàng nhỏ khó hơn thật, nên chúng tôi làm thêm chỗ bốc dỡ hàng ở các phố nhỏ."
     ],
     "items": [
       {
@@ -899,32 +899,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "They became much longer on all routes and stayed that way."
+            "t": "They rose and stayed high."
           },
           {
             "k": "B",
-            "t": "They rose a little at first, then returned to normal."
+            "t": "They hardly changed, then fell on some routes."
           },
           {
             "k": "C",
-            "t": "They became shorter immediately."
+            "t": "They rose at first, then settled down."
           },
           {
             "k": "D",
-            "t": "They have continued to increase."
+            "t": "They fell straight away on most routes."
           }
         ],
         "ans": "B",
         "b": 7.5,
         "ev": {
           "p": 1,
-          "s": "journey times for drivers did increase slightly on a couple of routes. But that settled down quite quickly"
+          "s": "journey times for drivers hardly changed at all. Then, after about a year, they actually fell on a couple of routes"
         },
-        "why": "Lúc đầu thời gian tăng chút ít trên vài tuyến, rồi \"settled down quite quickly\" = ổn định lại khá nhanh.",
+        "why": "Vài tháng đầu gần như không đổi; sau khoảng một năm còn giảm trên một vài tuyến.",
         "wrong": {
-          "A": "Chỉ tăng chút ít (slightly) trên vài tuyến, không phải nhiều và trên mọi tuyến.",
-          "C": "Ban đầu tăng chứ không giảm ngay.",
-          "D": "Tình hình đã ổn định."
+          "A": "Không tăng.",
+          "C": "Ban đầu không tăng.",
+          "D": "Chỉ giảm sau khoảng một năm, trên vài tuyến."
         }
       },
       {
@@ -933,32 +933,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "The planner thinks the critics were completely wrong."
+            "t": "They were mostly wrong, but one point was fair."
           },
           {
             "k": "B",
-            "t": "The planner accepts that the critics' worries were sensible."
+            "t": "They should have been consulted earlier."
           },
           {
             "k": "C",
-            "t": "The planner ignored the critics' concerns completely from the beginning."
+            "t": "Their concerns were all reasonable."
           },
           {
             "k": "D",
-            "t": "The planner agrees the lanes should be removed."
+            "t": "They were completely wrong."
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 8,
         "ev": {
           "p": 3,
-          "s": "Their concerns were reasonable, and we adjusted traffic lights in response to them."
+          "s": "Mostly, yes, but one of their concerns was fair"
         },
-        "why": "\"Their concerns were reasonable\" = lo ngại của họ có lý; chị còn chỉnh đèn giao thông để đáp lại.",
+        "why": "Phần lớn họ sai, nhưng một lo ngại (giao hàng) là đúng.",
         "wrong": {
-          "A": "Chị bác câu hỏi \"đã sai\" (I wouldn't put it that way).",
-          "C": "Chị đã điều chỉnh đèn giao thông theo lo ngại của họ.",
-          "D": "Chị không đề nghị bỏ làn xe đạp."
+          "B": "Không được nhắc.",
+          "C": "Chỉ một lo ngại là đúng.",
+          "D": "Có một lo ngại đúng."
         }
       }
     ],
@@ -1017,11 +1017,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "To show that they are the most reliable source that historians can use"
+            "t": "To show that they are a reliable source"
           },
           {
             "k": "B",
-            "t": "To illustrate how records can leave out large groups of people"
+            "t": "To show that property owners were the majority"
           },
           {
             "k": "C",
@@ -1029,20 +1029,20 @@
           },
           {
             "k": "D",
-            "t": "To prove that most people owned property"
+            "t": "To show what records can leave out"
           }
         ],
-        "ans": "B",
+        "ans": "D",
         "b": 8,
         "ev": {
           "p": 1,
           "s": "but almost nothing about those who owned none, who were, in many places, the majority"
         },
-        "why": "Sổ thuế là ví dụ cho việc tài liệu bỏ sót cả một nhóm lớn: người không có tài sản, mà họ lại là số đông.",
+        "why": "Hồ sơ thuế cho biết nhiều về người có tài sản, gần như không gì về người không có.",
         "wrong": {
-          "A": "Giảng viên dùng ví dụ để chỉ ra giới hạn của tài liệu, không phải độ tin cậy.",
-          "C": "Bài không giải thích cách thu thuế.",
-          "D": "Ngược lại, ở nhiều nơi số đông không có tài sản."
+          "A": "Ngược ý: giảng viên dùng nó để nói về giới hạn của nguồn.",
+          "B": "Ngược lại: người không có tài sản thường là đa số.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -1051,32 +1051,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "Historians should only trust written records."
+            "t": "Historians should rely mainly on written records."
           },
           {
             "k": "B",
-            "t": "What is missing from the records tells us something about the past."
+            "t": "Periods without records cannot really be studied."
           },
           {
             "k": "C",
-            "t": "Without written evidence, the history of a period cannot be studied at all."
+            "t": "What records leave out can tell us something about the past."
           },
           {
             "k": "D",
-            "t": "Privileged people kept better records."
+            "t": "Privileged people kept more careful records."
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 8.5,
         "ev": {
           "p": 2,
           "s": "The absence of evidence, in other words, is itself a kind of evidence."
         },
-        "why": "Việc tài liệu thiếu vắng một nhóm người tự nó cho ta biết điều gì đó về quá khứ (ai được ghi lại, ai bị bỏ qua).",
+        "why": "Điều vắng mặt trong hồ sơ cũng là một loại bằng chứng.",
         "wrong": {
-          "A": "Giảng viên cảnh báo không coi tài liệu viết như ô cửa nhìn thẳng vào quá khứ.",
-          "C": "Ý ngược lại: thiếu vắng cũng là bằng chứng để nghiên cứu.",
-          "D": "Có thể đúng ngoài đời nhưng không phải ý nghĩa của câu này. Bẫy: suy luận vượt bài."
+          "A": "Ngược ý: cảnh báo không nên coi tài liệu là cửa sổ nhìn toàn bộ quá khứ.",
+          "B": "Không được nhắc.",
+          "D": "Không phải ý của câu nói."
         }
       }
     ],
@@ -1137,7 +1137,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "Saturday morning"
+            "t": "Sunday afternoon"
           },
           {
             "k": "B",
@@ -1145,24 +1145,24 @@
           },
           {
             "k": "C",
-            "t": "Sunday afternoon"
+            "t": "Saturday morning"
           },
           {
             "k": "D",
             "t": "Sunday morning"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 4,
         "ev": {
           "p": 1,
           "s": "we have a few places on Sunday afternoon"
         },
-        "why": "Lớp thứ Bảy đã đầy, còn chỗ chiều Chủ nhật và cô đồng ý.",
+        "why": "Thứ Bảy kín chỗ; còn vài chỗ chiều Chủ nhật.",
         "wrong": {
-          "A": "Lớp thứ Bảy đã đầy.",
-          "B": "Lớp thứ Bảy đã đầy.",
-          "D": "Chỗ trống là buổi chiều, không phải buổi sáng."
+          "B": "Thứ Bảy đã kín.",
+          "C": "Thứ Bảy đã kín.",
+          "D": "Lớp còn chỗ là buổi chiều."
         }
       },
       {
@@ -1171,19 +1171,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "Some ingredients"
+            "t": "A recipe book"
           },
           {
             "k": "B",
-            "t": "A container"
+            "t": "A box"
           },
           {
             "k": "C",
-            "t": "A recipe"
+            "t": "An apron"
           },
           {
             "k": "D",
-            "t": "Nothing at all"
+            "t": "Some ingredients"
           }
         ],
         "ans": "B",
@@ -1192,11 +1192,11 @@
           "p": 3,
           "s": "Just bring a box so you can take home what you cook."
         },
-        "why": "\"a box\" = một cái hộp (container) để đem món đã nấu về.",
+        "why": "Mang hộp để đem món đã nấu về.",
         "wrong": {
-          "A": "Lớp chuẩn bị mọi nguyên liệu.",
-          "C": "Không nhắc đến công thức.",
-          "D": "Cô vẫn cần mang hộp. Bẫy: câu \"we provide everything\" dễ làm chọn đáp án này."
+          "A": "Không được nhắc.",
+          "C": "Không được nhắc.",
+          "D": "Lớp cung cấp mọi nguyên liệu."
         }
       }
     ],
@@ -1237,13 +1237,13 @@
       },
       {
         "sp": "Manager",
-        "t": "I know this isn't ideal, so we've agreed that anyone who prefers to work from home two days a week during this period can do so."
+        "t": "I know this isn't ideal, so we've agreed that the design team can start and finish an hour later during this period, to avoid the busy lifts in the morning."
       }
     ],
     "vi": [
       "Cập nhật nhanh về việc chuyển văn phòng. Toà nhà mới sẽ chưa xong cho đến cuối tháng Ba, muộn hơn một tháng so với dự kiến.",
       "Từ giờ đến lúc đó, nhóm kinh doanh tiếp tục làm việc ở đây, còn nhóm thiết kế tạm chuyển lên các phòng họp ở tầng năm, vì chỗ làm hiện tại của họ cần dùng làm kho.",
-      "Tôi biết như vậy không lý tưởng, nên chúng ta đã thống nhất rằng ai muốn làm việc tại nhà hai ngày một tuần trong thời gian này đều được."
+      "Tôi biết như vậy không lý tưởng, nên chúng ta đã thống nhất rằng nhóm thiết kế được bắt đầu và kết thúc muộn hơn một tiếng trong thời gian này, để tránh thang máy đông buổi sáng."
     ],
     "items": [
       {
@@ -1252,32 +1252,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "The new building is ready."
+            "t": "Their current area is needed for storage."
           },
           {
             "k": "B",
-            "t": "Their current area will be used to store things."
+            "t": "The new building is ready."
           },
           {
             "k": "C",
-            "t": "The sales team needs more space for its growing number of staff."
+            "t": "The sales team needs their space."
           },
           {
             "k": "D",
-            "t": "The fifth floor is quieter."
+            "t": "The meeting rooms are quieter."
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 6,
         "ev": {
           "p": 1,
           "s": "as their current space is needed for storage"
         },
-        "why": "Chỗ làm hiện tại của nhóm thiết kế cần dùng làm kho (storage).",
+        "why": "Khu làm việc hiện tại cần để làm kho.",
         "wrong": {
-          "A": "Toà nhà mới chưa xong.",
-          "C": "Nhóm kinh doanh chỉ tiếp tục làm ở đây, không cần thêm chỗ.",
-          "D": "Không nhắc tầng năm yên tĩnh hơn."
+          "B": "Toà nhà mới đến cuối tháng Ba mới xong.",
+          "C": "Nhóm bán hàng vẫn ở chỗ cũ, không cần thêm chỗ.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1286,32 +1286,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "Staff may work at home for part of the week."
-          },
-          {
-            "k": "B",
             "t": "The move will happen in February."
           },
           {
+            "k": "B",
+            "t": "The sales team will move first."
+          },
+          {
             "k": "C",
-            "t": "The sales team will move to the fifth floor."
+            "t": "Staff can work from home two days a week."
           },
           {
             "k": "D",
-            "t": "Everyone must work from home."
+            "t": "The design team can start and finish later."
           }
         ],
-        "ans": "A",
+        "ans": "D",
         "b": 6.5,
         "ev": {
           "p": 2,
-          "s": "anyone who prefers to work from home two days a week during this period can do so"
+          "s": "the design team can start and finish an hour later during this period"
         },
-        "why": "Ai muốn có thể làm ở nhà hai ngày một tuần: làm ở nhà một phần thời gian trong tuần.",
+        "why": "Nhóm thiết kế được bắt đầu và kết thúc muộn hơn một tiếng.",
         "wrong": {
-          "B": "Toà nhà xong cuối tháng Ba, muộn hơn dự kiến một tháng.",
-          "C": "Nhóm lên tầng năm là nhóm thiết kế.",
-          "D": "Đây là lựa chọn tự nguyện (prefers), không bắt buộc."
+          "A": "Toà nhà mới chậm đến cuối tháng Ba.",
+          "B": "Nhóm bán hàng ở lại.",
+          "C": "Không được nhắc."
         }
       }
     ],
@@ -1348,7 +1348,7 @@
       },
       {
         "sp": "Farmer",
-        "t": "People assume I was unhappy in the city, but that wasn't really it. My grandfather's land was going to be sold, and I couldn't bear the idea of it disappearing."
+        "t": "People assume I wanted to save my family's land, but that wasn't really it. I was tired of spending four hours a day travelling to and from work."
       },
       {
         "sp": "Interviewer",
@@ -1356,14 +1356,14 @@
       },
       {
         "sp": "Farmer",
-        "t": "The physical work is harder than I imagined, but what surprised me most was the amount of paperwork. I spend almost as much time on permits and accounts as I do in the fields."
+        "t": "The physical work is harder than I imagined, but what surprised me most was how lonely it can be. Some days I don't speak to anyone until the evening."
       }
     ],
     "vi": [
       "Anh bỏ một công việc lương cao ở thành phố để làm nông. Điều gì khiến anh quyết định vậy?",
-      "Người ta nghĩ tôi không vui ở thành phố, nhưng thật ra không phải. Đất của ông tôi sắp bị bán, và tôi không chịu nổi ý nghĩ nó biến mất.",
+      "Người ta nghĩ tôi muốn giữ đất của gia đình, nhưng thật ra không phải. Tôi đã quá mệt vì mỗi ngày mất bốn tiếng đi làm và về.",
       "Và mọi thứ có như anh mong đợi không?",
-      "Việc chân tay vất vả hơn tôi tưởng, nhưng điều làm tôi bất ngờ nhất là lượng giấy tờ. Tôi dành gần ngang thời gian cho giấy phép và sổ sách như thời gian ở ngoài đồng."
+      "Việc chân tay vất vả hơn tôi tưởng, nhưng điều làm tôi bất ngờ nhất là nó có thể cô đơn đến thế nào. Có hôm tôi chẳng nói chuyện với ai cho đến tối."
     ],
     "items": [
       {
@@ -1372,32 +1372,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "He was unhappy in the city."
-          },
-          {
-            "k": "B",
             "t": "He wanted to keep his family's land."
           },
           {
+            "k": "B",
+            "t": "He was tired of long journeys to work."
+          },
+          {
             "k": "C",
-            "t": "Farming paid better than his city job."
+            "t": "He was unhappy with his salary."
           },
           {
             "k": "D",
-            "t": "His grandfather asked him to."
+            "t": "His family asked him to come home."
           }
         ],
         "ans": "B",
         "b": 6.5,
         "ev": {
           "p": 1,
-          "s": "My grandfather's land was going to be sold, and I couldn't bear the idea of it disappearing."
+          "s": "I was tired of spending four hours a day travelling to and from work."
         },
-        "why": "Đất của ông sắp bị bán và anh không muốn nó mất đi: anh muốn giữ đất của gia đình.",
+        "why": "Anh mệt vì mỗi ngày mất bốn tiếng đi làm và về.",
         "wrong": {
-          "A": "Anh nói đó là điều người ta tưởng, \"but that wasn't really it\". Bẫy: ý được nêu để bác bỏ.",
-          "C": "Việc ở thành phố là việc lương cao.",
-          "D": "Không nói ông bảo anh về."
+          "A": "Anh nói người ta tưởng vậy nhưng không phải.",
+          "C": "Công việc lương cao.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1406,32 +1406,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "How hard the physical work is"
+            "t": "How much paperwork there is"
           },
           {
             "k": "B",
-            "t": "How much administrative work there is"
+            "t": "How hard the physical work is"
           },
           {
             "k": "C",
-            "t": "How little time he spends in the fields"
+            "t": "How lonely the work can be"
           },
           {
             "k": "D",
-            "t": "How expensive permits are"
+            "t": "How early he has to start"
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 7.5,
         "ev": {
           "p": 3,
-          "s": "what surprised me most was the amount of paperwork"
+          "s": "what surprised me most was how lonely it can be"
         },
-        "why": "\"paperwork\" (giấy phép, sổ sách) = công việc hành chính; đây là điều làm anh bất ngờ NHẤT.",
+        "why": "Điều bất ngờ nhất là công việc có thể cô đơn đến thế nào.",
         "wrong": {
-          "A": "Việc chân tay vất vả hơn tưởng, nhưng không phải điều bất ngờ nhất. Bẫy: hai ý trong một câu, câu hỏi hỏi \"most\".",
-          "C": "Anh dành gần ngang thời gian, không nói rất ít thời gian ở ngoài đồng.",
-          "D": "Không nhắc đến giá giấy phép."
+          "A": "Không được nhắc.",
+          "B": "Việc chân tay vất vả hơn nghĩ, nhưng không phải điều bất ngờ nhất.",
+          "D": "Không được nhắc."
         }
       }
     ],

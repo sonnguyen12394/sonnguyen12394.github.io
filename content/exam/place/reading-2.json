@@ -14,10 +14,10 @@
     "title": "Bus timetable change",
     "instr": "Read the notice and answer the questions.",
     "paras": [
-      "Bus 18 timetable change. From next Monday, bus 18 will not stop at the old market because of road works. Please use the stop in front of the post office, about 200 metres away. Buses will run every 15 minutes in the morning and every 30 minutes after 7 pm. The last bus from the city centre leaves at 11 pm. Weekly tickets bought before Monday can still be used."
+      "Bus 18 timetable change. From next Monday, bus 18 will not stop at the old market because the market street will be for walkers only. Please use the stop in front of the post office, about 200 metres away. Buses will run every 15 minutes in the morning and every 30 minutes after 7 pm. The last bus from the city centre leaves at 11 pm. Weekly tickets bought before Monday can still be used."
     ],
     "vi": [
-      "Thay đổi lịch xe buýt số 18. Từ thứ Hai tới, xe buýt 18 sẽ không dừng ở chợ cũ vì sửa đường. Vui lòng dùng điểm dừng trước bưu điện, cách khoảng 200 mét. Buổi sáng cứ 15 phút có một chuyến và sau 7 giờ tối thì 30 phút một chuyến. Chuyến cuối từ trung tâm thành phố chạy lúc 11 giờ đêm. Vé tuần mua trước thứ Hai vẫn dùng được."
+      "Thay đổi lịch xe buýt số 18. Từ thứ Hai tới, xe buýt 18 sẽ không dừng ở chợ cũ vì phố chợ sẽ chỉ dành cho người đi bộ. Vui lòng dùng điểm dừng trước bưu điện, cách khoảng 200 mét. Buổi sáng cứ 15 phút có một chuyến và sau 7 giờ tối thì 30 phút một chuyến. Chuyến cuối từ trung tâm thành phố chạy lúc 11 giờ đêm. Vé tuần mua trước thứ Hai vẫn dùng được."
     ],
     "items": [
       {
@@ -26,32 +26,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "The market has closed."
+            "t": "The street will be for walkers only."
           },
           {
             "k": "B",
-            "t": "Work is being done on the road."
+            "t": "Road works will start there."
           },
           {
             "k": "C",
-            "t": "There are not enough passengers."
+            "t": "A new market is being built there."
           },
           {
             "k": "D",
-            "t": "The post office is closer."
+            "t": "Too few passengers use that stop."
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 4,
         "ev": {
           "p": 0,
-          "s": "bus 18 will not stop at the old market because of road works"
+          "s": "because the market street will be for walkers only"
         },
-        "why": "\"because of road works\" = vì đang sửa đường.",
+        "why": "Phố chợ sẽ chỉ dành cho người đi bộ.",
         "wrong": {
-          "A": "Thông báo không nói chợ đóng cửa.",
-          "C": "Không nhắc đến số hành khách.",
-          "D": "Bưu điện là điểm dừng thay thế, không phải lý do đổi."
+          "B": "Không nói sửa đường.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -60,7 +60,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "Every 15 minutes"
+            "t": "Every 40 minutes"
           },
           {
             "k": "B",
@@ -72,7 +72,7 @@
           },
           {
             "k": "D",
-            "t": "It does not run."
+            "t": "Every 20 minutes"
           }
         ],
         "ans": "B",
@@ -81,11 +81,11 @@
           "p": 0,
           "s": "every 30 minutes after 7 pm"
         },
-        "why": "8 giờ tối là sau 7 giờ tối, nên 30 phút một chuyến.",
+        "why": "Sau 7 giờ tối xe chạy 30 phút một chuyến.",
         "wrong": {
-          "A": "15 phút một chuyến là buổi sáng.",
-          "C": "Thông báo không có tần suất một giờ một chuyến.",
-          "D": "Chuyến cuối là 11 giờ đêm, nên 8 giờ tối vẫn có xe."
+          "A": "Không được nhắc.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       }
     ]
@@ -105,44 +105,44 @@
     "title": "Volunteering at an animal shelter",
     "instr": "Read the text and answer the questions.",
     "paras": [
-      "The Happy Paws animal shelter needs volunteers to help on weekends. Volunteers walk the dogs, clean the cages and play with the cats so that they get used to people. You don't need any experience with animals, but you must be at least 16 years old and able to come at least twice a month. All new volunteers attend a two-hour training session on their first day. Unfortunately, we cannot accept volunteers who are allergic to animals, for their own safety."
+      "The Happy Paws animal shelter needs volunteers to help on weekends. Volunteers walk the dogs, clean the cages and brush the cats, because many of them are too old to keep themselves clean. You don't need any experience with animals, but you must be at least 16 years old and able to come at least twice a month. All new volunteers attend a two-hour training session on their first day. Unfortunately, we cannot accept volunteers who are allergic to animals, for their own safety."
     ],
     "vi": [
-      "Trại cứu hộ động vật Happy Paws cần tình nguyện viên giúp vào cuối tuần. Tình nguyện viên dắt chó đi dạo, dọn chuồng và chơi với mèo để chúng quen với người. Bạn không cần kinh nghiệm với động vật, nhưng phải từ 16 tuổi trở lên và đến được ít nhất hai lần một tháng. Mọi tình nguyện viên mới dự một buổi đào tạo hai tiếng vào ngày đầu. Rất tiếc, vì an toàn của chính các bạn, chúng tôi không nhận tình nguyện viên bị dị ứng với động vật."
+      "Trại cứu hộ động vật Happy Paws cần tình nguyện viên giúp vào cuối tuần. Tình nguyện viên dắt chó đi dạo, dọn chuồng và chải lông cho mèo, vì nhiều con đã quá già để tự giữ mình sạch sẽ. Bạn không cần kinh nghiệm với động vật, nhưng phải từ 16 tuổi trở lên và đến được ít nhất hai lần một tháng. Mọi tình nguyện viên mới dự một buổi đào tạo hai tiếng vào ngày đầu. Rất tiếc, vì an toàn của chính các bạn, chúng tôi không nhận tình nguyện viên bị dị ứng với động vật."
     ],
     "items": [
       {
         "id": "pl-r-14-a",
-        "q": "Why do volunteers play with the cats?",
+        "q": "Why do volunteers brush the cats?",
         "opts": [
           {
             "k": "A",
-            "t": "To help the cats feel comfortable with people"
+            "t": "So that they look nice for new owners"
           },
           {
             "k": "B",
-            "t": "To clean their cages"
+            "t": "So that they get used to people"
           },
           {
             "k": "C",
-            "t": "To train new volunteers"
+            "t": "To check them for health problems"
           },
           {
             "k": "D",
-            "t": "To find out whether any of the cats are ill"
+            "t": "Many are too old to clean themselves"
           }
         ],
-        "ans": "A",
+        "ans": "D",
         "b": 4.5,
         "ev": {
           "p": 0,
-          "s": "play with the cats so that they get used to people"
+          "s": "brush the cats, because many of them are too old to keep themselves clean"
         },
-        "why": "\"so that they get used to people\" = để mèo quen với người, tức là cảm thấy thoải mái khi ở cạnh người.",
+        "why": "Nhiều con mèo đã quá già để tự giữ sạch.",
         "wrong": {
-          "B": "Dọn chuồng là một việc khác, không phải mục đích của việc chơi với mèo.",
-          "C": "Đào tạo là dành cho tình nguyện viên mới, không liên quan đến mèo.",
-          "D": "Bài không nói kiểm tra mèo ốm."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -151,15 +151,15 @@
         "opts": [
           {
             "k": "A",
-            "t": "A 17-year-old with no experience"
+            "t": "A 16-year-old with no experience"
           },
           {
             "k": "B",
-            "t": "Someone who can come two weekends a month"
+            "t": "Someone who can come twice a month"
           },
           {
             "k": "C",
-            "t": "A person who has an allergy to animals"
+            "t": "A 15-year-old with a lot of experience"
           },
           {
             "k": "D",
@@ -170,13 +170,13 @@
         "b": 5,
         "ev": {
           "p": 0,
-          "s": "we cannot accept volunteers who are allergic to animals"
+          "s": "you must be at least 16 years old"
         },
-        "why": "Trại không nhận người dị ứng với động vật (allergic to animals = has an allergy to animals).",
+        "why": "Phải từ 16 tuổi trở lên; kinh nghiệm không quan trọng.",
         "wrong": {
-          "A": "17 tuổi là đủ tuổi (từ 16) và không cần kinh nghiệm.",
-          "B": "Hai lần một tháng là đúng mức tối thiểu.",
-          "D": "Không cần kinh nghiệm với động vật, nên chưa nuôi thú cưng vẫn được."
+          "A": "16 tuổi là đủ tuổi; không cần kinh nghiệm.",
+          "B": "Đến ít nhất hai lần một tháng là đủ.",
+          "D": "Không cần kinh nghiệm với động vật."
         }
       }
     ]
@@ -204,70 +204,70 @@
     "items": [
       {
         "id": "pl-r-15-a",
-        "q": "What does the writer advise you to do before buying online?",
+        "q": "How long do many shops accept complaints about broken items?",
         "opts": [
           {
             "k": "A",
-            "t": "Take a photo of the item"
+            "t": "48 hours"
           },
           {
             "k": "B",
-            "t": "Read the rules about returning items"
+            "t": "24 hours"
           },
           {
             "k": "C",
-            "t": "Pay for the postage"
+            "t": "7 days"
           },
           {
             "k": "D",
-            "t": "Contact the seller to explain the problem"
+            "t": "30 days"
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 4.5,
         "ev": {
           "p": 0,
-          "s": "Before you buy, check the shop's return policy."
+          "s": "many shops only accept complaints made within 48 hours of delivery"
         },
-        "why": "\"check the shop's return policy\" = đọc quy định đổi trả của cửa hàng.",
+        "why": "Nhiều cửa hàng chỉ nhận khiếu nại trong 48 giờ sau khi giao.",
         "wrong": {
-          "A": "Chụp ảnh là việc làm khi hàng đến bị vỡ, tức là sau khi mua.",
-          "C": "Trả tiền gửi chỉ là quy định của một số cửa hàng khi trả hàng.",
-          "D": "Liên hệ người bán là khi hàng bị vỡ."
+          "B": "Con số là 48 giờ.",
+          "C": "Không được nhắc.",
+          "D": "30 ngày là thời hạn gửi trả miễn phí ở một số cửa hàng."
         }
       },
       {
         "id": "pl-r-15-b",
-        "q": "Your new lamp arrives broken. What should you do first?",
+        "q": "According to the text, some shops ask customers to",
         "opts": [
           {
             "k": "A",
-            "t": "Wait 48 hours before complaining"
+            "t": "keep the original box."
           },
           {
             "k": "B",
-            "t": "Send the item back within 30 days"
+            "t": "pay for the postage."
           },
           {
             "k": "C",
-            "t": "Photograph the damage straight away"
+            "t": "return items within 7 days."
           },
           {
             "k": "D",
-            "t": "Wash it carefully"
+            "t": "fill in a return form."
           }
         ],
-        "ans": "C",
-        "b": 5.5,
+        "ans": "B",
+        "b": 5,
         "ev": {
           "p": 0,
-          "s": "If an item arrives broken, take a photo immediately and contact the seller"
+          "s": "while others ask you to pay for the postage"
         },
-        "why": "\"take a photo immediately\" = chụp ảnh ngay, đồng nghĩa với \"photograph the damage straight away\".",
+        "why": "Có nơi yêu cầu khách trả tiền gửi.",
         "wrong": {
-          "A": "48 giờ là thời hạn tối đa để khiếu nại, không phải thời gian phải chờ.",
-          "B": "30 ngày là quy định trả hàng thông thường, không phải việc làm đầu tiên khi hàng vỡ.",
-          "D": "Giặt liên quan đến quần áo, không phải đèn."
+          "A": "Không được nhắc.",
+          "C": "Bài nói 30 ngày ở một số nơi.",
+          "D": "Không được nhắc."
         }
       }
     ]
@@ -292,10 +292,10 @@
     ],
     "instr": "Read the text and answer the questions.",
     "paras": [
-      "Electric bicycles, or e-bikes, have become a common sight in many cities. They look like normal bicycles but have a small motor that helps the rider when pedalling uphill or against the wind. As a result, people who would never cycle to work because of the distance or the heat are now choosing e-bikes instead of motorbikes. However, e-bikes are still expensive, and their batteries need to be replaced every few years. Some cities offer money towards the cost of an e-bike, hoping to reduce traffic and air pollution."
+      "Electric bicycles, or e-bikes, have become a common sight in many cities. They look like normal bicycles but have a small motor that helps the rider when pedalling uphill or against the wind. As a result, people who would never cycle to work because of the distance or the heat are now choosing e-bikes instead of motorbikes. However, e-bikes are still expensive, and their batteries need to be replaced every few years. Some cities offer money towards the cost of an e-bike, hoping to reduce the number of serious motorbike accidents."
     ],
     "vi": [
-      "Xe đạp điện đã trở thành hình ảnh quen thuộc ở nhiều thành phố. Trông chúng như xe đạp bình thường nhưng có một động cơ nhỏ giúp người đạp khi lên dốc hoặc ngược gió. Nhờ vậy, những người trước đây không bao giờ đạp xe đi làm vì đường xa hay trời nóng nay chọn xe đạp điện thay cho xe máy. Tuy nhiên, xe đạp điện vẫn đắt và pin cần thay vài năm một lần. Một số thành phố hỗ trợ một phần tiền mua xe đạp điện, với hy vọng giảm giao thông và ô nhiễm không khí."
+      "Xe đạp điện đã trở thành hình ảnh quen thuộc ở nhiều thành phố. Trông chúng như xe đạp bình thường nhưng có một động cơ nhỏ giúp người đạp khi lên dốc hoặc ngược gió. Nhờ vậy, những người trước đây không bao giờ đạp xe đi làm vì đường xa hay trời nóng nay chọn xe đạp điện thay cho xe máy. Tuy nhiên, xe đạp điện vẫn đắt và pin cần thay vài năm một lần. Một số thành phố hỗ trợ một phần tiền mua xe đạp điện, với hy vọng giảm số vụ tai nạn xe máy nghiêm trọng."
     ],
     "items": [
       {
@@ -304,7 +304,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "The motor makes long or hot journeys easier."
+            "t": "Cities have built new cycle lanes."
           },
           {
             "k": "B",
@@ -312,24 +312,24 @@
           },
           {
             "k": "C",
-            "t": "Their cities have recently banned all motorbikes."
+            "t": "The motor helps with distance and heat."
           },
           {
             "k": "D",
-            "t": "The weather has become cooler."
+            "t": "Parking a motorbike has become difficult."
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 5.5,
         "ev": {
           "p": 0,
           "s": "people who would never cycle to work because of the distance or the heat are now choosing e-bikes"
         },
-        "why": "Người ngại đường xa hoặc trời nóng giờ chọn xe đạp điện vì có động cơ trợ lực: động cơ làm những chặng xa, nóng dễ hơn.",
+        "why": "Người ngại quãng đường xa hoặc trời nóng giờ chọn xe đạp điện.",
         "wrong": {
-          "B": "Bài nói xe đạp điện vẫn đắt (still expensive).",
-          "C": "Bài không nói cấm xe máy.",
-          "D": "Bài không nói thời tiết mát hơn."
+          "A": "Không được nhắc.",
+          "B": "Bài nói xe đạp điện vẫn đắt.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -338,32 +338,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "To lower the cost of replacing batteries"
+            "t": "To help people get fitter"
           },
           {
             "k": "B",
-            "t": "To make the air cleaner and roads less busy"
+            "t": "To reduce traffic and air pollution in cities"
           },
           {
             "k": "C",
-            "t": "To help riders go up hills more easily"
+            "t": "To support local bicycle shops"
           },
           {
             "k": "D",
-            "t": "To stop people from using motorbikes completely"
+            "t": "To reduce serious motorbike accidents"
           }
         ],
-        "ans": "B",
+        "ans": "D",
         "b": 5.5,
         "ev": {
           "p": 0,
-          "s": "hoping to reduce traffic and air pollution"
+          "s": "hoping to reduce the number of serious motorbike accidents"
         },
-        "why": "\"reduce traffic and air pollution\" = giảm giao thông và ô nhiễm không khí, tức là đường bớt đông và không khí sạch hơn.",
+        "why": "Thành phố mong giảm số vụ tai nạn xe máy nghiêm trọng.",
         "wrong": {
-          "A": "Bài nói pin phải thay vài năm một lần, nhưng tiền hỗ trợ là cho việc mua xe, không phải để giảm giá pin.",
-          "C": "Đi lên dốc dễ hơn là nhờ động cơ của xe, không phải lý do thành phố hỗ trợ tiền.",
-          "D": "Bài chỉ nói người ta chọn xe đạp điện thay xe máy, không nói mục tiêu là cấm hẳn xe máy."
+          "A": "Không được nhắc.",
+          "B": "Bài này không nêu mục đích đó.",
+          "C": "Không được nhắc."
         }
       }
     ]
@@ -383,44 +383,44 @@
     "title": "Food waste in supermarkets",
     "instr": "Read the text and answer the questions.",
     "paras": [
-      "Supermarkets throw away large amounts of food every day, much of it perfectly safe to eat. One reason is the 'best before' date printed on many products. Unlike a 'use by' date, which relates to safety, a 'best before' date only indicates when the food is at its highest quality. Yet many shoppers treat the two labels as if they meant the same thing, and supermarkets remove products from shelves to avoid complaints. Some countries have responded by encouraging shops to donate unsold food to charities, while others have removed 'best before' dates from fresh fruit and vegetables altogether."
+      "Supermarkets throw away large amounts of food every day, much of it perfectly safe to eat. One reason is the 'best before' date printed on many products. Unlike a 'use by' date, which relates to safety, a 'best before' date only indicates when the food is at its highest quality. Yet many shoppers throw food away as soon as its 'best before' date has passed, and supermarkets remove products from shelves to avoid complaints. Some countries have responded by encouraging shops to donate unsold food to charities, while others have removed 'best before' dates from fresh fruit and vegetables altogether."
     ],
     "vi": [
-      "Siêu thị vứt bỏ một lượng lớn thực phẩm mỗi ngày, phần lớn vẫn hoàn toàn an toàn để ăn. Một lý do là ngày \"best before\" (dùng ngon nhất trước) in trên nhiều sản phẩm. Khác với ngày \"use by\" (hạn sử dụng) liên quan đến an toàn, ngày \"best before\" chỉ cho biết lúc thực phẩm ngon nhất. Thế nhưng nhiều người mua coi hai nhãn này như nhau, và siêu thị dỡ hàng khỏi kệ để tránh bị phàn nàn. Một số nước đã khuyến khích cửa hàng tặng thực phẩm chưa bán được cho tổ chức từ thiện, nước khác bỏ hẳn ngày \"best before\" trên trái cây và rau tươi."
+      "Siêu thị vứt bỏ một lượng lớn thực phẩm mỗi ngày, phần lớn vẫn hoàn toàn an toàn để ăn. Một lý do là ngày \"best before\" (dùng ngon nhất trước) in trên nhiều sản phẩm. Khác với ngày \"use by\" (hạn sử dụng) liên quan đến an toàn, ngày \"best before\" chỉ cho biết lúc thực phẩm ngon nhất. Thế nhưng nhiều người mua vứt thực phẩm ngay khi qua ngày \"best before\", và siêu thị dỡ hàng khỏi kệ để tránh bị phàn nàn. Một số nước đã khuyến khích cửa hàng tặng thực phẩm chưa bán được cho tổ chức từ thiện, nước khác bỏ hẳn ngày \"best before\" trên trái cây và rau tươi."
     ],
     "items": [
       {
         "id": "pl-r-17-a",
-        "q": "What is the difference between the two labels?",
+        "q": "What does the writer say many shoppers do?",
         "opts": [
           {
             "k": "A",
-            "t": "'Best before' is about safety; 'use by' is about quality."
+            "t": "They throw food away on its 'best before' date."
           },
           {
             "k": "B",
-            "t": "'Use by' is about safety; 'best before' is about quality."
+            "t": "They ignore 'use by' dates."
           },
           {
             "k": "C",
-            "t": "Both labels are about safety."
+            "t": "They buy food close to its date because it is cheaper."
           },
           {
             "k": "D",
-            "t": "Both labels mean the same thing."
+            "t": "They confuse 'use by' with 'best before'."
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 6,
         "ev": {
           "p": 0,
-          "s": "Unlike a 'use by' date, which relates to safety, a 'best before' date only indicates when the food is at its highest quality."
+          "s": "many shoppers throw food away as soon as its 'best before' date has passed"
         },
-        "why": "\"use by\" liên quan đến an toàn, \"best before\" chỉ về chất lượng (lúc ngon nhất).",
+        "why": "Nhiều người vứt thực phẩm ngay khi qua ngày \"best before\".",
         "wrong": {
-          "A": "Đảo ngược hai nhãn: bẫy dành cho người đọc lướt.",
-          "C": "\"best before\" chỉ nói về chất lượng, không phải an toàn.",
-          "D": "Đây là cách hiểu SAI của nhiều người mua mà bài nêu ra, không phải sự thật."
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc.",
+          "D": "Bài không nói họ nhầm hai nhãn."
         }
       },
       {
@@ -429,19 +429,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "The law requires them to."
+            "t": "Because the law requires it"
           },
           {
             "k": "B",
-            "t": "Charities ask them to."
+            "t": "To give food to charities"
           },
           {
             "k": "C",
-            "t": "They want to prevent customers from complaining."
+            "t": "To avoid complaints"
           },
           {
             "k": "D",
-            "t": "The products lose all of their quality after being returned."
+            "t": "To keep shelves looking fresh"
           }
         ],
         "ans": "C",
@@ -450,11 +450,11 @@
           "p": 0,
           "s": "supermarkets remove products from shelves to avoid complaints"
         },
-        "why": "\"to avoid complaints\" = để tránh bị khách phàn nàn.",
+        "why": "Siêu thị gỡ hàng khỏi kệ để tránh khách phàn nàn.",
         "wrong": {
-          "A": "Bài không nói luật bắt buộc.",
-          "B": "Tổ chức từ thiện nhận thực phẩm được tặng, không yêu cầu siêu thị dỡ hàng.",
-          "D": "\"best before\" chỉ là lúc ngon nhất; qua ngày đó không có nghĩa là mất hết chất lượng."
+          "A": "Không nói luật bắt buộc.",
+          "B": "Tặng từ thiện là cách một số nước xử lý đồ ế, không phải lý do gỡ hàng.",
+          "D": "Không được nhắc."
         }
       }
     ]
@@ -482,36 +482,36 @@
     "items": [
       {
         "id": "pl-r-18-a",
-        "q": "According to the text, what advantage do children have?",
+        "q": "According to the text, what advantage do adults have?",
         "opts": [
           {
             "k": "A",
-            "t": "They understand grammar explanations better."
+            "t": "They are less shy about speaking."
           },
           {
             "k": "B",
-            "t": "They make much faster progress in their first year of study."
+            "t": "They memorise new words more quickly."
           },
           {
             "k": "C",
-            "t": "They are more likely to sound like native speakers."
+            "t": "They usually have better pronunciation."
           },
           {
             "k": "D",
-            "t": "They use more learning strategies."
+            "t": "They often learn faster in the first year."
           }
         ],
-        "ans": "C",
-        "b": 6,
+        "ans": "D",
+        "b": 6.5,
         "ev": {
           "p": 0,
-          "s": "people who begin a language in early childhood are more likely to develop a native-like accent"
+          "s": "In studies that compare progress over the first year, adults often learn faster than children."
         },
-        "why": "\"native-like accent\" = giọng gần như người bản xứ, tức là nói nghe giống người bản xứ hơn.",
+        "why": "Trong năm đầu, người lớn thường tiến bộ nhanh hơn trẻ em.",
         "wrong": {
-          "A": "Hiểu ngữ pháp khi được giải thích là lợi thế của người lớn.",
-          "B": "Năm đầu người lớn thường học nhanh hơn.",
-          "D": "Dùng chiến lược như ghi chép là lợi thế của người lớn."
+          "A": "Không được nhắc.",
+          "B": "Bài nói họ nối từ mới với kiến thức sẵn có, không nói nhớ nhanh hơn.",
+          "C": "Giọng chuẩn là lợi thế của trẻ em."
         }
       },
       {
@@ -520,19 +520,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "Their brains are designed for languages."
+            "t": "They are less afraid of making mistakes."
           },
           {
             "k": "B",
-            "t": "They keep learning for a longer time."
+            "t": "They keep learning for more years."
           },
           {
             "k": "C",
-            "t": "They have better teachers."
+            "t": "Their brains are better suited to languages."
           },
           {
             "k": "D",
-            "t": "They take more notes."
+            "t": "They get more practice at school."
           }
         ],
         "ans": "B",
@@ -541,11 +541,11 @@
           "p": 0,
           "s": "The difference is that children usually continue for many years, while adults tend to stop"
         },
-        "why": "Câu kết cho thấy điểm khác thật sự là trẻ em học liên tục nhiều năm, còn người lớn hay dừng lại. Câu hỏi suy luận từ ý của tác giả.",
+        "why": "Trẻ em thường học tiếp nhiều năm, còn người lớn hay dừng lại.",
         "wrong": {
-          "A": "Bài không nói não trẻ em được \"thiết kế\" cho ngôn ngữ; đây là niềm tin phổ biến mà bài chỉ ủng hộ một phần.",
-          "C": "Bài không so sánh giáo viên.",
-          "D": "Ghi chép là chiến lược của người lớn."
+          "A": "Không được nhắc.",
+          "C": "Đây là niềm tin phổ biến mà bài chỉ ủng hộ một phần (giọng nói).",
+          "D": "Không được nhắc."
         }
       }
     ]
@@ -565,10 +565,10 @@
     "title": "The value of boredom",
     "instr": "Read the text and answer the questions.",
     "paras": [
-      "Boredom has a poor reputation. We tend to see it as a waste of time and reach for our phones the moment it appears. Yet several psychologists argue that boredom serves a useful purpose. Rather than being an empty state, it signals that our current activity is no longer meaningful and pushes us to look for something more rewarding. In one study, participants who first completed a deliberately dull task later produced more original ideas in a creative exercise than those who had not. The researchers caution, however, that the effect depends on what people do next: boredom that is immediately relieved by scrolling through social media appears to bring no creative benefit at all."
+      "Boredom has a poor reputation. We tend to see it as a waste of time and reach for our phones the moment it appears. Yet several psychologists argue that boredom serves a useful purpose. Rather than being an empty state, it signals that our current activity is no longer meaningful and pushes us to look for something more rewarding. In one study, participants who first completed a deliberately dull task later produced more original ideas in a creative exercise than those who had not. The researchers caution, however, that the effect disappeared when participants were allowed to listen to music during the dull task."
     ],
     "vi": [
-      "Sự chán nản mang tiếng xấu. Ta thường coi nó là phí thời gian và vớ lấy điện thoại ngay khi nó xuất hiện. Thế nhưng một số nhà tâm lý học cho rằng chán nản có ích. Thay vì là một trạng thái trống rỗng, nó báo hiệu việc đang làm không còn ý nghĩa và thúc ta tìm việc đáng giá hơn. Trong một nghiên cứu, người tham gia làm trước một việc cố tình tẻ nhạt về sau nghĩ ra nhiều ý tưởng độc đáo hơn trong một bài tập sáng tạo so với người không làm. Tuy vậy, các nhà nghiên cứu lưu ý hiệu ứng này tuỳ vào việc người ta làm gì tiếp theo: chán nản được giải toả ngay bằng việc lướt mạng xã hội dường như chẳng mang lại lợi ích sáng tạo nào."
+      "Sự chán nản mang tiếng xấu. Ta thường coi nó là phí thời gian và vớ lấy điện thoại ngay khi nó xuất hiện. Thế nhưng một số nhà tâm lý học cho rằng chán nản có ích. Thay vì là một trạng thái trống rỗng, nó báo hiệu việc đang làm không còn ý nghĩa và thúc ta tìm việc đáng giá hơn. Trong một nghiên cứu, người tham gia làm trước một việc cố tình tẻ nhạt về sau nghĩ ra nhiều ý tưởng độc đáo hơn trong một bài tập sáng tạo so với người không làm. Tuy vậy, các nhà nghiên cứu lưu ý hiệu ứng này biến mất khi người tham gia được nghe nhạc trong lúc làm việc tẻ nhạt."
     ],
     "items": [
       {
@@ -577,32 +577,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "It allows the brain to rest completely."
+            "t": "It gives the brain time to rest."
           },
           {
             "k": "B",
-            "t": "It encourages people to find a more worthwhile activity."
+            "t": "It helps us remember what we have learned."
           },
           {
             "k": "C",
-            "t": "It makes people use their phones more."
+            "t": "It helps people relax after hard work."
           },
           {
             "k": "D",
-            "t": "It shows that a person lacks imagination and new ideas."
+            "t": "It signals that we should find something more rewarding."
           }
         ],
-        "ans": "B",
+        "ans": "D",
         "b": 7,
         "ev": {
           "p": 0,
           "s": "it signals that our current activity is no longer meaningful and pushes us to look for something more rewarding"
         },
-        "why": "Chán nản báo hiệu việc đang làm hết ý nghĩa và \"pushes us to look for something more rewarding\" = thúc ta tìm việc đáng giá hơn.",
+        "why": "Chán báo hiệu việc đang làm hết ý nghĩa, thúc ta tìm việc đáng giá hơn.",
         "wrong": {
-          "A": "Bài nói chán nản KHÔNG phải trạng thái trống rỗng (Rather than being an empty state).",
-          "C": "Vớ điện thoại là phản ứng thường gặp, không phải chức năng của chán nản.",
-          "D": "Bài không nói chán nản cho thấy thiếu trí tưởng tượng."
+          "A": "Bài nói chán không phải trạng thái trống rỗng.",
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -611,32 +611,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "Dull tasks always reduce creativity."
+            "t": "Only a small group of people was studied."
           },
           {
             "k": "B",
-            "t": "The benefit disappears if boredom is ended at once by social media."
+            "t": "Music during the dull task removed the effect."
           },
           {
             "k": "C",
-            "t": "Only a few participants took part."
+            "t": "Using social media afterwards cancelled the benefit."
           },
           {
             "k": "D",
-            "t": "The creative exercises used in the studies are not reliable."
+            "t": "The benefit lasted only a short time."
           }
         ],
         "ans": "B",
         "b": 7.5,
         "ev": {
           "p": 0,
-          "s": "boredom that is immediately relieved by scrolling through social media appears to bring no creative benefit at all"
+          "s": "the effect disappeared when participants were allowed to listen to music during the dull task"
         },
-        "why": "Chán nản được giải toả ngay bằng lướt mạng xã hội thì \"no creative benefit at all\" = không còn lợi ích sáng tạo.",
+        "why": "Hiệu ứng biến mất khi người tham gia được nghe nhạc trong lúc làm việc tẻ nhạt.",
         "wrong": {
-          "A": "Kết quả nghiên cứu ngược lại: việc tẻ nhạt giúp nảy ra ý tưởng độc đáo hơn.",
-          "C": "Bài không nói số người tham gia ít.",
-          "D": "Bài không phê phán độ tin cậy của bài tập sáng tạo."
+          "A": "Không nói quy mô nghiên cứu.",
+          "C": "Mạng xã hội được nhắc ở đầu bài như thói quen, không phải giới hạn của nghiên cứu.",
+          "D": "Không được nhắc."
         }
       }
     ]
@@ -656,10 +656,10 @@
     "title": "Citizen science",
     "instr": "Read the text and answer the questions.",
     "paras": [
-      "Citizen science, in which members of the public collect data for research projects, has expanded rapidly with the spread of smartphones. Volunteers now count birds, record the quality of local rivers and photograph distant galaxies for professional astronomers to classify. Supporters claim that such projects not only produce data on a scale that no research team could afford, but also improve public understanding of how science works. Sceptics, by contrast, question the accuracy of observations made by untrained people. In practice, many projects address this concern by asking several volunteers to examine the same item and accepting a result only when most of them agree."
+      "Citizen science, in which members of the public collect data for research projects, has expanded rapidly with the spread of smartphones. Volunteers now count birds, record the quality of local rivers and sort photographs of distant galaxies for professional astronomers. Supporters claim that such projects not only produce data on a scale that no research team could afford, but also improve public understanding of how science works. Sceptics, by contrast, question the accuracy of observations made by untrained people. In practice, many projects address this concern by asking several volunteers to examine the same item and accepting a result only when at least three of them agree."
     ],
     "vi": [
-      "Khoa học công dân, trong đó người dân thu thập dữ liệu cho các dự án nghiên cứu, đã phát triển nhanh nhờ điện thoại thông minh phổ biến. Tình nguyện viên nay đếm chim, ghi lại chất lượng sông ở địa phương và chụp ảnh các thiên hà xa xôi để nhà thiên văn chuyên nghiệp phân loại. Người ủng hộ cho rằng các dự án này không chỉ tạo ra dữ liệu ở quy mô mà không nhóm nghiên cứu nào chi trả nổi, mà còn giúp công chúng hiểu khoa học vận hành thế nào. Ngược lại, người hoài nghi đặt câu hỏi về độ chính xác của quan sát do người không được đào tạo thực hiện. Trên thực tế, nhiều dự án giải quyết mối lo này bằng cách nhờ nhiều tình nguyện viên xem cùng một mục và chỉ chấp nhận kết quả khi đa số đồng ý."
+      "Khoa học công dân, trong đó người dân thu thập dữ liệu cho các dự án nghiên cứu, đã phát triển nhanh nhờ điện thoại thông minh phổ biến. Tình nguyện viên nay đếm chim, ghi lại chất lượng sông ở địa phương và phân loại ảnh các thiên hà xa xôi cho nhà thiên văn chuyên nghiệp. Người ủng hộ cho rằng các dự án này không chỉ tạo ra dữ liệu ở quy mô mà không nhóm nghiên cứu nào chi trả nổi, mà còn giúp công chúng hiểu khoa học vận hành thế nào. Ngược lại, người hoài nghi đặt câu hỏi về độ chính xác của quan sát do người không được đào tạo thực hiện. Trên thực tế, nhiều dự án giải quyết mối lo này bằng cách nhờ nhiều tình nguyện viên xem cùng một mục và chỉ chấp nhận kết quả khi ít nhất ba người đồng ý."
     ],
     "items": [
       {
@@ -668,11 +668,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "It provides very large amounts of data."
+            "t": "Smartphones have helped it to grow."
           },
           {
             "k": "B",
-            "t": "It helps the public understand scientific methods."
+            "t": "It produces very large amounts of data."
           },
           {
             "k": "C",
@@ -680,7 +680,7 @@
           },
           {
             "k": "D",
-            "t": "It can be done using smartphones."
+            "t": "It can help people understand how science works."
           }
         ],
         "ans": "C",
@@ -689,45 +689,45 @@
           "p": 0,
           "s": "not only produce data on a scale that no research team could afford, but also improve public understanding of how science works"
         },
-        "why": "Bài không nói khoa học công dân làm giảm nhu cầu nhà khoa học chuyên nghiệp; ngược lại, tình nguyện viên chụp ảnh để nhà thiên văn chuyên nghiệp phân loại.",
+        "why": "Bài không nói khoa học công dân làm giảm nhu cầu nhà khoa học chuyên nghiệp.",
         "wrong": {
-          "A": "Có trong bài: dữ liệu ở quy mô không nhóm nghiên cứu nào chi trả nổi.",
-          "B": "Có trong bài: giúp công chúng hiểu khoa học vận hành thế nào.",
-          "D": "Có trong bài: khoa học công dân phát triển nhanh nhờ điện thoại thông minh."
+          "A": "Có nói: phát triển nhanh nhờ điện thoại thông minh.",
+          "B": "Có nói: dữ liệu ở quy mô không đội nào kham nổi.",
+          "D": "Có nói: giúp công chúng hiểu khoa học vận hành thế nào."
         }
       },
       {
         "id": "pl-r-20-b",
-        "q": "How do many projects deal with doubts about accuracy?",
+        "q": "When do many projects accept a volunteer's result?",
         "opts": [
           {
             "k": "A",
-            "t": "They train every volunteer before they start."
+            "t": "When at least 3 volunteers agree"
           },
           {
             "k": "B",
-            "t": "They rely on agreement between several volunteers."
+            "t": "When at least 2 volunteers agree"
           },
           {
             "k": "C",
-            "t": "They use only data collected by professional astronomers."
+            "t": "When an expert has checked it"
           },
           {
             "k": "D",
-            "t": "They limit projects to counting birds."
+            "t": "When at least 5 volunteers agree"
           }
         ],
-        "ans": "B",
-        "b": 7,
+        "ans": "A",
+        "b": 6.5,
         "ev": {
           "p": 0,
-          "s": "asking several volunteers to examine the same item and accepting a result only when most of them agree"
+          "s": "accepting a result only when at least three of them agree"
         },
-        "why": "Nhiều người cùng xem một mục, chỉ nhận kết quả khi đa số đồng ý: dựa vào sự đồng thuận giữa nhiều tình nguyện viên.",
+        "why": "Chỉ chấp nhận khi ít nhất ba tình nguyện viên đồng ý.",
         "wrong": {
-          "A": "Bài không nói đào tạo mọi tình nguyện viên; mối lo chính là họ \"untrained\".",
-          "C": "Nhà thiên văn chuyên nghiệp dùng dữ liệu của tình nguyện viên, không thay thế họ.",
-          "D": "Đếm chim chỉ là một ví dụ."
+          "B": "Con số là ba.",
+          "C": "Không nói chuyên gia kiểm tra.",
+          "D": "Con số là ba."
         }
       }
     ]
@@ -747,10 +747,10 @@
     "title": "Measuring happiness",
     "instr": "Read the text and answer the questions.",
     "paras": [
-      "For decades, governments judged national progress almost entirely by economic growth. Over the past twenty years, however, a number of countries have begun to publish official measures of well-being, asking citizens how satisfied they are with their lives. Advocates contend that such surveys capture aspects of welfare that income figures overlook, such as the quality of relationships or a sense of purpose. Critics respond that answers to a single question about life satisfaction are easily influenced by temporary factors, including the weather on the day of the survey. Perhaps the most persuasive argument for these measures is a modest one: they do not replace economic statistics but prevent policymakers from treating growth as an end in itself."
+      "For decades, governments judged national progress almost entirely by economic growth. Over the past twenty years, however, a number of countries have begun to publish official measures of well-being, asking citizens how satisfied they are with their lives. Advocates contend that such surveys capture aspects of welfare that income figures overlook, such as the quality of relationships or a sense of purpose. Critics respond that people in different countries understand the question in very different ways, so the results cannot be compared across borders. Perhaps the most persuasive argument for these measures is a modest one: they do not replace economic statistics but prevent policymakers from treating growth as an end in itself."
     ],
     "vi": [
-      "Trong nhiều thập kỷ, các chính phủ đánh giá tiến bộ quốc gia gần như hoàn toàn bằng tăng trưởng kinh tế. Tuy nhiên, hai mươi năm qua, một số nước bắt đầu công bố các chỉ số chính thức về hạnh phúc, hỏi người dân họ hài lòng với cuộc sống tới đâu. Người ủng hộ cho rằng các khảo sát này nắm bắt được những khía cạnh phúc lợi mà số liệu thu nhập bỏ qua, như chất lượng các mối quan hệ hay cảm giác có mục đích. Người phê phán đáp rằng câu trả lời cho một câu hỏi duy nhất về mức hài lòng dễ bị ảnh hưởng bởi yếu tố nhất thời, kể cả thời tiết hôm khảo sát. Có lẽ lập luận thuyết phục nhất cho các chỉ số này lại khiêm tốn: chúng không thay thế số liệu kinh tế mà giúp nhà hoạch định chính sách không coi tăng trưởng là mục đích tự thân."
+      "Trong nhiều thập kỷ, các chính phủ đánh giá tiến bộ quốc gia gần như hoàn toàn bằng tăng trưởng kinh tế. Tuy nhiên, hai mươi năm qua, một số nước bắt đầu công bố các chỉ số chính thức về hạnh phúc, hỏi người dân họ hài lòng với cuộc sống tới đâu. Người ủng hộ cho rằng các khảo sát này nắm bắt được những khía cạnh phúc lợi mà số liệu thu nhập bỏ qua, như chất lượng các mối quan hệ hay cảm giác có mục đích. Người phê phán đáp rằng người dân ở các nước hiểu câu hỏi theo những cách rất khác nhau, nên không thể so sánh kết quả giữa các quốc gia. Có lẽ lập luận thuyết phục nhất cho các chỉ số này lại khiêm tốn: chúng không thay thế số liệu kinh tế mà giúp nhà hoạch định chính sách không coi tăng trưởng là mục đích tự thân."
     ],
     "items": [
       {
@@ -759,32 +759,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "They ignore the quality of relationships."
+            "t": "Answers depend on short-term factors like the weather."
           },
           {
             "k": "B",
-            "t": "Their results may depend on short-term circumstances."
+            "t": "Too few people take part."
           },
           {
             "k": "C",
-            "t": "They are more expensive to collect than economic statistics."
+            "t": "People do not answer honestly."
           },
           {
             "k": "D",
-            "t": "Citizens refuse to answer them honestly."
+            "t": "Results cannot be compared between countries."
           }
         ],
-        "ans": "B",
+        "ans": "D",
         "b": 7.5,
         "ev": {
           "p": 0,
-          "s": "answers to a single question about life satisfaction are easily influenced by temporary factors, including the weather on the day of the survey"
+          "s": "people in different countries understand the question in very different ways, so the results cannot be compared across borders"
         },
-        "why": "\"temporary factors\" như thời tiết hôm khảo sát = hoàn cảnh nhất thời (short-term circumstances).",
+        "why": "Người các nước hiểu câu hỏi khác nhau nên không so sánh được kết quả.",
         "wrong": {
-          "A": "Ngược lại, người ủng hộ nói khảo sát nắm bắt được chất lượng các mối quan hệ.",
-          "C": "Bài không so sánh chi phí.",
-          "D": "Bài không nói người dân trả lời thiếu trung thực."
+          "A": "Bài này không nêu lời phê bình đó.",
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc."
         }
       },
       {
@@ -793,32 +793,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "They should replace economic growth as the main measure of progress for governments."
+            "t": "They remind leaders that growth is not an end in itself."
           },
           {
             "k": "B",
-            "t": "They are too unreliable to be useful."
+            "t": "They should become the main measure of national progress."
           },
           {
             "k": "C",
-            "t": "Their main value is to remind leaders that growth is not the only goal."
+            "t": "They are too easily influenced to be useful."
           },
           {
             "k": "D",
-            "t": "They are only useful in countries with good weather."
+            "t": "They are most useful when people are asked often."
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 8,
         "ev": {
           "p": 0,
           "s": "they do not replace economic statistics but prevent policymakers from treating growth as an end in itself"
         },
-        "why": "Tác giả thấy lập luận \"khiêm tốn\" thuyết phục nhất: chỉ số hạnh phúc giúp nhà hoạch định không coi tăng trưởng là mục đích tự thân, tức là tăng trưởng không phải mục tiêu duy nhất.",
+        "why": "Lý lẽ thuyết phục nhất: chúng ngăn coi tăng trưởng là mục đích tự thân.",
         "wrong": {
-          "A": "Tác giả nói rõ chúng KHÔNG thay thế số liệu kinh tế.",
-          "B": "Tác giả nêu lời phê phán nhưng vẫn thấy có lập luận thuyết phục cho các chỉ số này.",
-          "D": "Thời tiết chỉ là ví dụ về yếu tố nhất thời, không phải điều kiện để chỉ số có ích."
+          "B": "Không được nhắc.",
+          "C": "Đó là ý của người phản đối; tác giả vẫn thấy có giá trị.",
+          "D": "Tác giả nói chúng không thay thế số liệu kinh tế."
         }
       }
     ]
@@ -855,32 +855,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "To show that translations are always less valuable than originals"
+            "t": "To show that translation needs technical skill like music"
           },
           {
             "k": "B",
-            "t": "To suggest that a translation is a legitimate interpretation rather than a damaged copy"
+            "t": "To argue that translators should follow the original closely"
           },
           {
             "k": "C",
-            "t": "To argue that novels should be written with translation in mind"
+            "t": "To present a translation as a valid interpretation"
           },
           {
             "k": "D",
-            "t": "To explain why music is easier to translate than literature, and so needs fewer translators"
+            "t": "To suggest that translations are performed for an audience"
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 8,
         "ev": {
           "p": 0,
           "s": "a translation is less a damaged copy than a parallel performance, comparable to a pianist's rendering of a score"
         },
-        "why": "Tác giả coi bản dịch \"không hẳn là bản sao hư hỏng mà là màn trình diễn song song\", tức là một cách diễn giải chính đáng.",
+        "why": "Bản dịch là một \"màn trình diễn song song\", không phải bản sao hỏng.",
         "wrong": {
-          "A": "Ngược với ý tác giả, người cho rằng câu \"luôn mất gì đó khi dịch\" nhượng bộ bản gốc quá nhiều.",
-          "C": "Tác giả chỉ nêu tiểu thuyết thường không viết để dịch như một giới hạn của phép so sánh, không khuyên nên viết như vậy.",
-          "D": "Bài không nói âm nhạc dễ dịch hơn văn học."
+          "A": "Bài không nói về kỹ năng kỹ thuật.",
+          "B": "Bài chuyển câu hỏi sang điều bản dịch chọn nhấn mạnh, không đòi bám sát bản gốc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -889,19 +889,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "Pianists are more skilled than translators."
+            "t": "Pianists have more freedom than translators."
           },
           {
             "k": "B",
-            "t": "Unlike a score, a novel is not usually created to be performed in other versions."
+            "t": "Novels, unlike scores, are not usually written to be performed."
           },
           {
             "k": "C",
-            "t": "Readers do not usually interpret texts written in their own language."
+            "t": "Music can be understood without language."
           },
           {
             "k": "D",
-            "t": "Translations emphasise too many things."
+            "t": "A performance disappears, but a translation lasts."
           }
         ],
         "ans": "B",
@@ -910,11 +910,11 @@
           "p": 0,
           "s": "a score is designed to be performed, whereas most novels are not written with translation in mind"
         },
-        "why": "Giới hạn: bản nhạc được viết để trình diễn, còn phần lớn tiểu thuyết không được viết với ý định sẽ được dịch (tức là không tạo ra để có nhiều phiên bản).",
+        "why": "Bản nhạc được viết để trình diễn; tiểu thuyết thường không viết để dịch.",
         "wrong": {
-          "A": "Bài không so sánh tay nghề.",
-          "C": "Tác giả khẳng định ngược lại: mọi lần đọc đều là diễn giải.",
-          "D": "Bài nói bản dịch chọn nhấn mạnh điều gì, không chê nhấn mạnh quá nhiều."
+          "A": "Không được nhắc.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       }
     ]
@@ -942,36 +942,36 @@
     "items": [
       {
         "id": "pl-r-23-a",
-        "q": "What are staff told about the fire doors?",
+        "q": "By when must staff complete the online course?",
         "opts": [
           {
             "k": "A",
-            "t": "They may be opened in hot weather."
+            "t": "By the end of the week"
           },
           {
             "k": "B",
-            "t": "They must never be kept open."
+            "t": "Before the next inspection"
           },
           {
             "k": "C",
-            "t": "They will be replaced after the inspection."
+            "t": "Within two months"
           },
           {
             "k": "D",
-            "t": "Only managers can open them."
+            "t": "By the end of the month"
           }
         ],
-        "ans": "B",
-        "b": 6,
+        "ans": "D",
+        "b": 5.5,
         "ev": {
           "p": 0,
-          "s": "Fire doors on every floor must remain closed at all times"
+          "s": "everyone must complete the updated online fire safety course by the end of the month"
         },
-        "why": "\"must remain closed at all times\" = phải luôn đóng, tức là không bao giờ được để mở.",
+        "why": "Phải hoàn thành khoá học trực tuyến trước cuối tháng.",
         "wrong": {
-          "A": "Email nói chèn cửa mở cho thoáng khi trời nóng KHÔNG còn được phép. Bẫy: cụm \"however convenient in hot weather\".",
-          "C": "Không nói thay cửa.",
-          "D": "Không có quy định riêng cho quản lý."
+          "A": "Hạn là cuối tháng.",
+          "B": "Đợt kiểm tra đã diễn ra tuần trước.",
+          "C": "Hạn là cuối tháng."
         }
       },
       {
@@ -980,19 +980,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "They will lose their job."
+            "t": "They may have to repeat the whole course online."
           },
           {
             "k": "B",
-            "t": "They will have to sign in at reception."
+            "t": "They may receive a warning letter."
           },
           {
             "k": "C",
-            "t": "They may not be allowed to enter the building freely."
+            "t": "Their access to the building may be limited."
           },
           {
             "k": "D",
-            "t": "They will have to work alone in the office after 7 pm."
+            "t": "They may have to meet their manager."
           }
         ],
         "ans": "C",
@@ -1001,11 +1001,11 @@
           "p": 0,
           "s": "access to the building may be restricted for anyone who has not completed it by then"
         },
-        "why": "\"access to the building may be restricted\" = có thể bị hạn chế ra vào toà nhà.",
+        "why": "Ai chưa học xong có thể bị hạn chế ra vào toà nhà.",
         "wrong": {
-          "A": "Email không nói mất việc; chỉ nói quản lý nhận danh sách.",
-          "B": "Ký tên ở lễ tân là quy định cho người làm một mình sau 7 giờ tối.",
-          "D": "Làm một mình sau 7 giờ là đối tượng của quy định khác, không phải hình phạt."
+          "A": "Không được nhắc.",
+          "B": "Không nói thư cảnh cáo.",
+          "D": "Quản lý chỉ nhận danh sách."
         }
       }
     ]
@@ -1037,19 +1037,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "There are not enough homestays."
+            "t": "There are too many tourists in autumn."
           },
           {
             "k": "B",
-            "t": "Young people are giving up farming for tourism jobs."
+            "t": "Young people are leaving farming for tourism work."
           },
           {
             "k": "C",
-            "t": "Visitors do not come in autumn."
+            "t": "Ticket prices are too high for visitors."
           },
           {
             "k": "D",
-            "t": "Entrance tickets to the terraces are too expensive."
+            "t": "Homestays are taking land from farmers."
           }
         ],
         "ans": "B",
@@ -1058,11 +1058,11 @@
           "p": 0,
           "s": "young people are leaving the fields to work in hotels and restaurants"
         },
-        "why": "Người trẻ bỏ ruộng để làm ở khách sạn, nhà hàng: bỏ nghề nông để làm việc trong ngành du lịch.",
+        "why": "Người trẻ bỏ ruộng đi làm khách sạn, nhà hàng.",
         "wrong": {
-          "A": "Bài nói nhiều gia đình đã mở homestay, không nói thiếu.",
-          "C": "Ngược lại, du khách đến đông vào mùa thu.",
-          "D": "Bài không nói giá vé đắt."
+          "A": "Mùa thu đông khách được nêu như sự thật, không phải mối lo.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1071,19 +1071,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "To encourage them to keep the terraces farmed"
+            "t": "To keep families farming the terraces"
           },
           {
             "k": "B",
-            "t": "To help them open homestays"
+            "t": "To help farmers open homestays"
           },
           {
             "k": "C",
-            "t": "To pay for new hotels"
+            "t": "To make up for damage caused by visitors"
           },
           {
             "k": "D",
-            "t": "To reduce the number of visitors to the area"
+            "t": "To repair roads to the villages"
           }
         ],
         "ans": "A",
@@ -1092,11 +1092,11 @@
           "p": 0,
           "s": "To prevent this, some villages now share part of the money from entrance tickets with families who continue to grow rice."
         },
-        "why": "Chia tiền vé cho gia đình vẫn trồng lúa \"để ngăn điều này\" (cảnh quan biến mất), tức là khuyến khích họ tiếp tục canh tác ruộng bậc thang.",
+        "why": "Chia tiền vé cho gia đình còn trồng lúa để ruộng bậc thang không biến mất.",
         "wrong": {
-          "B": "Tiền chia cho người trồng lúa, không phải để mở homestay.",
-          "C": "Không nói xây khách sạn.",
-          "D": "Mục đích là giữ cảnh quan, không phải giảm khách."
+          "B": "Homestay là nguồn thu khác, không phải mục đích chia tiền.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       }
     ]

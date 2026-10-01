@@ -13,14 +13,14 @@
     "title": "Bicycles Return to the City",
     "instr": "Choose the correct letter, A, B, C or D.",
     "paras": [
-      "Fifty years ago, the streets of Dalton were full of bicycles. Most workers rode to the factories in the morning, and children cycled to school. By the 1990s, however, cars had taken over. The roads became busy and dangerous, and only a few people still used a bike to get around.",
-      "Ten years ago, the city council decided to change this. It built forty kilometres of cycle lanes that are separated from the traffic, and it opened a bike-sharing scheme with two thousand bicycles. Users pay a small yearly fee and can take a bike from any of the 150 stations in the city. The first thirty minutes of every trip are free.",
-      "The results have surprised even the planners. Cycling trips have tripled, and the number of accidents involving cyclists has fallen. Shop owners were worried at first that losing parking spaces would hurt their business, but most now say that sales have stayed the same or gone up. The council now plans to add cycle lanes to the roads near the university."
+      "Fifty years ago, the streets of Dalton were full of bicycles. Most workers rode to the factories in the morning, and children cycled to school. By the 1990s, however, most of the factories had closed, and people had to travel to jobs in other towns. Only a few people still used a bike to get around.",
+      "Ten years ago, the city council decided to change this. It built forty kilometres of cycle lanes that are lit at night by solar lamps, and it opened a bike-sharing scheme with two thousand bicycles. Users pay a small yearly fee and can take a bike from any of the 150 stations in the city. Every trip then costs the same, however long it lasts.",
+      "The results have surprised even the planners. Cycling trips have tripled, and the number of accidents involving cyclists has fallen. Shop owners were worried at first that losing parking spaces would hurt their business, and many say that sales did fall in the first year, although they have since recovered. The council now plans to add cycle lanes to the roads near the university."
     ],
     "vi": [
-      "Năm mươi năm trước, đường phố Dalton đầy xe đạp. Phần lớn công nhân đạp xe tới nhà máy vào buổi sáng, trẻ em đạp xe đi học. Tuy nhiên, tới thập niên 1990, ô tô đã chiếm chỗ. Đường sá trở nên đông và nguy hiểm, chỉ còn ít người dùng xe đạp để đi lại.",
-      "Mười năm trước, hội đồng thành phố quyết định thay đổi điều này. Họ làm 40 km làn xe đạp tách khỏi dòng xe, và mở hệ thống xe đạp dùng chung với 2.000 chiếc. Người dùng trả một khoản phí nhỏ hằng năm và có thể lấy xe ở bất kỳ trạm nào trong 150 trạm của thành phố. 30 phút đầu của mỗi chuyến đi được miễn phí.",
-      "Kết quả làm cả những người lập kế hoạch bất ngờ. Số chuyến đi xe đạp tăng gấp ba, và số tai nạn liên quan tới người đi xe đạp giảm. Ban đầu chủ cửa hàng lo mất chỗ đỗ xe sẽ làm hại việc kinh doanh, nhưng giờ phần lớn nói doanh số giữ nguyên hoặc tăng. Hội đồng đang định làm thêm làn xe đạp ở các con đường gần trường đại học."
+      "Năm mươi năm trước, đường phố Dalton đầy xe đạp. Phần lớn công nhân đạp xe tới nhà máy vào buổi sáng, trẻ em đạp xe đi học. Tuy nhiên, tới thập niên 1990, phần lớn nhà máy đã đóng cửa, và người ta phải đi làm ở các thị trấn khác. Chỉ còn ít người dùng xe đạp để đi lại.",
+      "Mười năm trước, hội đồng thành phố quyết định thay đổi điều này. Họ làm 40 km làn xe đạp được chiếu sáng ban đêm bằng đèn năng lượng mặt trời, và mở hệ thống xe đạp dùng chung với 2.000 chiếc. Người dùng trả một khoản phí nhỏ hằng năm và có thể lấy xe ở bất kỳ trạm nào trong 150 trạm của thành phố. Sau đó mọi chuyến đi đều cùng giá, dù dài bao lâu.",
+      "Kết quả làm cả những người lập kế hoạch bất ngờ. Số chuyến đi xe đạp tăng gấp ba, và số tai nạn liên quan tới người đi xe đạp giảm. Ban đầu chủ cửa hàng lo mất chỗ đỗ xe sẽ làm hại việc kinh doanh, và nhiều người nói doanh số đúng là giảm trong năm đầu, dù sau đó đã hồi phục. Hội đồng đang định làm thêm làn xe đạp ở các con đường gần trường đại học."
     ],
     "allow": [
       "council",
@@ -34,32 +34,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "The schools moved further away."
+            "t": "Buses became cheaper and faster."
           },
           {
             "k": "B",
-            "t": "The roads became unsafe because of cars."
+            "t": "Work moved to other towns."
           },
           {
             "k": "C",
-            "t": "The bicycles in the shops became too expensive."
+            "t": "The roads became too dangerous."
           },
           {
             "k": "D",
-            "t": "The factories closed down."
+            "t": "Bicycles became too expensive."
           }
         ],
         "ans": "B",
         "b": 4.5,
         "ev": {
           "p": 0,
-          "s": "The roads became busy and dangerous, and only a few people still used a bike to get around."
+          "s": "most of the factories had closed, and people had to travel to jobs in other towns"
         },
-        "why": "Bài nói ô tô chiếm đường, đường trở nên đông và nguy hiểm, nên ít người còn đi xe đạp: 'unsafe because of cars' là cách nói khác.",
+        "why": "Nhà máy đóng cửa, người ta phải đi làm ở thị trấn khác.",
         "wrong": {
-          "A": "Bài không nói trường học chuyển đi xa.",
-          "C": "Bài không nói gì về giá xe đạp.",
-          "D": "Bài có nhắc nhà máy nhưng không nói nhà máy đóng cửa."
+          "A": "Không được nhắc.",
+          "C": "Bài này không nói đường nguy hiểm.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -68,32 +68,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "They were paid for by shops in the town centre."
+            "t": "They were paid for by local shops."
           },
           {
             "k": "B",
-            "t": "They are only used by students."
+            "t": "They are separated from other traffic."
           },
           {
             "k": "C",
-            "t": "They are open only in the morning."
+            "t": "They are used mostly by students."
           },
           {
             "k": "D",
-            "t": "They are kept apart from other traffic."
+            "t": "They are lit at night by solar lamps."
           }
         ],
         "ans": "D",
         "b": 5,
         "ev": {
           "p": 1,
-          "s": "It built forty kilometres of cycle lanes that are separated from the traffic"
+          "s": "cycle lanes that are lit at night by solar lamps"
         },
-        "why": "'separated from the traffic' = 'kept apart from other traffic' (tách khỏi dòng xe).",
+        "why": "Làn xe đạp được chiếu sáng ban đêm bằng đèn năng lượng mặt trời.",
         "wrong": {
-          "A": "Bài không nói cửa hàng trả tiền; chính hội đồng thành phố làm.",
-          "B": "Bài chỉ nói kế hoạch làm làn gần trường đại học, không nói chỉ sinh viên được dùng.",
-          "C": "Bài không nói giờ mở làn xe."
+          "A": "Hội đồng thành phố xây, không phải cửa hàng.",
+          "B": "Không được nhắc.",
+          "C": "Làn gần đại học mới chỉ là kế hoạch."
         }
       },
       {
@@ -102,69 +102,69 @@
         "opts": [
           {
             "k": "A",
-            "t": "pay for every trip they make."
-          },
-          {
-            "k": "B",
-            "t": "can only use it for thirty minutes."
-          },
-          {
-            "k": "C",
             "t": "do not pay for short trips."
           },
           {
+            "k": "B",
+            "t": "pay only a yearly fee."
+          },
+          {
+            "k": "C",
+            "t": "pay the same price for every trip."
+          },
+          {
             "k": "D",
-            "t": "must return the bike to the same station."
+            "t": "must return bikes to the same station."
           }
         ],
         "ans": "C",
         "b": 5.5,
         "ev": {
           "p": 1,
-          "s": "The first thirty minutes of every trip are free."
+          "s": "Every trip then costs the same, however long it lasts."
         },
-        "why": "30 phút đầu miễn phí, nên chuyến đi ngắn (dưới 30 phút) không phải trả tiền.",
+        "why": "Ngoài phí năm, mọi chuyến đều cùng giá, dù dài bao lâu.",
         "wrong": {
-          "A": "Họ trả phí hằng năm, và 30 phút đầu mỗi chuyến là miễn phí, nên không phải trả mọi chuyến.",
-          "B": "30 phút là thời gian miễn phí, không phải thời gian tối đa được dùng.",
-          "D": "Bài nói có thể lấy xe ở bất kỳ trạm nào; không nói phải trả về đúng trạm cũ."
+          "A": "Không có chuyến miễn phí.",
+          "B": "Mỗi chuyến vẫn mất tiền.",
+          "D": "Có thể lấy xe ở bất kỳ trạm nào trong 150 trạm."
         },
         "trap": "Thấy số 'thirty minutes' trùng với bài nên chọn B; đọc kỹ thì 30 phút là phần miễn phí, không phải giới hạn."
       },
       {
         "id": "r-mcq-01-4",
-        "q": "How do most shop owners feel about the changes now?",
+        "q": "What happened to sales in the town's shops?",
         "opts": [
           {
             "k": "A",
-            "t": "Their business has not suffered."
+            "t": "They fell at first, then recovered."
           },
           {
             "k": "B",
-            "t": "They want more parking spaces."
+            "t": "They fell and have not recovered since."
           },
           {
             "k": "C",
-            "t": "They still believe they have lost customers."
+            "t": "They rose at first, then fell."
           },
           {
             "k": "D",
-            "t": "They have not noticed any difference."
+            "t": "They have not changed at all."
           }
         ],
         "ans": "A",
         "b": 5.5,
         "ev": {
           "p": 2,
-          "s": "most now say that sales have stayed the same or gone up"
+          "s": "many say that sales did fall in the first year, although they have since recovered"
         },
-        "why": "Doanh số giữ nguyên hoặc tăng, tức là việc kinh doanh không bị ảnh hưởng xấu.",
+        "why": "Doanh số giảm trong năm đầu rồi hồi phục.",
         "wrong": {
-          "B": "Bài không nói họ muốn thêm chỗ đỗ xe.",
-          "C": "Đó là nỗi lo ban đầu (\"at first\"), không phải cảm nhận hiện nay.",
-          "D": "Một số nói doanh số tăng, nên không phải \"không thấy khác biệt\"; bài cũng không nói như vậy."
+          "B": "Doanh số đã hồi phục.",
+          "C": "Ban đầu giảm, không tăng.",
+          "D": "Doanh số có giảm trong năm đầu."
         },
-        "trap": "Phương án C lấy ý từ câu 'worried at first'; chú ý thời gian: câu hỏi hỏi 'now'."
+        "trap": "Phương án B lấy ý từ câu 'worried at first'; chú ý thời gian: câu hỏi hỏi 'now'."
       },
       {
         "id": "r-mcq-01-5",
@@ -172,19 +172,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "Ask shop owners for their opinions."
+            "t": "Open more stations in the centre."
           },
           {
             "k": "B",
-            "t": "Lower the price of the yearly fee."
+            "t": "Reduce the yearly fee for users."
           },
           {
             "k": "C",
-            "t": "Build more stations in the city centre."
+            "t": "Ask shop owners for their opinions again."
           },
           {
             "k": "D",
-            "t": "Make cycle lanes near the university."
+            "t": "Add cycle lanes near the university."
           }
         ],
         "ans": "D",
@@ -193,11 +193,11 @@
           "p": 2,
           "s": "The council now plans to add cycle lanes to the roads near the university."
         },
-        "why": "Kế hoạch tiếp theo là thêm làn xe đạp trên các con đường gần trường đại học.",
+        "why": "Hội đồng định làm thêm làn xe đạp ở các con đường gần trường đại học.",
         "wrong": {
-          "A": "Bài không nói hội đồng sẽ hỏi ý kiến chủ cửa hàng.",
-          "B": "Bài không nói giảm phí.",
-          "C": "Bài không nói xây thêm trạm."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc."
         }
       }
     ]
@@ -216,14 +216,14 @@
     "title": "Bees in the City",
     "instr": "Choose the correct letter, A, B, C or D.",
     "paras": [
-      "In the last twenty years, beekeeping has become a popular hobby in many large cities. Hives can now be found on the roofs of hotels, offices and even museums. Many of the new beekeepers say that they started because they had read about the decline of bees and wanted to help.",
+      "In the last twenty years, beekeeping has become a popular hobby in many large cities. Hives can now be found on the roofs of hotels, offices and even museums. Many of the new beekeepers say that they started after their employers offered free beekeeping courses as a way to reduce stress at work.",
       "Some scientists, however, believe that this trend may be doing more harm than good. Honeybees are only one of thousands of bee species, and most wild bees live alone rather than in hives. In cities with a large number of hives, honeybees compete with wild bees for a limited supply of flowers. A study in London found that the amount of food available for each hive had fallen sharply as the number of hives rose.",
-      "Researchers do not argue that city beekeeping should be banned. Instead, they suggest that people who want to support bees should plant more flowers, especially those that bloom early and late in the year. Leaving areas of grass uncut and avoiding chemicals in gardens can also make a real difference to wild species."
+      "Researchers do not argue that city beekeeping should be banned. Instead, they suggest that people who want to support bees should leave dead wood and areas of bare soil in their gardens, because many wild bees build their nests there. Leaving areas of grass uncut and avoiding chemicals in gardens can also make a real difference to wild species."
     ],
     "vi": [
-      "Trong hai mươi năm qua, nuôi ong đã thành thú vui phổ biến ở nhiều thành phố lớn. Giờ có thể thấy tổ ong trên mái khách sạn, văn phòng và cả bảo tàng. Nhiều người mới nuôi ong nói họ bắt đầu vì đã đọc về sự suy giảm của loài ong và muốn giúp đỡ.",
+      "Trong hai mươi năm qua, nuôi ong đã thành thú vui phổ biến ở nhiều thành phố lớn. Giờ có thể thấy tổ ong trên mái khách sạn, văn phòng và cả bảo tàng. Nhiều người mới nuôi ong nói họ bắt đầu sau khi nơi làm việc mở các khoá nuôi ong miễn phí để giúp nhân viên bớt căng thẳng.",
       "Tuy nhiên, một số nhà khoa học cho rằng xu hướng này có thể gây hại nhiều hơn lợi. Ong mật chỉ là một trong hàng nghìn loài ong, và phần lớn ong hoang dã sống đơn độc chứ không sống theo tổ. Ở những thành phố có nhiều tổ ong, ong mật tranh giành với ong hoang dã một nguồn hoa có hạn. Một nghiên cứu ở London cho thấy lượng thức ăn có sẵn cho mỗi tổ đã giảm mạnh khi số tổ tăng lên.",
-      "Các nhà nghiên cứu không cho rằng nên cấm nuôi ong trong thành phố. Thay vào đó, họ gợi ý người muốn hỗ trợ loài ong nên trồng thêm hoa, đặc biệt là loài nở sớm và muộn trong năm. Để những khoảng cỏ không cắt và tránh dùng hoá chất trong vườn cũng có thể tạo khác biệt thật sự cho các loài hoang dã."
+      "Các nhà nghiên cứu không cho rằng nên cấm nuôi ong trong thành phố. Thay vào đó, họ gợi ý người muốn hỗ trợ loài ong nên để lại gỗ mục và những khoảng đất trống trong vườn, vì nhiều loài ong hoang dã làm tổ ở đó. Để những khoảng cỏ không cắt và tránh dùng hoá chất trong vườn cũng có thể tạo khác biệt thật sự cho các loài hoang dã."
     ],
     "allow": [
       "beekeeping",
@@ -239,34 +239,34 @@
         "opts": [
           {
             "k": "A",
-            "t": "wanted to sell honey to hotels."
+            "t": "wanted to help bees after reading about their decline."
           },
           {
             "k": "B",
-            "t": "hoped to protect a species in trouble."
+            "t": "were offered free courses at work."
           },
           {
             "k": "C",
-            "t": "had more free time than before."
+            "t": "had been asked to by museums."
           },
           {
             "k": "D",
-            "t": "had been asked to by the local museums."
+            "t": "wanted to sell honey to hotels."
           }
         ],
         "ans": "B",
         "b": 5.5,
         "ev": {
           "p": 0,
-          "s": "they started because they had read about the decline of bees and wanted to help"
+          "s": "they started after their employers offered free beekeeping courses as a way to reduce stress at work"
         },
-        "why": "Họ đọc về sự suy giảm của loài ong và muốn giúp: 'protect a species in trouble' là cách diễn đạt khác.",
+        "why": "Nơi làm việc mở khoá nuôi ong miễn phí để giảm căng thẳng.",
         "wrong": {
-          "A": "Bài nhắc khách sạn chỉ là nơi đặt tổ, không nói bán mật cho khách sạn.",
-          "C": "Bài không nói về thời gian rảnh.",
-          "D": "Bảo tàng là nơi có tổ ong; không nói bảo tàng yêu cầu."
+          "A": "Bài này không nêu lý do đó.",
+          "C": "Bảo tàng chỉ là nơi đặt tổ.",
+          "D": "Khách sạn chỉ là nơi đặt tổ; không nói bán mật."
         },
-        "trap": "Phương án A và D dùng lại từ hotels, museums của bài để gây nhiễu."
+        "trap": "Phương án A và C dùng lại từ hotels, museums của bài để gây nhiễu."
       },
       {
         "id": "r-mcq-02-2",
@@ -274,19 +274,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "Honeybees may take food that wild bees need."
+            "t": "Honeybees compete with wild bees for food."
           },
           {
             "k": "B",
-            "t": "Hives on roofs may be dangerous for people below."
+            "t": "Honeybees spread diseases to wild bees."
           },
           {
             "k": "C",
-            "t": "City honey may contain harmful chemicals."
+            "t": "City honey may contain pollution."
           },
           {
             "k": "D",
-            "t": "Wild bees may attack honeybee hives."
+            "t": "Hives on roofs may be unsafe."
           }
         ],
         "ans": "A",
@@ -295,79 +295,79 @@
           "p": 1,
           "s": "honeybees compete with wild bees for a limited supply of flowers"
         },
-        "why": "Ong mật tranh nguồn hoa có hạn với ong hoang dã, tức là lấy mất thức ăn mà ong hoang dã cần.",
+        "why": "Ong mật tranh nguồn hoa có hạn với ong hoang dã.",
         "wrong": {
-          "B": "Bài không nói tổ ong nguy hiểm cho người.",
-          "C": "Hoá chất chỉ được nhắc ở đoạn 3 như lời khuyên làm vườn, không nói mật ong có hoá chất.",
-          "D": "Bài nói hai loài tranh thức ăn, không nói ong hoang dã tấn công tổ."
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
         "id": "r-mcq-02-3",
-        "q": "What does the writer say about wild bees?",
+        "q": "What did the London study measure?",
         "opts": [
           {
             "k": "A",
-            "t": "They are more numerous than honeybees in London."
+            "t": "The amount of honey each hive produced"
           },
           {
             "k": "B",
-            "t": "They produce more honey than honeybees."
+            "t": "The number of wild bee species"
           },
           {
             "k": "C",
-            "t": "Most of them do not live in groups."
+            "t": "The food available for each hive"
           },
           {
             "k": "D",
-            "t": "They only feed on flowers that bloom early."
+            "t": "The health of the honeybees"
           }
         ],
         "ans": "C",
         "b": 6,
         "ev": {
           "p": 1,
-          "s": "most wild bees live alone rather than in hives"
+          "s": "the amount of food available for each hive had fallen sharply as the number of hives rose"
         },
-        "why": "'live alone rather than in hives' = không sống theo nhóm/tổ.",
+        "why": "Nghiên cứu đo lượng thức ăn có cho mỗi tổ.",
         "wrong": {
-          "A": "Bài không so sánh số lượng ong ở London.",
-          "B": "Bài không nói ong hoang dã làm mật.",
-          "D": "Hoa nở sớm được nhắc trong lời khuyên trồng hoa, không phải thức ăn duy nhất của ong hoang dã."
+          "A": "Không nói lượng mật.",
+          "B": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
         "id": "r-mcq-02-4",
-        "q": "The study in London found that",
+        "q": "According to the researchers, city beekeeping should",
         "opts": [
           {
             "k": "A",
-            "t": "each hive had less food as hives increased."
+            "t": "not be banned."
           },
           {
             "k": "B",
-            "t": "the number of hives in the city had started to fall."
+            "t": "be banned in the largest cities."
           },
           {
             "k": "C",
-            "t": "honeybees were healthier than wild bees."
+            "t": "need a special licence."
           },
           {
             "k": "D",
-            "t": "most hives were kept on museum roofs."
+            "t": "be moved out of city centres."
           }
         ],
         "ans": "A",
         "b": 6.5,
         "ev": {
-          "p": 1,
-          "s": "the amount of food available for each hive had fallen sharply as the number of hives rose"
+          "p": 2,
+          "s": "Researchers do not argue that city beekeeping should be banned."
         },
-        "why": "Số tổ tăng thì lượng thức ăn cho mỗi tổ giảm mạnh.",
+        "why": "Các nhà nghiên cứu không cho rằng nên cấm.",
         "wrong": {
-          "B": "Số tổ tăng (\"rose\"), không phải giảm; thứ giảm là thức ăn.",
-          "C": "Nghiên cứu không so sánh sức khoẻ hai loài.",
-          "D": "Nghiên cứu không nói tổ đặt ở đâu."
+          "B": "Ngược ý: họ không đề nghị cấm.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         },
         "trap": "Đảo chủ thể: 'fallen' đi với lượng thức ăn, 'rose' đi với số tổ. Phương án B gắn 'fall' cho số tổ."
       },
@@ -377,32 +377,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "Banning beekeeping in large cities."
+            "t": "Plant more flowers in parks and private gardens."
           },
           {
             "k": "B",
-            "t": "Growing flowers that bloom outside the main season."
+            "t": "Leave dead wood and bare soil in gardens."
           },
           {
             "k": "C",
-            "t": "Cutting grass more often."
+            "t": "Feed bees with sugar water."
           },
           {
             "k": "D",
-            "t": "Moving hives from the roofs of buildings into gardens."
+            "t": "Keep fewer hives on each roof."
           }
         ],
         "ans": "B",
         "b": 6.5,
         "ev": {
           "p": 2,
-          "s": "plant more flowers, especially those that bloom early and late in the year"
+          "s": "should leave dead wood and areas of bare soil in their gardens, because many wild bees build their nests there"
         },
-        "why": "Trồng hoa nở sớm và muộn trong năm, tức là ngoài mùa hoa chính.",
+        "why": "Để gỗ mục và đất trống trong vườn vì nhiều loài ong hoang dã làm tổ ở đó.",
         "wrong": {
-          "A": "Bài nói rõ họ KHÔNG cho rằng nên cấm (\"do not argue that … should be banned\").",
-          "C": "Bài khuyên để cỏ KHÔNG cắt (\"uncut\"), ngược với phương án này.",
-          "D": "Bài không đề xuất chuyển tổ ong."
+          "A": "Bài này không khuyên trồng hoa.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       }
     ]
@@ -423,12 +423,12 @@
     "paras": [
       "For a long time, sleep was thought of as a period when the brain simply rested. Research over the past few decades has shown that this is far from true. During certain stages of sleep, the brain is extremely active, and much of this activity appears to be connected with memory.",
       "In one well-known experiment, two groups of volunteers learned a list of word pairs in the evening. One group was then allowed to sleep normally, while the other was kept awake all night. Both groups slept normally on the following two nights, and were tested on the third day. The group that had slept after learning remembered significantly more, even though both groups had now had plenty of rest.",
-      "Scientists believe that during deep sleep the brain replays the events of the day and moves important information into long-term storage. This may explain why students who stay up all night before an examination often perform worse than expected. However, researchers point out that sleep cannot replace study: it strengthens memories, but only if something has been learned in the first place."
+      "Scientists believe that during deep sleep the brain replays the events of the day and moves important information into long-term storage. This may explain why students who stay up all night before an examination often feel confident but perform worse than expected. However, researchers point out that sleep cannot replace study: it strengthens memories, but only if something has been learned in the first place."
     ],
     "vi": [
       "Trong thời gian dài, giấc ngủ được coi là khoảng thời gian não chỉ nghỉ ngơi. Nghiên cứu trong vài thập kỷ qua cho thấy điều này hoàn toàn không đúng. Trong một số giai đoạn của giấc ngủ, não hoạt động rất mạnh, và phần lớn hoạt động đó dường như liên quan tới trí nhớ.",
       "Trong một thí nghiệm nổi tiếng, hai nhóm tình nguyện viên học một danh sách cặp từ vào buổi tối. Một nhóm sau đó được ngủ bình thường, nhóm kia bị giữ thức cả đêm. Cả hai nhóm ngủ bình thường trong hai đêm tiếp theo và được kiểm tra vào ngày thứ ba. Nhóm đã ngủ sau khi học nhớ được nhiều hơn rõ rệt, dù lúc đó cả hai nhóm đều đã nghỉ ngơi đầy đủ.",
-      "Các nhà khoa học tin rằng trong giấc ngủ sâu, não phát lại các sự kiện trong ngày và chuyển thông tin quan trọng vào kho trí nhớ dài hạn. Điều này có thể giải thích vì sao học sinh thức trắng đêm trước kỳ thi thường làm bài kém hơn dự kiến. Tuy nhiên, các nhà nghiên cứu lưu ý rằng giấc ngủ không thể thay việc học: nó củng cố trí nhớ, nhưng chỉ khi đã học được điều gì đó trước đã."
+      "Các nhà khoa học tin rằng trong giấc ngủ sâu, não phát lại các sự kiện trong ngày và chuyển thông tin quan trọng vào kho trí nhớ dài hạn. Điều này có thể giải thích vì sao học sinh thức trắng đêm trước kỳ thi thường thấy tự tin nhưng làm bài kém hơn dự kiến. Tuy nhiên, các nhà nghiên cứu lưu ý rằng giấc ngủ không thể thay việc học: nó củng cố trí nhớ, nhưng chỉ khi đã học được điều gì đó trước đã."
     ],
     "items": [
       {
@@ -437,19 +437,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "It was supported by early experiments."
+            "t": "It was based on early experiments."
           },
           {
             "k": "B",
-            "t": "It was mainly concerned with memory."
+            "t": "It was partly correct about memory."
           },
           {
             "k": "C",
-            "t": "It is still accepted by most scientists."
+            "t": "It is still held by many scientists."
           },
           {
             "k": "D",
-            "t": "It has been shown to be wrong."
+            "t": "It has turned out to be wrong."
           }
         ],
         "ans": "D",
@@ -458,11 +458,11 @@
           "p": 0,
           "s": "Research over the past few decades has shown that this is far from true."
         },
-        "why": "'far from true' = hoàn toàn không đúng; quan niệm cũ đã bị chứng minh là sai.",
+        "why": "Quan niệm não chỉ nghỉ khi ngủ \"far from true\".",
         "wrong": {
-          "A": "Bài không nói thí nghiệm ban đầu ủng hộ quan niệm cũ.",
-          "B": "Quan niệm cũ là não chỉ nghỉ ngơi; mối liên hệ với trí nhớ là phát hiện mới.",
-          "C": "Bài cho thấy nghiên cứu mới đã bác bỏ nó."
+          "A": "Không được nhắc.",
+          "B": "Quan niệm cũ không nói gì về trí nhớ.",
+          "C": "Nghiên cứu đã cho thấy nó sai."
         }
       },
       {
@@ -471,19 +471,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "To give the volunteers more time to study."
+            "t": "To give the volunteers more time to study"
           },
           {
             "k": "B",
-            "t": "Because the volunteers asked for it."
+            "t": "To check whether extra sleep improved memory"
           },
           {
             "k": "C",
-            "t": "To make sure that tiredness did not affect the results."
+            "t": "So that tiredness did not affect the test"
           },
           {
             "k": "D",
-            "t": "To test whether two extra nights of sleep improved memory."
+            "t": "Because the volunteers had asked to rest"
           }
         ],
         "ans": "C",
@@ -492,80 +492,80 @@
           "p": 1,
           "s": "even though both groups had now had plenty of rest"
         },
-        "why": "Hai đêm ngủ bình thường giúp lúc kiểm tra cả hai nhóm đều đã nghỉ ngơi đủ, nên khác biệt không phải do mệt mỏi.",
+        "why": "Cả hai nhóm đều ngủ đủ trước khi kiểm tra, nên khác biệt không do mệt.",
         "wrong": {
-          "A": "Bài không nói họ được học thêm.",
-          "B": "Bài không nói tình nguyện viên yêu cầu.",
-          "D": "Cả hai nhóm có cùng hai đêm ngủ; biến khác nhau chỉ là đêm đầu tiên."
+          "A": "Họ không học thêm.",
+          "B": "Hai đêm ngủ thêm giống nhau ở cả hai nhóm, không phải biến được thử.",
+          "D": "Không được nhắc."
         },
         "trap": "Câu hỏi suy luận: bài không viết thẳng mục đích, nhưng cụm 'even though both groups had now had plenty of rest' cho biết lý do."
       },
       {
         "id": "r-mcq-03-3",
-        "q": "What did the experiment show?",
+        "q": "When were both groups tested?",
         "opts": [
           {
             "k": "A",
-            "t": "People learn word pairs better in the evening."
+            "t": "The next morning"
           },
           {
             "k": "B",
-            "t": "Staying awake for one night has no long-term effect."
+            "t": "On the second day"
           },
           {
             "k": "C",
-            "t": "Three days is the best time to test memory."
+            "t": "A week later"
           },
           {
             "k": "D",
-            "t": "Sleep soon after learning helps memory."
+            "t": "On the third day"
           }
         ],
         "ans": "D",
         "b": 6,
         "ev": {
           "p": 1,
-          "s": "The group that had slept after learning remembered significantly more"
+          "s": "Both groups slept normally on the following two nights, and were tested on the third day."
         },
-        "why": "Nhóm ngủ ngay sau khi học nhớ nhiều hơn, nên ngủ sau khi học giúp trí nhớ.",
+        "why": "Cả hai nhóm được kiểm tra vào ngày thứ ba.",
         "wrong": {
-          "A": "Cả hai nhóm đều học buổi tối; thí nghiệm không so sánh thời điểm học.",
-          "B": "Ngược lại: thức một đêm làm nhớ kém hơn cả ba ngày sau.",
-          "C": "Bài không nói đây là thời điểm kiểm tra tốt nhất."
+          "A": "Họ ngủ thêm hai đêm trước khi kiểm tra.",
+          "B": "Ngày thứ ba, không phải thứ hai.",
+          "C": "Không được nhắc."
         }
       },
       {
         "id": "r-mcq-03-4",
-        "q": "According to scientists, what happens during deep sleep?",
+        "q": "What does the writer say about students who stay up all night before an exam?",
         "opts": [
           {
             "k": "A",
-            "t": "The brain stops using energy."
+            "t": "They feel tired but do better than expected."
           },
           {
             "k": "B",
-            "t": "Information is moved into lasting memory."
+            "t": "They feel confident but do worse than expected."
           },
           {
             "k": "C",
-            "t": "Dreams help people solve problems."
+            "t": "They feel confident and do better than expected."
           },
           {
             "k": "D",
-            "t": "New information is learned for the first time."
+            "t": "They feel tired and do worse than expected."
           }
         ],
         "ans": "B",
         "b": 6.5,
         "ev": {
           "p": 2,
-          "s": "moves important information into long-term storage"
+          "s": "students who stay up all night before an examination often feel confident but perform worse than expected"
         },
-        "why": "'long-term storage' = 'lasting memory' (trí nhớ dài hạn).",
+        "why": "Họ thường thấy tự tin nhưng làm bài kém hơn dự kiến.",
         "wrong": {
-          "A": "Bài nói não rất hoạt động khi ngủ, không ngừng dùng năng lượng.",
-          "C": "Bài không nhắc tới giấc mơ.",
-          "D": "Đoạn cuối nói giấc ngủ không thay việc học được; không học điều mới khi ngủ."
+          "A": "Họ thấy tự tin, và làm kém hơn.",
+          "C": "Họ làm kém hơn dự kiến.",
+          "D": "Bài nói họ thấy tự tin, không nói mệt."
         }
       },
       {
@@ -574,19 +574,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "Examinations should be held in the afternoon."
+            "t": "Sleep matters more than study."
           },
           {
             "k": "B",
-            "t": "Staying up late helps some students."
+            "t": "Short naps can work just as well as a full night."
           },
           {
             "k": "C",
-            "t": "Sleep is only useful when combined with learning."
+            "t": "Sleep only helps if something has been learned."
           },
           {
             "k": "D",
-            "t": "Students should sleep more instead of studying late."
+            "t": "Sleep helps most with difficult material."
           }
         ],
         "ans": "C",
@@ -595,11 +595,11 @@
           "p": 2,
           "s": "it strengthens memories, but only if something has been learned in the first place"
         },
-        "why": "Giấc ngủ chỉ củng cố trí nhớ khi đã học trước, tức là chỉ có ích khi đi kèm việc học.",
+        "why": "Ngủ củng cố trí nhớ, nhưng chỉ khi đã học trước đó.",
         "wrong": {
-          "A": "Bài không nói về giờ thi.",
-          "B": "Bài nói thức khuya làm học sinh làm bài kém hơn.",
-          "D": "Bài nói rõ giấc ngủ không thể thay việc học."
+          "A": "Ngược ý: giấc ngủ không thay được việc học.",
+          "B": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       }
     ]
@@ -634,19 +634,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "Ships often stayed in port for long periods."
+            "t": "Ships often spent long periods in port."
           },
           {
             "k": "B",
-            "t": "Ships were too small to carry most kinds of goods."
+            "t": "There were too few dock workers."
           },
           {
             "k": "C",
-            "t": "Goods had to be packed in metal boxes."
+            "t": "Goods often arrived late at the docks."
           },
           {
             "k": "D",
-            "t": "There were not enough dock workers."
+            "t": "Ships were too small for most goods."
           }
         ],
         "ans": "A",
@@ -655,11 +655,11 @@
           "p": 0,
           "s": "A ship could spend more time in port than at sea"
         },
-        "why": "Tàu có thể ở cảng lâu hơn ở trên biển, tức là thường nằm cảng rất lâu.",
+        "why": "Tàu có thể ở cảng lâu hơn ở biển.",
         "wrong": {
-          "B": "Bài không nói tàu quá nhỏ.",
-          "C": "Thùng kim loại là giải pháp ra đời sau, không phải vấn đề trước 1950.",
-          "D": "Bài nói có nhiều đội công nhân, không nói thiếu người."
+          "B": "Có những đội công nhân bốc vác; không nói thiếu người.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -668,19 +668,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "He was the first person to think of using containers."
+            "t": "He was the very first person to think of using containers."
           },
           {
             "k": "B",
-            "t": "He worked in the oil industry before 1956."
+            "t": "He had previously worked in the oil industry."
           },
           {
             "k": "C",
-            "t": "He developed the container idea into a working system."
+            "t": "He turned an existing idea into a working system."
           },
           {
             "k": "D",
-            "t": "He designed the very first purpose-built container ship."
+            "t": "He designed the first container ship."
           }
         ],
         "ans": "C",
@@ -689,11 +689,11 @@
           "p": 1,
           "s": "who turned it into a practical system"
         },
-        "why": "Ông biến ý tưởng thành một hệ thống dùng được trong thực tế ('practical system' = 'working system').",
+        "why": "Ý tưởng không hoàn toàn mới, nhưng McLean biến nó thành hệ thống thực tế.",
         "wrong": {
-          "A": "Bài nói ý tưởng \"không hoàn toàn mới\", nên ông không phải người đầu tiên nghĩ ra.",
-          "B": "Ông là doanh nhân vận tải đường bộ (trucking); tàu chở dầu chỉ là con tàu được cải tạo.",
-          "D": "Con tàu năm 1956 là tàu chở dầu cải tạo, không phải tàu thiết kế riêng."
+          "A": "Bài nói ý tưởng \"not entirely new\".",
+          "B": "Ông là doanh nhân vận tải đường bộ; tàu dầu chỉ là tàu được hoán cải.",
+          "D": "Ông dùng tàu dầu hoán cải, không thiết kế tàu mới."
         },
         "trap": "Phương án A là bẫy kinh điển: câu 'not entirely new' phủ nhận việc ông là người đầu tiên."
       },
@@ -703,19 +703,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "The goods were carried all the way from New Jersey to Texas by sea."
-          },
-          {
-            "k": "B",
-            "t": "The containers were loaded by hand."
-          },
-          {
-            "k": "C",
             "t": "The boxes were made of metal."
           },
           {
+            "k": "B",
+            "t": "The boxes were loaded by special cranes."
+          },
+          {
+            "k": "C",
+            "t": "The goods travelled the whole way by sea."
+          },
+          {
             "k": "D",
-            "t": "The boxes were not opened between different forms of transport."
+            "t": "Each box stayed closed from lorry to ship to train."
           }
         ],
         "ans": "D",
@@ -724,11 +724,11 @@
           "p": 1,
           "s": "the same box could move from lorry to ship to train without ever being opened"
         },
-        "why": "Điểm khác biệt ('distinctive') là thùng đi qua xe tải, tàu, tàu hoả mà không phải mở.",
+        "why": "Điểm khác biệt: cùng một thùng chuyển giữa xe tải, tàu, tàu hoả mà không mở ra.",
         "wrong": {
-          "A": "Đó là chi tiết chuyến đi, không phải điểm mới của phương pháp.",
-          "B": "Bài không nói container được bốc bằng tay; khiêng tay là cách làm cũ.",
-          "C": "Thùng kim loại đã có trong ý tưởng cũ, không phải điểm mới."
+          "A": "Thùng kim loại tiêu chuẩn là ý tưởng đã có.",
+          "B": "Cần cẩu lớn là thay đổi của cảng về sau.",
+          "C": "Không phải điểm mới; điểm mới là chuyển phương tiện không mở thùng."
         }
       },
       {
@@ -737,19 +737,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "They were slow to appear but very large."
+            "t": "They took time to appear but were large."
           },
           {
             "k": "B",
-            "t": "They were smaller than economists expected."
+            "t": "They mainly benefited dock workers."
           },
           {
             "k": "C",
-            "t": "They were immediate and positive for everyone."
+            "t": "They were smaller than many expected."
           },
           {
             "k": "D",
-            "t": "They mainly benefited dock workers."
+            "t": "They were felt immediately in every port."
           }
         ],
         "ans": "A",
@@ -758,11 +758,11 @@
           "p": 2,
           "s": "The effects were dramatic, although they took time to appear."
         },
-        "why": "'dramatic' (rất lớn) + 'took time to appear' (cần thời gian mới thấy).",
+        "why": "Tác động rất lớn, nhưng cần thời gian mới thấy.",
         "wrong": {
-          "B": "Bài nói tác động rất lớn, còn hơn cả các hiệp định thương mại.",
-          "C": "Bài nói cần thời gian và nhiều công nhân mất việc, nên không tức thì và không tốt cho mọi người.",
-          "D": "Ngược lại, nhiều công nhân bốc xếp mất việc."
+          "B": "Nhiều công nhân bến cảng mất việc.",
+          "C": "Ngược ý: tác động rất lớn.",
+          "D": "Ngược ý: cần thời gian mới thấy."
         }
       },
       {
@@ -771,19 +771,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "led directly to the first international trade agreement."
+            "t": "made trade agreements less necessary."
           },
           {
             "k": "B",
-            "t": "had a greater effect on trade than trade agreements."
+            "t": "increased trade more than trade agreements did."
           },
           {
             "k": "C",
-            "t": "made trade agreements unnecessary."
+            "t": "was as important as trade agreements."
           },
           {
             "k": "D",
-            "t": "was less important than trade agreements."
+            "t": "led to the first international trade agreement."
           }
         ],
         "ans": "B",
@@ -792,11 +792,11 @@
           "p": 2,
           "s": "the container did more to increase world trade than any international trade agreement of the period"
         },
-        "why": "Container làm tăng thương mại nhiều hơn bất kỳ hiệp định nào: tác động lớn hơn.",
+        "why": "Container làm tăng thương mại nhiều hơn bất kỳ hiệp định thương mại nào cùng thời.",
         "wrong": {
-          "A": "Bài không nói container dẫn tới hiệp định nào.",
-          "C": "Bài chỉ so sánh tác động, không nói hiệp định trở nên không cần thiết.",
-          "D": "Ngược nghĩa với câu trong bài."
+          "A": "Không nói hiệp định bớt cần thiết.",
+          "C": "Bài nói nhiều hơn, không phải ngang bằng.",
+          "D": "Không được nhắc."
         }
       }
     ]
@@ -838,19 +838,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "Citizen science depends on the internet."
+            "t": "Citizen science began with the internet."
           },
           {
             "k": "B",
-            "t": "Citizen science is older than many people think."
+            "t": "Citizen science has a longer history than people think."
           },
           {
             "k": "C",
-            "t": "Volunteers are better at counting birds than scientists."
+            "t": "Volunteers now do most wildlife research."
           },
           {
             "k": "D",
-            "t": "Bird numbers in North America have fallen since 1900."
+            "t": "Bird counts are the most reliable kind of data."
           }
         ],
         "ans": "B",
@@ -859,11 +859,11 @@
           "p": 0,
           "s": "In fact, its roots go back much further."
         },
-        "why": "Tác giả bác bỏ ý kiến 'phát minh gần đây' và nói gốc rễ của nó xa hơn nhiều, tức là lâu đời hơn người ta tưởng.",
+        "why": "Thường bị coi là mới, nhưng gốc rễ có từ năm 1900.",
         "wrong": {
-          "A": "Đó là quan niệm phổ biến mà tác giả phản bác.",
-          "C": "Bài không so sánh tình nguyện viên với nhà khoa học trong đoạn này.",
-          "D": "Bài chỉ nói về việc đếm chim, không nói số chim giảm."
+          "A": "Ngược ý: đó là nhận định sai mà tác giả bác.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         },
         "trap": "Câu đầu đoạn nêu ý của người khác ('is often described as'); ý chính của tác giả nằm sau 'In fact'."
       },
@@ -873,19 +873,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "improve the accuracy of the data that volunteers collect."
+            "t": "reduce the need for professional researchers."
           },
           {
             "k": "B",
-            "t": "make it possible for the first time."
+            "t": "improve the accuracy of volunteers' data."
           },
           {
             "k": "C",
-            "t": "replace professional researchers."
+            "t": "make it possible for the first time."
           },
           {
             "k": "D",
-            "t": "increase the number of people taking part."
+            "t": "greatly increase the scale of projects."
           }
         ],
         "ans": "D",
@@ -896,9 +896,9 @@
         },
         "why": "Internet thay đổi quy mô: hàng trăm nghìn người tham gia.",
         "wrong": {
-          "A": "Độ chính xác được bàn ở đoạn 3 nhờ khâu kiểm tra, không phải nhờ internet.",
-          "B": "Đoạn 1 đã cho thấy khoa học công dân có từ năm 1900.",
-          "C": "Bài nói việc xong nhanh hơn, không nói thay thế nhà nghiên cứu."
+          "A": "Không được nhắc.",
+          "B": "Độ chính xác được bảo đảm bằng kiểm tra chéo, không phải nhờ internet.",
+          "C": "Khoa học công dân đã có từ 1900."
         }
       },
       {
@@ -907,19 +907,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "As an example of a task that volunteers do online."
+            "t": "As an example of an online volunteer task"
           },
           {
             "k": "B",
-            "t": "To show that sailors were early citizen scientists."
+            "t": "To show that sailors were early citizen scientists"
           },
           {
             "k": "C",
-            "t": "To explain why weather data is unreliable."
+            "t": "To explain why old weather data is unreliable"
           },
           {
             "k": "D",
-            "t": "As evidence that ships cause climate change."
+            "t": "As an example of a task needing expert training"
           }
         ],
         "ans": "A",
@@ -928,46 +928,46 @@
           "p": 1,
           "s": "transcribe old weather records from ships' logbooks"
         },
-        "why": "Đây là một trong ba ví dụ về việc các dự án trực tuyến mời người tham gia làm.",
+        "why": "Chép lại nhật ký thời tiết từ tàu là ví dụ về việc tình nguyện viên làm online.",
         "wrong": {
-          "B": "Bài không nói thuỷ thủ là nhà khoa học công dân.",
-          "C": "Bài không nói số liệu thời tiết không đáng tin.",
-          "D": "Bài không nhắc biến đổi khí hậu."
+          "B": "Không nói thuỷ thủ là nhà khoa học công dân.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         },
         "trap": "Câu hỏi 'Why does the writer mention…' hỏi chức năng của chi tiết (ví dụ, bằng chứng, so sánh), không hỏi nội dung của nó."
       },
       {
         "id": "r-mcq-05-4",
-        "q": "How do projects deal with doubts about the quality of volunteer data?",
+        "q": "How many people may classify each image?",
         "opts": [
           {
             "k": "A",
-            "t": "They ask professional experts to check every single answer."
+            "t": "50"
           },
           {
             "k": "B",
-            "t": "They give volunteers formal training."
+            "t": "10"
           },
           {
             "k": "C",
-            "t": "They compare several people's answers to the same task."
+            "t": "20"
           },
           {
             "k": "D",
-            "t": "They only accept experienced volunteers."
+            "t": "5"
           }
         ],
         "ans": "C",
-        "b": 7.5,
+        "b": 7,
         "ev": {
           "p": 2,
-          "s": "each image, for example, may be classified by twenty different people, and only answers on which most agree are accepted"
+          "s": "each image, for example, may be classified by twenty different people"
         },
-        "why": "Mỗi ảnh do 20 người phân loại, chỉ nhận câu trả lời được đa số đồng ý: so sánh câu trả lời của nhiều người.",
+        "why": "Mỗi ảnh có thể được hai mươi người khác nhau phân loại.",
         "wrong": {
-          "A": "Chuyên gia chỉ xuất hiện trong nghiên cứu so sánh, không kiểm tra từng câu.",
-          "B": "Bài nói tình nguyện viên \"untrained\"; giải pháp không phải đào tạo.",
-          "D": "Bài không nói chỉ nhận người có kinh nghiệm."
+          "A": "Con số là hai mươi.",
+          "B": "Con số là hai mươi.",
+          "D": "Con số là hai mươi."
         }
       },
       {
@@ -976,19 +976,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "It is as good as expert work if tasks are clear."
+            "t": "It matches expert work when tasks are clear."
           },
           {
             "k": "B",
-            "t": "It improves when fewer people are involved."
+            "t": "It is slightly less accurate than expert work."
           },
           {
             "k": "C",
-            "t": "It is only reliable for simple bird counts."
+            "t": "It is reliable mainly for bird counts."
           },
           {
             "k": "D",
-            "t": "It is generally of lower quality than work done by experts."
+            "t": "It improves when fewer people take part."
           }
         ],
         "ans": "A",
@@ -997,11 +997,11 @@
           "p": 2,
           "s": "found the results to be of similar quality, provided that tasks are clearly defined"
         },
-        "why": "Chất lượng tương đương ('similar quality') với điều kiện ('provided that') nhiệm vụ rõ ràng.",
+        "why": "Chất lượng tương đương chuyên gia, với điều kiện nhiệm vụ được xác định rõ.",
         "wrong": {
-          "B": "Ngược lại, hệ thống dùng nhiều người (20 người) cho mỗi ảnh.",
-          "C": "Bài không giới hạn ở việc đếm chim.",
-          "D": "Bài nói chất lượng tương đương, không thấp hơn."
+          "B": "Kết quả là tương đương, không kém hơn.",
+          "C": "Không được nhắc.",
+          "D": "Ngược ý: nhiều người cùng làm để kiểm tra chéo."
         },
         "trap": "Bỏ sót điều kiện 'provided that': đáp án đúng phải giữ điều kiện này."
       }
@@ -1040,19 +1040,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "Most of them have millions of speakers."
+            "t": "Most have millions of speakers."
           },
           {
             "k": "B",
-            "t": "A small number are used by most people."
+            "t": "A few languages are spoken by most people."
           },
           {
             "k": "C",
-            "t": "Their number has doubled in recent years."
+            "t": "Their number has grown in recent years."
           },
           {
             "k": "D",
-            "t": "Forty per cent have already disappeared."
+            "t": "Forty per cent of them have already disappeared."
           }
         ],
         "ans": "B",
@@ -1061,11 +1061,11 @@
           "p": 0,
           "s": "Just twenty-three languages are spoken by more than half of the world's population"
         },
-        "why": "Chỉ 23 ngôn ngữ được hơn nửa dân số thế giới nói: số ít ngôn ngữ được đa số người dùng.",
+        "why": "23 ngôn ngữ được hơn nửa dân số thế giới nói.",
         "wrong": {
-          "A": "Hàng nghìn ngôn ngữ có ít hơn 10.000 người nói.",
-          "C": "Bài không nói số ngôn ngữ tăng.",
-          "D": "40% đang bị đe doạ (\"endangered\"), không phải đã biến mất."
+          "A": "Hàng nghìn ngôn ngữ có dưới 10.000 người nói.",
+          "C": "Không được nhắc.",
+          "D": "40% đang bị đe doạ, chưa biến mất."
         },
         "trap": "Phương án D đổi 'endangered' (bị đe doạ) thành 'disappeared' (đã mất)."
       },
@@ -1075,19 +1075,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "governments ban them in schools."
+            "t": "their speakers move to big cities."
           },
           {
             "k": "B",
-            "t": "their speakers die in wars or illness."
+            "t": "governments ban them in schools."
           },
           {
             "k": "C",
-            "t": "children find them much too difficult to learn at school."
+            "t": "children find them hard to learn."
           },
           {
             "k": "D",
-            "t": "parents choose not to teach them to their children."
+            "t": "parents stop passing them on."
           }
         ],
         "ans": "D",
@@ -1096,32 +1096,32 @@
           "p": 1,
           "s": "A language usually disappears not because its speakers die, but because they stop passing it on."
         },
-        "why": "Người nói ngừng truyền lại ngôn ngữ, cụ thể là cha mẹ chỉ nói ngôn ngữ khác ở nhà.",
+        "why": "Ngôn ngữ mất đi vì người nói ngừng truyền lại, không phải vì họ chết.",
         "wrong": {
-          "A": "Bài không nói chính phủ cấm.",
-          "B": "Bài nói rõ \"not because its speakers die\".",
-          "C": "Bài không nói trẻ thấy khó học."
+          "A": "Không được nhắc.",
+          "B": "Không được nhắc.",
+          "C": "Không được nhắc."
         }
       },
       {
         "id": "r-mcq-06-3",
-        "q": "According to the writer, once parents stop using a language at home, it may",
+        "q": "According to the writer, once parents stop using a language at home, how soon may it be used only by a few elderly people?",
         "opts": [
           {
             "k": "A",
-            "t": "disappear completely from the family within a few months."
+            "t": "Within one generation"
           },
           {
             "k": "B",
-            "t": "be replaced by a mixture of two languages."
+            "t": "Within a century"
           },
           {
             "k": "C",
-            "t": "survive only among older people after a few generations."
+            "t": "Within two or three generations"
           },
           {
             "k": "D",
-            "t": "become more popular with teenagers."
+            "t": "Within ten years"
           }
         ],
         "ans": "C",
@@ -1130,11 +1130,11 @@
           "p": 1,
           "s": "Within two or three generations, the original language may be used only by a few elderly people."
         },
-        "why": "Trong hai, ba thế hệ, ngôn ngữ gốc có thể chỉ còn vài người già dùng.",
+        "why": "Trong vòng hai, ba thế hệ, ngôn ngữ gốc có thể chỉ còn vài người già dùng.",
         "wrong": {
-          "A": "Bài nói hai, ba thế hệ, không phải vài tháng.",
-          "B": "Bài không nói về sự pha trộn hai ngôn ngữ.",
-          "D": "Bài không nói ngôn ngữ phổ biến hơn với thanh thiếu niên."
+          "A": "Bài nói hai, ba thế hệ.",
+          "B": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       },
       {
@@ -1143,15 +1143,15 @@
         "opts": [
           {
             "k": "A",
-            "t": "Adults take evening classes in Māori."
+            "t": "Adults take evening classes in Māori with teachers."
           },
           {
             "k": "B",
-            "t": "Teachers write new books and stories in the language."
+            "t": "Teachers write new stories in Māori."
           },
           {
             "k": "C",
-            "t": "Small children are cared for by older speakers."
+            "t": "Young children spend the day with older speakers."
           },
           {
             "k": "D",
@@ -1166,9 +1166,9 @@
         },
         "why": "Trẻ nhỏ ở cả ngày với người lớn tuổi nói tiếng Māori.",
         "wrong": {
-          "A": "Đối tượng là trẻ nhỏ, không phải người lớn học buổi tối.",
-          "B": "Bài không nói về viết sách.",
-          "D": "Hawaii có dự án tương tự riêng, không có chuyện đi thăm New Zealand."
+          "A": "Đối tượng là trẻ nhỏ, không phải người lớn.",
+          "B": "Không được nhắc.",
+          "D": "Hawaii có dự án tương tự, không đến New Zealand."
         }
       },
       {
@@ -1177,19 +1177,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "It will help tourism in places like Hawaii."
+            "t": "Bilingual children do better at school."
           },
           {
             "k": "B",
-            "t": "Languages contain knowledge that could be lost."
+            "t": "Each language holds unique local knowledge."
           },
           {
             "k": "C",
-            "t": "Children who speak two languages earn more money later."
+            "t": "It keeps families closer together."
           },
           {
             "k": "D",
-            "t": "Endangered languages are easier to learn."
+            "t": "It helps tourism in places like Hawaii."
           }
         ],
         "ans": "B",
@@ -1198,11 +1198,11 @@
           "p": 2,
           "s": "including knowledge about local plants, history and traditions"
         },
-        "why": "Ngôn ngữ mang theo hiểu biết về cây cỏ, lịch sử, truyền thống; mất ngôn ngữ là mất hiểu biết này.",
+        "why": "Mỗi ngôn ngữ chứa cách nhìn thế giới riêng, gồm kiến thức về cây cỏ, lịch sử, truyền thống.",
         "wrong": {
-          "A": "Bài không nhắc du lịch.",
-          "C": "Bài không nói về thu nhập.",
-          "D": "Bài không nói ngôn ngữ bị đe doạ dễ học hơn."
+          "A": "Không được nhắc.",
+          "C": "Không được nhắc.",
+          "D": "Không được nhắc."
         }
       }
     ]
