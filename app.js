@@ -1002,7 +1002,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 17, APP_VERSION = 33;
+const STATE_V = 17, APP_VERSION = 34;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},money:{h:5,hd:0,ht:0},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -2004,15 +2004,15 @@ function viewTalk(){
   if(T==='nghe') body=sec(`Luyện nghe ${L}`,card(`data-act="lisgo" data-lv="${L}"`,'headphones','Luyện nghe','Chép chính tả, nghe chọn nghĩa, nghe rồi đáp, nghe cả đoạn: ý chính, văn phong, chi tiết · 18 câu',(st.lis||{})[L]))
     +sec(`Nghe bài nói dài ${L}: phỏng vấn, bài giảng, podcast`,ts.map(x=>card(`data-lr="${x.id}" data-listen="1"`,'headphones',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.talk)} · ${Object.keys(x.sp).length>1?'hai giọng':'một giọng'} · ${wc(x.text.join(' '))} từ · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
     +(L==='A1'?sec('Khởi động Pre-A1',card('data-act="palist"','headphones','Chữ cái, số, giờ, ngày tháng',`Nghe rồi chọn, nghe rồi gõ · ${paDone()}/${PREA1.length} bài đạt`,null)):'')
-    +sec(`Nghe bài viết dài ${L}`,rs.map(x=>card(`data-lr="${x.id}" data-listen="1"`,'headphones',`<span lang="en">${esc(x.title)}</span>`,`Nghe cả bài (chưa hiện chữ) rồi trả lời · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
-    +(rs.length||ts.length?'':`<p class="hint">Bài nghe dài có từ B1. Ở ${L}, nghe thêm ở tab Hội thoại (bấm “Nghe cả hội thoại” trước khi đọc lời).</p>`)+exam;
+    +sec(`Nghe bài viết dài ${L}`,rs.filter(x=>!x.life).map(x=>card(`data-lr="${x.id}" data-listen="1"`,'headphones',`<span lang="en">${esc(x.title)}</span>`,`Nghe cả bài (chưa hiện chữ) rồi trả lời · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
+    +(rs.some(x=>!x.life)||ts.length?'':`<p class="hint">Bài nghe dài có từ B1. Ở ${L}, nghe thêm ở tab Hội thoại (bấm “Nghe cả hội thoại” trước khi đọc lời).</p>`)+exam;
   if(T==='noi') body=sec(`Luyện nói ${L}`,card(`data-act="shgo" data-lv="${L}"`,'mic','Nói nhại',`Nghe câu mẫu rồi nói lại; ${HAS_ASR?'máy tô từ nghe ra và chưa nghe ra':'ghi âm rồi tự so'} · ${SH_N} câu`,(st.shadow||{})[L])
       +card(`data-act="rxgo" data-lv="${L}"`,'chat','Phản xạ hội thoại',`Đáp lời trong vài giây, chọn cách nói hợp hoàn cảnh · ${RX_N} câu`,(st.rx||{})[L])
       +card(`data-act="csgo" data-lv="${L}"`,'ear','Nối âm, dạng yếu, ngữ điệu','Câu thoại cấp này: chỗ nối âm, từ đọc lướt, lên/xuống giọng, từ được nhấn · 10 câu',st.pron['cs-'+L])
       +card('data-go="sounds"','ear','Phát âm','Cặp âm người Việt hay nhầm, trọng âm, ngữ điệu, đuôi -s/-ed',null))
     +sec(`Nói theo đề ${L}`,ss.map(x=>{ const h=st.stask[x.id]||[]; return card(`data-stk="${x.id}"`,'mic',esc(x.vi),`<span lang="en">${esc(x.en)}</span> · chuẩn bị ${x.prep}s, nói ${x.speak}s`,h.length?`Đã nói ${h.length} lần`:null); }).join(''))
     +'<p class="hint">Muốn nói bằng câu của mình và được máy so ý? Mở một hội thoại ở tab Hội thoại rồi bấm Đóng vai.</p>';
-  if(T==='doc') body=sec(`Đọc bài dài ${L}`,rs.map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.tvi)} · ${wc(x.text.join(' '))} từ · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
+  if(T==='doc') body=sec(`Đọc văn bản đời thường ${L}`,rs.filter(x=>x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.kind)} · ${esc(x.tvi)} · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))+sec(`Đọc bài dài ${L}`,rs.filter(x=>!x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.tvi)} · ${wc(x.text.join(' '))} từ · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
     +sec('Truyện dài kỳ',card('data-go="stories"','read','Cuốn sổ của Lan',`Đã đọc ${STORY.filter(e=>st.story[e.id]!=null).length}/${STORY.length} tập`,null))
     +(rs.length?'':`<p class="hint">Bài đọc dài có từ B1. Ở ${L}, mỗi unit từ vựng đã có một bài đọc ngắn.</p>`)+exam;
   if(T==='viet') body=sec(`Viết theo đề ${L}`,ws.map(x=>card(`data-wt="${x.id}"`,'pen',esc(x.vi),`${esc(x.genre)} · ${x.min}–${x.max} từ`,st.wtask[x.id]&&st.wtask[x.id].text?'Đã viết':null)).join(''))
@@ -2232,7 +2232,7 @@ function viewLRead(){
   const R=ui.lr, r=LRD[R.id], hide=R.listen&&!R.done, all=Object.keys(R.picks).length===r.qs.length, nOk=r.qs.filter((q,i)=>R.order[i][R.picks[i]]===q.a).length, best=(st.lread[r.id]||{}).best;
   const full=r.text.join(' '), lb=`<button class="btn" data-say="${esc(full)}">${SPK} Nghe cả bài</button><button class="btn" data-say="${esc(full)}" data-slow="1">🐢 Nghe chậm</button>`;
   return `<button class="btn ghost back" data-go="talk">← Giao tiếp</button>
-  <section class="stack"><span class="eyebrow">${r.lv} · ${R.listen?'Nghe':'Đọc'} bài dài · ${wc(full)} từ</span><h1><span lang="en">${esc(r.title)}</span> <span class="muted" style="font-weight:400">· ${esc(r.tvi)}</span></h1></section>
+  <section class="stack"><span class="eyebrow">${r.lv} · ${r.life?'Văn bản đời thường · '+esc(r.kind):(R.listen?'Nghe':'Đọc')+' bài dài'} · ${wc(full)} từ</span><h1><span lang="en">${esc(r.title)}</span> <span class="muted" style="font-weight:400">· ${esc(r.tvi)}</span></h1></section>
   <article class="card">${HAS_TTS?`<div class="row">${lb}</div>`:''}
     ${hide?'<p class="muted">Bài đang ẩn chữ: nghe cả bài rồi trả lời. Nộp bài xong sẽ hiện chữ và bản dịch.</p>':r.text.map(x=>`<p class="reading" lang="en">${esc(x)}</p>`).join('')}
     ${hide?'':`<details><summary>Xem bản dịch</summary>${r.vi.map(x=>`<p class="vi" style="margin-top:8px">${esc(x)}</p>`).join('')}</details>`}</article>
@@ -7021,23 +7021,25 @@ document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closes
    Trước: “Đạt CEFR L” = làm xong ≥ 5/6 nhóm bài trong app. Nay cần thêm: (1) bài kiểm tra cấp L — nghe, đọc, từ vựng và
    ngữ pháp, câu mới trộn ngẫu nhiên, mỗi phần ≥ 60%, tổng ≥ 70%; (2) một đề viết cấp L được ước tính ở mức L; (3) một đề nói
    cấp L được ước tính ở mức L (máy không chép lời được thì dùng tự chấm, ghi rõ). Nhãn đổi thành “Ước tính CEFR”. */
-const LCHK = {lis:['Nghe',6], rd:['Đọc',6], lang:['Từ vựng & ngữ pháp',8]}, LCHK_SEC=.6, LCHK_ALL=.7;
+const LCHK = {lis:['Nghe',10], rd:['Đọc',10], lang:['Từ vựng & ngữ pháp',6]}, LCHK_SEC=.6, LCHK_ALL=.7;
 st.lchk ||= {};
 function lchkItems(L){ const items=[], li=LVS.indexOf(L);
-  // Nghe: câu hỏi chọn đáp án (nghe nghĩa, nghe và đáp, nghe cả đoạn) của cấp L
-  shuffle(lisItems(L).filter(x=>x.t==='mc')).slice(0,LCHK.lis[1]).forEach(x=>items.push({...x,sk:'lis',tag:'Nghe · '+(x.tag||'')}));
-  // Đọc: bài đọc của unit cấp L (cấp B1+ thêm bài đọc dài), mỗi bài 3 câu
-  const rs=[...shuffle(UNITS.filter(u=>u.level===L&&u.reading&&(u.reading.qs||[]).length>=3)).slice(0,2).map(u=>({title:u.reading.title,text:[u.reading.text],qs:u.reading.qs})),
-    ...(li>=2?shuffle(LREAD.filter(x=>x.lv===L&&!x.lines)).slice(0,1).map(r=>({title:r.title,text:r.text,qs:r.qs})):[])];
-  shuffle(rs).slice(0,2).forEach(r=>shuffle(r.qs.filter(q=>q.w&&q.w.length>=2)).slice(0,3).forEach(q=>{ const opts=shuffle([q.a,...q.w.slice(0,3)]);
-    items.push({t:'mc',sk:'rd',tag:'Đọc hiểu',lang:'en',opts,ans:opts.indexOf(q.a),plain:q.q,
-      q:`<details class="panel lchk-read" open><summary lang="en">${esc(r.title)}</summary>${r.text.map(x=>`<p class="reading" lang="en">${esc(x)}</p>`).join('')}</details><p class="prompt sent" lang="en">${esc(q.q)}</p>`}); }));
+  // Nghe (v34: 10 câu): khoảng nửa nghe cả hội thoại (ý chính, chi tiết, văn phong), nửa nghe một câu (nghĩa, câu đáp); rút ngẫu nhiên từ toàn bộ lời thoại cấp L
+  { const lm=lisItems(L).filter(x=>x.t==='mc'), wh=shuffle(lm.filter(x=>x.sayAll)), ln=shuffle(lm.filter(x=>!x.sayAll)), n=LCHK.lis[1], nw=Math.min(wh.length,Math.ceil(n/2));
+    [...wh.slice(0,nw),...ln,...wh.slice(nw)].slice(0,n).forEach(x=>items.push({...x,sk:'lis',tag:'Nghe · '+(x.tag||'')})); }
+  // Đọc (v34: 10 câu): nhiều bài, mỗi bài tối đa 3 câu; luôn có một bài đọc dài hoặc văn bản đời thường của cấp nếu có
+  { const unitR=shuffle(UNITS.filter(u=>u.level===L&&u.reading&&(u.reading.qs||[]).length>=3)).map(u=>({title:u.reading.title,text:[u.reading.text],qs:u.reading.qs}));
+    const lr=shuffle(LREAD.filter(x=>x.lv===L&&!x.lines)).map(r=>({title:r.title,text:r.text,qs:r.qs}));
+    const rs=[...lr.slice(0,1),...shuffle([...unitR.slice(0,6),...lr.slice(1,3)])]; let n=0;
+    for(const r of rs){ if(n>=LCHK.rd[1]) break; shuffle(r.qs.filter(q=>q.w&&q.w.length>=2)).slice(0,Math.min(3,LCHK.rd[1]-n)).forEach(q=>{ const opts=shuffle([q.a,...q.w.slice(0,3)]); n++;
+      items.push({t:'mc',sk:'rd',tag:'Đọc hiểu',lang:'en',opts,ans:opts.indexOf(q.a),plain:q.q,
+        q:`<details class="panel lchk-read" open><summary lang="en">${esc(r.title)}</summary>${r.text.map(x=>`<p class="reading" lang="en">${esc(x)}</p>`).join('')}</details><p class="prompt sent" lang="en">${esc(q.q)}</p>`}); }); } }
   // Từ vựng: nhận ra nghĩa và nhớ ra từ, từ của cấp L
-  shuffle(UNITS.filter(u=>u.level===L).flatMap(u=>u.words)).slice(0,4).forEach((w,i)=>{ const os=others(w,3);
+  shuffle(UNITS.filter(u=>u.level===L).flatMap(u=>u.words)).slice(0,Math.ceil(LCHK.lang[1]/2)).forEach((w,i)=>{ const os=others(w,3);
     if(i%2){ const opts=shuffle([w.word,...os.map(x=>x.word)]); items.push({t:'mc',sk:'lang',tag:'Từ vựng',lang:'en',opts,ans:opts.indexOf(w.word),plain:w.vi,q:`<p class="eyebrow">Từ nào có nghĩa này?</p><p class="prompt">${esc(w.vi)}</p>`}); }
     else { const opts=shuffle([w.vi,...os.map(x=>x.vi)]); items.push({t:'mc',sk:'lang',tag:'Từ vựng',opts,ans:opts.indexOf(w.vi),plain:w.word,q:`<p class="eyebrow">Từ này nghĩa là gì?</p><p class="prompt" lang="en">${esc(w.word)}</p>`}); } });
   // Ngữ pháp: câu trắc nghiệm của các bài ngữ pháp cấp L (dạng thi, không gợi ý)
-  const GL=GRAMMAR.levels.find(x=>x.id===L); if(GL) gPlaceItems(GL).filter(x=>x.opts&&x.opts.length>=2).slice(0,4).forEach(x=>items.push({t:'mc',sk:'lang',tag:'Ngữ pháp',lang:'en',opts:x.opts,ans:x.ans,plain:x.prompt,
+  const GL=GRAMMAR.levels.find(x=>x.id===L); if(GL) gPlaceItems(GL).filter(x=>x.opts&&x.opts.length>=2).slice(0,Math.floor(LCHK.lang[1]/2)).forEach(x=>items.push({t:'mc',sk:'lang',tag:'Ngữ pháp',lang:'en',opts:x.opts,ans:x.ans,plain:x.prompt,
     q:`<p class="eyebrow">${esc(GPT[x.gid]?GPT[x.gid].vi:'Ngữ pháp')}</p><p class="prompt sent" lang="en">${esc(x.prompt).replace('___','<span class="blank"></span>')}</p>`}));
   const by=k=>items.filter(x=>x.sk===k);
   return [...shuffle(by('lang')),...by('rd'),...shuffle(by('lis'))]; }
@@ -7869,6 +7871,96 @@ document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closes
   const key=g[2]+' '+g[1]; ui.cdOpen={...(ui.cdOpen||{}),[key]:true}; render(); setTimeout(()=>{ const d=document.querySelector(`details[data-cdg="${CSS.escape(key)}"]`); if(d) d.scrollIntoView({block:'start',behavior:'smooth'}); },30); });
 DETAIL_SAFE_ACT.add('cdsk');
 
+/* ---------- v34 (1): ĐỌC VĂN BẢN ĐỜI THƯỜNG A1–A2 ----------
+   Đọc A1–A2 trước đây chỉ có đoạn văn trong unit và truyện. CEFR A1–A2 mô tả đọc theo loại văn bản: đọc để định hướng (biển báo,
+   thông báo, thực đơn, lịch giờ), đọc thư từ (tin nhắn, bưu thiếp, email), đọc hướng dẫn và đọc lấy thông tin (quảng cáo, đánh giá).
+   12 văn bản, mỗi bài 4 câu hỏi tìm đúng chi tiết hoặc suy ra điều cần làm. Không dùng ở tab Nghe (đọc to biển báo không phải bài nghe). */
+const LR_R = [
+ {id:'a1-rl01',lv:'A1',life:1,kind:'Biển báo',title:'City Swimming Pool',tvi:'Nội quy bể bơi',text:['CITY SWIMMING POOL','Open: 6:00 a.m. – 9:00 p.m. every day.','Closed on Monday mornings for cleaning.','Children under 10 must swim with an adult.','No food or drinks in the water.','Please wear a swimming cap.','Tickets: adults 40,000 VND, children 20,000 VND.'],qs:[
+  {k:'detail',q:'When is the pool closed?',a:'On Monday mornings.',w:['On Sunday evenings.','Every day at 6 a.m.'],why:'“Closed on Monday mornings for cleaning.”'},
+  {k:'detail',q:'A boy is 8 years old. What must he do?',a:'Swim with an adult.',w:['Buy an adult ticket.','Swim before 6 a.m.'],why:'“Children under 10 must swim with an adult.”'},
+  {k:'detail',q:'What must you wear?',a:'A swimming cap.',w:['Shoes.','A T-shirt.'],why:'“Please wear a swimming cap.”'},
+  {k:'infer',q:'How much is one adult ticket and one child ticket?',a:'60,000 VND.',w:['40,000 VND.','80,000 VND.'],why:'40,000 + 20,000 = 60,000.'}]},
+ {id:'a1-rl02',lv:'A1',life:1,kind:'Thực đơn',title:'Lotus Café',tvi:'Thực đơn quán cà phê',text:['LOTUS CAFÉ','Drinks: coffee with milk 25,000 · black coffee 20,000 · orange juice 30,000 · green tea 15,000','Food: banh mi with egg 20,000 · banh mi with chicken 35,000 · fried rice 45,000','Breakfast set (7–10 a.m.): banh mi with egg + black coffee 35,000','Free water with every meal.'],qs:[
+  {k:'detail',q:'What is the cheapest drink?',a:'Green tea.',w:['Black coffee.','Orange juice.'],why:'Green tea 15,000 là rẻ nhất.'},
+  {k:'infer',q:'At 8 a.m. you want banh mi with egg and black coffee. How much do you pay?',a:'35,000 VND.',w:['40,000 VND.','45,000 VND.'],why:'8 giờ sáng có “breakfast set” 35,000.'},
+  {k:'detail',q:'What is free?',a:'Water.',w:['Green tea.','Coffee with milk.'],why:'“Free water with every meal.”'},
+  {k:'detail',q:'When can you order the breakfast set?',a:'From 7 to 10 in the morning.',w:['All day.','Only in the evening.'],why:'“Breakfast set (7–10 a.m.)”.'}]},
+ {id:'a1-rl03',lv:'A1',life:1,kind:'Lịch giờ',title:'Bus 09 Timetable',tvi:'Lịch xe buýt',text:['BUS 09: CITY CENTRE → AIRPORT','Monday – Friday: every 20 minutes, 5:30 a.m. – 10:00 p.m.','Saturday and Sunday: every 30 minutes, 6:00 a.m. – 9:00 p.m.','The trip takes about 45 minutes.','Ticket: 8,000 VND. Pay the driver. No change for big notes.'],qs:[
+  {k:'detail',q:'How often does the bus go on Tuesday?',a:'Every 20 minutes.',w:['Every 30 minutes.','Every 45 minutes.'],why:'Thứ Ba thuộc “Monday – Friday: every 20 minutes”.'},
+  {k:'detail',q:'What time is the last bus on Sunday?',a:'9:00 p.m.',w:['10:00 p.m.','6:00 a.m.'],why:'“Saturday and Sunday: … 6:00 a.m. – 9:00 p.m.”'},
+  {k:'detail',q:'Where do you pay for the ticket?',a:'To the driver.',w:['At the airport.','Online.'],why:'“Pay the driver.”'},
+  {k:'infer',q:'Why should you bring small money?',a:'The driver cannot give change for big notes.',w:['Big notes are not accepted in the city centre.','The ticket costs 45,000 VND.'],why:'“No change for big notes.”'}]},
+ {id:'a1-rl04',lv:'A1',life:1,kind:'Tin nhắn',title:'Cinema This Afternoon?',tvi:'Tin nhắn hẹn đi xem phim',text:['Mai (9:15): Hi Tom! Are you free this afternoon? Let’s go to the cinema.','Tom (9:20): Sorry, I have a class until 3. Is 4 o’clock OK?','Mai (9:22): Yes! The film starts at 4:30. Meet at the cinema door at 4:15?','Tom (9:25): Great. I’ll buy the popcorn 😊','Mai (9:26): Thanks! I’ll buy the tickets online.'],qs:[
+  {k:'detail',q:'Why can’t Tom go early?',a:'He has a class until 3.',w:['He is at the cinema.','He doesn’t like films.'],why:'“I have a class until 3.”'},
+  {k:'detail',q:'What time does the film start?',a:'4:30.',w:['4:15.','3:00.'],why:'“The film starts at 4:30.”'},
+  {k:'detail',q:'Where will they meet?',a:'At the cinema door.',w:['At Tom’s class.','At Mai’s house.'],why:'“Meet at the cinema door at 4:15?”'},
+  {k:'detail',q:'Who will buy the tickets?',a:'Mai.',w:['Tom.','Nobody: they will pay at the door.'],why:'Mai: “I’ll buy the tickets online.”'}]},
+ {id:'a1-rl05',lv:'A1',life:1,kind:'Bưu thiếp',title:'A Postcard from Da Lat',tvi:'Bưu thiếp gửi bà',text:['Dear Grandma,','I’m in Da Lat with my class. It’s cold here, about 15 degrees, so I wear my big jacket every day.','Yesterday we visited a flower garden and a coffee farm. Today we’re going to the lake by bike.','The food is good, but I miss your spring rolls!','I’ll be home on Friday evening.','Love, Hoa'],qs:[
+  {k:'detail',q:'Who is Hoa in Da Lat with?',a:'Her class.',w:['Her grandma.','Her parents.'],why:'“I’m in Da Lat with my class.”'},
+  {k:'detail',q:'What is the weather like?',a:'Cold.',w:['Hot.','Rainy.'],why:'“It’s cold here, about 15 degrees.”'},
+  {k:'detail',q:'What are they doing today?',a:'Cycling to the lake.',w:['Visiting a coffee farm.','Going home.'],why:'“Today we’re going to the lake by bike.”'},
+  {k:'detail',q:'When will Hoa be home?',a:'On Friday evening.',w:['Tomorrow morning.','On Sunday.'],why:'“I’ll be home on Friday evening.”'}]},
+ {id:'a1-rl06',lv:'A1',life:1,kind:'Hướng dẫn',title:'How to Get a Library Card',tvi:'Làm thẻ thư viện',text:['HOW TO GET A LIBRARY CARD','1. Fill in the form at the front desk.','2. Bring one photo and your ID card.','3. Pay 50,000 VND. The card is good for one year.','You can borrow 3 books for 2 weeks.','Late books: 2,000 VND a day for each book.'],qs:[
+  {k:'detail',q:'What do you need to bring?',a:'A photo and your ID card.',w:['Three books.','A form from home.'],why:'“Bring one photo and your ID card.”'},
+  {k:'detail',q:'How long can you use the card?',a:'One year.',w:['Two weeks.','Three days.'],why:'“The card is good for one year.”'},
+  {k:'detail',q:'How many books can you borrow?',a:'Three.',w:['Two.','Fifty.'],why:'“You can borrow 3 books.”'},
+  {k:'infer',q:'You bring back one book 2 days late. How much do you pay?',a:'4,000 VND.',w:['2,000 VND.','6,000 VND.'],why:'2,000 mỗi ngày × 2 ngày = 4,000.'}]},
+ {id:'a2-rl01',lv:'A2',life:1,kind:'Thông báo',title:'Notice to All Residents',tvi:'Thông báo cắt nước',text:['NOTICE TO ALL RESIDENTS – Sunrise Apartments, Building B','There will be no water on Thursday, 12 June, from 8 a.m. to 2 p.m. because workers are repairing the main pipe.','Please keep some water for cooking and washing before Thursday.','The lifts will work as usual, but the car park will be closed in the morning so the workers can bring in their equipment.','We are sorry for any problems this may cause. If you have questions, call the building office on 0243 555 0188 (8 a.m. – 5 p.m.).','Building Management'],qs:[
+  {k:'main',q:'Why will there be no water?',a:'Workers are repairing a pipe.',w:['The lifts are broken.','The building is being painted.'],why:'“because workers are repairing the main pipe”.'},
+  {k:'infer',q:'What should residents do before Thursday?',a:'Store some water.',w:['Move their cars to Building B.','Call the office after 5 p.m.'],why:'“Please keep some water for cooking and washing before Thursday.”'},
+  {k:'detail',q:'What will NOT be available on Thursday morning?',a:'The car park.',w:['The lifts.','The building office.'],why:'“the car park will be closed in the morning”.'},
+  {k:'detail',q:'Who wrote this notice?',a:'The building management.',w:['The workers.','A resident of Building B.'],why:'Ký tên “Building Management”.'}]},
+ {id:'a2-rl02',lv:'A2',life:1,kind:'Quảng cáo',title:'Room for Rent',tvi:'Cho thuê phòng',text:['ROOM FOR RENT – Cau Giay, Hanoi','Large room on the 3rd floor of a quiet house, 5 minutes’ walk from the bus stop and 10 minutes from the university.','The room has a bed, a desk, a wardrobe and air conditioning. You share the kitchen and bathroom with one other student.','Rent: 3.5 million VND a month, including Wi-Fi. Electricity and water are extra (about 400,000 VND a month).','No pets. No smoking inside.','Available from 1 September. Text Ms Lan: 0912 345 678. Please don’t call after 9 p.m.'],qs:[
+  {k:'infer',q:'Who is the room probably for?',a:'A student.',w:['A family with children.','A tourist for one night.'],why:'Gần trường đại học, ở chung với “one other student”.'},
+  {k:'detail',q:'What is included in the 3.5 million?',a:'Wi-Fi.',w:['Electricity.','Water.'],why:'“3.5 million VND a month, including Wi-Fi”.'},
+  {k:'infer',q:'About how much will you pay every month in total?',a:'About 3.9 million VND.',w:['Exactly 3.5 million VND.','About 4.5 million VND.'],why:'3,5 triệu + khoảng 400 nghìn điện nước.'},
+  {k:'detail',q:'What is the best way to contact Ms Lan?',a:'Send her a text message.',w:['Call her late in the evening.','Visit the university.'],why:'“Text Ms Lan … Please don’t call after 9 p.m.”'}]},
+ {id:'a2-rl03',lv:'A2',life:1,kind:'Email',title:'Change of Plan for Saturday',tvi:'Email đổi kế hoạch',text:['Subject: Change of plan for Saturday','Hi everyone,','I’m afraid the weather forecast says it will rain heavily on Saturday, so we won’t go hiking in Ba Vi. Instead, let’s meet at my place at 2 p.m. and cook together. I’ll make spring rolls, and it would be great if each person could bring one more dish or some fruit.','My new address is 25 Tran Phu Street, flat 402. It’s next to the post office, not near my old flat. Take the lift to the 4th floor.','If you can’t come, please let me know by Thursday so I can buy the right amount of food.','See you soon,','Minh'],qs:[
+  {k:'main',q:'Why did Minh change the plan?',a:'Heavy rain is expected.',w:['Ba Vi is closed.','He is ill.'],why:'“the weather forecast says it will rain heavily”.'},
+  {k:'detail',q:'What should each guest bring?',a:'A dish or some fruit.',w:['Spring rolls.','Nothing at all.'],why:'“bring one more dish or some fruit”.'},
+  {k:'detail',q:'Where is Minh’s flat now?',a:'Next to the post office.',w:['Near his old flat.','In Ba Vi.'],why:'“It’s next to the post office, not near my old flat.”'},
+  {k:'detail',q:'What should you do if you cannot come?',a:'Tell Minh by Thursday.',w:['Bring fruit on Saturday.','Go hiking alone.'],why:'“please let me know by Thursday”.'}]},
+ {id:'a2-rl04',lv:'A2',life:1,kind:'Nhãn thuốc',title:'Cough Syrup',tvi:'Hướng dẫn dùng thuốc ho',text:['COUGH SYRUP – 100 ml','Adults and children over 12: 10 ml three times a day after meals.','Children 6–12: 5 ml three times a day after meals.','Not for children under 6.','Do not take more than 4 times in 24 hours.','May make you sleepy. Do not drive after taking it.','Keep in a cool, dry place. Use within 1 month after opening.'],qs:[
+  {k:'detail',q:'How much should a 9-year-old take each time?',a:'5 ml.',w:['10 ml.','100 ml.'],why:'“Children 6–12: 5 ml”.'},
+  {k:'detail',q:'When should you take it?',a:'After meals.',w:['Only before breakfast.','When you feel hungry.'],why:'“three times a day after meals”.'},
+  {k:'detail',q:'Why shouldn’t you drive after taking it?',a:'It can make you sleepy.',w:['It must be kept cool.','It is only for children.'],why:'“May make you sleepy. Do not drive after taking it.”'},
+  {k:'infer',q:'You opened the bottle on 1 March. Until when can you use it?',a:'Until about 1 April.',w:['Until 8 March.','For as long as you like.'],why:'“Use within 1 month after opening.”'}]},
+ {id:'a2-rl05',lv:'A2',life:1,kind:'Đánh giá',title:'Great Location, Small Rooms',tvi:'Đánh giá khách sạn',text:['★★★★☆ Great location, small rooms','We stayed at the Riverside Hotel in Hoi An for three nights in May. The hotel is only a five-minute walk from the Old Town, so it was easy to go back for a rest in the afternoon when it was very hot.','The staff were friendly and helped us book a cooking class. Breakfast was simple but fresh, with good coffee and fruit.','The only problem was the room: it was clean but quite small for two people with big suitcases, and the window looked onto a wall.','If you want a cheap place close to everything, I recommend it. If you need space, ask for a river-view room.','– Linh, Da Nang'],qs:[
+  {k:'main',q:'What did Linh like most about the hotel?',a:'Its location.',w:['The size of the room.','The view from the window.'],why:'Tiêu đề “Great location” và “a five-minute walk from the Old Town”.'},
+  {k:'detail',q:'How did the staff help?',a:'They booked a cooking class for them.',w:['They gave them a bigger room.','They carried their suitcases to the Old Town.'],why:'“helped us book a cooking class”.'},
+  {k:'detail',q:'What was the problem with the room?',a:'It was small.',w:['It was dirty.','It was far from the Old Town.'],why:'“it was clean but quite small”.'},
+  {k:'detail',q:'What does Linh suggest for people who need more space?',a:'Ask for a river-view room.',w:['Stay in Da Nang instead.','Bring smaller suitcases.'],why:'“If you need space, ask for a river-view room.”'}]},
+ {id:'a2-rl06',lv:'A2',life:1,kind:'Lịch trình',title:'Ha Long Bay Day Tour',tvi:'Lịch trình tour Hạ Long',text:['HA LONG BAY – 1-DAY TOUR','7:30 Pick-up from your hotel in Hanoi (Old Quarter only)','11:30 Arrive at Ha Long. Get on the boat. Lunch on board (seafood; vegetarian food on request)','13:30 Visit Sung Sot Cave (many steps – wear comfortable shoes)','15:00 Kayaking or swimming (if the weather is good)','16:30 Back to the harbour · 20:30 Arrive in Hanoi','Price: 950,000 VND per person. Not included: drinks and tips. Children under 5 travel free.'],qs:[
+  {k:'detail',q:'Who can be picked up from their hotel?',a:'People staying in the Old Quarter.',w:['Everyone staying in Hanoi.','Only people staying in Ha Long.'],why:'“Pick-up from your hotel in Hanoi (Old Quarter only)”.'},
+  {k:'infer',q:'You don’t eat meat or fish. What should you do?',a:'Ask for vegetarian food.',w:['Bring lunch from Hanoi.','Skip lunch on the boat.'],why:'“vegetarian food on request”.'},
+  {k:'detail',q:'Why should you wear comfortable shoes?',a:'The cave has many steps.',w:['You will go kayaking.','The boat is very small.'],why:'“Sung Sot Cave (many steps – wear comfortable shoes)”.'},
+  {k:'detail',q:'What do you have to pay extra for?',a:'Drinks.',w:['Lunch.','The boat trip.'],why:'“Not included: drinks and tips.”'}]},
+];
+// Bản dịch song song từng dòng (nút “Xem bản dịch” sau khi nộp bài)
+const LR_R_VI = {
+ 'a1-rl01':['BỂ BƠI THÀNH PHỐ','Mở cửa: 6:00 sáng – 9:00 tối hằng ngày.','Đóng cửa sáng thứ Hai để vệ sinh.','Trẻ dưới 10 tuổi phải bơi cùng người lớn.','Không ăn uống dưới nước.','Vui lòng đội mũ bơi.','Vé: người lớn 40.000 đồng, trẻ em 20.000 đồng.'],
+ 'a1-rl02':['QUÁN CÀ PHÊ SEN','Đồ uống: cà phê sữa 25.000 · cà phê đen 20.000 · nước cam 30.000 · trà xanh 15.000','Đồ ăn: bánh mì trứng 20.000 · bánh mì gà 35.000 · cơm rang 45.000','Suất sáng (7–10 giờ sáng): bánh mì trứng + cà phê đen 35.000','Nước lọc miễn phí kèm mỗi bữa.'],
+ 'a1-rl03':['XE BUÝT 09: TRUNG TÂM → SÂN BAY','Thứ Hai – thứ Sáu: 20 phút một chuyến, 5:30 sáng – 10:00 tối.','Thứ Bảy và Chủ nhật: 30 phút một chuyến, 6:00 sáng – 9:00 tối.','Chuyến đi mất khoảng 45 phút.','Vé: 8.000 đồng. Trả tiền cho tài xế. Không thối tiền tờ lớn.'],
+ 'a1-rl04':['Mai (9:15): Chào Tom! Chiều nay bạn rảnh không? Mình đi xem phim đi.','Tom (9:20): Xin lỗi, mình có tiết học đến 3 giờ. 4 giờ được không?','Mai (9:22): Được! Phim chiếu lúc 4:30. Gặp nhau ở cửa rạp lúc 4:15 nhé?','Tom (9:25): Tuyệt. Mình sẽ mua bỏng ngô 😊','Mai (9:26): Cảm ơn! Mình sẽ mua vé trên mạng.'],
+ 'a1-rl05':['Bà yêu quý,','Cháu đang ở Đà Lạt cùng lớp. Ở đây lạnh, khoảng 15 độ, nên ngày nào cháu cũng mặc áo khoác to.','Hôm qua chúng cháu đi thăm một vườn hoa và một trang trại cà phê. Hôm nay chúng cháu đạp xe ra hồ.','Đồ ăn ngon, nhưng cháu nhớ món nem của bà!','Tối thứ Sáu cháu sẽ về nhà.','Thương bà, Hoa'],
+ 'a1-rl06':['CÁCH LÀM THẺ THƯ VIỆN','1. Điền tờ khai ở quầy lễ tân.','2. Mang một ảnh và căn cước của bạn.','3. Trả 50.000 đồng. Thẻ có giá trị một năm.','Bạn được mượn 3 cuốn sách trong 2 tuần.','Trả sách muộn: 2.000 đồng mỗi ngày cho mỗi cuốn.'],
+ 'a2-rl01':['THÔNG BÁO TỚI TẤT CẢ CƯ DÂN – Chung cư Sunrise, tòa B','Thứ Năm, ngày 12 tháng 6, sẽ mất nước từ 8 giờ sáng đến 2 giờ chiều vì thợ đang sửa đường ống chính.','Vui lòng trữ ít nước để nấu ăn và giặt giũ trước thứ Năm.','Thang máy vẫn hoạt động bình thường, nhưng bãi đỗ xe sẽ đóng cửa buổi sáng để thợ chuyển thiết bị vào.','Chúng tôi xin lỗi vì những bất tiện có thể xảy ra. Nếu có câu hỏi, hãy gọi văn phòng tòa nhà số 0243 555 0188 (8 giờ sáng – 5 giờ chiều).','Ban quản lý tòa nhà'],
+ 'a2-rl02':['CHO THUÊ PHÒNG – Cầu Giấy, Hà Nội','Phòng rộng ở tầng 3 của một ngôi nhà yên tĩnh, đi bộ 5 phút ra bến xe buýt và 10 phút tới trường đại học.','Phòng có giường, bàn học, tủ quần áo và điều hoà. Bạn dùng chung bếp và phòng tắm với một sinh viên khác.','Giá thuê: 3,5 triệu đồng một tháng, đã gồm Wi-Fi. Điện nước tính riêng (khoảng 400.000 đồng một tháng).','Không nuôi thú cưng. Không hút thuốc trong nhà.','Trống từ ngày 1 tháng 9. Nhắn tin cho chị Lan: 0912 345 678. Vui lòng không gọi sau 9 giờ tối.'],
+ 'a2-rl03':['Tiêu đề: Đổi kế hoạch thứ Bảy','Chào cả nhóm,','Mình e là dự báo thời tiết nói thứ Bảy sẽ mưa to, nên chúng ta sẽ không đi leo núi Ba Vì nữa. Thay vào đó, hãy gặp nhau ở nhà mình lúc 2 giờ chiều và cùng nấu ăn. Mình sẽ làm nem, và sẽ rất tuyệt nếu mỗi người mang thêm một món hoặc ít hoa quả.','Địa chỉ mới của mình là số 25 phố Trần Phú, căn hộ 402. Nhà ở cạnh bưu điện, không gần căn hộ cũ. Đi thang máy lên tầng 4.','Nếu không đến được, hãy báo mình trước thứ Năm để mình mua đủ đồ ăn.','Hẹn sớm gặp lại,','Minh'],
+ 'a2-rl04':['SI-RÔ HO – 100 ml','Người lớn và trẻ trên 12 tuổi: 10 ml, ngày ba lần, sau bữa ăn.','Trẻ 6–12 tuổi: 5 ml, ngày ba lần, sau bữa ăn.','Không dùng cho trẻ dưới 6 tuổi.','Không dùng quá 4 lần trong 24 giờ.','Có thể gây buồn ngủ. Không lái xe sau khi uống.','Bảo quản nơi khô mát. Dùng trong vòng 1 tháng sau khi mở nắp.'],
+ 'a2-rl05':['★★★★☆ Vị trí tuyệt vời, phòng nhỏ','Chúng tôi ở khách sạn Riverside tại Hội An ba đêm vào tháng Năm. Khách sạn chỉ cách Phố Cổ năm phút đi bộ, nên buổi chiều trời rất nóng thì dễ dàng về nghỉ một lát.','Nhân viên thân thiện và giúp chúng tôi đặt một lớp học nấu ăn. Bữa sáng đơn giản nhưng tươi, có cà phê và hoa quả ngon.','Điểm duy nhất chưa ổn là phòng: sạch nhưng khá nhỏ cho hai người mang vali to, và cửa sổ nhìn ra một bức tường.','Nếu bạn muốn chỗ rẻ, gần mọi nơi, tôi khuyên bạn ở đây. Nếu cần rộng, hãy xin phòng nhìn ra sông.','– Linh, Đà Nẵng'],
+ 'a2-rl06':['VỊNH HẠ LONG – TOUR 1 NGÀY','7:30 Đón tại khách sạn ở Hà Nội (chỉ khu Phố Cổ)','11:30 Đến Hạ Long. Lên thuyền. Ăn trưa trên thuyền (hải sản; có đồ chay nếu yêu cầu)','13:30 Thăm hang Sửng Sốt (nhiều bậc – nên đi giày thoải mái)','15:00 Chèo thuyền kayak hoặc bơi (nếu thời tiết tốt)','16:30 Về bến · 20:30 Về đến Hà Nội','Giá: 950.000 đồng mỗi người. Chưa gồm: đồ uống và tiền boa. Trẻ dưới 5 tuổi miễn phí.'],
+};
+LR_R.forEach(x=>{ x.vi=LR_R_VI[x.id]; });
+LR_R.forEach(x=>{ LREAD.push(x); LRD[x.id]=x; });
+{ const ids=(L,ns)=>ns.map(n=>L.toLowerCase()+'-rl0'+n);
+  CANDO.push(
+    {id:'a1-rdlife1',lv:'A1',grp:'rd',grp0:'ski',vi:'Tìm thông tin cần trên biển báo, thực đơn, lịch giờ chạy xe',en:'Find information in signs, menus and timetables',ref:[{t:'lr',v:ids('A1',[1,2,3]),n:2}]},
+    {id:'a1-rdlife2',lv:'A1',grp:'rd',grp0:'ski',vi:'Hiểu tin nhắn, bưu thiếp và hướng dẫn ngắn đơn giản',en:'Understand short messages, postcards and simple instructions',ref:[{t:'lr',v:ids('A1',[4,5,6]),n:2}]},
+    {id:'a2-rdlife1',lv:'A2',grp:'rd',grp0:'ski',vi:'Đọc thông báo, quảng cáo, lịch trình và tìm đúng chi tiết',en:'Find specific details in notices, adverts and schedules',ref:[{t:'lr',v:ids('A2',[1,2,6]),n:2}]},
+    {id:'a2-rdlife2',lv:'A2',grp:'rd',grp0:'ski',vi:'Hiểu email cá nhân, hướng dẫn trên nhãn sản phẩm và bài đánh giá ngắn',en:'Understand personal emails, product instructions and short reviews',ref:[{t:'lr',v:ids('A2',[3,4,5]),n:2}]}); }
+
 CHANGELOG.unshift({v:31,d:'2026-10-01',t:'Đo đúng cấp CEFR, nói và tương tác thật',items:[
   'Ước tính cấp CEFR cho bài viết và bài nói (máy chép lời khi bạn nói), kèm việc cần làm để lên cấp và kiểm tra bài có bám đề không.',
   'Xác nhận cấp CEFR bằng bài làm: bài kiểm tra cấp độ (nghe, đọc, từ vựng, ngữ pháp), một bài viết và một bài nói ở đúng cấp. Nhãn đổi thành “Ước tính CEFR”; cấp đã đạt theo cách tính cũ cần làm các bước xác nhận này. Ghi được điểm thi thật để so.',
@@ -7883,6 +7975,9 @@ CHANGELOG.unshift({v:33,d:'2026-10-01',t:'Bốn kỹ năng tách riêng, mỗi k
   'Bản đồ CEFR chia theo 4 kỹ năng: Nghe, Nói, Đọc, Viết, cộng phần nền tảng (từ vựng, ngữ pháp, phát âm). Trước đây 4 kỹ năng nằm chung một nhóm.',
   'Mỗi kỹ năng có cấp ước tính riêng, như cách các kỳ thi chuẩn báo điểm. Bạn có thể đạt Đọc B1 trong khi Nói còn A2, và app cho thấy kỹ năng nào đang chậm.',
   'Xác nhận cấp theo từng kỹ năng: bài kiểm tra cấp chấm riêng từng phần, mỗi kỹ năng có danh sách việc còn thiếu và nút làm ngay.']});
+CHANGELOG.unshift({v:34,d:'2026-10-01',t:'Đọc đời thường A1–A2, bài kiểm tra cấp tin cậy hơn',items:[
+  'Đọc văn bản đời thường A1–A2: 12 bài gồm biển báo, thực đơn, lịch xe buýt, tin nhắn, bưu thiếp, hướng dẫn, thông báo, quảng cáo, email, nhãn thuốc, đánh giá, lịch trình tour. Mỗi bài có câu hỏi và bản dịch.',
+  'Bài kiểm tra cấp tăng từ 24 lên 30 câu: Nghe 10 (một nửa nghe cả hội thoại), Đọc 10 (từ nhiều bài), Viết câu 4, nền tảng 6. Kết quả từng kỹ năng nhờ vậy ổn định hơn.']});
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
