@@ -165,7 +165,15 @@
           "B": "B ngay trong cổng."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-map-01.mp3",
+      "dur": 46.1,
+      "voices": [
+        "bf_emma"
+      ],
+      "slow": "a/l-map-01.slow.mp3"
+    }
   },
   {
     "id": "l-map-02",
@@ -336,7 +344,15 @@
         },
         "trap": "'by the entrance' được nhắc rồi bị phủ định."
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-map-02.mp3",
+      "dur": 58,
+      "voices": [
+        "bm_george"
+      ],
+      "slow": "a/l-map-02.slow.mp3"
+    }
   },
   {
     "id": "l-map-03",
@@ -506,7 +522,15 @@
           "E": "E gần lối đi."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-map-03.mp3",
+      "dur": 54,
+      "voices": [
+        "am_adam"
+      ],
+      "slow": "a/l-map-03.slow.mp3"
+    }
   },
   {
     "id": "l-map-04",
@@ -676,7 +700,15 @@
           "G": "G là rạp chiếu phim."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-map-04.mp3",
+      "dur": 74.6,
+      "voices": [
+        "af_nicole"
+      ],
+      "slow": "a/l-map-04.slow.mp3"
+    }
   },
   {
     "id": "l-map-05",
@@ -844,7 +876,15 @@
         },
         "trap": "'by the car park' được nhắc rồi bị bác."
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-map-05.mp3",
+      "dur": 45.3,
+      "voices": [
+        "bm_lewis"
+      ],
+      "slow": "a/l-map-05.slow.mp3"
+    }
   },
   {
     "id": "l-map-06",
@@ -1010,6 +1050,14 @@
           "F": "F ở giữa nửa phía nam."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/l-map-06.mp3",
+      "dur": 41.9,
+      "voices": [
+        "af_sarah"
+      ],
+      "slow": "a/l-map-06.slow.mp3"
+    }
   }
 ]

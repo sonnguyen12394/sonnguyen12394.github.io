@@ -46,36 +46,36 @@
     "items": [
       {
         "id": "v-l3-01-1",
-        "q": "How much sleep do teenagers need, according to the speaker?",
+        "q": "According to surveys, about how many people regularly sleep less than seven hours?",
         "opts": [
           {
             "k": "A",
-            "t": "about nine hours"
+            "t": "about a third"
           },
           {
             "k": "B",
-            "t": "about ten hours"
+            "t": "about two thirds"
           },
           {
             "k": "C",
-            "t": "about seven hours"
+            "t": "about a quarter"
           },
           {
             "k": "D",
-            "t": "about eight hours"
+            "t": "about half"
           }
         ],
         "ans": "A",
-        "b": 4.5,
+        "b": 5,
         "ev": {
           "p": 1,
-          "s": "Teenagers need even more, about nine hours"
+          "s": "around a third of people regularly get less than seven"
         },
-        "why": "Thanh thiếu niên cần khoảng chín tiếng.",
+        "why": "Khoảng một phần ba.",
         "wrong": {
-          "B": "Không được nhắc.",
-          "C": "Bảy tiếng là mức tối thiểu cho người lớn.",
-          "D": "Không được nhắc riêng."
+          "B": "Không được nói.",
+          "C": "Không được nói.",
+          "D": "Không được nói."
         }
       },
       {
@@ -391,19 +391,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "free advertising"
+            "t": "free advertising online"
           },
           {
             "k": "B",
-            "t": "a discount"
+            "t": "a discount on stall fees"
           },
           {
             "k": "C",
-            "t": "a certificate"
+            "t": "a document they can display"
           },
           {
             "k": "D",
-            "t": "a new stall"
+            "t": "a new place to set up"
           }
         ],
         "ans": "C",
@@ -412,7 +412,7 @@
           "p": 3,
           "s": "those who complete them receive a certificate they can display"
         },
-        "why": "Nhận chứng nhận.",
+        "why": "Nhận giấy chứng nhận để trưng ra.",
         "wrong": {
           "A": "Quảng cáo liên quan mạng xã hội, không phải khoá học.",
           "B": "Không được nói.",
@@ -557,7 +557,7 @@
           },
           {
             "k": "D",
-            "t": "about two full minutes"
+            "t": "about one minute"
           }
         ],
         "ans": "B",
@@ -832,36 +832,36 @@
       },
       {
         "id": "v-l3-04-4",
-        "q": "How have some governments responded?",
+        "q": "What does the speaker suggest about the 'middle category'?",
         "opts": [
           {
             "k": "A",
-            "t": "by banning gig apps"
+            "t": "It treats gig workers as full employees."
           },
           {
             "k": "B",
-            "t": "by increasing demand"
+            "t": "It mainly benefits the app companies."
           },
           {
             "k": "C",
-            "t": "by lowering taxes for app-based delivery companies"
+            "t": "It has been rejected by the courts."
           },
           {
             "k": "D",
-            "t": "by creating a middle category of worker"
+            "t": "It tries to add protections but keep flexibility."
           }
         ],
         "ans": "D",
-        "b": 7,
+        "b": 7.5,
         "ev": {
           "p": 4,
-          "s": "Others are experimenting with a middle category that guarantees some protections"
+          "s": "guarantees some protections without removing flexibility entirely"
         },
-        "why": "Thử nghiệm nhóm trung gian có một số quyền lợi.",
+        "why": "Nhóm trung gian bảo đảm một số quyền lợi mà vẫn giữ tính linh hoạt.",
         "wrong": {
-          "A": "Không được nói.",
+          "A": "Coi là nhân viên là phán quyết của toà ở một số nước, khác với nhóm trung gian.",
           "B": "Không được nói.",
-          "C": "Không được nói."
+          "C": "Toà án được nhắc với việc coi là nhân viên, không bác nhóm trung gian."
         }
       },
       {
@@ -870,11 +870,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "The gig economy's benefits should be shared more fairly."
+            "t": "The benefits of gig work should be shared more fairly."
           },
           {
             "k": "B",
-            "t": "The gig economy is entirely positive for everyone involved."
+            "t": "Algorithms are the biggest problem with gig work."
           },
           {
             "k": "C",
@@ -882,7 +882,7 @@
           },
           {
             "k": "D",
-            "t": "The gig economy should be stopped."
+            "t": "The debate should be about whether gig work is good or bad."
           }
         ],
         "ans": "A",
@@ -893,9 +893,9 @@
         },
         "why": "Cần chia sẻ lợi ích công bằng hơn.",
         "wrong": {
-          "B": "Người nói thừa nhận cả mặt tiêu cực.",
+          "B": "\"the most interesting issue\" không có nghĩa là vấn đề lớn nhất, và không phải kết luận.",
           "C": "Đó là phán quyết ở một số nước, không phải ý kiến của người nói.",
-          "D": "Không phải ý của người nói."
+          "D": "Ngược ý: \"shouldn't be about whether the gig economy is good or bad\"."
         },
         "trap": "Ý kiến riêng được báo hiệu bằng 'In my view'."
       }
@@ -1103,15 +1103,15 @@
         "opts": [
           {
             "k": "A",
-            "t": "They have made cutting emissions unnecessary."
+            "t": "They are mainly used for cold-water reefs."
           },
           {
             "k": "B",
-            "t": "They are too expensive for most countries."
+            "t": "They work better than cutting emissions."
           },
           {
             "k": "C",
-            "t": "They are enough to save most reefs."
+            "t": "They have saved most damaged reefs."
           },
           {
             "k": "D",
@@ -1126,9 +1126,9 @@
         },
         "why": "\"can only buy time\": chỉ kéo dài thời gian, không giải quyết gốc rễ.",
         "wrong": {
-          "A": "Ngược ý: vẫn phải cắt giảm khí thải.",
-          "B": "Không nói chi phí.",
-          "C": "Ngược ý: chỉ \"buy time\"."
+          "A": "Không được nói.",
+          "B": "Ngược ý: không cắt giảm khí thải thì san hô khó sống sót.",
+          "C": "Không được nói; chúng chỉ giúp hồi phục nhanh hơn."
         }
       }
     ]
@@ -1184,15 +1184,15 @@
         "opts": [
           {
             "k": "A",
-            "t": "It was run by a local organisation."
+            "t": "More of its money stayed in the community."
           },
           {
             "k": "B",
-            "t": "It was the shortest."
+            "t": "It offered a shorter placement."
           },
           {
             "k": "C",
-            "t": "It was the cheapest."
+            "t": "It cost less than other programmes."
           },
           {
             "k": "D",
@@ -1200,14 +1200,14 @@
           }
         ],
         "ans": "A",
-        "b": 5.5,
+        "b": 6,
         "ev": {
           "p": 1,
-          "s": "because it was run by a local organisation rather than an international company"
+          "s": "so more of the money went to the community"
         },
-        "why": "Do tổ chức địa phương điều hành.",
+        "why": "Do tổ chức địa phương điều hành nên nhiều tiền hơn đến với cộng đồng.",
         "wrong": {
-          "B": "Cô ở sáu tháng.",
+          "B": "Cô ở sáu tháng; không nói ngắn hơn.",
           "C": "Không được nói.",
           "D": "Không được nói."
         }
@@ -1298,7 +1298,7 @@
           },
           {
             "k": "D",
-            "t": "training local teachers"
+            "t": "preparing local staff to teach"
           }
         ],
         "ans": "D",
@@ -1325,7 +1325,7 @@
           },
           {
             "k": "B",
-            "t": "one full academic year"
+            "t": "about one year"
           },
           {
             "k": "C",

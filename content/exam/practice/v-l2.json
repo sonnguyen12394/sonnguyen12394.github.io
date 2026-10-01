@@ -1156,19 +1156,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "to have no slides"
+            "t": "to have no slides at all"
           },
           {
             "k": "B",
-            "t": "to use more text"
+            "t": "to put more text on each slide"
           },
           {
             "k": "C",
-            "t": "to use mainly charts and photos"
+            "t": "to show mostly visuals, not text"
           },
           {
             "k": "D",
-            "t": "to ask a friend to design them for the group"
+            "t": "to ask a friend to make them"
           }
         ],
         "ans": "C",
@@ -1177,7 +1177,7 @@
           "p": 5,
           "s": "This time let's use mainly charts and photos"
         },
-        "why": "Chủ yếu biểu đồ và ảnh.",
+        "why": "Chủ yếu biểu đồ và ảnh, ít chữ.",
         "wrong": {
           "A": "Không được nói.",
           "B": "Ngược lại, lần trước quá nhiều chữ.",
@@ -1581,36 +1581,36 @@
       },
       {
         "id": "v-l2-08-4",
-        "q": "What would make Mr Hai more willing to support the trial?",
+        "q": "What is Mr Hai's position at the end of the discussion?",
         "opts": [
           {
             "k": "A",
-            "t": "a reliable shuttle service"
+            "t": "He could support a trial under certain conditions."
           },
           {
             "k": "B",
-            "t": "fewer car-free days"
+            "t": "He believes shuttle buses would not help."
           },
           {
             "k": "C",
-            "t": "lower taxes"
+            "t": "He thinks the trial should start immediately."
           },
           {
             "k": "D",
-            "t": "more parking in the old quarter"
+            "t": "He wants restaurants left out of the trial."
           }
         ],
         "ans": "A",
-        "b": 7,
+        "b": 7.5,
         "ev": {
           "p": 6,
           "s": "If there were a reliable shuttle, I'd be more willing to support the trial."
         },
-        "why": "Có xe đưa đón đáng tin cậy.",
+        "why": "Ông sẵn lòng ủng hộ hơn nếu có xe đưa đón đáng tin và thành phố hỏi ý kiến chủ cửa hàng: ủng hộ có điều kiện.",
         "wrong": {
-          "B": "Không được nói.",
-          "C": "Không được nói.",
-          "D": "Không được đề xuất."
+          "B": "Ngược ý: xe đưa đón khiến ông dễ ủng hộ hơn.",
+          "C": "Ông muốn thành phố bàn với chủ cửa hàng trước.",
+          "D": "Không được nói."
         }
       }
     ]

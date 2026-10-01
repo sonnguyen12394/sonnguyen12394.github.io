@@ -457,7 +457,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "Prices have risen sharply."
+            "t": "Prices have stayed about the same."
           },
           {
             "k": "B",
@@ -465,11 +465,11 @@
           },
           {
             "k": "C",
-            "t": "Clothing production has roughly doubled since 2000."
+            "t": "About twice as many garments are made now as in 2000."
           },
           {
             "k": "D",
-            "t": "New designs appear only once a season."
+            "t": "New designs appear about once a season."
           }
         ],
         "ans": "C",
@@ -478,11 +478,11 @@
           "p": 0,
           "s": "the number of garments produced each year has roughly doubled since 2000"
         },
-        "why": "Số quần áo sản xuất tăng gần gấp đôi từ 2000.",
+        "why": "\"roughly doubled since 2000\": số quần áo làm ra tăng khoảng gấp đôi.",
         "wrong": {
-          "A": "Bài nói giá giảm, không tăng.",
+          "A": "Giá đã giảm rất thấp.",
           "B": "Đến được gần như mọi người.",
-          "D": "Mẫu mới ra vài tuần một lần."
+          "D": "Mẫu mới ra vài tuần một lần, không phải mỗi mùa."
         }
       },
       {
@@ -556,36 +556,36 @@
       },
       {
         "id": "v-r-02-5",
-        "q": "According to the passage, polyester",
+        "q": "According to paragraph 2, synthetic materials such as polyester",
         "opts": [
           {
             "k": "A",
-            "t": "is easy to recycle"
+            "t": "are mainly produced where laws are weak"
           },
           {
             "k": "B",
-            "t": "is used in a small proportion of new clothing"
+            "t": "are easy to recycle into new garments"
           },
           {
             "k": "C",
-            "t": "is made from oil"
+            "t": "now make up most new clothing"
           },
           {
             "k": "D",
-            "t": "uses less water than cotton"
+            "t": "need more water than cotton"
           }
         ],
         "ans": "C",
         "b": 6,
         "ev": {
           "p": 1,
-          "s": "are made from oil and shed tiny plastic fibres every time they are washed"
+          "s": "which now make up the majority of new clothing"
         },
-        "why": "Polyester được làm từ dầu mỏ.",
+        "why": "\"the majority of new clothing\" = phần lớn quần áo mới.",
         "wrong": {
-          "A": "Không được nói.",
-          "B": "Ngược lại: chiếm phần lớn (\"the majority\").",
-          "D": "Bài không so sánh lượng nước."
+          "A": "Luật yếu được nhắc khi nói về nhuộm vải, không phải nơi sản xuất polyester.",
+          "B": "Không được nói; bài chỉ nói chúng rụng sợi nhựa khi giặt.",
+          "D": "Nước chủ yếu dùng để trồng bông, không phải cho vải tổng hợp."
         }
       },
       {
@@ -624,7 +624,7 @@
       },
       {
         "id": "v-r-02-7",
-        "q": "What happens to much of the clothing that charity shops cannot sell?",
+        "q": "What happens to many of the clothes that charity shops cannot sell?",
         "opts": [
           {
             "k": "A",
@@ -696,19 +696,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "charity shops to sell much more of the clothing they receive"
+            "t": "charity shops to sell more of what they receive"
           },
           {
             "k": "B",
-            "t": "consumers to stop buying clothes"
+            "t": "consumers to buy only second-hand clothes"
           },
           {
             "k": "C",
-            "t": "governments to make producers responsible for waste"
+            "t": "rules making brands responsible for their waste"
           },
           {
             "k": "D",
-            "t": "more second-hand websites"
+            "t": "more brands to offer repair services"
           }
         ],
         "ans": "C",
@@ -717,11 +717,11 @@
           "p": 3,
           "s": "real change will require governments to make producers responsible for the waste their products create"
         },
-        "why": "Chính phủ buộc nhà sản xuất chịu trách nhiệm rác thải.",
+        "why": "Chính phủ buộc nhà sản xuất chịu trách nhiệm về rác thải.",
         "wrong": {
           "A": "Không được nói.",
-          "B": "Không ai đề nghị ngừng mua hẳn.",
-          "D": "Web đồ cũ là dấu hiệu tích cực nhưng không phải điều kiện critics nêu."
+          "B": "Không ai đề nghị chỉ mua đồ cũ.",
+          "D": "Dịch vụ sửa chữa là sáng kiến mà critics cho là còn quá nhỏ."
         }
       },
       {
@@ -989,7 +989,7 @@
           },
           {
             "k": "B",
-            "t": "It clearly improves learning."
+            "t": "It improves learning mainly for younger children."
           },
           {
             "k": "C",
@@ -997,7 +997,7 @@
           },
           {
             "k": "D",
-            "t": "It is used by most researchers."
+            "t": "It works best when combined with IQ testing."
           }
         ],
         "ans": "A",
@@ -1008,9 +1008,9 @@
         },
         "why": "Ít bằng chứng cho thấy nó cải thiện việc học.",
         "wrong": {
-          "B": "Bài nói có rất ít bằng chứng, không phải cải thiện rõ.",
+          "B": "Bài không nói về trẻ nhỏ; bài nói gần như không có bằng chứng.",
           "C": "Bài không nói đó là khuyến nghị chính của Gardner.",
-          "D": "Giáo viên dùng, nhà nghiên cứu thận trọng."
+          "D": "Không được nói."
         }
       },
       {
@@ -1054,15 +1054,15 @@
         "opts": [
           {
             "k": "A",
-            "t": "enthusiastic and fully supportive"
+            "t": "doubtful about all forms of intelligence testing"
           },
           {
             "k": "B",
-            "t": "completely dismissive of its value"
+            "t": "generally supportive of using it in schools"
           },
           {
             "k": "C",
-            "t": "uninterested in its practical effects on teaching"
+            "t": "more interested in its history than its value"
           },
           {
             "k": "D",
@@ -1075,11 +1075,11 @@
           "p": 2,
           "s": "Gardner's theory proved enormously popular with teachers"
         },
-        "why": "Tác giả ghi nhận thuyết rất được giáo viên ưa chuộng nhưng nêu phản bác của giới nghiên cứu: thái độ cân bằng.",
+        "why": "Tác giả ghi nhận sức hút và lý lẽ của thuyết nhưng nêu phản bác của giới nghiên cứu: thái độ cân bằng.",
         "wrong": {
-          "A": "Tác giả nêu rõ các phê phán và thiếu bằng chứng.",
-          "B": "Tác giả nêu sức hút và lý lẽ của thuyết, không bác bỏ hoàn toàn.",
-          "C": "Tác giả có bàn tác động thực tế (giáo viên thiết kế lại bài học)."
+          "A": "Đoạn cuối chấp nhận năng lực chung là có thật và đo được.",
+          "B": "Tác giả nêu rằng gần như không có bằng chứng việc dạy theo \"trí thông minh\" giúp học tốt hơn.",
+          "C": "Tác giả đánh giá giá trị của thuyết (bằng chứng, phản bác), không chỉ kể lịch sử."
         }
       },
       {
@@ -1122,19 +1122,19 @@
         "opts": [
           {
             "k": "A",
-            "t": "IQ tests should be abolished."
+            "t": "IQ scores are useful mainly for selecting staff."
           },
           {
             "k": "B",
-            "t": "General reasoning ability is real but is only one factor in success."
+            "t": "General ability is real but only one factor in success."
           },
           {
             "k": "C",
-            "t": "Gardner's theory of many intelligences has now been fully accepted by researchers."
+            "t": "Gardner's separate intelligences are now widely measured."
           },
           {
             "k": "D",
-            "t": "Intelligence is fixed at birth."
+            "t": "Intelligence is mostly inherited, though schooling helps a little."
           }
         ],
         "ans": "B",
@@ -1143,11 +1143,11 @@
           "p": 4,
           "s": "it represents only one of many qualities, including creativity, persistence and social skill"
         },
-        "why": "Năng lực suy luận chung có thật nhưng chỉ là một trong nhiều yếu tố.",
+        "why": "Năng lực suy luận chung có thật, đo được, nhưng chỉ là một trong nhiều phẩm chất quyết định thành công.",
         "wrong": {
-          "A": "Họ chấp nhận nó đo được và có ích.",
-          "C": "Đây là quan điểm trung dung, không chấp nhận hoàn toàn Gardner.",
-          "D": "Họ nhấn mạnh nó được định hình bởi trải nghiệm."
+          "A": "Việc dùng IQ để tuyển người là chuyện thế kỷ 20 (đoạn 1), không phải quan điểm hiện nay.",
+          "C": "Bài không nói các trí thông minh của Gardner được đo rộng rãi.",
+          "D": "Họ nhấn mạnh nó được định hình bởi trải nghiệm, không phải chủ yếu do di truyền."
         }
       }
     ]

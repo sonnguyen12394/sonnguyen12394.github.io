@@ -461,23 +461,23 @@
     "items": [
       {
         "id": "v-l1-04-1",
-        "q": "What should staff do during the alarm test?",
+        "q": "What are staff told about the alarm test?",
         "opts": [
           {
             "k": "A",
-            "t": "call the manager"
+            "t": "They should call the manager."
           },
           {
             "k": "B",
-            "t": "go to the ground floor"
+            "t": "They should go to the ground floor."
           },
           {
             "k": "C",
-            "t": "stay where they are"
+            "t": "They can stay inside the building."
           },
           {
             "k": "D",
-            "t": "leave the building"
+            "t": "They must leave the building."
           }
         ],
         "ans": "C",
@@ -486,11 +486,11 @@
           "p": 0,
           "s": "You do not need to leave the building."
         },
-        "why": "Không cần rời toà nhà, tức là ở yên tại chỗ.",
+        "why": "Không cần rời toà nhà, nên có thể ở lại bên trong.",
         "wrong": {
           "A": "Không được nói.",
           "B": "Không được nói.",
-          "D": "Bài nói không cần rời toà nhà."
+          "D": "Ngược ý: \"You do not need to leave\"."
         }
       },
       {
@@ -926,19 +926,19 @@
           },
           {
             "k": "B",
-            "t": "a fee"
+            "t": "a note from a parent"
           },
           {
             "k": "C",
-            "t": "an online form"
+            "t": "a copy of the timetable"
           },
           {
             "k": "D",
-            "t": "an interview"
+            "t": "a printed online form"
           }
         ],
         "ans": "A",
-        "b": 6,
+        "b": 5.5,
         "ev": {
           "p": 1,
           "s": "Late requests will only be accepted with a letter from your tutor."
@@ -946,8 +946,8 @@
         "why": "Cần thư của giáo viên hướng dẫn.",
         "wrong": {
           "B": "Không được nhắc.",
-          "C": "Biểu mẫu là yêu cầu chung, không riêng cho yêu cầu muộn.",
-          "D": "Không được nhắc."
+          "C": "Không được nhắc.",
+          "D": "Biểu mẫu trực tuyến là yêu cầu chung, không phải giấy tờ thêm cho yêu cầu muộn."
         },
         "trap": "Biểu mẫu được nhắc trước; câu hỏi hỏi riêng trường hợp nộp muộn."
       },
@@ -1276,8 +1276,8 @@
       "vstep"
     ],
     "qtype": "v-l1",
-    "level": "B2",
-    "band": 6.5,
+    "level": "B1",
+    "band": 6,
     "mode": "practice",
     "title": "Announcements 10",
     "instr": "You will hear three short announcements or messages. For each one, choose the best answer, A, B, C or D. You will hear each recording once.",
