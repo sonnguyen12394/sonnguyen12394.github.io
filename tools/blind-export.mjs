@@ -4,6 +4,7 @@
 // rồi chấm bằng tools/blind-score.mjs. Câu tốt chỉ trả lời được khi đọc/nghe bài, nên tỉ lệ đúng phải gần mức ngẫu nhiên.
 // Dùng: node tools/blind-export.mjs [--type pl-r,v-r] [--mock a1] [--sample N] [--seed S] > out.txt
 // --mock: chỉ câu của một đề thi thử, kể cả câu dùng phương án chung (TRUE/FALSE/NOT GIVEN, tiêu đề, nối).
+// Câu chọn nhiều đáp án ("Choose TWO") cũng được xuất; người làm trả lời dạng "B,D".
 import { loadGroups, optsOf } from './groups.mjs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,12 +17,12 @@ const by = new Map();
 for (const g of loadGroups(ROOT)) {
   if (types && !types.includes(g.qtype)) continue;
   if (mock && !g.id.startsWith(`m-${mock}-`)) continue;
-  for (const it of g.items) if (typeof it.ans === 'string' && (it.opts || (mock && g.options))) by.set(g.qtype, [...(by.get(g.qtype) ?? []), { ...it, opts: optsOf(it, g) }]);
+  for (const it of g.items) if ((typeof it.ans === 'string' || Array.isArray(it.ans)) && (it.opts || (mock && g.options))) by.set(g.qtype, [...(by.get(g.qtype) ?? []), { ...it, opts: optsOf(it, g) }]);
 }
 const out = [];
 for (const [, its] of by) {
   let pick = its;
   if (sample && its.length > sample) { pick = its.map(it => [rnd(), it]).sort((a, b) => a[0] - b[0]).slice(0, sample).map(x => x[1]); }
-  for (const it of pick) out.push(`[${it.id}] ${it.q}\n  ${it.opts.map(o => `${o.k}) ${o.t}`).join('   ')}`);
+  for (const it of pick) out.push(`[${it.id}] ${it.q}${Array.isArray(it.ans) ? ` (Choose ${['', 'ONE', 'TWO', 'THREE'][it.ans.length] ?? it.ans.length} letters; answer like "B,D")` : ''}\n  ${it.opts.map(o => `${o.k}) ${o.t}`).join('   ')}`);
 }
 process.stdout.write(out.join('\n') + '\n');

@@ -202,6 +202,15 @@
       "deposit",
       "stable"
     ],
+    "audio": {
+      "file": "a/m-a2-l1.mp3",
+      "dur": 249.4,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "bf_isabella"
+      ]
+    },
     "sets": [
       {
         "qtype": "l-form",
@@ -427,16 +436,7 @@
           }
         ]
       }
-    ],
-    "audio": {
-      "file": "a/m-a2-l1.mp3",
-      "dur": 249.4,
-      "voices": [
-        "bm_george",
-        "am_adam",
-        "bf_isabella"
-      ]
-    }
+    ]
   },
   {
     "id": "m-a2-l2",
@@ -557,6 +557,14 @@
       "hammer",
       "volunteering"
     ],
+    "audio": {
+      "file": "a/m-a2-l2.mp3",
+      "dur": 236.2,
+      "voices": [
+        "bm_george",
+        "bm_lewis"
+      ]
+    },
     "sets": [
       {
         "qtype": "l-map",
@@ -743,7 +751,7 @@
             "opts": [
               {
                 "k": "A",
-                "t": "only near the car park"
+                "t": "only near the car park and the first path"
               },
               {
                 "k": "B",
@@ -826,15 +834,7 @@
           }
         ]
       }
-    ],
-    "audio": {
-      "file": "a/m-a2-l2.mp3",
-      "dur": 236.2,
-      "voices": [
-        "bm_george",
-        "bm_lewis"
-      ]
-    }
+    ]
   },
   {
     "id": "m-a2-l3",
@@ -985,6 +985,16 @@
       "traders",
       "focus"
     ],
+    "audio": {
+      "file": "a/m-a2-l3.mp3",
+      "dur": 264.3,
+      "voices": [
+        "bm_george",
+        "af_nicole",
+        "bm_lewis",
+        "am_michael"
+      ]
+    },
     "sets": [
       {
         "qtype": "l-mcq2",
@@ -1089,7 +1099,9 @@
             "q": "The main reason the market moved was ___.",
             "ans": {
               "accept": [
-                "flooding"
+                "flooding",
+                "floods",
+                "flood"
               ]
             },
             "limit": 1,
@@ -1202,17 +1214,7 @@
           }
         ]
       }
-    ],
-    "audio": {
-      "file": "a/m-a2-l3.mp3",
-      "dur": 264.3,
-      "voices": [
-        "bm_george",
-        "af_nicole",
-        "bm_lewis",
-        "am_michael"
-      ]
-    }
+    ]
   },
   {
     "id": "m-a2-l4",
@@ -1323,6 +1325,14 @@
       "engineers",
       "significant"
     ],
+    "audio": {
+      "file": "a/m-a2-l4.mp3",
+      "dur": 205,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ]
+    },
     "sets": [
       {
         "qtype": "l-form",
@@ -1475,7 +1485,8 @@
             "q": "Shopkeepers complained about difficult ___",
             "ans": {
               "accept": [
-                "deliveries"
+                "deliveries",
+                "delivery"
               ]
             },
             "limit": 1,
@@ -1528,14 +1539,6 @@
           }
         ]
       }
-    ],
-    "audio": {
-      "file": "a/m-a2-l4.mp3",
-      "dur": 205,
-      "voices": [
-        "bm_george",
-        "bf_emma"
-      ]
-    }
+    ]
   }
 ]

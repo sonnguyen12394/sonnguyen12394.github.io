@@ -201,7 +201,8 @@
             "ans": {
               "accept": [
                 "string",
-                "the string"
+                "the string",
+                "ball of string"
               ]
             },
             "limit": 3,
@@ -237,20 +238,21 @@
           },
           {
             "id": "m-a2-r1-09",
-            "q": "Who did the hospital design walking routes for?",
+            "q": "What kind of operation had the patients on the walking routes recovered from?",
             "ans": {
               "accept": [
-                "patients",
-                "heart patients"
+                "heart operations",
+                "heart operation",
+                "heart"
               ]
             },
             "limit": 3,
             "b": 6.5,
             "ev": {
               "p": 4,
-              "s": "to design shaded walking routes for patients recovering from heart operations"
+              "s": "patients recovering from heart operations"
             },
-            "why": "Bệnh viện thiết kế tuyến đi bộ cho bệnh nhân hồi phục sau phẫu thuật tim."
+            "why": "Tuyến đi bộ dành cho bệnh nhân hồi phục sau phẫu thuật tim."
           }
         ]
       },
@@ -344,7 +346,7 @@
     "paras": [
       "For most of the twentieth century, the town of Brenmouth was protected from the sea by a vertical concrete wall. It had been built in the 1920s, after a storm destroyed the old wooden pier, and was raised by half a metre in the 1950s. It was tall enough, and it rarely failed outright. Its problems were less obvious. Because the wall was smooth and vertical, it reflected the energy of each wave straight back onto the beach in front of it, and over the decades the sand was gradually scoured away. The wall also had no proper way of letting water out: rain and spray that collected behind it in storms had nowhere to go, and the streets nearest the sea flooded from the land side, not the sea side.",
       "When the wall reached the end of its life, the engineers who designed its replacement took a different approach. Rather than trying to stop waves, the new wall is designed to tire them out. At its foot, a sloping bank of shingle absorbs much of each wave's force before it reaches the structure. Above the shingle, the face of the wall rises in a series of shallow steps, which slow the water as it climbs. Each step is about forty centimetres high, low enough for people to sit on in summer. The whole structure is a little over a kilometre long. Finally, a curved parapet along the top throws back whatever spray is left, so that very little water reaches the promenade behind it.",
-      "The problem of water behind the wall was solved with a drain that runs along the land side, just beneath the promenade. In heavy rain it carries water to three outlets, which open only when the tide is low. Each outlet is fitted with a flap that the rising sea itself pushes shut, so no machinery or power supply is needed. The engineers point out that this drain, which is invisible to most visitors, has prevented more flooding than any other part of the scheme.",
+      "The problem of water behind the wall was solved with a drain that runs along the land side, just beneath the promenade. In heavy rain it carries water to a single large outlet at the harbour end, which is opened and closed by hand by council staff, since automatic gates were judged too likely to jam with shingle. There are no pumps: when a storm coincides with a high tide, the water is simply held in the drain until the tide falls. The engineers point out that this drain, which is invisible to most visitors, has prevented more flooding than any other part of the scheme.",
       "The design was not universally welcomed. Hotel owners, who had expected to object to the loss of their sea views, were in fact relieved to find the new wall lower than the old one. The strongest opposition came from two groups. Fishermen complained that the shingle bank made it harder to pull their boats up the beach, and surfers argued that the stepped face would change the shape of the waves at a popular break nearby. The council held three public meetings before construction began. At these, the engineers agreed to leave a gap in the shingle bank where boats could still be landed, but they refused to change the stepped face.",
       "Several choices made during construction surprised observers. A taller wall was considered and rejected, not because of its appearance but because it would have needed permission from three separate authorities, which could have taken years. Local stone was used for the steps. It is often said that the stone came from the demolished wall, but the old wall was concrete; the real reason was a planning condition that the new wall should match the look of the stone harbour buildings beside it. Work also stopped completely for two months in the first winter. This was not a delivery problem, since the shingle had arrived early; the engineers judged that the half-built steps were too likely to be damaged by storms. Finally, the parapet was built lower than the engineers had first drawn it. Hotel owners assumed this was done to protect their view, but the real reason was the cost of the extra concrete, which the original budget had underestimated.",
       "The new wall is not maintenance-free. Every winter, storms carry part of the shingle along the coast, and it has to be topped up each spring at considerable cost to the council. Supporters of the scheme argue that this is a small price for a beach that, for the first time in decades, is growing rather than shrinking. The council now records the beach with a fixed camera that photographs it at every low tide, and the images are published online so that residents can follow the changes for themselves."
@@ -352,7 +354,7 @@
     "vi": [
       "Trong phần lớn thế kỷ hai mươi, thị trấn Brenmouth được một bức tường bê tông thẳng đứng bảo vệ khỏi biển. Tường được xây vào thập niên 1920, sau khi một cơn bão phá huỷ cầu tàu gỗ cũ, và được nâng thêm nửa mét vào thập niên 1950. Tường đủ cao, và hiếm khi sụp hẳn. Vấn đề của nó kín đáo hơn. Vì tường nhẵn và thẳng đứng, nó phản lại năng lượng của từng con sóng thẳng xuống bãi biển phía trước, và qua nhiều thập kỷ cát dần bị bào mòn. Tường cũng không có cách thoát nước đúng nghĩa: nước mưa và bọt sóng đọng lại phía sau tường khi bão không có chỗ thoát, và những con phố gần biển nhất bị ngập từ phía đất liền chứ không phải phía biển.",
       "Khi bức tường hết tuổi thọ, các kỹ sư thiết kế công trình thay thế đã chọn cách khác. Thay vì cố chặn sóng, bức tường mới được thiết kế để làm sóng kiệt sức. Ở chân tường, một bờ dốc bằng sỏi biển hấp thụ phần lớn lực của mỗi con sóng trước khi nó chạm công trình. Phía trên lớp sỏi, mặt tường dâng lên thành một loạt bậc thấp, làm nước chậm lại khi leo lên. Mỗi bậc cao khoảng bốn mươi xen-ti-mét, đủ thấp để người ta ngồi vào mùa hè. Toàn bộ công trình dài hơn một ki-lô-mét một chút. Cuối cùng, một gờ chắn cong dọc đỉnh tường hắt ngược lại chỗ bọt sóng còn sót, để rất ít nước tới được lối đi dạo phía sau.",
-      "Vấn đề nước đọng sau tường được giải quyết bằng một rãnh thoát chạy dọc phía đất liền, ngay dưới lối đi dạo. Khi mưa lớn, rãnh dẫn nước tới ba cửa xả, chỉ mở khi thuỷ triều xuống. Mỗi cửa xả có một nắp mà chính nước biển dâng lên đẩy đóng lại, nên không cần máy móc hay nguồn điện. Các kỹ sư chỉ ra rằng rãnh thoát này, thứ mà phần lớn du khách không nhìn thấy, đã ngăn ngập lụt nhiều hơn bất kỳ phần nào khác của công trình.",
+      "Vấn đề nước đọng sau tường được giải quyết bằng một rãnh thoát chạy dọc phía đất liền, ngay dưới lối đi dạo. Khi mưa lớn, rãnh dẫn nước tới một cửa xả lớn duy nhất ở phía bến cảng, được nhân viên hội đồng đóng mở bằng tay, vì cửa tự động bị đánh giá là quá dễ kẹt sỏi. Không có máy bơm: khi bão trùng với triều cường, nước chỉ được giữ trong rãnh cho tới khi triều xuống. Các kỹ sư chỉ ra rằng rãnh thoát này, thứ mà phần lớn du khách không nhìn thấy, đã ngăn ngập lụt nhiều hơn bất kỳ phần nào khác của công trình.",
       "Thiết kế không được tất cả hoan nghênh. Chủ khách sạn, những người đã định phản đối vì mất tầm nhìn ra biển, lại nhẹ nhõm khi thấy tường mới thấp hơn tường cũ. Phản đối mạnh nhất đến từ hai nhóm. Ngư dân phàn nàn rằng bờ sỏi khiến kéo thuyền lên bãi khó hơn, còn người lướt sóng cho rằng mặt tường bậc thang sẽ làm thay đổi hình dạng con sóng ở một điểm lướt sóng nổi tiếng gần đó. Hội đồng đã tổ chức ba cuộc họp công khai trước khi khởi công. Tại đó, các kỹ sư đồng ý chừa một khoảng trống trên bờ sỏi để thuyền vẫn cập được, nhưng từ chối thay đổi mặt tường bậc thang.",
       "Một số lựa chọn trong lúc thi công khiến người quan sát bất ngờ. Một bức tường cao hơn từng được cân nhắc rồi bị loại, không phải vì vẻ ngoài mà vì nó cần giấy phép của ba cơ quan riêng biệt, việc có thể mất nhiều năm. Đá địa phương được dùng làm bậc. Người ta hay nói đá lấy từ bức tường bị phá, nhưng tường cũ bằng bê tông; lý do thật là một điều kiện quy hoạch yêu cầu tường mới phải hợp với dáng vẻ các toà nhà bằng đá ở bến cảng bên cạnh. Công việc cũng dừng hẳn hai tháng vào mùa đông đầu tiên. Đây không phải chuyện giao hàng, vì sỏi đã tới sớm; các kỹ sư đánh giá rằng những bậc xây dở quá dễ bị bão làm hỏng. Cuối cùng, gờ chắn được xây thấp hơn bản vẽ ban đầu của các kỹ sư. Chủ khách sạn cho rằng việc này để giữ tầm nhìn cho họ, nhưng lý do thật là chi phí cho phần bê tông thêm, thứ mà ngân sách ban đầu đã tính thiếu.",
       "Bức tường mới không phải không cần bảo dưỡng. Mỗi mùa đông, bão cuốn một phần sỏi dọc bờ biển, và mỗi mùa xuân phải bổ sung với chi phí đáng kể cho hội đồng. Những người ủng hộ công trình cho rằng đó là cái giá nhỏ cho một bãi biển mà, lần đầu tiên sau nhiều thập kỷ, đang rộng ra chứ không thu hẹp lại. Hội đồng nay theo dõi bãi biển bằng một máy ảnh cố định chụp mỗi lần triều xuống, và ảnh được đăng trực tuyến để cư dân tự theo dõi sự thay đổi."
@@ -392,8 +394,9 @@
       "decades",
       "opposition",
       "pier",
-      "flap",
-      "machinery",
+      "jam",
+      "pumps",
+      "gates",
       "underestimated",
       "budget"
     ],
@@ -408,7 +411,8 @@
             "q": "14",
             "ans": {
               "accept": [
-                "shingle"
+                "shingle",
+                "bank"
               ]
             },
             "limit": 1,
@@ -590,27 +594,27 @@
         "items": [
           {
             "id": "m-a2-r2-10",
-            "q": "Which TWO problems did the old wall cause?",
+            "q": "Which TWO statements about the drain are correct?",
             "opts": [
               {
                 "k": "A",
-                "t": "It reflected waves that removed sand from the beach."
+                "t": "It is hidden from most visitors."
               },
               {
                 "k": "B",
-                "t": "It blocked views from the hotels."
+                "t": "It has pumps for use in storms."
               },
               {
                 "k": "C",
-                "t": "It was too low to stop large waves."
+                "t": "It carries water to three outlets."
               },
               {
                 "k": "D",
-                "t": "It made it hard for boats to reach the beach."
+                "t": "It was part of the original wall."
               },
               {
                 "k": "E",
-                "t": "It trapped water behind it during storms."
+                "t": "Its gate is opened by hand."
               }
             ],
             "ans": [
@@ -619,14 +623,14 @@
             ],
             "b": 7,
             "ev": {
-              "p": 0,
-              "s": "it reflected the energy of each wave straight back onto the beach"
+              "p": 2,
+              "s": "which is opened and closed by hand by council staff"
             },
-            "why": "Tường cũ phản sóng làm cát bị bào mòn, và không có cách thoát nước nên nước đọng phía sau gây ngập.",
+            "why": "Phần lớn du khách không nhìn thấy rãnh, và cửa xả duy nhất được nhân viên hội đồng đóng mở bằng tay.",
             "wrong": {
-              "B": "Chủ khách sạn chỉ lo về tường MỚI, và rồi nhẹ nhõm.",
-              "C": "Bài nói tường cũ \"tall enough\".",
-              "D": "Khó kéo thuyền là phàn nàn về bờ sỏi của tường mới."
+              "B": "Bài nói rõ \"There are no pumps\".",
+              "C": "Rãnh chỉ có một cửa xả lớn ở phía bến cảng.",
+              "D": "Rãnh là giải pháp mới cho vấn đề nước đọng của tường cũ, không phải một phần tường cũ."
             }
           }
         ]

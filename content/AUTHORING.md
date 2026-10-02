@@ -28,6 +28,7 @@ Rút ra từ đợt soát v41–v42. Trước v42, một phiên AI chỉ thấy 
 - **Danh sách dùng chung** (tiêu đề, người, nơi chốn, khung từ): không xếp theo thứ tự xuất hiện trong bài. Tên gọi không được gợi đáp án; ví dụ tên phòng "Roof Garden" gợi ngay việc ăn uống, nên dùng tên trung tính. Có ít nhất một phương án nhiễu gần nghĩa với từng đáp án.
 - **Nối nửa câu:** mỗi nửa đầu phải hợp ngữ pháp và hợp nghĩa với ít nhất hai nửa sau. Nếu không làm được, dùng dạng khác.
 - **Bài nghị luận:** đừng hỏi lập trường của tác giả bằng những mệnh đề suy ra được từ mạch lập luận. Hỏi chi tiết, ví dụ, số liệu, và quan điểm của tác giả về điểm phụ.
+- **Câu nối người – ý kiến (features) trong bài có nhiều người:** các câu hỏi khác của cùng bài hay để lộ ai bàn chuyện gì (ví dụ "Vance nói gì về kèm cặp?" cho biết ngay Vance bàn về cách giữ kiến thức). Vì vậy, mỗi người phải nói ít nhất một ý mà người đoán sẽ gán cho người khác: người đếm quy định không phải người nói "quy định lỗi thời có ở khắp nơi". Luôn thử cả bộ câu của bài cùng lúc, không thử riêng từng dạng. Đề 2 IELTS Academic: dạng này 20% ở vòng 1, 80% sau khi sửa các câu khác, 0% sau khi đảo vai.
 - **Ghi cấp độ theo độ khó thật của câu**, không theo độ khó của bài. Câu C1 phải có suy luận, thái độ hoặc chức năng đoạn văn.
 
 ## 3. Kiểm tra tự động (`npm run content`, chặn CI)
