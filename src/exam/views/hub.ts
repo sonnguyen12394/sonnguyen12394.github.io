@@ -31,13 +31,16 @@ export function viewHub(c: Ctx): string {
     return `<section class="stack"><span class="eyebrow">Ôn thi</span><h1>Bạn ôn thi gì?</h1>
       <p class="muted">Chọn một kỳ thi để app xếp bài theo đúng định dạng đề. Đổi lúc nào cũng được, tiến độ vẫn giữ.</p></section>
       <div class="units">${(Object.keys(EXAM_NAME) as ExamId[]).map(k => card(`data-x="exam" data-v="${k}"`, k === 'vstep' ? 'map' : 'exam', esc(EXAM_NAME[k]), esc(EXAM_DESC[k]), ico)).join('')}</div>
-      <p class="hint">Mọi bài luyện, đề thi thử và cách chấm đều miễn phí, không quảng cáo, không cần tài khoản.</p>`;
+      <p class="hint">Bài luyện, đề thi thử và cách chấm đang có đều miễn phí, không quảng cáo, không cần tài khoản.</p>`;
   }
   const isV = x.exam === 'vstep', today = host.today();
   const goal = x.target === null ? 'chưa đặt mục tiêu' : isV ? `mục tiêu trung bình ${fmt(x.target)}` : `mục tiêu band ${fmt(x.target)}`;
   const when = x.date === null ? 'chưa có ngày thi' : x.date >= today ? `thi ngày ${dayVi(x.date)} (còn ${x.date - today} ngày)` : `đã thi ngày ${dayVi(x.date)}`;
   return `<section class="stack"><span class="eyebrow">Ôn thi · ${esc(EXAM_NAME[x.exam])}</span><h1>Ôn ${esc(EXAM_NAME[x.exam])}</h1>
       <p class="muted">${esc(goal)} · ${esc(when)} · ${x.mins} phút/ngày <button class="linkbtn" data-x="route" data-r="settings" aria-label="Đổi mục tiêu, ngày thi, thời gian">Đổi</button></p></section>
+    ${x.consent === null ? `<section class="panel stack" aria-labelledby="xinv"><h3 id="xinv">Giúp app đo đúng hơn?</h3>
+      <p class="muted">Bật chia sẻ thống kê ẩn danh: app biết câu nào quá khó, ước tính lệch bao nhiêu so với điểm thật, và có bao nhiêu người đang học. Không tên, không email, không mã máy. Tắt lúc nào cũng được.</p>
+      <div class="row"><button class="btn primary small" data-x="route" data-r="settings">Xem và đồng ý</button><button class="btn ghost small" data-x="consentno">Không, cảm ơn</button></div></section>` : ''}
     ${todayPanel(c, planFor(c))}
     ${estimatePanel(c)}
     ${x.mockRun ? `<section class="panel spread"><span>Bạn đang làm dở <b>${esc((IDX.mocks ?? []).find(m => m.id === x.mockRun!.t)?.title ?? 'một đề thi thử')}</b>.</span><button class="btn primary small" data-x="mockresume">Làm tiếp</button></section>` : ''}

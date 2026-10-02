@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 44;
+const STATE_V = 18, APP_VERSION = 45;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -1156,7 +1156,11 @@ const currentUnit = () => (goalUnits()||UNITS).find(u=>unlocked(u)&&!U(u.id).pas
 const LONG_IVL = 21;
 function reviewItems(ws){ return spread(ws.flatMap(w=>{ const d=weakestDims(w.id), a=build(w,d[0]); return (W(w.id).ivl||1)>=LONG_IVL ? [a,Object.assign(build(w,d[1],{test:true}),{noSrs:true})] : [a]; })); }
 function dueWords(){ const t=today(); return ALL_WORDS.filter(w=>{const s=W(w.id);return s.learned&&s.due!=null&&s.due<=t;}); }
-function markActive(){ const t=today(); if(!st.days.includes(t)){ st.days.push(t); try{ ui.streakUp=streak(); }catch(e){} } }
+function markActive(){ const t=today(); if(!st.days.includes(t)){ st.days.push(t); try{ ui.streakUp=streak(); }catch(e){} } dayPing('learn'); }
+// v45: đếm người dùng mỗi ngày (supabase/migrations/20261002120000_day_count.sql). Chỉ khi đã bật "Chia sẻ thống kê ẩn danh" ở Ôn thi;
+// mỗi loại tối đa một lần/ngày (ev.pg ghi ngày đã gửi); máy chủ chỉ cộng vào tổng của ngày, không nhận gì về người học.
+function dayPing(k){ try{ if(!(st.x&&st.x.share)||IN_VIEWER||(typeof navigator!=='undefined'&&navigator.onLine===false)) return;
+  const p=EV().pg||(EV().pg={}), t=today(); if(p[k]===t) return; p[k]=t; save(); syncRpc('el_day_post',{kind:k,v:APP_VERSION}).catch(()=>{}); }catch(e){} }
 function streak(){ const set=new Set([...st.days,...((st.freeze&&st.freeze.used)||[])]); let n=0,t=today(); if(!set.has(t)) t--; while(set.has(t)){n++;t--;} return n; }
 
 // Mastery quyết định "ôn cái gì"; SRS quyết định "khi nào ôn".
@@ -2966,7 +2970,7 @@ ${(()=>{ const ws=WTASKS.filter(t=>st.wtask[t.id]&&st.wtask[t.id].text); return 
 <h2>Câu người học tự viết (app không chấm, nhờ giáo viên sửa)</h2>
 ${writ.length?`<table><tr><th>Phần</th><th>Câu của người học</th><th>Câu mẫu trong app</th><th>Nhận xét của giáo viên</th></tr>${writ.slice(-60).map(x=>`<tr><td class="m">${esc(x[0])}</td><td>${esc(x[1])}</td><td class="m">${esc(x[2])}</td><td><div class="w"></div></td></tr>`).join('')}</table>`:'<p class="m">Người học chưa viết câu nào.</p>'}
 ${st.flags.length?`<h2>Câu người học báo lỗi nội dung</h2><p>${st.flags.length} câu. Xem chi tiết: Cài đặt → Câu đã báo lỗi → Tải danh sách.</p>`:''}
-<p style="color:#555;font-size:13px">Báo cáo tạo bằng ${APP_NAME}: ${TAGLINE}. Mọi bài học miễn phí: ${HOME_URL}</p>
+<p style="color:#555;font-size:13px">Báo cáo tạo bằng ${APP_NAME}: ${TAGLINE}. Học miễn phí: ${HOME_URL}</p>
 </html>`;
 }
 function exportReport(){ return download(`bao-cao-tien-do-${new Date().toISOString().slice(0,10)}.html`,reportHtml(),'text/html'); }
@@ -4312,7 +4316,7 @@ function awaySave(i,gap){ const a=EV().away||=[]; a.push({d:today()-st.start,gap
   toast(['Bận việc','Quên mất'].includes(AWAY_WHY[i])?'Thử ⚡ Học nhanh 5 phút, và đặt lời nhắc trong Cài đặt.':AWAY_WHY[i]==='Bài ôn dồn nhiều quá'?'Bấm “Dàn đều bài ôn” ở trang chủ để chia ra các ngày sau.':AWAY_WHY[i]==='Khó quá'?'Có thể hạ mục tiêu ngày hoặc làm Kiểm tra nhanh để chọn lại cấp.':'Cảm ơn bạn! Góp ý thêm ở ☰ Thêm → Góp ý.'); }
 // Góp ý: đánh giá, điều thích, điều khó chịu, app từng dùng, sẵn sàng trả phí, ý kiến tự do.
 const FB = {
-  like:['Giải thích bằng tiếng Việt','Ôn đúng lúc sắp quên','Mọi bài học miễn phí','Không cần tài khoản','XP, nhiệm vụ, linh vật','Ngữ pháp','Phát âm','Hội thoại, giao tiếp','Dự báo ngày xong'],
+  like:['Giải thích bằng tiếng Việt','Ôn đúng lúc sắp quên','Học miễn phí','Không cần tài khoản','XP, nhiệm vụ, linh vật','Ngữ pháp','Phát âm','Hội thoại, giao tiếp','Dự báo ngày xong'],
   pain:['Tự gõ trên điện thoại','Lượt học quá dài','Khó quá','Dễ quá','Giọng đọc máy','Bài ôn dồn nhiều','Sợ mất tiến độ','Không biết học gì tiếp','Không thấy mình tiến bộ','Hết tim','Quảng cáo'],
   apps:['Duolingo','Quizlet','Anki','ELSA Speak','Prep','Monkey','Memrise','Học trên lớp/trung tâm','Chưa dùng app nào'],
   exam:['IELTS','VSTEP','Thi tốt nghiệp THPT','Chứng chỉ khác','Không thi, học để dùng'],
@@ -4518,15 +4522,16 @@ const WEB_URL = 'https://sonnguyen12394.github.io/';   // bản web (repo công 
 // Link artifact (riêng tư) vẫn chạy như bản phụ; tiến độ chuyển bằng mã sao lưu hoặc mã đồng bộ.
 const HOME_URL = WEB_URL;
 const ARTIFACT_URL = 'https://claude.ai/artifact/PZekH7X8puHNsCXphcmW9x';
-const SHARE_TEXT = `${APP_NAME}: ${TAGLINE}. Mọi bài học miễn phí, không cần tài khoản.`;
+const SHARE_TEXT = `${APP_NAME}: ${TAGLINE}. Học miễn phí, không cần tài khoản.`;
 function shareApp(){ return shareText(SHARE_BY(),'menu'); }
 const homePanel = () => `<section class="panel stack"><h3>Địa chỉ chính thức</h3>
   <p class="note">Luôn mở ${APP_NAME} từ đường link này. Tiến độ lưu theo từng đường link và từng trình duyệt: mở từ link khác (bản cũ, bản xem thử) sẽ là một kho tiến độ khác. Chuyển tiến độ bằng mã sao lưu.</p>
   <p class="num" style="overflow-wrap:anywhere"><a href="${HOME_URL}" target="_blank" rel="noopener">${HOME_URL}</a></p>
   <div class="row"><button class="btn" data-act="share">📤 Giới thiệu app cho bạn bè</button></div>
   <p class="hint">Ai cũng mở được, trên điện thoại hay máy tính, không cần tài khoản. Trên điện thoại: mở link rồi chọn “Thêm vào Màn hình chính” / “Cài đặt ứng dụng” để dùng như app, kể cả khi mất mạng.</p></section>`;
-/* ================== MIỄN PHÍ 100% (v35) ==================
-   Không tim, không giới hạn lượt học, không quảng cáo, không gói trả phí, không khoá nội dung (yêu cầu 3.1).
+/* ================== HỌC MIỄN PHÍ (v35, chỉnh v45) ==================
+   Không tim, không giới hạn lượt học, không quảng cáo, không khoá nội dung đang có (yêu cầu 3.1).
+   v45: bỏ cam kết "không gói trả phí" — có thể có dịch vụ trả phí tuỳ chọn tốn công người thật (chấm Viết/Nói).
    Bản v16–v34 từng có tim, quảng cáo nội bộ và gói Super: đã gỡ hẳn; migrate v17 → v18 bỏ st.money. */
 // Công cụ lớp học (không server): giáo viên mở nhiều file dữ liệu ẩn danh của học sinh → bảng cả lớp. File là dữ liệu không tin cậy: chỉ đọc số, chuỗi qua esc().
 function classRow(o,name){ if(!o||typeof o!=='object'||o.kind!=='vocab-ladder-research') return null;
@@ -4565,7 +4570,7 @@ const WHO_PITCH = {
   work:{p:'Email, họp, thuyết trình: mẫu câu theo mức lịch sự, hội thoại công việc có đóng vai.',share:'app học tiếng Anh công việc (email, họp, thuyết trình), mẫu câu theo mức lịch sự'},
   life:{p:'Nói chuyện hằng ngày, đi du lịch: hội thoại có đóng vai, luyện cặp âm người Việt hay nhầm.',share:'app học tiếng Anh giao tiếp hằng ngày, du lịch, có hội thoại đóng vai và luyện phát âm'},
 };
-const SHARE_BY = () => { const x=WHO_PITCH[st.me.who]; return x?`${APP_NAME}: ${x.share}. Mọi bài học miễn phí, không cần tài khoản.`:SHARE_TEXT; };
+const SHARE_BY = () => { const x=WHO_PITCH[st.me.who]; return x?`${APP_NAME}: ${x.share}. Học miễn phí, không cần tài khoản.`:SHARE_TEXT; };
 // Gửi đi luôn kèm link app. src: menu | ch (thách đấu) | ms (cột mốc) | class | flyer. Chỉ đếm, không ghi nội dung.
 async function shareText(text,src){ const t=`${text}\n${HOME_URL}`; evc('share'); evc('share:'+src); save();
   try{ if(navigator.share){ await navigator.share({title:APP_NAME,text,url:HOME_URL}); return; } }catch(e){ if(e&&e.name==='AbortError') return; }
@@ -4596,7 +4601,7 @@ function growthData(){ const c=EV().c||{}, n=k=>c[k]||0, fp=firstPass();
 function flyerHtml(){ const p=promise4w(15), nW=ALL_WORDS.length.toLocaleString('vi');
   return `<!doctype html><html lang="vi"><meta charset="utf-8"><title>${APP_NAME} · Tờ giới thiệu</title><style>body{font:15px/1.55 system-ui,sans-serif;max-width:720px;margin:32px auto;padding:0 20px;color:#162033}h1{font-size:28px;margin:0}h2{font-size:17px;margin-top:22px}.big{font-size:18px}.url{font:600 16px monospace;word-break:break-all;border:2px solid #1F4FD8;padding:10px;border-radius:8px}li{margin:4px 0}</style>
 <h1>${APP_NAME}</h1><p class="big">${TAGLINE}.</p>
-<p><b>Mọi bài học miễn phí, không cần tài khoản.</b> Mở trên điện thoại hoặc máy tính:</p><p class="url">${HOME_URL}</p>
+<p><b>Học miễn phí, không cần tài khoản.</b> Mở trên điện thoại hoặc máy tính:</p><p class="url">${HOME_URL}</p>
 <h2>Có gì</h2><ul><li>${nW} từ trong ${UNITS.length} unit A1 → C2, ${GPOINTS.length} bài ngữ pháp, ${DIALOGUES.length} hội thoại, bài đọc cho mọi unit.</li><li>${CANDO.length} câu “Tôi có thể…” của khung CEFR: luôn biết mình làm được gì ở mỗi cấp.</li><li>Mỗi phương án sai đều có lời giải thích bằng tiếng Việt; lịch ôn riêng cho từng từ.</li></ul>
 <h2>Học 15 phút mỗi ngày</h2><p>Khoảng ${String(p.per).replace('.',',')} unit mỗi tuần; sau 4 tuần khoảng ${p.words} từ được học và ôn đúng lúc sắp quên (ước tính ${UNIT_COST} câu mỗi unit).</p>
 <h2>Dùng trong lớp</h2><ol><li>Học sinh mở link, chọn “Học sinh phổ thông” (hoặc nhóm phù hợp), học 1–2 unit mỗi tuần.</li><li>Cuối tuần, học sinh vào Thêm → Góp ý → Dữ liệu học ẩn danh, tải file và gửi giáo viên.</li><li>Giáo viên mở Thêm → Công cụ lớp học, chọn các file: bảng cả lớp hiện ngay trên máy, không tải lên đâu cả.</li></ol>
@@ -6044,6 +6049,23 @@ function vxStatsHtml(tr){ if(!tr||!tr.text) return ''; const s=vxSpeechStats(tr)
     <p class="hint">Tốc độ nói tự nhiên khoảng 110–150 từ/phút; dưới 70 thường là ngập ngừng nhiều. Từ nối: ${s.links.length?esc(s.links.join(', ')):'chưa nghe thấy'}.</p>
     ${s.hints.length?`<div class="stack" style="gap:4px"><b>Lỗi hay gặp máy dò được</b>${s.hints.map(h=>`<p class="gerr"><span lang="en">${esc(h.snip)}</span><span class="hint">${esc(h.why)}</span></p>`).join('')}</div>`:''}
     <p class="hint">Máy có thể chép sai khi phát âm chưa rõ; lỗi ở đây có khi là lỗi nghe của máy.</p></details>`; }
+// v45: nhờ trợ lý AI của chính người học nhận xét (app không gọi AI): chép đề, bài làm và tiêu chí thành một lời nhắc để dán vào ChatGPT, Claude, Gemini…
+// Thang 1–4 giống phần tự chấm, nên người học nhập lại được điểm AI vào ô tự chấm.
+function vxAiText(k){ const V=ui.vx, sc='mỗi tiêu chí 1–4: 1 chưa đạt · 2 gần đạt · 3 đạt · 4 tốt';
+  const ask=`Hãy trả lời bằng tiếng Việt:\n1. Điểm từng tiêu chí (1–4), mỗi điểm kèm một câu lý do và trích câu trong bài làm làm bằng chứng.\n2. 3 lỗi quan trọng nhất: trích nguyên văn → sửa → giải thích ngắn.\n3. Một việc cụ thể nên luyện tiếp để lên điểm.\nChấm khắt khe như thi thật. Không viết lại cả bài.`;
+  if(V.mode==='w'){ const t=k==='w1'?VX_W1[V.w1]:VX_W2[V.w2], text=V.text[k]||'';
+    return `Bạn là giám khảo VSTEP (bậc 3–5) giàu kinh nghiệm. Hãy chấm ${k==='w1'?'Bài 1 (thư/email)':'Bài 2 (bài luận)'} của phần thi Viết dưới đây.\n\nĐỀ:\n${t.p}\n\nĐỘ DÀI: cần ít nhất ${VX_WMIN[k]} từ; bài làm có ${wcount(text)} từ.\n\nTIÊU CHÍ (${sc}):\n${VX_WRUB.map(([a,b])=>`- ${a}: ${b}`).join('\n')}\n\nBÀI LÀM:\n---\n${text.trim()}\n---\n\n${ask}`; }
+  const S=VX_S[V.set], tr=V.tr[k]||{};
+  const task=k==='s1'?S.p1.map(([t,qs])=>`${t}:\n${qs.map(q=>'- '+q).join('\n')}`).join('\n')
+    :k==='s2'?`${S.p2.sit}\nLựa chọn: ${S.p2.opts.join('; ')}`
+    :`Chủ đề: ${S.p3.topic}\nGợi ý: ${S.p3.ideas.join('; ')} (+ ý của thí sinh)\nCâu hỏi thêm:\n${S.p3.fu.map(q=>'- '+q).join('\n')}`;
+  const name={s1:'Phần 1 (giao tiếp xã hội)',s2:'Phần 2 (thảo luận giải pháp)',s3:'Phần 3 (phát triển chủ đề)'}[k];
+  return `Bạn là giám khảo VSTEP (bậc 3–5) giàu kinh nghiệm. Hãy chấm ${name} của phần thi Nói dưới đây.\n\nĐỀ:\n${task}\n\nTHỜI GIAN: tối đa ${VX_MIN[k]} phút; thí sinh nói khoảng ${Math.round(tr.dur||0)} giây.\n\nTIÊU CHÍ (${sc}):\n${VX_SRUB.map(([a,b])=>`- ${a}: ${b}`).join('\n')}\n\nLỜI THÍ SINH (máy nhận diện giọng nói chép lại, có thể chép sai; thiếu dấu câu không phải lỗi của thí sinh):\n---\n${(tr.text||'').trim()}\n---\n\nTừ văn bản không chấm chính xác được Phát âm và Trôi chảy: với hai tiêu chí này chỉ nhận xét điều thấy được (lặp từ, câu bỏ dở) và ghi rõ là ước đoán.\n\n${ask}`; }
+const vxAiOk = k => { const V=ui.vx; return V.mode==='w'?!!(V.text[k]||'').trim():!!((V.tr[k]||{}).text||'').trim(); };
+const vxAiBtn = k => vxAiOk(k)?`<div class="row"><button class="btn small" data-act="vxai" data-k="${k}">📋 Chép đề + bài + tiêu chí để nhờ AI nhận xét</button></div><p class="hint">App không gọi AI. Dán vào trợ lý AI bạn dùng (ChatGPT, Claude, Gemini…). AI cũng có thể chấm sai: dùng để tìm lỗi, đừng coi là điểm thi.</p>`:'';
+async function vxAiCopy(k){ if(!vxAiOk(k)) return; const t=vxAiText(k); let ok=false; try{ await navigator.clipboard.writeText(t); ok=true; }catch(e){} evc('vxai'); save();
+  if(ok) return toast('Đã chép. Dán vào trợ lý AI của bạn để nhận xét.');
+  modal({ic:'📋',title:'Chép lời nhắc',html:true,sub:`Trình duyệt chặn sao chép tự động. Chọn hết chữ trong ô rồi sao chép:<br><textarea class="field" readonly rows="10" style="width:100%;font:inherit" aria-label="Lời nhắc cho AI">${esc(t)}</textarea>`,buttons:[{label:'Đóng',act:'mclose',primary:true}]}); }
 const vxRub = (R,part,self) => `<div class="stack" style="gap:6px">${R.map(([t,d],i)=>`<div class="spread" style="gap:6px"><span><b>${t}</b> <span class="hint">${d}</span></span><span class="row" style="gap:4px">${[1,2,3,4].map(v=>`<button class="btn small ${self[i]===v?'primary':''}" data-act="vxself" data-p="${part}" data-i="${i}" data-v="${v}" aria-pressed="${self[i]===v}">${v}</button>`).join('')}</span></div>`).join('')}<p class="hint">1 chưa đạt · 2 gần đạt · 3 đạt · 4 tốt. Hãy chấm khắt khe, so với bài mẫu và tiêu chí.</p></div>`;
 function vxWChecks(k,text){ const n=wcount(text), paras=text.split(/\n\s*\n/).filter(x=>x.trim()).length, low=' '+nt(text)+' ', links=[...new Set(linksUpTo('B2').filter(l=>low.includes(' '+nt(l)+' ')))], hs=grammarHints(text);
   return {n,ok:n>=VX_WMIN[k],paras,links,hs}; }
@@ -6063,7 +6085,7 @@ function viewVx(){ const V=ui.vx; if(!V) return viewGames?viewGames():viewTalk()
       return `<section class="panel stack"><h3>${k==='w1'?'Bài 1 · Thư/email':'Bài 2 · Bài luận'}</h3><p class="hint">${esc(t.p)}</p>
         <p>${c.ok?'✅':'❌'} ${c.n} từ (cần ≥ ${VX_WMIN[k]})${c.ok?'':' · thiếu độ dài thường bị trừ điểm nặng'} · ${c.paras} đoạn · từ nối: ${c.links.length?esc(c.links.join(', ')):'chưa có'}</p>
         ${c.hs.length?`<div class="stack" style="gap:4px"><b>Lỗi chắc chắn sai máy dò được</b>${c.hs.map(h=>`<p class="gerr"><span lang="en">${esc(h.snip)}</span><span class="hint">${esc(h.why)}</span></p>`).join('')}</div>`:'<p class="hint">Máy không dò thấy lỗi hay gặp (không có nghĩa là không có lỗi).</p>'}
-        <details><summary>Bài của bạn</summary><p lang="en" style="white-space:pre-wrap">${esc(text)||'—'}</p></details>${vxRub(VX_WRUB,k,V.self[k])}</section>`; };
+        <details><summary>Bài của bạn</summary><p lang="en" style="white-space:pre-wrap">${esc(text)||'—'}</p></details>${vxAiBtn(k)}${vxRub(VX_WRUB,k,V.self[k])}</section>`; };
     const b1=vxBand(V.self.w1,4), b2=vxBand(V.self.w2,4), cap=(b,k)=>b==null?null:vxWChecks(k,V.text[k]||'').ok?b:Math.min(b,4), f=cap(b1,'w1')!=null&&cap(b2,'w2')!=null?Math.round((cap(b1,'w1')+2*cap(b2,'w2'))/3*2)/2:null;
     return `${top}<section class="stack"><span class="eyebrow">Kết quả thi thử Viết</span><h1>${f!=null?`Viết ≈ ${String(f).replace('.',',')}/10 · ${exLevel(f)}`:'Tự chấm để xem điểm ước tính'}</h1>
       <p class="muted note">Điểm = (Bài 1 + 2 × Bài 2) / 3 từ phần tự chấm; bài thiếu độ dài bị giới hạn tối đa 4/10.</p></section>${part('w1')}${part('w2')}
@@ -6083,7 +6105,7 @@ function viewVx(){ const V=ui.vx; if(!V) return viewGames?viewGames():viewTalk()
   const bs=['s1','s2','s3'].map(k=>vxBand(V.self[k]||[],5)), f=bs.every(b=>b!=null)?Math.round(bs.reduce((a,b)=>a+b,0)/3*2)/2:null;
   return `${top}<section class="stack"><span class="eyebrow">Kết quả thi thử Nói</span><h1>${f!=null?`Nói ≈ ${String(f).replace('.',',')}/10 · ${exLevel(f)}`:'Tự chấm để xem điểm ước tính'}</h1>
     <p class="muted note">Nghe lại bản ghi âm hoặc đọc lời máy chép, rồi chấm từng phần thật khắt khe.</p></section>
-    ${['s1','s2','s3'].map(k=>`<section class="panel stack"><h3>Phần ${k[1]}</h3>${vxStatsHtml(V.tr[k])}${vxRub(VX_SRUB,k,V.self[k]||[])}</section>`).join('')}
+    ${['s1','s2','s3'].map(k=>`<section class="panel stack"><h3>Phần ${k[1]}</h3>${vxStatsHtml(V.tr[k])}${vxAiBtn(k)}${vxRub(VX_SRUB,k,V.self[k]||[])}</section>`).join('')}
     <div class="row"><button class="btn primary" data-act="vxsave" ${f==null?'disabled':''}>Lưu kết quả</button><button class="btn" data-act="vxnew" data-m="s">Làm đề khác</button></div>`; }
 function vxSave(){ const V=ui.vx, me=st.me||(st.me={}), h=me.vx||(me.vx=[]);
   let b; if(V.mode==='w'){ const cap=(x,k)=>vxWChecks(k,V.text[k]||'').ok?x:Math.min(x,4); b=Math.round((cap(vxBand(V.self.w1,4),'w1')+2*cap(vxBand(V.self.w2,4),'w2'))/3*2)/2; }
@@ -6141,6 +6163,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
     case 'vxquit': recStop(); vxAsrStop(); return go('games');
     case 'vxself': { const V=ui.vx, p=d.p; (V.self[p]||(V.self[p]=[]))[+d.i]=+d.v; return render(); }
     case 'vxsave': return vxSave();
+    case 'vxai': return vxAiCopy(d.k);
     case 'vxrec': ui.vx.recKey=d.k; vxAsrStop(); return recStart();
     case 'vxasr': return vxAsrStart(d.k);
     case 'vxasrstop': return vxAsrStop();
@@ -6590,9 +6613,9 @@ function viewAbout(){ const cs=contentStats();
   return `<button class="btn ghost back" data-go="${st.onboarded?'more':'welcome'}">← ${st.onboarded?'Tôi':'Quay lại'}</button>
   <section class="stack"><span class="eyebrow">Minh bạch</span><h1>Về English Ladder</h1><p class="muted">App học tiếng Anh cho người Việt, theo khung năng lực châu Âu (CEFR), từ người mới tinh đến C2.</p></section>
   <section class="panel stack"><h3>Cam kết</h3><ul style="margin:0;padding-left:20px;display:grid;gap:6px">
-    <li><b>Mọi bài học miễn phí.</b> Không khoá bài sau tường phí.</li>
+    <li><b>Học miễn phí.</b> Bài học, ôn tập và đề thi thử đang có không bị khoá sau tường phí. Sau này có thể có dịch vụ trả phí tuỳ chọn tốn công người thật (ví dụ chấm bài Viết, Nói); việc học vẫn đủ khi không trả.</li>
     <li><b>Không quảng cáo của bên thứ ba, không bán dữ liệu.</b> Tiến độ lưu trên máy bạn; đồng bộ nhiều máy là tuỳ chọn, bằng mã, không cần tài khoản.</li>
-    <li><b>Không dùng AI để chấm hay tạo nội dung trong app.</b> Chấm bằng quy tắc minh bạch (từ khoá, luật lỗi), nên máy chỉ dò lỗi hay gặp, không thay được giáo viên.</li>
+    <li><b>App không gọi AI khi bạn học.</b> Chấm bằng quy tắc minh bạch (từ khoá, luật lỗi), nên máy chỉ dò lỗi hay gặp, không thay được giáo viên. Nội dung được soạn với sự hỗ trợ của AI rồi soát lại (biên bản soát trong mã nguồn). Bài Viết, Nói có nút chép đề và tiêu chí để bạn tự nhờ trợ lý AI của mình nhận xét, nếu muốn.</li>
     <li><b>Mã nguồn công khai.</b> Ai cũng xem được app làm gì với dữ liệu của mình.</li></ul>
     <div class="row"><a class="btn" href="${REPO_URL}" target="_blank" rel="noopener">Xem mã nguồn</a><a class="btn ghost" href="privacy.html" target="_blank" rel="noopener">Quyền riêng tư</a></div></section>
   <section class="panel stack"><h3>Nội dung hiện có</h3><div class="units">${cs.map(([n,t,s])=>`<div class="unit morei" style="cursor:default"><span class="no num">${n}</span><span class="t"><strong>${t}</strong><span class="muted">${s}</span></span></div>`).join('')}</div>
@@ -6644,7 +6667,7 @@ viewWelcome = function(){ const h=_viewWelcome30();
   // v35: cùng bố cục với màn chào tĩnh trong index.html (vẽ trước khi app.js nạp xong), nên khi app vẽ lại không xô lệch bố cục.
   return `<section class="hello"><h1>Ôn IELTS và VSTEP miễn phí</h1>
     <p class="muted">Biết band ước tính từng kỹ năng, học theo kế hoạch tới ngày thi.<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
-  <p class="hint hello-trust">Không quảng cáo · Không gói trả phí · Không bán dữ liệu · <button class="linkbtn" data-go="about">Về app</button></p>
+  <p class="hint hello-trust">Học miễn phí · Không quảng cáo · Không bán dữ liệu · <button class="linkbtn" data-go="about">Về app</button></p>
   <div class="actbar hello-act"><button class="btn primary" data-act="xstart">Bắt đầu ôn thi</button><button class="btn" data-act="quickstart">Học tiếng Anh nền tảng A1 → C2</button></div>
   ${restore}`; };
 
@@ -7956,6 +7979,10 @@ CHANGELOG.unshift({v:37,d:'2026-10-01',t:'Kiểm tra đầu vào thích ứng 15
   'Kho 96 câu mới (48 Đọc, 48 Nghe) từ band 3 đến 8,5; mỗi câu giải thích bằng tiếng Việt vì sao đúng, vì sao từng phương án sai và câu nào chứa đáp án.',
   'Bài nghe là tệp âm thanh tạo sẵn giọng Anh và Mỹ, phát một lần như thi thật; lời thoại và bản dịch hiện sau khi làm xong. Không nghe được thì bỏ qua phần Nghe.',
   'Nút Báo lỗi ở mọi câu khi xem lại.']});
+CHANGELOG.unshift({v:45,d:'2026-10-02',t:'Nhờ AI của bạn nhận xét bài Viết, Nói; nói rõ hơn về chuyện miễn phí',items:[
+  'Thi thử Viết và Nói VSTEP: nút chép đề, bài làm và tiêu chí chấm để bạn dán vào trợ lý AI mình dùng (ChatGPT, Claude, Gemini…) và nhận nhận xét từng tiêu chí bằng tiếng Việt. App vẫn không gọi AI.',
+  'Học miễn phí, không quảng cáo: bài học, ôn tập và đề thi thử đang có không bị khoá. Sau này có thể có dịch vụ trả phí tuỳ chọn tốn công người thật (ví dụ chấm bài); việc học vẫn đủ khi không trả.',
+  'Trang Ôn thi hỏi một lần bạn có muốn chia sẻ thống kê ẩn danh không. Khi bật, mỗi ngày app cộng thêm 1 vào tổng số người mở app và người học của ngày đó, để biết có bao nhiêu người đang học.']});
 CHANGELOG.unshift({v:44,d:'2026-10-02',t:'Thêm 5 đề thi thử: IELTS Academic Đề 2–3, General Training Đề 1, VSTEP Đề 2–3',big:true,items:[
   'IELTS Academic Đề 2 và Đề 3: đủ Nghe 4 phần và Đọc 3 bài, có bản đồ, sơ đồ và nhiều dạng câu (nối người – ý kiến, YES/NO/NOT GIVEN, tóm tắt, chọn hai đáp án).',
   'IELTS General Training Đề 1: Đọc 5 văn bản đời thường và nơi làm việc như đề thật; phần Nghe dùng chung với Academic Đề 1, giống đề thật.',
@@ -7994,7 +8021,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.6f26b9ce96.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.29c56ed94a.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8022,7 +8049,7 @@ DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].for
 // Nạp sẵn khi rảnh để tab “Ôn thi” mở ngay và để gộp/lọc dữ liệu ôn thi khi đồng bộ.
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,1500)))(()=>xmLoad().catch(()=>{}));
 const _gap=st.onboarded?daysAway():0;
-if(!LOAD_ISSUE) appOpen();
+if(!LOAD_ISSUE){ appOpen(); dayPing('open'); }
 applyFreeze();
 render();
 window.ELREADY=true;

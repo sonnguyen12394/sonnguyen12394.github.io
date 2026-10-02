@@ -23,7 +23,7 @@ export function viewSettings(c: Ctx): string {
     <div class="row"><button class="btn primary">Lưu</button></div></form>
   <form class="panel stack" data-xform="consent" aria-labelledby="xcons">
     <h3 id="xcons">Chia sẻ thống kê ẩn danh</h3>
-    <p class="note">Nếu bạn đồng ý, sau mỗi bài app gửi <b>id câu hỏi và đúng/sai</b> (không tên, không email, không mã máy, không tiến độ) để tính độ khó thật của từng câu và tạm ẩn câu kém. Khi bạn ghi điểm thi thật, app gửi thêm cặp “ước tính – điểm thật” để đo độ chính xác. Không bán, không dùng cho quảng cáo. Rút lại lúc nào cũng được; tắt thì app không gửi gì nữa.</p>
+    <p class="note">Nếu bạn đồng ý, sau mỗi bài app gửi <b>id câu hỏi và đúng/sai</b> (không tên, không email, không mã máy, không tiến độ) để tính độ khó thật của từng câu và tạm ẩn câu kém. Khi bạn ghi điểm thi thật, app gửi thêm cặp “ước tính – điểm thật” để đo độ chính xác. Mỗi ngày app cộng thêm 1 vào tổng số “đã mở app” và “đã học” của ngày đó (chỉ là số đếm chung, không lưu gì về bạn) để biết có bao nhiêu người đang học. Không bán, không dùng cho quảng cáo. Rút lại lúc nào cũng được; tắt thì app không gửi gì nữa.</p>
     <fieldset class="stack" style="border:0;padding:0;margin:0;gap:6px"><legend><b>Bạn bao nhiêu tuổi?</b></legend>
       <label class="chip"><input type="radio" name="age" value="adult"${cs?.adult ? ' checked' : ''}> Từ 16 tuổi trở lên</label>
       <label class="chip"><input type="radio" name="age" value="minor"${cs && !cs.adult ? ' checked' : ''}> Dưới 16 tuổi</label></fieldset>

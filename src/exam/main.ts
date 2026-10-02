@@ -214,6 +214,7 @@ export function init(host: Host): ExamModule {
       x.exam = v; host.save(); host.toast(`Đã chọn ${EXAM_NAME[v]}.`); host.go(first ? 'place' : 'hub');
     },
     examreset() { X().exam = ''; host.save(); host.go('hub'); },
+    consentno() { const x = X(); x.consent = { on: false, adult: false, parent: false, day: host.today() }; x.share = false; host.save(); host.render(); },
     route(el) { host.go(el.dataset.r || 'hub'); },
     placestart() { void placeStart(); },
     nbstart() { void nbStart(); },

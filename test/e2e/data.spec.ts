@@ -42,3 +42,41 @@ test('mã sao lưu mang theo phần ôn thi và khôi phục được', async ({
   expect(back.x.exam).toBe('vstep');
   expect(errors).toEqual([]);
 });
+
+// v45: đếm người dùng mỗi ngày chỉ khi đã đồng ý; lời mời đồng ý hiện trên trang Ôn thi cho tới khi người học chọn.
+test('đếm ngày: không gửi khi chưa đồng ý, gửi một lần mỗi ngày khi đã đồng ý', async ({ page, errors }) => {
+  const pings: string[] = [];
+  page.on('request', r => { if (r.url().includes('/rpc/el_day_post')) pings.push(JSON.parse(r.postData() || '{}').kind); });
+  await openApp(page);
+  await navTo(page, 'Ôn thi');
+  await page.getByRole('button', { name: /VSTEP/ }).click();
+  await page.getByRole('button', { name: 'Để sau' }).click();
+  await expect(page.getByRole('heading', { name: 'Giúp app đo đúng hơn?' })).toBeVisible();
+  expect(pings).toEqual([]);
+  await page.getByRole('button', { name: 'Xem và đồng ý' }).click();
+  await page.getByLabel('Từ 16 tuổi trở lên').check();
+  await page.getByRole('button', { name: 'Đồng ý chia sẻ' }).click();
+  await page.reload();
+  await expect.poll(() => pings).toEqual(['open']);
+  await page.reload();
+  await expect(page.locator('#bnav button:visible, #nav button:visible').first()).toBeVisible();
+  expect(pings).toEqual(['open']);
+  expect(errors).toEqual([]);
+});
+
+test('lời mời chia sẻ: "Không, cảm ơn" ẩn lời mời và không gửi gì', async ({ page, errors }) => {
+  const pings: string[] = [];
+  page.on('request', r => { if (r.url().includes('/rpc/el_day_post')) pings.push('x'); });
+  await openApp(page);
+  await navTo(page, 'Ôn thi');
+  await page.getByRole('button', { name: /VSTEP/ }).click();
+  await page.getByRole('button', { name: 'Để sau' }).click();
+  await page.getByRole('button', { name: 'Không, cảm ơn' }).click();
+  await expect(page.getByRole('heading', { name: 'Giúp app đo đúng hơn?' })).toHaveCount(0);
+  await page.reload();
+  await navTo(page, 'Ôn thi');
+  await expect(page.getByRole('heading', { name: /Ôn VSTEP/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Giúp app đo đúng hơn?' })).toHaveCount(0);
+  expect(pings).toEqual([]);
+  expect(errors).toEqual([]);
+});

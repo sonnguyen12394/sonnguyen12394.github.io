@@ -38,11 +38,35 @@ test('VSTEP: đề thi thử đầy đủ và bài thi nhanh có sẵn trong tab
   expect(errors).toEqual([]);
 });
 
-test('miễn phí 100%: không tim, không quảng cáo, không gói trả phí', async ({ page, errors }) => {
+test('học miễn phí: không tim, không quảng cáo, không khoá bài', async ({ page, errors }) => {
   await openApp(page);
   await navTo(page, 'Tôi');
   const body = await page.locator('#app').innerText();
   expect(body).not.toMatch(/Super|quảng cáo|❤️/i);
   await expect(page.getByRole('button', { name: /Thử thách/ })).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+// v45: app không gọi AI; nút chép đề + bài + tiêu chí để người học tự dán vào trợ lý AI của họ.
+test('thi thử Viết VSTEP: chép đề, bài làm và tiêu chí để nhờ AI nhận xét', async ({ page, errors }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: (t: string) => { (window as unknown as { __clip: string }).__clip = t; return Promise.resolve(); } } });
+  });
+  await openApp(page);
+  await navTo(page, 'Ôn thi');
+  await page.getByRole('button', { name: /VSTEP/ }).click();
+  await page.getByRole('button', { name: 'Để sau' }).click();
+  await page.getByRole('button', { name: /Thi thử Viết/ }).first().click();
+  await page.getByRole('button', { name: 'Bắt đầu Bài 1' }).click();
+  await page.getByLabel('Bài viết').fill('Dear Anna,\n\nI am happy that you are coming to Vietnam.');
+  await page.getByRole('button', { name: 'Nộp Bài 1, sang Bài 2' }).click();
+  await page.getByLabel('Bài viết').fill('In my opinion, students should work part-time because it teaches responsibility.');
+  await page.getByRole('button', { name: 'Nộp bài' }).click();
+  await page.getByRole('button', { name: /Chép đề \+ bài \+ tiêu chí/ }).first().click();
+  const clip = await page.evaluate(() => (window as unknown as { __clip?: string }).__clip ?? '');
+  expect(clip).toContain('giám khảo VSTEP');
+  expect(clip).toContain('I am happy that you are coming to Vietnam.');
+  expect(clip).toContain('Hoàn thành yêu cầu');
+  expect(clip).toMatch(/bài làm có \d+ từ/);
   expect(errors).toEqual([]);
 });

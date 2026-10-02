@@ -1,6 +1,6 @@
 # English Ladder
 
-Ôn VSTEP và IELTS miễn phí 100% cho người Việt tự học: band ước tính từng kỹ năng kèm sai số, kế hoạch tới ngày thi, giải thích bằng tiếng Việt. Nền tảng tiếng Anh A1 → C2 đi kèm. Không quảng cáo, không gói trả phí, không cần tài khoản.
+Ôn VSTEP và IELTS miễn phí cho người Việt tự học: band ước tính từng kỹ năng kèm sai số, kế hoạch tới ngày thi, giải thích bằng tiếng Việt. Nền tảng tiếng Anh A1 → C2 đi kèm. Không quảng cáo, không cần tài khoản. Bài học, ôn tập và đề thi thử đang có luôn miễn phí; sau này có thể có dịch vụ trả phí tuỳ chọn (ví dụ chấm Viết, Nói bởi người).
 
 👉 **https://sonnguyen12394.github.io/**
 
