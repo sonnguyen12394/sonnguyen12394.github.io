@@ -86,7 +86,7 @@
           },
           {
             "id": "m-g1-r1-02",
-            "q": "Learners will visit another building in the town during the course.",
+            "q": "Learners will spend one session in another building in the town.",
             "ans": "D",
             "b": 5,
             "ev": {
@@ -200,20 +200,20 @@
     "band": 5,
     "title": "Riverside monthly bus pass: changes from 1 March",
     "paras": [
-      "From 1 March, the price of the Riverside monthly bus pass will rise from £48 to £52. This is the first increase for three years, and it reflects higher fuel and maintenance costs.",
+      "From 1 March, the price of the Riverside monthly bus pass will rise from £48 to £52. This is the second increase in three years, and it reflects higher fuel and maintenance costs.",
       "Students aged under nineteen can still buy the pass at half price. To do so, they must show a current college or school card when they buy or renew the pass. Older students pay the full adult price.",
-      "The pass can now be loaded onto the Riverside Travel app and shown on your phone. Paper passes will continue to be sold at the bus station until the end of the year, so passengers without a smartphone do not need to change anything yet.",
+      "The pass can now be loaded onto the Riverside Travel app and shown on your phone. Paper passes will no longer be sold from 1 March, although any paper pass bought before that date can be used until it runs out. Passengers without a smartphone can ask for a plastic travel card instead, free of charge.",
       "The pass is valid on all Riverside routes, including night buses. It cannot be used on the airport express, which is run by a different company and has its own tickets.",
-      "If you lose your pass, the first replacement in any twelve-month period is free. Further replacements cost £5 each. Pass holders may also take one child under five with them on any journey without paying.",
-      "Refunds are only given for passes that have not been used at all, and must be requested within fourteen days of purchase."
+      "If you lose your pass, the first two replacements in any twelve-month period are free. Any further replacement costs £5. Pass holders may also take one child under five with them on any journey without paying.",
+      "Passes can be returned at any time for a partial refund, calculated according to the number of full days remaining. Requests must be made at the bus station, not through the app."
     ],
     "vi": [
-      "Từ ngày 1 tháng Ba, giá vé tháng xe buýt Riverside sẽ tăng từ 48 lên 52 bảng. Đây là lần tăng đầu tiên trong ba năm, phản ánh chi phí nhiên liệu và bảo dưỡng cao hơn.",
+      "Từ ngày 1 tháng Ba, giá vé tháng xe buýt Riverside sẽ tăng từ 48 lên 52 bảng. Đây là lần tăng thứ hai trong ba năm, phản ánh chi phí nhiên liệu và bảo dưỡng cao hơn.",
       "Học sinh, sinh viên dưới mười chín tuổi vẫn được mua vé giảm nửa giá. Để được vậy, các em phải xuất trình thẻ trường hoặc thẻ cao đẳng còn hạn khi mua hoặc gia hạn vé. Sinh viên lớn tuổi hơn trả giá người lớn.",
-      "Vé nay có thể được nạp vào ứng dụng Riverside Travel và xuất trình trên điện thoại. Vé giấy vẫn được bán ở bến xe buýt tới hết năm, nên hành khách không có điện thoại thông minh chưa cần thay đổi gì.",
+      "Vé nay có thể được nạp vào ứng dụng Riverside Travel và xuất trình trên điện thoại. Vé giấy sẽ ngừng bán từ ngày 1 tháng Ba, dù vé giấy mua trước ngày đó vẫn dùng được tới khi hết hạn. Hành khách không có điện thoại thông minh có thể xin một thẻ đi lại bằng nhựa thay thế, miễn phí.",
       "Vé dùng được trên mọi tuyến của Riverside, kể cả xe buýt đêm. Vé không dùng được trên xe buýt tốc hành sân bay, do một công ty khác vận hành và có vé riêng.",
-      "Nếu bạn làm mất vé, lần cấp lại đầu tiên trong bất kỳ khoảng mười hai tháng nào là miễn phí. Những lần sau, mỗi lần 5 bảng. Người có vé tháng cũng được dẫn theo một trẻ dưới năm tuổi trên mọi chuyến mà không phải trả tiền.",
-      "Chỉ hoàn tiền cho vé chưa hề được dùng, và phải yêu cầu trong vòng mười bốn ngày kể từ ngày mua."
+      "Nếu bạn làm mất vé, hai lần cấp lại đầu tiên trong bất kỳ khoảng mười hai tháng nào là miễn phí. Những lần sau, mỗi lần 5 bảng. Người có vé tháng cũng được dẫn theo một trẻ dưới năm tuổi trên mọi chuyến mà không phải trả tiền.",
+      "Vé có thể được trả lại bất cứ lúc nào để hoàn một phần tiền, tính theo số ngày trọn vẹn còn lại. Yêu cầu phải làm ở bến xe buýt, không qua ứng dụng."
     ],
     "allow": [
       "maintenance",
@@ -222,8 +222,11 @@
       "valid",
       "express",
       "refunds",
+      "refund",
       "replacement",
-      "replacements"
+      "replacements",
+      "partial",
+      "plastic"
     ],
     "sets": [
       {
@@ -247,15 +250,15 @@
           {
             "id": "m-g1-r2-01",
             "q": "The price of the pass has not changed for three years.",
-            "ans": "TRUE",
-            "b": 5,
+            "ans": "FALSE",
+            "b": 5.5,
             "ev": {
               "p": 0,
-              "s": "This is the first increase for three years"
+              "s": "This is the second increase in three years"
             },
-            "why": "Đây là lần tăng giá đầu tiên trong ba năm.",
+            "why": "Đây là lần tăng thứ hai trong ba năm, nên giá đã thay đổi trước đó.",
             "wrong": {
-              "FALSE": "Văn bản nói đúng như vậy.",
+              "TRUE": "Văn bản nói đã có một lần tăng khác trong ba năm.",
               "NOT GIVEN": "Văn bản có nêu điều này."
             }
           },
@@ -277,16 +280,16 @@
           {
             "id": "m-g1-r2-03",
             "q": "Paper passes will stop being sold on 1 March.",
-            "ans": "FALSE",
-            "b": 5,
+            "ans": "TRUE",
+            "b": 5.5,
             "ev": {
               "p": 2,
-              "s": "Paper passes will continue to be sold at the bus station until the end of the year"
+              "s": "Paper passes will no longer be sold from 1 March"
             },
-            "why": "Vé giấy vẫn được bán tới hết năm.",
+            "why": "Vé giấy ngừng bán từ ngày 1 tháng Ba (vé đã mua vẫn dùng được).",
             "wrong": {
-              "TRUE": "Văn bản nói ngược lại.",
-              "NOT GIVEN": "Văn bản có nói thời hạn bán vé giấy."
+              "FALSE": "Văn bản nói đúng như vậy.",
+              "NOT GIVEN": "Văn bản nêu rõ thời điểm ngừng bán."
             }
           },
           {
@@ -307,15 +310,15 @@
           {
             "id": "m-g1-r2-05",
             "q": "Someone who loses their pass twice in a year has to pay for the second replacement.",
-            "ans": "TRUE",
+            "ans": "FALSE",
             "b": 5.5,
             "ev": {
               "p": 4,
-              "s": "Further replacements cost £5 each"
+              "s": "the first two replacements in any twelve-month period are free"
             },
-            "why": "Lần cấp lại đầu tiên trong mười hai tháng miễn phí, những lần sau mất 5 bảng.",
+            "why": "Hai lần cấp lại đầu tiên trong mười hai tháng đều miễn phí.",
             "wrong": {
-              "FALSE": "Chỉ lần đầu là miễn phí.",
+              "TRUE": "Chỉ từ lần thứ ba mới mất phí.",
               "NOT GIVEN": "Văn bản nói rõ phí cấp lại."
             }
           },
@@ -336,17 +339,17 @@
           },
           {
             "id": "m-g1-r2-07",
-            "q": "Passengers who have used their pass once can get part of their money back.",
-            "ans": "FALSE",
+            "q": "A passenger who has used the pass for a week can still get some money back.",
+            "ans": "TRUE",
             "b": 5.5,
             "ev": {
               "p": 5,
-              "s": "Refunds are only given for passes that have not been used at all"
+              "s": "Passes can be returned at any time for a partial refund"
             },
-            "why": "Chỉ hoàn tiền cho vé chưa hề dùng.",
+            "why": "Vé trả lại lúc nào cũng được hoàn một phần tiền, tính theo số ngày còn lại.",
             "wrong": {
-              "TRUE": "Vé đã dùng thì không được hoàn.",
-              "NOT GIVEN": "Văn bản nói rõ điều kiện hoàn tiền."
+              "FALSE": "Văn bản nói hoàn một phần bất cứ lúc nào.",
+              "NOT GIVEN": "Văn bản nêu rõ chính sách hoàn tiền."
             }
           }
         ]
@@ -662,7 +665,8 @@
             "ans": {
               "accept": [
                 "one year",
-                "1 year"
+                "1 year",
+                "a year"
               ]
             },
             "limit": 2,
@@ -691,19 +695,19 @@
     "band": 6.5,
     "title": "The mail boat of Lake Varne",
     "paras": [
-      "A For more than a century, letters to the villages on the north shore of Lake Varne arrived by boat, because no road reached that side of the lake until 1962. Remarkably, a boat still makes the crossing today. It carries far more tourists than letters, but local people continue to call it the mail boat, and its timetable is still printed on the noticeboard of every village on the shore.",
-      "B The service did not begin as a postal service at all. In 1871 the only doctor in the area, who lived in the market town on the south shore, began paying a local fisherman to carry medicines across the lake twice a week. Villagers soon asked the fisherman to take their letters as well, and it was only after the doctor's death in 1880 that the post office agreed to take the service over and pay for it.",
-      "C Over the years, several boats were used. The fisherman's rowing boat was replaced in 1898 by a small steam launch named the Heron, which could cross the lake in forty minutes whatever the wind. The Heron served for over fifty years. Contrary to a story often told by guides, she was never wrecked; she was retired in 1951, when a diesel boat took her place, and she can now be seen in a transport museum in the capital.",
-      "D For three generations the boat was run by one family, the Grays, and the boatman did much more than deliver letters. He sold stamps, carried parcels and newspapers, and often brought back shopping for elderly villagers. In the coldest winters, when the lake froze, the mail had to be carried on foot along the shore path, a journey that took two days. The last of the Gray boatmen once said that he had walked that path more often than he had taken a holiday.",
-      "E The opening of the road in 1962 might have ended the service immediately. In fact, the post office continued to send some mail by boat for another eight years, until it ended its contract in 1970. The villagers, who had come to see the boat as part of their identity, organised a campaign to keep it running. Rather than ask for public money, they formed a cooperative, raised enough to buy the boat from the Gray family, and hired a skipper.",
+      "A For more than a century, letters to the villages on the north shore of Lake Varne arrived by boat, because no road reached that side of the lake until 1962. Remarkably, a boat still makes the crossing today. It carries far more tourists than letters, but local people continue to call it the mail boat, and its timetable is still printed on the noticeboard of every village on the shore. The lake itself is about eleven kilometres long and, at its widest point, a little under three kilometres across.",
+      "B The service did not begin as a postal service at all. In 1871 the only doctor in the area, who lived in the market town on the south shore, began paying a local fisherman to carry medicines across the lake twice a week. Villagers soon asked the fisherman to take their letters as well, and it was only after the doctor's death in 1880 that the post office agreed to take the service over and pay for it. Even then, the fisherman kept the job, and for some years he continued to fish on the days when there was no post to carry.",
+      "C Over the years, several boats were used. The fisherman's rowing boat was replaced in 1898 by a small steam launch named the Heron, which could cross the lake in forty minutes whatever the wind. She burned coal brought by cart from the railway station, and on calm days her smoke could be seen from every village around the lake. The Heron served for over fifty years. Contrary to a story often told by guides, she was never wrecked; she was retired in 1951, when a diesel boat took her place, and she can now be seen in a transport museum in the capital.",
+      "D For three generations the boat was run by one family, the Grays, and the boatman did much more than deliver letters. He sold stamps, carried parcels and newspapers, and often brought back shopping for elderly villagers. In the coldest winters, when the lake froze, the mail had to be carried on foot along the shore path, a journey that took two days. The last of the Gray boatmen once said that he had walked that path more often than he had taken a holiday. His logbooks, which record every crossing he made over thirty-one years, are now kept in the village hall.",
+      "E The opening of the road in 1962 might have ended the service immediately. In fact, the post office continued to send some mail by boat for another eight years, until it ended its contract in 1970. The villagers, who had come to see the boat as part of their identity, organised a campaign to keep it running. Rather than ask for public money, they formed a cooperative, raised enough to buy the boat from the Gray family, and hired a skipper. More than two hundred people bought shares, many of them former residents who had moved away from the lake but wanted the boat to continue.",
       "F Today the boat runs from April to October. Most of its income comes from visitors, who enjoy the hour-long round trip and the stories the skipper tells along the way. But it still has a postal role: two farms on the north shore have no road access, and their letters and parcels are delivered by boat all year round, with the skipper making a special trip in winter when necessary. The cooperative is now raising money to replace the diesel engine with an electric motor, which members hope will make the boat quieter and cheaper to run."
     ],
     "vi": [
-      "A Hơn một thế kỷ, thư gửi tới các làng ở bờ bắc hồ Varne đến bằng thuyền, vì tới năm 1962 mới có đường bộ tới phía đó của hồ. Điều đáng chú ý là ngày nay vẫn còn một chiếc thuyền qua lại. Nó chở khách du lịch nhiều hơn thư rất nhiều, nhưng người địa phương vẫn gọi nó là thuyền thư, và lịch chạy vẫn được dán trên bảng thông báo của mọi làng ven hồ.",
-      "B Dịch vụ này ban đầu hoàn toàn không phải dịch vụ bưu chính. Năm 1871, vị bác sĩ duy nhất trong vùng, sống ở thị trấn có chợ bên bờ nam, bắt đầu trả tiền cho một ngư dân địa phương chở thuốc qua hồ mỗi tuần hai lần. Dân làng sớm nhờ ngư dân mang cả thư của họ, và chỉ sau khi bác sĩ qua đời năm 1880, bưu điện mới đồng ý tiếp quản dịch vụ và trả tiền.",
-      "C Qua nhiều năm, có vài chiếc thuyền được dùng. Thuyền chèo của ngư dân được thay năm 1898 bằng một chiếc ca nô hơi nước nhỏ tên Heron, có thể qua hồ trong bốn mươi phút bất kể gió. Heron phục vụ hơn năm mươi năm. Trái với câu chuyện hướng dẫn viên hay kể, nó chưa bao giờ bị đắm; nó được cho nghỉ năm 1951, khi một chiếc thuyền chạy dầu thế chỗ, và nay có thể được xem trong một bảo tàng giao thông ở thủ đô.",
-      "D Suốt ba thế hệ, thuyền do một gia đình, nhà Gray, điều hành, và người lái thuyền làm nhiều hơn việc đưa thư. Ông bán tem, chở bưu kiện và báo, và thường mua đồ hộ những người già trong làng. Vào những mùa đông lạnh nhất, khi hồ đóng băng, thư phải được mang đi bộ theo lối mòn ven bờ, một chặng đường mất hai ngày. Người lái thuyền cuối cùng của nhà Gray từng nói ông đã đi lối mòn ấy nhiều lần hơn số lần ông đi nghỉ.",
-      "E Việc mở đường năm 1962 lẽ ra có thể chấm dứt dịch vụ ngay. Thực tế, bưu điện vẫn gửi một phần thư bằng thuyền thêm tám năm nữa, cho tới khi chấm dứt hợp đồng năm 1970. Dân làng, những người đã coi chiếc thuyền là một phần bản sắc của mình, tổ chức vận động để giữ nó. Thay vì xin tiền công, họ lập một hợp tác xã, quyên đủ tiền mua thuyền từ nhà Gray, và thuê một thuyền trưởng.",
+      "A Hơn một thế kỷ, thư gửi tới các làng ở bờ bắc hồ Varne đến bằng thuyền, vì tới năm 1962 mới có đường bộ tới phía đó của hồ. Điều đáng chú ý là ngày nay vẫn còn một chiếc thuyền qua lại. Nó chở khách du lịch nhiều hơn thư rất nhiều, nhưng người địa phương vẫn gọi nó là thuyền thư, và lịch chạy vẫn được dán trên bảng thông báo của mọi làng ven hồ. Bản thân hồ dài khoảng mười một ki-lô-mét và, ở chỗ rộng nhất, rộng chưa tới ba ki-lô-mét.",
+      "B Dịch vụ này ban đầu hoàn toàn không phải dịch vụ bưu chính. Năm 1871, vị bác sĩ duy nhất trong vùng, sống ở thị trấn có chợ bên bờ nam, bắt đầu trả tiền cho một ngư dân địa phương chở thuốc qua hồ mỗi tuần hai lần. Dân làng sớm nhờ ngư dân mang cả thư của họ, và chỉ sau khi bác sĩ qua đời năm 1880, bưu điện mới đồng ý tiếp quản dịch vụ và trả tiền. Dù vậy, người ngư dân vẫn giữ công việc, và trong vài năm ông vẫn đánh cá vào những hôm không có thư để chở.",
+      "C Qua nhiều năm, có vài chiếc thuyền được dùng. Thuyền chèo của ngư dân được thay năm 1898 bằng một chiếc ca nô hơi nước nhỏ tên Heron, có thể qua hồ trong bốn mươi phút bất kể gió. Nó đốt than chở bằng xe ngựa từ ga tàu, và những hôm lặng gió, khói của nó nhìn thấy được từ mọi làng quanh hồ. Heron phục vụ hơn năm mươi năm. Trái với câu chuyện hướng dẫn viên hay kể, nó chưa bao giờ bị đắm; nó được cho nghỉ năm 1951, khi một chiếc thuyền chạy dầu thế chỗ, và nay có thể được xem trong một bảo tàng giao thông ở thủ đô.",
+      "D Suốt ba thế hệ, thuyền do một gia đình, nhà Gray, điều hành, và người lái thuyền làm nhiều hơn việc đưa thư. Ông bán tem, chở bưu kiện và báo, và thường mua đồ hộ những người già trong làng. Vào những mùa đông lạnh nhất, khi hồ đóng băng, thư phải được mang đi bộ theo lối mòn ven bờ, một chặng đường mất hai ngày. Người lái thuyền cuối cùng của nhà Gray từng nói ông đã đi lối mòn ấy nhiều lần hơn số lần ông đi nghỉ. Sổ ghi chép của ông, ghi lại mọi chuyến qua hồ trong ba mươi mốt năm, nay được lưu ở nhà văn hoá của làng.",
+      "E Việc mở đường năm 1962 lẽ ra có thể chấm dứt dịch vụ ngay. Thực tế, bưu điện vẫn gửi một phần thư bằng thuyền thêm tám năm nữa, cho tới khi chấm dứt hợp đồng năm 1970. Dân làng, những người đã coi chiếc thuyền là một phần bản sắc của mình, tổ chức vận động để giữ nó. Thay vì xin tiền công, họ lập một hợp tác xã, quyên đủ tiền mua thuyền từ nhà Gray, và thuê một thuyền trưởng. Hơn hai trăm người mua cổ phần, nhiều người là cư dân cũ đã chuyển đi xa nhưng muốn chiếc thuyền tiếp tục chạy.",
       "F Ngày nay thuyền chạy từ tháng Tư tới tháng Mười. Phần lớn thu nhập đến từ du khách, những người thích chuyến khứ hồi dài một giờ và những câu chuyện thuyền trưởng kể dọc đường. Nhưng nó vẫn còn vai trò bưu chính: hai trang trại ở bờ bắc không có đường vào, và thư từ, bưu kiện của họ được đưa bằng thuyền quanh năm, thuyền trưởng chạy chuyến riêng vào mùa đông khi cần. Hợp tác xã đang quyên tiền để thay động cơ dầu bằng mô-tơ điện, mà các thành viên hy vọng sẽ làm thuyền êm hơn và rẻ hơn khi vận hành."
     ],
     "allow": [
@@ -722,7 +726,11 @@
       "cooperative",
       "skipper",
       "access",
-      "motor"
+      "motor",
+      "logbooks",
+      "shares",
+      "residents",
+      "cart"
     ],
     "sets": [
       {
@@ -881,7 +889,7 @@
           },
           {
             "id": "m-g1-r5-08",
-            "q": "When the lake froze, the mail was carried on ___ along the shore,",
+            "q": "When the lake froze, the mail was carried along the shore on ___.",
             "ans": {
               "accept": [
                 "foot"
@@ -897,7 +905,7 @@
           },
           {
             "id": "m-g1-r5-09",
-            "q": "a journey of two ___.",
+            "q": "That journey along the shore took two ___.",
             "ans": {
               "accept": [
                 "days"
@@ -965,7 +973,7 @@
           },
           {
             "id": "m-g1-r5-13",
-            "q": "The owners hope to fit an ___ motor.",
+            "q": "The cooperative is raising money for a new ___ motor.",
             "ans": {
               "accept": [
                 "electric"
