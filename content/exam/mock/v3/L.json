@@ -710,6 +710,15 @@
       "voucher",
       "bakery"
     ],
+    "audio": {
+      "file": "a/m-v3-l9.mp3",
+      "dur": 102.5,
+      "voices": [
+        "bm_george",
+        "bf_isabella",
+        "am_michael"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l2",
@@ -931,6 +940,15 @@
       "printers",
       "advert"
     ],
+    "audio": {
+      "file": "a/m-v3-l10.mp3",
+      "dur": 97.6,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "af_nicole"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l2",
@@ -1142,6 +1160,15 @@
       "complaints",
       "survey"
     ],
+    "audio": {
+      "file": "a/m-v3-l11.mp3",
+      "dur": 92.9,
+      "voices": [
+        "bm_george",
+        "af_sarah",
+        "bm_lewis"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l2",
@@ -1343,6 +1370,14 @@
       "estate",
       "sensors"
     ],
+    "audio": {
+      "file": "a/m-v3-l12.mp3",
+      "dur": 126.5,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l3",
@@ -1573,6 +1608,14 @@
       "clinic",
       "chatted"
     ],
+    "audio": {
+      "file": "a/m-v3-l13.mp3",
+      "dur": 129.6,
+      "voices": [
+        "bm_george",
+        "am_michael"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l3",
@@ -1807,6 +1850,14 @@
       "trivial",
       "notebook"
     ],
+    "audio": {
+      "file": "a/m-v3-l14.mp3",
+      "dur": 121.2,
+      "voices": [
+        "bm_george",
+        "bf_isabella"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l3",
