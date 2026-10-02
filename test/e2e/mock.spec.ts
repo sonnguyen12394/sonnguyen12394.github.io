@@ -34,8 +34,10 @@ test('Đọc: trả lời, tải lại trang vẫn làm tiếp đúng chỗ, n�
   await noHorizontalScroll(page);
   // Android hay đóng tab chạy nền: mở lại app phải làm tiếp được, câu trả lời còn nguyên
   await page.waitForTimeout(800);
-  await page.reload();
+  await page.evaluate(() => { (window as unknown as { __old: boolean }).__old = true; });
+  // Mở lại từ đầu bằng một lần điều hướng (reload rồi goto liền nhau làm WebKit sập trang trên CI)
   await openApp(page);
+  expect(await page.evaluate(() => (window as unknown as { __old?: boolean }).__old)).toBeUndefined();   // trang mới thật, không còn bộ nhớ cũ
   await navTo(page, 'Ôn thi');
   await page.getByRole('button', { name: 'Làm tiếp' }).click();
   await expect(page.locator('input[name="m-a1-r1-08"]')).toHaveValue('flowers');
