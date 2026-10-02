@@ -1056,11 +1056,11 @@
       },
       {
         "sp": "Anna",
-        "t": "Only if you can show it's needed for your job. I'll have to write a short explanation for the training committee."
+        "t": "Only if your manager signs a form to say it's needed for your job. You don't have to write anything yourself, which is a relief."
       },
       {
         "sp": "Ben",
-        "t": "Ask Maria in human resources. She did the same thing last year and she still has her letter. It'll save you time."
+        "t": "Ask Maria in human resources first. She chairs the training committee, so she'll know whether a language course is likely to be approved."
       },
       {
         "sp": "Anna",
@@ -1075,8 +1075,8 @@
       "Anh có xem, nhưng thật lòng anh muốn học thứ dùng được ngay. Nhóm mình thuyết trình cho khách hàng nhiều, mà lần nào anh cũng run. Có khoá thuyết trình hai buổi sáng, nên anh đăng ký khoá đó rồi.",
       "Ý hay. Em vẫn đang phân vân. Quản lý của em gợi ý khoá dữ liệu, nhưng em muốn giỏi tiếng Tây Ban Nha hơn, vì công ty sắp mở văn phòng ở Madrid.",
       "Quỹ có trả cho khoá ngoại ngữ không?",
-      "Chỉ khi chứng minh được là cần cho công việc. Em sẽ phải viết một bản giải thích ngắn gửi hội đồng đào tạo.",
-      "Hỏi Maria bên nhân sự ấy. Năm ngoái chị ấy làm đúng việc này và vẫn còn giữ thư. Sẽ đỡ mất thời gian.",
+      "Chỉ khi quản lý của em ký một mẫu đơn xác nhận là cần cho công việc. Em không phải tự viết gì cả, đỡ quá.",
+      "Hỏi Maria bên nhân sự trước đi. Chị ấy chủ trì hội đồng đào tạo, nên sẽ biết khoá ngoại ngữ có khả năng được duyệt không.",
       "Hay đấy. Chiều nay em sẽ email cho chị ấy."
     ],
     "voices": {
@@ -1170,32 +1170,32 @@
             "opts": [
               {
                 "k": "A",
-                "t": "pass a language test"
-              },
-              {
-                "k": "B",
-                "t": "get her manager to sign a form"
-              },
-              {
-                "k": "C",
                 "t": "pay half the cost herself"
               },
               {
+                "k": "B",
+                "t": "pass a language test"
+              },
+              {
+                "k": "C",
+                "t": "write an explanation for the committee"
+              },
+              {
                 "k": "D",
-                "t": "explain why her job needs it"
+                "t": "get her manager to sign a form"
               }
             ],
             "ans": "D",
             "b": 6.5,
             "ev": {
               "p": 7,
-              "s": "Only if you can show it's needed for your job."
+              "s": "Only if your manager signs a form to say it's needed for your job."
             },
-            "why": "Anna phải viết bản giải thích vì sao công việc cần khoá ngoại ngữ.",
+            "why": "Quản lý của Anna phải ký mẫu đơn xác nhận khoá học cần cho công việc.",
             "wrong": {
-              "A": "Không nhắc bài kiểm tra.",
-              "B": "Không nhắc chữ ký của quản lý.",
-              "C": "Không nhắc tự trả một nửa."
+              "A": "Không nhắc tự trả một nửa.",
+              "B": "Không nhắc bài kiểm tra.",
+              "C": "Anna nói không phải tự viết gì."
             }
           },
           {
@@ -1204,11 +1204,11 @@
             "opts": [
               {
                 "k": "A",
-                "t": "She runs the training committee."
+                "t": "She wrote a similar letter before."
               },
               {
                 "k": "B",
-                "t": "She wrote a similar letter before."
+                "t": "She runs the training committee."
               },
               {
                 "k": "C",
@@ -1223,11 +1223,11 @@
             "b": 6.5,
             "ev": {
               "p": 8,
-              "s": "She did the same thing last year and she still has her letter."
+              "s": "She chairs the training committee"
             },
-            "why": "Maria năm ngoái đã viết thư tương tự và vẫn còn giữ.",
+            "why": "Maria chủ trì hội đồng đào tạo nên biết khả năng được duyệt.",
             "wrong": {
-              "A": "Maria làm bên nhân sự, không nói chị điều hành hội đồng.",
+              "A": "Bài không nói Maria từng viết thư.",
               "C": "Không nói Maria biết tiếng Tây Ban Nha.",
               "D": "Không nói Maria làm ở Madrid."
             }
@@ -1265,7 +1265,7 @@
       },
       {
         "sp": "Speaker",
-        "t": "Not everyone was happy. Walkers lost a footpath across the field, but the council quickly built a boardwalk, and most of them like it more than the old path. The complaints that have continued come from our neighbours, who still believe the water will one day spread onto their land, although measurements show no sign of it."
+        "t": "Not everyone was happy. Our neighbours worried that the water would spread onto their land, but a year of measurements convinced them, and they have stopped complaining. The complaints that have continued come from walkers, who lost the footpath across the field. The council promised a boardwalk, but it still hasn't been built."
       },
       {
         "sp": "Speaker",
@@ -1277,7 +1277,7 @@
       "Chào buổi tối. Tôi là Owen Price, và suốt hai mươi năm gia đình tôi canh tác một cánh đồng cạnh sông bị ngập gần như mỗi mùa đông. Năm năm trước, chúng tôi thôi chống lại nước và để cánh đồng trở lại thành đất ngập nước. Người ta cho rằng chúng tôi làm vì cánh đồng đang lỗ, và đúng là lỗ thật, nhưng đó không phải lý do. Một chương trình của chính phủ đề nghị trả tiền cho nông dân tạo đất ngập nước, và khoản tiền lớn hơn bất cứ thứ gì chúng tôi từng thu từ cánh đồng đó trong một năm được mùa.",
       "Bản thân công việc đơn giản. Chúng tôi không làm hàng rào mới hay trồng gì cả; chỉ bịt các rãnh thoát nước cũ và để dòng sông lo phần còn lại. Khoản chi thật sự duy nhất là đào hai ao nông theo yêu cầu của chương trình, và việc đó mất gần trọn một tháng của một nhà thầu.",
       "Chim quay lại nhanh, đúng như ai cũng dự đoán, và ngôi làng ở hạ nguồn, nơi hội đồng hy vọng sẽ ít ngập hơn, quả thật đã ít ngập hơn. Điều không ai trong chúng tôi dự đoán là một loài hoa vàng nhỏ tên cúc vạn thọ đầm lầy, loài chưa được ghi nhận trong thung lũng suốt năm mươi năm. Một nhà thực vật học từ trường đại học giờ tới mỗi mùa xuân để đếm nó.",
-      "Không phải ai cũng vui. Người đi bộ mất một lối mòn băng qua cánh đồng, nhưng hội đồng nhanh chóng làm một lối ván gỗ, và phần lớn họ thích nó hơn lối cũ. Những lời phàn nàn còn kéo dài là từ hàng xóm của chúng tôi, những người vẫn tin nước một ngày nào đó sẽ tràn sang đất họ, dù số đo không cho thấy dấu hiệu nào.",
+      "Không phải ai cũng vui. Hàng xóm lo nước sẽ tràn sang đất họ, nhưng một năm đo đạc đã thuyết phục họ, và họ thôi phàn nàn. Những lời phàn nàn còn kéo dài là từ người đi bộ, những người mất lối mòn băng qua cánh đồng. Hội đồng hứa làm một lối ván gỗ, nhưng đến giờ vẫn chưa làm.",
       "Vậy tôi sẽ nói gì với các nông dân khác? Người ta hay nói nên nói chuyện với mọi người ở hạ nguồn trước khi bắt đầu, và điều đó hợp lý. Nhưng lời khuyên chính của tôi là chụp ảnh và đo đạc ngay từ ngày đầu tiên. Khi các cuộc tranh cãi bắt đầu, những ghi chép chúng tôi lưu lại thuyết phục hơn nhiều so với bất cứ điều gì chúng tôi có thể nói."
     ],
     "voices": {
@@ -1375,36 +1375,36 @@
           },
           {
             "id": "m-v2-l12-03",
-            "q": "What happened that nobody had expected?",
+            "q": "What result had the village council hoped for?",
             "opts": [
               {
                 "k": "A",
-                "t": "The river changed its course."
+                "t": "the return of a rare flower"
               },
               {
                 "k": "B",
-                "t": "The village flooded less often."
+                "t": "a new footpath for walkers"
               },
               {
                 "k": "C",
-                "t": "Birds returned to the field."
+                "t": "more birds on the river"
               },
               {
                 "k": "D",
-                "t": "A rare flower reappeared."
+                "t": "less flooding in the village"
               }
             ],
             "ans": "D",
-            "b": 7,
+            "b": 6.5,
             "ev": {
               "p": 3,
-              "s": "What none of us predicted was a small yellow flower called marsh marigold"
+              "s": "the village downstream, which the council had hoped would flood less, has indeed flooded less"
             },
-            "why": "Loài hoa vàng chưa được ghi nhận suốt năm mươi năm đã xuất hiện lại.",
+            "why": "Hội đồng hy vọng làng ở hạ nguồn ít ngập hơn, và điều đó đã xảy ra.",
             "wrong": {
-              "A": "Không nhắc sông đổi dòng.",
-              "B": "Làng ít ngập là điều hội đồng đã hy vọng.",
-              "C": "Chim quay lại là điều ai cũng dự đoán."
+              "A": "Loài hoa là điều không ai dự đoán.",
+              "B": "Lối ván gỗ là lời hứa của hội đồng, không phải kết quả họ mong.",
+              "C": "Chim quay lại là điều ai cũng dự đoán, không nói hội đồng mong."
             }
           },
           {
@@ -1413,11 +1413,11 @@
             "opts": [
               {
                 "k": "A",
-                "t": "the neighbours"
+                "t": "walkers"
               },
               {
                 "k": "B",
-                "t": "walkers"
+                "t": "the neighbours"
               },
               {
                 "k": "C",
@@ -1432,13 +1432,13 @@
             "b": 6.5,
             "ev": {
               "p": 4,
-              "s": "The complaints that have continued come from our neighbours"
+              "s": "The complaints that have continued come from walkers"
             },
-            "why": "Hàng xóm vẫn phàn nàn vì tin nước sẽ tràn sang.",
+            "why": "Người đi bộ vẫn phàn nàn vì mất lối mòn và lối ván gỗ chưa được làm.",
             "wrong": {
-              "B": "Người đi bộ phần lớn thích lối ván gỗ mới.",
+              "B": "Hàng xóm đã được thuyết phục bởi một năm đo đạc.",
               "C": "Nhà thực vật học tới đếm hoa.",
-              "D": "Hội đồng làm lối ván gỗ, không phàn nàn."
+              "D": "Hội đồng không phàn nàn; họ hứa làm lối ván gỗ."
             }
           },
           {
@@ -1504,11 +1504,11 @@
       },
       {
         "sp": "Lecturer",
-        "t": "The offices then tried different solutions. Taller screens between desks made almost no difference. Headphones helped the people wearing them, but caused an unexpected problem: because they could not hear themselves properly, people on video calls began speaking more loudly, which disturbed everyone else. The most effective change was a simple rule that phones must be kept on silent. It cost nothing, and after a few weeks most people followed it without being reminded."
+        "t": "The offices then tried different solutions. Taller screens between desks made almost no difference. Headphones helped people concentrate, but those who wore them all day reported feeling much more tired by the afternoon. The researchers had also expected people on video calls to speak more loudly with headphones on, but this hardly happened. The most effective change was a simple rule that phones must be kept on silent. It cost nothing, and after a few weeks most people followed it without being reminded."
       },
       {
         "sp": "Lecturer",
-        "t": "Interestingly, most staff did not notice the improvement themselves. Their questionnaire answers about concentration hardly changed, but the number of interruptions they reported each day fell by about a third."
+        "t": "After the rule was introduced, staff said in the questionnaires that they could concentrate much better, although the number of interruptions they reported each day hardly changed. The researchers think people simply felt less irritated."
       },
       {
         "sp": "Lecturer",
@@ -1519,8 +1519,8 @@
       "Bài 2. Bây giờ bạn có ba mươi giây để đọc câu 26 đến 30.",
       "Hôm nay tôi sẽ mô tả một nghiên cứu về tiếng ồn trong văn phòng không vách ngăn. Các nhà nghiên cứu đặt máy ghi âm trên bàn ở tám văn phòng trong một năm. Mỗi văn phòng có từ bốn mươi đến chín mươi nhân viên, và phần lớn công việc là viết báo cáo và trả lời email chứ không phải nói chuyện với khách hàng. Họ từng định đề nghị nhân viên ghi nhật ký hằng ngày, nhưng quá ít người ghi nên họ thay bằng một bảng hỏi ngắn hai tuần một lần.",
       "Các nghiên cứu trước đã thấy âm thanh gây phân tâm nhất là lời nói mà bạn hiểu được, và các nhà nghiên cứu trông đợi kết quả tương tự. Thế nhưng ở những văn phòng này, trò chuyện chỉ đứng thứ hai. Điều người ta khó bỏ qua nhất là điện thoại: không phải bản thân cuộc gọi, mà tiếng chuông và âm báo của điện thoại di động để trên bàn.",
-      "Các văn phòng sau đó thử nhiều giải pháp. Vách ngăn cao hơn giữa các bàn hầu như không tạo khác biệt. Tai nghe giúp người đeo, nhưng gây ra một vấn đề không ngờ: vì không nghe rõ giọng mình, người đang gọi video bắt đầu nói to hơn, làm phiền mọi người xung quanh. Thay đổi hiệu quả nhất là một quy định đơn giản rằng điện thoại phải để chế độ im lặng. Nó không tốn gì, và sau vài tuần phần lớn mọi người làm theo mà không cần nhắc.",
-      "Điều thú vị là phần lớn nhân viên không tự nhận ra sự cải thiện. Câu trả lời về mức độ tập trung trong bảng hỏi hầu như không đổi, nhưng số lần bị gián đoạn họ báo cáo mỗi ngày giảm khoảng một phần ba.",
+      "Các văn phòng sau đó thử nhiều giải pháp. Vách ngăn cao hơn giữa các bàn hầu như không tạo khác biệt. Tai nghe giúp người ta tập trung, nhưng ai đeo cả ngày thì cho biết thấy mệt hơn nhiều vào buổi chiều. Các nhà nghiên cứu cũng từng nghĩ người gọi video sẽ nói to hơn khi đeo tai nghe, nhưng điều này hầu như không xảy ra. Thay đổi hiệu quả nhất là một quy định đơn giản rằng điện thoại phải để chế độ im lặng. Nó không tốn gì, và sau vài tuần phần lớn mọi người làm theo mà không cần nhắc.",
+      "Sau khi có quy định, nhân viên nói trong bảng hỏi rằng họ tập trung tốt hơn nhiều, dù số lần bị gián đoạn họ báo cáo mỗi ngày hầu như không đổi. Các nhà nghiên cứu cho rằng người ta đơn giản là thấy bớt bực bội hơn.",
       "Các nhà nghiên cứu chỉ ra một giới hạn. Tám văn phòng thuộc các công ty khác nhau, nhưng đều đã chuyển vào toà nhà mới trong hai năm trước đó, nên kết quả có thể không áp dụng cho văn phòng cũ, nơi tường và sàn hấp thụ âm thanh khác. Họ đang tìm những văn phòng cũ sẵn lòng tham gia nghiên cứu thứ hai."
     ],
     "voices": {
@@ -1621,28 +1621,28 @@
               },
               {
                 "k": "B",
-                "t": "People stopped talking to colleagues."
-              },
-              {
-                "k": "C",
                 "t": "People on calls spoke more loudly."
               },
               {
+                "k": "C",
+                "t": "People felt more tired."
+              },
+              {
                 "k": "D",
-                "t": "People felt tired."
+                "t": "People stopped talking to colleagues."
               }
             ],
             "ans": "C",
             "b": 7,
             "ev": {
               "p": 3,
-              "s": "people on video calls began speaking more loudly"
+              "s": "reported feeling much more tired by the afternoon"
             },
-            "why": "Người gọi video nói to hơn vì không nghe rõ giọng mình.",
+            "why": "Người đeo tai nghe cả ngày thấy mệt hơn nhiều vào buổi chiều.",
             "wrong": {
               "A": "Không nhắc chuông báo.",
-              "B": "Không nói người ta thôi trò chuyện.",
-              "D": "Không nhắc mệt mỏi."
+              "B": "Các nhà nghiên cứu từng nghĩ vậy, nhưng điều này hầu như không xảy ra.",
+              "D": "Không nói người ta thôi trò chuyện."
             }
           },
           {
@@ -1659,24 +1659,24 @@
               },
               {
                 "k": "C",
-                "t": "Interruptions fell by about a third."
+                "t": "Staff said they could concentrate much better."
               },
               {
                 "k": "D",
-                "t": "Staff said they could concentrate much better."
+                "t": "Interruptions fell by about a third."
               }
             ],
             "ans": "C",
             "b": 7.5,
             "ev": {
               "p": 4,
-              "s": "the number of interruptions they reported each day fell by about a third"
+              "s": "staff said in the questionnaires that they could concentrate much better"
             },
-            "why": "Số lần bị gián đoạn giảm khoảng một phần ba, dù câu trả lời về tập trung hầu như không đổi.",
+            "why": "Nhân viên nói họ tập trung tốt hơn nhiều.",
             "wrong": {
               "A": "Không nói nhiều người đeo tai nghe hơn.",
               "B": "Không nói mức ồn tăng.",
-              "D": "Câu trả lời về tập trung hầu như không đổi."
+              "D": "Số lần bị gián đoạn hầu như không đổi."
             }
           },
           {
@@ -1746,11 +1746,11 @@
       },
       {
         "sp": "Librarian",
-        "t": "One finding worried us. Many teenagers said they rarely came to the library at all during term. We expected them to blame our rules about eating and talking, but very few did. The real problem was our opening hours: most branches close at five, which is before many school clubs and sports practices finish. By the time they could get to us, the doors were already locked."
+        "t": "One finding worried us. Many teenagers said they rarely came to the library at all during term. We wondered whether our opening hours were the reason, but most branches stay open until eight, and very few mentioned them. The main complaint was our rules: no eating and no talking in the reading rooms made them feel the library was not meant for them. Several said they went to cafés to study with friends instead, even though it cost them money."
       },
       {
         "sp": "Librarian",
-        "t": "So what happens next? Changing opening hours across the whole city would be expensive, so for now two branches near secondary schools will stay open until seven on weekdays, as a trial. We'll repeat the survey in a year to see whether it has made a difference before we decide anything else. If it works, we'll ask the council for the money to do the same in other branches."
+        "t": "So what happens next? We considered trying separate rooms in one or two branches, but there isn't space. Instead, the first step is simpler: we've asked every secondary school to give its students a talk about what the library offers, and we'll repeat the survey in a year to see whether attitudes have changed."
       }
     ],
     "vi": [
@@ -1758,8 +1758,8 @@
       "Chào buổi chiều. Tôi sẽ nói về một cuộc khảo sát chúng tôi thực hiện với thanh thiếu niên sử dụng thư viện thành phố. Nhiều năm nay chúng tôi nghe nói người trẻ đã thôi đọc sách, và chúng tôi muốn biết điều đó có đúng với bạn đọc của mình không. Hơn một nghìn thanh thiếu niên từ mười ba đến mười tám tuổi đã trả lời, qua mạng hoặc bằng phiếu giấy ở các chi nhánh.",
       "Kết quả đầu tiên làm chúng tôi bất ngờ. Số sách thanh thiếu niên mượn thật ra đã tăng trong năm năm qua, dù chỉ vài phần trăm. Điều thay đổi là loại sách. Mượn tiểu thuyết giảm, nhưng mượn truyện tranh dài và sách về các sự kiện có thật tăng mạnh.",
       "Chúng tôi hỏi họ chọn sách đọc thế nào. Kệ trưng bày gần lối vào ít quan trọng hơn chúng tôi mong. Câu trả lời phổ biến nhất là lời giới thiệu của bạn bè, tiếp đến là video do những bạn đọc trẻ khác làm trên mạng.",
-      "Một phát hiện làm chúng tôi lo. Nhiều thanh thiếu niên nói họ hiếm khi tới thư viện trong học kỳ. Chúng tôi tưởng họ sẽ đổ lỗi cho quy định về ăn uống và nói chuyện, nhưng rất ít người làm vậy. Vấn đề thật là giờ mở cửa: phần lớn chi nhánh đóng cửa lúc năm giờ, trước khi nhiều câu lạc bộ và buổi tập thể thao ở trường kết thúc. Khi các em tới được thì cửa đã khoá.",
-      "Vậy tiếp theo là gì? Đổi giờ mở cửa trên toàn thành phố sẽ tốn kém, nên trước mắt hai chi nhánh gần các trường trung học sẽ mở tới bảy giờ các ngày trong tuần, để thử nghiệm. Chúng tôi sẽ làm lại khảo sát sau một năm để xem có tạo khác biệt không trước khi quyết định điều gì khác. Nếu hiệu quả, chúng tôi sẽ xin hội đồng thành phố kinh phí để làm tương tự ở các chi nhánh khác."
+      "Một phát hiện làm chúng tôi lo. Nhiều thanh thiếu niên nói họ hiếm khi tới thư viện trong học kỳ. Chúng tôi tự hỏi liệu giờ mở cửa có phải lý do, nhưng phần lớn chi nhánh mở tới tám giờ, và rất ít em nhắc tới. Lời phàn nàn chính là quy định: cấm ăn uống và cấm nói chuyện trong phòng đọc khiến các em cảm thấy thư viện không dành cho mình. Vài em nói các em tới quán cà phê để học cùng bạn, dù tốn tiền.",
+      "Vậy tiếp theo là gì? Chúng tôi từng tính thử phòng riêng ở một hai chi nhánh, nhưng không đủ chỗ. Thay vào đó, bước đầu đơn giản hơn: chúng tôi đã đề nghị mọi trường trung học tổ chức cho học sinh một buổi nói chuyện về những gì thư viện có, và sẽ làm lại khảo sát sau một năm để xem thái độ có thay đổi không."
     ],
     "voices": {
       "N": "bm_george",
@@ -1889,7 +1889,7 @@
               },
               {
                 "k": "B",
-                "t": "the opening hours"
+                "t": "rules about eating and talking"
               },
               {
                 "k": "C",
@@ -1897,20 +1897,20 @@
               },
               {
                 "k": "D",
-                "t": "rules about eating and talking"
+                "t": "the opening hours"
               }
             ],
             "ans": "B",
             "b": 7.5,
             "ev": {
               "p": 4,
-              "s": "The real problem was our opening hours"
+              "s": "The main complaint was our rules"
             },
-            "why": "Thư viện đóng cửa lúc năm giờ, trước khi các câu lạc bộ ở trường kết thúc.",
+            "why": "Quy định cấm ăn uống và nói chuyện khiến các em thấy thư viện không dành cho mình.",
             "wrong": {
               "A": "Không nhắc khoảng cách.",
               "C": "Không nhắc sách là lý do.",
-              "D": "Rất ít người đổ lỗi cho quy định ăn uống, nói chuyện."
+              "D": "Phần lớn chi nhánh mở tới tám giờ, rất ít em nhắc giờ mở cửa."
             }
           },
           {
@@ -1919,32 +1919,32 @@
             "opts": [
               {
                 "k": "A",
-                "t": "keep two branches open later as a trial"
+                "t": "ask schools to give talks about the library"
               },
               {
                 "k": "B",
-                "t": "change opening hours in every branch"
+                "t": "try separate rooms in two branches"
               },
               {
                 "k": "C",
-                "t": "open separate rooms for teenagers"
+                "t": "stay open later as a trial"
               },
               {
                 "k": "D",
-                "t": "stop the survey"
+                "t": "remove the rules about talking"
               }
             ],
             "ans": "A",
             "b": 7.5,
             "ev": {
               "p": 5,
-              "s": "two branches near secondary schools will stay open until seven on weekdays, as a trial"
+              "s": "we've asked every secondary school to give its students a talk about what the library offers"
             },
-            "why": "Trước mắt hai chi nhánh gần trường trung học mở tới bảy giờ để thử.",
+            "why": "Bước đầu là đề nghị các trường tổ chức buổi nói chuyện về thư viện.",
             "wrong": {
-              "B": "Đổi giờ toàn thành phố sẽ tốn kém.",
-              "C": "Không nhắc phòng riêng.",
-              "D": "Khảo sát sẽ được làm lại sau một năm."
+              "B": "Phòng riêng được tính tới nhưng không đủ chỗ.",
+              "C": "Giờ mở cửa không phải vấn đề chính.",
+              "D": "Thư viện không nói sẽ bỏ quy định."
             }
           }
         ]

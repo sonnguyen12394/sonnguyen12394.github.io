@@ -10,7 +10,7 @@
     "title": "The village that shares its cars",
     "paras": [
       "The village of Hollin has about six hundred people and a bus that stops only twice a day. For years, almost every household owned at least one car, and many owned two. In 2018 that began to change, when the owner of the village shop, Ruth Kerr, started a car club. The parish council had discussed the idea several times without doing anything, so Ruth decided to try it herself with one second-hand car.",
-      "Today the club has three cars and a small electric van. Members pay ten pounds a month and a small charge for each hour they use a vehicle. There is a booking app, but most members still prefer the notebook that sits on the counter in the shop. Ruth says this is partly because many members are older, but also because writing in the book gives people a reason to come in and chat.",
+      "Today the club has three cars and a small electric van. Members pay ten pounds a month and a small charge for each hour they use a vehicle. There is a booking app, but most members still prefer the notebook that sits on the counter in the shop. Ruth says the main reason is that the internet connection in the village is so unreliable that the app often fails; writing in the book, she adds, also gives people a reason to come in and chat.",
       "Ruth expected the cars to be used mainly for shopping trips and hospital appointments. In fact, the most common use is taking children to sports matches at weekends, when the bus does not run at all. Shopping comes second, and the van is booked almost every Saturday by people moving furniture.",
       "There have been problems. In the first year, cars were often returned dirty or with an empty fuel tank. Ruth first tried a system in which each car was adopted by one household, which would keep it clean in return for free hours, but too few households volunteered. What finally worked was simpler: a fine of five pounds for any car returned dirty or with less than a quarter of a tank. Since then, complaints have almost disappeared.",
       "The club has changed the village in ways that Ruth did not plan. Fourteen households have given up owning a car altogether, and a few more have sold a second car. Insurance took two months to arrange, which Ruth had expected. The hardest part was something she had not thought about at all: finding somewhere to charge the electric van, because the only suitable socket was in the church hall, and the church committee took almost a year to agree.",
@@ -18,7 +18,7 @@
     ],
     "vi": [
       "Làng Hollin có khoảng sáu trăm người và một tuyến xe buýt chỉ dừng hai lần mỗi ngày. Nhiều năm, gần như hộ nào cũng có ít nhất một ô tô, và nhiều hộ có hai. Năm 2018 điều đó bắt đầu thay đổi, khi chủ cửa hàng tạp hoá của làng, Ruth Kerr, lập một câu lạc bộ ô tô. Hội đồng xã đã bàn ý tưởng này vài lần mà không làm gì, nên Ruth quyết định tự thử với một chiếc xe cũ.",
-      "Ngày nay câu lạc bộ có ba ô tô và một xe tải điện nhỏ. Thành viên trả mười bảng mỗi tháng và một khoản nhỏ cho mỗi giờ dùng xe. Có ứng dụng đặt xe, nhưng phần lớn thành viên vẫn thích cuốn sổ đặt trên quầy cửa hàng. Ruth nói một phần vì nhiều thành viên lớn tuổi, nhưng cũng vì việc ghi vào sổ cho mọi người một lý do để ghé vào trò chuyện.",
+      "Ngày nay câu lạc bộ có ba ô tô và một xe tải điện nhỏ. Thành viên trả mười bảng mỗi tháng và một khoản nhỏ cho mỗi giờ dùng xe. Có ứng dụng đặt xe, nhưng phần lớn thành viên vẫn thích cuốn sổ đặt trên quầy cửa hàng. Ruth nói lý do chính là kết nối internet trong làng chập chờn đến mức ứng dụng hay hỏng; bà nói thêm, ghi vào sổ cũng cho mọi người một lý do để ghé vào trò chuyện.",
       "Ruth tưởng xe sẽ chủ yếu được dùng để đi chợ và đi khám bệnh. Thực ra, việc dùng phổ biến nhất là đưa trẻ đi thi đấu thể thao vào cuối tuần, khi xe buýt hoàn toàn không chạy. Đi chợ đứng thứ hai, và xe tải gần như thứ Bảy nào cũng được đặt bởi những người chuyển đồ đạc.",
       "Cũng có những trục trặc. Năm đầu, xe thường bị trả lại bẩn hoặc hết xăng. Ruth thử trước một hệ thống trong đó mỗi xe được một hộ nhận chăm, giữ xe sạch để đổi lấy giờ dùng miễn phí, nhưng quá ít hộ đăng ký. Điều cuối cùng hiệu quả lại đơn giản hơn: phạt năm bảng với xe trả lại bẩn hoặc còn dưới một phần tư bình xăng. Từ đó, lời phàn nàn gần như biến mất.",
       "Câu lạc bộ đã thay đổi ngôi làng theo những cách Ruth không định trước. Mười bốn hộ đã thôi sở hữu xe hoàn toàn, và vài hộ khác đã bán chiếc xe thứ hai. Thu xếp bảo hiểm mất hai tháng, điều Ruth đã lường trước. Phần khó nhất là thứ bà hoàn toàn không nghĩ tới: tìm chỗ sạc cho chiếc xe tải điện, vì ổ cắm phù hợp duy nhất nằm ở hội trường nhà thờ, và ban quản lý nhà thờ mất gần một năm mới đồng ý.",
@@ -119,36 +119,36 @@
           },
           {
             "id": "m-v2-r1-03",
-            "q": "According to Ruth, why do members like the booking method they use?",
+            "q": "According to Ruth, what is the main reason members prefer the notebook?",
             "opts": [
               {
                 "k": "A",
-                "t": "It is faster."
+                "t": "It gives them a chance to talk to people."
               },
               {
                 "k": "B",
-                "t": "It is free."
+                "t": "Most members are older."
               },
               {
                 "k": "C",
-                "t": "It still works when there is no internet connection."
+                "t": "It is free to use."
               },
               {
                 "k": "D",
-                "t": "It gives them a chance to talk to people."
+                "t": "The internet connection is unreliable."
               }
             ],
             "ans": "D",
             "b": 5.5,
             "ev": {
               "p": 1,
-              "s": "writing in the book gives people a reason to come in and chat"
+              "s": "the internet connection in the village is so unreliable that the app often fails"
             },
-            "why": "Ghi vào sổ cho mọi người lý do ghé vào trò chuyện.",
+            "why": "Lý do chính là internet trong làng chập chờn khiến ứng dụng hay hỏng.",
             "wrong": {
-              "A": "Không nói nhanh hơn.",
-              "B": "Không nói về chi phí đặt xe.",
-              "C": "Không nhắc internet."
+              "A": "Ruth chỉ nói thêm điều này, không phải lý do chính.",
+              "B": "Bài không nêu tuổi thành viên là lý do.",
+              "C": "Bài không nói về chi phí."
             }
           },
           {
@@ -404,19 +404,19 @@
     "title": "A later start to the school day",
     "paras": [
       "Two years ago, Northgate High School moved the start of its school day from half past eight to quarter past nine. Many parents assumed that the head teacher, Diane Fowler, had been persuaded by research showing that teenagers naturally fall asleep later than adults. She had read that research, but her main reason was a practical one: the later start gave the whole staff forty-five minutes each morning to plan lessons together, something they had never had time for.",
-      "The decision was not easy. Teachers voted in favour, but a survey of parents found that only forty-five per cent supported the change, and a small group organised a petition against it. Fowler went ahead anyway, promising to review the decision after two years.",
+      "The decision was not easy. Teachers voted in favour, and a survey of parents found that fifty-five per cent supported the change, although a small group organised a petition against it. Fowler went ahead anyway, promising to review the decision after two years.",
       "In the first year, exam results were almost exactly the same as before. Lateness changed in an unexpected way. Students who walked to school arrived late much less often, but there was no change at all among students who came by bus, because the bus company kept its old timetable and those students still arrived at half past eight. The school nurse also reported that fewer students came to her with headaches in the morning.",
-      "Working parents complained that they now had to leave home before their children left for school. The school first planned to open the library early, but the librarian could not start before nine. Instead, students who arrive early now wait in the sports hall, where older students are paid a small amount to supervise them. Parents say they were doubtful at first, but the arrangement has worked well.",
-      "Because the school day now ends later, after-school activities were also affected. Football and drama continue as before, but several clubs moved to lunchtime, because in winter it was getting dark before they finished and parents did not want their children walking home at night.",
-      "In the second year, exam results finally rose slightly. Fowler is careful not to give the new timetable too much credit. A new maths teacher joined that year, but she thinks the bigger factor was that the students taking exams had arrived at the school with unusually good results, so they might have done better whatever the timetable."
+      "Working parents complained that they now had to leave home before their children left for school. The school first planned to open the library early, but the librarian could not start before nine. Instead, students who arrive early now wait in the sports hall, where parents take turns to supervise them on a rota. The school had considered paying older students to do this, but the insurance did not allow it. Parents say they were doubtful at first, but the arrangement has worked well.",
+      "Because the school day now ends later, after-school activities were also affected. Football and drama continue as before, but several clubs moved to lunchtime. Some parents mentioned the dark winter evenings, but the main reason was that many older students have part-time jobs that start at five.",
+      "In the second year, exam results finally rose slightly. Fowler is careful not to give the new timetable too much credit. Some people have suggested that the students taking exams that year were simply a stronger group, but their earlier results were quite ordinary. She thinks the bigger factor was a new maths teacher who joined that year."
     ],
     "vi": [
       "Hai năm trước, Trường Trung học Northgate dời giờ bắt đầu ngày học từ tám giờ rưỡi sang chín giờ mười lăm. Nhiều phụ huynh cho rằng hiệu trưởng Diane Fowler đã bị thuyết phục bởi nghiên cứu cho thấy thanh thiếu niên tự nhiên ngủ muộn hơn người lớn. Bà có đọc nghiên cứu đó, nhưng lý do chính của bà mang tính thực tế: giờ bắt đầu muộn hơn cho toàn bộ giáo viên bốn mươi lăm phút mỗi sáng để cùng lên kế hoạch bài dạy, điều họ chưa bao giờ có thời gian làm.",
-      "Quyết định không dễ dàng. Giáo viên bỏ phiếu ủng hộ, nhưng một khảo sát phụ huynh cho thấy chỉ bốn mươi lăm phần trăm ủng hộ thay đổi, và một nhóm nhỏ tổ chức kiến nghị phản đối. Fowler vẫn tiến hành, hứa sẽ xem xét lại quyết định sau hai năm.",
+      "Quyết định không dễ dàng. Giáo viên bỏ phiếu ủng hộ, và một khảo sát phụ huynh cho thấy năm mươi lăm phần trăm ủng hộ thay đổi, dù một nhóm nhỏ tổ chức kiến nghị phản đối. Fowler vẫn tiến hành, hứa sẽ xem xét lại quyết định sau hai năm.",
       "Năm đầu, kết quả thi gần như y hệt trước. Chuyện đi muộn thay đổi theo cách không ngờ. Học sinh đi bộ tới trường đi muộn ít hơn hẳn, nhưng học sinh đi xe buýt thì hoàn toàn không thay đổi, vì công ty xe buýt giữ lịch chạy cũ và các em vẫn tới lúc tám giờ rưỡi. Y tá trường cũng cho biết ít học sinh tới gặp cô vì đau đầu buổi sáng hơn.",
-      "Phụ huynh đi làm phàn nàn rằng giờ họ phải rời nhà trước khi con đi học. Trường ban đầu định mở thư viện sớm, nhưng thủ thư không thể bắt đầu trước chín giờ. Thay vào đó, học sinh đến sớm nay chờ ở nhà thi đấu, nơi các học sinh lớn được trả một khoản nhỏ để trông. Phụ huynh nói lúc đầu họ còn nghi ngờ, nhưng cách sắp xếp này đã hiệu quả.",
-      "Vì ngày học nay kết thúc muộn hơn, các hoạt động sau giờ học cũng bị ảnh hưởng. Bóng đá và kịch vẫn như cũ, nhưng vài câu lạc bộ chuyển sang giờ ăn trưa, vì mùa đông trời tối trước khi các câu lạc bộ kết thúc và phụ huynh không muốn con đi bộ về nhà lúc trời tối.",
-      "Sang năm thứ hai, kết quả thi cuối cùng tăng nhẹ. Fowler cẩn thận không quy quá nhiều công cho thời khoá biểu mới. Năm đó có một giáo viên toán mới tới, nhưng bà cho rằng yếu tố lớn hơn là khoá học sinh đi thi năm đó khi vào trường đã có kết quả tốt khác thường, nên các em có thể làm tốt hơn dù thời khoá biểu thế nào."
+      "Phụ huynh đi làm phàn nàn rằng giờ họ phải rời nhà trước khi con đi học. Trường ban đầu định mở thư viện sớm, nhưng thủ thư không thể bắt đầu trước chín giờ. Thay vào đó, học sinh đến sớm nay chờ ở nhà thi đấu, nơi phụ huynh thay phiên nhau trông theo lịch. Trường từng tính trả tiền cho học sinh lớn làm việc này, nhưng bảo hiểm không cho phép. Phụ huynh nói lúc đầu họ còn nghi ngờ, nhưng cách sắp xếp này đã hiệu quả.",
+      "Vì ngày học nay kết thúc muộn hơn, các hoạt động sau giờ học cũng bị ảnh hưởng. Bóng đá và kịch vẫn như cũ, nhưng vài câu lạc bộ chuyển sang giờ ăn trưa. Vài phụ huynh nhắc tới những buổi tối mùa đông tối trời, nhưng lý do chính là nhiều học sinh lớn có việc làm thêm bắt đầu lúc năm giờ.",
+      "Sang năm thứ hai, kết quả thi cuối cùng tăng nhẹ. Fowler cẩn thận không quy quá nhiều công cho thời khoá biểu mới. Có người cho rằng khoá học sinh đi thi năm đó đơn giản là giỏi hơn, nhưng kết quả trước đó của các em khá bình thường. Bà cho rằng yếu tố lớn hơn là một giáo viên toán mới tới năm đó."
     ],
     "allow": [
       "persuaded",
@@ -476,7 +476,7 @@
             "opts": [
               {
                 "k": "A",
-                "t": "Most parents supported the change."
+                "t": "Fewer than half supported the change."
               },
               {
                 "k": "B",
@@ -484,7 +484,7 @@
               },
               {
                 "k": "C",
-                "t": "Fewer than half supported the change."
+                "t": "Most parents supported the change."
               },
               {
                 "k": "D",
@@ -495,11 +495,11 @@
             "b": 5.5,
             "ev": {
               "p": 1,
-              "s": "only forty-five per cent supported the change"
+              "s": "fifty-five per cent supported the change"
             },
-            "why": "Chỉ 45% phụ huynh ủng hộ.",
+            "why": "55% phụ huynh ủng hộ, tức hơn một nửa.",
             "wrong": {
-              "A": "45% chưa tới một nửa.",
+              "A": "55% là hơn một nửa.",
               "B": "Không phải chia đôi đúng bằng nhau.",
               "D": "Bài không nói phụ huynh không biết."
             }
@@ -642,15 +642,15 @@
           },
           {
             "id": "m-v2-r2-07",
-            "q": "In paragraph 4, who are paid to supervise the early arrivals?",
+            "q": "In paragraph 4, who supervise the students who arrive early?",
             "opts": [
               {
                 "k": "A",
-                "t": "the librarian"
+                "t": "older students"
               },
               {
                 "k": "B",
-                "t": "older students"
+                "t": "parents"
               },
               {
                 "k": "C",
@@ -658,20 +658,20 @@
               },
               {
                 "k": "D",
-                "t": "parents"
+                "t": "the librarian"
               }
             ],
             "ans": "B",
             "b": 6,
             "ev": {
               "p": 3,
-              "s": "where older students are paid a small amount to supervise them"
+              "s": "where parents take turns to supervise them on a rota"
             },
-            "why": "Học sinh lớn được trả một khoản nhỏ để trông.",
+            "why": "Phụ huynh thay phiên nhau trông.",
             "wrong": {
-              "A": "Thủ thư không bắt đầu trước chín giờ.",
+              "A": "Trường từng tính tới học sinh lớn nhưng bảo hiểm không cho.",
               "C": "Giáo viên dùng giờ đó để lên kế hoạch.",
-              "D": "Phụ huynh là người phàn nàn, không trông."
+              "D": "Thủ thư không bắt đầu trước chín giờ."
             }
           },
           {
@@ -680,7 +680,7 @@
             "opts": [
               {
                 "k": "A",
-                "t": "Students preferred lunchtime."
+                "t": "It got dark before they finished in winter."
               },
               {
                 "k": "B",
@@ -692,18 +692,18 @@
               },
               {
                 "k": "D",
-                "t": "It got dark before they finished in winter."
+                "t": "Many students had part-time jobs."
               }
             ],
             "ans": "D",
             "b": 6,
             "ev": {
               "p": 4,
-              "s": "in winter it was getting dark before they finished"
+              "s": "the main reason was that many older students have part-time jobs that start at five"
             },
-            "why": "Mùa đông trời tối trước khi câu lạc bộ kết thúc.",
+            "why": "Lý do chính là nhiều học sinh lớn có việc làm thêm bắt đầu lúc năm giờ.",
             "wrong": {
-              "A": "Bài không nói học sinh thích giờ trưa hơn.",
+              "A": "Trời tối chỉ được vài phụ huynh nhắc, không phải lý do chính.",
               "B": "Nhà thi đấu dùng buổi sáng cho học sinh đến sớm.",
               "C": "Bài không nói thiếu giáo viên."
             }
@@ -748,7 +748,7 @@
             "opts": [
               {
                 "k": "A",
-                "t": "a new maths teacher"
+                "t": "an unusually strong group of students"
               },
               {
                 "k": "B",
@@ -756,7 +756,7 @@
               },
               {
                 "k": "C",
-                "t": "an unusually strong group of students"
+                "t": "a new maths teacher"
               },
               {
                 "k": "D",
@@ -767,11 +767,11 @@
             "b": 6.5,
             "ev": {
               "p": 5,
-              "s": "she thinks the bigger factor was that the students taking exams had arrived at the school with unusually good results"
+              "s": "She thinks the bigger factor was a new maths teacher"
             },
-            "why": "Bà cho rằng yếu tố lớn hơn là khoá học sinh năm đó vốn đã giỏi khác thường.",
+            "why": "Bà cho rằng yếu tố lớn hơn là giáo viên toán mới.",
             "wrong": {
-              "A": "Giáo viên toán mới có tới, nhưng bà cho là yếu tố nhỏ hơn.",
+              "A": "Kết quả trước đó của khoá này khá bình thường.",
               "B": "Bà cẩn thận không quy công cho thời khoá biểu.",
               "D": "Bài không nói đề thi dễ hơn."
             }
@@ -794,7 +794,7 @@
       "The couple's largest group of customers is not what most people would guess. Collectors rarely come to them, since serious collectors usually repair their own clocks. Instead, about half of the work comes from hotels, pubs and restaurants, which buy old clocks as decoration and then discover that a clock showing the wrong time annoys their guests. People who have inherited a clock from a grandparent form a smaller but growing group. Interestingly, many of them ask for the chime to be switched off, because they want the clock to work but not to wake them at night.",
       "Martin learned the trade from an elderly clockmaker over seven years. Elena's route was different. Although she has a degree in engineering, she learned the basics of clock repair at an evening class run by a local museum, and only later added to her knowledge with online videos. She believes videos explain most tasks well, including how to decide whether a worn part should be repaired or replaced. What they cannot teach, she says, is the slow adjustment that makes a clock keep exact time, which depends on listening to hundreds of clocks.",
       "The workshop's biggest difficulty is not one that customers would expect. Parts, which visitors always ask about, are rarely a problem: the Vosses cut most wheels themselves on a small machine, and they buy springs from a factory abroad that still makes them. The real difficulty is space. Clocks waiting for repair fill every shelf, and large clocks have to stand in the corridor, so the couple are looking for a bigger building.",
-      "Last year the couple took on their first apprentice, a nineteen-year-old called Josh. He first saw the workshop when he came in with his grandmother, who had brought a family clock for repair. A local film-maker later made a short film about him, but by then he had already been working there for months. The couple had applied for a grant from the town council to pay a trainee, but the application was refused. One of their hotel customers offered to help, but in the end it was a charity that supports training in traditional crafts which agreed to pay Josh's wages for his first year.",
+      "Last year the couple took on their first apprentice, a nineteen-year-old called Josh. He replied to an advertisement the couple had placed in the local newspaper. His grandmother had once brought a family clock to the workshop, but Josh had never been with her, and a short film about him was only made after he started. The couple had applied for a grant from the town council to pay a trainee, but the application was refused. One of their hotel customers offered to help, but in the end it was a charity that supports training in traditional crafts which agreed to pay Josh's wages for his first year.",
       "Martin is optimistic about the future of the craft, though not for the reasons people might expect. He does not believe that mechanical clocks will become fashionable again, and he thinks the demand from hotels may not last. His reason is simpler: most electronic clocks cannot be repaired at all, so a well-made mechanical clock will always outlive them. Elena prefers a different explanation. As long as people inherit objects that carry memories, she says, someone will be needed to keep them going."
     ],
     "vi": [
@@ -802,7 +802,7 @@
       "Nhóm khách đông nhất của hai vợ chồng không như phần lớn mọi người đoán. Nhà sưu tầm hiếm khi tới, vì những người sưu tầm nghiêm túc thường tự sửa đồng hồ của mình. Thay vào đó, khoảng một nửa công việc đến từ khách sạn, quán rượu và nhà hàng, những nơi mua đồng hồ cũ để trang trí rồi mới phát hiện một chiếc đồng hồ chạy sai giờ làm khách khó chịu. Những người được thừa kế đồng hồ của ông bà là một nhóm nhỏ hơn nhưng đang tăng. Thú vị là nhiều người trong số họ đề nghị tắt tiếng chuông, vì họ muốn đồng hồ chạy nhưng không đánh thức họ ban đêm.",
       "Martin học nghề từ một thợ đồng hồ già trong bảy năm. Con đường của Elena khác. Dù có bằng kỹ sư, bà học những điều cơ bản về sửa đồng hồ ở một lớp buổi tối do bảo tàng địa phương tổ chức, và chỉ sau này mới bổ sung kiến thức bằng video trên mạng. Bà tin video giải thích tốt phần lớn công việc, kể cả cách quyết định một bộ phận mòn nên sửa hay thay. Điều video không dạy được, theo bà, là việc chỉnh chậm rãi để đồng hồ chạy đúng giờ, việc phụ thuộc vào việc lắng nghe hàng trăm chiếc đồng hồ.",
       "Khó khăn lớn nhất của xưởng không phải điều khách hàng nghĩ. Linh kiện, thứ khách luôn hỏi, hiếm khi là vấn đề: vợ chồng Voss tự cắt phần lớn bánh răng trên một chiếc máy nhỏ, và mua lò xo từ một nhà máy ở nước ngoài vẫn còn sản xuất. Khó khăn thật là chỗ. Đồng hồ chờ sửa chiếm kín mọi kệ, đồng hồ lớn phải đứng ở hành lang, nên hai vợ chồng đang tìm một toà nhà lớn hơn.",
-      "Năm ngoái hai vợ chồng nhận người học việc đầu tiên, một chàng trai mười chín tuổi tên Josh. Lần đầu cậu thấy xưởng là khi đi cùng bà, người mang một chiếc đồng hồ gia đình tới sửa. Một nhà làm phim địa phương sau đó làm một phim ngắn về cậu, nhưng lúc ấy cậu đã làm ở đó nhiều tháng. Hai vợ chồng từng xin trợ cấp của hội đồng thị trấn để trả lương người học việc, nhưng đơn bị từ chối. Một khách hàng là khách sạn đề nghị giúp, nhưng cuối cùng một quỹ từ thiện hỗ trợ đào tạo nghề thủ công truyền thống đồng ý trả lương cho Josh năm đầu.",
+      "Năm ngoái hai vợ chồng nhận người học việc đầu tiên, một chàng trai mười chín tuổi tên Josh. Cậu trả lời một mẩu quảng cáo hai vợ chồng đăng trên báo địa phương. Bà cậu từng mang một chiếc đồng hồ gia đình tới xưởng, nhưng Josh chưa bao giờ đi cùng, và một phim ngắn về cậu chỉ được làm sau khi cậu bắt đầu làm. Hai vợ chồng từng xin trợ cấp của hội đồng thị trấn để trả lương người học việc, nhưng đơn bị từ chối. Một khách hàng là khách sạn đề nghị giúp, nhưng cuối cùng một quỹ từ thiện hỗ trợ đào tạo nghề thủ công truyền thống đồng ý trả lương cho Josh năm đầu.",
       "Martin lạc quan về tương lai của nghề, dù không vì những lý do người ta có thể nghĩ. Ông không tin đồng hồ cơ sẽ trở lại thành mốt, và ông nghĩ nhu cầu từ khách sạn có thể không kéo dài. Lý do của ông đơn giản hơn: phần lớn đồng hồ điện tử hoàn toàn không sửa được, nên một chiếc đồng hồ cơ được làm tốt sẽ luôn bền hơn chúng. Elena thích một cách giải thích khác. Theo bà, chừng nào người ta còn thừa kế những đồ vật mang kỷ niệm, sẽ còn cần có người giữ cho chúng chạy."
     ],
     "allow": [
@@ -1076,15 +1076,15 @@
             "opts": [
               {
                 "k": "A",
-                "t": "He came with his grandmother."
+                "t": "He answered an advertisement."
               },
               {
                 "k": "B",
-                "t": "He was sent by the town council."
+                "t": "He came with his grandmother."
               },
               {
                 "k": "C",
-                "t": "He answered an advertisement."
+                "t": "He was sent by the town council."
               },
               {
                 "k": "D",
@@ -1095,13 +1095,13 @@
             "b": 6.5,
             "ev": {
               "p": 4,
-              "s": "when he came in with his grandmother"
+              "s": "He replied to an advertisement the couple had placed in the local newspaper."
             },
-            "why": "Josh lần đầu tới xưởng khi đi cùng bà mang đồng hồ tới sửa.",
+            "why": "Josh trả lời quảng cáo trên báo địa phương.",
             "wrong": {
-              "B": "Hội đồng thị trấn từ chối đơn xin trợ cấp.",
-              "C": "Không nhắc quảng cáo.",
-              "D": "Phim ngắn được làm sau, khi cậu đã làm ở đó nhiều tháng."
+              "B": "Josh chưa bao giờ đi cùng bà tới xưởng.",
+              "C": "Hội đồng thị trấn không giới thiệu Josh.",
+              "D": "Phim ngắn chỉ được làm sau khi cậu bắt đầu làm."
             }
           },
           {
@@ -1186,20 +1186,20 @@
     "band": 7,
     "title": "A shorter week for small firms?",
     "paras": [
-      "The idea of a four-day working week, with no loss of pay, has usually been tested in large organisations with specialist staff and generous budgets. Small businesses, where one absent employee can halt an entire operation, have been widely assumed to be unsuitable. A recent trial involving thirty firms with fewer than fifty employees each suggests that this assumption deserves to be questioned, although not for the reasons its supporters usually give.",
+      "The idea of a four-day working week, with no loss of pay, has usually been tested in public services, such as council offices and hospitals, where budgets are fixed in advance. Small businesses, where one absent employee can halt an entire operation, have been widely assumed to be unsuitable. A recent trial involving thirty firms with fewer than fifty employees each suggests that this assumption deserves to be questioned, although not for the reasons its supporters usually give.",
       "Supporters of the shorter week tend to emphasise health: less stress, fewer days off sick, happier staff. In the trial, sickness absence did fall, but only modestly, and the firms' own surveys of staff wellbeing showed smaller improvements than those reported in larger studies. Productivity, measured as output per hour, rose in about a third of the firms and fell in the rest, so that on average it fell slightly.",
-      "The clearest benefit appeared somewhere else entirely: staff stopped leaving. Small firms often lose skilled workers to larger companies that can pay more. During the trial, the number of employees who resigned fell by roughly half, and several owners said that people who had been planning to leave decided to stay. Applications for advertised jobs also rose, though less than the owners had hoped. For a small business, the author of the study argues, keeping experienced staff may matter more than any change in output.",
-      "Not every firm completed the trial. The four that withdrew had one thing in common: they dealt directly with customers and had tried to close completely on Fridays. Customers, it turned out, did not accept an extra day without service. The firms that succeeded in similar sectors had instead arranged for staff to take different days off, so that the business remained open five days a week.",
-      "The study has weaknesses that its author is admirably open about. Critics have suggested that staff exaggerated the benefits in order to keep the shorter week, but the author found little sign of this. A more serious problem is timing: the trial ran from April to September, when sickness is low anyway, so the fall in absence may partly reflect the season. There is also a cost that rarely appears in such reports. Owners did not, as many had feared, work longer hours themselves; instead, a third of the firms paid part-time staff extra to cover the missing day, and several said they could not afford to continue doing so indefinitely.",
-      "None of this proves that a four-day week is wrong for small firms. But it suggests that the case for it should rest less on promises about health and productivity, and more on the practical question of whether a business can keep the experienced people it already has."
+      "The clearest benefit appeared somewhere else entirely: recruitment. Small firms often struggle to attract skilled workers, who can earn more at larger companies. During the trial, applications for each advertised job roughly tripled. The number of staff who resigned, by contrast, hardly changed, which surprised the owners, who had expected people to be more loyal. For a small business, the author of the study argues, this advantage may matter more than any change in output.",
+      "Not every firm completed the trial. The four that withdrew had one thing in common: they dealt directly with customers and had tried to close completely on Fridays. Customers, it turned out, did not accept an extra day without service. Two firms tried letting staff take different days off, but customers were confused about whom to contact. The firms that succeeded in similar sectors instead closed on their quietest day of the week, usually a Wednesday, and told customers well in advance.",
+      "The study has weaknesses that its author is admirably open about. The trial ran for a full year, so the season cannot explain the results. A more serious problem is that most of the information on wellbeing came from staff themselves, who knew that the trial might end if it appeared to fail, and who may therefore have exaggerated the benefits. There is also a cost that rarely appears in such reports. Owners did not, as many had feared, work longer hours themselves; instead, a third of the firms paid part-time staff extra to cover the missing day, and several said they could not afford to continue doing so indefinitely.",
+      "None of this proves that a four-day week is wrong for small firms. But it suggests that general promises are not enough. The most useful thing a small firm can do, the author concludes, is to run its own three-month trial before making a permanent decision."
     ],
     "vi": [
-      "Ý tưởng tuần làm việc bốn ngày, không giảm lương, thường được thử ở những tổ chức lớn có nhân viên chuyên môn và ngân sách rộng rãi. Doanh nghiệp nhỏ, nơi một nhân viên vắng mặt có thể làm ngừng cả hoạt động, vẫn được mặc nhiên coi là không phù hợp. Một cuộc thử nghiệm gần đây với ba mươi công ty, mỗi công ty dưới năm mươi nhân viên, cho thấy giả định này đáng bị đặt câu hỏi, dù không vì những lý do mà người ủng hộ thường đưa ra.",
+      "Ý tưởng tuần làm việc bốn ngày, không giảm lương, thường được thử ở các cơ quan công, như văn phòng hội đồng và bệnh viện, nơi ngân sách được định trước. Doanh nghiệp nhỏ, nơi một nhân viên vắng mặt có thể làm ngừng cả hoạt động, vẫn được mặc nhiên coi là không phù hợp. Một cuộc thử nghiệm gần đây với ba mươi công ty, mỗi công ty dưới năm mươi nhân viên, cho thấy giả định này đáng bị đặt câu hỏi, dù không vì những lý do mà người ủng hộ thường đưa ra.",
       "Người ủng hộ tuần làm việc ngắn hơn thường nhấn mạnh sức khoẻ: ít căng thẳng hơn, ít ngày nghỉ ốm hơn, nhân viên vui hơn. Trong thử nghiệm, số ngày nghỉ ốm có giảm, nhưng chỉ khiêm tốn, và khảo sát của chính các công ty về sức khoẻ tinh thần nhân viên cho thấy mức cải thiện nhỏ hơn những gì các nghiên cứu lớn hơn báo cáo. Năng suất, đo bằng sản lượng mỗi giờ, tăng ở khoảng một phần ba số công ty và giảm ở số còn lại, nên tính trung bình thì giảm nhẹ.",
-      "Lợi ích rõ ràng nhất lại xuất hiện ở một chỗ hoàn toàn khác: nhân viên thôi nghỉ việc. Doanh nghiệp nhỏ thường mất lao động có tay nghề vào tay công ty lớn trả lương cao hơn. Trong thử nghiệm, số nhân viên xin nghỉ việc giảm khoảng một nửa, và vài chủ doanh nghiệp nói những người đang định rời đi đã quyết định ở lại. Số đơn ứng tuyển cũng tăng, dù ít hơn chủ doanh nghiệp mong. Tác giả nghiên cứu lập luận rằng với một doanh nghiệp nhỏ, giữ được nhân viên có kinh nghiệm có thể quan trọng hơn bất kỳ thay đổi nào về sản lượng.",
-      "Không phải công ty nào cũng hoàn thành thử nghiệm. Bốn công ty rút lui có một điểm chung: họ làm việc trực tiếp với khách hàng và đã thử đóng cửa hoàn toàn vào thứ Sáu. Hoá ra khách hàng không chấp nhận thêm một ngày không có dịch vụ. Những công ty thành công trong các ngành tương tự đã thay vào đó sắp xếp cho nhân viên nghỉ vào những ngày khác nhau, để doanh nghiệp vẫn mở cửa năm ngày một tuần.",
-      "Nghiên cứu có những điểm yếu mà tác giả cởi mở thừa nhận một cách đáng khen. Người phê bình cho rằng nhân viên đã phóng đại lợi ích để giữ tuần làm việc ngắn hơn, nhưng tác giả thấy ít dấu hiệu của việc này. Vấn đề nghiêm trọng hơn là thời điểm: thử nghiệm kéo dài từ tháng Tư tới tháng Chín, khi người ta vốn ít ốm, nên việc nghỉ ốm giảm có thể một phần do mùa. Còn có một chi phí hiếm khi xuất hiện trong những báo cáo kiểu này. Chủ doanh nghiệp không phải làm thêm giờ như nhiều người lo; thay vào đó, một phần ba số công ty trả thêm tiền cho nhân viên bán thời gian để bù ngày thiếu, và vài nơi nói họ không đủ tiền tiếp tục như vậy mãi.",
-      "Không điều nào trong số này chứng minh tuần làm việc bốn ngày là sai với doanh nghiệp nhỏ. Nhưng nó cho thấy lập luận ủng hộ nên ít dựa vào những hứa hẹn về sức khoẻ và năng suất, và dựa nhiều hơn vào câu hỏi thực tế là doanh nghiệp có giữ được những người có kinh nghiệm mình đang có hay không."
+      "Lợi ích rõ ràng nhất lại xuất hiện ở một chỗ hoàn toàn khác: tuyển dụng. Doanh nghiệp nhỏ thường khó thu hút lao động có tay nghề, những người có thể kiếm nhiều hơn ở công ty lớn. Trong thử nghiệm, số đơn ứng tuyển cho mỗi vị trí tăng khoảng gấp ba. Ngược lại, số nhân viên xin nghỉ hầu như không đổi, điều làm chủ doanh nghiệp bất ngờ vì họ từng nghĩ nhân viên sẽ gắn bó hơn. Tác giả nghiên cứu lập luận rằng với một doanh nghiệp nhỏ, lợi thế này có thể quan trọng hơn bất kỳ thay đổi nào về sản lượng.",
+      "Không phải công ty nào cũng hoàn thành thử nghiệm. Bốn công ty rút lui có một điểm chung: họ làm việc trực tiếp với khách hàng và đã thử đóng cửa hoàn toàn vào thứ Sáu. Hoá ra khách hàng không chấp nhận thêm một ngày không có dịch vụ. Hai công ty thử cho nhân viên nghỉ vào những ngày khác nhau, nhưng khách hàng bối rối không biết liên hệ ai. Những công ty thành công trong các ngành tương tự thay vào đó đóng cửa vào ngày vắng khách nhất trong tuần, thường là thứ Tư, và báo trước cho khách từ sớm.",
+      "Nghiên cứu có những điểm yếu mà tác giả cởi mở thừa nhận một cách đáng khen. Thử nghiệm kéo dài trọn một năm, nên mùa không thể giải thích kết quả. Vấn đề nghiêm trọng hơn là phần lớn thông tin về sức khoẻ tinh thần đến từ chính nhân viên, những người biết thử nghiệm có thể dừng nếu có vẻ thất bại, và vì vậy có thể đã phóng đại lợi ích. Còn có một chi phí hiếm khi xuất hiện trong những báo cáo kiểu này. Chủ doanh nghiệp không phải làm thêm giờ như nhiều người lo; thay vào đó, một phần ba số công ty trả thêm tiền cho nhân viên bán thời gian để bù ngày thiếu, và vài nơi nói họ không đủ tiền tiếp tục như vậy mãi.",
+      "Không điều nào trong số này chứng minh tuần làm việc bốn ngày là sai với doanh nghiệp nhỏ. Nhưng nó cho thấy những hứa hẹn chung chung là chưa đủ. Tác giả kết luận rằng điều hữu ích nhất một doanh nghiệp nhỏ có thể làm là tự chạy thử ba tháng trước khi quyết định lâu dài."
     ],
     "allow": [
       "specialist",
@@ -1234,32 +1234,32 @@
             "opts": [
               {
                 "k": "A",
-                "t": "They all failed."
+                "t": "They were mostly in large private companies."
               },
               {
                 "k": "B",
-                "t": "They mostly involved small and medium-sized firms."
+                "t": "They mostly involved small firms."
               },
               {
                 "k": "C",
-                "t": "They were mostly in large organisations."
+                "t": "They were mostly in public services."
               },
               {
                 "k": "D",
-                "t": "They ignored productivity."
+                "t": "They mostly involved factories."
               }
             ],
             "ans": "C",
             "b": 7,
             "ev": {
               "p": 0,
-              "s": "has usually been tested in large organisations"
+              "s": "has usually been tested in public services"
             },
-            "why": "Các thử nghiệm trước thường ở tổ chức lớn.",
+            "why": "Các thử nghiệm trước thường ở cơ quan công như văn phòng hội đồng và bệnh viện.",
             "wrong": {
-              "A": "Bài không nói các thử nghiệm trước thất bại.",
-              "B": "Doanh nghiệp nhỏ bị coi là không phù hợp nên ít được thử.",
-              "D": "Bài không nói chúng bỏ qua năng suất."
+              "A": "Bài không nói công ty tư nhân lớn.",
+              "B": "Doanh nghiệp nhỏ vẫn bị coi là không phù hợp.",
+              "D": "Bài không nhắc nhà máy."
             }
           },
           {
@@ -1336,7 +1336,7 @@
             "opts": [
               {
                 "k": "A",
-                "t": "many more job applications"
+                "t": "fewer staff leaving"
               },
               {
                 "k": "B",
@@ -1344,7 +1344,7 @@
               },
               {
                 "k": "C",
-                "t": "fewer staff leaving"
+                "t": "more job applications"
               },
               {
                 "k": "D",
@@ -1355,47 +1355,47 @@
             "b": 7.5,
             "ev": {
               "p": 2,
-              "s": "The clearest benefit appeared somewhere else entirely: staff stopped leaving."
+              "s": "The clearest benefit appeared somewhere else entirely: recruitment."
             },
-            "why": "Lợi ích rõ nhất là nhân viên thôi nghỉ việc.",
+            "why": "Lợi ích rõ nhất là tuyển dụng: số đơn ứng tuyển tăng khoảng gấp ba.",
             "wrong": {
-              "A": "Đơn ứng tuyển có tăng nhưng ít hơn mong đợi.",
+              "A": "Số người nghỉ việc hầu như không đổi.",
               "B": "Cải thiện sức khoẻ nhỏ hơn các nghiên cứu khác.",
               "D": "Sản lượng trung bình giảm nhẹ."
             }
           },
           {
             "id": "m-v2-r4-05",
-            "q": "By how much did the number of staff resigning fall?",
+            "q": "By how much did applications for each job increase?",
             "opts": [
               {
                 "k": "A",
-                "t": "by about a quarter"
+                "t": "They roughly doubled."
               },
               {
                 "k": "B",
-                "t": "by about half"
+                "t": "They roughly tripled."
               },
               {
                 "k": "C",
-                "t": "by about three quarters"
+                "t": "They rose by about half."
               },
               {
                 "k": "D",
-                "t": "It did not fall."
+                "t": "They did not increase."
               }
             ],
             "ans": "B",
             "b": 7,
             "ev": {
               "p": 2,
-              "s": "the number of employees who resigned fell by roughly half"
+              "s": "applications for each advertised job roughly tripled"
             },
-            "why": "Số nhân viên xin nghỉ giảm khoảng một nửa.",
+            "why": "Số đơn ứng tuyển mỗi vị trí tăng khoảng gấp ba.",
             "wrong": {
-              "A": "Không phải một phần tư.",
-              "C": "Không phải ba phần tư.",
-              "D": "Có giảm, khoảng một nửa."
+              "A": "Không phải gấp đôi.",
+              "C": "Không phải tăng một nửa.",
+              "D": "Có tăng, khoảng gấp ba."
             }
           },
           {
@@ -1438,11 +1438,11 @@
             "opts": [
               {
                 "k": "A",
-                "t": "Staff took different days off."
+                "t": "They closed on their quietest day."
               },
               {
                 "k": "B",
-                "t": "They closed on Mondays instead."
+                "t": "Staff took different days off."
               },
               {
                 "k": "C",
@@ -1457,11 +1457,11 @@
             "b": 7,
             "ev": {
               "p": 3,
-              "s": "had instead arranged for staff to take different days off"
+              "s": "instead closed on their quietest day of the week"
             },
-            "why": "Nhân viên nghỉ vào những ngày khác nhau để doanh nghiệp vẫn mở năm ngày.",
+            "why": "Họ đóng cửa vào ngày vắng khách nhất, thường là thứ Tư.",
             "wrong": {
-              "B": "Đóng cả ngày là điều khách hàng không chấp nhận.",
+              "B": "Hai công ty thử cách này nhưng khách hàng bối rối.",
               "C": "Không nhắc thuê lao động thời vụ.",
               "D": "Không nhắc rút ngắn từng ngày làm việc."
             }
@@ -1476,11 +1476,11 @@
               },
               {
                 "k": "B",
-                "t": "Staff exaggerated the benefits."
+                "t": "The trial took place in spring and summer."
               },
               {
                 "k": "C",
-                "t": "The trial took place in spring and summer."
+                "t": "Staff may have exaggerated the benefits."
               },
               {
                 "k": "D",
@@ -1491,13 +1491,13 @@
             "b": 7.5,
             "ev": {
               "p": 4,
-              "s": "A more serious problem is timing"
+              "s": "who may therefore have exaggerated the benefits"
             },
-            "why": "Thử nghiệm từ tháng Tư tới tháng Chín, khi người ta vốn ít ốm.",
+            "why": "Thông tin chủ yếu do nhân viên tự báo, và họ có lý do để phóng đại.",
             "wrong": {
               "A": "Bài không nói quá ít công ty.",
-              "B": "Tác giả thấy ít dấu hiệu nhân viên phóng đại.",
-              "D": "Bài không nói chỉ hỏi quản lý."
+              "B": "Thử nghiệm kéo dài trọn một năm.",
+              "D": "Thông tin đến từ chính nhân viên, không phải quản lý."
             }
           },
           {
@@ -1540,7 +1540,7 @@
             "opts": [
               {
                 "k": "A",
-                "t": "It improves health more than productivity."
+                "t": "The case for it should focus on recruitment."
               },
               {
                 "k": "B",
@@ -1552,18 +1552,18 @@
               },
               {
                 "k": "D",
-                "t": "The case for it should focus on keeping staff."
+                "t": "Each firm should run its own short trial."
               }
             ],
             "ans": "D",
             "b": 7.5,
             "ev": {
               "p": 5,
-              "s": "whether a business can keep the experienced people it already has"
+              "s": "is to run its own three-month trial before making a permanent decision"
             },
-            "why": "Tác giả cho rằng lập luận ủng hộ nên dựa vào việc giữ được người có kinh nghiệm.",
+            "why": "Tác giả kết luận mỗi doanh nghiệp nên tự chạy thử ba tháng.",
             "wrong": {
-              "A": "Tác giả nói nên ít dựa vào hứa hẹn về sức khoẻ.",
+              "A": "Tuyển dụng là lợi ích rõ nhất, nhưng kết luận là mỗi công ty nên tự thử.",
               "B": "Tác giả nói không điều gì chứng minh nó sai.",
               "C": "Bài bàn về doanh nghiệp nhỏ."
             }
