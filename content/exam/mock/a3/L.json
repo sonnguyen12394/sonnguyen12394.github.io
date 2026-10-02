@@ -1,0 +1,1529 @@
+[
+  {
+    "id": "m-a3-l1",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "B1",
+    "band": 5,
+    "title": "Joining a tool library",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 1. You will hear a woman phoning a community tool library to become a member. First, you have some time to look at questions 1 to 6.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 1 to 6."
+      },
+      {
+        "sp": "Tom",
+        "t": "Hello, Eastbank Tool Library, Tom speaking."
+      },
+      {
+        "sp": "Freya",
+        "t": "Hi, I'd like to join, please. I've just moved to the area and I don't own many tools."
+      },
+      {
+        "sp": "Tom",
+        "t": "You've come to the right place. I can take your details now. What's your name?"
+      },
+      {
+        "sp": "Freya",
+        "t": "Freya Halloran. That's H-A-double L-O-R-A-N."
+      },
+      {
+        "sp": "Tom",
+        "t": "Thanks. And your address?"
+      },
+      {
+        "sp": "Freya",
+        "t": "Fourteen Quarry Road. People often write Query, but it's Q-U-A-R-R-Y."
+      },
+      {
+        "sp": "Tom",
+        "t": "Got it. Now, membership. The standard fee is twenty-five pounds a year, but there's a reduced rate of eighteen pounds if you're willing to help out for one afternoon a month."
+      },
+      {
+        "sp": "Freya",
+        "t": "I'd be happy to help. Is there a household rate as well? My partner might use it."
+      },
+      {
+        "sp": "Tom",
+        "t": "There used to be one, at forty pounds, but we stopped it. Your partner can borrow on your card, though."
+      },
+      {
+        "sp": "Freya",
+        "t": "Then the reduced rate, please."
+      },
+      {
+        "sp": "Tom",
+        "t": "Lovely. You'll collect your card in person. We're open on Saturday mornings, but the Saturday sessions are fully booked for new members until next month, so I'd suggest Thursday evening."
+      },
+      {
+        "sp": "Freya",
+        "t": "Thursday's fine. Do I need to bring any identification?"
+      },
+      {
+        "sp": "Tom",
+        "t": "Not a passport or ID card, no. But we do need proof of address, because members have to live in the borough. A recent bill is fine."
+      },
+      {
+        "sp": "Freya",
+        "t": "I can do that. And could I borrow something on the same evening? I was hoping for a drill."
+      },
+      {
+        "sp": "Tom",
+        "t": "All our drills are out at the moment, I'm afraid. What's the job?"
+      },
+      {
+        "sp": "Freya",
+        "t": "An old wooden table. I want to take the paint off it."
+      },
+      {
+        "sp": "Tom",
+        "t": "Then you don't need a drill anyway. You need a sander. I'll put one aside for you."
+      },
+      {
+        "sp": "N",
+        "t": "Before you hear the rest of the conversation, you have some time to look at questions 7 to 10.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen and answer questions 7 to 10."
+      },
+      {
+        "sp": "Freya",
+        "t": "What happens if something breaks while I've got it?"
+      },
+      {
+        "sp": "Tom",
+        "t": "We don't charge you for it, and we don't fix it quietly either. We ask you to come to one of our repair sessions, so you can see what went wrong and help put it right."
+      },
+      {
+        "sp": "Freya",
+        "t": "That sounds fair. How long can I keep things?"
+      },
+      {
+        "sp": "Tom",
+        "t": "Everyone assumes it's a week, like a book library, but it's four days. Big items are in such demand that we had to shorten it. If nobody's waiting, you can extend it by phone."
+      },
+      {
+        "sp": "Freya",
+        "t": "And I saw there's a workshop space at the back. Do you run classes there?"
+      },
+      {
+        "sp": "Tom",
+        "t": "We tried beginners' classes last year, and members used to work on their own projects there, but these days it's mostly used for fixing up tools that people donate. We get a lot of rusty ones."
+      },
+      {
+        "sp": "Freya",
+        "t": "That's where I'll be helping, then."
+      },
+      {
+        "sp": "Tom",
+        "t": "Probably. Oh, one last thing: we like to know how people found us. Was it a neighbour?"
+      },
+      {
+        "sp": "Freya",
+        "t": "No, I don't know my neighbours yet. I did see a poster at the station, but I didn't read it properly. It was actually a piece on the local radio that made me ring."
+      },
+      {
+        "sp": "Tom",
+        "t": "Good to know. See you on Thursday, Freya."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 1.",
+        "pause": 10
+      }
+    ],
+    "vi": [
+      "Phần 1. Bạn sẽ nghe một người phụ nữ gọi điện cho một thư viện dụng cụ cộng đồng để đăng ký làm thành viên. Trước tiên, bạn có thời gian xem câu 1 đến 6.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 1 đến 6.",
+      "Xin chào, Thư viện dụng cụ Eastbank, Tom nghe.",
+      "Chào anh, tôi muốn đăng ký làm thành viên. Tôi vừa chuyển tới khu này và không có nhiều dụng cụ.",
+      "Chị gọi đúng chỗ rồi. Tôi có thể ghi thông tin của chị ngay. Chị tên gì ạ?",
+      "Freya Halloran. H-A-hai chữ L-O-R-A-N.",
+      "Cảm ơn chị. Còn địa chỉ ạ?",
+      "Số mười bốn đường Quarry. Người ta hay viết thành Query, nhưng đúng là Q-U-A-R-R-Y.",
+      "Rõ rồi. Giờ đến phí thành viên. Phí thường là hai mươi lăm bảng một năm, nhưng có mức giảm mười tám bảng nếu chị sẵn lòng giúp một buổi chiều mỗi tháng.",
+      "Tôi sẵn lòng giúp. Có mức cho cả hộ gia đình không? Bạn đời tôi có thể dùng.",
+      "Trước có, bốn mươi bảng, nhưng chúng tôi đã bỏ. Dù vậy bạn đời của chị có thể mượn bằng thẻ của chị.",
+      "Vậy cho tôi mức giảm.",
+      "Tuyệt. Chị sẽ nhận thẻ trực tiếp. Chúng tôi mở cửa sáng thứ Bảy, nhưng các buổi thứ Bảy đã kín chỗ cho thành viên mới đến tháng sau, nên tôi gợi ý tối thứ Năm.",
+      "Thứ Năm được. Tôi có cần mang giấy tờ tuỳ thân không?",
+      "Hộ chiếu hay thẻ căn cước thì không. Nhưng chúng tôi cần giấy tờ chứng minh địa chỉ, vì thành viên phải sống trong quận. Một hoá đơn gần đây là được.",
+      "Được. Tối hôm đó tôi có mượn luôn được không? Tôi định mượn máy khoan.",
+      "Tiếc là máy khoan đều đang được mượn hết. Chị định làm việc gì?",
+      "Một chiếc bàn gỗ cũ. Tôi muốn bóc lớp sơn.",
+      "Vậy chị đâu cần máy khoan. Chị cần máy chà nhám. Tôi sẽ để riêng một cái cho chị.",
+      "Trước khi nghe phần còn lại của cuộc trò chuyện, bạn có thời gian xem câu 7 đến 10.",
+      "Bây giờ hãy nghe và trả lời câu 7 đến 10.",
+      "Nếu đồ hỏng khi tôi đang mượn thì sao?",
+      "Chúng tôi không bắt chị trả tiền, cũng không lặng lẽ sửa. Chúng tôi đề nghị chị tới một buổi sửa chữa, để chị thấy chỗ hỏng và cùng sửa.",
+      "Nghe công bằng đấy. Tôi được giữ đồ bao lâu?",
+      "Ai cũng tưởng một tuần, như thư viện sách, nhưng là bốn ngày. Đồ lớn được mượn nhiều đến mức chúng tôi phải rút ngắn. Nếu không ai đang chờ, chị có thể gọi điện gia hạn.",
+      "Tôi thấy phía sau có một không gian xưởng. Các anh có mở lớp ở đó không?",
+      "Năm ngoái chúng tôi có thử lớp cho người mới, và thành viên từng làm việc riêng của họ ở đó, nhưng giờ chủ yếu dùng để sửa dụng cụ người ta quyên góp. Chúng tôi nhận được nhiều đồ gỉ lắm.",
+      "Vậy đó là chỗ tôi sẽ giúp.",
+      "Có lẽ vậy. À, một điều cuối: chúng tôi muốn biết mọi người biết tới mình qua đâu. Có phải hàng xóm không?",
+      "Không, tôi chưa quen hàng xóm. Tôi có thấy một tấm áp phích ở nhà ga nhưng không đọc kỹ. Thật ra là một mục trên đài phát thanh địa phương khiến tôi gọi.",
+      "Thật hay khi biết điều đó. Hẹn gặp chị thứ Năm, Freya.",
+      "Hết Phần 1."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Tom": "bm_lewis",
+      "Freya": "bf_isabella"
+    },
+    "allow": [
+      "borough",
+      "sander",
+      "drill",
+      "donate",
+      "rusty",
+      "identification",
+      "quarry"
+    ],
+    "sets": [
+      {
+        "qtype": "l-form",
+        "instr": "Complete the form below. Write ONE WORD AND/OR A NUMBER for each answer.",
+        "items": [
+          {
+            "id": "m-a3-l1-01",
+            "q": "Name: Freya ___",
+            "ans": {
+              "accept": [
+                "Halloran"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 4.5,
+            "ev": {
+              "p": 5,
+              "s": "Freya Halloran. That's H-A-double L-O-R-A-N."
+            },
+            "why": "Tên được đánh vần H-A-L-L-O-R-A-N."
+          },
+          {
+            "id": "m-a3-l1-02",
+            "q": "Address: 14 ___ Road",
+            "ans": {
+              "accept": [
+                "Quarry"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 7,
+              "s": "it's Q-U-A-R-R-Y"
+            },
+            "why": "Tên đường được đánh vần Q-U-A-R-R-Y.",
+            "wrong": {
+              "query": "Freya nói người ta hay viết nhầm thành Query."
+            }
+          },
+          {
+            "id": "m-a3-l1-03",
+            "q": "Yearly fee: £___",
+            "ans": {
+              "accept": [
+                "18",
+                "eighteen"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 8,
+              "s": "there's a reduced rate of eighteen pounds"
+            },
+            "why": "Freya chọn mức giảm 18 bảng vì sẵn lòng giúp một buổi chiều mỗi tháng.",
+            "wrong": {
+              "25": "Đó là phí thường.",
+              "40": "Đó là mức hộ gia đình đã bị bỏ."
+            }
+          },
+          {
+            "id": "m-a3-l1-04",
+            "q": "Collect card on: ___ evening",
+            "ans": {
+              "accept": [
+                "Thursday"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 12,
+              "s": "so I'd suggest Thursday evening"
+            },
+            "why": "Buổi thứ Bảy đã kín chỗ, nên Freya tới tối thứ Năm.",
+            "wrong": {
+              "saturday": "Các buổi thứ Bảy đã kín chỗ cho thành viên mới."
+            }
+          },
+          {
+            "id": "m-a3-l1-05",
+            "q": "Bring: proof of ___",
+            "ans": {
+              "accept": [
+                "address"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5.5,
+            "ev": {
+              "p": 14,
+              "s": "But we do need proof of address"
+            },
+            "why": "Không cần hộ chiếu hay thẻ căn cước, nhưng cần chứng minh địa chỉ.",
+            "wrong": {
+              "identity": "Tom nói không cần giấy tờ tuỳ thân."
+            }
+          },
+          {
+            "id": "m-a3-l1-06",
+            "q": "First item to borrow: a ___",
+            "ans": {
+              "accept": [
+                "sander"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5.5,
+            "ev": {
+              "p": 18,
+              "s": "You need a sander."
+            },
+            "why": "Máy khoan đã hết, và để bóc sơn thì cần máy chà nhám.",
+            "wrong": {
+              "drill": "Máy khoan đều đang được mượn, và cũng không cần cho việc bóc sơn."
+            }
+          }
+        ]
+      },
+      {
+        "qtype": "l-mcq",
+        "instr": "Choose the correct letter, A, B or C.",
+        "items": [
+          {
+            "id": "m-a3-l1-07",
+            "q": "If a tool breaks while it is on loan, the borrower",
+            "opts": [
+              {
+                "k": "A",
+                "t": "goes to a repair session."
+              },
+              {
+                "k": "B",
+                "t": "pays the full cost of a new one."
+              },
+              {
+                "k": "C",
+                "t": "gets it fixed by the library at no charge."
+              }
+            ],
+            "ans": "A",
+            "b": 5.5,
+            "ev": {
+              "p": 22,
+              "s": "We ask you to come to one of our repair sessions"
+            },
+            "why": "Người mượn được mời tới một buổi sửa chữa để xem chỗ hỏng và cùng sửa.",
+            "wrong": {
+              "B": "Tom nói \"We don't charge you for it\".",
+              "C": "Thư viện không lặng lẽ sửa giúp (\"we don't fix it quietly either\")."
+            }
+          },
+          {
+            "id": "m-a3-l1-08",
+            "q": "How long can members normally keep a tool?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "two weeks"
+              },
+              {
+                "k": "B",
+                "t": "four days"
+              },
+              {
+                "k": "C",
+                "t": "one week"
+              }
+            ],
+            "ans": "B",
+            "b": 5.5,
+            "ev": {
+              "p": 24,
+              "s": "but it's four days"
+            },
+            "why": "Thời hạn mượn là bốn ngày, đã được rút ngắn.",
+            "wrong": {
+              "A": "Không ai nhắc hai tuần; chỉ được gia hạn nếu không ai chờ.",
+              "C": "Ai cũng tưởng một tuần như thư viện sách, nhưng không phải."
+            }
+          },
+          {
+            "id": "m-a3-l1-09",
+            "q": "What is the workshop space mainly used for now?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "members' own projects"
+              },
+              {
+                "k": "B",
+                "t": "classes for beginners"
+              },
+              {
+                "k": "C",
+                "t": "repairing donated tools"
+              }
+            ],
+            "ans": "C",
+            "b": 6,
+            "ev": {
+              "p": 26,
+              "s": "these days it's mostly used for fixing up tools that people donate"
+            },
+            "why": "Giờ xưởng chủ yếu dùng để sửa dụng cụ được quyên góp.",
+            "wrong": {
+              "A": "Thành viên \"used to\" làm việc riêng ở đó, giờ thì không.",
+              "B": "Lớp cho người mới chỉ được thử năm ngoái."
+            }
+          },
+          {
+            "id": "m-a3-l1-10",
+            "q": "How did Freya find out about the tool library?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "from a neighbour"
+              },
+              {
+                "k": "B",
+                "t": "from the radio"
+              },
+              {
+                "k": "C",
+                "t": "from a poster"
+              }
+            ],
+            "ans": "B",
+            "b": 5.5,
+            "ev": {
+              "p": 29,
+              "s": "It was actually a piece on the local radio that made me ring."
+            },
+            "why": "Freya gọi vì nghe một mục trên đài địa phương.",
+            "wrong": {
+              "A": "Freya chưa quen hàng xóm.",
+              "C": "Freya thấy áp phích nhưng không đọc kỹ."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-a3-l2",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "B1",
+    "band": 5.5,
+    "title": "Tour: the reopened lighthouse",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 2. You will hear a guide talking to visitors at a lighthouse that has recently reopened as a museum. First, you have some time to look at questions 11 to 16.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 11 to 16."
+      },
+      {
+        "sp": "Guide",
+        "t": "Welcome to Carrick Point lighthouse. Before we start climbing, let me tell you what's on each level, because it isn't quite what most people expect."
+      },
+      {
+        "sp": "Guide",
+        "t": "A little history first. The tower is thirty-two metres high and was built in 1850. The last keepers left in 1988, when the light was automated, and some years later it was switched off altogether."
+      },
+      {
+        "sp": "Guide",
+        "t": "Right at the bottom, in the basement, is the old oil store. The keepers kept the lamp oil down there because it was coolest, and it's now a small café. The gift shop, by the way, isn't in the tower at all. It's in the keeper's cottage next door."
+      },
+      {
+        "sp": "Guide",
+        "t": "On the ground floor, where we're standing, you'll see the original lens. Everyone expects to find it at the top, in the lamp room, but it weighs nearly two tonnes, and the floor up there can't take that weight any more."
+      },
+      {
+        "sp": "Guide",
+        "t": "The first floor was going to be a reconstruction of the keeper's living room, but the room turned out to be too small, so instead we've filled it with photographs of the keepers and their families."
+      },
+      {
+        "sp": "Guide",
+        "t": "The living room went up to the third floor, which is larger. Between the two, on the second floor, is the children's area, with dressing-up clothes and a model ship."
+      },
+      {
+        "sp": "Guide",
+        "t": "And the lamp room itself, at the very top, now holds the charts that sailors used along this coast. You'll hear the foghorn too, I'm afraid, but that's outside on the rocks, not in the tower."
+      },
+      {
+        "sp": "N",
+        "t": "Before you hear the rest of the talk, you have some time to look at questions 17 to 20.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen and answer questions 17 to 20."
+      },
+      {
+        "sp": "Guide",
+        "t": "Now, some advice for the climb. You don't need special shoes; every step has a rubber grip. What you do need to do is leave any bags in the lockers here, because the stairs get very narrow near the top. There's no handrail on the last flight, just a rope, so take your time."
+      },
+      {
+        "sp": "Guide",
+        "t": "And if you come back another day, try to climb in the afternoon. People think mornings are quieter, but that's when the school groups come."
+      },
+      {
+        "sp": "Guide",
+        "t": "People also ask what changed during the renovation. We looked at putting in a lift, but it would have meant cutting through every floor, so that idea was dropped. The staircase is the original one. We did replace all the windows, which were letting in water, and we switched the light back on. It's a modern lamp now, but it flashes in the same pattern as the old one."
+      },
+      {
+        "sp": "Guide",
+        "t": "You'll notice we didn't repaint the outside, either. The white is the original lime wash, and it's meant to weather naturally."
+      },
+      {
+        "sp": "Guide",
+        "t": "If anyone needs a rest on the way up, there are benches on the second and third floors, and there's no hurry at all. Right, let's start climbing. Lockers first, please."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 2.",
+        "pause": 10
+      }
+    ],
+    "vi": [
+      "Phần 2. Bạn sẽ nghe một hướng dẫn viên nói chuyện với du khách ở một ngọn hải đăng vừa mở lại thành bảo tàng. Trước tiên, bạn có thời gian xem câu 11 đến 16.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 11 đến 16.",
+      "Chào mừng tới hải đăng Carrick Point. Trước khi leo, để tôi kể các bạn mỗi tầng có gì, vì nó không hẳn như phần lớn mọi người nghĩ.",
+      "Trước hết là chút lịch sử. Tháp cao ba mươi hai mét và được xây năm 1850. Những người gác cuối cùng rời đi năm 1988, khi đèn được tự động hoá, và vài năm sau thì đèn bị tắt hẳn.",
+      "Ngay dưới cùng, ở tầng hầm, là kho dầu cũ. Người gác giữ dầu đèn ở dưới đó vì mát nhất, và giờ đây là một quán cà phê nhỏ. Nhân tiện, cửa hàng quà tặng hoàn toàn không ở trong tháp. Nó ở trong ngôi nhà của người gác bên cạnh.",
+      "Ở tầng trệt, nơi chúng ta đang đứng, các bạn sẽ thấy thấu kính nguyên bản. Ai cũng nghĩ sẽ thấy nó ở trên cùng, trong phòng đèn, nhưng nó nặng gần hai tấn, và sàn trên đó không còn chịu nổi sức nặng ấy.",
+      "Tầng một vốn định dựng lại phòng sinh hoạt của người gác, nhưng căn phòng hoá ra quá nhỏ, nên thay vào đó chúng tôi treo kín ảnh những người gác và gia đình họ.",
+      "Phòng sinh hoạt được chuyển lên tầng ba, rộng hơn. Ở giữa, tầng hai là khu cho trẻ em, có quần áo hoá trang và một mô hình tàu.",
+      "Còn chính phòng đèn, trên cùng, giờ trưng bày những hải đồ mà thuỷ thủ từng dùng dọc bờ biển này. Các bạn cũng sẽ nghe tiếng còi sương mù, nhưng nó ở ngoài trên ghềnh đá, không ở trong tháp.",
+      "Trước khi nghe phần còn lại của bài nói, bạn có thời gian xem câu 17 đến 20.",
+      "Bây giờ hãy nghe và trả lời câu 17 đến 20.",
+      "Giờ là vài lời khuyên khi leo. Các bạn không cần giày đặc biệt; bậc nào cũng có lớp cao su chống trượt. Điều các bạn cần làm là để túi vào tủ khoá ở đây, vì cầu thang rất hẹp gần đỉnh. Đoạn cuối không có tay vịn, chỉ có một sợi dây thừng, nên cứ từ từ.",
+      "Và nếu hôm khác các bạn quay lại, hãy cố leo vào buổi chiều. Người ta nghĩ buổi sáng vắng hơn, nhưng đó là lúc các đoàn học sinh tới.",
+      "Mọi người cũng hỏi việc cải tạo đã thay đổi những gì. Chúng tôi từng tính lắp thang máy, nhưng như vậy phải khoét qua mọi tầng, nên ý đó bị bỏ. Cầu thang là cầu thang nguyên bản. Chúng tôi đã thay toàn bộ cửa sổ, vì chúng bị thấm nước, và bật đèn sáng trở lại. Giờ là đèn hiện đại, nhưng chớp theo đúng nhịp của đèn cũ.",
+      "Các bạn sẽ để ý là chúng tôi cũng không sơn lại bên ngoài. Màu trắng là lớp vôi nguyên bản, và nó được để phong hoá tự nhiên.",
+      "Ai cần nghỉ trên đường lên thì có ghế ở tầng hai và tầng ba, và không cần vội. Nào, chúng ta bắt đầu leo. Mời các bạn cất túi vào tủ trước.",
+      "Hết Phần 2."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Guide": "bf_emma"
+    },
+    "allow": [
+      "lighthouse",
+      "keepers",
+      "keeper",
+      "lens",
+      "tonnes",
+      "reconstruction",
+      "charts",
+      "foghorn",
+      "rubber",
+      "lockers",
+      "handrail",
+      "flight",
+      "renovation",
+      "lime",
+      "weather",
+      "dressing-up",
+      "flashes"
+    ],
+    "sets": [
+      {
+        "qtype": "l-matching",
+        "instr": "What can visitors find on each level of the lighthouse? Choose SIX answers from the box and write the correct letter, A–H, next to Questions 11–16.",
+        "options": [
+          {
+            "k": "A",
+            "t": "charts used by sailors"
+          },
+          {
+            "k": "B",
+            "t": "the keeper's living room"
+          },
+          {
+            "k": "C",
+            "t": "the gift shop"
+          },
+          {
+            "k": "D",
+            "t": "the children's area"
+          },
+          {
+            "k": "E",
+            "t": "the foghorn"
+          },
+          {
+            "k": "F",
+            "t": "photographs"
+          },
+          {
+            "k": "G",
+            "t": "the original lens"
+          },
+          {
+            "k": "H",
+            "t": "a café"
+          }
+        ],
+        "items": [
+          {
+            "id": "m-a3-l2-01",
+            "q": "basement",
+            "ans": "H",
+            "b": 5,
+            "ev": {
+              "p": 4,
+              "s": "it's now a small café"
+            },
+            "why": "Kho dầu cũ ở tầng hầm giờ là quán cà phê.",
+            "wrong": {
+              "C": "Cửa hàng quà tặng ở trong nhà người gác bên cạnh, không ở trong tháp.",
+              "G": "Thấu kính ở tầng trệt."
+            }
+          },
+          {
+            "id": "m-a3-l2-02",
+            "q": "ground floor",
+            "ans": "G",
+            "b": 5.5,
+            "ev": {
+              "p": 5,
+              "s": "On the ground floor, where we're standing, you'll see the original lens."
+            },
+            "why": "Thấu kính nguyên bản ở tầng trệt vì quá nặng để đặt trên phòng đèn.",
+            "wrong": {
+              "A": "Hải đồ ở phòng đèn.",
+              "H": "Quán cà phê ở tầng hầm."
+            }
+          },
+          {
+            "id": "m-a3-l2-03",
+            "q": "first floor",
+            "ans": "F",
+            "b": 5.5,
+            "ev": {
+              "p": 6,
+              "s": "we've filled it with photographs of the keepers"
+            },
+            "why": "Tầng một treo ảnh người gác và gia đình họ.",
+            "wrong": {
+              "B": "Phòng sinh hoạt định đặt ở tầng một nhưng phòng quá nhỏ, nên chuyển lên tầng ba.",
+              "D": "Khu trẻ em ở tầng hai."
+            }
+          },
+          {
+            "id": "m-a3-l2-04",
+            "q": "second floor",
+            "ans": "D",
+            "b": 5.5,
+            "ev": {
+              "p": 7,
+              "s": "on the second floor, is the children's area"
+            },
+            "why": "Tầng hai là khu cho trẻ em.",
+            "wrong": {
+              "B": "Phòng sinh hoạt ở tầng ba.",
+              "F": "Ảnh ở tầng một."
+            }
+          },
+          {
+            "id": "m-a3-l2-05",
+            "q": "third floor",
+            "ans": "B",
+            "b": 6,
+            "ev": {
+              "p": 7,
+              "s": "The living room went up to the third floor"
+            },
+            "why": "Phòng sinh hoạt của người gác được chuyển lên tầng ba, rộng hơn.",
+            "wrong": {
+              "F": "Ảnh ở tầng một.",
+              "A": "Hải đồ ở phòng đèn."
+            }
+          },
+          {
+            "id": "m-a3-l2-06",
+            "q": "lamp room",
+            "ans": "A",
+            "b": 6,
+            "ev": {
+              "p": 8,
+              "s": "now holds the charts that sailors used along this coast"
+            },
+            "why": "Phòng đèn giờ trưng bày hải đồ của thuỷ thủ.",
+            "wrong": {
+              "G": "Ai cũng nghĩ thấu kính ở phòng đèn, nhưng nó ở tầng trệt.",
+              "E": "Còi sương mù ở ngoài trên ghềnh đá."
+            }
+          }
+        ]
+      },
+      {
+        "qtype": "l-mcq2",
+        "instr": "Choose TWO letters, A–E.",
+        "items": [
+          {
+            "id": "m-a3-l2-07",
+            "q": "Which TWO pieces of advice does the guide give about the climb?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "leave bags in the lockers"
+              },
+              {
+                "k": "B",
+                "t": "come in the morning when it is quiet"
+              },
+              {
+                "k": "C",
+                "t": "hold the handrail all the way up"
+              },
+              {
+                "k": "D",
+                "t": "wear flat shoes"
+              },
+              {
+                "k": "E",
+                "t": "climb in the afternoon"
+              }
+            ],
+            "ans": [
+              "A",
+              "E"
+            ],
+            "b": 6,
+            "ev": {
+              "p": 11,
+              "s": "leave any bags in the lockers here"
+            },
+            "why": "Hướng dẫn viên dặn để túi vào tủ khoá vì cầu thang hẹp, và nên leo buổi chiều vì buổi sáng có đoàn học sinh.",
+            "wrong": {
+              "B": "Người ta nghĩ buổi sáng vắng, nhưng đó là lúc đoàn học sinh tới.",
+              "C": "Đoạn cuối không có tay vịn, chỉ có dây thừng.",
+              "D": "Không cần giày đặc biệt; bậc nào cũng có cao su chống trượt."
+            }
+          }
+        ]
+      },
+      {
+        "qtype": "l-mcq2",
+        "instr": "Choose TWO letters, A–E.",
+        "items": [
+          {
+            "id": "m-a3-l2-08",
+            "q": "Which TWO changes were made during the renovation?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "The outside was repainted."
+              },
+              {
+                "k": "B",
+                "t": "The windows were replaced."
+              },
+              {
+                "k": "C",
+                "t": "The light was switched back on."
+              },
+              {
+                "k": "D",
+                "t": "A new staircase was built."
+              },
+              {
+                "k": "E",
+                "t": "A lift was installed."
+              }
+            ],
+            "ans": [
+              "B",
+              "C"
+            ],
+            "b": 6.5,
+            "ev": {
+              "p": 13,
+              "s": "We did replace all the windows"
+            },
+            "why": "Cửa sổ được thay vì thấm nước, và đèn được bật sáng trở lại (đèn hiện đại, chớp theo nhịp cũ).",
+            "wrong": {
+              "A": "Bên ngoài không sơn lại; lớp vôi trắng là nguyên bản.",
+              "D": "Cầu thang là cầu thang nguyên bản.",
+              "E": "Thang máy từng được tính tới nhưng bị bỏ."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-a3-l3",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "B2",
+    "band": 6.5,
+    "title": "Tutorial: why garden volunteers leave",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 3. You will hear two students, Lena and Jamal, discussing their research on community garden volunteers with their tutor, Dr Price. First, you have some time to look at questions 21 to 25.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 21 to 25."
+      },
+      {
+        "sp": "Dr Price",
+        "t": "So, how's the volunteer project going? How many people replied in the end?"
+      },
+      {
+        "sp": "Lena",
+        "t": "Sixty-three, out of about two hundred people who'd left in the last three years. That's lower than we hoped, but it's enough to see some patterns."
+      },
+      {
+        "sp": "Dr Price",
+        "t": "Any surprises so far?"
+      },
+      {
+        "sp": "Lena",
+        "t": "One big one. We assumed the people who stopped volunteering would mostly be new recruits who'd lost interest. In fact, most of them had been coming for more than five years."
+      },
+      {
+        "sp": "Jamal",
+        "t": "And only a few said they were too busy. A handful had moved away, but that wasn't the main pattern either."
+      },
+      {
+        "sp": "Dr Price",
+        "t": "That's an important point for your discussion section. Long-serving volunteers leaving is a different problem from new ones drifting away."
+      },
+      {
+        "sp": "Dr Price",
+        "t": "Interesting. I've looked at your questionnaire. The length is fine, and the questions are neutral. My concern is that you only sent it by email. A lot of your older volunteers may never have seen it."
+      },
+      {
+        "sp": "Lena",
+        "t": "That's fair. For the case study we've chosen the Northfield garden. It isn't the biggest, and it hasn't lost the most volunteers, but it's the only one that kept records of who left and when."
+      },
+      {
+        "sp": "Jamal",
+        "t": "We also asked former volunteers what they missed. I expected them to say the company, but most of them mentioned the physical work, the digging and carrying. Several said they hadn't found any other exercise they enjoyed."
+      },
+      {
+        "sp": "Dr Price",
+        "t": "And the younger volunteers? You said hardly any replied."
+      },
+      {
+        "sp": "Lena",
+        "t": "We thought about a prize draw, or asking the coordinators to remind them, but we've decided to go to the gardens at weekends and talk to them there."
+      },
+      {
+        "sp": "N",
+        "t": "Before you hear the rest of the discussion, you have some time to look at questions 26 to 30.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen and answer questions 26 to 30."
+      },
+      {
+        "sp": "Dr Price",
+        "t": "Let's go through your plan for the next stage."
+      },
+      {
+        "sp": "Jamal",
+        "t": "First, we'll contact each garden's coordinator to find out which days they hold work sessions."
+      },
+      {
+        "sp": "Lena",
+        "t": "Then, on those days, we'll hold short interviews. We did consider focus groups, but people are busy working, so ten minutes one to one is more realistic."
+      },
+      {
+        "sp": "Jamal",
+        "t": "We'll note the answers on paper. We tried using phones in the pilot, but they kept getting covered in mud."
+      },
+      {
+        "sp": "Dr Price",
+        "t": "Sensible. And how will you check whether your sample is typical?"
+      },
+      {
+        "sp": "Lena",
+        "t": "We'll compare our figures with the council's data on all the gardens in the city. The national survey doesn't break things down by garden, so it's not much use."
+      },
+      {
+        "sp": "Dr Price",
+        "t": "Good. And who are you presenting the findings to?"
+      },
+      {
+        "sp": "Jamal",
+        "t": "The council asked for a report, but we've agreed to present to the volunteers themselves first, so they can tell us if we've got anything wrong."
+      },
+      {
+        "sp": "Jamal",
+        "t": "If there's time, we'd also like to compare gardens in different parts of the city."
+      },
+      {
+        "sp": "Dr Price",
+        "t": "Only once the main analysis is finished. Don't spread yourselves too thin. But presenting to the volunteers first is an excellent idea. Send me a draft when you have one."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 3.",
+        "pause": 10
+      }
+    ],
+    "vi": [
+      "Phần 3. Bạn sẽ nghe hai sinh viên, Lena và Jamal, thảo luận nghiên cứu về tình nguyện viên vườn cộng đồng với giảng viên hướng dẫn, tiến sĩ Price. Trước tiên, bạn có thời gian xem câu 21 đến 25.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 21 đến 25.",
+      "Dự án về tình nguyện viên thế nào rồi? Cuối cùng có bao nhiêu người trả lời?",
+      "Sáu mươi ba người, trong khoảng hai trăm người đã nghỉ trong ba năm qua. Ít hơn bọn em mong, nhưng đủ để thấy vài xu hướng.",
+      "Đến giờ có gì bất ngờ không?",
+      "Một điều lớn ạ. Bọn em cứ nghĩ người bỏ tình nguyện chủ yếu là người mới, hết hứng thú. Thực ra phần lớn họ đã tham gia hơn năm năm.",
+      "Và chỉ vài người nói họ quá bận. Một số ít đã chuyển đi, nhưng đó cũng không phải xu hướng chính.",
+      "Đó là điểm quan trọng cho phần bàn luận. Người gắn bó lâu năm rời đi là vấn đề khác với người mới dần bỏ.",
+      "Thú vị đấy. Tôi đã xem bảng hỏi. Độ dài ổn, câu hỏi trung lập. Điều tôi lo là các em chỉ gửi qua email. Nhiều tình nguyện viên lớn tuổi có thể chưa bao giờ thấy nó.",
+      "Đúng ạ. Cho nghiên cứu điển hình, bọn em chọn vườn Northfield. Nó không phải lớn nhất, cũng không mất nhiều tình nguyện viên nhất, nhưng là nơi duy nhất ghi lại ai đã nghỉ và khi nào.",
+      "Bọn em cũng hỏi người đã nghỉ xem họ nhớ điều gì. Em tưởng họ sẽ nói nhớ bạn bè, nhưng phần lớn nhắc đến việc lao động chân tay, đào đất, khuân vác. Vài người nói họ chưa tìm được môn vận động nào khác mà họ thích.",
+      "Còn tình nguyện viên trẻ? Các em nói hầu như không ai trả lời.",
+      "Bọn em từng tính bốc thăm trúng thưởng, hoặc nhờ người điều phối nhắc họ, nhưng bọn em quyết định tới vườn vào cuối tuần và nói chuyện với họ ở đó.",
+      "Trước khi nghe phần còn lại của cuộc thảo luận, bạn có thời gian xem câu 26 đến 30.",
+      "Bây giờ hãy nghe và trả lời câu 26 đến 30.",
+      "Hãy cùng xem kế hoạch cho giai đoạn tiếp theo.",
+      "Trước tiên, bọn em sẽ liên hệ người điều phối của từng vườn để biết hôm nào họ có buổi làm việc.",
+      "Rồi vào những hôm đó, bọn em sẽ phỏng vấn ngắn. Bọn em có tính đến nhóm thảo luận, nhưng mọi người đang bận làm, nên mười phút trò chuyện riêng thực tế hơn.",
+      "Bọn em sẽ ghi câu trả lời ra giấy. Hồi làm thử bọn em dùng điện thoại, nhưng điện thoại cứ dính đầy bùn.",
+      "Hợp lý. Các em sẽ kiểm tra mẫu có điển hình không bằng cách nào?",
+      "Bọn em sẽ so số liệu của mình với dữ liệu của hội đồng thành phố về mọi khu vườn. Khảo sát quốc gia không tách theo từng vườn nên không giúp được nhiều.",
+      "Tốt. Các em sẽ trình bày kết quả cho ai?",
+      "Hội đồng có đề nghị một bản báo cáo, nhưng bọn em đã thống nhất trình bày cho chính các tình nguyện viên trước, để họ chỉ ra nếu bọn em hiểu sai điều gì.",
+      "Nếu còn thời gian, bọn em cũng muốn so sánh các vườn ở những khu khác nhau của thành phố.",
+      "Chỉ khi phân tích chính đã xong. Đừng dàn trải quá. Nhưng trình bày cho tình nguyện viên trước là ý rất hay. Có bản nháp thì gửi tôi nhé.",
+      "Hết Phần 3."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Dr Price": "bf_emma",
+      "Lena": "af_sarah",
+      "Jamal": "am_adam"
+    },
+    "allow": [
+      "recruits",
+      "questionnaire",
+      "neutral",
+      "coordinators",
+      "coordinator",
+      "pilot",
+      "sample",
+      "draw",
+      "digging"
+    ],
+    "sets": [
+      {
+        "qtype": "l-mcq",
+        "instr": "Choose the correct letter, A, B or C.",
+        "items": [
+          {
+            "id": "m-a3-l3-01",
+            "q": "What surprised the students about the volunteers who had left?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Most said they were too busy."
+              },
+              {
+                "k": "B",
+                "t": "Most had moved to another area."
+              },
+              {
+                "k": "C",
+                "t": "Most had volunteered for over five years."
+              }
+            ],
+            "ans": "C",
+            "b": 6.5,
+            "ev": {
+              "p": 5,
+              "s": "most of them had been coming for more than five years"
+            },
+            "why": "Hai bạn tưởng người nghỉ là người mới, nhưng phần lớn đã tham gia hơn năm năm.",
+            "wrong": {
+              "A": "Chỉ vài người nói quá bận.",
+              "B": "Chỉ một số ít đã chuyển đi."
+            }
+          },
+          {
+            "id": "m-a3-l3-02",
+            "q": "What does Dr Price think is the main weakness of the questionnaire?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "It was only sent by email."
+              },
+              {
+                "k": "B",
+                "t": "It is too long."
+              },
+              {
+                "k": "C",
+                "t": "Some questions are not neutral."
+              }
+            ],
+            "ans": "A",
+            "b": 6.5,
+            "ev": {
+              "p": 8,
+              "s": "My concern is that you only sent it by email."
+            },
+            "why": "Tiến sĩ Price lo bảng hỏi chỉ gửi qua email nên người lớn tuổi có thể không thấy.",
+            "wrong": {
+              "B": "Bà nói độ dài ổn.",
+              "C": "Bà nói câu hỏi trung lập."
+            }
+          },
+          {
+            "id": "m-a3-l3-03",
+            "q": "Why did the students choose the Northfield garden for their case study?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "It has lost the most volunteers."
+              },
+              {
+                "k": "B",
+                "t": "It kept records of people leaving."
+              },
+              {
+                "k": "C",
+                "t": "It is the largest garden."
+              }
+            ],
+            "ans": "B",
+            "b": 6.5,
+            "ev": {
+              "p": 9,
+              "s": "it's the only one that kept records of who left and when"
+            },
+            "why": "Northfield là vườn duy nhất ghi lại ai nghỉ và khi nào.",
+            "wrong": {
+              "A": "Nó cũng không mất nhiều người nhất.",
+              "C": "Lena nói nó không phải lớn nhất."
+            }
+          },
+          {
+            "id": "m-a3-l3-04",
+            "q": "What did most former volunteers say they missed?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "the physical work"
+              },
+              {
+                "k": "B",
+                "t": "the company of others"
+              },
+              {
+                "k": "C",
+                "t": "the food they grew"
+              }
+            ],
+            "ans": "A",
+            "b": 6.5,
+            "ev": {
+              "p": 10,
+              "s": "most of them mentioned the physical work"
+            },
+            "why": "Phần lớn nhắc tới lao động chân tay: đào đất, khuân vác.",
+            "wrong": {
+              "B": "Jamal tưởng họ sẽ nói nhớ bạn bè, nhưng không phải.",
+              "C": "Không ai được nhắc là nhớ rau quả tự trồng."
+            }
+          },
+          {
+            "id": "m-a3-l3-05",
+            "q": "How will the students try to reach younger volunteers?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "by offering a prize draw"
+              },
+              {
+                "k": "B",
+                "t": "by asking coordinators to remind them"
+              },
+              {
+                "k": "C",
+                "t": "by visiting the gardens at weekends"
+              }
+            ],
+            "ans": "C",
+            "b": 6.5,
+            "ev": {
+              "p": 12,
+              "s": "we've decided to go to the gardens at weekends"
+            },
+            "why": "Hai bạn sẽ tới vườn vào cuối tuần để nói chuyện trực tiếp.",
+            "wrong": {
+              "A": "Bốc thăm trúng thưởng chỉ được cân nhắc rồi bỏ.",
+              "B": "Nhờ người điều phối nhắc cũng chỉ được cân nhắc."
+            }
+          }
+        ]
+      },
+      {
+        "qtype": "l-flow",
+        "instr": "Complete the flow-chart below. Write ONE WORD ONLY for each answer.",
+        "items": [
+          {
+            "id": "m-a3-l3-06",
+            "q": "Contact each garden's ___ to find out the work days",
+            "ans": {
+              "accept": [
+                "coordinator"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 16,
+              "s": "we'll contact each garden's coordinator"
+            },
+            "why": "Bước đầu là liên hệ người điều phối của từng vườn.",
+            "wrong": {
+              "coordinater": "Sai chính tả: coordinator."
+            }
+          },
+          {
+            "id": "m-a3-l3-07",
+            "q": "Hold short ___ on those days",
+            "ans": {
+              "accept": [
+                "interviews"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 17,
+              "s": "we'll hold short interviews"
+            },
+            "why": "Hai bạn sẽ phỏng vấn ngắn, không làm nhóm thảo luận.",
+            "wrong": {
+              "focus groups": "Nhóm thảo luận đã được cân nhắc rồi bỏ, vì mọi người đang bận làm."
+            }
+          },
+          {
+            "id": "m-a3-l3-08",
+            "q": "Note answers on ___",
+            "ans": {
+              "accept": [
+                "paper"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 18,
+              "s": "We'll note the answers on paper."
+            },
+            "why": "Ghi ra giấy vì điện thoại dính bùn khi làm thử.",
+            "wrong": {
+              "phones": "Điện thoại dính đầy bùn khi làm thử."
+            }
+          },
+          {
+            "id": "m-a3-l3-09",
+            "q": "Compare figures with the ___ data",
+            "ans": {
+              "accept": [
+                "council's",
+                "council"
+              ]
+            },
+            "limit": 1,
+            "b": 7,
+            "ev": {
+              "p": 20,
+              "s": "We'll compare our figures with the council's data"
+            },
+            "why": "So với dữ liệu của hội đồng thành phố; khảo sát quốc gia không tách theo vườn.",
+            "wrong": {
+              "national": "Khảo sát quốc gia không tách theo từng vườn nên không dùng."
+            }
+          },
+          {
+            "id": "m-a3-l3-10",
+            "q": "Present findings to the ___ first",
+            "ans": {
+              "accept": [
+                "volunteers"
+              ]
+            },
+            "limit": 1,
+            "b": 7,
+            "ev": {
+              "p": 22,
+              "s": "we've agreed to present to the volunteers themselves first"
+            },
+            "why": "Hai bạn trình bày cho chính tình nguyện viên trước, để họ chỉ ra chỗ sai.",
+            "wrong": {
+              "council": "Hội đồng có đề nghị báo cáo, nhưng sẽ trình bày sau."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-a3-l4",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "C1",
+    "band": 7,
+    "title": "Lecture: bees on city roofs",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 4. You will hear a lecture about a study of beehives kept on the roofs of a city. First, you have some time to look at questions 31 to 40.",
+        "pause": 45
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 31 to 40."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Today I want to look at a five-year study of beehives on the roofs of a northern city. Rooftop beekeeping became fashionable quite suddenly, and the study was set up to find out whether it was doing any good. Each hive was inspected every fortnight during the summer, and pollen was collected in small traps at the entrance to each hive."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "You might expect that it began with complaints from residents about being stung. In fact, stings were rare. The research started because allotment gardeners noticed fewer bees on their crops, and wondered whether the rooftop hives were to blame."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "The first findings were encouraging for the beekeepers. Rooftop colonies did not produce more honey than hives in the countryside, but their bees travelled shorter distances to find food, because there was so much variety close by."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "And where was the food coming from? Not mainly from flowers in parks and gardens, as most people assume. When the team analysed the pollen, most of it came from the lime trees that line the city's older streets."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "The main threat to the hives turned out to be neither pollution nor vandalism. It was wind. On high roofs, gusts could tip a hive over, so beekeepers were advised to move their hives close to chimneys, which gave them shelter. Honey from the roofs, incidentally, was tested for traces of pollution, and the levels were well within safe limits."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Now, the gardeners' worry. Over the five years, the number of rooftop hives in the city rose from about 40 to 240. That's a lot of honeybees competing for the same flowers, especially in early spring, when little else is in bloom."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "The team expected wild bees to suffer most from this competition. Surprisingly, wild bee numbers were fairly stable. The insects that declined most were hoverflies, which feed on many of the same small flowers and are important pollinators in their own right."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "As a result, the city changed its rules. Anyone wanting to set up a new rooftop hive now needs a licence, and the number of licences in each district is limited. Applicants must also attend a short course on handling swarms, since a swarm leaving a roof in a busy street can cause real alarm."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "The next phase of the research will look at hives on hospital roofs. Hospitals have large flat roofs and plenty of planting around them, and they may turn out to be better places for hives than offices or flats."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "For next week, please read the summary of the study on the course website, and think about what kind of evidence would persuade you that a city has too many hives. We'll also look at how other cities have answered the same question."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 4. You now have two minutes to check your answers."
+      }
+    ],
+    "vi": [
+      "Phần 4. Bạn sẽ nghe một bài giảng về một nghiên cứu các tổ ong nuôi trên mái nhà trong một thành phố. Trước tiên, bạn có thời gian xem câu 31 đến 40.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 31 đến 40.",
+      "Hôm nay tôi muốn xem xét một nghiên cứu năm năm về các tổ ong trên mái nhà ở một thành phố phía bắc. Nuôi ong trên mái trở thành mốt khá đột ngột, và nghiên cứu được lập ra để tìm hiểu liệu việc này có ích gì không. Mỗi tổ được kiểm tra hai tuần một lần trong mùa hè, và phấn hoa được thu bằng những chiếc bẫy nhỏ ở cửa tổ.",
+      "Có thể các bạn nghĩ nó bắt đầu từ việc cư dân phàn nàn bị ong đốt. Thực ra, chuyện bị đốt rất hiếm. Nghiên cứu bắt đầu vì những người trồng rau ở các mảnh vườn thuê thấy ít ong hơn trên cây trồng, và tự hỏi liệu tổ ong trên mái có phải nguyên nhân.",
+      "Kết quả đầu tiên khá đáng mừng cho người nuôi ong. Đàn ong trên mái không cho nhiều mật hơn tổ ở nông thôn, nhưng ong của chúng bay quãng đường ngắn hơn để kiếm ăn, vì gần đó có rất nhiều loại cây.",
+      "Vậy thức ăn đến từ đâu? Không chủ yếu từ hoa trong công viên và vườn, như phần lớn mọi người nghĩ. Khi nhóm phân tích phấn hoa, phần lớn đến từ những cây đoạn trồng dọc các con phố cũ của thành phố.",
+      "Mối đe doạ chính với các tổ hoá ra không phải ô nhiễm hay phá hoại. Đó là gió. Trên mái cao, gió giật có thể lật đổ tổ, nên người nuôi được khuyên chuyển tổ sát ống khói để được che chắn. Nhân tiện, mật ong trên mái được xét nghiệm dấu vết ô nhiễm, và mức đo nằm trong giới hạn an toàn.",
+      "Giờ đến nỗi lo của người làm vườn. Trong năm năm, số tổ ong trên mái trong thành phố tăng từ khoảng bốn mươi lên hai trăm bốn mươi. Đó là rất nhiều ong mật tranh nhau cùng những bông hoa, nhất là đầu xuân, khi ít loài khác nở hoa.",
+      "Nhóm nghiên cứu nghĩ ong hoang sẽ chịu thiệt nhất từ sự cạnh tranh này. Bất ngờ là số ong hoang khá ổn định. Loài côn trùng giảm nhiều nhất là ruồi giả ong, loài ăn trên nhiều bông hoa nhỏ giống vậy và bản thân cũng là loài thụ phấn quan trọng.",
+      "Kết quả là thành phố đã đổi quy định. Ai muốn đặt tổ ong mới trên mái giờ cần có giấy phép, và số giấy phép ở mỗi quận bị giới hạn. Người xin phép cũng phải học một khoá ngắn về xử lý đàn ong chia đàn, vì một đàn ong rời mái nhà xuống phố đông người có thể gây hoảng loạn thật sự.",
+      "Giai đoạn nghiên cứu tiếp theo sẽ xem xét tổ ong trên mái bệnh viện. Bệnh viện có mái phẳng rộng và nhiều cây trồng xung quanh, và có thể hoá ra là nơi đặt tổ tốt hơn văn phòng hay chung cư.",
+      "Cho tuần sau, hãy đọc bản tóm tắt nghiên cứu trên trang web khoá học, và nghĩ xem loại bằng chứng nào sẽ thuyết phục bạn rằng một thành phố có quá nhiều tổ ong. Chúng ta cũng sẽ xem các thành phố khác đã trả lời câu hỏi này thế nào.",
+      "Hết Phần 4. Bây giờ bạn có hai phút để soát lại bài."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Lecturer": "bm_lewis"
+    },
+    "allow": [
+      "beehives",
+      "hives",
+      "hive",
+      "rooftop",
+      "beekeeping",
+      "beekeepers",
+      "stung",
+      "stings",
+      "allotment",
+      "colonies",
+      "pollen",
+      "lime",
+      "gusts",
+      "vandalism",
+      "chimneys",
+      "honeybees",
+      "hoverflies",
+      "pollinators",
+      "licence",
+      "licences",
+      "swarms",
+      "swarm",
+      "analysed",
+      "fortnight",
+      "traps",
+      "incidentally"
+    ],
+    "sets": [
+      {
+        "qtype": "l-sentence",
+        "instr": "Complete the sentences below. Write ONE WORD AND/OR A NUMBER for each answer.",
+        "items": [
+          {
+            "id": "m-a3-l4-01",
+            "q": "The research began because of concerns raised by local ___.",
+            "ans": {
+              "accept": [
+                "gardeners"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 6.5,
+            "ev": {
+              "p": 3,
+              "s": "The research started because allotment gardeners noticed fewer bees"
+            },
+            "why": "Nghiên cứu bắt đầu vì người trồng rau ở vườn thuê thấy ít ong hơn.",
+            "wrong": {
+              "residents": "Chuyện cư dân bị ong đốt rất hiếm, không phải lý do bắt đầu."
+            }
+          },
+          {
+            "id": "m-a3-l4-02",
+            "q": "Bees from rooftop hives travelled shorter ___ to find food.",
+            "ans": {
+              "accept": [
+                "distances"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 6.5,
+            "ev": {
+              "p": 4,
+              "s": "their bees travelled shorter distances to find food"
+            },
+            "why": "Ong trên mái bay quãng đường ngắn hơn; còn lượng mật thì không nhiều hơn.",
+            "wrong": {
+              "honey": "Đàn trên mái không cho nhiều mật hơn tổ ở nông thôn."
+            }
+          },
+          {
+            "id": "m-a3-l4-03",
+            "q": "Most of the pollen came from ___ trees.",
+            "ans": {
+              "accept": [
+                "lime"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 5,
+              "s": "most of it came from the lime trees"
+            },
+            "why": "Phần lớn phấn hoa từ cây đoạn dọc các phố cũ, không từ hoa công viên.",
+            "wrong": {
+              "park": "Mọi người nghĩ phấn từ hoa công viên, nhưng không phải."
+            }
+          },
+          {
+            "id": "m-a3-l4-04",
+            "q": "The biggest threat to rooftop hives was ___.",
+            "ans": {
+              "accept": [
+                "wind"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 6.5,
+            "ev": {
+              "p": 6,
+              "s": "It was wind."
+            },
+            "why": "Mối đe doạ chính là gió, không phải ô nhiễm hay phá hoại.",
+            "wrong": {
+              "pollution": "Bài giảng nói rõ không phải ô nhiễm.",
+              "vandalism": "Cũng không phải phá hoại."
+            }
+          },
+          {
+            "id": "m-a3-l4-05",
+            "q": "Beekeepers were advised to place hives close to ___.",
+            "ans": {
+              "accept": [
+                "chimneys"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 6,
+              "s": "move their hives close to chimneys"
+            },
+            "why": "Đặt tổ sát ống khói để được che gió."
+          },
+          {
+            "id": "m-a3-l4-06",
+            "q": "After five years there were about ___ rooftop hives in the city.",
+            "ans": {
+              "accept": [
+                "240"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 7,
+              "s": "rose from about 40 to 240"
+            },
+            "why": "Số tổ tăng từ khoảng 40 lên 240.",
+            "wrong": {
+              "40": "Đó là con số lúc đầu."
+            }
+          },
+          {
+            "id": "m-a3-l4-07",
+            "q": "The insects that declined most were ___.",
+            "ans": {
+              "accept": [
+                "hoverflies"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7.5,
+            "ev": {
+              "p": 8,
+              "s": "The insects that declined most were hoverflies"
+            },
+            "why": "Loài giảm nhiều nhất là ruồi giả ong, không phải ong hoang.",
+            "wrong": {
+              "wild bees": "Số ong hoang khá ổn định."
+            }
+          },
+          {
+            "id": "m-a3-l4-08",
+            "q": "New rooftop hives now require a ___.",
+            "ans": {
+              "accept": [
+                "licence",
+                "license"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 9,
+              "s": "now needs a licence"
+            },
+            "why": "Đặt tổ mới phải có giấy phép, và số giấy phép mỗi quận bị giới hạn."
+          },
+          {
+            "id": "m-a3-l4-09",
+            "q": "Applicants must take a course on handling ___.",
+            "ans": {
+              "accept": [
+                "swarms"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7.5,
+            "ev": {
+              "p": 9,
+              "s": "a short course on handling swarms"
+            },
+            "why": "Người xin phép phải học cách xử lý đàn ong chia đàn."
+          },
+          {
+            "id": "m-a3-l4-10",
+            "q": "The next phase will study hives on ___ roofs.",
+            "ans": {
+              "accept": [
+                "hospital"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 10,
+              "s": "will look at hives on hospital roofs"
+            },
+            "why": "Giai đoạn sau nghiên cứu tổ ong trên mái bệnh viện.",
+            "wrong": {
+              "office": "Văn phòng chỉ được nhắc để so sánh."
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

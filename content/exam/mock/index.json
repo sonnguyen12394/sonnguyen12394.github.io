@@ -32,6 +32,22 @@
     ]
   },
   {
+    "id": "a3",
+    "exam": "ielts-ac",
+    "title": "IELTS Academic – Đề 3",
+    "L": [
+      "m-a3-l1",
+      "m-a3-l2",
+      "m-a3-l3",
+      "m-a3-l4"
+    ],
+    "R": [
+      "m-a3-r1",
+      "m-a3-r2",
+      "m-a3-r3"
+    ]
+  },
+  {
     "id": "v1",
     "exam": "vstep",
     "title": "VSTEP – Đề 1",
