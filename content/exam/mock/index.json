@@ -16,6 +16,22 @@
     ]
   },
   {
+    "id": "a2",
+    "exam": "ielts-ac",
+    "title": "IELTS Academic – Đề 2",
+    "L": [
+      "m-a2-l1",
+      "m-a2-l2",
+      "m-a2-l3",
+      "m-a2-l4"
+    ],
+    "R": [
+      "m-a2-r1",
+      "m-a2-r2",
+      "m-a2-r3"
+    ]
+  },
+  {
     "id": "v1",
     "exam": "vstep",
     "title": "VSTEP – Đề 1",

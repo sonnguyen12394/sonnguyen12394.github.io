@@ -1,0 +1,1541 @@
+[
+  {
+    "id": "m-a2-l1",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "B1",
+    "band": 5,
+    "title": "Bike hire for a group",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 1. You will hear a man phoning a bike-hire company to book bikes for a family trip. First, you have some time to look at questions 1 to 6.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 1 to 6."
+      },
+      {
+        "sp": "Clara",
+        "t": "Good morning, Valley Cycle Hire, Clara speaking."
+      },
+      {
+        "sp": "Ravi",
+        "t": "Hi. I'd like to book some bikes for the old railway trail, for a family group."
+      },
+      {
+        "sp": "Clara",
+        "t": "Lovely. Let me start a booking. What's your surname?"
+      },
+      {
+        "sp": "Ravi",
+        "t": "Desai. D-E-S-A-I. First name Ravi."
+      },
+      {
+        "sp": "Clara",
+        "t": "Thanks. And how many people will be riding?"
+      },
+      {
+        "sp": "Ravi",
+        "t": "There are nine of us altogether, but my parents will walk part of the way and meet us at the café, so it's seven bikes."
+      },
+      {
+        "sp": "Clara",
+        "t": "Seven bikes. And what date were you thinking of?"
+      },
+      {
+        "sp": "Ravi",
+        "t": "We'd planned on the twelfth of August, but that's a Monday, isn't it? Someone told me the trail café is closed then."
+      },
+      {
+        "sp": "Clara",
+        "t": "It is, yes. The café's shut on Mondays."
+      },
+      {
+        "sp": "Ravi",
+        "t": "Then let's say the fourteenth. The Wednesday."
+      },
+      {
+        "sp": "Clara",
+        "t": "The fourteenth, fine. Now, you mentioned children. How old are they?"
+      },
+      {
+        "sp": "Ravi",
+        "t": "Two of them are ten and eleven, so they'll manage on small bikes. But my youngest is only four."
+      },
+      {
+        "sp": "Clara",
+        "t": "For a four-year-old, most families take a child seat, but on the trail we recommend a trailer instead. The path is quite bumpy in places, and a trailer is much more stable."
+      },
+      {
+        "sp": "Ravi",
+        "t": "A trailer, then. Where do we pick everything up? Your shop is in town, isn't it?"
+      },
+      {
+        "sp": "Clara",
+        "t": "The shop is, but for groups we bring the bikes to the start of the trail. You collect them from the old station, next to the ticket office."
+      },
+      {
+        "sp": "Ravi",
+        "t": "Great. Do we need to bring helmets?"
+      },
+      {
+        "sp": "Clara",
+        "t": "No, helmets come with every bike. What I'd suggest is a map for each rider. The trail splits in two places, and people do get lost. They're two pounds each."
+      },
+      {
+        "sp": "Ravi",
+        "t": "Put one down for each of us, then."
+      },
+      {
+        "sp": "N",
+        "t": "Before you hear the rest of the conversation, you have some time to look at questions 7 to 10.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen and answer questions 7 to 10."
+      },
+      {
+        "sp": "Ravi",
+        "t": "Is there anything I need to bring on the day?"
+      },
+      {
+        "sp": "Clara",
+        "t": "We don't need a deposit or a passport, and the booking is already paid online. Just bring your bank card, so that we can charge it if a bike isn't returned."
+      },
+      {
+        "sp": "Ravi",
+        "t": "Fine. And how long is the trail? My father's worried about the distance."
+      },
+      {
+        "sp": "Clara",
+        "t": "The whole trail is eighteen kilometres, but most families only go as far as the viaduct, which is eleven kilometres from the station, and then come back."
+      },
+      {
+        "sp": "Ravi",
+        "t": "And what's the best thing to see on the way? The children will want something to look forward to."
+      },
+      {
+        "sp": "Clara",
+        "t": "Most people talk about the viaduct, but the children always love the tunnel most. It's three hundred metres long and it has lights, so it's quite safe."
+      },
+      {
+        "sp": "Ravi",
+        "t": "Perfect. And if the weather is bad?"
+      },
+      {
+        "sp": "Clara",
+        "t": "We don't refund for rain, I'm afraid, but you can move the booking to another date free of charge, as long as you tell us by nine on the morning of the trip."
+      },
+      {
+        "sp": "Ravi",
+        "t": "That's very reasonable. Thanks, Clara."
+      },
+      {
+        "sp": "Clara",
+        "t": "You're welcome. I'll send a confirmation email this afternoon with directions to the old station and a link to the route map. Enjoy the trail."
+      },
+      {
+        "sp": "Ravi",
+        "t": "Thanks, I'll look out for it. Bye."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 1.",
+        "pause": 10
+      }
+    ],
+    "vi": [
+      "Phần 1. Bạn sẽ nghe một người đàn ông gọi điện cho công ty cho thuê xe đạp để đặt xe cho chuyến đi của gia đình. Trước tiên, bạn có thời gian xem câu 1 đến 6.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 1 đến 6.",
+      "Chào buổi sáng, Valley Cycle Hire, Clara nghe đây.",
+      "Chào chị. Tôi muốn đặt vài chiếc xe đạp để đi tuyến đường ray cũ, cho một nhóm gia đình.",
+      "Tuyệt. Để tôi tạo lượt đặt. Anh họ gì ạ?",
+      "Desai. D-E-S-A-I. Tên là Ravi.",
+      "Cảm ơn anh. Có bao nhiêu người sẽ đạp xe ạ?",
+      "Chúng tôi có chín người tất cả, nhưng bố mẹ tôi sẽ đi bộ một đoạn rồi gặp chúng tôi ở quán cà phê, nên là bảy xe.",
+      "Bảy xe. Anh định đi ngày nào ạ?",
+      "Chúng tôi định đi ngày mười hai tháng Tám, nhưng hôm đó là thứ Hai phải không? Có người bảo quán cà phê trên tuyến đóng cửa hôm đó.",
+      "Đúng vậy. Quán cà phê đóng cửa thứ Hai.",
+      "Vậy thì ngày mười bốn. Thứ Tư.",
+      "Ngày mười bốn, được ạ. Anh có nhắc đến trẻ em. Các cháu bao nhiêu tuổi ạ?",
+      "Hai đứa mười và mười một tuổi, nên đi xe nhỏ được. Nhưng đứa út mới bốn tuổi.",
+      "Với trẻ bốn tuổi, phần lớn gia đình lấy ghế trẻ em, nhưng trên tuyến này chúng tôi khuyên dùng xe kéo phía sau. Đường có đoạn khá xóc, và xe kéo vững hơn nhiều.",
+      "Vậy lấy xe kéo. Chúng tôi lấy xe ở đâu? Cửa hàng của chị ở trong thị trấn phải không?",
+      "Cửa hàng thì ở đó, nhưng với nhóm, chúng tôi mang xe tới điểm đầu tuyến. Anh nhận xe ở nhà ga cũ, cạnh phòng bán vé.",
+      "Tuyệt. Chúng tôi có cần mang mũ bảo hiểm không?",
+      "Không, mũ đi kèm mỗi xe. Điều tôi gợi ý là mỗi người một tấm bản đồ. Tuyến đường rẽ đôi ở hai chỗ, và người ta hay bị lạc. Mỗi tấm hai bảng.",
+      "Vậy chị cho mỗi người một tấm.",
+      "Trước khi nghe phần còn lại của cuộc trò chuyện, bạn có thời gian xem câu 7 đến 10.",
+      "Bây giờ hãy nghe và trả lời câu 7 đến 10.",
+      "Hôm đó tôi có cần mang gì theo không?",
+      "Chúng tôi không cần tiền đặt cọc hay hộ chiếu, và lượt đặt đã trả tiền qua mạng rồi. Anh chỉ cần mang thẻ ngân hàng, để chúng tôi tính tiền nếu có xe không được trả lại.",
+      "Được. Tuyến đường dài bao nhiêu? Bố tôi lo về quãng đường.",
+      "Cả tuyến dài mười tám cây số, nhưng phần lớn gia đình chỉ đi đến cầu cạn, cách nhà ga mười một cây số, rồi quay về.",
+      "Trên đường có gì đáng xem nhất? Bọn trẻ sẽ muốn có gì đó để mong chờ.",
+      "Phần lớn mọi người nói về cầu cạn, nhưng trẻ con luôn thích đường hầm nhất. Hầm dài ba trăm mét và có đèn, nên khá an toàn.",
+      "Tuyệt. Nếu thời tiết xấu thì sao?",
+      "Tiếc là chúng tôi không hoàn tiền vì trời mưa, nhưng anh có thể dời lượt đặt sang ngày khác miễn phí, miễn là báo trước chín giờ sáng ngày đi.",
+      "Rất hợp lý. Cảm ơn chị, Clara.",
+      "Không có gì ạ. Chiều nay tôi sẽ gửi email xác nhận kèm chỉ đường tới ga cũ và đường dẫn tới bản đồ tuyến. Chúc gia đình đi vui.",
+      "Cảm ơn chị, tôi sẽ để ý. Chào chị.",
+      "Hết Phần 1."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Ravi": "am_adam",
+      "Clara": "bf_isabella"
+    },
+    "allow": [
+      "trail",
+      "trailer",
+      "bumpy",
+      "helmets",
+      "viaduct",
+      "tunnel",
+      "refund",
+      "deposit",
+      "stable"
+    ],
+    "sets": [
+      {
+        "qtype": "l-form",
+        "instr": "Complete the notes below. Write ONE WORD AND/OR A NUMBER for each answer.",
+        "items": [
+          {
+            "id": "m-a2-l1-01",
+            "q": "Name: Ravi ___",
+            "ans": {
+              "accept": [
+                "Desai"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 4.5,
+            "ev": {
+              "p": 5,
+              "s": "Desai. D-E-S-A-I."
+            },
+            "why": "Ravi đánh vần họ D-E-S-A-I.",
+            "tag": "chính tả"
+          },
+          {
+            "id": "m-a2-l1-02",
+            "q": "Number of bikes: ___",
+            "ans": {
+              "accept": [
+                "7",
+                "seven"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 7,
+              "s": "so it's seven bikes"
+            },
+            "why": "Nhóm có chín người nhưng bố mẹ đi bộ, nên chỉ cần bảy xe.",
+            "wrong": {
+              "9": "Chín là tổng số người, hai người đi bộ.",
+              "nine": "Chín là tổng số người, hai người đi bộ."
+            },
+            "trap": "Nghe hết câu: con số đầu tiên (chín) chưa phải số xe."
+          },
+          {
+            "id": "m-a2-l1-03",
+            "q": "Date: ___ August",
+            "ans": {
+              "accept": [
+                "14",
+                "14th",
+                "fourteenth"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 11,
+              "s": "Then let's say the fourteenth."
+            },
+            "why": "Ngày 12 là thứ Hai, quán cà phê đóng cửa, nên chọn ngày 14.",
+            "wrong": {
+              "12": "Ngày 12 là thứ Hai, quán cà phê đóng cửa nên đã đổi."
+            }
+          },
+          {
+            "id": "m-a2-l1-04",
+            "q": "For the youngest child: a ___",
+            "ans": {
+              "accept": [
+                "trailer"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5.5,
+            "ev": {
+              "p": 14,
+              "s": "we recommend a trailer instead"
+            },
+            "why": "Trên tuyến này nên dùng xe kéo phía sau thay vì ghế trẻ em.",
+            "wrong": {
+              "seat": "Ghế trẻ em là lựa chọn của \"phần lớn gia đình\", nhưng tuyến này khuyên dùng xe kéo."
+            }
+          },
+          {
+            "id": "m-a2-l1-05",
+            "q": "Collect bikes from: the old ___",
+            "ans": {
+              "accept": [
+                "station"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 16,
+              "s": "You collect them from the old station"
+            },
+            "why": "Với nhóm, xe được mang tới nhà ga cũ ở đầu tuyến.",
+            "wrong": {
+              "shop": "Cửa hàng ở thị trấn, nhưng nhóm nhận xe ở nhà ga cũ."
+            }
+          },
+          {
+            "id": "m-a2-l1-06",
+            "q": "Extra: one ___ for each rider (£2 each)",
+            "ans": {
+              "accept": [
+                "map"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 18,
+              "s": "a map for each rider"
+            },
+            "why": "Clara gợi ý mỗi người một tấm bản đồ, giá hai bảng.",
+            "wrong": {
+              "helmet": "Mũ bảo hiểm đã đi kèm mỗi xe, không phải mua thêm."
+            }
+          }
+        ]
+      },
+      {
+        "qtype": "l-short",
+        "instr": "Answer the questions below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.",
+        "items": [
+          {
+            "id": "m-a2-l1-07",
+            "q": "What must Ravi bring on the day?",
+            "ans": {
+              "accept": [
+                "bank card"
+              ]
+            },
+            "limit": 2,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 23,
+              "s": "Just bring your bank card"
+            },
+            "why": "Không cần đặt cọc hay hộ chiếu; chỉ cần thẻ ngân hàng.",
+            "wrong": {
+              "passport": "Clara nói không cần hộ chiếu.",
+              "deposit": "Không cần tiền đặt cọc."
+            }
+          },
+          {
+            "id": "m-a2-l1-08",
+            "q": "How far from the station is the viaduct?",
+            "ans": {
+              "accept": [
+                "11 kilometres",
+                "11 km",
+                "eleven kilometres",
+                "11 kilometers",
+                "eleven kilometers"
+              ]
+            },
+            "limit": 2,
+            "num": true,
+            "b": 5.5,
+            "ev": {
+              "p": 25,
+              "s": "which is eleven kilometres from the station"
+            },
+            "why": "Cầu cạn cách nhà ga mười một cây số.",
+            "wrong": {
+              "18 kilometres": "Mười tám cây số là cả tuyến."
+            }
+          },
+          {
+            "id": "m-a2-l1-09",
+            "q": "According to Clara, what do children enjoy most on the trail?",
+            "ans": {
+              "accept": [
+                "the tunnel",
+                "tunnel"
+              ]
+            },
+            "limit": 2,
+            "num": true,
+            "b": 5.5,
+            "ev": {
+              "p": 27,
+              "s": "the children always love the tunnel most"
+            },
+            "why": "Trẻ con luôn thích đường hầm nhất.",
+            "wrong": {
+              "the viaduct": "Cầu cạn là thứ \"phần lớn mọi người\" nhắc tới."
+            }
+          },
+          {
+            "id": "m-a2-l1-10",
+            "q": "By what time must Ravi call to move the booking?",
+            "ans": {
+              "accept": [
+                "9 am",
+                "9",
+                "nine",
+                "9 a.m.",
+                "9:00",
+                "nine am",
+                "nine o'clock"
+              ]
+            },
+            "limit": 2,
+            "num": true,
+            "b": 6,
+            "ev": {
+              "p": 29,
+              "s": "as long as you tell us by nine on the morning of the trip"
+            },
+            "why": "Phải báo trước chín giờ sáng ngày đi để dời lịch miễn phí."
+          }
+        ]
+      }
+    ],
+    "audio": {
+      "file": "a/m-a2-l1.mp3",
+      "dur": 249.4,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "bf_isabella"
+      ]
+    }
+  },
+  {
+    "id": "m-a2-l2",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "B1",
+    "band": 5.5,
+    "title": "Hollins Marsh nature reserve",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 2. You will hear a warden talking to new volunteers at a nature reserve. First, you have some time to look at questions 11 to 15.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 11 to 15."
+      },
+      {
+        "sp": "Warden",
+        "t": "Morning, everyone, and thanks for volunteering at Hollins Marsh. Visitors will ask you where things are all day long, so let's start with the map. You'll see the car park in the bottom left-hand corner. From there, the path runs east for a short way and then turns north up to the visitor centre."
+      },
+      {
+        "sp": "Warden",
+        "t": "Cyclists often ask where to leave their bikes. The racks used to be by the visitor centre, but we've moved them down to the corner where the path turns north, on the left-hand side as you walk up. That way, bikes stay off the narrow part of the path."
+      },
+      {
+        "sp": "Warden",
+        "t": "Families will want the children's trail. People expect it to start in the woodland, but it actually begins just east of the car park, south of the main path, so that small children don't have to walk far before it starts."
+      },
+      {
+        "sp": "Warden",
+        "t": "Now, picnics. Some of you will remember the picnic tables south of the mere. That area has been turned into a wildflower meadow, so please don't send anyone there to eat. The new picnic area is right next to the visitor centre, on its west side, where it's sheltered from the wind."
+      },
+      {
+        "sp": "Warden",
+        "t": "The toilets aren't inside the visitor centre itself. They're in the small block directly behind it, on the north side."
+      },
+      {
+        "sp": "Warden",
+        "t": "And finally the bird hide. The boardwalk runs from the visitor centre east to the edge of the mere, and it ends at a viewing platform. Lots of visitors think the platform is the hide, but it isn't. The hide is further round, on the north shore of the mere, and you reach it along the water's edge."
+      },
+      {
+        "sp": "N",
+        "t": "Before you hear the rest of the talk, you have some time to look at questions 16 to 20.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen and answer questions 16 to 20."
+      },
+      {
+        "sp": "Warden",
+        "t": "A few rules you'll need to explain. The reserve is closed on Tuesday mornings. That isn't for maintenance, which we do in the evenings, or for the bird survey, which is on Sundays. It's because Tuesday mornings are kept for school groups."
+      },
+      {
+        "sp": "Warden",
+        "t": "If a visitor finds an injured bird, please don't let them pick it up or bring it to the centre. Birds die from the stress of being carried. Ask them to ring the rescue number on the noticeboards, and a trained handler will come out."
+      },
+      {
+        "sp": "Warden",
+        "t": "Dogs are a common question. They're not banned completely, but they are only allowed in the car park area and on the first part of the path, on a lead. Beyond the turn, no dogs at all."
+      },
+      {
+        "sp": "Warden",
+        "t": "The café in the visitor centre reopened last month. It used to do hot meals, but there's no proper kitchen any more, so now it's mostly soup and bread, plus cakes at the weekend."
+      },
+      {
+        "sp": "Warden",
+        "t": "Lastly, what we need help with this month. The bird count is well covered, and the paths were cleared in spring. What we're short of is people to help repair the roof of the hide before the winter storms. If you can use a hammer, please put your name down."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 2.",
+        "pause": 10
+      }
+    ],
+    "vi": [
+      "Phần 2. Bạn sẽ nghe một người kiểm lâm nói chuyện với tình nguyện viên mới tại một khu bảo tồn thiên nhiên. Trước tiên, bạn có thời gian xem câu 11 đến 15.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 11 đến 15.",
+      "Chào buổi sáng mọi người, cảm ơn các bạn đã tình nguyện ở Hollins Marsh. Khách sẽ hỏi các bạn chỗ này chỗ kia cả ngày, nên ta bắt đầu bằng bản đồ. Các bạn thấy bãi đỗ xe ở góc dưới bên trái. Từ đó, lối đi chạy về phía đông một đoạn ngắn rồi rẽ lên phía bắc tới trung tâm du khách.",
+      "Người đi xe đạp hay hỏi để xe ở đâu. Giá để xe trước đây ở cạnh trung tâm du khách, nhưng chúng tôi đã dời xuống góc nơi lối đi rẽ lên phía bắc, ở bên trái khi bạn đi lên. Như vậy xe đạp không chiếm phần hẹp của lối đi.",
+      "Các gia đình sẽ muốn tìm lối mòn cho trẻ em. Người ta hay nghĩ nó bắt đầu trong rừng, nhưng thật ra nó bắt đầu ngay phía đông bãi đỗ xe, phía nam lối đi chính, để trẻ nhỏ không phải đi xa mới tới.",
+      "Giờ đến chuyện dã ngoại. Một số bạn sẽ nhớ những bàn dã ngoại ở phía nam hồ. Khu đó đã được biến thành đồng hoa dại, nên xin đừng chỉ ai ra đó ăn uống. Khu dã ngoại mới ở ngay cạnh trung tâm du khách, phía tây, nơi được che gió.",
+      "Nhà vệ sinh không nằm trong trung tâm du khách. Chúng ở dãy nhà nhỏ ngay phía sau, ở phía bắc.",
+      "Và cuối cùng là chòi quan sát chim. Lối ván gỗ chạy từ trung tâm du khách về phía đông tới mép hồ, và kết thúc ở một bục ngắm cảnh. Nhiều khách tưởng bục đó là chòi quan sát, nhưng không phải. Chòi nằm xa hơn, ở bờ bắc của hồ, và bạn đi tới đó dọc theo mép nước.",
+      "Trước khi nghe phần còn lại của bài nói, bạn có thời gian xem câu 16 đến 20.",
+      "Bây giờ hãy nghe và trả lời câu 16 đến 20.",
+      "Vài quy định các bạn cần giải thích. Khu bảo tồn đóng cửa sáng thứ Ba. Không phải để bảo trì, việc đó chúng tôi làm buổi tối, cũng không phải để khảo sát chim, việc đó vào Chủ nhật. Mà vì sáng thứ Ba dành cho các đoàn học sinh.",
+      "Nếu khách thấy một con chim bị thương, xin đừng để họ nhặt lên hay mang tới trung tâm. Chim chết vì căng thẳng khi bị mang đi. Hãy bảo họ gọi số cứu hộ trên bảng thông báo, và một người được huấn luyện sẽ tới.",
+      "Chó là câu hỏi hay gặp. Chó không bị cấm hoàn toàn, nhưng chỉ được ở khu bãi đỗ xe và đoạn đầu lối đi, có dây dắt. Qua chỗ rẽ thì không được mang chó.",
+      "Quán cà phê trong trung tâm du khách mở lại tháng trước. Trước đây quán bán món nóng, nhưng giờ không còn bếp đúng nghĩa, nên chủ yếu là súp và bánh mì, thêm bánh ngọt vào cuối tuần.",
+      "Cuối cùng, tháng này chúng tôi cần giúp gì. Việc đếm chim đã đủ người, và lối đi đã được dọn từ mùa xuân. Thứ chúng tôi thiếu là người giúp sửa mái chòi quan sát trước mùa bão đông. Ai dùng được búa thì xin ghi tên.",
+      "Hết Phần 2."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Warden": "bm_lewis"
+    },
+    "allow": [
+      "warden",
+      "racks",
+      "woodland",
+      "meadow",
+      "wildflower",
+      "sheltered",
+      "hide",
+      "boardwalk",
+      "mere",
+      "maintenance",
+      "injured",
+      "handler",
+      "noticeboards",
+      "lead",
+      "hammer",
+      "volunteering"
+    ],
+    "sets": [
+      {
+        "qtype": "l-map",
+        "instr": "Label the map below. Choose the correct letter, A–H, next to Questions 11–15.",
+        "options": [
+          {
+            "k": "A",
+            "t": "Location A"
+          },
+          {
+            "k": "B",
+            "t": "Location B"
+          },
+          {
+            "k": "C",
+            "t": "Location C"
+          },
+          {
+            "k": "D",
+            "t": "Location D"
+          },
+          {
+            "k": "E",
+            "t": "Location E"
+          },
+          {
+            "k": "F",
+            "t": "Location F"
+          },
+          {
+            "k": "G",
+            "t": "Location G"
+          },
+          {
+            "k": "H",
+            "t": "Location H"
+          }
+        ],
+        "figure": "map-reserve",
+        "items": [
+          {
+            "id": "m-a2-l2-01",
+            "q": "cycle racks",
+            "ans": "E",
+            "b": 5,
+            "ev": {
+              "p": 3,
+              "s": "on the left-hand side as you walk up"
+            },
+            "why": "Giá để xe ở góc nơi lối đi rẽ lên bắc, bên trái khi đi lên: E.",
+            "wrong": {
+              "B": "B là khu dã ngoại mới, cạnh trung tâm du khách (chỗ giá xe trước đây).",
+              "H": "H là điểm bắt đầu lối mòn trẻ em."
+            }
+          },
+          {
+            "id": "m-a2-l2-02",
+            "q": "start of the children's trail",
+            "ans": "H",
+            "b": 5.5,
+            "ev": {
+              "p": 4,
+              "s": "it actually begins just east of the car park, south of the main path"
+            },
+            "why": "Lối mòn trẻ em bắt đầu ngay phía đông bãi đỗ xe, phía nam lối đi chính: H.",
+            "wrong": {
+              "F": "Người ta tưởng nó bắt đầu trong rừng (F), nhưng không phải.",
+              "E": "E là giá để xe."
+            }
+          },
+          {
+            "id": "m-a2-l2-03",
+            "q": "picnic area",
+            "ans": "B",
+            "b": 5.5,
+            "ev": {
+              "p": 5,
+              "s": "The new picnic area is right next to the visitor centre, on its west side"
+            },
+            "why": "Khu dã ngoại mới ở phía tây trung tâm du khách: B.",
+            "wrong": {
+              "A": "Khu phía nam hồ (A) nay là đồng hoa dại.",
+              "G": "G là nhà vệ sinh, phía bắc trung tâm."
+            }
+          },
+          {
+            "id": "m-a2-l2-04",
+            "q": "toilets",
+            "ans": "G",
+            "b": 5,
+            "ev": {
+              "p": 6,
+              "s": "directly behind it, on the north side"
+            },
+            "why": "Nhà vệ sinh ở dãy nhà ngay phía bắc trung tâm du khách: G.",
+            "wrong": {
+              "B": "B là khu dã ngoại, phía tây.",
+              "D": "D là bục ngắm cảnh cuối lối ván gỗ."
+            }
+          },
+          {
+            "id": "m-a2-l2-05",
+            "q": "bird hide",
+            "ans": "C",
+            "b": 6,
+            "ev": {
+              "p": 7,
+              "s": "The hide is further round, on the north shore of the mere"
+            },
+            "why": "Chòi quan sát ở bờ bắc của hồ: C.",
+            "wrong": {
+              "D": "D là bục ngắm cảnh mà nhiều khách tưởng là chòi.",
+              "A": "A là đồng hoa dại phía nam hồ."
+            },
+            "trap": "Bục ngắm cảnh ở cuối lối ván gỗ (D) được nhắc trước để gây nhầm."
+          }
+        ]
+      },
+      {
+        "qtype": "l-mcq",
+        "instr": "Choose the correct letter, A, B or C.",
+        "items": [
+          {
+            "id": "m-a2-l2-06",
+            "q": "Why is the reserve closed on Tuesday mornings?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "for maintenance work"
+              },
+              {
+                "k": "B",
+                "t": "for visits by school groups"
+              },
+              {
+                "k": "C",
+                "t": "for the bird survey"
+              }
+            ],
+            "ans": "B",
+            "b": 5.5,
+            "ev": {
+              "p": 10,
+              "s": "It's because Tuesday mornings are kept for school groups."
+            },
+            "why": "Sáng thứ Ba dành cho các đoàn học sinh.",
+            "wrong": {
+              "A": "Bảo trì làm vào buổi tối.",
+              "C": "Khảo sát chim vào Chủ nhật."
+            }
+          },
+          {
+            "id": "m-a2-l2-07",
+            "q": "What should a visitor do if they find an injured bird?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "bring it to the visitor centre"
+              },
+              {
+                "k": "B",
+                "t": "cover it and wait beside it"
+              },
+              {
+                "k": "C",
+                "t": "phone a rescue number"
+              }
+            ],
+            "ans": "C",
+            "b": 6,
+            "ev": {
+              "p": 11,
+              "s": "Ask them to ring the rescue number on the noticeboards"
+            },
+            "why": "Bảo khách gọi số cứu hộ trên bảng thông báo.",
+            "wrong": {
+              "A": "Người kiểm lâm dặn không mang chim tới trung tâm vì chim chết vì căng thẳng.",
+              "B": "Không ai nhắc việc che chim lại và chờ."
+            }
+          },
+          {
+            "id": "m-a2-l2-08",
+            "q": "Where are dogs allowed?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "only near the car park"
+              },
+              {
+                "k": "B",
+                "t": "nowhere in the reserve"
+              },
+              {
+                "k": "C",
+                "t": "anywhere if they are on a lead"
+              }
+            ],
+            "ans": "A",
+            "b": 6,
+            "ev": {
+              "p": 12,
+              "s": "they are only allowed in the car park area and on the first part of the path"
+            },
+            "why": "Chó chỉ được ở khu bãi đỗ xe và đoạn đầu lối đi, có dây dắt.",
+            "wrong": {
+              "B": "Người kiểm lâm nói \"not banned completely\".",
+              "C": "Qua chỗ rẽ thì không được mang chó dù có dây."
+            }
+          },
+          {
+            "id": "m-a2-l2-09",
+            "q": "What does the café mainly sell now?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "hot meals"
+              },
+              {
+                "k": "B",
+                "t": "cakes"
+              },
+              {
+                "k": "C",
+                "t": "soup and bread"
+              }
+            ],
+            "ans": "C",
+            "b": 5.5,
+            "ev": {
+              "p": 13,
+              "s": "so now it's mostly soup and bread"
+            },
+            "why": "Quán giờ chủ yếu bán súp và bánh mì.",
+            "wrong": {
+              "A": "Món nóng là trước đây; giờ không còn bếp đúng nghĩa.",
+              "B": "Bánh ngọt chỉ có vào cuối tuần."
+            }
+          },
+          {
+            "id": "m-a2-l2-10",
+            "q": "What do the volunteers most need to help with this month?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "counting birds"
+              },
+              {
+                "k": "B",
+                "t": "repairing the hide"
+              },
+              {
+                "k": "C",
+                "t": "clearing the paths"
+              }
+            ],
+            "ans": "B",
+            "b": 6,
+            "ev": {
+              "p": 14,
+              "s": "What we're short of is people to help repair the roof of the hide"
+            },
+            "why": "Thứ thiếu là người sửa mái chòi quan sát.",
+            "wrong": {
+              "A": "Việc đếm chim đã đủ người.",
+              "C": "Lối đi đã được dọn từ mùa xuân."
+            }
+          }
+        ]
+      }
+    ],
+    "audio": {
+      "file": "a/m-a2-l2.mp3",
+      "dur": 236.2,
+      "voices": [
+        "bm_george",
+        "bm_lewis"
+      ]
+    }
+  },
+  {
+    "id": "m-a2-l3",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "B2",
+    "band": 6.5,
+    "title": "A market on the move",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 3. You will hear two students, Mira and Josh, discussing their project on a street market with their tutor, Dr Okafor. First, you have some time to look at questions 21 to 24.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 21 to 24."
+      },
+      {
+        "sp": "Dr Okafor",
+        "t": "So, the market project. Remind me what you've done so far."
+      },
+      {
+        "sp": "Mira",
+        "t": "We've interviewed twenty traders about the move from the old square to the new site by the river. We expected the main complaint to be fewer customers, but actually most of them said footfall has gone up."
+      },
+      {
+        "sp": "Josh",
+        "t": "And the rents were frozen for two years as part of the deal, so money wasn't really the issue either. What came up again and again was storage. At the old square they could leave their stock in the arches overnight. Now there's nowhere to keep anything."
+      },
+      {
+        "sp": "Mira",
+        "t": "Which links to the other big one: setting up. Because the stalls have to be taken down every night, it takes them much longer to get ready in the morning. Some start at five."
+      },
+      {
+        "sp": "Dr Okafor",
+        "t": "Good. And what's next? You mentioned an online survey last time."
+      },
+      {
+        "sp": "Josh",
+        "t": "We dropped that. The people who answer online surveys aren't the people who shop at markets. Instead we'll interview shoppers at the market itself, and we'll count visitors at each entrance on two different days."
+      },
+      {
+        "sp": "Dr Okafor",
+        "t": "I'd avoid a focus group, by the way. The traders who come will be the angriest ones. And photographs are fine for your appendix, but they're not data."
+      },
+      {
+        "sp": "N",
+        "t": "Before you hear the rest of the discussion, you have some time to look at questions 25 to 30.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen and answer questions 25 to 30."
+      },
+      {
+        "sp": "Dr Okafor",
+        "t": "Let's talk about your findings section. Why did the council move the market in the first place?"
+      },
+      {
+        "sp": "Mira",
+        "t": "Everyone assumes it was traffic, and that's what the newspapers said. But the council minutes show the real reason was flooding. The old square flooded twice a year, and the insurance became impossible."
+      },
+      {
+        "sp": "Josh",
+        "t": "We also found that older shoppers have changed how they arrive. A free minibus was promised, but it was cancelled before it started, and the bus stop is quite far. So a lot of older people now share a taxi."
+      },
+      {
+        "sp": "Mira",
+        "t": "And the pattern of the day has changed. At the old square, mornings were busiest. Now the busiest period is the late afternoon, when office workers stop on their way home."
+      },
+      {
+        "sp": "Josh",
+        "t": "The traders who've done best are the ones selling flowers. You'd think food stalls would win, with all those office workers, but flowers sell three times as well as before."
+      },
+      {
+        "sp": "Dr Okafor",
+        "t": "Interesting. To strengthen your conclusions, compare it with a market that didn't move. Not the one in the city centre, which is far too big. Try Ashford, which is about the same size."
+      },
+      {
+        "sp": "Mira",
+        "t": "And should we include a map of the new site?"
+      },
+      {
+        "sp": "Dr Okafor",
+        "t": "The council already publishes a map. What would be more useful is a sketch of the site showing where each type of stall is, so readers can see where the flower sellers ended up."
+      },
+      {
+        "sp": "Mira",
+        "t": "That makes sense. We could mark the old square on the same sketch, too, so readers can compare the two layouts."
+      },
+      {
+        "sp": "Dr Okafor",
+        "t": "Good idea. Send me a draft of the findings by the end of next week, and we'll meet again after that."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 3.",
+        "pause": 10
+      }
+    ],
+    "vi": [
+      "Phần 3. Bạn sẽ nghe hai sinh viên, Mira và Josh, thảo luận dự án về một khu chợ đường phố với giảng viên, tiến sĩ Okafor. Trước tiên, bạn có thời gian xem câu 21 đến 24.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 21 đến 24.",
+      "Vậy, dự án về chợ. Nhắc tôi các em đã làm được gì rồi.",
+      "Bọn em đã phỏng vấn hai mươi người bán về việc chuyển từ quảng trường cũ sang khu mới bên sông. Bọn em tưởng phàn nàn chính sẽ là ít khách hơn, nhưng thật ra phần lớn nói lượng người qua lại đã tăng.",
+      "Và tiền thuê được giữ nguyên hai năm theo thoả thuận, nên tiền cũng không thật là vấn đề. Điều được nhắc đi nhắc lại là chỗ chứa hàng. Ở quảng trường cũ, họ để hàng trong các vòm cuốn qua đêm được. Giờ không có chỗ nào để cất cả.",
+      "Điều đó liên quan đến vấn đề lớn còn lại: dựng hàng. Vì quầy hàng phải tháo xuống mỗi tối, nên buổi sáng họ mất nhiều thời gian hơn để chuẩn bị. Có người bắt đầu từ năm giờ.",
+      "Tốt. Tiếp theo là gì? Lần trước các em có nhắc đến khảo sát trực tuyến.",
+      "Bọn em bỏ rồi. Người trả lời khảo sát trực tuyến không phải người đi chợ. Thay vào đó, bọn em sẽ phỏng vấn người mua ngay tại chợ, và đếm khách ở từng lối vào vào hai ngày khác nhau.",
+      "Nhân tiện, tôi sẽ tránh làm nhóm thảo luận. Người bán đến dự sẽ là những người bực bội nhất. Còn ảnh chụp thì đưa vào phụ lục được, nhưng đó không phải dữ liệu.",
+      "Trước khi nghe phần còn lại của cuộc thảo luận, bạn có thời gian xem câu 25 đến 30.",
+      "Bây giờ hãy nghe và trả lời câu 25 đến 30.",
+      "Hãy nói về phần kết quả. Vì sao ban đầu hội đồng thành phố lại chuyển chợ?",
+      "Ai cũng cho là vì giao thông, và báo chí cũng nói vậy. Nhưng biên bản họp của hội đồng cho thấy lý do thật là ngập lụt. Quảng trường cũ ngập hai lần mỗi năm, và bảo hiểm trở nên bất khả.",
+      "Bọn em cũng thấy người mua lớn tuổi đã đổi cách đến chợ. Một chiếc xe buýt nhỏ miễn phí từng được hứa, nhưng bị huỷ trước khi chạy, và trạm xe buýt khá xa. Nên nhiều người lớn tuổi giờ đi chung taxi.",
+      "Và nhịp trong ngày cũng thay đổi. Ở quảng trường cũ, buổi sáng đông nhất. Giờ khoảng thời gian đông nhất là cuối buổi chiều, khi nhân viên văn phòng ghé qua trên đường về.",
+      "Những người bán khá nhất là người bán hoa. Ta tưởng hàng đồ ăn sẽ thắng, với ngần ấy nhân viên văn phòng, nhưng hoa bán chạy gấp ba so với trước.",
+      "Thú vị đấy. Để kết luận chắc hơn, hãy so sánh với một chợ không chuyển chỗ. Đừng chọn chợ ở trung tâm thành phố, nó lớn quá. Hãy thử Ashford, chợ đó cỡ tương đương.",
+      "Bọn em có nên đưa bản đồ khu mới vào không?",
+      "Hội đồng đã công bố bản đồ rồi. Điều hữu ích hơn là một bản phác hoạ khu chợ cho thấy từng loại quầy nằm ở đâu, để người đọc thấy người bán hoa rốt cuộc ở chỗ nào.",
+      "Hợp lý ạ. Bọn em cũng có thể đánh dấu quảng trường cũ trên cùng bản phác, để người đọc so sánh hai cách bố trí.",
+      "Ý hay. Gửi tôi bản nháp phần kết quả trước cuối tuần sau, rồi chúng ta gặp lại.",
+      "Hết Phần 3."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Mira": "af_nicole",
+      "Josh": "bm_lewis",
+      "Dr Okafor": "am_michael"
+    },
+    "allow": [
+      "footfall",
+      "rents",
+      "arches",
+      "stock",
+      "stalls",
+      "appendix",
+      "minutes",
+      "flooding",
+      "flooded",
+      "insurance",
+      "minibus",
+      "sketch",
+      "traders",
+      "focus"
+    ],
+    "sets": [
+      {
+        "qtype": "l-mcq2",
+        "instr": "Choose TWO letters, A–E.",
+        "items": [
+          {
+            "id": "m-a2-l3-01",
+            "q": "Which TWO problems did most traders report after the move?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "nowhere to store goods"
+              },
+              {
+                "k": "B",
+                "t": "more time needed to set up"
+              },
+              {
+                "k": "C",
+                "t": "fewer customers"
+              },
+              {
+                "k": "D",
+                "t": "higher rents"
+              },
+              {
+                "k": "E",
+                "t": "noise from traffic"
+              }
+            ],
+            "ans": [
+              "A",
+              "B"
+            ],
+            "b": 6.5,
+            "ev": {
+              "p": 4,
+              "s": "What came up again and again was storage."
+            },
+            "why": "Hai vấn đề chính là không có chỗ chứa hàng qua đêm và mất nhiều thời gian dựng quầy buổi sáng.",
+            "wrong": {
+              "C": "Lượng người qua lại thực ra đã tăng.",
+              "D": "Tiền thuê được giữ nguyên hai năm.",
+              "E": "Không ai nhắc tiếng ồn giao thông."
+            }
+          }
+        ]
+      },
+      {
+        "qtype": "l-mcq2",
+        "instr": "Choose TWO letters, A–E.",
+        "items": [
+          {
+            "id": "m-a2-l3-02",
+            "q": "Which TWO methods will the students use next?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "an online survey"
+              },
+              {
+                "k": "B",
+                "t": "interviews with shoppers"
+              },
+              {
+                "k": "C",
+                "t": "a focus group"
+              },
+              {
+                "k": "D",
+                "t": "photographs"
+              },
+              {
+                "k": "E",
+                "t": "a count of visitors"
+              }
+            ],
+            "ans": [
+              "B",
+              "E"
+            ],
+            "b": 6.5,
+            "ev": {
+              "p": 7,
+              "s": "Instead we'll interview shoppers at the market itself, and we'll count visitors"
+            },
+            "why": "Hai bạn sẽ phỏng vấn người mua tại chợ và đếm khách ở các lối vào.",
+            "wrong": {
+              "A": "Khảo sát trực tuyến đã bị bỏ.",
+              "C": "Giảng viên khuyên tránh nhóm thảo luận.",
+              "D": "Ảnh chỉ để phụ lục, không phải dữ liệu."
+            }
+          }
+        ]
+      },
+      {
+        "qtype": "l-sentence",
+        "instr": "Complete the sentences below. Write ONE WORD ONLY for each answer.",
+        "items": [
+          {
+            "id": "m-a2-l3-03",
+            "q": "The main reason the market moved was ___.",
+            "ans": {
+              "accept": [
+                "flooding"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 12,
+              "s": "the real reason was flooding"
+            },
+            "why": "Biên bản họp cho thấy lý do thật là ngập lụt, không phải giao thông.",
+            "wrong": {
+              "traffic": "Giao thông là điều \"ai cũng cho là\", báo chí cũng nói vậy, nhưng không phải lý do thật."
+            }
+          },
+          {
+            "id": "m-a2-l3-04",
+            "q": "Many older shoppers now arrive by ___.",
+            "ans": {
+              "accept": [
+                "taxi",
+                "taxis"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 13,
+              "s": "So a lot of older people now share a taxi."
+            },
+            "why": "Xe buýt nhỏ bị huỷ, trạm xe buýt xa, nên nhiều người lớn tuổi đi chung taxi.",
+            "wrong": {
+              "minibus": "Xe buýt nhỏ bị huỷ trước khi chạy.",
+              "bus": "Trạm xe buýt khá xa; người lớn tuổi đi taxi."
+            }
+          },
+          {
+            "id": "m-a2-l3-05",
+            "q": "The busiest time at the new site is the late ___.",
+            "ans": {
+              "accept": [
+                "afternoon"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 14,
+              "s": "Now the busiest period is the late afternoon"
+            },
+            "why": "Đông nhất là cuối buổi chiều, khi nhân viên văn phòng ghé qua.",
+            "wrong": {
+              "morning": "Buổi sáng đông nhất là ở quảng trường cũ."
+            }
+          },
+          {
+            "id": "m-a2-l3-06",
+            "q": "The traders who have done best sell ___.",
+            "ans": {
+              "accept": [
+                "flowers"
+              ]
+            },
+            "limit": 1,
+            "b": 7,
+            "ev": {
+              "p": 15,
+              "s": "The traders who've done best are the ones selling flowers."
+            },
+            "why": "Người bán hoa khá nhất, hoa bán chạy gấp ba.",
+            "wrong": {
+              "food": "Hàng đồ ăn là điều \"ta tưởng\", nhưng không phải."
+            }
+          },
+          {
+            "id": "m-a2-l3-07",
+            "q": "Dr Okafor suggests comparing the market with the one in ___.",
+            "ans": {
+              "accept": [
+                "Ashford"
+              ]
+            },
+            "limit": 1,
+            "b": 7,
+            "ev": {
+              "p": 16,
+              "s": "Try Ashford, which is about the same size."
+            },
+            "why": "Giảng viên gợi ý so với chợ Ashford, cỡ tương đương.",
+            "wrong": {
+              "centre": "Chợ trung tâm thành phố quá lớn để so."
+            }
+          },
+          {
+            "id": "m-a2-l3-08",
+            "q": "The report should include a ___ showing where each type of stall is.",
+            "ans": {
+              "accept": [
+                "sketch"
+              ]
+            },
+            "limit": 1,
+            "b": 7,
+            "ev": {
+              "p": 18,
+              "s": "is a sketch of the site showing where each type of stall is"
+            },
+            "why": "Giảng viên muốn một bản phác hoạ cho thấy vị trí từng loại quầy.",
+            "wrong": {
+              "map": "Hội đồng đã công bố bản đồ; giảng viên muốn bản phác hoạ."
+            }
+          }
+        ]
+      }
+    ],
+    "audio": {
+      "file": "a/m-a2-l3.mp3",
+      "dur": 264.3,
+      "voices": [
+        "bm_george",
+        "af_nicole",
+        "bm_lewis",
+        "am_michael"
+      ]
+    }
+  },
+  {
+    "id": "m-a2-l4",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "C1",
+    "band": 7,
+    "title": "Lecture: Bringing buried rivers back",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 4. You will hear a lecture about uncovering rivers that were buried under cities. First, you have some time to look at questions 31 to 40.",
+        "pause": 45
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 31 to 40."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Today's topic is what planners call daylighting: taking a river that was covered over and buried beneath a city, and bringing it back into the open air. I'll start with why rivers were buried in the first place, then look at one city's project in detail."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "It's often said that cities buried their rivers because of disease, and certainly polluted rivers smelled terrible. But if you read the council records, the reason given again and again is space for roads. A covered river was simply free land on which to build a road."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "In the city I want to discuss, the river had run underground, inside a concrete tunnel, for ninety years. Most residents had no idea it was there. The project to uncover it took four years, and contrary to what many people assume, most of the money did not come from the national government. It came from a local lottery, which ran a special series of draws for the project."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "The planners expected the first benefit to be cooler air in summer, and the temperature along the river did eventually fall by about two degrees. But the first change residents noticed was the drop in noise, because the four-lane road above the river had been removed."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "There were problems, of course. The engineers had planned for litter, with nets at several points. What they had not planned for was leaves. In the first autumn, leaves from the new trees blocked the channel twice and caused minor flooding."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Wildlife returned faster than anyone expected. Everyone was waiting for fish, but the first species to come back, within a single summer, was a small frog, which local children quickly adopted as a kind of mascot."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "What about the economic effects? Property values along the river rose by twelve per cent within three years, which is less than the twenty per cent some newspapers reported, but still significant. Not everyone benefited, however. Shopkeepers complained that deliveries became very difficult, because vans could no longer stop outside their doors. Parking, interestingly, was hardly mentioned."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "What lessons did the city draw? The most important, according to the project team, was to involve children from the very beginning. Schools named the new bridges and footpaths, and that gave families a reason to support the project when the building work became disruptive."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "The city has now begun a second project, on a smaller stream that runs under the harbour district. That one, I suspect, will be harder, because the stream passes beneath several historic buildings."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "In our next session, we'll look at what these schemes cost and how cities have paid for them. Please read the two articles on the course website before then, and bring any questions you have about today's case."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 4. You now have two minutes to check your answers."
+      }
+    ],
+    "vi": [
+      "Phần 4. Bạn sẽ nghe một bài giảng về việc khơi lại những con sông bị chôn dưới thành phố. Trước tiên, bạn có thời gian xem câu 31 đến 40.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 31 đến 40.",
+      "Chủ đề hôm nay là điều các nhà quy hoạch gọi là \"đưa ra ánh sáng\": lấy một con sông từng bị che phủ và chôn dưới thành phố, rồi đưa nó trở lại ngoài trời. Tôi sẽ bắt đầu bằng việc vì sao sông bị chôn, rồi xem xét chi tiết dự án của một thành phố.",
+      "Người ta hay nói các thành phố chôn sông vì dịch bệnh, và quả thật sông ô nhiễm bốc mùi khủng khiếp. Nhưng nếu đọc hồ sơ của hội đồng thành phố, lý do được nêu đi nêu lại là chỗ cho đường sá. Một con sông được che phủ đơn giản là đất trống để làm đường.",
+      "Ở thành phố tôi muốn bàn, con sông đã chảy ngầm trong một đường hầm bê tông suốt chín mươi năm. Phần lớn cư dân không hề biết nó ở đó. Dự án khơi lại mất bốn năm, và trái với điều nhiều người nghĩ, phần lớn tiền không đến từ chính phủ trung ương. Nó đến từ một quỹ xổ số địa phương, nơi tổ chức một loạt kỳ quay riêng cho dự án.",
+      "Các nhà quy hoạch đã nghĩ lợi ích đầu tiên sẽ là không khí mát hơn vào mùa hè, và rốt cuộc nhiệt độ dọc sông cũng giảm khoảng hai độ. Nhưng thay đổi đầu tiên cư dân nhận thấy là tiếng ồn giảm, vì con đường bốn làn xe phía trên sông đã bị dỡ bỏ.",
+      "Tất nhiên có những vấn đề. Các kỹ sư đã tính đến rác, với lưới chắn ở nhiều điểm. Điều họ không tính đến là lá cây. Mùa thu đầu tiên, lá từ những hàng cây mới làm tắc lòng sông hai lần và gây ngập nhẹ.",
+      "Động vật hoang dã trở lại nhanh hơn ai cũng nghĩ. Mọi người chờ cá, nhưng loài đầu tiên quay lại, chỉ trong một mùa hè, là một loài ếch nhỏ, mà trẻ em địa phương nhanh chóng coi như một kiểu linh vật.",
+      "Còn tác động kinh tế thì sao? Giá nhà dọc sông tăng mười hai phần trăm trong ba năm, ít hơn con số hai mươi phần trăm mà vài tờ báo đưa, nhưng vẫn đáng kể. Tuy nhiên, không phải ai cũng được lợi. Chủ cửa hàng phàn nàn rằng việc giao hàng trở nên rất khó, vì xe tải nhỏ không còn dừng được trước cửa. Thú vị là chuyện chỗ đỗ xe hầu như không được nhắc tới.",
+      "Thành phố rút ra bài học gì? Theo nhóm dự án, quan trọng nhất là cho trẻ em tham gia ngay từ đầu. Các trường học đặt tên cho những cây cầu và lối đi bộ mới, và điều đó cho các gia đình lý do để ủng hộ dự án khi công trình xây dựng gây xáo trộn.",
+      "Thành phố giờ đã bắt đầu dự án thứ hai, trên một dòng suối nhỏ chảy dưới khu cảng. Tôi đoán dự án này sẽ khó hơn, vì dòng suối chảy bên dưới một số toà nhà lịch sử.",
+      "Buổi sau, chúng ta sẽ xem các dự án này tốn bao nhiêu và các thành phố đã chi trả thế nào. Trước đó, hãy đọc hai bài báo trên trang web khoá học, và mang theo câu hỏi về trường hợp hôm nay.",
+      "Hết Phần 4. Bây giờ bạn có hai phút để soát lại bài."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Lecturer": "bf_emma"
+    },
+    "allow": [
+      "daylighting",
+      "planners",
+      "council",
+      "concrete",
+      "tunnel",
+      "residents",
+      "lottery",
+      "draws",
+      "litter",
+      "nets",
+      "channel",
+      "flooding",
+      "mascot",
+      "shopkeepers",
+      "deliveries",
+      "vans",
+      "disruptive",
+      "footpaths",
+      "harbour",
+      "polluted",
+      "species",
+      "engineers",
+      "significant"
+    ],
+    "sets": [
+      {
+        "qtype": "l-form",
+        "instr": "Complete the notes below. Write ONE WORD AND/OR A NUMBER for each answer.",
+        "items": [
+          {
+            "id": "m-a2-l4-01",
+            "q": "Main reason rivers were buried: to provide space for ___",
+            "ans": {
+              "accept": [
+                "roads"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 3,
+              "s": "the reason given again and again is space for roads"
+            },
+            "why": "Hồ sơ hội đồng nêu đi nêu lại lý do là chỗ cho đường sá.",
+            "wrong": {
+              "disease": "Dịch bệnh là điều \"người ta hay nói\", nhưng hồ sơ nêu đường sá."
+            }
+          },
+          {
+            "id": "m-a2-l4-02",
+            "q": "The river had been underground for ___ years",
+            "ans": {
+              "accept": [
+                "90",
+                "ninety"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 6.5,
+            "ev": {
+              "p": 4,
+              "s": "for ninety years"
+            },
+            "why": "Sông chảy ngầm trong đường hầm bê tông suốt chín mươi năm.",
+            "wrong": {
+              "4": "Bốn năm là thời gian dự án."
+            }
+          },
+          {
+            "id": "m-a2-l4-03",
+            "q": "Most of the money came from a local ___",
+            "ans": {
+              "accept": [
+                "lottery"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 4,
+              "s": "It came from a local lottery"
+            },
+            "why": "Phần lớn tiền đến từ quỹ xổ số địa phương, không phải chính phủ trung ương.",
+            "wrong": {
+              "government": "Bài giảng nói tiền KHÔNG chủ yếu đến từ chính phủ."
+            }
+          },
+          {
+            "id": "m-a2-l4-04",
+            "q": "First change residents noticed: less ___",
+            "ans": {
+              "accept": [
+                "noise"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 5,
+              "s": "the first change residents noticed was the drop in noise"
+            },
+            "why": "Thay đổi đầu tiên cư dân nhận thấy là tiếng ồn giảm, vì đường bốn làn bị dỡ.",
+            "wrong": {
+              "heat": "Không khí mát hơn là điều các nhà quy hoạch đoán sẽ đến đầu tiên; nó đến sau."
+            }
+          },
+          {
+            "id": "m-a2-l4-05",
+            "q": "Unexpected problem: ___ blocked the channel",
+            "ans": {
+              "accept": [
+                "leaves"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 6,
+              "s": "What they had not planned for was leaves."
+            },
+            "why": "Kỹ sư đã tính đến rác nhưng không tính đến lá cây.",
+            "wrong": {
+              "litter": "Rác đã được tính trước với lưới chắn."
+            }
+          },
+          {
+            "id": "m-a2-l4-06",
+            "q": "First species to return: a small ___",
+            "ans": {
+              "accept": [
+                "frog"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 6.5,
+            "ev": {
+              "p": 7,
+              "s": "was a small frog"
+            },
+            "why": "Loài đầu tiên quay lại là một loài ếch nhỏ, không phải cá.",
+            "wrong": {
+              "fish": "Mọi người chờ cá, nhưng cá không phải loài đầu tiên."
+            }
+          },
+          {
+            "id": "m-a2-l4-07",
+            "q": "Property values rose by ___ per cent",
+            "ans": {
+              "accept": [
+                "12",
+                "twelve"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 8,
+              "s": "Property values along the river rose by twelve per cent"
+            },
+            "why": "Giá nhà tăng mười hai phần trăm.",
+            "wrong": {
+              "20": "Hai mươi phần trăm là con số vài tờ báo đưa, cao hơn thực tế."
+            }
+          },
+          {
+            "id": "m-a2-l4-08",
+            "q": "Shopkeepers complained about difficult ___",
+            "ans": {
+              "accept": [
+                "deliveries"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7.5,
+            "ev": {
+              "p": 8,
+              "s": "Shopkeepers complained that deliveries became very difficult"
+            },
+            "why": "Chủ cửa hàng phàn nàn việc giao hàng khó vì xe không dừng được trước cửa.",
+            "wrong": {
+              "parking": "Chỗ đỗ xe \"hầu như không được nhắc tới\"."
+            }
+          },
+          {
+            "id": "m-a2-l4-09",
+            "q": "Key lesson: involve ___ from the start",
+            "ans": {
+              "accept": [
+                "children",
+                "schoolchildren"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 9,
+              "s": "was to involve children from the very beginning"
+            },
+            "why": "Bài học quan trọng nhất là cho trẻ em tham gia từ đầu."
+          },
+          {
+            "id": "m-a2-l4-10",
+            "q": "Second project: a stream under the ___ district",
+            "ans": {
+              "accept": [
+                "harbour",
+                "harbor"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 10,
+              "s": "that runs under the harbour district"
+            },
+            "why": "Dự án thứ hai là dòng suối dưới khu cảng."
+          }
+        ]
+      }
+    ],
+    "audio": {
+      "file": "a/m-a2-l4.mp3",
+      "dur": 205,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ]
+    }
+  }
+]
