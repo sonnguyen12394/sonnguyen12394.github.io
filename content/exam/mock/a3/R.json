@@ -778,17 +778,17 @@
           },
           {
             "id": "m-a3-r3-05",
-            "q": "Charging a fee has made handling sessions easier for poorer families to attend.",
-            "ans": "NO",
-            "b": 7,
+            "q": "Three museums in one valley already share a single handling collection.",
+            "ans": "YES",
+            "b": 7.5,
             "ev": {
               "p": 5,
-              "s": "this tends to exclude exactly the families who would benefit most"
+              "s": "A scheme of this kind already operates between three village museums in one valley"
             },
-            "why": "Thu phí loại đúng những gia đình được lợi nhiều nhất.",
+            "why": "Tác giả nói mô hình dùng chung đã vận hành giữa ba bảo tàng làng trong một thung lũng.",
             "wrong": {
-              "YES": "Tác giả nói ngược lại.",
-              "NOT GIVEN": "Tác giả có nêu tác động của phí."
+              "NO": "Tác giả nói mô hình này đã có.",
+              "NOT GIVEN": "Tác giả nêu rõ ví dụ này."
             }
           }
         ]
