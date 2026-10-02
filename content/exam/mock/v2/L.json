@@ -27,6 +27,14 @@
       "N": "bm_george",
       "Announcer": "bf_emma"
     },
+    "audio": {
+      "file": "a/m-v2-l1.mp3",
+      "dur": 41.3,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l1",
@@ -97,6 +105,14 @@
     "voices": {
       "N": "bm_george",
       "Announcer": "am_adam"
+    },
+    "audio": {
+      "file": "a/m-v2-l2.mp3",
+      "dur": 30.7,
+      "voices": [
+        "bm_george",
+        "am_adam"
+      ]
     },
     "sets": [
       {
@@ -169,6 +185,14 @@
       "N": "bm_george",
       "Receptionist": "af_nicole"
     },
+    "audio": {
+      "file": "a/m-v2-l3.mp3",
+      "dur": 36.5,
+      "voices": [
+        "bm_george",
+        "af_nicole"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l1",
@@ -239,6 +263,14 @@
     "voices": {
       "N": "bm_george",
       "Receptionist": "bf_isabella"
+    },
+    "audio": {
+      "file": "a/m-v2-l4.mp3",
+      "dur": 29.9,
+      "voices": [
+        "bm_george",
+        "bf_isabella"
+      ]
     },
     "sets": [
       {
@@ -311,6 +343,14 @@
       "N": "bm_george",
       "Teacher": "am_michael"
     },
+    "audio": {
+      "file": "a/m-v2-l5.mp3",
+      "dur": 33.2,
+      "voices": [
+        "bm_george",
+        "am_michael"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l1",
@@ -381,6 +421,14 @@
     "voices": {
       "N": "bm_george",
       "Presenter": "bm_lewis"
+    },
+    "audio": {
+      "file": "a/m-v2-l6.mp3",
+      "dur": 30.1,
+      "voices": [
+        "bm_george",
+        "bm_lewis"
+      ]
     },
     "sets": [
       {
@@ -453,6 +501,14 @@
       "N": "bm_george",
       "Guide": "af_sarah"
     },
+    "audio": {
+      "file": "a/m-v2-l7.mp3",
+      "dur": 30.1,
+      "voices": [
+        "bm_george",
+        "af_sarah"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l1",
@@ -460,7 +516,7 @@
         "items": [
           {
             "id": "m-v2-l7-01",
-            "q": "When can visitors without a booking join a guided tour today?",
+            "q": "Which tour can visitors still join today?",
             "opts": [
               {
                 "k": "A",
@@ -523,6 +579,13 @@
     "voices": {
       "N": "bm_george",
       "Manager": "bm_george"
+    },
+    "audio": {
+      "file": "a/m-v2-l8.mp3",
+      "dur": 29.9,
+      "voices": [
+        "bm_george"
+      ]
     },
     "sets": [
       {
@@ -646,6 +709,15 @@
       "sailing",
       "tent"
     ],
+    "audio": {
+      "file": "a/m-v2-l9.mp3",
+      "dur": 97.8,
+      "voices": [
+        "bm_george",
+        "bf_emma",
+        "am_adam"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l2",
@@ -870,6 +942,15 @@
       "pads",
       "mechanic"
     ],
+    "audio": {
+      "file": "a/m-v2-l10.mp3",
+      "dur": 82.2,
+      "voices": [
+        "bm_george",
+        "bm_lewis",
+        "am_michael"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l2",
@@ -1091,6 +1172,15 @@
       "resources",
       "clients"
     ],
+    "audio": {
+      "file": "a/m-v2-l11.mp3",
+      "dur": 90.3,
+      "voices": [
+        "bm_george",
+        "af_sarah",
+        "bm_lewis"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l2",
@@ -1300,6 +1390,14 @@
       "persuasive",
       "shallow"
     ],
+    "audio": {
+      "file": "a/m-v2-l12.mp3",
+      "dur": 136.4,
+      "voices": [
+        "bm_george",
+        "bm_lewis"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l3",
@@ -1538,6 +1636,14 @@
       "interruptions",
       "absorb"
     ],
+    "audio": {
+      "file": "a/m-v2-l13.mp3",
+      "dur": 133.4,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l3",
@@ -1549,7 +1655,7 @@
             "opts": [
               {
                 "k": "A",
-                "t": "recordings of their conversations"
+                "t": "interviews with managers"
               },
               {
                 "k": "B",
@@ -1572,7 +1678,7 @@
             },
             "why": "Nhật ký hằng ngày bị thay bằng bảng hỏi ngắn hai tuần một lần.",
             "wrong": {
-              "A": "Máy ghi âm ghi mức âm thanh, không phải thu thập ý kiến nhân viên.",
+              "A": "Không nhắc phỏng vấn quản lý.",
               "B": "Quá ít người ghi nhật ký nên phải bỏ.",
               "C": "Không nhắc phỏng vấn cuối năm."
             }
@@ -1772,6 +1878,14 @@
       "branches",
       "graphic"
     ],
+    "audio": {
+      "file": "a/m-v2-l14.mp3",
+      "dur": 150.8,
+      "voices": [
+        "bm_george",
+        "af_nicole"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l3",
@@ -1847,7 +1961,7 @@
           },
           {
             "id": "m-v2-l14-03",
-            "q": "How do most teenagers choose books?",
+            "q": "What was the most common way teenagers said they choose books?",
             "opts": [
               {
                 "k": "A",
