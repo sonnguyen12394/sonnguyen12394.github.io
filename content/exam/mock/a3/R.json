@@ -128,17 +128,17 @@
           },
           {
             "id": "m-a3-r1-04",
-            "q": "Roughly one in three borrowers returns some seeds.",
-            "ans": "TRUE",
-            "b": 5.5,
+            "q": "More than half of all borrowers return some seeds.",
+            "ans": "FALSE",
+            "b": 6,
             "ev": {
               "p": 1,
               "s": "about a third of borrowers do so"
             },
-            "why": "Khoảng một phần ba người mượn trả lại hạt.",
+            "why": "Chỉ khoảng một phần ba người mượn trả lại hạt.",
             "wrong": {
-              "FALSE": "Con số khớp với bài.",
-              "NOT GIVEN": "Bài nêu rõ tỉ lệ này."
+              "TRUE": "Một phần ba ít hơn một nửa.",
+              "NOT GIVEN": "Bài nêu rõ tỉ lệ."
             }
           },
           {
@@ -658,7 +658,7 @@
       "The usual reason given for the rule is that human skin leaves behind oils and salts which slowly damage surfaces. This is true, but it may not be the main problem. When one regional museum examined the objects in its touchable displays after five years, it found that most of the wear had been caused not by visitors' fingers but by the cloths that staff used every evening to wipe the fingerprints away. Changing to a softer cloth, and cleaning once a week instead of every day, reduced the damage considerably. The museum had expected the opposite result, and it repeated the examination a year later, with the same outcome.",
       "Experience from handling sessions, in which small groups are allowed to pick up objects under supervision, is also reassuring. A museum in a northern port has run such sessions for ten years with a collection of about two hundred objects. Only a handful have needed repair, and the pattern of damage was not what the staff had feared. The pottery, which they had worried about most, survived almost untouched. The objects most often damaged were metal tools, which visitors handled carelessly precisely because they looked indestructible, and which were dented when they were dropped.",
       "The benefits of handling are harder to measure, but one finding from the same museum deserves attention. Staff expected visitors who attended a session to remember more about the objects they had held, and they did, though only slightly. The more striking effect was elsewhere: after a session, visitors spent almost twice as long looking at the objects in the glass cases nearby. Holding one old knife, it seems, teaches people how to look at a hundred others.",
-      "Many museums now offer replicas made with 3D printers instead, and they are better than their reputation suggests. A replica can be weighted so that it matches the original's weight exactly, and its colour can be copied closely, although printing a single object can take several days. What is lost is surface detail: fine scratches and tool marks simply vanish. In a survey at one museum, the visitors most likely to notice the difference were not those with poor eyesight, as staff had predicted, but children, who described the originals as colder to the touch. Adults, by contrast, cared less about how an object felt than about knowing its history.",
+      "Many museums now offer replicas made with 3D printers instead, and they are better than their reputation suggests. A replica can be weighted so that it matches the original's weight exactly, and its colour can be copied closely, although printing a single object can take several days. What is lost is surface texture: fine scratches and tool marks simply vanish. In a survey at one museum, the visitors most likely to notice the difference were not those with poor eyesight, as staff had predicted, but adults, who described the originals as colder to the touch. Children, by contrast, cared less about how an object felt, or even what it was worth, than about knowing its history: who had used it, and when.",
       "Handling sessions are not cheap. They need trained staff, and most insurers will not allow volunteers to supervise valuable objects. Some museums have tried charging a small fee, but this tends to exclude exactly the families who would benefit most. A better approach, I believe, would be for several small museums to share a single handling collection, moving it between them during the year. Each museum would then need only one trained member of staff for a few weeks at a time. A scheme of this kind already operates between three village museums in one valley, where a single box of objects travels from one to the next each month.",
       "None of this means that every object should be handled. Some things are unique, and the loss of a single one would be a loss for everyone; these should stay behind glass. But most museum stores contain hundreds of ordinary objects, duplicates of things already on display, which are never seen at all. Putting a few of them into visitors' hands would cost very little, and the evidence so far suggests that it would do far less harm than we have been told."
     ],
@@ -667,7 +667,7 @@
       "Lý do thường được nêu cho quy định là da người để lại dầu và muối, dần dần làm hỏng bề mặt. Điều này đúng, nhưng có thể không phải vấn đề chính. Khi một bảo tàng cấp vùng kiểm tra hiện vật trong các tủ trưng bày được chạm sau năm năm, họ thấy phần lớn hao mòn không do ngón tay khách mà do những chiếc khăn nhân viên dùng mỗi tối để lau dấu vân tay. Chuyển sang khăn mềm hơn, và lau mỗi tuần một lần thay vì mỗi ngày, đã giảm hư hại đáng kể. Bảo tàng từng trông đợi kết quả ngược lại, và đã kiểm tra lại một năm sau, với cùng kết quả.",
       "Kinh nghiệm từ các buổi cầm hiện vật, nơi những nhóm nhỏ được nhấc hiện vật lên dưới sự giám sát, cũng đáng yên tâm. Một bảo tàng ở một thành phố cảng phía bắc đã tổ chức các buổi như vậy suốt mười năm với bộ sưu tập khoảng hai trăm hiện vật. Chỉ vài hiện vật phải sửa, và kiểu hư hại không như nhân viên lo sợ. Đồ gốm, thứ họ lo nhất, gần như còn nguyên. Hiện vật hay hỏng nhất là dụng cụ kim loại, mà khách cầm cẩu thả chính vì chúng trông như không thể hỏng, và bị móp khi rơi.",
       "Lợi ích của việc cầm hiện vật khó đo hơn, nhưng một phát hiện từ cùng bảo tàng đáng được chú ý. Nhân viên trông đợi khách dự buổi cầm hiện vật sẽ nhớ nhiều hơn về những hiện vật họ đã cầm, và đúng vậy, dù chỉ nhỉnh hơn một chút. Hiệu quả nổi bật hơn lại ở chỗ khác: sau buổi đó, khách dành thời gian gần gấp đôi để ngắm hiện vật trong các tủ kính gần đó. Có vẻ như cầm một con dao cũ dạy người ta cách nhìn hàng trăm hiện vật khác.",
-      "Nhiều bảo tàng nay đưa ra bản sao in 3D thay thế, và chúng tốt hơn tiếng tăm của mình. Bản sao có thể được làm nặng để khớp chính xác trọng lượng bản gốc, và màu có thể sao lại khá sát, dù in một hiện vật có thể mất vài ngày. Thứ mất đi là chi tiết bề mặt: những vết xước nhỏ và dấu dụng cụ biến mất. Trong một khảo sát ở một bảo tàng, những khách dễ nhận ra khác biệt nhất không phải người thị lực kém như nhân viên dự đoán, mà là trẻ em, các em tả bản gốc là lạnh hơn khi chạm. Ngược lại, người lớn ít quan tâm hiện vật cho cảm giác thế nào mà quan tâm tới việc biết lịch sử của nó.",
+      "Nhiều bảo tàng nay đưa ra bản sao in 3D thay thế, và chúng tốt hơn tiếng tăm của mình. Bản sao có thể được làm nặng để khớp chính xác trọng lượng bản gốc, và màu có thể sao lại khá sát, dù in một hiện vật có thể mất vài ngày. Thứ mất đi là kết cấu bề mặt: những vết xước nhỏ và dấu dụng cụ biến mất. Trong một khảo sát ở một bảo tàng, những khách dễ nhận ra khác biệt nhất không phải người thị lực kém như nhân viên dự đoán, mà là người lớn, họ tả bản gốc là lạnh hơn khi chạm. Ngược lại, trẻ em ít quan tâm hiện vật cho cảm giác thế nào, hay thậm chí nó đáng giá bao nhiêu, mà quan tâm tới việc biết lịch sử của nó: ai đã dùng nó, và khi nào.",
       "Các buổi cầm hiện vật không rẻ. Chúng cần nhân viên được đào tạo, và phần lớn công ty bảo hiểm không cho tình nguyện viên giám sát hiện vật có giá trị. Vài bảo tàng đã thử thu một khoản phí nhỏ, nhưng việc này thường loại đúng những gia đình được lợi nhiều nhất. Tôi tin cách tốt hơn là để vài bảo tàng nhỏ dùng chung một bộ sưu tập để cầm, chuyển qua lại giữa các nơi trong năm. Khi đó mỗi bảo tàng chỉ cần một nhân viên được đào tạo trong vài tuần mỗi lần. Một mô hình như vậy đã vận hành giữa ba bảo tàng làng trong một thung lũng, nơi một hộp hiện vật được chuyển từ nơi này sang nơi kia mỗi tháng.",
       "Điều này không có nghĩa là mọi hiện vật đều nên được cầm. Có những thứ là duy nhất, và mất một món cũng là mất mát của tất cả; những thứ đó nên ở sau lớp kính. Nhưng phần lớn kho bảo tàng chứa hàng trăm hiện vật bình thường, bản trùng của những thứ đã trưng bày, chẳng bao giờ được ai nhìn thấy. Đặt một vài món vào tay khách sẽ tốn rất ít, và bằng chứng đến nay cho thấy nó gây hại ít hơn nhiều so với những gì chúng ta được nghe."
     ],
@@ -718,77 +718,77 @@
         "items": [
           {
             "id": "m-a3-r3-01",
-            "q": "The writer has handled historical objects personally.",
+            "q": "The objects the writer handled on the course were from the eighteenth century.",
             "ans": "YES",
             "b": 6.5,
             "ev": {
               "p": 0,
-              "s": "required me to handle a collection of eighteenth-century tools and pottery myself"
+              "s": "a collection of eighteenth-century tools and pottery"
             },
-            "why": "Khoá học bảo quản buộc tác giả tự tay cầm dụng cụ và đồ gốm thế kỷ mười tám.",
+            "why": "Khoá học buộc tác giả cầm dụng cụ và đồ gốm thế kỷ mười tám.",
             "wrong": {
-              "NO": "Tác giả nói rõ đã tự tay cầm.",
-              "NOT GIVEN": "Bài có nói điều này."
+              "NO": "Tác giả nói rõ là hiện vật thế kỷ mười tám.",
+              "NOT GIVEN": "Bài có nêu niên đại hiện vật."
             }
           },
           {
             "id": "m-a3-r3-02",
-            "q": "Visitors' fingers caused most of the wear found at the regional museum.",
+            "q": "The regional museum stopped wiping fingerprints off its touchable objects.",
             "ans": "NO",
             "b": 7,
             "ev": {
               "p": 1,
-              "s": "most of the wear had been caused not by visitors' fingers but by the cloths"
+              "s": "cleaning once a week instead of every day"
             },
-            "why": "Phần lớn hao mòn do khăn lau, không do ngón tay khách.",
+            "why": "Bảo tàng vẫn lau, chỉ chuyển sang khăn mềm hơn và lau mỗi tuần một lần.",
             "wrong": {
-              "YES": "Bài nói ngược lại.",
-              "NOT GIVEN": "Bài có nêu nguyên nhân hao mòn."
+              "YES": "Bảo tàng giảm tần suất lau chứ không bỏ.",
+              "NOT GIVEN": "Bài có nói việc lau hiện nay."
             }
           },
           {
             "id": "m-a3-r3-03",
-            "q": "The port museum's handling collection has grown since the sessions began.",
+            "q": "The port museum's handling sessions are especially popular with schools.",
             "ans": "NOT GIVEN",
             "b": 7.5,
             "ev": {
               "p": 2,
-              "s": "with a collection of about two hundred objects"
+              "s": "A museum in a northern port has run such sessions for ten years"
             },
-            "why": "Bài chỉ nói bộ sưu tập khoảng hai trăm hiện vật, không nói nó lớn lên hay không.",
+            "why": "Bài nói bảo tàng tổ chức các buổi suốt mười năm nhưng không nói ai tham gia nhiều.",
             "wrong": {
-              "YES": "Bài không nói bộ sưu tập tăng.",
-              "NO": "Bài cũng không nói nó giữ nguyên hay giảm."
+              "YES": "Bài không nhắc trường học.",
+              "NO": "Bài cũng không nói trường học ít tham gia."
             }
           },
           {
             "id": "m-a3-r3-04",
-            "q": "3D-printed copies cannot be made as heavy as the originals.",
-            "ans": "NO",
-            "b": 7,
+            "q": "3D-printed copies are usually lighter than the objects they copy.",
+            "ans": "NOT GIVEN",
+            "b": 7.5,
             "ev": {
               "p": 4,
               "s": "A replica can be weighted so that it matches the original's weight exactly"
             },
-            "why": "Bản sao có thể được làm nặng để khớp chính xác trọng lượng bản gốc.",
+            "why": "Tác giả chỉ nói bản sao có thể được làm nặng cho khớp, không nói bản sao thường nhẹ hơn.",
             "wrong": {
-              "YES": "Tác giả nói ngược lại.",
-              "NOT GIVEN": "Tác giả có nêu điều này."
+              "YES": "Bài không nói bản sao thường nhẹ hơn.",
+              "NO": "Bài cũng không nói bản sao thường nặng bằng."
             }
           },
           {
             "id": "m-a3-r3-05",
-            "q": "Insurers are the main reason handling sessions are rare.",
-            "ans": "NOT GIVEN",
-            "b": 7.5,
+            "q": "Charging a fee has made handling sessions easier for poorer families to attend.",
+            "ans": "NO",
+            "b": 7,
             "ev": {
               "p": 5,
-              "s": "most insurers will not allow volunteers to supervise valuable objects"
+              "s": "this tends to exclude exactly the families who would benefit most"
             },
-            "why": "Bài chỉ nói bảo hiểm không cho tình nguyện viên giám sát, không nói đó là lý do chính khiến các buổi hiếm.",
+            "why": "Thu phí loại đúng những gia đình được lợi nhiều nhất.",
             "wrong": {
-              "YES": "Bài không so sánh các lý do.",
-              "NO": "Bài cũng không nói bảo hiểm không phải lý do."
+              "YES": "Tác giả nói ngược lại.",
+              "NOT GIVEN": "Tác giả có nêu tác động của phí."
             }
           }
         ]
@@ -936,124 +936,97 @@
         ]
       },
       {
-        "qtype": "r-summary-box",
-        "instr": "Complete the summary using the list of words, A–J, below.",
-        "options": [
-          {
-            "k": "A",
-            "t": "weight"
-          },
-          {
-            "k": "B",
-            "t": "colour"
-          },
-          {
-            "k": "C",
-            "t": "detail"
-          },
-          {
-            "k": "D",
-            "t": "smell"
-          },
-          {
-            "k": "E",
-            "t": "temperature"
-          },
-          {
-            "k": "F",
-            "t": "price"
-          },
-          {
-            "k": "G",
-            "t": "children"
-          },
-          {
-            "k": "H",
-            "t": "adults"
-          },
-          {
-            "k": "I",
-            "t": "history"
-          },
-          {
-            "k": "J",
-            "t": "size"
-          }
-        ],
+        "qtype": "r-summary",
+        "instr": "Complete the summary below. Choose ONE WORD ONLY from the passage for each answer.",
         "items": [
           {
             "id": "m-a3-r3-10",
             "q": "A 3D-printed replica can be made to match an original object's ___ exactly,",
-            "ans": "A",
-            "b": 7.5,
+            "ans": {
+              "accept": [
+                "weight"
+              ]
+            },
+            "limit": 1,
+            "b": 7,
             "ev": {
               "p": 4,
               "s": "matches the original's weight exactly"
             },
             "why": "Bản sao có thể được làm nặng để khớp chính xác trọng lượng.",
             "wrong": {
-              "J": "Bài không nói về kích thước.",
-              "B": "Màu chỉ được sao lại khá sát, không phải chính xác."
+              "size": "Bài không nói về kích thước.",
+              "colour": "Màu chỉ được sao lại khá sát, không phải chính xác."
             }
           },
           {
             "id": "m-a3-r3-11",
-            "q": "but fine surface ___ is lost.",
-            "ans": "C",
+            "q": "but its surface ___ cannot be reproduced.",
+            "ans": {
+              "accept": [
+                "texture"
+              ]
+            },
+            "limit": 1,
             "b": 7,
             "ev": {
               "p": 4,
-              "s": "What is lost is surface detail"
+              "s": "What is lost is surface texture"
             },
-            "why": "Thứ mất đi là chi tiết bề mặt: vết xước nhỏ, dấu dụng cụ.",
-            "wrong": {
-              "B": "Màu được sao lại khá sát.",
-              "A": "Trọng lượng khớp chính xác."
-            }
+            "why": "Thứ mất đi là kết cấu bề mặt: vết xước nhỏ, dấu dụng cụ."
           },
           {
             "id": "m-a3-r3-12",
             "q": "In one survey, ___ were the visitors most likely to notice the difference,",
-            "ans": "G",
+            "ans": {
+              "accept": [
+                "adults"
+              ]
+            },
+            "limit": 1,
             "b": 7.5,
             "ev": {
               "p": 4,
-              "s": "but children, who described the originals as colder to the touch"
+              "s": "but adults, who described the originals as colder to the touch"
             },
-            "why": "Trẻ em là những khách dễ nhận ra khác biệt nhất.",
+            "why": "Người lớn là những khách dễ nhận ra khác biệt nhất, không phải người thị lực kém như nhân viên dự đoán.",
             "wrong": {
-              "H": "Người lớn quan tâm lịch sử hơn cảm giác.",
-              "I": "Lịch sử là điều người lớn quan tâm, không phải nhóm khách."
+              "children": "Trẻ em quan tâm lịch sử hiện vật hơn cảm giác."
             }
           },
           {
             "id": "m-a3-r3-13",
-            "q": "saying that originals were different in ___,",
-            "ans": "E",
-            "b": 7,
+            "q": "describing the originals as ___ to the touch,",
+            "ans": {
+              "accept": [
+                "colder"
+              ]
+            },
+            "limit": 1,
+            "b": 7.5,
             "ev": {
               "p": 4,
               "s": "described the originals as colder to the touch"
             },
-            "why": "Trẻ tả bản gốc là lạnh hơn khi chạm, tức khác về nhiệt độ.",
-            "wrong": {
-              "A": "Trọng lượng của bản sao khớp chính xác.",
-              "D": "Bài không nói về mùi."
-            }
+            "why": "Người lớn tả bản gốc là lạnh hơn khi chạm."
           },
           {
             "id": "m-a3-r3-14",
-            "q": "while older visitors cared more about knowing an object's ___.",
-            "ans": "I",
+            "q": "while children cared more about knowing an object's ___.",
+            "ans": {
+              "accept": [
+                "history"
+              ]
+            },
+            "limit": 1,
             "b": 7,
             "ev": {
               "p": 4,
               "s": "than about knowing its history"
             },
-            "why": "Người lớn quan tâm tới việc biết lịch sử hiện vật.",
+            "why": "Trẻ em quan tâm tới lịch sử hiện vật (ai đã dùng, khi nào) hơn cảm giác hay giá trị.",
             "wrong": {
-              "F": "Bài không nói về giá.",
-              "E": "Nhiệt độ là điều trẻ em nhận ra."
+              "value": "Bài nói trẻ em ít quan tâm hiện vật đáng giá bao nhiêu."
             }
           }
         ]
