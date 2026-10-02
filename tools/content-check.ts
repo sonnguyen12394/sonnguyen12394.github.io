@@ -5,7 +5,8 @@ import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv from 'ajv';
-import { checkAll, levelReport, suggestVariants } from '../src/content/check.ts';
+import { checkAll, checkMock, levelReport, suggestVariants } from '../src/content/check.ts';
+import { expandPart, isMockPart, type MockTest } from '../src/exam/mock.ts';
 import { QT } from '../src/exam/content.ts';
 import type { Group } from '../src/exam/content.ts';
 
@@ -33,11 +34,21 @@ for (const f of walk(join(DIR, 'types'))) {
   for (const s of [...t.lesson, ...t.steps, ...t.tips, ...t.traps]) if (!VI.test(s)) { schemaErr++; console.error(`✗ ${t.id}: câu bài học phải bằng tiếng Việt: ${s.slice(0, 40)}`); }
   typeIds.add(t.id);
 }
-for (const f of walk(DIR).filter(p => !p.includes('/types/'))) {
+const MOCK_INDEX = join(DIR, 'mock/index.json');
+const tests: MockTest[] = existsSync(MOCK_INDEX) ? JSON.parse(readFileSync(MOCK_INDEX, 'utf8')) as MockTest[] : [];
+const PART_KEYS = new Set(['id', 'kind', 'exams', 'level', 'band', 'title', 'paras', 'script', 'audio', 'vi', 'voices', 'allow', 'tips', 'sets']);
+const SET_KEYS = new Set(['qtype', 'instr', 'options', 'figure', 'items']);
+for (const f of walk(DIR).filter(p => !p.includes('/types/') && p !== MOCK_INDEX)) {
   const rel = relative(ROOT, f);
   let data: unknown;
   try { data = JSON.parse(readFileSync(f, 'utf8')); } catch (e) { console.error(`✗ ${rel}: JSON hỏng (${(e as Error).message})`); schemaErr++; continue; }
-  const arr = Array.isArray(data) ? data : [data];
+  const arr = (Array.isArray(data) ? data : [data]).flatMap(g => {
+    if (!isMockPart(g)) return [g];
+    // Phần đề thi thử: khoá lạ ở phần/bộ câu bị bỏ qua khi mở rộng, nên báo ngay (lược đồ nhóm kiểm phần còn lại).
+    for (const k of Object.keys(g)) if (!PART_KEYS.has(k)) { schemaErr++; console.error(`✗ ${rel} ${g.id}: khoá lạ "${k}" ở phần đề`); }
+    for (const st of g.sets) for (const k of Object.keys(st)) if (!SET_KEYS.has(k)) { schemaErr++; console.error(`✗ ${rel} ${g.id}: khoá lạ "${k}" ở bộ câu`); }
+    return expandPart(g);
+  });
   for (const g of arr) {
     if (!validate(g)) { schemaErr++; console.error(`✗ ${rel} ${(g as { id?: string }).id ?? ''}: sai lược đồ ${ajv.errorsText(validate.errors)}`); continue; }
     groups.push(g as Group);
@@ -60,7 +71,7 @@ for (const f of walk(DIR).filter(p => !p.includes('/types/'))) {
     }
   }
 }
-const issues = checkAll(groups, list);
+const issues = [...checkAll(groups, list), ...checkMock(tests, groups)];
 // Mỗi dạng câu có bài luyện phải có bài học (6.2)
 for (const q of new Set(groups.filter(g => g.mode === 'practice').map(g => g.qtype))) if (!typeIds.has(q)) issues.push({ where: q, msg: 'dạng câu có bài luyện nhưng chưa có bài học (content/exam/types)' });
 for (const i of issues) console.error(`✗ ${i.where}: ${i.msg}`);

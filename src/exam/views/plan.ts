@@ -29,7 +29,7 @@ export function taskButton(t: Task, isV: boolean, primary = false): string {
     case 'review': return `<button class="${cls}" data-x="route" data-r="nb">Ôn</button>`;
     case 'write': return `<button class="${cls}" data-act="vxnew" data-m="w">Viết</button>`;
     case 'speak': return `<button class="${cls}" data-act="vxnew" data-m="s">Nói</button>`;
-    case 'mock': return isV ? `<button class="${cls}" data-act="exgo">Thi thử</button>` : `<button class="${cls}" data-x="route" data-r="practice">Luyện</button>`;
+    case 'mock': return `<button class="${cls}" data-x="route" data-r="mocks">Thi thử</button>`;
     default: return `<button class="${cls}" data-x="route" data-r="practice">Luyện</button>`;
   }
 }

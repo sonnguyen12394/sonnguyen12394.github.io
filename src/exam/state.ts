@@ -5,7 +5,7 @@
 import type { ExamId } from './scales.ts';
 import type { Card } from './fsrs.ts';
 
-export const X_V = 2;
+export const X_V = 3;
 
 export interface Attempt {
   id: string;            // id bài (đề thi thử, bộ luyện, bài kiểm tra đầu vào)
@@ -51,6 +51,22 @@ export interface Consent {
   day: number;           // ngày đồng ý (hoặc rút lại)
 }
 
+// Đề thi thử đang làm dở: lưu sau mỗi câu trả lời, nên tab bị đóng (Android hay đóng tab chạy nền) vẫn làm tiếp được.
+export type MGiven = Record<string, string | string[]>;
+export interface MockRun {
+  t: string;                  // id đề
+  sk: 'L' | 'R';
+  both: boolean;              // làm cả đề: xong Nghe thì sang Đọc
+  part: number;               // Nghe: phần đang phát (0…); Đọc: phần đang xem
+  pos: number;                // Nghe: giây đã phát của phần hiện tại
+  phase: 'run' | 'check';     // Nghe: đang phát / đang soát lại sau khi nghe xong
+  left: number;               // mili giây còn lại (Đọc; Nghe khi soát lại)
+  given: MGiven;
+  marked: string[];           // câu đánh dấu để xem lại
+  secs: number;               // giây đã làm (để cộng phút học)
+}
+export interface MockLog { d: number; given: MGiven }
+
 export interface XState {
   v: number;
   exam: ExamId | '';
@@ -64,14 +80,17 @@ export interface XState {
   consent: Consent | null;
   resp: Resp[];               // các câu Nghe/Đọc đã trả lời gần đây
   sent: number;               // số lượt đã gửi ẩn danh (để người học biết)
+  mockRun: MockRun | null;
+  mockLog: Record<string, MockLog>;   // bài làm gần nhất của từng đề và kỹ năng ("a1-L") để xem lại giải thích bất cứ lúc nào
 }
 
 export const EXAMS: ExamId[] = ['ielts-ac', 'ielts-gt', 'vstep'];
 export const ATTEMPT_MAX = 400;
 export const RESP_MAX = 800;
+export const MOCKLOG_MAX = 40;
 
 export function freshX(): XState {
-  return { v: X_V, exam: '', target: null, date: null, mins: 30, attempts: [], nb: {}, real: [], share: false, consent: null, resp: [], sent: 0 };
+  return { v: X_V, exam: '', target: null, date: null, mins: 30, attempts: [], nb: {}, real: [], share: false, consent: null, resp: [], sent: 0, mockRun: null, mockLog: {} };
 }
 
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
@@ -86,6 +105,7 @@ export function migrateX(raw: unknown): XState {
   const x = obj(raw);
   if (typeof x.v !== 'number') return freshX();
   if (x.v === 1) { x.resp = []; x.consent = null; x.sent = 0; x.v = 2; }   // v1 → v2: nhật ký câu trả lời để ước tính band, đồng ý chia sẻ có kiểm tuổi
+  if (x.v === 2) { x.mockRun = null; x.mockLog = {}; x.v = 3; }            // v2 → v3: đề thi thử đầy đủ (bài đang làm, bài đã làm)
   return sanitizeX(x);
 }
 
@@ -127,11 +147,36 @@ export function sanitizeX(raw: unknown): XState {
   out.resp = (Array.isArray(x.resp) ? x.resp : []).map(obj).filter(r => idOk(r.i)).slice(-RESP_MAX).map(r => ({
     i: r.i as string, c: r.c === 1 ? 1 : 0, d: Math.round(num(r.d, 0, 1e6, 0)), s: r.s === 'L' ? 'L' : 'R', b: num(r.b, 0, 9, 5.5), g: num(r.g, 0, 0.5, 0),
   }));
+  out.mockRun = sanitizeRun(x.mockRun);
+  const logs = Object.entries(obj(x.mockLog)).filter(([k]) => /^[a-z0-9]{1,8}-[LR]$/.test(k)).map(([k, v]) => [k, obj(v)] as const)
+    .sort((a, b) => num(a[1].d, 0, 1e6, 0) - num(b[1].d, 0, 1e6, 0)).slice(-MOCKLOG_MAX);
+  for (const [k, v] of logs) out.mockLog[k] = { d: Math.round(num(v.d, 0, 1e6, 0)), given: sanitizeGiven(v.given) };
   out.real = (Array.isArray(x.real) ? x.real : []).map(obj).filter(r => exam(r.exam)).slice(-20).map(r => ({
     exam: exam(r.exam) as ExamId, day: Math.round(num(r.day, 0, 1e6, 0)),
     L: numOrNull(r.L, 0, 10), R: numOrNull(r.R, 0, 10), W: numOrNull(r.W, 0, 10), S: numOrNull(r.S, 0, 10),
   }));
   return out;
+}
+
+function sanitizeGiven(v: unknown): MGiven {
+  const out: MGiven = {};
+  for (const [k, a] of Object.entries(obj(v)).slice(0, 120)) {
+    if (!idOk(k)) continue;
+    if (typeof a === 'string' && a.length <= 80) out[k] = a;
+    else if (Array.isArray(a)) { const xs = a.filter((s): s is string => typeof s === 'string' && s.length <= 12).slice(0, 5); if (xs.length) out[k] = xs; }
+  }
+  return out;
+}
+
+function sanitizeRun(v: unknown): MockRun | null {
+  const r = obj(v);
+  if (typeof r.t !== 'string' || !/^[a-z0-9]{1,8}$/.test(r.t) || (r.sk !== 'L' && r.sk !== 'R')) return null;
+  return {
+    t: r.t, sk: r.sk, both: r.both === true, part: Math.round(num(r.part, 0, 50, 0)), pos: num(r.pos, 0, 3600, 0),
+    phase: r.phase === 'check' ? 'check' : 'run', left: Math.round(num(r.left, 0, 4 * 3600e3, 0)),
+    given: sanitizeGiven(r.given), marked: (Array.isArray(r.marked) ? r.marked : []).filter(idOk).slice(0, 60),
+    secs: Math.round(num(r.secs, 0, 1e5, 0)),
+  };
 }
 
 // Gộp hai máy: lịch sử làm bài lấy hợp (bỏ trùng), sổ lỗi giữ bản ôn gần hơn, cài đặt lấy của máy đang dùng (a).
@@ -152,6 +197,8 @@ export function mergeX(a0: unknown, b0: unknown): XState {
     ...a,
     exam: a.exam || b.exam, target: a.target ?? b.target, date: a.date ?? b.date,
     share: a.share, consent: a.consent, sent: a.sent,   // đồng ý gửi thống kê là của từng máy
+    mockRun: a.mockRun,                                  // bài đang làm dở là của máy đang dùng
+    mockLog: Object.fromEntries(Object.entries({ ...b.mockLog }).concat(Object.entries(a.mockLog).filter(([k, e]) => !b.mockLog[k] || e.d >= b.mockLog[k]!.d))),
     attempts, nb, real, resp,
   };
 }

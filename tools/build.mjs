@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync, readdirSync, unlinkSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { expandPart, isMockPart } from '../src/exam/mock.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const P = f => join(ROOT, f);
@@ -25,13 +26,18 @@ function setLine(file, re, line) {
 //    (danh sách gói và tham số từng câu, đóng vào mô-đun để ước tính band mà không phải tải gói). Kiểm nội dung ở tools/content-check.ts.
 const QSKILL = q => (q.startsWith('l-') || /^v-l/.test(q) ? 'L' : 'R');
 function walk(d) { if (!existsSync(d)) return []; return readdirSync(d, { withFileTypes: true }).flatMap(e => e.isDirectory() ? walk(join(d, e.name)) : e.name.endsWith('.json') ? [join(d, e.name)] : []).sort(); }
-const groups = walk(P('content/exam')).filter(f => !f.includes('/types/')).flatMap(f => { const d = JSON.parse(readFileSync(f, 'utf8')); return Array.isArray(d) ? d : [d]; })
+// Đề thi thử: content/exam/mock/index.json là danh mục đề; các tệp khác trong mock/ là danh sách "phần" của đề, mở rộng
+// thành nhóm câu thường bằng expandPart (src/exam/mock.ts, dùng chung với app và kiểm nội dung).
+const MOCK_INDEX = P('content/exam/mock/index.json');
+const groups = walk(P('content/exam')).filter(f => !f.includes('/types/') && f !== MOCK_INDEX).flatMap(f => { const d = JSON.parse(readFileSync(f, 'utf8')); return Array.isArray(d) ? d : [d]; })
+  .flatMap(g => isMockPart(g) ? expandPart(g) : [g])
   .filter(g => g && g.id && Array.isArray(g.items)).sort((a, b) => (a.id < b.id ? -1 : 1));
+const mockTests = existsSync(MOCK_INDEX) ? JSON.parse(readFileSync(MOCK_INDEX, 'utf8')) : [];
 const packOf = g => g.mode === 'place' ? 'place' : g.mode === 'mock' ? 'm-' + (/^m-([a-z0-9]+)-/.exec(g.id) || [, 'x'])[1] : 'p-' + g.qtype;
 const packs = {};
 for (const g of groups) (packs[packOf(g)] ||= []).push(g);
 mkdirSync(P('data/exam'), { recursive: true });
-const index = { packs: {}, items: {} };
+const index = { packs: {}, items: {}, mocks: [] };
 const keep = new Set();
 // Hình (sơ đồ, bản đồ) vẽ bằng SVG ở content/fig/<id>.svg, nhúng vào gói để dùng offline cùng một lần tải.
 // Chỉ nhận SVG tĩnh: không script, không thuộc tính on*, không liên kết ngoài (tools/content-check.ts kiểm cùng luật).
@@ -62,6 +68,11 @@ if (types.length) {
   keep.add(file.slice('data/exam/'.length));
   if (!existsSync(P(file))) writeFileSync(P(file), body);
   index.packs.types = { file, groups: 0, items: 0, qtypes: types.map(t => t.id), exams: [] };
+}
+// Danh mục đề (nhỏ, đóng vào mô-đun để liệt kê đề mà không phải tải gói). Số điểm mỗi kỹ năng tính từ nội dung thật.
+for (const t of mockTests) {
+  const n = sk => groups.filter(g => t[sk].includes(g.part)).reduce((s, g) => s + g.items.reduce((k, it) => k + (Array.isArray(it.ans) ? it.ans.length : 1), 0), 0);
+  index.mocks.push({ id: t.id, exam: t.exam, title: t.title, L: t.L, R: t.R, ...(t.adj ? { adj: t.adj } : {}), n: { L: n('L'), R: n('R') } });
 }
 for (const f of readdirSync(P('data/exam'))) if (!keep.has(f)) unlinkSync(P('data/exam/' + f));
 mkdirSync(P('src/exam/gen'), { recursive: true });

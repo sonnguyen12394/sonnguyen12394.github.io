@@ -4,6 +4,7 @@
 import { QT, sourceText, answerKind, itemOptions, type Group, type Item, type TextAnswer } from '../exam/content.ts';
 import { markItem, withinLimit, norm, marksOf } from '../exam/score.ts';
 import { levelOf, tokens, LEVELS } from './lemma.ts';
+import { MOCK_FORMAT, testGroups, meanB, type MockTest } from '../exam/mock.ts';
 
 export interface Issue {
   where: string;
@@ -72,7 +73,9 @@ export function checkGroup(g: Group, list: Record<string, string> | null): Issue
   }
   const n = wordCount(src.join(' '));
   const [lo, hi] = (g.mode === 'practice' && QLENGTH[g.qtype]) || LENGTH[g.kind]![g.mode]!;
-  if (n < lo || n > hi) bad(g.id, `độ dài ${n} từ, chuẩn ${lo}–${hi} từ cho ${g.kind}/${g.mode}`);
+  // Đề thi thử: độ dài theo vị trí phần trong đề, kiểm ở checkMock.
+  if (g.mode !== 'mock' && (n < lo || n > hi)) bad(g.id, `độ dài ${n} từ, chuẩn ${lo}–${hi} từ cho ${g.kind}/${g.mode}`);
+  if (g.mode === 'mock' && !g.part) bad(g.id, 'nhóm đề thi thử phải thuộc một phần (part)');
   if (g.vi && g.vi.length !== src.length) bad(g.id, `bản dịch có ${g.vi.length} dòng, bài có ${src.length} dòng`);
   if (g.options) {
     const ks = g.options.map(o => o.k), ts = g.options.map(o => squash(o.t));
@@ -165,6 +168,77 @@ export function checkAll(groups: Group[], list: Record<string, string> | null): 
   return out;
 }
 
+// Độ dài ngữ liệu (số từ) của một phần đề thi thử, theo kỳ thi, kỹ năng và số điểm của phần.
+// IELTS Nghe: mỗi phần ~4–7 phút nói kèm lời dẫn; IELTS Đọc Academic: bài 700–1000 từ; General Training: văn bản ngắn
+// ở Phần 1–2, bài dài ở Phần 3; VSTEP Nghe: thông báo ngắn (1 câu), hội thoại (4 câu), bài nói (5 câu); VSTEP Đọc 300–700 từ.
+export function mockLength(exam: string, kind: 'reading' | 'listening', marks: number): [number, number] {
+  if (exam === 'vstep') {
+    if (kind === 'reading') return [300, 720];
+    return marks === 1 ? [30, 160] : marks <= 4 ? [160, 650] : [280, 950];
+  }
+  if (kind === 'listening') return [450, 1300];
+  if (exam === 'ielts-gt') return marks <= 8 ? [120, 600] : [250, 1050];
+  return [650, 1050];
+}
+
+// Đề thi thử (6.3, 5.5): đúng định dạng (tổng điểm, số phần, điểm từng phần), phần nào cũng thuộc một đề, id câu theo phần,
+// độ dài theo vị trí, độ khó tăng dần trong đề, và độ khó trung bình giữa các đề cùng kỳ thi lệch ≤ 0,5 band
+// (mỗi đề cách trung bình ≤ 0,25).
+export const MOCK_BAL = 0.25;
+export function checkMock(tests: MockTest[], groups: Group[]): Issue[] {
+  const out: Issue[] = [];
+  const bad = (where: string, msg: string): void => { out.push({ where, msg }); };
+  const mock = groups.filter(g => g.mode === 'mock'), used = new Set<string>(), tids = new Set<string>();
+  for (const g of mock) for (const it of g.items) if (g.part && !it.id.startsWith(g.part + '-')) bad(`${g.id}/${it.id}`, `id câu phải bắt đầu bằng id phần "${g.part}-"`);
+  const bal = new Map<string, Array<{ id: string; b: number }>>();
+  for (const t of tests) {
+    if (tids.has(t.id)) bad(t.id, 'id đề bị trùng');
+    tids.add(t.id);
+    const f = MOCK_FORMAT[t.exam];
+    if (!f) { bad(t.id, `kỳ thi "${t.exam}" không hợp lệ`); continue; }
+    for (const sk of ['L', 'R'] as const) {
+      const fmt = f[sk], parts = testGroups(t, sk, mock), where = `${t.id}/${sk}`;
+      t[sk].forEach(pid => used.add(pid));
+      parts.forEach((gs, i) => { if (!gs.length) bad(where, `không có phần "${t[sk][i]}"`); });
+      if (parts.some(gs => !gs.length)) continue;
+      const pm = parts.map(gs => gs.reduce((s, g) => s + g.items.reduce((k, it) => k + marksOf(it), 0), 0));
+      const total = pm.reduce((a, b) => a + b, 0);
+      if (total !== fmt.marks) bad(where, `tổng ${total} điểm, định dạng cần ${fmt.marks}`);
+      if (fmt.parts && pm.join(',') !== fmt.parts.join(',')) bad(where, `điểm từng phần ${pm.join('/')}, định dạng cần ${fmt.parts.join('/')}`);
+      if (t.exam === 'ielts-ac' && sk === 'R' && (pm.length !== 3 || pm.some(m => m < 13 || m > 14))) bad(where, `Đọc Academic cần 3 bài, mỗi bài 13–14 câu (đang ${pm.join('/')})`);
+      if (t.exam === 'ielts-gt' && sk === 'R' && (pm.length < 4 || pm.length > 6)) bad(where, `Đọc General Training cần 4–6 văn bản (đang ${pm.length})`);
+      parts.forEach((gs, i) => {
+        const g = gs[0]!;
+        if (!g.exams.includes(t.exam)) bad(g.part!, `phần dùng trong đề ${t.id} nhưng không ghi kỳ thi ${t.exam}`);
+        if ((g.kind === 'listening') !== (sk === 'L')) bad(g.part!, `phần ${g.kind} nằm ở kỹ năng ${sk}`);
+        const n = wordCount(sourceText(g).filter((_, k) => g.kind === 'reading' || g.script![k]!.sp !== 'N').join(' '));
+        const [lo, hi] = mockLength(t.exam, g.kind, pm[i]!);
+        if (n < lo || n > hi) bad(g.part!, `độ dài ${n} từ, chuẩn ${lo}–${hi} từ cho phần ${pm[i]} câu (${t.exam})`);
+      });
+      if (t.exam !== 'vstep') {
+        const qts = new Set(parts.flat().map(g => g.qtype));
+        if (qts.size < (sk === 'L' ? 3 : 4)) bad(where, `chỉ có ${qts.size} dạng câu; đề thật trộn nhiều dạng (≥ ${sk === 'L' ? 3 : 4})`);
+      }
+      // Độ khó tăng dần: phần đầu (theo điểm) không khó hơn phần cuối.
+      const bs = parts.flat().flatMap(g => g.items.flatMap(it => Array(marksOf(it)).fill(it.b) as number[]));
+      const q = Math.max(1, Math.floor(bs.length / 4)), avg = (xs: number[]): number => xs.reduce((a, b) => a + b, 0) / xs.length;
+      if (avg(bs.slice(0, q)) > avg(bs.slice(-q))) bad(where, `câu đầu đề (b ≈ ${avg(bs.slice(0, q)).toFixed(1)}) khó hơn câu cuối (b ≈ ${avg(bs.slice(-q)).toFixed(1)}) — đề thật khó dần`);
+      const key = `${t.exam}/${sk}`;
+      bal.set(key, [...(bal.get(key) ?? []), { id: t.id, b: meanB(parts) }]);
+    }
+  }
+  for (const [key, xs] of bal) {
+    if (xs.length < 2) continue;
+    const m = xs.reduce((s, x) => s + x.b, 0) / xs.length;
+    for (const x of xs) if (Math.abs(x.b - m) > MOCK_BAL) bad(`${x.id}/${key}`, `độ khó trung bình ${x.b.toFixed(2)} lệch ${(x.b - m).toFixed(2)} band so với trung bình các đề (${m.toFixed(2)}); tối đa ±${MOCK_BAL}`);
+  }
+  for (const p of new Set(mock.map(g => g.part!))) if (!used.has(p)) bad(p, 'phần đề không thuộc đề nào trong content/exam/mock/index.json');
+  return out;
+}
+
+// Đề thi thử xét riêng với bộ luyện: người học làm cả đề, nên đề không được lệch dù kho luyện đã cân.
+const poolKey = (g: Group): string => (g.mode === 'mock' ? 'đề thi thử ' + g.qtype : g.qtype);
+
 // Vị trí đáp án đúng phải rải đều (người soạn hay vô thức đặt đáp án ở B/C; thí sinh tinh ý sẽ khai thác).
 // Xét mọi chế độ, kể cả bài kiểm tra đầu vào (v42: pl-r từng có 0/48 đáp án ở vị trí D). Chỉ xét câu có phương án riêng (it.opts) — danh sách dùng chung (tiêu đề, đoạn, khung từ) do nội dung quyết định.
 // Mỗi dạng ≥ 12 câu: mỗi vị trí phải xuất hiện ít nhất một lần và không vị trí nào chiếm quá 1/n + 15 điểm %;
@@ -172,7 +246,7 @@ export function checkAll(groups: Group[], list: Record<string, string> | null): 
 export function checkKeyBalance(groups: Group[]): Issue[] {
   const out: Issue[] = [];
   const by = new Map<string, Item[]>();
-  for (const g of groups) for (const it of g.items) if (it.opts) by.set(g.qtype, [...(by.get(g.qtype) ?? []), it]);
+  for (const g of groups) for (const it of g.items) if (it.opts) { const k = poolKey(g); by.set(k, [...(by.get(k) ?? []), it]); }
   for (const [q, its] of by) {
     const single = its.filter(it => typeof it.ans === 'string'), multi = its.filter(it => Array.isArray(it.ans));
     if (single.length >= 12) {
@@ -230,7 +304,7 @@ export function suggestVariants(groups: Group[]): Issue[] {
 export function checkLengthCue(groups: Group[]): Issue[] {
   const out: Issue[] = [];
   const by = new Map<string, Item[]>();
-  for (const g of groups) for (const it of g.items) if (it.opts && typeof it.ans === 'string') by.set(g.qtype, [...(by.get(g.qtype) ?? []), it]);
+  for (const g of groups) for (const it of g.items) if (it.opts && typeof it.ans === 'string') { const k = poolKey(g); by.set(k, [...(by.get(k) ?? []), it]); }
   for (const [q, its] of by) {
     if (its.length < 12) continue;
     const n = Math.round(its.reduce((s, it) => s + it.opts!.length, 0) / its.length);

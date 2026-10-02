@@ -28,6 +28,7 @@ import { readGiven } from './views/items.ts';
 import { attachNoise, detachNoise, unlockAudio } from './noise.ts';
 import { QT } from './content.ts';
 import { ieltsBand } from './scales.ts';
+import { mockController } from './mockrun.ts';
 
 export const MODULE_VERSION = 1;
 
@@ -177,7 +178,11 @@ export function init(host: Host): ExamModule {
     nb = null; host.go('nb');
   }
 
+  // ---------- Đề thi thử ----------
+  const mc = mockController(host, X);
+
   const routes: Record<string, (c: Ctx) => string> = {
+    ...mc.routes,
     plan: viewPlan,
     nb: c => viewNb(c, nbLoading, nbErr),
     'nb-run': c => (nb ? viewNbRun(c, nb) : viewNb(c, nbLoading, nbErr)),
@@ -201,6 +206,7 @@ export function init(host: Host): ExamModule {
   }
 
   const act: Record<string, (el: HTMLElement) => void> = {
+    ...mc.act,
     exam(el) {
       const v = el.dataset.v as ExamId;
       if (!EXAM_NAME[v]) return;
@@ -267,6 +273,7 @@ export function init(host: Host): ExamModule {
   };
 
   const forms: Record<string, (f: HTMLFormElement, submitter: HTMLButtonElement | null) => void> = {
+    ...mc.forms,
     setcheck(f) { setCheck(f); },
     nbanswer(f) {
       if (!nb || nb.answered) return;
@@ -346,6 +353,7 @@ export function init(host: Host): ExamModule {
     render,
     after(route: string) {
       stopTimer();
+      mc.after(route);
       const sa = document.getElementById('xsetaudio') as HTMLAudioElement | null;
       if (route === 'set' && prun?.ver === 'noise' && sa) attachNoise(sa); else detachNoise();
       if (route === 'place-run' && run && !run.st.finished) {
