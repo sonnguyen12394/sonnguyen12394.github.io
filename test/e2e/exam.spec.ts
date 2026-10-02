@@ -24,12 +24,16 @@ test('tab Ôn thi: chọn kỳ thi, xem cách tính điểm có nguồn', async 
   expect(errors).toEqual([]);
 });
 
-test('VSTEP: thi thử có sẵn trong tab Ôn thi, không bị khoá', async ({ page, errors }) => {
+test('VSTEP: đề thi thử đầy đủ và bài thi nhanh có sẵn trong tab Ôn thi, không bị khoá', async ({ page, errors }) => {
   await openApp(page);
   await navTo(page, 'Ôn thi');
   await page.getByRole('button', { name: /VSTEP/ }).click();
   await page.getByRole('button', { name: 'Để sau' }).click();
-  await page.getByRole('button', { name: /Thi thử Nghe \+ Đọc/ }).click();
+  await page.getByRole('button', { name: /^Đề thi thử đầy đủ/ }).click();
+  await expect(page.getByRole('heading', { name: 'Đề thi thử đầy đủ' })).toBeVisible();
+  await expect(page.getByText('VSTEP – Đề 1')).toBeVisible();
+  await page.getByRole('button', { name: 'Về trang Ôn thi' }).click();
+  await page.getByRole('button', { name: /Thi nhanh Nghe \+ Đọc/ }).click();
   await expect(page.getByRole('heading', { name: /Thi thử VSTEP/ })).toBeVisible();
   expect(errors).toEqual([]);
 });

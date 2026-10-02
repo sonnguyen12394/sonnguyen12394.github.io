@@ -1,0 +1,1573 @@
+[
+  {
+    "id": "m-a1-l1",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "B1",
+    "band": 5,
+    "title": "Riverside Night Market",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 1. You will hear a woman phoning the organiser of a night market about renting a stall. First, you have some time to look at questions 1 to 6.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 1 to 6."
+      },
+      {
+        "sp": "Dev",
+        "t": "Riverside Night Market, Dev speaking."
+      },
+      {
+        "sp": "Joanna",
+        "t": "Oh, hello. I saw your notice in the community centre and I'd like to ask about renting a stall."
+      },
+      {
+        "sp": "Dev",
+        "t": "Of course. I'll fill in the application form while we talk, if that's all right. Could I have your name?"
+      },
+      {
+        "sp": "Joanna",
+        "t": "It's Joanna. And the surname is Kellet. That's K-E-L-L-E-T."
+      },
+      {
+        "sp": "Dev",
+        "t": "Two Ts at the end?"
+      },
+      {
+        "sp": "Joanna",
+        "t": "No, just one. People always add a second one, but it's one T."
+      },
+      {
+        "sp": "Dev",
+        "t": "Got it. And what would you be selling?"
+      },
+      {
+        "sp": "Joanna",
+        "t": "Well, for years I made candles, but the wax prices went up so much that I stopped. These days I make lampshades by hand, mostly from old maps and sheet music."
+      },
+      {
+        "sp": "Dev",
+        "t": "That sounds lovely. We have a few people doing jewellery, but nobody with lighting, so that would fit in well. Which night were you hoping for? We open on Thursdays, Fridays and Saturdays."
+      },
+      {
+        "sp": "Joanna",
+        "t": "Friday would be ideal."
+      },
+      {
+        "sp": "Dev",
+        "t": "I'm afraid Friday is full until the end of the year, and there's a waiting list for Saturday. But I can offer you Thursday straight away."
+      },
+      {
+        "sp": "Joanna",
+        "t": "Then I'll take Thursday. Actually, it might be quieter, which suits me."
+      },
+      {
+        "sp": "Dev",
+        "t": "Right. Now, the standard stall is two metres wide. Is that enough?"
+      },
+      {
+        "sp": "Joanna",
+        "t": "Not really. The shades take up a lot of room when they're lit. Could I have three?"
+      },
+      {
+        "sp": "Dev",
+        "t": "Three is fine on a Thursday. And I imagine you'll need electricity to show them properly?"
+      },
+      {
+        "sp": "Joanna",
+        "t": "Yes, that's essential. I don't need water or anything like that, just electricity for about six lamps."
+      },
+      {
+        "sp": "Dev",
+        "t": "No problem, we have sockets along the river wall. Now, the fee. Regular traders pay thirty-five pounds a week, but new traders get a reduced rate for the first two months, so you'd pay twenty-eight pounds."
+      },
+      {
+        "sp": "Joanna",
+        "t": "Twenty-eight a week. That seems very fair."
+      },
+      {
+        "sp": "N",
+        "t": "Before you hear the rest of the conversation, you have some time to look at questions 7 to 10.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen and answer questions 7 to 10."
+      },
+      {
+        "sp": "Joanna",
+        "t": "Is there anything I need to bring on my first night?"
+      },
+      {
+        "sp": "Dev",
+        "t": "Most people worry about fire safety, but we keep extinguishers at every second stall, so you don't need your own. And you mentioned you have a table already. What I will need to see is your insurance certificate. Just bring a copy and give it to whoever is on the information tent."
+      },
+      {
+        "sp": "Joanna",
+        "t": "I'll do that. What about parking? I'll have a small van."
+      },
+      {
+        "sp": "Dev",
+        "t": "The multi-storey is the obvious choice, but the entrance is too low for most vans. Some traders used to leave theirs behind the library, but that space now belongs to the new flats. So the best place is Mill Lane. It's free after five, and it's only a two-minute walk."
+      },
+      {
+        "sp": "Joanna",
+        "t": "Mill Lane, fine. And what time should I arrive?"
+      },
+      {
+        "sp": "Dev",
+        "t": "We ask everyone to be here by half past four. There's no briefing to attend, and our volunteers only start at six, so you'd be unloading on your own anyway. The real reason is that the bridge closes to all vehicles at five, and after that you can't get a van anywhere near the stalls."
+      },
+      {
+        "sp": "Joanna",
+        "t": "That makes sense. And how do I pay the fee? Can I bring cash on the night?"
+      },
+      {
+        "sp": "Dev",
+        "t": "We stopped taking cash last spring, I'm afraid. And we don't hold a deposit any more either. You just pay through our website before each month starts. I'll email you the link."
+      },
+      {
+        "sp": "Joanna",
+        "t": "Perfect. Thanks so much, Dev."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 1.",
+        "pause": 10
+      }
+    ],
+    "vi": [
+      "Phần 1. Bạn sẽ nghe một người phụ nữ gọi điện cho người tổ chức chợ đêm để thuê một gian hàng. Trước tiên, bạn có thời gian xem câu 1 đến 6.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 1 đến 6.",
+      "Chợ đêm Bờ Sông, Dev nghe đây.",
+      "À, xin chào. Tôi thấy thông báo của anh ở nhà văn hoá và muốn hỏi về việc thuê một gian hàng.",
+      "Tất nhiên. Tôi sẽ điền đơn đăng ký trong lúc ta nói chuyện, nếu chị không phiền. Cho tôi xin tên chị?",
+      "Tôi là Joanna. Họ là Kellet, đánh vần K-E-L-L-E-T.",
+      "Hai chữ T ở cuối phải không?",
+      "Không, chỉ một thôi. Ai cũng hay thêm chữ T thứ hai, nhưng chỉ có một chữ T.",
+      "Rõ rồi. Chị định bán gì?",
+      "À, nhiều năm tôi làm nến, nhưng giá sáp tăng nhiều quá nên tôi thôi. Bây giờ tôi làm chụp đèn thủ công, phần lớn từ bản đồ cũ và bản nhạc.",
+      "Nghe hay đấy. Chúng tôi có vài người bán trang sức, nhưng chưa ai bán đồ chiếu sáng, nên chị sẽ rất hợp. Chị muốn bán tối nào? Chúng tôi mở cửa thứ Năm, thứ Sáu và thứ Bảy.",
+      "Thứ Sáu là tốt nhất.",
+      "Tiếc là thứ Sáu đã kín đến cuối năm, còn thứ Bảy thì có danh sách chờ. Nhưng tôi có thể xếp chị vào thứ Năm ngay.",
+      "Vậy tôi lấy thứ Năm. Thật ra có lẽ vắng hơn, như thế lại hợp với tôi.",
+      "Được. Gian tiêu chuẩn rộng hai mét. Như vậy có đủ không?",
+      "Không đủ lắm. Chụp đèn chiếm nhiều chỗ khi bật sáng. Tôi lấy ba mét được không?",
+      "Ba mét vào thứ Năm thì được. Và tôi đoán chị cần điện để trưng bày cho đẹp?",
+      "Vâng, cái đó là bắt buộc. Tôi không cần nước hay gì cả, chỉ cần điện cho khoảng sáu cái đèn.",
+      "Không vấn đề gì, chúng tôi có ổ cắm dọc tường bờ sông. Giờ đến phí. Người bán lâu năm trả ba mươi lăm bảng mỗi tuần, nhưng người mới được giảm giá trong hai tháng đầu, nên chị sẽ trả hai mươi tám bảng.",
+      "Hai mươi tám một tuần. Như thế rất hợp lý.",
+      "Trước khi nghe phần còn lại của cuộc trò chuyện, bạn có thời gian xem câu 7 đến 10.",
+      "Bây giờ hãy nghe và trả lời câu 7 đến 10.",
+      "Tối đầu tiên tôi có cần mang theo gì không?",
+      "Phần lớn mọi người lo về an toàn cháy nổ, nhưng chúng tôi đặt bình chữa cháy cách một gian một bình, nên chị không cần mang của mình. Và chị có nói là đã có bàn rồi. Thứ tôi cần xem là giấy chứng nhận bảo hiểm của chị. Chị chỉ cần mang một bản sao và đưa cho người trực ở lều thông tin.",
+      "Tôi sẽ làm vậy. Còn chỗ đỗ xe thì sao? Tôi có một chiếc xe tải nhỏ.",
+      "Bãi đỗ nhiều tầng là lựa chọn dễ thấy nhất, nhưng lối vào quá thấp với hầu hết xe tải. Trước đây vài người bán đỗ xe sau thư viện, nhưng chỗ đó giờ thuộc về khu căn hộ mới. Vì vậy chỗ tốt nhất là phố Mill Lane. Ở đó miễn phí sau năm giờ, và chỉ mất hai phút đi bộ.",
+      "Mill Lane, được. Tôi nên đến lúc mấy giờ?",
+      "Chúng tôi đề nghị mọi người có mặt trước bốn rưỡi. Không có buổi hướng dẫn nào cần dự, và tình nguyện viên sáu giờ mới bắt đầu, nên dù sao chị cũng tự dỡ hàng. Lý do thật là cây cầu cấm mọi xe từ năm giờ, sau đó chị không thể đưa xe tải tới gần các gian hàng được.",
+      "Hợp lý. Tôi trả phí thế nào? Tôi mang tiền mặt đến tối hôm đó được không?",
+      "Tiếc là chúng tôi đã thôi nhận tiền mặt từ mùa xuân năm ngoái. Chúng tôi cũng không giữ tiền đặt cọc nữa. Chị chỉ cần trả qua trang web của chúng tôi trước khi mỗi tháng bắt đầu. Tôi sẽ gửi đường dẫn qua email cho chị.",
+      "Tuyệt. Cảm ơn anh nhiều, Dev.",
+      "Hết Phần 1."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Joanna": "bf_emma",
+      "Dev": "am_michael"
+    },
+    "allow": [
+      "lampshades",
+      "wax",
+      "extinguishers",
+      "sockets",
+      "multi-storey"
+    ],
+    "audio": {
+      "file": "a/m-a1-l1.mp3",
+      "dur": 283.4,
+      "voices": [
+        "bm_george",
+        "bf_emma",
+        "am_michael"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "l-form",
+        "instr": "Complete the form below. Write ONE WORD AND/OR A NUMBER for each answer.",
+        "items": [
+          {
+            "id": "m-a1-l1-01",
+            "q": "Name: Joanna ___",
+            "ans": {
+              "accept": [
+                "Kellet"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 4.5,
+            "ev": {
+              "p": 5,
+              "s": "It's Joanna. And the surname is Kellet."
+            },
+            "why": "Joanna đánh vần họ K-E-L-L-E-T và nhấn mạnh chỉ có một chữ T ở cuối.",
+            "wrong": {
+              "Kellett": "Sai chính tả: người nghe hỏi \"hai chữ T?\" và Joanna trả lời \"No, just one\". Câu điền tên phải đúng từng chữ cái."
+            },
+            "tag": "chính tả"
+          },
+          {
+            "id": "m-a1-l1-02",
+            "q": "Products: hand-made ___",
+            "ans": {
+              "accept": [
+                "lampshades",
+                "lamp-shades"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 9,
+              "s": "These days I make lampshades by hand"
+            },
+            "why": "Joanna nói bây giờ cô làm chụp đèn thủ công (\"These days I make lampshades by hand\").",
+            "wrong": {
+              "candles": "Nến là thứ cô từng làm nhiều năm nhưng đã thôi vì giá sáp tăng — bẫy thông tin cũ."
+            },
+            "trap": "Thông tin nhắc trước (\"for years I made candles\") thường là bẫy; chờ tới thông tin hiện tại (\"These days…\")."
+          },
+          {
+            "id": "m-a1-l1-03",
+            "q": "Night: ___",
+            "ans": {
+              "accept": [
+                "Thursday",
+                "Thursdays"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 13,
+              "s": "Then I'll take Thursday."
+            },
+            "why": "Thứ Sáu đã kín, thứ Bảy có danh sách chờ, nên Joanna nhận thứ Năm.",
+            "wrong": {
+              "Friday": "Joanna muốn thứ Sáu nhưng Dev nói thứ Sáu kín đến cuối năm.",
+              "Saturday": "Thứ Bảy có danh sách chờ, không phải ngày được xếp."
+            }
+          },
+          {
+            "id": "m-a1-l1-04",
+            "q": "Stall width: ___ metres",
+            "ans": {
+              "accept": [
+                "3",
+                "three"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 15,
+              "s": "Could I have three?"
+            },
+            "why": "Gian tiêu chuẩn rộng 2 mét nhưng Joanna xin 3 mét và Dev đồng ý (\"Three is fine on a Thursday\").",
+            "wrong": {
+              "2": "Hai mét là cỡ tiêu chuẩn, Joanna nói không đủ."
+            }
+          },
+          {
+            "id": "m-a1-l1-05",
+            "q": "Needs access to: ___",
+            "ans": {
+              "accept": [
+                "electricity",
+                "power"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 17,
+              "s": "just electricity for about six lamps"
+            },
+            "why": "Joanna cần điện cho khoảng sáu cái đèn; cô nói rõ không cần nước.",
+            "wrong": {
+              "water": "Joanna nói \"I don't need water\"."
+            }
+          },
+          {
+            "id": "m-a1-l1-06",
+            "q": "Weekly fee for first two months: £___",
+            "ans": {
+              "accept": [
+                "28",
+                "twenty-eight"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5.5,
+            "ev": {
+              "p": 18,
+              "s": "so you'd pay twenty-eight pounds"
+            },
+            "why": "Người mới được giảm giá trong hai tháng đầu: 28 bảng mỗi tuần.",
+            "wrong": {
+              "35": "35 bảng là mức của người bán lâu năm, không phải của Joanna."
+            },
+            "trap": "Hai con số được nhắc liền nhau; nghe kỹ con số dành cho đúng đối tượng (\"new traders\")."
+          }
+        ]
+      },
+      {
+        "qtype": "l-mcq",
+        "instr": "Choose the correct letter, A, B or C.",
+        "items": [
+          {
+            "id": "m-a1-l1-07",
+            "q": "What must Joanna bring on her first night?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "a copy of her insurance certificate"
+              },
+              {
+                "k": "B",
+                "t": "a small fire extinguisher for her stall"
+              },
+              {
+                "k": "C",
+                "t": "a folding table for her lamps"
+              }
+            ],
+            "ans": "A",
+            "b": 5,
+            "ev": {
+              "p": 23,
+              "s": "What I will need to see is your insurance certificate."
+            },
+            "why": "Dev nói thứ cần xem là giấy chứng nhận bảo hiểm, chỉ cần mang bản sao.",
+            "wrong": {
+              "B": "Chợ đặt sẵn bình chữa cháy cách một gian một bình, nên cô không cần mang.",
+              "C": "Joanna đã có bàn; Dev không yêu cầu mang bàn."
+            }
+          },
+          {
+            "id": "m-a1-l1-08",
+            "q": "Where does Dev advise Joanna to park her van?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "in the multi-storey car park"
+              },
+              {
+                "k": "B",
+                "t": "behind the library"
+              },
+              {
+                "k": "C",
+                "t": "in Mill Lane"
+              }
+            ],
+            "ans": "C",
+            "b": 5.5,
+            "ev": {
+              "p": 25,
+              "s": "So the best place is Mill Lane."
+            },
+            "why": "Bãi nhiều tầng có lối vào quá thấp, chỗ sau thư viện giờ thuộc khu căn hộ, nên chỗ tốt nhất là Mill Lane.",
+            "wrong": {
+              "A": "Lối vào bãi nhiều tầng quá thấp với hầu hết xe tải.",
+              "B": "Chỗ sau thư viện nay thuộc khu căn hộ mới, không đỗ được nữa."
+            }
+          },
+          {
+            "id": "m-a1-l1-09",
+            "q": "Why must traders arrive by half past four?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "There is a safety briefing for all traders."
+              },
+              {
+                "k": "B",
+                "t": "Vehicles cannot cross the bridge after five."
+              },
+              {
+                "k": "C",
+                "t": "Volunteers are available to help with unloading."
+              }
+            ],
+            "ans": "B",
+            "b": 6,
+            "ev": {
+              "p": 27,
+              "s": "the bridge closes to all vehicles at five"
+            },
+            "why": "Dev nói lý do thật là cây cầu cấm mọi xe từ năm giờ.",
+            "wrong": {
+              "A": "Dev nói rõ \"There's no briefing to attend\".",
+              "C": "Tình nguyện viên sáu giờ mới bắt đầu, nên người bán tự dỡ hàng."
+            }
+          },
+          {
+            "id": "m-a1-l1-10",
+            "q": "How will Joanna pay the fee?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "in cash at the information tent"
+              },
+              {
+                "k": "B",
+                "t": "from a deposit held by the market"
+              },
+              {
+                "k": "C",
+                "t": "online before each month"
+              }
+            ],
+            "ans": "C",
+            "b": 5.5,
+            "ev": {
+              "p": 29,
+              "s": "You just pay through our website before each month starts."
+            },
+            "why": "Phí trả qua trang web trước khi mỗi tháng bắt đầu.",
+            "wrong": {
+              "A": "Chợ đã thôi nhận tiền mặt từ mùa xuân năm ngoái.",
+              "B": "Chợ không giữ tiền đặt cọc nữa."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-a1-l2",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "B1",
+    "band": 5.5,
+    "title": "Harlow Mill Makerspace",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 2. You will hear a guide welcoming new members to a community workshop in an old mill. First, you have some time to look at questions 11 to 16.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 11 to 16."
+      },
+      {
+        "sp": "Guide",
+        "t": "Good morning, everyone, and welcome to Harlow Mill. I'm Priya, and I look after the members here. Before we walk round, I want to explain how the building is used now, because the old names of the rooms can be a little misleading."
+      },
+      {
+        "sp": "Guide",
+        "t": "Let's start with the Weaving Hall, the big room right in front of you. There hasn't been a loom in it for sixty years. Because it has the strongest floor in the building, it's where we keep the 3-D printers and the laser cutter, which are surprisingly heavy."
+      },
+      {
+        "sp": "Guide",
+        "t": "Next to it is the Dye Shed. Nobody dyes anything there any more. The walls are almost a metre thick, so it's completely quiet inside, and we turned it into a small studio where members record music and podcasts."
+      },
+      {
+        "sp": "Guide",
+        "t": "Then there's the Boiler House. You might think that would be the bicycle workshop, since it already has a concrete floor and drains, and we did try that. But it was too dark, so the bike repairs moved out, and now the Boiler House is simply where you can store large materials, like timber or sheets of metal, for up to a month."
+      },
+      {
+        "sp": "Guide",
+        "t": "So where did the bikes go? To the Loading Bay, at the back. It has huge doors that open onto the street, so people can wheel their bikes straight in. On the second Saturday of each month, the bike stands are pushed aside and the space becomes our members' market, where you can sell anything you've made here."
+      },
+      {
+        "sp": "Guide",
+        "t": "Upstairs, the Counting Room used to hold the mill's accounts. It's the only room with comfortable chairs, so a lot of people assume it's the place for lunch, but food isn't allowed up there because of the carpets. It's where the children's classes are held on weekday afternoons."
+      },
+      {
+        "sp": "Guide",
+        "t": "If you want to eat, go right to the top, to the Roof Garden. There are tables, a kettle and a fridge, and on a clear day you can see the river."
+      },
+      {
+        "sp": "N",
+        "t": "Before you hear the rest of the talk, you have some time to look at questions 17 to 20.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen and answer questions 17 to 20."
+      },
+      {
+        "sp": "Guide",
+        "t": "Now, a few things about your first month. Everyone has to complete a safety induction before using any machine, even if you've used the same machine somewhere else. It takes about an hour and you can book it at the front desk."
+      },
+      {
+        "sp": "Guide",
+        "t": "You don't need references to join, and lockers are free for the first year, so don't worry about those. We do have a mentor scheme, but that's optional, and plenty of members never use it. What isn't optional is the volunteer shift. In your first month, every new member gives three hours to help run the place: tidying, answering the door, that sort of thing."
+      },
+      {
+        "sp": "Guide",
+        "t": "Finally, borrowing tools. Most of the equipment has to be booked online, especially the sewing machines, which are always in demand, and the cameras, which are expensive to replace. But two things you can simply take from the racks by the stairs without booking: the ladders and the power drills. Just write your name on the board and bring them back the same day."
+      },
+      {
+        "sp": "Guide",
+        "t": "We don't lend laptops, by the way. People often ask, but you'll need to bring your own. Right, let's go and look at the Weaving Hall."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 2.",
+        "pause": 10
+      }
+    ],
+    "vi": [
+      "Phần 2. Bạn sẽ nghe một hướng dẫn viên chào đón thành viên mới tại một xưởng chế tác cộng đồng trong một nhà máy cũ. Trước tiên, bạn có thời gian xem câu 11 đến 16.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 11 đến 16.",
+      "Chào buổi sáng mọi người, chào mừng đến Harlow Mill. Tôi là Priya, tôi phụ trách các thành viên ở đây. Trước khi đi một vòng, tôi muốn giải thích toà nhà hiện được dùng thế nào, vì tên cũ của các phòng có thể hơi gây hiểu lầm.",
+      "Bắt đầu với Weaving Hall, căn phòng lớn ngay trước mặt các bạn. Sáu mươi năm nay trong đó không còn khung dệt nào. Vì phòng có sàn chắc nhất toà nhà, chúng tôi đặt máy in 3-D và máy cắt laser ở đó, những thứ này nặng hơn ta tưởng.",
+      "Cạnh đó là Dye Shed. Không còn ai nhuộm gì ở đó nữa. Tường dày gần một mét nên bên trong hoàn toàn yên tĩnh, và chúng tôi biến nó thành một phòng thu nhỏ để thành viên thu âm nhạc và podcast.",
+      "Rồi đến Boiler House. Có thể bạn nghĩ đó là xưởng sửa xe đạp, vì phòng đã có sàn bê tông và cống thoát nước, và chúng tôi từng thử như vậy. Nhưng phòng quá tối nên việc sửa xe chuyển đi, và giờ Boiler House chỉ là nơi bạn cất vật liệu lớn như gỗ hay tấm kim loại, tối đa một tháng.",
+      "Vậy xe đạp chuyển đi đâu? Tới Loading Bay ở phía sau. Nơi đó có những cánh cửa rất lớn mở ra đường, nên mọi người dắt thẳng xe vào được. Vào thứ Bảy thứ hai mỗi tháng, giá để xe được đẩy sang bên và nơi này thành chợ của thành viên, nơi bạn bán được bất cứ thứ gì mình làm ra ở đây.",
+      "Trên lầu, Counting Room từng là nơi giữ sổ sách của nhà máy. Đó là phòng duy nhất có ghế êm, nên nhiều người tưởng đó là chỗ ăn trưa, nhưng trên đó không được mang đồ ăn vì có thảm. Đó là nơi tổ chức lớp học cho trẻ em vào các buổi chiều trong tuần.",
+      "Nếu muốn ăn, hãy lên tận trên cùng, tới Roof Garden. Ở đó có bàn, ấm đun nước và tủ lạnh, ngày trời trong bạn còn nhìn thấy sông.",
+      "Trước khi nghe phần còn lại của bài nói, bạn có thời gian xem câu 17 đến 20.",
+      "Bây giờ hãy nghe và trả lời câu 17 đến 20.",
+      "Giờ là vài điều về tháng đầu tiên của các bạn. Ai cũng phải hoàn thành buổi hướng dẫn an toàn trước khi dùng bất kỳ máy nào, kể cả khi bạn đã dùng đúng loại máy đó ở nơi khác. Buổi đó mất khoảng một tiếng và bạn đặt lịch ở quầy lễ tân.",
+      "Bạn không cần thư giới thiệu để tham gia, và tủ đồ miễn phí trong năm đầu, nên đừng lo về mấy thứ đó. Chúng tôi có chương trình người hướng dẫn, nhưng không bắt buộc, và nhiều thành viên chưa bao giờ dùng. Thứ bắt buộc là ca tình nguyện. Trong tháng đầu, mỗi thành viên mới dành ba tiếng giúp vận hành nơi này: dọn dẹp, trực cửa, những việc như vậy.",
+      "Cuối cùng là mượn dụng cụ. Hầu hết thiết bị phải đặt trước trên mạng, nhất là máy may vì lúc nào cũng có người cần, và máy ảnh vì thay mới rất đắt. Nhưng có hai thứ bạn cứ lấy ở giá cạnh cầu thang mà không cần đặt: thang và máy khoan điện. Chỉ cần ghi tên lên bảng và trả lại trong ngày.",
+      "Nhân tiện, chúng tôi không cho mượn máy tính xách tay. Nhiều người hỏi, nhưng bạn sẽ phải tự mang theo. Được rồi, chúng ta đi xem Weaving Hall nào.",
+      "Hết Phần 2."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Guide": "bf_isabella"
+    },
+    "allow": [
+      "loom",
+      "laser",
+      "printers",
+      "dyes",
+      "podcasts",
+      "drains",
+      "timber",
+      "induction",
+      "mentor",
+      "racks",
+      "drills",
+      "kettle",
+      "dye",
+      "cutter",
+      "weaving",
+      "concrete"
+    ],
+    "audio": {
+      "file": "a/m-a1-l2.mp3",
+      "dur": 243.5,
+      "voices": [
+        "bm_george",
+        "bf_isabella"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "l-matching",
+        "instr": "What is each room used for now? Choose SIX answers from the box and write the correct letter, A–G, next to Questions 11–16.",
+        "options": [
+          {
+            "k": "A",
+            "t": "repairing bicycles"
+          },
+          {
+            "k": "B",
+            "t": "recording sound"
+          },
+          {
+            "k": "C",
+            "t": "using heavy machines"
+          },
+          {
+            "k": "D",
+            "t": "teaching children"
+          },
+          {
+            "k": "E",
+            "t": "storing materials"
+          },
+          {
+            "k": "F",
+            "t": "eating meals"
+          },
+          {
+            "k": "G",
+            "t": "selling work"
+          }
+        ],
+        "items": [
+          {
+            "id": "m-a1-l2-01",
+            "q": "the Weaving Hall",
+            "ans": "C",
+            "b": 5,
+            "ev": {
+              "p": 3,
+              "s": "it's where we keep the 3-D printers and the laser cutter"
+            },
+            "why": "Weaving Hall có sàn chắc nhất nên đặt máy in 3-D và máy cắt laser, tức là nơi dùng máy nặng.",
+            "wrong": {
+              "A": "Việc sửa xe đạp ở Loading Bay, không phải Weaving Hall.",
+              "E": "Vật liệu lớn được cất ở Boiler House."
+            },
+            "trap": "Tên cũ của phòng (dệt) không cho biết công dụng hiện nay."
+          },
+          {
+            "id": "m-a1-l2-02",
+            "q": "the Dye Shed",
+            "ans": "B",
+            "b": 5,
+            "ev": {
+              "p": 4,
+              "s": "we turned it into a small studio where members record music and podcasts"
+            },
+            "why": "Tường dày nên yên tĩnh; phòng thành phòng thu âm nhạc và podcast.",
+            "wrong": {
+              "C": "Máy nặng đặt ở Weaving Hall.",
+              "D": "Lớp trẻ em học ở Counting Room."
+            }
+          },
+          {
+            "id": "m-a1-l2-03",
+            "q": "the Boiler House",
+            "ans": "E",
+            "b": 5.5,
+            "ev": {
+              "p": 5,
+              "s": "now the Boiler House is simply where you can store large materials"
+            },
+            "why": "Boiler House giờ là nơi cất vật liệu lớn như gỗ, tấm kim loại.",
+            "wrong": {
+              "A": "Xưởng xe đạp từng thử ở đây nhưng quá tối nên đã chuyển đi.",
+              "G": "Chợ của thành viên họp ở Loading Bay."
+            },
+            "trap": "Thông tin \"we did try that\" là việc cũ đã bỏ."
+          },
+          {
+            "id": "m-a1-l2-04",
+            "q": "the Loading Bay",
+            "ans": "A",
+            "b": 5.5,
+            "ev": {
+              "p": 6,
+              "s": "To the Loading Bay, at the back."
+            },
+            "why": "Xe đạp chuyển tới Loading Bay vì cửa lớn mở ra đường; đây là nơi sửa xe đạp hằng ngày.",
+            "wrong": {
+              "G": "Chợ chỉ họp ở đây một ngày mỗi tháng (thứ Bảy thứ hai); công dụng chính là sửa xe đạp.",
+              "E": "Vật liệu được cất ở Boiler House."
+            },
+            "trap": "Chợ mỗi tháng một lần là thông tin phụ; câu hỏi hỏi công dụng của phòng."
+          },
+          {
+            "id": "m-a1-l2-05",
+            "q": "the Counting Room",
+            "ans": "D",
+            "b": 6,
+            "ev": {
+              "p": 7,
+              "s": "It's where the children's classes are held on weekday afternoons."
+            },
+            "why": "Counting Room là nơi học của các lớp trẻ em vào chiều các ngày trong tuần.",
+            "wrong": {
+              "F": "Nhiều người tưởng ăn trưa ở đây, nhưng không được mang đồ ăn lên vì có thảm.",
+              "B": "Thu âm ở Dye Shed."
+            }
+          },
+          {
+            "id": "m-a1-l2-06",
+            "q": "the Roof Garden",
+            "ans": "F",
+            "b": 5,
+            "ev": {
+              "p": 8,
+              "s": "If you want to eat, go right to the top, to the Roof Garden."
+            },
+            "why": "Muốn ăn thì lên Roof Garden; có bàn, ấm nước, tủ lạnh.",
+            "wrong": {
+              "D": "Lớp trẻ em ở Counting Room.",
+              "G": "Bán sản phẩm ở Loading Bay."
+            }
+          }
+        ]
+      },
+      {
+        "qtype": "l-mcq2",
+        "instr": "Choose TWO letters, A–E.",
+        "items": [
+          {
+            "id": "m-a1-l2-07",
+            "q": "Which TWO things must every new member do in their first month?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "provide references"
+              },
+              {
+                "k": "B",
+                "t": "choose a mentor"
+              },
+              {
+                "k": "C",
+                "t": "attend a safety induction"
+              },
+              {
+                "k": "D",
+                "t": "pay for a locker"
+              },
+              {
+                "k": "E",
+                "t": "do a volunteer shift"
+              }
+            ],
+            "ans": [
+              "C",
+              "E"
+            ],
+            "b": 6,
+            "ev": {
+              "p": 12,
+              "s": "In your first month, every new member gives three hours"
+            },
+            "why": "Buổi hướng dẫn an toàn là bắt buộc trước khi dùng máy (\"Everyone has to complete a safety induction\"), và ca tình nguyện ba tiếng trong tháng đầu là bắt buộc (\"What isn't optional is the volunteer shift\").",
+            "wrong": {
+              "A": "Không cần thư giới thiệu để tham gia.",
+              "B": "Chương trình người hướng dẫn là tuỳ chọn.",
+              "D": "Tủ đồ miễn phí trong năm đầu."
+            }
+          }
+        ]
+      },
+      {
+        "qtype": "l-mcq2",
+        "instr": "Choose TWO letters, A–E.",
+        "items": [
+          {
+            "id": "m-a1-l2-08",
+            "q": "Which TWO items can members borrow without booking?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "laptops"
+              },
+              {
+                "k": "B",
+                "t": "sewing machines"
+              },
+              {
+                "k": "C",
+                "t": "cameras"
+              },
+              {
+                "k": "D",
+                "t": "ladders"
+              },
+              {
+                "k": "E",
+                "t": "power drills"
+              }
+            ],
+            "ans": [
+              "D",
+              "E"
+            ],
+            "b": 6,
+            "ev": {
+              "p": 13,
+              "s": "the ladders and the power drills"
+            },
+            "why": "Hai thứ lấy ở giá cạnh cầu thang mà không cần đặt là thang và máy khoan điện.",
+            "wrong": {
+              "A": "Xưởng không cho mượn máy tính xách tay.",
+              "B": "Máy may phải đặt trước vì luôn có người cần.",
+              "C": "Máy ảnh phải đặt trước vì đắt."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-a1-l3",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "B2",
+    "band": 6.5,
+    "title": "Noise in the university library",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 3. You will hear two students, Lena and Tomas, discussing their research project with their tutor, Dr Hale. First, you have some time to look at questions 21 to 25.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 21 to 25."
+      },
+      {
+        "sp": "Dr Hale",
+        "t": "Come in, both of you. So, how is the library project going? Remind me why you chose it. I seem to remember I suggested the cafeteria."
+      },
+      {
+        "sp": "Tomas",
+        "t": "You did, and we nearly went with that. And people in our seminar group were always complaining about the library, but mostly about the Wi-Fi, not the noise."
+      },
+      {
+        "sp": "Lena",
+        "t": "What decided it was that the head librarian came to us. She'd heard we were doing a measurement project and asked whether we could find out why the third floor gets so many noise complaints."
+      },
+      {
+        "sp": "Dr Hale",
+        "t": "A real client. That always helps. And what did the sound meters show?"
+      },
+      {
+        "sp": "Tomas",
+        "t": "Well, we expected the silent floor to be louder than people claim, but it was actually the quietest, just as it should be. And we assumed phones would be the main problem, but there were hardly any phone calls. Most of the noise was doors and footsteps."
+      },
+      {
+        "sp": "Lena",
+        "t": "The real surprise was the timing. The readings jumped every hour, for about ten minutes after the hour, when lectures finish and everyone swaps seats. The rest of the time it was fairly calm."
+      },
+      {
+        "sp": "Dr Hale",
+        "t": "Interesting. And the questionnaire?"
+      },
+      {
+        "sp": "Tomas",
+        "t": "Only sixty-two replies out of about four hundred. I think it's because we sent it out in the reading week, when half the students had gone home."
+      },
+      {
+        "sp": "Lena",
+        "t": "I don't think that was it, though. The people who started it mostly gave up halfway. Forty questions was far too many. Next time I'd cut it to ten."
+      },
+      {
+        "sp": "Dr Hale",
+        "t": "And what will you do with the written comments? You had an open question at the end, I think."
+      },
+      {
+        "sp": "Lena",
+        "t": "We thought about leaving them out because they're so varied, or even giving them to the librarian to look at. But in the end we're going to sort them into themes, like lighting, temperature and seating, and count how often each one comes up."
+      },
+      {
+        "sp": "Dr Hale",
+        "t": "Good. One piece of advice about the presentation. Most students spend the first five minutes on their method. Don't. The library staff want to know what to change, so open with your main recommendation and explain how you got there afterwards. The charts you've got are fine as they are."
+      },
+      {
+        "sp": "N",
+        "t": "Before you hear the rest of the discussion, you have some time to look at questions 26 to 30.",
+        "pause": 30
+      },
+      {
+        "sp": "N",
+        "t": "Now listen and answer questions 26 to 30."
+      },
+      {
+        "sp": "Dr Hale",
+        "t": "So what are your next steps?"
+      },
+      {
+        "sp": "Tomas",
+        "t": "First, we need to check the spreadsheet. Two of the meters recorded the wrong date for a week, so some readings are probably in the wrong place."
+      },
+      {
+        "sp": "Lena",
+        "t": "Then we want to do two short interviews. We'd planned to talk to students, but we've got plenty of their views already. The people who hear the library all day are the cleaners, so we'll interview two of them."
+      },
+      {
+        "sp": "Dr Hale",
+        "t": "Good idea. Then what?"
+      },
+      {
+        "sp": "Tomas",
+        "t": "Then we'll draw a map of each floor showing where the noise is worst, using colours, because a table of numbers won't mean much to the staff."
+      },
+      {
+        "sp": "Lena",
+        "t": "After that, we present everything to the library committee. The librarian can't change the timetable on her own, so the committee has to approve anything we suggest."
+      },
+      {
+        "sp": "Dr Hale",
+        "t": "And for your assessment?"
+      },
+      {
+        "sp": "Tomas",
+        "t": "The last step is the written report. It's due in week twelve, and we'll include whatever the committee says about our ideas."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 3.",
+        "pause": 10
+      }
+    ],
+    "vi": [
+      "Phần 3. Bạn sẽ nghe hai sinh viên, Lena và Tomas, thảo luận dự án nghiên cứu với giảng viên hướng dẫn, tiến sĩ Hale. Trước tiên, bạn có thời gian xem câu 21 đến 25.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 21 đến 25.",
+      "Mời hai em vào. Dự án về thư viện tiến triển thế nào rồi? Nhắc lại cho tôi vì sao các em chọn đề tài này. Hình như tôi đã gợi ý căng tin.",
+      "Cô có gợi ý, và bọn em suýt chọn đề tài đó. Các bạn trong nhóm thảo luận cũng hay than phiền về thư viện, nhưng chủ yếu là về Wi-Fi, không phải tiếng ồn.",
+      "Điều quyết định là trưởng thư viện tự tìm đến bọn em. Cô ấy nghe nói bọn em làm dự án đo đạc nên hỏi bọn em có tìm hiểu được vì sao tầng ba bị phàn nàn về tiếng ồn nhiều đến thế không.",
+      "Một khách hàng thật. Như thế luôn có ích. Máy đo âm thanh cho thấy gì?",
+      "Bọn em tưởng tầng yên lặng sẽ ồn hơn mọi người nói, nhưng thật ra đó lại là tầng yên tĩnh nhất, đúng như phải thế. Bọn em cũng đoán điện thoại là vấn đề chính, nhưng hầu như không có cuộc gọi nào. Phần lớn tiếng ồn là tiếng cửa và tiếng bước chân.",
+      "Điều bất ngờ thật sự là thời điểm. Số đo tăng vọt mỗi giờ, khoảng mười phút đầu mỗi giờ, khi các buổi giảng kết thúc và mọi người đổi chỗ. Thời gian còn lại khá yên.",
+      "Thú vị đấy. Còn bảng hỏi thì sao?",
+      "Chỉ có sáu mươi hai câu trả lời trên khoảng bốn trăm. Em nghĩ là do bọn em gửi vào tuần tự học, lúc một nửa sinh viên đã về nhà.",
+      "Nhưng mình không nghĩ là vì thế. Những người đã bắt đầu làm phần lớn bỏ dở giữa chừng. Bốn mươi câu là quá nhiều. Lần sau mình sẽ rút xuống mười câu.",
+      "Còn các nhận xét viết tay thì các em sẽ làm gì? Tôi nghĩ cuối bảng hỏi có một câu hỏi mở.",
+      "Bọn em từng nghĩ sẽ bỏ chúng ra vì chúng quá đa dạng, hoặc đưa cho trưởng thư viện xem. Nhưng cuối cùng bọn em sẽ xếp chúng theo chủ đề, như ánh sáng, nhiệt độ và chỗ ngồi, rồi đếm mỗi chủ đề xuất hiện bao nhiêu lần.",
+      "Tốt. Một lời khuyên cho bài thuyết trình. Phần lớn sinh viên dành năm phút đầu nói về phương pháp. Đừng làm thế. Nhân viên thư viện muốn biết cần thay đổi gì, nên hãy mở đầu bằng khuyến nghị chính rồi sau đó giải thích các em đi đến đó thế nào. Các biểu đồ các em có là ổn rồi.",
+      "Trước khi nghe phần còn lại của cuộc thảo luận, bạn có thời gian xem câu 26 đến 30.",
+      "Bây giờ hãy nghe và trả lời câu 26 đến 30.",
+      "Vậy các bước tiếp theo của các em là gì?",
+      "Trước hết, bọn em cần kiểm tra bảng tính. Hai máy đo ghi sai ngày trong một tuần, nên có lẽ một số số đo bị đặt sai chỗ.",
+      "Sau đó bọn em muốn làm hai cuộc phỏng vấn ngắn. Bọn em định phỏng vấn sinh viên, nhưng đã có nhiều ý kiến của họ rồi. Những người nghe thư viện cả ngày là nhân viên vệ sinh, nên bọn em sẽ phỏng vấn hai người trong số họ.",
+      "Ý hay. Rồi sao nữa?",
+      "Rồi bọn em sẽ vẽ bản đồ từng tầng cho thấy chỗ ồn nhất, dùng màu sắc, vì một bảng số liệu sẽ chẳng có nhiều ý nghĩa với nhân viên.",
+      "Sau đó bọn em trình bày tất cả với hội đồng thư viện. Trưởng thư viện không tự đổi thời gian biểu được, nên hội đồng phải duyệt mọi đề xuất của bọn em.",
+      "Còn phần chấm điểm của các em?",
+      "Bước cuối là bản báo cáo viết. Hạn nộp là tuần mười hai, và bọn em sẽ đưa vào bất cứ điều gì hội đồng nói về ý tưởng của bọn em.",
+      "Hết Phần 3."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Lena": "af_sarah",
+      "Tomas": "am_adam",
+      "Dr Hale": "bf_emma"
+    },
+    "allow": [
+      "seminar",
+      "librarian",
+      "meters",
+      "questionnaire",
+      "footsteps",
+      "readings",
+      "spreadsheet",
+      "cleaners",
+      "committee",
+      "timetable",
+      "assessment",
+      "lectures"
+    ],
+    "audio": {
+      "file": "a/m-a1-l3.mp3",
+      "dur": 259.3,
+      "voices": [
+        "bm_george",
+        "af_sarah",
+        "am_adam",
+        "bf_emma"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "l-mcq",
+        "instr": "Choose the correct letter, A, B or C.",
+        "items": [
+          {
+            "id": "m-a1-l3-01",
+            "q": "Why did the students choose the library for their project?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Their tutor recommended it."
+              },
+              {
+                "k": "B",
+                "t": "A member of staff asked them for help."
+              },
+              {
+                "k": "C",
+                "t": "Other students had complained about it."
+              }
+            ],
+            "ans": "B",
+            "b": 6,
+            "ev": {
+              "p": 4,
+              "s": "the head librarian came to us"
+            },
+            "why": "Lena nói điều quyết định là trưởng thư viện tự tìm đến và nhờ tìm hiểu vì sao tầng ba bị phàn nàn.",
+            "wrong": {
+              "A": "Giảng viên gợi ý căng tin, không phải thư viện.",
+              "C": "Bạn cùng nhóm phàn nàn về Wi-Fi, và đó không phải lý do quyết định."
+            }
+          },
+          {
+            "id": "m-a1-l3-02",
+            "q": "What surprised the students about the sound measurements?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Noise rose sharply at the start of each hour."
+              },
+              {
+                "k": "B",
+                "t": "The silent floor was the noisiest."
+              },
+              {
+                "k": "C",
+                "t": "Phone calls were the main source of the noise they recorded."
+              }
+            ],
+            "ans": "A",
+            "b": 6.5,
+            "ev": {
+              "p": 7,
+              "s": "The real surprise was the timing."
+            },
+            "why": "Lena nói điều bất ngờ là thời điểm: số đo tăng vọt khoảng mười phút đầu mỗi giờ.",
+            "wrong": {
+              "B": "Tầng yên lặng thực ra là yên tĩnh nhất, đúng như phải thế.",
+              "C": "Hầu như không có cuộc gọi; tiếng ồn chủ yếu là cửa và bước chân."
+            }
+          },
+          {
+            "id": "m-a1-l3-03",
+            "q": "What does Lena think caused the low response rate?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "the timing of the survey"
+              },
+              {
+                "k": "B",
+                "t": "the number of questions"
+              },
+              {
+                "k": "C",
+                "t": "a lack of interest in the topic"
+              }
+            ],
+            "ans": "B",
+            "b": 6.5,
+            "ev": {
+              "p": 10,
+              "s": "Forty questions was far too many."
+            },
+            "why": "Lena không đồng ý với Tomas: người làm bỏ dở giữa chừng vì bốn mươi câu là quá nhiều.",
+            "wrong": {
+              "A": "Đó là ý của Tomas (gửi vào tuần tự học); Lena nói \"I don't think that was it\".",
+              "C": "Không ai nói sinh viên không quan tâm đến đề tài."
+            },
+            "trap": "Câu hỏi hỏi ý của Lena; ý của Tomas được nói trước để gây nhiễu."
+          },
+          {
+            "id": "m-a1-l3-04",
+            "q": "What will the students do with the written comments?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "organise them by topic"
+              },
+              {
+                "k": "B",
+                "t": "pass them to the librarian"
+              },
+              {
+                "k": "C",
+                "t": "leave them out of the analysis"
+              }
+            ],
+            "ans": "A",
+            "b": 6.5,
+            "ev": {
+              "p": 12,
+              "s": "we're going to sort them into themes"
+            },
+            "why": "Cuối cùng hai bạn sẽ xếp nhận xét theo chủ đề (ánh sáng, nhiệt độ, chỗ ngồi) và đếm tần suất.",
+            "wrong": {
+              "B": "Họ từng nghĩ đưa cho trưởng thư viện nhưng không chọn cách đó.",
+              "C": "Họ từng nghĩ bỏ ra nhưng không chọn cách đó."
+            }
+          },
+          {
+            "id": "m-a1-l3-05",
+            "q": "What is Dr Hale's advice about the presentation?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Reduce the number of charts."
+              },
+              {
+                "k": "B",
+                "t": "Explain the research method in more detail."
+              },
+              {
+                "k": "C",
+                "t": "Begin with the main recommendation."
+              }
+            ],
+            "ans": "C",
+            "b": 7,
+            "ev": {
+              "p": 13,
+              "s": "open with your main recommendation"
+            },
+            "why": "Giảng viên khuyên mở đầu bằng khuyến nghị chính rồi mới giải thích cách làm.",
+            "wrong": {
+              "A": "Giảng viên nói các biểu đồ \"fine as they are\".",
+              "B": "Giảng viên khuyên không dành năm phút đầu cho phương pháp."
+            }
+          }
+        ]
+      },
+      {
+        "qtype": "l-flow",
+        "instr": "Complete the flow-chart below. Write ONE WORD ONLY for each answer.",
+        "items": [
+          {
+            "id": "m-a1-l3-06",
+            "q": "Check the ___ because some readings have the wrong date",
+            "ans": {
+              "accept": [
+                "spreadsheet"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 17,
+              "s": "First, we need to check the spreadsheet."
+            },
+            "why": "Bước đầu là kiểm tra bảng tính, vì hai máy đo ghi sai ngày trong một tuần."
+          },
+          {
+            "id": "m-a1-l3-07",
+            "q": "Interview two ___",
+            "ans": {
+              "accept": [
+                "cleaners"
+              ]
+            },
+            "limit": 1,
+            "b": 7,
+            "ev": {
+              "p": 18,
+              "s": "so we'll interview two of them"
+            },
+            "why": "Hai bạn đổi ý: không phỏng vấn sinh viên mà phỏng vấn hai nhân viên vệ sinh, người nghe thư viện cả ngày (\"The people who hear the library all day are the cleaners\").",
+            "wrong": {
+              "students": "Họ định phỏng vấn sinh viên nhưng đã đổi ý vì có đủ ý kiến sinh viên rồi."
+            }
+          },
+          {
+            "id": "m-a1-l3-08",
+            "q": "Draw a coloured ___ of each floor",
+            "ans": {
+              "accept": [
+                "map"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 20,
+              "s": "Then we'll draw a map of each floor"
+            },
+            "why": "Hai bạn sẽ vẽ bản đồ từng tầng bằng màu thay cho bảng số.",
+            "wrong": {
+              "table": "Bảng số liệu là thứ họ nói sẽ không có nhiều ý nghĩa với nhân viên."
+            }
+          },
+          {
+            "id": "m-a1-l3-09",
+            "q": "Present findings to the library ___",
+            "ans": {
+              "accept": [
+                "committee"
+              ]
+            },
+            "limit": 1,
+            "b": 7,
+            "ev": {
+              "p": 21,
+              "s": "we present everything to the library committee"
+            },
+            "why": "Trình bày với hội đồng thư viện, vì trưởng thư viện không tự đổi thời gian biểu được.",
+            "wrong": {
+              "librarian": "Trưởng thư viện không có quyền tự quyết; hội đồng mới duyệt đề xuất."
+            }
+          },
+          {
+            "id": "m-a1-l3-10",
+            "q": "Submit the written ___ in week twelve",
+            "ans": {
+              "accept": [
+                "report"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 23,
+              "s": "The last step is the written report."
+            },
+            "why": "Bước cuối là nộp báo cáo viết vào tuần mười hai."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-a1-l4",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt"
+    ],
+    "level": "C1",
+    "band": 7,
+    "title": "Lecture: Labels in museums",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 4. You will hear a lecture about the labels that museums place next to objects. First, you have some time to look at questions 31 to 40.",
+        "pause": 45
+      },
+      {
+        "sp": "N",
+        "t": "Now listen carefully and answer questions 31 to 40."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Today I want to look at something most museum visitors barely notice: the small printed label next to each object. Labels seem trivial, but they decide a great deal about what people actually learn on a visit."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "I'll divide the talk into three parts: how labels were written in the past, what research on visitors has shown, and how one museum tried to put that research into practice."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "In the nineteenth century, labels were written by curators, and it's often said they were written for wealthy collectors. In fact, the main audience the curators had in mind was other scholars, people who would judge their expertise, which explains the dense, technical language."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "There was also a practical problem. Labels were usually fixed far too high for children to read, often at the eye level of a tall adult, simply because that's where the curators themselves stood."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Now, when researchers started timing visitors, the results were humbling. People spend, on average, about eight seconds reading a label. Not eighty, as one optimistic curator once claimed, but eight."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Some labels did much better than others, though. You might expect a striking date or a famous name to draw people in. The research found something different: the labels people actually finished were the ones that opened with a question, such as, why would anyone build a boat with no nails?"
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Length mattered too. Above about fifty words, most visitors simply moved on, however interesting the text was."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Position mattered more than anyone expected, as well. When the same label was moved from beside an object to directly below it, noticeably more people read it, probably because their eyes were already moving downwards from the object itself."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Let me now describe a redesign project at a regional museum, which rewrote every label in its collection over two years. Before writing a single word, the team spent several weeks simply watching visitors, noting where they stopped and what they pointed at. The first change was the language. Technical terms weren't banned, but each one was explained by comparing it with an everyday object. A loom, for instance, was described as working rather like a very large comb."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Second, wherever it was known, the label now gave the name of the person who made the object. Older labels named the donor, the person who gave it to the museum, but visitors told the team they cared far more about the maker."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Third, the physical labels changed. White labels reflected the gallery lights and were hard to read from an angle, so the text was printed on grey panels, which reduced the glare considerably. Black was tried first, but people found white text tiring to read."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "So what happened? Visitors stayed longer in almost every room, but the biggest change was in the textile gallery, which had previously been the least popular room in the museum. The time people spent there almost doubled."
+      },
+      {
+        "sp": "Lecturer",
+        "t": "Not everyone was pleased, of course. Teachers bringing school groups were generally positive. The complaints came mainly from historians, who felt that some of the comparisons made the objects seem simpler than they really were. That's a fair criticism, and it leads us to the question of accuracy, which we'll look at next week."
+      },
+      {
+        "sp": "N",
+        "t": "That is the end of Part 4. You now have two minutes to check your answers."
+      }
+    ],
+    "vi": [
+      "Phần 4. Bạn sẽ nghe một bài giảng về các tấm nhãn mà bảo tàng đặt cạnh hiện vật. Trước tiên, bạn có thời gian xem câu 31 đến 40.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 31 đến 40.",
+      "Hôm nay tôi muốn bàn về một thứ mà hầu hết khách tham quan bảo tàng hầu như không để ý: tấm nhãn in nhỏ cạnh mỗi hiện vật. Nhãn có vẻ vụn vặt, nhưng nó quyết định rất nhiều điều người ta thực sự học được trong một chuyến tham quan.",
+      "Tôi sẽ chia bài giảng thành ba phần: nhãn được viết thế nào trong quá khứ, nghiên cứu về khách tham quan cho thấy gì, và một bảo tàng đã thử áp dụng nghiên cứu đó vào thực tế ra sao.",
+      "Ở thế kỷ mười chín, nhãn do người phụ trách bảo tàng viết, và người ta hay nói rằng nhãn được viết cho giới sưu tầm giàu có. Thật ra, đối tượng chính mà người phụ trách nghĩ tới là các học giả khác, những người sẽ đánh giá chuyên môn của họ, điều này giải thích vì sao ngôn ngữ dày đặc và chuyên môn.",
+      "Còn có một vấn đề thực tế. Nhãn thường được gắn quá cao để trẻ em đọc được, thường ngang tầm mắt một người lớn cao, chỉ vì đó là chỗ chính người phụ trách đứng.",
+      "Khi các nhà nghiên cứu bắt đầu bấm giờ khách tham quan, kết quả khiến người ta khiêm tốn hơn. Trung bình mỗi người dành khoảng tám giây đọc một tấm nhãn. Không phải tám mươi, như một người phụ trách lạc quan từng khẳng định, mà là tám.",
+      "Tuy vậy, có những tấm nhãn hiệu quả hơn hẳn. Có thể bạn nghĩ một mốc thời gian ấn tượng hay một cái tên nổi tiếng sẽ thu hút người đọc. Nghiên cứu lại thấy điều khác: những tấm nhãn người ta thực sự đọc hết là những tấm mở đầu bằng một câu hỏi, chẳng hạn, vì sao lại có người đóng một con thuyền không dùng đinh?",
+      "Độ dài cũng quan trọng. Quá khoảng năm mươi từ thì phần lớn khách đi tiếp, dù nội dung có hay đến đâu.",
+      "Vị trí cũng quan trọng hơn mọi người tưởng. Khi cùng một tấm nhãn được chuyển từ cạnh hiện vật xuống ngay bên dưới, số người đọc tăng rõ rệt, có lẽ vì mắt họ vốn đang di chuyển xuống từ chính hiện vật.",
+      "Giờ tôi xin mô tả một dự án thiết kế lại ở một bảo tàng cấp vùng, nơi đã viết lại mọi tấm nhãn trong bộ sưu tập trong hai năm. Trước khi viết chữ nào, nhóm dành vài tuần chỉ quan sát khách tham quan, ghi lại chỗ họ dừng và thứ họ chỉ tay vào. Thay đổi đầu tiên là ngôn ngữ. Thuật ngữ chuyên môn không bị cấm, nhưng mỗi thuật ngữ được giải thích bằng cách so với một đồ vật thường ngày. Chẳng hạn, khung dệt được mô tả là hoạt động khá giống một cái lược rất lớn.",
+      "Thứ hai, ở chỗ nào biết được, nhãn nay ghi tên người làm ra hiện vật. Nhãn cũ ghi tên người hiến tặng, người đã trao hiện vật cho bảo tàng, nhưng khách tham quan nói với nhóm rằng họ quan tâm đến người làm ra hơn nhiều.",
+      "Thứ ba, chính tấm nhãn thay đổi. Nhãn trắng phản chiếu đèn phòng trưng bày và khó đọc khi nhìn nghiêng, nên chữ được in trên tấm màu xám, làm giảm loá đáng kể. Ban đầu thử màu đen, nhưng mọi người thấy đọc chữ trắng rất mệt.",
+      "Vậy kết quả ra sao? Khách ở lâu hơn trong gần như mọi phòng, nhưng thay đổi lớn nhất là ở phòng trưng bày hàng dệt, trước đó là phòng kém thu hút nhất bảo tàng. Thời gian người ta ở đó tăng gần gấp đôi.",
+      "Tất nhiên không phải ai cũng hài lòng. Giáo viên dẫn các đoàn học sinh nhìn chung tích cực. Lời phàn nàn đến chủ yếu từ các nhà sử học, họ cho rằng một số phép so sánh làm hiện vật có vẻ đơn giản hơn thực tế. Đó là một lời phê bình xác đáng, và nó dẫn chúng ta đến vấn đề độ chính xác, mà ta sẽ xem xét vào tuần sau.",
+      "Hết Phần 4. Bây giờ bạn có hai phút để soát lại bài."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Lecturer": "bm_lewis"
+    },
+    "allow": [
+      "curators",
+      "scholars",
+      "expertise",
+      "collectors",
+      "humbling",
+      "optimistic",
+      "loom",
+      "comb",
+      "donor",
+      "glare",
+      "textile",
+      "historians",
+      "galleries",
+      "gallery",
+      "nails",
+      "regional",
+      "panels",
+      "dense",
+      "trivial",
+      "considerably",
+      "previously",
+      "criticism"
+    ],
+    "audio": {
+      "file": "a/m-a1-l4.mp3",
+      "dur": 243.3,
+      "voices": [
+        "bm_george",
+        "bm_lewis"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "l-form",
+        "instr": "Complete the notes below. Write ONE WORD AND/OR A NUMBER for each answer.",
+        "items": [
+          {
+            "id": "m-a1-l4-01",
+            "q": "Early labels were written mainly for other ___",
+            "ans": {
+              "accept": [
+                "scholars"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 4,
+              "s": "the main audience the curators had in mind was other scholars"
+            },
+            "why": "Giảng viên bác bỏ ý \"viết cho giới sưu tầm giàu có\": đối tượng chính là các học giả khác.",
+            "wrong": {
+              "collectors": "Đây là điều \"người ta hay nói\", bị giảng viên bác bằng \"In fact…\"."
+            },
+            "trap": "\"It's often said… In fact…\": thông tin sau \"In fact\" mới là đáp án."
+          },
+          {
+            "id": "m-a1-l4-02",
+            "q": "Labels were often placed too ___ for children",
+            "ans": {
+              "accept": [
+                "high"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 6.5,
+            "ev": {
+              "p": 5,
+              "s": "Labels were usually fixed far too high for children to read"
+            },
+            "why": "Nhãn thường gắn quá cao để trẻ em đọc được."
+          },
+          {
+            "id": "m-a1-l4-03",
+            "q": "Average time spent reading a label: ___ seconds",
+            "ans": {
+              "accept": [
+                "8",
+                "eight"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 6.5,
+            "ev": {
+              "p": 6,
+              "s": "about eight seconds reading a label"
+            },
+            "why": "Trung bình khoảng tám giây, không phải tám mươi.",
+            "wrong": {
+              "80": "Tám mươi là con số một người phụ trách lạc quan từng khẳng định, bị bác ngay."
+            }
+          },
+          {
+            "id": "m-a1-l4-04",
+            "q": "Labels that start with a ___ were more often read to the end",
+            "ans": {
+              "accept": [
+                "question"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 7,
+              "s": "the ones that opened with a question"
+            },
+            "why": "Nhãn được đọc hết là nhãn mở đầu bằng một câu hỏi, không phải mốc thời gian hay tên nổi tiếng.",
+            "wrong": {
+              "date": "Mốc thời gian ấn tượng là điều \"có thể bạn nghĩ\", nghiên cứu thấy khác.",
+              "name": "Tên nổi tiếng cũng là phỏng đoán bị nghiên cứu bác."
+            }
+          },
+          {
+            "id": "m-a1-l4-05",
+            "q": "Most visitors ignored labels longer than ___ words",
+            "ans": {
+              "accept": [
+                "50",
+                "fifty"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 6.5,
+            "ev": {
+              "p": 8,
+              "s": "Above about fifty words, most visitors simply moved on"
+            },
+            "why": "Quá khoảng năm mươi từ thì phần lớn khách bỏ đi."
+          },
+          {
+            "id": "m-a1-l4-06",
+            "q": "Technical terms were explained by comparison with an everyday ___",
+            "ans": {
+              "accept": [
+                "object"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7.5,
+            "ev": {
+              "p": 10,
+              "s": "each one was explained by comparing it with an everyday object"
+            },
+            "why": "Mỗi thuật ngữ được giải thích bằng cách so với một đồ vật thường ngày (ví dụ khung dệt giống cái lược lớn).",
+            "wrong": {
+              "comb": "Cái lược chỉ là một ví dụ của phép so sánh, không phải điều ghi chú hỏi."
+            }
+          },
+          {
+            "id": "m-a1-l4-07",
+            "q": "Labels now include the ___'s name",
+            "ans": {
+              "accept": [
+                "maker"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7.5,
+            "ev": {
+              "p": 11,
+              "s": "they cared far more about the maker"
+            },
+            "why": "Nhãn mới ghi tên người làm ra hiện vật; khách nói họ quan tâm đến \"the maker\" hơn người hiến tặng.",
+            "wrong": {
+              "donor": "Tên người hiến tặng là cách ghi của nhãn cũ."
+            }
+          },
+          {
+            "id": "m-a1-l4-08",
+            "q": "Text was printed on ___ panels to reduce glare",
+            "ans": {
+              "accept": [
+                "grey",
+                "gray"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 12,
+              "s": "so the text was printed on grey panels"
+            },
+            "why": "Chữ in trên tấm màu xám để giảm loá; màu trắng bị loá, màu đen làm chữ trắng khó đọc.",
+            "wrong": {
+              "black": "Màu đen được thử trước nhưng bị bỏ vì chữ trắng đọc mệt.",
+              "white": "Nhãn trắng gây loá, là vấn đề cần sửa."
+            }
+          },
+          {
+            "id": "m-a1-l4-09",
+            "q": "The largest increase in visiting time was in the ___ gallery",
+            "ans": {
+              "accept": [
+                "textile",
+                "textiles"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7,
+            "ev": {
+              "p": 13,
+              "s": "the biggest change was in the textile gallery"
+            },
+            "why": "Thay đổi lớn nhất ở phòng hàng dệt, nơi thời gian ở lại tăng gần gấp đôi."
+          },
+          {
+            "id": "m-a1-l4-10",
+            "q": "Most complaints came from ___",
+            "ans": {
+              "accept": [
+                "historians"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 7.5,
+            "ev": {
+              "p": 14,
+              "s": "The complaints came mainly from historians"
+            },
+            "why": "Lời phàn nàn chủ yếu từ các nhà sử học; giáo viên nhìn chung tích cực.",
+            "wrong": {
+              "teachers": "Giáo viên \"generally positive\", không phải người phàn nàn."
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

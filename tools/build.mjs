@@ -72,7 +72,9 @@ if (types.length) {
 // Danh mục đề (nhỏ, đóng vào mô-đun để liệt kê đề mà không phải tải gói). Số điểm mỗi kỹ năng tính từ nội dung thật.
 for (const t of mockTests) {
   const n = sk => groups.filter(g => t[sk].includes(g.part)).reduce((s, g) => s + g.items.reduce((k, it) => k + (Array.isArray(it.ans) ? it.ans.length : 1), 0), 0);
-  index.mocks.push({ id: t.id, exam: t.exam, title: t.title, L: t.L, R: t.R, ...(t.adj ? { adj: t.adj } : {}), n: { L: n('L'), R: n('R') } });
+  // Thời lượng âm thanh phần Nghe (giây), để trang đầu đề nói đúng thời gian thật thay vì số danh nghĩa.
+  const dur = Math.round([...new Set(groups.filter(g => t.L.includes(g.part)).map(g => g.part))].reduce((s, p) => s + (groups.find(g => g.part === p).audio?.dur ?? 0), 0));
+  index.mocks.push({ id: t.id, exam: t.exam, title: t.title, L: t.L, R: t.R, ...(t.adj ? { adj: t.adj } : {}), n: { L: n('L'), R: n('R') }, dur });
 }
 for (const f of readdirSync(P('data/exam'))) if (!keep.has(f)) unlinkSync(P('data/exam/' + f));
 mkdirSync(P('src/exam/gen'), { recursive: true });

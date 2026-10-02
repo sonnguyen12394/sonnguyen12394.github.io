@@ -25,7 +25,8 @@ export interface MockView {
 }
 
 export const mmss = (ms: number): string => { const s = Math.max(0, Math.ceil(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
-const minutesOf = (t: MockEntry, sk: MSkill): number => MOCK_FORMAT[t.exam][sk].minutes;
+// Nghe: thời lượng âm thanh thật + thời gian soát; Đọc: thời gian của đề.
+const minutesOf = (t: MockEntry, sk: MSkill): number => sk === 'L' && t.dur ? Math.round((t.dur + (MOCK_FORMAT[t.exam].L.checkSecs ?? 0)) / 60) : MOCK_FORMAT[t.exam][sk].minutes;
 
 export function mocksFor(exam: string): MockEntry[] {
   return (IDX.mocks ?? []).filter(m => m.exam === exam);
@@ -65,9 +66,10 @@ export function viewMockIntro(c: Ctx, t: MockEntry | undefined, loading: string,
   const busy = !!loading;
   return `<section class="stack"><span class="eyebrow">Đề thi thử · ${esc(EXAM_NAME[t.exam])}</span><h1>${esc(t.title)}</h1></section>
   <section class="panel stack"><ul class="sklist">
-    <li><b>Nghe</b>: ${t.n.L} câu, ${isV ? '3 phần (thông báo ngắn, hội thoại, bài nói)' : '4 phần'}, khoảng ${f.L.minutes} phút. Âm thanh <b>phát một lần</b>, không tạm dừng, có thời gian đọc câu hỏi như đề thật; nghe xong có ${Math.round((f.L.checkSecs ?? 0) / 60)} phút soát lại.</li>
+    <li><b>Nghe</b>: ${t.n.L} câu, ${isV ? '3 phần (thông báo ngắn, hội thoại, bài nói)' : '4 phần'}, khoảng ${minutesOf(t, 'L')} phút. Âm thanh <b>phát một lần</b>, không tạm dừng, có thời gian đọc câu hỏi như đề thật; nghe xong có ${Math.round((f.L.checkSecs ?? 0) / 60)} phút soát lại.</li>
     <li><b>Đọc</b>: ${t.n.R} câu, ${f.R.minutes} phút. Hết giờ app tự nộp bài.</li>
     <li>Đeo tai nghe, ngồi chỗ yên tĩnh. Bị gián đoạn (tắt máy, đóng app) thì mở lại làm tiếp được.</li>
+    <li>Bài đọc, bài nghe do app soạn mới theo định dạng công khai của đề, không lấy từ đề thật. Người, địa danh, nghiên cứu và số liệu trong bài là hư cấu để luyện tập, đừng dùng làm nguồn kiến thức.</li>
     <li>Điểm là <b>ước tính</b> theo bảng quy đổi ${isV ? 'của app (tỉ lệ đúng × 10, Quyết định 729 không công bố bảng theo số câu)' : 'chính thức của IELTS'}, không phải điểm thi thật.</li></ul>
     ${other ? `<p class="warnt" role="alert">Bạn đang làm dở một đề khác. Bắt đầu đề này sẽ bỏ bài đang dở.</p>` : ''}
     ${err ? `<p class="warnt" role="alert">${esc(err)}</p>` : ''}
@@ -75,7 +77,7 @@ export function viewMockIntro(c: Ctx, t: MockEntry | undefined, loading: string,
     <div class="row"><button class="btn primary" data-x="mockstart" data-t="${esc(t.id)}" data-m="both"${busy ? ' disabled' : ''}>Làm cả đề (Nghe rồi Đọc)</button>
       <button class="btn" data-x="mockstart" data-t="${esc(t.id)}" data-m="L"${busy ? ' disabled' : ''}>Chỉ Nghe</button>
       <button class="btn" data-x="mockstart" data-t="${esc(t.id)}" data-m="R"${busy ? ' disabled' : ''}>Chỉ Đọc</button></div>
-    <p class="hint">Lần đầu cần mạng để tải đề và âm thanh (khoảng ${Math.round(f.L.minutes * 0.25)} MB); sau đó làm được khi mất mạng. Không nghe được? Chọn "Chỉ Đọc".</p></section>
+    <p class="hint">Lần đầu cần mạng để tải đề và âm thanh (khoảng ${Math.max(1, Math.round((t.dur || f.L.minutes * 60) * 4 / 1024))} MB); sau đó làm được khi mất mạng. Không nghe được? Chọn "Chỉ Đọc".</p></section>
   ${res ? `<section class="panel stack"><h3>Bài đã làm</h3><ul class="sklist">${res}</ul></section>` : ''}
   ${back('Danh sách đề', 'mocks')}`;
 }
