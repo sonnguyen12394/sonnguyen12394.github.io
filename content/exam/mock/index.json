@@ -48,6 +48,24 @@
     ]
   },
   {
+    "id": "g1",
+    "exam": "ielts-gt",
+    "title": "IELTS General Training – Đề 1",
+    "L": [
+      "m-a1-l1",
+      "m-a1-l2",
+      "m-a1-l3",
+      "m-a1-l4"
+    ],
+    "R": [
+      "m-g1-r1",
+      "m-g1-r2",
+      "m-g1-r3",
+      "m-g1-r4",
+      "m-g1-r5"
+    ]
+  },
+  {
     "id": "v1",
     "exam": "vstep",
     "title": "VSTEP – Đề 1",

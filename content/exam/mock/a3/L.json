@@ -190,6 +190,15 @@
       "identification",
       "quarry"
     ],
+    "audio": {
+      "file": "a/m-a3-l1.mp3",
+      "dur": 249.2,
+      "voices": [
+        "bm_george",
+        "bm_lewis",
+        "bf_isabella"
+      ]
+    },
     "sets": [
       {
         "qtype": "l-form",
@@ -565,6 +574,14 @@
       "dressing-up",
       "flashes"
     ],
+    "audio": {
+      "file": "a/m-a3-l2.mp3",
+      "dur": 224.9,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ]
+    },
     "sets": [
       {
         "qtype": "l-matching",
@@ -956,6 +973,16 @@
       "draw",
       "digging"
     ],
+    "audio": {
+      "file": "a/m-a3-l3.mp3",
+      "dur": 249.1,
+      "voices": [
+        "bm_george",
+        "bf_emma",
+        "af_sarah",
+        "am_adam"
+      ]
+    },
     "sets": [
       {
         "qtype": "l-mcq",
@@ -1324,6 +1351,14 @@
       "traps",
       "incidentally"
     ],
+    "audio": {
+      "file": "a/m-a3-l4.mp3",
+      "dur": 212,
+      "voices": [
+        "bm_george",
+        "bm_lewis"
+      ]
+    },
     "sets": [
       {
         "qtype": "l-sentence",
