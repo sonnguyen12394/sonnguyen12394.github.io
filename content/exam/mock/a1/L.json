@@ -106,7 +106,7 @@
       },
       {
         "sp": "Dev",
-        "t": "Most people worry about fire safety, but we keep extinguishers at every second stall, so you don't need your own. And you mentioned you have a table already. What I will need to see is your insurance certificate. Just bring a copy and give it to whoever is on the information tent."
+        "t": "Most people worry about fire safety, but we keep extinguishers at every second stall, so you don't need your own. And the market's insurance covers all traders, so there's no certificate to show. What we don't provide is furniture, so you'll need to bring a folding table."
       },
       {
         "sp": "Joanna",
@@ -114,15 +114,15 @@
       },
       {
         "sp": "Dev",
-        "t": "The multi-storey is the obvious choice, but the entrance is too low for most vans. Some traders used to leave theirs behind the library, but that space now belongs to the new flats. So the best place is Mill Lane. It's free after five, and it's only a two-minute walk."
+        "t": "The multi-storey is the obvious choice, but the entrance is too low for most vans. Mill Lane used to be popular, but it's residents only now. So the best place is behind the library. It's free after five, and it's only a two-minute walk."
       },
       {
         "sp": "Joanna",
-        "t": "Mill Lane, fine. And what time should I arrive?"
+        "t": "Behind the library, fine. And what time should I arrive?"
       },
       {
         "sp": "Dev",
-        "t": "We ask everyone to be here by half past four. There's no briefing to attend, and our volunteers only start at six, so you'd be unloading on your own anyway. The real reason is that the bridge closes to all vehicles at five, and after that you can't get a van anywhere near the stalls."
+        "t": "We ask everyone to be here by half past four. The bridge doesn't close to vehicles until seven, and our volunteers only start at six, so you'd be unloading on your own anyway. The real reason is the safety briefing at quarter to five. Every trader has to attend it, every week, even people who've been here for years."
       },
       {
         "sp": "Joanna",
@@ -166,11 +166,11 @@
       "Trước khi nghe phần còn lại của cuộc trò chuyện, bạn có thời gian xem câu 7 đến 10.",
       "Bây giờ hãy nghe và trả lời câu 7 đến 10.",
       "Tối đầu tiên tôi có cần mang theo gì không?",
-      "Phần lớn mọi người lo về an toàn cháy nổ, nhưng chúng tôi đặt bình chữa cháy cách một gian một bình, nên chị không cần mang của mình. Và chị có nói là đã có bàn rồi. Thứ tôi cần xem là giấy chứng nhận bảo hiểm của chị. Chị chỉ cần mang một bản sao và đưa cho người trực ở lều thông tin.",
+      "Phần lớn mọi người lo về an toàn cháy nổ, nhưng chúng tôi đặt bình chữa cháy cách một gian một bình, nên chị không cần mang của mình. Bảo hiểm của chợ cũng bao cho mọi người bán, nên không cần trình giấy chứng nhận nào. Thứ chúng tôi không cung cấp là bàn ghế, nên chị cần mang một cái bàn gấp.",
       "Tôi sẽ làm vậy. Còn chỗ đỗ xe thì sao? Tôi có một chiếc xe tải nhỏ.",
-      "Bãi đỗ nhiều tầng là lựa chọn dễ thấy nhất, nhưng lối vào quá thấp với hầu hết xe tải. Trước đây vài người bán đỗ xe sau thư viện, nhưng chỗ đó giờ thuộc về khu căn hộ mới. Vì vậy chỗ tốt nhất là phố Mill Lane. Ở đó miễn phí sau năm giờ, và chỉ mất hai phút đi bộ.",
-      "Mill Lane, được. Tôi nên đến lúc mấy giờ?",
-      "Chúng tôi đề nghị mọi người có mặt trước bốn rưỡi. Không có buổi hướng dẫn nào cần dự, và tình nguyện viên sáu giờ mới bắt đầu, nên dù sao chị cũng tự dỡ hàng. Lý do thật là cây cầu cấm mọi xe từ năm giờ, sau đó chị không thể đưa xe tải tới gần các gian hàng được.",
+      "Bãi đỗ nhiều tầng là lựa chọn dễ thấy nhất, nhưng lối vào quá thấp với hầu hết xe tải. Phố Mill Lane từng được nhiều người chọn, nhưng giờ chỉ dành cho cư dân. Vì vậy chỗ tốt nhất là phía sau thư viện. Ở đó miễn phí sau năm giờ, và chỉ mất hai phút đi bộ.",
+      "Sau thư viện, được. Tôi nên đến lúc mấy giờ?",
+      "Chúng tôi đề nghị mọi người có mặt trước bốn rưỡi. Cây cầu bảy giờ mới cấm xe, và tình nguyện viên sáu giờ mới bắt đầu, nên dù sao chị cũng tự dỡ hàng. Lý do thật là buổi hướng dẫn an toàn lúc năm giờ kém mười lăm. Người bán nào cũng phải dự, tuần nào cũng vậy, kể cả người đã bán ở đây nhiều năm.",
       "Hợp lý. Tôi trả phí thế nào? Tôi mang tiền mặt đến tối hôm đó được không?",
       "Tiếc là chúng tôi đã thôi nhận tiền mặt từ mùa xuân năm ngoái. Chúng tôi cũng không giữ tiền đặt cọc nữa. Chị chỉ cần trả qua trang web của chúng tôi trước khi mỗi tháng bắt đầu. Tôi sẽ gửi đường dẫn qua email cho chị.",
       "Tuyệt. Cảm ơn anh nhiều, Dev.",
@@ -186,11 +186,15 @@
       "wax",
       "extinguishers",
       "sockets",
-      "multi-storey"
+      "multi-storey",
+      "certificate",
+      "furniture",
+      "briefing",
+      "residents"
     ],
     "audio": {
       "file": "a/m-a1-l1.mp3",
-      "dur": 283.4,
+      "dur": 283.2,
       "voices": [
         "bm_george",
         "bf_emma",
@@ -315,7 +319,8 @@
             "ans": {
               "accept": [
                 "28",
-                "twenty-eight"
+                "twenty-eight",
+                "£28"
               ]
             },
             "limit": 1,
@@ -343,27 +348,27 @@
             "opts": [
               {
                 "k": "A",
-                "t": "a copy of her insurance certificate"
+                "t": "a folding table for her lamps"
               },
               {
                 "k": "B",
-                "t": "a small fire extinguisher for her stall"
+                "t": "a copy of her insurance certificate"
               },
               {
                 "k": "C",
-                "t": "a folding table for her lamps"
+                "t": "a small fire extinguisher for her stall"
               }
             ],
             "ans": "A",
             "b": 5,
             "ev": {
               "p": 23,
-              "s": "What I will need to see is your insurance certificate."
+              "s": "so you'll need to bring a folding table"
             },
-            "why": "Dev nói thứ cần xem là giấy chứng nhận bảo hiểm, chỉ cần mang bản sao.",
+            "why": "Chợ không cung cấp bàn ghế nên Joanna phải mang bàn gấp.",
             "wrong": {
-              "B": "Chợ đặt sẵn bình chữa cháy cách một gian một bình, nên cô không cần mang.",
-              "C": "Joanna đã có bàn; Dev không yêu cầu mang bàn."
+              "B": "Bảo hiểm của chợ bao cho mọi người bán, không cần trình giấy.",
+              "C": "Chợ đặt sẵn bình chữa cháy cách một gian một bình."
             }
           },
           {
@@ -376,23 +381,23 @@
               },
               {
                 "k": "B",
-                "t": "behind the library"
+                "t": "in Mill Lane"
               },
               {
                 "k": "C",
-                "t": "in Mill Lane"
+                "t": "behind the library"
               }
             ],
             "ans": "C",
             "b": 5.5,
             "ev": {
               "p": 25,
-              "s": "So the best place is Mill Lane."
+              "s": "So the best place is behind the library."
             },
-            "why": "Bãi nhiều tầng có lối vào quá thấp, chỗ sau thư viện giờ thuộc khu căn hộ, nên chỗ tốt nhất là Mill Lane.",
+            "why": "Bãi nhiều tầng có lối vào quá thấp, Mill Lane chỉ dành cho cư dân, nên chỗ tốt nhất là sau thư viện.",
             "wrong": {
               "A": "Lối vào bãi nhiều tầng quá thấp với hầu hết xe tải.",
-              "B": "Chỗ sau thư viện nay thuộc khu căn hộ mới, không đỗ được nữa."
+              "B": "Mill Lane giờ chỉ dành cho cư dân."
             }
           },
           {
@@ -401,11 +406,11 @@
             "opts": [
               {
                 "k": "A",
-                "t": "There is a safety briefing for all traders."
+                "t": "Vehicles cannot cross the bridge after five."
               },
               {
                 "k": "B",
-                "t": "Vehicles cannot cross the bridge after five."
+                "t": "There is a safety briefing for all traders."
               },
               {
                 "k": "C",
@@ -416,12 +421,12 @@
             "b": 6,
             "ev": {
               "p": 27,
-              "s": "the bridge closes to all vehicles at five"
+              "s": "The real reason is the safety briefing at quarter to five."
             },
-            "why": "Dev nói lý do thật là cây cầu cấm mọi xe từ năm giờ.",
+            "why": "Lý do thật là buổi hướng dẫn an toàn lúc 4:45 mà mọi người bán phải dự.",
             "wrong": {
-              "A": "Dev nói rõ \"There's no briefing to attend\".",
-              "C": "Tình nguyện viên sáu giờ mới bắt đầu, nên người bán tự dỡ hàng."
+              "A": "Cầu bảy giờ mới cấm xe.",
+              "C": "Tình nguyện viên sáu giờ mới bắt đầu, người bán tự dỡ hàng."
             }
           },
           {
@@ -470,53 +475,49 @@
     "script": [
       {
         "sp": "N",
-        "t": "Part 2. You will hear a guide welcoming new members to a community workshop in an old mill. First, you have some time to look at questions 11 to 16.",
+        "t": "Part 2. You will hear a guide welcoming new members to a community workshop in an old mill. First, you have some time to look at questions 11 to 15.",
         "pause": 30
       },
       {
         "sp": "N",
-        "t": "Now listen carefully and answer questions 11 to 16."
+        "t": "Now listen carefully and answer questions 11 to 15."
       },
       {
         "sp": "Guide",
-        "t": "Good morning, everyone, and welcome to Harlow Mill. I'm Priya, and I look after the members here. Before we walk round, I want to explain how the building is used now, because the old names of the rooms can be a little misleading."
+        "t": "Good morning, everyone, and welcome to Harlow Mill. I'm Priya, and I look after the members here. Before we walk round, I want to explain how each part of the building is used, because things have moved around a lot since the mill closed."
       },
       {
         "sp": "Guide",
-        "t": "Let's start with the Weaving Hall, the big room right in front of you. There hasn't been a loom in it for sixty years. Because it has the strongest floor in the building, it's where we keep the 3-D printers and the laser cutter, which are surprisingly heavy."
+        "t": "Let's start with the North Room, the big room right in front of you. It has the strongest floor in the building, so that's where we keep the 3-D printers and the laser cutter, which are surprisingly heavy. People sometimes ask whether they can eat their lunch in there. Please don't: the dust from the cutter gets everywhere."
       },
       {
         "sp": "Guide",
-        "t": "Next to it is the Dye Shed. Nobody dyes anything there any more. The walls are almost a metre thick, so it's completely quiet inside, and we turned it into a small studio where members record music and podcasts."
+        "t": "Behind it is the Annexe. Its walls are almost a metre thick, so it's completely quiet inside, and we turned it into a small studio where members record music and podcasts. We did try holding the children's classes there at first, but the children found it far too gloomy."
       },
       {
         "sp": "Guide",
-        "t": "Then there's the Boiler House. You might think that would be the bicycle workshop, since it already has a concrete floor and drains, and we did try that. But it was too dark, so the bike repairs moved out, and now the Boiler House is simply where you can store large materials, like timber or sheets of metal, for up to a month."
+        "t": "Downstairs, the Lower Hall has a concrete floor and drains, so you might think it would be ideal for the bicycle workshop, and we did try that. But it was too dark, so the bike repairs moved out, and now the Lower Hall is simply where you can store large materials, like timber or sheets of metal, for up to a month."
       },
       {
         "sp": "Guide",
-        "t": "So where did the bikes go? To the Loading Bay, at the back. It has huge doors that open onto the street, so people can wheel their bikes straight in. On the second Saturday of each month, the bike stands are pushed aside and the space becomes our members' market, where you can sell anything you've made here."
+        "t": "So where did the bikes go? To the West Room, which has huge doors onto the street, so people can wheel their bikes straight in. On the second Saturday of each month we used to push the bike stands aside and hold our members' market there, but the market has now moved to the Glass Room upstairs, where there's far more light to show things off."
       },
       {
         "sp": "Guide",
-        "t": "Upstairs, the Counting Room used to hold the mill's accounts. It's the only room with comfortable chairs, so a lot of people assume it's the place for lunch, but food isn't allowed up there because of the carpets. It's where the children's classes are held on weekday afternoons."
-      },
-      {
-        "sp": "Guide",
-        "t": "If you want to eat, go right to the top, to the Roof Garden. There are tables, a kettle and a fridge, and on a clear day you can see the river."
+        "t": "The Glass Room is also where you can eat: there are tables, a kettle and a fridge, and on a clear day you can see the river. And at the very top is the Tower Room. It's small and it has the only carpet in the building, so that's where the children's classes are held on weekday afternoons. No food up there, please."
       },
       {
         "sp": "N",
-        "t": "Before you hear the rest of the talk, you have some time to look at questions 17 to 20.",
+        "t": "Before you hear the rest of the talk, you have some time to look at questions 16 to 20.",
         "pause": 30
       },
       {
         "sp": "N",
-        "t": "Now listen and answer questions 17 to 20."
+        "t": "Now listen and answer questions 16 to 20."
       },
       {
         "sp": "Guide",
-        "t": "Now, a few things about your first month. Everyone has to complete a safety induction before using any machine, even if you've used the same machine somewhere else. It takes about an hour and you can book it at the front desk."
+        "t": "Now, a few things about your first month. During that month, everyone has to complete a safety induction, and you can't use any machine until you have, even if you've used the same machine somewhere else. It used to take about forty minutes, but it now takes two hours, because it covers the laser cutter as well. A full half-day course is only for people who want to teach other members. You can book it at the front desk."
       },
       {
         "sp": "Guide",
@@ -537,18 +538,17 @@
       }
     ],
     "vi": [
-      "Phần 2. Bạn sẽ nghe một hướng dẫn viên chào đón thành viên mới tại một xưởng chế tác cộng đồng trong một nhà máy cũ. Trước tiên, bạn có thời gian xem câu 11 đến 16.",
-      "Bây giờ hãy nghe kỹ và trả lời câu 11 đến 16.",
-      "Chào buổi sáng mọi người, chào mừng đến Harlow Mill. Tôi là Priya, tôi phụ trách các thành viên ở đây. Trước khi đi một vòng, tôi muốn giải thích toà nhà hiện được dùng thế nào, vì tên cũ của các phòng có thể hơi gây hiểu lầm.",
-      "Bắt đầu với Weaving Hall, căn phòng lớn ngay trước mặt các bạn. Sáu mươi năm nay trong đó không còn khung dệt nào. Vì phòng có sàn chắc nhất toà nhà, chúng tôi đặt máy in 3-D và máy cắt laser ở đó, những thứ này nặng hơn ta tưởng.",
-      "Cạnh đó là Dye Shed. Không còn ai nhuộm gì ở đó nữa. Tường dày gần một mét nên bên trong hoàn toàn yên tĩnh, và chúng tôi biến nó thành một phòng thu nhỏ để thành viên thu âm nhạc và podcast.",
-      "Rồi đến Boiler House. Có thể bạn nghĩ đó là xưởng sửa xe đạp, vì phòng đã có sàn bê tông và cống thoát nước, và chúng tôi từng thử như vậy. Nhưng phòng quá tối nên việc sửa xe chuyển đi, và giờ Boiler House chỉ là nơi bạn cất vật liệu lớn như gỗ hay tấm kim loại, tối đa một tháng.",
-      "Vậy xe đạp chuyển đi đâu? Tới Loading Bay ở phía sau. Nơi đó có những cánh cửa rất lớn mở ra đường, nên mọi người dắt thẳng xe vào được. Vào thứ Bảy thứ hai mỗi tháng, giá để xe được đẩy sang bên và nơi này thành chợ của thành viên, nơi bạn bán được bất cứ thứ gì mình làm ra ở đây.",
-      "Trên lầu, Counting Room từng là nơi giữ sổ sách của nhà máy. Đó là phòng duy nhất có ghế êm, nên nhiều người tưởng đó là chỗ ăn trưa, nhưng trên đó không được mang đồ ăn vì có thảm. Đó là nơi tổ chức lớp học cho trẻ em vào các buổi chiều trong tuần.",
-      "Nếu muốn ăn, hãy lên tận trên cùng, tới Roof Garden. Ở đó có bàn, ấm đun nước và tủ lạnh, ngày trời trong bạn còn nhìn thấy sông.",
-      "Trước khi nghe phần còn lại của bài nói, bạn có thời gian xem câu 17 đến 20.",
-      "Bây giờ hãy nghe và trả lời câu 17 đến 20.",
-      "Giờ là vài điều về tháng đầu tiên của các bạn. Ai cũng phải hoàn thành buổi hướng dẫn an toàn trước khi dùng bất kỳ máy nào, kể cả khi bạn đã dùng đúng loại máy đó ở nơi khác. Buổi đó mất khoảng một tiếng và bạn đặt lịch ở quầy lễ tân.",
+      "Phần 2. Bạn sẽ nghe một hướng dẫn viên chào đón thành viên mới tại một xưởng chế tác cộng đồng trong một nhà máy cũ. Trước tiên, bạn có thời gian xem câu 11 đến 15.",
+      "Bây giờ hãy nghe kỹ và trả lời câu 11 đến 15.",
+      "Chào buổi sáng mọi người, chào mừng đến Harlow Mill. Tôi là Priya, tôi phụ trách các thành viên ở đây. Trước khi đi một vòng, tôi muốn giải thích từng khu trong toà nhà được dùng thế nào, vì mọi thứ đã thay đổi chỗ nhiều kể từ khi nhà máy đóng cửa.",
+      "Bắt đầu với North Room, căn phòng lớn ngay trước mặt các bạn. Phòng có sàn chắc nhất toà nhà, nên chúng tôi đặt máy in 3-D và máy cắt laser ở đó, những thứ này nặng hơn ta tưởng. Đôi khi có người hỏi có được ăn trưa trong đó không. Xin đừng: bụi từ máy cắt bay khắp nơi.",
+      "Phía sau là Annexe. Tường dày gần một mét nên bên trong hoàn toàn yên tĩnh, và chúng tôi biến nó thành một phòng thu nhỏ để thành viên thu âm nhạc và podcast. Lúc đầu chúng tôi có thử tổ chức lớp trẻ em ở đó, nhưng bọn trẻ thấy quá u ám.",
+      "Ở tầng dưới, Lower Hall có sàn bê tông và cống thoát nước, nên có thể bạn nghĩ đó là chỗ lý tưởng cho xưởng xe đạp, và chúng tôi từng thử như vậy. Nhưng phòng quá tối nên việc sửa xe chuyển đi, và giờ Lower Hall chỉ là nơi bạn cất vật liệu lớn như gỗ hay tấm kim loại, tối đa một tháng.",
+      "Vậy xe đạp chuyển đi đâu? Tới West Room, nơi có những cánh cửa rất lớn mở ra đường, nên mọi người dắt thẳng xe vào được. Trước đây, vào thứ Bảy thứ hai mỗi tháng, chúng tôi đẩy giá xe sang bên và họp chợ của thành viên ở đó, nhưng chợ giờ đã chuyển lên Glass Room ở tầng trên, nơi có nhiều ánh sáng hơn hẳn để trưng bày đồ.",
+      "Glass Room cũng là nơi bạn có thể ăn: có bàn, ấm đun nước và tủ lạnh, ngày trời trong còn thấy được sông. Trên cùng là Tower Room. Phòng nhỏ và có tấm thảm duy nhất trong toà nhà, nên đó là nơi tổ chức lớp học cho trẻ em vào các buổi chiều trong tuần. Xin đừng mang đồ ăn lên đó.",
+      "Trước khi nghe phần còn lại của bài nói, bạn có thời gian xem câu 16 đến 20.",
+      "Bây giờ hãy nghe và trả lời câu 16 đến 20.",
+      "Giờ là vài điều về tháng đầu tiên của các bạn. Trong tháng đó, ai cũng phải hoàn thành buổi hướng dẫn an toàn, và chưa xong thì không được dùng máy nào, kể cả khi bạn đã dùng đúng loại máy đó ở nơi khác. Trước đây buổi đó mất khoảng bốn mươi phút, nhưng giờ mất hai tiếng, vì có cả phần máy cắt laser. Khoá trọn nửa ngày chỉ dành cho ai muốn hướng dẫn thành viên khác. Bạn đặt lịch ở quầy lễ tân.",
       "Bạn không cần thư giới thiệu để tham gia, và tủ đồ miễn phí trong năm đầu, nên đừng lo về mấy thứ đó. Chúng tôi có chương trình người hướng dẫn, nhưng không bắt buộc, và nhiều thành viên chưa bao giờ dùng. Thứ bắt buộc là ca tình nguyện. Trong tháng đầu, mỗi thành viên mới dành ba tiếng giúp vận hành nơi này: dọn dẹp, trực cửa, những việc như vậy.",
       "Cuối cùng là mượn dụng cụ. Hầu hết thiết bị phải đặt trước trên mạng, nhất là máy may vì lúc nào cũng có người cần, và máy ảnh vì thay mới rất đắt. Nhưng có hai thứ bạn cứ lấy ở giá cạnh cầu thang mà không cần đặt: thang và máy khoan điện. Chỉ cần ghi tên lên bảng và trả lại trong ngày.",
       "Nhân tiện, chúng tôi không cho mượn máy tính xách tay. Nhiều người hỏi, nhưng bạn sẽ phải tự mang theo. Được rồi, chúng ta đi xem Weaving Hall nào.",
@@ -559,10 +559,8 @@
       "Guide": "bf_isabella"
     },
     "allow": [
-      "loom",
       "laser",
       "printers",
-      "dyes",
       "podcasts",
       "drains",
       "timber",
@@ -571,14 +569,15 @@
       "racks",
       "drills",
       "kettle",
-      "dye",
       "cutter",
-      "weaving",
-      "concrete"
+      "concrete",
+      "annexe",
+      "gloomy",
+      "studio"
     ],
     "audio": {
       "file": "a/m-a1-l2.mp3",
-      "dur": 243.5,
+      "dur": 255,
       "voices": [
         "bm_george",
         "bf_isabella"
@@ -587,7 +586,7 @@
     "sets": [
       {
         "qtype": "l-matching",
-        "instr": "What is each room used for now? Choose SIX answers from the box and write the correct letter, A–G, next to Questions 11–16.",
+        "instr": "What is each room used for now? Choose FIVE answers from the box and write the correct letter, A–G, next to Questions 11–15.",
         "options": [
           {
             "k": "A",
@@ -621,95 +620,113 @@
         "items": [
           {
             "id": "m-a1-l2-01",
-            "q": "the Weaving Hall",
+            "q": "the North Room",
             "ans": "C",
             "b": 5,
             "ev": {
               "p": 3,
-              "s": "it's where we keep the 3-D printers and the laser cutter"
+              "s": "that's where we keep the 3-D printers and the laser cutter"
             },
-            "why": "Weaving Hall có sàn chắc nhất nên đặt máy in 3-D và máy cắt laser, tức là nơi dùng máy nặng.",
+            "why": "North Room có sàn chắc nhất nên đặt máy in 3-D và máy cắt laser: nơi dùng máy nặng.",
             "wrong": {
-              "A": "Việc sửa xe đạp ở Loading Bay, không phải Weaving Hall.",
-              "E": "Vật liệu lớn được cất ở Boiler House."
-            },
-            "trap": "Tên cũ của phòng (dệt) không cho biết công dụng hiện nay."
+              "F": "Người hướng dẫn dặn đừng ăn trưa ở đó vì bụi.",
+              "E": "Vật liệu lớn được cất ở Lower Hall."
+            }
           },
           {
             "id": "m-a1-l2-02",
-            "q": "the Dye Shed",
+            "q": "the Annexe",
             "ans": "B",
-            "b": 5,
+            "b": 5.5,
             "ev": {
               "p": 4,
               "s": "we turned it into a small studio where members record music and podcasts"
             },
-            "why": "Tường dày nên yên tĩnh; phòng thành phòng thu âm nhạc và podcast.",
+            "why": "Annexe tường dày, yên tĩnh, thành phòng thu âm.",
             "wrong": {
-              "C": "Máy nặng đặt ở Weaving Hall.",
-              "D": "Lớp trẻ em học ở Counting Room."
-            }
+              "D": "Lớp trẻ em từng thử ở đây nhưng bọn trẻ thấy quá u ám, nên đã chuyển đi.",
+              "C": "Máy nặng đặt ở North Room."
+            },
+            "trap": "\"We did try … at first\" là việc cũ đã bỏ."
           },
           {
             "id": "m-a1-l2-03",
-            "q": "the Boiler House",
+            "q": "the Lower Hall",
             "ans": "E",
             "b": 5.5,
             "ev": {
               "p": 5,
-              "s": "now the Boiler House is simply where you can store large materials"
+              "s": "now the Lower Hall is simply where you can store large materials"
             },
-            "why": "Boiler House giờ là nơi cất vật liệu lớn như gỗ, tấm kim loại.",
+            "why": "Lower Hall giờ là nơi cất vật liệu lớn.",
             "wrong": {
               "A": "Xưởng xe đạp từng thử ở đây nhưng quá tối nên đã chuyển đi.",
-              "G": "Chợ của thành viên họp ở Loading Bay."
-            },
-            "trap": "Thông tin \"we did try that\" là việc cũ đã bỏ."
+              "G": "Chợ nay họp ở Glass Room."
+            }
           },
           {
             "id": "m-a1-l2-04",
-            "q": "the Loading Bay",
+            "q": "the West Room",
             "ans": "A",
-            "b": 5.5,
+            "b": 6,
             "ev": {
               "p": 6,
-              "s": "To the Loading Bay, at the back."
+              "s": "To the West Room, which has huge doors onto the street"
             },
-            "why": "Xe đạp chuyển tới Loading Bay vì cửa lớn mở ra đường; đây là nơi sửa xe đạp hằng ngày.",
+            "why": "Xe đạp chuyển tới West Room vì cửa lớn mở ra đường.",
             "wrong": {
-              "G": "Chợ chỉ họp ở đây một ngày mỗi tháng (thứ Bảy thứ hai); công dụng chính là sửa xe đạp.",
-              "E": "Vật liệu được cất ở Boiler House."
-            },
-            "trap": "Chợ mỗi tháng một lần là thông tin phụ; câu hỏi hỏi công dụng của phòng."
+              "G": "Chợ từng họp ở đây nhưng nay đã chuyển lên Glass Room.",
+              "E": "Vật liệu được cất ở Lower Hall."
+            }
           },
           {
             "id": "m-a1-l2-05",
-            "q": "the Counting Room",
+            "q": "the Tower Room",
             "ans": "D",
             "b": 6,
             "ev": {
               "p": 7,
-              "s": "It's where the children's classes are held on weekday afternoons."
+              "s": "that's where the children's classes are held"
             },
-            "why": "Counting Room là nơi học của các lớp trẻ em vào chiều các ngày trong tuần.",
+            "why": "Tower Room có thảm, là nơi học của lớp trẻ em.",
             "wrong": {
-              "F": "Nhiều người tưởng ăn trưa ở đây, nhưng không được mang đồ ăn lên vì có thảm.",
-              "B": "Thu âm ở Dye Shed."
+              "F": "Không được mang đồ ăn lên Tower Room.",
+              "B": "Thu âm ở Annexe."
             }
-          },
+          }
+        ]
+      },
+      {
+        "qtype": "l-mcq",
+        "instr": "Choose the correct letter, A, B or C.",
+        "items": [
           {
             "id": "m-a1-l2-06",
-            "q": "the Roof Garden",
-            "ans": "F",
-            "b": 5,
+            "q": "How long does the general safety induction now take?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "about forty minutes"
+              },
+              {
+                "k": "B",
+                "t": "about two hours"
+              },
+              {
+                "k": "C",
+                "t": "half a day"
+              }
+            ],
+            "ans": "B",
+            "b": 6,
             "ev": {
-              "p": 8,
-              "s": "If you want to eat, go right to the top, to the Roof Garden."
+              "p": 10,
+              "s": "but it now takes two hours"
             },
-            "why": "Muốn ăn thì lên Roof Garden; có bàn, ấm nước, tủ lạnh.",
+            "why": "Buổi hướng dẫn nay mất hai tiếng vì có cả phần máy cắt laser.",
             "wrong": {
-              "D": "Lớp trẻ em ở Counting Room.",
-              "G": "Bán sản phẩm ở Loading Bay."
+              "A": "Bốn mươi phút là thời lượng trước đây.",
+              "C": "Nửa ngày là khoá cho người muốn hướng dẫn thành viên khác."
             }
           }
         ]
@@ -749,7 +766,7 @@
             ],
             "b": 6,
             "ev": {
-              "p": 12,
+              "p": 11,
               "s": "In your first month, every new member gives three hours"
             },
             "why": "Buổi hướng dẫn an toàn là bắt buộc trước khi dùng máy (\"Everyone has to complete a safety induction\"), và ca tình nguyện ba tiếng trong tháng đầu là bắt buộc (\"What isn't optional is the volunteer shift\").",
@@ -796,7 +813,7 @@
             ],
             "b": 6,
             "ev": {
-              "p": 13,
+              "p": 12,
               "s": "the ladders and the power drills"
             },
             "why": "Hai thứ lấy ở giá cạnh cầu thang mà không cần đặt là thang và máy khoan điện.",
@@ -832,15 +849,15 @@
       },
       {
         "sp": "Dr Hale",
-        "t": "Come in, both of you. So, how is the library project going? Remind me why you chose it. I seem to remember I suggested the cafeteria."
+        "t": "Come in, both of you. So, how is the library project going? Remind me why you chose it. I seem to remember I suggested it."
       },
       {
         "sp": "Tomas",
-        "t": "You did, and we nearly went with that. And people in our seminar group were always complaining about the library, but mostly about the Wi-Fi, not the noise."
+        "t": "You did, and that's really what decided it. People in our seminar group were always complaining about the library, but mostly about the Wi-Fi, not the noise."
       },
       {
         "sp": "Lena",
-        "t": "What decided it was that the head librarian came to us. She'd heard we were doing a measurement project and asked whether we could find out why the third floor gets so many noise complaints."
+        "t": "And once we'd started, the head librarian heard about it and asked whether we could also find out why the third floor gets so many noise complaints. So now she's a kind of client."
       },
       {
         "sp": "Dr Hale",
@@ -872,11 +889,11 @@
       },
       {
         "sp": "Lena",
-        "t": "We thought about leaving them out because they're so varied, or even giving them to the librarian to look at. But in the end we're going to sort them into themes, like lighting, temperature and seating, and count how often each one comes up."
+        "t": "We were going to sort them into themes, like lighting and seating, but there are only fourteen, which isn't enough to count. And we don't want to leave them out, because some are really useful. So we'll pass them straight to the librarian and let her decide what to do with them."
       },
       {
         "sp": "Dr Hale",
-        "t": "Good. One piece of advice about the presentation. Most students spend the first five minutes on their method. Don't. The library staff want to know what to change, so open with your main recommendation and explain how you got there afterwards. The charts you've got are fine as they are."
+        "t": "Good. One piece of advice about the presentation. People will tell you to open with your main recommendation, and that's fine, but the order matters less than you think, and your explanation of the method is clear already. My real worry is that you have eleven charts. Nobody can take in that many in ten minutes. Choose the best three."
       },
       {
         "sp": "N",
@@ -928,9 +945,9 @@
     "vi": [
       "Phần 3. Bạn sẽ nghe hai sinh viên, Lena và Tomas, thảo luận dự án nghiên cứu với giảng viên hướng dẫn, tiến sĩ Hale. Trước tiên, bạn có thời gian xem câu 21 đến 25.",
       "Bây giờ hãy nghe kỹ và trả lời câu 21 đến 25.",
-      "Mời hai em vào. Dự án về thư viện tiến triển thế nào rồi? Nhắc lại cho tôi vì sao các em chọn đề tài này. Hình như tôi đã gợi ý căng tin.",
-      "Cô có gợi ý, và bọn em suýt chọn đề tài đó. Các bạn trong nhóm thảo luận cũng hay than phiền về thư viện, nhưng chủ yếu là về Wi-Fi, không phải tiếng ồn.",
-      "Điều quyết định là trưởng thư viện tự tìm đến bọn em. Cô ấy nghe nói bọn em làm dự án đo đạc nên hỏi bọn em có tìm hiểu được vì sao tầng ba bị phàn nàn về tiếng ồn nhiều đến thế không.",
+      "Mời hai em vào. Dự án về thư viện tiến triển thế nào rồi? Nhắc lại cho tôi vì sao các em chọn đề tài này. Hình như chính tôi đã gợi ý.",
+      "Cô có gợi ý, và thật ra đó là điều quyết định. Các bạn trong nhóm thảo luận cũng hay than phiền về thư viện, nhưng chủ yếu là về Wi-Fi, không phải tiếng ồn.",
+      "Và khi bọn em đã bắt đầu, trưởng thư viện nghe chuyện và hỏi bọn em có tìm hiểu thêm được vì sao tầng ba bị phàn nàn về tiếng ồn nhiều đến thế không. Nên giờ cô ấy như một kiểu khách hàng.",
       "Một khách hàng thật. Như thế luôn có ích. Máy đo âm thanh cho thấy gì?",
       "Bọn em tưởng tầng yên lặng sẽ ồn hơn mọi người nói, nhưng thật ra đó lại là tầng yên tĩnh nhất, đúng như phải thế. Bọn em cũng đoán điện thoại là vấn đề chính, nhưng hầu như không có cuộc gọi nào. Phần lớn tiếng ồn là tiếng cửa và tiếng bước chân.",
       "Điều bất ngờ thật sự là thời điểm. Số đo tăng vọt mỗi giờ, khoảng mười phút đầu mỗi giờ, khi các buổi giảng kết thúc và mọi người đổi chỗ. Thời gian còn lại khá yên.",
@@ -938,8 +955,8 @@
       "Chỉ có sáu mươi hai câu trả lời trên khoảng bốn trăm. Em nghĩ là do bọn em gửi vào tuần tự học, lúc một nửa sinh viên đã về nhà.",
       "Nhưng mình không nghĩ là vì thế. Những người đã bắt đầu làm phần lớn bỏ dở giữa chừng. Bốn mươi câu là quá nhiều. Lần sau mình sẽ rút xuống mười câu.",
       "Còn các nhận xét viết tay thì các em sẽ làm gì? Tôi nghĩ cuối bảng hỏi có một câu hỏi mở.",
-      "Bọn em từng nghĩ sẽ bỏ chúng ra vì chúng quá đa dạng, hoặc đưa cho trưởng thư viện xem. Nhưng cuối cùng bọn em sẽ xếp chúng theo chủ đề, như ánh sáng, nhiệt độ và chỗ ngồi, rồi đếm mỗi chủ đề xuất hiện bao nhiêu lần.",
-      "Tốt. Một lời khuyên cho bài thuyết trình. Phần lớn sinh viên dành năm phút đầu nói về phương pháp. Đừng làm thế. Nhân viên thư viện muốn biết cần thay đổi gì, nên hãy mở đầu bằng khuyến nghị chính rồi sau đó giải thích các em đi đến đó thế nào. Các biểu đồ các em có là ổn rồi.",
+      "Bọn em định xếp chúng theo chủ đề, như ánh sáng và chỗ ngồi, nhưng chỉ có mười bốn nhận xét, không đủ để đếm. Bọn em cũng không muốn bỏ ra, vì vài nhận xét rất có ích. Nên bọn em sẽ chuyển thẳng cho trưởng thư viện và để cô ấy quyết định làm gì.",
+      "Tốt. Một lời khuyên cho bài thuyết trình. Người ta sẽ bảo các em mở đầu bằng khuyến nghị chính, như vậy cũng được, nhưng thứ tự không quan trọng như các em nghĩ, và phần giải thích phương pháp của các em đã rõ rồi. Điều tôi thật sự lo là các em có mười một biểu đồ. Không ai tiếp thu được ngần ấy trong mười phút. Hãy chọn ba cái tốt nhất.",
       "Trước khi nghe phần còn lại của cuộc thảo luận, bạn có thời gian xem câu 26 đến 30.",
       "Bây giờ hãy nghe và trả lời câu 26 đến 30.",
       "Vậy các bước tiếp theo của các em là gì?",
@@ -974,7 +991,7 @@
     ],
     "audio": {
       "file": "a/m-a1-l3.mp3",
-      "dur": 259.3,
+      "dur": 261.7,
       "voices": [
         "bm_george",
         "af_sarah",
@@ -997,23 +1014,23 @@
               },
               {
                 "k": "B",
-                "t": "A member of staff asked them for help."
+                "t": "Other students had complained about it."
               },
               {
                 "k": "C",
-                "t": "Other students had complained about it."
+                "t": "A member of staff asked them for help."
               }
             ],
-            "ans": "B",
+            "ans": "A",
             "b": 6,
             "ev": {
-              "p": 4,
-              "s": "the head librarian came to us"
+              "p": 3,
+              "s": "You did, and that's really what decided it."
             },
-            "why": "Lena nói điều quyết định là trưởng thư viện tự tìm đến và nhờ tìm hiểu vì sao tầng ba bị phàn nàn.",
+            "why": "Giảng viên đã gợi ý thư viện, và Tomas nói đó là điều quyết định.",
             "wrong": {
-              "A": "Giảng viên gợi ý căng tin, không phải thư viện.",
-              "C": "Bạn cùng nhóm phàn nàn về Wi-Fi, và đó không phải lý do quyết định."
+              "B": "Bạn cùng nhóm phàn nàn về Wi-Fi, và đó không phải lý do quyết định.",
+              "C": "Trưởng thư viện chỉ nhờ thêm SAU KHI các em đã bắt đầu."
             }
           },
           {
@@ -1022,18 +1039,18 @@
             "opts": [
               {
                 "k": "A",
-                "t": "Noise rose sharply at the start of each hour."
+                "t": "The silent floor was the noisiest."
               },
               {
                 "k": "B",
-                "t": "The silent floor was the noisiest."
+                "t": "Noise rose sharply at the start of each hour."
               },
               {
                 "k": "C",
                 "t": "Phone calls were the main source of the noise they recorded."
               }
             ],
-            "ans": "A",
+            "ans": "B",
             "b": 6.5,
             "ev": {
               "p": 7,
@@ -1041,7 +1058,7 @@
             },
             "why": "Lena nói điều bất ngờ là thời điểm: số đo tăng vọt khoảng mười phút đầu mỗi giờ.",
             "wrong": {
-              "B": "Tầng yên lặng thực ra là yên tĩnh nhất, đúng như phải thế.",
+              "A": "Tầng yên lặng thực ra là yên tĩnh nhất, đúng như phải thế.",
               "C": "Hầu như không có cuộc gọi; tiếng ồn chủ yếu là cửa và bước chân."
             }
           },
@@ -1051,18 +1068,18 @@
             "opts": [
               {
                 "k": "A",
-                "t": "the timing of the survey"
+                "t": "the number of questions"
               },
               {
                 "k": "B",
-                "t": "the number of questions"
+                "t": "the timing of the survey"
               },
               {
                 "k": "C",
                 "t": "a lack of interest in the topic"
               }
             ],
-            "ans": "B",
+            "ans": "A",
             "b": 6.5,
             "ev": {
               "p": 10,
@@ -1070,7 +1087,7 @@
             },
             "why": "Lena không đồng ý với Tomas: người làm bỏ dở giữa chừng vì bốn mươi câu là quá nhiều.",
             "wrong": {
-              "A": "Đó là ý của Tomas (gửi vào tuần tự học); Lena nói \"I don't think that was it\".",
+              "B": "Đó là ý của Tomas (gửi vào tuần tự học); Lena nói \"I don't think that was it\".",
               "C": "Không ai nói sinh viên không quan tâm đến đề tài."
             },
             "trap": "Câu hỏi hỏi ý của Lena; ý của Tomas được nói trước để gây nhiễu."
@@ -1081,27 +1098,27 @@
             "opts": [
               {
                 "k": "A",
-                "t": "organise them by topic"
+                "t": "leave them out of the analysis"
               },
               {
                 "k": "B",
-                "t": "pass them to the librarian"
+                "t": "organise them by topic"
               },
               {
                 "k": "C",
-                "t": "leave them out of the analysis"
+                "t": "pass them to the librarian"
               }
             ],
-            "ans": "A",
+            "ans": "C",
             "b": 6.5,
             "ev": {
               "p": 12,
-              "s": "we're going to sort them into themes"
+              "s": "So we'll pass them straight to the librarian"
             },
-            "why": "Cuối cùng hai bạn sẽ xếp nhận xét theo chủ đề (ánh sáng, nhiệt độ, chỗ ngồi) và đếm tần suất.",
+            "why": "Chỉ có mười bốn nhận xét nên các em chuyển thẳng cho trưởng thư viện.",
             "wrong": {
-              "B": "Họ từng nghĩ đưa cho trưởng thư viện nhưng không chọn cách đó.",
-              "C": "Họ từng nghĩ bỏ ra nhưng không chọn cách đó."
+              "A": "Các em không muốn bỏ ra vì vài nhận xét có ích.",
+              "B": "Các em định xếp theo chủ đề nhưng không đủ số lượng để đếm."
             }
           },
           {
@@ -1114,23 +1131,23 @@
               },
               {
                 "k": "B",
-                "t": "Explain the research method in more detail."
+                "t": "Begin with the main recommendation."
               },
               {
                 "k": "C",
-                "t": "Begin with the main recommendation."
+                "t": "Explain the research method in more detail."
               }
             ],
-            "ans": "C",
+            "ans": "A",
             "b": 7,
             "ev": {
               "p": 13,
-              "s": "open with your main recommendation"
+              "s": "Choose the best three."
             },
-            "why": "Giảng viên khuyên mở đầu bằng khuyến nghị chính rồi mới giải thích cách làm.",
+            "why": "Giảng viên lo vì có mười một biểu đồ và khuyên chọn ba cái tốt nhất.",
             "wrong": {
-              "A": "Giảng viên nói các biểu đồ \"fine as they are\".",
-              "B": "Giảng viên khuyên không dành năm phút đầu cho phương pháp."
+              "B": "Giảng viên nói thứ tự \"matters less than you think\".",
+              "C": "Giảng viên nói phần giải thích phương pháp \"clear already\"."
             }
           }
         ]
@@ -1385,7 +1402,8 @@
             },
             "why": "Giảng viên bác bỏ ý \"viết cho giới sưu tầm giàu có\": đối tượng chính là các học giả khác.",
             "wrong": {
-              "collectors": "Đây là điều \"người ta hay nói\", bị giảng viên bác bằng \"In fact…\"."
+              "collectors": "Đây là điều \"người ta hay nói\", bị giảng viên bác bằng \"In fact…\".",
+              "experts": "Gần nghĩa nhưng bài dùng \"scholars\"; câu điền lấy đúng từ nghe được."
             },
             "trap": "\"It's often said… In fact…\": thông tin sau \"In fact\" mới là đáp án."
           },
@@ -1503,7 +1521,8 @@
             },
             "why": "Nhãn mới ghi tên người làm ra hiện vật; khách nói họ quan tâm đến \"the maker\" hơn người hiến tặng.",
             "wrong": {
-              "donor": "Tên người hiến tặng là cách ghi của nhãn cũ."
+              "donor": "Tên người hiến tặng là cách ghi của nhãn cũ.",
+              "maker's": "Ô trống đứng ngay trước \"'s\" đã in sẵn, nên chỉ viết maker; viết thêm 's thành sai ngữ pháp."
             }
           },
           {

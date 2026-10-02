@@ -331,7 +331,7 @@
             "opts": [
               {
                 "k": "A",
-                "t": "Very few items were returned late."
+                "t": "Most late items came back within a day anyway."
               },
               {
                 "k": "B",
@@ -343,7 +343,7 @@
               },
               {
                 "k": "D",
-                "t": "Fines would be difficult to collect."
+                "t": "Volunteers refused to collect the money."
               }
             ],
             "ans": "B",
@@ -354,9 +354,9 @@
             },
             "why": "Điều quyết định là đợt thử ba tháng: người bị phạt còn giữ đồ lâu hơn.",
             "wrong": {
-              "A": "Trả muộn là \"vấn đề chính\".",
+              "A": "Bài không nói đồ trả muộn thường về trong một ngày; trả muộn là \"vấn đề chính\".",
               "C": "Đó là lập luận của một số thành viên, nhưng không phải điều quyết định.",
-              "D": "Bài không nói khó thu tiền phạt."
+              "D": "Bài không nói tình nguyện viên từ chối thu tiền."
             },
             "trap": "Bài nêu hai lý do; câu hỏi hỏi lý do QUYẾT ĐỊNH (\"what decided the matter\")."
           },
@@ -410,18 +410,18 @@
     "paras": [
       "Apprenticeships are usually associated with teenagers who have just left school. So when Harwood Engineering, a company in the small town of Linmouth that makes farm machinery, announced that its new apprenticeship scheme would be open only to people over fifty, many in the industry assumed it was a publicity stunt. Its neighbours, which make parts for trains and engines for buses, had never tried anything similar.",
       "The company's reasoning was more practical than that. Its managers had noticed that younger apprentices rarely stayed for long after finishing their training. A few left for better-paid jobs in larger cities, but most went on to university, often with the company's encouragement. Older trainees, the managers reasoned, were unlikely to start degree courses or to move away.",
-      "More than two hundred people applied for the fourteen places in the first group. The trainees came from very different backgrounds: there was a former bus driver, two people who had worked in shops for decades, and a woman who had spent twenty years as a nurse. The oldest was sixty-one. People often assume that the advantage of such trainees is that they have no bad habits to unlearn, but the training manager, Ruth Abbot, says that what mattered most was their long experience of dealing with the public. 'They could explain a problem to a customer clearly and calmly,' she says, 'which our younger staff still find hard.'",
+      "More than two hundred people applied. Fifteen were offered places in the first group, and fourteen of them accepted. The trainees came from very different backgrounds: there was a former bus driver, two people who had worked in shops for a few years, and a woman who had spent twenty years as a nurse. The oldest was sixty-one. People often assume that the advantage of such trainees is that they have no bad habits to unlearn, but the training manager, Ruth Abbot, says that what mattered most was their long experience of dealing with the public. 'They could explain a problem to a customer clearly and calmly,' she says, 'which our younger staff still find hard.'",
       "The scheme was not without difficulties. The training programme had been designed for eighteen-year-olds, and several trainees found the written tests stressful, even when their practical work was excellent. The company first replaced the tests with practical assessments, but instructors found that watching each trainee individually took far too long. It now uses group projects, in which three trainees build a component together and are assessed as a team.",
       "Three years on, thirteen of the original fourteen are still with the company. The one who left moved to a larger city to be closer to his daughter; rumours that he had joined a rival firm were untrue. Harwood now runs two schemes side by side, one for school-leavers and one for older workers. The two groups have classroom lessons and workshop training separately, because they prefer to work at different speeds, but once a month they go together on visits to other firms.",
-      "Not everyone is convinced that the model can be copied. Critics point out that Harwood pays its older trainees a full adult wage from the first day, which few companies could afford, and that house prices in Linmouth are no lower than elsewhere. Abbot accepts that other firms are in a different situation. Even so, she has been asked to advise three of them, and she has agreed, on condition that they do not expect the same results."
+      "Not everyone is convinced that the model can be copied. Critics point out that Harwood pays its older trainees a full adult wage from the first day, which few companies could afford, and that Linmouth has few other large employers, so trainees have little reason to leave. Abbot accepts that other firms are in a different situation. Even so, she has been asked to advise three of them, and she has agreed, on condition that they do not expect the same results."
     ],
     "vi": [
       "Học nghề thường gắn với thanh thiếu niên vừa rời ghế nhà trường. Vì vậy, khi Harwood Engineering, một công ty chế tạo máy nông nghiệp ở thị trấn nhỏ Linmouth, công bố chương trình học nghề mới chỉ dành cho người trên năm mươi tuổi, nhiều người trong ngành cho rằng đó là chiêu quảng cáo. Các công ty lân cận, vốn làm linh kiện tàu hoả và động cơ xe buýt, chưa từng thử điều gì tương tự.",
       "Lý lẽ của công ty thực tế hơn thế. Các quản lý nhận thấy thợ học việc trẻ hiếm khi ở lại lâu sau khi học xong. Một số ít ra đi vì công việc lương cao hơn ở thành phố lớn, nhưng phần lớn đi học đại học, thường được chính công ty khuyến khích. Các quản lý lập luận rằng học viên lớn tuổi khó có khả năng bắt đầu học đại học hay chuyển đi nơi khác.",
-      "Hơn hai trăm người nộp đơn cho mười bốn suất của nhóm đầu tiên. Các học viên đến từ những nền tảng rất khác nhau: một người từng lái xe buýt, hai người làm bán hàng hàng chục năm, và một phụ nữ đã làm y tá hai mươi năm. Người lớn tuổi nhất sáu mươi mốt tuổi. Người ta thường cho rằng lợi thế của những học viên như vậy là không có thói quen xấu phải bỏ, nhưng trưởng phòng đào tạo Ruth Abbot nói điều quan trọng nhất là kinh nghiệm lâu năm giao tiếp với công chúng. \"Họ giải thích được một vấn đề cho khách hàng rõ ràng và bình tĩnh,\" bà nói, \"điều mà nhân viên trẻ của chúng tôi vẫn thấy khó.\"",
+      "Hơn hai trăm người nộp đơn. Mười lăm người được nhận vào nhóm đầu tiên, và mười bốn người trong số đó nhận lời. Các học viên đến từ những nền tảng rất khác nhau: một người từng lái xe buýt, hai người làm bán hàng vài năm, và một phụ nữ đã làm y tá hai mươi năm. Người lớn tuổi nhất sáu mươi mốt tuổi. Người ta thường cho rằng lợi thế của những học viên như vậy là không có thói quen xấu phải bỏ, nhưng trưởng phòng đào tạo Ruth Abbot nói điều quan trọng nhất là kinh nghiệm lâu năm giao tiếp với công chúng. \"Họ giải thích được một vấn đề cho khách hàng rõ ràng và bình tĩnh,\" bà nói, \"điều mà nhân viên trẻ của chúng tôi vẫn thấy khó.\"",
       "Chương trình không phải không có khó khăn. Chương trình đào tạo vốn thiết kế cho người mười tám tuổi, và nhiều học viên thấy các bài kiểm tra viết rất căng thẳng, dù phần thực hành của họ xuất sắc. Công ty đầu tiên thay bài kiểm tra bằng đánh giá thực hành, nhưng người hướng dẫn thấy việc quan sát từng học viên mất quá nhiều thời gian. Giờ công ty dùng dự án nhóm, trong đó ba học viên cùng chế tạo một bộ phận và được đánh giá theo nhóm.",
       "Ba năm sau, mười ba trên mười bốn người ban đầu vẫn làm cho công ty. Người duy nhất nghỉ đã chuyển lên một thành phố lớn để ở gần con gái; tin đồn rằng anh sang một công ty đối thủ là không đúng. Harwood giờ chạy song song hai chương trình, một cho người vừa ra trường và một cho người lao động lớn tuổi. Hai nhóm học lý thuyết và thực hành ở xưởng riêng, vì họ thích làm việc với tốc độ khác nhau, nhưng mỗi tháng một lần họ cùng đi thăm các công ty khác.",
-      "Không phải ai cũng tin mô hình này có thể nhân rộng. Những người phê bình chỉ ra rằng Harwood trả học viên lớn tuổi mức lương đầy đủ của người lớn ngay từ ngày đầu, điều ít công ty kham nổi, và giá nhà ở Linmouth không thấp hơn nơi khác. Abbot thừa nhận các công ty khác ở hoàn cảnh khác. Dù vậy, bà đã được ba công ty nhờ tư vấn, và bà đồng ý, với điều kiện họ không trông đợi kết quả giống hệt."
+      "Không phải ai cũng tin mô hình này có thể nhân rộng. Những người phê bình chỉ ra rằng Harwood trả học viên lớn tuổi mức lương đầy đủ của người lớn ngay từ ngày đầu, điều ít công ty kham nổi, và Linmouth có ít công ty lớn khác, nên học viên ít có lý do để rời đi. Abbot thừa nhận các công ty khác ở hoàn cảnh khác. Dù vậy, bà đã được ba công ty nhờ tư vấn, và bà đồng ý, với điều kiện họ không trông đợi kết quả giống hệt."
     ],
     "allow": [
       "apprenticeships",
@@ -525,19 +525,19 @@
           },
           {
             "id": "m-v1-r2-03",
-            "q": "How many places were there in the first group?",
+            "q": "How many people started in the first group?",
             "opts": [
               {
                 "k": "A",
-                "t": "two hundred"
+                "t": "fifteen"
               },
               {
                 "k": "B",
-                "t": "thirteen"
+                "t": "twelve"
               },
               {
                 "k": "C",
-                "t": "sixty-one"
+                "t": "thirteen"
               },
               {
                 "k": "D",
@@ -545,16 +545,16 @@
               }
             ],
             "ans": "D",
-            "b": 5.5,
+            "b": 6,
             "ev": {
               "p": 2,
-              "s": "More than two hundred people applied for the fourteen places"
+              "s": "and fourteen of them accepted"
             },
-            "why": "Có mười bốn suất cho nhóm đầu tiên.",
+            "why": "Mười lăm người được nhận, mười bốn người nhận lời và bắt đầu học.",
             "wrong": {
-              "A": "Hơn hai trăm là số người nộp đơn.",
-              "B": "Mười ba là số người còn ở lại sau ba năm.",
-              "C": "Sáu mươi mốt là tuổi của người lớn tuổi nhất."
+              "A": "Mười lăm là số người được mời, một người không nhận lời.",
+              "B": "Bài không nhắc mười hai.",
+              "C": "Mười ba là số người còn ở lại sau ba năm."
             }
           },
           {
@@ -588,7 +588,7 @@
             "wrong": {
               "B": "Bài chỉ nói tuổi của người lớn tuổi nhất.",
               "C": "Bài không nói người lái xe buýt làm bao lâu.",
-              "D": "Hai người bán hàng làm \"hàng chục năm\", không nói hai mươi năm."
+              "D": "Hai người bán hàng chỉ làm vài năm."
             }
           },
           {
@@ -757,7 +757,7 @@
             "why": "Người phê bình nói Harwood trả lương đầy đủ ngay từ đầu, ít công ty kham nổi.",
             "wrong": {
               "B": "Bài không nhắc trường học địa phương.",
-              "C": "Bài nói giá nhà ở Linmouth KHÔNG thấp hơn nơi khác.",
+              "C": "Người phê bình không nhắc giá nhà; họ nói Linmouth ít công ty lớn khác.",
               "D": "Bài không nói đội đào tạo lớn."
             }
           },
@@ -767,15 +767,15 @@
             "opts": [
               {
                 "k": "A",
-                "t": "stop the scheme for school-leavers"
+                "t": "take her trainees to an industry conference"
               },
               {
                 "k": "B",
-                "t": "advise other companies"
+                "t": "advise three other companies"
               },
               {
                 "k": "C",
-                "t": "expand the scheme to younger workers"
+                "t": "write a guide for other firms"
               },
               {
                 "k": "D",
@@ -783,15 +783,15 @@
               }
             ],
             "ans": "B",
-            "b": 6,
+            "b": 6.5,
             "ev": {
               "p": 5,
               "s": "she has been asked to advise three of them, and she has agreed"
             },
             "why": "Bà đã đồng ý tư vấn cho ba công ty khác.",
             "wrong": {
-              "A": "Bài không nói ngừng chương trình cho người vừa ra trường.",
-              "C": "Chương trình cho người trẻ đã có sẵn, song song.",
+              "A": "Học viên đi thăm công ty khác hằng tháng, không phải dự hội nghị.",
+              "C": "Bài không nói bà viết hướng dẫn.",
               "D": "Bài không nói chuyển chương trình đi nơi khác."
             }
           }
@@ -810,19 +810,20 @@
     "title": "The invisible craft of subtitles",
     "paras": [
       "Most viewers notice subtitles only when something goes wrong: a line that disappears before it can be read, or a joke that makes no sense. When subtitles work well, they are almost invisible, and the people who write them are rarely mentioned. Yet subtitling is one of the most demanding forms of translation, and the rise of streaming services, which release the same series in dozens of languages on the same day, has made it more important than ever.",
-      "The main difficulty is space. A subtitle may contain no more than two short lines, and it must stay on screen long enough to be read, which means that a translator often has to say in eight words what a character says in fifteen. Lena Varga, who has subtitled films for twenty years, describes the job as 'translation with scissors'. The skill lies not in finding equivalent words but in deciding what can be left out without the viewer noticing that anything is missing.",
-      "Humour is particularly hard. Jokes that depend on a play on words almost never survive direct translation. Varga's approach is to replace the joke rather than explain it: if a character makes a pun about food, she will look for a different pun in the target language, even if it is about something else entirely, as long as it fits what is happening on screen. Viewers, she argues, want to laugh at the same moment as the audience in the original language, not to understand exactly why the original was funny.",
-      "Working conditions in the industry have changed considerably. Streaming companies often send translators the script weeks before the final version of the film is ready, so translators may have to redo their work when scenes are cut or changed. Deadlines have also become shorter. Some companies now use machine translation to produce a first draft, which a human then corrects. Varga is not opposed to the technology itself, but she points out that correcting a poor draft can take longer than writing a good subtitle from the beginning, and that translators are usually paid less for 'correction' work.",
-      "There are signs that audiences are starting to pay attention. Online, viewers increasingly compare subtitles across languages and complain publicly when a translation seems careless. Varga welcomes this, with one reservation. 'Viewers often criticise a subtitle for not being literal,' she says, 'when in fact it's the literal version that would have failed.'"
+      "The main difficulty is space. A subtitle may contain no more than two short lines, and it must stay on screen long enough to be read, which means that a translator often has to say in eight words what a character says in fifteen; in a fast argument, it may be as few as five. Lena Varga, who has subtitled films for twenty years, says the skill lies not in finding equivalent words but in deciding what can be left out. People often assume that comedies are the hardest films to subtitle, and children's cartoons the easiest. In Varga's experience, courtroom dramas are the hardest of all, because characters speak quickly and almost every word may matter to the plot.",
+      "Humour is still a challenge. Jokes that depend on a play on words almost never survive direct translation. Many translators replace such a joke with a different one, and some add a short note explaining it. Varga accepts notes in documentaries, where viewers expect information, but in nothing else. Her own rule surprises colleagues: unless the joke matters to the story, she leaves it out completely, because a weak replacement draws more attention than a moment of silence.",
+      "Working conditions in the industry have changed considerably. Streaming companies often send translators the script weeks before the final version of the film is ready, so translators may have to redo their work when scenes are cut or changed. Unusually, some companies now pay a fixed extra fee for every change, which Varga calls one of the few real improvements of recent years. Many companies also use machine translation to produce a first draft, which a human then corrects. Varga accepted such 'correction' work for a while. It paid less and was often slower than writing subtitles from the beginning, but that is not why she stopped two years ago: she simply had more ordinary subtitling work than she could manage.",
+      "There are signs that audiences are starting to pay attention. Online, viewers increasingly compare subtitles across languages and complain publicly when a translation seems careless. Varga reads every complaint about her own work, but she never replies. Her one reservation is that many complaints come from people who watched with the sound turned off, and so could not judge whether a subtitle matched the tone of the actor's voice."
     ],
     "vi": [
       "Phần lớn khán giả chỉ để ý phụ đề khi có gì đó trục trặc: một dòng biến mất trước khi kịp đọc, hay một câu đùa vô nghĩa. Khi phụ đề tốt, chúng gần như vô hình, và người viết chúng hiếm khi được nhắc tới. Thế nhưng dịch phụ đề là một trong những hình thức dịch đòi hỏi khắt khe nhất, và sự phát triển của các dịch vụ phát trực tuyến, nơi cùng một bộ phim được phát hành bằng hàng chục ngôn ngữ trong cùng một ngày, đã khiến nó quan trọng hơn bao giờ hết.",
-      "Khó khăn chính là không gian. Một dòng phụ đề chỉ được tối đa hai dòng ngắn, và phải ở trên màn hình đủ lâu để đọc, nghĩa là người dịch thường phải nói bằng tám chữ điều mà nhân vật nói bằng mười lăm. Lena Varga, người đã làm phụ đề phim hai mươi năm, gọi công việc này là \"dịch bằng kéo\". Kỹ năng không nằm ở việc tìm từ tương đương mà ở việc quyết định có thể bỏ gì mà khán giả không nhận ra thiếu thứ gì.",
-      "Hài hước đặc biệt khó. Những câu đùa dựa vào chơi chữ hầu như không bao giờ sống sót qua dịch trực tiếp. Cách của Varga là thay câu đùa chứ không giải thích nó: nếu một nhân vật chơi chữ về đồ ăn, bà sẽ tìm một kiểu chơi chữ khác trong ngôn ngữ đích, kể cả về một thứ hoàn toàn khác, miễn là khớp với điều đang diễn ra trên màn hình. Bà lập luận rằng khán giả muốn cười cùng lúc với khán giả của ngôn ngữ gốc, chứ không phải hiểu chính xác vì sao bản gốc buồn cười.",
-      "Điều kiện làm việc trong ngành đã thay đổi đáng kể. Các công ty phát trực tuyến thường gửi kịch bản cho người dịch nhiều tuần trước khi bản phim cuối cùng hoàn thành, nên người dịch có thể phải làm lại khi các cảnh bị cắt hay thay đổi. Thời hạn cũng ngắn hơn. Một số công ty nay dùng dịch máy để tạo bản nháp đầu tiên, rồi một người sửa lại. Varga không phản đối bản thân công nghệ, nhưng bà chỉ ra rằng sửa một bản nháp kém có thể mất nhiều thời gian hơn viết một dòng phụ đề tốt từ đầu, và người dịch thường được trả ít hơn cho việc \"sửa\".",
-      "Có dấu hiệu khán giả bắt đầu để ý. Trên mạng, người xem ngày càng so sánh phụ đề giữa các ngôn ngữ và phàn nàn công khai khi bản dịch có vẻ cẩu thả. Varga hoan nghênh điều này, với một điều dè dặt. \"Người xem hay chê một dòng phụ đề vì không dịch sát chữ,\" bà nói, \"trong khi thật ra chính bản dịch sát chữ mới là bản thất bại.\""
+      "Khó khăn chính là không gian. Một dòng phụ đề chỉ được tối đa hai dòng ngắn, và phải ở trên màn hình đủ lâu để đọc, nghĩa là người dịch thường phải nói bằng tám chữ điều mà nhân vật nói bằng mười lăm; trong một cuộc cãi vã nhanh, có khi chỉ còn năm. Lena Varga, người đã làm phụ đề phim hai mươi năm, nói kỹ năng không nằm ở việc tìm từ tương đương mà ở việc quyết định bỏ được gì. Người ta hay cho rằng phim hài là khó làm phụ đề nhất, còn phim hoạt hình thiếu nhi là dễ nhất. Theo kinh nghiệm của Varga, phim xử án mới là khó nhất, vì nhân vật nói nhanh và gần như từng chữ đều có thể quan trọng với cốt truyện.",
+      "Hài hước vẫn là một thử thách. Những câu đùa dựa vào chơi chữ hầu như không bao giờ sống sót qua dịch trực tiếp. Nhiều người dịch thay câu đùa bằng một câu khác, và một số thêm ghi chú ngắn giải thích. Varga chấp nhận ghi chú trong phim tài liệu, nơi khán giả chờ đợi thông tin, nhưng không ở loại phim nào khác. Quy tắc riêng của bà khiến đồng nghiệp bất ngờ: trừ khi câu đùa quan trọng với câu chuyện, bà bỏ hẳn nó, vì một câu thay thế yếu gây chú ý hơn một khoảnh khắc im lặng.",
+      "Điều kiện làm việc trong ngành đã thay đổi đáng kể. Các công ty phát trực tuyến thường gửi kịch bản cho người dịch nhiều tuần trước khi bản phim cuối cùng hoàn thành, nên người dịch có thể phải làm lại khi các cảnh bị cắt hay thay đổi. Điều hiếm thấy là một số công ty nay trả thêm một khoản cố định cho mỗi lần thay đổi, điều mà Varga gọi là một trong số ít tiến bộ thật sự của những năm gần đây. Nhiều công ty cũng dùng dịch máy để tạo bản nháp đầu tiên, rồi một người sửa lại. Varga từng nhận việc \"sửa\" như vậy một thời gian. Việc đó được trả ít hơn và thường chậm hơn viết phụ đề từ đầu, nhưng đó không phải lý do bà thôi từ hai năm trước: đơn giản là bà có nhiều việc làm phụ đề thông thường hơn mức bà làm xuể.",
+      "Có dấu hiệu khán giả bắt đầu để ý. Trên mạng, người xem ngày càng so sánh phụ đề giữa các ngôn ngữ và phàn nàn công khai khi bản dịch có vẻ cẩu thả. Varga đọc mọi lời phàn nàn về công việc của mình, nhưng không bao giờ trả lời. Điều bà dè dặt duy nhất là nhiều lời phàn nàn đến từ những người xem khi đã tắt tiếng, nên không thể đánh giá một dòng phụ đề có hợp với giọng điệu của diễn viên hay không."
     ],
     "allow": [
+      "documentaries",
       "subtitles",
       "subtitle",
       "subtitling",
@@ -831,22 +832,22 @@
       "translator",
       "translators",
       "equivalent",
-      "scissors",
-      "pun",
+      "comedies",
+      "cartoons",
+      "courtroom",
+      "dramas",
       "humour",
+      "distracts",
       "considerably",
-      "deadlines",
       "draft",
       "correction",
-      "literal",
       "reservation",
       "careless",
       "demanding",
       "viewers",
-      "criticise",
       "publicly",
       "increasingly",
-      "opposed"
+      "plot"
     ],
     "sets": [
       {
@@ -855,36 +856,36 @@
         "items": [
           {
             "id": "m-v1-r3-01",
-            "q": "According to the passage, when do most viewers notice subtitles?",
+            "q": "According to Varga, which kind of film is the hardest to subtitle?",
             "opts": [
               {
                 "k": "A",
-                "t": "when they appear in two lines"
+                "t": "documentaries"
               },
               {
                 "k": "B",
-                "t": "when there is a problem with them"
+                "t": "courtroom dramas"
               },
               {
                 "k": "C",
-                "t": "when they are written by a famous translator"
+                "t": "children's cartoons"
               },
               {
                 "k": "D",
-                "t": "when they are watching a foreign series"
+                "t": "comedies"
               }
             ],
             "ans": "B",
-            "b": 6,
+            "b": 6.5,
             "ev": {
-              "p": 0,
-              "s": "Most viewers notice subtitles only when something goes wrong"
+              "p": 1,
+              "s": "courtroom dramas are the hardest of all"
             },
-            "why": "Khán giả chỉ để ý khi có trục trặc.",
+            "why": "Theo Varga, phim xử án là khó nhất vì nhân vật nói nhanh và từng chữ đều có thể quan trọng.",
             "wrong": {
-              "A": "Hai dòng là giới hạn kỹ thuật, không phải lúc khán giả để ý.",
-              "C": "Người viết phụ đề hiếm khi được nhắc tên.",
-              "D": "Bài không nói khán giả để ý vì phim nước ngoài."
+              "A": "Bài không nhắc phim tài liệu.",
+              "C": "Phim hoạt hình thiếu nhi được cho là dễ nhất.",
+              "D": "Phim hài là điều \"người ta hay cho rằng\"."
             }
           },
           {
@@ -893,11 +894,11 @@
             "opts": [
               {
                 "k": "A",
-                "t": "Translators are now paid more than they were before."
+                "t": "Viewers prefer subtitles to dubbing."
               },
               {
                 "k": "B",
-                "t": "Viewers prefer subtitles to dubbing."
+                "t": "More cinemas show foreign films."
               },
               {
                 "k": "C",
@@ -905,7 +906,7 @@
               },
               {
                 "k": "D",
-                "t": "Films have become longer."
+                "t": "Translators are paid more than before."
               }
             ],
             "ans": "C",
@@ -916,43 +917,43 @@
             },
             "why": "Dịch vụ phát trực tuyến phát hành cùng lúc bằng hàng chục ngôn ngữ.",
             "wrong": {
-              "A": "Bài nói người dịch thường được trả ít hơn cho việc sửa.",
-              "B": "Bài không so sánh với lồng tiếng.",
-              "D": "Bài không nói phim dài hơn."
+              "A": "Bài không so sánh với lồng tiếng.",
+              "B": "Bài không nhắc rạp chiếu phim.",
+              "D": "Bài không nói người dịch được trả nhiều hơn nói chung."
             }
           },
           {
             "id": "m-v1-r3-03",
-            "q": "What does Varga mean by \"translation with scissors\"?",
+            "q": "In a fast argument, how many words may a translator have for a character's fifteen?",
             "opts": [
               {
                 "k": "A",
-                "t": "Translators divide long lines into two."
+                "t": "ten"
               },
               {
                 "k": "B",
-                "t": "Translators often cut whole scenes from the films they work on."
+                "t": "two"
               },
               {
                 "k": "C",
-                "t": "Translators work with printed scripts."
+                "t": "eight"
               },
               {
                 "k": "D",
-                "t": "Translators must decide what to leave out."
+                "t": "five"
               }
             ],
             "ans": "D",
             "b": 6.5,
             "ev": {
               "p": 1,
-              "s": "in deciding what can be left out without the viewer noticing"
+              "s": "in a fast argument, it may be as few as five"
             },
-            "why": "Kỹ năng là quyết định bỏ gì mà khán giả không nhận ra.",
+            "why": "Trong cuộc cãi vã nhanh, có khi chỉ còn năm chữ.",
             "wrong": {
-              "A": "Chia dòng không phải ý của hình ảnh \"cái kéo\".",
-              "B": "Người dịch không cắt cảnh; cảnh bị công ty cắt.",
-              "C": "Không nói kịch bản in."
+              "A": "Bài không nhắc mười chữ.",
+              "B": "Hai là số dòng tối đa của một phụ đề.",
+              "C": "Tám chữ là trường hợp thông thường, không phải cuộc cãi vã nhanh."
             }
           },
           {
@@ -965,15 +966,15 @@
               },
               {
                 "k": "B",
-                "t": "easier to read quickly"
+                "t": "more common"
               },
               {
                 "k": "C",
-                "t": "shorter in length"
+                "t": "more formal"
               },
               {
                 "k": "D",
-                "t": "more polite"
+                "t": "shorter in length"
               }
             ],
             "ans": "A",
@@ -982,215 +983,216 @@
               "p": 1,
               "s": "not in finding equivalent words"
             },
-            "why": "\"Equivalent\" nghĩa là tương đương (về nghĩa).",
+            "why": "\"Equivalent\" nghĩa là tương đương về nghĩa.",
             "wrong": {
-              "B": "Dễ đọc hơn không phải nghĩa của từ.",
-              "C": "Ngắn hơn không phải nghĩa của từ.",
-              "D": "Lịch sự hơn không liên quan."
+              "B": "\"Phổ biến hơn\" không phải nghĩa của từ.",
+              "C": "\"Trang trọng hơn\" không phải nghĩa của từ.",
+              "D": "\"Ngắn hơn\" không phải nghĩa của từ."
             }
           },
           {
             "id": "m-v1-r3-05",
-            "q": "How does Varga deal with a pun that cannot be translated?",
+            "q": "What does Varga usually do with a pun that cannot be translated?",
             "opts": [
               {
                 "k": "A",
-                "t": "She replaces it with another joke."
+                "t": "She leaves it out."
               },
               {
                 "k": "B",
-                "t": "She leaves it out completely."
+                "t": "She translates it word for word."
               },
               {
                 "k": "C",
-                "t": "She explains it in a short note."
+                "t": "She replaces it with another joke."
               },
               {
                 "k": "D",
-                "t": "She translates it word for word."
+                "t": "She explains it in a short note."
               }
             ],
             "ans": "A",
-            "b": 6.5,
+            "b": 7,
             "ev": {
               "p": 2,
-              "s": "she will look for a different pun in the target language"
+              "s": "she leaves it out completely"
             },
-            "why": "Bà thay bằng một kiểu chơi chữ khác khớp với cảnh phim.",
+            "why": "Trừ khi câu đùa quan trọng với câu chuyện, bà bỏ hẳn nó.",
             "wrong": {
-              "B": "Bà không bỏ câu đùa mà thay câu khác.",
-              "C": "Bà \"replace the joke rather than explain it\".",
-              "D": "Chơi chữ hầu như không sống sót qua dịch trực tiếp."
+              "B": "Chơi chữ hầu như không sống sót qua dịch trực tiếp.",
+              "C": "Đó là cách của \"nhiều người dịch\", không phải của Varga.",
+              "D": "Bà cho rằng ghi chú làm khán giả xao nhãng."
             }
           },
           {
             "id": "m-v1-r3-06",
-            "q": "According to Varga, what do viewers want from jokes in subtitles?",
+            "q": "What does Varga think of notes that explain jokes?",
             "opts": [
               {
                 "k": "A",
-                "t": "to understand exactly why the original joke was funny"
+                "t": "They distract viewers in every kind of film."
               },
               {
                 "k": "B",
-                "t": "to see the original words on screen"
+                "t": "They help people learning the language."
               },
               {
                 "k": "C",
-                "t": "to laugh when the original audience laughs"
+                "t": "They are acceptable only in documentaries."
               },
               {
                 "k": "D",
-                "t": "to learn about the original culture"
+                "t": "They are required by most companies."
               }
             ],
             "ans": "C",
-            "b": 6.5,
+            "b": 7,
             "ev": {
               "p": 2,
-              "s": "want to laugh at the same moment as the audience in the original language"
+              "s": "Varga accepts notes in documentaries"
             },
-            "why": "Khán giả muốn cười cùng lúc với khán giả bản gốc.",
+            "why": "Varga chỉ chấp nhận ghi chú trong phim tài liệu.",
             "wrong": {
-              "A": "Bà nói rõ \"not to understand exactly why the original was funny\".",
-              "B": "Không nhắc hiện chữ gốc.",
-              "D": "Không nhắc tìm hiểu văn hoá."
+              "A": "Bà chấp nhận ghi chú trong phim tài liệu, nên không phải \"mọi loại phim\".",
+              "B": "Bài không nhắc người học ngôn ngữ.",
+              "D": "Bài không nói công ty bắt buộc ghi chú."
             }
           },
           {
             "id": "m-v1-r3-07",
-            "q": "Why may translators have to redo their work?",
+            "q": "What do some companies now do when scenes are changed after the script is sent?",
             "opts": [
               {
                 "k": "A",
-                "t": "Viewers complain publicly about the subtitles on social media."
+                "t": "They use machine translation for the new scenes."
               },
               {
                 "k": "B",
-                "t": "The film may change after the script is sent."
+                "t": "They pay the translator an extra fee."
               },
               {
                 "k": "C",
-                "t": "Machine translation contains errors."
+                "t": "They ask a different translator to finish the work."
               },
               {
                 "k": "D",
-                "t": "Their deadlines are extended."
+                "t": "They extend the deadline."
               }
             ],
             "ans": "B",
-            "b": 6.5,
+            "b": 7,
             "ev": {
               "p": 3,
-              "s": "translators may have to redo their work when scenes are cut or changed"
+              "s": "some companies now pay a fixed extra fee for every change"
             },
-            "why": "Kịch bản được gửi trước khi phim hoàn thành, nên cảnh bị cắt/đổi thì phải làm lại.",
+            "why": "Một số công ty trả thêm khoản cố định cho mỗi lần thay đổi.",
             "wrong": {
-              "A": "Phàn nàn của khán giả ở đoạn cuối, không phải lý do làm lại.",
-              "C": "Lỗi dịch máy liên quan đến việc sửa bản nháp, không phải làm lại vì phim đổi.",
-              "D": "Thời hạn ngắn đi, không phải dài ra."
+              "A": "Dịch máy được nhắc cho bản nháp đầu, không gắn với cảnh bị đổi.",
+              "C": "Bài không nói giao cho người dịch khác.",
+              "D": "Bài không nói gia hạn."
             }
           },
           {
             "id": "m-v1-r3-08",
-            "q": "What is Varga's view of machine translation?",
+            "q": "Why did Varga stop doing \"correction\" work?",
             "opts": [
               {
                 "k": "A",
-                "t": "She refuses to work with it."
+                "t": "It was slower and paid less than writing subtitles herself."
               },
               {
                 "k": "B",
-                "t": "She thinks it always saves time."
+                "t": "She disagreed with machine translation in principle."
               },
               {
                 "k": "C",
-                "t": "She believes it will soon replace human translators."
+                "t": "Viewers complained about the results."
               },
               {
                 "k": "D",
-                "t": "She accepts it but criticises how it is used."
+                "t": "She had more ordinary work than she could manage."
               }
             ],
             "ans": "D",
-            "b": 7,
+            "b": 7.5,
             "ev": {
               "p": 3,
-              "s": "Varga is not opposed to the technology itself"
+              "s": "she simply had more ordinary subtitling work than she could manage"
             },
-            "why": "Bà không phản đối công nghệ, nhưng chỉ ra sửa bản nháp kém có thể lâu hơn và bị trả ít hơn.",
+            "why": "Bà thôi vì có nhiều việc làm phụ đề thông thường hơn mức làm xuể.",
             "wrong": {
-              "A": "Bà \"not opposed\".",
-              "B": "Bà nói sửa bản nháp kém có thể MẤT NHIỀU thời gian hơn.",
-              "C": "Bài không nói máy sẽ thay người."
-            }
+              "A": "Bài nói việc đó trả ít và chậm, nhưng \"that is not why she stopped\".",
+              "B": "Bài không nói bà phản đối dịch máy về nguyên tắc.",
+              "C": "Bài không gắn lời phàn nàn với việc sửa bản nháp."
+            },
+            "trap": "Thông tin đúng nhưng bị phủ nhận là lý do (\"that is not why\")."
           },
           {
             "id": "m-v1-r3-09",
-            "q": "The word \"this\" in paragraph 5 refers to",
+            "q": "What does Varga do with complaints about her work?",
             "opts": [
               {
                 "k": "A",
-                "t": "online streaming"
+                "t": "She passes them to the company."
               },
               {
                 "k": "B",
-                "t": "literal subtitles"
+                "t": "She ignores them."
               },
               {
                 "k": "C",
-                "t": "viewers paying more attention to subtitles"
+                "t": "She reads them but never replies."
               },
               {
                 "k": "D",
-                "t": "translations that viewers think are careless"
+                "t": "She replies to each one."
               }
             ],
             "ans": "C",
             "b": 6.5,
             "ev": {
               "p": 4,
-              "s": "Varga welcomes this"
+              "s": "Varga reads every complaint about her own work, but she never replies."
             },
-            "why": "\"This\" chỉ việc khán giả so sánh phụ đề và lên tiếng, tức là bắt đầu để ý đến phụ đề.",
+            "why": "Bà đọc mọi lời phàn nàn nhưng không bao giờ trả lời.",
             "wrong": {
-              "A": "Đoạn này không bàn dịch vụ trực tuyến.",
-              "B": "Bà cho rằng bản dịch sát chữ mới thất bại.",
-              "D": "Bà không hoan nghênh bản dịch cẩu thả."
+              "A": "Bài không nói chuyển cho công ty.",
+              "B": "Bà đọc tất cả, không bỏ qua.",
+              "D": "Bà không bao giờ trả lời."
             }
           },
           {
             "id": "m-v1-r3-10",
-            "q": "What is Varga's reservation about viewers' criticism?",
+            "q": "What is Varga's reservation about viewers' complaints?",
             "opts": [
               {
                 "k": "A",
-                "t": "Viewers wrongly expect word-for-word translation."
+                "t": "Many complainers watched with the sound off."
               },
               {
                 "k": "B",
-                "t": "Viewers rarely watch films with subtitles."
+                "t": "Most complaints are about very small errors."
               },
               {
                 "k": "C",
-                "t": "Viewers complain too much about small errors."
+                "t": "Viewers rarely watch films with subtitles."
               },
               {
                 "k": "D",
-                "t": "Viewers do not understand the original language well enough."
+                "t": "Viewers expect word-for-word translation."
               }
             ],
             "ans": "A",
             "b": 7.5,
             "ev": {
               "p": 4,
-              "s": "it's the literal version that would have failed"
+              "s": "many complaints come from people who watched with the sound turned off"
             },
-            "why": "Bà lo khán giả chê phụ đề vì không sát chữ, trong khi bản sát chữ mới thất bại.",
+            "why": "Nhiều người phàn nàn đã xem khi tắt tiếng nên không đánh giá được giọng điệu.",
             "wrong": {
-              "B": "Bài nói khán giả ngày càng so sánh phụ đề.",
-              "C": "Bà không nói họ phàn nàn quá nhiều về lỗi nhỏ.",
-              "D": "Bà không nói khán giả không hiểu ngôn ngữ gốc."
+              "B": "Bài không nói phàn nàn chủ yếu về lỗi nhỏ.",
+              "C": "Bài nói người xem ngày càng so sánh phụ đề.",
+              "D": "Bài không nói khán giả đòi dịch sát chữ."
             }
           }
         ]
@@ -1208,41 +1210,42 @@
     "title": "Remembering the weather",
     "paras": [
       "Ask people what the summers of their childhood were like and many will describe long, hot afternoons that seemed to last for months. Ask them about last summer and the answer is often more mixed. It is tempting to conclude that summers have simply got worse, but a study by the psychologist Nadia Petrov suggests that the explanation has at least as much to do with how memory works as with the climate.",
-      "Petrov asked several hundred adults in one region to describe the weather during specific events in their lives, such as a wedding, a holiday or their first day at a new school, and then compared their accounts with local weather records. The results were striking. Memories of rain were far less reliable than memories of sunshine, but not in the way one might expect. People did not simply forget rainy days; they frequently moved the rain to a different event, remembering a sunny wedding as wet and a wet holiday as sunny.",
-      "Petrov argues that this happens because the weather is rarely stored as a fact in its own right. Instead, it is reconstructed later to suit the emotional tone of the memory. An event remembered as joyful tends to acquire good weather; one associated with disappointment tends to acquire bad weather. In her study, the strongest predictor of how people described the weather was not the actual weather but how they felt about the event when they were asked.",
-      "This has an intriguing consequence. Because feelings about past events can change, so can the remembered weather. Several participants who had since divorced described their wedding day as grey or stormy, although records showed bright sunshine. Petrov is careful to note that her participants were not lying; when shown the records, most were genuinely surprised.",
-      "Childhood summers present a special case. Children spend more time outdoors, notice weather more directly and have fewer responsibilities, so the sunny days of childhood may genuinely have been experienced more intensely. In addition, the repetition of a few vivid memories over many years makes them seem more typical than they were. One brilliant August, told and retold, can come to stand for an entire decade.",
-      "None of this means that the climate has not changed; Petrov is explicit that her work says nothing about long-term weather patterns. Its point is narrower and, in a sense, more uncomfortable: our memories of the weather are better evidence of how we feel about our past than of what the sky actually looked like."
+      "Petrov asked about three hundred adults to describe the weather during specific events in their lives, such as a wedding, a holiday, a birthday or their first day at a new school. Because official weather records are not kept for small villages, she compared their accounts with photographs taken on the day, which, unlike records from a distant weather station, show conditions at the exact place. Accuracy was lowest not for weddings, which people revisit often, but for first days at new schools. Participants who had kept diaries remembered more rain than anyone else, although their diaries rarely mentioned the weather at all.",
+      "Petrov argues that the weather is rarely stored as a fact in its own right. Instead, it is reconstructed later to suit the emotional tone of the memory. An event remembered as joyful tends to acquire good weather; one associated with disappointment tends to acquire bad weather. In her study, the strongest predictor of how people described the weather was neither the actual weather nor how often they had told the story, but how they felt about the event when they were asked.",
+      "This has an intriguing consequence. Because feelings about past events can change, so can the remembered weather. Several participants who had since divorced described their wedding day as grey or stormy, although the photographs showed bright sunshine. When shown the pictures, only a few of them were surprised; most insisted that the photographs must have been taken on a different day.",
+      "Childhood summers present a special case. Children spend more time outdoors and notice the weather more directly, and records show that a few summers of the participants' childhoods really were unusually sunny. In addition, the repetition of a few vivid memories over many years makes them seem more typical than they were. One brilliant August, told and retold, can come to stand for an entire decade.",
+      "None of this means that the climate has not changed; Petrov is explicit that her work says nothing about long-term weather patterns. Her next study will look at people who have spent their whole lives in very dry climates, where rain is rare and may therefore be remembered differently. Her point for now is narrower and, in a sense, more uncomfortable: our memories of the weather are better evidence of how we feel about our past than of what the sky actually looked like."
     ],
     "vi": [
       "Hỏi người ta những mùa hè thời thơ ấu ra sao, nhiều người sẽ tả những buổi chiều dài, nóng nực như kéo dài hàng tháng. Hỏi về mùa hè năm ngoái, câu trả lời thường lẫn lộn hơn. Người ta dễ kết luận rằng mùa hè đơn giản là tệ đi, nhưng một nghiên cứu của nhà tâm lý học Nadia Petrov cho thấy lời giải thích liên quan đến cách trí nhớ hoạt động ít nhất cũng nhiều như liên quan đến khí hậu.",
-      "Petrov đề nghị vài trăm người trưởng thành ở một vùng mô tả thời tiết trong những sự kiện cụ thể của đời họ, như đám cưới, kỳ nghỉ hay ngày đầu tiên ở trường mới, rồi so lời kể của họ với hồ sơ thời tiết địa phương. Kết quả rất đáng chú ý. Ký ức về mưa kém đáng tin hơn nhiều so với ký ức về nắng, nhưng không theo cách người ta có thể nghĩ. Người ta không chỉ đơn giản quên những ngày mưa; họ thường chuyển cơn mưa sang một sự kiện khác, nhớ một đám cưới nắng thành mưa và một kỳ nghỉ mưa thành nắng.",
-      "Petrov lập luận rằng điều này xảy ra vì thời tiết hiếm khi được lưu như một dữ kiện độc lập. Thay vào đó, nó được dựng lại về sau cho hợp với sắc thái cảm xúc của ký ức. Một sự kiện được nhớ là vui thường \"được gắn\" thời tiết đẹp; sự kiện gắn với thất vọng thường bị gắn thời tiết xấu. Trong nghiên cứu của bà, yếu tố dự báo mạnh nhất cho cách người ta mô tả thời tiết không phải thời tiết thật mà là cảm nhận của họ về sự kiện vào thời điểm được hỏi.",
-      "Điều này dẫn tới một hệ quả thú vị. Vì cảm nhận về sự kiện đã qua có thể thay đổi, thời tiết trong ký ức cũng vậy. Nhiều người tham gia về sau đã ly hôn tả ngày cưới của mình là âm u hoặc bão gió, dù hồ sơ cho thấy trời nắng rực rỡ. Petrov cẩn thận lưu ý rằng những người này không nói dối; khi được xem hồ sơ, phần lớn thật sự ngạc nhiên.",
-      "Mùa hè thời thơ ấu là một trường hợp đặc biệt. Trẻ em ở ngoài trời nhiều hơn, cảm nhận thời tiết trực tiếp hơn và ít trách nhiệm hơn, nên những ngày nắng thời thơ ấu có thể thật sự được trải nghiệm mãnh liệt hơn. Thêm vào đó, việc nhắc đi nhắc lại một vài ký ức sống động qua nhiều năm khiến chúng có vẻ điển hình hơn thực tế. Một tháng Tám rực rỡ, được kể đi kể lại, có thể trở thành đại diện cho cả một thập kỷ.",
-      "Không điều nào ở trên có nghĩa là khí hậu không thay đổi; Petrov nói rõ nghiên cứu của bà không nói gì về các xu hướng thời tiết dài hạn. Ý của nó hẹp hơn và, theo một nghĩa nào đó, khó chịu hơn: ký ức về thời tiết là bằng chứng tốt hơn về cảm nhận của ta đối với quá khứ hơn là về việc bầu trời thực sự trông ra sao."
+      "Petrov đề nghị khoảng ba trăm người trưởng thành mô tả thời tiết trong những sự kiện cụ thể của đời họ, như đám cưới, kỳ nghỉ, sinh nhật hay ngày đầu tiên ở trường mới. Vì không có hồ sơ thời tiết chính thức cho các làng nhỏ, bà so lời kể của họ với ảnh chụp trong ngày, thứ mà, khác với số liệu của một trạm khí tượng ở xa, cho thấy thời tiết tại đúng nơi đó. Độ chính xác thấp nhất không phải ở đám cưới, sự kiện người ta hay nhớ lại, mà ở ngày đầu đến trường mới. Những người từng viết nhật ký nhớ có mưa nhiều hơn những người khác, dù nhật ký của họ hiếm khi nhắc đến thời tiết.",
+      "Petrov lập luận rằng thời tiết hiếm khi được lưu như một dữ kiện độc lập. Thay vào đó, nó được dựng lại về sau cho hợp với sắc thái cảm xúc của ký ức. Một sự kiện được nhớ là vui thường \"được gắn\" thời tiết đẹp; sự kiện gắn với thất vọng thường bị gắn thời tiết xấu. Trong nghiên cứu của bà, yếu tố dự báo mạnh nhất cho cách người ta mô tả thời tiết không phải thời tiết thật, cũng không phải số lần họ đã kể lại câu chuyện, mà là cảm nhận của họ về sự kiện vào lúc được hỏi.",
+      "Điều này dẫn tới một hệ quả thú vị. Vì cảm nhận về sự kiện đã qua có thể thay đổi, thời tiết trong ký ức cũng vậy. Nhiều người tham gia về sau đã ly hôn tả ngày cưới của mình là âm u hoặc bão gió, dù ảnh chụp cho thấy nắng rực rỡ. Khi được xem ảnh, chỉ vài người ngạc nhiên; phần lớn khăng khăng rằng ảnh hẳn đã được chụp vào một ngày khác.",
+      "Mùa hè thời thơ ấu là một trường hợp đặc biệt. Trẻ em ở ngoài trời nhiều hơn và cảm nhận thời tiết trực tiếp hơn, và số liệu cho thấy vài mùa hè thời thơ ấu của những người tham gia thật sự nắng khác thường. Thêm vào đó, việc nhắc đi nhắc lại một vài ký ức sống động qua nhiều năm khiến chúng có vẻ điển hình hơn thực tế. Một tháng Tám rực rỡ, được kể đi kể lại, có thể trở thành đại diện cho cả một thập kỷ.",
+      "Không điều nào ở trên có nghĩa là khí hậu không thay đổi; Petrov nói rõ nghiên cứu của bà không nói gì về các xu hướng thời tiết dài hạn. Nghiên cứu tiếp theo của bà sẽ tìm hiểu những người sống cả đời ở vùng khí hậu rất khô, nơi mưa hiếm và vì thế có thể được nhớ theo cách khác. Ý của bà lúc này hẹp hơn và, theo một nghĩa nào đó, khó chịu hơn: ký ức về thời tiết là bằng chứng tốt hơn về cảm nhận của ta đối với quá khứ hơn là về việc bầu trời thực sự trông ra sao."
     ],
     "allow": [
       "psychologist",
+      "participants",
+      "accuracy",
+      "diaries",
       "reconstructed",
       "predictor",
       "intriguing",
-      "participants",
       "divorced",
-      "genuinely",
-      "intensely",
+      "insisted",
       "repetition",
       "vivid",
       "explicit",
-      "striking",
       "accounts",
       "disappointment",
       "acquire",
-      "decade",
       "uncomfortable",
       "joyful",
       "stormy",
-      "consequence"
+      "consequence",
+      "unusually",
+      "typical"
     ],
     "sets": [
       {
@@ -1263,11 +1266,11 @@
               },
               {
                 "k": "C",
-                "t": "to compare children's and adults' memories"
+                "t": "to describe how one region's climate has changed"
               },
               {
                 "k": "D",
-                "t": "to describe how the climate of one region has changed over time"
+                "t": "to compare children's and adults' memories"
               }
             ],
             "ans": "B",
@@ -1276,15 +1279,49 @@
               "p": 0,
               "s": "the explanation has at least as much to do with how memory works"
             },
-            "why": "Đoạn 1 nêu niềm tin phổ biến (mùa hè tệ đi) rồi giới thiệu cách giải thích khác: do trí nhớ.",
+            "why": "Đoạn 1 nêu niềm tin phổ biến rồi giới thiệu cách giải thích khác: do trí nhớ.",
             "wrong": {
-              "A": "Đoạn văn nói rằng kết luận này \"tempting\" nhưng chưa chắc đúng.",
-              "C": "Việc so sánh trẻ em và người lớn không phải mục đích đoạn 1.",
-              "D": "Đoạn 1 không mô tả khí hậu một vùng."
+              "A": "Đoạn văn nói kết luận này chỉ là điều \"dễ\" nghĩ tới.",
+              "C": "Đoạn 1 không mô tả khí hậu một vùng.",
+              "D": "Đoạn 1 không so sánh trí nhớ trẻ em và người lớn."
             }
           },
           {
             "id": "m-v1-r4-02",
+            "q": "About how many adults took part in the study?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "eighty"
+              },
+              {
+                "k": "B",
+                "t": "two thousand"
+              },
+              {
+                "k": "C",
+                "t": "nine hundred"
+              },
+              {
+                "k": "D",
+                "t": "three hundred"
+              }
+            ],
+            "ans": "D",
+            "b": 6.5,
+            "ev": {
+              "p": 1,
+              "s": "Petrov asked about three hundred adults"
+            },
+            "why": "Khoảng ba trăm người trưởng thành tham gia.",
+            "wrong": {
+              "A": "Bài không nhắc tám mươi.",
+              "B": "Bài không nhắc hai nghìn.",
+              "C": "Bài không nhắc chín trăm."
+            }
+          },
+          {
+            "id": "m-v1-r4-03",
             "q": "How did Petrov check people's memories?",
             "opts": [
               {
@@ -1293,198 +1330,164 @@
               },
               {
                 "k": "B",
-                "t": "by asking them the same questions again a year later"
+                "t": "by reading their diaries"
               },
               {
                 "k": "C",
-                "t": "by showing them old photographs"
+                "t": "by comparing them with official weather records"
               },
               {
                 "k": "D",
-                "t": "by comparing them with weather records"
+                "t": "by comparing them with photographs"
               }
             ],
             "ans": "D",
-            "b": 6.5,
+            "b": 7,
             "ev": {
               "p": 1,
-              "s": "compared their accounts with local weather records"
+              "s": "she compared their accounts with photographs taken on the day"
             },
-            "why": "Bà so lời kể với hồ sơ thời tiết địa phương.",
+            "why": "Bà so lời kể với ảnh chụp trong ngày.",
             "wrong": {
-              "A": "Không nhắc người thân.",
-              "B": "Không nói hỏi hai lần.",
-              "C": "Không nhắc ảnh cũ."
-            }
-          },
-          {
-            "id": "m-v1-r4-03",
-            "q": "What did the study show about memories of rain?",
-            "opts": [
-              {
-                "k": "A",
-                "t": "People remembered rain more accurately than sunshine."
-              },
-              {
-                "k": "B",
-                "t": "People exaggerated how heavy the rain was."
-              },
-              {
-                "k": "C",
-                "t": "People tended to forget rain completely."
-              },
-              {
-                "k": "D",
-                "t": "People often linked rain to the wrong event."
-              }
-            ],
-            "ans": "D",
-            "b": 7.5,
-            "ev": {
-              "p": 1,
-              "s": "they frequently moved the rain to a different event"
-            },
-            "why": "Người ta thường \"chuyển\" cơn mưa sang một sự kiện khác.",
-            "wrong": {
-              "A": "Ký ức về mưa KÉM đáng tin hơn ký ức về nắng.",
-              "B": "Bài không nói về mức độ mưa to.",
-              "C": "Bài nói \"did not simply forget rainy days\"."
+              "A": "Bài không nhắc người thân.",
+              "B": "Nhật ký được nhắc nhưng hiếm khi ghi về thời tiết, không dùng để đối chiếu.",
+              "C": "Không có hồ sơ chính thức cho làng nhỏ; trạm khí tượng ở xa."
             }
           },
           {
             "id": "m-v1-r4-04",
-            "q": "The word \"reconstructed\" in paragraph 3 is closest in meaning to",
+            "q": "Which events were remembered least accurately?",
             "opts": [
               {
                 "k": "A",
-                "t": "removed"
+                "t": "holidays"
               },
               {
                 "k": "B",
-                "t": "recorded"
+                "t": "weddings"
               },
               {
                 "k": "C",
-                "t": "rebuilt"
+                "t": "first days at a new school"
               },
               {
                 "k": "D",
-                "t": "repeated"
+                "t": "birthdays"
               }
             ],
             "ans": "C",
             "b": 7,
             "ev": {
-              "p": 2,
-              "s": "it is reconstructed later to suit the emotional tone"
+              "p": 1,
+              "s": "but for first days at new schools"
             },
-            "why": "\"Reconstructed\" nghĩa là được dựng lại, tái tạo.",
+            "why": "Độ chính xác thấp nhất ở ngày đầu đến trường mới.",
             "wrong": {
-              "A": "\"Removed\" là xoá bỏ.",
-              "B": "\"Recorded\" là ghi lại, khác với dựng lại về sau.",
-              "D": "\"Repeated\" là lặp lại."
+              "A": "Kỳ nghỉ chỉ được liệt kê là một loại sự kiện.",
+              "B": "Bài nói rõ không phải đám cưới.",
+              "D": "Sinh nhật chỉ được liệt kê là một loại sự kiện."
             }
           },
           {
             "id": "m-v1-r4-05",
+            "q": "What did Petrov find about participants who had kept diaries?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They remembered more rain than others."
+              },
+              {
+                "k": "B",
+                "t": "They were no more accurate than others."
+              },
+              {
+                "k": "C",
+                "t": "They refused to show their diaries."
+              },
+              {
+                "k": "D",
+                "t": "They were more accurate than others."
+              }
+            ],
+            "ans": "A",
+            "b": 7,
+            "ev": {
+              "p": 1,
+              "s": "Participants who had kept diaries remembered more rain than anyone else"
+            },
+            "why": "Người viết nhật ký nhớ có mưa nhiều hơn người khác.",
+            "wrong": {
+              "B": "Bài không so độ chính xác của họ; bài nói họ nhớ nhiều mưa hơn.",
+              "C": "Bài không nói họ từ chối đưa nhật ký.",
+              "D": "Bài không nói họ chính xác hơn."
+            }
+          },
+          {
+            "id": "m-v1-r4-06",
             "q": "According to Petrov, what best predicted how people described the weather?",
             "opts": [
               {
                 "k": "A",
-                "t": "their present feelings about the event"
+                "t": "how often they had told the story"
               },
               {
                 "k": "B",
-                "t": "how long ago the event happened"
+                "t": "their present feelings about the event"
               },
               {
                 "k": "C",
-                "t": "the season in which the event took place"
+                "t": "their age at the time of the event"
               },
               {
                 "k": "D",
                 "t": "the actual weather on the day"
               }
             ],
-            "ans": "A",
-            "b": 7.5,
-            "ev": {
-              "p": 2,
-              "s": "how they felt about the event when they were asked"
-            },
-            "why": "Yếu tố dự báo mạnh nhất là cảm nhận về sự kiện vào lúc được hỏi.",
-            "wrong": {
-              "B": "Bài không nói khoảng thời gian là yếu tố chính.",
-              "C": "Bài không nhắc mùa.",
-              "D": "Bài nói rõ \"not the actual weather\"."
-            }
-          },
-          {
-            "id": "m-v1-r4-06",
-            "q": "Why does the writer mention participants who had divorced?",
-            "opts": [
-              {
-                "k": "A",
-                "t": "to prove that some participants were dishonest"
-              },
-              {
-                "k": "B",
-                "t": "to show that remembered weather follows feelings"
-              },
-              {
-                "k": "C",
-                "t": "to explain why the study was stopped"
-              },
-              {
-                "k": "D",
-                "t": "to suggest that weddings are often held in bad weather"
-              }
-            ],
             "ans": "B",
             "b": 7.5,
             "ev": {
-              "p": 3,
-              "s": "Several participants who had since divorced described their wedding day as grey or stormy"
+              "p": 2,
+              "s": "but how they felt about the event when they were asked"
             },
-            "why": "Ví dụ cho thấy khi cảm nhận về sự kiện đổi, thời tiết trong ký ức cũng đổi.",
+            "why": "Yếu tố dự báo mạnh nhất là cảm nhận về sự kiện vào lúc được hỏi.",
             "wrong": {
-              "A": "Petrov lưu ý họ không nói dối.",
-              "C": "Bài không nói nghiên cứu bị dừng.",
-              "D": "Hồ sơ cho thấy đám cưới của họ trời nắng."
+              "A": "Bài nói cũng không phải số lần kể lại.",
+              "C": "Bài không nhắc tuổi.",
+              "D": "Bài nói \"neither the actual weather\"."
             }
           },
           {
             "id": "m-v1-r4-07",
-            "q": "The word \"most\" in paragraph 4 refers to",
+            "q": "How did most divorced participants react when shown the photographs?",
             "opts": [
               {
                 "k": "A",
-                "t": "the wedding days they described"
+                "t": "They changed their description of the weather."
               },
               {
                 "k": "B",
-                "t": "participants who had divorced"
+                "t": "They said the photographs were from another day."
               },
               {
                 "k": "C",
-                "t": "researchers"
+                "t": "They refused to look at them."
               },
               {
                 "k": "D",
-                "t": "records"
+                "t": "They were surprised."
               }
             ],
             "ans": "B",
-            "b": 7,
+            "b": 7.5,
             "ev": {
               "p": 3,
-              "s": "most were genuinely surprised"
+              "s": "most insisted that the photographs must have been taken on a different day"
             },
-            "why": "\"Most\" chỉ phần lớn những người tham gia (đã ly hôn) khi được xem hồ sơ.",
+            "why": "Phần lớn khăng khăng ảnh hẳn chụp vào ngày khác; chỉ vài người ngạc nhiên.",
             "wrong": {
-              "A": "Ngày cưới không phải đối tượng ngạc nhiên.",
-              "C": "Nhà nghiên cứu không được nhắc ở câu này.",
-              "D": "Hồ sơ không thể \"ngạc nhiên\"."
+              "A": "Bài không nói họ đổi lời kể.",
+              "C": "Bài không nói họ từ chối xem.",
+              "D": "Chỉ \"vài người\" ngạc nhiên."
             }
           },
           {
@@ -1493,15 +1496,15 @@
             "opts": [
               {
                 "k": "A",
-                "t": "Summers were actually hotter in the past."
+                "t": "Children have fewer responsibilities."
               },
               {
                 "k": "B",
-                "t": "Children have fewer responsibilities than adults."
+                "t": "Children spend more time outdoors."
               },
               {
                 "k": "C",
-                "t": "Children spend more time outside."
+                "t": "Some childhood summers really were sunny."
               },
               {
                 "k": "D",
@@ -1514,79 +1517,79 @@
               "p": 4,
               "s": "Childhood summers present a special case."
             },
-            "why": "Đoạn 5 nêu: trẻ ở ngoài trời nhiều, ít trách nhiệm, ký ức được kể đi kể lại; không nói mùa hè trước đây thật sự nóng hơn.",
+            "why": "Đoạn 5 nêu: ở ngoài trời, vài mùa hè thật sự nắng, ký ức được kể lại; không nhắc trách nhiệm.",
             "wrong": {
-              "B": "Có nêu: \"fewer responsibilities\".",
-              "C": "Có nêu: \"spend more time outdoors\".",
-              "D": "Có nêu: \"repetition of a few vivid memories\"."
+              "B": "Có nêu: trẻ ở ngoài trời nhiều hơn.",
+              "C": "Có nêu: số liệu cho thấy vài mùa hè thật sự nắng.",
+              "D": "Có nêu: ký ức được nhắc đi nhắc lại."
             }
           },
           {
             "id": "m-v1-r4-09",
-            "q": "What does Petrov say about climate change?",
+            "q": "One brilliant August can come to represent",
             "opts": [
               {
                 "k": "A",
-                "t": "It explains most of the memories she studied."
+                "t": "an entire childhood."
               },
               {
                 "k": "B",
-                "t": "Her research shows it has not happened."
+                "t": "a single year."
               },
               {
                 "k": "C",
-                "t": "It has made summers less predictable."
+                "t": "a generation."
               },
               {
                 "k": "D",
-                "t": "Her research does not address it."
+                "t": "a whole decade."
               }
             ],
             "ans": "D",
             "b": 7,
             "ev": {
-              "p": 5,
-              "s": "her work says nothing about long-term weather patterns"
+              "p": 4,
+              "s": "can come to stand for an entire decade"
             },
-            "why": "Petrov nói rõ nghiên cứu không nói gì về xu hướng thời tiết dài hạn.",
+            "why": "Một tháng Tám rực rỡ có thể đại diện cho cả một thập kỷ.",
             "wrong": {
-              "A": "Bài giải thích ký ức bằng cảm xúc, không bằng khí hậu.",
-              "B": "Bài nói \"None of this means that the climate has not changed\".",
-              "C": "Không nói mùa hè khó đoán hơn."
+              "A": "Bài không nói \"cả thời thơ ấu\".",
+              "B": "Bài nói nó đại diện cho nhiều hơn một năm.",
+              "C": "Bài không nói một thế hệ."
             }
           },
           {
             "id": "m-v1-r4-10",
-            "q": "Which statement best summarises the writer's conclusion?",
+            "q": "Who will Petrov study next?",
             "opts": [
               {
                 "k": "A",
-                "t": "People should keep diaries to remember the weather."
+                "t": "professional weather forecasters"
               },
               {
                 "k": "B",
-                "t": "Childhood memories are more reliable than adult ones."
+                "t": "older adults"
               },
               {
                 "k": "C",
-                "t": "Weather memories reflect feelings more than facts."
+                "t": "people in very dry climates"
               },
               {
                 "k": "D",
-                "t": "Weather records are often inaccurate."
+                "t": "children"
               }
             ],
             "ans": "C",
-            "b": 8,
+            "b": 7,
             "ev": {
               "p": 5,
-              "s": "our memories of the weather are better evidence of how we feel about our past"
+              "s": "Her next study will look at people who have spent their whole lives in very dry climates"
             },
-            "why": "Kết luận: ký ức thời tiết là bằng chứng về cảm nhận với quá khứ hơn là về bầu trời thật.",
+            "why": "Nghiên cứu tiếp theo về người sống cả đời ở vùng khí hậu rất khô.",
             "wrong": {
-              "A": "Bài không khuyên viết nhật ký.",
-              "B": "Bài không nói ký ức tuổi thơ đáng tin hơn.",
-              "D": "Hồ sơ thời tiết được dùng làm chuẩn so sánh, không bị chê."
+              "A": "Bài không nhắc người dự báo thời tiết.",
+              "B": "Bài không nói người cao tuổi.",
+              "D": "Bài không nói nghiên cứu trẻ em."
             }
           }
         ]

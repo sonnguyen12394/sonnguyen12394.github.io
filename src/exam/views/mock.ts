@@ -141,7 +141,7 @@ export function viewMockResult(c: Ctx, v: MockView, sk: MSkill, given: Record<st
   }
   const typeRows = s.byType.map(r => {
     const q = QT[r.qtype], pct = Math.round((100 * r.got) / r.of), can = typeCount(r.qtype).items > 0;
-    return `<tr><td>${esc(q?.vi ?? r.qtype)}</td><td class="num">${r.got}/${r.of}</td><td class="num">${pct}%</td><td>${pct < 100 && can ? `<button class="btn small" data-x="route" data-r="type/${esc(r.qtype)}">Luyện dạng này</button>` : ''}</td></tr>`;
+    return `<li style="display:flex;flex-wrap:nowrap;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)"><span style="flex:1;min-width:0">${esc(q?.vi ?? r.qtype)}<br><span class="hint num">${r.got}/${r.of} đúng · ${pct}%</span></span>${pct < 100 && can ? `<button class="btn small" style="flex:none" data-x="route" data-r="type/${esc(r.qtype)}" aria-label="Luyện dạng ${esc(q?.vi ?? r.qtype)}">Luyện</button>` : ''}</li>`;
   }).join('');
   const review = v.parts[sk].map((gs, pi) => {
     const g0 = gs[0]!, got = gs.reduce((a, g) => a + g.items.reduce((k, it) => k + (s.marks[it.id]?.got ?? 0), 0), 0), of = gs.reduce((a, g) => a + g.items.reduce((k, it) => k + (s.marks[it.id]?.of ?? 0), 0), 0);
@@ -159,7 +159,7 @@ export function viewMockResult(c: Ctx, v: MockView, sk: MSkill, given: Record<st
     ${combo ? `<p>${combo}</p>` : ''}</section>
   ${sk === 'L' && !lastScore(c, t.id, 'R') ? `<section class="panel stack"><p>Tiếp theo: phần Đọc của đề này (${MOCK_FORMAT[t.exam].R.minutes} phút).</p><div class="row"><button class="btn primary" data-x="mockstart" data-t="${esc(t.id)}" data-m="R">Bắt đầu phần Đọc</button></div></section>` : ''}
   <section class="panel stack"><h3>Dạng câu bạn hay sai</h3><p class="hint">Xếp từ tỉ lệ đúng thấp nhất. Câu sai đã vào sổ lỗi sai để ôn lại đúng lúc.</p>
-    <div class="tablewrap"><table style="min-width:0"><thead><tr><th>Dạng câu</th><th>Đúng</th><th>Tỉ lệ</th><th></th></tr></thead><tbody>${typeRows}</tbody></table></div></section>
+    <ul style="list-style:none;margin:0;padding:0">${typeRows}</ul></section>
   <h2>Xem lại từng câu</h2>${review}
   <div class="row"><button class="btn" data-x="route" data-r="mock/${esc(t.id)}">Về đề này</button><button class="btn" data-x="route" data-r="mocks">Danh sách đề</button></div>`;
 }

@@ -17,7 +17,7 @@ for (const r of runs) for (const [id, a] of Object.entries(r)) {
   const k = key.get(id); if (!k) { console.log(`? ${id}: không có trong kho`); continue; }
   const s = st.get(k.q) ?? { n: 0, ok: 0, opts: 0 }; s.n++; s.opts += k.n;
   const [letter, conf] = String(a).trim().toUpperCase().split('/');
-  if (letter === k.ans) { s.ok++; hits.set(id, (hits.get(id) ?? 0) + 1); if (conf === 'H') sure.add(id); }
+  if (letter === String(k.ans).toUpperCase()) { s.ok++; hits.set(id, (hits.get(id) ?? 0) + 1); if (conf === 'H') sure.add(id); }
   st.set(k.q, s);
 }
 let fail = false;

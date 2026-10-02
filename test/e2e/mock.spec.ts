@@ -1,8 +1,16 @@
 import { readFileSync } from 'node:fs';
-import { test, expect, openApp, navTo, noHorizontalScroll, type Page } from './fixtures.ts';
+import type { Page } from '@playwright/test';
+import { test, expect, openApp, navTo, noHorizontalScroll } from './fixtures.ts';
 
 // Đề thi thử đầy đủ (yêu cầu 6.3): làm bài có giờ, bị gián đoạn vẫn làm tiếp, nộp bài ra điểm + phân tích dạng câu + giải thích.
 const SILENCE = readFileSync(new URL('./silence.mp3', import.meta.url));
+// Đáp án lấy từ chính nguồn đề, để soạn lại đề không làm hỏng bài thử
+type Src = Array<{ sets: Array<{ items: Array<{ id: string; ans: unknown }> }> }>;
+const R1 = JSON.parse(readFileSync(new URL('../../content/exam/mock/a1/R.json', import.meta.url), 'utf8')) as Src;
+const ansOf = (id: string): unknown => R1.flatMap(p => p.sets.flatMap(s => s.items)).find(it => it.id === id)?.ans;
+
+// Service worker tự tải âm thanh thật (page.route không chặn được yêu cầu của nó): tắt SW để dùng âm thanh im lặng 1 giây.
+test.use({ serviceWorkers: 'block' });
 
 async function openMock(page: Page): Promise<void> {
   await openApp(page);
@@ -20,7 +28,8 @@ test('Đọc: trả lời, tải lại trang vẫn làm tiếp đúng chỗ, n�
   await page.getByRole('button', { name: 'Chỉ Đọc' }).click();
   await expect(page.getByRole('heading', { name: 'The orchards that switched off their lights' })).toBeVisible();
   await expect(page.getByRole('timer')).toBeVisible();
-  await page.locator('input[name="m-a1-r1-01"][value="FALSE"]').check();
+  const a01 = String(ansOf('m-a1-r1-01'));
+  await page.locator(`input[name="m-a1-r1-01"][value="${a01}"]`).check();
   await page.locator('input[name="m-a1-r1-08"]').fill('flowers');
   await noHorizontalScroll(page);
   // Android hay đóng tab chạy nền: mở lại app phải làm tiếp được, câu trả lời còn nguyên
@@ -30,7 +39,7 @@ test('Đọc: trả lời, tải lại trang vẫn làm tiếp đúng chỗ, n�
   await navTo(page, 'Ôn thi');
   await page.getByRole('button', { name: 'Làm tiếp' }).click();
   await expect(page.locator('input[name="m-a1-r1-08"]')).toHaveValue('flowers');
-  await expect(page.locator('input[name="m-a1-r1-01"][value="FALSE"]')).toBeChecked();
+  await expect(page.locator(`input[name="m-a1-r1-01"][value="${a01}"]`)).toBeChecked();
   // sang bài 2 bằng thẻ phần, rồi nộp (lần đầu app nhắc còn câu chưa trả lời)
   await page.getByRole('tab', { name: 'Phần 2' }).click();
   await expect(page.getByRole('heading', { name: 'Taking boredom seriously' })).toBeVisible();
@@ -46,7 +55,7 @@ test('Đọc: trả lời, tải lại trang vẫn làm tiếp đúng chỗ, n�
 });
 
 test('Nghe: tải trước âm thanh, phát liền các phần, hết giờ soát lại thì tự nộp', async ({ page, errors }) => {
-  await page.route(/\/a\/m-a1-l\d\.mp3$/, r => r.fulfill({ status: 200, contentType: 'audio/mpeg', body: SILENCE }));
+  await page.route(/\/a\/m-a1-l\d\.mp3/, r => r.fulfill({ status: 200, contentType: 'audio/mpeg', body: SILENCE }));
   await openMock(page);
   await page.getByRole('button', { name: 'Chỉ Nghe' }).click();
   await page.getByRole('button', { name: /Bắt đầu nghe/ }).click();

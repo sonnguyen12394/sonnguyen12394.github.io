@@ -22,6 +22,9 @@ export const LENGTH: Record<string, Record<string, [number, number]>> = {
 // Ngoại lệ theo dạng câu (bộ luyện): Phần 1 Nghe VSTEP là các thông báo ngắn ~30–40 từ, mỗi bộ gồm 3 đoạn.
 export const QLENGTH: Record<string, [number, number]> = { 'v-l1': [60, 400] };
 
+// Dạng có danh sách cố định (TRUE/FALSE/NOT GIVEN…) không xét thứ tự đáp án.
+const ORDERLESS = new Set(['r-tfng', 'r-ynng']);
+
 // Số câu điền nằm nguyên văn trong bài (IELTS: "Choose NO MORE THAN … WORDS from the passage").
 const FROM_TEXT = new Set(['r-sentence', 'r-summary', 'r-notes', 'r-diagram', 'r-short', 'l-form', 'l-sentence', 'l-flow', 'l-short']);
 
@@ -81,6 +84,11 @@ export function checkGroup(g: Group, list: Record<string, string> | null): Issue
     const ks = g.options.map(o => o.k), ts = g.options.map(o => squash(o.t));
     if (new Set(ks).size !== ks.length) bad(g.id, 'khoá phương án dùng chung bị trùng');
     if (new Set(ts).size !== ts.length) bad(g.id, 'nội dung phương án dùng chung bị trùng');
+    // Danh sách dùng chung (tiêu đề, người, phòng, khung từ) không được xếp theo thứ tự đáp án của các câu:
+    // GĐ6 bản nháp xếp tiêu đề và nhà nghiên cứu đúng thứ tự trong bài, đoán theo thứ tự là trúng.
+    const idx = g.items.map(it => (typeof it.ans === 'string' ? ks.indexOf(it.ans) : -1));
+    if (g.mode === 'mock' && !ORDERLESS.has(g.qtype) && g.items.length >= 3 && idx.every(i => i >= 0) && idx.every((v, i) => i === 0 || v >= idx[i - 1]!))
+      bad(g.id, 'đáp án các câu theo đúng thứ tự trong danh sách phương án — xáo danh sách để không đoán được theo thứ tự');
   }
   const ids = new Set<string>();
   for (const it of g.items) {

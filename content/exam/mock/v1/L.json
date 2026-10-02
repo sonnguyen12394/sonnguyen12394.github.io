@@ -27,6 +27,14 @@
       "N": "bm_george",
       "Announcer": "bf_emma"
     },
+    "audio": {
+      "file": "a/m-v1-l1.mp3",
+      "dur": 41.5,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l1",
@@ -87,16 +95,24 @@
       },
       {
         "sp": "Guide",
-        "t": "Welcome to the Maritime Museum. To use your audio guide, type the number shown on any label and press the green button. You can pause at any time. There's no charge for the guide, and you don't need to leave a deposit. However, the headphones are yours to keep, so please don't hand them in. What we do need is the device itself: please leave it in the box by the exit door before you go."
+        "t": "Welcome to the Maritime Museum. Please note that audio guides are no longer handed out at the entrance, and the information desk has moved upstairs. You can collect a guide from the shop, which is next to the café on the ground floor. The guide is free, and the headphones are yours to keep. When you have finished, please leave the device in the box by the exit door."
       }
     ],
     "vi": [
       "Câu 2. Hãy nghe và chọn đáp án đúng nhất.",
-      "Chào mừng quý khách đến Bảo tàng Hàng hải. Để dùng thiết bị thuyết minh, hãy nhập số ghi trên nhãn bất kỳ và bấm nút xanh. Quý khách có thể tạm dừng bất cứ lúc nào. Thiết bị thuyết minh miễn phí, và không cần để lại tiền đặt cọc. Tuy nhiên, tai nghe là quà tặng quý khách, xin đừng nộp lại. Thứ chúng tôi cần là chính thiết bị: xin để nó vào hộp cạnh cửa ra trước khi về."
+      "Chào mừng quý khách đến Bảo tàng Hàng hải. Xin lưu ý thiết bị thuyết minh không còn được phát ở lối vào, và quầy thông tin đã chuyển lên tầng trên. Quý khách có thể nhận thiết bị ở cửa hàng, cạnh quán cà phê ở tầng trệt. Thiết bị miễn phí, và tai nghe là quà tặng quý khách. Khi dùng xong, xin để thiết bị vào hộp cạnh cửa ra."
     ],
     "voices": {
       "N": "bm_george",
       "Guide": "af_nicole"
+    },
+    "audio": {
+      "file": "a/m-v1-l2.mp3",
+      "dur": 37.6,
+      "voices": [
+        "bm_george",
+        "af_nicole"
+      ]
     },
     "sets": [
       {
@@ -105,36 +121,36 @@
         "items": [
           {
             "id": "m-v1-l2-01",
-            "q": "What must visitors do before leaving the museum?",
+            "q": "Where can visitors get an audio guide?",
             "opts": [
               {
                 "k": "A",
-                "t": "collect their deposit"
+                "t": "in the café"
               },
               {
                 "k": "B",
-                "t": "leave the device in a box"
+                "t": "in the shop"
               },
               {
                 "k": "C",
-                "t": "return their headphones to staff"
+                "t": "at the entrance"
               },
               {
                 "k": "D",
-                "t": "press the green button"
+                "t": "at the information desk"
               }
             ],
             "ans": "B",
             "b": 4.5,
             "ev": {
               "p": 1,
-              "s": "please leave it in the box by the exit door"
+              "s": "You can collect a guide from the shop"
             },
-            "why": "Khách phải để thiết bị thuyết minh vào hộp cạnh cửa ra.",
+            "why": "Thiết bị được nhận ở cửa hàng, cạnh quán cà phê.",
             "wrong": {
-              "A": "Không có tiền đặt cọc.",
-              "C": "Tai nghe là quà tặng, \"please don't hand them in\".",
-              "D": "Nút xanh dùng để nghe thuyết minh, không phải việc trước khi về."
+              "A": "Quán cà phê chỉ là mốc chỉ đường, nằm cạnh cửa hàng.",
+              "C": "Thiết bị không còn được phát ở lối vào.",
+              "D": "Quầy thông tin đã chuyển lên tầng trên, không phát thiết bị."
             }
           }
         ]
@@ -158,16 +174,24 @@
       },
       {
         "sp": "Teacher",
-        "t": "Before you go into the exam room tomorrow, a few reminders. Dictionaries are not allowed in this paper, even though you used them in the practice test. Phones must be left in the lockers in the corridor, not just switched off. Pencil cases will be taken away at the door, so bring your pens in a clear plastic bag. And you may bring a bottle of water, as long as the label has been removed."
+        "t": "Before you go into the exam room tomorrow, a few reminders. Dictionaries are not allowed in this paper, even though you used them in the practice test. Phones must be left in the lockers in the corridor, not just switched off. This year, water bottles are not allowed either, because of what happened to the papers last time; there will be water outside. You may bring a pencil case, but only if it is made of clear plastic."
       }
     ],
     "vi": [
       "Câu 3. Hãy nghe và chọn đáp án đúng nhất.",
-      "Trước khi các em vào phòng thi ngày mai, thầy nhắc vài điều. Bài thi này không được dùng từ điển, dù các em đã dùng trong bài thi thử. Điện thoại phải để trong tủ khoá ở hành lang, không chỉ tắt máy. Hộp bút sẽ bị thu ở cửa, nên hãy đựng bút trong túi nhựa trong. Và các em được mang một chai nước, miễn là đã bóc nhãn."
+      "Trước khi các em vào phòng thi ngày mai, thầy nhắc vài điều. Bài thi này không được dùng từ điển, dù các em đã dùng trong bài thi thử. Điện thoại phải để trong tủ khoá ở hành lang, không chỉ tắt máy. Năm nay cũng không được mang chai nước, vì chuyện đã xảy ra với bài thi lần trước; bên ngoài sẽ có nước uống. Các em được mang hộp bút, nhưng chỉ khi nó làm bằng nhựa trong."
     ],
     "voices": {
       "N": "bm_george",
       "Teacher": "bm_lewis"
+    },
+    "audio": {
+      "file": "a/m-v1-l3.mp3",
+      "dur": 35.8,
+      "voices": [
+        "bm_george",
+        "bm_lewis"
+      ]
     },
     "sets": [
       {
@@ -184,28 +208,28 @@
               },
               {
                 "k": "B",
-                "t": "a pencil case"
+                "t": "a phone that is switched off"
               },
               {
                 "k": "C",
-                "t": "a bottle of water without a label"
+                "t": "a see-through pencil case"
               },
               {
                 "k": "D",
-                "t": "a mobile phone, as long as it is switched off"
+                "t": "a bottle of water"
               }
             ],
             "ans": "C",
             "b": 5,
             "ev": {
               "p": 1,
-              "s": "you may bring a bottle of water, as long as the label has been removed"
+              "s": "You may bring a pencil case, but only if it is made of clear plastic."
             },
-            "why": "Học sinh được mang chai nước nếu đã bóc nhãn.",
+            "why": "Được mang hộp bút nếu bằng nhựa trong.",
             "wrong": {
               "A": "Bài thi này không được dùng từ điển.",
-              "B": "Hộp bút bị thu ở cửa.",
-              "D": "Điện thoại phải để trong tủ khoá, tắt máy cũng không được mang vào."
+              "B": "Điện thoại phải để trong tủ khoá, tắt máy cũng không được.",
+              "D": "Năm nay không được mang chai nước."
             }
           }
         ]
@@ -239,6 +263,14 @@
     "voices": {
       "N": "bm_george",
       "Conductor": "am_michael"
+    },
+    "audio": {
+      "file": "a/m-v1-l4.mp3",
+      "dur": 36.1,
+      "voices": [
+        "bm_george",
+        "am_michael"
+      ]
     },
     "sets": [
       {
@@ -311,6 +343,14 @@
       "N": "bm_george",
       "Presenter": "af_sky"
     },
+    "audio": {
+      "file": "a/m-v1-l5.mp3",
+      "dur": 31.2,
+      "voices": [
+        "bm_george",
+        "af_sky"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l1",
@@ -371,16 +411,24 @@
       },
       {
         "sp": "Receptionist",
-        "t": "A quick message for all members. From Monday, you can no longer book fitness classes at the reception desk or by phone. All bookings must be made through the members' app, and they open exactly two days before each class. If you don't have a smartphone, ask a member of staff, who will set up a booking for you using the computer in the office."
+        "t": "A quick message for all members. Because of problems with the members' app, it will be switched off from Monday until further notice. Phone bookings have also stopped, as we don't have enough staff to answer calls. So from Monday, please book fitness classes in person at the reception desk. Bookings open two days before each class, and you can't book on the day itself."
       }
     ],
     "vi": [
       "Câu 6. Hãy nghe và chọn đáp án đúng nhất.",
-      "Thông báo nhanh tới tất cả hội viên. Từ thứ Hai, quý vị không thể đặt lớp thể dục ở quầy lễ tân hay qua điện thoại nữa. Mọi lượt đặt phải qua ứng dụng dành cho hội viên, và mở đúng hai ngày trước mỗi lớp. Nếu không có điện thoại thông minh, hãy nhờ nhân viên, họ sẽ đặt giúp bằng máy tính trong văn phòng."
+      "Thông báo nhanh tới tất cả hội viên. Do sự cố với ứng dụng hội viên, ứng dụng sẽ ngừng hoạt động từ thứ Hai cho đến khi có thông báo mới. Việc đặt qua điện thoại cũng đã dừng, vì chúng tôi không đủ nhân viên nghe máy. Vì vậy từ thứ Hai, xin đặt lớp thể dục trực tiếp tại quầy lễ tân. Lượt đặt mở hai ngày trước mỗi lớp, và không đặt được trong ngày."
     ],
     "voices": {
       "N": "bm_george",
       "Receptionist": "bf_isabella"
+    },
+    "audio": {
+      "file": "a/m-v1-l6.mp3",
+      "dur": 32.6,
+      "voices": [
+        "bm_george",
+        "bf_isabella"
+      ]
     },
     "sets": [
       {
@@ -389,11 +437,11 @@
         "items": [
           {
             "id": "m-v1-l6-01",
-            "q": "How will most members book classes from Monday?",
+            "q": "How will members book classes from Monday?",
             "opts": [
               {
                 "k": "A",
-                "t": "at the reception desk"
+                "t": "using the app"
               },
               {
                 "k": "B",
@@ -405,20 +453,20 @@
               },
               {
                 "k": "D",
-                "t": "using an app"
+                "t": "at the reception desk"
               }
             ],
             "ans": "D",
             "b": 5,
             "ev": {
               "p": 1,
-              "s": "All bookings must be made through the members' app"
+              "s": "please book fitness classes in person at the reception desk"
             },
-            "why": "Từ thứ Hai, mọi lượt đặt phải qua ứng dụng hội viên.",
+            "why": "Từ thứ Hai, đặt lớp trực tiếp tại quầy lễ tân.",
             "wrong": {
-              "A": "Không đặt ở quầy lễ tân được nữa.",
-              "B": "Lượt đặt mở hai ngày trước lớp, không phải trong ngày.",
-              "C": "Không đặt qua điện thoại được nữa."
+              "A": "Ứng dụng ngừng hoạt động từ thứ Hai.",
+              "B": "Không đặt được trong ngày; lượt đặt mở hai ngày trước.",
+              "C": "Đặt qua điện thoại đã dừng."
             }
           }
         ]
@@ -452,6 +500,14 @@
     "voices": {
       "N": "bm_george",
       "Nurse": "af_bella"
+    },
+    "audio": {
+      "file": "a/m-v1-l7.mp3",
+      "dur": 33.1,
+      "voices": [
+        "bm_george",
+        "af_bella"
+      ]
     },
     "sets": [
       {
@@ -523,6 +579,14 @@
     "voices": {
       "N": "bm_george",
       "Librarian": "am_adam"
+    },
+    "audio": {
+      "file": "a/m-v1-l8.mp3",
+      "dur": 31.9,
+      "voices": [
+        "bm_george",
+        "am_adam"
+      ]
     },
     "sets": [
       {
@@ -608,19 +672,19 @@
       },
       {
         "sp": "Mai",
-        "t": "Her husband had a good idea. She's always admired the photos that Joe takes, so instead of buying something, we could ask Joe to make an album of pictures of the team, and spend the money on a really good printer for him to do it with. Then Joe keeps the printer for the office."
+        "t": "Her husband had an idea. Joe could make an album of photos of the team, and we'd spend the money on a good printer for him to do it with. Joe would keep the printer for the office afterwards, which I don't think anyone would mind."
       },
       {
         "sp": "Peter",
-        "t": "Hmm. I'm not sure people gave money for office equipment. I'd rather Joe made the album and we spend the money on a voucher for her new life in Canada, something she can use there."
+        "t": "The cost isn't the problem, and Joe's not that busy. But an album of photos? Linda once told me she can't stand having her picture taken. She hid at the back of every team photo we've ever had. I'd rather we got her a voucher she can use in Canada."
       },
       {
         "sp": "Mai",
-        "t": "That's fair. I'll ask Joe today. Can you find out which shops she could use over there?"
+        "t": "Oh, I didn't know that. All right, a voucher. I'll look up which shops she could use over there. Could you tell Joe we won't need the album after all? He's already started choosing pictures."
       },
       {
         "sp": "Peter",
-        "t": "I'll do it this afternoon."
+        "t": "Sure, I'll catch him this afternoon."
       }
     ],
     "vi": [
@@ -631,10 +695,10 @@
       "Ồ. Vậy em định thế nào? Ăn trưa ở văn phòng hôm thứ Năm?",
       "Kiểu như vậy, nhưng không phải ăn trưa. Nửa nhóm đi hội nghị thứ Năm đến ba giờ. Em đề xuất tiệc trà chiều lúc bốn giờ ở phòng họp, với bánh của tiệm bánh dưới nhà.",
       "Được đấy. Còn quà thì sao? Anh đã thu được khoảng hai trăm bảng từ mọi người.",
-      "Chồng chị ấy có một ý hay. Chị ấy luôn thích ảnh Joe chụp, nên thay vì mua đồ, mình có thể nhờ Joe làm một cuốn album ảnh của cả nhóm, và dùng tiền mua một máy in thật tốt để anh ấy làm. Sau đó Joe giữ máy in cho văn phòng.",
-      "Hừm. Anh không chắc mọi người góp tiền để mua thiết bị văn phòng. Anh muốn Joe làm album, còn tiền thì mình mua một phiếu quà tặng cho cuộc sống mới của chị ấy ở Canada, thứ chị ấy dùng được bên đó.",
-      "Hợp lý. Em sẽ hỏi Joe hôm nay. Anh tìm hiểu xem bên đó chị ấy dùng được ở cửa hàng nào nhé?",
-      "Chiều nay anh làm."
+      "Chồng chị ấy có một ý. Joe có thể làm một cuốn album ảnh cả nhóm, và mình dùng tiền mua một máy in tốt để anh ấy làm. Sau đó Joe giữ máy in cho văn phòng, em nghĩ chẳng ai phản đối chuyện đó.",
+      "Tiền không phải vấn đề, và Joe cũng không bận đến thế. Nhưng một album ảnh à? Linda từng nói với anh chị ấy không chịu nổi việc bị chụp ảnh. Lần chụp ảnh nhóm nào chị ấy cũng trốn ở hàng cuối. Anh muốn mua cho chị ấy một phiếu quà tặng dùng được ở Canada hơn.",
+      "Ồ, em không biết chuyện đó. Được, phiếu quà tặng. Em sẽ tìm xem bên đó chị ấy dùng được ở cửa hàng nào. Anh báo Joe giúp em là mình không cần album nữa nhé? Anh ấy đã bắt đầu chọn ảnh rồi.",
+      "Được, chiều nay anh sẽ gặp anh ấy."
     ],
     "voices": {
       "N": "bm_george",
@@ -649,6 +713,15 @@
       "printer",
       "equipment"
     ],
+    "audio": {
+      "file": "a/m-v1-l9.mp3",
+      "dur": 115.4,
+      "voices": [
+        "bm_george",
+        "af_sarah",
+        "bm_lewis"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l2",
@@ -728,32 +801,32 @@
             "opts": [
               {
                 "k": "A",
-                "t": "He thinks the money should not pay for office equipment."
+                "t": "Linda dislikes being photographed."
               },
               {
                 "k": "B",
-                "t": "He thinks Linda would prefer flowers."
+                "t": "The money should not pay for office equipment."
               },
               {
                 "k": "C",
-                "t": "He thinks a printer would cost too much."
+                "t": "Joe is too busy to make an album."
               },
               {
                 "k": "D",
-                "t": "He thinks Joe would not have enough time to make an album."
+                "t": "The printer would be too expensive."
               }
             ],
             "ans": "A",
             "b": 6,
             "ev": {
               "p": 8,
-              "s": "I'm not sure people gave money for office equipment."
+              "s": "Linda once told me she can't stand having her picture taken."
             },
-            "why": "Peter không chắc mọi người góp tiền để mua thiết bị văn phòng (máy in Joe giữ lại).",
+            "why": "Peter nói Linda không chịu nổi việc bị chụp ảnh nên album ảnh không hợp.",
             "wrong": {
-              "B": "Không ai nhắc hoa.",
-              "C": "Peter không bàn giá máy in.",
-              "D": "Peter vẫn muốn Joe làm album."
+              "B": "Mai nói chẳng ai phản đối việc Joe giữ máy in; Peter không phản đối điểm này.",
+              "C": "Peter nói Joe \"not that busy\".",
+              "D": "Peter nói \"The cost isn't the problem\"."
             }
           },
           {
@@ -762,15 +835,15 @@
             "opts": [
               {
                 "k": "A",
-                "t": "buy cakes for the party"
-              },
-              {
-                "k": "B",
                 "t": "find out about shops in Canada"
               },
               {
-                "k": "C",
+                "k": "B",
                 "t": "speak to Joe about the album"
+              },
+              {
+                "k": "C",
+                "t": "buy cakes for the party"
               },
               {
                 "k": "D",
@@ -780,13 +853,13 @@
             "ans": "B",
             "b": 5.5,
             "ev": {
-              "p": 9,
-              "s": "Can you find out which shops she could use over there?"
+              "p": 10,
+              "s": "Sure, I'll catch him this afternoon."
             },
-            "why": "Mai nhờ Peter tìm cửa hàng ở Canada mà Linda dùng phiếu được; Peter nói chiều nay làm.",
+            "why": "Mai nhờ Peter báo Joe là không cần album nữa; Peter nói chiều nay sẽ gặp anh ấy.",
             "wrong": {
-              "A": "Không ai nói Peter mua bánh.",
-              "C": "Mai là người sẽ hỏi Joe.",
+              "A": "Mai là người sẽ tìm cửa hàng ở Canada.",
+              "C": "Không ai nói Peter mua bánh.",
               "D": "Peter đã thu khoảng hai trăm bảng rồi."
             }
           }
@@ -823,15 +896,15 @@
       },
       {
         "sp": "Huong",
-        "t": "No, they're lovely, actually. And the room's fine. It's the location. I've started a part-time job at the hospital, and some of my shifts finish at eleven at night. Block C is at the far end of the campus, and the path there isn't lit."
+        "t": "No, they're lovely, actually, and they're very quiet. I do work late shifts at the hospital, but the path back is fine now that they've put lights in. The problem is that my room is directly above the bike store, and the metal door bangs every time someone comes in, even at three in the morning."
       },
       {
         "sp": "Officer",
-        "t": "I see. Well, we do have a free room in Block A, next to the main gate. It's slightly smaller and it's eight pounds a week more, because it has its own bathroom."
+        "t": "I see. Well, we do have a free room in Block A. It's on the ground floor, it's the same size as yours and it's the same price, because the bathroom is shared. The rooms with private bathrooms are all taken."
       },
       {
         "sp": "Huong",
-        "t": "Eight pounds is fine. When could I move?"
+        "t": "The ground floor is fine, as long as it's not above anything noisy. When could I move?"
       },
       {
         "sp": "Officer",
@@ -843,7 +916,7 @@
       },
       {
         "sp": "Officer",
-        "t": "Because they'll get a new person in your place, and they're entitled to know. It's just a signature, they don't have to agree to anything. You can pick up the form here or download it, but it has to be handed in here in person, not emailed."
+        "t": "It's not about agreeing to the move, and we'll tell them ourselves who's replacing you. It's because you share the electricity bill. Their signatures confirm that you've paid your share up to the day you leave. You can pick up the form here or download it, but it has to be handed in here in person, not emailed."
       },
       {
         "sp": "Huong",
@@ -855,12 +928,12 @@
       "Xin chào, phòng quản lý ký túc xá. Tôi giúp gì được bạn?",
       "Chào chị. Em tên là Hương, ở khu C, phòng 21. Em muốn hỏi về việc chuyển sang phòng khác.",
       "Bạn có vấn đề gì với bạn cùng phòng à?",
-      "Không ạ, các bạn ấy dễ thương lắm. Phòng cũng ổn. Vấn đề là vị trí. Em mới bắt đầu làm thêm ở bệnh viện, một số ca kết thúc lúc mười một giờ đêm. Khu C ở tận cuối khuôn viên, và đường tới đó không có đèn.",
-      "Tôi hiểu. Chúng tôi có một phòng trống ở khu A, cạnh cổng chính. Phòng hơi nhỏ hơn và đắt hơn tám bảng mỗi tuần, vì có phòng tắm riêng.",
-      "Tám bảng thì được ạ. Khi nào em chuyển được?",
+      "Không ạ, các bạn ấy dễ thương lắm, lại rất yên tĩnh. Em có làm ca muộn ở bệnh viện, nhưng đường về giờ ổn rồi vì người ta đã lắp đèn. Vấn đề là phòng em ở ngay trên kho để xe đạp, và cánh cửa sắt đập rầm mỗi lần có người vào, kể cả lúc ba giờ sáng.",
+      "Tôi hiểu. Chúng tôi có một phòng trống ở khu A. Phòng ở tầng trệt, rộng bằng phòng bạn và cùng giá, vì phòng tắm dùng chung. Các phòng có phòng tắm riêng đều đã có người.",
+      "Tầng trệt cũng được ạ, miễn là không ở trên chỗ nào ồn. Khi nào em chuyển được?",
       "Phòng cần sơn lại trước đã, nên phải đến ngày hai mươi. Trước đó, bạn cần điền đơn chuyển phòng, và các bạn cùng phòng hiện tại phải ký vào.",
       "Các bạn ấy phải ký ạ? Sao vậy ạ?",
-      "Vì họ sẽ có người mới thay chỗ bạn, và họ có quyền được biết. Chỉ là chữ ký thôi, họ không phải đồng ý điều gì. Bạn có thể lấy đơn ở đây hoặc tải về, nhưng phải nộp trực tiếp ở đây, không gửi email.",
+      "Không phải để đồng ý việc chuyển phòng, và chính chúng tôi sẽ báo cho họ ai thay chỗ bạn. Lý do là các bạn dùng chung hoá đơn tiền điện. Chữ ký của họ xác nhận bạn đã trả phần của mình đến ngày bạn đi. Bạn có thể lấy đơn ở đây hoặc tải về, nhưng phải nộp trực tiếp ở đây, không gửi email.",
       "Vâng. Tối nay em tải về và thứ Hai em mang đến."
     ],
     "voices": {
@@ -871,13 +944,22 @@
     "allow": [
       "accommodation",
       "flatmates",
-      "campus",
       "shifts",
       "transfer",
-      "entitled",
-      "signature",
-      "download"
+      "signatures",
+      "download",
+      "bathroom",
+      "electricity"
     ],
+    "audio": {
+      "file": "a/m-v1-l10.mp3",
+      "dur": 111.3,
+      "voices": [
+        "bm_george",
+        "bf_emma",
+        "af_nicole"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l2",
@@ -889,32 +971,32 @@
             "opts": [
               {
                 "k": "A",
-                "t": "She walks home late along an unlit path."
+                "t": "A door below her room bangs at night."
               },
               {
                 "k": "B",
-                "t": "She would like a room with its own private bathroom."
+                "t": "She wants a room with its own bathroom."
               },
               {
                 "k": "C",
-                "t": "She does not get on with her flatmates."
+                "t": "Her flatmates are noisy at night."
               },
               {
                 "k": "D",
-                "t": "Her room is too small."
+                "t": "The path to her block is dark."
               }
             ],
             "ans": "A",
-            "b": 5,
+            "b": 5.5,
             "ev": {
               "p": 4,
-              "s": "the path there isn't lit"
+              "s": "my room is directly above the bike store"
             },
-            "why": "Ca làm thêm kết thúc lúc 11 giờ đêm, khu C ở cuối khuôn viên và đường không có đèn.",
+            "why": "Phòng của Hương ở ngay trên kho xe đạp, cửa sắt đập rầm cả đêm.",
             "wrong": {
-              "B": "Phòng tắm riêng là đặc điểm của phòng mới, không phải lý do muốn chuyển.",
-              "C": "Hương nói các bạn cùng phòng \"lovely\".",
-              "D": "Hương nói \"the room's fine\"; phòng mới còn nhỏ hơn."
+              "B": "Hương không đòi phòng tắm riêng; các phòng đó cũng hết.",
+              "C": "Hương nói các bạn cùng phòng rất yên tĩnh.",
+              "D": "Đường về đã có đèn nên \"fine now\"."
             }
           },
           {
@@ -923,32 +1005,32 @@
             "opts": [
               {
                 "k": "A",
-                "t": "It is bigger than her current room."
-              },
-              {
-                "k": "B",
                 "t": "It costs more each week."
               },
               {
+                "k": "B",
+                "t": "It is on the ground floor."
+              },
+              {
                 "k": "C",
-                "t": "It is available immediately."
+                "t": "It has its own bathroom."
               },
               {
                 "k": "D",
-                "t": "It is next to the hospital."
+                "t": "It is available immediately."
               }
             ],
             "ans": "B",
             "b": 5.5,
             "ev": {
               "p": 5,
-              "s": "it's eight pounds a week more"
+              "s": "It's on the ground floor"
             },
-            "why": "Phòng ở khu A đắt hơn tám bảng mỗi tuần vì có phòng tắm riêng.",
+            "why": "Phòng ở tầng trệt, cùng cỡ, cùng giá, phòng tắm dùng chung.",
             "wrong": {
-              "A": "Phòng hơi nhỏ hơn.",
-              "C": "Phải đến ngày hai mươi mới chuyển được vì cần sơn.",
-              "D": "Phòng ở cạnh cổng chính, không phải cạnh bệnh viện."
+              "A": "Phòng cùng giá.",
+              "C": "Phòng tắm dùng chung; phòng có phòng tắm riêng đã hết.",
+              "D": "Phải đến ngày hai mươi mới chuyển được vì cần sơn."
             }
           },
           {
@@ -957,15 +1039,15 @@
             "opts": [
               {
                 "k": "A",
-                "t": "They need to pay part of the cost."
+                "t": "They need to be told who will replace her."
               },
               {
                 "k": "B",
-                "t": "They are responsible for the room being painted."
+                "t": "They will pay for the room to be painted."
               },
               {
                 "k": "C",
-                "t": "They must be told someone new will join them."
+                "t": "They confirm she has paid her share of a bill."
               },
               {
                 "k": "D",
@@ -973,16 +1055,16 @@
               }
             ],
             "ans": "C",
-            "b": 6,
+            "b": 6.5,
             "ev": {
               "p": 9,
-              "s": "they're entitled to know"
+              "s": "Their signatures confirm that you've paid your share"
             },
-            "why": "Họ ký vì sẽ có người mới thay chỗ và có quyền được biết; không phải để đồng ý.",
+            "why": "Chữ ký xác nhận Hương đã trả phần tiền điện của mình đến ngày đi.",
             "wrong": {
-              "A": "Không ai nói họ phải trả tiền.",
-              "B": "Việc sơn là ở phòng mới, không liên quan đến họ.",
-              "D": "Nhân viên nói \"they don't have to agree to anything\"."
+              "A": "Văn phòng tự báo cho họ người thay thế.",
+              "B": "Không ai nói họ trả tiền sơn.",
+              "D": "Nhân viên nói không phải để đồng ý việc chuyển."
             }
           },
           {
@@ -1048,11 +1130,11 @@
       },
       {
         "sp": "Nam",
-        "t": "Not especially. My doctor told me to spend more time outdoors, and I thought it would be better than going to the gym, which I find boring. Is it hard work?"
+        "t": "Yes, but one thing in particular. My grandmother grew chillies on her balcony, and I've never managed to grow them myself. My doctor keeps telling me to get outside more, and I'm bored of the gym, but honestly, it's the chillies. Is it hard work?"
       },
       {
         "sp": "Ellie",
-        "t": "It can be, in spring. But honestly, the physical work wasn't what surprised me. What I didn't expect was how much I'd learn from the older members. There's a retired engineer who designed the whole watering system, and he's taught me more than any course I've done."
+        "t": "It can be, in spring. I expected to learn a lot from the older members, and I have. What surprised me was how much we throw away. We grow far more courgettes and beans than anyone can eat, and half of them end up on the compost heap."
       },
       {
         "sp": "Nam",
@@ -1060,7 +1142,7 @@
       },
       {
         "sp": "Ellie",
-        "t": "There's no minimum, but you can't just do the fun parts. Everyone is put on a rota for the jobs nobody wants, like emptying the compost bins. It's about once a month."
+        "t": "There's no minimum number of hours, and you choose your own jobs. A couple of volunteers actually enjoy emptying the compost bins, so nobody else has to. The one rule is that you must come to the meeting on the first Sunday of each month. Miss three in a row and you lose your place."
       },
       {
         "sp": "Nam",
@@ -1068,7 +1150,7 @@
       },
       {
         "sp": "Ellie",
-        "t": "That used to be true, when everyone had their own plot. But now we grow everything together and share the harvest, so there's no limit on members. You could start next weekend."
+        "t": "That used to be true. We still have separate plots, and nobody has left in years. But last spring the council gave us the field next door, so now there's room for everyone. You could start next weekend."
       },
       {
         "sp": "Nam",
@@ -1083,12 +1165,12 @@
       "Hội thoại 3. Bây giờ bạn có hai mươi giây để đọc câu 17 đến 20.",
       "Ellie, năm ngoái bạn tham gia vườn cộng đồng phải không? Mình đang định đăng ký.",
       "Đúng rồi. Bạn thích trồng rau à?",
-      "Không hẳn. Bác sĩ bảo mình nên ở ngoài trời nhiều hơn, và mình nghĩ thế sẽ tốt hơn đi phòng tập, mình thấy phòng tập chán lắm. Có vất vả không?",
-      "Có thể vất vả vào mùa xuân. Nhưng thật lòng, việc chân tay không phải điều làm mình bất ngờ. Điều mình không ngờ là mình học được nhiều thế nào từ các thành viên lớn tuổi. Có một kỹ sư về hưu đã thiết kế cả hệ thống tưới, và ông ấy dạy mình nhiều hơn bất kỳ khoá học nào mình từng học.",
+      "Có, nhưng đặc biệt một thứ. Bà mình trồng ớt trên ban công, còn mình chưa bao giờ tự trồng được. Bác sĩ cứ bảo mình ra ngoài trời nhiều hơn, và mình cũng chán phòng tập rồi, nhưng thật lòng là vì ớt. Có vất vả không?",
+      "Có thể vất vả vào mùa xuân. Mình đã nghĩ sẽ học được nhiều từ các thành viên lớn tuổi, và đúng vậy. Điều làm mình bất ngờ là chúng mình bỏ đi nhiều thế nào. Chúng mình trồng bí ngòi và đậu nhiều hơn mức ai ăn hết, và một nửa cuối cùng bị đổ vào đống ủ phân.",
       "Nghe hay quá. Thành viên phải dành bao nhiêu thời gian?",
-      "Không có mức tối thiểu, nhưng bạn không được chỉ làm phần vui. Ai cũng được xếp lịch luân phiên cho những việc không ai muốn, như đổ thùng ủ phân. Khoảng một tháng một lần.",
+      "Không có số giờ tối thiểu, và bạn tự chọn việc. Có vài tình nguyện viên còn thích đổ thùng ủ phân, nên không ai khác phải làm. Quy định duy nhất là bạn phải đến buổi họp vào Chủ nhật đầu tiên mỗi tháng. Vắng ba lần liên tiếp là mất suất.",
       "Cũng hợp lý. Danh sách chờ có dài không? Có người bảo mình phải mất một năm mới vào được.",
-      "Trước đây thì đúng, khi mỗi người có mảnh đất riêng. Nhưng giờ cả nhóm trồng chung và chia nhau thu hoạch, nên không giới hạn số thành viên. Bạn có thể bắt đầu ngay cuối tuần tới.",
+      "Trước đây thì đúng. Chúng mình vẫn chia mảnh đất riêng, và nhiều năm nay chẳng ai rời đi. Nhưng mùa xuân năm ngoái, hội đồng thành phố cho chúng mình mảnh ruộng bên cạnh, nên giờ có chỗ cho tất cả. Bạn có thể bắt đầu ngay cuối tuần tới.",
       "Tuyệt. Mình có nên mang dụng cụ riêng không?",
       "Không, ở đó có nhiều lắm. Chỉ cần mang găng tay, vì găng trong nhà kho đều quá to với hầu hết mọi người."
     ],
@@ -1099,15 +1181,25 @@
     },
     "allow": [
       "compost",
-      "rota",
-      "plot",
-      "harvest",
-      "retired",
-      "engineer",
+      "plots",
+      "chillies",
+      "balcony",
+      "courgettes",
+      "beans",
+      "council",
       "shed",
       "gloves",
-      "physical"
+      "heap"
     ],
+    "audio": {
+      "file": "a/m-v1-l11.mp3",
+      "dur": 106.7,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "bf_isabella"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l2",
@@ -1123,28 +1215,28 @@
               },
               {
                 "k": "B",
-                "t": "He has stopped going to the gym because it is too expensive."
+                "t": "He has stopped going to the gym."
               },
               {
                 "k": "C",
-                "t": "He wants to grow his own food."
+                "t": "His doctor advised him to be outside more."
               },
               {
                 "k": "D",
-                "t": "His doctor advised him to be outside more."
+                "t": "He wants to grow a plant his grandmother grew."
               }
             ],
             "ans": "D",
-            "b": 5.5,
+            "b": 6,
             "ev": {
               "p": 3,
-              "s": "My doctor told me to spend more time outdoors"
+              "s": "honestly, it's the chillies"
             },
-            "why": "Bác sĩ khuyên Nam ở ngoài trời nhiều hơn.",
+            "why": "Nam nói lý do thật là muốn trồng ớt như bà từng trồng.",
             "wrong": {
               "A": "Nam không nói muốn gặp người mới.",
-              "B": "Nam chỉ nói thấy phòng tập chán, không nói đã thôi đi.",
-              "C": "Nam nói \"Not especially\" khi được hỏi về trồng rau."
+              "B": "Nam chỉ nói chán phòng tập, không nói đã thôi đi.",
+              "C": "Lời khuyên của bác sĩ có được nhắc, nhưng Nam nói lý do thật là ớt."
             }
           },
           {
@@ -1153,15 +1245,15 @@
             "opts": [
               {
                 "k": "A",
-                "t": "how modern and complicated the watering system was"
+                "t": "how physically tiring the work was"
               },
               {
                 "k": "B",
-                "t": "how much she learned from older members"
+                "t": "how much food was wasted"
               },
               {
                 "k": "C",
-                "t": "how physically tiring the work was"
+                "t": "how much she learned from older members"
               },
               {
                 "k": "D",
@@ -1169,50 +1261,50 @@
               }
             ],
             "ans": "B",
-            "b": 6,
+            "b": 6.5,
             "ev": {
               "p": 4,
-              "s": "What I didn't expect was how much I'd learn from the older members."
+              "s": "What surprised me was how much we throw away."
             },
-            "why": "Ellie bất ngờ vì học được nhiều từ thành viên lớn tuổi.",
+            "why": "Ellie bất ngờ vì nhóm bỏ đi rất nhiều rau.",
             "wrong": {
-              "A": "Hệ thống tưới được nhắc như ví dụ về người kỹ sư, không phải điều bất ngờ.",
-              "C": "Ellie nói rõ việc chân tay không phải điều làm cô bất ngờ.",
+              "A": "Ellie chỉ nói vất vả vào mùa xuân, không nói bất ngờ.",
+              "C": "Ellie nói cô đã ĐOÁN TRƯỚC điều này.",
               "D": "Không nói ít người tham gia."
             }
           },
           {
             "id": "m-v1-l11-03",
-            "q": "What does Ellie say about the work members must do?",
+            "q": "What must every member do?",
             "opts": [
               {
                 "k": "A",
-                "t": "Members can choose only the tasks they enjoy."
+                "t": "take turns emptying the compost bins"
               },
               {
                 "k": "B",
-                "t": "New members do most of the hard work."
+                "t": "bring their own tools"
               },
               {
                 "k": "C",
-                "t": "Everyone takes turns doing unpleasant jobs."
+                "t": "come to a monthly meeting"
               },
               {
                 "k": "D",
-                "t": "There is a minimum number of hours each week."
+                "t": "work a minimum number of hours"
               }
             ],
             "ans": "C",
             "b": 6.5,
             "ev": {
               "p": 6,
-              "s": "Everyone is put on a rota for the jobs nobody wants"
+              "s": "you must come to the meeting on the first Sunday of each month"
             },
-            "why": "Ai cũng được xếp lịch luân phiên cho việc không ai muốn làm.",
+            "why": "Quy định duy nhất là phải đến buổi họp Chủ nhật đầu tiên mỗi tháng.",
             "wrong": {
-              "A": "Ellie nói không được chỉ làm phần vui.",
-              "B": "Không nói thành viên mới làm nhiều hơn.",
-              "D": "Ellie nói \"There's no minimum\"."
+              "A": "Vài tình nguyện viên thích làm việc này nên người khác không phải làm.",
+              "B": "Ở đó có nhiều dụng cụ, chỉ cần mang găng tay.",
+              "D": "Không có số giờ tối thiểu."
             }
           },
           {
@@ -1221,11 +1313,11 @@
             "opts": [
               {
                 "k": "A",
-                "t": "Members no longer have separate plots."
+                "t": "The council gave the garden more land."
               },
               {
                 "k": "B",
-                "t": "More land has been added to the garden."
+                "t": "Members no longer have separate plots."
               },
               {
                 "k": "C",
@@ -1240,12 +1332,12 @@
             "b": 6.5,
             "ev": {
               "p": 8,
-              "s": "now we grow everything together and share the harvest"
+              "s": "last spring the council gave us the field next door"
             },
-            "why": "Giờ cả nhóm trồng chung, không chia mảnh riêng, nên không giới hạn số thành viên.",
+            "why": "Hội đồng thành phố cho thêm mảnh ruộng bên cạnh nên có chỗ cho tất cả.",
             "wrong": {
-              "B": "Không nhắc thêm đất.",
-              "C": "Không nói thành viên lớn tuổi rời đi.",
+              "B": "Ellie nói vẫn chia mảnh riêng.",
+              "C": "Nhiều năm nay chẳng ai rời đi.",
               "D": "Không nhắc phí."
             }
           }
@@ -1274,33 +1366,33 @@
       },
       {
         "sp": "Speaker",
-        "t": "Our first idea was the obvious one: smaller portions. We tried it in three schools, and waste did fall, but so did the amount children actually ate, and teachers reported that pupils were hungry and restless by the middle of the afternoon. So we abandoned that quite quickly."
+        "t": "Our first idea was smaller portions for the youngest children. Waste did fall, and the children seemed to eat as much as before, so in that sense it worked. But serving two different sizes slowed the queue so much that some classes had only ten minutes left to eat, and the kitchen staff asked us to stop after a fortnight."
       },
       {
         "sp": "Speaker",
-        "t": "What made the biggest difference was something we hadn't planned at all. In one school, the timetable was changed so that children had their break before lunch rather than after it. Waste in that school fell by nearly forty per cent. The children who played first arrived at lunch genuinely hungry and calmer, instead of rushing through their food to get outside."
+        "t": "We then tried three changes, each in a different term, so that we could measure them separately. Letting children play before lunch rather than after it helped a little. Cooking rice and vegetables in each school, instead of sending everything from a central kitchen, helped a little more. But the biggest effect by far came from asking children to choose their meal the day before, rather than in the queue. Waste in those schools fell by almost forty per cent."
       },
       {
         "sp": "Speaker",
-        "t": "Of course, changing a timetable is not simple. Head teachers were worried about supervising the playground at a different time, and in two schools the dining hall was also used for music lessons straight after lunch. In the end, nine of the twelve schools made the change. The other three simply couldn't make the rooms work."
+        "t": "Not every school could move playtime. Head teachers worried about supervision at first, but that was solved quickly, and the music lessons that used one dining hall were simply moved. The real obstacle was in three schools where the playground is shared with a nursery, whose children are outside at exactly that time."
       },
       {
         "sp": "Speaker",
-        "t": "We also learned to listen to the children. We'd assumed they disliked vegetables, but when we asked them, the most common complaint was about cold food. Many dishes were cooked at a central kitchen and arrived lukewarm. We now cook rice and vegetables in each school, and only the main dishes travel."
+        "t": "We also asked the children what they disliked. We'd assumed it would be vegetables, and some did say the food was cold, but the most common complaint by far was the queue: they hated waiting while their friends were already outside."
       },
       {
         "sp": "Speaker",
-        "t": "Overall, waste across the district has fallen by about a quarter. That's good, but I want to be honest: we still don't know how much of that comes from the timetable and how much from the cooking changes, because both happened in the same term. Next year we'll measure them separately."
+        "t": "Overall, waste has fallen by about a quarter. But I want to be honest about one weakness. During the first term, the food was weighed by kitchen staff who knew about the project and wanted it to succeed, so those early figures may be better than the truth. From now on, the weighing is done by parent volunteers."
       }
     ],
     "vi": [
       "Phần 3. Trong phần này, bạn sẽ nghe ba bài nói hoặc bài giảng. Mỗi bài có năm câu hỏi. Bài 1. Bây giờ bạn có ba mươi giây để đọc câu 21 đến 25.",
       "Chào buổi sáng. Tôi là Grace Obi, tôi điều phối bữa ăn học đường cho mười hai trường tiểu học trong quận. Hai năm trước, chúng tôi cân mọi thứ trẻ để thừa trên đĩa trong một tháng. Trung bình mỗi ngày, gần một phần ba thức ăn phục vụ bị đổ vào thùng rác.",
-      "Ý tưởng đầu tiên của chúng tôi là cách hiển nhiên: giảm khẩu phần. Chúng tôi thử ở ba trường, và lượng thừa có giảm, nhưng lượng trẻ thực sự ăn cũng giảm, và giáo viên báo rằng học sinh đói và bồn chồn vào giữa buổi chiều. Vì vậy chúng tôi bỏ cách đó khá nhanh.",
-      "Điều tạo khác biệt lớn nhất lại là một thứ chúng tôi hoàn toàn không lên kế hoạch. Ở một trường, thời khoá biểu được đổi để trẻ ra chơi trước bữa trưa thay vì sau bữa trưa. Lượng thừa ở trường đó giảm gần bốn mươi phần trăm. Những đứa trẻ được chơi trước đến bữa trưa với cái bụng đói thật sự và bình tĩnh hơn, thay vì ăn vội để chạy ra ngoài.",
-      "Tất nhiên, đổi thời khoá biểu không đơn giản. Hiệu trưởng lo việc trông sân chơi vào một giờ khác, và ở hai trường, nhà ăn còn được dùng cho giờ âm nhạc ngay sau bữa trưa. Cuối cùng, chín trên mười hai trường đã đổi. Ba trường còn lại đơn giản là không sắp xếp được phòng.",
-      "Chúng tôi cũng học cách lắng nghe trẻ. Chúng tôi từng cho rằng trẻ không thích rau, nhưng khi hỏi, lời phàn nàn phổ biến nhất lại là đồ ăn nguội. Nhiều món được nấu ở bếp trung tâm và đến nơi đã âm ấm. Giờ chúng tôi nấu cơm và rau tại mỗi trường, chỉ món chính là vận chuyển.",
-      "Nhìn chung, lượng thừa toàn quận giảm khoảng một phần tư. Như thế là tốt, nhưng tôi muốn nói thật: chúng tôi vẫn chưa biết bao nhiêu phần là nhờ thời khoá biểu và bao nhiêu nhờ thay đổi cách nấu, vì cả hai diễn ra trong cùng một học kỳ. Năm tới chúng tôi sẽ đo riêng từng thứ."
+      "Ý tưởng đầu tiên của chúng tôi là khẩu phần nhỏ hơn cho trẻ nhỏ nhất. Lượng thừa có giảm, và trẻ dường như vẫn ăn nhiều như trước, nên theo nghĩa đó nó có tác dụng. Nhưng phục vụ hai cỡ khác nhau làm hàng chờ chậm đến mức có lớp chỉ còn mười phút để ăn, và nhân viên bếp đề nghị chúng tôi dừng sau hai tuần.",
+      "Sau đó chúng tôi thử ba thay đổi, mỗi thay đổi ở một học kỳ khác nhau, để đo riêng từng cái. Cho trẻ chơi trước bữa trưa thay vì sau có giúp một chút. Nấu cơm và rau tại mỗi trường thay vì chuyển mọi thứ từ bếp trung tâm giúp nhiều hơn một chút. Nhưng tác động lớn nhất, hơn hẳn, đến từ việc cho trẻ chọn món từ hôm trước thay vì chọn khi xếp hàng. Lượng thừa ở các trường đó giảm gần bốn mươi phần trăm.",
+      "Không phải trường nào cũng đổi được giờ ra chơi. Lúc đầu hiệu trưởng lo việc trông trẻ, nhưng chuyện đó được giải quyết nhanh, còn các giờ âm nhạc dùng một nhà ăn thì được chuyển đi. Trở ngại thật sự nằm ở ba trường có sân chơi dùng chung với một nhà trẻ, nơi trẻ nhỏ ra sân đúng vào giờ đó.",
+      "Chúng tôi cũng hỏi trẻ không thích điều gì. Chúng tôi tưởng sẽ là rau, và có em nói đồ ăn nguội, nhưng lời phàn nàn phổ biến nhất, hơn hẳn, là hàng chờ: các em ghét phải đợi trong khi bạn bè đã ra ngoài.",
+      "Nhìn chung, lượng thừa giảm khoảng một phần tư. Nhưng tôi muốn nói thật về một điểm yếu. Trong học kỳ đầu, thức ăn được cân bởi nhân viên bếp, những người biết về dự án và muốn nó thành công, nên số liệu ban đầu có thể đẹp hơn thực tế. Từ nay, việc cân do phụ huynh tình nguyện làm."
     ],
     "voices": {
       "N": "bm_george",
@@ -1309,17 +1401,24 @@
     "allow": [
       "coordinate",
       "portions",
-      "restless",
-      "abandoned",
-      "timetable",
-      "supervising",
+      "fortnight",
+      "supervision",
       "playground",
-      "lukewarm",
-      "genuinely",
+      "nursery",
+      "playtime",
       "separately",
       "district",
-      "pupils"
+      "weighing",
+      "weighed"
     ],
+    "audio": {
+      "file": "a/m-v1-l12.mp3",
+      "dur": 140.2,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l3",
@@ -1331,100 +1430,100 @@
             "opts": [
               {
                 "k": "A",
-                "t": "It did not reduce the amount of waste."
+                "t": "Waste did not fall."
               },
               {
                 "k": "B",
-                "t": "Parents complained about the change."
+                "t": "Children did not eat enough."
               },
               {
                 "k": "C",
-                "t": "It was too expensive to organise."
+                "t": "Parents complained about it."
               },
               {
                 "k": "D",
-                "t": "Children did not eat enough."
+                "t": "Serving became too slow."
               }
             ],
             "ans": "D",
             "b": 6.5,
             "ev": {
               "p": 2,
-              "s": "pupils were hungry and restless by the middle of the afternoon"
+              "s": "serving two different sizes slowed the queue"
             },
-            "why": "Lượng thừa giảm nhưng trẻ ăn ít đi, đói và bồn chồn vào buổi chiều.",
+            "why": "Phục vụ hai cỡ làm hàng chờ chậm, nhân viên bếp đề nghị dừng.",
             "wrong": {
-              "A": "Lượng thừa có giảm (\"waste did fall\").",
-              "B": "Giáo viên báo cáo, không phải phụ huynh phàn nàn.",
-              "C": "Không nhắc chi phí."
+              "A": "Lượng thừa có giảm.",
+              "B": "Trẻ dường như vẫn ăn nhiều như trước.",
+              "C": "Người đề nghị dừng là nhân viên bếp, không phải phụ huynh."
             }
           },
           {
             "id": "m-v1-l12-02",
-            "q": "What does the speaker say about the change to the timetable?",
+            "q": "Which change reduced waste the most?",
             "opts": [
               {
                 "k": "A",
-                "t": "It began in one school without being planned."
+                "t": "children choosing their meal the day before"
               },
               {
                 "k": "B",
-                "t": "It was part of the original plan."
+                "t": "letting children play before lunch"
               },
               {
                 "k": "C",
-                "t": "It was suggested by the children."
+                "t": "cooking in each school"
               },
               {
                 "k": "D",
-                "t": "It reduced waste by forty per cent in every school."
+                "t": "giving children more time to eat"
               }
             ],
             "ans": "A",
             "b": 7,
             "ev": {
               "p": 3,
-              "s": "something we hadn't planned at all"
+              "s": "the biggest effect by far came from asking children to choose their meal the day before"
             },
-            "why": "Thay đổi lớn nhất là thứ \"không hề lên kế hoạch\", xảy ra ở một trường.",
+            "why": "Tác động lớn nhất là cho trẻ chọn món từ hôm trước.",
             "wrong": {
-              "B": "Người nói nói rõ không hề lên kế hoạch.",
-              "C": "Không nói trẻ đề xuất việc đổi giờ ra chơi.",
-              "D": "Mới có chín trên mười hai trường đổi, và số liệu chung chưa tách riêng tác động."
+              "B": "Chơi trước bữa trưa chỉ giúp \"a little\".",
+              "C": "Nấu tại trường giúp nhiều hơn một chút, nhưng không lớn nhất.",
+              "D": "Không có thay đổi nào là thêm giờ ăn."
             }
           },
           {
             "id": "m-v1-l12-03",
-            "q": "Why did three schools not change their timetable?",
+            "q": "Why could three schools not move playtime?",
             "opts": [
               {
                 "k": "A",
-                "t": "Their pupils preferred the old timetable."
+                "t": "The dining hall was used for music lessons."
               },
               {
                 "k": "B",
-                "t": "They could not solve problems with rooms."
+                "t": "They share a playground with a nursery."
               },
               {
                 "k": "C",
-                "t": "They had no playground."
+                "t": "They did not have enough staff."
               },
               {
                 "k": "D",
-                "t": "Their head teachers disagreed with the idea."
+                "t": "Head teachers were worried about supervision."
               }
             ],
             "ans": "B",
             "b": 7,
             "ev": {
               "p": 4,
-              "s": "The other three simply couldn't make the rooms work."
+              "s": "the playground is shared with a nursery"
             },
-            "why": "Ba trường không sắp xếp được phòng (nhà ăn dùng cho giờ âm nhạc…).",
+            "why": "Ba trường dùng chung sân với nhà trẻ, nơi trẻ nhỏ ra sân đúng giờ đó.",
             "wrong": {
-              "A": "Không nói học sinh thích lịch cũ.",
-              "C": "Không nói trường không có sân chơi.",
-              "D": "Hiệu trưởng có lo ngại về trông sân chơi, nhưng lý do cuối cùng là phòng."
+              "A": "Giờ âm nhạc đã được chuyển đi.",
+              "C": "Không nhắc thiếu nhân viên.",
+              "D": "Lo ngại về trông trẻ được giải quyết nhanh."
             }
           },
           {
@@ -1433,15 +1532,15 @@
             "opts": [
               {
                 "k": "A",
-                "t": "The portions were too small."
+                "t": "The food was cold."
               },
               {
                 "k": "B",
-                "t": "Lunchtime was too short."
+                "t": "The portions were too small."
               },
               {
                 "k": "C",
-                "t": "The food was not hot enough."
+                "t": "They had to wait in a queue."
               },
               {
                 "k": "D",
@@ -1452,47 +1551,47 @@
             "b": 6.5,
             "ev": {
               "p": 5,
-              "s": "the most common complaint was about cold food"
+              "s": "the most common complaint by far was the queue"
             },
-            "why": "Khi được hỏi, trẻ phàn nàn nhiều nhất về đồ ăn nguội.",
+            "why": "Lời phàn nàn phổ biến nhất là hàng chờ.",
             "wrong": {
-              "A": "Không phải lời phàn nàn chính.",
-              "B": "Không nhắc thời gian ăn trưa ngắn.",
-              "D": "Đó là điều người lớn \"đã cho rằng\", nhưng hỏi trẻ thì khác."
+              "A": "Chỉ \"có em\" nói đồ nguội.",
+              "B": "Không nói khẩu phần quá nhỏ.",
+              "D": "Người lớn đã TƯỞNG là rau."
             }
           },
           {
             "id": "m-v1-l12-05",
-            "q": "What does the speaker admit at the end?",
+            "q": "What weakness in the project does the speaker admit?",
             "opts": [
               {
                 "k": "A",
-                "t": "The central kitchen will soon be closed."
+                "t": "Waste has risen again in some schools."
               },
               {
                 "k": "B",
-                "t": "The project cost more than expected."
+                "t": "The changes happened in the same term."
               },
               {
                 "k": "C",
-                "t": "It is unclear which change caused the improvement."
+                "t": "The early figures may have been too positive."
               },
               {
                 "k": "D",
-                "t": "Waste has started to increase again in some of the schools."
+                "t": "The project cost more than expected."
               }
             ],
             "ans": "C",
             "b": 7.5,
             "ev": {
               "p": 6,
-              "s": "we still don't know how much of that comes from the timetable"
+              "s": "so those early figures may be better than the truth"
             },
-            "why": "Hai thay đổi diễn ra cùng học kỳ nên chưa tách được tác động của từng thứ.",
+            "why": "Số liệu học kỳ đầu do nhân viên bếp (muốn dự án thành công) cân, có thể đẹp hơn thực tế.",
             "wrong": {
-              "A": "Bếp trung tâm vẫn nấu món chính.",
-              "B": "Không nhắc chi phí.",
-              "D": "Không nói lượng thừa tăng lại."
+              "A": "Không nói lượng thừa tăng lại.",
+              "B": "Ba thay đổi diễn ra ở ba học kỳ khác nhau để đo riêng.",
+              "D": "Không nhắc chi phí."
             }
           }
         ]
@@ -1516,37 +1615,32 @@
       },
       {
         "sp": "Lecturer",
-        "t": "In today's lecture I want to look at a question that more and more cities are facing: what should be done with multi-storey car parks that are no longer full? In the city I'll use as an example, the number of cars entering the centre each day has fallen by about a fifth in ten years, mainly because of a new tram line rather than any change in attitudes to driving."
+        "t": "In today's lecture I want to look at a question that more and more cities are facing: what should be done with multi-storey car parks that are no longer full? In the city I'll use as an example, the number of cars entering the centre each day has fallen by about a fifth. People tend to credit the new tram line, but that only opened last year. The fall began ten years ago, when parking charges in the centre doubled."
       },
       {
         "sp": "Lecturer",
-        "t": "The first instinct of the council was to demolish the emptiest car park and build flats on the site. But demolition turned out to be far more expensive than expected, partly because the structure contained a great deal of steel, and partly because the noise and dust would have affected a hospital next door for over a year."
+        "t": "The council's first plan was to demolish the emptiest car park and build flats on the site. Demolition would actually have been the cheaper option, and the building was not protected in any way. What stopped it was the discovery of a colony of rare bats living in the stairwells, which by law could not be disturbed."
       },
       {
         "sp": "Lecturer",
-        "t": "So the architects proposed converting the building instead. This is not as easy as it sounds. Car parks have low ceilings and sloping floors, and they were never designed to carry the weight of kitchens and bathrooms. The solution was to remove every second floor, which created rooms of a normal height and reduced the total weight at the same time. The building ended up with fewer homes than a new block would have provided, roughly sixty instead of ninety."
+        "t": "So the architects converted the building instead. Car parks have low ceilings and sloping ramps, and many people assumed the solution would be to remove every second floor. That would have weakened the frame, however. Instead, the architects removed the ramps in the middle of the building, which created an open courtyard and let daylight reach every flat. The building ended up with about sixty homes, rather than the ninety a new block could have provided."
       },
       {
         "sp": "Lecturer",
-        "t": "Why accept fewer homes? The council's main argument was not cost, though conversion was cheaper. It was carbon. Producing new concrete and steel releases enormous amounts of carbon dioxide, and by keeping the original frame, the project avoided most of that."
+        "t": "Why accept fewer homes? Keeping the concrete frame saved a great deal of carbon, and the council mentions that in every press release. But the deciding factor was speed. The conversion took eighteen months; a new building on the site would have taken at least four years."
       },
       {
         "sp": "Lecturer",
-        "t": "The residents' reactions have been interesting. Many people assumed the flats would feel dark and enclosed, but in surveys the most common complaint has been about noise from the tram, not light. The large openings that once let air into the car park now provide unusually big windows."
-      },
-      {
-        "sp": "Lecturer",
-        "t": "I don't want to suggest this is a model for every city. It worked here because the car park was close to public transport and because its frame was strong. Many older car parks are in poor condition, and for those, demolition may still be the only sensible choice."
+        "t": "The residents' reactions have been interesting. Many people expected the flats to feel dark, but the courtyard has solved that. In surveys, the most common complaint is noise from the trams, which now run directly past the building until after midnight."
       }
     ],
     "vi": [
       "Bài 2. Bây giờ bạn có ba mươi giây để đọc câu 26 đến 30.",
-      "Trong bài giảng hôm nay, tôi muốn xem xét một câu hỏi ngày càng nhiều thành phố gặp phải: nên làm gì với các bãi đỗ xe nhiều tầng không còn kín chỗ? Ở thành phố tôi lấy làm ví dụ, số ô tô vào trung tâm mỗi ngày đã giảm khoảng một phần năm trong mười năm, chủ yếu nhờ một tuyến tàu điện mới chứ không phải do thái độ với việc lái xe thay đổi.",
-      "Phản xạ đầu tiên của hội đồng thành phố là phá bãi đỗ vắng nhất và xây căn hộ trên nền đất đó. Nhưng việc phá dỡ hoá ra tốn kém hơn dự kiến rất nhiều, một phần vì kết cấu chứa rất nhiều thép, một phần vì tiếng ồn và bụi sẽ ảnh hưởng đến bệnh viện bên cạnh trong hơn một năm.",
-      "Vì vậy các kiến trúc sư đề xuất cải tạo toà nhà. Việc này không dễ như nghe. Bãi đỗ xe có trần thấp và sàn dốc, và chúng chưa bao giờ được thiết kế để chịu sức nặng của bếp và phòng tắm. Giải pháp là bỏ cách một tầng một sàn, tạo ra những căn phòng cao bình thường và đồng thời giảm tổng trọng lượng. Toà nhà cuối cùng có ít nhà ở hơn so với một khối nhà mới, khoảng sáu mươi thay vì chín mươi.",
-      "Vì sao chấp nhận ít nhà ở hơn? Lập luận chính của hội đồng không phải chi phí, dù cải tạo rẻ hơn. Đó là khí carbon. Sản xuất bê tông và thép mới thải ra lượng carbon dioxide khổng lồ, và nhờ giữ lại khung cũ, dự án đã tránh được phần lớn lượng đó.",
-      "Phản ứng của cư dân rất đáng chú ý. Nhiều người cho rằng căn hộ sẽ tối và bí bách, nhưng trong khảo sát, lời phàn nàn phổ biến nhất lại là tiếng ồn từ tàu điện, không phải ánh sáng. Những khoảng trống lớn từng đưa không khí vào bãi đỗ giờ thành những cửa sổ lớn khác thường.",
-      "Tôi không muốn nói đây là mô hình cho mọi thành phố. Cách này thành công ở đây vì bãi đỗ gần giao thông công cộng và vì khung nhà chắc chắn. Nhiều bãi đỗ cũ trong tình trạng kém, và với chúng, phá dỡ có lẽ vẫn là lựa chọn hợp lý duy nhất."
+      "Trong bài giảng hôm nay, tôi muốn xem xét một câu hỏi ngày càng nhiều thành phố gặp phải: nên làm gì với các bãi đỗ xe nhiều tầng không còn kín chỗ? Ở thành phố tôi lấy làm ví dụ, số ô tô vào trung tâm mỗi ngày đã giảm khoảng một phần năm. Người ta hay cho là nhờ tuyến tàu điện mới, nhưng tuyến đó năm ngoái mới khai trương. Sự sụt giảm bắt đầu từ mười năm trước, khi phí đỗ xe ở trung tâm tăng gấp đôi.",
+      "Kế hoạch đầu tiên của hội đồng thành phố là phá bãi đỗ vắng nhất và xây căn hộ trên nền đất đó. Thật ra phá dỡ lại là phương án rẻ hơn, và toà nhà không hề được bảo tồn. Điều ngăn kế hoạch lại là việc phát hiện một đàn dơi quý hiếm sống trong các buồng cầu thang, mà theo luật không được làm phiền.",
+      "Vì vậy các kiến trúc sư cải tạo toà nhà. Bãi đỗ xe có trần thấp và đường dốc, và nhiều người cho rằng giải pháp sẽ là bỏ cách một tầng một sàn. Tuy nhiên, như vậy sẽ làm yếu khung nhà. Thay vào đó, các kiến trúc sư bỏ các đường dốc ở giữa toà nhà, tạo ra một sân trong rộng mở và đưa ánh sáng ban ngày đến mọi căn hộ. Toà nhà cuối cùng có khoảng sáu mươi nhà ở, thay vì chín mươi nếu xây một khối nhà mới.",
+      "Vì sao chấp nhận ít nhà ở hơn? Giữ lại khung bê tông tiết kiệm rất nhiều khí carbon, và hội đồng nhắc điều đó trong mọi thông cáo báo chí. Nhưng yếu tố quyết định là tốc độ. Việc cải tạo mất mười tám tháng; một toà nhà mới trên khu đất đó sẽ mất ít nhất bốn năm.",
+      "Phản ứng của cư dân rất đáng chú ý. Nhiều người nghĩ căn hộ sẽ tối, nhưng sân trong đã giải quyết chuyện đó. Trong khảo sát, lời phàn nàn phổ biến nhất là tiếng ồn từ tàu điện, nay chạy ngay sát toà nhà đến tận sau nửa đêm."
     ],
     "voices": {
       "N": "bm_george",
@@ -1555,24 +1649,34 @@
     "allow": [
       "multi-storey",
       "tram",
-      "instinct",
+      "trams",
       "council",
       "demolish",
       "demolition",
-      "structure",
+      "colony",
+      "bats",
+      "stairwells",
       "architects",
-      "converting",
+      "converted",
       "conversion",
-      "sloping",
       "ceilings",
-      "carbon",
-      "dioxide",
+      "sloping",
+      "ramps",
+      "courtyard",
       "concrete",
+      "carbon",
       "residents",
-      "enclosed",
-      "openings",
-      "frame"
+      "frame",
+      "midnight"
     ],
+    "audio": {
+      "file": "a/m-v1-l13.mp3",
+      "dur": 131.3,
+      "voices": [
+        "bm_george",
+        "bm_lewis"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l3",
@@ -1580,104 +1684,104 @@
         "items": [
           {
             "id": "m-v1-l13-01",
-            "q": "According to the lecturer, why are fewer cars entering the city centre?",
+            "q": "According to the lecturer, why did fewer cars start entering the city centre?",
             "opts": [
               {
                 "k": "A",
-                "t": "Several car parks have closed."
+                "t": "People became less willing to drive."
               },
               {
                 "k": "B",
-                "t": "A new tram line has opened."
+                "t": "Parking charges doubled."
               },
               {
                 "k": "C",
-                "t": "Parking charges have risen."
+                "t": "Several car parks closed."
               },
               {
                 "k": "D",
-                "t": "People have become less willing to drive."
+                "t": "A new tram line opened."
               }
             ],
             "ans": "B",
-            "b": 6.5,
+            "b": 7,
             "ev": {
               "p": 1,
-              "s": "mainly because of a new tram line"
+              "s": "when parking charges in the centre doubled"
             },
-            "why": "Số xe giảm chủ yếu nhờ tuyến tàu điện mới.",
+            "why": "Sự sụt giảm bắt đầu khi phí đỗ xe tăng gấp đôi, mười năm trước.",
             "wrong": {
-              "A": "Bãi đỗ vắng là hệ quả, không phải nguyên nhân.",
-              "C": "Không nhắc phí đỗ xe.",
-              "D": "Người giảng nói rõ không phải do thái độ với việc lái xe thay đổi."
+              "A": "Người giảng không nói thái độ người lái thay đổi.",
+              "C": "Bãi đỗ vắng là hệ quả, không phải nguyên nhân.",
+              "D": "Tàu điện năm ngoái mới khai trương, sau khi lượng xe đã giảm."
             }
           },
           {
             "id": "m-v1-l13-02",
-            "q": "Why did the council decide not to demolish the car park?",
+            "q": "What prevented the car park from being demolished?",
             "opts": [
               {
                 "k": "A",
-                "t": "Residents wanted to keep the car park."
+                "t": "The building was protected as a historic site."
               },
               {
                 "k": "B",
-                "t": "There was not enough land for new flats."
+                "t": "Residents wanted to keep it."
               },
               {
                 "k": "C",
-                "t": "The building was legally protected as a historic site."
+                "t": "Demolition would have cost too much."
               },
               {
                 "k": "D",
-                "t": "It was too costly and would disturb a hospital."
+                "t": "Rare animals were found living in it."
               }
             ],
             "ans": "D",
             "b": 7,
             "ev": {
               "p": 2,
-              "s": "demolition turned out to be far more expensive than expected"
+              "s": "the discovery of a colony of rare bats"
             },
-            "why": "Phá dỡ tốn kém hơn dự kiến và tiếng ồn, bụi sẽ ảnh hưởng bệnh viện bên cạnh.",
+            "why": "Phát hiện đàn dơi quý hiếm trong buồng cầu thang, theo luật không được làm phiền.",
             "wrong": {
-              "A": "Không nói cư dân muốn giữ bãi đỗ.",
-              "B": "Kế hoạch ban đầu chính là xây căn hộ trên nền đất đó.",
-              "C": "Không nói toà nhà được bảo tồn."
+              "A": "Toà nhà không hề được bảo tồn.",
+              "B": "Không nhắc cư dân muốn giữ bãi đỗ.",
+              "C": "Phá dỡ lại là phương án rẻ hơn."
             }
           },
           {
             "id": "m-v1-l13-03",
-            "q": "Why was every second floor removed?",
+            "q": "What did the architects remove from the building?",
             "opts": [
               {
                 "k": "A",
-                "t": "to create normal room heights and reduce weight"
+                "t": "the ramps in the middle"
               },
               {
                 "k": "B",
-                "t": "to keep enough space for car parking on the lower floors"
+                "t": "every second floor"
               },
               {
                 "k": "C",
-                "t": "to build larger flats for families"
+                "t": "the stairwells"
               },
               {
                 "k": "D",
-                "t": "to allow more light into the flats"
+                "t": "the outside walls"
               }
             ],
             "ans": "A",
             "b": 7,
             "ev": {
               "p": 3,
-              "s": "which created rooms of a normal height and reduced the total weight"
+              "s": "the architects removed the ramps in the middle of the building"
             },
-            "why": "Bỏ cách một tầng một sàn để phòng cao bình thường và giảm trọng lượng.",
+            "why": "Họ bỏ các đường dốc ở giữa, tạo sân trong.",
             "wrong": {
-              "B": "Không nói giữ chỗ đỗ xe.",
-              "C": "Không nói về căn hộ cho gia đình.",
-              "D": "Ánh sáng đến từ các khoảng trống lớn sẵn có, không phải lý do bỏ sàn."
+              "B": "Bỏ cách một tầng một sàn là điều nhiều người tưởng, nhưng sẽ làm yếu khung.",
+              "C": "Buồng cầu thang là nơi dơi sống, không bị bỏ.",
+              "D": "Không nói bỏ tường ngoài."
             }
           },
           {
@@ -1686,34 +1790,33 @@
             "opts": [
               {
                 "k": "A",
-                "t": "The hospital next door needed part of the building for storage."
+                "t": "the needs of the bats"
               },
               {
                 "k": "B",
-                "t": "Conversion was much cheaper."
+                "t": "the lower cost"
               },
               {
                 "k": "C",
-                "t": "Keeping the frame avoided large carbon emissions."
+                "t": "the speed of the work"
               },
               {
                 "k": "D",
-                "t": "The site was too small for more homes."
+                "t": "the carbon savings"
               }
             ],
             "ans": "C",
             "b": 7.5,
             "ev": {
               "p": 4,
-              "s": "It was carbon."
+              "s": "But the deciding factor was speed."
             },
-            "why": "Lập luận chính là khí carbon: giữ khung cũ tránh được lượng carbon lớn khi sản xuất bê tông, thép mới.",
+            "why": "Yếu tố quyết định là tốc độ: 18 tháng so với ít nhất 4 năm.",
             "wrong": {
-              "A": "Bệnh viện không dùng toà nhà.",
-              "B": "Cải tạo rẻ hơn nhưng người giảng nói rõ đó KHÔNG phải lập luận chính.",
-              "D": "Không nói khu đất quá nhỏ."
-            },
-            "trap": "\"not cost, though conversion was cheaper\": thông tin đúng nhưng không phải lý do chính."
+              "A": "Dơi là lý do không phá dỡ, không phải lý do chấp nhận ít nhà hơn.",
+              "B": "Người giảng không nói chi phí là lý do chính.",
+              "D": "Carbon được nhắc trong thông cáo báo chí, nhưng không phải yếu tố quyết định."
+            }
           },
           {
             "id": "m-v1-l13-05",
@@ -1721,11 +1824,11 @@
             "opts": [
               {
                 "k": "A",
-                "t": "the small size of the windows"
+                "t": "the small size of the flats"
               },
               {
                 "k": "B",
-                "t": "the poor condition of the building"
+                "t": "the bats in the stairwells"
               },
               {
                 "k": "C",
@@ -1740,13 +1843,13 @@
             "b": 7,
             "ev": {
               "p": 5,
-              "s": "the most common complaint has been about noise from the tram"
+              "s": "the most common complaint is noise from the trams"
             },
             "why": "Lời phàn nàn phổ biến nhất là tiếng ồn tàu điện.",
             "wrong": {
-              "A": "Cửa sổ \"unusually big\".",
-              "B": "Tình trạng kém nói về các bãi đỗ cũ khác.",
-              "C": "Người ta tưởng căn hộ tối, nhưng khảo sát cho thấy không phải."
+              "A": "Không nói căn hộ nhỏ.",
+              "B": "Không nói cư dân phàn nàn về dơi.",
+              "C": "Sân trong đã giải quyết chuyện tối."
             }
           }
         ]
@@ -1770,52 +1873,58 @@
       },
       {
         "sp": "Researcher",
-        "t": "I'd like to talk about a study that began almost as a joke. A colleague and I were travelling on the same bus every morning, and we started betting on where the next passenger would sit. After a few weeks we realised we could predict it surprisingly well, so we decided to study it properly."
+        "t": "I'd like to talk about a study of where people choose to sit on buses. Newspapers like to say it began with two researchers betting on a bus, and it's a nice story, but it isn't true. It began with an essay by one of my students, who described her own careful rules for choosing a seat, and asked whether everyone had rules like hers."
       },
       {
         "sp": "Researcher",
-        "t": "Over six months, we recorded the seat choices of around two thousand passengers. The first finding confirmed what most people would expect: when there's a choice, people avoid sitting next to a stranger. More interesting was what they did when they had no choice. Passengers did not choose the person who looked friendliest. They chose the person who seemed least likely to start a conversation, typically someone wearing headphones or reading."
+        "t": "Over six months, we recorded the seat choices of around two thousand passengers. When there was a choice, people avoided sitting next to a stranger, as you'd expect. When there was no choice, we expected them to pick the person who looked least likely to start a conversation. In fact, the strongest pattern was age: passengers sat next to someone of roughly their own age far more often than chance would predict."
       },
       {
         "sp": "Researcher",
-        "t": "We also found a strong effect of direction. On buses with some seats facing backwards, those seats were always the last to be taken, even by passengers who told us afterwards that travelling backwards didn't bother them at all. When we asked why, the most common answer was that facing other passengers felt like being watched."
+        "t": "Backward-facing seats were always the last to be taken. A few people said these seats made them feel ill, and some said facing other passengers felt like being watched. But the most common answer was practical: facing backwards made it hard to see when their stop was coming."
       },
       {
         "sp": "Researcher",
-        "t": "Now, the bus company took an interest in all this, but not for the reason you might think. They weren't concerned about comfort. Their problem was that buses were taking too long at stops, because passengers getting on would walk slowly down the bus looking for the ideal seat. The company redesigned the layout of twenty buses, removing the backward-facing seats and widening the space near the doors, and the average time at each stop fell noticeably."
+        "t": "The bus company took an interest in all this, but not because of journey times, which were already acceptable. Their concern was a steady stream of complaints from older passengers who could not find seats near the front. The company redesigned the layout of twenty buses, removing the backward-facing seats and adding more seats near the doors."
       },
       {
         "sp": "Researcher",
-        "t": "I should mention one limitation. All our observations were made in one city, during the morning rush hour. Evening passengers, who are often more tired and less hurried, may behave quite differently, and we're planning to look at that next."
+        "t": "I should mention our main limitation. We studied only one city, but colleagues elsewhere have found similar patterns, so that worries me less. What worries me more is that our observers sat at the front of the bus with clipboards, so passengers could see that someone was taking notes, and some of them may have behaved differently because of it."
       }
     ],
     "vi": [
       "Bài 3. Bây giờ bạn có ba mươi giây để đọc câu 31 đến 35.",
-      "Tôi muốn nói về một nghiên cứu bắt đầu gần như là chuyện đùa. Một đồng nghiệp và tôi đi cùng một chuyến xe buýt mỗi sáng, và chúng tôi bắt đầu đánh cược hành khách tiếp theo sẽ ngồi đâu. Sau vài tuần, chúng tôi nhận ra mình đoán đúng đến bất ngờ, nên quyết định nghiên cứu nghiêm túc.",
-      "Trong sáu tháng, chúng tôi ghi lại lựa chọn chỗ ngồi của khoảng hai nghìn hành khách. Phát hiện đầu tiên khẳng định điều hầu hết mọi người đoán: khi được chọn, người ta tránh ngồi cạnh người lạ. Thú vị hơn là việc họ làm khi không có lựa chọn. Hành khách không chọn người trông thân thiện nhất. Họ chọn người có vẻ ít khả năng bắt chuyện nhất, thường là người đeo tai nghe hoặc đang đọc.",
-      "Chúng tôi còn thấy hướng ngồi có tác động mạnh. Trên những xe có vài ghế quay ngược chiều, các ghế đó luôn là ghế cuối cùng có người ngồi, kể cả với những hành khách sau đó nói rằng ngồi ngược chiều không làm họ khó chịu chút nào. Khi được hỏi vì sao, câu trả lời phổ biến nhất là ngồi đối mặt hành khách khác giống như bị nhìn chằm chằm.",
-      "Công ty xe buýt quan tâm đến chuyện này, nhưng không vì lý do bạn nghĩ. Họ không lo về sự thoải mái. Vấn đề của họ là xe dừng ở mỗi điểm quá lâu, vì hành khách lên xe đi chậm dọc xe để tìm ghế lý tưởng. Công ty thiết kế lại bố trí của hai mươi xe, bỏ ghế quay ngược và mở rộng khoảng trống gần cửa, và thời gian dừng trung bình ở mỗi điểm giảm rõ rệt.",
-      "Tôi nên nói đến một hạn chế. Mọi quan sát của chúng tôi đều thực hiện ở một thành phố, trong giờ cao điểm buổi sáng. Hành khách buổi tối, thường mệt hơn và ít vội hơn, có thể cư xử khá khác, và chúng tôi dự định tìm hiểu điều đó tiếp theo."
+      "Tôi muốn nói về một nghiên cứu xem người ta chọn ngồi đâu trên xe buýt. Báo chí thích kể rằng nó bắt đầu từ hai nhà nghiên cứu đánh cược trên xe buýt, câu chuyện hay nhưng không đúng. Nó bắt đầu từ một bài luận của một sinh viên của tôi, người mô tả những quy tắc chọn ghế kỹ lưỡng của riêng mình, và hỏi liệu ai cũng có quy tắc như vậy không.",
+      "Trong sáu tháng, chúng tôi ghi lại lựa chọn chỗ ngồi của khoảng hai nghìn hành khách. Khi có lựa chọn, người ta tránh ngồi cạnh người lạ, như bạn có thể đoán. Khi không có lựa chọn, chúng tôi đoán họ sẽ chọn người trông ít có khả năng bắt chuyện nhất. Thực tế, quy luật rõ nhất là tuổi tác: hành khách ngồi cạnh người cùng lứa tuổi thường xuyên hơn nhiều so với ngẫu nhiên.",
+      "Ghế quay ngược chiều luôn là ghế cuối cùng có người ngồi. Vài người nói những ghế này khiến họ thấy khó chịu trong người, và một số nói ngồi đối mặt hành khách khác giống như bị nhìn. Nhưng câu trả lời phổ biến nhất lại rất thực tế: ngồi quay ngược khiến họ khó thấy khi nào sắp đến điểm dừng của mình.",
+      "Công ty xe buýt quan tâm đến chuyện này, nhưng không phải vì thời gian hành trình, vốn đã chấp nhận được. Mối lo của họ là những lời phàn nàn liên tục từ hành khách lớn tuổi không tìm được ghế gần phía trước. Công ty thiết kế lại bố trí của hai mươi xe, bỏ ghế quay ngược và thêm ghế gần cửa.",
+      "Tôi nên nói đến hạn chế chính của chúng tôi. Chúng tôi chỉ nghiên cứu một thành phố, nhưng đồng nghiệp ở nơi khác cũng thấy quy luật tương tự, nên điều đó khiến tôi ít lo hơn. Điều khiến tôi lo hơn là người quan sát của chúng tôi ngồi phía trước xe với tập giấy ghi chép, nên hành khách thấy có người đang ghi chép, và một số người có thể đã cư xử khác đi vì thế."
     ],
     "voices": {
       "N": "bm_george",
       "Researcher": "af_nicole"
     },
     "allow": [
-      "betting",
-      "predict",
+      "essay",
       "passengers",
       "stranger",
-      "headphones",
-      "layout",
-      "widening",
-      "noticeably",
-      "limitation",
-      "observations",
-      "hurried",
+      "backward-facing",
       "backwards",
-      "redesigned"
+      "layout",
+      "redesigned",
+      "limitation",
+      "observers",
+      "clipboards",
+      "acceptable"
     ],
+    "audio": {
+      "file": "a/m-v1-l14.mp3",
+      "dur": 152.9,
+      "voices": [
+        "bm_george",
+        "af_nicole"
+      ]
+    },
     "sets": [
       {
         "qtype": "v-l3",
@@ -1827,100 +1936,100 @@
             "opts": [
               {
                 "k": "A",
-                "t": "A bus company asked for research."
+                "t": "Two researchers made bets on a bus."
               },
               {
                 "k": "B",
-                "t": "Two colleagues began guessing where people would sit."
+                "t": "A student wrote an essay about her own habits."
               },
               {
                 "k": "C",
-                "t": "A university offered funding for a study of public transport."
+                "t": "Passengers complained about crowded buses."
               },
               {
                 "k": "D",
-                "t": "Passengers complained about crowded buses."
+                "t": "A bus company asked for research."
               }
             ],
             "ans": "B",
             "b": 7,
             "ev": {
               "p": 1,
-              "s": "we started betting on where the next passenger would sit"
+              "s": "It began with an essay by one of my students"
             },
-            "why": "Nghiên cứu bắt đầu từ trò đánh cược của hai đồng nghiệp về chỗ hành khách sẽ ngồi.",
+            "why": "Nghiên cứu bắt đầu từ bài luận của một sinh viên về quy tắc chọn ghế của mình.",
             "wrong": {
-              "A": "Công ty xe buýt quan tâm về sau, không khởi xướng nghiên cứu.",
-              "C": "Không nhắc tài trợ.",
-              "D": "Không nhắc phàn nàn."
+              "A": "Đó là chuyện báo chí kể, người nói bảo không đúng.",
+              "C": "Không nhắc phàn nàn về xe đông.",
+              "D": "Công ty xe buýt quan tâm về sau."
             }
           },
           {
             "id": "m-v1-l14-02",
-            "q": "When passengers had to sit next to someone, whom did they usually choose?",
+            "q": "When passengers had to sit next to someone, what was the strongest pattern?",
             "opts": [
               {
                 "k": "A",
-                "t": "someone who seemed unlikely to talk"
+                "t": "They chose someone of a similar age."
               },
               {
                 "k": "B",
-                "t": "someone of a similar age"
+                "t": "They chose the person nearest the door."
               },
               {
                 "k": "C",
-                "t": "the person nearest the door"
+                "t": "They chose someone who looked friendly."
               },
               {
                 "k": "D",
-                "t": "the person who looked most friendly"
+                "t": "They chose someone unlikely to talk."
               }
             ],
             "ans": "A",
-            "b": 7,
+            "b": 7.5,
             "ev": {
               "p": 2,
-              "s": "They chose the person who seemed least likely to start a conversation"
+              "s": "the strongest pattern was age"
             },
-            "why": "Họ chọn người ít có khả năng bắt chuyện nhất, như người đeo tai nghe hoặc đang đọc.",
+            "why": "Quy luật rõ nhất là tuổi: hành khách hay ngồi cạnh người cùng lứa.",
             "wrong": {
-              "B": "Không nhắc tuổi.",
-              "C": "Không nói về khoảng cách đến cửa trong lựa chọn này.",
-              "D": "Người nói nói rõ hành khách KHÔNG chọn người trông thân thiện nhất."
+              "B": "Không nói về khoảng cách đến cửa.",
+              "C": "Không nói chọn người trông thân thiện.",
+              "D": "Đó là điều nhóm nghiên cứu ĐÃ ĐOÁN, thực tế khác."
             }
           },
           {
             "id": "m-v1-l14-03",
-            "q": "Why did passengers avoid backward-facing seats?",
+            "q": "Why did most passengers avoid backward-facing seats?",
             "opts": [
               {
                 "k": "A",
-                "t": "The seats were less comfortable."
+                "t": "They felt as if they were being watched."
               },
               {
                 "k": "B",
-                "t": "The seats were too far from the doors."
+                "t": "The seats were less comfortable."
               },
               {
                 "k": "C",
-                "t": "They felt they were being watched."
+                "t": "It was hard to see their stop coming."
               },
               {
                 "k": "D",
-                "t": "Travelling backwards made them feel ill."
+                "t": "The seats made them feel ill."
               }
             ],
             "ans": "C",
             "b": 7.5,
             "ev": {
               "p": 3,
-              "s": "facing other passengers felt like being watched"
+              "s": "facing backwards made it hard to see when their stop was coming"
             },
-            "why": "Câu trả lời phổ biến nhất: ngồi đối mặt người khác giống như bị nhìn.",
+            "why": "Câu trả lời phổ biến nhất: khó thấy sắp đến điểm dừng.",
             "wrong": {
-              "A": "Không nói ghế kém thoải mái.",
-              "B": "Không nói ghế xa cửa.",
-              "D": "Nhiều hành khách nói ngồi ngược chiều không làm họ khó chịu."
+              "A": "Chỉ \"một số\" nói vậy.",
+              "B": "Không ai nói ghế kém êm.",
+              "D": "Chỉ \"vài người\" nói vậy."
             }
           },
           {
@@ -1929,66 +2038,66 @@
             "opts": [
               {
                 "k": "A",
-                "t": "It planned to buy new buses."
+                "t": "It wanted to buy new buses."
               },
               {
                 "k": "B",
-                "t": "Buses were spending too long at stops."
+                "t": "Older passengers complained about seats."
               },
               {
                 "k": "C",
-                "t": "It wanted to make passengers more comfortable."
+                "t": "Journeys were taking too long."
               },
               {
                 "k": "D",
-                "t": "Passengers were refusing to sit backwards."
+                "t": "Drivers asked for changes."
               }
             ],
             "ans": "B",
             "b": 7.5,
             "ev": {
               "p": 4,
-              "s": "buses were taking too long at stops"
+              "s": "complaints from older passengers who could not find seats near the front"
             },
-            "why": "Vấn đề của công ty là xe dừng quá lâu do hành khách đi chậm tìm ghế.",
+            "why": "Mối lo là phàn nàn của hành khách lớn tuổi không tìm được ghế phía trước.",
             "wrong": {
-              "A": "Công ty thiết kế lại hai mươi xe hiện có, không nói mua xe mới.",
-              "C": "Người nói nói rõ công ty \"weren't concerned about comfort\".",
-              "D": "Ghế ngược chiều có người ngồi sau cùng, không phải bị từ chối hẳn."
+              "A": "Công ty sửa bố trí hai mươi xe hiện có.",
+              "C": "Thời gian hành trình đã chấp nhận được.",
+              "D": "Không nhắc tài xế."
             }
           },
           {
             "id": "m-v1-l14-05",
-            "q": "What limitation of the study does the speaker mention?",
+            "q": "What limitation worries the speaker most?",
             "opts": [
               {
                 "k": "A",
-                "t": "It only covered morning journeys in one city."
+                "t": "Passengers could see the observers taking notes."
               },
               {
                 "k": "B",
-                "t": "The bus company changed the results."
+                "t": "Too few passengers were included."
               },
               {
                 "k": "C",
-                "t": "The number of passengers was too small."
+                "t": "Only one city was studied."
               },
               {
                 "k": "D",
-                "t": "Passengers knew they were being observed by researchers."
+                "t": "The bus company changed the results."
               }
             ],
             "ans": "A",
-            "b": 7,
+            "b": 7.5,
             "ev": {
               "p": 5,
-              "s": "All our observations were made in one city, during the morning rush hour."
+              "s": "passengers could see that someone was taking notes"
             },
-            "why": "Mọi quan sát ở một thành phố, trong giờ cao điểm buổi sáng.",
+            "why": "Người quan sát ngồi trước với giấy ghi chép nên hành khách có thể cư xử khác.",
             "wrong": {
-              "B": "Không nói công ty can thiệp vào kết quả.",
-              "C": "Khoảng hai nghìn hành khách, người nói không coi là ít.",
-              "D": "Không nói hành khách biết mình bị quan sát."
+              "B": "Khoảng hai nghìn hành khách, không bị coi là ít.",
+              "C": "Chỉ một thành phố khiến bà \"ít lo hơn\" vì nơi khác có kết quả tương tự.",
+              "D": "Không nói công ty can thiệp kết quả."
             }
           }
         ]

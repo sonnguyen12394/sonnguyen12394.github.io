@@ -25,6 +25,9 @@ Rút ra từ đợt soát v41–v42. Trước v42, một phiên AI chỉ thấy 
 - **Đáp án diễn đạt lại**, không chép nguyên cụm dài từ bài, nhất là ở B2 trở lên.
 - **Câu hỏi bỏ lửng** (không có "?") thì phương án phải nối tiếp được câu đó.
 - **Câu vốn đoán được** (từ vựng trong ngữ cảnh, quy chiếu, ý chính): tối đa 1–2 câu mỗi bài, và phương án nhiễu cũng phải hợp ngữ cảnh.
+- **Danh sách dùng chung** (tiêu đề, người, nơi chốn, khung từ): không xếp theo thứ tự xuất hiện trong bài. Tên gọi không được gợi đáp án; ví dụ tên phòng "Roof Garden" gợi ngay việc ăn uống, nên dùng tên trung tính. Có ít nhất một phương án nhiễu gần nghĩa với từng đáp án.
+- **Nối nửa câu:** mỗi nửa đầu phải hợp ngữ pháp và hợp nghĩa với ít nhất hai nửa sau. Nếu không làm được, dùng dạng khác.
+- **Bài nghị luận:** đừng hỏi lập trường của tác giả bằng những mệnh đề suy ra được từ mạch lập luận. Hỏi chi tiết, ví dụ, số liệu, và quan điểm của tác giả về điểm phụ.
 - **Ghi cấp độ theo độ khó thật của câu**, không theo độ khó của bài. Câu C1 phải có suy luận, thái độ hoặc chức năng đoạn văn.
 
 ## 3. Kiểm tra tự động (`npm run content`, chặn CI)
@@ -34,6 +37,8 @@ Rút ra từ đợt soát v41–v42. Trước v42, một phiên AI chỉ thấy 
 | `checkKeyBalance` | Vị trí đáp án dồn về một chỗ (mọi chế độ, kể cả bài đầu vào) |
 | `checkLengthCue` | Đáp án là phương án dài nhất ở quá 1/n + 15 điểm % số câu |
 | Câu bỏ lửng | Phương án viết hoa đầu câu, không nối tiếp được câu hỏi |
+| Thứ tự danh sách (đề thi thử) | Đáp án các câu theo đúng thứ tự danh sách dùng chung |
+| `checkMock` | Tổng điểm, điểm từng phần, độ dài theo vị trí, độ khó tăng dần, cân bằng giữa các đề (±0,25 band) |
 | Lược đồ | `wrong` cho mọi phương án sai, mỗi lời giải thích ≥ 10 ký tự |
 
 Luật tĩnh chỉ bắt được tín hiệu đếm được. Thước đo nghiệm thu là phép thử không có bài ở mục 4.

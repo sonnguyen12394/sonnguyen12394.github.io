@@ -100,6 +100,15 @@ test('luật đề thi thử: đúng định dạng thì qua; sai tổng, lệch
   assert.ok(Math.abs(meanB(testGroups(A.test, 'L', A.groups)) - 5.75) < 1e-9);
 });
 
+test('đề thi thử: danh sách dùng chung xếp theo thứ tự đáp án thì báo (đoán theo thứ tự được)', async () => {
+  const { checkGroup } = await import('../../src/content/check.ts');
+  const g = expandPart({ ...rPart('a1', 2, 13, 6), sets: [{ qtype: 'r-headings', instr: 'Choose the correct heading.', options: [{ k: 'i', t: 'one' }, { k: 'ii', t: 'two' }, { k: 'iii', t: 'three' }, { k: 'iv', t: 'four' }],
+    items: ['i', 'ii', 'iii'].map((a, n) => ({ ...mc(`m-a1-r2-0${n + 1}`, 6), opts: undefined, ans: a, wrong: { iv: 'Không phải ý chính của đoạn.' } })) }] })[0]!;
+  assert.match(checkGroup(g, null).map(i => i.msg).join('\n'), /theo đúng thứ tự/);
+  const ok = { ...g, items: g.items.map((it, n) => ({ ...it, ans: ['ii', 'i', 'iii'][n]! })) };
+  assert.doesNotMatch(checkGroup(ok, null).map(i => i.msg).join('\n'), /theo đúng thứ tự/);
+});
+
 test('bài đang làm dở được làm sạch khi nạp (dữ liệu ngoài không tin cậy)', () => {
   const x = sanitizeX({ v: 3, mockRun: { t: 'a1', sk: 'R', part: 2, left: 99e9, given: { 'm-a1-r1-01': 'TRUE', 'bad id!': 'x', 'm-a1-r1-02': ['A', 'B'], 'm-a1-r1-03': 'x'.repeat(500) }, marked: ['m-a1-r1-01', 5] }, mockLog: { 'a1-R': { d: 3, given: { 'm-a1-r1-01': 'A' } }, 'zz': { d: 1 } } });
   assert.equal(x.mockRun!.sk, 'R');

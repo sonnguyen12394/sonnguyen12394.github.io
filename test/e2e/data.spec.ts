@@ -20,7 +20,7 @@ test('nâng cấp dữ liệu v17 → v18 không mất tiến độ', async ({ p
   expect(saved.words.price.learned).toBe(true);
   expect(saved.words.price.ivl).toBe(12);
   expect(saved.exam).toEqual([{ day: 20001, l: 6, r: 6.5 }]);
-  expect(saved.x).toMatchObject({ v: 2, attempts: [], resp: [] });
+  expect(saved.x).toMatchObject({ v: 3, attempts: [], resp: [] });
   expect(errors).toEqual([]);
 });
 

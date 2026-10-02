@@ -280,7 +280,11 @@ export function mockController(host: Host, X: () => XState): MockController {
       if (name !== 'mock-run') {
         // Rời màn làm bài: dừng âm thanh (ghi lại vị trí) và dừng đồng hồ (ghi giờ còn lại).
         if (ui.playing || timer) { stopAudio(); stopTimer(); }
-      } else if (r && timed(r) && !timer) {
+      } else {
+        // Thanh phần + đồng hồ dính dưới thanh tiêu đề của app (chiều cao thay đổi theo màn hình).
+        try { const h = document.querySelector('.top'); document.documentElement.style.setProperty('--toph', `${h ? h.getBoundingClientRect().height : 0}px`); } catch { /* không có DOM */ }
+      }
+      if (name === 'mock-run' && r && timed(r) && !timer) {
         if (!ui.deadline) ui.deadline = Date.now() + r.left;
         timer = setInterval(tick, 1000);
       }
