@@ -763,17 +763,17 @@
           },
           {
             "id": "m-a3-r3-04",
-            "q": "3D-printed copies are usually lighter than the objects they copy.",
-            "ans": "NOT GIVEN",
+            "q": "3D-printed replicas are less useful than many people believe.",
+            "ans": "NO",
             "b": 7.5,
             "ev": {
               "p": 4,
-              "s": "A replica can be weighted so that it matches the original's weight exactly"
+              "s": "and they are better than their reputation suggests"
             },
-            "why": "Tác giả chỉ nói bản sao có thể được làm nặng cho khớp, không nói bản sao thường nhẹ hơn.",
+            "why": "Tác giả nói bản sao in 3D tốt hơn tiếng tăm của chúng.",
             "wrong": {
-              "YES": "Bài không nói bản sao thường nhẹ hơn.",
-              "NO": "Bài cũng không nói bản sao thường nặng bằng."
+              "YES": "Tác giả nói ngược lại.",
+              "NOT GIVEN": "Tác giả nêu rõ quan điểm về bản sao."
             }
           },
           {
