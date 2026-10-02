@@ -35,6 +35,12 @@ Rút ra từ đợt soát v41–v42. Trước v42, một phiên AI chỉ thấy 
   - bốn phương án phải cụ thể và "đáng kể chuyện" ngang nhau;
   - trong một bài, trộn câu có đáp án là điều bình thường (nói thẳng trong bài) với câu có đáp án là điều bất ngờ; phương án còn lại xuất hiện trong bài ở vai trò bẫy.
   Vòng 3: 34%.
+- **Đừng viết bài trước rồi rút câu hỏi từ bài.** Làm vậy thì bộ câu thành bản tóm tắt luận điểm của bài: đọc 10 câu là đoán ra luận điểm, rồi từ luận điểm suy ra từng đáp án. VSTEP Đề 3 bản đầu: phần 1 soạn câu hỏi trước nên chỉ 13%, còn Đọc soạn bài trước nên 83–90%. Cách làm đúng:
+  - soạn bảng câu hỏi trước;
+  - mỗi bài có 4–5 câu chi tiết trung tính (số, người, nơi, thứ tự);
+  - có ít nhất 2 câu mà đáp án đi ngược luận điểm chính của bài;
+  - không để hai câu cùng kể một mạch, ví dụ "xe buýt ngừng sớm" và "đề nghị cho xe buýt chạy muộn".
+- **Câu từ vựng trong ngữ cảnh:** từ chỉ có một nghĩa phổ biến (reluctant, offer) thì ai cũng đoán đúng. Chọn từ đa nghĩa (figure, fair, straight) mà nghĩa thường gặp nhất là phương án sai.
 - **Ghi cấp độ theo độ khó thật của câu**, không theo độ khó của bài. Câu C1 phải có suy luận, thái độ hoặc chức năng đoạn văn.
 
 ## 3. Kiểm tra tự động (`npm run content`, chặn CI)

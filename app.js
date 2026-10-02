@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 43;
+const STATE_V = 18, APP_VERSION = 44;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -7956,6 +7956,11 @@ CHANGELOG.unshift({v:37,d:'2026-10-01',t:'Kiểm tra đầu vào thích ứng 15
   'Kho 96 câu mới (48 Đọc, 48 Nghe) từ band 3 đến 8,5; mỗi câu giải thích bằng tiếng Việt vì sao đúng, vì sao từng phương án sai và câu nào chứa đáp án.',
   'Bài nghe là tệp âm thanh tạo sẵn giọng Anh và Mỹ, phát một lần như thi thật; lời thoại và bản dịch hiện sau khi làm xong. Không nghe được thì bỏ qua phần Nghe.',
   'Nút Báo lỗi ở mọi câu khi xem lại.']});
+CHANGELOG.unshift({v:44,d:'2026-10-02',t:'Thêm 5 đề thi thử: IELTS Academic Đề 2–3, General Training Đề 1, VSTEP Đề 2–3',big:true,items:[
+  'IELTS Academic Đề 2 và Đề 3: đủ Nghe 4 phần và Đọc 3 bài, có bản đồ, sơ đồ và nhiều dạng câu (nối người – ý kiến, YES/NO/NOT GIVEN, tóm tắt, chọn hai đáp án).',
+  'IELTS General Training Đề 1: Đọc 5 văn bản đời thường và nơi làm việc như đề thật; phần Nghe dùng chung với Academic Đề 1, giống đề thật.',
+  'VSTEP Đề 2 và Đề 3: Nghe 35 câu, Đọc 4 bài 40 câu, từ B1 lên C1; độ khó cân với Đề 1.',
+  'Mỗi đề đã qua phép thử "không có bài" (không đọc bài thì không đoán được: mọi dạng dưới ngưỡng 45%) và soát độc lập có bài. Biên bản soát từng đề có trong thư mục content/review. Nay có 7/15 đề; Viết và Nói của đề thi thử sẽ có ở bản sau.']});
 CHANGELOG.unshift({v:43,d:'2026-10-02',t:'Đề thi thử đầy đủ: IELTS Academic Đề 1 và VSTEP Đề 1',big:true,items:[
   'Đề thi thử đúng định dạng đề thật: IELTS Nghe 4 phần 40 câu, Đọc 3 bài 40 câu (60 phút); VSTEP Nghe 35 câu (thông báo, hội thoại, bài nói), Đọc 4 bài 40 câu. Âm thanh phát một lần như phòng thi, có lời dẫn và thời gian đọc câu hỏi.',
   'Tải trước toàn bộ âm thanh trước khi bắt đầu, nên mạng yếu không làm dừng giữa đề. Bị gián đoạn (tắt máy, đóng app) thì mở lại làm tiếp đúng chỗ.',
