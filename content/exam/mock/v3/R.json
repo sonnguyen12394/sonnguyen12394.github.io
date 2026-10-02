@@ -1,0 +1,1540 @@
+[
+  {
+    "id": "m-v3-r1",
+    "kind": "reading",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 5,
+    "title": "A library of things",
+    "paras": [
+      "Three years ago, Sam Okafor opened a small shop in an old bus garage in Eastwick. Nothing in it is for sale. Membership is free, but members leave a deposit of ten pounds for each item they borrow, which they get back when they return it. On the shelves there are drills, tents, sewing machines, ladders and even a chocolate fountain. Most items can be kept for two weeks, although large items such as ladders must come back after one.",
+      "Sam got the idea from his neighbour, Mr Price, who knocked on his door almost every weekend to borrow his ladder. \"I didn't mind,\" Sam says, \"but I started to wonder how many other people on our street had bought a ladder they used twice a year.\" The first figure he got, from a quick survey of forty houses, was thirty-one ladders.",
+      "He expected students to be his main members, because they move house so often. In fact, most members are young families, who need things like baby seats and travel cots for a few weeks and then never again. Students do use the shop, but mainly to borrow sewing machines, since many of them study fashion at the college next door.",
+      "The most popular item is the drill, which has been borrowed more than two hundred times. The carpet cleaner and the tents come next. A large pasta machine, which Sam bought as a joke, has been borrowed only three times.",
+      "Running the shop has not always been easy. Very few things have been stolen, and the old garage has plenty of room. The real problem has been late returns: about one item in five comes back late, which means the next member on the waiting list is let down. Sam has also had to stop lending the chocolate fountain, because its motor broke three times in one year.",
+      "Next spring, Sam plans to open a second shop. He had hoped to use a room in the library in Westford, but it was too small. Then the council offered him an empty shop in the town centre at a very low rent, and that is where it will be."
+    ],
+    "vi": [
+      "Ba năm trước, Sam Okafor mở một cửa hàng nhỏ trong một xưởng xe buýt cũ ở Eastwick. Không thứ gì trong đó được bán. Làm thành viên thì miễn phí, nhưng thành viên để lại mười bảng đặt cọc cho mỗi món mượn, và được nhận lại khi trả đồ. Trên kệ có máy khoan, lều, máy khâu, thang và cả tháp sô-cô-la. Phần lớn đồ được giữ trong hai tuần, dù đồ lớn như thang phải trả sau một tuần.",
+      "Sam nảy ra ý tưởng từ người hàng xóm, ông Price, người gõ cửa nhà anh gần như mỗi cuối tuần để mượn thang. \"Tôi không phiền,\" Sam nói, \"nhưng tôi bắt đầu tự hỏi bao nhiêu người khác trên phố đã mua một cái thang mà mỗi năm chỉ dùng hai lần.\" Con số đầu tiên anh có được, từ một khảo sát nhanh bốn mươi ngôi nhà, là ba mươi mốt cái thang.",
+      "Anh đã nghĩ sinh viên sẽ là thành viên chính, vì họ chuyển nhà thường xuyên. Thực tế, phần lớn thành viên là các gia đình trẻ, những người cần ghế em bé và cũi du lịch trong vài tuần rồi không bao giờ dùng nữa. Sinh viên cũng dùng cửa hàng, nhưng chủ yếu để mượn máy khâu, vì nhiều em học thiết kế thời trang ở trường cao đẳng bên cạnh.",
+      "Món được mượn nhiều nhất là máy khoan, đã được mượn hơn hai trăm lần. Máy giặt thảm và lều đứng sau. Một chiếc máy làm mì ống lớn, thứ Sam mua cho vui, mới được mượn đúng ba lần.",
+      "Điều hành cửa hàng không phải lúc nào cũng dễ. Rất ít đồ bị mất cắp, và xưởng cũ có nhiều chỗ. Vấn đề thật là trả muộn: khoảng một trong năm món về muộn, nghĩa là thành viên tiếp theo trong danh sách chờ bị lỡ hẹn. Sam cũng phải ngừng cho mượn tháp sô-cô-la, vì động cơ của nó hỏng ba lần trong một năm.",
+      "Mùa xuân tới, Sam định mở cửa hàng thứ hai. Anh từng mong dùng một phòng trong thư viện ở Westford, nhưng phòng quá nhỏ. Rồi hội đồng đề nghị cho anh thuê một cửa hàng trống ở trung tâm thị trấn với giá rất thấp, và cửa hàng sẽ ở đó."
+    ],
+    "allow": [
+      "drills",
+      "drill",
+      "ladder",
+      "ladders",
+      "fountain",
+      "carpet",
+      "garage",
+      "deposit",
+      "cots",
+      "rent",
+      "survey"
+    ],
+    "sets": [
+      {
+        "qtype": "v-r",
+        "instr": "Read the passage and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v3-r1-01",
+            "q": "How does the shop work for members?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They pay a small amount for each day."
+              },
+              {
+                "k": "B",
+                "t": "They give an item in exchange for each loan."
+              },
+              {
+                "k": "C",
+                "t": "They pay a yearly fee to borrow items."
+              },
+              {
+                "k": "D",
+                "t": "They leave some money that is returned later."
+              }
+            ],
+            "ans": "D",
+            "b": 5,
+            "ev": {
+              "p": 0,
+              "s": "members leave a deposit of ten pounds for each item they borrow, which they get back when they return it"
+            },
+            "why": "Thành viên đặt cọc mười bảng mỗi món và được nhận lại khi trả.",
+            "wrong": {
+              "A": "Bài không nói trả tiền theo ngày.",
+              "B": "Bài không nói đổi đồ.",
+              "C": "Làm thành viên miễn phí."
+            }
+          },
+          {
+            "id": "m-v3-r1-02",
+            "q": "How long can members keep most items?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "one month"
+              },
+              {
+                "k": "B",
+                "t": "two weeks"
+              },
+              {
+                "k": "C",
+                "t": "three days"
+              },
+              {
+                "k": "D",
+                "t": "one week"
+              }
+            ],
+            "ans": "B",
+            "b": 4.5,
+            "ev": {
+              "p": 0,
+              "s": "Most items can be kept for two weeks"
+            },
+            "why": "Phần lớn đồ được giữ hai tuần.",
+            "wrong": {
+              "A": "Bài không nhắc một tháng.",
+              "C": "Bài không nhắc ba ngày.",
+              "D": "Một tuần chỉ áp dụng cho đồ lớn như thang."
+            }
+          },
+          {
+            "id": "m-v3-r1-03",
+            "q": "What gave Sam the idea for the shop?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "a neighbour who often borrowed from him"
+              },
+              {
+                "k": "B",
+                "t": "helping a friend move house"
+              },
+              {
+                "k": "C",
+                "t": "clearing out his own garage"
+              },
+              {
+                "k": "D",
+                "t": "reading about a similar shop"
+              }
+            ],
+            "ans": "A",
+            "b": 5,
+            "ev": {
+              "p": 1,
+              "s": "Sam got the idea from his neighbour, Mr Price"
+            },
+            "why": "Ý tưởng đến từ ông hàng xóm hay mượn thang.",
+            "wrong": {
+              "B": "Bài không nhắc giúp bạn chuyển nhà.",
+              "C": "Xưởng là nơi đặt cửa hàng, không phải xưởng của Sam.",
+              "D": "Bài không nói Sam đọc về cửa hàng khác."
+            }
+          },
+          {
+            "id": "m-v3-r1-04",
+            "q": "The word \"figure\" in paragraph 2 is closest in meaning to",
+            "opts": [
+              {
+                "k": "A",
+                "t": "person"
+              },
+              {
+                "k": "B",
+                "t": "shape"
+              },
+              {
+                "k": "C",
+                "t": "number"
+              },
+              {
+                "k": "D",
+                "t": "drawing"
+              }
+            ],
+            "ans": "C",
+            "b": 5,
+            "ev": {
+              "p": 1,
+              "s": "The first figure he got, from a quick survey of forty houses, was thirty-one ladders."
+            },
+            "why": "\"Figure\" ở đây là con số.",
+            "wrong": {
+              "A": "Không chỉ người trong câu này.",
+              "B": "\"Figure\" có thể là hình dáng, nhưng ở đây là số liệu.",
+              "D": "Không có nghĩa hình vẽ trong câu này."
+            }
+          },
+          {
+            "id": "m-v3-r1-05",
+            "q": "Who are most of the members?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "local builders"
+              },
+              {
+                "k": "B",
+                "t": "retired people"
+              },
+              {
+                "k": "C",
+                "t": "students"
+              },
+              {
+                "k": "D",
+                "t": "young families"
+              }
+            ],
+            "ans": "D",
+            "b": 5,
+            "ev": {
+              "p": 2,
+              "s": "most members are young families"
+            },
+            "why": "Phần lớn thành viên là gia đình trẻ.",
+            "wrong": {
+              "A": "Bài không nhắc thợ xây.",
+              "B": "Bài không nhắc người nghỉ hưu.",
+              "C": "Sam đã nghĩ sinh viên là thành viên chính, nhưng không phải."
+            }
+          },
+          {
+            "id": "m-v3-r1-06",
+            "q": "What do students mainly borrow?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "camping equipment"
+              },
+              {
+                "k": "B",
+                "t": "equipment for parties"
+              },
+              {
+                "k": "C",
+                "t": "sewing machines"
+              },
+              {
+                "k": "D",
+                "t": "tools for their flats"
+              }
+            ],
+            "ans": "C",
+            "b": 5,
+            "ev": {
+              "p": 2,
+              "s": "mainly to borrow sewing machines"
+            },
+            "why": "Sinh viên chủ yếu mượn máy khâu.",
+            "wrong": {
+              "A": "Bài không nói sinh viên mượn lều.",
+              "B": "Bài không nhắc đồ cho tiệc.",
+              "D": "Bài không nói sinh viên mượn dụng cụ cho căn hộ."
+            }
+          },
+          {
+            "id": "m-v3-r1-07",
+            "q": "Which item has been borrowed most often?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "the drill"
+              },
+              {
+                "k": "B",
+                "t": "the carpet cleaner"
+              },
+              {
+                "k": "C",
+                "t": "the tents"
+              },
+              {
+                "k": "D",
+                "t": "the pasta machine"
+              }
+            ],
+            "ans": "A",
+            "b": 5,
+            "ev": {
+              "p": 3,
+              "s": "The most popular item is the drill"
+            },
+            "why": "Máy khoan được mượn nhiều nhất.",
+            "wrong": {
+              "B": "Máy giặt thảm đứng sau máy khoan.",
+              "C": "Lều đứng sau máy khoan.",
+              "D": "Máy làm mì mới được mượn ba lần."
+            }
+          },
+          {
+            "id": "m-v3-r1-08",
+            "q": "What has been the biggest problem for Sam?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "items being stolen"
+              },
+              {
+                "k": "B",
+                "t": "items coming back late"
+              },
+              {
+                "k": "C",
+                "t": "not having enough space"
+              },
+              {
+                "k": "D",
+                "t": "not having enough members"
+              }
+            ],
+            "ans": "B",
+            "b": 5.5,
+            "ev": {
+              "p": 4,
+              "s": "The real problem has been late returns"
+            },
+            "why": "Vấn đề thật là đồ trả muộn.",
+            "wrong": {
+              "A": "Rất ít đồ bị mất cắp.",
+              "C": "Xưởng cũ có nhiều chỗ.",
+              "D": "Bài không nói thiếu thành viên."
+            }
+          },
+          {
+            "id": "m-v3-r1-09",
+            "q": "Why did Sam stop lending the chocolate fountain?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "It kept breaking down."
+              },
+              {
+                "k": "B",
+                "t": "It was rarely borrowed."
+              },
+              {
+                "k": "C",
+                "t": "It took up too much space."
+              },
+              {
+                "k": "D",
+                "t": "It was difficult to clean."
+              }
+            ],
+            "ans": "A",
+            "b": 5,
+            "ev": {
+              "p": 4,
+              "s": "its motor broke three times in one year"
+            },
+            "why": "Động cơ hỏng ba lần trong một năm.",
+            "wrong": {
+              "B": "Máy làm mì mới là thứ ít được mượn.",
+              "C": "Xưởng có nhiều chỗ.",
+              "D": "Bài không nói khó lau rửa."
+            }
+          },
+          {
+            "id": "m-v3-r1-10",
+            "q": "Where will the second shop be?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "at the college"
+              },
+              {
+                "k": "B",
+                "t": "in another bus garage"
+              },
+              {
+                "k": "C",
+                "t": "in a library"
+              },
+              {
+                "k": "D",
+                "t": "in the town centre"
+              }
+            ],
+            "ans": "D",
+            "b": 5.5,
+            "ev": {
+              "p": 5,
+              "s": "the council offered him an empty shop in the town centre"
+            },
+            "why": "Cửa hàng thứ hai ở trung tâm thị trấn.",
+            "wrong": {
+              "A": "Trường cao đẳng là nơi sinh viên học.",
+              "B": "Xưởng xe buýt là cửa hàng đầu tiên.",
+              "C": "Phòng ở thư viện quá nhỏ."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-r2",
+    "kind": "reading",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 5.5,
+    "title": "The market that moved to the evening",
+    "paras": [
+      "For more than a hundred years, the market in Holmbridge took place every Saturday morning in the square outside the town hall. Last year, the council moved it to Thursday evenings, from four until nine. Local people were told that the change was meant to bring life back to the town centre after dark, and that was part of it. But the main reason was much simpler: on Saturday mornings the square was needed for a new car park while the old one was being rebuilt.",
+      "Many of the traders were unhappy at first. The fruit and vegetable sellers were confident, because people buy food on the way home from work. It was the clothes sellers who were most worried, and they were right to be. Their sales have fallen by almost a third, and they say the main reason is not the time of day but their new pitch: when the market moved, the clothes stalls were placed along the dark north side of the square, where few shoppers walk. Fruit and vegetable sales, meanwhile, have also fallen slightly.",
+      "The biggest winners have been the hot food stalls. There used to be two; now there are nine, and the council has agreed to allow eleven next year. Their best customers turned out to be families with children, who come straight from school and stay to eat, rather than the young office workers the council had expected.",
+      "Shops around the square have had mixed results. The cafés report their busiest Thursdays ever. The bookshop owner, Ruth Ellis, tried staying open until nine, but most shoppers did not want to carry books around while eating, so she now sets up a small stall at the market itself, which has worked far better.",
+      "Not everyone is pleased. Some residents of the flats above the square have complained. The smell of cooking, which many people expected to be a problem, has hardly been mentioned; the complaints are about the noise of traders packing up their vans after nine. The council has asked traders to finish packing by half past nine.",
+      "The new car park will open next year, and the council has promised a vote on the market's future. Most traders, including the clothes sellers, now say they would like to keep the Thursday evening market and not return to Saturdays at all, as long as the stalls are arranged more fairly."
+    ],
+    "vi": [
+      "Hơn một trăm năm, chợ Holmbridge họp vào mỗi sáng thứ Bảy ở quảng trường trước toà thị chính. Năm ngoái, hội đồng chuyển chợ sang tối thứ Năm, từ bốn giờ đến chín giờ. Người dân được bảo rằng thay đổi này nhằm đem sức sống trở lại trung tâm thị trấn sau khi trời tối, và đó là một phần lý do. Nhưng lý do chính đơn giản hơn nhiều: sáng thứ Bảy quảng trường cần dùng làm bãi đỗ xe tạm trong lúc bãi cũ được xây lại.",
+      "Lúc đầu nhiều tiểu thương không vui. Người bán rau quả thì tự tin, vì người ta mua đồ ăn trên đường đi làm về. Chính người bán quần áo mới lo nhất, và họ lo là đúng. Doanh số của họ giảm gần một phần ba, và họ nói lý do chính không phải giờ họp chợ mà là chỗ bán mới: khi chợ chuyển giờ, các quầy quần áo được xếp dọc phía bắc tối tăm của quảng trường, nơi ít khách đi qua. Trong khi đó, doanh số rau quả cũng giảm nhẹ.",
+      "Người được lợi nhất là các quầy đồ ăn nóng. Trước kia có hai quầy; giờ có chín, và hội đồng đã đồng ý cho phép mười một quầy vào năm sau. Khách tốt nhất của họ hoá ra là các gia đình có con, đi thẳng từ trường tới và ở lại ăn, chứ không phải dân văn phòng trẻ như hội đồng đã nghĩ.",
+      "Các cửa hàng quanh quảng trường có kết quả lẫn lộn. Các quán cà phê nói chưa bao giờ đông khách vào thứ Năm như vậy. Chủ hiệu sách Ruth Ellis đã thử mở cửa tới chín giờ, nhưng phần lớn khách không muốn mang sách đi khắp nơi khi đang ăn, nên giờ bà dựng một quầy nhỏ ngay trong chợ, cách này hiệu quả hơn hẳn.",
+      "Không phải ai cũng hài lòng. Vài cư dân ở các căn hộ phía trên quảng trường đã phàn nàn. Mùi nấu nướng, thứ nhiều người tưởng sẽ là vấn đề, hầu như không được nhắc tới; các lời phàn nàn là về tiếng ồn khi tiểu thương dọn hàng lên xe sau chín giờ. Hội đồng đã yêu cầu tiểu thương dọn xong trước chín rưỡi.",
+      "Bãi đỗ xe mới sẽ mở vào năm sau, và hội đồng đã hứa tổ chức bỏ phiếu về tương lai của chợ. Phần lớn tiểu thương, kể cả người bán quần áo, giờ nói họ muốn giữ chợ tối thứ Năm và hoàn toàn không quay lại thứ Bảy, miễn là các quầy được sắp xếp công bằng hơn."
+    ],
+    "allow": [
+      "traders",
+      "stalls",
+      "stall",
+      "pitch",
+      "residents",
+      "vans",
+      "confident"
+    ],
+    "sets": [
+      {
+        "qtype": "v-r",
+        "instr": "Read the passage and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v3-r2-01",
+            "q": "What was the main reason for moving the market?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "to give traders more time to sell"
+              },
+              {
+                "k": "B",
+                "t": "to free the square for parking on Saturdays"
+              },
+              {
+                "k": "C",
+                "t": "to make the town centre livelier at night"
+              },
+              {
+                "k": "D",
+                "t": "to attract more young customers"
+              }
+            ],
+            "ans": "B",
+            "b": 5.5,
+            "ev": {
+              "p": 0,
+              "s": "on Saturday mornings the square was needed for a new car park"
+            },
+            "why": "Lý do chính là sáng thứ Bảy quảng trường cần làm bãi đỗ xe tạm.",
+            "wrong": {
+              "A": "Bài không nói lý do là thêm giờ bán.",
+              "C": "Đó chỉ là một phần lý do, không phải lý do chính.",
+              "D": "Bài không nói lý do là thu hút khách trẻ."
+            }
+          },
+          {
+            "id": "m-v3-r2-02",
+            "q": "Which traders were most worried about the change?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "the hot food sellers"
+              },
+              {
+                "k": "B",
+                "t": "the booksellers"
+              },
+              {
+                "k": "C",
+                "t": "the clothes sellers"
+              },
+              {
+                "k": "D",
+                "t": "the fruit and vegetable sellers"
+              }
+            ],
+            "ans": "C",
+            "b": 5.5,
+            "ev": {
+              "p": 1,
+              "s": "It was the clothes sellers who were most worried"
+            },
+            "why": "Người bán quần áo lo nhất.",
+            "wrong": {
+              "A": "Quầy đồ ăn nóng được lợi nhất.",
+              "B": "Bài không nói người bán sách lo nhất.",
+              "D": "Người bán rau quả thì tự tin."
+            }
+          },
+          {
+            "id": "m-v3-r2-03",
+            "q": "According to the clothes sellers, why have their sales fallen?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Their stalls are in a poor position."
+              },
+              {
+                "k": "B",
+                "t": "Prices in the shops are lower."
+              },
+              {
+                "k": "C",
+                "t": "The market opens too late."
+              },
+              {
+                "k": "D",
+                "t": "Evening shoppers mainly want food."
+              }
+            ],
+            "ans": "A",
+            "b": 6,
+            "ev": {
+              "p": 1,
+              "s": "their new pitch"
+            },
+            "why": "Họ nói lý do chính là chỗ bán mới ở phía bắc tối tăm.",
+            "wrong": {
+              "B": "Bài không so sánh giá với cửa hàng.",
+              "C": "Bài không nói chợ mở quá muộn.",
+              "D": "Họ nói lý do chính không phải giờ họp chợ."
+            }
+          },
+          {
+            "id": "m-v3-r2-04",
+            "q": "What has happened to sales of fruit and vegetables?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They have fallen by a third."
+              },
+              {
+                "k": "B",
+                "t": "They have risen sharply."
+              },
+              {
+                "k": "C",
+                "t": "They have stayed the same."
+              },
+              {
+                "k": "D",
+                "t": "They have fallen slightly."
+              }
+            ],
+            "ans": "D",
+            "b": 5.5,
+            "ev": {
+              "p": 1,
+              "s": "Fruit and vegetable sales, meanwhile, have also fallen slightly."
+            },
+            "why": "Doanh số rau quả giảm nhẹ.",
+            "wrong": {
+              "A": "Giảm một phần ba là quần áo.",
+              "B": "Không tăng.",
+              "C": "Có giảm nhẹ."
+            }
+          },
+          {
+            "id": "m-v3-r2-05",
+            "q": "How many hot food stalls are there now?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "two"
+              },
+              {
+                "k": "B",
+                "t": "twenty"
+              },
+              {
+                "k": "C",
+                "t": "nine"
+              },
+              {
+                "k": "D",
+                "t": "eleven"
+              }
+            ],
+            "ans": "C",
+            "b": 5,
+            "ev": {
+              "p": 2,
+              "s": "now there are nine"
+            },
+            "why": "Giờ có chín quầy.",
+            "wrong": {
+              "A": "Hai là số quầy trước kia.",
+              "B": "Bài không nhắc hai mươi.",
+              "D": "Mười một là số được phép năm sau."
+            }
+          },
+          {
+            "id": "m-v3-r2-06",
+            "q": "Who are the best customers of the hot food stalls?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "other traders"
+              },
+              {
+                "k": "B",
+                "t": "families with children"
+              },
+              {
+                "k": "C",
+                "t": "young office workers"
+              },
+              {
+                "k": "D",
+                "t": "residents of the flats"
+              }
+            ],
+            "ans": "B",
+            "b": 5.5,
+            "ev": {
+              "p": 2,
+              "s": "Their best customers turned out to be families with children"
+            },
+            "why": "Khách tốt nhất là gia đình có con.",
+            "wrong": {
+              "A": "Bài không nói tiểu thương khác là khách chính.",
+              "C": "Hội đồng đã nghĩ vậy, nhưng không phải.",
+              "D": "Cư dân căn hộ là người phàn nàn."
+            }
+          },
+          {
+            "id": "m-v3-r2-07",
+            "q": "The word \"straight\" in paragraph 3 is closest in meaning to",
+            "opts": [
+              {
+                "k": "A",
+                "t": "honestly"
+              },
+              {
+                "k": "B",
+                "t": "not bent"
+              },
+              {
+                "k": "C",
+                "t": "in a line"
+              },
+              {
+                "k": "D",
+                "t": "directly"
+              }
+            ],
+            "ans": "D",
+            "b": 6,
+            "ev": {
+              "p": 2,
+              "s": "who come straight from school and stay to eat"
+            },
+            "why": "\"Come straight from school\" là đi thẳng từ trường tới.",
+            "wrong": {
+              "A": "\"Straight\" có nghĩa thật thà ở chỗ khác, không phải ở đây.",
+              "B": "\"Không cong\" là nghĩa khác của từ này.",
+              "C": "Không có nghĩa xếp hàng ở đây."
+            }
+          },
+          {
+            "id": "m-v3-r2-08",
+            "q": "What does Ruth Ellis do now?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "runs a café in her shop"
+              },
+              {
+                "k": "B",
+                "t": "stays open until nine on Thursdays"
+              },
+              {
+                "k": "C",
+                "t": "sells books at a market stall"
+              },
+              {
+                "k": "D",
+                "t": "closes the shop on Thursdays"
+              }
+            ],
+            "ans": "C",
+            "b": 6,
+            "ev": {
+              "p": 3,
+              "s": "she now sets up a small stall at the market itself"
+            },
+            "why": "Bà dựng một quầy nhỏ ngay trong chợ.",
+            "wrong": {
+              "A": "Bài không nói bà mở quán cà phê.",
+              "B": "Bà đã thử mở cửa tới chín giờ nhưng không hiệu quả.",
+              "D": "Bài không nói bà đóng cửa hàng."
+            }
+          },
+          {
+            "id": "m-v3-r2-09",
+            "q": "What have some residents complained about?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "rubbish in the square"
+              },
+              {
+                "k": "B",
+                "t": "noise when traders pack up"
+              },
+              {
+                "k": "C",
+                "t": "cars parked outside"
+              },
+              {
+                "k": "D",
+                "t": "the smell of cooking"
+              }
+            ],
+            "ans": "B",
+            "b": 6,
+            "ev": {
+              "p": 4,
+              "s": "the complaints are about the noise of traders packing up their vans after nine"
+            },
+            "why": "Cư dân phàn nàn tiếng ồn khi dọn hàng sau chín giờ.",
+            "wrong": {
+              "A": "Bài không nhắc rác.",
+              "C": "Bài không nhắc xe đỗ.",
+              "D": "Mùi nấu nướng hầu như không được nhắc tới."
+            }
+          },
+          {
+            "id": "m-v3-r2-10",
+            "q": "What would most traders like to happen in future?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "keep only the Thursday evening market"
+              },
+              {
+                "k": "B",
+                "t": "have markets on both days"
+              },
+              {
+                "k": "C",
+                "t": "return to Saturday mornings only"
+              },
+              {
+                "k": "D",
+                "t": "move the market to the new car park"
+              }
+            ],
+            "ans": "A",
+            "b": 6.5,
+            "ev": {
+              "p": 5,
+              "s": "keep the Thursday evening market and not return to Saturdays at all"
+            },
+            "why": "Phần lớn muốn giữ chợ thứ Năm và không quay lại thứ Bảy.",
+            "wrong": {
+              "B": "Họ hoàn toàn không muốn chợ thứ Bảy.",
+              "C": "Họ không muốn quay lại thứ Bảy.",
+              "D": "Bài không nói chuyển chợ tới bãi đỗ xe mới."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-r3",
+    "kind": "reading",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B2",
+    "band": 6.5,
+    "title": "Translating for children",
+    "paras": [
+      "Marta Novak has translated about forty children's books into English, most of them from Slovak, a few from Czech and one from Polish. She did not set out to do this. She trained as a lawyer and spent eight years translating contracts. The change came when she entered a competition run by a children's publisher, which asked readers to translate the first page of a Slovak picture book. She won, and the publisher asked her to finish the book.",
+      "That first book, with fewer than four hundred words, took her two months. The hardest part, she says, was not the language at all but the space. The words had to fit inside the pictures, which could not be changed, and English sentences are often longer than Slovak ones. She now reads every draft aloud to her neighbour's children, not to check whether they understand it, but to see whether they laugh in the right places.",
+      "Small details of everyday life are another challenge: what people eat on Christmas Eve, or why a grandmother keeps a fish in the bath. When she started, she kept every such detail and trusted the pictures to explain it. She has since changed her mind. Unless the detail is shown in a picture, she now replaces it with something an English-speaking child would recognise, because, as she puts it, a story that needs a footnote has already lost a fair number of its readers.",
+      "The money is another matter. Translators of children's books are usually paid a fixed fee rather than a share of sales, so a translator earns nothing extra if a book sells well. This is what bothers Novak most. Her name, which used to be hidden on the back page, now appears on the cover of most of her books, and she says she no longer worries about being invisible.",
+      "Why are British publishers now more willing to take risks on books from small languages? Ten years ago, the answer was money: sharing printing costs with a foreign publisher made illustrated books affordable. That is no longer the main reason, Novak believes. Parents and teachers have started asking for stories from other countries, and the bookshops have noticed."
+    ],
+    "vi": [
+      "Marta Novak đã dịch khoảng bốn mươi cuốn sách thiếu nhi sang tiếng Anh, phần lớn từ tiếng Slovakia, vài cuốn từ tiếng Séc và một cuốn từ tiếng Ba Lan. Bà không định làm việc này từ đầu. Bà học luật và dành tám năm dịch hợp đồng. Sự thay đổi đến khi bà tham gia một cuộc thi do một nhà xuất bản sách thiếu nhi tổ chức, yêu cầu người đọc dịch trang đầu của một cuốn sách tranh tiếng Slovakia. Bà thắng, và nhà xuất bản nhờ bà dịch nốt cuốn sách.",
+      "Cuốn đầu tiên đó, chưa tới bốn trăm chữ, mất của bà hai tháng. Bà nói phần khó nhất hoàn toàn không phải ngôn ngữ mà là chỗ trống. Chữ phải vừa trong tranh, mà tranh thì không được thay đổi, và câu tiếng Anh thường dài hơn câu tiếng Slovakia. Giờ bà đọc to mọi bản nháp cho con nhà hàng xóm nghe, không phải để xem chúng có hiểu không, mà để xem chúng có cười đúng chỗ không.",
+      "Những chi tiết nhỏ của đời thường là một thử thách khác: người ta ăn gì trong đêm Giáng sinh, hay vì sao bà lại nuôi một con cá trong bồn tắm. Khi mới bắt đầu, bà giữ mọi chi tiết như vậy và tin rằng tranh sẽ giải thích. Từ đó bà đã đổi ý. Trừ khi chi tiết được vẽ trong tranh, giờ bà thay nó bằng thứ mà một đứa trẻ nói tiếng Anh nhận ra được, vì, như bà nói, một câu chuyện cần chú thích thì đã mất một số lượng kha khá người đọc.",
+      "Tiền là chuyện khác. Người dịch sách thiếu nhi thường được trả một khoản cố định thay vì phần trăm doanh số, nên người dịch không được thêm gì nếu sách bán chạy. Đây là điều khiến Novak phiền lòng nhất. Tên bà, trước kia bị giấu ở trang cuối, nay xuất hiện trên bìa phần lớn sách của bà, và bà nói mình không còn lo bị vô hình.",
+      "Vì sao các nhà xuất bản Anh giờ sẵn lòng mạo hiểm hơn với sách từ những ngôn ngữ nhỏ? Mười năm trước, câu trả lời là tiền: chia chi phí in với một nhà xuất bản nước ngoài giúp sách có tranh minh hoạ vừa túi tiền. Novak cho rằng đó không còn là lý do chính. Phụ huynh và giáo viên đã bắt đầu tìm truyện từ các nước khác, và các hiệu sách đã nhận ra điều đó."
+    ],
+    "allow": [
+      "contracts",
+      "publisher",
+      "publishers",
+      "competition",
+      "draft",
+      "footnote",
+      "illustrated",
+      "printing",
+      "invisible",
+      "recognise"
+    ],
+    "sets": [
+      {
+        "qtype": "v-r",
+        "instr": "Read the passage and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v3-r3-01",
+            "q": "Which language has Novak translated the most books from?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Hungarian"
+              },
+              {
+                "k": "B",
+                "t": "Czech"
+              },
+              {
+                "k": "C",
+                "t": "Polish"
+              },
+              {
+                "k": "D",
+                "t": "Slovak"
+              }
+            ],
+            "ans": "D",
+            "b": 6,
+            "ev": {
+              "p": 0,
+              "s": "most of them from Slovak"
+            },
+            "why": "Phần lớn sách bà dịch từ tiếng Slovakia.",
+            "wrong": {
+              "A": "Bài không nhắc tiếng Hungary.",
+              "B": "Chỉ vài cuốn từ tiếng Séc.",
+              "C": "Chỉ một cuốn từ tiếng Ba Lan."
+            }
+          },
+          {
+            "id": "m-v3-r3-02",
+            "q": "How did Novak start translating children's books?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "She translated stories for her own children."
+              },
+              {
+                "k": "B",
+                "t": "She won a translation competition."
+              },
+              {
+                "k": "C",
+                "t": "She replaced a translator who was ill."
+              },
+              {
+                "k": "D",
+                "t": "She studied translation at university."
+              }
+            ],
+            "ans": "B",
+            "b": 6,
+            "ev": {
+              "p": 0,
+              "s": "She won, and the publisher asked her to finish the book."
+            },
+            "why": "Bà thắng một cuộc thi dịch của nhà xuất bản.",
+            "wrong": {
+              "A": "Bài không nhắc con của bà.",
+              "C": "Bài không nhắc người dịch bị ốm.",
+              "D": "Bà học luật."
+            }
+          },
+          {
+            "id": "m-v3-r3-03",
+            "q": "How long did Novak work as a legal translator?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "four years"
+              },
+              {
+                "k": "B",
+                "t": "two years"
+              },
+              {
+                "k": "C",
+                "t": "eight years"
+              },
+              {
+                "k": "D",
+                "t": "ten years"
+              }
+            ],
+            "ans": "C",
+            "b": 6,
+            "ev": {
+              "p": 0,
+              "s": "spent eight years translating contracts"
+            },
+            "why": "Bà dịch hợp đồng tám năm.",
+            "wrong": {
+              "A": "Không phải bốn năm.",
+              "B": "Không phải hai năm.",
+              "D": "Mười năm trước là thời điểm nói về chi phí in."
+            }
+          },
+          {
+            "id": "m-v3-r3-04",
+            "q": "How long did her first picture book take to translate?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "two months"
+              },
+              {
+                "k": "B",
+                "t": "two weeks"
+              },
+              {
+                "k": "C",
+                "t": "two days"
+              },
+              {
+                "k": "D",
+                "t": "a year"
+              }
+            ],
+            "ans": "A",
+            "b": 6,
+            "ev": {
+              "p": 1,
+              "s": "took her two months"
+            },
+            "why": "Cuốn đầu tiên mất hai tháng.",
+            "wrong": {
+              "B": "Không phải hai tuần.",
+              "C": "Không phải hai ngày.",
+              "D": "Không phải một năm."
+            }
+          },
+          {
+            "id": "m-v3-r3-05",
+            "q": "What was the hardest part of translating her first book?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "understanding the language"
+              },
+              {
+                "k": "B",
+                "t": "fitting the words into the pictures"
+              },
+              {
+                "k": "C",
+                "t": "explaining everyday details"
+              },
+              {
+                "k": "D",
+                "t": "translating the jokes"
+              }
+            ],
+            "ans": "B",
+            "b": 7,
+            "ev": {
+              "p": 1,
+              "s": "The words had to fit inside the pictures"
+            },
+            "why": "Khó nhất là làm chữ vừa trong tranh.",
+            "wrong": {
+              "A": "Bà nói khó nhất hoàn toàn không phải ngôn ngữ.",
+              "C": "Chi tiết đời thường là \"một thử thách khác\", không phải khó nhất.",
+              "D": "Bài không nói truyện cười là khó nhất."
+            }
+          },
+          {
+            "id": "m-v3-r3-06",
+            "q": "Why does Novak read her drafts aloud to children?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "to find out which stories they prefer"
+              },
+              {
+                "k": "B",
+                "t": "to notice where the sentences are too long"
+              },
+              {
+                "k": "C",
+                "t": "to see whether they laugh at the right moments"
+              },
+              {
+                "k": "D",
+                "t": "to check whether they understand the words"
+              }
+            ],
+            "ans": "C",
+            "b": 7,
+            "ev": {
+              "p": 1,
+              "s": "to see whether they laugh in the right places"
+            },
+            "why": "Bà đọc để xem trẻ có cười đúng chỗ không.",
+            "wrong": {
+              "A": "Bài không nói bà hỏi trẻ thích truyện nào.",
+              "B": "Câu dài là chuyện chỗ trống trong tranh, không phải lý do đọc to.",
+              "D": "Bài nói rõ không phải để xem trẻ có hiểu không."
+            }
+          },
+          {
+            "id": "m-v3-r3-07",
+            "q": "What does Novak now usually do with unfamiliar details?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "explains them in a footnote"
+              },
+              {
+                "k": "B",
+                "t": "keeps them and lets the pictures explain"
+              },
+              {
+                "k": "C",
+                "t": "leaves them out completely"
+              },
+              {
+                "k": "D",
+                "t": "replaces them with familiar ones"
+              }
+            ],
+            "ans": "D",
+            "b": 7,
+            "ev": {
+              "p": 2,
+              "s": "she now replaces it with something an English-speaking child would recognise"
+            },
+            "why": "Giờ bà thay bằng thứ trẻ nói tiếng Anh nhận ra được.",
+            "wrong": {
+              "A": "Bà cho rằng truyện cần chú thích là mất người đọc.",
+              "B": "Đó là cách bà làm khi mới bắt đầu.",
+              "C": "Bà thay chứ không bỏ hẳn."
+            }
+          },
+          {
+            "id": "m-v3-r3-08",
+            "q": "The word \"fair\" in paragraph 3 is closest in meaning to",
+            "opts": [
+              {
+                "k": "A",
+                "t": "quite large"
+              },
+              {
+                "k": "B",
+                "t": "just"
+              },
+              {
+                "k": "C",
+                "t": "light-coloured"
+              },
+              {
+                "k": "D",
+                "t": "beautiful"
+              }
+            ],
+            "ans": "A",
+            "b": 6.5,
+            "ev": {
+              "p": 2,
+              "s": "has already lost a fair number of its readers"
+            },
+            "why": "\"A fair number\" là một số lượng kha khá.",
+            "wrong": {
+              "B": "\"Fair\" nghĩa công bằng ở chỗ khác, không phải ở đây.",
+              "C": "\"Fair\" chỉ màu tóc, da sáng ở chỗ khác.",
+              "D": "\"Fair\" nghĩa đẹp là cách dùng cũ, không hợp ở đây."
+            }
+          },
+          {
+            "id": "m-v3-r3-09",
+            "q": "What bothers Novak most about her job?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "There are too few books to translate."
+              },
+              {
+                "k": "B",
+                "t": "She is paid a fixed fee."
+              },
+              {
+                "k": "C",
+                "t": "Publishers make too many changes."
+              },
+              {
+                "k": "D",
+                "t": "Her name is rarely on the cover."
+              }
+            ],
+            "ans": "B",
+            "b": 7,
+            "ev": {
+              "p": 3,
+              "s": "This is what bothers Novak most."
+            },
+            "why": "Điều bà phiền nhất là bị trả khoản cố định, không được thêm khi sách bán chạy.",
+            "wrong": {
+              "A": "Bài không nói thiếu sách để dịch.",
+              "C": "Bài không nói nhà xuất bản sửa nhiều.",
+              "D": "Tên bà nay có trên bìa phần lớn sách."
+            }
+          },
+          {
+            "id": "m-v3-r3-10",
+            "q": "According to Novak, why are British publishers now taking more risks?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Printing has become much cheaper."
+              },
+              {
+                "k": "B",
+                "t": "Foreign publishers now pay all the printing costs."
+              },
+              {
+                "k": "C",
+                "t": "Translators now accept lower fees."
+              },
+              {
+                "k": "D",
+                "t": "Parents and teachers want stories from abroad."
+              }
+            ],
+            "ans": "D",
+            "b": 7.5,
+            "ev": {
+              "p": 4,
+              "s": "Parents and teachers have started asking for stories from other countries"
+            },
+            "why": "Phụ huynh và giáo viên bắt đầu tìm truyện từ nước khác.",
+            "wrong": {
+              "A": "Bài không nói chi phí in rẻ đi.",
+              "B": "Chia chi phí in là lý do mười năm trước; bài không nói nhà xuất bản nước ngoài trả toàn bộ.",
+              "C": "Bài không nói người dịch chấp nhận phí thấp hơn."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-r4",
+    "kind": "reading",
+    "exams": [
+      "vstep"
+    ],
+    "level": "C1",
+    "band": 7.5,
+    "title": "Closing the centre to cars",
+    "paras": [
+      "When a city announces that it will close its centre to cars, the argument that follows tends to be shaped by whoever is loudest. In Kelford, a medium-sized city I followed for two years after its centre went car-free, that meant a residents' group from the old town, whose members filled the council chamber at every meeting. Shopkeepers, commuters and bus users were barely heard, and the debate was conducted almost entirely in terms of noise and safety.",
+      "The shopkeepers, when they were heard, predicted that trade would collapse, and their fears were not unreasonable, though not for the reason they gave: takings in the centre had already fallen for three years in a row, so any further loss would hurt. A survey of their customers had found that only about a tenth arrived by car, so the loss of drivers was never likely to matter much. A weakness nobody mentioned was the buses, which stopped running at seven in the evening; once cars were gone, anyone in the centre after seven had no easy way home. What the survey failed to capture was distance. It asked how customers travelled but not how far, and so it missed the fact that the few who drove came mostly from villages with no bus service at all.",
+      "Two years on, daytime takings in the centre are slightly up. The losers are not the businesses everyone expected. The two hardware shops, which sell heavy goods, simply started delivering, and both are doing well. It is the cafés and restaurants that have suffered, because their evening customers can no longer get home.",
+      "Nor did traffic behave as the experts predicted. Transport researchers often describe a process they call \"traffic evaporation\": when a road is closed, some journeys are made at other times, by other means, or not at all, and the traffic seems to disappear. In Kelford it did not. Cars poured into the surrounding streets in the first few months and, two years later, they are still there. The ring road is busier than before the scheme began.",
+      "None of this, I should stress, makes me think Kelford was wrong to act. Air quality in the centre has improved measurably. My objection is to the way success is being judged. The council publishes footfall and air-quality figures every quarter, all of them collected between nine and five; nothing is measured after dark, when the centre's problems begin. A survey of just twelve of the centre's two hundred businesses is still quoted as proof that businesses are unaffected. The fix would cost relatively little: run the buses until eleven, and count what happens in the evening as carefully as what happens by day."
+    ],
+    "vi": [
+      "Khi một thành phố tuyên bố sẽ cấm ô tô vào trung tâm, cuộc tranh luận sau đó thường được định hình bởi người nói to nhất. Ở Kelford, một thành phố cỡ vừa mà tôi theo dõi hai năm sau khi trung tâm cấm ô tô, đó là một nhóm cư dân phố cổ, với các thành viên lấp kín phòng họp hội đồng ở mọi buổi họp. Chủ cửa hàng, người đi làm và người đi xe buýt hầu như không được lắng nghe, và cuộc tranh luận diễn ra gần như hoàn toàn quanh tiếng ồn và an toàn.",
+      "Giới chủ cửa hàng, khi được lắng nghe, dự báo việc buôn bán sẽ sụp đổ, và nỗi lo đó không vô lý, dù không phải vì lý do họ đưa ra: doanh thu ở trung tâm đã giảm ba năm liền, nên mất thêm chút nào cũng đau. Một khảo sát khách hàng cho thấy chỉ khoảng một phần mười tới bằng ô tô, nên việc mất khách lái xe chưa bao giờ có khả năng ảnh hưởng nhiều. Một điểm yếu không ai nhắc tới là xe buýt, vốn ngừng chạy lúc bảy giờ tối; khi ô tô bị cấm, ai ở trung tâm sau bảy giờ không có cách nào dễ dàng để về nhà. Điều khảo sát không nắm được là khoảng cách. Nó hỏi khách đi bằng gì nhưng không hỏi đi bao xa, nên bỏ sót chuyện số ít người lái xe phần lớn đến từ các làng hoàn toàn không có xe buýt.",
+      "Hai năm sau, doanh thu ban ngày ở trung tâm tăng nhẹ. Người chịu thiệt không phải những cơ sở mà ai cũng nghĩ. Hai cửa hàng đồ ngũ kim, vốn bán hàng nặng, chỉ đơn giản bắt đầu giao hàng, và cả hai đều làm ăn tốt. Chính các quán cà phê và nhà hàng mới chịu thiệt, vì khách buổi tối của họ không còn cách về nhà.",
+      "Giao thông cũng không diễn biến như giới chuyên gia dự đoán. Các nhà nghiên cứu giao thông thường mô tả một quá trình họ gọi là \"giao thông bốc hơi\": khi một con đường bị đóng, một số chuyến đi được thực hiện vào giờ khác, bằng phương tiện khác, hoặc không đi nữa, và lưu lượng xe dường như biến mất. Ở Kelford thì không. Ô tô đổ dồn vào các phố xung quanh trong mấy tháng đầu và, hai năm sau, chúng vẫn ở đó. Đường vành đai đông hơn trước khi dự án bắt đầu.",
+      "Tôi cần nhấn mạnh rằng không điều nào ở trên khiến tôi nghĩ Kelford đã sai khi hành động. Chất lượng không khí ở trung tâm đã cải thiện đo được. Điều tôi phản đối là cách thành công đang được đánh giá. Hội đồng công bố số liệu lượt người qua lại và chất lượng không khí mỗi quý, tất cả đều thu thập từ chín giờ sáng đến năm giờ chiều; không gì được đo sau khi trời tối, lúc các vấn đề của trung tâm bắt đầu. Một khảo sát chỉ mười hai trên hai trăm cơ sở kinh doanh ở trung tâm vẫn được trích dẫn làm bằng chứng rằng các cơ sở kinh doanh không bị ảnh hưởng. Cách sửa tốn tương đối ít: cho xe buýt chạy tới mười một giờ, và đếm những gì xảy ra buổi tối cẩn thận như ban ngày."
+    ],
+    "allow": [
+      "chamber",
+      "commuters",
+      "conducted",
+      "takings",
+      "hardware",
+      "evaporation",
+      "footfall",
+      "quarter",
+      "measurably",
+      "quoted"
+    ],
+    "sets": [
+      {
+        "qtype": "v-r",
+        "instr": "Read the passage and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v3-r4-01",
+            "q": "According to paragraph 1, who dominated the public debate in Kelford?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "residents of the old town"
+              },
+              {
+                "k": "B",
+                "t": "transport researchers"
+              },
+              {
+                "k": "C",
+                "t": "shopkeepers"
+              },
+              {
+                "k": "D",
+                "t": "bus users"
+              }
+            ],
+            "ans": "A",
+            "b": 7,
+            "ev": {
+              "p": 0,
+              "s": "a residents' group from the old town"
+            },
+            "why": "Một nhóm cư dân phố cổ chi phối cuộc tranh luận.",
+            "wrong": {
+              "B": "Nhà nghiên cứu giao thông chỉ được nhắc ở đoạn 4.",
+              "C": "Chủ cửa hàng hầu như không được lắng nghe.",
+              "D": "Người đi xe buýt hầu như không được lắng nghe."
+            }
+          },
+          {
+            "id": "m-v3-r4-02",
+            "q": "Why, according to the writer, were the shopkeepers' fears \"not unreasonable\"?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Rents in the centre were rising."
+              },
+              {
+                "k": "B",
+                "t": "Many customers came by car."
+              },
+              {
+                "k": "C",
+                "t": "Trade had already been falling."
+              },
+              {
+                "k": "D",
+                "t": "The buses stopped running early."
+              }
+            ],
+            "ans": "C",
+            "b": 7.5,
+            "ev": {
+              "p": 1,
+              "s": "takings in the centre had already fallen for three years in a row"
+            },
+            "why": "Doanh thu đã giảm ba năm liền nên mất thêm chút nào cũng đau.",
+            "wrong": {
+              "A": "Bài không nhắc tiền thuê.",
+              "B": "Chỉ khoảng một phần mười khách lái xe tới.",
+              "D": "Xe buýt là điểm yếu không ai nhắc tới, không phải lý do tác giả đưa cho nỗi lo của chủ cửa hàng."
+            }
+          },
+          {
+            "id": "m-v3-r4-03",
+            "q": "What did the customer survey fail to show?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "which shops customers preferred"
+              },
+              {
+                "k": "B",
+                "t": "how often customers visited"
+              },
+              {
+                "k": "C",
+                "t": "how far customers travelled"
+              },
+              {
+                "k": "D",
+                "t": "how many customers drove"
+              }
+            ],
+            "ans": "C",
+            "b": 7.5,
+            "ev": {
+              "p": 1,
+              "s": "It asked how customers travelled but not how far"
+            },
+            "why": "Khảo sát không hỏi khách đi bao xa.",
+            "wrong": {
+              "A": "Bài không nói về cửa hàng khách thích.",
+              "B": "Bài không nói về tần suất ghé.",
+              "D": "Khảo sát có cho thấy khoảng một phần mười lái xe tới."
+            }
+          },
+          {
+            "id": "m-v3-r4-04",
+            "q": "What does the writer say about the hardware shops?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They started delivering goods."
+              },
+              {
+                "k": "B",
+                "t": "One moved to the edge of the city."
+              },
+              {
+                "k": "C",
+                "t": "Both have closed down."
+              },
+              {
+                "k": "D",
+                "t": "They now open in the evening."
+              }
+            ],
+            "ans": "A",
+            "b": 7,
+            "ev": {
+              "p": 2,
+              "s": "simply started delivering"
+            },
+            "why": "Hai cửa hàng ngũ kim bắt đầu giao hàng và làm ăn tốt.",
+            "wrong": {
+              "B": "Bài không nói cửa hàng nào chuyển đi.",
+              "C": "Cả hai đều làm ăn tốt.",
+              "D": "Bài không nói họ mở cửa buổi tối."
+            }
+          },
+          {
+            "id": "m-v3-r4-05",
+            "q": "Which businesses have been harmed by the scheme?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "delivery companies"
+              },
+              {
+                "k": "B",
+                "t": "hardware shops"
+              },
+              {
+                "k": "C",
+                "t": "clothes shops"
+              },
+              {
+                "k": "D",
+                "t": "cafés and restaurants"
+              }
+            ],
+            "ans": "D",
+            "b": 7,
+            "ev": {
+              "p": 2,
+              "s": "It is the cafés and restaurants that have suffered"
+            },
+            "why": "Quán cà phê và nhà hàng chịu thiệt vì khách buổi tối không về được.",
+            "wrong": {
+              "A": "Bài không nhắc công ty giao hàng.",
+              "B": "Cửa hàng ngũ kim bắt đầu giao hàng và làm ăn tốt.",
+              "C": "Bài không nhắc cửa hàng quần áo."
+            }
+          },
+          {
+            "id": "m-v3-r4-06",
+            "q": "What has happened to traffic in the surrounding streets?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "It increased at first, then fell back."
+              },
+              {
+                "k": "B",
+                "t": "It increased and has stayed high."
+              },
+              {
+                "k": "C",
+                "t": "It fell as journeys moved to other times."
+              },
+              {
+                "k": "D",
+                "t": "It hardly changed at all."
+              }
+            ],
+            "ans": "B",
+            "b": 7,
+            "ev": {
+              "p": 3,
+              "s": "two years later, they are still there"
+            },
+            "why": "Ô tô đổ vào phố xung quanh và hai năm sau vẫn còn đó.",
+            "wrong": {
+              "A": "Lưu lượng không giảm lại.",
+              "C": "Đó là \"giao thông bốc hơi\" theo lý thuyết, không xảy ra ở Kelford.",
+              "D": "Mấy tháng đầu ô tô đã đổ dồn vào."
+            }
+          },
+          {
+            "id": "m-v3-r4-07",
+            "q": "The writer mentions \"traffic evaporation\" in order to",
+            "opts": [
+              {
+                "k": "A",
+                "t": "show that the scheme succeeded"
+              },
+              {
+                "k": "B",
+                "t": "describe what experts expected to happen"
+              },
+              {
+                "k": "C",
+                "t": "explain why the ring road is busier"
+              },
+              {
+                "k": "D",
+                "t": "criticise the way traffic was measured"
+              }
+            ],
+            "ans": "B",
+            "b": 7.5,
+            "ev": {
+              "p": 3,
+              "s": "In Kelford it did not."
+            },
+            "why": "Tác giả nêu điều chuyên gia dự đoán, rồi cho thấy ở Kelford không xảy ra.",
+            "wrong": {
+              "A": "Ở Kelford giao thông không \"bốc hơi\".",
+              "C": "Thuật ngữ không giải thích vì sao đường vành đai đông hơn.",
+              "D": "Đoạn 4 không phê phán cách đo giao thông."
+            }
+          },
+          {
+            "id": "m-v3-r4-08",
+            "q": "What is said about the council's figures?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They are collected only during the day."
+              },
+              {
+                "k": "B",
+                "t": "They are collected by the shopkeepers."
+              },
+              {
+                "k": "C",
+                "t": "They do not include air quality."
+              },
+              {
+                "k": "D",
+                "t": "They are published only once a year."
+              }
+            ],
+            "ans": "A",
+            "b": 7.5,
+            "ev": {
+              "p": 4,
+              "s": "all of them collected between nine and five"
+            },
+            "why": "Mọi số liệu được thu thập từ chín giờ sáng đến năm giờ chiều.",
+            "wrong": {
+              "B": "Bài không nói chủ cửa hàng thu thập số liệu.",
+              "C": "Có số liệu chất lượng không khí.",
+              "D": "Số liệu được công bố mỗi quý."
+            }
+          },
+          {
+            "id": "m-v3-r4-09",
+            "q": "Why does the writer criticise the survey that is still quoted?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "It was paid for by the council."
+              },
+              {
+                "k": "B",
+                "t": "It was carried out too early."
+              },
+              {
+                "k": "C",
+                "t": "It ignored air quality."
+              },
+              {
+                "k": "D",
+                "t": "It asked too few businesses."
+              }
+            ],
+            "ans": "D",
+            "b": 7.5,
+            "ev": {
+              "p": 4,
+              "s": "A survey of just twelve of the centre's two hundred businesses"
+            },
+            "why": "Khảo sát chỉ hỏi mười hai trên hai trăm cơ sở.",
+            "wrong": {
+              "A": "Bài không nói ai trả tiền khảo sát.",
+              "B": "Bài không nói khảo sát làm quá sớm.",
+              "C": "Bài không nói khảo sát bỏ qua chất lượng không khí."
+            }
+          },
+          {
+            "id": "m-v3-r4-10",
+            "q": "What does the writer suggest Kelford should do?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "build a new car park"
+              },
+              {
+                "k": "B",
+                "t": "reopen the centre to cars"
+              },
+              {
+                "k": "C",
+                "t": "run the buses later"
+              },
+              {
+                "k": "D",
+                "t": "enforce the parking rules"
+              }
+            ],
+            "ans": "C",
+            "b": 7,
+            "ev": {
+              "p": 4,
+              "s": "run the buses until eleven"
+            },
+            "why": "Tác giả đề nghị cho xe buýt chạy tới mười một giờ.",
+            "wrong": {
+              "A": "Bài không đề nghị xây bãi đỗ.",
+              "B": "Tác giả không muốn mở lại cho ô tô.",
+              "D": "Bài không nhắc quy định đỗ xe."
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

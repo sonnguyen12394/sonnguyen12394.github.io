@@ -1,0 +1,2040 @@
+[
+  {
+    "id": "m-v3-l1",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 4.5,
+    "title": "Baggage reclaim",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 1. In this part, you will hear eight short announcements or instructions. There is one question for each. You will hear the recordings only once. Question 1.",
+        "pause": 8
+      },
+      {
+        "sp": "Announcer",
+        "t": "Welcome to Riverside Airport. Passengers arriving on flight BA 207 from Lisbon, please note that your baggage will now be delivered to belt four, not belt two as shown on the screens. Belt six is closed for repairs. If any of your bags are missing, please speak to the staff at the information desk before you leave the hall."
+      }
+    ],
+    "vi": [
+      "Phần 1. Trong phần này, bạn sẽ nghe tám thông báo hoặc hướng dẫn ngắn. Mỗi bài có một câu hỏi. Bạn chỉ được nghe một lần. Câu 1.",
+      "Chào mừng quý khách tới Sân bay Riverside. Hành khách chuyến bay BA 207 từ Lisbon xin lưu ý hành lý của quý khách sẽ được trả ở băng chuyền số bốn, không phải băng chuyền số hai như trên màn hình. Băng chuyền số sáu đang đóng để sửa. Nếu thiếu hành lý, xin gặp nhân viên ở quầy thông tin trước khi rời sảnh."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Announcer": "bf_emma"
+    },
+    "audio": {
+      "file": "a/m-v3-l1.mp3",
+      "dur": 36.9,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l1",
+        "instr": "Listen to the announcement or instruction and choose the correct answer, A, B, C or D.",
+        "items": [
+          {
+            "id": "m-v3-l1-01",
+            "q": "Where should passengers from Lisbon collect their bags?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "at belt four"
+              },
+              {
+                "k": "B",
+                "t": "at belt two"
+              },
+              {
+                "k": "C",
+                "t": "at belt six"
+              },
+              {
+                "k": "D",
+                "t": "at the information desk"
+              }
+            ],
+            "ans": "A",
+            "b": 4.5,
+            "ev": {
+              "p": 1,
+              "s": "your baggage will now be delivered to belt four"
+            },
+            "why": "Hành lý được trả ở băng chuyền số bốn.",
+            "wrong": {
+              "B": "Băng chuyền số hai là thông tin cũ trên màn hình.",
+              "C": "Băng chuyền số sáu đang đóng để sửa.",
+              "D": "Quầy thông tin chỉ dành cho người bị thiếu hành lý."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l2",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 4.5,
+    "title": "Library closing time",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Question 2. Listen to the recording and choose the best answer.",
+        "pause": 8
+      },
+      {
+        "sp": "Librarian",
+        "t": "Good afternoon. Please note that the library will close early today, at six o'clock instead of eight, because of a staff meeting. The study rooms upstairs will close at half past five, so that they can be cleaned. The library will open at nine as usual tomorrow morning."
+      }
+    ],
+    "vi": [
+      "Câu 2. Hãy nghe và chọn đáp án đúng nhất.",
+      "Xin chào. Xin lưu ý hôm nay thư viện đóng cửa sớm, lúc sáu giờ thay vì tám giờ, vì có cuộc họp nhân viên. Các phòng tự học trên lầu đóng lúc năm giờ rưỡi để dọn dẹp. Sáng mai thư viện mở cửa lúc chín giờ như thường lệ."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Librarian": "af_nicole"
+    },
+    "audio": {
+      "file": "a/m-v3-l2.mp3",
+      "dur": 32,
+      "voices": [
+        "bm_george",
+        "af_nicole"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l1",
+        "instr": "Listen to the announcement or instruction and choose the correct answer, A, B, C or D.",
+        "items": [
+          {
+            "id": "m-v3-l2-01",
+            "q": "What time does the library close today?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "5.30"
+              },
+              {
+                "k": "B",
+                "t": "6.00"
+              },
+              {
+                "k": "C",
+                "t": "9.00"
+              },
+              {
+                "k": "D",
+                "t": "8.00"
+              }
+            ],
+            "ans": "B",
+            "b": 4.5,
+            "ev": {
+              "p": 1,
+              "s": "the library will close early today, at six o'clock instead of eight"
+            },
+            "why": "Hôm nay thư viện đóng lúc sáu giờ.",
+            "wrong": {
+              "A": "Năm giờ rưỡi là giờ đóng của phòng tự học.",
+              "C": "Chín giờ là giờ mở cửa sáng mai.",
+              "D": "Tám giờ là giờ đóng thường ngày."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l3",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 4.5,
+    "title": "Flu vaccinations",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Question 3. Listen to the recording and choose the best answer.",
+        "pause": 8
+      },
+      {
+        "sp": "Receptionist",
+        "t": "You have reached Hillside Medical Centre. If you are calling to book a flu vaccination, please do not wait on the line. Our phones are extremely busy this week. The booking form on our website is not working at the moment, so please come to the reception desk in person, any weekday between nine and five. The local pharmacy is also offering vaccinations, but only to people over sixty-five."
+      }
+    ],
+    "vi": [
+      "Câu 3. Hãy nghe và chọn đáp án đúng nhất.",
+      "Bạn đã gọi tới Trung tâm Y tế Hillside. Nếu bạn gọi để đặt lịch tiêm phòng cúm, xin đừng chờ máy. Tuần này điện thoại của chúng tôi cực kỳ bận. Mẫu đặt lịch trên trang web hiện không hoạt động, nên xin tới quầy lễ tân trực tiếp, bất kỳ ngày thường nào từ chín giờ đến năm giờ. Nhà thuốc địa phương cũng tiêm phòng, nhưng chỉ cho người trên sáu mươi lăm tuổi."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Receptionist": "bf_isabella"
+    },
+    "audio": {
+      "file": "a/m-v3-l3.mp3",
+      "dur": 34.5,
+      "voices": [
+        "bm_george",
+        "bf_isabella"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l1",
+        "instr": "Listen to the announcement or instruction and choose the correct answer, A, B, C or D.",
+        "items": [
+          {
+            "id": "m-v3-l3-01",
+            "q": "How should most callers book a flu vaccination?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "by going to the pharmacy"
+              },
+              {
+                "k": "B",
+                "t": "by using the website"
+              },
+              {
+                "k": "C",
+                "t": "by visiting the reception desk"
+              },
+              {
+                "k": "D",
+                "t": "by waiting on the phone line"
+              }
+            ],
+            "ans": "C",
+            "b": 5,
+            "ev": {
+              "p": 1,
+              "s": "please come to the reception desk in person"
+            },
+            "why": "Người gọi được đề nghị tới quầy lễ tân trực tiếp.",
+            "wrong": {
+              "A": "Nhà thuốc chỉ tiêm cho người trên sáu mươi lăm tuổi.",
+              "B": "Mẫu đặt lịch trên trang web đang không hoạt động.",
+              "D": "Tin nhắn dặn đừng chờ máy vì điện thoại rất bận."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l4",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 4.5,
+    "title": "Cinema notice",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Question 4. Listen to the recording and choose the best answer.",
+        "pause": 8
+      },
+      {
+        "sp": "Manager",
+        "t": "Good evening, everyone. I'm sorry to say that tonight's eight o'clock showing of The Long Road has been cancelled. Ticket sales were fine, and the projector that broke last week was repaired this morning, but the digital copy of the film hasn't been delivered by the distributor. You can get a full refund at the box office or exchange your ticket for another night."
+      }
+    ],
+    "vi": [
+      "Câu 4. Hãy nghe và chọn đáp án đúng nhất.",
+      "Chào buổi tối mọi người. Tôi rất tiếc phải báo suất chiếu tám giờ tối nay của phim The Long Road bị huỷ. Vé bán vẫn tốt, và máy chiếu hỏng tuần trước đã được sửa sáng nay, nhưng nhà phát hành chưa giao bản phim kỹ thuật số. Quý khách có thể nhận lại toàn bộ tiền ở quầy vé hoặc đổi vé sang tối khác."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Manager": "am_adam"
+    },
+    "audio": {
+      "file": "a/m-v3-l4.mp3",
+      "dur": 32,
+      "voices": [
+        "bm_george",
+        "am_adam"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l1",
+        "instr": "Listen to the announcement or instruction and choose the correct answer, A, B, C or D.",
+        "items": [
+          {
+            "id": "m-v3-l4-01",
+            "q": "Why has tonight's film been cancelled?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "There is a fire alarm test."
+              },
+              {
+                "k": "B",
+                "t": "Not enough tickets were sold."
+              },
+              {
+                "k": "C",
+                "t": "A projector is not working."
+              },
+              {
+                "k": "D",
+                "t": "The film has not arrived."
+              }
+            ],
+            "ans": "D",
+            "b": 4.5,
+            "ev": {
+              "p": 1,
+              "s": "the digital copy of the film hasn't been delivered by the distributor"
+            },
+            "why": "Nhà phát hành chưa giao bản phim.",
+            "wrong": {
+              "A": "Thông báo không nhắc thử chuông báo cháy.",
+              "B": "Vé bán vẫn tốt.",
+              "C": "Máy chiếu hỏng đã được sửa sáng nay."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l5",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 4.5,
+    "title": "Lecture room",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Question 5. Listen to the recording and choose the best answer.",
+        "pause": 8
+      },
+      {
+        "sp": "Lecturer",
+        "t": "This is a reminder about Thursday's economics lecture. Last week's email said we would move to the Science Building because the main hall was needed for exams. The exams have now been moved to the sports centre, so we will meet in the main hall as usual. Please don't go to the library seminar room either; that is for Friday's seminar. The lecture still starts at ten."
+      }
+    ],
+    "vi": [
+      "Câu 5. Hãy nghe và chọn đáp án đúng nhất.",
+      "Đây là lời nhắc về bài giảng kinh tế thứ Năm. Email tuần trước nói chúng ta sẽ chuyển sang Toà nhà Khoa học vì hội trường chính cần cho kỳ thi. Kỳ thi nay đã chuyển sang trung tâm thể thao, nên chúng ta sẽ học ở hội trường chính như thường lệ. Cũng xin đừng tới phòng thảo luận ở thư viện; phòng đó dành cho buổi thảo luận thứ Sáu. Bài giảng vẫn bắt đầu lúc mười giờ."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Lecturer": "am_michael"
+    },
+    "audio": {
+      "file": "a/m-v3-l5.mp3",
+      "dur": 36,
+      "voices": [
+        "bm_george",
+        "am_michael"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l1",
+        "instr": "Listen to the announcement or instruction and choose the correct answer, A, B, C or D.",
+        "items": [
+          {
+            "id": "m-v3-l5-01",
+            "q": "Where will Thursday's lecture take place?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "in the main hall"
+              },
+              {
+                "k": "B",
+                "t": "in the Science Building"
+              },
+              {
+                "k": "C",
+                "t": "in the library seminar room"
+              },
+              {
+                "k": "D",
+                "t": "in the sports centre"
+              }
+            ],
+            "ans": "A",
+            "b": 5,
+            "ev": {
+              "p": 1,
+              "s": "we will meet in the main hall as usual"
+            },
+            "why": "Bài giảng vẫn ở hội trường chính như thường lệ.",
+            "wrong": {
+              "B": "Toà nhà Khoa học là kế hoạch cũ trong email tuần trước.",
+              "C": "Phòng thảo luận thư viện dành cho buổi thứ Sáu.",
+              "D": "Trung tâm thể thao là nơi tổ chức kỳ thi."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l6",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 4.5,
+    "title": "Shop announcement",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Question 6. Listen to the recording and choose the best answer.",
+        "pause": 8
+      },
+      {
+        "sp": "Announcer",
+        "t": "Attention, shoppers. For today only, all boots are reduced by thirty per cent. Winter coats are not included in this offer, although every coat bought this week comes with a free scarf. The reductions will be taken off at the till."
+      }
+    ],
+    "vi": [
+      "Câu 6. Hãy nghe và chọn đáp án đúng nhất.",
+      "Xin chú ý, quý khách. Chỉ riêng hôm nay, mọi đôi ủng giảm ba mươi phần trăm. Áo khoác mùa đông không nằm trong chương trình này, dù mỗi chiếc áo khoác mua trong tuần được tặng một khăn quàng. Tiền giảm sẽ được trừ khi thanh toán."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Announcer": "bf_emma"
+    },
+    "audio": {
+      "file": "a/m-v3-l6.mp3",
+      "dur": 25.9,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l1",
+        "instr": "Listen to the announcement or instruction and choose the correct answer, A, B, C or D.",
+        "items": [
+          {
+            "id": "m-v3-l6-01",
+            "q": "What is reduced by thirty per cent today?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "winter coats"
+              },
+              {
+                "k": "B",
+                "t": "boots"
+              },
+              {
+                "k": "C",
+                "t": "everything in the shop"
+              },
+              {
+                "k": "D",
+                "t": "scarves"
+              }
+            ],
+            "ans": "B",
+            "b": 4.5,
+            "ev": {
+              "p": 1,
+              "s": "all boots are reduced by thirty per cent"
+            },
+            "why": "Ủng được giảm ba mươi phần trăm.",
+            "wrong": {
+              "A": "Áo khoác mùa đông không nằm trong chương trình.",
+              "C": "Chỉ ủng được giảm.",
+              "D": "Khăn quàng được tặng kèm áo khoác, không phải giảm giá."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l7",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 4.5,
+    "title": "Hotel breakfast",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Question 7. Listen to the recording and choose the best answer.",
+        "pause": 8
+      },
+      {
+        "sp": "Receptionist",
+        "t": "Good evening, and welcome to the Harbour Hotel. Breakfast is served in the restaurant from seven until half past nine on weekdays. On Sunday it finishes later, at eleven, but it still starts at seven. If you need to leave before seven, we can prepare a packed breakfast; just let us know by eight tonight."
+      }
+    ],
+    "vi": [
+      "Câu 7. Hãy nghe và chọn đáp án đúng nhất.",
+      "Chào buổi tối và chào mừng quý khách tới Khách sạn Harbour. Bữa sáng được phục vụ ở nhà hàng từ bảy giờ tới chín giờ rưỡi các ngày trong tuần. Chủ nhật bữa sáng kết thúc muộn hơn, lúc mười một giờ, nhưng vẫn bắt đầu lúc bảy giờ. Nếu cần đi trước bảy giờ, chúng tôi có thể chuẩn bị bữa sáng mang đi; chỉ cần báo trước tám giờ tối nay."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Receptionist": "af_sarah"
+    },
+    "audio": {
+      "file": "a/m-v3-l7.mp3",
+      "dur": 30.5,
+      "voices": [
+        "bm_george",
+        "af_sarah"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l1",
+        "instr": "Listen to the announcement or instruction and choose the correct answer, A, B, C or D.",
+        "items": [
+          {
+            "id": "m-v3-l7-01",
+            "q": "When does breakfast start on Sunday?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "at half past nine"
+              },
+              {
+                "k": "B",
+                "t": "at eleven"
+              },
+              {
+                "k": "C",
+                "t": "at seven"
+              },
+              {
+                "k": "D",
+                "t": "at eight"
+              }
+            ],
+            "ans": "C",
+            "b": 5,
+            "ev": {
+              "p": 1,
+              "s": "but it still starts at seven"
+            },
+            "why": "Chủ nhật bữa sáng vẫn bắt đầu lúc bảy giờ.",
+            "wrong": {
+              "A": "Chín giờ rưỡi là giờ kết thúc các ngày trong tuần.",
+              "B": "Mười một giờ là giờ kết thúc ngày Chủ nhật.",
+              "D": "Tám giờ tối là hạn báo nếu cần bữa sáng mang đi."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l8",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 4.5,
+    "title": "New gym machines",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Question 8. Listen to the recording and choose the best answer.",
+        "pause": 8
+      },
+      {
+        "sp": "Instructor",
+        "t": "Hi everyone. The new rowing machines have arrived and they're in the room next to the pool. They're very simple, so you don't need an induction with an instructor, and there's no extra charge. But our insurance company says that everyone must sign a new form at reception before using them for the first time."
+      }
+    ],
+    "vi": [
+      "Câu 8. Hãy nghe và chọn đáp án đúng nhất.",
+      "Chào mọi người. Máy chèo thuyền mới đã về và được đặt ở phòng cạnh bể bơi. Máy rất đơn giản nên bạn không cần buổi hướng dẫn với huấn luyện viên, và không mất thêm phí. Nhưng công ty bảo hiểm yêu cầu mọi người phải ký một mẫu đơn mới ở quầy lễ tân trước khi dùng lần đầu."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Instructor": "bm_lewis"
+    },
+    "audio": {
+      "file": "a/m-v3-l8.mp3",
+      "dur": 29.5,
+      "voices": [
+        "bm_george",
+        "bm_lewis"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l1",
+        "instr": "Listen to the announcement or instruction and choose the correct answer, A, B, C or D.",
+        "items": [
+          {
+            "id": "m-v3-l8-01",
+            "q": "What must members do before using the new machines?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "book the room next to the pool"
+              },
+              {
+                "k": "B",
+                "t": "pay an extra fee"
+              },
+              {
+                "k": "C",
+                "t": "have a short induction"
+              },
+              {
+                "k": "D",
+                "t": "sign a new form"
+              }
+            ],
+            "ans": "D",
+            "b": 5,
+            "ev": {
+              "p": 1,
+              "s": "everyone must sign a new form at reception before using them for the first time"
+            },
+            "why": "Mọi người phải ký mẫu đơn mới ở quầy lễ tân.",
+            "wrong": {
+              "A": "Phòng cạnh bể bơi là nơi đặt máy, không cần đặt phòng.",
+              "B": "Không mất thêm phí.",
+              "C": "Máy đơn giản nên không cần hướng dẫn."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l9",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 5.5,
+    "title": "A surprise party",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 2. In this part, you will hear three conversations. There are four questions for each conversation. Conversation 1. You now have twenty seconds to read questions 9 to 12.",
+        "pause": 20
+      },
+      {
+        "sp": "Maya",
+        "t": "Leo, we need to decide about Ruth's party. I rang the Italian restaurant on the corner, but they want a deposit of two hundred pounds, which is far too much."
+      },
+      {
+        "sp": "Leo",
+        "t": "We could just have it here at the flat."
+      },
+      {
+        "sp": "Maya",
+        "t": "Not after last time. Mrs Hart downstairs complained to the landlord. But Ruth's sister Anna has offered her garden, and she says we can use her kitchen too. The bowling alley was another idea, but it's closed for repairs all month."
+      },
+      {
+        "sp": "Leo",
+        "t": "Anna's garden, then. Sunday afternoon?"
+      },
+      {
+        "sp": "Maya",
+        "t": "Ruth's working on Sunday. Her birthday's on Saturday, and she's free all day, so let's do Saturday evening."
+      },
+      {
+        "sp": "Leo",
+        "t": "OK. I'm useless at baking, but I could send the invitations. I've got everyone's numbers."
+      },
+      {
+        "sp": "Maya",
+        "t": "Anna's doing that, because she knows Ruth's work friends. What we really need is someone to collect the cake from the bakery on Saturday morning. Could you do that? I'll bring drinks and borrow some speakers from work."
+      },
+      {
+        "sp": "Leo",
+        "t": "Sure. And the present? I thought of concert tickets, but they're sold out. What about a cookery class? She talks about cooking all the time."
+      },
+      {
+        "sp": "Maya",
+        "t": "I checked, and the classes are full until next year. Let's give her a voucher for the bookshop in town. She can choose what she likes, and everyone can add a card."
+      }
+    ],
+    "vi": [
+      "Phần 2. Trong phần này, bạn sẽ nghe ba cuộc hội thoại. Mỗi hội thoại có bốn câu hỏi. Hội thoại 1. Bây giờ bạn có hai mươi giây để đọc câu 9 đến 12.",
+      "Leo, mình phải quyết vụ tiệc của Ruth. Mình đã gọi nhà hàng Ý ở góc phố, nhưng họ đòi đặt cọc hai trăm bảng, nhiều quá.",
+      "Mình có thể tổ chức ngay ở căn hộ này.",
+      "Không được, sau lần trước. Bà Hart tầng dưới đã phàn nàn với chủ nhà. Nhưng Anna, em gái Ruth, đã đề nghị cho dùng khu vườn của cô ấy, và nói mình dùng cả bếp cũng được. Sân bowling cũng là một ý, nhưng sân đóng cửa sửa cả tháng.",
+      "Vậy vườn của Anna. Chiều Chủ nhật nhé?",
+      "Chủ nhật Ruth đi làm. Sinh nhật cô ấy vào thứ Bảy, và cô ấy rảnh cả ngày, nên làm tối thứ Bảy đi.",
+      "Được. Mình làm bánh dở lắm, nhưng mình có thể gửi lời mời. Mình có số của mọi người.",
+      "Anna lo việc đó rồi, vì cô ấy biết bạn đồng nghiệp của Ruth. Cái mình thật sự cần là người đi lấy bánh ở tiệm bánh sáng thứ Bảy. Cậu làm được không? Mình sẽ mang đồ uống và mượn loa ở chỗ làm.",
+      "Được. Còn quà? Mình nghĩ tới vé hoà nhạc, nhưng hết rồi. Hay một lớp nấu ăn? Cô ấy nói chuyện nấu nướng suốt.",
+      "Mình kiểm tra rồi, các lớp kín chỗ tới năm sau. Mình tặng cô ấy phiếu mua hàng ở hiệu sách trong thị trấn. Cô ấy chọn thứ mình thích, và mọi người cùng viết thiệp."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Maya": "bf_isabella",
+      "Leo": "am_michael"
+    },
+    "allow": [
+      "deposit",
+      "bowling",
+      "alley",
+      "speakers",
+      "invitations",
+      "landlord",
+      "voucher",
+      "bakery"
+    ],
+    "audio": {
+      "file": "a/m-v3-l9.mp3",
+      "dur": 102.5,
+      "voices": [
+        "bm_george",
+        "bf_isabella",
+        "am_michael"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l2",
+        "instr": "Listen to the conversation and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v3-l9-01",
+            "q": "Where will the party be held?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "in Ruth's sister's garden"
+              },
+              {
+                "k": "B",
+                "t": "in a restaurant"
+              },
+              {
+                "k": "C",
+                "t": "at a bowling alley"
+              },
+              {
+                "k": "D",
+                "t": "at Maya and Leo's flat"
+              }
+            ],
+            "ans": "A",
+            "b": 5,
+            "ev": {
+              "p": 3,
+              "s": "Ruth's sister Anna has offered her garden"
+            },
+            "why": "Tiệc tổ chức ở vườn của Anna, em gái Ruth.",
+            "wrong": {
+              "B": "Nhà hàng đòi đặt cọc hai trăm bảng, quá nhiều.",
+              "C": "Sân bowling đóng cửa sửa cả tháng.",
+              "D": "Hàng xóm đã phàn nàn sau lần trước."
+            }
+          },
+          {
+            "id": "m-v3-l9-02",
+            "q": "When will the party take place?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "on Saturday afternoon"
+              },
+              {
+                "k": "B",
+                "t": "on Sunday evening"
+              },
+              {
+                "k": "C",
+                "t": "on Sunday afternoon"
+              },
+              {
+                "k": "D",
+                "t": "on Saturday evening"
+              }
+            ],
+            "ans": "D",
+            "b": 5.5,
+            "ev": {
+              "p": 5,
+              "s": "so let's do Saturday evening"
+            },
+            "why": "Tiệc vào tối thứ Bảy.",
+            "wrong": {
+              "A": "Họ chọn buổi tối, không phải buổi chiều.",
+              "B": "Chủ nhật Ruth đi làm.",
+              "C": "Chủ nhật Ruth đi làm."
+            }
+          },
+          {
+            "id": "m-v3-l9-03",
+            "q": "What will Leo do for the party?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "bring the drinks"
+              },
+              {
+                "k": "B",
+                "t": "collect the cake"
+              },
+              {
+                "k": "C",
+                "t": "send the invitations"
+              },
+              {
+                "k": "D",
+                "t": "borrow some speakers"
+              }
+            ],
+            "ans": "B",
+            "b": 5.5,
+            "ev": {
+              "p": 7,
+              "s": "someone to collect the cake from the bakery on Saturday morning"
+            },
+            "why": "Maya nhờ Leo đi lấy bánh ở tiệm sáng thứ Bảy.",
+            "wrong": {
+              "A": "Maya mang đồ uống.",
+              "C": "Anna lo việc gửi lời mời.",
+              "D": "Maya mượn loa ở chỗ làm."
+            }
+          },
+          {
+            "id": "m-v3-l9-04",
+            "q": "What present will they give Ruth?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "tickets for a concert"
+              },
+              {
+                "k": "B",
+                "t": "a new set of speakers"
+              },
+              {
+                "k": "C",
+                "t": "a voucher for a bookshop"
+              },
+              {
+                "k": "D",
+                "t": "a place on a cookery class"
+              }
+            ],
+            "ans": "C",
+            "b": 5.5,
+            "ev": {
+              "p": 9,
+              "s": "Let's give her a voucher for the bookshop in town."
+            },
+            "why": "Họ tặng Ruth phiếu mua hàng ở hiệu sách.",
+            "wrong": {
+              "A": "Vé hoà nhạc đã bán hết.",
+              "B": "Loa chỉ là đồ mượn cho buổi tiệc.",
+              "D": "Các lớp nấu ăn kín chỗ tới năm sau."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l10",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 5.5,
+    "title": "Looking for a part-time job",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Conversation 2. You now have twenty seconds to read questions 13 to 16.",
+        "pause": 20
+      },
+      {
+        "sp": "Adviser",
+        "t": "Hello, Nadia. Come in. You said in your email you're looking for a part-time job."
+      },
+      {
+        "sp": "Nadia",
+        "t": "Yes. I worked in a café in the old town last year, but I had to leave."
+      },
+      {
+        "sp": "Adviser",
+        "t": "Was it the hours?"
+      },
+      {
+        "sp": "Nadia",
+        "t": "No, the hours were fine, and so was the pay. But in January the café moved to the new shopping centre on the other side of the city. It took me over an hour each way on two buses."
+      },
+      {
+        "sp": "Adviser",
+        "t": "I see. So what are you looking at now?"
+      },
+      {
+        "sp": "Nadia",
+        "t": "I thought about tutoring maths, but most families want someone with a teaching certificate. So I've applied to the university library. They need someone on weekday evenings to help students find books and use the printers."
+      },
+      {
+        "sp": "Adviser",
+        "t": "Good. Let me look at your CV. You've described the café job well, and you've mentioned the maths club you ran. But there's nothing about your exam results, and the library asked for them in the advert. Add them under your education."
+      },
+      {
+        "sp": "Nadia",
+        "t": "OK. They've already asked me to come in, actually. They suggested Friday, but I've got an exam that day, so it's Thursday at four."
+      },
+      {
+        "sp": "Adviser",
+        "t": "Then update the CV before Thursday and take a printed copy with you."
+      }
+    ],
+    "vi": [
+      "Hội thoại 2. Bây giờ bạn có hai mươi giây để đọc câu 13 đến 16.",
+      "Chào Nadia. Mời em vào. Em viết trong email là em đang tìm việc bán thời gian.",
+      "Vâng. Năm ngoái em làm ở một quán cà phê trong phố cổ, nhưng em phải nghỉ.",
+      "Vì giờ làm à?",
+      "Không ạ, giờ làm ổn, lương cũng ổn. Nhưng tháng Một quán chuyển tới trung tâm mua sắm mới ở đầu kia thành phố. Em mất hơn một tiếng mỗi chiều, đi hai chuyến xe buýt.",
+      "Thầy hiểu. Vậy giờ em đang xem việc gì?",
+      "Em từng nghĩ tới dạy kèm toán, nhưng phần lớn gia đình muốn người có chứng chỉ sư phạm. Nên em đã nộp đơn vào thư viện trường. Họ cần người làm các tối trong tuần để giúp sinh viên tìm sách và dùng máy in.",
+      "Tốt. Để thầy xem CV của em. Em mô tả việc ở quán cà phê tốt, và có nhắc câu lạc bộ toán em từng điều hành. Nhưng không có gì về kết quả thi của em, mà thư viện có yêu cầu trong tin tuyển dụng. Hãy thêm vào phần học vấn.",
+      "Vâng. Thật ra họ đã mời em tới rồi. Họ đề nghị thứ Sáu, nhưng hôm đó em có bài thi, nên là bốn giờ chiều thứ Năm.",
+      "Vậy hãy sửa CV trước thứ Năm và mang theo một bản in."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Adviser": "am_adam",
+      "Nadia": "af_nicole"
+    },
+    "allow": [
+      "tutoring",
+      "CV",
+      "certificate",
+      "printers",
+      "advert"
+    ],
+    "audio": {
+      "file": "a/m-v3-l10.mp3",
+      "dur": 97.6,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "af_nicole"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l2",
+        "instr": "Listen to the conversation and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v3-l10-01",
+            "q": "Why did Nadia leave her job at the café?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "The working hours kept changing."
+              },
+              {
+                "k": "B",
+                "t": "The café moved too far away."
+              },
+              {
+                "k": "C",
+                "t": "She did not get on with the staff."
+              },
+              {
+                "k": "D",
+                "t": "The pay was too low."
+              }
+            ],
+            "ans": "B",
+            "b": 5.5,
+            "ev": {
+              "p": 4,
+              "s": "the café moved to the new shopping centre on the other side of the city"
+            },
+            "why": "Quán chuyển tới đầu kia thành phố, Nadia mất hơn một tiếng mỗi chiều.",
+            "wrong": {
+              "A": "Nadia nói giờ làm ổn.",
+              "C": "Nadia không nhắc chuyện với nhân viên.",
+              "D": "Nadia nói lương ổn."
+            }
+          },
+          {
+            "id": "m-v3-l10-02",
+            "q": "What job has Nadia applied for?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "teaching maths to school students"
+              },
+              {
+                "k": "B",
+                "t": "working in a shopping centre"
+              },
+              {
+                "k": "C",
+                "t": "working in the university library"
+              },
+              {
+                "k": "D",
+                "t": "serving in another café"
+              }
+            ],
+            "ans": "C",
+            "b": 5.5,
+            "ev": {
+              "p": 6,
+              "s": "So I've applied to the university library."
+            },
+            "why": "Nadia nộp đơn vào thư viện trường.",
+            "wrong": {
+              "A": "Gia đình muốn người có chứng chỉ sư phạm.",
+              "B": "Trung tâm mua sắm là nơi quán cũ chuyển tới.",
+              "D": "Nadia không tìm việc ở quán cà phê nữa."
+            }
+          },
+          {
+            "id": "m-v3-l10-03",
+            "q": "What does the adviser tell Nadia to add to her CV?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "her exam results"
+              },
+              {
+                "k": "B",
+                "t": "the club she ran at school"
+              },
+              {
+                "k": "C",
+                "t": "her experience at the café"
+              },
+              {
+                "k": "D",
+                "t": "the name of a referee"
+              }
+            ],
+            "ans": "A",
+            "b": 6,
+            "ev": {
+              "p": 7,
+              "s": "there's nothing about your exam results"
+            },
+            "why": "Thầy bảo thêm kết quả thi vào phần học vấn.",
+            "wrong": {
+              "B": "CV đã nhắc câu lạc bộ toán.",
+              "C": "Việc ở quán đã được mô tả tốt.",
+              "D": "Không nhắc người giới thiệu."
+            }
+          },
+          {
+            "id": "m-v3-l10-04",
+            "q": "When is Nadia's interview?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "on Wednesday"
+              },
+              {
+                "k": "B",
+                "t": "on Friday"
+              },
+              {
+                "k": "C",
+                "t": "on Saturday"
+              },
+              {
+                "k": "D",
+                "t": "on Thursday"
+              }
+            ],
+            "ans": "D",
+            "b": 5.5,
+            "ev": {
+              "p": 8,
+              "s": "so it's Thursday at four"
+            },
+            "why": "Buổi phỏng vấn là bốn giờ chiều thứ Năm.",
+            "wrong": {
+              "A": "Không nhắc thứ Tư.",
+              "B": "Thứ Sáu Nadia có bài thi.",
+              "C": "Không nhắc thứ Bảy."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l11",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B2",
+    "band": 6,
+    "title": "A four-day week",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Conversation 3. You now have twenty seconds to read questions 17 to 20.",
+        "pause": 20
+      },
+      {
+        "sp": "Karen",
+        "t": "Did you read the email about the four-day week trial? Everyone's saying it's because the landlord is putting the rent up."
+      },
+      {
+        "sp": "Paul",
+        "t": "I thought so too, but the director told us it isn't about the building at all. We've lost six people this year to companies that already offer a four-day week, and replacing them costs far more than the rent."
+      },
+      {
+        "sp": "Karen",
+        "t": "That makes sense. I'm not sure how it'll work for the support team, though. Customers still phone on Fridays."
+      },
+      {
+        "sp": "Paul",
+        "t": "Half of them will take Monday off instead, which seems fine to me. The longer days don't bother me either; I'd rather work nine hours and have a whole day free. What I'm unhappy about is the Friday team meeting. It's moving to Monday morning, and half the support team won't be there."
+      },
+      {
+        "sp": "Karen",
+        "t": "True. And how will they decide if it's worked? By how much we produce, I suppose."
+      },
+      {
+        "sp": "Paul",
+        "t": "That's what I expected, but no. The trial lasts three months, and at the end they'll simply compare the number of customer complaints with the same months last year."
+      },
+      {
+        "sp": "Karen",
+        "t": "Well, I'd like to join the planning group, but it meets on Fridays, so that's no good for me. I'll fill in the staff survey tonight instead and mention the meeting problem."
+      }
+    ],
+    "vi": [
+      "Hội thoại 3. Bây giờ bạn có hai mươi giây để đọc câu 17 đến 20.",
+      "Anh đọc email về việc thử tuần làm bốn ngày chưa? Ai cũng nói là vì chủ nhà sắp tăng tiền thuê.",
+      "Tôi cũng nghĩ vậy, nhưng giám đốc nói chẳng liên quan gì tới toà nhà cả. Năm nay mình mất sáu người vào các công ty đã có tuần làm bốn ngày, và tuyển người thay tốn hơn tiền thuê nhiều.",
+      "Hợp lý đấy. Nhưng tôi không chắc nhóm hỗ trợ sẽ làm thế nào. Khách vẫn gọi vào thứ Sáu.",
+      "Một nửa nhóm sẽ nghỉ thứ Hai thay vào đó, tôi thấy ổn. Ngày làm dài hơn tôi cũng không ngại; tôi thà làm chín tiếng mà có trọn một ngày rảnh. Điều tôi không vui là buổi họp nhóm thứ Sáu. Nó chuyển sang sáng thứ Hai, và một nửa nhóm hỗ trợ sẽ vắng.",
+      "Đúng thế. Mà họ quyết định đợt thử thành công hay không bằng cách nào? Chắc là bằng sản lượng của mình.",
+      "Tôi cũng tưởng vậy, nhưng không. Đợt thử kéo dài ba tháng, và cuối đợt họ chỉ so số khiếu nại của khách với cùng mấy tháng năm ngoái.",
+      "Thôi, tôi muốn vào nhóm lập kế hoạch, nhưng nhóm họp vào thứ Sáu, nên không hợp với tôi. Tối nay tôi sẽ điền phiếu khảo sát nhân viên thay vào đó và nêu vấn đề buổi họp."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Karen": "af_sarah",
+      "Paul": "bm_lewis"
+    },
+    "allow": [
+      "landlord",
+      "rent",
+      "trial",
+      "complaints",
+      "survey"
+    ],
+    "audio": {
+      "file": "a/m-v3-l11.mp3",
+      "dur": 92.9,
+      "voices": [
+        "bm_george",
+        "af_sarah",
+        "bm_lewis"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l2",
+        "instr": "Listen to the conversation and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v3-l11-01",
+            "q": "According to Paul, what is the main reason for the trial?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "to answer more customer calls"
+              },
+              {
+                "k": "B",
+                "t": "to reduce the cost of the office"
+              },
+              {
+                "k": "C",
+                "t": "to make staff more productive"
+              },
+              {
+                "k": "D",
+                "t": "to stop staff leaving for other companies"
+              }
+            ],
+            "ans": "D",
+            "b": 6,
+            "ev": {
+              "p": 2,
+              "s": "We've lost six people this year to companies that already offer a four-day week"
+            },
+            "why": "Công ty mất người vào các công ty đã có tuần làm bốn ngày.",
+            "wrong": {
+              "A": "Khách gọi là mối lo của Karen, không phải lý do.",
+              "B": "Ai cũng tưởng vì tiền thuê, nhưng giám đốc nói không phải.",
+              "C": "Đợt thử không đo bằng sản lượng."
+            }
+          },
+          {
+            "id": "m-v3-l11-02",
+            "q": "What is Paul unhappy about?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "the longer working days"
+              },
+              {
+                "k": "B",
+                "t": "the new time of the team meeting"
+              },
+              {
+                "k": "C",
+                "t": "the support team taking Mondays off"
+              },
+              {
+                "k": "D",
+                "t": "the length of the trial"
+              }
+            ],
+            "ans": "B",
+            "b": 6,
+            "ev": {
+              "p": 4,
+              "s": "What I'm unhappy about is the Friday team meeting."
+            },
+            "why": "Buổi họp chuyển sang sáng thứ Hai, khi một nửa nhóm hỗ trợ vắng.",
+            "wrong": {
+              "A": "Paul không ngại ngày làm dài.",
+              "C": "Paul thấy việc đó ổn.",
+              "D": "Paul không phàn nàn về độ dài đợt thử."
+            }
+          },
+          {
+            "id": "m-v3-l11-03",
+            "q": "How will the trial be judged?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "by the amount of work produced"
+              },
+              {
+                "k": "B",
+                "t": "by the number of staff who resign"
+              },
+              {
+                "k": "C",
+                "t": "by the number of customer complaints"
+              },
+              {
+                "k": "D",
+                "t": "by a survey of customers"
+              }
+            ],
+            "ans": "C",
+            "b": 6,
+            "ev": {
+              "p": 6,
+              "s": "compare the number of customer complaints with the same months last year"
+            },
+            "why": "Họ so số khiếu nại của khách với cùng kỳ năm ngoái.",
+            "wrong": {
+              "A": "Paul nói rõ không đo bằng sản lượng.",
+              "B": "Số người nghỉ việc là lý do của đợt thử, không phải thước đo.",
+              "D": "Khảo sát là của nhân viên, không phải của khách."
+            }
+          },
+          {
+            "id": "m-v3-l11-04",
+            "q": "What will Karen do next?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "complete a staff survey"
+              },
+              {
+                "k": "B",
+                "t": "join the planning group"
+              },
+              {
+                "k": "C",
+                "t": "ask to take Mondays off"
+              },
+              {
+                "k": "D",
+                "t": "speak to the director"
+              }
+            ],
+            "ans": "A",
+            "b": 6.5,
+            "ev": {
+              "p": 7,
+              "s": "I'll fill in the staff survey tonight instead"
+            },
+            "why": "Karen sẽ điền phiếu khảo sát tối nay.",
+            "wrong": {
+              "B": "Nhóm lập kế hoạch họp thứ Sáu, không hợp với Karen.",
+              "C": "Nghỉ thứ Hai là kế hoạch cho nhóm hỗ trợ.",
+              "D": "Karen không nói sẽ gặp giám đốc."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l12",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B2",
+    "band": 6.5,
+    "title": "Switching off the streetlights",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Part 3. In this part, you will hear three talks or lectures. There are five questions for each talk. Talk 1. You now have thirty seconds to read questions 21 to 25.",
+        "pause": 30
+      },
+      {
+        "sp": "Speaker",
+        "t": "Good evening. I'm Helen Marsh from the town council, and I've been asked to report on our first year of switching off most streetlights between one and five in the morning. Let me start with why we did it. The newspapers said it was to save money, and it does save some, but the savings are small, because the new lamps are already cheap to run. The decision was actually forced on us by the county: every town had to cut its carbon emissions by a fixed amount, and the lights were the quickest way to do it."
+      },
+      {
+        "sp": "Speaker",
+        "t": "Before we started, the biggest worry was crime. In fact, the police figures for those hours show a clear fall, of about ten per cent. The police think that anyone walking around with a torch at three in the morning is now easy to notice. Road accidents at night stayed about the same."
+      },
+      {
+        "sp": "Speaker",
+        "t": "The complaints we did receive came mostly from older residents, who told us they no longer felt safe walking their dogs late at night, even though they rarely went out after one. Night-shift workers at the hospital, whom we had expected to object, hardly wrote to us, because most of them drive. We also had a surprising number of letters thanking us. A few came from the astronomy club, but most were from people who said they were sleeping better, because the light no longer came through their bedroom curtains."
+      },
+      {
+        "sp": "Speaker",
+        "t": "So what happens next? We are not going to switch the lights back on. In fact, from next month the lights on the industrial estate will go off earlier, at eleven, since nobody works there at night. We had considered motion sensors, which turn a light on when someone walks past, but they cost too much to fit. We'll look at the figures again after another year."
+      }
+    ],
+    "vi": [
+      "Phần 3. Trong phần này, bạn sẽ nghe ba bài nói hoặc bài giảng. Mỗi bài có năm câu hỏi. Bài 1. Bây giờ bạn có ba mươi giây để đọc câu 21 đến 25.",
+      "Chào buổi tối. Tôi là Helen Marsh ở hội đồng thị trấn, và tôi được đề nghị báo cáo về năm đầu tiên chúng tôi tắt phần lớn đèn đường từ một giờ đến năm giờ sáng. Tôi bắt đầu với lý do chúng tôi làm việc này. Báo chí nói là để tiết kiệm tiền, và đúng là có tiết kiệm được một ít, nhưng không nhiều, vì đèn mới vốn đã rẻ khi vận hành. Thật ra quyết định này do hạt áp xuống: mọi thị trấn phải giảm lượng khí thải các-bon một mức cố định, và đèn đường là cách nhanh nhất.",
+      "Trước khi bắt đầu, lo lắng lớn nhất là tội phạm. Thực tế, số liệu của cảnh sát trong những giờ đó cho thấy giảm rõ, khoảng mười phần trăm. Cảnh sát cho rằng ai cầm đèn pin đi lại lúc ba giờ sáng giờ rất dễ bị để ý. Tai nạn giao thông ban đêm gần như không đổi.",
+      "Những lời phàn nàn chúng tôi nhận được chủ yếu đến từ người cao tuổi; họ nói không còn thấy an toàn khi dắt chó đi dạo đêm khuya, dù họ hiếm khi ra ngoài sau một giờ. Người làm ca đêm ở bệnh viện, những người chúng tôi tưởng sẽ phản đối, hầu như không viết thư, vì phần lớn họ lái xe. Chúng tôi cũng nhận được số thư cảm ơn nhiều đáng ngạc nhiên. Vài thư đến từ câu lạc bộ thiên văn, nhưng phần lớn từ những người nói họ ngủ ngon hơn, vì ánh đèn không còn lọt qua rèm cửa phòng ngủ.",
+      "Vậy tiếp theo là gì? Chúng tôi sẽ không bật lại đèn. Thật ra, từ tháng sau, đèn ở khu công nghiệp sẽ tắt sớm hơn, lúc mười một giờ, vì ban đêm không ai làm việc ở đó. Chúng tôi từng tính tới cảm biến chuyển động, loại bật đèn khi có người đi qua, nhưng chi phí lắp đặt quá cao. Chúng tôi sẽ xem lại số liệu sau một năm nữa."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Speaker": "bf_emma"
+    },
+    "allow": [
+      "council",
+      "county",
+      "emissions",
+      "carbon",
+      "torch",
+      "residents",
+      "astronomy",
+      "curtains",
+      "industrial",
+      "estate",
+      "sensors"
+    ],
+    "audio": {
+      "file": "a/m-v3-l12.mp3",
+      "dur": 126.5,
+      "voices": [
+        "bm_george",
+        "bf_emma"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l3",
+        "instr": "Listen to the talk and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v3-l12-01",
+            "q": "What was the main reason for switching off the lights?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "to meet a target set by the county"
+              },
+              {
+                "k": "B",
+                "t": "to save money for the council"
+              },
+              {
+                "k": "C",
+                "t": "to answer complaints about light"
+              },
+              {
+                "k": "D",
+                "t": "to reduce crime at night"
+              }
+            ],
+            "ans": "A",
+            "b": 6.5,
+            "ev": {
+              "p": 1,
+              "s": "The decision was actually forced on us by the county"
+            },
+            "why": "Hạt bắt mọi thị trấn giảm khí thải một mức cố định.",
+            "wrong": {
+              "B": "Báo chí nói vậy, nhưng tiết kiệm được không nhiều.",
+              "C": "Không nhắc phàn nàn về ánh sáng trước đó.",
+              "D": "Tội phạm là nỗi lo trước khi làm, không phải lý do."
+            }
+          },
+          {
+            "id": "m-v3-l12-02",
+            "q": "What happened to crime during the hours without light?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "It has not been measured."
+              },
+              {
+                "k": "B",
+                "t": "It fell noticeably."
+              },
+              {
+                "k": "C",
+                "t": "It rose noticeably."
+              },
+              {
+                "k": "D",
+                "t": "It hardly changed."
+              }
+            ],
+            "ans": "B",
+            "b": 6,
+            "ev": {
+              "p": 2,
+              "s": "the police figures for those hours show a clear fall"
+            },
+            "why": "Số liệu cảnh sát cho thấy giảm rõ, khoảng mười phần trăm.",
+            "wrong": {
+              "A": "Cảnh sát có số liệu.",
+              "C": "Tội phạm không tăng.",
+              "D": "Tai nạn giao thông mới gần như không đổi."
+            }
+          },
+          {
+            "id": "m-v3-l12-03",
+            "q": "Who complained most about the change?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "parents of young children"
+              },
+              {
+                "k": "B",
+                "t": "hospital night workers"
+              },
+              {
+                "k": "C",
+                "t": "local drivers"
+              },
+              {
+                "k": "D",
+                "t": "older residents"
+              }
+            ],
+            "ans": "D",
+            "b": 6.5,
+            "ev": {
+              "p": 3,
+              "s": "The complaints we did receive came mostly from older residents"
+            },
+            "why": "Phàn nàn chủ yếu từ người cao tuổi.",
+            "wrong": {
+              "A": "Không nhắc phụ huynh phàn nàn.",
+              "B": "Người làm ca đêm hầu như không viết thư vì phần lớn lái xe.",
+              "C": "Không nhắc người lái xe phàn nàn."
+            }
+          },
+          {
+            "id": "m-v3-l12-04",
+            "q": "What were most of the thank-you letters about?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "lower council tax"
+              },
+              {
+                "k": "B",
+                "t": "being able to see the stars"
+              },
+              {
+                "k": "C",
+                "t": "sleeping better at night"
+              },
+              {
+                "k": "D",
+                "t": "quieter streets at night"
+              }
+            ],
+            "ans": "C",
+            "b": 6.5,
+            "ev": {
+              "p": 3,
+              "s": "most were from people who said they were sleeping better"
+            },
+            "why": "Phần lớn thư cảm ơn nói ngủ ngon hơn.",
+            "wrong": {
+              "A": "Không nhắc thuế giảm.",
+              "B": "Chỉ vài thư từ câu lạc bộ thiên văn.",
+              "D": "Không nhắc đường phố yên tĩnh hơn."
+            }
+          },
+          {
+            "id": "m-v3-l12-05",
+            "q": "What will the council do next?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "fit motion sensors to the lights"
+              },
+              {
+                "k": "B",
+                "t": "end the scheme after another year"
+              },
+              {
+                "k": "C",
+                "t": "switch some lights off earlier"
+              },
+              {
+                "k": "D",
+                "t": "switch the lights back on"
+              }
+            ],
+            "ans": "C",
+            "b": 7,
+            "ev": {
+              "p": 4,
+              "s": "the lights on the industrial estate will go off earlier, at eleven"
+            },
+            "why": "Đèn khu công nghiệp sẽ tắt sớm hơn, lúc mười một giờ.",
+            "wrong": {
+              "A": "Cảm biến chuyển động quá tốn kém.",
+              "B": "Sau một năm chỉ xem lại số liệu.",
+              "D": "Hội đồng sẽ không bật lại đèn."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l13",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B2",
+    "band": 7,
+    "title": "Why waiting feels long",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Talk 2. You now have thirty seconds to read questions 26 to 30.",
+        "pause": 30
+      },
+      {
+        "sp": "Speaker",
+        "t": "Today I want to describe a small study my students and I carried out at a post office in our city. We wanted to know why some waits feel much longer than others, even when they last exactly the same time. We didn't wait until customers left the building, because by then they were thinking about their next errand. Instead, a student stood beside the counter, and as each customer reached the front, she asked them to guess how long they had been in the queue. We then compared the guess with the real time from the camera."
+      },
+      {
+        "sp": "Speaker",
+        "t": "For the first two weeks, customers simply stood in one line, and on average they overestimated their wait by about a quarter. In the third week, the post office introduced numbered tickets, a screen showing which number was being served, and a row of seats. We expected the screen to make the biggest difference, and we were wrong. Very few people looked at it more than once. What mattered was sitting down: customers who had a seat guessed their wait almost exactly, while those who stood, even with a ticket, still overestimated it."
+      },
+      {
+        "sp": "Speaker",
+        "t": "We also noticed something we hadn't planned to study. Customers who spent the wait looking at their phones guessed no better than anyone else, but those who chatted to the person next to them guessed their wait as shorter than it really was."
+      },
+      {
+        "sp": "Speaker",
+        "t": "I should be honest about the limits. The camera worked throughout, and very few customers refused to answer. The real problem was timing: the third week happened to be the week before a public holiday, when the queues are always longer and the customers are different. Next year we hope to repeat the study in a hospital clinic, over a whole year."
+      }
+    ],
+    "vi": [
+      "Bài 2. Bây giờ bạn có ba mươi giây để đọc câu 26 đến 30.",
+      "Hôm nay tôi muốn kể về một nghiên cứu nhỏ tôi và sinh viên thực hiện ở một bưu điện trong thành phố. Chúng tôi muốn biết vì sao có những lần chờ cảm thấy dài hơn nhiều so với lần khác, dù kéo dài đúng bằng nhau. Chúng tôi không đợi tới khi khách ra khỏi toà nhà, vì lúc đó họ đã nghĩ tới việc tiếp theo. Thay vào đó, một sinh viên đứng cạnh quầy, và khi mỗi khách tới lượt, cô hỏi họ đoán mình đã xếp hàng bao lâu. Sau đó chúng tôi so sánh con số đoán với thời gian thật từ camera.",
+      "Trong hai tuần đầu, khách chỉ đứng thành một hàng, và trung bình họ ước lượng thời gian chờ dài hơn thực tế khoảng một phần tư. Sang tuần thứ ba, bưu điện đưa vào vé số, một màn hình hiện số đang được phục vụ, và một hàng ghế. Chúng tôi tưởng màn hình sẽ tạo khác biệt lớn nhất, và chúng tôi đã sai. Rất ít người nhìn nó quá một lần. Điều quan trọng là được ngồi: khách có ghế đoán thời gian chờ gần như chính xác, còn người đứng, dù có vé, vẫn ước lượng dài hơn.",
+      "Chúng tôi cũng nhận ra một điều không định nghiên cứu. Khách dùng điện thoại trong lúc chờ đoán không khá hơn ai, nhưng người trò chuyện với người bên cạnh lại đoán thời gian chờ ngắn hơn thực tế.",
+      "Tôi phải thành thật về những giới hạn. Camera hoạt động suốt, và rất ít khách từ chối trả lời. Vấn đề thật là thời điểm: tuần thứ ba tình cờ là tuần trước một ngày lễ, khi hàng luôn dài hơn và khách cũng khác. Năm tới chúng tôi hy vọng lặp lại nghiên cứu ở một phòng khám bệnh viện, kéo dài cả năm."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Speaker": "am_michael"
+    },
+    "allow": [
+      "errand",
+      "queue",
+      "queues",
+      "overestimated",
+      "clinic",
+      "chatted"
+    ],
+    "audio": {
+      "file": "a/m-v3-l13.mp3",
+      "dur": 129.6,
+      "voices": [
+        "bm_george",
+        "am_michael"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l3",
+        "instr": "Listen to the talk and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v3-l13-01",
+            "q": "When did the researchers ask customers about their wait?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "as they reached the counter"
+              },
+              {
+                "k": "B",
+                "t": "as they joined the queue"
+              },
+              {
+                "k": "C",
+                "t": "as they left the building"
+              },
+              {
+                "k": "D",
+                "t": "by email the next day"
+              }
+            ],
+            "ans": "A",
+            "b": 6.5,
+            "ev": {
+              "p": 1,
+              "s": "as each customer reached the front, she asked them to guess"
+            },
+            "why": "Sinh viên hỏi khi khách tới lượt ở quầy.",
+            "wrong": {
+              "B": "Không hỏi lúc khách mới xếp hàng.",
+              "C": "Họ không đợi tới khi khách ra về.",
+              "D": "Không nhắc email."
+            }
+          },
+          {
+            "id": "m-v3-l13-02",
+            "q": "By how much did customers in the single line overestimate their wait?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "by about double"
+              },
+              {
+                "k": "B",
+                "t": "by about a quarter"
+              },
+              {
+                "k": "C",
+                "t": "by about a tenth"
+              },
+              {
+                "k": "D",
+                "t": "by about a half"
+              }
+            ],
+            "ans": "B",
+            "b": 7,
+            "ev": {
+              "p": 2,
+              "s": "they overestimated their wait by about a quarter"
+            },
+            "why": "Trung bình họ ước lượng dài hơn khoảng một phần tư.",
+            "wrong": {
+              "A": "Không phải gấp đôi.",
+              "C": "Không phải một phần mười.",
+              "D": "Không phải một nửa."
+            }
+          },
+          {
+            "id": "m-v3-l13-03",
+            "q": "Which customers guessed their waiting time most accurately?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "those who used their phones"
+              },
+              {
+                "k": "B",
+                "t": "those who watched the screen"
+              },
+              {
+                "k": "C",
+                "t": "those who had a ticket"
+              },
+              {
+                "k": "D",
+                "t": "those who were sitting down"
+              }
+            ],
+            "ans": "D",
+            "b": 7,
+            "ev": {
+              "p": 2,
+              "s": "customers who had a seat guessed their wait almost exactly"
+            },
+            "why": "Khách có ghế ngồi đoán gần như chính xác.",
+            "wrong": {
+              "A": "Người dùng điện thoại đoán không khá hơn ai.",
+              "B": "Rất ít người nhìn màn hình quá một lần.",
+              "C": "Người đứng dù có vé vẫn ước lượng dài hơn."
+            }
+          },
+          {
+            "id": "m-v3-l13-04",
+            "q": "What did the researchers notice about customers who talked to others?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They guessed their wait as shorter than it was."
+              },
+              {
+                "k": "B",
+                "t": "They refused to answer the question."
+              },
+              {
+                "k": "C",
+                "t": "They guessed their wait exactly."
+              },
+              {
+                "k": "D",
+                "t": "They guessed their wait as longer than it was."
+              }
+            ],
+            "ans": "A",
+            "b": 7,
+            "ev": {
+              "p": 3,
+              "s": "those who chatted to the person next to them guessed their wait as shorter than it really was"
+            },
+            "why": "Người trò chuyện đoán thời gian chờ ngắn hơn thực tế.",
+            "wrong": {
+              "B": "Rất ít khách từ chối trả lời.",
+              "C": "Người ngồi mới đoán gần chính xác.",
+              "D": "Người đứng mới ước lượng dài hơn."
+            }
+          },
+          {
+            "id": "m-v3-l13-05",
+            "q": "What problem with the study does the speaker mention?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Many customers refused to answer."
+              },
+              {
+                "k": "B",
+                "t": "The third week came just before a holiday."
+              },
+              {
+                "k": "C",
+                "t": "Two changes were made at the same time."
+              },
+              {
+                "k": "D",
+                "t": "The study lasted only one week."
+              }
+            ],
+            "ans": "B",
+            "b": 7.5,
+            "ev": {
+              "p": 4,
+              "s": "the third week happened to be the week before a public holiday"
+            },
+            "why": "Tuần thứ ba tình cờ là tuần trước ngày lễ.",
+            "wrong": {
+              "A": "Rất ít khách từ chối.",
+              "C": "Người nói không nêu vấn đề này.",
+              "D": "Nghiên cứu kéo dài ba tuần."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v3-l14",
+    "kind": "listening",
+    "exams": [
+      "vstep"
+    ],
+    "level": "C1",
+    "band": 7.5,
+    "title": "Inside a repair café",
+    "script": [
+      {
+        "sp": "N",
+        "t": "Talk 3. You now have thirty seconds to read questions 31 to 35.",
+        "pause": 30
+      },
+      {
+        "sp": "Speaker",
+        "t": "For eighteen months I spent every second Saturday at a repair café in a community hall, where volunteers fix things that people bring in for free. I went there expecting to write about money: about families who couldn't afford a new toaster. That turned out to be the wrong question. When I asked visitors why they had come, very few mentioned cost, and fewer still talked about the object having sentimental value. What most of them wanted was to watch the repair, so that they could do it themselves next time. Several brought a notebook."
+      },
+      {
+        "sp": "Speaker",
+        "t": "You might imagine that the café mainly repaired electrical goods. In fact, clothing made up the largest share, about a third of everything brought in, mostly zips and torn seams. Electrical items came second, and they were the least likely to be fixed."
+      },
+      {
+        "sp": "Speaker",
+        "t": "I had assumed the volunteers would find it painful to tell someone that a much-loved object could not be saved. In practice, visitors took bad news calmly. What the volunteers found hardest was getting hold of spare parts: for many modern machines they simply aren't sold, and the volunteers spent hours searching online for a single part."
+      },
+      {
+        "sp": "Speaker",
+        "t": "So what should we take from this? The organisers like to say that repair cafés bring the generations together, but the volunteers and the visitors I met were mostly retired, so I saw little of that. I began as a sceptic about the environmental claims, too. But the café weighs everything it repairs, and over eighteen months that came to nearly two tonnes that would otherwise have been thrown away. For a single hall, that is not trivial, and I now think it is their main value."
+      }
+    ],
+    "vi": [
+      "Bài 3. Bây giờ bạn có ba mươi giây để đọc câu 31 đến 35.",
+      "Trong mười tám tháng, cứ cách một thứ Bảy tôi lại tới một quán cà phê sửa đồ trong một hội trường cộng đồng, nơi tình nguyện viên sửa miễn phí đồ người ta mang tới. Tôi tới đó với dự định viết về tiền: về những gia đình không đủ tiền mua máy nướng bánh mới. Hoá ra đó là câu hỏi sai. Khi tôi hỏi khách vì sao họ tới, rất ít người nhắc chi phí, và càng ít người nói đồ vật có giá trị tình cảm. Điều phần lớn họ muốn là xem sửa, để lần sau tự làm được. Vài người mang theo sổ ghi chép.",
+      "Bạn có thể nghĩ quán chủ yếu sửa đồ điện. Thực tế, quần áo chiếm phần lớn nhất, khoảng một phần ba mọi thứ được mang tới, chủ yếu là khoá kéo và đường may bị rách. Đồ điện đứng thứ hai, và là loại ít được sửa xong nhất.",
+      "Tôi từng cho rằng tình nguyện viên sẽ thấy khó xử khi phải báo cho ai đó rằng món đồ họ quý không cứu được. Thực tế, khách đón nhận tin xấu bình thản. Điều tình nguyện viên thấy khó nhất là kiếm phụ tùng thay thế: với nhiều máy hiện đại, phụ tùng đơn giản là không được bán, và tình nguyện viên mất hàng giờ tìm trên mạng chỉ cho một bộ phận.",
+      "Vậy chúng ta rút ra điều gì? Người tổ chức thích nói quán sửa đồ gắn kết các thế hệ, nhưng tình nguyện viên và khách tôi gặp phần lớn đã nghỉ hưu, nên tôi thấy điều đó ít. Ban đầu tôi cũng hoài nghi các tuyên bố về môi trường. Nhưng quán cân mọi thứ được sửa, và sau mười tám tháng con số lên gần hai tấn đồ lẽ ra đã bị vứt đi. Với một hội trường thôi, đó không phải là nhỏ, và giờ tôi nghĩ đó là giá trị chính của chúng."
+    ],
+    "voices": {
+      "N": "bm_george",
+      "Speaker": "bf_isabella"
+    },
+    "allow": [
+      "volunteers",
+      "sentimental",
+      "zips",
+      "seams",
+      "spare",
+      "organisers",
+      "sceptic",
+      "tonnes",
+      "trivial",
+      "notebook"
+    ],
+    "audio": {
+      "file": "a/m-v3-l14.mp3",
+      "dur": 121.2,
+      "voices": [
+        "bm_george",
+        "bf_isabella"
+      ]
+    },
+    "sets": [
+      {
+        "qtype": "v-l3",
+        "instr": "Listen to the talk and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v3-l14-01",
+            "q": "What did the speaker originally plan to write about?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "how repair reduces waste"
+              },
+              {
+                "k": "B",
+                "t": "the skills of the volunteers"
+              },
+              {
+                "k": "C",
+                "t": "the history of repair cafés"
+              },
+              {
+                "k": "D",
+                "t": "how people save money through repair"
+              }
+            ],
+            "ans": "D",
+            "b": 7,
+            "ev": {
+              "p": 1,
+              "s": "I went there expecting to write about money"
+            },
+            "why": "Ban đầu người nói định viết về tiền.",
+            "wrong": {
+              "A": "Ban đầu người nói còn hoài nghi về môi trường.",
+              "B": "Không nói định viết về tay nghề tình nguyện viên.",
+              "C": "Không nói định viết về lịch sử."
+            }
+          },
+          {
+            "id": "m-v3-l14-02",
+            "q": "Why did most visitors come to the café?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They could not afford new items."
+              },
+              {
+                "k": "B",
+                "t": "Their items had sentimental value."
+              },
+              {
+                "k": "C",
+                "t": "They wanted to learn to repair things."
+              },
+              {
+                "k": "D",
+                "t": "They wanted to meet other people."
+              }
+            ],
+            "ans": "C",
+            "b": 7,
+            "ev": {
+              "p": 1,
+              "s": "so that they could do it themselves next time"
+            },
+            "why": "Phần lớn muốn xem sửa để lần sau tự làm.",
+            "wrong": {
+              "A": "Rất ít người nhắc chi phí.",
+              "B": "Càng ít người nói về giá trị tình cảm.",
+              "D": "Không nói khách tới để gặp người khác."
+            }
+          },
+          {
+            "id": "m-v3-l14-03",
+            "q": "What kind of item was brought in most often?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "bicycles"
+              },
+              {
+                "k": "B",
+                "t": "clothing"
+              },
+              {
+                "k": "C",
+                "t": "electrical goods"
+              },
+              {
+                "k": "D",
+                "t": "furniture"
+              }
+            ],
+            "ans": "B",
+            "b": 7,
+            "ev": {
+              "p": 2,
+              "s": "clothing made up the largest share"
+            },
+            "why": "Quần áo chiếm phần lớn nhất, khoảng một phần ba.",
+            "wrong": {
+              "A": "Không nhắc xe đạp.",
+              "C": "Đồ điện đứng thứ hai.",
+              "D": "Không nhắc đồ gỗ."
+            }
+          },
+          {
+            "id": "m-v3-l14-04",
+            "q": "What did the volunteers find most difficult?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "giving people bad news"
+              },
+              {
+                "k": "B",
+                "t": "working with young people"
+              },
+              {
+                "k": "C",
+                "t": "finding spare parts"
+              },
+              {
+                "k": "D",
+                "t": "repairing clothing"
+              }
+            ],
+            "ans": "C",
+            "b": 7.5,
+            "ev": {
+              "p": 3,
+              "s": "What the volunteers found hardest was getting hold of spare parts"
+            },
+            "why": "Khó nhất là kiếm phụ tùng thay thế.",
+            "wrong": {
+              "A": "Khách đón nhận tin xấu bình thản.",
+              "B": "Khách và tình nguyện viên phần lớn đã nghỉ hưu.",
+              "D": "Không nói sửa quần áo khó."
+            }
+          },
+          {
+            "id": "m-v3-l14-05",
+            "q": "What does the speaker now think is the main value of repair cafés?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "reducing the amount of waste"
+              },
+              {
+                "k": "B",
+                "t": "bringing generations together"
+              },
+              {
+                "k": "C",
+                "t": "saving money for poor families"
+              },
+              {
+                "k": "D",
+                "t": "teaching practical skills"
+              }
+            ],
+            "ans": "A",
+            "b": 7.5,
+            "ev": {
+              "p": 4,
+              "s": "I now think it is their main value"
+            },
+            "why": "Gần hai tấn đồ không bị vứt đi; giờ người nói coi đó là giá trị chính.",
+            "wrong": {
+              "B": "Người nói thấy điều đó ít vì phần lớn đã nghỉ hưu.",
+              "C": "Rất ít khách nhắc chi phí.",
+              "D": "Khách muốn học sửa, nhưng người nói không coi đó là giá trị chính."
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

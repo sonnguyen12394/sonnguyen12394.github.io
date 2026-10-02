@@ -1,0 +1,1575 @@
+[
+  {
+    "id": "m-v2-r1",
+    "kind": "reading",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 5,
+    "title": "The village that shares its cars",
+    "paras": [
+      "The village of Hollin has about six hundred people and a bus that stops only twice a day. For years, almost every household owned at least one car, and many owned two. In 2018 that began to change, when the owner of the village shop, Ruth Kerr, started a car club. The parish council had discussed the idea several times without doing anything, so Ruth decided to try it herself with one second-hand car.",
+      "Today the club has three cars and a small electric van. Members pay ten pounds a month and a small charge for each hour they use a vehicle. There is a booking app, but most members still prefer the notebook that sits on the counter in the shop. Ruth says the main reason is that the internet connection in the village is so unreliable that the app often fails; writing in the book, she adds, also gives people a reason to come in and chat.",
+      "Ruth expected the cars to be used mainly for shopping trips and hospital appointments. In fact, the most common use is taking children to sports matches at weekends, when the bus does not run at all. Shopping comes second, and the van is booked almost every Saturday by people moving furniture.",
+      "There have been problems. In the first year, cars were often returned dirty or with an empty fuel tank. Ruth first tried a system in which each car was adopted by one household, which would keep it clean in return for free hours, but too few households volunteered. What finally worked was simpler: a fine of five pounds for any car returned dirty or with less than a quarter of a tank. Since then, complaints have almost disappeared.",
+      "The club has changed the village in ways that Ruth did not plan. Fourteen households have given up owning a car altogether, and a few more have sold a second car. Insurance took two months to arrange, which Ruth had expected. The hardest part was something she had not thought about at all: finding somewhere to charge the electric van, because the only suitable socket was in the church hall, and the church committee took almost a year to agree.",
+      "A cargo bike was suggested for short trips, but the village is too hilly, so next year the club will instead buy a second van, since the first is booked almost every weekend. Ruth admits that not everyone is convinced the club can afford it. But she points out that when the club started, people said nobody would share a car either."
+    ],
+    "vi": [
+      "Làng Hollin có khoảng sáu trăm người và một tuyến xe buýt chỉ dừng hai lần mỗi ngày. Nhiều năm, gần như hộ nào cũng có ít nhất một ô tô, và nhiều hộ có hai. Năm 2018 điều đó bắt đầu thay đổi, khi chủ cửa hàng tạp hoá của làng, Ruth Kerr, lập một câu lạc bộ ô tô. Hội đồng xã đã bàn ý tưởng này vài lần mà không làm gì, nên Ruth quyết định tự thử với một chiếc xe cũ.",
+      "Ngày nay câu lạc bộ có ba ô tô và một xe tải điện nhỏ. Thành viên trả mười bảng mỗi tháng và một khoản nhỏ cho mỗi giờ dùng xe. Có ứng dụng đặt xe, nhưng phần lớn thành viên vẫn thích cuốn sổ đặt trên quầy cửa hàng. Ruth nói lý do chính là kết nối internet trong làng chập chờn đến mức ứng dụng hay hỏng; bà nói thêm, ghi vào sổ cũng cho mọi người một lý do để ghé vào trò chuyện.",
+      "Ruth tưởng xe sẽ chủ yếu được dùng để đi chợ và đi khám bệnh. Thực ra, việc dùng phổ biến nhất là đưa trẻ đi thi đấu thể thao vào cuối tuần, khi xe buýt hoàn toàn không chạy. Đi chợ đứng thứ hai, và xe tải gần như thứ Bảy nào cũng được đặt bởi những người chuyển đồ đạc.",
+      "Cũng có những trục trặc. Năm đầu, xe thường bị trả lại bẩn hoặc hết xăng. Ruth thử trước một hệ thống trong đó mỗi xe được một hộ nhận chăm, giữ xe sạch để đổi lấy giờ dùng miễn phí, nhưng quá ít hộ đăng ký. Điều cuối cùng hiệu quả lại đơn giản hơn: phạt năm bảng với xe trả lại bẩn hoặc còn dưới một phần tư bình xăng. Từ đó, lời phàn nàn gần như biến mất.",
+      "Câu lạc bộ đã thay đổi ngôi làng theo những cách Ruth không định trước. Mười bốn hộ đã thôi sở hữu xe hoàn toàn, và vài hộ khác đã bán chiếc xe thứ hai. Thu xếp bảo hiểm mất hai tháng, điều Ruth đã lường trước. Phần khó nhất là thứ bà hoàn toàn không nghĩ tới: tìm chỗ sạc cho chiếc xe tải điện, vì ổ cắm phù hợp duy nhất nằm ở hội trường nhà thờ, và ban quản lý nhà thờ mất gần một năm mới đồng ý.",
+      "Có người đề xuất một chiếc xe đạp chở hàng cho những chuyến ngắn, nhưng làng quá nhiều dốc, nên năm tới câu lạc bộ sẽ mua chiếc xe tải thứ hai, vì chiếc đầu tiên gần như cuối tuần nào cũng được đặt. Ruth thừa nhận không phải ai cũng tin câu lạc bộ đủ tiền. Nhưng bà chỉ ra rằng khi câu lạc bộ mới bắt đầu, người ta cũng nói sẽ chẳng ai chịu dùng chung ô tô."
+    ],
+    "allow": [
+      "parish",
+      "second-hand",
+      "van",
+      "counter",
+      "appointments",
+      "furniture",
+      "fuel",
+      "fines",
+      "adopted",
+      "tyres",
+      "insurance",
+      "cargo",
+      "convinced",
+      "households",
+      "socket",
+      "committee",
+      "hilly",
+      "quarter"
+    ],
+    "sets": [
+      {
+        "qtype": "v-r",
+        "instr": "Read the passage and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v2-r1-01",
+            "q": "Who started the car club?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "the local bus company"
+              },
+              {
+                "k": "B",
+                "t": "the parish council"
+              },
+              {
+                "k": "C",
+                "t": "the village shopkeeper"
+              },
+              {
+                "k": "D",
+                "t": "a group of local parents"
+              }
+            ],
+            "ans": "C",
+            "b": 4.5,
+            "ev": {
+              "p": 0,
+              "s": "when the owner of the village shop, Ruth Kerr, started a car club"
+            },
+            "why": "Chủ cửa hàng tạp hoá Ruth Kerr lập câu lạc bộ.",
+            "wrong": {
+              "A": "Không nhắc công ty xe buýt.",
+              "B": "Hội đồng xã bàn nhiều lần mà không làm gì.",
+              "D": "Không nhắc nhóm phụ huynh."
+            }
+          },
+          {
+            "id": "m-v2-r1-02",
+            "q": "How do most members book a vehicle?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "by writing in a notebook"
+              },
+              {
+                "k": "B",
+                "t": "by phoning Ruth"
+              },
+              {
+                "k": "C",
+                "t": "by sending an email to Ruth"
+              },
+              {
+                "k": "D",
+                "t": "by using an app"
+              }
+            ],
+            "ans": "A",
+            "b": 5,
+            "ev": {
+              "p": 1,
+              "s": "most members still prefer the notebook that sits on the counter"
+            },
+            "why": "Phần lớn thành viên ghi vào cuốn sổ trên quầy.",
+            "wrong": {
+              "B": "Không nhắc gọi điện.",
+              "C": "Không nhắc email.",
+              "D": "Có ứng dụng nhưng phần lớn không dùng."
+            }
+          },
+          {
+            "id": "m-v2-r1-03",
+            "q": "According to Ruth, what is the main reason members prefer the notebook?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "It gives them a chance to talk to people."
+              },
+              {
+                "k": "B",
+                "t": "Most members are older."
+              },
+              {
+                "k": "C",
+                "t": "It is free to use."
+              },
+              {
+                "k": "D",
+                "t": "The internet connection is unreliable."
+              }
+            ],
+            "ans": "D",
+            "b": 5.5,
+            "ev": {
+              "p": 1,
+              "s": "the internet connection in the village is so unreliable that the app often fails"
+            },
+            "why": "Lý do chính là internet trong làng chập chờn khiến ứng dụng hay hỏng.",
+            "wrong": {
+              "A": "Ruth chỉ nói thêm điều này, không phải lý do chính.",
+              "B": "Bài không nêu tuổi thành viên là lý do.",
+              "C": "Bài không nói về chi phí."
+            }
+          },
+          {
+            "id": "m-v2-r1-04",
+            "q": "What are the cars used for most often?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "shopping trips"
+              },
+              {
+                "k": "B",
+                "t": "taking children to sports matches"
+              },
+              {
+                "k": "C",
+                "t": "travelling to hospital appointments in town"
+              },
+              {
+                "k": "D",
+                "t": "moving furniture"
+              }
+            ],
+            "ans": "B",
+            "b": 5,
+            "ev": {
+              "p": 2,
+              "s": "the most common use is taking children to sports matches at weekends"
+            },
+            "why": "Phổ biến nhất là đưa trẻ đi thi đấu thể thao cuối tuần.",
+            "wrong": {
+              "A": "Đi chợ đứng thứ hai.",
+              "C": "Đi khám bệnh là điều Ruth tưởng.",
+              "D": "Chuyển đồ là việc của xe tải vào thứ Bảy."
+            }
+          },
+          {
+            "id": "m-v2-r1-05",
+            "q": "How was the problem of dirty cars solved?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "by writing a list of rules"
+              },
+              {
+                "k": "B",
+                "t": "by employing a cleaner for the cars every week"
+              },
+              {
+                "k": "C",
+                "t": "by making households responsible for cars"
+              },
+              {
+                "k": "D",
+                "t": "by charging fines"
+              }
+            ],
+            "ans": "D",
+            "b": 5.5,
+            "ev": {
+              "p": 3,
+              "s": "a fine of five pounds for any car returned dirty"
+            },
+            "why": "Cuối cùng phạt năm bảng là cách hiệu quả.",
+            "wrong": {
+              "A": "Bài không nói lập danh sách quy định.",
+              "B": "Không nhắc thuê người dọn.",
+              "C": "Hệ thống hộ nhận chăm xe được thử nhưng quá ít hộ đăng ký."
+            }
+          },
+          {
+            "id": "m-v2-r1-06",
+            "q": "The word \"adopted\" in paragraph 4 is closest in meaning to",
+            "opts": [
+              {
+                "k": "A",
+                "t": "looked after"
+              },
+              {
+                "k": "B",
+                "t": "picked out"
+              },
+              {
+                "k": "C",
+                "t": "borrowed for a while"
+              },
+              {
+                "k": "D",
+                "t": "paid for"
+              }
+            ],
+            "ans": "A",
+            "b": 5,
+            "ev": {
+              "p": 3,
+              "s": "each car was adopted by one household"
+            },
+            "why": "\"Adopted\" ở đây là nhận chăm sóc: hộ đó giữ xe sạch.",
+            "wrong": {
+              "B": "Chọn chưa đủ nghĩa: hộ đó còn phải chăm xe.",
+              "C": "Mượn xe là việc mọi thành viên làm.",
+              "D": "Hộ đó không mua xe."
+            }
+          },
+          {
+            "id": "m-v2-r1-07",
+            "q": "What have fourteen households done since the club started?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "bought an electric car"
+              },
+              {
+                "k": "B",
+                "t": "joined the parish council"
+              },
+              {
+                "k": "C",
+                "t": "given up owning a car"
+              },
+              {
+                "k": "D",
+                "t": "sold their second car"
+              }
+            ],
+            "ans": "C",
+            "b": 5.5,
+            "ev": {
+              "p": 4,
+              "s": "Fourteen households have given up owning a car altogether"
+            },
+            "why": "Mười bốn hộ đã thôi sở hữu xe hoàn toàn.",
+            "wrong": {
+              "A": "Không nhắc mua xe điện.",
+              "B": "Không nhắc tham gia hội đồng xã.",
+              "D": "Chỉ vài hộ khác bán chiếc xe thứ hai."
+            }
+          },
+          {
+            "id": "m-v2-r1-08",
+            "q": "What has been the most difficult part of running the club?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "buying the vehicles"
+              },
+              {
+                "k": "B",
+                "t": "finding a place to charge the van"
+              },
+              {
+                "k": "C",
+                "t": "finding members"
+              },
+              {
+                "k": "D",
+                "t": "getting insurance"
+              }
+            ],
+            "ans": "B",
+            "b": 6,
+            "ev": {
+              "p": 4,
+              "s": "The hardest part was something she had not thought about at all"
+            },
+            "why": "Phần khó nhất là tìm chỗ sạc xe tải điện; ban quản lý nhà thờ mất gần một năm mới đồng ý.",
+            "wrong": {
+              "A": "Không nói mua xe khó.",
+              "C": "Không nhắc khó tìm thành viên.",
+              "D": "Bảo hiểm mất hai tháng, như Ruth đã lường trước."
+            }
+          },
+          {
+            "id": "m-v2-r1-09",
+            "q": "What does the club plan to do next year?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "buy another van"
+              },
+              {
+                "k": "B",
+                "t": "add a cargo bike"
+              },
+              {
+                "k": "C",
+                "t": "close the notebook system"
+              },
+              {
+                "k": "D",
+                "t": "start a bus service"
+              }
+            ],
+            "ans": "A",
+            "b": 5.5,
+            "ev": {
+              "p": 5,
+              "s": "next year the club will instead buy a second van"
+            },
+            "why": "Năm tới câu lạc bộ mua chiếc xe tải thứ hai.",
+            "wrong": {
+              "B": "Xe đạp chở hàng bị loại vì làng quá nhiều dốc.",
+              "C": "Không nhắc bỏ sổ.",
+              "D": "Không nhắc dịch vụ xe buýt."
+            }
+          },
+          {
+            "id": "m-v2-r1-10",
+            "q": "What is the passage mainly about?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "how to insure a group of drivers"
+              },
+              {
+                "k": "B",
+                "t": "the problems of rural bus services"
+              },
+              {
+                "k": "C",
+                "t": "why people in villages sell their cars"
+              },
+              {
+                "k": "D",
+                "t": "a village car-sharing club"
+              }
+            ],
+            "ans": "D",
+            "b": 5,
+            "ev": {
+              "p": 0,
+              "s": "started a car club"
+            },
+            "why": "Bài kể cách câu lạc bộ dùng chung ô tô ở làng Hollin hoạt động và thay đổi làng.",
+            "wrong": {
+              "A": "Bảo hiểm là một chi tiết.",
+              "B": "Xe buýt chỉ là bối cảnh.",
+              "C": "Việc bán xe là một chi tiết."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v2-r2",
+    "kind": "reading",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B1",
+    "band": 5.5,
+    "title": "A later start to the school day",
+    "paras": [
+      "Two years ago, Northgate High School moved the start of its school day from half past eight to quarter past nine. Many parents assumed that the head teacher, Diane Fowler, had been persuaded by research showing that teenagers naturally fall asleep later than adults. She had read that research, but her main reason was a practical one: the later start gave the whole staff forty-five minutes each morning to plan lessons together, something they had never had time for.",
+      "The decision was not easy. Teachers voted in favour, and a survey of parents found that fifty-five per cent supported the change, although a small group organised a petition against it. Fowler went ahead anyway, promising to review the decision after two years.",
+      "In the first year, exam results were almost exactly the same as before. Lateness changed in an unexpected way. Students who walked to school arrived late much less often, but there was no change at all among students who came by bus, because the bus company kept its old timetable and those students still arrived at half past eight. The school nurse also reported that fewer students came to her with headaches in the morning.",
+      "Working parents complained that they now had to leave home before their children left for school. The school first planned to open the library early, but the librarian could not start before nine. Instead, students who arrive early now wait in the sports hall, where parents take turns to supervise them on a rota. The school had considered paying older students to do this, but the insurance did not allow it. Parents say they were doubtful at first, but the arrangement has worked well.",
+      "Because the school day now ends later, after-school activities were also affected. Football and drama continue as before, but several clubs moved to lunchtime. Some parents mentioned the dark winter evenings, but the main reason was that many older students have part-time jobs that start at five.",
+      "In the second year, exam results finally rose slightly. Fowler is careful not to give the new timetable too much credit. Some people have suggested that the students taking exams that year were simply a stronger group, but their earlier results were quite ordinary. She thinks the bigger factor was a new maths teacher who joined that year."
+    ],
+    "vi": [
+      "Hai năm trước, Trường Trung học Northgate dời giờ bắt đầu ngày học từ tám giờ rưỡi sang chín giờ mười lăm. Nhiều phụ huynh cho rằng hiệu trưởng Diane Fowler đã bị thuyết phục bởi nghiên cứu cho thấy thanh thiếu niên tự nhiên ngủ muộn hơn người lớn. Bà có đọc nghiên cứu đó, nhưng lý do chính của bà mang tính thực tế: giờ bắt đầu muộn hơn cho toàn bộ giáo viên bốn mươi lăm phút mỗi sáng để cùng lên kế hoạch bài dạy, điều họ chưa bao giờ có thời gian làm.",
+      "Quyết định không dễ dàng. Giáo viên bỏ phiếu ủng hộ, và một khảo sát phụ huynh cho thấy năm mươi lăm phần trăm ủng hộ thay đổi, dù một nhóm nhỏ tổ chức kiến nghị phản đối. Fowler vẫn tiến hành, hứa sẽ xem xét lại quyết định sau hai năm.",
+      "Năm đầu, kết quả thi gần như y hệt trước. Chuyện đi muộn thay đổi theo cách không ngờ. Học sinh đi bộ tới trường đi muộn ít hơn hẳn, nhưng học sinh đi xe buýt thì hoàn toàn không thay đổi, vì công ty xe buýt giữ lịch chạy cũ và các em vẫn tới lúc tám giờ rưỡi. Y tá trường cũng cho biết ít học sinh tới gặp cô vì đau đầu buổi sáng hơn.",
+      "Phụ huynh đi làm phàn nàn rằng giờ họ phải rời nhà trước khi con đi học. Trường ban đầu định mở thư viện sớm, nhưng thủ thư không thể bắt đầu trước chín giờ. Thay vào đó, học sinh đến sớm nay chờ ở nhà thi đấu, nơi phụ huynh thay phiên nhau trông theo lịch. Trường từng tính trả tiền cho học sinh lớn làm việc này, nhưng bảo hiểm không cho phép. Phụ huynh nói lúc đầu họ còn nghi ngờ, nhưng cách sắp xếp này đã hiệu quả.",
+      "Vì ngày học nay kết thúc muộn hơn, các hoạt động sau giờ học cũng bị ảnh hưởng. Bóng đá và kịch vẫn như cũ, nhưng vài câu lạc bộ chuyển sang giờ ăn trưa. Vài phụ huynh nhắc tới những buổi tối mùa đông tối trời, nhưng lý do chính là nhiều học sinh lớn có việc làm thêm bắt đầu lúc năm giờ.",
+      "Sang năm thứ hai, kết quả thi cuối cùng tăng nhẹ. Fowler cẩn thận không quy quá nhiều công cho thời khoá biểu mới. Có người cho rằng khoá học sinh đi thi năm đó đơn giản là giỏi hơn, nhưng kết quả trước đó của các em khá bình thường. Bà cho rằng yếu tố lớn hơn là một giáo viên toán mới tới năm đó."
+    ],
+    "allow": [
+      "persuaded",
+      "petition",
+      "supervise",
+      "doubtful",
+      "arrangement",
+      "credit",
+      "unusually",
+      "nurse",
+      "headaches",
+      "timetable",
+      "lateness"
+    ],
+    "sets": [
+      {
+        "qtype": "v-r",
+        "instr": "Read the passage and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v2-r2-01",
+            "q": "What was the head teacher's main reason for the change?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "to match the bus timetable"
+              },
+              {
+                "k": "B",
+                "t": "to give teachers time to plan together"
+              },
+              {
+                "k": "C",
+                "t": "to reduce traffic outside the school"
+              },
+              {
+                "k": "D",
+                "t": "to help students sleep longer"
+              }
+            ],
+            "ans": "B",
+            "b": 5.5,
+            "ev": {
+              "p": 0,
+              "s": "her main reason was a practical one: the later start gave the whole staff forty-five minutes each morning to plan lessons together"
+            },
+            "why": "Lý do chính là cho giáo viên thời gian cùng lên kế hoạch mỗi sáng.",
+            "wrong": {
+              "A": "Lịch xe buýt không đổi theo giờ học mới.",
+              "C": "Bài không nhắc giao thông.",
+              "D": "Phụ huynh tưởng vì nghiên cứu giấc ngủ, nhưng đó không phải lý do chính."
+            }
+          },
+          {
+            "id": "m-v2-r2-02",
+            "q": "What did the survey of parents show?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Fewer than half supported the change."
+              },
+              {
+                "k": "B",
+                "t": "Parents were divided exactly equally."
+              },
+              {
+                "k": "C",
+                "t": "Most parents supported the change."
+              },
+              {
+                "k": "D",
+                "t": "Parents had not heard about the change."
+              }
+            ],
+            "ans": "C",
+            "b": 5.5,
+            "ev": {
+              "p": 1,
+              "s": "fifty-five per cent supported the change"
+            },
+            "why": "55% phụ huynh ủng hộ, tức hơn một nửa.",
+            "wrong": {
+              "A": "55% là hơn một nửa.",
+              "B": "Không phải chia đôi đúng bằng nhau.",
+              "D": "Bài không nói phụ huynh không biết."
+            }
+          },
+          {
+            "id": "m-v2-r2-03",
+            "q": "What happened to exam results in the first year?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They stayed about the same."
+              },
+              {
+                "k": "B",
+                "t": "They fell."
+              },
+              {
+                "k": "C",
+                "t": "They improved a lot."
+              },
+              {
+                "k": "D",
+                "t": "They improved, but only slightly."
+              }
+            ],
+            "ans": "A",
+            "b": 5.5,
+            "ev": {
+              "p": 2,
+              "s": "exam results were almost exactly the same as before"
+            },
+            "why": "Năm đầu kết quả gần như y hệt trước.",
+            "wrong": {
+              "B": "Kết quả không giảm.",
+              "C": "Không cải thiện nhiều.",
+              "D": "Tăng nhẹ là năm thứ hai."
+            }
+          },
+          {
+            "id": "m-v2-r2-04",
+            "q": "Which students arrived late less often after the change?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "students who came by bus"
+              },
+              {
+                "k": "B",
+                "t": "students who walked"
+              },
+              {
+                "k": "C",
+                "t": "students who were driven by parents"
+              },
+              {
+                "k": "D",
+                "t": "all students equally"
+              }
+            ],
+            "ans": "B",
+            "b": 6,
+            "ev": {
+              "p": 2,
+              "s": "Students who walked to school arrived late much less often"
+            },
+            "why": "Học sinh đi bộ đi muộn ít hơn hẳn.",
+            "wrong": {
+              "A": "Học sinh đi xe buýt không thay đổi gì.",
+              "C": "Bài không nhắc học sinh được đưa đón.",
+              "D": "Thay đổi không đều giữa các nhóm."
+            }
+          },
+          {
+            "id": "m-v2-r2-05",
+            "q": "What did the school nurse report?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "more students asking for food"
+              },
+              {
+                "k": "B",
+                "t": "more sports injuries"
+              },
+              {
+                "k": "C",
+                "t": "fewer students fainting in assembly"
+              },
+              {
+                "k": "D",
+                "t": "fewer students with morning headaches"
+              }
+            ],
+            "ans": "D",
+            "b": 5.5,
+            "ev": {
+              "p": 2,
+              "s": "fewer students came to her with headaches in the morning"
+            },
+            "why": "Ít học sinh tới vì đau đầu buổi sáng hơn.",
+            "wrong": {
+              "A": "Bài không nhắc xin đồ ăn.",
+              "B": "Bài không nhắc chấn thương thể thao.",
+              "C": "Bài không nhắc ngất xỉu."
+            }
+          },
+          {
+            "id": "m-v2-r2-06",
+            "q": "Where do students who arrive early now wait?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "in their classrooms"
+              },
+              {
+                "k": "B",
+                "t": "in the library"
+              },
+              {
+                "k": "C",
+                "t": "in the sports hall"
+              },
+              {
+                "k": "D",
+                "t": "in the canteen"
+              }
+            ],
+            "ans": "C",
+            "b": 5.5,
+            "ev": {
+              "p": 3,
+              "s": "students who arrive early now wait in the sports hall"
+            },
+            "why": "Học sinh đến sớm chờ ở nhà thi đấu, có học sinh lớn trông.",
+            "wrong": {
+              "A": "Bài không nhắc lớp học.",
+              "B": "Thư viện là kế hoạch ban đầu, nhưng thủ thư không bắt đầu sớm được.",
+              "D": "Bài không nhắc nhà ăn."
+            }
+          },
+          {
+            "id": "m-v2-r2-07",
+            "q": "In paragraph 4, who supervises the students who arrive early?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "older students"
+              },
+              {
+                "k": "B",
+                "t": "parents"
+              },
+              {
+                "k": "C",
+                "t": "teachers"
+              },
+              {
+                "k": "D",
+                "t": "the librarian"
+              }
+            ],
+            "ans": "B",
+            "b": 6,
+            "ev": {
+              "p": 3,
+              "s": "where parents take turns to supervise them on a rota"
+            },
+            "why": "Phụ huynh thay phiên nhau trông.",
+            "wrong": {
+              "A": "Trường từng tính tới học sinh lớn nhưng bảo hiểm không cho.",
+              "C": "Giáo viên dùng giờ đó để lên kế hoạch.",
+              "D": "Thủ thư không bắt đầu trước chín giờ."
+            }
+          },
+          {
+            "id": "m-v2-r2-08",
+            "q": "Why did several clubs move to lunchtime?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "It got dark before they finished in winter."
+              },
+              {
+                "k": "B",
+                "t": "The sports hall was being used."
+              },
+              {
+                "k": "C",
+                "t": "There were not enough teachers."
+              },
+              {
+                "k": "D",
+                "t": "Many students had part-time jobs."
+              }
+            ],
+            "ans": "D",
+            "b": 6,
+            "ev": {
+              "p": 4,
+              "s": "the main reason was that many older students have part-time jobs that start at five"
+            },
+            "why": "Lý do chính là nhiều học sinh lớn có việc làm thêm bắt đầu lúc năm giờ.",
+            "wrong": {
+              "A": "Trời tối chỉ được vài phụ huynh nhắc, không phải lý do chính.",
+              "B": "Nhà thi đấu dùng buổi sáng cho học sinh đến sớm.",
+              "C": "Bài không nói thiếu giáo viên."
+            }
+          },
+          {
+            "id": "m-v2-r2-09",
+            "q": "The word \"doubtful\" in paragraph 4 is closest in meaning to",
+            "opts": [
+              {
+                "k": "A",
+                "t": "unsure"
+              },
+              {
+                "k": "B",
+                "t": "angry"
+              },
+              {
+                "k": "C",
+                "t": "pleased"
+              },
+              {
+                "k": "D",
+                "t": "surprised"
+              }
+            ],
+            "ans": "A",
+            "b": 5,
+            "ev": {
+              "p": 3,
+              "s": "Parents say they were doubtful at first"
+            },
+            "why": "\"Doubtful\" là còn nghi ngờ, chưa chắc.",
+            "wrong": {
+              "B": "Không có nghĩa là giận.",
+              "C": "Ngược nghĩa.",
+              "D": "Không có nghĩa là ngạc nhiên."
+            }
+          },
+          {
+            "id": "m-v2-r2-10",
+            "q": "What does Fowler think mainly explains the better results in the second year?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "an unusually strong group of students"
+              },
+              {
+                "k": "B",
+                "t": "the new timetable"
+              },
+              {
+                "k": "C",
+                "t": "a new maths teacher"
+              },
+              {
+                "k": "D",
+                "t": "easier exams"
+              }
+            ],
+            "ans": "C",
+            "b": 6.5,
+            "ev": {
+              "p": 5,
+              "s": "She thinks the bigger factor was a new maths teacher"
+            },
+            "why": "Bà cho rằng yếu tố lớn hơn là giáo viên toán mới.",
+            "wrong": {
+              "A": "Kết quả trước đó của khoá này khá bình thường.",
+              "B": "Bà cẩn thận không quy công cho thời khoá biểu.",
+              "D": "Bài không nói đề thi dễ hơn."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v2-r3",
+    "kind": "reading",
+    "exams": [
+      "vstep"
+    ],
+    "level": "B2",
+    "band": 6.5,
+    "title": "The clock menders",
+    "paras": [
+      "Thirty years ago, it seemed that the craft of clock repair would soon disappear. Cheap electronic clocks had replaced mechanical ones in most homes, and the old clockmakers were retiring without anyone to take their place. Yet in the market town of Kelso Bridge, a small workshop run by Martin and Elena Voss now has a waiting list of almost four months. When they opened ten years ago, customers waited about six weeks.",
+      "The couple's largest group of customers is not what most people would guess. Collectors rarely come to them, since serious collectors usually repair their own clocks. Instead, about half of the work comes from hotels, pubs and restaurants, which buy old clocks as decoration and then discover that a clock showing the wrong time annoys their guests. People who have inherited a clock from a grandparent form a smaller but growing group. Interestingly, many of them ask for the chime to be switched off, because they want the clock to work but not to wake them at night.",
+      "Martin learned the trade from an elderly clockmaker over seven years. Elena's route was different. Although she has a degree in engineering, she learned the basics of clock repair at an evening class run by a local museum, and only later added to her knowledge with online videos. She believes videos explain most tasks well, including how to decide whether a worn part should be repaired or replaced. What they cannot teach, she says, is the slow adjustment that makes a clock keep exact time, which depends on listening to hundreds of clocks.",
+      "The workshop's biggest difficulty is not one that customers would expect. Parts, which visitors always ask about, are rarely a problem: the Vosses cut most wheels themselves on a small machine, and they buy springs from a factory abroad that still makes them. The real difficulty is space. Clocks waiting for repair fill every shelf, and large clocks have to stand in the corridor, so the couple are looking for a bigger building.",
+      "Last year the couple took on their first apprentice, a nineteen-year-old called Josh. He replied to an advertisement the couple had placed in the local newspaper. A local film-maker made a short film about him a few months after he started. The couple had applied for a grant from the town council to pay a trainee, but the application was refused. One of their hotel customers offered to help, but in the end it was a charity that supports training in traditional crafts which agreed to pay Josh's wages for his first year.",
+      "Martin is optimistic about the future of the craft, though not for the reasons people might expect. He does not believe that mechanical clocks will become fashionable again, and he thinks the demand from hotels may not last. His reason is simpler: most electronic clocks cannot be repaired at all, so a well-made mechanical clock will always outlive them. Elena prefers a different explanation. As long as people inherit objects that carry memories, she says, someone will be needed to keep them going."
+    ],
+    "vi": [
+      "Ba mươi năm trước, có vẻ như nghề sửa đồng hồ sẽ sớm biến mất. Đồng hồ điện tử rẻ tiền đã thay đồng hồ cơ trong phần lớn các gia đình, và những thợ đồng hồ lớn tuổi nghỉ hưu mà không có ai thay thế. Vậy mà ở thị trấn có chợ Kelso Bridge, một xưởng nhỏ do Martin và Elena Voss điều hành nay có danh sách chờ gần bốn tháng. Khi họ mới mở cửa mười năm trước, khách chờ khoảng sáu tuần.",
+      "Nhóm khách đông nhất của hai vợ chồng không như phần lớn mọi người đoán. Nhà sưu tầm hiếm khi tới, vì những người sưu tầm nghiêm túc thường tự sửa đồng hồ của mình. Thay vào đó, khoảng một nửa công việc đến từ khách sạn, quán rượu và nhà hàng, những nơi mua đồng hồ cũ để trang trí rồi mới phát hiện một chiếc đồng hồ chạy sai giờ làm khách khó chịu. Những người được thừa kế đồng hồ của ông bà là một nhóm nhỏ hơn nhưng đang tăng. Thú vị là nhiều người trong số họ đề nghị tắt tiếng chuông, vì họ muốn đồng hồ chạy nhưng không đánh thức họ ban đêm.",
+      "Martin học nghề từ một thợ đồng hồ già trong bảy năm. Con đường của Elena khác. Dù có bằng kỹ sư, bà học những điều cơ bản về sửa đồng hồ ở một lớp buổi tối do bảo tàng địa phương tổ chức, và chỉ sau này mới bổ sung kiến thức bằng video trên mạng. Bà tin video giải thích tốt phần lớn công việc, kể cả cách quyết định một bộ phận mòn nên sửa hay thay. Điều video không dạy được, theo bà, là việc chỉnh chậm rãi để đồng hồ chạy đúng giờ, việc phụ thuộc vào việc lắng nghe hàng trăm chiếc đồng hồ.",
+      "Khó khăn lớn nhất của xưởng không phải điều khách hàng nghĩ. Linh kiện, thứ khách luôn hỏi, hiếm khi là vấn đề: vợ chồng Voss tự cắt phần lớn bánh răng trên một chiếc máy nhỏ, và mua lò xo từ một nhà máy ở nước ngoài vẫn còn sản xuất. Khó khăn thật là chỗ. Đồng hồ chờ sửa chiếm kín mọi kệ, đồng hồ lớn phải đứng ở hành lang, nên hai vợ chồng đang tìm một toà nhà lớn hơn.",
+      "Năm ngoái hai vợ chồng nhận người học việc đầu tiên, một chàng trai mười chín tuổi tên Josh. Cậu trả lời một mẩu quảng cáo hai vợ chồng đăng trên báo địa phương. Vài tháng sau khi cậu bắt đầu làm, một nhà làm phim địa phương làm một phim ngắn về cậu. Hai vợ chồng từng xin trợ cấp của hội đồng thị trấn để trả lương người học việc, nhưng đơn bị từ chối. Một khách hàng là khách sạn đề nghị giúp, nhưng cuối cùng một quỹ từ thiện hỗ trợ đào tạo nghề thủ công truyền thống đồng ý trả lương cho Josh năm đầu.",
+      "Martin lạc quan về tương lai của nghề, dù không vì những lý do người ta có thể nghĩ. Ông không tin đồng hồ cơ sẽ trở lại thành mốt, và ông nghĩ nhu cầu từ khách sạn có thể không kéo dài. Lý do của ông đơn giản hơn: phần lớn đồng hồ điện tử hoàn toàn không sửa được, nên một chiếc đồng hồ cơ được làm tốt sẽ luôn bền hơn chúng. Elena thích một cách giải thích khác. Theo bà, chừng nào người ta còn thừa kế những đồ vật mang kỷ niệm, sẽ còn cần có người giữ cho chúng chạy."
+    ],
+    "allow": [
+      "craft",
+      "mechanical",
+      "clockmakers",
+      "clockmaker",
+      "antiques",
+      "collectors",
+      "inherited",
+      "inherit",
+      "chime",
+      "springs",
+      "apprentice",
+      "trainee",
+      "grant",
+      "optimistic",
+      "fashionable",
+      "decoration",
+      "corridor",
+      "adjustment",
+      "film-maker",
+      "outlive"
+    ],
+    "sets": [
+      {
+        "qtype": "v-r",
+        "instr": "Read the passage and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v2-r3-01",
+            "q": "How long did customers wait for a repair when the workshop first opened?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "about six weeks"
+              },
+              {
+                "k": "B",
+                "t": "almost four months"
+              },
+              {
+                "k": "C",
+                "t": "nearly a year"
+              },
+              {
+                "k": "D",
+                "t": "about two weeks"
+              }
+            ],
+            "ans": "A",
+            "b": 6,
+            "ev": {
+              "p": 0,
+              "s": "customers waited about six weeks"
+            },
+            "why": "Mười năm trước khách chờ khoảng sáu tuần; nay gần bốn tháng.",
+            "wrong": {
+              "B": "Gần bốn tháng là thời gian chờ hiện nay.",
+              "C": "Không nhắc gần một năm.",
+              "D": "Không nhắc hai tuần."
+            }
+          },
+          {
+            "id": "m-v2-r3-02",
+            "q": "Which group of customers provides the largest share of the workshop's work?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "people who have inherited clocks"
+              },
+              {
+                "k": "B",
+                "t": "collectors of antique clocks"
+              },
+              {
+                "k": "C",
+                "t": "hotels, pubs and restaurants"
+              },
+              {
+                "k": "D",
+                "t": "local museums"
+              }
+            ],
+            "ans": "C",
+            "b": 6.5,
+            "ev": {
+              "p": 1,
+              "s": "about half of the work comes from hotels, pubs and restaurants"
+            },
+            "why": "Khoảng một nửa công việc đến từ khách sạn, quán rượu và nhà hàng.",
+            "wrong": {
+              "A": "Người thừa kế là nhóm nhỏ hơn, đang tăng.",
+              "B": "Nhà sưu tầm hiếm khi tới vì tự sửa.",
+              "D": "Bảo tàng chỉ tổ chức lớp học Elena tham gia."
+            }
+          },
+          {
+            "id": "m-v2-r3-03",
+            "q": "What do many people who have inherited clocks ask for?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "the clock to be made to run faster"
+              },
+              {
+                "k": "B",
+                "t": "the clock to be valued"
+              },
+              {
+                "k": "C",
+                "t": "a new case for the clock"
+              },
+              {
+                "k": "D",
+                "t": "the chime to be switched off"
+              }
+            ],
+            "ans": "D",
+            "b": 6.5,
+            "ev": {
+              "p": 1,
+              "s": "many of them ask for the chime to be switched off"
+            },
+            "why": "Họ muốn đồng hồ chạy nhưng tắt chuông để không bị đánh thức ban đêm.",
+            "wrong": {
+              "A": "Không nhắc chỉnh đồng hồ chạy nhanh.",
+              "B": "Không nhắc định giá.",
+              "C": "Không nhắc vỏ đồng hồ mới."
+            }
+          },
+          {
+            "id": "m-v2-r3-04",
+            "q": "Where did Elena first learn clock repair?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "from online videos"
+              },
+              {
+                "k": "B",
+                "t": "at an evening class"
+              },
+              {
+                "k": "C",
+                "t": "from Martin"
+              },
+              {
+                "k": "D",
+                "t": "at university"
+              }
+            ],
+            "ans": "B",
+            "b": 6.5,
+            "ev": {
+              "p": 2,
+              "s": "she learned the basics of clock repair at an evening class run by a local museum"
+            },
+            "why": "Elena học điều cơ bản ở lớp buổi tối do bảo tàng tổ chức.",
+            "wrong": {
+              "A": "Video chỉ là thứ bà dùng về sau.",
+              "C": "Bài không nói bà học từ Martin.",
+              "D": "Ở đại học bà học kỹ sư, không học sửa đồng hồ."
+            }
+          },
+          {
+            "id": "m-v2-r3-05",
+            "q": "According to Elena, what cannot be learned from videos?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "deciding whether to repair or replace a part"
+              },
+              {
+                "k": "B",
+                "t": "cleaning old oil from small parts"
+              },
+              {
+                "k": "C",
+                "t": "cutting new wheels on a machine"
+              },
+              {
+                "k": "D",
+                "t": "adjusting a clock so that it keeps exact time"
+              }
+            ],
+            "ans": "D",
+            "b": 7,
+            "ev": {
+              "p": 2,
+              "s": "is the slow adjustment that makes a clock keep exact time"
+            },
+            "why": "Việc chỉnh để đồng hồ chạy đúng giờ phụ thuộc vào việc lắng nghe hàng trăm chiếc đồng hồ.",
+            "wrong": {
+              "A": "Bà nói video giải thích tốt cả việc quyết định sửa hay thay.",
+              "B": "Bài không nhắc làm sạch dầu cũ.",
+              "C": "Cắt bánh răng là việc họ làm trên máy, bài không nói video không dạy được."
+            }
+          },
+          {
+            "id": "m-v2-r3-06",
+            "q": "What is the workshop's biggest difficulty?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "finding customers"
+              },
+              {
+                "k": "B",
+                "t": "finding space"
+              },
+              {
+                "k": "C",
+                "t": "finding trained staff"
+              },
+              {
+                "k": "D",
+                "t": "finding parts"
+              }
+            ],
+            "ans": "B",
+            "b": 6.5,
+            "ev": {
+              "p": 3,
+              "s": "The real difficulty is space."
+            },
+            "why": "Khó khăn thật là chỗ: đồng hồ chờ sửa chiếm kín kệ và hành lang.",
+            "wrong": {
+              "A": "Xưởng có danh sách chờ bốn tháng.",
+              "C": "Bài không nói khó tìm nhân viên.",
+              "D": "Linh kiện hiếm khi là vấn đề."
+            }
+          },
+          {
+            "id": "m-v2-r3-07",
+            "q": "Where do the Vosses get springs?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They take them from old clocks."
+              },
+              {
+                "k": "B",
+                "t": "They make them on a small machine."
+              },
+              {
+                "k": "C",
+                "t": "They buy them from a factory abroad."
+              },
+              {
+                "k": "D",
+                "t": "They buy them from retired clockmakers."
+              }
+            ],
+            "ans": "C",
+            "b": 7,
+            "ev": {
+              "p": 3,
+              "s": "they buy springs from a factory abroad that still makes them"
+            },
+            "why": "Họ mua lò xo từ một nhà máy ở nước ngoài.",
+            "wrong": {
+              "A": "Bài không nói tháo từ đồng hồ cũ.",
+              "B": "Máy nhỏ dùng để cắt bánh răng.",
+              "D": "Bài không nhắc mua từ thợ nghỉ hưu."
+            }
+          },
+          {
+            "id": "m-v2-r3-08",
+            "q": "How did Josh come to join the workshop?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "He answered an advertisement."
+              },
+              {
+                "k": "B",
+                "t": "He came with his grandmother."
+              },
+              {
+                "k": "C",
+                "t": "He was sent by the town council."
+              },
+              {
+                "k": "D",
+                "t": "He saw a short film about it."
+              }
+            ],
+            "ans": "A",
+            "b": 6.5,
+            "ev": {
+              "p": 4,
+              "s": "He replied to an advertisement the couple had placed in the local newspaper."
+            },
+            "why": "Josh trả lời quảng cáo trên báo địa phương.",
+            "wrong": {
+              "B": "Bài không nói Josh tới cùng bà.",
+              "C": "Hội đồng thị trấn không giới thiệu Josh.",
+              "D": "Phim ngắn chỉ được làm sau khi cậu bắt đầu làm."
+            }
+          },
+          {
+            "id": "m-v2-r3-09",
+            "q": "Who is paying Josh's wages in his first year?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "the Vosses"
+              },
+              {
+                "k": "B",
+                "t": "a hotel owner"
+              },
+              {
+                "k": "C",
+                "t": "the town council"
+              },
+              {
+                "k": "D",
+                "t": "a craft charity"
+              }
+            ],
+            "ans": "D",
+            "b": 7,
+            "ev": {
+              "p": 4,
+              "s": "a charity that supports training in traditional crafts which agreed to pay Josh's wages"
+            },
+            "why": "Một quỹ từ thiện hỗ trợ đào tạo nghề thủ công trả lương năm đầu.",
+            "wrong": {
+              "A": "Hai vợ chồng chưa đủ khả năng tự trả.",
+              "B": "Một khách sạn đề nghị giúp nhưng không phải bên trả.",
+              "C": "Đơn xin trợ cấp của hội đồng bị từ chối."
+            }
+          },
+          {
+            "id": "m-v2-r3-10",
+            "q": "Why is Martin optimistic about the future of clock repair?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Most electronic clocks cannot be repaired."
+              },
+              {
+                "k": "B",
+                "t": "Hotels will keep buying old clocks."
+              },
+              {
+                "k": "C",
+                "t": "Mechanical clocks will become fashionable again."
+              },
+              {
+                "k": "D",
+                "t": "People will keep inheriting clocks with memories."
+              }
+            ],
+            "ans": "A",
+            "b": 7.5,
+            "ev": {
+              "p": 5,
+              "s": "most electronic clocks cannot be repaired at all"
+            },
+            "why": "Martin cho rằng đồng hồ điện tử phần lớn không sửa được nên đồng hồ cơ tốt sẽ bền hơn.",
+            "wrong": {
+              "B": "Martin nghĩ nhu cầu từ khách sạn có thể không kéo dài.",
+              "C": "Martin không tin đồng hồ cơ trở lại thành mốt.",
+              "D": "Đó là cách giải thích của Elena."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-v2-r4",
+    "kind": "reading",
+    "exams": [
+      "vstep"
+    ],
+    "level": "C1",
+    "band": 7,
+    "title": "A shorter week for small firms?",
+    "paras": [
+      "The idea of a four-day working week, with no loss of pay, has usually been tested in public services, such as council offices and hospitals, where budgets are fixed in advance. Small businesses, where one absent employee can halt an entire operation, have been widely assumed to be unsuitable. A recent trial involving thirty firms with fewer than fifty employees each suggests that this assumption deserves to be questioned, although not for the reasons its supporters usually give.",
+      "Supporters of the shorter week tend to emphasise health: less stress, fewer days off sick, happier staff. In the trial, sickness absence did fall, but only modestly, and the firms' own surveys of staff wellbeing showed smaller improvements than those reported in larger studies. Productivity, measured as output per hour, rose in about a third of the firms and fell in the rest, so that on average it fell slightly.",
+      "The clearest benefit appeared somewhere else entirely: recruitment. Small firms often struggle to attract skilled workers, who can earn more at larger companies. During the trial, applications for each advertised job roughly tripled. The number of staff who resigned, by contrast, hardly changed, which surprised the owners, who had expected people to be more loyal. For a small business, the author of the study argues, this advantage may matter more than any change in output.",
+      "Not every firm completed the trial. The four that withdrew had one thing in common: they dealt directly with customers and had tried to close completely on Fridays. Customers, it turned out, did not accept an extra day without service. Two firms tried letting staff take different days off, but customers were confused about whom to contact. The firms that succeeded in similar sectors instead closed on their quietest day of the week, usually a Wednesday, and told customers well in advance.",
+      "The study has weaknesses that its author is admirably open about. One common objection does not apply: the trial ran for a full year, so the season cannot explain the results. A more serious problem is that most of the information on wellbeing came from staff themselves, who knew that the trial might end if it appeared to fail, and who may therefore have exaggerated the benefits. There is also a cost that rarely appears in such reports. Owners did not, as many had feared, work longer hours themselves; instead, a third of the firms paid part-time staff extra to cover the missing day, and several said they could not afford to continue doing so indefinitely.",
+      "None of this proves that a four-day week is wrong for small firms. But it suggests that general promises are not enough. The most useful thing a small firm can do, the author concludes, is to run its own three-month trial before making a permanent decision."
+    ],
+    "vi": [
+      "Ý tưởng tuần làm việc bốn ngày, không giảm lương, thường được thử ở các cơ quan công, như văn phòng hội đồng và bệnh viện, nơi ngân sách được định trước. Doanh nghiệp nhỏ, nơi một nhân viên vắng mặt có thể làm ngừng cả hoạt động, vẫn được mặc nhiên coi là không phù hợp. Một cuộc thử nghiệm gần đây với ba mươi công ty, mỗi công ty dưới năm mươi nhân viên, cho thấy giả định này đáng bị đặt câu hỏi, dù không vì những lý do mà người ủng hộ thường đưa ra.",
+      "Người ủng hộ tuần làm việc ngắn hơn thường nhấn mạnh sức khoẻ: ít căng thẳng hơn, ít ngày nghỉ ốm hơn, nhân viên vui hơn. Trong thử nghiệm, số ngày nghỉ ốm có giảm, nhưng chỉ khiêm tốn, và khảo sát của chính các công ty về sức khoẻ tinh thần nhân viên cho thấy mức cải thiện nhỏ hơn những gì các nghiên cứu lớn hơn báo cáo. Năng suất, đo bằng sản lượng mỗi giờ, tăng ở khoảng một phần ba số công ty và giảm ở số còn lại, nên tính trung bình thì giảm nhẹ.",
+      "Lợi ích rõ ràng nhất lại xuất hiện ở một chỗ hoàn toàn khác: tuyển dụng. Doanh nghiệp nhỏ thường khó thu hút lao động có tay nghề, những người có thể kiếm nhiều hơn ở công ty lớn. Trong thử nghiệm, số đơn ứng tuyển cho mỗi vị trí tăng khoảng gấp ba. Ngược lại, số nhân viên xin nghỉ hầu như không đổi, điều làm chủ doanh nghiệp bất ngờ vì họ từng nghĩ nhân viên sẽ gắn bó hơn. Tác giả nghiên cứu lập luận rằng với một doanh nghiệp nhỏ, lợi thế này có thể quan trọng hơn bất kỳ thay đổi nào về sản lượng.",
+      "Không phải công ty nào cũng hoàn thành thử nghiệm. Bốn công ty rút lui có một điểm chung: họ làm việc trực tiếp với khách hàng và đã thử đóng cửa hoàn toàn vào thứ Sáu. Hoá ra khách hàng không chấp nhận thêm một ngày không có dịch vụ. Hai công ty thử cho nhân viên nghỉ vào những ngày khác nhau, nhưng khách hàng bối rối không biết liên hệ ai. Những công ty thành công trong các ngành tương tự thay vào đó đóng cửa vào ngày vắng khách nhất trong tuần, thường là thứ Tư, và báo trước cho khách từ sớm.",
+      "Nghiên cứu có những điểm yếu mà tác giả cởi mở thừa nhận một cách đáng khen. Một lời phản bác thường gặp không áp dụng ở đây: thử nghiệm kéo dài trọn một năm, nên mùa không thể giải thích kết quả. Vấn đề nghiêm trọng hơn là phần lớn thông tin về sức khoẻ tinh thần đến từ chính nhân viên, những người biết thử nghiệm có thể dừng nếu có vẻ thất bại, và vì vậy có thể đã phóng đại lợi ích. Còn có một chi phí hiếm khi xuất hiện trong những báo cáo kiểu này. Chủ doanh nghiệp không phải làm thêm giờ như nhiều người lo; thay vào đó, một phần ba số công ty trả thêm tiền cho nhân viên bán thời gian để bù ngày thiếu, và vài nơi nói họ không đủ tiền tiếp tục như vậy mãi.",
+      "Không điều nào trong số này chứng minh tuần làm việc bốn ngày là sai với doanh nghiệp nhỏ. Nhưng nó cho thấy những hứa hẹn chung chung là chưa đủ. Tác giả kết luận rằng điều hữu ích nhất một doanh nghiệp nhỏ có thể làm là tự chạy thử ba tháng trước khi quyết định lâu dài."
+    ],
+    "allow": [
+      "specialist",
+      "generous",
+      "halt",
+      "assumption",
+      "emphasise",
+      "modestly",
+      "wellbeing",
+      "productivity",
+      "output",
+      "recruitment",
+      "applications",
+      "withdrew",
+      "sectors",
+      "admirably",
+      "indefinitely",
+      "sickness",
+      "absence",
+      "resigned",
+      "exaggerated",
+      "critics"
+    ],
+    "sets": [
+      {
+        "qtype": "v-r",
+        "instr": "Read the passage and choose the correct answer, A, B, C or D, for each question.",
+        "items": [
+          {
+            "id": "m-v2-r4-01",
+            "q": "What does the writer say about earlier tests of the four-day week?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They were mostly in large private companies."
+              },
+              {
+                "k": "B",
+                "t": "They mostly involved small firms."
+              },
+              {
+                "k": "C",
+                "t": "They were mostly in public services."
+              },
+              {
+                "k": "D",
+                "t": "They mostly involved factories."
+              }
+            ],
+            "ans": "C",
+            "b": 7,
+            "ev": {
+              "p": 0,
+              "s": "has usually been tested in public services"
+            },
+            "why": "Các thử nghiệm trước thường ở cơ quan công như văn phòng hội đồng và bệnh viện.",
+            "wrong": {
+              "A": "Bài không nói công ty tư nhân lớn.",
+              "B": "Doanh nghiệp nhỏ vẫn bị coi là không phù hợp.",
+              "D": "Bài không nhắc nhà máy."
+            }
+          },
+          {
+            "id": "m-v2-r4-02",
+            "q": "What happened to sickness absence during the trial?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "It rose."
+              },
+              {
+                "k": "B",
+                "t": "It fell a little."
+              },
+              {
+                "k": "C",
+                "t": "It stayed the same."
+              },
+              {
+                "k": "D",
+                "t": "It fell sharply."
+              }
+            ],
+            "ans": "B",
+            "b": 7,
+            "ev": {
+              "p": 1,
+              "s": "sickness absence did fall, but only modestly"
+            },
+            "why": "Nghỉ ốm giảm nhưng chỉ khiêm tốn.",
+            "wrong": {
+              "A": "Bài không nói số liệu tăng.",
+              "C": "Bài nói số liệu có giảm.",
+              "D": "Chỉ giảm khiêm tốn."
+            }
+          },
+          {
+            "id": "m-v2-r4-03",
+            "q": "What happened to average productivity?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "It fell slightly."
+              },
+              {
+                "k": "B",
+                "t": "It was almost unchanged."
+              },
+              {
+                "k": "C",
+                "t": "It rose slightly."
+              },
+              {
+                "k": "D",
+                "t": "It was not measured."
+              }
+            ],
+            "ans": "A",
+            "b": 7,
+            "ev": {
+              "p": 1,
+              "s": "so that on average it fell slightly"
+            },
+            "why": "Năng suất tăng ở khoảng một phần ba và giảm ở số còn lại, nên trung bình giảm nhẹ.",
+            "wrong": {
+              "B": "Trung bình có thay đổi: giảm nhẹ.",
+              "C": "Chỉ tăng ở khoảng một phần ba số công ty.",
+              "D": "Năng suất được đo bằng sản lượng mỗi giờ."
+            }
+          },
+          {
+            "id": "m-v2-r4-04",
+            "q": "According to the passage, what was the clearest benefit for the firms?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "fewer staff leaving"
+              },
+              {
+                "k": "B",
+                "t": "better staff health"
+              },
+              {
+                "k": "C",
+                "t": "more job applications"
+              },
+              {
+                "k": "D",
+                "t": "higher output"
+              }
+            ],
+            "ans": "C",
+            "b": 7.5,
+            "ev": {
+              "p": 2,
+              "s": "The clearest benefit appeared somewhere else entirely: recruitment."
+            },
+            "why": "Lợi ích rõ nhất là tuyển dụng: số đơn ứng tuyển tăng khoảng gấp ba.",
+            "wrong": {
+              "A": "Số người nghỉ việc hầu như không đổi.",
+              "B": "Cải thiện sức khoẻ nhỏ hơn các nghiên cứu khác.",
+              "D": "Sản lượng trung bình giảm nhẹ."
+            }
+          },
+          {
+            "id": "m-v2-r4-05",
+            "q": "By how much did applications for each job increase?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They roughly doubled."
+              },
+              {
+                "k": "B",
+                "t": "They roughly tripled."
+              },
+              {
+                "k": "C",
+                "t": "They rose by about half."
+              },
+              {
+                "k": "D",
+                "t": "They did not increase."
+              }
+            ],
+            "ans": "B",
+            "b": 7,
+            "ev": {
+              "p": 2,
+              "s": "applications for each advertised job roughly tripled"
+            },
+            "why": "Số đơn ứng tuyển mỗi vị trí tăng khoảng gấp ba.",
+            "wrong": {
+              "A": "Không phải gấp đôi.",
+              "C": "Không phải tăng một nửa.",
+              "D": "Có tăng, khoảng gấp ba."
+            }
+          },
+          {
+            "id": "m-v2-r4-06",
+            "q": "Why did four firms withdraw from the trial?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Their staff became less productive than before the trial."
+              },
+              {
+                "k": "B",
+                "t": "They could not afford it."
+              },
+              {
+                "k": "C",
+                "t": "Their owners became ill."
+              },
+              {
+                "k": "D",
+                "t": "Their customers did not accept the closures."
+              }
+            ],
+            "ans": "D",
+            "b": 7.5,
+            "ev": {
+              "p": 3,
+              "s": "Customers, it turned out, did not accept an extra day without service."
+            },
+            "why": "Khách hàng không chấp nhận thêm một ngày đóng cửa.",
+            "wrong": {
+              "A": "Lý do rút lui là phản ứng của khách hàng.",
+              "B": "Không nói về khả năng chi trả.",
+              "C": "Không nhắc chủ bị ốm."
+            }
+          },
+          {
+            "id": "m-v2-r4-07",
+            "q": "How did successful customer-facing firms organise the shorter week?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "They closed on their quietest day."
+              },
+              {
+                "k": "B",
+                "t": "Staff took different days off."
+              },
+              {
+                "k": "C",
+                "t": "They hired temporary workers."
+              },
+              {
+                "k": "D",
+                "t": "They shortened each working day."
+              }
+            ],
+            "ans": "A",
+            "b": 7,
+            "ev": {
+              "p": 3,
+              "s": "instead closed on their quietest day of the week"
+            },
+            "why": "Họ đóng cửa vào ngày vắng khách nhất, thường là thứ Tư.",
+            "wrong": {
+              "B": "Hai công ty thử cách này nhưng khách hàng bối rối.",
+              "C": "Không nhắc thuê lao động thời vụ.",
+              "D": "Không nhắc rút ngắn từng ngày làm việc."
+            }
+          },
+          {
+            "id": "m-v2-r4-08",
+            "q": "What weakness of the study does the writer consider most serious?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "Too few firms took part."
+              },
+              {
+                "k": "B",
+                "t": "The trial took place in spring and summer."
+              },
+              {
+                "k": "C",
+                "t": "Staff may have exaggerated the benefits."
+              },
+              {
+                "k": "D",
+                "t": "Only managers were asked about wellbeing."
+              }
+            ],
+            "ans": "C",
+            "b": 7.5,
+            "ev": {
+              "p": 4,
+              "s": "who may therefore have exaggerated the benefits"
+            },
+            "why": "Thông tin chủ yếu do nhân viên tự báo, và họ có lý do để phóng đại.",
+            "wrong": {
+              "A": "Bài không nói quá ít công ty.",
+              "B": "Thử nghiệm kéo dài trọn một năm.",
+              "D": "Thông tin đến từ chính nhân viên, không phải quản lý."
+            }
+          },
+          {
+            "id": "m-v2-r4-09",
+            "q": "What hidden cost does the writer mention?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "loss of customers to rivals"
+              },
+              {
+                "k": "B",
+                "t": "extra pay for part-time staff"
+              },
+              {
+                "k": "C",
+                "t": "owners working longer hours"
+              },
+              {
+                "k": "D",
+                "t": "higher energy bills"
+              }
+            ],
+            "ans": "B",
+            "b": 7.5,
+            "ev": {
+              "p": 4,
+              "s": "a third of the firms paid part-time staff extra to cover the missing day"
+            },
+            "why": "Một phần ba số công ty trả thêm cho nhân viên bán thời gian.",
+            "wrong": {
+              "A": "Mất khách là chuyện các công ty rút lui.",
+              "C": "Chủ doanh nghiệp không phải làm thêm giờ như nhiều người lo.",
+              "D": "Bài không nhắc hoá đơn năng lượng."
+            }
+          },
+          {
+            "id": "m-v2-r4-10",
+            "q": "What is the writer's main conclusion?",
+            "opts": [
+              {
+                "k": "A",
+                "t": "The case for it should focus on recruitment."
+              },
+              {
+                "k": "B",
+                "t": "The four-day week should be banned in small firms."
+              },
+              {
+                "k": "C",
+                "t": "More large firms should try it."
+              },
+              {
+                "k": "D",
+                "t": "Each firm should run its own short trial."
+              }
+            ],
+            "ans": "D",
+            "b": 7.5,
+            "ev": {
+              "p": 5,
+              "s": "is to run its own three-month trial before making a permanent decision"
+            },
+            "why": "Tác giả kết luận mỗi doanh nghiệp nên tự chạy thử ba tháng.",
+            "wrong": {
+              "A": "Tuyển dụng là lợi ích rõ nhất, nhưng kết luận là mỗi công ty nên tự thử.",
+              "B": "Tác giả nói không điều gì chứng minh nó sai.",
+              "C": "Bài bàn về doanh nghiệp nhỏ."
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

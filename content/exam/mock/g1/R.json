@@ -1,0 +1,994 @@
+[
+  {
+    "id": "m-g1-r1",
+    "kind": "reading",
+    "exams": [
+      "ielts-gt"
+    ],
+    "level": "B1",
+    "band": 5,
+    "title": "Evening and weekend courses at Brook Hill Centre",
+    "paras": [
+      "A Watercolour painting. Eight Tuesday evenings, 7–9 pm, £64. Beginners are very welcome. Paper and paints are provided, but please bring your own brushes. Because the main hall is being repainted this term, the course meets in the library annexe across the car park. Finished paintings stay at the centre for an exhibition at the end of term.",
+      "B Conversational Spanish. Ten Monday evenings, £75. This course is for people who already know some basic Spanish and want to speak with more confidence. The first evening is a free taster session, so you can decide whether the level suits you before paying.",
+      "C Bicycle maintenance. Four sessions, £40. Learn to fix punctures, adjust brakes and gears, and keep your bike running smoothly. Tools are provided, but you must bring your own bicycle. Unlike our other courses, this one runs on Saturday mornings, because the workshop is used by a woodwork group on weekday evenings.",
+      "D Tracing your family history. Six Wednesday evenings, £48. Find out how to use online records to trace your ancestors. You will need to bring a laptop or tablet to every session. In week three, the class will spend the evening at the town records office, where staff will show you documents that are not available online.",
+      "E Bread making. Five Thursday evenings, £55. Bake a different kind of bread each week and take home everything you make. Aprons are provided. Please note that all the recipes use ordinary wheat flour, so the course is not suitable for anyone who needs to avoid gluten."
+    ],
+    "vi": [
+      "A Vẽ màu nước. Tám tối thứ Ba, 7–9 giờ tối, 64 bảng. Rất hoan nghênh người mới bắt đầu. Giấy và màu được cung cấp, nhưng xin mang cọ riêng. Vì hội trường chính đang được sơn lại trong học kỳ này, lớp học ở nhà phụ của thư viện bên kia bãi đỗ xe. Tranh vẽ xong được giữ lại trung tâm để triển lãm cuối học kỳ.",
+      "B Tiếng Tây Ban Nha giao tiếp. Mười tối thứ Hai, 75 bảng. Khoá học dành cho người đã biết chút tiếng Tây Ban Nha cơ bản và muốn nói tự tin hơn. Buổi tối đầu là buổi học thử miễn phí, để bạn quyết định trình độ có hợp không trước khi đóng tiền.",
+      "C Bảo dưỡng xe đạp. Bốn buổi, 40 bảng. Học vá săm, chỉnh phanh và líp, và giữ xe chạy êm. Dụng cụ được cung cấp, nhưng bạn phải mang xe đạp của mình. Khác các khoá còn lại, khoá này học sáng thứ Bảy, vì xưởng được một nhóm làm đồ gỗ dùng vào các tối trong tuần.",
+      "D Tìm hiểu lịch sử gia đình. Sáu tối thứ Tư, 48 bảng. Tìm hiểu cách dùng hồ sơ trực tuyến để lần lại tổ tiên. Bạn cần mang máy tính xách tay hoặc máy tính bảng tới mọi buổi. Vào tuần thứ ba, lớp sẽ dành buổi tối ở văn phòng lưu trữ hồ sơ của thị trấn, nơi nhân viên sẽ cho bạn xem những tài liệu không có trên mạng.",
+      "E Làm bánh mì. Năm tối thứ Năm, 55 bảng. Mỗi tuần nướng một loại bánh khác nhau và mang về mọi thứ bạn làm. Tạp dề được cung cấp. Xin lưu ý mọi công thức đều dùng bột mì thường, nên khoá học không phù hợp với ai cần tránh gluten."
+    ],
+    "allow": [
+      "watercolour",
+      "annexe",
+      "exhibition",
+      "conversational",
+      "taster",
+      "maintenance",
+      "punctures",
+      "brakes",
+      "gears",
+      "woodwork",
+      "ancestors",
+      "laptop",
+      "tablet",
+      "aprons",
+      "gluten",
+      "flour"
+    ],
+    "sets": [
+      {
+        "qtype": "r-info",
+        "instr": "Look at the five course descriptions, A–E. For which course are the following statements true? Write the correct letter, A–E. NB You may use any letter more than once.",
+        "options": [
+          {
+            "k": "A",
+            "t": "Course A"
+          },
+          {
+            "k": "B",
+            "t": "Course B"
+          },
+          {
+            "k": "C",
+            "t": "Course C"
+          },
+          {
+            "k": "D",
+            "t": "Course D"
+          },
+          {
+            "k": "E",
+            "t": "Course E"
+          }
+        ],
+        "items": [
+          {
+            "id": "m-g1-r1-01",
+            "q": "It takes place at the weekend.",
+            "ans": "C",
+            "b": 4.5,
+            "ev": {
+              "p": 2,
+              "s": "this one runs on Saturday mornings"
+            },
+            "why": "Khoá bảo dưỡng xe đạp học sáng thứ Bảy.",
+            "wrong": {
+              "A": "Lớp vẽ học tối thứ Ba.",
+              "B": "Lớp tiếng học tối thứ Hai.",
+              "D": "Lớp lịch sử gia đình học tối thứ Tư.",
+              "E": "Lớp làm bánh học tối thứ Năm."
+            }
+          },
+          {
+            "id": "m-g1-r1-02",
+            "q": "Learners will spend one session in another building in the town.",
+            "ans": "D",
+            "b": 5,
+            "ev": {
+              "p": 3,
+              "s": "the class will spend the evening at the town records office"
+            },
+            "why": "Tuần thứ ba lớp tới văn phòng lưu trữ hồ sơ của thị trấn.",
+            "wrong": {
+              "A": "Lớp vẽ học cả khoá ở nhà phụ thư viện, không có buổi tham quan.",
+              "B": "Lớp tiếng không có buổi đi nơi khác.",
+              "C": "Lớp xe đạp học ở xưởng.",
+              "E": "Lớp làm bánh không có buổi đi nơi khác."
+            }
+          },
+          {
+            "id": "m-g1-r1-03",
+            "q": "Learners can try the course without paying.",
+            "ans": "B",
+            "b": 4.5,
+            "ev": {
+              "p": 1,
+              "s": "The first evening is a free taster session"
+            },
+            "why": "Buổi đầu của lớp tiếng Tây Ban Nha là buổi học thử miễn phí.",
+            "wrong": {
+              "A": "Lớp vẽ không có buổi miễn phí.",
+              "C": "Lớp xe đạp không có buổi miễn phí.",
+              "D": "Lớp lịch sử gia đình không có buổi miễn phí.",
+              "E": "Lớp làm bánh không có buổi miễn phí."
+            }
+          },
+          {
+            "id": "m-g1-r1-04",
+            "q": "It is not held in its usual place this term.",
+            "ans": "A",
+            "b": 5,
+            "ev": {
+              "p": 0,
+              "s": "the course meets in the library annexe across the car park"
+            },
+            "why": "Hội trường chính đang được sơn lại nên lớp vẽ học ở nhà phụ thư viện.",
+            "wrong": {
+              "B": "Lớp tiếng không nói đổi địa điểm.",
+              "C": "Lớp xe đạp vẫn học ở xưởng, chỉ khác giờ.",
+              "D": "Lớp lịch sử gia đình chỉ tới văn phòng lưu trữ một buổi, đó là chuyến tham quan theo kế hoạch.",
+              "E": "Lớp làm bánh không nói đổi địa điểm."
+            }
+          },
+          {
+            "id": "m-g1-r1-05",
+            "q": "Learners must bring an electronic device.",
+            "ans": "D",
+            "b": 4.5,
+            "ev": {
+              "p": 3,
+              "s": "You will need to bring a laptop or tablet to every session"
+            },
+            "why": "Lớp lịch sử gia đình cần mang máy tính xách tay hoặc máy tính bảng.",
+            "wrong": {
+              "A": "Lớp vẽ cần mang cọ.",
+              "B": "Lớp tiếng không yêu cầu mang thiết bị.",
+              "C": "Lớp xe đạp cần mang xe, không phải thiết bị điện tử.",
+              "E": "Lớp làm bánh được cung cấp tạp dề, không cần mang thiết bị."
+            }
+          },
+          {
+            "id": "m-g1-r1-06",
+            "q": "It is unsuitable for people with a particular diet.",
+            "ans": "E",
+            "b": 4.5,
+            "ev": {
+              "p": 4,
+              "s": "the course is not suitable for anyone who needs to avoid gluten"
+            },
+            "why": "Lớp làm bánh dùng bột mì thường nên không hợp người cần tránh gluten.",
+            "wrong": {
+              "A": "Lớp vẽ không liên quan chế độ ăn.",
+              "B": "Lớp tiếng không liên quan chế độ ăn.",
+              "C": "Lớp xe đạp không liên quan chế độ ăn.",
+              "D": "Lớp lịch sử gia đình không liên quan chế độ ăn."
+            }
+          },
+          {
+            "id": "m-g1-r1-07",
+            "q": "Learners cannot take their work home at the end of the course.",
+            "ans": "A",
+            "b": 5,
+            "ev": {
+              "p": 0,
+              "s": "Finished paintings stay at the centre for an exhibition"
+            },
+            "why": "Tranh vẽ xong được giữ lại để triển lãm.",
+            "wrong": {
+              "B": "Lớp tiếng không làm ra sản phẩm.",
+              "C": "Lớp xe đạp không nói giữ lại sản phẩm; học viên mang xe của mình.",
+              "D": "Lớp lịch sử gia đình không nói giữ lại kết quả.",
+              "E": "Lớp làm bánh được mang về mọi thứ mình làm."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-g1-r2",
+    "kind": "reading",
+    "exams": [
+      "ielts-gt"
+    ],
+    "level": "B1",
+    "band": 5,
+    "title": "Riverside monthly bus pass: changes from 1 March",
+    "paras": [
+      "From 1 March, the price of the Riverside monthly bus pass will rise from £48 to £52. This is the second increase in three years, and it reflects higher fuel and maintenance costs.",
+      "Students aged under nineteen can still buy the pass at half price. To do so, they must show a current college or school card when they buy or renew the pass. Older students pay the full adult price.",
+      "The pass can now be loaded onto the Riverside Travel app and shown on your phone. Paper passes will no longer be sold from 1 March, although any paper pass bought before that date can be used until it runs out. Passengers without a smartphone can ask for a plastic travel card instead, free of charge.",
+      "The pass is valid on all Riverside routes, including night buses. It cannot be used on the airport express, which is run by a different company and has its own tickets.",
+      "If you lose your pass, the first two replacements in any twelve-month period are free. Any further replacement costs £5. Pass holders may also take one child under five with them on any journey without paying.",
+      "Passes can be returned at any time for a partial refund, calculated according to the number of full days remaining. Requests must be made at the bus station, not through the app."
+    ],
+    "vi": [
+      "Từ ngày 1 tháng Ba, giá vé tháng xe buýt Riverside sẽ tăng từ 48 lên 52 bảng. Đây là lần tăng thứ hai trong ba năm, phản ánh chi phí nhiên liệu và bảo dưỡng cao hơn.",
+      "Học sinh, sinh viên dưới mười chín tuổi vẫn được mua vé giảm nửa giá. Để được vậy, các em phải xuất trình thẻ trường hoặc thẻ cao đẳng còn hạn khi mua hoặc gia hạn vé. Sinh viên lớn tuổi hơn trả giá người lớn.",
+      "Vé nay có thể được nạp vào ứng dụng Riverside Travel và xuất trình trên điện thoại. Vé giấy sẽ ngừng bán từ ngày 1 tháng Ba, dù vé giấy mua trước ngày đó vẫn dùng được tới khi hết hạn. Hành khách không có điện thoại thông minh có thể xin một thẻ đi lại bằng nhựa thay thế, miễn phí.",
+      "Vé dùng được trên mọi tuyến của Riverside, kể cả xe buýt đêm. Vé không dùng được trên xe buýt tốc hành sân bay, do một công ty khác vận hành và có vé riêng.",
+      "Nếu bạn làm mất vé, hai lần cấp lại đầu tiên trong bất kỳ khoảng mười hai tháng nào là miễn phí. Những lần sau, mỗi lần 5 bảng. Người có vé tháng cũng được dẫn theo một trẻ dưới năm tuổi trên mọi chuyến mà không phải trả tiền.",
+      "Vé có thể được trả lại bất cứ lúc nào để hoàn một phần tiền, tính theo số ngày trọn vẹn còn lại. Yêu cầu phải làm ở bến xe buýt, không qua ứng dụng."
+    ],
+    "allow": [
+      "maintenance",
+      "renew",
+      "smartphone",
+      "valid",
+      "express",
+      "refunds",
+      "refund",
+      "replacement",
+      "replacements",
+      "partial",
+      "plastic"
+    ],
+    "sets": [
+      {
+        "qtype": "r-tfng",
+        "instr": "Do the following statements agree with the information given in the text? Write TRUE, FALSE or NOT GIVEN.",
+        "options": [
+          {
+            "k": "TRUE",
+            "t": "if the statement agrees with the information"
+          },
+          {
+            "k": "FALSE",
+            "t": "if the statement contradicts the information"
+          },
+          {
+            "k": "NOT GIVEN",
+            "t": "if there is no information on this"
+          }
+        ],
+        "items": [
+          {
+            "id": "m-g1-r2-01",
+            "q": "The price of the pass has not changed for three years.",
+            "ans": "FALSE",
+            "b": 5.5,
+            "ev": {
+              "p": 0,
+              "s": "This is the second increase in three years"
+            },
+            "why": "Đây là lần tăng thứ hai trong ba năm, nên giá đã thay đổi trước đó.",
+            "wrong": {
+              "TRUE": "Văn bản nói đã có một lần tăng khác trong ba năm.",
+              "NOT GIVEN": "Văn bản có nêu điều này."
+            }
+          },
+          {
+            "id": "m-g1-r2-02",
+            "q": "Students aged nineteen or over pay the same price as other adults.",
+            "ans": "TRUE",
+            "b": 5,
+            "ev": {
+              "p": 1,
+              "s": "Older students pay the full adult price"
+            },
+            "why": "Sinh viên từ mười chín tuổi trả giá người lớn.",
+            "wrong": {
+              "FALSE": "Văn bản nói đúng như vậy.",
+              "NOT GIVEN": "Văn bản nói rõ giá cho sinh viên lớn tuổi."
+            }
+          },
+          {
+            "id": "m-g1-r2-03",
+            "q": "Paper passes will stop being sold on 1 March.",
+            "ans": "TRUE",
+            "b": 5.5,
+            "ev": {
+              "p": 2,
+              "s": "Paper passes will no longer be sold from 1 March"
+            },
+            "why": "Vé giấy ngừng bán từ ngày 1 tháng Ba (vé đã mua vẫn dùng được).",
+            "wrong": {
+              "FALSE": "Văn bản nói đúng như vậy.",
+              "NOT GIVEN": "Văn bản nêu rõ thời điểm ngừng bán."
+            }
+          },
+          {
+            "id": "m-g1-r2-04",
+            "q": "The airport express runs every thirty minutes.",
+            "ans": "NOT GIVEN",
+            "b": 5,
+            "ev": {
+              "p": 3,
+              "s": "It cannot be used on the airport express"
+            },
+            "why": "Văn bản chỉ nói vé không dùng được trên xe tốc hành sân bay, không nói tần suất chạy.",
+            "wrong": {
+              "TRUE": "Văn bản không nhắc tần suất.",
+              "FALSE": "Văn bản cũng không nói tần suất khác."
+            }
+          },
+          {
+            "id": "m-g1-r2-05",
+            "q": "Someone who loses their pass twice in a year has to pay for the second replacement.",
+            "ans": "FALSE",
+            "b": 5.5,
+            "ev": {
+              "p": 4,
+              "s": "the first two replacements in any twelve-month period are free"
+            },
+            "why": "Hai lần cấp lại đầu tiên trong mười hai tháng đều miễn phí.",
+            "wrong": {
+              "TRUE": "Chỉ từ lần thứ ba mới mất phí.",
+              "NOT GIVEN": "Văn bản nói rõ phí cấp lại."
+            }
+          },
+          {
+            "id": "m-g1-r2-06",
+            "q": "A pass holder may take two young children on a bus free of charge.",
+            "ans": "FALSE",
+            "b": 5.5,
+            "ev": {
+              "p": 4,
+              "s": "may also take one child under five with them on any journey without paying"
+            },
+            "why": "Chỉ được dẫn theo một trẻ dưới năm tuổi miễn phí.",
+            "wrong": {
+              "TRUE": "Văn bản nói một trẻ, không phải hai.",
+              "NOT GIVEN": "Văn bản nêu rõ số trẻ."
+            }
+          },
+          {
+            "id": "m-g1-r2-07",
+            "q": "A passenger who has used the pass for a week can still get some money back.",
+            "ans": "TRUE",
+            "b": 5.5,
+            "ev": {
+              "p": 5,
+              "s": "Passes can be returned at any time for a partial refund"
+            },
+            "why": "Vé trả lại lúc nào cũng được hoàn một phần tiền, tính theo số ngày còn lại.",
+            "wrong": {
+              "FALSE": "Văn bản nói hoàn một phần bất cứ lúc nào.",
+              "NOT GIVEN": "Văn bản nêu rõ chính sách hoàn tiền."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-g1-r3",
+    "kind": "reading",
+    "exams": [
+      "ielts-gt"
+    ],
+    "level": "B1",
+    "band": 5.5,
+    "title": "Swapping shifts: a guide for warehouse staff",
+    "paras": [
+      "Most of us need to change a shift from time to time, and the new swap system is designed to make this simple and fair. Please read this guide before you request your first swap.",
+      "All swap requests must now be made through the staff app. Requests sent by email or text message to your team leader will not be accepted, because they cannot be checked against the rota. A request must be made at least forty-eight hours before the start of the shift. For shorter notice, you will need to speak to the duty manager in person.",
+      "You can only swap with a colleague who has completed the same level of training as you. For example, a colleague who is not yet qualified to drive a forklift cannot take over a forklift shift, even if they are happy to do so. The app will only show you colleagues who are eligible.",
+      "Each member of staff may make up to three swaps in a calendar month. This limit does not apply to swaps made for medical appointments, but you will be asked to show the appointment letter afterwards.",
+      "Once a swap has been approved, the colleague who has agreed to work the shift becomes responsible for it. If they fail to turn up, it is their absence, not yours, that will be recorded. Swaps on public holidays are treated differently: they must be approved by the site manager, and both people must agree to work the next public holiday as originally planned."
+    ],
+    "vi": [
+      "Phần lớn chúng ta thỉnh thoảng cần đổi ca, và hệ thống đổi ca mới được thiết kế để việc này đơn giản và công bằng. Hãy đọc hướng dẫn này trước khi yêu cầu lần đổi ca đầu tiên.",
+      "Mọi yêu cầu đổi ca nay phải gửi qua ứng dụng cho nhân viên. Yêu cầu gửi bằng email hay tin nhắn cho trưởng nhóm sẽ không được chấp nhận, vì không thể đối chiếu với lịch phân ca. Yêu cầu phải gửi ít nhất bốn mươi tám giờ trước khi ca bắt đầu. Gấp hơn thế, bạn cần gặp trực tiếp quản lý trực ca.",
+      "Bạn chỉ được đổi với đồng nghiệp đã hoàn thành cùng cấp độ đào tạo như bạn. Ví dụ, một đồng nghiệp chưa đủ chứng chỉ lái xe nâng không thể nhận ca lái xe nâng, dù họ sẵn lòng. Ứng dụng chỉ hiện những đồng nghiệp đủ điều kiện.",
+      "Mỗi nhân viên được đổi tối đa ba lần trong một tháng dương lịch. Giới hạn này không áp dụng với lần đổi để đi khám bệnh, nhưng sau đó bạn sẽ được yêu cầu xuất trình giấy hẹn.",
+      "Khi một lần đổi ca đã được duyệt, đồng nghiệp đồng ý làm ca đó sẽ chịu trách nhiệm. Nếu họ không tới, sự vắng mặt được ghi cho họ chứ không phải bạn. Đổi ca vào ngày lễ được xử lý khác: phải được quản lý cơ sở duyệt, và cả hai người phải đồng ý làm ngày lễ tiếp theo như lịch ban đầu."
+    ],
+    "allow": [
+      "warehouse",
+      "rota",
+      "forklift",
+      "eligible",
+      "qualified",
+      "calendar",
+      "approved",
+      "absence"
+    ],
+    "sets": [
+      {
+        "qtype": "r-notes",
+        "instr": "Complete the notes below. Choose ONE WORD AND/OR A NUMBER from the text for each answer.",
+        "items": [
+          {
+            "id": "m-g1-r3-01",
+            "q": "Requests must be made using the staff ___",
+            "ans": {
+              "accept": [
+                "app"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 1,
+              "s": "All swap requests must now be made through the staff app."
+            },
+            "why": "Mọi yêu cầu phải gửi qua ứng dụng cho nhân viên.",
+            "wrong": {
+              "email": "Yêu cầu qua email không được chấp nhận."
+            }
+          },
+          {
+            "id": "m-g1-r3-02",
+            "q": "Minimum notice: ___ hours",
+            "ans": {
+              "accept": [
+                "48",
+                "forty-eight"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5,
+            "ev": {
+              "p": 1,
+              "s": "at least forty-eight hours before the start of the shift"
+            },
+            "why": "Phải gửi ít nhất 48 giờ trước ca."
+          },
+          {
+            "id": "m-g1-r3-03",
+            "q": "Less notice: talk to the duty ___",
+            "ans": {
+              "accept": [
+                "manager"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5.5,
+            "ev": {
+              "p": 1,
+              "s": "you will need to speak to the duty manager in person"
+            },
+            "why": "Gấp hơn thì gặp trực tiếp quản lý trực ca.",
+            "wrong": {
+              "leader": "Trưởng nhóm không xử lý yêu cầu gấp."
+            }
+          },
+          {
+            "id": "m-g1-r3-04",
+            "q": "Colleagues must have the same level of ___",
+            "ans": {
+              "accept": [
+                "training"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5.5,
+            "ev": {
+              "p": 2,
+              "s": "the same level of training as you"
+            },
+            "why": "Chỉ đổi với người cùng cấp độ đào tạo."
+          },
+          {
+            "id": "m-g1-r3-05",
+            "q": "Limit: three swaps per month (except for ___ appointments)",
+            "ans": {
+              "accept": [
+                "medical"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 5.5,
+            "ev": {
+              "p": 3,
+              "s": "swaps made for medical appointments"
+            },
+            "why": "Đổi để đi khám bệnh không tính vào giới hạn ba lần."
+          },
+          {
+            "id": "m-g1-r3-06",
+            "q": "If the colleague doesn't come, their ___ is recorded",
+            "ans": {
+              "accept": [
+                "absence"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 6,
+            "ev": {
+              "p": 4,
+              "s": "it is their absence, not yours, that will be recorded"
+            },
+            "why": "Sự vắng mặt được ghi cho người đã nhận ca."
+          },
+          {
+            "id": "m-g1-r3-07",
+            "q": "Public holiday swaps: approval needed from the ___ manager",
+            "ans": {
+              "accept": [
+                "site"
+              ]
+            },
+            "limit": 1,
+            "num": true,
+            "b": 6,
+            "ev": {
+              "p": 4,
+              "s": "they must be approved by the site manager"
+            },
+            "why": "Đổi ca ngày lễ phải được quản lý cơ sở duyệt.",
+            "wrong": {
+              "duty": "Quản lý trực ca xử lý yêu cầu gấp, không phải đổi ca ngày lễ."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-g1-r4",
+    "kind": "reading",
+    "exams": [
+      "ielts-gt"
+    ],
+    "level": "B2",
+    "band": 6,
+    "title": "The staff learning fund: how to apply",
+    "paras": [
+      "The company sets aside a learning fund each year to help staff gain qualifications and skills. Any employee who has worked here for at least six months can apply, including part-time staff. The fund pays up to £600 per person per year towards course fees. It does not cover travel or the cost of books.",
+      "Courses do not have to be directly related to your current job. In the last two years, the fund has paid for courses in accounting, first aid and sign language, as well as for a number of language courses. However, the course must lead to a recognised certificate, so short workshops without an assessment are not normally funded.",
+      "To apply, complete the form on the staff website and ask your line manager to sign it. Applications are considered by a small panel which meets four times a year, in January, April, July and October. Applications must reach the panel at least two weeks before it meets. If your course starts before the panel's next meeting, you may pay the fees yourself and claim them back, but only if the panel later approves your application.",
+      "If you leave the company within one year of finishing a funded course, you may be asked to repay part of the cost. Staff who fail a course are not asked to repay anything, and they may apply again for the same course the following year."
+    ],
+    "vi": [
+      "Mỗi năm công ty dành một quỹ học tập để giúp nhân viên lấy bằng cấp và kỹ năng. Bất kỳ nhân viên nào đã làm ở đây ít nhất sáu tháng đều có thể nộp đơn, kể cả nhân viên bán thời gian. Quỹ chi tối đa 600 bảng mỗi người mỗi năm cho học phí. Quỹ không chi tiền đi lại hay tiền sách.",
+      "Khoá học không nhất thiết liên quan trực tiếp tới công việc hiện tại. Trong hai năm qua, quỹ đã chi cho các khoá kế toán, sơ cứu và ngôn ngữ ký hiệu, cùng một số khoá ngoại ngữ. Tuy vậy, khoá học phải dẫn tới một chứng chỉ được công nhận, nên các buổi hội thảo ngắn không có đánh giá thường không được chi.",
+      "Để nộp đơn, hãy điền mẫu trên trang web nhân viên và nhờ quản lý trực tiếp ký. Đơn được một hội đồng nhỏ xem xét, họp bốn lần một năm, vào tháng Một, Tư, Bảy và Mười. Đơn phải tới hội đồng ít nhất hai tuần trước buổi họp. Nếu khoá học bắt đầu trước buổi họp kế tiếp của hội đồng, bạn có thể tự trả học phí rồi xin hoàn lại, nhưng chỉ khi hội đồng sau đó duyệt đơn của bạn.",
+      "Nếu bạn rời công ty trong vòng một năm sau khi học xong một khoá được quỹ chi, bạn có thể bị yêu cầu hoàn lại một phần chi phí. Nhân viên trượt khoá học không phải hoàn lại gì, và có thể nộp đơn lại cho cùng khoá vào năm sau."
+    ],
+    "allow": [
+      "qualifications",
+      "accounting",
+      "recognised",
+      "certificate",
+      "assessment",
+      "workshops",
+      "panel",
+      "funded",
+      "repay",
+      "line"
+    ],
+    "sets": [
+      {
+        "qtype": "r-short",
+        "instr": "Answer the questions below. Choose NO MORE THAN TWO WORDS AND/OR A NUMBER from the text for each answer.",
+        "items": [
+          {
+            "id": "m-g1-r4-01",
+            "q": "How long must staff have worked for the company before they can apply?",
+            "ans": {
+              "accept": [
+                "six months",
+                "6 months"
+              ]
+            },
+            "limit": 2,
+            "num": true,
+            "b": 5.5,
+            "ev": {
+              "p": 0,
+              "s": "has worked here for at least six months"
+            },
+            "why": "Phải làm ít nhất sáu tháng."
+          },
+          {
+            "id": "m-g1-r4-02",
+            "q": "Apart from travel, what else does the fund not pay for?",
+            "ans": {
+              "accept": [
+                "books"
+              ]
+            },
+            "limit": 2,
+            "num": true,
+            "b": 6,
+            "ev": {
+              "p": 0,
+              "s": "It does not cover travel or the cost of books."
+            },
+            "why": "Quỹ không chi tiền đi lại và tiền sách."
+          },
+          {
+            "id": "m-g1-r4-03",
+            "q": "What must a course lead to in order to be funded?",
+            "ans": {
+              "accept": [
+                "recognised certificate",
+                "certificate",
+                "recognized certificate"
+              ]
+            },
+            "limit": 2,
+            "num": true,
+            "b": 6,
+            "ev": {
+              "p": 1,
+              "s": "the course must lead to a recognised certificate"
+            },
+            "why": "Khoá học phải dẫn tới một chứng chỉ được công nhận."
+          },
+          {
+            "id": "m-g1-r4-04",
+            "q": "Who must sign the application form?",
+            "ans": {
+              "accept": [
+                "line manager"
+              ]
+            },
+            "limit": 2,
+            "num": true,
+            "b": 6,
+            "ev": {
+              "p": 2,
+              "s": "ask your line manager to sign it"
+            },
+            "why": "Quản lý trực tiếp phải ký đơn.",
+            "wrong": {
+              "panel": "Hội đồng xem xét đơn, không ký đơn."
+            }
+          },
+          {
+            "id": "m-g1-r4-05",
+            "q": "How many weeks before a panel meeting must an application arrive?",
+            "ans": {
+              "accept": [
+                "two",
+                "2",
+                "two weeks",
+                "2 weeks"
+              ]
+            },
+            "limit": 2,
+            "num": true,
+            "b": 6,
+            "ev": {
+              "p": 2,
+              "s": "at least two weeks before it meets"
+            },
+            "why": "Đơn phải tới ít nhất hai tuần trước buổi họp."
+          },
+          {
+            "id": "m-g1-r4-06",
+            "q": "Staff who leave within what period after finishing a funded course may have to repay some of the cost?",
+            "ans": {
+              "accept": [
+                "one year",
+                "1 year",
+                "a year"
+              ]
+            },
+            "limit": 2,
+            "num": true,
+            "b": 6.5,
+            "ev": {
+              "p": 3,
+              "s": "If you leave the company within one year of finishing a funded course"
+            },
+            "why": "Người rời công ty trong vòng một năm sau khoá học có thể phải hoàn lại một phần.",
+            "wrong": {
+              "six months": "Sáu tháng là thời gian làm việc tối thiểu để được nộp đơn."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m-g1-r5",
+    "kind": "reading",
+    "exams": [
+      "ielts-gt"
+    ],
+    "level": "B2",
+    "band": 6.5,
+    "title": "The mail boat of Lake Varne",
+    "paras": [
+      "A For more than a century, letters to the villages on the north shore of Lake Varne arrived by boat, because no road reached that side of the lake until 1962. Remarkably, a boat still makes the crossing today. It carries far more tourists than letters, but local people continue to call it the mail boat, and its timetable is still printed on the noticeboard of every village on the shore. The lake itself is about eleven kilometres long and, at its widest point, a little under three kilometres across.",
+      "B The service did not begin as a postal service at all. In 1871 the only doctor in the area, who lived in the market town on the south shore, began paying a local fisherman to carry medicines across the lake twice a week. Villagers soon asked the fisherman to take their letters as well, and it was only after the doctor's death in 1880 that the post office agreed to take the service over and pay for it. Even then, the fisherman kept the job, and for some years he continued to fish on the days when there was no post to carry.",
+      "C Over the years, several boats were used. The fisherman's rowing boat was replaced in 1898 by a small steam launch named the Heron, which could cross the lake in forty minutes whatever the wind. She burned coal brought by cart from the railway station, and on calm days her smoke could be seen from every village around the lake. The Heron served for over fifty years. Contrary to a story often told by guides, she was never wrecked; she was retired in 1951, when a diesel boat took her place, and she can now be seen in a transport museum in the capital.",
+      "D For three generations the boat was run by one family, the Grays, and the boatman did much more than deliver letters. He sold stamps, carried parcels and newspapers, and often brought back shopping for elderly villagers. In the coldest winters, when the lake froze, the mail had to be carried on foot along the shore path, a journey that took two days. The last of the Gray boatmen once said that he had walked that path more often than he had taken a holiday. His logbooks, which record every crossing he made over thirty-one years, are now kept in the village hall.",
+      "E The opening of the road in 1962 might have ended the service immediately. In fact, the post office continued to send some mail by boat for another eight years, until it ended its contract in 1970. The villagers, who had come to see the boat as part of their identity, organised a campaign to keep it running. Rather than ask for public money, they formed a cooperative, raised enough to buy the boat from the Gray family, and hired a skipper. More than two hundred people bought shares, many of them former residents who had moved away from the lake but wanted the boat to continue.",
+      "F Today the boat runs from April to October. Most of its income comes from visitors, who enjoy the hour-long round trip and the stories the skipper tells along the way. But it still has a postal role: two farms on the north shore have no road access, and their letters and parcels are delivered by boat all year round, with the skipper making a special trip in winter when necessary. The cooperative is now raising money to replace the diesel engine with an electric motor, which members hope will make the boat quieter and cheaper to run."
+    ],
+    "vi": [
+      "A Hơn một thế kỷ, thư gửi tới các làng ở bờ bắc hồ Varne đến bằng thuyền, vì tới năm 1962 mới có đường bộ tới phía đó của hồ. Điều đáng chú ý là ngày nay vẫn còn một chiếc thuyền qua lại. Nó chở khách du lịch nhiều hơn thư rất nhiều, nhưng người địa phương vẫn gọi nó là thuyền thư, và lịch chạy vẫn được dán trên bảng thông báo của mọi làng ven hồ. Bản thân hồ dài khoảng mười một ki-lô-mét và, ở chỗ rộng nhất, rộng chưa tới ba ki-lô-mét.",
+      "B Dịch vụ này ban đầu hoàn toàn không phải dịch vụ bưu chính. Năm 1871, vị bác sĩ duy nhất trong vùng, sống ở thị trấn có chợ bên bờ nam, bắt đầu trả tiền cho một ngư dân địa phương chở thuốc qua hồ mỗi tuần hai lần. Dân làng sớm nhờ ngư dân mang cả thư của họ, và chỉ sau khi bác sĩ qua đời năm 1880, bưu điện mới đồng ý tiếp quản dịch vụ và trả tiền. Dù vậy, người ngư dân vẫn giữ công việc, và trong vài năm ông vẫn đánh cá vào những hôm không có thư để chở.",
+      "C Qua nhiều năm, có vài chiếc thuyền được dùng. Thuyền chèo của ngư dân được thay năm 1898 bằng một chiếc ca nô hơi nước nhỏ tên Heron, có thể qua hồ trong bốn mươi phút bất kể gió. Nó đốt than chở bằng xe ngựa từ ga tàu, và những hôm lặng gió, khói của nó nhìn thấy được từ mọi làng quanh hồ. Heron phục vụ hơn năm mươi năm. Trái với câu chuyện hướng dẫn viên hay kể, nó chưa bao giờ bị đắm; nó được cho nghỉ năm 1951, khi một chiếc thuyền chạy dầu thế chỗ, và nay có thể được xem trong một bảo tàng giao thông ở thủ đô.",
+      "D Suốt ba thế hệ, thuyền do một gia đình, nhà Gray, điều hành, và người lái thuyền làm nhiều hơn việc đưa thư. Ông bán tem, chở bưu kiện và báo, và thường mua đồ hộ những người già trong làng. Vào những mùa đông lạnh nhất, khi hồ đóng băng, thư phải được mang đi bộ theo lối mòn ven bờ, một chặng đường mất hai ngày. Người lái thuyền cuối cùng của nhà Gray từng nói ông đã đi lối mòn ấy nhiều lần hơn số lần ông đi nghỉ. Sổ ghi chép của ông, ghi lại mọi chuyến qua hồ trong ba mươi mốt năm, nay được lưu ở nhà văn hoá của làng.",
+      "E Việc mở đường năm 1962 lẽ ra có thể chấm dứt dịch vụ ngay. Thực tế, bưu điện vẫn gửi một phần thư bằng thuyền thêm tám năm nữa, cho tới khi chấm dứt hợp đồng năm 1970. Dân làng, những người đã coi chiếc thuyền là một phần bản sắc của mình, tổ chức vận động để giữ nó. Thay vì xin tiền công, họ lập một hợp tác xã, quyên đủ tiền mua thuyền từ nhà Gray, và thuê một thuyền trưởng. Hơn hai trăm người mua cổ phần, nhiều người là cư dân cũ đã chuyển đi xa nhưng muốn chiếc thuyền tiếp tục chạy.",
+      "F Ngày nay thuyền chạy từ tháng Tư tới tháng Mười. Phần lớn thu nhập đến từ du khách, những người thích chuyến khứ hồi dài một giờ và những câu chuyện thuyền trưởng kể dọc đường. Nhưng nó vẫn còn vai trò bưu chính: hai trang trại ở bờ bắc không có đường vào, và thư từ, bưu kiện của họ được đưa bằng thuyền quanh năm, thuyền trưởng chạy chuyến riêng vào mùa đông khi cần. Hợp tác xã đang quyên tiền để thay động cơ dầu bằng mô-tơ điện, mà các thành viên hy vọng sẽ làm thuyền êm hơn và rẻ hơn khi vận hành."
+    ],
+    "allow": [
+      "postal",
+      "noticeboard",
+      "medicines",
+      "launch",
+      "wrecked",
+      "retired",
+      "diesel",
+      "generations",
+      "parcels",
+      "elderly",
+      "identity",
+      "campaign",
+      "cooperative",
+      "skipper",
+      "access",
+      "motor",
+      "logbooks",
+      "shares",
+      "residents",
+      "cart"
+    ],
+    "sets": [
+      {
+        "qtype": "r-headings",
+        "instr": "The text has six paragraphs, A–F. Choose the correct heading for each paragraph from the list of headings below. Write the correct number, i–ix.",
+        "options": [
+          {
+            "k": "i",
+            "t": "Keeping the service afloat today"
+          },
+          {
+            "k": "ii",
+            "t": "The building of the lakeside road"
+          },
+          {
+            "k": "iii",
+            "t": "More than a postman"
+          },
+          {
+            "k": "iv",
+            "t": "An unexpected beginning"
+          },
+          {
+            "k": "v",
+            "t": "Disasters on the water"
+          },
+          {
+            "k": "vi",
+            "t": "A boat that has outlived its original purpose"
+          },
+          {
+            "k": "vii",
+            "t": "The road arrives and the community responds"
+          },
+          {
+            "k": "viii",
+            "t": "Competition from the railway"
+          },
+          {
+            "k": "ix",
+            "t": "A series of vessels"
+          }
+        ],
+        "items": [
+          {
+            "id": "m-g1-r5-01",
+            "q": "Paragraph A",
+            "ans": "vi",
+            "b": 6,
+            "ev": {
+              "p": 0,
+              "s": "Remarkably, a boat still makes the crossing today"
+            },
+            "why": "Đoạn A: thuyền vẫn chạy dù giờ chở du khách nhiều hơn thư.",
+            "wrong": {
+              "i": "Đoạn A mới giới thiệu, chưa nói cách duy trì dịch vụ hiện nay.",
+              "ii": "Đoạn A chỉ nhắc năm có đường, không kể việc làm đường."
+            }
+          },
+          {
+            "id": "m-g1-r5-02",
+            "q": "Paragraph B",
+            "ans": "iv",
+            "b": 6.5,
+            "ev": {
+              "p": 1,
+              "s": "The service did not begin as a postal service at all."
+            },
+            "why": "Đoạn B: dịch vụ bắt đầu từ việc bác sĩ trả tiền chở thuốc.",
+            "wrong": {
+              "ix": "Đoạn B nói về nguồn gốc dịch vụ, không phải các con thuyền.",
+              "vi": "Ý thuyền tồn tại lâu hơn mục đích ban đầu là đoạn A."
+            }
+          },
+          {
+            "id": "m-g1-r5-03",
+            "q": "Paragraph C",
+            "ans": "ix",
+            "b": 6.5,
+            "ev": {
+              "p": 2,
+              "s": "Over the years, several boats were used."
+            },
+            "why": "Đoạn C: lần lượt thuyền chèo, ca nô hơi nước Heron, thuyền chạy dầu.",
+            "wrong": {
+              "v": "Đoạn C nói rõ Heron chưa bao giờ bị đắm.",
+              "iii": "Công việc của người lái thuyền là đoạn D."
+            }
+          },
+          {
+            "id": "m-g1-r5-04",
+            "q": "Paragraph D",
+            "ans": "iii",
+            "b": 6.5,
+            "ev": {
+              "p": 3,
+              "s": "the boatman did much more than deliver letters"
+            },
+            "why": "Đoạn D: người lái thuyền bán tem, chở bưu kiện, mua đồ hộ, đi bộ đưa thư mùa đông.",
+            "wrong": {
+              "v": "Hồ đóng băng là khó khăn, không phải thảm hoạ trên mặt nước.",
+              "ix": "Các con thuyền là đoạn C."
+            }
+          },
+          {
+            "id": "m-g1-r5-05",
+            "q": "Paragraph E",
+            "ans": "vii",
+            "b": 7,
+            "ev": {
+              "p": 4,
+              "s": "they formed a cooperative"
+            },
+            "why": "Đoạn E: đường mở, bưu điện chấm dứt hợp đồng, dân làng lập hợp tác xã mua thuyền.",
+            "wrong": {
+              "ii": "Đoạn E nói hệ quả của việc mở đường, không kể việc xây đường.",
+              "viii": "Văn bản không nhắc đường sắt."
+            }
+          },
+          {
+            "id": "m-g1-r5-06",
+            "q": "Paragraph F",
+            "ans": "i",
+            "b": 6.5,
+            "ev": {
+              "p": 5,
+              "s": "Most of its income comes from visitors"
+            },
+            "why": "Đoạn F: thuyền nay sống nhờ du khách, vẫn đưa thư cho hai trang trại, định chuyển sang mô-tơ điện.",
+            "wrong": {
+              "vi": "Ý thuyền tồn tại lâu hơn mục đích ban đầu là đoạn A.",
+              "vii": "Việc dân làng phản ứng khi có đường là đoạn E."
+            }
+          }
+        ]
+      },
+      {
+        "qtype": "r-summary",
+        "instr": "Complete the summary below. Choose ONE WORD ONLY from the text for each answer.",
+        "items": [
+          {
+            "id": "m-g1-r5-07",
+            "q": "As well as delivering letters, the boatman sold ___",
+            "ans": {
+              "accept": [
+                "stamps"
+              ]
+            },
+            "limit": 1,
+            "b": 6,
+            "ev": {
+              "p": 3,
+              "s": "He sold stamps, carried parcels and newspapers"
+            },
+            "why": "Người lái thuyền bán tem, chở bưu kiện và báo."
+          },
+          {
+            "id": "m-g1-r5-08",
+            "q": "When the lake froze, the mail was carried along the shore on ___.",
+            "ans": {
+              "accept": [
+                "foot"
+              ]
+            },
+            "limit": 1,
+            "b": 6,
+            "ev": {
+              "p": 3,
+              "s": "the mail had to be carried on foot along the shore path"
+            },
+            "why": "Khi hồ đóng băng, thư được mang đi bộ theo lối ven bờ."
+          },
+          {
+            "id": "m-g1-r5-09",
+            "q": "That journey along the shore took two ___.",
+            "ans": {
+              "accept": [
+                "days"
+              ]
+            },
+            "limit": 1,
+            "b": 6,
+            "ev": {
+              "p": 3,
+              "s": "a journey that took two days"
+            },
+            "why": "Chặng đường mất hai ngày."
+          },
+          {
+            "id": "m-g1-r5-10",
+            "q": "In 1970 the post office ended its ___.",
+            "ans": {
+              "accept": [
+                "contract"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 4,
+              "s": "until it ended its contract in 1970"
+            },
+            "why": "Bưu điện chấm dứt hợp đồng năm 1970."
+          },
+          {
+            "id": "m-g1-r5-11",
+            "q": "The villagers then formed a ___ and bought the boat.",
+            "ans": {
+              "accept": [
+                "cooperative",
+                "co-operative"
+              ]
+            },
+            "limit": 1,
+            "b": 7,
+            "ev": {
+              "p": 4,
+              "s": "they formed a cooperative"
+            },
+            "why": "Dân làng lập hợp tác xã để mua thuyền.",
+            "wrong": {
+              "campaign": "Vận động là việc làm trước, còn thứ họ lập để mua thuyền là hợp tác xã."
+            }
+          },
+          {
+            "id": "m-g1-r5-12",
+            "q": "Mail is still delivered all year to two ___ with no road access.",
+            "ans": {
+              "accept": [
+                "farms"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 5,
+              "s": "two farms on the north shore have no road access"
+            },
+            "why": "Hai trang trại ở bờ bắc không có đường vào vẫn nhận thư bằng thuyền."
+          },
+          {
+            "id": "m-g1-r5-13",
+            "q": "The cooperative is raising money for a new ___ motor.",
+            "ans": {
+              "accept": [
+                "electric"
+              ]
+            },
+            "limit": 1,
+            "b": 6.5,
+            "ev": {
+              "p": 5,
+              "s": "to replace the diesel engine with an electric motor"
+            },
+            "why": "Hợp tác xã đang quyên tiền để thay bằng mô-tơ điện."
+          }
+        ]
+      }
+    ]
+  }
+]
