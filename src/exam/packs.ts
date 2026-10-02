@@ -3,9 +3,11 @@
 
 import INDEX from './gen/index.json';
 import type { Group } from './content.ts';
+import type { MockTest } from './mock.ts';
 
 export interface PackInfo { file: string; groups: number; items: number; qtypes: string[]; exams: string[] }
-export interface Index { packs: Record<string, PackInfo>; items: Record<string, [number, number, 'L' | 'R', string]> }
+export interface MockEntry extends MockTest { n: { L: number; R: number }; dur: number }   // dur: giây âm thanh phần Nghe
+export interface Index { packs: Record<string, PackInfo>; items: Record<string, [number, number, 'L' | 'R', string]>; mocks: MockEntry[] }
 
 export const IDX = INDEX as unknown as Index;
 export const X_CACHE = 'el-x';

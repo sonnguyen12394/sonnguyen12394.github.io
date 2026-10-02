@@ -86,8 +86,9 @@ export interface Item {
 }
 
 export interface ScriptLine {
-  sp: string;             // người nói (tên hoặc A/B)
+  sp: string;             // người nói (tên hoặc A/B); "N" là người dẫn của đề (lời dẫn, không chứa đáp án)
   t: string;
+  pause?: number;         // giây im lặng sau câu này (thời gian đọc câu hỏi/soát lại như đề thật)
 }
 
 export interface Audio {
@@ -119,6 +120,7 @@ export interface Group {
   allow?: string[];       // từ vượt cấp được phép (thuật ngữ của chủ đề), người soạn phải liệt kê rõ
   items: Item[];
   tips?: string[];        // mẹo riêng cho bài này (tiếng Việt)
+  part?: string;          // đề thi thử: id phần (bài đọc/đoạn nghe) mà nhóm này thuộc về, xem src/exam/mock.ts
 }
 
 export function answerKind(it: Item, g: Group): AnswerKind {

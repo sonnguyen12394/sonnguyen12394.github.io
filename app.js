@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 42;
+const STATE_V = 18, APP_VERSION = 43;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -7956,6 +7956,11 @@ CHANGELOG.unshift({v:37,d:'2026-10-01',t:'Kiểm tra đầu vào thích ứng 15
   'Kho 96 câu mới (48 Đọc, 48 Nghe) từ band 3 đến 8,5; mỗi câu giải thích bằng tiếng Việt vì sao đúng, vì sao từng phương án sai và câu nào chứa đáp án.',
   'Bài nghe là tệp âm thanh tạo sẵn giọng Anh và Mỹ, phát một lần như thi thật; lời thoại và bản dịch hiện sau khi làm xong. Không nghe được thì bỏ qua phần Nghe.',
   'Nút Báo lỗi ở mọi câu khi xem lại.']});
+CHANGELOG.unshift({v:43,d:'2026-10-02',t:'Đề thi thử đầy đủ: IELTS Academic Đề 1 và VSTEP Đề 1',big:true,items:[
+  'Đề thi thử đúng định dạng đề thật: IELTS Nghe 4 phần 40 câu, Đọc 3 bài 40 câu (60 phút); VSTEP Nghe 35 câu (thông báo, hội thoại, bài nói), Đọc 4 bài 40 câu. Âm thanh phát một lần như phòng thi, có lời dẫn và thời gian đọc câu hỏi.',
+  'Tải trước toàn bộ âm thanh trước khi bắt đầu, nên mạng yếu không làm dừng giữa đề. Bị gián đoạn (tắt máy, đóng app) thì mở lại làm tiếp đúng chỗ.',
+  'Sau mỗi đề: điểm theo bảng quy đổi (IELTS chính thức; VSTEP thang 10), dạng câu bạn hay sai kèm nút luyện dạng đó, và giải thích từng câu: vì sao đúng, vì sao từng phương án sai, câu nào trong bài chứa đáp án. Câu sai tự vào sổ lỗi sai.',
+  'Mỗi đề đã qua phép thử "không có bài" và soát độc lập. Đây mới là 2 trong 15 đề theo chỉ tiêu (6 IELTS Academic, 3 General Training, 6 VSTEP); các đề còn lại đang soạn. Viết và Nói của đề thi thử sẽ có ở bản sau.']});
 CHANGELOG.unshift({v:42,d:'2026-10-01',t:'Câu trắc nghiệm không còn đoán được bằng mẹo',items:[
   'Viết lại phương án và một phần bài đọc, lời thoại của 278 câu trắc nghiệm, kể cả bài kiểm tra đầu vào: phương án sai đều hợp lý và chỉ sai vì một chi tiết trong bài, đáp án không còn là câu dài nhất, ôn hoà nhất hay "điển hình" nhất.',
   'Trước đây, chỉ nhìn câu hỏi và phương án (không đọc bài) đã đoán đúng khoảng 79%; nay còn 52%, và ở các dạng Nghe chỉ còn 23–41%. Nhờ vậy band ước tính từ bài kiểm tra đầu vào sát thực lực hơn.',
@@ -7984,7 +7989,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.af108cc50a.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.07d155e5c3.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),

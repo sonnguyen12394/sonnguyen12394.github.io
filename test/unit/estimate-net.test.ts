@@ -38,10 +38,12 @@ test('ước tính gần năng lực thật, có khoảng sai số, quy đổi C
   assert.equal(gaps(p, 7)[0]!.gap, 99);
 });
 
-test('nâng cấp tiến độ ôn thi v1 → v2 giữ dữ liệu cũ, đồng ý chia sẻ cần tuổi hợp lệ', () => {
+test('nâng cấp tiến độ ôn thi v1 → v3 giữ dữ liệu cũ, đồng ý chia sẻ cần tuổi hợp lệ', () => {
   const v1 = { v: 1, exam: 'vstep', target: 6, attempts: [{ id: 'm1', exam: 'vstep', day: 3, total: 35, correct: 20, skill: 'L' }] };
   const x = migrateX(v1);
-  assert.equal(x.v, 2);
+  assert.equal(x.v, 3);
+  assert.equal(x.mockRun, null);
+  assert.deepEqual(x.mockLog, {});
   assert.equal(x.exam, 'vstep');
   assert.equal(x.attempts.length, 1);
   assert.deepEqual(x.resp, []);

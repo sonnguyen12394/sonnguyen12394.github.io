@@ -45,6 +45,8 @@ function synth(lines, voices, speed) {
     out.push(new Float32Array(Math.round(gap * sr)));
     const a = t.generate({ text: speakable(l.t), sid, speed });
     out.push(a.samples);
+    // Thời gian đọc câu hỏi / soát lại như đề thật ("You now have 30 seconds to look at questions 1 to 6").
+    if (l.pause) out.push(new Float32Array(Math.round(l.pause * sr)));
     prev = l.sp;
   }
   out.push(new Float32Array(Math.round(0.5 * sr)));
@@ -73,6 +75,8 @@ for (const f of walk(path.join(ROOT, 'content/exam'))) {
   for (const g of arr) {
     if (g.kind !== 'listening' || !g.script || (want.size && !want.has(g.id))) continue;
     if (!g.voices) throw new Error(`${g.id}: thiếu "voices" (người nói → giọng)`);
+    // Phần đề thi thử (content/exam/mock) không có g.mode: chỉ bản tốc độ thi, nghe một lần như đề thật; khi xem lại,
+    // app phát chậm bằng playbackRate (giữ cao độ) nên không lưu thêm tệp.
     // Bộ luyện: bản thường + bản chậm (Kokoro nói chậm tự nhiên hơn kéo giãn). Bản có tiếng ồn tạo ngay trên máy người học
     // (Web Audio, src/exam/views/practice.ts) để không lưu thêm một tệp cho mỗi bài; --noise vẫn tạo tệp nếu cần.
     const variants = [['file', 1, false, ''], ...(SLOW || g.mode === 'practice' ? [['slow', 0.8, false, '.slow']] : []), ...(NOISE ? [['noise', 1, true, '.noise']] : [])];

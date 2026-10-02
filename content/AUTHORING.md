@@ -8,8 +8,15 @@ Rút ra từ đợt soát v41–v42. Trước v42, một phiên AI chỉ thấy 
 2. **Phương án sai phi lý hoặc cực đoan** ("completely", "only", "all"). Đáp án thì là phương án ôn hoà, cụ thể nhất.
 3. **Hội tụ.** Viết phương án sai bằng cách sửa một chi tiết của đáp án ("brother / sister", "15 / 25 chỗ"), nên đáp án là "tâm" của các phương án.
 4. **Dài nhất, vị trí, chép nguyên văn.** Đáp án dài nhất, hay rơi vào một vị trí, hoặc lặp đúng chữ trong bài.
+5. **Mạch truyện của cả bộ câu (GĐ6).** Khi người đoán thấy cả 10 câu của một bài, các đáp án đúng ghép lại thành câu chuyện của bài; phương án nhiễu "không có trong bài" thì lạc mạch. Đề thi thử VSTEP Đề 1 bản đầu: 93% câu Đọc đoán đúng. Sửa phương án mà vẫn giữ chi tiết mặc định trong bài: vẫn 90%. Chỉ khi đổi chính chi tiết trong bài sang điều không mặc định mới xuống 20%.
 
 ## 2. Quy tắc
+
+**Quy trình soạn một câu (bắt buộc với đề thi thử):**
+1. Viết câu hỏi và bốn phương án song song, cùng loại, đều hợp lý khi chưa đọc bài.
+2. Hỏi: người không đọc bài sẽ chọn phương án nào? Thường không chọn phương án đó làm đáp án; chỉ thỉnh thoảng giữ nó làm đáp án, để "tránh phương án hiển nhiên" không thành quy luật.
+3. Viết bài sau, cho khớp đáp án đã chọn. Các phương án còn lại xuất hiện trong bài ở vai trò khác: người khác, thời điểm khác, điều đã thử rồi bỏ, con số khác.
+4. Đọc lại cả bộ câu của bài như người đoán: câu hỏi này có lộ đáp án câu khác không? Có câu "bước ngoặt" (at first, surprised, assumed…) mà đáp án là phương án ngược đời duy nhất không?
 
 - **Chi tiết trong bài không mặc định.** Điều bài nói phải hợp lý nhưng không phải điều ai cũng đoán được. Đáp án "điển hình" trở thành phương án nhiễu, tốt nhất được nhắc trong bài như một cái bẫy ("People assume I wanted to save my family's land, but…").
 - **Mỗi phương án sai đều hợp lý khi chưa đọc bài,** và sai vì một chi tiết cụ thể trong bài. `wrong` nói rõ chi tiết đó bằng tiếng Việt.
@@ -17,6 +24,10 @@ Rút ra từ đợt soát v41–v42. Trước v42, một phiên AI chỉ thấy 
 - **Bài có kiến thức thật** (khoa học, lịch sử): không bịa số liệu về thế giới thật. Hỏi chi tiết riêng của bài (ví dụ của người nói, khảo sát địa phương, trình tự lập luận), không hỏi điều sách giáo khoa nào cũng có.
 - **Đáp án diễn đạt lại**, không chép nguyên cụm dài từ bài, nhất là ở B2 trở lên.
 - **Câu hỏi bỏ lửng** (không có "?") thì phương án phải nối tiếp được câu đó.
+- **Câu vốn đoán được** (từ vựng trong ngữ cảnh, quy chiếu, ý chính): tối đa 1–2 câu mỗi bài, và phương án nhiễu cũng phải hợp ngữ cảnh.
+- **Danh sách dùng chung** (tiêu đề, người, nơi chốn, khung từ): không xếp theo thứ tự xuất hiện trong bài. Tên gọi không được gợi đáp án; ví dụ tên phòng "Roof Garden" gợi ngay việc ăn uống, nên dùng tên trung tính. Có ít nhất một phương án nhiễu gần nghĩa với từng đáp án.
+- **Nối nửa câu:** mỗi nửa đầu phải hợp ngữ pháp và hợp nghĩa với ít nhất hai nửa sau. Nếu không làm được, dùng dạng khác.
+- **Bài nghị luận:** đừng hỏi lập trường của tác giả bằng những mệnh đề suy ra được từ mạch lập luận. Hỏi chi tiết, ví dụ, số liệu, và quan điểm của tác giả về điểm phụ.
 - **Ghi cấp độ theo độ khó thật của câu**, không theo độ khó của bài. Câu C1 phải có suy luận, thái độ hoặc chức năng đoạn văn.
 
 ## 3. Kiểm tra tự động (`npm run content`, chặn CI)
@@ -26,6 +37,8 @@ Rút ra từ đợt soát v41–v42. Trước v42, một phiên AI chỉ thấy 
 | `checkKeyBalance` | Vị trí đáp án dồn về một chỗ (mọi chế độ, kể cả bài đầu vào) |
 | `checkLengthCue` | Đáp án là phương án dài nhất ở quá 1/n + 15 điểm % số câu |
 | Câu bỏ lửng | Phương án viết hoa đầu câu, không nối tiếp được câu hỏi |
+| Thứ tự danh sách (đề thi thử) | Đáp án các câu theo đúng thứ tự danh sách dùng chung |
+| `checkMock` | Tổng điểm, điểm từng phần, độ dài theo vị trí, độ khó tăng dần, cân bằng giữa các đề (±0,25 band) |
 | Lược đồ | `wrong` cho mọi phương án sai, mỗi lời giải thích ≥ 10 ký tự |
 
 Luật tĩnh chỉ bắt được tín hiệu đếm được. Thước đo nghiệm thu là phép thử không có bài ở mục 4.
