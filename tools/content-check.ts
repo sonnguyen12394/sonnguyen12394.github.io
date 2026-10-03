@@ -109,7 +109,7 @@ const worst = groups.map(g => ({ id: g.id, r: levelReport(g, list).ratio })).sor
   }
   const ids = new Set(Object.values(ws).flat().map(t => String(t.id)));
   const MIN: Record<string, number> = { w1ac: 150, w1gt: 150, w2: 250, s2: 150, vw1: 120, vw2: 250 };
-  const words = (t: string): number => t.split(/\s+/).filter(w => /[a-z]/i.test(w)).length;
+  const words = (t: string): number => t.split(/\s+/).filter(w => /[a-z0-9]/i.test(w)).length;
   for (const sm of ws.samples ?? []) {
     if (!V.sample!(sm)) { schemaErr++; console.error(`✗ ws ${String(sm.id)}: ${wajv.errorsText(V.sample!.errors)}`); continue; }
     const task = String(sm.task), pr = String(sm.prompt);

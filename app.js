@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 49;
+const STATE_V = 18, APP_VERSION = 50;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},e:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -6129,7 +6129,7 @@ function vxEvidence(V){ if(typeof ELCORE==='undefined') return; const t=today();
 // ---------- Thi thử Viết/Nói IELTS (M6) + bài mẫu chú thích band ----------
 // Đề và bài mẫu là dữ liệu (content/ws/*.json → WS_JSON, tải khi cần). Dùng chung hẹn giờ, ghi âm, máy chép lời với thi thử VSTEP.
 // Tự chấm 4 tiêu chí công khai của IELTS ở thang band 4–9, so với bài mẫu có chú thích; máy chấm luật chấm cùng bài (engine/grader.ts).
-const WS_JSON = 'data/exam/ws.b148fb42ee.json';   // tools/build.mjs ghi
+const WS_JSON = 'data/exam/ws.05f4d14542.json';   // tools/build.mjs ghi
 let WS=null, _wsP=null;
 function wsLoad(){ if(WS) return Promise.resolve(WS); return _wsP ||= fetch(WS_JSON).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }).then(d=>{ WS=d; return d; }).catch(e=>{ _wsP=null; throw e; }); }
 const IX_MIN = {w1:20,w2:40,s1:5,s2:3,s3:5}, IX_PREP = {s2:60}, IX_WMIN = {w1:150,w2:250};
@@ -6147,7 +6147,7 @@ const ixRound = x => Math.floor(x*2+.5+1e-9)/2;
 const ixRub = (R,part,self) => `<div class="stack" style="gap:6px">${R.map(([t,d],i)=>`<div class="stack" style="gap:4px"><span><b>${t}</b> <span class="hint">${d}</span></span><span class="row" style="gap:4px">${[4,5,6,7,8,9].map(v=>`<button class="btn small ${self[i]===v?'primary':''}" data-act="vxself" data-p="${part}" data-i="${i}" data-v="${v}" aria-pressed="${self[i]===v}">${v}</button>`).join('')}</span></div>`).join('')}<p class="hint">Chấm band 4–9 cho từng tiêu chí sau khi đọc bài mẫu bên trên: bài bạn giống bài mẫu band nào nhất ở tiêu chí đó?</p></div>`;
 function wsSamplesHtml(task){ if(!WS){ wsLoad().then(()=>{ if(ui.view==='vx') render(); }).catch(()=>{}); return ''; }
   const ss=(WS.samples||[]).filter(x=>x.task===task).sort((a,b)=>a.band-b.band); if(!ss.length) return '';
-  const vs=task[0]==='v', f=b=>String(b).replace('.',',');
+  const vs=task[0]==='v', f=b=>b.toFixed(1).replace('.',',');
   return `<details class="panel stack"><summary><b>Bài mẫu ${vs?'điểm':'band'} ${ss.map(x=>f(x.band)).join(' · ')}</b> <span class="hint">· so sánh trước khi tự chấm</span></summary>
     <p class="hint">Bài mẫu do app soạn, ${vs?'điểm':'band'} ghi kèm là ước tính theo mô tả tiêu chí công khai, không phải điểm chấm chính thức.</p>
     ${ss.map(x=>`<section class="stack" style="gap:6px"><h3>${vs?'Điểm':'Band'} ${f(x.band)}</h3><p lang="en" style="white-space:pre-wrap">${esc(x.text)}</p>
@@ -8087,6 +8087,11 @@ CHANGELOG.unshift({v:49,d:'2026-10-03',t:'Bạn đã sẵn sàng đi thi chưa?'
   'Với IELTS, VSTEP: app mô phỏng điểm 4 kỹ năng theo đúng cách tính điểm của kỳ thi, cho khả năng đạt và khoảng điểm tổng có thể; thiếu kỹ năng nào thì nói rõ và có nút làm bài đó.',
   'Viết/Nói được chấm bởi hai người chấm độc lập: phần tự chấm của bạn và máy chấm luật. Khi bạn ghi điểm thi thật, app đo bạn tự chấm cao hay thấp hơn thật bao nhiêu và tự trừ độ lệch đó.',
   'Mục tiêu kỳ thi chỉ được xác nhận đạt bằng điểm thi thật; mục tiêu CEFR, giao tiếp đạt khi mọi năng lực và bài làm thật đã qua, 14 ngày không quên khi ôn.']});
+CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài mẫu theo band',big:true,items:[
+  'Tab Ôn thi (IELTS): thi thử Viết đủ Task 1 (biểu đồ cho Academic, viết thư cho General) và Task 2, tính giờ như thi thật; thi thử Nói đủ Part 1–3 với thẻ đề, ghi âm và máy chép lời.',
+  'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
+  'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
+  '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
 CHANGELOG.unshift({v:46,d:'2026-10-03',t:'App đo bạn đã thật sự thành thạo gì',big:true,items:[
   'Mỗi câu trả lời (từ vựng, ngữ pháp, câu ôn thi) giờ là một bằng chứng: app ước tính mức thành thạo của từng năng lực ở 5 mức (nhận ra, hiểu, nhớ ra, dùng có kiểm soát, dùng tự do) kèm độ tin cậy. Đoán mò, lặp lại cùng câu trong ngày được tính nhẹ hơn.',
   'Câu "Tôi có thể…" chỉ đạt khi bài làm đủ tốt, không còn đạt chỉ vì làm đủ số bài: làm xong mà điểm thấp thì vẫn hiện là đang học.',
@@ -8135,7 +8140,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.40a28c4338.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.f17bfe0ce7.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
