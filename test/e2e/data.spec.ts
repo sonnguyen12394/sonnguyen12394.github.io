@@ -15,7 +15,9 @@ test('nâng cấp dữ liệu v17 → v18 không mất tiến độ', async ({ p
   await expect(page.getByRole('heading', { name: 'Bạn ôn thi gì?' })).toBeVisible();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('vocab-ladder-v1') || '{}'));
   expect(saved.v).toBe(18);
-  expect(saved.money).toBeUndefined();
+  // tim theo lỗi của v16–v17 bị bỏ khi nâng cấp; năng lượng theo lượt (v51) là bản ghi mới, đầy năng lượng
+  expect(saved.money?.h).toBeUndefined();
+  expect(saved.money?.e ?? 5).toBe(5);
   expect(saved.xp).toBe(777);
   expect(saved.words.price.learned).toBe(true);
   expect(saved.words.price.ivl).toBe(12);

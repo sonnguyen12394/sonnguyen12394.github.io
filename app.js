@@ -1003,7 +1003,10 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 50;
+const STATE_V = 18, APP_VERSION = 51;
+// Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
+const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
+const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},e:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -1069,6 +1072,7 @@ function sanitizeState(x){
   const g=obj(x.games); x.games={speed:Math.round(numIn(g.speed,0,1e4,0)),match:numIn(g.match,0,1e5,0),last:g.last==null?undefined:numIn(g.last,0,1e6),
     ch:(Array.isArray(g.ch)?g.ch:[]).filter(c=>c&&typeof c==='object'&&LVS.includes(c.L)).slice(0,10).map(c=>({day:numIn(c.day,0,1e6,0),L:c.L,me:Math.round(numIn(c.me,0,CH_N,0)),them:c.them==null?null:Math.round(numIn(c.them,0,CH_N,0)),name:c.name==null?null:String(c.name).slice(0,24)}))};
   const c=obj(x.cos); x.cos={own:(Array.isArray(c.own)?c.own:[]).filter(k=>!!ACC_KEYS[k]),sk:(Array.isArray(c.sk)?c.sk:[]).filter(k=>!!SKIN_KEYS[k]),acc:ACC_KEYS[c.acc]?c.acc:'',skin:SKIN_KEYS[c.skin]?c.skin:''};
+  if(x.money!=null){ const mo=obj(x.money); x.money={e:numIn(mo.e,0,EN.cap,EN.cap),t:numIn(mo.t,0,1e14,Date.now()),s:!!mo.s,out:Math.round(numIn(mo.out,0,1e6,0)),blk:Math.round(numIn(mo.blk,0,1e8,0)),ad:Math.round(numIn(mo.ad,0,1e7,0)),used:Math.round(numIn(mo.used,0,1e7,0)),bs:numIn(mo.bs,0,1e14,0),be:numIn(mo.be,0,1e14,0)}; }
   const m=obj(x.me); x.me={...m,src:SRC[m.src]?m.src:'',who:typeof m.who==='string'&&/^[a-z]{0,12}$/.test(m.who)?m.who:'',target:LVS.includes(m.target)?m.target:'',mins:numIn(m.mins,0,600),deadline:m.deadline==null?null:numIn(m.deadline,0,1e6,null)};
   const se=obj(x.set); x.set={...se,path:typeof se.path==='string'&&/^[a-z]{0,12}$/.test(se.path)?se.path:'',goal:Math.round(numIn(se.goal,5,500,20)),newMax:Math.round(numIn(se.newMax,0,500,20)),rate:numIn(se.rate,.5,1.5,.9),voice:typeof se.voice==='string'?se.voice.slice(0,80):'',remind:/^\d\d:\d\d$/.test(se.remind||'')?se.remind:'20:00',asr:se.asr===true,notif:se.notif===true};
   x.start=Math.round(numIn(x.start,0,1e6,0)); x.offset=Math.round(numIn(x.offset,0,1e5,0));
@@ -2391,7 +2395,7 @@ function renderChrome(){
   document.getElementById('nav').innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${badge(k)}</button>`).join('');
   const bn=document.getElementById('bnav');
   if(bn){ bn.style.gridTemplateColumns=`repeat(${NAV.length},1fr)`; } if(bn) bn.innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}><span class="bi">${ico(ic)}</span><span>${l}</span>${badge(k)}</button>`).join('');
-  document.getElementById('clock').innerHTML = `${FOCUS()?'':`${ico('flame')} <b>${streak()}</b> ngày · `}hôm nay <b>${Math.min(goalCount(),goal())}/${goal()}</b>${st.set.demo?` · ngày ${dayNo(today())} <button class="btn small" data-act="nextday" title="Chế độ demo: tua nhanh thời gian để thử lịch ôn">+1 ngày</button>`:''}`;
+  document.getElementById('clock').innerHTML = `${FOCUS()?'':`${ico('flame')} <b>${streak()}</b> ngày · `}hôm nay <b>${Math.min(goalCount(),goal())}/${goal()}</b>${FOCUS()?'':enPill()}${st.set.demo?` · ngày ${dayNo(today())} <button class="btn small" data-act="nextday" title="Chế độ demo: tua nhanh thời gian để thử lịch ôn">+1 ngày</button>`:''}`;
 }
 function viewMore(){
   const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
@@ -3774,7 +3778,7 @@ function mergeState(a,b){
   x.badges=[...new Set([...(a.badges||[]),...(b.badges||[])])];
   x.cos={...a.cos,own:[...new Set([...(a.cos.own||[]),...(b.cos.own||[])])],sk:[...new Set([...(a.cos.sk||[]),...(b.cos.sk||[])])]};
   x.games={...a.games,speed:Math.max(a.games.speed||0,b.games.speed||0),match:[a.games.match,b.games.match].filter(Boolean).sort((p,q)=>p-q)[0]||0,ch:[...(a.games.ch||[]),...(b.games.ch||[])].sort((p,q)=>q.day-p.day).slice(0,10)};
-  x.start=Math.min(a.start??1e9,b.start??1e9); x.onboarded=true; if(!(a.me&&a.me.who)&&b.me) x.me=b.me;
+  x.start=Math.min(a.start??1e9,b.start??1e9); x.onboarded=true; x.money=moneyMerge(a.money,b.money); if(!(a.me&&a.me.who)&&b.me) x.me=b.me;
   for(const k of ['story','cando','dlg','fn','pron','lread','sounds','wtask','stask','oral','gwrite','lis','shadow','rx','pv','med','sp','pa']) x[k]={...(b[k]||{}),...(a[k]||{})};
   { const seen=new Set(); x.exam=[...(a.exam||[]),...(b.exam||[])].filter(e=>{ const k=JSON.stringify(e); return seen.has(k)?false:seen.add(k); }).sort((p,q)=>q.day-p.day).slice(0,10); }
   x.app={seen:Math.max((a.app||{}).seen||0,(b.app||{}).seen||0),vh:((a.app||{}).vh||[]).slice()};
@@ -4553,9 +4557,40 @@ const homePanel = () => `<section class="panel stack"><h3>Địa chỉ chính th
   <p class="num" style="overflow-wrap:anywhere"><a href="${HOME_URL}" target="_blank" rel="noopener">${HOME_URL}</a></p>
   <div class="row"><button class="btn" data-act="share">📤 Giới thiệu app cho bạn bè</button></div>
   <p class="hint">Ai cũng mở được, trên điện thoại hay máy tính, không cần tài khoản. Trên điện thoại: mở link rồi chọn “Thêm vào Màn hình chính” / “Cài đặt ứng dụng” để dùng như app, kể cả khi mất mạng.</p></section>`;
-/* ================== MIỄN PHÍ 100% (v35) ==================
-   Không tim, không giới hạn lượt học, không quảng cáo, không gói trả phí, không khoá nội dung (yêu cầu 3.1).
-   Bản v16–v34 từng có tim, quảng cáo nội bộ và gói Super: đã gỡ hẳn; migrate v17 → v18 bỏ st.money. */
+/* ================== KIẾM TIỀN GIẢ LẬP (M7, docs/SPEC.md §11) ==================
+   Bản thử trên web chạy đủ cơ chế kiểu Duolingo nhưng KHÔNG thu tiền, KHÔNG có quảng cáo của bên thứ ba:
+   - Năng lượng theo lượt: mỗi bài mới/luyện tập tốn 1 lượt, đúng hay sai không đổi (engine cố ý cho câu vừa đủ khó); hồi theo thời gian.
+   - Không tốn: ôn đến hạn, chẩn đoán, kiểm tra cấp, bài làm thật (hội thoại, viết/nói theo đề, thi thử), đề thi thử (để không làm sai phép đo).
+   - Super giả lập: công tắc trong Cài đặt; bật thì không giới hạn năng lượng, không ô quảng cáo.
+   - Quảng cáo giả lập: một ô ở màn kết quả bài học (bản miễn phí), chỉ quảng bá Super.
+   - Ghi trên máy: số lần hết năng lượng, số phút bị chặn, số ô quảng cáo đã hiện — để đo ảnh hưởng lên việc học của người sáng lập.
+   Bản v16–v34 từng có tim theo lỗi; v35–v50 miễn phí hoàn toàn; v51 thêm lại theo spec (năng lượng theo lượt, không theo lỗi). */
+function money(){ const m=st.money||(st.money={}); m.e??=EN.cap; m.t??=Date.now(); m.s??=false; for(const k of ['out','blk','ad','used']) m[k]??=0; return m; }
+// Năng lượng hiện tại (số thực), cộng phần đã hồi từ lần ghi trước.
+function enNow(){ const m=money(), now=Date.now(); if(m.s) return EN.cap;
+  if(m.e<EN.cap) m.e=Math.min(EN.cap,m.e+Math.max(0,now-m.t)/(EN.regenMin*60000)); m.t=now; return m.e; }
+const enMinsTo = need => Math.max(0,Math.ceil((need-enNow())*EN.regenMin));
+// Kết thúc khoảng bị chặn: cộng số phút từ lúc hết năng lượng tới lúc có lại (hoặc tới lúc bật Super).
+function enUnblock(){ const m=money(); if(!m.bs) return; const end=Math.min(Date.now(),m.be||Date.now()); m.blk+=Math.max(0,Math.round((end-m.bs)/60000)); m.bs=0; m.be=0; }
+function enSpend(what){ const m=money(); if(m.s){ enUnblock(); return true; }
+  const e=enNow(); if(e>=EN.cost){ enUnblock(); m.e=e-EN.cost; m.used++; save(); return true; }
+  m.out++; if(!m.bs){ m.bs=Date.now(); m.be=Date.now()+enMinsTo(EN.cost)*60000; } save(); evc('en:out:'+what);
+  modal({ic:'⚡',title:'Hết năng lượng',sub:`Mỗi bài mới hoặc luyện tập tốn ${EN.cost} lượt; năng lượng hồi 1 lượt mỗi ${EN.regenMin/60} giờ, lượt tiếp theo sau khoảng ${enMinsTo(EN.cost)} phút. Ôn tập đến hạn, bài chẩn đoán, bài làm thật và đề thi thử không tốn năng lượng. (Bản thử: năng lượng và gói Super là giả lập, không thu tiền.)`,
+    buttons:[{label:'Ôn tập đến hạn (miễn phí)',act:'enrev',primary:true},{label:'Bật Super (giả lập)',act:'supersim'},{label:'Để sau',act:'mclose'}]});
+  return false; }
+const enPill = () => { const m=money(); return m.s?' · <span title="Gói Super giả lập">⚡ Super</span>':` · <span title="Năng lượng: mỗi bài mới tốn ${EN.cost}, hồi 1 lượt mỗi ${EN.regenMin/60} giờ">⚡ <b>${Math.floor(enNow())}</b>/${EN.cap}</span>`; };
+const _adSeen = new WeakSet();
+// Ô quảng cáo giả lập ở màn kết quả (bản miễn phí): không tải gì từ bên ngoài, chỉ quảng bá Super; đếm mỗi phiên một lần.
+function adPanel(key){ const m=money(); if(m.s) return ''; if(key&&!_adSeen.has(key)){ _adSeen.add(key); m.ad++; save(); }
+  return `<aside class="panel stack" aria-label="Quảng cáo giả lập"><span class="eyebrow">Quảng cáo · giả lập</span><p style="margin:0"><b>Super</b>: học không giới hạn năng lượng, không quảng cáo.</p><p class="hint" style="margin:0">Bản thử chưa thu tiền: ô này chỉ để đo trải nghiệm khi có quảng cáo.</p><div class="row"><button class="btn small" data-act="supersim">Bật Super (giả lập)</button></div></aside>`; }
+// Gộp hai máy: Super bật ở máy nào cũng giữ; bộ đếm lấy lớn hơn; năng lượng lấy theo bản ghi mới hơn.
+function moneyMerge(a,b){ if(!a&&!b) return undefined; a=a||{}; b=b||{}; const n=(a.t||0)>=(b.t||0)?a:b;
+  return {e:n.e??EN.cap,t:n.t??Date.now(),s:!!(a.s||b.s),out:Math.max(a.out||0,b.out||0),blk:Math.max(a.blk||0,b.blk||0),ad:Math.max(a.ad||0,b.ad||0),used:Math.max(a.used||0,b.used||0),bs:n.bs||0,be:n.be||0}; }
+function moneyPanel(){ const m=money();
+  return `<section class="panel stack"><h3>Năng lượng và gói Super (giả lập)</h3>
+    <p class="muted">Mỗi bài mới hoặc luyện tập tốn ${EN.cost} lượt năng lượng (tối đa ${EN.cap}, hồi 1 lượt mỗi ${EN.regenMin/60} giờ). Ôn đến hạn, chẩn đoán, bài làm thật và đề thi thử không tốn. Bản thử chưa thu tiền; Super chỉ là công tắc.</p>
+    <div class="spread"><span><b>Super</b> <span class="hint">· không giới hạn năng lượng, không ô quảng cáo</span></span><button class="btn small ${m.s?'primary':''}" data-act="supertoggle" aria-pressed="${m.s}">${m.s?'Đang bật · Tắt':'Bật Super'}</button></div>
+    <p class="hint num">Số liệu trên máy: hết năng lượng ${m.out} lần · bị chặn ${m.blk} phút · ${m.used} bài đã tốn năng lượng · ${m.ad} ô quảng cáo đã hiện.</p></section>`; }
 // Công cụ lớp học (không server): giáo viên mở nhiều file dữ liệu ẩn danh của học sinh → bảng cả lớp. File là dữ liệu không tin cậy: chỉ đọc số, chuỗi qua esc().
 function classRow(o,name){ if(!o||typeof o!=='object'||o.kind!=='vocab-ladder-research') return null;
   const n=(v,hi)=>numIn(v,0,hi,0), ob=v=>v&&typeof v==='object'&&!Array.isArray(v)?v:{}, day=n(o.day,1e5);
@@ -4790,7 +4825,7 @@ const SCOPE = {
 };
 
 /* ================== ACTIONS ================== */
-function startSession(kind,items,uid,lvl=null){
+function startSession(kind,items,uid,lvl=null){ if(EN_COST.has(kind)&&!enSpend(kind)) return;
   const before={}, bst={}; items.forEach(x=>{ before[x.wid]=mastery(x.wid); bst[x.wid]=wStage(x.wid); });
   ui.sess={kind,uid,lvl,q:items,i:0,res:[],ans:null,ord:[],retried:new Set(),before,bst,gold:goldIdx(items.length)};
   evc('s:'+kind); go('session');
@@ -4861,7 +4896,7 @@ function seed(){
 }
 
 /* ---------- Ngữ pháp: phiên luyện ---------- */
-function gStart(kind,items,gid=null,lvl=null){
+function gStart(kind,items,gid=null,lvl=null){ if(EN_COST.has(kind)&&!enSpend('g'+kind)) return;
   const before={}; items.forEach(x=>before[x.gid]=gmastery(x.gid));
   ui.gs={kind,gid,lvl,q:items,i:0,res:[],ans:null,ord:[],retried:new Set(),before,gold:goldIdx(items.length)};
   go('gsess');
@@ -6254,6 +6289,9 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
     case 'pdxnext': return pdxNext(d.skip==='1');
     case 'noise': if(NOISE.on) noiseOff(); else noiseOn(); return render();
     case 'vxnew': return startVx(d.m,d.ex);
+    case 'enrev': closeModal(); return go('review');
+    case 'supersim': { const m=money(); enNow(); m.s=true; enUnblock(); save(); closeModal(); toast('Đã bật Super (giả lập, không thu tiền).'); evc('super:on'); return render(); }
+    case 'supertoggle': { const m=money(); enNow(); m.s=!m.s; if(m.s) enUnblock(); else m.t=Date.now(); save(); evc(m.s?'super:on':'super:off'); return render(); }
     case 'vxstep': return vxStep(d.s);
     case 'vxquit': recStop(); vxAsrStop(); return go('games');
     case 'vxself': { const V=ui.vx, p=d.p; (V.self[p]||(V.self[p]=[]))[+d.i]=+d.v; return render(); }
@@ -6708,7 +6746,7 @@ function viewAbout(){ const cs=contentStats();
   <section class="stack"><span class="eyebrow">Minh bạch</span><h1>Về English Ladder</h1><p class="muted">App học tiếng Anh cho người Việt, theo khung năng lực châu Âu (CEFR), từ người mới tinh đến C2.</p></section>
   <section class="panel stack"><h3>Cam kết</h3><ul style="margin:0;padding-left:20px;display:grid;gap:6px">
     <li><b>Mọi bài học miễn phí.</b> Không khoá bài sau tường phí.</li>
-    <li><b>Không quảng cáo của bên thứ ba, không bán dữ liệu.</b> Tiến độ lưu trên máy bạn; đồng bộ nhiều máy là tuỳ chọn, bằng mã, không cần tài khoản.</li>
+    <li><b>Không quảng cáo của bên thứ ba, không bán dữ liệu.</b> Bản thử trên web có năng lượng, gói Super và ô quảng cáo <b>giả lập</b> (không thu tiền, không tải gì từ bên ngoài) để thử cơ chế trước khi lên cửa hàng ứng dụng; tắt bằng công tắc Super trong Cài đặt. Tiến độ lưu trên máy bạn; đồng bộ nhiều máy là tuỳ chọn, bằng mã, không cần tài khoản.</li>
     <li><b>Không dùng AI để chấm hay tạo nội dung trong app.</b> Chấm bằng quy tắc minh bạch (từ khoá, luật lỗi), nên máy chỉ dò lỗi hay gặp, không thay được giáo viên.</li>
     <li><b>Mã nguồn công khai.</b> Ai cũng xem được app làm gì với dữ liệu của mình.</li></ul>
     <div class="row"><a class="btn" href="${REPO_URL}" target="_blank" rel="noopener">Xem mã nguồn</a><a class="btn ghost" href="privacy.html" target="_blank" rel="noopener">Quyền riêng tư</a></div></section>
@@ -6761,7 +6799,7 @@ viewWelcome = function(){ const h=_viewWelcome30();
   // v35: cùng bố cục với màn chào tĩnh trong index.html (vẽ trước khi app.js nạp xong), nên khi app vẽ lại không xô lệch bố cục.
   return `<section class="hello"><h1>Ôn IELTS và VSTEP miễn phí</h1>
     <p class="muted">Biết band ước tính từng kỹ năng, học theo kế hoạch tới ngày thi.<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
-  <p class="hint hello-trust">Không quảng cáo · Không gói trả phí · Không bán dữ liệu · <button class="linkbtn" data-go="about">Về app</button></p>
+  <p class="hint hello-trust">Bản thử chưa thu tiền · Không quảng cáo bên thứ ba · Không bán dữ liệu · <button class="linkbtn" data-go="about">Về app</button></p>
   <div class="actbar hello-act"><button class="btn primary" data-act="xstart">Bắt đầu ôn thi</button><button class="btn" data-act="quickstart">Học tiếng Anh nền tảng A1 → C2</button></div>
   ${restore}`; };
 
@@ -7387,6 +7425,12 @@ const _cvAnswer0 = cvAnswer; cvAnswer = function(text){ const C=ui.cv; if(!C||C.
   const q=(C.pre?C.pre+' ':'')+nd.a, t=String(text||'').trim(); if(!t) return;
   C.hist=(C.hist||'')+`<div class="dl"><span class="who">${esc(c.who)}</span><span lang="en">${esc(q)}</span></div><div class="dl me B"><span class="who">Bạn</span><span lang="en">${esc(t)}</span></div>`;
   return _cvAnswer0(t); };
+// M7: ô quảng cáo giả lập ở màn kết quả bài tốn năng lượng; bảng năng lượng/Super trong Cài đặt; bắt đầu học unit mới tốn năng lượng.
+{ const _vs0=viewSummary; viewSummary=function(){ const h=_vs0(), r=ui.summary; return r&&EN_COST.has(r.kind)?h+adPanel(r):h; };
+  const _vg0=viewGSum; viewGSum=function(){ const h=_vg0(), r=ui.gsum; return r&&EN_COST.has(r.kind)?h+adPanel(r):h; };
+  const _st0=viewSettings0; viewSettings0=function(){ return _st0()+moneyPanel(); };
+  const _go0=go; go=function(view,extra={}){ const L=extra&&extra.learn; if(view==='learn'&&L&&!L.i&&!extra._nohist&&!U(L.uid).learned&&!enSpend('learn')) return; return _go0(view,extra); };
+  ['enrev','supersim','supertoggle'].forEach(a=>DETAIL_SAFE_ACT.add(a)); }
 DETAIL_SAFE_VIEW.add('conv'); TRANSIENT.conv='talk'; ['cvgo','cvquit','cvplay','cvshow','cvvi','cvhint','cvagain'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('button'); if(!b) return; const d=b.dataset;
   switch(d.act){
@@ -8092,6 +8136,11 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:51,d:'2026-10-03',t:'Năng lượng và gói Super (bản thử, chưa thu tiền)',big:true,items:[
+  'Năng lượng theo lượt như Duolingo: mỗi bài mới hoặc luyện tập tốn 1 lượt (tối đa 5, hồi 1 lượt mỗi 2 giờ), đúng hay sai không mất thêm. Số năng lượng ở góc trên màn hình.',
+  'Không tốn năng lượng: ôn tập đến hạn, bài chẩn đoán, kiểm tra cấp, bài làm thật (hội thoại, viết/nói theo đề, thi thử) và đề thi thử.',
+  'Gói Super giả lập (Cài đặt → Năng lượng và gói Super): bật thì không giới hạn năng lượng, không ô quảng cáo. Không thu tiền.',
+  'Bản miễn phí có một ô quảng cáo giả lập ở màn kết quả bài luyện, không tải gì từ bên ngoài. App ghi trên máy số lần hết năng lượng và số phút bị chặn để đo ảnh hưởng lên việc học.']});
 CHANGELOG.unshift({v:46,d:'2026-10-03',t:'App đo bạn đã thật sự thành thạo gì',big:true,items:[
   'Mỗi câu trả lời (từ vựng, ngữ pháp, câu ôn thi) giờ là một bằng chứng: app ước tính mức thành thạo của từng năng lực ở 5 mức (nhận ra, hiểu, nhớ ra, dùng có kiểm soát, dùng tự do) kèm độ tin cậy. Đoán mò, lặp lại cùng câu trong ngày được tính nhẹ hơn.',
   'Câu "Tôi có thể…" chỉ đạt khi bài làm đủ tốt, không còn đạt chỉ vì làm đủ số bài: làm xong mà điểm thấp thì vẫn hiện là đang học.',
@@ -8140,7 +8189,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.f17bfe0ce7.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.1c579b6716.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),

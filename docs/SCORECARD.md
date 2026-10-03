@@ -1,5 +1,14 @@
 # Chấm điểm app theo Master Spec v2
 
+## v51 (sau M7) — 03/10/2026: 7,4/10 (lõi engine 7,6/10)
+
+| # | Tiêu chí | v50 → v51 | Bằng chứng |
+| --- | --- | --- | --- |
+| 51 | Năng lượng theo lượt | 0 → 8 | `EN` (dung lượng 5, 1 lượt mỗi bài mới/luyện tập, hồi 1 lượt/2 giờ) là tham số; ôn đến hạn, chẩn đoán, kiểm tra cấp, bài làm thật, đề thi thử không tốn; hết thì chặn bài mới và chỉ lối ôn miễn phí (`test/e2e/money.spec.ts`). Chưa có số liệu dùng thật để chỉnh tham số |
+| 52 | Super, quảng cáo giả lập | 0 → 8 | Công tắc Super trong Cài đặt; ô quảng cáo giả lập ở màn kết quả bài luyện bản miễn phí; ghi trên máy số lần hết năng lượng, phút bị chặn, số ô quảng cáo; gộp hai máy. Lời giới thiệu, README, trang Giới thiệu sửa cho khớp |
+
+Nhóm J: 2,7 → 8,0. Tổng 7,1 → 7,4.
+
 ## v50 (sau M6a) — 03/10/2026: 7,1/10 (lõi engine 7,6/10)
 
 | # | Tiêu chí | v49 → v50 | Bằng chứng |
