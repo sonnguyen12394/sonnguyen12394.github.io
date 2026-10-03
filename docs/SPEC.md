@@ -19,11 +19,11 @@ App là một engine học dùng chung cho mọi mục tiêu, kiếm tiền ki�
 | Giá trị lõi | Một engine cho mọi mục tiêu; thêm mục tiêu = thêm Target Model, không xây app mới |
 | Phạm vi engine đầu tiên | CEFR Pre-A1 → C2; IELTS Academic + General 4.0–9.0; VSTEP B1, B2, C1; giao tiếp hằng ngày, công việc, du lịch, học tập |
 | Cách xây | Xây lên app hiện tại (v44), không viết lại. AI viết code và soạn nội dung; người sáng lập định hướng và kiểm tra |
-| Thời gian | Không gấp, miễn đúng |
+| Thời gian | Không gấp, miễn đúng. Người sáng lập đợi engine và bắt đầu học từ M4; ngày thi và doanh thu lùi theo tốc độ xây |
 | Người dùng đầu tiên | Chính người sáng lập: mất gốc (A1–A2), muốn thi VSTEP và IELTS |
-| Kiếm tiền | Giống Duolingo: thuê bao tháng/năm, quảng cáo ở bản miễn phí, tim/năng lượng giới hạn lượt, game hoá, quy mô lớn |
+| Kiếm tiền | Giống Duolingo: thuê bao tháng/năm, quảng cáo ở bản miễn phí, năng lượng theo lượt (mỗi bài tốn như nhau, đúng hay sai), XP theo hoạt động, game hoá, quy mô lớn |
 | Giai đoạn demo | Web, chạy đủ cơ chế kiếm tiền nhưng chưa thu tiền thật |
-| Cổng lên store | Người sáng lập đạt điểm thi thật; khi đó mới làm tài khoản, thanh toán, store |
+| Cổng lên store | Người sáng lập đạt điểm thi thật ở kỳ thi chọn ngay sau bài chẩn đoán đầu vào trên engine (M3); khi đó mới làm tài khoản, thanh toán, store |
 | AI | Làm sau. Trước hết mọi chức năng phải tốt nhất có thể mà không lệ thuộc AI |
 | Điểm kỹ thuật còn mở | Giao cho Claude quyết, miễn đúng triết lý spec |
 | Bản v45 (nhánh `claude/v45-ai-copy-honest-free`) | Để nguyên, quyết sau. Không gộp nguyên trạng vì chữ "không quảng cáo" trái với mô hình đã chọn |
@@ -63,13 +63,13 @@ Bốn mục của spec gốc được sửa cho khớp quyết định của ng�
 | Mục | Spec gốc | Bản sửa |
 | --- | --- | --- |
 | 35. AI khi chạy | Không dùng AI khi chạy | Engine không phụ thuộc AI: mọi chức năng chạy đầy đủ khi không có AI. AI là lớp cắm thêm ở giai đoạn sau (ví dụ chấm Viết/Nói trong gói trả phí), qua một giao diện "người chấm" chung với máy chấm luật và tự chấm |
-| 40. Động lực | Không thao túng | Game hoá kiểu Duolingo: tim, năng lượng, chuỗi ngày, giải đấu, XP. Giới hạn: ôn tập đến hạn (Memory Maintenance) và bài chẩn đoán không tốn tim, để cơ chế kiếm tiền không làm hỏng phép đo |
+| 40. Động lực | Không thao túng | Game hoá kiểu Duolingo: năng lượng theo lượt, chuỗi ngày, giải đấu, XP theo hoạt động. Năng lượng trừ theo lượt chứ không theo lỗi, vì engine cố ý cho câu vừa đủ khó; chẩn đoán, ôn đến hạn, bài Can-Do, thi thử không tốn năng lượng |
 | 42. Quyền riêng tư và tài khoản | Không cần tài khoản; mã hoá xuất/nhập | Demo web: lưu trên máy + mã đồng bộ hiện có, không tài khoản. Giai đoạn store: tài khoản cho mọi người dùng (đồng bộ, mua gói); vẫn tuân Nghị định 13/2023, đồng ý của cha mẹ với người dưới 16 tuổi, không bán dữ liệu |
-| 43. Kinh doanh | Không quảng cáo, không gói trả phí; nghiên cứu B2B | Thuê bao tháng/năm + quảng cáo ở bản miễn phí + giới hạn lượt bằng tim/năng lượng. Demo chạy đủ cơ chế, chưa thu tiền. B2B (trường, trung tâm) là hướng phụ, để sau |
+| 43. Kinh doanh | Không quảng cáo, không gói trả phí; nghiên cứu B2B | Thuê bao tháng/năm + quảng cáo ở bản miễn phí + giới hạn lượt bằng năng lượng. Demo chạy đủ cơ chế, chưa thu tiền. B2B (trường, trung tâm) là hướng phụ, để sau |
 
 ## Quyết định kỹ thuật (mục 50)
 
-Mọi điểm còn mở đều đã có phương án, chạy được khi chưa có dữ liệu người dùng và nâng cấp được khi có. Các con số (ngưỡng, số tim) là tham số cấu hình, chỉnh được mà không sửa code.
+Mọi điểm còn mở đều đã có phương án, chạy được khi chưa có dữ liệu người dùng và nâng cấp được khi có. Các con số (ngưỡng, dung lượng năng lượng) là tham số cấu hình, chỉnh được mà không sửa code.
 
 ### 1. Mô hình dữ liệu (mục 50.1, 50.6, 50.7)
 
@@ -119,6 +119,8 @@ Target Model ghi mức cần cho từng nút. Mặc định: nút phục vụ Đ
 4. Buổi học hằng ngày theo số phút: ôn đến hạn trước (tối đa 30% thời gian), rồi nút ưu tiên cao nhất; mỗi tuần ít nhất một bài làm thật (Can-Do).
 5. Nhiều mục tiêu cùng lúc: gộp Target Model, lấy mức cần cao nhất của mỗi nút; mục tiêu có ngày thi gần hơn được nhân trọng số ưu tiên.
 
+**Kiểm tra để bỏ qua**: khi lộ trình đưa vào một nút người học thấy đã biết, họ làm một bài kiểm tra ngắn ở mức cần; qua thì nút Đạt ngay. Lý do: 20 phút chẩn đoán không phủ hết vài trăm nút.
+
 ### 7. Chẩn đoán
 
 1. **Nghe/Đọc**: bài kiểm tra thích ứng IRT sẵn có (`src/exam/placement.ts`). Kết quả đặt tiên nghiệm cho các nút theo cấp CEFR: nút dưới cấp ước tính Beta(3, 1), trên cấp Beta(1, 3).
@@ -145,11 +147,11 @@ Mỗi kỳ thi có Target Model riêng. Bảng quy đổi có nguồn trong `src
 
 ### 11. Kiếm tiền trong demo (mục 50.11)
 
-- **Tim**: 5 tim; sai một câu trong bài học mới hoặc luyện tập mất 1 tim; hồi 1 tim mỗi 5 giờ; hết tim thì dừng học mới. Kiếm lại tim bằng ôn tập. Biến thể **năng lượng** bật bằng cấu hình.
-- **Không tốn tim**: ôn tập đến hạn, chẩn đoán, bài Can-Do, đề thi thử (để không làm sai phép đo).
-- **Gói Super giả lập**: công tắc trong Cài đặt; bật thì không giới hạn tim, không quảng cáo.
+- **Năng lượng theo lượt**: mỗi bài học mới hoặc luyện tập tốn năng lượng như nhau, đúng hay sai không đổi; hồi theo thời gian; hết thì dừng học mới. Không trừ theo lỗi vì engine cố ý cho câu vừa đủ khó (đúng 75–85%): 5 tim trừ theo lỗi sẽ hết sau 20–33 câu. Dung lượng, chi phí mỗi bài và tốc độ hồi là tham số cấu hình. **XP** tính theo hoạt động (số bài, số phút) như Duolingo, hiển thị tách khỏi Readiness.
+- **Không tốn năng lượng**: ôn tập đến hạn, chẩn đoán, bài Can-Do, đề thi thử (để không làm sai phép đo).
+- **Gói Super giả lập**: công tắc trong Cài đặt; bật thì không giới hạn năng lượng, không quảng cáo.
 - **Quảng cáo giả lập**: ô quảng cáo ở màn kết quả bài học (bản miễn phí).
-- Ghi số liệu trên máy: số lần hết tim, số phút bị chặn, để đo ảnh hưởng lên việc học của người sáng lập.
+- Ghi số liệu trên máy: số lần hết năng lượng, số phút bị chặn, để đo ảnh hưởng lên việc học của người sáng lập.
 - Tái dùng mẫu `st.money` từng có ở v16–v17 (xem `migrate()` trong `app.js`).
 
 ### 12. Tài khoản và đồng bộ (mục 50.12)
@@ -183,7 +185,7 @@ Engine được xây thành mô-đun TypeScript mới `src/engine/`, nối với
 | Game hoá | Chuỗi ngày, XP, giải đấu tuần, linh vật | `app.js`, bảng `el_league` |
 | Đồng bộ | Mã `ELK-…`, sao lưu | `syncRpc`, `syncNow` trong `app.js` |
 
-Cái cần viết mới: đồ thị + Target Model, trạng thái mastery/confidence, dò đồ thị, Learning Path, Readiness, tim/Super/quảng cáo giả lập, và nội dung cho các nút còn thiếu.
+Cái cần viết mới: đồ thị + Target Model, trạng thái mastery/confidence, dò đồ thị, Learning Path, Readiness, năng lượng/Super/quảng cáo giả lập, và nội dung cho các nút còn thiếu.
 
 ## Lộ trình xây
 
@@ -199,7 +201,7 @@ Tám mốc theo thứ tự phụ thuộc, không hạn ngày; mỗi mốc chỉ 
 | M4 · Learning Path + Memory Maintenance | Màn "Bước tiếp theo" tự xếp buổi học; nút đã đạt chuyển sang ôn duy trì |
 | M5 · Bài Can-Do + Goal Readiness | Readiness cho đủ 4 nhóm mục tiêu, kèm khoảng tin cậy |
 | M6 · Lấp nội dung | Mọi nút của mọi Target Model có đủ câu đo ở mức cần, qua phép thử đoán mò |
-| M7 · Kiếm tiền giả lập | Tim, năng lượng, Super, quảng cáo giả chạy; số phút bị chặn được ghi lại |
+| M7 · Kiếm tiền giả lập | Năng lượng theo lượt, Super, quảng cáo giả chạy; số phút bị chặn được ghi lại |
 
 **Cổng: điểm thi thật của người sáng lập đạt mục tiêu**
 
@@ -211,6 +213,15 @@ Tám mốc theo thứ tự phụ thuộc, không hạn ngày; mỗi mốc chỉ 
 
 Từ M4, người sáng lập học hằng ngày bằng engine; những chỗ vướng khi học quyết định thứ tự lấp nội dung ở M6.
 
+## Giới hạn thực tế
+
+Bốn điều engine không làm được trong giai đoạn demo, ghi thẳng để không ai hiểu sai.
+
+1. **Demo kiểm chứng trải nghiệm, chưa kiểm chứng độ chính xác.** Với một người dùng, mọi tham số (độ mạnh tiền đề, ngưỡng mastery, độ khó câu) là giả định của người soạn; chỉ hiệu chỉnh được khi có nhiều người dùng.
+2. **Điểm thi của người sáng lập chứng minh người sáng lập học được, không chứng minh engine đúng.** Cỡ mẫu là 1, và việc duyệt nội dung hằng ngày cũng là học. Dùng được làm câu chuyện, không dùng làm bằng chứng độ chính xác.
+3. **Trước khi có AI, engine không tự tuyên bố sẵn sàng cho Viết/Nói mức cao.** Luật biết người học *có dùng* một từ hay cấu trúc, không biết dùng *đúng và tự nhiên*; mức 5 (dùng tự do) chỉ đạt Confidence Vừa.
+4. **Nội dung quyết định thời gian, không phải code.** Ước tính thô 10.000–20.000 câu cho 4 nhóm mục tiêu (hiện ~1.350 câu ôn thi); câu AI viết cần 2–3 vòng soát chống đoán mò (`content/AUTHORING.md`). M6 là mốc dài nhất.
+
 ## Rủi ro đã ghi nhận
 
 Các rủi ro dưới đây được theo dõi trong lúc xây, không dùng để đổi hướng đã chốt.
@@ -218,8 +229,10 @@ Các rủi ro dưới đây được theo dõi trong lúc xây, không dùng đ�
 | Rủi ro | Dấu hiệu theo dõi | Cách giảm |
 | --- | --- | --- |
 | Khối lượng nội dung cho 4 nhóm mục tiêu rất lớn | Bảng phủ: số nút chưa đủ câu đo ở mức cần | Nút dùng chung giữa các mục tiêu; lấp theo thứ tự Learning Path của người sáng lập |
+| Đợi engine làm lùi ngày học, ngày thi và doanh thu | Thời gian từ nay tới khi M4 chạy | Xây M1–M4 trước, nội dung chỉ đủ cho mục tiêu của người sáng lập rồi mới mở rộng |
 | Độ mạnh tiền đề do người soạn đoán | Người học trượt nút sau dù đã đạt nút trước | Hiệu chỉnh từ dữ liệu khi có; ghi lại lý do mỗi lần sửa |
 | Readiness Viết/Nói kém tin cậy khi chưa có AI | Chênh lệch tự chấm với điểm thật | Giới hạn Confidence ở Vừa; nói rõ trên màn hình |
-| Tim làm chậm việc học của chính người sáng lập | Số lần hết tim, số phút bị chặn mỗi tuần | Công tắc Super giả lập; điều chỉnh số tim và thời gian hồi |
+| Năng lượng làm chậm việc học của chính người sáng lập | Số lần hết năng lượng, số phút bị chặn mỗi tuần | Công tắc Super giả lập; điều chỉnh dung lượng và tốc độ hồi |
+| XP theo hoạt động kéo người học đi cày XP thay vì lấp khoảng thiếu | Tỉ lệ phút học ngoài Learning Path | Nút chính luôn là "Bước tiếp theo"; Readiness hiển thị ngang hàng XP |
 | Điểm trong app của người sáng lập bị thổi phồng vì đã duyệt nội dung | Điểm app cao hơn đề ngoài | Đo mốc bằng đề ngoài chưa từng xem trước khi đăng ký thi thật |
 | `app.js` lớn (3,8 MB) làm chậm máy yếu | Thời gian mở app trên Android rẻ | Engine viết thành mô-đun riêng, nội dung tải theo nút |
