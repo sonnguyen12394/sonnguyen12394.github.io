@@ -1,7 +1,7 @@
 // Service worker của English Ladder: lưu app để chạy offline. index.html lấy từ mạng trước (có bản mới thì dùng ngay),
 // mất mạng thì dùng bản đã lưu; tệp tĩnh khác lấy từ bộ nhớ trước. Đổi VERSION khi phát hành để xoá bộ nhớ cũ.
-const VERSION = 'vl-v44';
-const CORE = ['./', 'index.html', 'app.js?v=44', 'x/exam.6f26b9ce96.js', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];
+const VERSION = 'vl-v45';
+const CORE = ['./', 'index.html', 'app.js?v=45', 'x/exam.bd3715a817.js', 'x/engine.c1f200f487.js', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 const META = 'el-meta';   // trạng thái nhắc học do app ghi (service worker không đọc được localStorage); không xoá khi đổi bản
 const DATA = 'el-data';   // chi tiết bài học theo cấp (data/lv-<cấp>.<băm>.json): tên có băm nội dung nên giữ qua các bản; app tự dọn tệp cũ
@@ -11,7 +11,7 @@ self.addEventListener('fetch', e => {
   const r = e.request; if (r.method !== 'GET') return;
   const path = new URL(r.url).pathname;
   // Nội dung ôn thi và âm thanh bài nghe (tên có băm hoặc cố định theo id): lưu lâu ở ngăn riêng "el-x", phần ôn thi tự dọn bản cũ.
-  if (/\/data\/exam\/[^/]+\.json$|\/a\/[^/]+\.mp3$/.test(path)) {
+  if (/\/data\/(exam|engine)\/[^/]+\.json$|\/a\/[^/]+\.mp3$/.test(path)) {
     e.respondWith(caches.open(X).then(c => c.match(r).then(x => x || fetch(r).then(res => { if (res.ok && res.status === 200) c.put(r, res.clone()); return res; }))));
     return;
   }

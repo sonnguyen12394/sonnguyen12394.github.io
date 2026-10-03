@@ -1,0 +1,90 @@
+{
+ "id": "comm-study",
+ "version": "1.0",
+ "kind": "comm",
+ "vi": "Giao tiếp trong học tập",
+ "target": "study",
+ "cefr": "C1",
+ "req": [
+  {
+   "node": "cd:b1-voc1",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-voc7",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-gra4",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-voc1",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-voc4",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-voc9",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-gra3",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-ski3",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:c1-voc1",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:c1-gra2",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:c1-pro3",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:c1-ski3",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:c1-ski4",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:c1-com1",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-ski8",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:c1-ski8",
+   "level": 3,
+   "type": "skill"
+  }
+ ]
+}

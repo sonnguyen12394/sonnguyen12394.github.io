@@ -7,7 +7,7 @@
 const fs = require('fs'), path = require('path'), vm = require('vm'), crypto = require('crypto');
 const ROOT = path.join(__dirname, '..'), APP = path.join(ROOT, 'app.js'), DATA = path.join(ROOT, 'data');
 const U_DETAIL = ['reading', 'guided'], W_DETAIL = ['en', 'ex', 'exVi', 'ex2', 'ex2Vi', 'cloze', 'col', 'why', 'tip'];
-const INLINE = ['A1'];   // cấp có sẵn chi tiết trong app.js (màn chào và bài đầu chạy ngay)
+const INLINE = [];   // v45 (engine M1): cả A1 cũng tải theo cấp; app.js chỉ còn khung, màn chào vẽ sẵn trong index.html
 
 const src = fs.readFileSync(APP, 'utf8');
 // Khối CONTENT: từ "const CONTENT = " tới hết dấu ; đóng khối ở cuối dòng, trước khai báo top-level kế tiếp.

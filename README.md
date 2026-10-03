@@ -69,9 +69,11 @@ App là PWA đủ điều kiện đóng gói Trusted Web Activity:
 - `index.html`: khung trang (CSS, biểu tượng SVG, màn chào vẽ sẵn để mở nhanh).
 - `app.js`: app hiện có (học nền tảng A1–C2, ôn tập, kỹ năng, thi thử VSTEP rút gọn), khung bài học mọi cấp và chi tiết A1.
 - `src/exam/`: **phần ôn thi IELTS/VSTEP viết mới bằng TypeScript**, chia mô-đun: `scales.ts` (bảng quy đổi có nguồn), `irt.ts` (ước tính band thích ứng), `stats.ts` (phân tích câu hỏi), `fsrs.ts` (lịch ôn FSRS-5), `score.ts` (máy chấm), `state.ts` (tiến độ có phiên bản), `views/` (màn hình). Build ra `x/exam.<băm>.js`, `app.js` nạp động qua `XHOST`.
+- `src/engine/`: **engine học theo mục tiêu** (docs/SPEC.md): `graph.ts` (đồ thị năng lực: tô-pô, phát hiện vòng lặp, đóng tiền đề, gộp mục tiêu), `state.ts` (tiến độ `st.e` có phiên bản), màn chọn mục tiêu. Build ra `x/engine.<băm>.js`; đồ thị ra `data/engine/graph.<băm>.json` (tải khi cần).
+- `content/engine/`: đồ thị năng lực và Target Model (nodes, edges, goals/*.json, bảng phủ `coverage.md`), sinh bằng `npm run engine` (đọc CANDO/UNITS/GPOINTS từ app đang chạy rồi dựng đồ thị); chỉnh tay ở `overrides.json`. Kiểm bằng `npm run content`.
 - `src/content/`: kiểm nội dung tự động (lược đồ, đáp án, giải thích tiếng Việt, câu trích, máy chấm, cấp từ vựng).
 - `content/exam/`: nội dung ôn thi (JSON, theo `content/schema/group.schema.json`); `content/wordlist.json`: từ → cấp CEFR (tạo từ app.js).
-- `data/lv-<cấp>.<băm>.json`: chi tiết bài học A2–C2, tải theo cấp.
+- `data/lv-<cấp>.<băm>.json`: chi tiết bài học A1–C2, tải theo cấp.
 - `sw.js`: chạy offline. `tools/`: build, máy chủ test, Lighthouse, kiểm nội dung, tách/ghép nội dung (`content-split.cjs`).
 - `test/unit`: test đơn vị (node:test). `test/e2e`: test giao diện Playwright (Chrome Android, Safari iOS, máy tính, offline, trợ năng WCAG AA).
 

@@ -1,0 +1,245 @@
+{
+ "id": "cefr-a1",
+ "version": "1.0",
+ "kind": "cefr",
+ "vi": "Tiếng Anh tổng quát A1 (Sơ cấp)",
+ "target": "A1",
+ "cefr": "A1",
+ "req": [
+  {
+   "node": "cd:a1-voc1",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-voc2",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-voc3",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-voc4",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-voc5",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-voc6",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-gra1",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-gra2",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-gra3",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-gra4",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-gra5",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-gra6",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-pro1",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-pro2",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-pro3",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-pro4",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-pro5",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-pro6",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-fun1",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-fun2",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-fun3",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-fun4",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-fun5",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-ski1",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-ski2",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-ski3",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-ski4",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-ski5",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-ski6",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-com1",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:a1-com2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:a1-com3",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:a1-com4",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:a1-com5",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "cd:a1-com-pa",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "cd:a1-pro7",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a1-com-med2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:a1-med",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:a1-rx",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "cd:a1-cs",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-lis",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-sp",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:a1-conv",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:a1-lrlis",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-cw",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-rdlife1",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a1-rdlife2",
+   "level": 3,
+   "type": "skill"
+  }
+ ]
+}

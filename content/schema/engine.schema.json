@@ -1,0 +1,57 @@
+{
+  "$id": "engine",
+  "description": "Đồ thị năng lực và Target Model của engine (docs/SPEC.md §1). Sinh bởi tools/engine-gen.ts.",
+  "definitions": {
+    "level": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "cefr": { "enum": ["A1", "A2", "B1", "B2", "C1", "C2"] },
+    "node": {
+      "type": "object",
+      "required": ["id", "kind", "area", "skill", "cefr", "vi", "ctx", "acts", "minutes"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^(cd|u|g|x|xw|xs):[a-z0-9][a-z0-9._-]*$" },
+        "kind": { "enum": ["cando", "vocab", "grammar", "task"] },
+        "area": { "enum": ["voc", "gra", "pro", "lis", "rd", "wr", "spk", "task"] },
+        "skill": { "enum": ["L", "R", "W", "S", null] },
+        "cefr": { "anyOf": [{ "$ref": "#/definitions/cefr" }, { "type": "null" }] },
+        "vi": { "type": "string", "minLength": 1 },
+        "en": { "type": "string" },
+        "ctx": { "type": "array", "items": { "enum": ["daily", "work", "travel", "study", "exam"] }, "uniqueItems": true },
+        "acts": {
+          "type": "array",
+          "items": { "type": "object", "required": ["at", "t"], "additionalProperties": false,
+            "properties": { "at": { "type": "string", "pattern": "^data-[a-z]+=\"[^\"]+\"( data-[a-z]+=\"[^\"]+\")?$" }, "t": { "type": "string" } } }
+        },
+        "minutes": { "type": "number", "minimum": 1 }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "required": ["from", "to", "type", "w"],
+      "additionalProperties": false,
+      "properties": {
+        "from": { "type": "string" }, "to": { "type": "string" },
+        "type": { "enum": ["hard", "soft"] },
+        "w": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+      }
+    },
+    "goal": {
+      "type": "object",
+      "required": ["id", "version", "kind", "vi", "target", "cefr", "req"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]*$" },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+$" },
+        "kind": { "enum": ["cefr", "ielts-ac", "ielts-gt", "vstep", "comm"] },
+        "vi": { "type": "string", "minLength": 1 },
+        "target": { "type": "string" },
+        "cefr": { "anyOf": [{ "$ref": "#/definitions/cefr" }, { "type": "null" }] },
+        "req": {
+          "type": "array", "minItems": 1,
+          "items": { "type": "object", "required": ["node", "level", "type"], "additionalProperties": false,
+            "properties": { "node": { "type": "string" }, "level": { "$ref": "#/definitions/level" }, "type": { "enum": ["foundation", "skill", "performance"] } } }
+        }
+      }
+    }
+  }
+}

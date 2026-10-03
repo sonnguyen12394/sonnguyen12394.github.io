@@ -1,0 +1,60 @@
+{
+ "id": "comm-work",
+ "version": "1.0",
+ "kind": "comm",
+ "vi": "Giao tiếp nơi làm việc",
+ "target": "work",
+ "cefr": "B2",
+ "req": [
+  {
+   "node": "cd:a2-voc4",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-voc1",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-ski3",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-com5",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-voc3",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-ski6",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-com1",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-com2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-ski8",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-ski8",
+   "level": 3,
+   "type": "skill"
+  }
+ ]
+}
