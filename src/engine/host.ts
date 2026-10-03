@@ -12,4 +12,5 @@ export interface EHost {
   ico(name: string): string;
   fetchJson(url: string): Promise<unknown>;
   cando(id: string): { p: number; m: number; lb: number; k: number; need: number } | null;   // tiến độ Can-Do tính từ bằng chứng (app.js cdProg)
+  probe(node: string): Array<{ id: string; level: 1 | 2 | 3; g: number; prompt: string; opts?: string[]; ans?: number; accept?: string[]; en?: string }>;   // câu dò cho chẩn đoán (app.js eProbe)
 }
