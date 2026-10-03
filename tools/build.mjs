@@ -117,6 +117,16 @@ const engName = `x/engine.${hash(ecode)}.js`;
 for (const f of readdirSync(P('x'))) if (/^engine\.[0-9a-f]{10}\.js$/.test(f) && `x/${f}` !== engName) unlinkSync(P('x/' + f));
 if (!existsSync(P(engName)) || !readFileSync(P(engName)).equals(Buffer.from(ecode))) writeFileSync(P(engName), ecode);
 
+// 1c. Lõi dùng chung (FSRS + ghi bằng chứng mastery): script thường, biến toàn cục ELCORE, nạp trước app.js.
+const rc = await build({
+  entryPoints: [P('src/engine/core.ts')], bundle: true, format: 'iife', globalName: 'ELCORE', target: 'es2020',
+  minify: true, write: false, legalComments: 'none', charset: 'utf8', logLevel: 'warning',
+});
+const ccode = rc.outputFiles[0].contents;
+const coreName = `x/core.${hash(ccode)}.js`;
+for (const f of readdirSync(P('x'))) if (/^core\.[0-9a-f]{10}\.js$/.test(f) && `x/${f}` !== coreName) unlinkSync(P('x/' + f));
+if (!existsSync(P(coreName)) || !readFileSync(P(coreName)).equals(Buffer.from(ccode))) writeFileSync(P(coreName), ccode);
+
 // 2. app.js biết tên tệp
 setLine('app.js', /^const EXAM_JS = .*$/m, `const EXAM_JS = '${examName}';   // tools/build.mjs ghi`);
 setLine('app.js', /^const ENGINE_JS = .*$/m, `const ENGINE_JS = '${engName}';   // tools/build.mjs ghi`);
@@ -126,7 +136,7 @@ const app = readFileSync(P('app.js'), 'utf8');
 const ver = Number((/APP_VERSION = (\d+)/.exec(app) || [])[1]);
 if (!ver) throw new Error('không đọc được APP_VERSION');
 setLine('sw.js', /^const VERSION = .*$/m, `const VERSION = 'vl-v${ver}';`);
-setLine('sw.js', /^const CORE = .*$/m, `const CORE = ['./', 'index.html', 'app.js?v=${ver}', '${examName}', '${engName}', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];`);
-setLine('index.html', /<script src="app\.js\?v=\d+"( defer)?><\/script>/, `<script src="app.js?v=${ver}" defer></script>`);
+setLine('sw.js', /^const CORE = .*$/m, `const CORE = ['./', 'index.html', 'app.js?v=${ver}', '${coreName}', '${examName}', '${engName}', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];`);
+setLine('index.html', /^(<script src="x\/core\.[0-9a-f]{10}\.js" defer><\/script>)?<script src="app\.js\?v=\d+"( defer)?><\/script>$/m, `<script src="${coreName}" defer></script><script src="app.js?v=${ver}" defer></script>`);
 
 console.log(`build: ${engName} (${(ecode.length / 1024).toFixed(1)} KB), đồ thị ${gFile} (${(gBody.length / 1024).toFixed(0)} KB); ${examName} (${(code.length / 1024).toFixed(1)} KB), bản ${ver}; nội dung ${groups.length} nhóm, ${Object.keys(index.items).length} câu, ${Object.keys(index.packs).length} gói`);

@@ -11,4 +11,5 @@ export interface EHost {
   esc(s: unknown): string;
   ico(name: string): string;
   fetchJson(url: string): Promise<unknown>;
+  cando(id: string): { p: number; m: number; lb: number; k: number; need: number } | null;   // tiến độ Can-Do tính từ bằng chứng (app.js cdProg)
 }

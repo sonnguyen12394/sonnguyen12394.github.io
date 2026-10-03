@@ -7,7 +7,7 @@ import type { XState } from './state.ts';
 import type { ExamId } from './scales.ts';
 import { shouldHide, type ItemStat } from './stats.ts';
 
-export const APP_V = 45;
+export const APP_V = 46;
 const CACHE_KEY = 'el-x-net';
 const TTL = 12 * 3600e3;
 

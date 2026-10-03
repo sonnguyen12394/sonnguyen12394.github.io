@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 45;
+const STATE_V = 18, APP_VERSION = 46;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},e:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -1055,7 +1055,7 @@ function sanitizeState(x){
   const obj = v => v&&typeof v==='object'&&!Array.isArray(v) ? v : {};
   const pick = (bag,ok,fix) => { const o={}; for(const [k,v] of Object.entries(obj(bag))) if(ok(k)&&v&&typeof v==='object') o[k]=fix(v); return o; };
   const dims = (d,keys) => Object.fromEntries(keys.map(k=>[k,numIn(obj(d)[k],0,1)]));
-  const srs = v => ({stage:Math.round(numIn(v.stage,0,30,0)),due:v.due==null?null:Math.round(numIn(v.due,0,1e6,0)),ivl:numIn(v.ivl,0,3650,0),ease:numIn(v.ease,EASE.min,EASE.max,EASE.start),learned:!!v.learned,...(v.lp>0?{lp:Math.round(numIn(v.lp,0,1e4,0))}:{})});
+  const srs = v => ({stage:Math.round(numIn(v.stage,0,30,0)),due:v.due==null?null:Math.round(numIn(v.due,0,1e6,0)),ivl:numIn(v.ivl,0,3650,0),ease:numIn(v.ease,EASE.min,EASE.max,EASE.start),learned:!!v.learned,...(v.lp>0?{lp:Math.round(numIn(v.lp,0,1e4,0))}:{}),...(v.fs!=null?{fs:numIn(v.fs,.1,36500,1),fd:numIn(v.fd,1,10,5),fl:Math.round(numIn(v.fl,0,1e6,0))}:{})});
   x.words=pick(x.words,k=>!!WORD[k],v=>({...srs(v),d:dims(v.d,['rec','rcl','spl','ctx','col'])}));
   x.units=pick(x.units,k=>UNITS.some(u=>u.id===k),v=>({learned:!!v.learned,practiced:Math.round(numIn(v.practiced,0,1e4,0)),best:numIn(v.best,0,1),passed:!!v.passed,skipped:!!v.skipped,speak:Math.round(numIn(v.speak,0,1e4,0)),written:!!v.written,read:numIn(v.read,0,1),listen:numIn(v.listen,0,1),...(v.pd!=null?{pd:Math.round(numIn(v.pd,0,1e6,0))}:{})}));
   x.gram=pick(x.gram,k=>!!GPT[k],v=>({...srs(v),d:dims(v.d,['cho','typ','fix','ord']),practiced:Math.round(numIn(v.practiced,0,1e4,0)),best:numIn(v.best,0,1),passed:!!v.passed,skipped:!!v.skipped}));
@@ -1122,6 +1122,8 @@ const today = () => realDay()+st.offset;
 const dayNo = d => d-st.start+1;
 function W(id){ return st.words[id] ||= {d:{rec:null,rcl:null,spl:null,ctx:null,col:null},stage:0,due:null,ivl:0,ease:EASE.start,learned:false}; }
 const easeLabel = e => e==null||e>=2.4 ? 'bình thường' : e>=1.9 ? 'hơi khó' : 'khó';
+// v45: thẻ đã sang FSRS dùng độ khó D (1–10); thẻ chưa ôn lần nào từ v45 vẫn đọc hệ số dễ cũ.
+const diffLabel = s => s.fd!=null ? (s.fd<6?'bình thường':s.fd<7.5?'hơi khó':'khó') : easeLabel(s.ease);
 function U(id){ return st.units[id] ||= {learned:false,practiced:0,best:null,passed:false,speak:0,written:false}; }
 const uname = u => `${u.level} · Unit ${String(u.no).padStart(2,'0')}`;
 const when = d => { const n=d-today(); return n<=0?'hôm nay':n===1?'ngày mai':`sau ${n} ngày`; };
@@ -1158,6 +1160,8 @@ const currentUnit = () => (goalUnits()||UNITS).find(u=>unlocked(u)&&!U(u.id).pas
 const LONG_IVL = 21;
 function reviewItems(ws){ return spread(ws.flatMap(w=>{ const d=weakestDims(w.id), a=build(w,d[0]); return (W(w.id).ivl||1)>=LONG_IVL ? [a,Object.assign(build(w,d[1],{test:true}),{noSrs:true})] : [a]; })); }
 function dueWords(){ const t=today(); return ALL_WORDS.filter(w=>{const s=W(w.id);return s.learned&&s.due!=null&&s.due<=t;}); }
+// Bằng chứng mastery cho engine (docs/SPEC.md §2): ghi ngay vào st.e qua lõi dùng chung, kể cả khi mô-đun engine chưa tải.
+function eEv(e){ try{ if(typeof ELCORE!=='undefined'&&e.node&&!/undefined$/.test(e.node)) ELCORE.ev(st,e,today()); }catch(x){} }
 function markActive(){ const t=today(); if(!st.days.includes(t)){ st.days.push(t); try{ ui.streakUp=streak(); }catch(e){} } }
 function streak(){ const set=new Set([...st.days,...((st.freeze&&st.freeze.used)||[])]); let n=0,t=today(); if(!set.has(t)) t--; while(set.has(t)){n++;t--;} return n; }
 
@@ -1177,25 +1181,31 @@ function grade(ex,correct){
   if(correct&&typed&&ex.dim!=='rec'&&!ex.guess){ const r=w.d.rec??0; w.d.rec=r+a*(1-r); }
   if(old<HARD&&w.d[ex.dim]>=HARD&&['rcl','spl','ctx'].includes(ex.dim)&&W(ex.wid).learned) toast(`💪 Lên độ khó: lần sau “${WORD[ex.wid].word}” (${DIM[ex.dim].vi}) sẽ là câu tự gõ.`);
   if(!ex.noSrs) srsStep(w,correct,typed&&!ex.guess);
+  eEv({node:'u:'+(UNIT_OF[ex.wid]||{}).id,level:ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'w:'+ex.wid+':'+ex.dim,qt:ex.opts?'mcq':'typed',ctx:ex.dim,w:correct&&ex.guess?.5:1});
   if(correct&&typed) bump('typed');
   tally(correct, xpFor(xpKind((ui.sess||{}).kind)+':w:'+ex.wid,(typed?15:10)+(wasDue&&!ex.noSrs?5:0),correct,ex._dn));
 }
 // Lịch ôn của một mục (từ hoặc bài ngữ pháp). `typed`: câu tự gõ (bằng chứng nhớ chắc hơn trắc nghiệm).
+// v45 (engine M2): một hệ FSRS-5 cho mọi lịch ôn (ELCORE.fsrs, cùng mã với sổ lỗi sai ôn thi). w.fs = độ bền (ngày), w.fd = độ khó 1–10,
+// w.fl = ngày ôn gần nhất; stage/ivl/due giữ nguyên ý nghĩa cho giao diện. Thẻ cũ (kiểu SM-2) chuyển sang lúc ôn đầu tiên:
+// độ bền = khoảng ôn cũ, độ khó suy từ hệ số dễ (3,0 → 1; 1,3 → 10). Hệ số riêng st.srs.k (srsCal) vẫn co giãn khoảng ôn.
+const easeToD = e => Math.min(10,Math.max(1,1+((EASE.max-(e??EASE.start))/(EASE.max-EASE.min))*9));
+function fsrsCard(w,t){ if(w.fs==null){ w.fs=Math.max(.5,w.ivl||1); w.fd=+easeToD(w.ease).toFixed(3); w.fl=Math.max(0,(w.due??t)-(w.ivl||1)); }
+  return {s:w.fs,d:w.fd,last:w.fl??t,due:w.due??t,reps:w.stage||0,lapses:w.lp||0}; }
+function fsrsKeep(w,c){ w.fs=+c.s.toFixed(3); w.fd=+c.d.toFixed(3); w.fl=c.last; }
 function srsStep(w,correct,typed){
   if(!w.learned) return;
-  const t=today();
-  if(w.due==null){ if(correct){ w.stage=0; w.ivl=1; w.due=t+1; } return; }   // lịch ôn bắt đầu từ lần đầu tự nhớ ra đúng, không phải lúc xem thẻ
-  w.ease??=EASE.start;
-  if(!correct){                                         // quên → lùi 2 bậc, giảm hệ số (mục khó sẽ được ôn dày hơn), ôn lại ngày mai
+  const t=today(), F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
+  if(w.due==null){ if(correct){ w.stage=0; if(F){ const c=F.newCard(typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.max(1,c.due-t); } else w.ivl=1; w.due=t+w.ivl; } return; }   // lịch ôn bắt đầu từ lần đầu tự nhớ ra đúng, không phải lúc xem thẻ
+  if(!correct){                                         // quên → độ bền giảm theo FSRS, ôn lại ngày mai
     if(w.due<=t) w.lp=(w.lp||0)+1;                      // số lần quên khi đến hạn (forgetting patterns, docs/DANH-GIA-DU-LIEU-HOC.md)
-    w.stage=Math.max(0,w.stage-2); w.ease=Math.max(EASE.min,w.ease-.2); w.ivl=1; w.due=t+1;
-  } else if(w.due<=t){                                  // nhớ khi đến hạn → giãn ra
-    const elapsed=(w.ivl||1)+(t-w.due);                 // ôn trễ mà vẫn nhớ: tính theo khoảng thực tế
-    // Tự gõ đúng là bằng chứng nhớ chắc (tăng hệ số); chọn đúng trắc nghiệm có thể do đoán (giữ nguyên hệ số).
-    if(typed) w.ease=Math.min(EASE.max,w.ease+.1);
+    if(F) fsrsKeep(w,F.review(fsrsCard(w,t),1,t));
+    w.stage=Math.max(0,w.stage-2); w.ivl=1; w.due=t+1;
+  } else if(w.due<=t){                                  // nhớ khi đến hạn → giãn ra theo độ bền mới
+    // Tự gõ đúng là bằng chứng nhớ chắc (điểm 3 = "được"); chọn đúng trắc nghiệm có thể do đoán (điểm 2 = "khó").
     w.stage++;
-    // Hệ số riêng của người học (st.srs.k, 0,6–1,25) kéo tỉ lệ nhớ ra khi ôn về mục tiêu 87% (srsCal): người quên nhanh ôn dày hơn.
-    w.ivl=Math.min(MAX_IVL, Math.max(1,Math.round((w.stage<INTERVALS.length ? Math.max(INTERVALS[w.stage],elapsed) : elapsed*w.ease)*srsK())));
+    if(F){ const c=F.review(fsrsCard(w,t),typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.min(MAX_IVL,Math.max(1,Math.round(F.interval(c.s)*srsK()))); }
+    else w.ivl=Math.min(MAX_IVL,Math.max(1,Math.round((w.ivl||1)*2.5*srsK())));
     w.due=t+w.ivl;
   }
 }
@@ -2276,23 +2286,23 @@ const wtDone = id => !wtMissing(id).length;
 const stDone = id => (st.stask[id]||[]).some(h=>SRUB.every((_,i)=>(h.self||[])[i]>=SELF_OK));
 const cdStatus = (ok,miss) => `<p class="${ok?'':'hint'}">🧭 Tính cho câu “Tôi có thể…”: ${ok?'<b>đạt</b>':'chưa đạt'}${!ok&&miss&&miss.length?` · còn thiếu: ${miss.map(esc).join('; ')}`:''} ${info('evidence')}</p>`;
 function cdActs(r,L){
-  const uA=u=>({done:!!U(u.id).passed&&(!!U(u.id).skipped||unitSolid(u)), at:`data-unit="${u.id}"`, t:u.title}), best=o=>o&&o.best;
+  const uA=u=>({done:!!U(u.id).passed&&(!!U(u.id).skipped||unitSolid(u)), s:eScore('u:'+u.id,3), at:`data-unit="${u.id}"`, t:u.title}), best=o=>o&&o.best;
   switch(r.t){
     case 'u': return UNITS.filter(u=>u.level===L&&r.v.some(p=>u.title.startsWith(p))).map(uA);
     case 'ul': return UNITS.filter(u=>u.level===r.v[0]).map(uA);
-    case 'g': return r.v.map(id=>{ const p=GPI['g-'+id]; return {done:!!G(p.id).passed, at:`data-gp="${p.id}"`, t:p.title}; });
-    case 'gl': return GPOINTS.filter(p=>p.level===r.v[0]).map(p=>({done:!!G(p.id).passed, at:`data-gp="${p.id}"`, t:p.title}));
-    case 'd': return r.v.map(id=>({done:cdOk(best(st.dlg[id])), at:`data-dlg="${id}"`, t:DLG[id].title}));
-    case 'rp': return r.v.map(id=>({done:!!(st.dlg[id]||{}).rp&&(st.dlg[id]||{}).rp!=='hard', at:`data-dlg="${id}"`, t:'Đóng vai: '+DLG[id].title}));
-    case 'f': return r.v.map(id=>({done:cdOk(best(st.fn[id])), at:`data-fn="${id}"`, t:FN[id].vi}));
-    case 'p': return r.v.map(id=>({done:cdOk(best(st.pron[id])), at:`data-pron="${id}"`, t:PRONL[id].vi}));
-    case 'ws': return r.v.map(l=>({done:cdOk(best(st.pron['ws-'+l])), at:`data-wstress="${l}"`, t:'Trọng âm từ '+l}));
-    case 'snd': return r.v.map(id=>({done:cdOk(best(st.sounds[id])), at:`data-snd="${id}"`, t:SND[id].a+' – '+SND[id].b}));
+    case 'g': return r.v.map(id=>{ const p=GPI['g-'+id]; return {done:!!G(p.id).passed, s:eScore('g:'+p.id,3), at:`data-gp="${p.id}"`, t:p.title}; });
+    case 'gl': return GPOINTS.filter(p=>p.level===r.v[0]).map(p=>({done:!!G(p.id).passed, s:eScore('g:'+p.id,3), at:`data-gp="${p.id}"`, t:p.title}));
+    case 'd': return r.v.map(id=>({done:cdOk(best(st.dlg[id])), s:best(st.dlg[id])??null, at:`data-dlg="${id}"`, t:DLG[id].title}));
+    case 'rp': return r.v.map(id=>({done:!!(st.dlg[id]||{}).rp&&(st.dlg[id]||{}).rp!=='hard', s:{easy:1,ok:.85,hard:.45}[(st.dlg[id]||{}).rp]??null, at:`data-dlg="${id}"`, t:'Đóng vai: '+DLG[id].title}));
+    case 'f': return r.v.map(id=>({done:cdOk(best(st.fn[id])), s:best(st.fn[id])??null, at:`data-fn="${id}"`, t:FN[id].vi}));
+    case 'p': return r.v.map(id=>({done:cdOk(best(st.pron[id])), s:best(st.pron[id])??null, at:`data-pron="${id}"`, t:PRONL[id].vi}));
+    case 'ws': return r.v.map(l=>({done:cdOk(best(st.pron['ws-'+l])), s:best(st.pron['ws-'+l])??null, at:`data-wstress="${l}"`, t:'Trọng âm từ '+l}));
+    case 'snd': return r.v.map(id=>({done:cdOk(best(st.sounds[id])), s:best(st.sounds[id])??null, at:`data-snd="${id}"`, t:SND[id].a+' – '+SND[id].b}));
     case 'w': return r.v.map(id=>({done:wtDone(id), at:`data-wt="${id}"`, t:WT[id].vi}));
     case 's': return r.v.map(id=>({done:stDone(id), at:`data-stk="${id}"`, t:STK[id].vi}));
-    case 'lr': return r.v.map(id=>({done:cdOk(best(st.lread[id])), at:`data-lr="${id}"`, t:LRD[id].title}));
-    case 'rd': case 'ls': { const k=r.t==='rd'?'read':'listen'; return UNITS.filter(u=>u.level===r.v[0]&&u.reading).map(u=>({done:cdOk((st.units[u.id]||{})[k]), at:`data-unit="${u.id}"`, t:(k==='read'?'Đọc: ':'Nghe: ')+u.reading.title})); }
-    case 'sto': return r.v.map(id=>{ const e=STORY.find(x=>x.id===id); return {done:cdOk(st.story[id]), at:storyOpen(e)?`data-story="${id}"`:`data-act="stories"`, t:`Truyện tập ${e.no}`}; });
+    case 'lr': return r.v.map(id=>({done:cdOk(best(st.lread[id])), s:best(st.lread[id])??null, at:`data-lr="${id}"`, t:LRD[id].title}));
+    case 'rd': case 'ls': { const k=r.t==='rd'?'read':'listen'; return UNITS.filter(u=>u.level===r.v[0]&&u.reading).map(u=>({done:cdOk((st.units[u.id]||{})[k]), s:(st.units[u.id]||{})[k]??null, at:`data-unit="${u.id}"`, t:(k==='read'?'Đọc: ':'Nghe: ')+u.reading.title})); }
+    case 'sto': return r.v.map(id=>{ const e=STORY.find(x=>x.id===id); return {done:cdOk(st.story[id]), s:st.story[id]??null, at:storyOpen(e)?`data-story="${id}"`:`data-act="stories"`, t:`Truyện tập ${e.no}`}; });
   }
   return [];
 }
@@ -2302,7 +2312,17 @@ function cdRef(r,L){
   const need=Math.min(r.n||acts.length, acts.length)||1;
   return {p:Math.min(1,done/need),acts,done,need};
 }
-function cdProg(c){ const rs=c.ref.map(r=>cdRef(r,c.lv)); return {p:rs.reduce((s,x)=>s+x.p,0)/rs.length, rs}; }
+// v45 (engine M2, spec mục 3, 9, 12): Can-Do tính từ CHẤT LƯỢNG bằng chứng, không từ số bài đã làm. Mỗi hoạt động đã làm cho một
+// điểm s (0–1): điểm cao nhất của hoạt động, hoặc mastery của engine với unit/điểm ngữ pháp. Gộp thành Beta(1 + Σ6s, 1 + Σ6(1−s)):
+// đạt khi đủ độ phủ (đủ số hoạt động như trước) VÀ m ≥ 0,8 VÀ cận dưới 80% ≥ 0,6. Chưa đạt thì tiến độ ≤ 79% = độ phủ × m.
+const CD_W = 6;
+function eScore(node,level){ try{ const c=(st.e&&st.e.m&&st.e.m[node]||{})[level]; if(!c||(c.a+c.b<=2.0001)) return null; return c.a/(c.a+c.b); }catch(e){ return null; } }
+function cdProg(c){ const rs=c.ref.map(r=>cdRef(r,c.lv));
+  const ev=rs.flatMap(x=>x.acts.map(a=>a.s!==undefined&&a.s!==null?Math.min(1,Math.max(0,a.s)):(a.done?.9:null))).filter(v=>v!=null);
+  const need=Math.max(1,rs.reduce((n,x)=>n+x.need,0)), cov=Math.min(1,ev.length/need);
+  const a=1+ev.reduce((t,v)=>t+CD_W*v,0), b=1+ev.reduce((t,v)=>t+CD_W*(1-v),0), S=a+b, m=a/S, lb=m-1.2816*Math.sqrt(a*b/(S*S*(S+1)));
+  const pass=cov>=1&&m>=.8&&lb>=.6;
+  return {p:pass?1:Math.min(.79,cov*(ev.length?m:0)), m, lb, k:ev.length, need, rs}; }
 function cdGroup(L,g){ const cs=CANDO.filter(c=>c.lv===L&&c.grp===g); return cs.length?cs.reduce((s,c)=>s+cdProg(c).p,0)/cs.length:0; }
 function cdLevel(L){ const gs=CD_GRP.map(([g])=>cdGroup(L,g)); return {gs, ok:gs.filter(x=>x>=.8).length, p:gs.reduce((a,b)=>a+b,0)/gs.length}; }
 const cdLv = () => ui.cdLv || (UNITS.find(u=>!U(u.id).passed)||UNITS[UNITS.length-1]).level;
@@ -2417,7 +2437,7 @@ const GLOSSARY={
   place:['Thi vượt cấp / xếp lớp','30 câu lấy từ khắp các unit của một cấp độ. Đạt thì cả cấp được tính là xong, không phải học lại từ đầu.'],
   review:['Tổng kết cấp độ','Sau khi qua mọi unit của một cấp: bài kiểm tra lại cả cấp, ưu tiên từ bạn yếu. Kết quả dùng để ước lượng vốn từ.'],
   est:['Vốn từ ước tính','Từ kết quả thi xếp lớp hay tổng kết, app ước lượng bạn biết khoảng bao nhiêu từ của cấp độ đó. Vì bài chỉ hỏi một phần số từ nên kết quả là một khoảng (độ tin cậy 95%).'],
-  hard:['Hay quên','Từ bạn hay trả lời sai khi ôn (hệ số dễ thấp), hoặc đã qua lần ôn giãn cách mà điểm kỹ năng vẫn dưới 50%. Sổ từ lọc riêng được để luyện lại.'],
+  hard:['Hay quên','Từ bạn hay trả lời sai khi ôn (độ khó cao trong lịch ôn), hoặc đã qua lần ôn giãn cách mà điểm kỹ năng vẫn dưới 50%. Sổ từ lọc riêng được để luyện lại.'],
   ahead:['Học trước','Unit hay bài ngữ pháp chưa tới lượt trong lộ trình vẫn mở được. Qua bài kiểm tra của nó thì nó được tính là đã qua.'],
   resume:['Làm tiếp','Lượt đang làm được lưu sau mỗi câu. Thoát giữa chừng hay tải lại trang, lần sau bấm “Làm tiếp” ở trang chủ để học tiếp đúng chỗ.'],
   guess:['Mình đang đoán','Bấm trước khi trả lời nếu bạn không chắc. Đúng thì chỉ được cộng một nửa (vì có thể do may), sai thì như bình thường. Cuối lượt app cho biết khi chắc bạn đúng bao nhiêu, khi đoán đúng bao nhiêu: biết mình thật sự nhớ hay chỉ đoán giúp ôn đúng chỗ.'],
@@ -2850,7 +2870,7 @@ function viewReview(){
   ${(()=>{const gd=dueG();return `<section class="panel today"><div class="stack" style="gap:4px"><span class="eyebrow">Ngữ pháp</span>${gd.length?`<h2>${gd.length} bài ngữ pháp đến hạn</h2><p class="muted">${gd.map(p=>esc(p.vi)).join(', ')}</p>`:`<h2>Không có bài ngữ pháp đến hạn</h2><p class="muted">Bài ngữ pháp đã học cũng được hẹn ôn theo cùng lịch giãn cách.</p>`}</div>${gd.length?`<button class="btn primary" data-act="greview">Ôn ngữ pháp</button>`:''}</section>`})()}
   <details class="panel stack"><summary><h3>Lịch ôn sắp tới và cách app hẹn ngày ôn</h3></summary>
   ${upcoming.length?`<div class="tablewrap"><table style="min-width:520px"><thead><tr><th>Từ</th><th>Lần nhớ liên tiếp</th><th>Khoảng cách</th><th>Độ khó với bạn</th><th>Đến hạn</th><th>Kỹ năng yếu nhất</th></tr></thead><tbody>
-    ${upcoming.map(w=>{const s=W(w.id);return `<tr><td class="w" lang="en">${esc(w.word)}</td><td class="num">${s.stage}</td><td class="num">${s.ivl||1} ngày</td><td>${easeLabel(s.ease)}</td><td class="num">${when(s.due)}</td><td>${DIM[weakestDims(w.id)[0]].vi}</td></tr>`}).join('')}
+    ${upcoming.map(w=>{const s=W(w.id);return `<tr><td class="w" lang="en">${esc(w.word)}</td><td class="num">${s.stage}</td><td class="num">${s.ivl||1} ngày</td><td>${diffLabel(s)}</td><td class="num">${when(s.due)}</td><td>${DIM[weakestDims(w.id)[0]].vi}</td></tr>`}).join('')}
   </tbody></table></div>`:'<p class="muted">Chưa có.</p>'}
   <h3>Lịch ôn tự điều chỉnh theo từng từ</h3><div class="ladder"><span>Mới học</span>${INTERVALS.map(n=>`<em>→</em><span>${n} ngày</span>`).join('')}<em>→</em><span>× hệ số riêng</span><em>→</em><span>tối đa ${MAX_IVL} ngày</span></div>
   <p class="note">Ba lần ôn đầu cách 1, 3, 7 ngày. Sau đó mỗi lần nhớ đúng, khoảng cách nhân với <b>hệ số riêng của từ</b>: từ bạn tự gõ đúng nhiều lần thì giãn nhanh hơn; từ bạn hay quên thì hệ số giảm và được ôn dày hơn. Trả lời sai: lùi 2 bậc, ôn lại ngày mai. Ôn trễ mà vẫn nhớ thì khoảng cách tính theo thời gian thực tế. Mỗi lượt ôn tối đa ${REVIEW_BATCH} từ; ôn xong có thể ôn tiếp.</p></details>`;
@@ -2942,7 +2962,7 @@ function reportHtml(){
       <td>${P(avg(tests))}${tests.length?` (${tests.length} bài)`:''}</td><td>${P(lv.best)}</td><td>${x?`${x.lo}–${x.hi}/${x.T}`:'—'}</td><td>${P(avg(reads))} / ${P(avg(lis))}</td></tr>`; }).join('');
   const dims=DIMS.map(k=>`<tr><td>${k.en} · ${k.vi}</td><td>${P(avg(learned.map(w=>W(w.id).d[k.k]).filter(v=>v!=null)))}</td></tr>`).join('');
   const weak=learned.slice().sort((a,b)=>mastery(a.id)-mastery(b.id)).slice(0,30).map(w=>{const s=W(w.id);
-    return `<tr><td><b>${esc(w.word)}</b> <i>${esc(w.pos)}</i></td><td>${esc(w.vi)}</td><td>${uname(UNIT_OF[w.id])}</td><td>${pct(mastery(w.id))}</td><td>${DIM[weakestDims(w.id)[0]].vi}</td><td>${easeLabel(s.ease)}</td></tr>`;}).join('');
+    return `<tr><td><b>${esc(w.word)}</b> <i>${esc(w.pos)}</i></td><td>${esc(w.vi)}</td><td>${uname(UNIT_OF[w.id])}</td><td>${pct(mastery(w.id))}</td><td>${DIM[weakestDims(w.id)[0]].vi}</td><td>${diffLabel(s)}</td></tr>`;}).join('');
   const gram=GRAMMAR.levels.filter(L=>L.points.length).map(L=>`<tr><td><b>${L.id}</b></td><td>${L.points.filter(p=>G(p.id).passed).length}/${L.points.length}</td><td>${L.points.filter(p=>gMastered(p.id)).length}</td><td>${P(GLV(L.id).best)}</td></tr>`).join('');
   const snd=SOUNDS.filter(x=>st.sounds[x.id]).map(x=>`${esc(x.a)}–${esc(x.b)}: ${pct(st.sounds[x.id].best)}`).join(' · ');
   // Câu người học tự viết (app không chấm nghĩa): đặt câu với từng từ, viết theo khung, viết câu ngữ pháp.
@@ -2978,7 +2998,7 @@ function exportReport(){ return download(`bao-cao-tien-do-${new Date().toISOStri
 // Trạng thái của một từ với người học: chưa học, đang học, đã thuộc (isMastered), hay quên (hệ số dễ đã giảm vì quên khi ôn, hoặc điểm còn thấp).
 const WSTAT = {new:'Chưa học',learning:'Đang học',mastered:'Đã thuộc',hard:'Hay quên',due:'Đến hạn ôn'};
 function wstat(w){ const s=W(w.id); if(!s.learned) return 'new'; if(isMastered(w.id)) return 'mastered';
-  return (s.ease??EASE.start)<2.3 || (s.stage>=1 && skillOf(w.id)<.5) ? 'hard' : 'learning'; }   // hay quên: quên khi ôn (hệ số dễ thấp) hoặc đã ôn giãn cách mà điểm kỹ năng vẫn thấp
+  return (s.fd!=null?s.fd>=7:(s.ease??EASE.start)<2.3) || (s.stage>=1 && skillOf(w.id)<.5) ? 'hard' : 'learning'; }   // hay quên: quên khi ôn (hệ số dễ thấp) hoặc đã ôn giãn cách mà điểm kỹ năng vẫn thấp
 const wbPill = k => `<span class="pill ${{new:'',learning:'accent',mastered:'good',hard:'bad'}[k]}">${WSTAT[k]}</span>`;
 // So khớp không dấu: gõ “bua sang” vẫn tìm được “bữa sáng”.
 const fold = x => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d');
@@ -3024,7 +3044,7 @@ function viewWord(){
   ${ygLink(w.word)}
   <section class="panel stack"><div class="spread"><h3>Tiến độ của bạn với từ này</h3>${wbPill(k)}</div>${ladderHtml(WSTAGES,wStage(w.id),'Bậc thuộc của từ')}
     ${s.learned?`${DIMS.map(d=>{const v=s.d[d.k];return `<div class="dimrow"><span>${d.vi}</span>${meter(v??0,(v??0)>=MASTERED?'good':'')}<span class="v">${v==null?'–':pct(v)}</span></div>`;}).join('')}
-      <p class="muted">Mức thuộc ${pct(mastery(w.id))} · ôn lần tới: ${when(s.due)} · khoảng cách ${s.ivl||1} ngày · độ khó với bạn: ${easeLabel(s.ease)}</p>`
+      <p class="muted">Mức thuộc ${pct(mastery(w.id))} · ôn lần tới: ${when(s.due)} · khoảng cách ${s.ivl||1} ngày · độ khó với bạn: ${diffLabel(s)}</p>`
       :`<p class="muted">Bạn chưa học từ này. Từ nằm trong ${uname(u)} · ${esc(u.title)}.</p>`}
     <div class="row">${s.learned?`<button class="btn primary" data-act="wbone">Luyện từ này</button>`:''}${unlocked(u)?`<button class="btn" data-unit="${u.id}">Mở ${uname(u)}</button>`:'<span class="hint">Unit của từ này chưa mở khoá.</span>'}</div>
   </section>`;
@@ -3688,9 +3708,10 @@ mastery(từ) = trung bình 5 kỹ năng
 mastery(unit) = trung bình các từ
 đã thuộc: mastery ≥ ${MASTERED} và bậc SRS ≥ ${LONG_TERM}
 kỹ năng ≥ ${HARD} → chuyển sang dạng tự gõ</pre></div>
-    <div class="panel stack"><h3>Lịch SRS (kiểu SM-2)</h3><div class="ladder"><span>Mới học</span>${INTERVALS.map(n=>`<em>→</em><span>${n}d</span>`).join('')}<em>→</em><span>ivl × ease</span></div><pre>đúng khi đến hạn: ivl ← max(bước cố định, ivl thực tế) rồi × ease (tối đa ${MAX_IVL})
-  tự gõ đúng: ease + 0.1 (tối đa ${EASE.max})
-sai: ease − 0.2 (tối thiểu ${EASE.min}), lùi 2 bậc, ôn lại ngày mai</pre><p class="note">Luyện tập trước hạn cập nhật mastery nhưng không đổi lịch.</p></div>
+    <div class="panel stack"><h3>Lịch ôn FSRS-5</h3><pre>mỗi thẻ: độ bền S (ngày), độ khó D (1–10), ngày ôn gần nhất
+đến hạn khi khả năng nhớ R(t) = (1 + 19/81 · t / S)^−0,5 giảm còn 90%
+đúng khi đến hạn: S tăng (tự gõ đúng = "được", chọn đúng trắc nghiệm = "khó"), khoảng ôn = f(S) × hệ số riêng (tối đa ${MAX_IVL} ngày)
+sai: S giảm theo FSRS, D tăng, lùi 2 bậc, ôn lại ngày mai</pre><p class="note">Luyện tập trước hạn cập nhật mastery nhưng không đổi lịch.</p></div>
   </section>`;
 }
 
@@ -4850,7 +4871,8 @@ function gAnswer(correct,extra={}){
   g.d[ex.dim]=old+stepOf(ex.type,correct)*((correct?1:0)-old);
   srsStep(g,correct,G_TYPED.includes(ex.type)); bump('gram'); if(correct&&G_TYPED.includes(ex.type)) bump('typed'); tally(correct, xpFor(xpKind(s.kind)+':g:'+ex.gid+':'+ex.key,G_TYPED.includes(ex.type)?15:10,correct,extra.dunno)); if(!TEST_KINDS.includes(s.kind)) sfx(correct?'ok':'bad');
   const key=ex.gid+'|'+ex.dim+'|'+ex.key, given=extra.text??(extra.picked!=null?ex.opts[extra.picked]:null);
-  if(!s.retried.has(key)) evItem(ex.type,GPT[ex.gid].level,correct);
+  if(!s.retried.has(key)){ evItem(ex.type,GPT[ex.gid].level,correct);
+    eEv({node:'g:'+ex.gid,level:{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'g:'+key,qt:ex.type,ctx:ex.dim}); }
   if(!s.retried.has(key)) s.res.push({gid:ex.gid,dim:ex.dim,type:ex.type,correct,right:gRight(ex),given,prompt:ex.type==='gfc'?'Chọn câu đúng ngữ pháp':ex.type==='gor'?'Sắp xếp câu':ex.type==='gdi'?'Nghe và chép lại câu':ex.prompt,why:correct?'':gExplain(ex,given)});
   if(!correct&&!TEST_KINDS.includes(s.kind)&&!s.retried.has(key)){ s.retried.add(key); s.q.push(gbuild(GPT[ex.gid],ex.dim)); }
   else s.retried.add(key);
@@ -7961,6 +7983,11 @@ CHANGELOG.unshift({v:37,d:'2026-10-01',t:'Kiểm tra đầu vào thích ứng 15
   'Kho 96 câu mới (48 Đọc, 48 Nghe) từ band 3 đến 8,5; mỗi câu giải thích bằng tiếng Việt vì sao đúng, vì sao từng phương án sai và câu nào chứa đáp án.',
   'Bài nghe là tệp âm thanh tạo sẵn giọng Anh và Mỹ, phát một lần như thi thật; lời thoại và bản dịch hiện sau khi làm xong. Không nghe được thì bỏ qua phần Nghe.',
   'Nút Báo lỗi ở mọi câu khi xem lại.']});
+CHANGELOG.unshift({v:46,d:'2026-10-03',t:'App đo bạn đã thật sự thành thạo gì',big:true,items:[
+  'Mỗi câu trả lời (từ vựng, ngữ pháp, câu ôn thi) giờ là một bằng chứng: app ước tính mức thành thạo của từng năng lực ở 5 mức (nhận ra, hiểu, nhớ ra, dùng có kiểm soát, dùng tự do) kèm độ tin cậy. Đoán mò, lặp lại cùng câu trong ngày được tính nhẹ hơn.',
+  'Câu "Tôi có thể…" chỉ đạt khi bài làm đủ tốt, không còn đạt chỉ vì làm đủ số bài: làm xong mà điểm thấp thì vẫn hiện là đang học.',
+  'Một lịch ôn duy nhất FSRS-5 cho mọi thứ (từ vựng, ngữ pháp, sổ lỗi sai): khoảng ôn theo độ bền trí nhớ của từng thẻ. Thẻ cũ tự chuyển sang khi ôn lần tới, không mất tiến độ.',
+  'Trang Mục tiêu hiện từng năng lực đã đạt hay chưa, bao nhiêu phần trăm và tin cậy đến đâu.']});
 CHANGELOG.unshift({v:45,d:'2026-10-03',t:'Mục tiêu của bạn: chọn đích đến, xem chính xác cần đạt gì',big:true,items:[
   'Chọn mục tiêu: tiếng Anh tổng quát A1–C2, IELTS Academic/General 4.0–9.0, VSTEP B1–C1, hoặc giao tiếp hằng ngày, du lịch, nơi làm việc, học tập. Có thể chọn tới 4 mục tiêu và đặt hạn cho từng cái (Tôi → Mục tiêu của bạn).',
   'Mỗi mục tiêu là một bản đồ năng lực có phiên bản: những gì cần đạt ở từng mảng (từ vựng, ngữ pháp, phát âm, nghe, đọc, viết, nói, dạng bài thi), mức cần đạt, và các bài học sẵn có để luyện. Mục nào app chưa có bài thì ghi rõ "chưa có bài".',
@@ -8004,7 +8031,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.bd3715a817.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.f4bf9a089a.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8015,6 +8042,7 @@ const XHOST = {
   minutes:()=>({...(EV().am||{})}),
   addMinutes:m=>{ if(!(m>0)) return; const a=EV().am||(EV().am={}), d=today(); a[d]=+((a[d]||0)+Math.min(m,600)).toFixed(2); },
   markActive:()=>markActive(),
+  evidence:e=>eEv(e),
 };
 let _xmP=null, _xmErr='';
 function xmLoad(){ if(XM) return Promise.resolve(XM);
@@ -8031,11 +8059,12 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.c1f200f487.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.ab6e632de5.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),
+  cando:id=>{ const c=CANDO.find(x=>x.id===id); if(!c) return null; const p=cdProg(c); return {p:p.p,m:p.m,lb:p.lb,k:p.k,need:p.need}; },
 };
 let _emP=null, _emErr='';
 function emLoad(){ if(EM) return Promise.resolve(EM);
@@ -8054,6 +8083,12 @@ DETAIL_SAFE_VIEW.add('goal'); DETAIL_SAFE_GO.add('goal'); DETAIL_SAFE_ACT.add('e
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,2500)))(()=>emLoad().catch(()=>{}));
 // Nạp sẵn khi rảnh để tab “Ôn thi” mở ngay và để gộp/lọc dữ liệu ôn thi khi đồng bộ.
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,1500)))(()=>xmLoad().catch(()=>{}));
+// v45 (engine M2): tiến độ cũ thành tiên nghiệm cho engine, một lần: unit/điểm ngữ pháp đã qua (kể cả thi vượt cấp) coi như đã có bằng chứng.
+function ePriors(){ try{ if(typeof ELCORE==='undefined'||ELCORE.priorsDone(st)) return;
+  for(const u of UNITS){ const x=st.units[u.id]; if(x&&x.passed){ const solid=x.skipped||unitSolid(u); ELCORE.seed(st,'u:'+u.id,3,solid?6:4,solid?.5:1); } }
+  for(const p of GPOINTS){ const g=st.gram[p.id]; if(g&&g.passed) ELCORE.seed(st,'g:'+p.id,4,6,.5); }
+  ELCORE.markPriors(st); save(); }catch(e){} }
+ePriors();
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
