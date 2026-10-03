@@ -43,8 +43,9 @@ function missingActs(r: ExamReady): string {
   if (r.exam === 'vstep') {
     if (r.missing.includes('W')) b.push('<button class="btn small" data-act="vxnew" data-m="w">Thi thử Viết</button>');
     if (r.missing.includes('S')) b.push('<button class="btn small" data-act="vxnew" data-m="s">Thi thử Nói</button>');
-  } else if (r.missing.includes('W') || r.missing.includes('S')) {
-    b.push('<button class="btn small" data-act="vxnew" data-m="w">Thi thử Viết (định dạng VSTEP)</button>');
+  } else {
+    if (r.missing.includes('W')) b.push(`<button class="btn small" data-act="vxnew" data-m="w" data-ex="${r.exam}">Thi thử Viết IELTS</button>`);
+    if (r.missing.includes('S')) b.push(`<button class="btn small" data-act="vxnew" data-m="s" data-ex="${r.exam}">Thi thử Nói IELTS</button>`);
   }
   return b.length ? `<div class="row">${b.join('')}</div>` : '';
 }

@@ -1,5 +1,16 @@
 # Chấm điểm app theo Master Spec v2
 
+## v50 (sau M6a) — 03/10/2026: 7,1/10 (lõi engine 7,6/10)
+
+| # | Tiêu chí | v49 → v50 | Bằng chứng |
+| --- | --- | --- | --- |
+| 33 | IELTS Viết/Nói | 1 → 6 | Thi thử Viết (Task 1 Academic có 3 biểu đồ, Task 1 General 3 thư, Task 2 6 đề đủ 5 dạng) và Nói (4 bộ Part 1–3), tính giờ, ghi âm, máy chép lời, tự chấm 4 tiêu chí band, máy chấm luật; nối nút bài thi và Readiness. Thiếu: người chấm AI, giám khảo nói (Part 1/3 chỉ đọc câu hỏi) |
+| 34 | VSTEP Viết/Nói | 6 → 7 | Bài mẫu Viết bài 1, bài 2 ở điểm 4,5 / 6,5 / 8,5 có chú thích từng tiêu chí |
+| 38 | Tự chấm theo bài mẫu chú thích band | 4 → 8 | 18 bài mẫu (`content/ws/`), mỗi loại bài 3 mức, chú thích trích câu trong bài + cách lên mức; kiểm CI đủ 3 mức và đủ số từ. Chưa có bài mẫu Nói VSTEP |
+| 49 | Bảng phủ | 7 → 8 | Mọi nút của đồ thị đều có hoạt động đo (`engine-gen`: 0 nút chưa có gì để đo) |
+
+Nhóm G: 5,3 → 6,3; H: 5,8 → 6,8; I: 7,1 → 7,2. Tổng 7,0 → 7,1. Còn lại của M6: thêm đề thi thử Nghe/Đọc (#35, 7/15) và âm thanh (#43), tách thành M6b.
+
 ## v49 (sau M5) — 03/10/2026: 7,0/10 (lõi engine 7,6/10)
 
 | # | Tiêu chí | v48 → v49 | Bằng chứng |

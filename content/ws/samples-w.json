@@ -1,0 +1,128 @@
+[
+ {
+  "id": "smp-w1ac-1-50",
+  "task": "w1ac",
+  "prompt": "w1ac-1",
+  "band": 5,
+  "text": "The bar chart show the percentage of worker in Northport and how they travel to work in two year, 2005 and 2025.\n\nIn 2005, car was the most popular way. 52% of people go to work by car. Bus was 21% and walking was 12%. Train was 9% and bicycle was only 6%. So car is very popular in 2005. The different between car and other way is very big.\n\nIn 2025, the car was still the most popular but it decrease to 38%. Bus also decrease to 19%. Train increase to 18%, it is double. Bicycle increase too, from 6% to 15%, it is a big increase. Walking is same, it was 12% in 2005 and 12% in 2025.\n\nFirstly, car is decrease and train is increase. Secondly, bicycle is increase very much. Moreover, walking not change. In conclusion, there are many change in the way people travel to work in Northport.",
+  "crit": {
+   "TA": "Bài nêu đủ số liệu của cả 5 phương tiện nhưng ghi sai xe buýt năm 2025 là “19%” (biểu đồ là 17%). Không có overview rõ ràng: câu kết “there are many change in the way people travel” quá chung chung, không chỉ ra xu hướng chính (ô tô giảm, tàu và xe đạp tăng mạnh).",
+   "CC": "Bài chia đoạn theo năm nên dễ theo dõi, nhưng từ nối dùng máy móc (“Firstly… Secondly… Moreover…”) ở đoạn cuối chỉ để liệt kê lại thông tin đã nói. Đoạn 2 gồm toàn câu ngắn rời rạc, không có so sánh giữa các phương tiện.",
+   "LR": "Vốn từ hạn chế, lặp “increase/decrease” và “popular” nhiều lần. Cách diễn đạt “it is double”, “Walking is same” thiếu tự nhiên; không dùng các cụm như “the proportion of”, “remained stable”.",
+   "GRA": "Lỗi chia động từ dày đặc: “The bar chart show”, “it decrease”, “car is decrease”, “walking not change”; thì hiện tại và quá khứ lẫn lộn (“52% of people go to work” khi nói năm 2005). Thiếu mạo từ/số nhiều: “percentage of worker”, “many change”. Gần như chỉ dùng câu đơn."
+  },
+  "next": "1) Viết một đoạn overview ngay sau mở bài nêu 2 ý chính: ô tô vẫn đứng đầu nhưng giảm mạnh, tàu và xe đạp tăng đáng kể. 2) Kiểm tra lại từng số liệu với biểu đồ và dùng thì quá khứ nhất quán (decreased, increased, remained). 3) Gộp các câu ngắn thành câu so sánh, ví dụ “Train use doubled from 9% to 18%, while cycling rose from 6% to 15%.”"
+ },
+ {
+  "id": "smp-w1ac-1-65",
+  "task": "w1ac",
+  "prompt": "w1ac-1",
+  "band": 6.5,
+  "text": "The bar chart compares the proportion of workers in Northport who used five different modes of transport to travel to work in 2005 and 2025.\n\nOverall, the car remained the most common way of commuting in both years, although its share fell considerably. In contrast, rail and cycling became much more popular, while the figure for walking did not change.\n\nIn 2005, more than half of workers (52%) drove to work, which was far higher than other methods. Buses were the second most popular option at 21%, followed by walking at 12%. Only 9% of people took the train and cycling was the least common choice, at 6%.\n\nTwenty years later, the percentage of car users dropped to 38%, and bus use also declined slightly to 17%. On the other hand, the proportion of train commuters doubled to 18%, making it the second most popular mode, just above buses. Cycling saw the most dramatic growth, it rose more than two times to 15%. Meanwhile, walking stayed stable at 12% in both years.",
+  "crit": {
+   "TA": "Có overview rõ ràng (“the car remained the most common way… its share fell considerably”) và mọi số liệu đều khớp biểu đồ. Tuy nhiên một số chi tiết chưa chính xác về mức độ: xe buýt giảm 4 điểm phần trăm (21% → 17%) mà gọi là “declined slightly”.",
+   "CC": "Bố cục 4 đoạn hợp lý, overview tách riêng, mỗi đoạn thân bài theo một năm. Từ nối đa dạng hơn (“In contrast”, “On the other hand”, “Meanwhile”) nhưng đôi chỗ vẫn mang tính công thức.",
+   "LR": "Đã dùng được từ vựng ít phổ biến như “modes of transport”, “commuting”, “the proportion of train commuters”. Có chỗ diễn đạt chưa chuẩn: “rose more than two times” (nên là “more than doubled” hoặc “rose two and a half times”).",
+   "GRA": "Kết hợp câu đơn và câu phức, có mệnh đề quan hệ (“which was far higher than…”) và cụm phân từ (“making it the second most popular mode”). Còn lỗi nối câu bằng dấu phẩy: “Cycling saw the most dramatic growth, it rose…”."
+  },
+  "next": "1) Thêm phép so sánh trong overview, ví dụ nêu rõ tàu đã vượt xe buýt hoặc xe đạp đã vượt đi bộ. 2) Diễn đạt mức thay đổi chính xác hơn: “fell by 14 percentage points”, “two and a half times its 2005 level”. 3) Sửa lỗi nối câu bằng dấu phẩy bằng “which” hoặc mệnh đề phân từ: “…growth, rising from 6% to 15%.”"
+ },
+ {
+  "id": "smp-w1ac-1-75",
+  "task": "w1ac",
+  "prompt": "w1ac-1",
+  "band": 7.5,
+  "text": "The bar chart illustrates how workers in Northport travelled to their jobs in 2005 and 2025, broken down into five modes of transport.\n\nOverall, while the car remained the dominant means of commuting throughout the period, its share shrank markedly as rail and cycling gained ground. Walking was the only mode whose share stayed exactly the same.\n\nIn 2005, just over half of all commuters (52%) drove to work, a figure more than double that of the second most popular option, the bus (21%). Walking accounted for 12% of journeys, whereas trains and bicycles were relatively marginal, at 9% and 6% respectively.\n\nBy 2025, the picture had changed considerably. The proportion of car commuters had fallen by 14 percentage points to 38%, and bus use had also slipped, to 17%. Rail, by contrast, doubled its share to 18%, overtaking the bus to become the second most common way of getting to work. The most striking rise, however, was in cycling, which climbed from a mere 6% to 15%, two and a half times its earlier level. Walking, meanwhile, held steady at 12%, meaning that by 2025 it had been overtaken by cycling.",
+  "crit": {
+   "TA": "Overview nêu đúng xu hướng chủ đạo (“the car remained the dominant means… its share shrank markedly as rail and cycling gained ground”), số liệu chính xác và được chọn lọc kèm so sánh có ý nghĩa: tàu vượt xe buýt, xe đạp vượt đi bộ. Có thể nâng thêm bằng cách nêu sự thay đổi thứ hạng ngay trong overview.",
+   "CC": "Liên kết linh hoạt, không lệ thuộc từ nối đầu câu: “by contrast”, “however”, “meanwhile” được đặt giữa câu; đại từ và cụm “a figure more than double that of…” giúp tham chiếu tự nhiên.",
+   "LR": "Từ vựng chính xác, ít phổ biến: “relatively marginal”, “gained ground”, “bus use had also slipped”, “fell by 14 percentage points”. Lặp “share” vài lần nhưng không gây ảnh hưởng.",
+   "GRA": "Thì quá khứ hoàn thành dùng đúng với mốc “By 2025… had fallen”, nhiều cấu trúc phức như mệnh đề quan hệ không xác định (“cycling, which climbed…”) và cụm phân từ (“overtaking the bus to become…”). Gần như không có lỗi."
+  },
+  "next": "1) Đưa sự đảo thứ hạng (tàu vượt xe buýt, xe đạp vượt đi bộ) vào overview để bài “sắc” hơn. 2) Thay bớt “share” bằng các từ đồng nghĩa (“proportion”, “percentage”) và thêm một câu so sánh tổng hợp, ví dụ tổng phương tiện “xanh” (tàu + xe đạp) tăng từ 15% lên 33%. 3) Giữ độ dài khoảng 180–200 từ, không thêm chi tiết thừa."
+ },
+ {
+  "id": "smp-w1gt-1-50",
+  "task": "w1gt",
+  "prompt": "w1gt-1",
+  "band": 5,
+  "text": "Dear Sir or Madam,\n\nI am write this letter about the new opening time of the library. I read in the notice that from next month the library will close at 5 pm in weekday, not 8 pm like now. I am very unhappy about this.\n\nI use the library very much. I go there three or four time a week after work. I borrow book for me and my son and I also use the computer because my computer at home is very old. Sometime I study English there because it is quiet.\n\nIf the library close at 5 pm, I can not go there anymore because I finish my work at 5:30 pm. My son also can not go because he have extra class after school. It is very bad for us and for many people who work.\n\nI think you should open the library late in some day, for example Tuesday and Thursday. Or you can close in the morning instead because not many people come in the morning.\n\nI hope you will think about it. Thank you.\n\nYours faithfully,\nMinh Tran",
+  "crit": {
+   "TA": "Đã trả lời cả 3 gạch đầu dòng nhưng phát triển sơ sài; giọng điệu chưa phù hợp với thư trang trọng: “I am very unhappy about this”, “It is very bad for us”. Đề xuất ở đoạn 4 diễn đạt mơ hồ (“open the library late in some day”).",
+   "CC": "Mỗi đoạn ứng với một gạch đầu dòng nên bố cục rõ, nhưng câu nối với nhau chủ yếu bằng “and”, “because”, “Or” đặt đầu câu. Thiếu câu mở đầu nêu mục đích và câu kết trang trọng như “I look forward to your reply”.",
+   "LR": "Từ vựng đơn giản, lặp lại (“use the library very much”, “can not go” hai lần). Một số cụm sai nghĩa: “open the library late” (ý là open until late), “close in the morning instead”.",
+   "GRA": "Nhiều lỗi cơ bản nhưng vẫn hiểu được: “I am write”, “three or four time”, “he have extra class”, “If the library close”, “in weekday”, “Sometime”. Câu chủ yếu là câu đơn hoặc ghép với “because”."
+  },
+  "next": "1) Mở thư bằng câu nêu mục đích trang trọng: “I am writing to express my concern about…”, và thay các câu cảm xúc bằng cách nói lịch sự (“I find this decision disappointing”). 2) Phát triển mỗi gạch đầu dòng bằng chi tiết cụ thể (bạn là thành viên bao lâu, dùng dịch vụ gì, đề xuất giờ mở cửa cụ thể). 3) Rà lỗi chia động từ ngôi thứ ba và số nhiều (he has, four times, books)."
+ },
+ {
+  "id": "smp-w1gt-1-65",
+  "task": "w1gt",
+  "prompt": "w1gt-1",
+  "band": 6.5,
+  "text": "Dear Sir or Madam,\n\nI am writing to express my concern about the recent announcement that the library will close at 5 p.m. instead of 8 p.m. on weekdays from next month.\n\nI have been a member of the library since about six years and I visit it regularly, usually three evenings a week after work. As well as borrowing novels and books for my children, I often use the study area to prepare for my English exams, since my flat is quite noisy. I also attend the free computer class which is held on Wednesday evening.\n\nUnfortunately, the new opening hours will make it almost impossible for me to use these services, because I normally leave my office at half past five. I believe that many other working people and students will be in the same situation, so the library may lose a large number of its regular visitors.\n\nI understand that the library might need to reduce costs. However, I would like to suggest that, instead of closing earlier every day, it could open later in the morning, when there are usually not many readers. Alternatively, it could stay open until 8 p.m. on at least two weekdays, so the profession people still have a chance to come.\n\nI would be grateful if you could consider my suggestions.\n\nYours faithfully,\nLinh Pham",
+  "crit": {
+   "TA": "Mục đích thư rõ ngay câu đầu, cả 3 gạch đầu dòng được phát triển với chi tiết cụ thể (lớp tin học tối thứ Tư, tan làm lúc 5 giờ 30). Giọng trang trọng nhất quán (“I would be grateful if you could…”).",
+   "CC": "Các đoạn sắp xếp logic, có từ nối phù hợp (“Unfortunately”, “However”, “Alternatively”). Đoạn 2 hơi dồn nhiều ý vào một chuỗi câu liền nhau nhưng vẫn mạch lạc.",
+   "LR": "Có các cụm tự nhiên như “express my concern”, “almost impossible”, “regular visitors”. Còn chỗ dùng từ sai: “the profession people” (ý là working professionals).",
+   "GRA": "Dùng tốt câu phức với “since”, “instead of + V-ing”, mệnh đề quan hệ. Còn lỗi điển hình của người Việt: “since about six years” (phải là “for about six years”) và thiếu “s” ở “Wednesday evening(s)”."
+  },
+  "next": "1) Sửa các lỗi giới từ/từ loại như “for about six years”, “working professionals”. 2) Làm đề xuất thuyết phục hơn bằng dẫn chứng (ví dụ: buổi sáng thư viện thường vắng trước 11 giờ) và lý do vì sao nó giúp tiết kiệm chi phí. 3) Dùng thêm một vài cấu trúc trang trọng đa dạng hơn, như câu hỏi đề xuất “Might I suggest…?” hoặc “It seems unfortunate that…”."
+ },
+ {
+  "id": "smp-w1gt-1-75",
+  "task": "w1gt",
+  "prompt": "w1gt-1",
+  "band": 7.5,
+  "text": "Dear Sir or Madam,\n\nI am writing in response to the notice displayed at the entrance of Riverside Library, which states that from 1 November the library will close at 5 p.m., rather than 8 p.m., from Monday to Friday. As a long-standing member, I would like to explain why I find this decision so disappointing.\n\nFor the past six years, the library has been an essential part of my week. I typically spend two or three evenings there after work, borrowing books for my two children and making use of the quiet reading room to prepare for a professional accounting qualification. I also volunteer on Thursday evenings at the homework club for local teenagers, which would presumably have to be cancelled.\n\nSince my working day ends at half past five, the proposed hours would effectively exclude me, and I suspect a great many other employees and students, from the library altogether. It seems unfortunate that the people who rely on the service most would be the ones to lose access.\n\nIf the change is driven by budget constraints, might I suggest opening later in the morning instead? From my own observations, the building is rarely busy before 11 a.m., so starting the day at that time and remaining open until 8 p.m. would surely serve the community far better.\n\nI would be grateful if you could take this proposal into consideration, and I look forward to hearing from you.\n\nYours faithfully,\nLinh Pham",
+  "crit": {
+   "TA": "Cả 3 gạch đầu dòng được phát triển đầy đủ và thuyết phục; đề xuất có lý do cụ thể (“the building is rarely busy before 11 a.m.”). Giọng điệu trang trọng, lịch sự nhưng vẫn thể hiện rõ thái độ (“I find this decision so disappointing”).",
+   "CC": "Mạch thư tự nhiên từ lý do viết → cách dùng → ảnh hưởng → giải pháp. Liên kết bằng tham chiếu thay vì từ nối máy móc: “this decision”, “the proposed hours”, “If the change is driven by…”.",
+   "LR": "Từ vựng chính xác và đúng văn phong: “long-standing member”, “budget constraints”, “effectively exclude me… from the library altogether”. Collocation “making use of the quiet reading room” dùng tự nhiên.",
+   "GRA": "Đa dạng cấu trúc: câu hỏi đề xuất lịch sự “might I suggest opening…?”, mệnh đề chèn “and I suspect a great many other employees and students”, câu bị động “would presumably have to be cancelled”. Không thấy lỗi đáng kể."
+  },
+  "next": "1) Rút gọn đôi chỗ hơi dài (đoạn mở đầu có thể ngắn hơn) để dành chỗ cho một ý bổ sung, ví dụ đề nghị thư viện lấy ý kiến người dùng trước khi quyết định. 2) Thêm một chi tiết định lượng hoặc tác động cộng đồng ở đoạn 4 để lập luận chặt hơn. 3) Đa dạng hơn câu kết, tránh cả hai công thức quen thuộc trong cùng một câu."
+ },
+ {
+  "id": "smp-w2-1-50",
+  "task": "w2",
+  "prompt": "w2-1",
+  "band": 5,
+  "text": "Nowadays, many people think that university student should do work experience before they graduate. In my opinion, there are good things and bad things about this idea.\n\nFirst of all, work experience is very good for student. When student work in a company, they can learn many things that they cannot learn in university. For example, they can learn how to work with other people and how to talk with customer. Also they can know what job they like. My cousin did a work experience in a bank and after that she know she want to work in bank. So work experience is very useful for student future.\n\nSecondly, work experience can help student to find a job easy. Because company like people who have experience. If student have experience, company will choose them more than other people. So it is very good for them.\n\nHowever, work experience also have some bad things. Student is very busy with study and exam. If they must work, they will not have time to study and they will be tired. Some student also must do part-time job to get money, so they cannot do work experience without money and it is not fair for them. In addition, some subject like history or literature, it is difficult to find a company for work experience.\n\nIn conclusion, work experience have many advantages and disadvantages. I think it is good for student but it also have some problem. University should think about this carefully before they make a rule for all student.",
+  "crit": {
+   "TA": "Đề hỏi “To what extent do you agree or disagree?” nhưng bài không nêu rõ quan điểm: mở bài chỉ nói “there are good things and bad things” và kết bài lặp lại “many advantages and disadvantages”. Các ý có liên quan nhưng phát triển chung chung, ví dụ người anh họ chưa được khai thác.",
+   "CC": "Có chia đoạn và từ nối (“First of all”, “Secondly”, “However”, “In conclusion”) nhưng dùng máy móc; câu “Because company like people who have experience.” là câu không hoàn chỉnh. Mỗi đoạn kết thúc bằng câu lặp “So it is very good for them”.",
+   "LR": "Vốn từ hạn chế, lặp “student”, “good”, “work experience” liên tục. Một số kết hợp từ sai: “find a job easy”, “did a work experience”.",
+   "GRA": "Lỗi số nhiều và chia động từ thường xuyên: “university student should”, “she know she want”, “work experience also have”, “Student is very busy”. Có cố dùng câu điều kiện (“If student have experience, company will choose them”) nhưng vẫn sai chủ ngữ – động từ."
+  },
+  "next": "1) Nêu quan điểm rõ ràng ngay mở bài và giữ nhất quán tới kết bài, ví dụ “I largely agree, provided that placements are paid.” 2) Phát triển mỗi đoạn thân bài theo trình tự: luận điểm → giải thích → ví dụ cụ thể, thay vì kết thúc bằng câu lặp lại. 3) Sửa lỗi số nhiều (students, customers) và hòa hợp chủ ngữ – động từ; dùng từ đồng nghĩa như “placement”, “internship”, “graduates”."
+ },
+ {
+  "id": "smp-w2-1-65",
+  "task": "w2",
+  "prompt": "w2-1",
+  "band": 6.5,
+  "text": "It is often argued that all university students should have to complete a period of work experience before they are allowed to graduate. I largely agree with this view, although I believe some flexibility is needed.\n\nThe main reason why I support this idea is that work experience prepares students for their future careers. At university, students mainly learn theory, but they rarely have opportunity to apply it in real situations. During an internship, for instance, an engineering student can see how a project is actually managed and learn practical skills such as teamwork and dealing with deadlines. These skills are highly valued by employers, so graduates with work experience usually find a job more easily than those without.\n\nIn addition, a placement can help young people to make better decisions about their career. Many students choose their major without really knowing what the job involves. By spending a few months in a workplace, they can find out whether the profession really suits with them, and if it does not, they still have time to change direction before it is too late.\n\nOn the other hand, making work experience compulsory for everyone could cause some problems. Students from poor families often have to do part-time jobs to pay their fees, and an unpaid placement would put more pressures on them. Furthermore, in some subjects such as philosophy, it can be difficult to find a relevant placement.\n\nIn conclusion, I agree that work experience brings considerable benefits and should be a part of most university programmes. However, universities should make sure that placements are paid and offer alternatives, such as research projects, for students in fields where suitable work is hard to find.",
+  "crit": {
+   "TA": "Quan điểm rõ ngay mở bài (“I largely agree with this view, although… some flexibility is needed”) và được giữ nhất quán tới kết bài. Các luận điểm có ví dụ (sinh viên kỹ thuật thực tập), nhưng đoạn phản biện còn ngắn và chưa giải thích “flexibility” cụ thể là gì cho tới kết bài.",
+   "CC": "Bố cục rõ ràng, mỗi đoạn một ý chính có câu chủ đề. Từ nối phù hợp nhưng còn công thức (“In addition”, “On the other hand”, “Furthermore”).",
+   "LR": "Có từ vựng ít phổ biến và đúng ngữ cảnh: “placement”, “highly valued by employers”, “change direction”. Một vài chỗ dùng từ chưa chuẩn: “suits with them” (suit không đi với “with”), “more pressures” (pressure không đếm được).",
+   "GRA": "Kết hợp tốt câu phức: bị động (“are highly valued”), mệnh đề danh từ (“whether the profession really suits…”), cụm V-ing làm chủ ngữ (“making work experience compulsory…”). Lỗi nhỏ như thiếu mạo từ ở “rarely have opportunity” không gây khó hiểu."
+  },
+  "next": "1) Phát triển đoạn phản biện sâu hơn và chỉ ra ngay trong thân bài cách giải quyết các vấn đề đó, để quan điểm “largely agree” được bảo vệ chặt chẽ. 2) Thay một số từ nối công thức bằng liên kết qua tham chiếu (“These concerns, however,…”). 3) Sửa lỗi collocation và danh từ không đếm được (suit them, more pressure, have the opportunity)."
+ },
+ {
+  "id": "smp-w2-1-75",
+  "task": "w2",
+  "prompt": "w2-1",
+  "band": 7.5,
+  "text": "Universities have traditionally been judged on the academic knowledge they impart, yet there is growing pressure for them to produce graduates who are ready for the workplace. One proposal is to make a period of work experience a condition of graduation. While I accept that this requirement would pose practical difficulties, I am broadly in favour of it.\n\nThe strongest argument for compulsory placements is that they bridge the gap between theory and practice. A business student may be able to define cash flow in an exam, but managing an actual budget under time pressure is a different matter entirely. Spending even two or three months in a real organisation exposes students to this kind of complexity and develops the soft skills, such as communication and teamwork, that employers consistently say graduates lack. As a result, those who have completed a placement tend to make a smoother transition into full-time employment.\n\nA placement can also save students from costly career mistakes. Many teenagers choose a degree based on vague impressions or family expectations, and only discover after graduating that the profession does not suit them. A compulsory internship in the second or third year would give them a realistic picture of the work while there is still time to adjust their plans.\n\nAdmittedly, critics raise valid concerns. Unpaid internships disadvantage students who need to earn money, and in disciplines such as classics or pure mathematics, relevant placements are scarce. These problems, however, are arguments for designing the scheme carefully rather than abandoning it. Universities could partner with employers to guarantee a minimum wage, and allow research or community projects to count as equivalent experience.\n\nIn conclusion, although a one-size-fits-all rule would be unfair, I believe that a well-designed work experience requirement would benefit the vast majority of students and should be adopted.",
+  "crit": {
+   "TA": "Quan điểm rõ và có sắc thái (“While I accept… practical difficulties, I am broadly in favour of it”), được phát triển qua hai luận điểm có ví dụ cụ thể (sinh viên kinh doanh và “cash flow”). Đoạn nhượng bộ không chỉ nêu phản biện mà còn bác bỏ và đưa giải pháp, giúp lập trường nhất quán.",
+   "CC": "Các đoạn liên kết mượt nhờ tham chiếu ngược: “this kind of complexity”, “These problems, however, are arguments for…”. Từ nối dùng tiết chế, đặt linh hoạt trong câu thay vì luôn đứng đầu.",
+   "LR": "Từ vựng chính xác và ít phổ biến: “bridge the gap between theory and practice”, “a smoother transition into full-time employment”, “a one-size-fits-all rule”. Có thể đa dạng hơn thay vì lặp “placement” nhiều lần.",
+   "GRA": "Đa dạng cấu trúc phức và gần như không lỗi: mệnh đề quan hệ rút gọn tân ngữ (“the soft skills… that employers consistently say graduates lack”), cụm V-ing làm chủ ngữ (“Spending even two or three months… exposes”), câu điều kiện ẩn (“would give them a realistic picture”)."
+  },
+  "next": "1) Kết bài hơi ngắn: thêm một câu tóm lại hai lợi ích chính và điều kiện thiết kế chương trình. 2) Bổ sung một ví dụ thực tế hơn cho đoạn 3 (ví dụ một ngành cụ thể) để mức độ phát triển ý đạt band 8. 3) Thay bớt từ lặp “placement/internship” bằng “work-based learning”, “industry experience” để vốn từ phong phú hơn."
+ }
+]

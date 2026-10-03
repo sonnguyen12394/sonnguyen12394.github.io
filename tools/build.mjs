@@ -76,6 +76,22 @@ for (const t of mockTests) {
   const dur = Math.round([...new Set(groups.filter(g => t.L.includes(g.part)).map(g => g.part))].reduce((s, p) => s + (groups.find(g => g.part === p).audio?.dur ?? 0), 0));
   index.mocks.push({ id: t.id, exam: t.exam, title: t.title, L: t.L, R: t.R, ...(t.adj ? { adj: t.adj } : {}), n: { L: n('L'), R: n('R') }, dur });
 }
+// Viết/Nói theo kỳ thi (IELTS) + bài mẫu chú thích band: content/ws/*.json → data/exam/ws.<băm>.json; app.js tải khi mở thi thử
+// Viết/Nói (WS_JSON). Hình biểu đồ Task 1 nhúng như hình của gói câu.
+let wsFile = null;
+if (existsSync(P('content/ws'))) {
+  const ws = { samples: [] };
+  for (const f of readdirSync(P('content/ws')).filter(f => f.endsWith('.json')).sort()) {
+    const d = JSON.parse(readFileSync(P('content/ws/' + f), 'utf8'));
+    if (Array.isArray(d)) ws.samples.push(...d); else Object.assign(ws, d);
+  }
+  ws.samples.sort((a, b) => (a.id < b.id ? -1 : 1));
+  for (const t of ws.w1ac || []) if (t.fig) t.svg = svgOf(t.fig.replace(/\.svg$/, ''));
+  const body = Buffer.from(JSON.stringify(ws));
+  wsFile = `data/exam/ws.${hash(body)}.json`;
+  keep.add(wsFile.slice('data/exam/'.length));
+  if (!existsSync(P(wsFile))) writeFileSync(P(wsFile), body);
+}
 for (const f of readdirSync(P('data/exam'))) if (!keep.has(f)) unlinkSync(P('data/exam/' + f));
 mkdirSync(P('src/exam/gen'), { recursive: true });
 const idxText = JSON.stringify(index) + '\n';
@@ -130,6 +146,7 @@ if (!existsSync(P(coreName)) || !readFileSync(P(coreName)).equals(Buffer.from(cc
 // 2. app.js biết tên tệp
 setLine('app.js', /^const EXAM_JS = .*$/m, `const EXAM_JS = '${examName}';   // tools/build.mjs ghi`);
 setLine('app.js', /^const ENGINE_JS = .*$/m, `const ENGINE_JS = '${engName}';   // tools/build.mjs ghi`);
+if (wsFile) setLine('app.js', /^const WS_JSON = .*$/m, `const WS_JSON = '${wsFile}';   // tools/build.mjs ghi`);
 
 // 3. Số bản phát hành
 const app = readFileSync(P('app.js'), 'utf8');

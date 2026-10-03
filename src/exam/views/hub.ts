@@ -50,6 +50,8 @@ export function viewHub(c: Ctx): string {
       ${isV ? card('data-act="exgo"', 'trophy', 'Thi nhanh Nghe + Đọc (rút gọn)', 'Khoảng 45 phút, câu lấy từ bài học; muốn sát đề thật hãy làm Đề thi thử đầy đủ', ico) : ''}
       ${isV ? card('data-act="vxnew" data-m="w"', 'pen', 'Thi thử Viết', 'Thư ≥ 120 từ và bài luận ≥ 250 từ, 60 phút', ico) : ''}
       ${isV ? card('data-act="vxnew" data-m="s"', 'mic', 'Thi thử Nói', '3 phần, tính giờ, máy chép lời', ico) : ''}
+      ${!isV ? card(`data-act="vxnew" data-m="w" data-ex="${esc(x.exam)}"`, 'pen', 'Thi thử Viết IELTS', `Task 1 (${x.exam === 'ielts-gt' ? 'viết thư' : 'biểu đồ'}) + Task 2, 60 phút; bài mẫu band 5,0 / 6,5 / 7,5 có chú thích, tự chấm 4 tiêu chí`, ico) : ''}
+      ${!isV ? card(`data-act="vxnew" data-m="s" data-ex="${esc(x.exam)}"`, 'mic', 'Thi thử Nói IELTS', 'Part 1–3, tính giờ, ghi âm, máy chép lời; bài mẫu Part 2 có chú thích', ico) : ''}
       ${card('data-x="route" data-r="real"', 'star', 'Ghi điểm thi thật', 'So với ước tính của app; giúp đo độ chính xác cho mọi người', ico)}
       ${card('data-x="route" data-r="scales"', 'chart', 'Cách tính điểm và nguồn', 'Bảng quy đổi số câu đúng → band, CEFR ↔ IELTS ↔ VSTEP, sai số, giới hạn của app', ico)}
       ${card('data-x="route" data-r="accuracy"', 'info', 'Độ chính xác của ước tính', 'So với điểm thi thật của người học (công bố khi đủ 100 cặp mỗi kỹ năng)', ico)}

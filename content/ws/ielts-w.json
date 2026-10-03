@@ -1,0 +1,83 @@
+{
+ "w1ac": [
+  {
+   "id": "w1ac-1",
+   "fig": "chart-commute.svg",
+   "alt": "Biểu đồ cột về phương tiện chính mà người lao động ở thành phố Northport dùng để đi làm, năm 2005 và 2025 (đơn vị: %). Ô tô: 52% năm 2005, 38% năm 2025. Xe buýt: 21% và 17%. Tàu hỏa: 9% và 18%. Xe đạp: 6% và 15%. Đi bộ: 12% ở cả hai năm.",
+   "p": "The bar chart below shows the main way that workers in a city called Northport travelled to work in 2005 and 2025.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
+   "vi": "Mô tả biểu đồ cột so sánh tỉ lệ người lao động ở Northport dùng từng phương tiện (ô tô, xe buýt, tàu, xe đạp, đi bộ) để đi làm năm 2005 và 2025."
+  },
+  {
+   "id": "w1ac-2",
+   "fig": "chart-visitors.svg",
+   "alt": "Biểu đồ đường về số lượt khách hằng năm (nghìn lượt) đến ba điểm tham quan ở thị trấn Lakeford từ 2000 đến 2020. Bảo tàng: 120, 135, 150, 140, 160. Sở thú: 200, 190, 170, 155, 145. Thủy cung: 40, 55, 90, 120, 175. Giữa năm 2015 và 2020, thủy cung vượt qua cả bảo tàng và sở thú.",
+   "p": "The line graph below shows the number of visitors to three tourist attractions in the town of Lakeford between 2000 and 2020.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
+   "vi": "Mô tả biểu đồ đường thể hiện số lượt khách đến bảo tàng, sở thú và thủy cung ở Lakeford trong giai đoạn 2000–2020."
+  },
+  {
+   "id": "w1ac-3",
+   "fig": "chart-water.svg",
+   "alt": "Bảng về lượng nước trung bình mỗi người dùng một ngày (lít) ở thị trấn Eastvale năm 2000, 2010 và 2020. Tắm vòi sen và bồn tắm: 60, 55, 48. Xả bồn cầu: 45, 35, 28. Máy giặt: 25, 20, 18. Tưới vườn: 20, 26, 30. Uống và nấu ăn: 10, 10, 11. Tổng: 160, 146, 135.",
+   "p": "The table below shows the average amount of water used per person each day for different purposes in Eastvale in 2000, 2010 and 2020.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
+   "vi": "Mô tả bảng số liệu về lượng nước mỗi người dùng hằng ngày cho từng mục đích ở Eastvale qua ba mốc 2000, 2010 và 2020."
+  }
+ ],
+ "w1gt": [
+  {
+   "id": "w1gt-1",
+   "reg": "f",
+   "p": "Your local library has announced that it will close earlier on weekday evenings from next month.\n\nWrite a letter to the library manager. In your letter\n• explain how you use the library\n• describe how the change will affect you\n• suggest an alternative solution\n\nWrite at least 150 words.\n\nYou do NOT need to write any addresses.\n\nBegin your letter as follows:\n\nDear Sir or Madam,",
+   "vi": "Viết thư trang trọng gửi quản lý thư viện về việc thư viện đóng cửa sớm hơn vào buổi tối các ngày trong tuần: bạn dùng thư viện thế nào, thay đổi ảnh hưởng ra sao, đề xuất giải pháp khác."
+  },
+  {
+   "id": "w1gt-2",
+   "reg": "n",
+   "p": "You recently joined a community gardening group in your neighbourhood. You would like to help organise an event for the group.\n\nWrite a letter to the group leader. In your letter\n• introduce yourself briefly\n• describe the event you would like to organise\n• say what help you would need from other members\n\nWrite at least 150 words.\n\nYou do NOT need to write any addresses.\n\nBegin your letter as follows:\n\nDear Mr Collins,",
+   "vi": "Viết thư bán trang trọng gửi trưởng nhóm làm vườn cộng đồng mà bạn mới tham gia: giới thiệu bản thân, mô tả sự kiện muốn tổ chức, nói bạn cần các thành viên khác giúp gì."
+  },
+  {
+   "id": "w1gt-3",
+   "reg": "i",
+   "p": "A friend from another country is planning to spend a week in your city next month and has asked for your advice.\n\nWrite a letter to your friend. In your letter\n• suggest the best way to travel around the city\n• recommend a place your friend should visit\n• explain what you would like to do together\n\nWrite at least 150 words.\n\nYou do NOT need to write any addresses.\n\nBegin your letter as follows:\n\nDear ...,",
+   "vi": "Viết thư thân mật cho một người bạn nước ngoài sắp đến thành phố của bạn một tuần: gợi ý cách di chuyển, giới thiệu một nơi nên đến, nói hai bạn sẽ làm gì cùng nhau."
+  }
+ ],
+ "w2": [
+  {
+   "id": "w2-1",
+   "type": "opinion",
+   "p": "Some people believe that every university student should be required to complete a period of work experience before they are allowed to graduate.\n\nTo what extent do you agree or disagree?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+   "vi": "Có ý kiến cho rằng mọi sinh viên đại học phải hoàn thành một thời gian thực tập/làm việc thực tế mới được tốt nghiệp. Bạn đồng ý hay không đồng ý đến mức nào?"
+  },
+  {
+   "id": "w2-2",
+   "type": "discuss",
+   "p": "Some people think that employees work more effectively when they are allowed to work from home. Others believe that working together in an office produces better results.\n\nDiscuss both these views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+   "vi": "Một số người cho rằng nhân viên làm việc hiệu quả hơn khi được làm tại nhà; số khác tin rằng làm việc cùng nhau ở văn phòng cho kết quả tốt hơn. Bàn về cả hai quan điểm và nêu ý kiến của bạn."
+  },
+  {
+   "id": "w2-3",
+   "type": "problem",
+   "p": "In many large cities, traffic congestion is becoming worse every year.\n\nWhat are the main causes of this problem, and what measures could be taken to reduce it?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+   "vi": "Ở nhiều thành phố lớn, tắc đường ngày càng nghiêm trọng. Nguyên nhân chính là gì và có thể áp dụng biện pháp nào để giảm tình trạng này?"
+  },
+  {
+   "id": "w2-4",
+   "type": "adv",
+   "p": "In some countries, a growing number of patients now consult their doctor by video call instead of visiting a clinic in person.\n\nDo the advantages of this development outweigh the disadvantages?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+   "vi": "Ở một số nước, ngày càng nhiều bệnh nhân khám bệnh qua cuộc gọi video thay vì đến phòng khám. Lợi ích của xu hướng này có lớn hơn bất lợi không?"
+  },
+  {
+   "id": "w2-5",
+   "type": "two-part",
+   "p": "Many people now buy new clothes very frequently, even when their old clothes are still in good condition.\n\nWhy do people do this? Is this a positive or negative development for the environment?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+   "vi": "Nhiều người mua quần áo mới rất thường xuyên dù đồ cũ vẫn còn tốt. Vì sao họ làm vậy? Đây là xu hướng tích cực hay tiêu cực đối với môi trường?"
+  },
+  {
+   "id": "w2-6",
+   "type": "opinion",
+   "p": "Some people argue that all children should learn computer programming at primary school, as it will be an essential skill in the future.\n\nTo what extent do you agree or disagree?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+   "vi": "Có ý kiến cho rằng mọi trẻ em nên học lập trình máy tính từ bậc tiểu học vì đây sẽ là kỹ năng thiết yếu trong tương lai. Bạn đồng ý hay không đồng ý đến mức nào?"
+  }
+ ]
+}

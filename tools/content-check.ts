@@ -93,5 +93,32 @@ const worst = groups.map(g => ({ id: g.id, r: levelReport(g, list).ratio })).sor
   for (const msg of validateGraph({ nodes, edges, goals })) { schemaErr++; console.error(`✗ engine: ${msg}`); }
   console.log(`engine: ${nodes.length} nút, ${edges.length} cạnh, ${goals.length} mục tiêu`);
 }
+// Viết/Nói theo kỳ thi + bài mẫu chú thích band (content/ws/*.json): lược đồ, đề mẫu tồn tại, độ dài tối thiểu, đủ các band mỗi loại bài.
+{
+  const W = join(ROOT, 'content/ws'), wschema = JSON.parse(readFileSync(join(ROOT, 'content/schema/ws.schema.json'), 'utf8'));
+  const wajv = new Ajv({ allErrors: true, schemas: [wschema] });
+  const V: Record<string, ReturnType<typeof wajv.getSchema>> = Object.fromEntries(['w1ac', 'w1gt', 'w2', 's', 'sample'].map(k => [k, wajv.getSchema(`ws#/definitions/${k}`)]));
+  const ws: Record<string, Array<Record<string, unknown>>> = { samples: [] };
+  for (const f of existsSync(W) ? walk(W) : []) {
+    const d = JSON.parse(readFileSync(f, 'utf8'));
+    if (Array.isArray(d)) ws.samples!.push(...d); else for (const [k, v] of Object.entries(d)) { if (!V[k]) { schemaErr++; console.error(`✗ ${relative(ROOT, f)}: khoá lạ "${k}"`); continue; } ws[k] = v as Array<Record<string, unknown>>; }
+  }
+  for (const k of ['w1ac', 'w1gt', 'w2', 's']) for (const t of ws[k] ?? []) {
+    if (!V[k]!(t)) { schemaErr++; console.error(`✗ ws ${String(t.id)}: ${wajv.errorsText(V[k]!.errors)}`); }
+    if (k === 'w1ac' && !existsSync(join(ROOT, 'content/fig', String(t.fig).replace(/\.svg$/, '') + '.svg'))) { schemaErr++; console.error(`✗ ws ${String(t.id)}: thiếu hình ${String(t.fig)}`); }
+  }
+  const ids = new Set(Object.values(ws).flat().map(t => String(t.id)));
+  const MIN: Record<string, number> = { w1ac: 150, w1gt: 150, w2: 250, s2: 150, vw1: 120, vw2: 250 };
+  const words = (t: string): number => t.split(/\s+/).filter(w => /[a-z0-9]/i.test(w)).length;
+  for (const sm of ws.samples ?? []) {
+    if (!V.sample!(sm)) { schemaErr++; console.error(`✗ ws ${String(sm.id)}: ${wajv.errorsText(V.sample!.errors)}`); continue; }
+    const task = String(sm.task), pr = String(sm.prompt);
+    if (!task.startsWith('v') && !ids.has(pr)) { schemaErr++; console.error(`✗ ws ${String(sm.id)}: không có đề ${pr}`); }
+    if (words(String(sm.text)) < MIN[task]! * 0.95) { schemaErr++; console.error(`✗ ws ${String(sm.id)}: ${words(String(sm.text))} từ, cần ≥ ${MIN[task]}`); }
+  }
+  const tasks = [...new Set((ws.samples ?? []).map(s => String(s.task)))];
+  for (const t of tasks) if (new Set((ws.samples ?? []).filter(s => s.task === t).map(s => s.band)).size < 3) { schemaErr++; console.error(`✗ ws: bài mẫu ${t} cần ≥ 3 mức band`); }
+  console.log(`ws: ${(ws.w1ac ?? []).length + (ws.w1gt ?? []).length + (ws.w2 ?? []).length} đề Viết, ${(ws.s ?? []).length} bộ đề Nói, ${(ws.samples ?? []).length} bài mẫu`);
+}
 console.log(`content: ${groups.length} nhóm, ${items} câu; ${schemaErr + issues.length} lỗi${worst ? `; tỉ lệ từ vượt cấp cao nhất ${(worst.r * 100).toFixed(1)}% (${worst.id})` : ''}`);
 process.exit(schemaErr + issues.length ? 1 : 0);

@@ -26033,7 +26033,12 @@
   "ctx": [
    "exam"
   ],
-  "acts": [],
+  "acts": [
+   {
+    "at": "data-act=\"vxnew\" data-m=\"s\" data-ex=\"ielts-ac\"",
+    "t": "Thi thử Nói IELTS"
+   }
+  ],
   "minutes": 40
  },
  {
@@ -26047,7 +26052,12 @@
   "ctx": [
    "exam"
   ],
-  "acts": [],
+  "acts": [
+   {
+    "at": "data-act=\"vxnew\" data-m=\"s\" data-ex=\"ielts-ac\"",
+    "t": "Thi thử Nói IELTS"
+   }
+  ],
   "minutes": 40
  },
  {
@@ -26061,7 +26071,12 @@
   "ctx": [
    "exam"
   ],
-  "acts": [],
+  "acts": [
+   {
+    "at": "data-act=\"vxnew\" data-m=\"s\" data-ex=\"ielts-ac\"",
+    "t": "Thi thử Nói IELTS"
+   }
+  ],
   "minutes": 40
  },
  {
@@ -26132,7 +26147,12 @@
   "ctx": [
    "exam"
   ],
-  "acts": [],
+  "acts": [
+   {
+    "at": "data-act=\"vxnew\" data-m=\"w\" data-ex=\"ielts-ac\"",
+    "t": "Thi thử Viết IELTS Academic"
+   }
+  ],
   "minutes": 40
  },
  {
@@ -26146,7 +26166,12 @@
   "ctx": [
    "exam"
   ],
-  "acts": [],
+  "acts": [
+   {
+    "at": "data-act=\"vxnew\" data-m=\"w\" data-ex=\"ielts-gt\"",
+    "t": "Thi thử Viết IELTS General"
+   }
+  ],
   "minutes": 40
  },
  {
@@ -26160,7 +26185,12 @@
   "ctx": [
    "exam"
   ],
-  "acts": [],
+  "acts": [
+   {
+    "at": "data-act=\"vxnew\" data-m=\"w\" data-ex=\"ielts-ac\"",
+    "t": "Thi thử Viết IELTS"
+   }
+  ],
   "minutes": 40
  },
  {

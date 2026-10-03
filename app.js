@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 49;
+const STATE_V = 18, APP_VERSION = 50;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},e:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -6038,10 +6038,10 @@ const VX_WRUB = [['Hoàn thành yêu cầu','Trả lời đủ các ý đề h�
 const VX_SRUB = [['Ngữ pháp','Chính xác, có câu phức'],['Từ vựng','Đủ và đa dạng cho chủ đề'],['Phát âm','Rõ âm cuối, trọng âm, ngữ điệu'],['Trôi chảy','Nói liền, ít ngập ngừng'],['Tổ chức ý','Có thứ tự, có ví dụ, có từ nối']];
 const VX_MIN = {w1:20,w2:40,s1:3,s2:4,s3:5}, VX_PREP = {s1:0,s2:60,s3:60}, VX_WMIN = {w1:120,w2:250};
 const vxBand = (sc,n) => { const v=sc.filter(x=>x); return v.length===n?Math.round(v.reduce((a,b)=>a+b,0)/n*2.5*2)/2:null; };   // 1–4 → thang 10, làm tròn 0,5
-function startVx(mode){ recReset(); asrReset(); vxAsrStop(); const pick=a=>Math.floor(Math.random()*a.length);
+function startVx(mode,ex){ if(ex==='ielts-ac'||ex==='ielts-gt') return ixStart(mode,ex); recReset(); asrReset(); vxAsrStop(); const pick=a=>Math.floor(Math.random()*a.length);
   go('vx',{vx:mode==='w'?{mode,w1:pick(VX_W1),w2:pick(VX_W2),step:'intro',text:{w1:'',w2:''},self:{w1:[],w2:[]},end:0}:{mode,set:pick(VX_S),step:'intro',self:{},tr:{},end:0,prep:0}}); }
 function vxStep(step){ const V=ui.vx; if(V.mode==='w'&&/^w/.test(V.step)){ const el=document.getElementById('vxin'); if(el) V.text[V.step]=el.value; }
-  recStop(); vxAsrStop(); V.step=step; const m=VX_MIN[step]; V.prep=VX_PREP[step]?Date.now()+VX_PREP[step]*1000:0; V.end=m?(V.prep||Date.now())+m*60000:0; render(); window.scrollTo(0,0); vxArm(); }
+  recStop(); vxAsrStop(); V.step=step; const MIN=V.ex?IX_MIN:VX_MIN, PREP=V.ex?IX_PREP:VX_PREP, m=MIN[step]; V.prep=PREP[step]?Date.now()+PREP[step]*1000:0; V.end=m?(V.prep||Date.now())+m*60000:0; render(); window.scrollTo(0,0); vxArm(); }
 let _vxT=null;
 function vxArm(){ if(_vxT) return; _vxT=setInterval(()=>{ const V=ui.vx; if(ui.view!=='vx'||!V||!V.end){ clearInterval(_vxT); _vxT=null; return; }
   const now=Date.now(), el=document.getElementById('vxtimer'), pre=V.prep&&now<V.prep, left=Math.max(0,(pre?V.prep:V.end)-now);
@@ -6074,9 +6074,9 @@ function vxStatsHtml(tr){ if(!tr||!tr.text) return ''; const s=vxSpeechStats(tr)
     ${s.hints.length?`<div class="stack" style="gap:4px"><b>Lỗi hay gặp máy dò được</b>${s.hints.map(h=>`<p class="gerr"><span lang="en">${esc(h.snip)}</span><span class="hint">${esc(h.why)}</span></p>`).join('')}</div>`:''}
     <p class="hint">Máy có thể chép sai khi phát âm chưa rõ; lỗi ở đây có khi là lỗi nghe của máy.</p></details>`; }
 const vxRub = (R,part,self) => `<div class="stack" style="gap:6px">${R.map(([t,d],i)=>`<div class="spread" style="gap:6px"><span><b>${t}</b> <span class="hint">${d}</span></span><span class="row" style="gap:4px">${[1,2,3,4].map(v=>`<button class="btn small ${self[i]===v?'primary':''}" data-act="vxself" data-p="${part}" data-i="${i}" data-v="${v}" aria-pressed="${self[i]===v}">${v}</button>`).join('')}</span></div>`).join('')}<p class="hint">1 chưa đạt · 2 gần đạt · 3 đạt · 4 tốt. Hãy chấm khắt khe, so với bài mẫu và tiêu chí.</p></div>`;
-function vxWChecks(k,text){ const n=wcount(text), paras=text.split(/\n\s*\n/).filter(x=>x.trim()).length, low=' '+nt(text)+' ', links=[...new Set(linksUpTo('B2').filter(l=>low.includes(' '+nt(l)+' ')))], hs=grammarHints(text);
-  return {n,ok:n>=VX_WMIN[k],paras,links,hs}; }
-function viewVx(){ const V=ui.vx; if(!V) return viewGames?viewGames():viewTalk();
+function vxWChecks(k,text,min){ const n=wcount(text), paras=text.split(/\n\s*\n/).filter(x=>x.trim()).length, low=' '+nt(text)+' ', links=[...new Set(linksUpTo('B2').filter(l=>low.includes(' '+nt(l)+' ')))], hs=grammarHints(text);
+  return {n,ok:n>=(min||VX_WMIN[k]),paras,links,hs}; }
+function viewVx(){ const V=ui.vx; if(!V) return viewGames?viewGames():viewTalk(); if(V.ex) return viewIx(V);
   const top=`<div class="spread"><button class="btn ghost back" data-act="vxquit">← Thoát</button>${V.end?`<span class="pill accent num" role="timer">⏱ <span id="vxtimer">…</span></span>`:''}</div>`;
   if(V.mode==='w'){
     if(V.step==='intro') return `${top}<section class="stack"><span class="eyebrow">Thi thử · định dạng VSTEP (bậc 3–5)</span><h1>Thi thử Viết</h1>
@@ -6092,7 +6092,7 @@ function viewVx(){ const V=ui.vx; if(!V) return viewGames?viewGames():viewTalk()
       return `<section class="panel stack"><h3>${k==='w1'?'Bài 1 · Thư/email':'Bài 2 · Bài luận'}</h3><p class="hint">${esc(t.p)}</p>
         <p>${c.ok?'✅':'❌'} ${c.n} từ (cần ≥ ${VX_WMIN[k]})${c.ok?'':' · thiếu độ dài thường bị trừ điểm nặng'} · ${c.paras} đoạn · từ nối: ${c.links.length?esc(c.links.join(', ')):'chưa có'}</p>
         ${c.hs.length?`<div class="stack" style="gap:4px"><b>Lỗi chắc chắn sai máy dò được</b>${c.hs.map(h=>`<p class="gerr"><span lang="en">${esc(h.snip)}</span><span class="hint">${esc(h.why)}</span></p>`).join('')}</div>`:'<p class="hint">Máy không dò thấy lỗi hay gặp (không có nghĩa là không có lỗi).</p>'}
-        <details><summary>Bài của bạn</summary><p lang="en" style="white-space:pre-wrap">${esc(text)||'—'}</p></details>${vxRub(VX_WRUB,k,V.self[k])}</section>`; };
+        <details><summary>Bài của bạn</summary><p lang="en" style="white-space:pre-wrap">${esc(text)||'—'}</p></details>${wsSamplesHtml(k==='w1'?'vw1':'vw2')}${vxRub(VX_WRUB,k,V.self[k])}</section>`; };
     const b1=vxBand(V.self.w1,4), b2=vxBand(V.self.w2,4), cap=(b,k)=>b==null?null:vxWChecks(k,V.text[k]||'').ok?b:Math.min(b,4), f=cap(b1,'w1')!=null&&cap(b2,'w2')!=null?Math.round((cap(b1,'w1')+2*cap(b2,'w2'))/3*2)/2:null;
     return `${top}<section class="stack"><span class="eyebrow">Kết quả thi thử Viết</span><h1>${f!=null?`Viết ≈ ${String(f).replace('.',',')}/10 · ${exLevel(f)}`:'Tự chấm để xem điểm ước tính'}</h1>
       <p class="muted note">Điểm = (Bài 1 + 2 × Bài 2) / 3 từ phần tự chấm; bài thiếu độ dài bị giới hạn tối đa 4/10.</p></section>${part('w1')}${part('w2')}
@@ -6114,19 +6114,101 @@ function viewVx(){ const V=ui.vx; if(!V) return viewGames?viewGames():viewTalk()
     <p class="muted note">Nghe lại bản ghi âm hoặc đọc lời máy chép, rồi chấm từng phần thật khắt khe.</p></section>
     ${['s1','s2','s3'].map(k=>`<section class="panel stack"><h3>Phần ${k[1]}</h3>${vxStatsHtml(V.tr[k])}${vxRub(VX_SRUB,k,V.self[k]||[])}</section>`).join('')}
     <div class="row"><button class="btn primary" data-act="vxsave" ${f==null?'disabled':''}>Lưu kết quả</button><button class="btn" data-act="vxnew" data-m="s">Làm đề khác</button></div>`; }
-function vxSave(){ const V=ui.vx, me=st.me||(st.me={}), h=me.vx||(me.vx=[]);
+function vxSave(){ const V=ui.vx, me=st.me||(st.me={}), h=me.vx||(me.vx=[]); if(V.ex) return ixSave(V,me,h);
   let b; if(V.mode==='w'){ const cap=(x,k)=>vxWChecks(k,V.text[k]||'').ok?x:Math.min(x,4); b=Math.round((cap(vxBand(V.self.w1,4),'w1')+2*cap(vxBand(V.self.w2,4),'w2'))/3*2)/2; }
   else b=Math.round(['s1','s2','s3'].map(k=>vxBand(V.self[k]||[],5)).reduce((a,x)=>a+x,0)/3*2)/2;
   // Máy chấm luật (perfEst) chấm cùng bài để engine có hai người chấm độc lập (grader.ts); bài làm thật ghi bằng chứng cho nút bài thi
   const txt=V.mode==='w'?[V.text.w1,V.text.w2].filter(Boolean).join('\n\n'):Object.values(V.tr||{}).map(x=>x&&x.text||'').filter(Boolean).join('. '), pe=perfEst(txt,V.mode==='w'?'W':'S');
   h.unshift({day:today(),m:V.mode,b,...(pe?{r:+pe.p.toFixed(2)}:{})}); me.vx=h.slice(0,10); vxEvidence(V); bump(V.mode==='w'?'read':'talk'); markActive(); addXP(selfXP('vx'+V.mode,30)); evc('vx:'+V.mode); save();
-  const e=(st.exam||[])[0], o=h.find(x=>x.m!==V.mode), all=e&&o&&today()-e.day<=30&&today()-o.day<=30?(e.l+e.r+b+o.b)/4:null;
+  const e=(st.exam||[])[0], o=h.find(x=>x.m!==V.mode&&!x.ex), all=e&&o&&today()-e.day<=30&&today()-o.day<=30?(e.l+e.r+b+o.b)/4:null;
   modal({ic:'📝',title:`Đã lưu: ${V.mode==='w'?'Viết':'Nói'} ≈ ${String(b).replace('.',',')}/10`,sub:all!=null?`Ước tính 4 kỹ năng (30 ngày gần nhất): ${all.toFixed(1).replace('.',',')}/10 · ${exLevel(all)}.`:`Để có ước tính đủ 4 kỹ năng, làm thêm: ${[!(e&&today()-e.day<=30)&&'thi thử Nghe + Đọc',!(o&&today()-o.day<=30)&&(V.mode==='w'?'thi thử Nói':'thi thử Viết')].filter(Boolean).join(' và ')}.`}); }
 // Mỗi phần thi thử là một bằng chứng cho nút bài thi (xw:vstep-t1/t2, xs:vstep-p1..p3) ở mức 3/4/5 = ngưỡng bậc 3/4/5 (4 / 6 / 8,5 điểm).
 function vxEvidence(V){ if(typeof ELCORE==='undefined') return; const t=today();
   const parts=V.mode==='w'?['w1','w2'].map((k,i)=>{ const x=vxBand(V.self[k],4); return ['xw:vstep-t'+(i+1),x==null?null:vxWChecks(k,V.text[k]||'').ok?x:Math.min(x,4)]; }):['s1','s2','s3'].map((k,i)=>['xs:vstep-p'+(i+1),vxBand(V.self[k]||[],5)]);
   for(const [node,sc] of parts){ if(sc==null) continue; [[3,4],[4,6],[5,8.5]].forEach(([level,thr])=>ELCORE.ev(st,{node,level,ok:sc>=thr,w:2,only:true,qt:'vx'},t)); } }
-const vxLast = m => ((st.me||{}).vx||[]).find(x=>x.m===m);
+// ---------- Thi thử Viết/Nói IELTS (M6) + bài mẫu chú thích band ----------
+// Đề và bài mẫu là dữ liệu (content/ws/*.json → WS_JSON, tải khi cần). Dùng chung hẹn giờ, ghi âm, máy chép lời với thi thử VSTEP.
+// Tự chấm 4 tiêu chí công khai của IELTS ở thang band 4–9, so với bài mẫu có chú thích; máy chấm luật chấm cùng bài (engine/grader.ts).
+const WS_JSON = 'data/exam/ws.05f4d14542.json';   // tools/build.mjs ghi
+let WS=null, _wsP=null;
+function wsLoad(){ if(WS) return Promise.resolve(WS); return _wsP ||= fetch(WS_JSON).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }).then(d=>{ WS=d; return d; }).catch(e=>{ _wsP=null; throw e; }); }
+const IX_MIN = {w1:20,w2:40,s1:5,s2:3,s3:5}, IX_PREP = {s2:60}, IX_WMIN = {w1:150,w2:250};
+const IX_WRUB = [['Hoàn thành yêu cầu','Task 1: tổng quan + số liệu chính, so sánh. Task 2: trả lời đủ mọi phần đề, quan điểm rõ, ý phát triển có ví dụ'],['Mạch lạc, liên kết','Đoạn rõ ý, từ nối đa dạng và đúng, quy chiếu (this, which…) không lặp'],['Từ vựng','Đa dạng, chính xác, có từ ít phổ biến, ít lỗi chính tả, dạng từ'],['Ngữ pháp','Nhiều cấu trúc phức, phần lớn câu không lỗi']];
+const IX_SRUB = [['Trôi chảy, mạch lạc','Nói liền, ít ngập ngừng, ý nối tiếp hợp lý'],['Từ vựng','Đủ từ cho mọi chủ đề, có thành ngữ/cụm từ tự nhiên'],['Ngữ pháp','Câu phức, thì đúng, ít lỗi'],['Phát âm','Âm cuối, trọng âm từ, ngữ điệu; người nghe hiểu dễ']];
+const CRIT_VI = {TA:'Hoàn thành yêu cầu',CC:'Mạch lạc, liên kết',LR:'Từ vựng',GRA:'Ngữ pháp',FC:'Trôi chảy, mạch lạc',P:'Phát âm',k1:'Hoàn thành yêu cầu',k2:'Tổ chức',k3:'Từ vựng',k4:'Ngữ pháp'};
+function ixStart(mode,ex){ recReset(); asrReset(); vxAsrStop();
+  if(!WS){ toast('Đang tải đề…'); return wsLoad().then(()=>ixStart(mode,ex)).catch(()=>toast('Chưa tải được đề. Kiểm tra mạng rồi thử lại.')); }
+  const pick=a=>Math.floor(Math.random()*a.length);
+  go('vx',{vx:mode==='w'?{mode,ex,w1:pick(ex==='ielts-ac'?WS.w1ac:WS.w1gt),w2:pick(WS.w2),step:'intro',text:{w1:'',w2:''},self:{w1:[],w2:[]},end:0}:{mode,ex,set:pick(WS.s),step:'intro',self:{},tr:{},end:0,prep:0}}); }
+const ixT1 = V => (V.ex==='ielts-ac'?WS.w1ac:WS.w1gt)[V.w1];
+// Band một bài viết = trung bình 4 tiêu chí làm tròn xuống 0,5; bài thiếu số từ tối thiểu bị giới hạn 5,0 (ước tính, như trừ điểm Task Achievement).
+const ixTask = (sc,ok) => { const v=(sc||[]).filter(x=>x); if(v.length<4) return null; const b=Math.floor(v.reduce((a,x)=>a+x,0)/4*2)/2; return ok?b:Math.min(b,5); };
+const ixRound = x => Math.floor(x*2+.5+1e-9)/2;
+const ixRub = (R,part,self) => `<div class="stack" style="gap:6px">${R.map(([t,d],i)=>`<div class="stack" style="gap:4px"><span><b>${t}</b> <span class="hint">${d}</span></span><span class="row" style="gap:4px">${[4,5,6,7,8,9].map(v=>`<button class="btn small ${self[i]===v?'primary':''}" data-act="vxself" data-p="${part}" data-i="${i}" data-v="${v}" aria-pressed="${self[i]===v}">${v}</button>`).join('')}</span></div>`).join('')}<p class="hint">Chấm band 4–9 cho từng tiêu chí sau khi đọc bài mẫu bên trên: bài bạn giống bài mẫu band nào nhất ở tiêu chí đó?</p></div>`;
+function wsSamplesHtml(task){ if(!WS){ wsLoad().then(()=>{ if(ui.view==='vx') render(); }).catch(()=>{}); return ''; }
+  const ss=(WS.samples||[]).filter(x=>x.task===task).sort((a,b)=>a.band-b.band); if(!ss.length) return '';
+  const vs=task[0]==='v', f=b=>b.toFixed(1).replace('.',',');
+  return `<details class="panel stack"><summary><b>Bài mẫu ${vs?'điểm':'band'} ${ss.map(x=>f(x.band)).join(' · ')}</b> <span class="hint">· so sánh trước khi tự chấm</span></summary>
+    <p class="hint">Bài mẫu do app soạn, ${vs?'điểm':'band'} ghi kèm là ước tính theo mô tả tiêu chí công khai, không phải điểm chấm chính thức.</p>
+    ${ss.map(x=>`<section class="stack" style="gap:6px"><h3>${vs?'Điểm':'Band'} ${f(x.band)}</h3><p lang="en" style="white-space:pre-wrap">${esc(x.text)}</p>
+      <ul class="stack" style="gap:4px;margin:0;padding-left:18px">${Object.entries(x.crit).map(([k,v])=>`<li><b>${esc(CRIT_VI[k]||k)}:</b> ${esc(v)}</li>`).join('')}</ul>
+      <p class="hint"><b>Để lên mức tiếp theo:</b> ${esc(x.next)}</p></section>`).join('')}</details>`; }
+function viewIx(V){ if(!WS){ wsLoad().then(()=>{ if(ui.view==='vx') render(); }).catch(()=>{}); return '<p class="muted" role="status">Đang tải đề…</p>'; }
+  const ac=V.ex==='ielts-ac', name=ac?'IELTS Academic':'IELTS General Training', f=b=>String(b).replace('.',',');
+  const top=`<div class="spread"><button class="btn ghost back" data-act="vxquit">← Thoát</button>${V.end?`<span class="pill accent num" role="timer">⏱ <span id="vxtimer">…</span></span>`:''}</div>`;
+  if(V.mode==='w'){ const t1=ixT1(V), t2=WS.w2[V.w2];
+    if(V.step==='intro') return `${top}<section class="stack"><span class="eyebrow">Thi thử · ${name}</span><h1>Thi thử Viết IELTS</h1>
+      <p class="muted note"><b>Task 1</b>: ${ac?'mô tả biểu đồ/bảng':'viết thư'} ≥ 150 từ (${IX_MIN.w1} phút). <b>Task 2</b>: bài luận ≥ 250 từ (${IX_MIN.w2} phút). Task 2 được tính gấp đôi. Hết giờ app tự chuyển bài.</p>
+      <p class="hint">Đề do app soạn theo định dạng IELTS công khai. Sau khi nộp: máy kiểm tra độ dài, đoạn, từ nối, lỗi chắc chắn sai; bạn đọc bài mẫu band 5,0 / 6,5 / 7,5 có chú thích rồi tự chấm 4 tiêu chí. Kết quả là ước tính.</p></section>
+      <div class="row"><button class="btn primary" data-act="vxstep" data-s="w1">Bắt đầu Task 1</button></div>`;
+    if(V.step==='w1'||V.step==='w2'){ const t=V.step==='w1'?t1:t2;
+      return `${top}<section class="stack"><span class="eyebrow">${V.step==='w1'?'Task 1':'Task 2'} · ${name}</span><p lang="en" style="font-size:17px;white-space:pre-wrap">${esc(t.p)}</p><p class="hint">${esc(t.vi)}</p>
+        ${V.step==='w1'&&t.svg?`<figure class="panel" style="margin:0" role="img" aria-label="${esc(t.alt)}">${t.svg}</figure>`:''}</section>
+        <textarea id="vxin" class="field" rows="${V.step==='w1'?10:16}" lang="en" spellcheck="false" style="width:100%;font:inherit" aria-label="Bài viết">${esc(V.text[V.step]||'')}</textarea>
+        <p class="hint num"><span id="vxwc">${wcount(V.text[V.step]||'')}</span> từ · cần ≥ ${IX_WMIN[V.step]} · cách đoạn bằng một dòng trống</p>
+        <div class="row"><button class="btn primary" data-act="vxstep" data-s="${V.step==='w1'?'w2':'wres'}">${V.step==='w1'?'Nộp Task 1, sang Task 2':'Nộp bài'}</button></div>`; }
+    const part=k=>{ const text=V.text[k]||'', c=vxWChecks(k,text,IX_WMIN[k]), t=k==='w1'?t1:t2, pe=perfEst(text,'W');
+      return `<section class="panel stack"><h3>${k==='w1'?'Task 1':'Task 2'}</h3><p class="hint" lang="en">${esc(t.p.split('\n')[0])}</p>
+        <p>${c.ok?'✅':'❌'} ${c.n} từ (cần ≥ ${IX_WMIN[k]})${c.ok?'':' · thiếu số từ: band bài này bị giới hạn 5,0'} · ${c.paras} đoạn · từ nối: ${c.links.length?esc(c.links.join(', ')):'chưa có'}</p>
+        ${pe?`<p class="hint">Máy chấm luật (độ đa dạng từ, độ dài câu, từ cấp B1+, từ nối, mệnh đề phụ, lỗi): bài viết ở mức khoảng <b>${pe.L}</b>. Máy không hiểu ý bài; dùng để đối chiếu với phần tự chấm.</p>`:''}
+        ${c.hs.length?`<div class="stack" style="gap:4px"><b>Lỗi chắc chắn sai máy dò được</b>${c.hs.map(h=>`<p class="gerr"><span lang="en">${esc(h.snip)}</span><span class="hint">${esc(h.why)}</span></p>`).join('')}</div>`:'<p class="hint">Máy không dò thấy lỗi hay gặp (không có nghĩa là không có lỗi).</p>'}
+        <details><summary>Bài của bạn</summary><p lang="en" style="white-space:pre-wrap">${esc(text)||'—'}</p></details>
+        ${wsSamplesHtml(k==='w1'?(ac?'w1ac':'w1gt'):'w2')}${ixRub(IX_WRUB,k,V.self[k])}</section>`; };
+    const b1=ixTask(V.self.w1,vxWChecks('w1',V.text.w1||'',IX_WMIN.w1).ok), b2=ixTask(V.self.w2,vxWChecks('w2',V.text.w2||'',IX_WMIN.w2).ok), fb=b1!=null&&b2!=null?ixRound((b1+2*b2)/3):null;
+    return `${top}<section class="stack"><span class="eyebrow">Kết quả thi thử Viết · ${name}</span><h1>${fb!=null?`Viết ≈ band ${f(fb)}`:'Tự chấm để xem band ước tính'}</h1>
+      <p class="muted note">Band mỗi Task = trung bình 4 tiêu chí (làm tròn xuống 0,5); band Viết = (Task 1 + 2 × Task 2) / 3. Đây là ước tính từ phần tự chấm, sai số khoảng ±1 band.</p></section>${part('w1')}${part('w2')}
+      <div class="row"><button class="btn primary" data-act="vxsave" ${fb==null?'disabled':''}>Lưu kết quả</button><button class="btn" data-act="vxnew" data-m="w" data-ex="${V.ex}">Làm đề khác</button></div>`; }
+  const S=WS.s[V.set];
+  if(V.step==='intro') return `${top}<section class="stack"><span class="eyebrow">Thi thử · IELTS Speaking</span><h1>Thi thử Nói IELTS</h1>
+    <p class="muted note"><b>Part 1</b> hỏi đáp chủ đề quen thuộc (4–5 phút) · <b>Part 2</b> nói 1–2 phút theo thẻ đề (1 phút chuẩn bị) · <b>Part 3</b> thảo luận (4–5 phút).</p>
+    <p class="hint">Mỗi phần: ghi âm để nghe lại, hoặc nói để máy chép lời (đếm tốc độ, vốn từ, từ nối, lỗi hay gặp). Cuối bài đọc bài mẫu Part 2 band 5,0 / 6,5 / 7,5 có chú thích rồi tự chấm 4 tiêu chí. Kết quả là ước tính.</p></section>
+    <div class="row"><button class="btn primary" data-act="vxstep" data-s="s1">Bắt đầu Part 1</button></div>`;
+  if(/^s[123]$/.test(V.step)){ const k=V.step, nx={s1:'s2',s2:'s3',s3:'sres'}[k], q=x=>`<p lang="en">• ${esc(x)} ${HAS_TTS?`<button class="audio" data-say="${esc(x)}" aria-label="Nghe">${SPK}</button>`:''}</p>`;
+    const body=k==='s1'?S.p1.map(([t,qs])=>`<div class="stack" style="gap:4px"><b lang="en">${esc(t)}</b>${qs.map(q).join('')}</div>`).join('')
+      :k==='s2'?`<section class="panel stack" lang="en"><b style="font-size:17px">${esc(S.p2.card)}</b><p style="margin:0">You should say:</p>${S.p2.bul.map(b=>`<p style="margin:0">• ${esc(b)}</p>`).join('')}</section><p class="hint">${esc(S.p2.vi)}</p>`
+      :S.p3.map(q).join('');
+    return `${top}<section class="stack"><span class="eyebrow">Part ${k[1]} · ${k==='s1'?'Hỏi đáp chủ đề quen thuộc':k==='s2'?'Nói theo thẻ đề':'Thảo luận'}</span>${body}</section>
+      <section class="panel stack">${vxRecRow(k)}${vxStatsHtml(V.tr[k])}</section>
+      <div class="row"><button class="btn primary" data-act="vxstep" data-s="${nx}">${nx==='sres'?'Xong, xem kết quả':'Sang Part '+nx[1]}</button></div>`; }
+  const sc=V.self.all||[], v=sc.filter(x=>x), fb=v.length===4?ixRound(v.reduce((a,x)=>a+x,0)/4):null;
+  return `${top}<section class="stack"><span class="eyebrow">Kết quả thi thử Nói · IELTS</span><h1>${fb!=null?`Nói ≈ band ${f(fb)}`:'Tự chấm để xem band ước tính'}</h1>
+    <p class="muted note">Nghe lại bản ghi âm hoặc đọc lời máy chép của cả 3 phần, so với bài mẫu, rồi chấm 4 tiêu chí cho cả bài nói. Band Nói = trung bình 4 tiêu chí, làm tròn 0,5. Ước tính, sai số khoảng ±1 band.</p></section>
+    ${['s1','s2','s3'].map(k=>V.tr[k]?`<section class="panel stack"><h3>Part ${k[1]}</h3>${vxStatsHtml(V.tr[k])}</section>`:'').join('')}
+    ${wsSamplesHtml('s2')}<section class="panel stack"><h3>Tự chấm cả bài nói</h3>${ixRub(IX_SRUB,'all',sc)}</section>
+    <div class="row"><button class="btn primary" data-act="vxsave" ${fb==null?'disabled':''}>Lưu kết quả</button><button class="btn" data-act="vxnew" data-m="s" data-ex="${V.ex}">Làm đề khác</button></div>`; }
+function ixSave(V,me,h){ let b;
+  if(V.mode==='w') b=ixRound((ixTask(V.self.w1,vxWChecks('w1',V.text.w1||'',IX_WMIN.w1).ok)+2*ixTask(V.self.w2,vxWChecks('w2',V.text.w2||'',IX_WMIN.w2).ok))/3);
+  else { const v=(V.self.all||[]).filter(x=>x); b=ixRound(v.reduce((a,x)=>a+x,0)/4); }
+  const txt=V.mode==='w'?[V.text.w1,V.text.w2].filter(Boolean).join('\n\n'):Object.values(V.tr||{}).map(x=>x&&x.text||'').filter(Boolean).join('. '), pe=perfEst(txt,V.mode==='w'?'W':'S');
+  h.unshift({day:today(),m:V.mode,ex:V.ex,b,...(pe?{r:+pe.p.toFixed(2)}:{})}); me.vx=h.slice(0,10); ixEvidence(V,b);
+  bump(V.mode==='w'?'read':'talk'); markActive(); addXP(selfXP('ix'+V.mode,30)); evc('ix:'+V.mode); save();
+  modal({ic:'📝',title:`Đã lưu: ${V.mode==='w'?'Viết':'Nói'} IELTS ≈ band ${String(b).replace('.',',')}`,sub:'Mức sẵn sàng của mục tiêu IELTS (Tôi → Mục tiêu của bạn) đã dùng kết quả này, kèm máy chấm luật.'}); }
+// Bằng chứng cho nút bài thi IELTS (xw:ielts-*, xs:ielts-p1..3) ở mức 3/4/5 = band ≥ 4,5 / 5,5 / 7 (mốc mục tiêu band của Target Model).
+function ixEvidence(V,b){ if(typeof ELCORE==='undefined') return; const t=today();
+  const nodes=V.mode==='w'?[V.ex==='ielts-ac'?'xw:ielts-t1-ac':'xw:ielts-t1-gt','xw:ielts-t2']:['xs:ielts-p1','xs:ielts-p2','xs:ielts-p3'];
+  const per=V.mode==='w'?[ixTask(V.self.w1,true),ixTask(V.self.w2,true)]:nodes.map(()=>b);
+  nodes.forEach((node,i)=>{ const sc=per[i]; if(sc==null) return; [[3,4.5],[4,5.5],[5,7]].forEach(([level,thr])=>ELCORE.ev(st,{node,level,ok:sc>=thr,w:2,only:true,qt:'ix'},t)); }); }
+const vxLast = (m,ex) => ((st.me||{}).vx||[]).find(x=>x.m===m&&(x.ex||'')===(ex||''));
 
 // ---------- Câu “Tôi có thể…”, móc nối, sự kiện ----------
 LVS.forEach(L=>CANDO.push({id:L.toLowerCase()+'-sp',lv:L,grp:'com',vi:'Tự nói câu đáp từ ý tiếng Việt trong hội thoại '+L,en:'Produce spoken replies from an idea',ref:[{t:'sp',v:[L]}]}));
@@ -6171,7 +6253,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
     case 'pdxgo': return startPdx();
     case 'pdxnext': return pdxNext(d.skip==='1');
     case 'noise': if(NOISE.on) noiseOff(); else noiseOn(); return render();
-    case 'vxnew': return startVx(d.m);
+    case 'vxnew': return startVx(d.m,d.ex);
     case 'vxstep': return vxStep(d.s);
     case 'vxquit': recStop(); vxAsrStop(); return go('games');
     case 'vxself': { const V=ui.vx, p=d.p; (V.self[p]||(V.self[p]=[]))[+d.i]=+d.v; return render(); }
@@ -8005,6 +8087,11 @@ CHANGELOG.unshift({v:49,d:'2026-10-03',t:'Bạn đã sẵn sàng đi thi chưa?'
   'Với IELTS, VSTEP: app mô phỏng điểm 4 kỹ năng theo đúng cách tính điểm của kỳ thi, cho khả năng đạt và khoảng điểm tổng có thể; thiếu kỹ năng nào thì nói rõ và có nút làm bài đó.',
   'Viết/Nói được chấm bởi hai người chấm độc lập: phần tự chấm của bạn và máy chấm luật. Khi bạn ghi điểm thi thật, app đo bạn tự chấm cao hay thấp hơn thật bao nhiêu và tự trừ độ lệch đó.',
   'Mục tiêu kỳ thi chỉ được xác nhận đạt bằng điểm thi thật; mục tiêu CEFR, giao tiếp đạt khi mọi năng lực và bài làm thật đã qua, 14 ngày không quên khi ôn.']});
+CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài mẫu theo band',big:true,items:[
+  'Tab Ôn thi (IELTS): thi thử Viết đủ Task 1 (biểu đồ cho Academic, viết thư cho General) và Task 2, tính giờ như thi thật; thi thử Nói đủ Part 1–3 với thẻ đề, ghi âm và máy chép lời.',
+  'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
+  'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
+  '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
 CHANGELOG.unshift({v:46,d:'2026-10-03',t:'App đo bạn đã thật sự thành thạo gì',big:true,items:[
   'Mỗi câu trả lời (từ vựng, ngữ pháp, câu ôn thi) giờ là một bằng chứng: app ước tính mức thành thạo của từng năng lực ở 5 mức (nhận ra, hiểu, nhớ ra, dùng có kiểm soát, dùng tự do) kèm độ tin cậy. Đoán mò, lặp lại cùng câu trong ngày được tính nhẹ hơn.',
   'Câu "Tôi có thể…" chỉ đạt khi bài làm đủ tốt, không còn đạt chỉ vì làm đủ số bài: làm xong mà điểm thấp thì vẫn hiện là đang học.',
@@ -8053,7 +8140,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.5b8e63048a.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.f17bfe0ce7.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8081,7 +8168,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.840cd23a02.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.3768ea79dd.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
@@ -8094,8 +8181,9 @@ const EHOST = {
   // Người chấm Viết/Nói (M5, src/engine/grader.ts): tự chấm + máy chấm luật của thi thử VSTEP, máy chấm luật của bài viết theo đề.
   grades:()=>{ const out=[];
     for(const v of ((st.me&&st.me.vx)||[])){ if(!v||(v.m!=='w'&&v.m!=='s')||!(v.day>0)) continue; const skill=v.m==='w'?'W':'S';
-      if(typeof v.b==='number') out.push({by:'self',skill,day:v.day,v:v.b,scale:'vstep',src:'Thi thử VSTEP'});
-      if(typeof v.r==='number') out.push({by:'rule',skill,day:v.day,v:v.r,scale:'cefr',src:'Thi thử VSTEP'}); }
+      const ix=v.ex==='ielts-ac'||v.ex==='ielts-gt', src=ix?'Thi thử IELTS':'Thi thử VSTEP';
+      if(typeof v.b==='number') out.push({by:'self',skill,day:v.day,v:v.b,scale:ix?'band':'vstep',src});
+      if(typeof v.r==='number') out.push({by:'rule',skill,day:v.day,v:v.r,scale:'cefr',src}); }
     for(const [id,w] of Object.entries(st.wtask||{})){ if(!w||!w.text||!(w.day>0)) continue; const k=id+':'+w.day+':'+w.text.length;
       if(!E_PE.has(k)){ const pe=perfEst(w.text,'W'); E_PE.set(k,pe?+pe.p.toFixed(2):null); }
       const p=E_PE.get(k); if(p!=null) out.push({by:'rule',skill:'W',day:w.day,v:p,scale:'cefr',src:'Bài viết theo đề'}); }

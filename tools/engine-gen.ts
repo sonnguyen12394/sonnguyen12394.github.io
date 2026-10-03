@@ -75,12 +75,12 @@ for (const q of QTYPES.filter(q => !q.id.startsWith('pl-'))) nodes.push({
   acts: [{ at: `data-xr="type/${q.id}"`, t: q.vi }], minutes: 30,
 });
 const PROD: Array<[string, Skill, string, string, DumpAct[]]> = [
-  ['xw:ielts-t1-ac', 'W', 'IELTS Viết Task 1 (Academic): mô tả biểu đồ, quy trình', 'IELTS Writing Task 1 (Academic)', []],
-  ['xw:ielts-t1-gt', 'W', 'IELTS Viết Task 1 (General): viết thư', 'IELTS Writing Task 1 (General Training)', []],
-  ['xw:ielts-t2', 'W', 'IELTS Viết Task 2: bài luận', 'IELTS Writing Task 2', []],
-  ['xs:ielts-p1', 'S', 'IELTS Nói Part 1: hỏi đáp chủ đề quen thuộc', 'IELTS Speaking Part 1', []],
-  ['xs:ielts-p2', 'S', 'IELTS Nói Part 2: nói 2 phút theo thẻ đề', 'IELTS Speaking Part 2', []],
-  ['xs:ielts-p3', 'S', 'IELTS Nói Part 3: thảo luận', 'IELTS Speaking Part 3', []],
+  ['xw:ielts-t1-ac', 'W', 'IELTS Viết Task 1 (Academic): mô tả biểu đồ, quy trình', 'IELTS Writing Task 1 (Academic)', [{ at: 'data-act="vxnew" data-m="w" data-ex="ielts-ac"', t: 'Thi thử Viết IELTS Academic' }]],
+  ['xw:ielts-t1-gt', 'W', 'IELTS Viết Task 1 (General): viết thư', 'IELTS Writing Task 1 (General Training)', [{ at: 'data-act="vxnew" data-m="w" data-ex="ielts-gt"', t: 'Thi thử Viết IELTS General' }]],
+  ['xw:ielts-t2', 'W', 'IELTS Viết Task 2: bài luận', 'IELTS Writing Task 2', [{ at: 'data-act="vxnew" data-m="w" data-ex="ielts-ac"', t: 'Thi thử Viết IELTS' }]],
+  ['xs:ielts-p1', 'S', 'IELTS Nói Part 1: hỏi đáp chủ đề quen thuộc', 'IELTS Speaking Part 1', [{ at: 'data-act="vxnew" data-m="s" data-ex="ielts-ac"', t: 'Thi thử Nói IELTS' }]],
+  ['xs:ielts-p2', 'S', 'IELTS Nói Part 2: nói 2 phút theo thẻ đề', 'IELTS Speaking Part 2', [{ at: 'data-act="vxnew" data-m="s" data-ex="ielts-ac"', t: 'Thi thử Nói IELTS' }]],
+  ['xs:ielts-p3', 'S', 'IELTS Nói Part 3: thảo luận', 'IELTS Speaking Part 3', [{ at: 'data-act="vxnew" data-m="s" data-ex="ielts-ac"', t: 'Thi thử Nói IELTS' }]],
   ['xw:vstep-t1', 'W', 'VSTEP Viết bài 1: thư/email', 'VSTEP Writing Task 1', [{ at: 'data-act="vxnew" data-m="w"', t: 'Thi thử Viết VSTEP' }]],
   ['xw:vstep-t2', 'W', 'VSTEP Viết bài 2: bài luận', 'VSTEP Writing Task 2', [{ at: 'data-act="vxnew" data-m="w"', t: 'Thi thử Viết VSTEP' }]],
   ['xs:vstep-p1', 'S', 'VSTEP Nói phần 1: giao tiếp xã hội', 'VSTEP Speaking Part 1', [{ at: 'data-act="vxnew" data-m="s"', t: 'Thi thử Nói VSTEP' }]],
