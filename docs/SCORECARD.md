@@ -1,5 +1,18 @@
 # Chấm điểm app theo Master Spec v2
 
+## v48 (sau M4) — 03/10/2026: 6,7/10 (lõi engine 7,3/10)
+
+| # | Tiêu chí | v47 → v48 | Bằng chứng |
+| --- | --- | --- | --- |
+| 10 | Mastery theo mục tiêu | 5 → 7 | Lộ trình tính tập thiếu theo mức cần của Target Model (`src/engine/path.ts`) |
+| 18 | Lộ trình động theo trạng thái | 4 → 7 | Trang Học dùng "Bước tiếp theo" của engine thay unit cố định; tính lại sau mỗi câu trả lời. Thiếu: chưa nối `makePlan` tới ngày thi |
+| 19 | Đường đi tối thiểu | 3 → 8 | Tập thiếu = đóng tiền đề cứng trừ nút Đạt; chỉ mở nút đủ tiền đề; ưu tiên = năng lực phụ thuộc ÷ phút |
+| 20 | Kiểm tra để bỏ qua từng nút | 4 → 8 | "Tôi biết rồi" cho từng cụm từ / điểm ngữ pháp, 3–4 câu ở mức cần, trọng số ×4. Chưa có cho Can-Do |
+| 22 | Gộp nhiều mục tiêu | 3 → 7 | `mergeGoals` + trọng số theo ngày thi (×1 → ×3) trong ưu tiên |
+| 25 | Ôn trượt quay lại lộ trình | 5 → 6 | Sai khi ôn làm giảm mastery; nút rớt khỏi Đạt tự quay lại lộ trình |
+
+Nhóm B: 7,0 → 7,3; D: 4,8 → 7,5; E: 7,0 → 7,3. Tổng 6,4 → 6,7; lõi 6,6 → 7,3.
+
 ## v47 (sau M3) — 03/10/2026: 6,4/10 (lõi engine 6,6/10)
 
 | # | Tiêu chí | v46 → v47 | Bằng chứng |
