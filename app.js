@@ -8122,10 +8122,12 @@ function eProbe(node){ const out=[], pick=(xs,n)=>shuffle(xs.slice()).slice(0,n)
     if(p.fx&&p.fx.length){ const q=gbuild(p,'fix',{test:true,used}); if(q.type==='gfx') out.push({id:'g:'+p.id+':'+q.key,level:4,g:0,prompt:'Sửa câu sai: '+q.prompt,accept:q.accept}); }
     return out; }
   return out; }
-let _emP=null, _emErr='';
-function emLoad(){ if(EM) return Promise.resolve(EM);
-  return _emP ||= import('./'+ENGINE_JS).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal') render(); return EM; })
-    .catch(e=>{ _emP=null; _emErr='Chưa tải được phần mục tiêu. Kiểm tra mạng rồi thử lại.'; if(ui.view==='goal') render(); throw e; }); }
+let _emP=null, _emErr='', _emN=0;
+// Lần tải lại dùng URL khác (?r=N): trình duyệt có thể nhớ lần import hỏng của cùng URL.
+// bg = tải trước khi rảnh: thất bại thì im lặng (không để lỗi nền "dính" lên màn Mục tiêu); mở màn sẽ tải lại và mới báo lỗi.
+function emLoad(bg){ if(EM) return Promise.resolve(EM);
+  return _emP ||= import('./'+ENGINE_JS+(_emN++?'?r='+_emN:'')).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal') render(); return EM; })
+    .catch(e=>{ _emP=null; if(!bg||ui.view==='goal'){ _emErr='Chưa tải được phần mục tiêu. Kiểm tra mạng rồi thử lại.'; if(ui.view==='goal') render(); } throw e; }); }
 function viewGoalE(){
   if(EM) return EM.render(ui.er||'goals');
   if(!_emP&&!_emErr) emLoad().catch(()=>{});
@@ -8136,7 +8138,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
   if(t.dataset.xr){ e.preventDefault(); return go('thi',{xr:t.dataset.xr}); }
   _emErr=''; emLoad().catch(()=>{}); render(); });
 DETAIL_SAFE_VIEW.add('goal'); DETAIL_SAFE_GO.add('goal'); DETAIL_SAFE_ACT.add('emretry');
-if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,2500)))(()=>emLoad().catch(()=>{}));
+if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,2500)))(()=>emLoad(true).catch(()=>{}));
 // Nạp sẵn khi rảnh để tab “Ôn thi” mở ngay và để gộp/lọc dữ liệu ôn thi khi đồng bộ.
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,1500)))(()=>xmLoad().catch(()=>{}));
 // v45 (engine M2): tiến độ cũ thành tiên nghiệm cho engine, một lần: unit/điểm ngữ pháp đã qua (kể cả thi vượt cấp) coi như đã có bằng chứng.
