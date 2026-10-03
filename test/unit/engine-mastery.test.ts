@@ -85,3 +85,12 @@ test('gộp hai máy: mỗi ô lấy bản nhiều bằng chứng hơn, mục ti
   const e = mergeE({ v: 2, goals: [{ id: 'cefr-b1', version: '1.0', since: 3, date: null }], m: A, r: {} }, { v: 2, goals: [{ id: 'vstep-b1', version: '1.0', since: 1, date: null }], m: B, r: {} });
   assert.deepEqual(e.goals.map(g => g.id), ['vstep-b1', 'cefr-b1']);
 });
+
+test('bài làm thật chấm theo ngưỡng từng mức: chỉ ghi đúng mức đó, không lan xuống', () => {
+  const s: MasteryStore = {};
+  record(s, { node: 'xw:t', level: 3, ok: true, w: 2, only: true }, 1);
+  record(s, { node: 'xw:t', level: 4, ok: false, w: 2, only: true }, 1);
+  assert.equal(s['xw:t']?.[1], undefined);
+  assert.ok(s['xw:t']![3]!.a > s['xw:t']![3]!.b);
+  assert.ok(s['xw:t']![4]!.b > s['xw:t']![4]!.a);
+});

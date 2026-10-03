@@ -8,6 +8,7 @@ import type { EState } from './state.ts';
 import { GOALS, loaded } from './data.ts';
 import { plan, session, type PathOut, type Session, type PathItem } from './path.ts';
 import { LEVEL_VI } from './types.ts';
+import { readinessOf, readyChip } from './readyview.ts';
 import type { Index } from './graph.ts';
 
 export interface DayInfo { reviewItems: number; reviewMins: number; mins: number; perfDue: boolean }
@@ -41,6 +42,7 @@ export function viewToday(c: ECtx, day: DayInfo): string {
   const p = computePath(host, e, ix), s = computeSession(host, e, ix, p, day);
   const head = `<section class="stack"><span class="eyebrow">Lộ trình hôm nay · ${day.mins} phút</span><h1>Hôm nay học gì</h1>
     <p class="muted">Còn ${p.unmet.length}/${p.total} năng lực chưa đạt (≈ ${Math.max(1, Math.round(p.minutes / 60))} giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.${e.diag ? '' : ' Chưa làm bài chẩn đoán: lộ trình có thể gồm cả thứ bạn đã biết.'}</p>
+    <div class="row" style="gap:6px">${e.goals.map(sg => { const g = ix.goal.get(sg.id); return g ? `<button class="btn ghost small" data-e="go" data-r="goal/${esc(g.id)}">${esc(g.vi)}</button>${readyChip(readinessOf(host, e, g))}` : ''; }).join('')}</div>
     ${e.diag ? '' : '<div class="row"><button class="btn small" data-e="go" data-r="diag">Làm bài chẩn đoán</button></div>'}</section>`;
   const review = s.review > 0 ? `<section class="panel stack"><span class="eyebrow">Ôn duy trì</span><div><b>${day.reviewItems} mục đến hạn ôn</b><br><span class="hint">Những gì đã đạt nhưng sắp quên · ≈ ${s.review} phút</span></div><div class="row"><button class="btn primary small" data-act="review">Ôn ngay</button></div></section>` : '';
   const perf = s.perf ? itemHtml(host, ix, s.perf, 'Bài làm thật trong tuần') : '';

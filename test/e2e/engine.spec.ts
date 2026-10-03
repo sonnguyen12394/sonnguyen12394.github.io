@@ -104,3 +104,32 @@ test('lộ trình: trang Học hiện bước tiếp theo của engine, lộ tr�
   await expect(page.locator('#app')).not.toContainText('Có lỗi khi mở màn này');
   expect(errors).toEqual([]);
 });
+
+// M5: Sẵn sàng tách khỏi tiến độ học; thiếu kỹ năng thì nói rõ; đủ 4 kỹ năng thì ra xác suất, Viết/Nói tin cậy tối đa Vừa.
+test('sẵn sàng: thiếu dữ liệu thì nói rõ; có Nghe/Đọc + thi thử Viết/Nói thì ra xác suất đạt', async ({ page, errors }) => {
+  await openApp(page);
+  await navTo(page, 'Tôi');
+  await page.getByRole('button', { name: /Mục tiêu của bạn/ }).click();
+  await page.getByRole('button', { name: /^VSTEP/ }).click();
+  await page.getByRole('button', { name: 'Chọn VSTEP Bậc 3 (B1)' }).click();
+  await expect(page.getByRole('heading', { name: 'Sẵn sàng: chưa đủ dữ liệu' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Thi thử Viết', exact: true })).toBeVisible();
+  await page.evaluate(() => {
+    // @ts-expect-error hàm toàn cục của app.js
+    const t: number = today();
+    const s = JSON.parse(localStorage.getItem('vocab-ladder-v1') || '{}');
+    s.x = s.x || {};
+    s.x.resp = Array.from({ length: 30 }, (_, i) => ({ i: 'q' + i, c: i % 3 ? 1 : 0, d: t, s: i % 2 ? 'L' : 'R', b: 5, g: 0.25 }));
+    s.me = { ...(s.me || {}), vx: [{ day: t, m: 'w', b: 6, r: 2.5 }, { day: t, m: 's', b: 6 }] };
+    localStorage.setItem('vocab-ladder-v1', JSON.stringify(s));
+  });
+  await page.reload();
+  await page.evaluate(() => (window as unknown as { go: (v: string, x: object) => void }).go('goal', { er: 'goal/vstep-b1' }));
+  await expect(page.getByRole('heading', { name: /^Sẵn sàng: \d+% khả năng đạt$/ })).toBeVisible();
+  // một lần thi thử: tin cậy thấp; Viết có hai người chấm (luật + tự chấm)
+  await expect(page.getByRole('cell', { name: 'máy chấm luật + tự chấm · tin cậy thấp' })).toBeVisible();
+  await expect(page.getByText(/độ tin cậy tối đa là Vừa/)).toBeVisible();
+  await expect(page.getByText('tiến độ học: năng lực đã đạt')).toBeVisible();
+  await noHorizontalScroll(page);
+  expect(errors).toEqual([]);
+});

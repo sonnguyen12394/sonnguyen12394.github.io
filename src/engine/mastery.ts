@@ -30,6 +30,7 @@ export interface Evidence {
   qt?: string;           // dạng câu
   ctx?: string;          // ngữ cảnh
   w?: number;            // trọng số thêm (ví dụ 0,5 khi người học tự nhận là đoán)
+  only?: boolean;        // chỉ ghi đúng mức này, không lan xuống mức thấp (bài làm thật chấm theo ngưỡng từng mức)
 }
 
 export const freshCell = (): Cell => ({ a: 1, b: 1, n: 0, q: [], c: [], d: 0 });
@@ -46,7 +47,7 @@ export function record(store: MasteryStore, ev: Evidence, today: number, recent?
   }
   const g = Math.min(0.9, Math.max(0, ev.g ?? 0));
   const cells = (store[ev.node] ||= {});
-  for (let l = 1 as Level; l <= ev.level; l = (l + 1) as Level) {
+  for (let l = (ev.only ? ev.level : 1) as Level; l <= ev.level; l = (l + 1) as Level) {
     const c = (cells[l] ||= freshCell());
     if (ev.ok) c.a += w * (1 - g); else c.b += w * (1 - SLIP);
     c.n += w; c.q = addUniq(c.q, ev.qt, 6); c.c = addUniq(c.c, ev.ctx, 8); c.d = today;

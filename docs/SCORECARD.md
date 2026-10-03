@@ -1,5 +1,20 @@
 # Chấm điểm app theo Master Spec v2
 
+## v49 (sau M5) — 03/10/2026: 7,0/10 (lõi engine 7,6/10)
+
+| # | Tiêu chí | v48 → v49 | Bằng chứng |
+| --- | --- | --- | --- |
+| 26 | Tách tiến độ khỏi sẵn sàng | 6 → 8 | Trang mục tiêu: "tiến độ học" và khối "Sẵn sàng" riêng; chip sẵn sàng ở danh sách mục tiêu và Lộ trình hôm nay |
+| 27 | Ước tính có khoảng tin cậy | 6 → 8 | Mỗi kỹ năng có nguồn + độ tin cậy; điểm tổng có khoảng 80% từ mô phỏng (`src/engine/readiness.ts`) |
+| 28 | Điểm tổng đúng cách kỳ thi | 6 → 8 | Mô phỏng 4000 lượt qua `ieltsOverall` (làm tròn từng kỹ năng rồi tổng) / `vstepLevel` (Quyết định 729) → P(đạt) |
+| 29 | Đạt mục tiêu bằng điểm thật | 7 → 8 | Achieved kỳ thi chỉ từ `x.real` đủ 4 kỹ năng; CEFR/giao tiếp: mọi nút + bài làm thật + 14 ngày không quên (`w.ld`) |
+| 34 | VSTEP Viết/Nói | 5 → 6 | Thi thử Viết/Nói thành bằng chứng cho nút bài thi theo ngưỡng bậc 3/4/5; thêm máy chấm luật cho cùng bài |
+| 37 | Máy chấm luật | 6 → 7 | `perfEst` chấm mọi bài thi thử và bài viết theo đề, đưa vào Readiness với độ lệch chuẩn riêng |
+| 39 | Theo dõi độ lệch tự chấm | 0 → 5 | `selfBias`: tự chấm 30 ngày trước điểm thật − điểm thật, trừ khi ước tính, hiện trên màn. Chưa có dữ liệu thật để kiểm |
+| 40 | Giao diện người chấm chung | 2 → 7 | `src/engine/grader.ts`: một kiểu Grade cho luật / tự chấm / AI, gộp nghịch phương sai, sàn tin cậy Vừa khi chưa có AI hoặc điểm thật. Chưa có người chấm AI |
+
+Nhóm F: 5,8 → 7,2; G: 5,2 → 5,3; H: 3,0 → 5,8. Tổng 6,7 → 7,0; lõi 7,3 → 7,6.
+
 ## v48 (sau M4) — 03/10/2026: 6,7/10 (lõi engine 7,3/10)
 
 | # | Tiêu chí | v47 → v48 | Bằng chứng |
