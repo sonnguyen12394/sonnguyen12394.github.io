@@ -6,6 +6,7 @@ import { GOAL_MAX } from './state.ts';
 import { META, GOALS, loaded, type GoalMeta } from './data.ts';
 import { closure, defaultLevel } from './graph.ts';
 import { statusOf } from './mastery.ts';
+import { readinessOf, readyChip, viewReady } from './readyview.ts';
 import { LEVEL_VI, type Area, type GoalKind, type Node, type Req } from './types.ts';
 
 export interface ECtx { host: EHost; e: EState; route: string }
@@ -50,6 +51,7 @@ export function viewGoals(c: ECtx): string {
   const cards = mine.map(({ s, m }) => `<section class="panel stack" aria-label="${esc(m.vi)}">
       <div class="spread"><h3>${esc(m.vi)}</h3><span class="pill">Target Model ${esc(s.version)}</span></div>
       <p class="muted">${m.n} năng lực ghi trực tiếp${s.date !== null ? ` · hạn ${esc(isoOf(s.date))}` : ''}</p>
+      ${(() => { const g = loaded()?.goal.get(m.id); return g ? `<div class="row" style="gap:6px">${readyChip(readinessOf(host, e, g))}</div>` : ''; })()}
       <div class="row"><button class="btn primary small" data-e="go" data-r="goal/${esc(m.id)}">Xem cần đạt gì</button><button class="btn ghost small" data-e="rm" data-g="${esc(m.id)}" aria-label="Bỏ mục tiêu ${esc(m.vi)}">Bỏ</button></div></section>`).join('');
   return `${head}${diag}${cards}${mine.length < GOAL_MAX ? `<section class="stack"><h2>Thêm mục tiêu</h2><p class="muted">Có nhiều mục tiêu thì app gộp lại: năng lực chung chỉ học một lần, lấy mức cao nhất.</p></section>${kinds}` : `<p class="hint">Tối đa ${GOAL_MAX} mục tiêu cùng lúc.</p>`}`;
 }
@@ -86,10 +88,11 @@ export function viewGoal(c: ECtx, loadErr: string): string {
     return `<li style="display:flex;gap:8px;align-items:center;justify-content:space-between"><span style="flex:1;min-width:0">${esc(n.vi)} <span class="hint">· cần mức ${r.level}: ${esc(LEVEL_VI[r.level])}</span><br>${statChip(stats.get(r.node)!)}</span>${act ? `<button class="btn small ghost" style="flex:none" ${act.at} aria-label="Học: ${esc(n.vi)}">Học</button>` : '<span class="pill" style="flex:none" title="Nội dung sẽ được bổ sung">chưa có bài</span>'}</li>`; };
   return `${head}
     <section class="panel stack"><div class="me-stats me3">
-      <div class="stat"><b>${passed}/${g.req.length}</b><span class="muted">năng lực đã đạt</span></div>
+      <div class="stat"><b>${passed}/${g.req.length}</b><span class="muted">tiến độ học: năng lực đã đạt</span></div>
       <div class="stat"><b>${all.length}</b><span class="muted">kể cả tiền đề</span></div>
       <div class="stat"><b>${esc(hours(minutes))}</b><span class="muted">học từ đầu (ước tính thô)</span></div></div>
       <p class="hint">Tiền đề gồm ${count(n => n.kind === 'vocab')} cụm từ vựng, ${count(n => n.kind === 'grammar')} điểm ngữ pháp và ${count(n => n.kind === 'cando')} năng lực cấp dưới. Thứ bạn đã thành thạo sẽ được bỏ khỏi lộ trình sau bài chẩn đoán, nên con số thật thường nhỏ hơn.</p></section>
+    ${viewReady(host, g, readinessOf(host, e, g))}
     ${sel ? `<form class="panel stack" data-eform="date" data-g="${esc(id)}"><label class="stack" style="gap:4px"><b>Ngày thi hoặc hạn muốn đạt</b><input class="field" type="date" name="date" value="${sel.date !== null ? isoOf(sel.date) : ''}" min="${isoOf(host.today())}"></label><div class="row"><button class="btn small">Lưu</button></div></form>`
       : `<div class="row"><button class="btn primary" data-e="add" data-g="${esc(id)}">Chọn mục tiêu này</button></div>`}
     ${groups.map(([a, rs]) => `<section class="stack"><h2>${esc(AREA_VI[a])} <span class="hint">(${rs.length})</span></h2><ul class="stack" style="list-style:none;padding:0;margin:0;gap:6px">${rs.map(row).join('')}</ul></section>`).join('')}

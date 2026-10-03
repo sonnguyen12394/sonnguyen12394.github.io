@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 48;
+const STATE_V = 18, APP_VERSION = 49;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},e:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -1055,7 +1055,7 @@ function sanitizeState(x){
   const obj = v => v&&typeof v==='object'&&!Array.isArray(v) ? v : {};
   const pick = (bag,ok,fix) => { const o={}; for(const [k,v] of Object.entries(obj(bag))) if(ok(k)&&v&&typeof v==='object') o[k]=fix(v); return o; };
   const dims = (d,keys) => Object.fromEntries(keys.map(k=>[k,numIn(obj(d)[k],0,1)]));
-  const srs = v => ({stage:Math.round(numIn(v.stage,0,30,0)),due:v.due==null?null:Math.round(numIn(v.due,0,1e6,0)),ivl:numIn(v.ivl,0,3650,0),ease:numIn(v.ease,EASE.min,EASE.max,EASE.start),learned:!!v.learned,...(v.lp>0?{lp:Math.round(numIn(v.lp,0,1e4,0))}:{}),...(v.fs!=null?{fs:numIn(v.fs,.1,36500,1),fd:numIn(v.fd,1,10,5),fl:Math.round(numIn(v.fl,0,1e6,0))}:{})});
+  const srs = v => ({stage:Math.round(numIn(v.stage,0,30,0)),due:v.due==null?null:Math.round(numIn(v.due,0,1e6,0)),ivl:numIn(v.ivl,0,3650,0),ease:numIn(v.ease,EASE.min,EASE.max,EASE.start),learned:!!v.learned,...(v.lp>0?{lp:Math.round(numIn(v.lp,0,1e4,0))}:{}),...(v.ld>0?{ld:Math.round(numIn(v.ld,0,1e6,0))}:{}),...(v.fs!=null?{fs:numIn(v.fs,.1,36500,1),fd:numIn(v.fd,1,10,5),fl:Math.round(numIn(v.fl,0,1e6,0))}:{})});
   x.words=pick(x.words,k=>!!WORD[k],v=>({...srs(v),d:dims(v.d,['rec','rcl','spl','ctx','col'])}));
   x.units=pick(x.units,k=>UNITS.some(u=>u.id===k),v=>({learned:!!v.learned,practiced:Math.round(numIn(v.practiced,0,1e4,0)),best:numIn(v.best,0,1),passed:!!v.passed,skipped:!!v.skipped,speak:Math.round(numIn(v.speak,0,1e4,0)),written:!!v.written,read:numIn(v.read,0,1),listen:numIn(v.listen,0,1),...(v.pd!=null?{pd:Math.round(numIn(v.pd,0,1e6,0))}:{})}));
   x.gram=pick(x.gram,k=>!!GPT[k],v=>({...srs(v),d:dims(v.d,['cho','typ','fix','ord']),practiced:Math.round(numIn(v.practiced,0,1e4,0)),best:numIn(v.best,0,1),passed:!!v.passed,skipped:!!v.skipped}));
@@ -1198,7 +1198,7 @@ function srsStep(w,correct,typed){
   const t=today(), F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
   if(w.due==null){ if(correct){ w.stage=0; if(F){ const c=F.newCard(typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.max(1,c.due-t); } else w.ivl=1; w.due=t+w.ivl; } return; }   // lịch ôn bắt đầu từ lần đầu tự nhớ ra đúng, không phải lúc xem thẻ
   if(!correct){                                         // quên → độ bền giảm theo FSRS, ôn lại ngày mai
-    if(w.due<=t) w.lp=(w.lp||0)+1;                      // số lần quên khi đến hạn (forgetting patterns, docs/DANH-GIA-DU-LIEU-HOC.md)
+    if(w.due<=t){ w.lp=(w.lp||0)+1; w.ld=t; }          // số lần quên khi đến hạn (forgetting patterns, docs/DANH-GIA-DU-LIEU-HOC.md); ld = ngày quên gần nhất (Goal Achieved CEFR: không quên trong 14 ngày)
     if(F) fsrsKeep(w,F.review(fsrsCard(w,t),1,t));
     w.stage=Math.max(0,w.stage-2); w.ivl=1; w.due=t+1;
   } else if(w.due<=t){                                  // nhớ khi đến hạn → giãn ra theo độ bền mới
@@ -6117,9 +6117,15 @@ function viewVx(){ const V=ui.vx; if(!V) return viewGames?viewGames():viewTalk()
 function vxSave(){ const V=ui.vx, me=st.me||(st.me={}), h=me.vx||(me.vx=[]);
   let b; if(V.mode==='w'){ const cap=(x,k)=>vxWChecks(k,V.text[k]||'').ok?x:Math.min(x,4); b=Math.round((cap(vxBand(V.self.w1,4),'w1')+2*cap(vxBand(V.self.w2,4),'w2'))/3*2)/2; }
   else b=Math.round(['s1','s2','s3'].map(k=>vxBand(V.self[k]||[],5)).reduce((a,x)=>a+x,0)/3*2)/2;
-  h.unshift({day:today(),m:V.mode,b}); me.vx=h.slice(0,10); bump(V.mode==='w'?'read':'talk'); markActive(); addXP(selfXP('vx'+V.mode,30)); evc('vx:'+V.mode); save();
+  // Máy chấm luật (perfEst) chấm cùng bài để engine có hai người chấm độc lập (grader.ts); bài làm thật ghi bằng chứng cho nút bài thi
+  const txt=V.mode==='w'?[V.text.w1,V.text.w2].filter(Boolean).join('\n\n'):Object.values(V.tr||{}).map(x=>x&&x.text||'').filter(Boolean).join('. '), pe=perfEst(txt,V.mode==='w'?'W':'S');
+  h.unshift({day:today(),m:V.mode,b,...(pe?{r:+pe.p.toFixed(2)}:{})}); me.vx=h.slice(0,10); vxEvidence(V); bump(V.mode==='w'?'read':'talk'); markActive(); addXP(selfXP('vx'+V.mode,30)); evc('vx:'+V.mode); save();
   const e=(st.exam||[])[0], o=h.find(x=>x.m!==V.mode), all=e&&o&&today()-e.day<=30&&today()-o.day<=30?(e.l+e.r+b+o.b)/4:null;
   modal({ic:'📝',title:`Đã lưu: ${V.mode==='w'?'Viết':'Nói'} ≈ ${String(b).replace('.',',')}/10`,sub:all!=null?`Ước tính 4 kỹ năng (30 ngày gần nhất): ${all.toFixed(1).replace('.',',')}/10 · ${exLevel(all)}.`:`Để có ước tính đủ 4 kỹ năng, làm thêm: ${[!(e&&today()-e.day<=30)&&'thi thử Nghe + Đọc',!(o&&today()-o.day<=30)&&(V.mode==='w'?'thi thử Nói':'thi thử Viết')].filter(Boolean).join(' và ')}.`}); }
+// Mỗi phần thi thử là một bằng chứng cho nút bài thi (xw:vstep-t1/t2, xs:vstep-p1..p3) ở mức 3/4/5 = ngưỡng bậc 3/4/5 (4 / 6 / 8,5 điểm).
+function vxEvidence(V){ if(typeof ELCORE==='undefined') return; const t=today();
+  const parts=V.mode==='w'?['w1','w2'].map((k,i)=>{ const x=vxBand(V.self[k],4); return ['xw:vstep-t'+(i+1),x==null?null:vxWChecks(k,V.text[k]||'').ok?x:Math.min(x,4)]; }):['s1','s2','s3'].map((k,i)=>['xs:vstep-p'+(i+1),vxBand(V.self[k]||[],5)]);
+  for(const [node,sc] of parts){ if(sc==null) continue; [[3,4],[4,6],[5,8.5]].forEach(([level,thr])=>ELCORE.ev(st,{node,level,ok:sc>=thr,w:2,only:true,qt:'vx'},t)); } }
 const vxLast = m => ((st.me||{}).vx||[]).find(x=>x.m===m);
 
 // ---------- Câu “Tôi có thể…”, móc nối, sự kiện ----------
@@ -7994,6 +8000,11 @@ CHANGELOG.unshift({v:48,d:'2026-10-03',t:'Lộ trình theo mục tiêu: học đ
   'Lộ trình hôm nay: ôn những gì sắp quên (tối đa 30% thời gian), mỗi tuần một bài làm thật, rồi các bước ưu tiên; có mục tiêu với ngày thi gần thì ưu tiên mục tiêu đó.',
   'Đã biết rồi? Bấm "Tôi biết rồi" để làm bài kiểm tra ngắn; đúng hết thì phần đó được tính Đạt và bỏ khỏi lộ trình.',
   'Bài học cũ (unit, ngữ pháp) giữ nguyên trong Thư viện bài học; lộ trình dẫn tới đúng bài.']});
+CHANGELOG.unshift({v:49,d:'2026-10-03',t:'Bạn đã sẵn sàng đi thi chưa?',big:true,items:[
+  'Trang mục tiêu tách hai con số: tiến độ học (bao nhiêu năng lực đã đạt) và mức sẵn sàng (khả năng đạt mục tiêu nếu thi hôm nay).',
+  'Với IELTS, VSTEP: app mô phỏng điểm 4 kỹ năng theo đúng cách tính điểm của kỳ thi, cho khả năng đạt và khoảng điểm tổng có thể; thiếu kỹ năng nào thì nói rõ và có nút làm bài đó.',
+  'Viết/Nói được chấm bởi hai người chấm độc lập: phần tự chấm của bạn và máy chấm luật. Khi bạn ghi điểm thi thật, app đo bạn tự chấm cao hay thấp hơn thật bao nhiêu và tự trừ độ lệch đó.',
+  'Mục tiêu kỳ thi chỉ được xác nhận đạt bằng điểm thi thật; mục tiêu CEFR, giao tiếp đạt khi mọi năng lực và bài làm thật đã qua, 14 ngày không quên khi ôn.']});
 CHANGELOG.unshift({v:46,d:'2026-10-03',t:'App đo bạn đã thật sự thành thạo gì',big:true,items:[
   'Mỗi câu trả lời (từ vựng, ngữ pháp, câu ôn thi) giờ là một bằng chứng: app ước tính mức thành thạo của từng năng lực ở 5 mức (nhận ra, hiểu, nhớ ra, dùng có kiểm soát, dùng tự do) kèm độ tin cậy. Đoán mò, lặp lại cùng câu trong ngày được tính nhẹ hơn.',
   'Câu "Tôi có thể…" chỉ đạt khi bài làm đủ tốt, không còn đạt chỉ vì làm đủ số bài: làm xong mà điểm thấp thì vẫn hiện là đang học.',
@@ -8042,7 +8053,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.8ce0a83862.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.5b8e63048a.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8070,7 +8081,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.07ddb0665f.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.840cd23a02.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
@@ -8078,9 +8089,21 @@ const EHOST = {
   cando:id=>{ const c=CANDO.find(x=>x.id===id); if(!c) return null; const p=cdProg(c); return {p:p.p,m:p.m,lb:p.lb,k:p.k,need:p.need}; },
   probe:node=>eProbe(node),
   dayInfo:()=>{ const dw=dueWords().length, dg=dueG().length, t=today();
-    const lastPerf=Math.max(0,...Object.values(st.dlg||{}).map(d=>d&&d.day||0),...((st.x&&st.x.attempts)||[]).filter(a=>a.kind==='mock').map(a=>a.day||0));
+    const lastPerf=Math.max(0,...Object.values(st.dlg||{}).map(d=>d&&d.day||0),...((st.x&&st.x.attempts)||[]).filter(a=>a.kind==='mock').map(a=>a.day||0),...((st.me&&st.me.vx)||[]).map(v=>v&&v.day||0));
     return {reviewItems:dw+dg, reviewMins:(dw?reviewMin(dw):0)+dg*2, mins:Math.round((st.x&&st.x.mins)||20), perfDue:t-lastPerf>=7}; },
+  // Người chấm Viết/Nói (M5, src/engine/grader.ts): tự chấm + máy chấm luật của thi thử VSTEP, máy chấm luật của bài viết theo đề.
+  grades:()=>{ const out=[];
+    for(const v of ((st.me&&st.me.vx)||[])){ if(!v||(v.m!=='w'&&v.m!=='s')||!(v.day>0)) continue; const skill=v.m==='w'?'W':'S';
+      if(typeof v.b==='number') out.push({by:'self',skill,day:v.day,v:v.b,scale:'vstep',src:'Thi thử VSTEP'});
+      if(typeof v.r==='number') out.push({by:'rule',skill,day:v.day,v:v.r,scale:'cefr',src:'Thi thử VSTEP'}); }
+    for(const [id,w] of Object.entries(st.wtask||{})){ if(!w||!w.text||!(w.day>0)) continue; const k=id+':'+w.day+':'+w.text.length;
+      if(!E_PE.has(k)){ const pe=perfEst(w.text,'W'); E_PE.set(k,pe?+pe.p.toFixed(2):null); }
+      const p=E_PE.get(k); if(p!=null) out.push({by:'rule',skill:'W',day:w.day,v:p,scale:'cefr',src:'Bài viết theo đề'}); }
+    return out; },
+  exam:()=>({resp:(st.x&&st.x.resp)||[], real:(st.x&&st.x.real)||[]}),
+  lapse:()=>{ let d=0; for(const m of [st.words||{},st.gram||{}]) for(const v of Object.values(m)) if(v&&v.ld>d) d=v.ld; return d||null; },
 };
+const E_PE = new Map();   // điểm máy chấm luật của bài viết theo đề (perfEst chậm, chỉ tính lại khi bài đổi)
 // Câu dò cho chẩn đoán của engine (M3), lấy từ kho sẵn có: cụm từ vựng 3 câu (nhận ra nghĩa → mức 1, chọn từ theo nghĩa → mức 2,
 // tự gõ từ theo nghĩa → mức 3); điểm ngữ pháp 2 câu chọn (mức 2) + 1 câu tự gõ (mức 3) nếu bài có.
 function eProbe(node){ const out=[], pick=(xs,n)=>shuffle(xs.slice()).slice(0,n);
@@ -8099,10 +8122,12 @@ function eProbe(node){ const out=[], pick=(xs,n)=>shuffle(xs.slice()).slice(0,n)
     if(p.fx&&p.fx.length){ const q=gbuild(p,'fix',{test:true,used}); if(q.type==='gfx') out.push({id:'g:'+p.id+':'+q.key,level:4,g:0,prompt:'Sửa câu sai: '+q.prompt,accept:q.accept}); }
     return out; }
   return out; }
-let _emP=null, _emErr='';
-function emLoad(){ if(EM) return Promise.resolve(EM);
-  return _emP ||= import('./'+ENGINE_JS).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal') render(); return EM; })
-    .catch(e=>{ _emP=null; _emErr='Chưa tải được phần mục tiêu. Kiểm tra mạng rồi thử lại.'; if(ui.view==='goal') render(); throw e; }); }
+let _emP=null, _emErr='', _emN=0;
+// Lần tải lại dùng URL khác (?r=N): trình duyệt có thể nhớ lần import hỏng của cùng URL.
+// bg = tải trước khi rảnh: thất bại thì im lặng (không để lỗi nền "dính" lên màn Mục tiêu); mở màn sẽ tải lại và mới báo lỗi.
+function emLoad(bg){ if(EM) return Promise.resolve(EM);
+  return _emP ||= import('./'+ENGINE_JS+(_emN++?'?r='+_emN:'')).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal') render(); return EM; })
+    .catch(e=>{ _emP=null; if(!bg||ui.view==='goal'){ _emErr='Chưa tải được phần mục tiêu. Kiểm tra mạng rồi thử lại.'; if(ui.view==='goal') render(); } throw e; }); }
 function viewGoalE(){
   if(EM) return EM.render(ui.er||'goals');
   if(!_emP&&!_emErr) emLoad().catch(()=>{});
@@ -8113,7 +8138,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
   if(t.dataset.xr){ e.preventDefault(); return go('thi',{xr:t.dataset.xr}); }
   _emErr=''; emLoad().catch(()=>{}); render(); });
 DETAIL_SAFE_VIEW.add('goal'); DETAIL_SAFE_GO.add('goal'); DETAIL_SAFE_ACT.add('emretry');
-if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,2500)))(()=>emLoad().catch(()=>{}));
+if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,2500)))(()=>emLoad(true).catch(()=>{}));
 // Nạp sẵn khi rảnh để tab “Ôn thi” mở ngay và để gộp/lọc dữ liệu ôn thi khi đồng bộ.
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,1500)))(()=>xmLoad().catch(()=>{}));
 // v45 (engine M2): tiến độ cũ thành tiên nghiệm cho engine, một lần: unit/điểm ngữ pháp đã qua (kể cả thi vượt cấp) coi như đã có bằng chứng.
