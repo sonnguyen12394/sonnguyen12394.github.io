@@ -38,11 +38,15 @@ test('VSTEP: đề thi thử đầy đủ và bài thi nhanh có sẵn trong tab
   expect(errors).toEqual([]);
 });
 
-test('miễn phí 100%: không tim, không quảng cáo, không gói trả phí', async ({ page, errors }) => {
+test('ôn thi không tốn năng lượng: hết năng lượng vẫn mở đề thi thử đầy đủ (spec §11)', async ({ page, errors }) => {
   await openApp(page);
-  await navTo(page, 'Tôi');
-  const body = await page.locator('#app').innerText();
-  expect(body).not.toMatch(/Super|quảng cáo|❤️/i);
-  await expect(page.getByRole('button', { name: /Thử thách/ })).toBeVisible();
+  // @ts-expect-error biến toàn cục của app.js
+  await page.evaluate(() => { const m = money(); m.e = 0; m.t = Date.now(); save(); render(); });
+  await navTo(page, 'Ôn thi');
+  await page.getByRole('button', { name: /VSTEP/ }).click();
+  await page.getByRole('button', { name: 'Để sau' }).click();
+  await page.getByRole('button', { name: /Đề thi thử đầy đủ/ }).first().click();
+  await expect(page.getByRole('heading', { name: 'Hết năng lượng' })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: /Đề thi thử/ }).first()).toBeVisible();
   expect(errors).toEqual([]);
 });
