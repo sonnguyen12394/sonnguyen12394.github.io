@@ -1,0 +1,30 @@
+{
+  "$id": "ws",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Đề Viết/Nói theo kỳ thi và bài mẫu chú thích band (content/ws/*.json)",
+  "definitions": {
+    "vi": { "type": "string", "minLength": 4 },
+    "w1ac": { "type": "object", "additionalProperties": false, "required": ["id", "fig", "alt", "p", "vi"],
+      "properties": { "id": { "type": "string", "pattern": "^w1ac-\\d+$" }, "fig": { "type": "string", "pattern": "^[a-z0-9-]+(\\.svg)?$" }, "alt": { "$ref": "#/definitions/vi" }, "p": { "type": "string", "minLength": 40 }, "vi": { "$ref": "#/definitions/vi" } } },
+    "w1gt": { "type": "object", "additionalProperties": false, "required": ["id", "p", "reg", "vi"],
+      "properties": { "id": { "type": "string", "pattern": "^w1gt-\\d+$" }, "p": { "type": "string", "minLength": 40 }, "reg": { "enum": ["f", "n", "i"] }, "vi": { "$ref": "#/definitions/vi" } } },
+    "w2": { "type": "object", "additionalProperties": false, "required": ["id", "p", "type", "vi"],
+      "properties": { "id": { "type": "string", "pattern": "^w2-\\d+$" }, "p": { "type": "string", "minLength": 40 }, "type": { "enum": ["opinion", "discuss", "problem", "adv", "two-part"] }, "vi": { "$ref": "#/definitions/vi" } } },
+    "s": { "type": "object", "additionalProperties": false, "required": ["id", "p1", "p2", "p3"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^s-\\d+$" },
+        "p1": { "type": "array", "minItems": 2, "items": { "type": "array", "minItems": 2, "maxItems": 2, "items": [{ "type": "string" }, { "type": "array", "minItems": 3, "items": { "type": "string" } }] } },
+        "p2": { "type": "object", "additionalProperties": false, "required": ["card", "bul", "vi"], "properties": { "card": { "type": "string" }, "bul": { "type": "array", "minItems": 3, "items": { "type": "string" } }, "vi": { "$ref": "#/definitions/vi" } } },
+        "p3": { "type": "array", "minItems": 3, "items": { "type": "string" } } } },
+    "sample": { "type": "object", "additionalProperties": false, "required": ["id", "task", "prompt", "band", "text", "crit", "next"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^smp-" },
+        "task": { "enum": ["w1ac", "w1gt", "w2", "s2", "vw1", "vw2"] },
+        "prompt": { "type": "string" },
+        "band": { "type": "number", "minimum": 0, "maximum": 10, "multipleOf": 0.5 },
+        "text": { "type": "string", "minLength": 300 },
+        "crit": { "type": "object", "minProperties": 4, "maxProperties": 4, "additionalProperties": { "$ref": "#/definitions/vi" } },
+        "next": { "$ref": "#/definitions/vi" } } }
+  },
+  "type": ["object", "array"]
+}
