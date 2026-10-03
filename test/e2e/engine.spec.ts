@@ -135,12 +135,16 @@ test('sẵn sàng: thiếu dữ liệu thì nói rõ; có Nghe/Đọc + thi th�
 });
 
 // Lần tải trước (khi rảnh) của mô-đun engine hỏng thì không được để lỗi "dính": mở Mục tiêu vẫn tải lại được (lỗi WebKit CI ở v49).
-test('tải trước mô-đun engine hỏng: mở Mục tiêu vẫn tải lại được', async ({ page }) => {
-  let failed = 0;
-  await page.route(/\/x\/engine\.[0-9a-f]+\.js$/, route => { if (!failed++) return route.abort(); return route.continue(); });
-  await openApp(page);
-  await expect.poll(() => failed).toBeGreaterThan(0);
-  await navTo(page, 'Tôi');
-  await page.getByRole('button', { name: /Mục tiêu của bạn/ }).click();
-  await expect(page.getByRole('heading', { name: 'Mục tiêu của bạn', level: 1 })).toBeVisible();
+// Service worker phục vụ tệp engine từ bộ nhớ đệm thì page.route không thấy (WebKit): chặn service worker cho test này.
+test.describe(() => {
+  test.use({ serviceWorkers: 'block' });
+  test('tải trước mô-đun engine hỏng: mở Mục tiêu vẫn tải lại được', async ({ page }) => {
+    let failed = 0;
+    await page.route(/\/x\/engine\.[0-9a-f]+\.js$/, route => { if (!failed++) return route.abort(); return route.continue(); });
+    await openApp(page);
+    await expect.poll(() => failed).toBeGreaterThan(0);
+    await navTo(page, 'Tôi');
+    await page.getByRole('button', { name: /Mục tiêu của bạn/ }).click();
+    await expect(page.getByRole('heading', { name: 'Mục tiêu của bạn', level: 1 })).toBeVisible();
+  });
 });
