@@ -4,6 +4,7 @@
 // - Android hay đóng tab chạy nền: câu trả lời, phần đang nghe và giây đã nghe, giờ còn lại đều lưu vào x.mockRun.
 // - Vẽ lại màn hình không được làm mất bài: thẻ <audio> của đề nằm ngoài DOM (new Audio), câu trả lời ghi ngay khi gõ/chọn.
 
+import { examEvidence } from './evidence.ts';
 import type { Host } from './host.ts';
 import type { XState, MockRun } from './state.ts';
 import { MOCKLOG_MAX } from './state.ts';
@@ -175,6 +176,7 @@ export function mockController(host: Host, X: () => XState): MockController {
       const m = s.marks[it.id]!, ok = m.got === m.of;
       items[it.id] = ok ? 1 : 0;
       x.resp.push({ i: it.id, c: ok ? 1 : 0, d: day, s: sk, b: it.b, g: QT[g.qtype]?.guess ?? 0 });
+      examEvidence(host, g.qtype, it, ok, g.id);
       if (!ok) addWrong(x, it.id, g.qtype, day, it.tag);
     }
     const f = MOCK_FORMAT[t.exam][sk];

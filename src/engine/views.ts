@@ -5,6 +5,7 @@ import type { EState } from './state.ts';
 import { GOAL_MAX } from './state.ts';
 import { META, GOALS, loaded, type GoalMeta } from './data.ts';
 import { closure, defaultLevel } from './graph.ts';
+import { statusOf } from './mastery.ts';
 import { LEVEL_VI, type Area, type GoalKind, type Node, type Req } from './types.ts';
 
 export interface ECtx { host: EHost; e: EState; route: string }
@@ -19,6 +20,21 @@ export const KIND_VI: Record<GoalKind, [string, string]> = {
 const KINDS = Object.keys(KIND_VI) as GoalKind[];
 const AREA_VI: Record<Area, string> = { voc: 'Từ vựng', gra: 'Ngữ pháp', pro: 'Phát âm', lis: 'Nghe', rd: 'Đọc', wr: 'Viết', spk: 'Nói', task: 'Dạng bài thi' };
 const AREA_ORDER: Area[] = ['voc', 'gra', 'pro', 'lis', 'rd', 'wr', 'spk', 'task'];
+export interface NStat { pass: boolean; pct: number; conf: 'low' | 'mid' | 'high'; none: boolean }
+// Trạng thái một nút ở mức cần: Can-Do lấy từ app (bằng chứng hoạt động), nút khác lấy từ kho mastery của engine.
+export function nodeStat(host: EHost, e: EState, node: string, level: Req['level']): NStat {
+  if (node.startsWith('cd:')) {
+    const c = host.cando(node.slice(3));
+    if (!c || !c.k) return { pass: false, pct: 0, conf: 'low', none: true };
+    return { pass: c.p >= 1, pct: c.p, conf: c.k >= 3 && c.lb >= 0.6 ? 'high' : c.k >= 2 ? 'mid' : 'low', none: false };
+  }
+  const s = statusOf(e.m, node, level), cell = e.m[node]?.[level];
+  if (!cell) return { pass: false, pct: 0, conf: 'low', none: true };
+  return { pass: s.pass, pct: s.pass ? 1 : Math.min(0.79, s.m), conf: s.conf, none: false };
+}
+const CONF_VI = { low: 'tin cậy thấp', mid: 'tin cậy vừa', high: 'tin cậy cao' } as const;
+export const statChip = (st: NStat): string => st.none ? '<span class="pill">chưa có bằng chứng</span>'
+  : st.pass ? `<span class="pill" style="color:var(--good)">✓ Đạt · ${CONF_VI[st.conf]}</span>` : `<span class="pill">${Math.round(st.pct * 100)}% · ${CONF_VI[st.conf]}</span>`;
 const back = (r = 'goals', t = 'Mục tiêu của bạn') => `<div class="row"><button class="btn ghost" data-e="go" data-r="${r}">← ${t}</button></div>`;
 const hours = (min: number): string => (min < 90 ? `${Math.max(1, Math.round(min))} phút` : `≈ ${Math.round(min / 60)} giờ`);
 
@@ -62,11 +78,13 @@ export function viewGoal(c: ECtx, loadErr: string): string {
   const sel = e.goals.find(s => s.id === id);
   const count = (pred: (n: Node) => boolean) => pre.filter(r => pred(node(r))).length;
   const groups = AREA_ORDER.map(a => [a, g.req.filter(r => node(r).area === a)] as const).filter(([, rs]) => rs.length);
+  const stats = new Map(g.req.map(r => [r.node, nodeStat(host, e, r.node, r.level)]));
+  const passed = g.req.filter(r => stats.get(r.node)!.pass).length;
   const row = (r: Req) => { const n = node(r), act = n.acts[0];
-    return `<li style="display:flex;gap:8px;align-items:center;justify-content:space-between"><span style="flex:1;min-width:0">${esc(n.vi)} <span class="hint">· cần mức ${r.level}: ${esc(LEVEL_VI[r.level])}</span></span>${act ? `<button class="btn small ghost" style="flex:none" ${act.at} aria-label="Học: ${esc(n.vi)}">Học</button>` : '<span class="pill" style="flex:none" title="Nội dung sẽ được bổ sung">chưa có bài</span>'}</li>`; };
+    return `<li style="display:flex;gap:8px;align-items:center;justify-content:space-between"><span style="flex:1;min-width:0">${esc(n.vi)} <span class="hint">· cần mức ${r.level}: ${esc(LEVEL_VI[r.level])}</span><br>${statChip(stats.get(r.node)!)}</span>${act ? `<button class="btn small ghost" style="flex:none" ${act.at} aria-label="Học: ${esc(n.vi)}">Học</button>` : '<span class="pill" style="flex:none" title="Nội dung sẽ được bổ sung">chưa có bài</span>'}</li>`; };
   return `${head}
     <section class="panel stack"><div class="me-stats me3">
-      <div class="stat"><b>${g.req.length}</b><span class="muted">năng lực ghi trực tiếp</span></div>
+      <div class="stat"><b>${passed}/${g.req.length}</b><span class="muted">năng lực đã đạt</span></div>
       <div class="stat"><b>${all.length}</b><span class="muted">kể cả tiền đề</span></div>
       <div class="stat"><b>${esc(hours(minutes))}</b><span class="muted">học từ đầu (ước tính thô)</span></div></div>
       <p class="hint">Tiền đề gồm ${count(n => n.kind === 'vocab')} cụm từ vựng, ${count(n => n.kind === 'grammar')} điểm ngữ pháp và ${count(n => n.kind === 'cando')} năng lực cấp dưới. Thứ bạn đã thành thạo sẽ được bỏ khỏi lộ trình sau bài chẩn đoán, nên con số thật thường nhỏ hơn.</p></section>

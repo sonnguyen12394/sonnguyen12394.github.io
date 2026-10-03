@@ -1,5 +1,48 @@
 # Chấm điểm app theo Master Spec v2
 
+## v46 (sau M1 + M2) — 03/10/2026: 6,2/10 (lõi engine 6,2/10)
+
+Chỉ đổi điểm tiêu chí có bằng chứng mới trong code; các tiêu chí khác giữ điểm v44.
+
+| Nhóm | v44 | v46 |
+| --- | --- | --- |
+| A. Mục tiêu và đồ thị năng lực | 1,8 | **8,2** |
+| B. Trạng thái và mastery | 3,7 | **7,0** |
+| C. Chẩn đoán | 5,0 | 5,0 |
+| D. Gap và Learning Path | 4,2 | 4,5 |
+| E. Ôn duy trì | 6,0 | 7,0 |
+| F. Sẵn sàng và đạt mục tiêu | 5,8 | 5,8 |
+| G. Kỳ thi | 5,2 | 5,2 |
+| H. Viết/Nói không AI | 3,0 | 3,0 |
+| I. Nội dung | 6,7 | 7,1 |
+| J. Động lực và kiếm tiền | 2,7 | 2,7 |
+| K. Kỹ thuật và vận hành | 7,6 | 7,9 |
+| L. Quyền riêng tư | 9,0 | 9,0 |
+| M. Bằng chứng thực tế | 1,0 | 1,0 |
+| **Tổng** | **5,1** | **6,2** |
+
+| # | Tiêu chí | v44 → v46 | Bằng chứng |
+| --- | --- | --- | --- |
+| 1 | Chọn mục tiêu | 5 → 8 | Tôi → Mục tiêu của bạn: CEFR A1–C2, IELTS AC/GT 4.0–9.0, VSTEP B1–C1, giao tiếp ×4, tối đa 4, có hạn (chưa có Pre-A1) |
+| 2 | Target Model có phiên bản | 0 → 9 | `content/engine/goals/*.json`, version 1.0, lưu phiên bản lúc chọn |
+| 3 | Đồ thị năng lực | 2 → 8 | 998 nút, 2.607 cạnh cứng/mềm có độ mạnh (`tools/engine-gen.ts`) |
+| 4 | Nút dùng chung | 2 → 7 | Mọi mục tiêu cùng một đồ thị; nút thi tách riêng |
+| 5 | CI kiểm vòng lặp | 0 → 10 | `validate()` trong `npm run content` + unit test |
+| 6 | Mục tiêu giao tiếp | 2 → 7 | `comm-*`, thẻ ngữ cảnh đoán theo từ khoá, chỉnh tay được |
+| 7 | 5 mức mastery | 4 → 7 | `src/engine/mastery.ts`: ô Beta cho mỗi nút × mức 1–5 |
+| 8 | Nhiều bằng chứng, nhiều dạng câu | 4 → 7 | Mỗi câu từ vựng/ngữ pháp/ôn thi là một bằng chứng, giảm trọng số khi lặp, theo dõi dạng câu và ngữ cảnh |
+| 9 | Confidence riêng | 4 → 8 | Thấp/Vừa/Cao theo spec §3, hiện ở trang mục tiêu |
+| 10 | Mastery theo mục tiêu | 1 → 5 | Target Model ghi mức cần; trang mục tiêu đo đúng mức đó (lộ trình chưa dùng: M4) |
+| 11 | Biết ≠ làm được | 6 → 7 | Can-Do cần bằng chứng hoạt động thật, tách khỏi mastery kiến thức |
+| 12 | Không lấy hoàn thành bài làm tiến độ | 3 → 8 | `cdProg` tính Beta từ điểm từng hoạt động; làm đủ mà điểm thấp vẫn chưa đạt |
+| 22 | Gộp nhiều mục tiêu | 1 → 3 | `mergeGoals` có, lộ trình chưa dùng (M4) |
+| 24 | Mô hình quên | 7 → 9 | Một hệ FSRS-5 (`x/core`), thẻ SM-2 cũ tự chuyển |
+| 25 | Ôn trượt quay lại lộ trình | 4 → 5 | Quên làm giảm độ bền FSRS và mastery; luật "mất Đạt" ở M4 |
+| 48 | Nội dung là dữ liệu | 5 → 7 | Đồ thị là JSON có schema; chi tiết A1 tách khỏi app.js |
+| 49 | Bảng phủ | 5 → 7 | `content/engine/coverage.md` theo từng mục tiêu |
+| 53 | Mô-đun TypeScript có test | 5 → 6 | `src/engine/` có unit test; app.js vẫn là khối lớn |
+| 56 | App shell, máy yếu | 5 → 6 | app.js 3,8 → 3,1 MB; Lighthouse tại máy 91 (main 87) |
+
 ## v44 — 03/10/2026: 5,1/10 (lõi engine 4,0/10)
 
 Chấm 64 tiêu chí rút từ `docs/SPEC.md`, bằng chứng lấy từ code. Thang: 10 = đạt đúng spec, 5 = có một phần hoặc làm theo cách khác, 0 = chưa có. Chấm lại sau mỗi mốc M1–M8, thêm một mục mới lên đầu tệp.

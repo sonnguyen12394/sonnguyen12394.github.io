@@ -18,6 +18,7 @@ export interface Host {
   minutes(): Record<string, number>;                // phút học thật theo ngày (chung cho cả app)
   addMinutes(m: number): void;                      // cộng phút học của phần ôn thi vào hôm nay
   markActive(): void;                               // tính hôm nay là ngày có học (chuỗi ngày)
+  evidence?(e: { node: string; level: 1 | 2 | 3 | 4 | 5; ok: boolean; g?: number; item?: string; qt?: string; ctx?: string }): void;   // bằng chứng mastery cho engine (docs/SPEC.md §2)
 }
 
 export interface FlagRec {

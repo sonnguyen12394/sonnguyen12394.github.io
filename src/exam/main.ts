@@ -29,6 +29,7 @@ import { attachNoise, detachNoise, unlockAudio } from './noise.ts';
 import { QT } from './content.ts';
 import { ieltsBand } from './scales.ts';
 import { mockController } from './mockrun.ts';
+import { examEvidence } from './evidence.ts';
 
 export const MODULE_VERSION = 1;
 
@@ -146,6 +147,7 @@ export function init(host: Host): ExamModule {
       const m = prun.marks[it.id]!, ok = m.got === m.of;
       got += m.got; of += m.of; items[it.id] = ok ? 1 : 0;
       x.resp.push({ i: it.id, c: ok ? 1 : 0, d: day, s: skill, b: it.b, g: QT[g.qtype]?.guess ?? 0 });
+      examEvidence(host, g.qtype, it, ok, g.id);
       if (!ok) addWrong(x, it.id, g.qtype, day, it.tag);
     }
     const secs = Math.round((Date.now() - prun.t0) / 1000), exam = x.exam || 'ielts-ac';
