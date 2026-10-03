@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 47;
+const STATE_V = 18, APP_VERSION = 48;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},e:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -2508,6 +2508,8 @@ function mainAction(){
   if(away>=3) return {h:`Chào mừng bạn quay lại sau ${away} ngày!`,p:'Bắt đầu nhẹ nhàng: 10 câu ôn những từ bạn yếu nhất, khoảng 5 phút.',btn:`<button class="btn primary big" data-act="quick">⚡ Học nhanh 5 phút</button>`};
   if(due) return {h:`${due} từ đến hạn ôn`,p:`Ôn đúng lúc sắp quên thì nhớ lâu nhất. Mỗi từ được hỏi đúng kỹ năng bạn đang yếu. ${info('due')}`,btn:`<button class="btn primary big" data-act="review">Ôn ${Math.min(due,REVIEW_BATCH)} từ</button>`};
   if(!s.learned&&newCapHit()&&ALL_WORDS.some(w=>W(w.id).learned)) return {h:'Hôm nay đã đủ từ mới',p:`Bạn đã học ${newToday()} từ mới hôm nay. Luyện cho chắc những từ vừa học sẽ giúp nhớ lâu hơn học thêm. ${info('newmax')}`,btn:`<button class="btn primary big" data-act="quick">⚡ Luyện 5 phút</button>`};
+  // v48 (engine M4): có mục tiêu thì bước tiếp theo do lộ trình của engine chọn (đường đi tối thiểu), không theo thứ tự unit.
+  try{ const en=EM&&EM.next(); if(en) return {...en,eng:true}; }catch(e){}
   const cd=unitCando(cur), why=cd?` Unit này giúp bạn đạt: “${esc(cdSay(cd))}”.`:'';
   return {h:`${s.learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,p:(s.learned?'Chưa có từ nào đến hạn ôn. Học tiếp unit này: luyện rồi làm bài kiểm tra để mở unit sau.':'Học 10 từ mới, luyện, rồi làm bài kiểm tra để mở unit sau.')+why,btn:`<button class="btn primary big" data-unit="${cur.id}">${s.learned?'Tiếp tục':'Bắt đầu học'}</button>`};
 }
@@ -2558,7 +2560,7 @@ function featCheck(){ if(!['path','review','more'].includes(ui.view)||ui.modal) 
   for(const [k,t,d] of FEAT_NEW) if(featOn(k)&&!fs.includes(k)){ fs.push(k); save(); setTimeout(()=>celebrate('🔓','Mở khoá: '+t,d),300); return; } }
 // Trang Học: một thanh vị trí (bấm để xem lộ trình), tối đa một lời nhắc.
 function simpleStrip(){ if(!st.onboarded&&!st.stats.a) return ''; const x=lvLayer();
-  return `<button class="panel pathbar" data-act="showmap" aria-expanded="${!!ui.showMap}"><span class="pb-t"><b class="lvtag" style="--lv:var(--lv-${x.L.toLowerCase()})">${x.L}</b> · Unit ${x.cur.no}/${x.n}</span>${meter(x.n?x.passed/x.n:0,'good')}<span class="pb-m">${ui.showMap?'Ẩn lộ trình ▴':'Xem lộ trình ▾'}</span></button>`; }
+  return `<button class="panel pathbar" data-act="showmap" aria-expanded="${!!ui.showMap}"><span class="pb-t"><b class="lvtag" style="--lv:var(--lv-${x.L.toLowerCase()})">${x.L}</b> · Unit ${x.cur.no}/${x.n}</span>${meter(x.n?x.passed/x.n:0,'good')}<span class="pb-m">${ui.showMap?'Ẩn thư viện bài học ▴':(st.e&&(st.e.goals||[]).length?'Thư viện bài học ▾':'Xem lộ trình ▾')}</span></button>`; }
 const oneNudge = () => (learnerNudges()+backupNag()).split(/(?=<div class="spread slim)/).map(x=>x.trim()).filter(Boolean)[0]||'';
 function viewPath(){
   const cur = currentUnit(), gu=goalUnits(), onlyGoal=gu&&!ui.goalAll;
@@ -6217,7 +6219,7 @@ function balanceStep(force=false,SLx=null){ const cur=currentUnit(), L=cur.level
   if(g&&s) return (st.me.balLast==='g')?s:g;
   return g||s; }
 const _mainAction0 = mainAction;
-mainAction = function(){ loadToday(); const m=_mainAction0(); if(/data-act="(resume|review)"/.test(m.btn)||/quay lại/.test(m.h)) return m;
+mainAction = function(){ loadToday(); const m=_mainAction0(); if(m.eng||/data-act="(resume|review)"/.test(m.btn)||/quay lại/.test(m.h)) return m;   // m.eng: bước của engine (v48), không xen kẽ theo khoá học cũ
   const blocked=/data-act="quick"/.test(m.btn); let b=balanceStep(blocked);
   // Cấp đang nhắm đã hết việc làm được mà từ mới đang tạm dừng: đi trước sang kỹ năng, ngữ pháp của cấp sau (không luyện lặp vô ích).
   if(!b&&blocked){ const got=cefrGot(), L=currentUnit().level, SL=LVS.slice(LVS.indexOf(L)).find(x=>!got.includes(x))||L; for(const X of LVS.slice(LVS.indexOf(SL)+1)){ b=balanceStep(true,X); if(b) break; } }
@@ -7030,7 +7032,7 @@ const _viewQuiz31 = viewQuiz; viewQuiz = function(){ const s=ui.qz; if(!(s&&s.ki
   ${bad.length?`<details class="panel stack"><summary><h3>Câu sai · ${bad.length}</h3></summary>${bad.map(x=>`<p><span class="muted" lang="en">${esc(x.q)}</span><br>Đáp án: <b lang="en">${esc(x.right)}</b></p>`).join('')}</details>`:''}
   <div class="row endrow" aria-label="Việc tiếp theo"><button class="btn primary" data-go="cefr">Về bản đồ CEFR</button><button class="btn" data-act="qzagain">Làm lại</button></div>`; };
 // Nút chính: đủ nhóm năng lực mà chưa xác nhận thì gợi ý bước xác nhận còn thiếu.
-const _mainAction31 = mainAction; mainAction = function(){ const m=_mainAction31(); if(/data-act="(resume|review)"/.test(m.btn)) return m;
+const _mainAction31 = mainAction; mainAction = function(){ const m=_mainAction31(); if(m.eng||/data-act="(resume|review)"/.test(m.btn)) return m;
   // v33: theo từng kỹ năng — kỹ năng đã học đủ bài ở cấp L mà chưa có bằng chứng bài làm thì gợi ý đúng bằng chứng của kỹ năng đó.
   for(const L of LVS) for(const [k,n] of SK4){ if(cdGroup(L,k)<CD_DONE||SK_EV[k](L)) continue;
     const test={h:`Xác nhận ${n} ${L}: bài kiểm tra`,p:`Bạn đã học đủ bài ${n.toLowerCase()} ${L}. Bài kiểm tra cấp ${L} chấm riêng từng kỹ năng; phần ${n.toLowerCase()} đạt ≥ ${pct(LCHK_SEC)} là bằng chứng cho kỹ năng này.`,btn:`<button class="btn primary big" data-act="lchkgo" data-l="${L}">Làm bài kiểm tra ${L}</button>`};
@@ -7987,6 +7989,11 @@ CHANGELOG.unshift({v:47,d:'2026-10-03',t:'Bài chẩn đoán: app biết bạn �
   'Bài dò 10–20 phút (Tôi → Mục tiêu của bạn → Làm bài chẩn đoán): hỏi vài câu ở từng cụm từ vựng và điểm ngữ pháp, bắt đầu ở cấp dễ (hoặc ở cấp bài kiểm tra Nghe + Đọc nếu bạn đã làm), đúng thì lên cấp, sai thì dò xuống phần nền.',
   'Xong bài dò, những gì dưới mức của bạn được coi là đã biết và bỏ khỏi lộ trình; nếu sai, bài học sau sẽ đưa trở lại.',
   'Màn kết quả cho biết cấp từ vựng, ngữ pháp, còn thiếu bao nhiêu so với từng mục tiêu, và số giờ học ước tính tới từng kỳ thi (VSTEP B1–C1, IELTS 5.5–7.0) để chọn kỳ thi đầu tiên vừa sức.']});
+CHANGELOG.unshift({v:48,d:'2026-10-03',t:'Lộ trình theo mục tiêu: học đúng cái còn thiếu',big:true,items:[
+  'Có mục tiêu thì trang Học hiện "Bước tiếp theo": năng lực mục tiêu cần, đủ nền để học, mở đường cho nhiều năng lực khác nhất mà tốn ít phút nhất.',
+  'Lộ trình hôm nay: ôn những gì sắp quên (tối đa 30% thời gian), mỗi tuần một bài làm thật, rồi các bước ưu tiên; có mục tiêu với ngày thi gần thì ưu tiên mục tiêu đó.',
+  'Đã biết rồi? Bấm "Tôi biết rồi" để làm bài kiểm tra ngắn; đúng hết thì phần đó được tính Đạt và bỏ khỏi lộ trình.',
+  'Bài học cũ (unit, ngữ pháp) giữ nguyên trong Thư viện bài học; lộ trình dẫn tới đúng bài.']});
 CHANGELOG.unshift({v:46,d:'2026-10-03',t:'App đo bạn đã thật sự thành thạo gì',big:true,items:[
   'Mỗi câu trả lời (từ vựng, ngữ pháp, câu ôn thi) giờ là một bằng chứng: app ước tính mức thành thạo của từng năng lực ở 5 mức (nhận ra, hiểu, nhớ ra, dùng có kiểm soát, dùng tự do) kèm độ tin cậy. Đoán mò, lặp lại cùng câu trong ngày được tính nhẹ hơn.',
   'Câu "Tôi có thể…" chỉ đạt khi bài làm đủ tốt, không còn đạt chỉ vì làm đủ số bài: làm xong mà điểm thấp thì vẫn hiện là đang học.',
@@ -8035,7 +8042,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.9aa9ec33f7.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.8ce0a83862.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8063,13 +8070,16 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.5e6655a70b.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.07ddb0665f.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),
   cando:id=>{ const c=CANDO.find(x=>x.id===id); if(!c) return null; const p=cdProg(c); return {p:p.p,m:p.m,lb:p.lb,k:p.k,need:p.need}; },
   probe:node=>eProbe(node),
+  dayInfo:()=>{ const dw=dueWords().length, dg=dueG().length, t=today();
+    const lastPerf=Math.max(0,...Object.values(st.dlg||{}).map(d=>d&&d.day||0),...((st.x&&st.x.attempts)||[]).filter(a=>a.kind==='mock').map(a=>a.day||0));
+    return {reviewItems:dw+dg, reviewMins:(dw?reviewMin(dw):0)+dg*2, mins:Math.round((st.x&&st.x.mins)||20), perfDue:t-lastPerf>=7}; },
 };
 // Câu dò cho chẩn đoán của engine (M3), lấy từ kho sẵn có: cụm từ vựng 3 câu (nhận ra nghĩa → mức 1, chọn từ theo nghĩa → mức 2,
 // tự gõ từ theo nghĩa → mức 3); điểm ngữ pháp 2 câu chọn (mức 2) + 1 câu tự gõ (mức 3) nếu bài có.
@@ -8086,6 +8096,7 @@ function eProbe(node){ const out=[], pick=(xs,n)=>shuffle(xs.slice()).slice(0,n)
   if(node.startsWith('g:')){ const p=GPT[node.slice(2)]; if(!p) return out; const used=new Set();
     for(let i=0;i<2&&p.mc&&p.mc.length;i++){ const q=gbuild(p,'cho',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:2,g:1/q.opts.length,prompt:q.prompt,opts:q.opts,ans:q.ans}); }
     if(p.ty&&p.ty.length){ const q=gbuild(p,'typ',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:3,g:0,prompt:q.prompt,accept:q.accept}); }
+    if(p.fx&&p.fx.length){ const q=gbuild(p,'fix',{test:true,used}); if(q.type==='gfx') out.push({id:'g:'+p.id+':'+q.key,level:4,g:0,prompt:'Sửa câu sai: '+q.prompt,accept:q.accept}); }
     return out; }
   return out; }
 let _emP=null, _emErr='';

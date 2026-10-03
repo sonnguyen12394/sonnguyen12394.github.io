@@ -76,3 +76,31 @@ test('chẩn đoán: làm tới hết, có kết quả, tiên nghiệm được 
   expect(e.m['u:c1-u1']?.['3']).toMatchObject({ a: 2, b: 4 });
   expect(errors).toEqual([]);
 });
+
+// M4: có mục tiêu thì trang Học dùng bước tiếp theo của lộ trình; lộ trình hôm nay; kiểm tra để bỏ qua.
+test('lộ trình: trang Học hiện bước tiếp theo của engine, lộ trình hôm nay, kiểm tra để bỏ qua', async ({ page, errors }) => {
+  await openApp(page);
+  await navTo(page, 'Tôi');
+  await page.getByRole('button', { name: /Mục tiêu của bạn/ }).click();
+  await page.getByRole('button', { name: /^VSTEP/ }).click();
+  await page.getByRole('button', { name: 'Chọn VSTEP Bậc 3 (B1)' }).click();
+  await expect(page.getByRole('heading', { name: 'VSTEP Bậc 3 (B1)', level: 1 })).toBeVisible();
+  await navTo(page, 'Học');
+  await expect(page.getByText(/^Bước tiếp theo: /)).toBeVisible();
+  await expect(page.getByText(/Cần cho VSTEP Bậc 3 \(B1\)/)).toBeVisible();
+  await page.getByRole('button', { name: 'Lộ trình hôm nay' }).click();
+  await expect(page.getByRole('heading', { name: 'Hôm nay học gì', level: 1 })).toBeVisible();
+  await noHorizontalScroll(page);
+  // kiểm tra để bỏ qua một cụm từ vựng A1: trả lời "Không biết" thì chưa được bỏ qua
+  await page.evaluate(() => (window as unknown as { go: (v: string, x: object) => void }).go('goal', { er: 'tout/u:a1-u1' }));
+  for (let k = 0; k < 6 && !(await page.getByRole('heading', { name: 'Chưa đủ để bỏ qua' }).isVisible()); k++) {
+    await page.getByRole('button', { name: 'Không biết' }).click();
+  }
+  await expect(page.getByRole('heading', { name: 'Chưa đủ để bỏ qua' })).toBeVisible();
+  await page.getByRole('button', { name: 'Về lộ trình hôm nay' }).click();
+  await expect(page.getByRole('heading', { name: 'Hôm nay học gì', level: 1 })).toBeVisible();
+  // nút Học của bước đầu mở đúng màn học cũ (thư viện), không lỗi
+  await page.getByRole('button', { name: 'Học', exact: true }).first().click();
+  await expect(page.locator('#app')).not.toContainText('Có lỗi khi mở màn này');
+  expect(errors).toEqual([]);
+});

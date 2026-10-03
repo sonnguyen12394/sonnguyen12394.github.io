@@ -12,5 +12,6 @@ export interface EHost {
   ico(name: string): string;
   fetchJson(url: string): Promise<unknown>;
   cando(id: string): { p: number; m: number; lb: number; k: number; need: number } | null;   // tiến độ Can-Do tính từ bằng chứng (app.js cdProg)
+  dayInfo(): { reviewItems: number; reviewMins: number; mins: number; perfDue: boolean };   // ôn đến hạn, phút học mỗi ngày, đã có bài làm thật trong 7 ngày chưa
   probe(node: string): Array<{ id: string; level: 1 | 2 | 3; g: number; prompt: string; opts?: string[]; ans?: number; accept?: string[]; en?: string }>;   // câu dò cho chẩn đoán (app.js eProbe)
 }

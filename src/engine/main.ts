@@ -10,6 +10,8 @@ import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, type 
 import { record, prior } from './mastery.ts';
 import { closure, defaultLevel, mergeGoals } from './graph.ts';
 import { bandToCefr } from '../exam/scales.ts';
+import { viewToday, viewTout, nextStep, type ToutRun } from './today.ts';
+import { nodeStat } from './views.ts';
 
 export const MODULE_VERSION = 1;
 
@@ -17,6 +19,7 @@ export interface EngineModule {
   version: number;
   render(route: string): string;
   after(route: string): void;
+  next(): { h: string; p: string; btn: string } | null;   // nút chính trang chủ theo lộ trình; null = dùng cách cũ
   sanitize(e: unknown): EState;
   merge(a: unknown, b: unknown): EState;
 }
@@ -34,7 +37,7 @@ export function init(host: EHost): EngineModule {
   };
   E();
   let loadErr = '';
-  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('diag');
+  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout');
   const ensure = () => {
     if (loaded()) return;
     loadGraph(host.fetchJson).then(() => { loadErr = ''; host.render(); })
@@ -98,7 +101,35 @@ export function init(host: EHost): EngineModule {
     host.save(); host.render();
   }
 
+  // ---------- Kiểm tra để bỏ qua (M4) ----------
+  let tout: ToutRun | null = null, toutRes: { node: string; pass: boolean } | null = null;
+  function toutStart(node: string): void {
+    const qs = host.probe(node);
+    tout = qs.length ? { node, qs, i: 0, got: 0 } : null; toutRes = null;
+  }
+  function toutAnswer(ok: boolean): void {
+    if (!tout) return;
+    const q = tout.qs[tout.i]!, e = E();
+    // Bài kiểm tra có chủ đích ở mức cần: mỗi câu nặng gấp 4 câu luyện (đúng hết thì đủ bằng chứng để Đạt).
+    record(e.m, { node: tout.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'testout', w: 4 }, host.today(), e.r);
+    if (ok) tout.got++;
+    tout.i++;
+    if (tout.i >= tout.qs.length) {
+      const ix = loaded()!, n = ix.node.get(tout.node)!, lvl = Math.max(...tout.qs.map(x => x.level)) as 1 | 2 | 3 | 4;
+      const need = n.kind === 'vocab' ? 3 : 4, pass = tout.got === tout.qs.length && nodeStat(host, e, tout.node, Math.min(need, lvl) as 3 | 4).pass;
+      toutRes = { node: tout.node, pass }; tout = null;
+    }
+    host.save(); host.render();
+  }
+
   const routes: Record<string, (c: ECtx) => string> = {
+    today: c => (loaded() ? viewToday(c, host.dayInfo()) : (ensure(), viewLoading(c, loadErr))),
+    tout: c => {
+      if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
+      const node = c.route.slice('tout/'.length);
+      if (!tout && (!toutRes || toutRes.node !== node)) toutStart(node);
+      return viewTout(c, tout, toutRes && toutRes.node === node ? toutRes : null);
+    },
     diag: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return drun ? viewDiagRun(c, drun) : viewDiagIntro(c, lr()); },
     'diag-result': c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewDiagResult(c, lr()); },
     goals: viewGoals,
@@ -136,8 +167,15 @@ export function init(host: EHost): EngineModule {
       diagAnswer(i >= 0 && i === q.ans, q);
     },
     dstop() { finishDiag(); },
+    tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
+    ttyped(f) {
+      if (!tout) return;
+      const q = tout.qs[tout.i]!, a = norm(String(new FormData(f).get('a') || ''));
+      if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
+      toutAnswer((q.accept ?? []).some(x => norm(x) === a));
+    },
     dtyped(f) {
       if (!drun) return;
       const q = drun.qs[drun.i]!, a = norm(String(new FormData(f).get('a') || ''));
@@ -167,7 +205,14 @@ export function init(host: EHost): EngineModule {
   return {
     version: MODULE_VERSION,
     render,
-    after(route) { if (needGraph(route) && !loaded()) ensure(); },
+    after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('tout')) { tout = null; toutRes = null; } },
+    next() {
+      const e = E();
+      if (!e.goals.length) return null;
+      const ix = loaded();
+      if (!ix) { ensure(); return null; }
+      return nextStep(host, e, ix);
+    },
     sanitize: sanitizeE,
     merge: mergeE,
   };
