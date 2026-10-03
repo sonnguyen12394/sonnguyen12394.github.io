@@ -27,14 +27,15 @@ test('chọn mục tiêu VSTEP B1, xem cần đạt gì, đặt hạn; tải l�
   expect(errors).toEqual([]);
 });
 
-test('IELTS: chọn band; mục Viết/Nói thi chưa có bài thì nói rõ', async ({ page, errors }) => {
+test('IELTS: chọn band; mục Viết/Nói thi dẫn tới đúng bài thi thử Viết/Nói IELTS (M6)', async ({ page, errors }) => {
   await openApp(page);
   await navTo(page, 'Tôi');
   await page.getByRole('button', { name: /Mục tiêu của bạn/ }).click();
   await page.getByRole('button', { name: /^IELTS Academic/ }).click();
   await page.getByRole('button', { name: 'Chọn IELTS Academic 6.5' }).click();
   await expect(page.getByRole('heading', { name: 'IELTS Academic 6.5', level: 1 })).toBeVisible();
-  await expect(page.getByText('chưa có bài').first()).toBeVisible();
+  await page.getByRole('button', { name: 'Học: IELTS Viết Task 2: bài luận' }).click();
+  await expect(page.getByRole('heading', { name: 'Thi thử Viết IELTS' })).toBeVisible();
   expect(errors).toEqual([]);
 });
 
