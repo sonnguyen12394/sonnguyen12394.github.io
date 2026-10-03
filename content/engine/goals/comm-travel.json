@@ -1,0 +1,50 @@
+{
+ "id": "comm-travel",
+ "version": "1.0",
+ "kind": "comm",
+ "vi": "Giao tiếp khi du lịch",
+ "target": "travel",
+ "cefr": "B1",
+ "req": [
+  {
+   "node": "cd:a2-voc2",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:a2-fun3",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a2-ski5",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a2-com2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-voc4",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-voc7",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-com1",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-com3",
+   "level": 4,
+   "type": "performance"
+  }
+ ]
+}

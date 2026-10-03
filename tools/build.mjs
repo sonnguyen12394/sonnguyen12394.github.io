@@ -81,6 +81,21 @@ mkdirSync(P('src/exam/gen'), { recursive: true });
 const idxText = JSON.stringify(index) + '\n';
 if (!existsSync(P('src/exam/gen/index.json')) || readFileSync(P('src/exam/gen/index.json'), 'utf8') !== idxText) writeFileSync(P('src/exam/gen/index.json'), idxText);
 
+// 0b. Engine (docs/SPEC.md): content/engine/{nodes,edges,goals} → data/engine/graph.<băm>.json (tải khi cần)
+//     + src/engine/gen/meta.json (danh mục mục tiêu, đóng vào mô-đun để màn chọn mục tiêu mở ngay).
+const ENG = P('content/engine');
+const eNodes = JSON.parse(readFileSync(join(ENG, 'nodes.json'), 'utf8')), eEdges = JSON.parse(readFileSync(join(ENG, 'edges.json'), 'utf8'));
+const eGoals = readdirSync(join(ENG, 'goals')).filter(f => f.endsWith('.json')).sort().map(f => JSON.parse(readFileSync(join(ENG, 'goals', f), 'utf8')));
+const gBody = Buffer.from(JSON.stringify({ nodes: eNodes, edges: eEdges, goals: eGoals }));
+const gFile = `data/engine/graph.${hash(gBody)}.json`;
+mkdirSync(P('data/engine'), { recursive: true });
+for (const f of readdirSync(P('data/engine'))) if (`data/engine/${f}` !== gFile) unlinkSync(P('data/engine/' + f));
+if (!existsSync(P(gFile))) writeFileSync(P(gFile), gBody);
+mkdirSync(P('src/engine/gen'), { recursive: true });
+const metaText = JSON.stringify({ file: gFile, nodes: eNodes.length, edges: eEdges.length,
+  goals: eGoals.map(g => ({ id: g.id, kind: g.kind, vi: g.vi, target: g.target, cefr: g.cefr, version: g.version, n: g.req.length })) }) + '\n';
+if (!existsSync(P('src/engine/gen/meta.json')) || readFileSync(P('src/engine/gen/meta.json'), 'utf8') !== metaText) writeFileSync(P('src/engine/gen/meta.json'), metaText);
+
 // 1. Mô-đun ôn thi
 const r = await build({
   entryPoints: [P('src/exam/main.ts')], bundle: true, format: 'esm', target: 'es2020',
@@ -92,15 +107,26 @@ mkdirSync(P('x'), { recursive: true });
 for (const f of readdirSync(P('x'))) if (/^exam\.[0-9a-f]{10}\.js$/.test(f) && `x/${f}` !== examName) unlinkSync(P('x/' + f));
 if (!existsSync(P(examName)) || !readFileSync(P(examName)).equals(Buffer.from(code))) writeFileSync(P(examName), code);
 
+// 1b. Mô-đun engine
+const re = await build({
+  entryPoints: [P('src/engine/main.ts')], bundle: true, format: 'esm', target: 'es2020',
+  minify: true, write: false, legalComments: 'none', charset: 'utf8', logLevel: 'warning',
+});
+const ecode = re.outputFiles[0].contents;
+const engName = `x/engine.${hash(ecode)}.js`;
+for (const f of readdirSync(P('x'))) if (/^engine\.[0-9a-f]{10}\.js$/.test(f) && `x/${f}` !== engName) unlinkSync(P('x/' + f));
+if (!existsSync(P(engName)) || !readFileSync(P(engName)).equals(Buffer.from(ecode))) writeFileSync(P(engName), ecode);
+
 // 2. app.js biết tên tệp
 setLine('app.js', /^const EXAM_JS = .*$/m, `const EXAM_JS = '${examName}';   // tools/build.mjs ghi`);
+setLine('app.js', /^const ENGINE_JS = .*$/m, `const ENGINE_JS = '${engName}';   // tools/build.mjs ghi`);
 
 // 3. Số bản phát hành
 const app = readFileSync(P('app.js'), 'utf8');
 const ver = Number((/APP_VERSION = (\d+)/.exec(app) || [])[1]);
 if (!ver) throw new Error('không đọc được APP_VERSION');
 setLine('sw.js', /^const VERSION = .*$/m, `const VERSION = 'vl-v${ver}';`);
-setLine('sw.js', /^const CORE = .*$/m, `const CORE = ['./', 'index.html', 'app.js?v=${ver}', '${examName}', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];`);
+setLine('sw.js', /^const CORE = .*$/m, `const CORE = ['./', 'index.html', 'app.js?v=${ver}', '${examName}', '${engName}', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];`);
 setLine('index.html', /<script src="app\.js\?v=\d+"( defer)?><\/script>/, `<script src="app.js?v=${ver}" defer></script>`);
 
-console.log(`build: ${examName} (${(code.length / 1024).toFixed(1)} KB), bản ${ver}; nội dung ${groups.length} nhóm, ${Object.keys(index.items).length} câu, ${Object.keys(index.packs).length} gói`);
+console.log(`build: ${engName} (${(ecode.length / 1024).toFixed(1)} KB), đồ thị ${gFile} (${(gBody.length / 1024).toFixed(0)} KB); ${examName} (${(code.length / 1024).toFixed(1)} KB), bản ${ver}; nội dung ${groups.length} nhóm, ${Object.keys(index.items).length} câu, ${Object.keys(index.packs).length} gói`);

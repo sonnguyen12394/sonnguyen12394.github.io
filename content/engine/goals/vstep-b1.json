@@ -1,0 +1,300 @@
+{
+ "id": "vstep-b1",
+ "version": "1.0",
+ "kind": "vstep",
+ "vi": "VSTEP Bậc 3 (B1)",
+ "target": "B1",
+ "cefr": "B1",
+ "req": [
+  {
+   "node": "cd:b1-voc1",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-voc2",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-voc3",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-voc4",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-voc5",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-voc6",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-voc7",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-voc8",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-gra1",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-gra2",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-gra3",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-gra4",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-gra5",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-gra6",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-pro1",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-pro2",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-pro3",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-pro4",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-pro5",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-pro6",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-fun1",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-fun2",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-fun3",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-fun4",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-fun5",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-ski1",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-ski2",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-ski3",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-ski4",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-ski5",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-ski6",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-com1",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-com2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-com3",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-com4",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-com5",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-ski7",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-ski9",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-ski8",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-fun6",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-com-med2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-med",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-rx",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-cs",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-lis",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b1-pv",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b1-sp",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-conv",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b1-cw",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "x:v-l1",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "x:v-l2",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "x:v-l3",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "x:v-r",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "xw:vstep-t1",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "xw:vstep-t2",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "xs:vstep-p1",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "xs:vstep-p2",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "xs:vstep-p3",
+   "level": 3,
+   "type": "performance"
+  }
+ ]
+}

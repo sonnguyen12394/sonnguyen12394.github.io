@@ -1,0 +1,395 @@
+{
+ "id": "ielts-gt-6.5",
+ "version": "1.0",
+ "kind": "ielts-gt",
+ "vi": "IELTS General Training 6.5",
+ "target": "6.5",
+ "cefr": "B2",
+ "req": [
+  {
+   "node": "cd:b2-voc1",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-voc2",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-voc3",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-voc4",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-voc5",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-voc6",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-voc7",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-voc8",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-voc9",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-gra1",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-gra2",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-gra3",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-gra4",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-gra5",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-gra6",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-pro1",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-pro2",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-pro3",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-pro4",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-pro5",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-fun1",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-fun2",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-fun3",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-fun4",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-fun5",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-ski1",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-ski2",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-ski3",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-ski4",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-ski5",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-ski6",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-ski7",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-com1",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-com2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-com3",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-com4",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-com5",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-ski8",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-pro6",
+   "level": 4,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-fun6",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-com-med2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-med",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-rx",
+   "level": 3,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-cs",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-lis",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-pv",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "cd:b2-sp",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-conv",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "cd:b2-cw",
+   "level": 4,
+   "type": "skill"
+  },
+  {
+   "node": "cd:b2-ski7-l",
+   "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "x:r-mcq",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-mcq2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-tfng",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-ynng",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-headings",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-info",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-features",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-endings",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-sentence",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-summary",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-summary-box",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-notes",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-diagram",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:r-short",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:l-form",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:l-sentence",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:l-flow",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:l-short",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:l-mcq",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:l-mcq2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:l-matching",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "x:l-map",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "xw:ielts-t1-gt",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "xw:ielts-t2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "xs:ielts-p1",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "xs:ielts-p2",
+   "level": 4,
+   "type": "performance"
+  },
+  {
+   "node": "xs:ielts-p3",
+   "level": 4,
+   "type": "performance"
+  }
+ ]
+}

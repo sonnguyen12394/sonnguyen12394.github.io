@@ -9,6 +9,8 @@ import { checkAll, checkMock, levelReport, suggestVariants } from '../src/conten
 import { expandPart, isMockPart, type MockTest } from '../src/exam/mock.ts';
 import { QT } from '../src/exam/content.ts';
 import type { Group } from '../src/exam/content.ts';
+import { validate as validateGraph } from '../src/engine/graph.ts';
+import type { Node, Edge, Goal } from '../src/engine/types.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIR = join(ROOT, 'content/exam');
@@ -78,5 +80,18 @@ for (const i of issues) console.error(`✗ ${i.where}: ${i.msg}`);
 for (const i of suggestVariants(groups)) console.warn(`⚠ ${i.where}: ${i.msg}`);
 const items = groups.reduce((s, g) => s + g.items.length, 0);
 const worst = groups.map(g => ({ id: g.id, r: levelReport(g, list).ratio })).sort((p, q) => q.r - p.r)[0];
+// Engine (docs/SPEC.md §1): lược đồ nút/cạnh/mục tiêu + toàn vẹn đồ thị (không vòng lặp, id tồn tại, mục tiêu có phiên bản).
+{
+  const E = join(ROOT, 'content/engine'), eschema = JSON.parse(readFileSync(join(ROOT, 'content/schema/engine.schema.json'), 'utf8'));
+  const eajv = new Ajv({ allErrors: true, schemas: [eschema] });
+  const vNode = eajv.getSchema('engine#/definitions/node')!, vEdge = eajv.getSchema('engine#/definitions/edge')!, vGoal = eajv.getSchema('engine#/definitions/goal')!;
+  const nodes = JSON.parse(readFileSync(join(E, 'nodes.json'), 'utf8')) as Node[], edges = JSON.parse(readFileSync(join(E, 'edges.json'), 'utf8')) as Edge[];
+  const goals = walk(join(E, 'goals')).map(f => JSON.parse(readFileSync(f, 'utf8')) as Goal);
+  for (const n of nodes) if (!vNode(n)) { schemaErr++; console.error(`✗ engine nút ${n.id}: ${eajv.errorsText(vNode.errors)}`); }
+  for (const e of edges) if (!vEdge(e)) { schemaErr++; console.error(`✗ engine cạnh ${e.from} → ${e.to}: ${eajv.errorsText(vEdge.errors)}`); }
+  for (const g of goals) if (!vGoal(g)) { schemaErr++; console.error(`✗ engine mục tiêu ${g.id}: ${eajv.errorsText(vGoal.errors)}`); }
+  for (const msg of validateGraph({ nodes, edges, goals })) { schemaErr++; console.error(`✗ engine: ${msg}`); }
+  console.log(`engine: ${nodes.length} nút, ${edges.length} cạnh, ${goals.length} mục tiêu`);
+}
 console.log(`content: ${groups.length} nhóm, ${items} câu; ${schemaErr + issues.length} lỗi${worst ? `; tỉ lệ từ vượt cấp cao nhất ${(worst.r * 100).toFixed(1)}% (${worst.id})` : ''}`);
 process.exit(schemaErr + issues.length ? 1 : 0);

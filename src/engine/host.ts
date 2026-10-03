@@ -1,0 +1,14 @@
+// Giao diện giữa engine (mô-đun mới) và khung app (app.js), cùng khuôn với src/exam/host.ts:
+// engine không đụng biến toàn cục của app; mọi thứ đi qua Host để test được và tách bạch.
+
+export interface EHost {
+  state(): { e?: unknown; [k: string]: unknown };   // bản lưu chung; phần engine ở state().e
+  save(): void;
+  render(): void;
+  go(route: string): void;                          // mở màn engine (route kiểu 'goals', 'goal/ielts-ac-6.5')
+  today(): number;                                  // số ngày từ 1/1/1970 (theo giờ của app)
+  toast(msg: string): void;
+  esc(s: unknown): string;
+  ico(name: string): string;
+  fetchJson(url: string): Promise<unknown>;
+}

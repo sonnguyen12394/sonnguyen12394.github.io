@@ -13,10 +13,11 @@
     "check": "tsc -p tsconfig.json",
     "test": "node --experimental-strip-types --no-warnings --test \"test/unit/**/*.test.ts\"",
     "content": "node --experimental-strip-types --no-warnings tools/content-check.ts",
-    "fresh": "node --experimental-strip-types --no-warnings tools/build.mjs && node tools/wordlist.mjs && git diff --exit-code -- app.js sw.js index.html x data/exam content/wordlist.json",
+    "fresh": "node --experimental-strip-types --no-warnings tools/build.mjs && node tools/wordlist.mjs && git diff --exit-code -- app.js sw.js index.html x data/exam data/engine src/engine/gen content/wordlist.json && test -z \"$(git status --porcelain -- x data/exam data/engine src/engine/gen)\"",
     "e2e": "playwright test",
     "lh": "node tools/lighthouse.mjs",
-    "serve": "node tools/serve.mjs"
+    "serve": "node tools/serve.mjs",
+    "engine": "node tools/engine-dump.mjs && node --experimental-strip-types --no-warnings tools/engine-gen.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",
