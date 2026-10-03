@@ -44,12 +44,14 @@ export function viewGoals(c: ECtx): string {
   const head = `<section class="stack"><span class="eyebrow">Mục tiêu</span><h1>Mục tiêu của bạn</h1>
     <p class="muted">App chỉ cho bạn học những gì mục tiêu thật sự cần và bạn chưa thành thạo. Mỗi mục tiêu là một danh sách năng lực cần đạt (Target Model), có phiên bản.</p></section>`;
   const kinds = `<div class="units">${KINDS.map(k => `<button class="unit morei" data-e="go" data-r="pick/${k}"><span class="no">${host.ico(k === 'comm' ? 'mic' : k === 'cefr' ? 'map' : 'exam')}</span><span class="t"><strong>${esc(KIND_VI[k][0])}</strong><span class="muted">${esc(KIND_VI[k][1])}</span></span></button>`).join('')}</div>`;
-  if (!mine.length) return `${head}<section class="stack"><h2>Bạn muốn đạt gì?</h2></section>${kinds}`;
+  const diag = e.diag ? `<section class="panel spread"><span>Chẩn đoán gần nhất: từ vựng ≈ ${esc(cefrName(e.diag.u))}, ngữ pháp ≈ ${esc(cefrName(e.diag.g))}</span><button class="btn small" data-e="go" data-r="diag-result">Xem</button></section>`
+    : `<section class="panel stack"><h3>Bạn đang ở đâu?</h3><p class="muted">Bài dò 10–20 phút để app bỏ qua những gì bạn đã biết.</p><div class="row"><button class="btn primary small" data-e="go" data-r="diag">Làm bài chẩn đoán</button></div></section>`;
+  if (!mine.length) return `${head}${diag}<section class="stack"><h2>Bạn muốn đạt gì?</h2></section>${kinds}`;
   const cards = mine.map(({ s, m }) => `<section class="panel stack" aria-label="${esc(m.vi)}">
       <div class="spread"><h3>${esc(m.vi)}</h3><span class="pill">Target Model ${esc(s.version)}</span></div>
       <p class="muted">${m.n} năng lực ghi trực tiếp${s.date !== null ? ` · hạn ${esc(isoOf(s.date))}` : ''}</p>
       <div class="row"><button class="btn primary small" data-e="go" data-r="goal/${esc(m.id)}">Xem cần đạt gì</button><button class="btn ghost small" data-e="rm" data-g="${esc(m.id)}" aria-label="Bỏ mục tiêu ${esc(m.vi)}">Bỏ</button></div></section>`).join('');
-  return `${head}${cards}${mine.length < GOAL_MAX ? `<section class="stack"><h2>Thêm mục tiêu</h2><p class="muted">Có nhiều mục tiêu thì app gộp lại: năng lực chung chỉ học một lần, lấy mức cao nhất.</p></section>${kinds}` : `<p class="hint">Tối đa ${GOAL_MAX} mục tiêu cùng lúc.</p>`}`;
+  return `${head}${diag}${cards}${mine.length < GOAL_MAX ? `<section class="stack"><h2>Thêm mục tiêu</h2><p class="muted">Có nhiều mục tiêu thì app gộp lại: năng lực chung chỉ học một lần, lấy mức cao nhất.</p></section>${kinds}` : `<p class="hint">Tối đa ${GOAL_MAX} mục tiêu cùng lúc.</p>`}`;
 }
 
 export function viewPick(c: ECtx): string {
@@ -94,5 +96,6 @@ export function viewGoal(c: ECtx, loadErr: string): string {
     ${back()}`;
 }
 
+const cefrName = (x: number): string => { const C = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']; return C[Math.floor(x)]! + (x % 1 ? '–' + C[Math.ceil(x)]! : ''); };
 export const isoOf = (d: number): string => new Date(d * 86400000).toISOString().slice(0, 10);
 export const dayOf = (iso: string): number | null => (/^\d{4}-\d{2}-\d{2}$/.test(iso) ? Math.floor(Date.parse(iso + 'T00:00:00Z') / 86400000) : null);

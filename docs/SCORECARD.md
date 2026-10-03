@@ -1,5 +1,17 @@
 # Chấm điểm app theo Master Spec v2
 
+## v47 (sau M3) — 03/10/2026: 6,4/10 (lõi engine 6,6/10)
+
+| # | Tiêu chí | v46 → v47 | Bằng chứng |
+| --- | --- | --- | --- |
+| 13 | Chẩn đoán nhanh, ít chạm | 7 → 8 | Bài dò ≤ 20 phút, ≤ 16 phần, từ trang Mục tiêu (2 chạm); Nghe/Đọc dùng bài IRT sẵn có |
+| 14 | Hồ sơ theo kỹ năng | 7 → 8 | Kết quả: cấp từ vựng, ngữ pháp, band Nghe/Đọc |
+| 15 | Truy gốc rễ qua tiền đề | 1 → 6 | Cầu thang: trượt thì dò xuống cấp nền; chưa dò từ Can-Do xuống tiền đề cứng của nó |
+| 16 | Chẩn đoán từ vựng, ngữ pháp | 5 → 8 | Dò ở mức từng cụm từ / điểm ngữ pháp, 3 câu ở 3 mức; tiên nghiệm cho nút chưa dò (`src/engine/diag.ts`) |
+| 17 | Tính khoảng thiếu so với mục tiêu | 5 → 7 | Kết quả chẩn đoán: số năng lực chưa đạt và giờ học còn lại cho từng mục tiêu |
+
+Nhóm C: 5,0 → 7,5; D: 4,5 → 4,8. Tổng 6,2 → 6,4.
+
 ## v46 (sau M1 + M2) — 03/10/2026: 6,2/10 (lõi engine 6,2/10)
 
 Chỉ đổi điểm tiêu chí có bằng chứng mới trong code; các tiêu chí khác giữ điểm v44.

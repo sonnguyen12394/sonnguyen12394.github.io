@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 46;
+const STATE_V = 18, APP_VERSION = 47;
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},e:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
@@ -7983,6 +7983,10 @@ CHANGELOG.unshift({v:37,d:'2026-10-01',t:'Kiểm tra đầu vào thích ứng 15
   'Kho 96 câu mới (48 Đọc, 48 Nghe) từ band 3 đến 8,5; mỗi câu giải thích bằng tiếng Việt vì sao đúng, vì sao từng phương án sai và câu nào chứa đáp án.',
   'Bài nghe là tệp âm thanh tạo sẵn giọng Anh và Mỹ, phát một lần như thi thật; lời thoại và bản dịch hiện sau khi làm xong. Không nghe được thì bỏ qua phần Nghe.',
   'Nút Báo lỗi ở mọi câu khi xem lại.']});
+CHANGELOG.unshift({v:47,d:'2026-10-03',t:'Bài chẩn đoán: app biết bạn đang ở đâu',big:true,items:[
+  'Bài dò 10–20 phút (Tôi → Mục tiêu của bạn → Làm bài chẩn đoán): hỏi vài câu ở từng cụm từ vựng và điểm ngữ pháp, bắt đầu ở cấp dễ (hoặc ở cấp bài kiểm tra Nghe + Đọc nếu bạn đã làm), đúng thì lên cấp, sai thì dò xuống phần nền.',
+  'Xong bài dò, những gì dưới mức của bạn được coi là đã biết và bỏ khỏi lộ trình; nếu sai, bài học sau sẽ đưa trở lại.',
+  'Màn kết quả cho biết cấp từ vựng, ngữ pháp, còn thiếu bao nhiêu so với từng mục tiêu, và số giờ học ước tính tới từng kỳ thi (VSTEP B1–C1, IELTS 5.5–7.0) để chọn kỳ thi đầu tiên vừa sức.']});
 CHANGELOG.unshift({v:46,d:'2026-10-03',t:'App đo bạn đã thật sự thành thạo gì',big:true,items:[
   'Mỗi câu trả lời (từ vựng, ngữ pháp, câu ôn thi) giờ là một bằng chứng: app ước tính mức thành thạo của từng năng lực ở 5 mức (nhận ra, hiểu, nhớ ra, dùng có kiểm soát, dùng tự do) kèm độ tin cậy. Đoán mò, lặp lại cùng câu trong ngày được tính nhẹ hơn.',
   'Câu "Tôi có thể…" chỉ đạt khi bài làm đủ tốt, không còn đạt chỉ vì làm đủ số bài: làm xong mà điểm thấp thì vẫn hiện là đang học.',
@@ -8031,7 +8035,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.f4bf9a089a.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.9aa9ec33f7.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8059,13 +8063,31 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.ab6e632de5.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.5e6655a70b.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),
   cando:id=>{ const c=CANDO.find(x=>x.id===id); if(!c) return null; const p=cdProg(c); return {p:p.p,m:p.m,lb:p.lb,k:p.k,need:p.need}; },
+  probe:node=>eProbe(node),
 };
+// Câu dò cho chẩn đoán của engine (M3), lấy từ kho sẵn có: cụm từ vựng 3 câu (nhận ra nghĩa → mức 1, chọn từ theo nghĩa → mức 2,
+// tự gõ từ theo nghĩa → mức 3); điểm ngữ pháp 2 câu chọn (mức 2) + 1 câu tự gõ (mức 3) nếu bài có.
+function eProbe(node){ const out=[], pick=(xs,n)=>shuffle(xs.slice()).slice(0,n);
+  if(node.startsWith('u:')){ const u=UNIT_BY_ID[node.slice(2)]; if(!u||!u.words.length) return out;
+    const pool=ALL_WORDS.filter(w=>UNIT_OF[w.id].level===u.level&&UNIT_OF[w.id]!==u);
+    const mcq=(w,k,level)=>{ const others=pick(pool.filter(x=>x[k]!==w[k]),3).map(x=>x[k]), opts=shuffle([w[k],...others]);
+      return {id:'w:'+w.id+':'+k,level,g:1/opts.length,opts,ans:opts.indexOf(w[k])}; };
+    const ws=pick(u.words,3);
+    if(ws[0]) out.push({...mcq(ws[0],'vi',1),prompt:`“${ws[0].word}” nghĩa là gì?`,en:ws[0].word});
+    if(ws[1]) out.push({...mcq(ws[1],'word',2),prompt:`Từ nào nghĩa là “${ws[1].vi}”?`});
+    const w3=ws[2]||ws[0]; out.push({id:'w:'+w3.id+':typ',level:3,g:0,prompt:`Gõ từ tiếng Anh nghĩa là “${w3.vi}” (${w3.pos||'từ'})`,accept:[w3.word]});
+    return out; }
+  if(node.startsWith('g:')){ const p=GPT[node.slice(2)]; if(!p) return out; const used=new Set();
+    for(let i=0;i<2&&p.mc&&p.mc.length;i++){ const q=gbuild(p,'cho',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:2,g:1/q.opts.length,prompt:q.prompt,opts:q.opts,ans:q.ans}); }
+    if(p.ty&&p.ty.length){ const q=gbuild(p,'typ',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:3,g:0,prompt:q.prompt,accept:q.accept}); }
+    return out; }
+  return out; }
 let _emP=null, _emErr='';
 function emLoad(){ if(EM) return Promise.resolve(EM);
   return _emP ||= import('./'+ENGINE_JS).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal') render(); return EM; })

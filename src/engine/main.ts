@@ -5,6 +5,11 @@ import type { EHost } from './host.ts';
 import { migrateE, sanitizeE, mergeE, E_V, GOAL_MAX, type EState } from './state.ts';
 import { GOALS, loadGraph, loaded } from './data.ts';
 import { viewGoals, viewPick, viewGoal, dayOf, type ECtx } from './views.ts';
+import { viewDiagIntro, viewDiagRun, viewDiagResult, viewLoading, lrBand, type DiagRun } from './diagview.ts';
+import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, type Cand } from './diag.ts';
+import { record, prior } from './mastery.ts';
+import { closure, defaultLevel, mergeGoals } from './graph.ts';
+import { bandToCefr } from '../exam/scales.ts';
 
 export const MODULE_VERSION = 1;
 
@@ -29,14 +34,73 @@ export function init(host: EHost): EngineModule {
   };
   E();
   let loadErr = '';
-  const needGraph = (route: string) => route.startsWith('goal/');
+  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('diag');
   const ensure = () => {
     if (loaded()) return;
     loadGraph(host.fetchJson).then(() => { loadErr = ''; host.render(); })
       .catch(() => { loadErr = 'Chưa tải được bản đồ năng lực. Kiểm tra mạng rồi thử lại.'; host.render(); });
   };
 
+  // ---------- Chẩn đoán (M3) ----------
+  let drun: DiagRun | null = null;
+  const lr = () => lrBand(host.state());
+  const norm = (s: string) => s.trim().toLowerCase().replace(/[‘’]/g, "'").replace(/[.!?]+$/, '').replace(/\s+/g, ' ');
+  function candidates(): Cand[] {
+    const ix = loaded()!, e = E();
+    const goals = e.goals.map(s => ix.goal.get(s.id)).filter((g): g is NonNullable<typeof g> => !!g);
+    const ids = goals.length ? new Set(closure(ix, mergeGoals(goals), defaultLevel).map(r => r.node)) : null;
+    const out: Cand[] = [];
+    for (const n of ix.node.values()) {
+      if ((n.kind !== 'vocab' && n.kind !== 'grammar') || (ids && !ids.has(n.id))) continue;
+      out.push({ id: n.id, kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), weight: (ix.post.get(n.id) ?? []).filter(x => x.type === 'hard').length });
+    }
+    return out;
+  }
+  function startLevel(): number {
+    const b = lr(), bs = [b.L, b.R].filter((x): x is number => x !== null);
+    return bs.length ? cefrIdx(bandToCefr(Math.min(...bs))) : 0;
+  }
+  function loadNode(d: DiagRun['d']): DiagRun | null {
+    const cands = candidates();
+    for (;;) {
+      if (finished(d, Date.now(), cands.length - d.probed.length)) return null;
+      const c = nextProbe(d, cands);
+      if (!c) return null;
+      const qs = host.probe(c.id);
+      if (qs.length) return { d, node: c.id, qs, i: 0, got: 0, total: qs.length };
+      d.probed.push(c.id);   // nút không có câu dò: bỏ qua
+    }
+  }
+  function finishDiag(): void {
+    if (!drun) return;
+    const ix = loaded()!, e = E(), d = drun.d, est = { u: level(d.stair.u), g: level(d.stair.g) };
+    for (const n of ix.node.values()) {
+      if (n.kind !== 'vocab' && n.kind !== 'grammar') continue;
+      const p = priorFor(cefrIdx(n.cefr), n.kind === 'vocab' ? est.u : est.g);
+      if (p) prior(e.m, n.id, defaultLevel(n), p[0], p[1]);
+    }
+    e.diag = { day: host.today(), u: est.u, g: est.g, n: d.probed.length };
+    drun = null; host.save(); host.go('diag-result');
+  }
+  function diagAnswer(ok: boolean, q: DiagRun['qs'][number]): void {
+    if (!drun) return;
+    const e = E();
+    record(e.m, { node: drun.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'diag' }, host.today(), e.r);
+    if (ok) drun.got++;
+    drun.i++;
+    if (drun.i >= drun.qs.length) {
+      const ix = loaded()!, n = ix.node.get(drun.node)!;
+      answer(drun.d, { id: n.id, kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), weight: 0 }, drun.got, drun.total);
+      const next = loadNode(drun.d);
+      if (!next) { finishDiag(); return; }
+      drun = next;
+    }
+    host.save(); host.render();
+  }
+
   const routes: Record<string, (c: ECtx) => string> = {
+    diag: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return drun ? viewDiagRun(c, drun) : viewDiagIntro(c, lr()); },
+    'diag-result': c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewDiagResult(c, lr()); },
     goals: viewGoals,
     pick: viewPick,
     goal: c => { if (!loaded() && !loadErr) ensure(); return viewGoal(c, loadErr); },
@@ -60,8 +124,26 @@ export function init(host: EHost): EngineModule {
       e.goals = e.goals.filter(g => g.id !== id); host.save(); host.render();
     },
     retry() { loadErr = ''; ensure(); host.render(); },
+    dstart() {
+      if (!loaded()) { ensure(); return; }
+      drun = loadNode(startDiag(startLevel(), Date.now()));
+      if (!drun) { host.toast('Không có gì để dò cho mục tiêu này.'); return; }
+      host.render();
+    },
+    dans(el) {
+      if (!drun) return;
+      const q = drun.qs[drun.i]!, i = Number(el.dataset.i);
+      diagAnswer(i >= 0 && i === q.ans, q);
+    },
+    dstop() { finishDiag(); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
+    dtyped(f) {
+      if (!drun) return;
+      const q = drun.qs[drun.i]!, a = norm(String(new FormData(f).get('a') || ''));
+      if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
+      diagAnswer((q.accept ?? []).some(x => norm(x) === a), q);
+    },
     date(f) {
       const e = E(), g = e.goals.find(x => x.id === f.dataset.g), v = String(new FormData(f).get('date') || '');
       if (!g) return;

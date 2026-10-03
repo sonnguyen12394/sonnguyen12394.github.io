@@ -50,3 +50,29 @@ test('đồ thị engine khớp Can-Do, unit, điểm ngữ pháp của app (ch�
   expect(want.filter(id => !have.has(id))).toEqual([]);
   expect(nodes.filter(id => /^(cd|u|g):/.test(id)).length).toBe(want.length);
 });
+
+// M3: chẩn đoán dò đồ thị — trả lời "Không biết" liên tục thì kết thúc ở cấp thấp; kết quả có bảng giờ tới từng kỳ thi.
+test('chẩn đoán: làm tới hết, có kết quả, tiên nghiệm được đặt cho nút chưa dò', async ({ page, errors }) => {
+  await openApp(page);
+  await navTo(page, 'Tôi');
+  await page.getByRole('button', { name: /Mục tiêu của bạn/ }).click();
+  await page.getByRole('button', { name: 'Làm bài chẩn đoán' }).click();
+  await expect(page.getByRole('heading', { name: 'Bạn đang ở đâu?', level: 1 })).toBeVisible();
+  await page.getByRole('button', { name: 'Bắt đầu dò' }).click();
+  // câu đầu là trắc nghiệm nhận ra nghĩa: chọn sai một lần bằng "Không biết", rồi tiếp tục tới khi xong
+  for (let k = 0; k < 80; k++) {
+    if (await page.getByRole('heading', { name: 'Bạn đang ở đâu', level: 1, exact: true }).isVisible()) break;
+    await page.getByRole('button', { name: 'Không biết' }).click();
+  }
+  await expect(page.getByRole('heading', { name: 'Bạn đang ở đâu', level: 1, exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Số giờ học ước tính tới từng kỳ thi' })).toBeVisible();
+  await expect(page.getByText('VSTEP Bậc 3 (B1)')).toBeVisible();
+  await noHorizontalScroll(page);
+  const e = await page.evaluate(() => JSON.parse(localStorage.getItem('vocab-ladder-v1') || '{}').e);
+  expect(e.diag.u).toBe(0);
+  expect(e.diag.g).toBe(0);
+  expect(e.diag.n).toBeGreaterThanOrEqual(5);
+  // nút cấp cao chưa dò nhận tiên nghiệm "chưa biết"
+  expect(e.m['u:c1-u1']?.['3']).toMatchObject({ a: 2, b: 4 });
+  expect(errors).toEqual([]);
+});
