@@ -88,6 +88,10 @@ test('tiên nghiệm không đè ô đã có bằng chứng thật; bằng chứ
   setPrior(s2, m2, 'u:z', 3, 6, 0.5, 'diag', 1);
   ingest(s2, m2, { node: 'u:z', level: 3, ok: true, item: 'a' }, { dev: 'd00001', ts: 1, day: 2 });
   assert.equal(stat(m2['u:z']![3]).pass, true);
+  // m3.3 (bot L01): một câu đúng chưa đủ xác nhận Claim (có thể đoán trúng): vẫn "suy ra"; câu thứ hai khác nhau mới thành Đạt thật.
+  assert.equal(stat(m2['u:z']![3]).state, 'inferred');
+  ingest(s2, m2, { node: 'u:z', level: 3, ok: true, item: 'b' }, { dev: 'd00001', ts: 2, day: 3 });
+  assert.equal(stat(m2['u:z']![3]).state, 'mastered');
 });
 
 test('gộp hai máy (G-counter theo thiết bị): không mất, không đếm trùng, gộp lặp lại không đổi kết quả', () => {

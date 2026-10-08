@@ -23,6 +23,7 @@ export interface Cell {
   nv?: number;      // số lượt đúng ở câu lần đầu gặp (transfer/độ mới)
   ro?: 1;           // mở lại: bằng chứng mới mâu thuẫn với kết luận Đạt (spec §69)
   vf?: 1;           // cần xác minh: mức 4–5 chưa có lượt đúng nào ở câu mới (C180)
+  cl?: 1;           // m3.3: Claim của chẩn đoán đang được xác nhận (chưa đủ 2 câu khác nhau): vẫn coi như biết, trạng thái "suy ra"
 }
 export type NodeCells = Partial<Record<Level, Cell>>;
 export type MasteryStore = Record<string, NodeCells>;
@@ -88,10 +89,10 @@ export function stat(c: Cell | undefined): Status {
   const x = c ?? freshCell(), { m, lb, sd } = betaStat(x.a, x.b);
   const numbers = m >= PASS_M && lb >= PASS_LB, pass = numbers && !x.ro && !x.vf;
   const state: NodeState = !c ? 'unknown' : x.n <= 0 ? (x.a !== 1 || x.b !== 1 ? 'inferred' : 'unknown')
-    : x.ro ? 'reopened' : numbers && x.vf ? 'verify' : pass ? 'mastered' : 'learning';
+    : x.ro ? 'reopened' : numbers && x.vf ? 'verify' : pass && x.cl ? 'inferred' : pass ? 'mastered' : 'learning';
   // Confidence (spec §3): Thấp khi dưới 3 lượt có trọng số hoặc cận dưới < 0,5; Cao khi ≥ 2 dạng câu, ≥ 3 ngữ cảnh, sd ≤ 0,1.
   const conf: Status['conf'] = x.n < 3 || (lb < 0.5 && !(m < 0.5 && x.n >= 3)) ? 'low' : x.q.length >= 2 && x.c.length >= 3 && sd <= 0.1 ? 'high' : 'mid';
-  return { m, lb, sd, n: x.n, pass, conf: x.ro ? 'low' : conf, state };
+  return { m, lb, sd, n: x.n, pass, conf: x.ro || x.cl ? 'low' : conf, state };
 }
 
 export function statusOf(store: MasteryStore, node: string, level: Level): Status { return stat(store[node]?.[level]); }

@@ -313,7 +313,7 @@ export function init(host: EHost): EngineModule {
     const today = host.today(), cnt = new Map<string, number>();
     for (const x of e.ev.led) if (x.day === today && x.ch?.startsWith(`${QUEST_VER}:`)) cnt.set(x.node, (cnt.get(x.node) ?? 0) + 1);
     const claims = (p.all ?? []).filter(r => nodeStat(host, v, r.node, r.level).state === 'inferred').map(r => r.node);
-    const plan = planFloor({ acts, open: p.open, review, can: n => n.startsWith('u:') || n.startsWith('g:'), started: n => !!e.m[n], floor: sv.floor, fresh: n => (cnt.get(n) ?? 0) < QUEST.capDay, claims });
+    const plan = planFloor({ acts, open: p.open, review, can: n => n.startsWith('u:') || n.startsWith('g:'), started: n => Object.values(e.m[n] ?? {}).some(c => (c?.n ?? 0) > 0), floor: sv.floor, fresh: n => (cnt.get(n) ?? 0) < QUEST.capDay, claims });
     if (!plan.length) { host.toast('Chưa có gì để leo: chọn mục tiêu CEFR trước.'); return; }
     const max = hearts(sv.floor);
     qrun = { plan, i: 0, hp: max, max, coins: 0, ok: 0, n: 0, floor: sv.floor, q: null, card: null, chk: null, teach: false, taught: [], ans: null, done: null, wrong: [], gaps: [] };

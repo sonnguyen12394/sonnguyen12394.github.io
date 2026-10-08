@@ -83,8 +83,11 @@ export function derive(st: EvStore, node: string, lv: Level, rule: Rule = RULE):
   if (st.dis[ck]?.on) cell.ro = 1;
   // Mức 4–5: cần ≥ 1 lượt đúng ở câu mới, hoặc ≥ 2 câu khác nhau nhớ lại đúng cách quãng (khi đã hết câu mới).
   if (lv >= 4 && n > 0 && nv < 1 && vk < rule.distinct) cell.vf = 1;
-  // m3.2 (C180): mức 1–3 cũng không Đạt chỉ bằng một câu lặp lại: cần đúng ở ≥ 2 câu khác nhau. Claim "đã biết" từ chẩn đoán được miễn.
-  else if (lv <= 3 && n > 0 && nd < rule.distinct && !(pr && pr.a >= pr.b)) cell.vf = 1;
+  // m3.2 (C180): mức 1–3 cũng không Đạt chỉ bằng một câu lặp lại: cần đúng ở ≥ 2 câu khác nhau.
+  // m3.3 (bot L01): Claim "đã biết" từ chẩn đoán đang được kiểm tra mà chưa đủ 2 câu khác nhau → vẫn coi như biết (không bắt học lại,
+  // P10) nhưng giữ trạng thái "suy ra" (cl), chưa tính là Đạt thật. Trước đây một câu đúng (có thể đoán trúng) là xác nhận Claim → 11–14
+  // nút "Đạt" mà người học chưa biết.
+  else if (lv <= 3 && n > 0 && nd < rule.distinct) { if (pr && pr.a >= pr.b) cell.cl = 1; else cell.vf = 1; }
   return cell;
 }
 const round = (x: number): number => Math.round(x * 1e6) / 1e6;

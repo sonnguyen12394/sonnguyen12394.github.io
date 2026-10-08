@@ -17,7 +17,7 @@ import { xferStatus, XFER } from './transfer.ts';
 import type { NodeState } from './mastery.ts';
 import { recallOf } from './today.ts';
 
-const STATE_VI: Record<NodeState, string> = { unknown: 'chưa có gì', inferred: 'suy ra (chưa có bằng chứng thật)', learning: 'đang học', mastered: '✓ Đạt', verify: 'cần xác minh ở câu mới', reopened: 'mở lại: bằng chứng mới mâu thuẫn' };
+const STATE_VI: Record<NodeState, string> = { unknown: 'chưa có gì', inferred: 'suy ra từ chẩn đoán (đang xác nhận)', learning: 'đang học', mastered: '✓ Đạt', verify: 'cần xác minh ở câu mới', reopened: 'mở lại: bằng chứng mới mâu thuẫn' };
 
 const SRC_VI: Record<string, string> = {
   vocab: 'luyện từ vựng', gram: 'luyện ngữ pháp', exam: 'câu đọc/nghe', pa: 'bài Pre-A1', diag: 'bài chẩn đoán', testout: 'kiểm tra bỏ qua',

@@ -35,7 +35,7 @@ export function nodeStat(host: EHost, e: EState, node: string, level: Req['level
 }
 const CONF_VI = { low: 'tin cậy thấp', mid: 'tin cậy vừa', high: 'tin cậy cao' } as const;
 const STATE_CHIP: Partial<Record<NodeState, string>> = {
-  inferred: 'suy ra từ chẩn đoán, chưa có bằng chứng', verify: 'cần xác minh ở câu mới', reopened: 'mở lại: bằng chứng mới mâu thuẫn',
+  inferred: 'suy ra từ chẩn đoán, đang xác nhận', verify: 'cần xác minh ở câu mới', reopened: 'mở lại: bằng chứng mới mâu thuẫn',
 };
 export const statChip = (st: NStat): string => st.none ? '<span class="pill">chưa có bằng chứng</span>'
   : st.state && STATE_CHIP[st.state] && !(st.state === 'inferred' && st.pass) ? `<span class="pill warn">${STATE_CHIP[st.state]} · ${Math.round(st.pct * 100)}%</span>`

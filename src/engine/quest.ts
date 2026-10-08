@@ -42,7 +42,9 @@ export interface FloorIn {
   fresh?: (node: string) => boolean;    // v69: nút chưa bị hỏi quá QUEST.capDay lượt hôm nay (giãn cách, chống hỏi lặp một nút cả ngày)
   claims?: string[];                    // v69: nút chẩn đoán "suy ra đã biết" (Claim) chưa xác nhận: trinh sát / rương rảnh thì kiểm tra
 }
-export const QUEST = { capDay: 3 } as const;
+// capDay: số lượt tối đa mỗi nút mỗi ngày trong tháp (giãn cách). wip: số phần đang học dở tối đa trước khi mở phần mới — học xong
+// phần đã bắt đầu trước khi rải sang phần mới (bot L01: không giới hạn thì một tháng chạm 100 nút mà gần như không nút nào vững).
+export const QUEST = { capDay: 3, wip: 6 } as const;
 
 const EVT: Record<Enc, string[]> = { monster: ['recognition', 'recall'], scout: ['diagnostic'], chest: ['retention'], camp: ['micro'], boss: ['transfer', 'novel'] };
 const BASE: Record<Enc, number> = { boss: 30, scout: 20, chest: 15, monster: 10, camp: 5 };
@@ -59,7 +61,9 @@ export function planFloor(x: FloorIn): Challenge[] {
     context: `quest-${kind}`, scoringRule: 'ok', value: Math.round(value * 100) / 100, version: QUEST_VER,
   });
   const all = x.open.filter(o => x.can(o.node)), rested = x.fresh ? all.filter(o => x.fresh!(o.node)) : all;
-  const learn = rested.length ? rested : all;
+  const busy = all.filter(o => x.started(o.node)).length, room = Math.max(0, QUEST.wip - busy);
+  const focus = (xs: PathItem[]): PathItem[] => { let k = 0; return xs.filter(o => x.started(o.node) || k++ < room); };
+  const learn = [focus(rested), focus(all)].find(xs => xs.length) ?? all;
   const claim = (): string | undefined => (x.claims ?? []).find(n => x.can(n) && !used.has(n));
   const take = (kind: Enc): Challenge | null => {
     if (kind === 'boss') {

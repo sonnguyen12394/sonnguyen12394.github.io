@@ -69,3 +69,11 @@ test('v69 (bot L01): giãn cách — nút đã hỏi đủ lượt hôm nay như
   // Mọi nút đều hết lượt hôm nay: vẫn dựng được tầng (không kẹt người học).
   assert.ok(planFloor({ acts, open, review: [], can: () => true, started: () => true, floor: 1, fresh: () => false }).length >= 6);
 });
+
+test('v69 (bot L01): học xong phần đang dở trước khi mở phần mới (tối đa QUEST.wip phần đang học)', () => {
+  const many = Array.from({ length: 12 }, (_, i) => item(`u:n${i}`, 12 - i));
+  const acts = rank({ open: many, probe: null, review: none, verify: [] });
+  const started = new Set(['u:n3', 'u:n5', 'u:n7', 'u:n8', 'u:n9', 'u:n10']);   // đã đủ 6 phần đang học
+  const plan = planFloor({ acts, open: many, review: [], can: () => true, started: n => started.has(n), floor: 1 });
+  assert.ok(plan.filter(c => c.gameType === 'monster').every(c => started.has(c.node)), JSON.stringify(plan.map(c => c.node)));
+});
