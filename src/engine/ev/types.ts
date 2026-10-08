@@ -4,6 +4,7 @@
 // Quan sát không bao giờ cập nhật mastery trực tiếp (HG4): mọi thứ đi qua evaluate() rồi aggregate, ô Beta luôn tính lại từ L2.
 
 import type { Level } from '../types.ts';
+import type { Snapshot } from './snapshot.ts';
 
 // Nguồn hoạt động sinh ra quan sát (provenance §36: activity).
 export type Src = 'vocab' | 'gram' | 'exam' | 'pa' | 'diag' | 'testout' | 'perf' | 'game' | 'micro' | 'transfer' | 'legacy';
@@ -97,6 +98,8 @@ export interface EvStore {
   seen: Record<string, string>;                // nút → các mã băm câu đã gặp (6 ký tự mỗi câu), để biết câu mới
   seq: number;                                 // số thứ tự sự kiện của thiết bị này
   integ: Integrity;
+  snap: Snapshot[];                            // L4 Decision Snapshot
+  sseq?: number;
 }
 
 export const EV_SCHEMA = 1;

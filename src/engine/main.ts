@@ -9,6 +9,9 @@ import { viewDiagIntro, viewDiagRun, viewDiagResult, viewLoading, lrBand, type D
 import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, type Cand } from './diag.ts';
 import { ingest, setPrior } from './ev/store.ts';
 import { dev } from './core.ts';
+import { addSnap } from './ev/snapshot.ts';
+import { RULE_ID } from './ev/evaluate.ts';
+import { viewWhy } from './whyview.ts';
 import { closure, defaultLevel, mergeGoals } from './graph.ts';
 import { bandToCefr } from '../exam/scales.ts';
 import { viewToday, viewTout, nextStep, type ToutRun } from './today.ts';
@@ -42,7 +45,7 @@ export function init(host: EHost): EngineModule {
   const future = (): boolean => !!host.future?.();
   const V = (): EState => { const e = E(); return { ...e, goals: e.goals.filter(g => goalOn(g.id, future())) }; };
   let loadErr = '';
-  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout');
+  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout');
   const ensure = () => {
     if (loaded()) return;
     loadGraph(host.fetchJson).then(() => { loadErr = ''; host.render(); })
@@ -88,6 +91,9 @@ export function init(host: EHost): EngineModule {
       if (p) setPrior(e.ev, e.m, n.id, defaultLevel(n), p[0], p[1], 'diag', host.today());
     }
     e.diag = { day: host.today(), u: est.u, g: est.g, n: d.probed.length };
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: 'diag', dec: `u=${est.u};g=${est.g}`, rule: `${RULE_ID}/diag-stair-1`,
+      info: { u: est.u, g: est.g, probes: d.probed.length, start: d.stair.u.seen[0] ?? 0, rev: d.stair.u.rev + d.stair.g.rev },
+      evs: e.ev.led.filter(x => x.src === 'diag').slice(-12).map(x => x.id) }, false);
     drun = null; host.save(); host.go('diag-result');
   }
   function diagAnswer(ok: boolean, q: DiagRun['qs'][number]): void {
@@ -122,6 +128,9 @@ export function init(host: EHost): EngineModule {
     if (tout.i >= tout.qs.length) {
       const ix = loaded()!, n = ix.node.get(tout.node)!, lvl = Math.max(...tout.qs.map(x => x.level)) as 1 | 2 | 3 | 4;
       const need = n.kind === 'vocab' ? 3 : 4, pass = tout.got === tout.qs.length && nodeStat(host, e, tout.node, Math.min(need, lvl) as 3 | 4).pass;
+      const st = nodeStat(host, e, tout.node, Math.min(need, lvl) as 3 | 4);
+      addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'testout', subj: tout.node, lv: Math.min(need, lvl) as 3 | 4, dec: pass ? 'PASS' : 'FAIL', rule: `${RULE_ID}/testout-1`,
+        info: { got: tout.got, of: tout.qs.length, pass: st.pass ? 'yes' : 'no', w: 4 }, evs: e.ev.led.filter(x => x.node === tout!.node && x.src === 'testout').slice(-tout.qs.length).map(x => x.id) }, false);
       toutRes = { node: tout.node, pass }; tout = null;
     }
     host.save(); host.render();
@@ -138,6 +147,7 @@ export function init(host: EHost): EngineModule {
     diag: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return drun ? viewDiagRun(c, drun) : viewDiagIntro(c, lr()); },
     'diag-result': c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewDiagResult(c, lr()); },
     goals: viewGoals,
+    why: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewWhy(c); },
     pick: viewPick,
     goal: c => { if (!loaded() && !loadErr) ensure(); return viewGoal(c, loadErr); },
   };

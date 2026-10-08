@@ -10,6 +10,21 @@ import { plan, session, type PathOut, type Session, type PathItem } from './path
 import { LEVEL_VI } from './types.ts';
 import { readinessOf, readyChip } from './readyview.ts';
 import type { Index } from './graph.ts';
+import { addSnap } from './ev/snapshot.ts';
+import { RULE_ID } from './ev/evaluate.ts';
+
+// L4: bước tiếp theo được chọn → snapshot kèm 3 ứng viên đầu và điểm ưu tiên (HG30, HF10). Bỏ trùng khi lựa chọn không đổi.
+export const NBA_RULE = 'nba-path-1';
+export function snapNba(host: EHost, e: EState, p: PathOut): void {
+  const top = p.open[0];
+  if (!top || !e.ev) return;
+  addSnap(e.ev, {
+    ts: Date.now(), day: host.today(), kind: 'nba', subj: top.node, lv: top.level, dec: 'CHOSEN', rule: `${RULE_ID}/${NBA_RULE}`,
+    alt: p.open.slice(0, 3).map(x => ({ node: x.node, score: Math.round(x.score * 1e4) / 1e4, dep: Math.round(x.dep * 100) / 100, min: x.minutes })),
+    info: { unmet: p.unmet.length, total: p.total, goals: e.goals.map(g => g.id).join(',') },
+    evs: e.ev.led.filter(x => x.node === top.node).slice(-6).map(x => x.id),
+  });
+}
 
 export interface DayInfo { reviewItems: number; reviewMins: number; mins: number; perfDue: boolean }
 
@@ -33,13 +48,14 @@ function itemHtml(host: EHost, ix: Index, it: PathItem, tag = ''): string {
   const esc = host.esc, n = ix.node.get(it.node)!, act = n.acts[0];
   return `<section class="panel stack">${tag ? `<span class="eyebrow">${esc(tag)}</span>` : ''}
     <div><b>${esc(n.vi)}</b><br><span class="hint">${esc(why(ix, it))} · cần mức ${it.level}: ${esc(LEVEL_VI[it.level])} · ≈ ${Math.min(20, it.minutes)} phút</span></div>
-    <div class="row">${act ? `<button class="btn primary small" ${act.at}>Học</button>` : '<span class="pill">chưa có bài trong app</span>'}${canTestOut(it.node) ? `<button class="btn ghost small" data-e="go" data-r="tout/${esc(it.node)}">Tôi biết rồi: kiểm tra để bỏ qua</button>` : ''}</div></section>`;
+    <div class="row">${act ? `<button class="btn primary small" ${act.at}>Học</button>` : '<span class="pill">chưa có bài trong app</span>'}${canTestOut(it.node) ? `<button class="btn ghost small" data-e="go" data-r="tout/${esc(it.node)}">Tôi biết rồi: kiểm tra để bỏ qua</button>` : ''}<button class="btn ghost small" data-e="go" data-r="why/${esc(it.node)}">Vì sao?</button></div></section>`;
 }
 
 export function viewToday(c: ECtx, day: DayInfo): string {
   const { host, e } = c, esc = host.esc, ix = loaded()!;
   if (!e.goals.length) return `<section class="stack"><span class="eyebrow">Lộ trình</span><h1>Chưa có mục tiêu</h1><p class="muted">Chọn một mục tiêu để app xếp lộ trình chỉ gồm những gì bạn còn thiếu.</p></section><div class="row"><button class="btn primary" data-e="go" data-r="goals">Chọn mục tiêu</button></div>`;
   const p = computePath(host, e, ix), s = computeSession(host, e, ix, p, day);
+  snapNba(host, e, p);
   const head = `<section class="stack"><span class="eyebrow">Lộ trình hôm nay · ${day.mins} phút</span><h1>Hôm nay học gì</h1>
     <p class="muted">Còn ${p.unmet.length}/${p.total} năng lực chưa đạt (≈ ${Math.max(1, Math.round(p.minutes / 60))} giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.${e.diag ? '' : ' Chưa làm bài chẩn đoán: lộ trình có thể gồm cả thứ bạn đã biết.'}</p>
     <div class="row" style="gap:6px">${e.goals.map(sg => { const g = ix.goal.get(sg.id); return g ? `<button class="btn ghost small" data-e="go" data-r="goal/${esc(g.id)}">${esc(g.vi)}</button>${readyChip(readinessOf(host, e, g))}` : ''; }).join('')}</div>
@@ -56,12 +72,13 @@ export function nextStep(host: EHost, e: EState, ix: Index): { h: string; p: str
   if (!e.goals.length) return null;
   const p = computePath(host, e, ix), it = p.open[0];
   const esc = host.esc;
+  snapNba(host, e, p);
   if (!it) return { h: 'Đã đạt mọi năng lực của mục tiêu', p: 'Ôn duy trì để giữ, hoặc thêm mục tiêu mới.', btn: '<button class="btn primary big" data-e="go" data-r="goals">Mục tiêu của bạn</button>' };
   const n = ix.node.get(it.node)!, act = n.acts[0];
   return {
     h: `Bước tiếp theo: ${esc(n.vi)}`,
     p: `${esc(why(ix, it))}. Khoảng ${Math.min(20, it.minutes)} phút. Còn ${p.unmet.length}/${p.total} năng lực chưa đạt.`,
-    btn: `${act ? `<button class="btn primary big" ${act.at}>▶ Học ngay</button>` : `<button class="btn primary big" data-e="go" data-r="today">Xem lộ trình hôm nay</button>`}<div class="row" style="justify-content:center;gap:6px"><button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay</button>${canTestOut(it.node) ? `<button class="btn ghost small" data-e="go" data-r="tout/${esc(it.node)}">Tôi biết rồi</button>` : ''}</div>`,
+    btn: `${act ? `<button class="btn primary big" ${act.at}>▶ Học ngay</button>` : `<button class="btn primary big" data-e="go" data-r="today">Xem lộ trình hôm nay</button>`}<div class="row" style="justify-content:center;gap:6px"><button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay</button><button class="btn ghost small" data-e="go" data-r="why/${esc(it.node)}">Vì sao?</button>${canTestOut(it.node) ? `<button class="btn ghost small" data-e="go" data-r="tout/${esc(it.node)}">Tôi biết rồi</button>` : ''}</div>`,
   };
 }
 
