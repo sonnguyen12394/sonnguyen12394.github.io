@@ -43,7 +43,9 @@ export interface EngineModule {
   autoGoal(id: string, why: string): boolean;              // goal-first (v64): đặt mục tiêu khi người học chưa có mục tiêu nào
   sanitize(e: unknown): EState;
   merge(a: unknown, b: unknown): EState;
+  peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
+export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string }
 
 let bound = false;
 
@@ -544,5 +546,21 @@ export function init(host: EHost): EngineModule {
     },
     sanitize: sanitizeE,
     merge: mergeE,
+    peek() {
+      const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
+        q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;
+      if (drun) return of('diag', drun.node, drun.qs[drun.i]);
+      if (qrun && !qrun.done && qrun.plan[qrun.i]?.gameType === 'camp') {   // trại: nút của bí kíp đang hiện
+        const next = qrun.plan.slice(qrun.i + 1).find(p => p.gameType === 'monster')?.node;
+        return { run: 'camp', node: qrun.wrong[qrun.wrong.length - 1] ?? next ?? '', level: 0, id: '', prompt: qrun.card?.title ?? '' };
+      }
+      if (qrun) return qrun.ans || qrun.done ? null : of('quest', qcur.node || qrun.plan[qrun.i]?.node || '', qrun.q, { game: qrun.plan[qrun.i]?.gameType ?? '', gap: qcur.gap });
+      if (mrunM) { const q = mrunM.run.qs[mrunM.run.i]; return of('measure', E().ms?.set.find(x => x.item === q?.id)?.node ?? mrunM.run.node, q); }
+      if (mrun?.run) return of('micro', mrun.run.node, mrun.run.qs[mrun.run.i]);
+      if (prun) return of('probe', prun.node, prun.qs[prun.i]);
+      if (xrun) return of('xfer', xrun.node, xrun.qs[xrun.i]);
+      if (tout) return of('tout', tout.node, tout.qs[tout.i]);
+      return null;
+    },
   };
 }
