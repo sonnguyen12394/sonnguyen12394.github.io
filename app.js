@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 54;
+const STATE_V = 18, APP_VERSION = 55;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1188,7 +1188,7 @@ function grade(ex,correct){
   if(correct&&typed&&ex.dim!=='rec'&&!ex.guess){ const r=w.d.rec??0; w.d.rec=r+a*(1-r); }
   if(old<HARD&&w.d[ex.dim]>=HARD&&['rcl','spl','ctx'].includes(ex.dim)&&W(ex.wid).learned) toast(`💪 Lên độ khó: lần sau “${WORD[ex.wid].word}” (${DIM[ex.dim].vi}) sẽ là câu tự gõ.`);
   if(!ex.noSrs) srsStep(w,correct,typed&&!ex.guess);
-  eEv({node:'u:'+(UNIT_OF[ex.wid]||{}).id,level:ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'w:'+ex.wid+':'+ex.dim,qt:ex.opts?'mcq':'typed',ctx:ex.dim,w:correct&&ex.guess?.5:1,src:'vocab',retry:!!ex.retry,ch:'u:'+((UNIT_OF[ex.wid]||{}).id||'')});
+  eEv({node:'u:'+(UNIT_OF[ex.wid]||{}).id,level:ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'w:'+ex.wid+':'+ex.dim,qt:ex.opts?'mcq':'typed',ctx:ex.dim,w:correct&&ex.guess?.5:1,src:'vocab',retry:!!ex.retry,ch:'u:'+((UNIT_OF[ex.wid]||{}).id||''),given:ex._given,rt:ex._rt||undefined});
   if(correct&&typed) bump('typed');
   tally(correct, xpFor(xpKind((ui.sess||{}).kind)+':w:'+ex.wid,(typed?15:10)+(wasDue&&!ex.noSrs?5:0),correct,ex._dn));
 }
@@ -4853,7 +4853,7 @@ function answer(correct,extra={}){
   if(!s.retried.has(k0)&&!extra.dunno){ evCal(ex.guess,correct); const c=s.cal||={sure:[0,0],guess:[0,0]}, x=c[ex.guess?'guess':'sure']; x[0]++; if(correct) x[1]++; }
   s.ans={correct,...extra}; s.snap={w:JSON.stringify(W(ex.wid)),res:s.res.length,q:s.q.length}; const ms=answerMs(ex), due=W(ex.wid).learned&&W(ex.wid).due!=null&&W(ex.wid).due<=today(), first=!s.retried.has(k0); evTime(ex.type,ms);
   if(due){ bump('review'); if(first&&!s.retried.has('r:'+ex.wid)){ s.retried.add('r:'+ex.wid); evRecall(W(ex.wid),correct,ex); evLog(W(ex.wid),ex,correct,ms,true); if(!ex.opts&&!ex.guess&&!extra.dunno&&(W(ex.wid).ivl||1)>=3) srsCal(); } }
-  else if(first&&!extra.dunno) evLog(W(ex.wid),ex,correct,ms,false); s.wrongRun=correct?0:(s.wrongRun||0)+1; grade(ex,correct); if(!TEST_KINDS.includes(s.kind)) sfx(correct?'ok':'bad');
+  else if(first&&!extra.dunno) evLog(W(ex.wid),ex,correct,ms,false); s.wrongRun=correct?0:(s.wrongRun||0)+1; ex._given=extra.text??(extra.picked!=null&&ex.opts?ex.opts[extra.picked]:undefined); ex._rt=ms; grade(ex,correct); if(!TEST_KINDS.includes(s.kind)) sfx(correct?'ok':'bad');
   const key=ex.wid+'|'+ex.dim;
   if(!s.retried.has(key)) evItem(ex.type,UNIT_OF[ex.wid].level,correct);
   if(!s.retried.has(key)) s.res.push({wid:ex.wid,dim:ex.dim,type:ex.type,correct,right:rightAnswer(ex),given:extra.text??(extra.picked!=null?ex.opts[extra.picked]:null)});
@@ -4925,7 +4925,7 @@ function gAnswer(correct,extra={}){
   srsStep(g,correct,G_TYPED.includes(ex.type)); bump('gram'); if(correct&&G_TYPED.includes(ex.type)) bump('typed'); tally(correct, xpFor(xpKind(s.kind)+':g:'+ex.gid+':'+ex.key,G_TYPED.includes(ex.type)?15:10,correct,extra.dunno)); if(!TEST_KINDS.includes(s.kind)) sfx(correct?'ok':'bad');
   const key=ex.gid+'|'+ex.dim+'|'+ex.key, given=extra.text??(extra.picked!=null?ex.opts[extra.picked]:null);
   if(!s.retried.has(key)){ evItem(ex.type,GPT[ex.gid].level,correct);
-    eEv({node:'g:'+ex.gid,level:{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'g:'+key,qt:ex.type,ctx:ex.dim,src:'gram',ch:'g:'+ex.gid}); }
+    eEv({node:'g:'+ex.gid,level:{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'g:'+key,qt:ex.type,ctx:ex.dim,src:'gram',ch:'g:'+ex.gid,given:given==null?undefined:String(given),rt:answerMs(ex)||undefined}); }
   if(!s.retried.has(key)) s.res.push({gid:ex.gid,dim:ex.dim,type:ex.type,correct,right:gRight(ex),given,prompt:ex.type==='gfc'?'Chọn câu đúng ngữ pháp':ex.type==='gor'?'Sắp xếp câu':ex.type==='gdi'?'Nghe và chép lại câu':ex.prompt,why:correct?'':gExplain(ex,given)});
   if(!correct&&!TEST_KINDS.includes(s.kind)&&!s.retried.has(key)){ s.retried.add(key); s.q.push(gbuild(GPT[ex.gid],ex.dim)); }
   else s.retried.add(key);
@@ -8158,6 +8158,12 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:55,d:'2026-10-08',t:'Đo thành thạo chặt hơn và biết tự sửa',big:true,items:[
+  'Ngưỡng tin cậy tính chính xác thay cho ước lượng gần đúng, nên app không còn kết luận "Đạt" sớm khi mới có vài câu đúng.',
+  'Một lỗi lẻ không làm mất Đạt. Nhưng nếu đã Đạt mà sai 2 lần ở câu mới chưa gặp, app "mở lại" phần đó và cần bạn đúng ở câu mới để xác nhận lại.',
+  'Dùng tự do / có kiểm soát (mức 4–5) chỉ Đạt khi đã đúng ít nhất một lần ở câu mới, không chỉ ở câu đã luyện.',
+  'Chọn cùng một đáp án sai nhiều lần: app ghi nhận có thể bạn đang hiểu sai, hiện trong "Vì sao?".',
+  'Khi bạn tiến bộ sau một thời gian sai nhiều (hoặc quên sau thời gian đúng nhiều), app theo kịp nhanh hơn.']});
 CHANGELOG.unshift({v:54,d:'2026-10-08',t:'Nút "Vì sao?": app giải thích mọi kết luận',big:true,items:[
   'Mỗi năng lực, mỗi bước tiếp theo và mỗi mục tiêu có nút "Vì sao?": xem mastery, cận dưới tin cậy, ngưỡng cần, số lượt, số ngữ cảnh, dạng câu, luật đang dùng và các bằng chứng gần nhất.',
   'App ghi lại mỗi quyết định quan trọng (đạt hoặc mất Đạt một năng lực, kiểm tra bỏ qua, mức sẵn sàng, bước tiếp theo, kết quả chẩn đoán) cùng bằng chứng dẫn tới nó; bằng chứng đó được giữ lâu dài.',
@@ -8251,7 +8257,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.30f896c1c7.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.954ee243c0.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),

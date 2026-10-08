@@ -20,11 +20,11 @@ test('nút đổi trạng thái Đạt → snapshot có số liệu, ngưỡng, 
   assert.match(s!.rule, /^ev\d/);
   // Snapshot giữ đúng α, β của ô lúc quyết định (đối chiếu được về sau, MT20)
   assert.ok(s!.m!.a > 1 && s!.m!.b === 1);
-  // Mất Đạt khi bằng chứng trái chiều đủ mạnh → snapshot FAIL
+  // Sai ở câu mới khi đang Đạt (model disagreement) → mở lại; snapshot REOPEN tái tạo được
   for (let i = 0; i < 12; i++) ingest(st, m, { node: 'u:x', level: 1, ok: false, item: `z${i}` }, ctx(100 + i, 20));
   const f = st.snap.filter(x => x.subj === 'u:x' && x.kind === 'mastery').at(-1)!;
-  assert.equal(f.dec, 'FAIL');
-  assert.equal(replay(f), 'FAIL');
+  assert.equal(f.dec, 'REOPEN');
+  assert.equal(replay(f), 'REOPEN');
 });
 
 test('bằng chứng mà snapshot tham chiếu sống qua đợt dọn sổ (critical evidence, C109)', () => {

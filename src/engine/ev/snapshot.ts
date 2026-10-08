@@ -61,8 +61,10 @@ export function replay(s: Snapshot): string {
   switch (s.kind) {
     case 'mastery': {
       if (!s.m || !s.thr) return '?';
-      const b = betaStat(s.m.a, s.m.b);
-      return b.m >= s.thr.m && b.lb >= s.thr.lb ? 'PASS' : 'FAIL';
+      const b = betaStat(s.m.a, s.m.b), numbers = b.m >= s.thr.m && b.lb >= s.thr.lb;
+      if (s.info?.ro === 'yes') return 'REOPEN';
+      if (numbers && s.info?.vf === 'yes') return 'VERIFY';
+      return numbers ? 'PASS' : 'FAIL';
     }
     case 'testout': {
       const got = Number(s.info?.got), of = Number(s.info?.of), pass = s.info?.pass === 'yes';

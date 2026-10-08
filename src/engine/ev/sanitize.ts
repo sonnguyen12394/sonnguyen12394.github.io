@@ -24,6 +24,8 @@ function agg(v: unknown, legacy: boolean): Agg | null {
     d0: Math.round(num(x.d0, 0, 1e6, 0)), d1: Math.round(num(x.d1, 0, 1e6, 0)),
   };
   if (a.swgOk > a.swOk) a.swgOk = a.swOk;
+  if (typeof x.novOk === 'number') a.novOk = Math.round(num(x.novOk, 0, 1e7, 0));
+  if (typeof x.dv === 'number') a.dv = Math.round(num(x.dv, 0, 1e9, 0));
   if (legacy) {
     const ss = (y: unknown, max: number) => (Array.isArray(y) ? y.filter((s): s is string => typeof s === 'string' && s.length <= 40).slice(0, max) : []);
     a.lq = ss(x.lq, 6); a.lc = ss(x.lc, 8);
@@ -98,6 +100,20 @@ export function sanitizeEv(raw: unknown): EvStore {
     return sn;
   }).filter((v): v is Snapshot => !!v).slice(-SNAP_MAX);
   out.sseq = Math.round(num(x.sseq, 0, 1e9, out.snap.length));
+  for (const [k, v] of Object.entries(obj(x.dis))) {
+    if (!/^(cd|u|g|pa|x|xw|xs):[a-z0-9][a-z0-9._-]{0,60}\|[1-5]$/.test(k)) continue;
+    const d = obj(v);
+    out.dis[k] = { bad: num(d.bad, 0, 1e6, 0), ok: num(d.ok, 0, 1e6, 0), on: d.on === 1 ? 1 : 0, day: Math.round(num(d.day, 0, 1e6, 0)) };
+  }
+  for (const [n, v] of Object.entries(obj(x.mis))) {
+    if (!NODE.test(n)) continue;
+    const m: Record<string, { t: string; n: number; d: number }> = {};
+    for (const [k, y0] of Object.entries(obj(v)).slice(0, 5)) {
+      const y = obj(y0), t = str(y.t, 40);
+      if (/^[0-9a-z]{6}$/.test(k) && t) m[k] = { t, n: num(y.n, 0, 1e6, 0), d: Math.round(num(y.d, 0, 1e6, 0)) };
+    }
+    if (Object.keys(m).length) out.mis[n] = m;
+  }
   const ig = obj(x.integ);
   out.integ = { err: Math.round(num(ig.err, 0, 1e9, 0)), last: str(ig.last, 200) ?? '', fixed: Math.round(num(ig.fixed, 0, 1e9, 0)) };
   return out;

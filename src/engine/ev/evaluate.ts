@@ -12,13 +12,17 @@ import type { Observation, EvEvent, Src } from './types.ts';
 
 export const RULE = {
   evaluator: 'ev1.0',
-  mastery: 'm2.1',
+  mastery: 'm3.0',
   slip: 0.1,            // s: người đã biết vẫn có thể sai (spec §44)
   repeat: 0.5,          // cùng câu trong 24 giờ
   hint: 0.5,            // đúng nhờ gợi ý
   retry: 0.3,           // đúng ở lượt làm lại
   timeout: 0.3,         // hết giờ khi bị ép thời gian
   gMax: 0.9,
+  decay: 0.9,           // v55: lượt mới đi ngược kết luận hiện tại → bằng chứng cũ của ô nhân 0,9 — model hồi phục/đổi hướng được
+  reopenBad: 2,         // nút đang Đạt mà sai ≥ 2 lần ở câu mới → mở lại (model disagreement, spec §69)
+  reopenOk: 2,          // cần ≥ 2 lần đúng ở câu mới để xác nhận lại
+  misMin: 2,            // chọn cùng một phương án sai ≥ 2 lần → giả thuyết hiểu sai (misconception)
 } as const;
 export type Rule = { [K in keyof typeof RULE]: (typeof RULE)[K] extends string ? string : number };
 export const RULE_ID = `${RULE.evaluator}/${RULE.mastery}`;
