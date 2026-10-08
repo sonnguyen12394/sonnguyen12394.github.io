@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 63;
+const STATE_V = 18, APP_VERSION = 64;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -4196,7 +4196,7 @@ function render(){
     if(s.ans){ const n=document.getElementById('qznextbtn'); n&&n.focus({preventScroll:true}); } }
   if(ui.view==='exam') exArm();
   if(ui.view==='thi'&&XM) try{ XM.after(ui.xr||'hub'); }catch(e){}
-  if(ui.view==='goal'&&EM) try{ EM.after(ui.er||'goals'); }catch(e){}
+  if((ui.view==='goal'||ui.view==='play')&&EM) try{ EM.after(ui.view==='play'?'quest':ui.er||'goals'); }catch(e){}
   if(ui.view==='sound'&&ui.snd&&!ui.snd.done){
     const s=ui.snd;
     if(!s.ans&&s.played!==s.i){ s.played=s.i; say(sndWord(SND[s.id],s.q[s.i]).w); }
@@ -8178,6 +8178,10 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:64,d:'2026-10-08',t:'Chơi là màn chính',big:true,items:[
+  'Mở app là vào tháp Ladder Quest (tab Chơi). Bài học, ôn tập, kỹ năng vẫn ở các tab còn lại.',
+  'Người mới: bấm "Bắt đầu" để làm bài dò ngắn (3–5 phút); app tự đặt mục tiêu là cấp CEFR kế tiếp của bạn. Đổi ở Tôi → Mục tiêu.',
+  'Đã học mà chưa có mục tiêu: app đặt mục tiêu theo cấp bạn đang học (một lần, có báo).']});
 CHANGELOG.unshift({v:63,d:'2026-10-08',t:'Đo tiến bộ thật',big:false,items:[
   'Mới: "Đo tiến bộ" (Lộ trình hôm nay, hoặc Tôi → Dữ liệu nghiên cứu). 12 câu ngữ cảnh mới giữ riêng, không xuất hiện khi luyện hay chơi; đo lúc bắt đầu, sau 14 ngày học, rồi sau 7 và 30 ngày để xem có nhớ lâu.',
   'Tuỳ chọn tham gia nghiên cứu: chỉ gán nhãn nhóm so sánh vào dữ liệu bạn tự tải, không đổi trải nghiệm học.']});
@@ -8408,11 +8412,12 @@ let _emP=null, _emErr='', _emN=0;
 // Lần tải lại dùng URL khác (?r=N): trình duyệt có thể nhớ lần import hỏng của cùng URL.
 // bg = tải trước khi rảnh: thất bại thì im lặng (không để lỗi nền "dính" lên màn Mục tiêu); mở màn sẽ tải lại và mới báo lỗi.
 function emLoad(bg){ if(EM) return Promise.resolve(EM);
-  return _emP ||= import('./'+ENGINE_JS+(_emN++?'?r='+_emN:'')).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal') render(); return EM; })
-    .catch(e=>{ _emP=null; if(!bg||ui.view==='goal'){ _emErr='Chưa tải được phần mục tiêu. Kiểm tra mạng rồi thử lại.'; if(ui.view==='goal') render(); } throw e; }); }
-function viewPlay(){ ui.er='quest'; return viewGoalE(); }
-function viewGoalE(){
-  if(EM) return EM.render(ui.er||'goals');
+  return _emP ||= import('./'+ENGINE_JS+(_emN++?'?r='+_emN:'')).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal'||ui.view==='play') render(); return EM; })
+    .catch(e=>{ _emP=null; if(!bg||ui.view==='goal'||ui.view==='play'){ _emErr='Chưa tải được phần mục tiêu. Kiểm tra mạng rồi thử lại.'; if(ui.view==='goal'||ui.view==='play') render(); } throw e; }); }
+// v64: tab Chơi = route quest của engine; không ghi đè ui.er (route của màn Mục tiêu).
+function viewPlay(){ return viewGoalE('quest'); }
+function viewGoalE(route){
+  if(EM) return EM.render(route||ui.er||'goals');
   if(!_emP&&!_emErr) emLoad().catch(()=>{});
   return _emErr?`<section class="panel stack"><p class="warnt" role="alert">${esc(_emErr)}</p><div class="row"><button class="btn primary" data-act="emretry">Thử lại</button></div></section>`
     :`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang mở phần mục tiêu…</p>`; }

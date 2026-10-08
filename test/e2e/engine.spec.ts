@@ -21,8 +21,11 @@ test('chọn mục tiêu VSTEP B1, xem cần đạt gì, đặt hạn; tải l�
   expect(saved.goals[0]).toMatchObject({ id: 'vstep-b1', version: '1.0' });
   expect(saved.goals[0].date).toBe(Math.floor(Date.parse('2027-03-15T00:00:00Z') / 86400000));
   await page.reload();
-  await navTo(page, 'Tôi');
-  await page.getByRole('button', { name: /Mục tiêu của bạn/ }).click();
+  // Màn chính (v64) là tháp: chờ app và mô-đun engine vẽ xong rồi mới chuyển tab, bấm lại nếu cú bấm rơi vào lúc vẽ lại.
+  await page.waitForFunction(() => (window as unknown as { ELREADY?: boolean }).ELREADY === true);
+  const goalsBtn = page.getByRole('button', { name: /Mục tiêu của bạn/ });
+  await expect(async () => { if (!(await goalsBtn.isVisible())) await navTo(page, 'Tôi'); await expect(goalsBtn).toBeVisible({ timeout: 3000 }); }).toPass({ timeout: 20000 });
+  await goalsBtn.click();
   await expect(page.getByRole('heading', { name: 'VSTEP Bậc 3 (B1)', level: 3 })).toBeVisible();
   expect(errors).toEqual([]);
 });
