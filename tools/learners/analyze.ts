@@ -55,6 +55,11 @@ const repeats = [...itemCount.values()].filter(v => v > 1).length;
 // Kỹ năng thật trung bình trên các nút mục tiêu đã gặp: đầu vs cuối.
 const goalNodes = Object.keys(ends.at(-1)!.truth).filter(n => /^(u|g|fn|ph):/.test(n));
 const mean = (e: typeof ends[number]) => avg(goalNodes.map(n => e.truth[n] ?? 0));
+// Kẹt: nút được hỏi ≥ 15 lần, đúng ≥ 85%, mà cuối cùng vẫn chưa Đạt ở mức nào đã hỏi (dấu hiệu luật xác minh / dạy lại không thoát được).
+const lastM = ends.at(-1)!.m, stuckNodes = [...new Set(rows.map(r => r.node))].filter(n => {
+  const xs = rows.filter(r => r.node === n && r.run === 'quest'); if (xs.length < 15 || xs.filter(r => r.ok).length / xs.length < 0.85) return false;
+  return [...new Set(xs.map(r => r.level))].every(l => !stat(lastM[n]?.[l as 1]).pass);
+});
 const decs = new Map<string, number>(); for (const s of state.e.ev.snap) { const k = s.dec.split(':').slice(0, 2).join(':'); decs.set(k, (decs.get(k) ?? 0) + 1); }
 const out = {
   answers: rows.length, sessions: ends.length, pageErrors: state.errors.length, stuck: events.filter(e => e.what === 'stuck'),
@@ -62,7 +67,7 @@ const out = {
   byRun: Object.fromEntries(runs), byGame: Object.fromEntries(games), byGap: Object.fromEntries(gapsT),
   novel: by(r => r.novel && r.run === 'quest'), seen: by(r => !r.novel && r.run === 'quest'),
   repeatsItems: repeats, distinctItems: itemCount.size, distinctNodes: new Set(rows.map(r => r.node)).size,
-  mastery: perSess, reopened,
+  mastery: perSess, reopened, stuckNodes,
   truthMean: { first: mean(ends[0]!), last: mean(ends.at(-1)!), nodes: goalNodes.length },
   measure: state.e.ms?.checks ?? [],
   todayActions: events.filter(e => e.what === 'today-action').map(e => `${e.day}:${(e.info as { route: string }).route}`),

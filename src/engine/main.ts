@@ -298,9 +298,10 @@ export function init(host: EHost): EngineModule {
       return;
     }
     const it = qItem(ch); qrun.q = it.q; qrun.card = null; qrun.teach = false; qx = it.xfer;
-    // v69: lỗ hổng "chưa biết" (chưa từng có bằng chứng ở nút) → dạy trước rồi mới hỏi (remedy "teach": dạy + nhận ra). Câu trả lời ngay
-    // sau thẻ là bằng chứng có trợ giúp (hint), không được tính như tự lực. Mỗi nút chỉ dạy trước một lần mỗi lượt chơi.
-    if (it.q && qcur.gap === 'knowledge' && !qrun.taught.includes(qcur.node)) {
+    // v69: phần CHƯA TỪNG GẶP → dạy trước rồi mới hỏi (remedy "teach": dạy + nhận ra). Câu trả lời ngay sau thẻ là bằng chứng có trợ
+    // giúp (hint), không được tính như tự lực, nên chỉ dạy trước đúng một lần: dạy lại mỗi lượt thì mọi câu đúng đều "có trợ giúp" và
+    // nút không bao giờ được xác minh (bot L01, người học nhanh: đúng 55/55 lần mà vẫn "cần xác minh").
+    if (it.q && qcur.gap === 'knowledge' && !qrun.taught.includes(qcur.node) && !E().ev.led.some(x => x.node === qcur.node)) {
       const mc = host.micro?.(qcur.node);
       if (mc) { qrun.card = mc.card; qrun.teach = true; qrun.taught.push(qcur.node); }
     }
