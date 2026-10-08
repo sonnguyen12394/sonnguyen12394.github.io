@@ -14,7 +14,7 @@ import type { Row } from './core.ts';
 const DIR = process.argv[2] ?? 'reports/learners/L02';
 const J = (f: string) => JSON.parse(readFileSync(join(DIR, f), 'utf8'));
 const rows = J('rows.json') as Row[];
-const ends = J('ends.json') as { day: number; m: MasteryStore; truth: Record<string, number>; mis?: Record<string, Record<string, { t: string; n: number }>> }[];
+const ends = J('ends.json') as { day: number; m: MasteryStore; truth: Record<string, number>; stab?: Record<string, number>; mis?: Record<string, Record<string, { t: string; n: number }>> }[];
 const events = J('events.json') as { day: number; what: string; info?: Record<string, unknown> }[];
 const state = J('state.json') as { e: { goals: { id: string }[]; ev: { snap: { dec: string; subj: string; day: number; info?: Record<string, unknown> }[]; hyp: Record<string, unknown> }; ms?: { checks: { phase: string; got: number; of: number }[] } }; errors: string[]; mind: { n: string; p: number; s: number; mis: number | null }[] };
 const pct = (a: number, b: number) => (b ? Math.round((a / b) * 1000) / 10 : null);
@@ -30,7 +30,7 @@ const judged = Object.keys(last.truth).filter(n => /^(u|g):/.test(n) && (last.m[
 let agree = 0, extremes = 0, opposite = 0; const weakMiss: string[] = [], weakFalse: string[] = [];
 const pairs: Array<[number, number]> = [], cls: Record<string, number> = {};
 for (const n of judged) {
-  const s = stat(last.m[n]![lvOf(n) as 3]), t = r2(truthAt(last.truth[n]!, lvOf(n)));   // năng lực thật ở đúng mức app đo (câu mới, tự lực)
+  const s = stat(last.m[n]![lvOf(n) as 3]), t = r2(truthAt(last.truth[n]!, lvOf(n), last.stab?.[n]));   // năng lực thật ở đúng mức app đo (câu mới, tự lực)
   if (s.n < 3) continue;
   pairs.push([s.m, t]);
   const a = s.pass && s.state === 'mastered' ? 'strong' : s.m < 0.6 ? 'weak' : 'mid', b = t >= 0.75 ? 'strong' : t < 0.5 ? 'weak' : 'mid';
@@ -49,7 +49,7 @@ const listen = rows.filter(r => r.node.startsWith('ph:')).length;
 // 3. Nút thắt: phân bổ lượt trong tháp.
 const share = (f: (r: Row) => boolean) => pct(quest.filter(f).length, quest.length);
 const cefr = (n: string) => NODE.get(n)?.cefr ?? '?';
-const alloc = { grammarA1A2: share(r => r.node.startsWith('g:') && /A1|A2/.test(cefr(r.node))), vocab: share(r => r.node.startsWith('u:')), knownNodes: share(r => truthAt(r.s ?? 0, r.level) >= 0.75 && r.game !== 'chest') };
+const alloc = { grammarA1A2: share(r => r.node.startsWith('g:') && /A1|A2/.test(cefr(r.node))), vocab: share(r => r.node.startsWith('u:')), knownNodes: share(r => truthAt(r.s ?? 0, r.level, r.S) >= 0.75 && r.game !== 'chest') };
 
 // 4. Nguyên nhân gốc: nhãn lỗ hổng của app ↔ nguyên nhân thật.
 const MAP: Record<string, string[]> = { knowledge: ['knowledge', 'misconception', 'partial'], recall: ['recall'], skill: ['use'], transfer: ['transfer'], retention: ['retention'], prerequisite: ['knowledge'], context: ['transfer'], automaticity: ['none'] };
@@ -100,7 +100,7 @@ sc.S10 = { nodes: s10.length, before: s10.length ? r2(s10.reduce((a, x) => a + x
 const itemN = new Map<string, number>(); for (const r of quest) itemN.set(r.item, (itemN.get(r.item) ?? 0) + 1);
 const eff = {
   answers: rows.length, quest: quest.length, distinctItems: itemN.size, repeatAsks: pct(quest.length - itemN.size, quest.length),
-  practiceOnKnown: pct(quest.filter(r => truthAt(r.s ?? 0, r.level) >= 0.75 && r.game !== 'chest' && r.game !== 'scout').length, quest.length),   // đã dùng được ở mức đang hỏi, kể cả câu mới
+  practiceOnKnown: pct(quest.filter(r => truthAt(r.s ?? 0, r.level, r.S) >= 0.75 && r.game !== 'chest' && r.game !== 'scout').length, quest.length),   // đã dùng được ở mức đang hỏi, kể cả câu mới
   probesOnSolid: rows.filter(r => (r.run === 'probe' || r.game === 'scout') && r.appState === 'mastered').length, probes: rows.filter(r => r.run === 'probe' || r.game === 'scout').length,
   maxAsksOneNodeOneDay: Math.max(...[...new Set(quest.map(r => `${r.day}|${r.node}`))].map(k => quest.filter(r => `${r.day}|${r.node}` === k).length)),
 };
@@ -114,7 +114,7 @@ const acc = (xs: Row[]) => pct(xs.filter(r => r.ok).length, xs.length);
 const gain = {
   truthStart: r2(practiced.reduce((a, n) => a + t0(n), 0) / practiced.length), truthEnd: r2(practiced.reduce((a, n) => a + (last.truth[n] ?? 0), 0) / practiced.length),
   knownStart: practiced.filter(n => t0(n) >= 0.8).length, knownEnd: practiced.filter(n => (last.truth[n] ?? 0) >= 0.8).length, practiced: practiced.length,
-  usableStart: practiced.filter(n => truthAt(t0(n), lvOf(n)) >= 0.75).length, usableEnd: practiced.filter(n => truthAt(last.truth[n] ?? 0, lvOf(n)) >= 0.75).length,   // dùng được câu mới ở mức mục tiêu cần
+  usableStart: practiced.filter(n => truthAt(t0(n), lvOf(n)) >= 0.75).length, usableEnd: practiced.filter(n => truthAt(last.truth[n] ?? 0, lvOf(n), last.stab?.[n]) >= 0.75).length,   // dùng được câu mới ở mức mục tiêu cần
   accFirstHalf: acc(qa), accSecondHalf: acc(qb), novelFirst: acc(qa.filter(r => r.novel)), novelSecond: acc(qb.filter(r => r.novel)), seenFirst: acc(qa.filter(r => !r.novel)), seenSecond: acc(qb.filter(r => !r.novel)),
   grammarA1A2TruthStart: r2(avg(practiced.filter(n => /^g:g-a[12]/.test(n)).map(t0))), grammarA1A2TruthEnd: r2(avg(practiced.filter(n => /^g:g-a[12]/.test(n)).map(n => last.truth[n] ?? 0))),
   measure: state.e.ms?.checks.map(c => `${c.phase}:${c.got}/${c.of}`) ?? [],

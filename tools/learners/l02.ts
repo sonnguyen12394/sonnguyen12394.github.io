@@ -2,7 +2,7 @@
 // Ground truth (hồ sơ ẩn):
 //   - Mục tiêu CEFR B1 (bot tự chọn ở màn Mục tiêu sau bài dò — việc người học được làm; bot không tự chọn bài học).
 //   - Từ vựng A1 0,85 / A2 0,6 / B1 0,2; ngữ pháp A1 0,5 / A2 0,3 / B1 0,08 (nút thắt chính: nền ngữ pháp); âm (nghe) 0,2.
-//   - Nhớ lại yếu: câu tự gõ s^2,2; dùng có kiểm soát (mức 4) s^2,8. Transfer thấp: câu mới ×0,7, câu quen +0,2.
+//   - Nhớ lại yếu: câu tự gõ s^2,2; dùng có kiểm soát (mức 4) s^2,8. Transfer thấp: câu mới ×0,7 (lên dần ×1 khi nhớ bền), câu quen +0,2.
 //   - Nhớ lâu thấp–vừa: S = 1,5 ngày. Đoán mò khi không chắc (ít bấm "Không biết").
 //   - Học nhanh sau giải thích rõ: thẻ mới / bí kíp +30%, dòng "vì sao" +15%; thấy đáp án +8%.
 //   - Hiểu sai ở 3 nút: g-a1-01 (to be) và g-a1-04 (số nhiều) — kiểu 1, luôn chọn cùng một phương án sai; g-a1-08 (hiện tại đơn) —
@@ -20,9 +20,12 @@ const PRIOR: Record<string, Record<string, number>> = {
   ph: { 'Pre-A1': 0.25, A1: 0.2, A2: 0.15, B1: 0.08, B2: 0.04, C1: 0.02 },
   fn: { 'Pre-A1': 0.5, A1: 0.4, A2: 0.25, B1: 0.1, B2: 0.04, C1: 0.02 },
 };
+// Transfer thấp nhưng không cố định: câu mới ×0,7 khi kiến thức còn mới, tăng dần tới ×1 khi đã nhớ bền (S ≥ 16 ngày, tức đã nhớ lại
+// đúng cách quãng nhiều lần). Ôn cách quãng vì vậy giúp dùng được ở câu mới — giả định sư phạm, ghi rõ để người đọc tự đánh giá.
+export const tf = (S: number): number => 0.7 + 0.3 * Math.min(1, Math.max(0, (S - 1.5) / 14.5));
 // Năng lực thật ở một mức với câu MỚI, tự lực (không quen câu, không đoán): thước đo "yếu / vững" để so với kết luận của app.
-export function truthAt(s: number, level: number): number {
-  const sn = s * 0.7;
+export function truthAt(s: number, level: number, S = 1.5): number {
+  const sn = s * tf(S);
   return level <= 2 ? sn : Math.pow(sn, level >= 4 ? 2.8 : 2.2);
 }
 export const MIS: Record<string, 1 | 2> = { 'g:g-a1-01': 1, 'g:g-a1-04': 1, 'g:g-a1-08': 2 };
@@ -40,8 +43,8 @@ const S = { s01: '', s01done: false, s02: '', s02left: 0, s02done: false, s03: '
 export const L02: Profile = {
   name: 'L02', out: 'reports/learners/L02', S0: 1.5,
   prior: node => (PRIOR[node.split(':')[0]!] ?? PRIOR.fn!)[NODE.get(node)?.cefr ?? 'A2'] ?? 0.1,
-  pCorrect: (_x, s0, q, novel, opts) => {
-    const s = novel ? s0 * 0.7 : Math.min(1, s0 + 0.2);
+  pCorrect: (x, s0, q, novel, opts) => {
+    const s = novel ? s0 * tf(x.S) : Math.min(1, s0 + 0.2);
     return opts ? s + (1 - s) / opts : Math.pow(s, q.level >= 4 ? 2.8 : 2.2);
   },
   gain: { ok: 0.04, bad: 0.08, card: 0.3, teach: 0.3, why: 0.15, diagOk: 0.02 },
@@ -53,9 +56,11 @@ export const L02: Profile = {
     if (s < 0.35) return 'knowledge';
     if (q.level <= 2) return s < 0.75 ? 'partial' : 'none';   // nhận ra: biết lơ mơ hay biết
     // Mức 3 (tự nhớ ra) / 4 (dùng có kiểm soát): câu quen mà vẫn khó → lỗ hổng nhớ lại / dùng; câu quen được mà câu mới không → transfer.
-    const e = q.level >= 4 ? 2.8 : 2.2, fam = Math.pow(Math.min(1, s + 0.2), e), nov = Math.pow(s * 0.7, e);
+    // Theo NÚT ở mức này (không theo câu cụ thể): lỗ hổng là gì nếu hỏi một câu mới.
+    const e = q.level >= 4 ? 2.8 : 2.2, fam = Math.pow(Math.min(1, s + 0.2), e), nov = Math.pow(s * tf(x.S), e);
+    void novel;
     if (fam < 0.5) return q.level >= 4 ? 'use' : 'recall';
-    if (novel && nov < 0.5) return 'transfer';
+    if (nov < 0.5) return 'transfer';
     return 'none';
   },
   // Giải thích chung (thẻ, bí kíp, dòng vì sao) chỉ làm hiểu sai yếu đi chút ít; giải thích nhắm đúng câu sai hay gặp ("Bạn hay trả lời…")

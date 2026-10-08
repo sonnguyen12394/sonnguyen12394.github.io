@@ -22,7 +22,7 @@ export interface Peek { run: string; node: string; level: number; id: string; pr
 export interface Row {
   day: number; sess: string; run: string; game?: string; gap?: string; node: string; level: number; item: string; novel: boolean; opts: number;
   pTrue: number; trueKnow: boolean; ok: boolean; dunno: boolean; appState?: string; appM?: number; appN?: number; ms: number;
-  cause?: string; forced?: string; guess?: boolean; given?: string; mis?: boolean; s?: number;   // s: kỹ năng ẩn lúc trả lời
+  cause?: string; forced?: string; guess?: boolean; given?: string; mis?: boolean; s?: number; S?: number;   // s: kỹ năng ẩn lúc trả lời; S: độ bền trí nhớ (ngày)
 }
 // Quyết định thay cho xúc xắc mặc định (kịch bản ép, hiểu sai). i: chỉ số phương án (−1 = "Không biết"); typed: chuỗi gõ.
 export interface Decision { ok: boolean; i?: number; typed?: string; forced?: string; mis?: boolean }
@@ -71,7 +71,7 @@ export async function run(P: Profile): Promise<void> {
   };
 
   const rows: Row[] = [], screens: { day: number; sess: string; where: string; text: string }[] = [], events: { day: number; sess: string; what: string; info?: unknown }[] = [];
-  const ends: { day: number; sess: string; m: unknown; truth: Record<string, number>; snaps: number; q: unknown; mis?: unknown }[] = [];
+  const ends: { day: number; sess: string; m: unknown; truth: Record<string, number>; stab: Record<string, number>; snaps: number; q: unknown; mis?: unknown }[] = [];
   let DAY = 0, SESS = '';
   const note = (what: string, info?: unknown) => { events.push({ day: DAY, sess: SESS, what, ...(info !== undefined ? { info } : {}) }); };
   const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
@@ -143,7 +143,7 @@ export async function run(P: Profile): Promise<void> {
     const app = await page.evaluate(([n, lv]) => { const w = window as any; try { const s = w.ELCORE.stat(w.eval('st'), n, Math.max(1, Math.min(5, lv))); return { state: s.state, m: s.m, n: s.n }; } catch { return null; } }, [node, q.level] as const);   // eslint-disable-line @typescript-eslint/no-explicit-any
     rows.push({
       day: DAY, sess: SESS, run: q.run, ...(q.game ? { game: q.game } : {}), ...(q.gap ? { gap: q.gap } : {}), node, level: q.level, item: q.id, novel, opts: nOpts,
-      pTrue: +p.toFixed(2), s: +s.toFixed(2), trueKnow: truth, ok, dunno, ...(app ? { appState: app.state, appM: +(+app.m).toFixed(2), appN: app.n } : {}), ms: Date.now() - t0,
+      pTrue: +p.toFixed(2), s: +s.toFixed(2), S: +x.S.toFixed(1), trueKnow: truth, ok, dunno, ...(app ? { appState: app.state, appM: +(+app.m).toFixed(2), appN: app.n } : {}), ms: Date.now() - t0,
       ...(cause ? { cause } : {}), ...(d?.forced ? { forced: d.forced } : {}), ...(d?.mis ? { mis: true } : {}), ...(ok && q.opts && nOpts > 1 && (p * nOpts - 1) / (nOpts - 1) < 0.5 ? { guess: true } : {}), ...(given && !ok ? { given: given.slice(0, 40) } : {}),
     });
     x.seen.add(q.id);
@@ -259,9 +259,9 @@ export async function run(P: Profile): Promise<void> {
     for (let f = 0; f < floors; f++) await playFloor();
     // Cuối phiên: mastery của app, giả thuyết hiểu sai của app, kỹ năng thật của bot trên mọi nút đã gặp.
     const e = await page.evaluate(() => { const st = (window as any).eval('st'); return { m: st.e.m, snaps: st.e.ev.snap.length, q: st.e.q, mis: st.e.ev.mis }; });   // eslint-disable-line @typescript-eslint/no-explicit-any
-    const truth: Record<string, number> = {};
-    for (const n of new Set([...Object.keys(e.m ?? {}), ...mind.keys()])) truth[n] = +eff(k(n), day).toFixed(3);
-    ends.push({ day, sess: SESS, m: e.m, truth, snaps: e.snaps, q: e.q, mis: e.mis });
+    const truth: Record<string, number> = {}, stab: Record<string, number> = {};
+    for (const n of new Set([...Object.keys(e.m ?? {}), ...mind.keys()])) { truth[n] = +eff(k(n), day).toFixed(3); stab[n] = +k(n).S.toFixed(1); }
+    ends.push({ day, sess: SESS, m: e.m, truth, stab, snaps: e.snaps, q: e.q, mis: e.mis });
   }
 
   try {
