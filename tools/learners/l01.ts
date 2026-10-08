@@ -14,7 +14,8 @@
 // Giới hạn trung thực: đây là người học mô phỏng; mô hình học / quên do bot đặt ra, nên "mức tăng" của bot không chứng minh
 // hiệu quả học trên người thật. Điều bot đo tốt: app có đoán đúng trình độ ẩn, có công nhận nhầm, có chọn đúng chỗ thiếu không.
 //
-// Chạy: node --experimental-strip-types --no-warnings tools/learners/l01.ts [--days 45] [--seed 1] [--out reports/learners/L01]
+// Chạy: node --experimental-strip-types --no-warnings tools/learners/l01.ts [--days 45] [--seed 1] [--rate 1] [--out reports/learners/L01]
+// --rate: hệ số tốc độ học của người học ẩn (độ nhạy: app có nhận ra khi người học tiến bộ nhanh hơn không).
 
 import { chromium, devices, type Page } from '@playwright/test';
 import { spawn } from 'node:child_process';
@@ -22,7 +23,7 @@ import { readFileSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const arg = (k: string, d: string) => { const i = process.argv.indexOf(`--${k}`); return i > 0 ? process.argv[i + 1]! : d; };
-const DAYS = Number(arg('days', '45')), SEED = Number(arg('seed', '1')), OUT = arg('out', 'reports/learners/L01'), PORT = Number(arg('port', '8098'));
+const RATE = Number(arg('rate', '1')), DAYS = Number(arg('days', '45')), SEED = Number(arg('seed', '1')), OUT = arg('out', 'reports/learners/L01'), PORT = Number(arg('port', '8098'));
 const SCHEDULE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 21, 24, 28, 35, 44].filter(d => d <= DAYS);
 
 // ---------- ngẫu nhiên có hạt giống ----------
@@ -56,7 +57,7 @@ const knows = (node: string, day: number) => eff(k(node), day) >= 0.8;
 function learn(node: string, day: number, gain: number, recalled = false): void {
   const x = k(node), cur = eff(x, day);
   if (recalled && day - x.last >= 1) x.S = Math.min(120, x.S * 2);
-  x.s = cur + gain * (1 - cur); x.last = day;
+  x.s = cur + Math.min(0.9, gain * RATE) * (1 - cur); x.last = day;
 }
 function pCorrect(node: string, day: number, item: string, opts?: number): number {
   const x = k(node), s = Math.min(1, eff(x, day) + (x.seen.has(item) ? 0.15 : 0));

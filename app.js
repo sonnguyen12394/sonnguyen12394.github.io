@@ -6856,7 +6856,7 @@ viewWelcome = function(){ const h=_viewWelcome30();
   const restore=(/<details class="panel"><summary>Đã học ở máy khác[\s\S]*?<\/details>/.exec(h)||[''])[0].replace('<details class="panel">','<details class="panel hello-more">').replace(/<summary>[^<]*<\/summary>/,'<summary>Đã học trên máy khác? Chuyển tiến độ</summary>');
   // v35: cùng bố cục với màn chào tĩnh trong index.html (vẽ trước khi app.js nạp xong), nên khi app vẽ lại không xô lệch bố cục.
   return `<section class="hello"><h1>${FUTURE()?'Ôn IELTS và VSTEP miễn phí':'Tiếng Anh từ con số 0 tới C2'}</h1>
-    <p class="muted">${FUTURE()?'Biết band ước tính từng kỹ năng, học theo kế hoạch tới ngày thi.':'App tự tìm chỗ bạn còn thiếu và chỉ cho học đúng phần đó, tới khi có bằng chứng bạn đạt cấp.'}<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
+    <p class="muted">${FUTURE()?'Biết band ước tính từng kỹ năng, học theo kế hoạch tới ngày thi.':'Chơi game leo tháp: mỗi đòn đánh là một câu tiếng Anh. App tự tìm chỗ bạn còn thiếu và chỉ cho học đúng phần đó, tới khi có bằng chứng bạn đạt cấp.'}<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
   <p class="hint hello-trust">Bản thử chưa thu tiền · Không quảng cáo bên thứ ba · Không bán dữ liệu · <button class="linkbtn" data-go="about">Về app</button></p>
   <div class="actbar hello-act">${helloActs()}</div>
   ${restore}`; };
