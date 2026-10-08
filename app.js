@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 52;
+const STATE_V = 18, APP_VERSION = 53;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1117,6 +1117,8 @@ function compactState(){ DEF.w??=JSON.stringify({d:{rec:null,rcl:null,spl:null,c
   DEF.l??=JSON.stringify({best:null,passed:false});
   const f=(bag,d)=>Object.fromEntries(Object.entries(bag||{}).filter(([,v])=>JSON.stringify(v)!==d));
   return {...st,words:f(st.words,DEF.w),units:f(st.units,DEF.u),gram:f(st.gram,DEF.g),levels:f(st.levels,DEF.l),glevels:f(st.glevels,DEF.l)}; }
+// Bản gửi máy chủ đồng bộ: bỏ quan sát thô L0 (chỉ của máy này, spec v2.4 §88 Standard Export).
+function syncState(){ const x=compactState(); if(x.e&&x.e.ev&&x.e.ev.obs) x.e={...x.e,ev:{...x.e.ev,obs:[]}}; return x; }
 let _saveWarned=false;
 function save(){ if(LOAD_ISSUE&&!LOAD_ISSUE.ok) return; try{ localStorage.setItem(KEY,JSON.stringify(compactState())); }catch(e){ return saveFailed(e); } try{ syncDirty(); }catch(e){} try{ remindWrite(); }catch(e){} try{ netTouch(); }catch(e){} }   // đồng bộ khai báo sau (TDZ khi lưu lúc khởi động)
 function saveFailed(e){ try{ (EV().err||(EV().err={})).save=((EV().err||{}).save||0)+1; }catch(x){}
@@ -1165,7 +1167,8 @@ const LONG_IVL = 21;
 function reviewItems(ws){ return spread(ws.flatMap(w=>{ const d=weakestDims(w.id), a=build(w,d[0]); return (W(w.id).ivl||1)>=LONG_IVL ? [a,Object.assign(build(w,d[1],{test:true}),{noSrs:true})] : [a]; })); }
 function dueWords(){ const t=today(); return ALL_WORDS.filter(w=>{const s=W(w.id);return s.learned&&s.due!=null&&s.due<=t;}); }
 // Bằng chứng mastery cho engine (docs/SPEC.md §2): ghi ngay vào st.e qua lõi dùng chung, kể cả khi mô-đun engine chưa tải.
-function eEv(e){ try{ if(typeof ELCORE!=='undefined'&&e.node&&!/undefined$/.test(e.node)) ELCORE.ev(st,e,today()); }catch(x){} }
+// v53: phiên bản nội dung mặc định của câu học nền = số bản phát hành (nội dung nằm trong app.js / data/lv-*); câu thi có băm riêng.
+function eEv(e){ try{ if(typeof ELCORE!=='undefined'&&e.node&&!/undefined$/.test(e.node)) ELCORE.ev(st,{cv:'a'+APP_VERSION,...e},today()); }catch(x){ try{ console.warn('eEv',x); }catch(y){} } }
 function markActive(){ const t=today(); if(!st.days.includes(t)){ st.days.push(t); try{ ui.streakUp=streak(); }catch(e){} } }
 function streak(){ const set=new Set([...st.days,...((st.freeze&&st.freeze.used)||[])]); let n=0,t=today(); if(!set.has(t)) t--; while(set.has(t)){n++;t--;} return n; }
 
@@ -1185,7 +1188,7 @@ function grade(ex,correct){
   if(correct&&typed&&ex.dim!=='rec'&&!ex.guess){ const r=w.d.rec??0; w.d.rec=r+a*(1-r); }
   if(old<HARD&&w.d[ex.dim]>=HARD&&['rcl','spl','ctx'].includes(ex.dim)&&W(ex.wid).learned) toast(`💪 Lên độ khó: lần sau “${WORD[ex.wid].word}” (${DIM[ex.dim].vi}) sẽ là câu tự gõ.`);
   if(!ex.noSrs) srsStep(w,correct,typed&&!ex.guess);
-  eEv({node:'u:'+(UNIT_OF[ex.wid]||{}).id,level:ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'w:'+ex.wid+':'+ex.dim,qt:ex.opts?'mcq':'typed',ctx:ex.dim,w:correct&&ex.guess?.5:1});
+  eEv({node:'u:'+(UNIT_OF[ex.wid]||{}).id,level:ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'w:'+ex.wid+':'+ex.dim,qt:ex.opts?'mcq':'typed',ctx:ex.dim,w:correct&&ex.guess?.5:1,src:'vocab',retry:!!ex.retry,ch:'u:'+((UNIT_OF[ex.wid]||{}).id||'')});
   if(correct&&typed) bump('typed');
   tally(correct, xpFor(xpKind((ui.sess||{}).kind)+':w:'+ex.wid,(typed?15:10)+(wasDue&&!ex.noSrs?5:0),correct,ex._dn));
 }
@@ -1882,7 +1885,7 @@ const qzRight = it => it.t==='mc'?it.opts[it.ans]:it.t==='order'?it.ans.map(i=>i
 function qzAnswer(correct,extra={}){ const s=ui.qz; if(!s||s.ans) return; const it=s.q[s.i];
   s.ans={correct,...extra}; s.wrongRun=correct?0:(s.wrongRun||0)+1;
   // Bài Pre-A1 là bằng chứng cho nút pa:<bài> (v52): nghe rồi chọn = nhận ra (mức 1), nghe rồi gõ = nhớ ra (mức 3).
-  if(s.kind==='pa') eEv({node:'pa:'+String(s.ref).replace(/^pa-/,''),level:it.t==='typed'?3:1,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'pa:'+s.ref+':'+(it.plain||s.i),qt:it.t==='typed'?'typed':'mcq',ctx:'prea1'});
+  if(s.kind==='pa') eEv({node:'pa:'+String(s.ref).replace(/^pa-/,''),level:it.t==='typed'?3:1,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'pa:'+s.ref+':'+(it.plain||s.i),qt:it.t==='typed'?'typed':'mcq',ctx:'prea1',src:'pa',ch:'pa:'+s.ref});
   tally(correct, xpFor('q:'+s.kind+':'+s.ref+':'+(it.plain||s.i),it.t==='typed'?15:10,correct)); sfx(correct?'ok':'bad');
   s.res.push({correct,q:it.plain||'',right:qzRight(it)}); render(); }
 function qzCheck(){ const s=ui.qz, it=s.q[s.i]; if(s.ans) return;
@@ -3741,6 +3744,12 @@ async function download(name,text,type){
   catch(e){ toast('Trình duyệt không cho tải file.'); return false; }
   return true;
 }
+// v53 (spec v2.4 §88): sổ bằng chứng trên máy + bản xuất nghiên cứu đầy đủ (quan sát thô, sổ L1, thống kê, luật, provenance).
+function evPanel(){ const e=st.e||{}, v=e.ev||{}, ig=v.integ||{}, n=(v.led||[]).length, crit=(v.led||[]).filter(x=>x.tier>=2).length, kb=Math.round(JSON.stringify(v).length/1024);
+  return `<p class="note">Sổ bằng chứng trên máy này: ${n} sự kiện gần đây (${crit} quan trọng), ${kb} KB. Luật đang dùng: ${esc(ELCORE.rules.id)}.${ig.err?` Lỗi ghi: ${ig.err}.`:''}${ig.fixed?` Đã tự sửa ${ig.fixed} ô lệch.`:''} Bằng chứng ít giá trị được gộp thành thống kê, bằng chứng quan trọng được giữ.</p>
+    <div class="row"><button class="btn" data-act="evexport">Tải dữ liệu nghiên cứu đầy đủ</button></div>`; }
+async function exportResearch(){ const d=new Date().toISOString().slice(0,10);
+  await download(`english-ladder-research-${d}.json`,JSON.stringify(ELCORE.research(st),null,1),'application/json'); }
 async function exportBackup(){
   const d=new Date().toISOString().slice(0,10);
   if(await download(`vocab-ladder-${d}.json`,JSON.stringify({app:'vocab-ladder',saved:new Date().toISOString(),state:st},null,1),'application/json')){
@@ -3787,7 +3796,7 @@ function mergeState(a,b){
   for(const k of ['story','cando','dlg','fn','pron','lread','sounds','wtask','stask','oral','gwrite','lis','shadow','rx','pv','med','sp','pa']) x[k]={...(b[k]||{}),...(a[k]||{})};
   { const seen=new Set(); x.exam=[...(a.exam||[]),...(b.exam||[])].filter(e=>{ const k=JSON.stringify(e); return seen.has(k)?false:seen.add(k); }).sort((p,q)=>q.day-p.day).slice(0,10); }
   x.app={seen:Math.max((a.app||{}).seen||0,(b.app||{}).seen||0),vh:((a.app||{}).vh||[]).slice()};
-  x.e=EM?EM.merge(a.e,b.e):((a.e&&(a.e.goals||[]).length?a.e:b.e)||{});   // engine: hợp mục tiêu hai máy
+  x.e=typeof ELCORE!=='undefined'?ELCORE.merge(a.e,b.e):EM?EM.merge(a.e,b.e):((a.e&&(a.e.goals||[]).length?a.e:b.e)||{});   // engine: hợp mục tiêu hai máy
   x.x=XM?XM.merge(a.x,b.x):((a.x&&a.x.attempts||[]).length>=((b.x&&b.x.attempts)||[]).length?a.x:b.x)||{};   // phần ôn thi: mô-đun gộp (lịch sử lấy hợp); chưa nạp thì giữ bản nhiều bài hơn
   { const seen=new Set(); x.ev={...(a.ev||{}),log:[...((b.ev||{}).log||[]),...((a.ev||{}).log||[])].filter(e=>{ const k=JSON.stringify(e); return seen.has(k)?false:seen.add(k); }).sort((p,q)=>p[0]-q[0]).slice(-LOG_MAX)}; }   // bỏ mục trùng: đồng bộ gộp nhiều lần
   return x;
@@ -3838,7 +3847,7 @@ async function syncNow(){
       if(row&&row.rev!==s.rev){ const x=sanitizeState(await readCode(row.data)); if(x&&x.words&&x.units){ st=mergeState(st,x); merged=true; } s.rev=row.rev; }
       if(!row) s.rev=0;
       if(!s.dirty&&row) break;
-      const [p]=await syncRpc('el_push',{k:s.k,d:await makeCode(compactState()),base:s.rev});
+      const [p]=await syncRpc('el_push',{k:s.k,d:await makeCode(syncState()),base:s.rev});
       if(p&&!p.conflict){ s.rev=p.rev; s.dirty=false; break; }
     }
     s.at=Date.now(); syncSet(s);
@@ -3939,6 +3948,7 @@ function viewSettings0(){
     <p class="note">Tiến độ chỉ lưu trong trình duyệt này. Xoá dữ liệu trình duyệt hoặc đổi máy sẽ mất, vì vậy hãy sao lưu định kỳ.${lb!=null?` Lần sao lưu gần nhất: ${today()-lb===0?'hôm nay':`${today()-lb} ngày trước`}.`:' Bạn chưa sao lưu lần nào.'}</p>
     <div class="row"><button class="btn primary" data-act="export">Tải file sao lưu</button><button class="btn" data-act="import">Khôi phục từ file</button>
     <input type="file" id="importfile" accept=".json,application/json" hidden></div>
+    ${typeof ELCORE!=='undefined'?evPanel():''}
     <h3 style="margin-top:6px">Chuyển sang máy khác bằng mã</h3>
     <p class="note">Không muốn dùng file? Sao chép mã sao lưu, gửi cho chính mình (Zalo, email…), rồi dán vào ô dưới đây trên máy kia.</p>
     <div class="row"><button class="btn" data-act="copycode">Sao chép mã sao lưu</button></div>
@@ -4847,7 +4857,7 @@ function answer(correct,extra={}){
   const key=ex.wid+'|'+ex.dim;
   if(!s.retried.has(key)) evItem(ex.type,UNIT_OF[ex.wid].level,correct);
   if(!s.retried.has(key)) s.res.push({wid:ex.wid,dim:ex.dim,type:ex.type,correct,right:rightAnswer(ex),given:extra.text??(extra.picked!=null?ex.opts[extra.picked]:null)});
-  if(!correct && !TEST_KINDS.includes(s.kind) && !s.retried.has(key)){ s.retried.add(key); s.q.push(build(WORD[ex.wid],ex.dim,{noAudio:true})); }
+  if(!correct && !TEST_KINDS.includes(s.kind) && !s.retried.has(key)){ s.retried.add(key); s.q.push(Object.assign(build(WORD[ex.wid],ex.dim,{noAudio:true}),{retry:true})); }
   else s.retried.add(key);
   render();
 }
@@ -4915,7 +4925,7 @@ function gAnswer(correct,extra={}){
   srsStep(g,correct,G_TYPED.includes(ex.type)); bump('gram'); if(correct&&G_TYPED.includes(ex.type)) bump('typed'); tally(correct, xpFor(xpKind(s.kind)+':g:'+ex.gid+':'+ex.key,G_TYPED.includes(ex.type)?15:10,correct,extra.dunno)); if(!TEST_KINDS.includes(s.kind)) sfx(correct?'ok':'bad');
   const key=ex.gid+'|'+ex.dim+'|'+ex.key, given=extra.text??(extra.picked!=null?ex.opts[extra.picked]:null);
   if(!s.retried.has(key)){ evItem(ex.type,GPT[ex.gid].level,correct);
-    eEv({node:'g:'+ex.gid,level:{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'g:'+key,qt:ex.type,ctx:ex.dim}); }
+    eEv({node:'g:'+ex.gid,level:{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'g:'+key,qt:ex.type,ctx:ex.dim,src:'gram',ch:'g:'+ex.gid}); }
   if(!s.retried.has(key)) s.res.push({gid:ex.gid,dim:ex.dim,type:ex.type,correct,right:gRight(ex),given,prompt:ex.type==='gfc'?'Chọn câu đúng ngữ pháp':ex.type==='gor'?'Sắp xếp câu':ex.type==='gdi'?'Nghe và chép lại câu':ex.prompt,why:correct?'':gExplain(ex,given)});
   if(!correct&&!TEST_KINDS.includes(s.kind)&&!s.retried.has(key)){ s.retried.add(key); s.q.push(gbuild(GPT[ex.gid],ex.dim)); }
   else s.retried.add(key);
@@ -5124,6 +5134,7 @@ document.addEventListener('click',e=>{
     case 'sfx': st.set.sfx=!st.set.sfx; save(); sfx('ok'); toast(st.set.sfx?'Đã bật âm thanh.':'Đã tắt âm thanh.'); return render();
     case 'demo': st.set.demo=!st.set.demo; save(); toast(st.set.demo?'Đã bật chế độ demo.':'Đã tắt chế độ demo.'); return render();
     case 'export': return exportBackup();
+    case 'evexport': return exportResearch();
     case 'import': return document.getElementById('importfile').click();
     case 'ics': return downloadReminder();
     case 'report': return exportReport();
@@ -6167,7 +6178,7 @@ function vxSave(){ const V=ui.vx, me=st.me||(st.me={}), h=me.vx||(me.vx=[]); if(
 // Mỗi phần thi thử là một bằng chứng cho nút bài thi (xw:vstep-t1/t2, xs:vstep-p1..p3) ở mức 3/4/5 = ngưỡng bậc 3/4/5 (4 / 6 / 8,5 điểm).
 function vxEvidence(V){ if(typeof ELCORE==='undefined') return; const t=today();
   const parts=V.mode==='w'?['w1','w2'].map((k,i)=>{ const x=vxBand(V.self[k],4); return ['xw:vstep-t'+(i+1),x==null?null:vxWChecks(k,V.text[k]||'').ok?x:Math.min(x,4)]; }):['s1','s2','s3'].map((k,i)=>['xs:vstep-p'+(i+1),vxBand(V.self[k]||[],5)]);
-  for(const [node,sc] of parts){ if(sc==null) continue; [[3,4],[4,6],[5,8.5]].forEach(([level,thr])=>ELCORE.ev(st,{node,level,ok:sc>=thr,w:2,only:true,qt:'vx'},t)); } }
+  for(const [node,sc] of parts){ if(sc==null) continue; [[3,4],[4,6],[5,8.5]].forEach(([level,thr])=>ELCORE.ev(st,{node,level,ok:sc>=thr,w:2,only:true,qt:'vx',src:'perf',ch:'vx'},t)); } }
 // ---------- Thi thử Viết/Nói IELTS (M6) + bài mẫu chú thích band ----------
 // Đề và bài mẫu là dữ liệu (content/ws/*.json → WS_JSON, tải khi cần). Dùng chung hẹn giờ, ghi âm, máy chép lời với thi thử VSTEP.
 // Tự chấm 4 tiêu chí công khai của IELTS ở thang band 4–9, so với bài mẫu có chú thích; máy chấm luật chấm cùng bài (engine/grader.ts).
@@ -6249,7 +6260,7 @@ function ixSave(V,me,h){ let b;
 function ixEvidence(V,b){ if(typeof ELCORE==='undefined') return; const t=today();
   const nodes=V.mode==='w'?[V.ex==='ielts-ac'?'xw:ielts-t1-ac':'xw:ielts-t1-gt','xw:ielts-t2']:['xs:ielts-p1','xs:ielts-p2','xs:ielts-p3'];
   const per=V.mode==='w'?[ixTask(V.self.w1,true),ixTask(V.self.w2,true)]:nodes.map(()=>b);
-  nodes.forEach((node,i)=>{ const sc=per[i]; if(sc==null) return; [[3,4.5],[4,5.5],[5,7]].forEach(([level,thr])=>ELCORE.ev(st,{node,level,ok:sc>=thr,w:2,only:true,qt:'ix'},t)); }); }
+  nodes.forEach((node,i)=>{ const sc=per[i]; if(sc==null) return; [[3,4.5],[4,5.5],[5,7]].forEach(([level,thr])=>ELCORE.ev(st,{node,level,ok:sc>=thr,w:2,only:true,qt:'ix',src:'perf',ch:'ix'},t)); }); }
 const vxLast = (m,ex) => ((st.me||{}).vx||[]).find(x=>x.m===m&&(x.ex||'')===(ex||''));
 
 // ---------- Câu “Tôi có thể…”, móc nối, sự kiện ----------
@@ -8147,6 +8158,11 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:53,d:'2026-10-08',t:'Sổ bằng chứng: app nhớ vì sao nó kết luận',big:true,items:[
+  'Mỗi câu trả lời giờ đi qua ba bước: ghi lại đúng điều đã xảy ra (có dùng gợi ý, làm lại, thời gian), đánh giá thành bằng chứng có trọng số, rồi mới cập nhật mức thành thạo. Đúng nhờ gợi ý hoặc ở lượt làm lại được tính nhẹ hơn.',
+  'App giữ một sổ bằng chứng: bằng chứng quan trọng (làm đổi kết luận, sát ngưỡng, mâu thuẫn với kết luận cũ) được giữ lâu; bằng chứng lặp lại ít giá trị được gộp thành thống kê. Dung lượng không tăng mãi theo số câu bạn làm.',
+  'Đồng bộ hai máy không còn bỏ bằng chứng của một máy: mỗi máy giữ phần thống kê riêng rồi cộng lại.',
+  'Cài đặt → Sao lưu: xem tình trạng sổ bằng chứng, tải dữ liệu nghiên cứu đầy đủ.']});
 CHANGELOG.unshift({v:52,d:'2026-10-08',t:'Tập trung vào CEFR: Pre-A1 tới C2',big:true,items:[
   'App tập trung vào một mục tiêu: tiếng Anh tổng quát theo khung CEFR, từ Pre-A1 (người mới tinh) tới C2. Thêm mục tiêu "Khởi động Pre-A1"; bài Pre-A1 giờ là bằng chứng năng lực như mọi bài khác.',
   'Tab Ôn thi và các mục tiêu IELTS, VSTEP, giao tiếp tạm ẩn (vẫn giữ nguyên dữ liệu và bằng chứng). Muốn dùng: Cài đặt → Nâng cao → Mục tiêu tương lai.']});
@@ -8203,7 +8219,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.1c579b6716.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.1ab25a353a.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8231,7 +8247,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.d9ffb5bc24.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.8438286b23.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),

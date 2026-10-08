@@ -7,7 +7,8 @@ import { GOALS, loadGraph, loaded, goalOn } from './data.ts';
 import { viewGoals, viewPick, viewGoal, dayOf, type ECtx } from './views.ts';
 import { viewDiagIntro, viewDiagRun, viewDiagResult, viewLoading, lrBand, type DiagRun } from './diagview.ts';
 import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, type Cand } from './diag.ts';
-import { record, prior } from './mastery.ts';
+import { ingest, setPrior } from './ev/store.ts';
+import { dev } from './core.ts';
 import { closure, defaultLevel, mergeGoals } from './graph.ts';
 import { bandToCefr } from '../exam/scales.ts';
 import { viewToday, viewTout, nextStep, type ToutRun } from './today.ts';
@@ -84,7 +85,7 @@ export function init(host: EHost): EngineModule {
     for (const n of ix.node.values()) {
       if (n.kind !== 'vocab' && n.kind !== 'grammar') continue;
       const p = priorFor(cefrIdx(n.cefr), n.kind === 'vocab' ? est.u : est.g);
-      if (p) prior(e.m, n.id, defaultLevel(n), p[0], p[1]);
+      if (p) setPrior(e.ev, e.m, n.id, defaultLevel(n), p[0], p[1], 'diag', host.today());
     }
     e.diag = { day: host.today(), u: est.u, g: est.g, n: d.probed.length };
     drun = null; host.save(); host.go('diag-result');
@@ -92,7 +93,7 @@ export function init(host: EHost): EngineModule {
   function diagAnswer(ok: boolean, q: DiagRun['qs'][number]): void {
     if (!drun) return;
     const e = E();
-    record(e.m, { node: drun.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'diag' }, host.today(), e.r);
+    ingest(e.ev, e.m, { node: drun.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'diag', src: 'diag', ch: 'diag' }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) drun.got++;
     drun.i++;
     if (drun.i >= drun.qs.length) {
@@ -115,7 +116,7 @@ export function init(host: EHost): EngineModule {
     if (!tout) return;
     const q = tout.qs[tout.i]!, e = E();
     // Bài kiểm tra có chủ đích ở mức cần: mỗi câu nặng gấp 4 câu luyện (đúng hết thì đủ bằng chứng để Đạt).
-    record(e.m, { node: tout.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'testout', w: 4 }, host.today(), e.r);
+    ingest(e.ev, e.m, { node: tout.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'testout', w: 4, src: 'testout', ch: `tout/${tout.node}` }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) tout.got++;
     tout.i++;
     if (tout.i >= tout.qs.length) {
