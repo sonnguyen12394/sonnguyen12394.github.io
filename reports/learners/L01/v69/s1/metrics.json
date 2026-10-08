@@ -1,0 +1,664 @@
+{
+ "answers": 529,
+ "sessions": 23,
+ "pageErrors": 0,
+ "stuck": [],
+ "diag": {
+  "probes": {
+   "probes": 28,
+   "head": "Chẩn đoán · 8 phần đã dò | Bạn đang ở đâu | A1 | từ vựng | A1 | ngữ pháp"
+  },
+  "rows": {
+   "n": 28,
+   "ok": 57.1,
+   "truthKnow": 0,
+   "pTrue": 0.513
+  }
+ },
+ "byRun": {
+  "diag": {
+   "n": 28,
+   "ok": 57.1,
+   "truthKnow": 0,
+   "pTrue": 0.513
+  },
+  "measure": {
+   "n": 48,
+   "ok": 47.9,
+   "truthKnow": 0,
+   "pTrue": 0.539
+  },
+  "quest": {
+   "n": 388,
+   "ok": 72.9,
+   "truthKnow": 30.2,
+   "pTrue": 0.734
+  },
+  "probe": {
+   "n": 65,
+   "ok": 60,
+   "truthKnow": 6.2,
+   "pTrue": 0.613
+  }
+ },
+ "byGame": {
+  "monster": {
+   "n": 242,
+   "ok": 80.2,
+   "truthKnow": 36.4,
+   "pTrue": 0.792
+  },
+  "scout": {
+   "n": 48,
+   "ok": 35.4,
+   "truthKnow": 2.1,
+   "pTrue": 0.438
+  },
+  "camp": {
+   "n": 47,
+   "ok": 78.7,
+   "truthKnow": 21.3,
+   "pTrue": 0.77
+  },
+  "boss": {
+   "n": 47,
+   "ok": 66,
+   "truthKnow": 29.8,
+   "pTrue": 0.682
+  },
+  "chest": {
+   "n": 4,
+   "ok": 100,
+   "truthKnow": 100,
+   "pTrue": 0.963
+  }
+ },
+ "byGap": {
+  "knowledge": {
+   "n": 55,
+   "ok": 61.8,
+   "truthKnow": 0,
+   "pTrue": 0.597
+  },
+  "transfer": {
+   "n": 47,
+   "ok": 66,
+   "truthKnow": 29.8,
+   "pTrue": 0.682
+  },
+  "recall": {
+   "n": 126,
+   "ok": 83.3,
+   "truthKnow": 26.2,
+   "pTrue": 0.812
+  },
+  "skill": {
+   "n": 61,
+   "ok": 90.2,
+   "truthKnow": 90.2,
+   "pTrue": 0.926
+  },
+  "retention": {
+   "n": 4,
+   "ok": 100,
+   "truthKnow": 100,
+   "pTrue": 0.963
+  }
+ },
+ "novel": {
+  "n": 160,
+  "ok": 53.8,
+  "truthKnow": 17.5,
+  "pTrue": 0.557
+ },
+ "seen": {
+  "n": 228,
+  "ok": 86.4,
+  "truthKnow": 39,
+  "pTrue": 0.858
+ },
+ "repeatsItems": 72,
+ "distinctItems": 297,
+ "distinctNodes": 83,
+ "mastery": [
+  {
+   "day": 0,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 3,
+   "coins": 150
+  },
+  {
+   "day": 1,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 4,
+   "coins": 250
+  },
+  {
+   "day": 2,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 6,
+   "coins": 378
+  },
+  {
+   "day": 3,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 8,
+   "coins": 559
+  },
+  {
+   "day": 4,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 10,
+   "coins": 674
+  },
+  {
+   "day": 5,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 11,
+   "coins": 777
+  },
+  {
+   "day": 6,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 12,
+   "coins": 832
+  },
+  {
+   "day": 7,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 14,
+   "coins": 945
+  },
+  {
+   "day": 8,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 16,
+   "coins": 1054
+  },
+  {
+   "day": 9,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 18,
+   "coins": 1220
+  },
+  {
+   "day": 10,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 20,
+   "coins": 1345
+  },
+  {
+   "day": 11,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 22,
+   "coins": 1488
+  },
+  {
+   "day": 12,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 24,
+   "coins": 1614
+  },
+  {
+   "day": 13,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 26,
+   "coins": 1789
+  },
+  {
+   "day": 14,
+   "claimed": 0,
+   "tp": 0,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 28,
+   "coins": 1948
+  },
+  {
+   "day": 15,
+   "claimed": 2,
+   "tp": 2,
+   "fp": 0,
+   "fn": 1,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 2,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 30,
+   "coins": 2199
+  },
+  {
+   "day": 17,
+   "claimed": 3,
+   "tp": 3,
+   "fp": 0,
+   "fn": 1,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 3,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 33,
+   "coins": 2492
+  },
+  {
+   "day": 19,
+   "claimed": 3,
+   "tp": 3,
+   "fp": 0,
+   "fn": 1,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 3,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 35,
+   "coins": 2656
+  },
+  {
+   "day": 21,
+   "claimed": 6,
+   "tp": 6,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 6,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 37,
+   "coins": 2884
+  },
+  {
+   "day": 24,
+   "claimed": 6,
+   "tp": 6,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 6,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 39,
+   "coins": 3085
+  },
+  {
+   "day": 28,
+   "claimed": 6,
+   "tp": 6,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 6,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 41,
+   "coins": 3315
+  },
+  {
+   "day": 35,
+   "claimed": 6,
+   "tp": 6,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 6,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 43,
+   "coins": 3498
+  },
+  {
+   "day": 44,
+   "claimed": 6,
+   "tp": 6,
+   "fp": 0,
+   "fn": 0,
+   "inferredFp": 0,
+   "inferred": 554,
+   "solid": 6,
+   "solidFp": 0,
+   "fps": [],
+   "floor": 45,
+   "coins": 3709
+  }
+ ],
+ "reopened": 0,
+ "stuckNodes": [],
+ "truthMean": {
+  "first": 0.116,
+  "last": 0.172,
+  "nodes": 637
+ },
+ "measure": [
+  {
+   "phase": "pre",
+   "day": 20734,
+   "got": 5,
+   "of": 12,
+   "mins": 8
+  },
+  {
+   "phase": "post",
+   "day": 20748,
+   "got": 7,
+   "of": 12,
+   "mins": 65
+  },
+  {
+   "phase": "d7",
+   "day": 20755,
+   "got": 4,
+   "of": 12,
+   "mins": 86
+  },
+  {
+   "phase": "d30",
+   "day": 20778,
+   "got": 7,
+   "of": 12,
+   "mins": 103
+  }
+ ],
+ "todayActions": [
+  "1:probe/g:g-a1-07/4/explore",
+  "2:probe/g:g-a1-10/4/explore",
+  "3:probe/g:g-a1-13/4/explore",
+  "4:probe/g:g-a1-17/4/explore",
+  "5:probe/g:g-a1-20/4/explore",
+  "6:probe/g:g-a1-23/4/explore",
+  "7:probe/g:g-a1-26/4/explore",
+  "8:probe/u:a1-u10/3/explore",
+  "9:probe/u:a1-u16/3/explore",
+  "10:probe/u:a1-u2/3/explore",
+  "11:probe/u:a1-u22/3/explore",
+  "12:probe/u:a1-u25/3/explore",
+  "13:probe/u:a1-u3/3/explore",
+  "15:probe/u:a1-u35/3/explore",
+  "17:probe/g:g-a1-01/4/boundary",
+  "19:probe/u:a1-u40/3/explore",
+  "24:probe/u:a1-u43/3/explore",
+  "28:probe/u:a1-u47/3/explore",
+  "35:probe/u:a1-u5/3/explore"
+ ],
+ "camps": 47,
+ "hyp": 0,
+ "decisions": {
+  "quest:win": 44,
+  "micro:fixed": 37,
+  "PASS": 32,
+  "probe:explore": 18,
+  "micro:not-yet": 10,
+  "quest:lose": 6,
+  "CHOSEN": 5,
+  "goal:AUTO": 1,
+  "u=0;g=0": 1,
+  "NOT_READY": 1,
+  "measure:pre": 1,
+  "measure:post": 1,
+  "probe:boundary": 1,
+  "measure:d7": 1,
+  "measure:d30": 1
+ },
+ "targeting": [
+  {
+   "day": 0,
+   "n": 16,
+   "unknownShare": 100,
+   "ok": 68.8
+  },
+  {
+   "day": 1,
+   "n": 12,
+   "unknownShare": 100,
+   "ok": 50
+  },
+  {
+   "day": 2,
+   "n": 16,
+   "unknownShare": 100,
+   "ok": 56.3
+  },
+  {
+   "day": 3,
+   "n": 24,
+   "unknownShare": 100,
+   "ok": 58.3
+  },
+  {
+   "day": 4,
+   "n": 16,
+   "unknownShare": 100,
+   "ok": 62.5
+  },
+  {
+   "day": 5,
+   "n": 16,
+   "unknownShare": 100,
+   "ok": 62.5
+  },
+  {
+   "day": 6,
+   "n": 12,
+   "unknownShare": 100,
+   "ok": 50
+  },
+  {
+   "day": 7,
+   "n": 16,
+   "unknownShare": 87.5,
+   "ok": 62.5
+  },
+  {
+   "day": 8,
+   "n": 16,
+   "unknownShare": 81.3,
+   "ok": 75
+  },
+  {
+   "day": 9,
+   "n": 16,
+   "unknownShare": 81.3,
+   "ok": 87.5
+  },
+  {
+   "day": 10,
+   "n": 16,
+   "unknownShare": 68.8,
+   "ok": 75
+  },
+  {
+   "day": 11,
+   "n": 16,
+   "unknownShare": 50,
+   "ok": 81.3
+  },
+  {
+   "day": 12,
+   "n": 20,
+   "unknownShare": 45,
+   "ok": 70
+  },
+  {
+   "day": 13,
+   "n": 16,
+   "unknownShare": 31.3,
+   "ok": 93.8
+  },
+  {
+   "day": 14,
+   "n": 16,
+   "unknownShare": 37.5,
+   "ok": 81.3
+  },
+  {
+   "day": 15,
+   "n": 24,
+   "unknownShare": 29.2,
+   "ok": 79.2
+  },
+  {
+   "day": 17,
+   "n": 24,
+   "unknownShare": 54.2,
+   "ok": 79.2
+  },
+  {
+   "day": 19,
+   "n": 16,
+   "unknownShare": 56.3,
+   "ok": 81.3
+  },
+  {
+   "day": 21,
+   "n": 16,
+   "unknownShare": 56.3,
+   "ok": 81.3
+  },
+  {
+   "day": 24,
+   "n": 16,
+   "unknownShare": 62.5,
+   "ok": 75
+  },
+  {
+   "day": 28,
+   "n": 16,
+   "unknownShare": 75,
+   "ok": 81.3
+  },
+  {
+   "day": 35,
+   "n": 16,
+   "unknownShare": 62.5,
+   "ok": 75
+  },
+  {
+   "day": 44,
+   "n": 16,
+   "unknownShare": 62.5,
+   "ok": 81.3
+  }
+ ]
+}

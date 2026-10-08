@@ -1,266 +1,213 @@
-# L01: Người mới hoàn toàn (Cold-Start Beginner)
+# L01 — Người mới hoàn toàn (Cold-Start Beginner)
 
-**Bot:** `Learner_01_Absolute_Beginner`, chạy bằng `tools/learners/l01.ts`, seed 1.
+**Bot:** `Learner_01_Absolute_Beginner`, chạy bằng `tools/learners/l01.ts`.
 - Bot chơi app qua giao diện thật: Chromium, màn hình Pixel 7, không mạng ngoài, không AI.
-- **23 phiên trong 44 ngày mô phỏng:**
-  - mỗi ngày từ ngày 0 đến ngày 15;
-  - sau đó các ngày 17, 19, 21, 24, 28, 35, 44.
-- **Tổng cộng 473 câu trả lời:**
-  - 28 câu chẩn đoán;
-  - 338 câu trong game;
-  - 59 câu kiểm tra nhanh;
-  - 48 câu đo.
-- **Kết quả chạy:** 0 lỗi trang, 0 lần kẹt giao diện.
-- **Dữ liệu thô:**
-  - `rows.json`: từng câu, gồm xác suất đúng thật, bot có thật sự biết không, và trạng thái app kết luận;
-  - `events.json`, `screens.json`: chữ trên từng màn;
-  - `metrics.json`: số liệu tổng hợp, sinh bằng `tools/learners/analyze.ts`.
+- Lịch: 23 phiên trong 44 ngày mô phỏng.
+- Phân tích bằng `tools/learners/analyze.ts`.
+
+**Dữ liệu:**
+- `v68/`: lần chạy đầu, trước khi sửa.
+- `v69/`: sau khi sửa. Gồm `s1`, `s2`, `s3` (3 seed) và `fast` (seed 1, người học tiếp thu nhanh gấp 3).
 
 **Cách bot "là người học":**
-- Mỗi nút năng lực có một kỹ năng ẩn s.
-  - Từ vựng A1 khoảng 0,6, A2 khoảng 0,3.
-  - Ngữ pháp A1 khoảng 0,35.
-  - Gần như không biết B1.
-- Câu chọn đáp án: xác suất đúng = s + đoán.
-- Câu tự gõ: xác suất đúng = s^1,4.
-- Câu đã gặp được cộng điểm "quen mặt" (+0,15). Câu mới thì không, nên đo được bot chỉ nhớ vẹt hay dùng được thật.
-- Bot học khi thấy đáp án hoặc đọc bí kíp, và quên dần theo thời gian.
+- Mỗi nút năng lực có một kỹ năng ẩn s:
+  - từ vựng A1 khoảng 0,6;
+  - ngữ pháp A1 khoảng 0,35;
+  - gần như không biết B1.
+- Xác suất đúng:
+  - câu chọn đáp án: s + phần đoán mò;
+  - câu tự gõ: s^1,4.
+- Câu đã gặp được cộng điểm "quen mặt" +0,15.
+- Bot học khi thấy đáp án hoặc đọc bí kíp, và quên theo e^(−Δngày/S). S tăng gấp đôi sau mỗi lần nhớ đúng vào một ngày khác.
 - "Thật sự biết" một nút = s ≥ 0,8.
+- Bot làm đúng những gì màn hình bảo. Để biết đáp án đúng, nó dùng `EM.peek()`. Hàm này chỉ đọc, không đổi hành vi app. Bot trả lời đúng hay sai theo kỹ năng ẩn của nó.
 
-Bot không đọc trạng thái bên trong app để quyết định học gì; nó làm đúng những gì màn hình bảo. Để biết đáp án đúng, bot dùng `EM.peek()`. Hàm này chỉ đọc, không đổi hành vi app. Bot trả lời đúng hay sai theo kỹ năng ẩn của nó.
-
-> **Giới hạn trung thực.** Mô hình học và quên do bot đặt ra, nên nhóm I (kết quả học) chỉ cho biết app có tạo ĐIỀU KIỆN để học hay không. Nó không chứng minh hiệu quả trên người thật. Cảm nhận (bối rối, động lực) cũng chỉ suy ra từ chữ trên màn và tiến độ hiển thị. Điều bot đo chắc nhất là: app đoán trình độ ẩn đúng tới đâu, có công nhận nhầm hay từ chối nhầm, có hỏi đúng chỗ thiếu không.
+> **Giới hạn trung thực.** Mô hình học và quên do bot đặt ra, và khá bi quan (quên nhanh, mỗi câu chỉ học thêm 4–10%). Vì vậy nhóm I (kết quả học) chỉ cho biết app có tạo điều kiện để học hay không; nó không chứng minh hiệu quả trên người thật. Cảm nhận (bối rối, động lực) cũng chỉ suy ra từ chữ trên màn hình. Điều bot đo chắc nhất: app đoán trình độ đúng tới đâu, có công nhận nhầm, có từ chối nhầm, có kẹt không, có hỏi đúng chỗ thiếu không.
 
 ## Kết luận
 
 ```
-L01 ABSOLUTE BEGINNER                (thang 10, đạt = ≥ 8 ≈ ≥ 3/4)
-A ONBOARDING              7,0   (4/8 đạt)
-B CHẨN ĐOÁN               6,4   (3/8)
-C GAMEPLAY                7,0   (4/7)
-D XỬ LÝ LỖI               7,7   (4/6)
-E MICRO-LEARNING          6,3   (2/6)
-F MASTERY                 6,2   (3/5)
-G THÍCH ỨNG               5,0   (1/6)
-H BẰNG CHỨNG              8,1   (6/7)
-I KẾT QUẢ HỌC (mô phỏng)  4,7   (0/6)
-J ĐỘNG LỰC (suy ra)       5,3   (2/4)
-K LỘ TRÌNH                5,8   (1/4)
-L VÒNG KHÉP KÍN           5,0   (2/8)
-HARD GATES (spec L01)     9/9 PASS (L01-76…80 đều 10/10)
-CORE LEARNING (B,E–I,K,L) 18/50 đạt ≥ 8  → cần ≥ 90%
-TRUNG BÌNH 80 TIÊU CHÍ    6,5/10
-OVERALL                   ❌ NOT READY
-NÚT THẮT CHÍNH            Kẹt "Cần xác minh": người học đã biết mà app không bao giờ công nhận → lộ trình đứng yên
-NÚT THẮT PHỤ              Chẩn đoán suy ra quá tay (Claim tính như Đạt), xác nhận chậm; game không có ôn lại và không kiểm tra sau bí kíp
+L01 ABSOLUTE BEGINNER          v68 → v69   (thang 10, đạt = ≥ 8 ≈ ≥ 3/4)
+A ONBOARDING                   7,0 → 8,1
+B CHẨN ĐOÁN                    6,4 → 7,8
+C GAMEPLAY                     7,0 → 8,0
+D XỬ LÝ LỖI                    7,7 → 8,5
+E MICRO-LEARNING               6,3 → 8,0
+F MASTERY                      6,2 → 8,2
+G THÍCH ỨNG                    5,0 → 7,7
+H BẰNG CHỨNG                   8,1 → 8,3
+I KẾT QUẢ HỌC (mô phỏng)       4,7 → 5,7
+J ĐỘNG LỰC (suy ra)            5,3 → 7,0
+K LỘ TRÌNH                     5,8 → 7,5
+L VÒNG KHÉP KÍN                5,0 → 7,5
+HARD GATES                     9/9 → 9/9 PASS
+CORE LEARNING đạt ≥ 8          18/50 → 34/50 (bỏ nhóm I: 34/44 = 77%)
+TRUNG BÌNH 80 TIÊU CHÍ         6,5 → 7,9
+OVERALL                        ❌ NOT READY → 🟠 GẦN ĐẠT
+                               Cơ chế đúng và không còn kẹt. Chưa đạt ngưỡng 90% ở Core vì nhóm I cần người học thật,
+                               và vài điểm UX/lộ trình (xem "Còn lại").
+NÚT THẮT CÒN LẠI               Hiệu quả học thật (cần cohort người thật với bộ đo v63); xác nhận Claim của chẩn đoán còn chậm
 ```
 
-### Số liệu chính
+### Số liệu trước / sau
 
-| Chỉ số | Giá trị |
-|---|---|
-| **Tiến độ hiển thị (năng lực A1 đã Đạt)** | 4/36 (ngày 0) → 3 → 2 → **1/36 (ngày 44)** |
-| **Bước tiếp theo hiển thị** | "There is / there are" suốt 40 ngày |
-| Nút bot thật sự biết, trong 34 nút đã luyện | 0 → 4 (kỹ năng thật trung bình 0,57 → 0,64) |
-| Câu cùng một nút ngữ pháp | g-a1-07/08/09 mỗi nút khoảng 49 lần, trong 23 phiên; chỉ có 3 câu mức 3 cho mỗi nút |
-| Trạng thái app của g-a1-07 ("There is / there are") | mức 3: m = 0,86, n = 35, **"cần xác minh" vĩnh viễn**. Kỹ năng thật của bot 0,84 |
-| Tầng game | thắng 46 / thua 3; tầng 47; 3.980 xu |
-| Đúng ở câu mới / câu đã gặp (trong game) | 68% / 89% |
-| Trùm (câu mới, transfer) | 46 lượt, đúng 63%; chỉ 11% hỏi vào nút bot thật sự biết |
-| Rương (ôn phần sắp quên) | **0 lượt trong 44 ngày** |
-| Kiểm tra nhanh xác nhận chẩn đoán | 19 lần, khoảng 1 lần/ngày, cho khoảng 60 nút "suy ra đã biết" |
-| "Đạt" mà kỹ năng thật < 0,7 | 48–60 nút, gần hết là Claim từ chẩn đoán (n = 0). Nút có bằng chứng thật: 3–5 |
-| Đo giữ riêng (12 câu, cùng bộ câu) | trước 6/12 → sau 7 → 7 ngày 7 → 30 ngày 9/12 (có hiệu ứng quen câu, xem bên dưới) |
-| Giả thuyết nguyên nhân gốc | 0 (không có lỗi nào bị kết luận vội là thiếu phần nền) |
+v68 là lần chạy đầu (seed 1). Cột v69 ghi seed 1; trong ngoặc là seed 2 / seed 3 / người học nhanh.
 
-### Gốc rễ (đã kiểm trong code)
+| Chỉ số | v68 | v69 |
+|---|---|---|
+| Nút **kẹt** (≥ 15 lượt, đúng ≥ 85%, vẫn chưa Đạt) | **4** (g-a1-07/08/09/22) | **0** (0 / 0 / 0) |
+| "Bước tiếp theo" đổi bao nhiêu lần trong 44 ngày | 1 (đứng yên 40 ngày) | 4 (3 / 6 / 6) |
+| Tiến độ kỹ năng trên tháp | không có; chỉ "4 → 1/36 năng lực" (giảm) | 📈 0 → 6 kỹ năng đã vững (7 / 8 / 8), có "+N trong 7 ngày" |
+| "Đạt" thật mà bot chưa biết (kỹ năng ẩn < 0,7) | 3–5 | **0** (1 / 0 / 0) |
+| "Đạt" chỉ do suy ra từ chẩn đoán mà bot chưa biết | 60 (đếm như Đạt, xác nhận khoảng 1 nút/ngày) | 0 (14 / 19 / 22) ở ngày 44, giảm dần từ 66 / 58 / 63. Hiện là "≈ Đạt (suy ra, đang xác nhận)", không đếm là kỹ năng vững |
+| Âm tính giả (biết ≥ 0,9, có ≥ 4 lượt, chưa Đạt) cuối kỳ | 0 (nhưng 4 nút kẹt) | 0 (1 / 0 / 2) |
+| Chẩn đoán từ vựng (thật: A1 chưa vững) | A2 (cao một cấp) | A1 (A1–A2 / A1–A2 / A1–A2) |
+| Rương ôn (phần sắp quên) | 0 lượt | 4 (39 / 41 / 44) |
+| Câu thử ngay sau bí kíp ở trại | 0 | 47: sửa được 37, chưa được 10 (33/13, 43/10, 50/3) |
+| Phản hồi khi sai có "vì sao" | không | có (💡 ý chính của bí kíp) |
+| Nút khác nhau được hỏi | 42 (3 nút hỏi khoảng 49 lần mỗi nút) | 83; tối đa 3 lượt/nút/ngày và 6 phần học dở |
+| Nút bot thật sự biết (cuối / đầu, trong các nút đã luyện) | 0 → 4 / 34 | 3 → 6 / 70 (0→6, 1→4, nhanh 4→11) |
+| Trùm (câu mới chưa gặp) đúng | 63% | 66% (75% / 74% / 75%) |
+| Đo giữ riêng (12 câu): trước → sau → 7 ngày → 30 ngày | 6 → 7 → 7 → 9 (cùng 12 câu, quen câu) | 5 → 7 → 4 → 7 (dạng song song, nhiễu lớn vì chỉ 12 câu) |
+| Lỗi trang / kẹt giao diện | 0 / 0 | 0 / 0 |
 
-1. **Kẹt "cần xác minh" ở mức 1–3** (`src/engine/ev/store.ts:75`).
-   - Luật m3.2 đòi ≥ 2 lượt **đúng ở câu mới** (`novOk`).
-   - Câu "mới" chỉ tính ở lần gặp đầu tiên. Nút ngữ pháp chỉ có 3 câu mức 3. Bot sai lần đầu ở 2/3 câu (lúc đó chưa biết), nên `nv` dừng ở 1 và không bao giờ lên 2.
-   - Hệ quả dây chuyền:
-     - mức 3 không Đạt nên không lên mức 4;
-     - nút không ra khỏi biên lộ trình nên game hỏi lại cùng 3 câu suốt 40 ngày;
-     - "Bước tiếp theo" đứng yên;
-     - tiến độ hiển thị giảm.
-   - Luật Readiness đã có ngoại lệ "hết câu mới" (v65), nhưng luật xác minh mức 1–3 thì không.
-2. **Claim từ chẩn đoán được tính là Đạt** (`pass` bỏ qua `n = 0`).
-   - Bài dò ước lượng từ vựng A2, nên toàn bộ unit A1 thành "suy ra đã biết". Kỹ năng thật của bot ở các unit này chỉ khoảng 0,6.
-   - Việc xác nhận nằm ở "Lộ trình hôm nay": một bài kiểm tra nhanh mỗi ngày, và chỉ khi người học tự mở màn đó. Màn chính là tháp, không đưa xác nhận vào game.
-3. **Game không khép vòng nhớ lâu.**
-   - Rương chỉ lấy nút đã Đạt mà sắp quên. Do (1), gần như không có nút Đạt nào. Claim từ chẩn đoán không bao giờ được ôn.
-4. **Bí kíp trong game không có câu kiểm tra ngay sau**: trại chỉ hồi tim. Bí kíp 60 giây có câu kiểm tra thì chỉ có ở bài học, người chơi tháp không gặp.
-5. **Phản hồi khi sai chỉ có đáp án**, không có một dòng "vì sao".
+### Đã sửa gì (gốc rễ → cách sửa, đều có test)
 
-## 80 tiêu chí (0–10)
+1. **Kẹt "cần xác minh" khi hết câu mới** (luật m3.3, `ev/store.ts`). Câu đã gặp mà trả lời đúng tự lực sau ≥ 1 ngày không gặp (nhớ lại cách quãng) được tính như câu mới khi xác minh, nhưng vẫn cần ≥ 2 câu **khác nhau**, nên một câu lặp qua nhiều ngày vẫn không Đạt (C180). Test dựng đúng kịch bản bot nằm trong `engine-evq.test`. Mô phỏng `npm run sim` không đổi: FP 0%, FN 22,9%.
+2. **Claim của chẩn đoán bị tính như Đạt** (m3.3). Claim vẫn được coi như biết để người học không phải học lại (P10), nhưng chỉ thành Đạt thật khi **riêng bằng chứng thật** đủ Đạt. Trong lúc đó trạng thái hiện "suy ra, đang xác nhận" (`engine-evidence.test`).
+3. **Chẩn đoán bị đoán mò thổi lên.** Tỉ lệ đúng được trừ phần đoán mò trước khi lên/xuống cấp: r′ = (r − ḡ)/(1 − ḡ) (`engine-diag.test`).
+4. **Không có ôn cho người chỉ chơi tháp.** Khả năng nhớ được dựng từ sổ bằng chứng bằng một thẻ FSRS ảo (`retain.ts`); từ đó rương và NBA "ôn trong tháp" xuất hiện (`engine-retain.test`).
+5. **Tháp hỏi lặp một nút cả ngày, rồi rải sang 100 nút.**
+   - Mỗi nút tối đa 3 lượt/ngày.
+   - Tối đa 6 phần học dở; phần ưu tiên số 1 (cũng là "Bước tiếp theo") luôn được vào.
+   - Trinh sát và rương rảnh dùng để xác nhận Claim bằng câu tự gõ.
+   - Test ở `engine-quest.test`.
+6. **Dạy rồi kiểm tra trong game:**
+   - Phần chưa từng gặp được dạy trước bằng thẻ mới (chỉ một lần; câu trả lời ngay sau thẻ tính là có trợ giúp).
+   - Trại có "Thử ngay 1 câu" ở đúng phần vừa đọc, ghi snapshot hiệu quả can thiệp.
+   - Sai có một dòng "vì sao".
+   - Test ở `quest.spec`.
+   - Trong lúc làm, bot bắt được một lỗi do chính bản sửa đầu tiên: thẻ dạy hiện lại ở mọi lượt, nên mọi câu đúng thành "có trợ giúp" và lại kẹt. Lỗi đã được sửa.
+7. **Giao diện người mới:**
+   - Màn chào nói rõ là học qua game.
+   - Kết quả bài dò ghi rõ là ước lượng (có thể lệch nửa cấp, sẽ kiểm tra lại khi chơi) và bỏ bảng giờ học IELTS/VSTEP ở bản chỉ có CEFR.
+   - Tháp có thanh "kỹ năng đã vững" và nút cho "Bước tiếp theo".
+   - Test ở `play.spec`.
+8. **Đo bị hiệu ứng quen câu:** các lần đo sau dùng dạng song song (cùng nút, câu khác chưa gặp).
 
-Đạt = ≥ 8. **Chứng cứ** ghi rõ nguồn: bot (log lần chạy), code, hoặc test.
+## 80 tiêu chí (0–10, v68 → v69)
 
-### A. Onboarding & trải nghiệm đầu
+Mỗi dòng ghi điểm v68 → v69 và kết quả: ✓ là đạt (≥ 8), ✗ là chưa.
 
-| ID | Điểm | KQ | Quan sát → kỳ vọng |
-|---|---|---|---|
-| L01-01 Hiểu mục tiêu app | 7 | ✗ | Màn chào nói rõ "app tự tìm chỗ bạn còn thiếu…". Màn chào không nhắc game; tới màn tháp mới thấy học bằng game. |
-| L01-02 Hiểu hành động đầu | 9 | ✓ | Một nút lớn "BẮT ĐẦU"; bot bấm ngay, không do dự. |
-| L01-03 Không đọc dài | 8 | ✓ | Màn chào 74 từ, màn giới thiệu bài dò 72 từ. |
-| L01-04 Không cần thuật ngữ | 5 | ✗ | Màn kết quả có "band", "CEFR", "năng lực", bảng giờ học IELTS/VSTEP. Lộ trình hôm nay có "mức 4: Dùng có kiểm soát", "Sẵn sàng 11%". |
-| L01-05 Không choáng UI | 6 | ✗ | Màn kết quả dò có 2 bảng, trong đó một bảng là giờ học các kỳ thi, không liên quan bản chỉ có CEFR. Màn tháp gọn. |
-| L01-06 Hành động đầu có ý nghĩa | 8 | ✓ | Bài dò đặt mục tiêu và loại bỏ phần đã biết. |
-| L01-07 Không bắt chọn bài | 9 | ✓ | App tự đặt mục tiêu A1 (snapshot `goal:AUTO`) và vào tháp. |
-| L01-08 Không bị kẹt | 4 | ✗ | Giao diện không kẹt lần nào. Nhưng về học thì kẹt: "Bước tiếp theo" cùng một mục 40 ngày. Dòng đó trên tháp lại **không có nút bấm**. |
+### A. Onboarding & trải nghiệm đầu: 7,0 → 8,1
+- **L01-01** · 7 → **8** ✓: Màn chào giờ nói "Chơi game leo tháp: mỗi đòn đánh là một câu tiếng Anh".
+- **L01-02** · 9 → **9** ✓: Một nút "BẮT ĐẦU".
+- **L01-03** · 8 → **8** ✓: Màn chào khoảng 85 từ.
+- **L01-04** · 5 → **7** ✗: Kết quả dò bỏ "band" và bảng thi. Lộ trình hôm nay vẫn còn "mức 4: Dùng có kiểm soát", "Sẵn sàng %".
+- **L01-05** · 6 → **8** ✓: Kết quả dò còn 2 ô cấp, một đoạn giải thích, mục tiêu tự đặt.
+- **L01-06** · 8 → **8** ✓: Bài dò vừa xác định cấp vừa đặt mục tiêu.
+- **L01-07** · 9 → **9** ✓: Mục tiêu tự đặt, game tự chọn câu.
+- **L01-08** · 4 → **8** ✓: 0 lần kẹt; "Bước tiếp theo" có nút và đổi theo bằng chứng.
 
-### B. Chẩn đoán lúc bắt đầu
+### B. Chẩn đoán lúc bắt đầu: 6,4 → 7,8
+- **L01-09** · 9 → **9** ✓: Không giả định A1.
+- **L01-10** · 8 → **8** ✓: Mỗi phần quyết định lên hay xuống cấp.
+- **L01-11** · 7 → **8** ✓: 28 câu; màn giới thiệu ghi đúng "8 phần (mỗi phần 2–4 câu)".
+- **L01-12** · 8 → **8** ✓: Bậc thang lên/xuống, có trừ đoán mò.
+- **L01-13** · 5 → **7** ✗: Seed 1 đúng (A1). Seed 2/3 ra A1–A2, vẫn cao nửa cấp so với kỹ năng ẩn 0,6.
+- **L01-14** · 4 → **8** ✓: "Có thể lệch khoảng nửa cấp… sẽ kiểm tra dần trong lúc chơi".
+- **L01-15** · 4 → **8** ✓: Claim tách khỏi Đạt thật và được xác nhận trong game (66 → 14 Claim sai sau 44 ngày). Chưa 9 vì còn chậm.
+- **L01-16** · 6 → **6** ✗: Tách từ vựng/ngữ pháp; bài dò chưa có nghe.
 
-| ID | Điểm | KQ | Quan sát |
-|---|---|---|---|
-| L01-09 Không giả định trình độ | 9 | ✓ | Dò theo bậc thang lên/xuống. Không mặc định A1. |
-| L01-10 Mỗi câu dò có mục đích | 8 | ✓ | Mỗi "phần" quyết định lên hay xuống cấp cho từ vựng hoặc ngữ pháp. |
-| L01-11 Không quá dài | 7 | ✗ | 28 câu ("8 phần"), khoảng 3–5 phút. Chấp nhận được, nhưng gấp 3 lần con số "8" người học đọc thấy. |
-| L01-12 Thích ứng | 8 | ✓ | Đúng thì lên cấp, sai thì xuống (bậc thang). |
-| L01-13 Tìm được điểm xuất phát | 5 | ✗ | App: từ vựng A2, ngữ pháp A1. Thật: từ vựng A1 của bot chỉ khoảng 0,6, tức chưa nắm. Từ vựng bị ước lượng cao một bậc. |
-| L01-14 Thể hiện độ không chắc | 4 | ✗ | Bên trong có trạng thái "suy ra" và câu xác nhận. Màn kết quả chỉ hiện một cấp, không có độ tin cậy; khoảng 60 nút suy ra được coi như đã biết. |
-| L01-15 Chẩn đoán ≠ mastery | 4 | ✗ | Claim tách khỏi Đạt ở tầng dữ liệu, nhưng `pass` vẫn tính Claim. Xác nhận khoảng 1 nút/ngày; sau 44 ngày còn 48 Claim sai. |
-| L01-16 Phát hiện hồ sơ không đều | 6 | ✗ | Tách được từ vựng và ngữ pháp. Nghe/Đọc "chưa đo"; bài dò không có nghe. |
+### C. Gameplay: 7,0 → 8,0
+- **L01-17** · 8 → **8** ✓: Luật một dòng mỗi lượt.
+- **L01-18** · 8 → **8** ✓: Tên kỹ năng trên mỗi lượt; có thẻ mới.
+- **L01-19** · 5 → **7** ✗: Quái đúng 76–82%. Thắng 42–51 tầng, thua 4–11. Hợp lý hơn (trước 46/49 thắng), nhưng vẫn hơi dễ.
+- **L01-20** · 9 → **9** ✓: Độ khó game chỉ đổi tim.
+- **L01-21** · 4 → **8** ✓: Không còn 3 nút hỏi khoảng 49 lần; ưu tiên số 1 + phần học dở + xác nhận Claim.
+- **L01-22** · 9 → **9** ✓: Mọi lượt thành bằng chứng.
+- **L01-23** · 6 → **7** ✗: Thêm thẻ mới, câu thử ở trại, rương. Bot không đo được "vui".
 
-### C. Gameplay
+### D. Xử lý lỗi: 7,7 → 8,5
+- **L01-24** · 9 → **9** ✓: Câu thử ở trại sai thì không mất tim.
+- **L01-25** · 9 → **9** ✓
+- **L01-26** · 8 → **8** ✓: 0 giả thuyết từ lỗi lẻ.
+- **L01-27** · 4 → **8** ✓: "💡 Đại từ (I, he, she…) đứng trước động từ…".
+- **L01-28** · 9 → **9** ✓: Ba dòng.
+- **L01-29** · 7 → **8** ✓: Trại dạy và cho thử đúng phần vừa sai.
 
-| ID | Điểm | KQ | Quan sát |
-|---|---|---|---|
-| L01-17 Hiểu luật chơi | 8 | ✓ | Mỗi lượt có một câu ngắn ("Trả lời đúng để tấn công"), tim, xu; bot không cần hướng dẫn. |
-| L01-18 Không che mục tiêu học | 8 | ✓ | Tiêu đề lượt ghi tên năng lực ("👾 Quái · There is / there are"). |
-| L01-19 Độ khó phù hợp | 5 | ✗ | Ngày 0 đúng 79% là hợp lý. Từ ngày 10, đúng 86–100% vì lặp câu cũ. Thắng 46/49 tầng. |
-| L01-20 Tách độ khó game và ngôn ngữ | 9 | ✓ | Theo thiết kế, độ khó game chỉ đổi tim; xu/tầng không vào mastery (`engine-quest.test`). |
-| L01-21 Game đúng mục tiêu học | 4 | ✗ | 3 nút ngữ pháp bị hỏi khoảng 49 lần mỗi nút sau khi bot đã biết. Unit từ vựng A1 bot chưa nắm thì gần như không vào game. |
-| L01-22 Game tạo bằng chứng | 9 | ✓ | 338/338 câu trả lời trong game đều vào sổ, có nguồn gốc. |
-| L01-23 Không thành bài thi khô | 6 | ✗ | Có cảnh, tim, xu. Thực chất là câu chọn hoặc tự gõ có biểu tượng, và lặp cùng 3 câu. Bot không đo được "vui". |
+### E. Micro-learning: 6,3 → 8,0
+- **L01-30** · 7 → **8** ✓: Bí kíp nhắm đúng nút vừa sai.
+- **L01-31** · 9 → **9** ✓
+- **L01-32** · 7 → **7** ✗: Bí kíp từ vựng còn nghèo ("cook (verb): nấu ăn").
+- **L01-33** · 8 → **8** ✓
+- **L01-34** · 4 → **8** ✓: "Thử ngay 1 câu" sau bí kíp; thẻ mới trước câu đầu.
+- **L01-35** · 3 → **8** ✓: Snapshot `micro:fixed/not-yet` kèm mastery trước/sau (37/10).
 
-### D. Xử lý lỗi
+### F. Mastery: 6,2 → 8,2
+- **L01-36** · 5 → **8** ✓: Đạt thật sai 0–1 nút/seed; Claim hiện là "suy ra".
+- **L01-37** · 1 → **8** ✓: 0 nút kẹt ở cả 4 lần chạy; âm tính giả cuối kỳ 0–2.
+- **L01-38** · 9 → **9** ✓
+- **L01-39** · 8 → **8** ✓: Claim có độ tin cậy "thấp".
+- **L01-40** · 8 → **8** ✓: Claim bị phủ định 54–58 lần (seed 2/3).
 
-| ID | Điểm | KQ | Quan sát |
-|---|---|---|---|
-| L01-24 Không phạt quá mức | 9 | ✓ | Mất 1 tim, vẫn có xu, "Tầng này vẫn chờ bạn, không mất gì". |
-| L01-25 Nhận diện lỗi | 9 | ✓ | Mọi câu sai được ghi đúng. |
-| L01-26 Không vội kết luận gốc rễ | 8 | ✓ | Một lỗi chỉ được ghi nhận; 0 giả thuyết thiếu phần nền trong 44 ngày. Mastery theo Beta, một lỗi không làm mất Đạt. |
-| L01-27 Phản hồi dễ hiểu | 4 | ✗ | Chỉ "Đáp án: aren't / Bạn trả lời: …", không có vì sao. Giải thích chỉ đến sau đó ở trại. |
-| L01-28 Phản hồi không dài | 9 | ✓ | Hai dòng. |
-| L01-29 Lỗi dẫn tới hành động | 7 | ✗ | Cuối tầng có "Lượt sau app sẽ đưa lại: …", trại dạy phần vừa sai. Không có câu làm lại ngay. |
+### G. Thích ứng: 5,0 → 7,7
+- **L01-41** · 5 → **8** ✓
+- **L01-42** · 7 → **7** ✗: Một bot không đủ để so; L02 sẽ so.
+- **L01-43** · 2 → **8** ✓: Bước tiếp theo đổi 4–6 lần theo bằng chứng.
+- **L01-44** · 5 → **7** ✗: Bỏ qua bằng Claim + "Tôi biết rồi"; xác nhận vẫn chậm.
+- **L01-45** · 3 → **8** ✓: Rương 39–44 lượt (seed 2/3). Seed 1 chỉ 4 lượt vì ít nút Đạt.
+- **L01-46** · 8 → **8** ✓: Trinh sát 48–71 lượt.
 
-### E. Micro-learning
+### H. Bằng chứng: 8,1 → 8,3
+- **L01-47** · 9 → **9** ✓
+- **L01-48** · 9 → **9** ✓
+- **L01-49** · 8 → **8** ✓: Thêm ngữ cảnh micro cho câu thử ở trại.
+- **L01-50** · 8 → **8** ✓
+- **L01-51** · 7 → **8** ✓: Lặp trong ngày ×0,5; chỉ nhớ lại cách quãng mới tính xác minh.
+- **L01-52** · 8 → **8** ✓: Câu sau thẻ dạy hoặc bí kíp tính là có trợ giúp.
+- **L01-53** · 8 → **8** ✓: Đoán mò được trừ cả ở chẩn đoán.
 
-| ID | Điểm | KQ | Quan sát |
-|---|---|---|---|
-| L01-30 Đúng chỗ thiếu | 7 | ✗ | Trại chiếu bí kíp đúng nút vừa sai (48 lần). Nút từ vựng chỉ có tiêu đề "A1 · Unit 19". |
-| L01-31 Đủ nhỏ | 9 | ✓ | Khoảng 5 dòng. |
-| L01-32 Hợp trình độ | 7 | ✗ | Tiếng Việt, có đối chiếu với tiếng Việt (tốt cho ngữ pháp). Bí kíp từ vựng nghèo. |
-| L01-33 Có ví dụ | 8 | ✓ | 2 ví dụ có dịch. |
-| L01-34 Luyện ngay sau giải thích | 4 | ✗ | Trại → "Hồi một tim và đi tiếp"; lượt sau thường là nút khác. |
-| L01-35 Kiểm tra sau bí kíp | 3 | ✗ | Bí kíp 60 giây có câu kiểm tra chỉ có ở bài học; người chơi tháp không gặp lần nào. |
+### I. Kết quả học (mô phỏng): 4,7 → 5,7
+- **L01-54** · 6 → **7** ✗: Câu thử sau bí kíp đúng khoảng 80%.
+- **L01-55** · 5 → **5** ✗: Đo 7 ngày nhiễu (12 câu).
+- **L01-56** · 3 → **5** ✗: Trùm câu mới 66–75%; nút thật sự biết 3 → 6.
+- **L01-57** · 3 → **6** ✗: Rương ôn chạy được; hiệu quả cần người thật.
+- **L01-58** · 6 → **6** ✗
+- **L01-59** · 5 → **5** ✗: Ngoài game vẫn thấp hơn trong game.
 
-### F. Mastery
+### J. Động lực (suy ra): 5,3 → 7,0
+- **L01-60** · 3 → **6** ✗: Thanh kỹ năng tăng dần. Số năng lực Can-do A1 vẫn 0/36 sau 44 ngày (người học mô phỏng tiến chậm).
+- **L01-61** · 8 → **8** ✓
+- **L01-62** · 8 → **8** ✓
+- **L01-63** · 2 → **6** ✗: Có "+N kỹ năng trong 7 ngày"; xu vẫn lớn hơn nhiều so với tiến bộ thật.
 
-| ID | Điểm | KQ | Quan sát |
-|---|---|---|---|
-| L01-36 Không công nhận quá sớm | 5 | ✗ | Nút có bằng chứng thật: chỉ 3–5 "Đạt" sai (tốt). Nhưng Claim từ chẩn đoán (n = 0) được tính Đạt: 48–60 nút sai. |
-| L01-37 Không từ chối vô lý | **1** | ✗ | g-a1-07/08/22: bot thật sự biết (0,83–0,92), đúng hơn 35 lần qua 40 ngày, nhưng app vẫn "cần xác minh" vĩnh viễn vì hết câu mới. |
-| L01-38 Mastery đa chiều | 9 | ✓ | 5 mức riêng (nhận ra → tự do), mỗi mức một ô. |
-| L01-39 Có độ tin cậy | 8 | ✓ | Có cận dưới và độ tin cậy thấp/vừa/cao; không hiện cho người mới. |
-| L01-40 Có thể sửa | 8 | ✓ | 13 lần chuyển từ Đạt về đang học hoặc mở lại; có quyết định REOPEN. |
+### K. Lộ trình: 5,8 → 7,5
+- **L01-64** · 7 → **7** ✗
+- **L01-65** · 8 → **8** ✓
+- **L01-66** · 5 → **8** ✓: Giãn cách + giới hạn phần học dở.
+- **L01-67** · 3 → **7** ✗: Lộ trình đổi theo bằng chứng, nhưng Claim sai còn nằm ngoài lộ trình tới khi được xác nhận.
 
-### G. Thích ứng
+### L. Vòng khép kín: 5,0 → 7,5
+- **L01-68** · 9 → **9** ✓
+- **L01-69** · 8 → **8** ✓
+- **L01-70** · 5 → **8** ✓
+- **L01-71** · 6 → **8** ✓
+- **L01-72** · 3 → **8** ✓
+- **L01-73** · 5 → **6** ✗: Trùm transfer chưa ưu tiên nút vừa Đạt.
+- **L01-74** · 2 → **6** ✗: Ôn từ sổ chạy được, nhưng mới vài chục lượt.
+- **L01-75** · 2 → **7** ✗: Rương quyết định lượt chơi.
 
-| ID | Điểm | KQ | Quan sát |
-|---|---|---|---|
-| L01-41 Biết cần gì tiếp | 5 | ✗ | Luôn có bước tiếp theo, nhưng cùng một bước suốt 40 ngày. |
-| L01-42 NBA theo trạng thái | 7 | ✗ | Đúng về cấu trúc (có unit test). Một bot không đủ để so hai người học; L02 sẽ so. |
-| L01-43 NBA đổi khi bằng chứng đổi | **2** | ✗ | Kỹ năng thật ở "There is / there are" tăng 0,58 → 0,84, bước tiếp theo vẫn là nó. |
-| L01-44 Có thể bỏ qua | 5 | ✗ | Chẩn đoán bỏ được cấp dưới; có "Tôi biết rồi". Nhưng nút đã biết không được bỏ qua (kẹt). |
-| L01-45 Có thể ôn lại | 3 | ✗ | Rương: 0 lượt trong 44 ngày; NBA không đề xuất ôn lần nào. |
-| L01-46 Dò thêm khi chưa chắc | 8 | ✓ | Trinh sát 49 lượt và kiểm tra nhanh 19 lần (xác nhận / ranh giới). |
+### M. Hard gate: 10 / 10 / 10 / 10 / 10, giữ nguyên
+- Điểm game ≠ mastery.
+- Hoàn thành ≠ mastery.
+- Một lỗi ≠ thiếu kiến thức.
+- Không tự quyết lộ trình.
+- Không cần AI lúc chạy.
 
-### H. Bằng chứng
-
-| ID | Điểm | KQ | Quan sát |
-|---|---|---|---|
-| L01-47 Câu trả lời không thành mastery trực tiếp | 9 | ✓ | Câu trả lời → sổ → tổng hợp → Beta (L0–L4), có test. |
-| L01-48 Có nguồn gốc | 9 | ✓ | Mỗi câu có `ch` (vd. `quest-1:12:3:g:…`), phiên, máy, thời điểm. |
-| L01-49 Biết ngữ cảnh | 8 | ✓ | quest-monster / transfer / probe / measure / diag. |
-| L01-50 Biết dạng câu | 8 | ✓ | Câu chọn / tự gõ và mức 1–5. Game chưa có câu nghe. |
-| L01-51 Nhận diện làm lại | 7 | ✗ | Có cờ retry và tính câu mới; câu lặp vẫn cộng Beta đầy đủ (m = 0,97 trên 3 câu lặp). |
-| L01-52 Nhận diện gợi ý | 8 | ✓ | Câu có gợi ý tính trọng số 0,5; câu sau bí kíp có cờ `hint`. |
-| L01-53 Xét khả năng đoán | 8 | ✓ | Độ tin cậy giảm theo số phương án; có ước lượng tỉ lệ đoán. |
-
-### I. Kết quả học (mô phỏng, xem giới hạn)
-
-| ID | Điểm | KQ | Quan sát |
-|---|---|---|---|
-| L01-54 Tăng ngay | 6 | ✗ | Sau khi sai và đọc bí kíp, câu đó lần sau thường đúng. Đó là vì app hỏi lại đúng câu cũ. |
-| L01-55 Tăng sau một thời gian | 5 | ✗ | Đo 7 ngày bằng đo sau (7/12). |
-| L01-56 Transfer | 3 | ✗ | Câu mới chỉ đúng 68% (câu đã gặp 89%); nút thật sự biết 0 → 4/34 sau 473 câu. |
-| L01-57 Nhớ lâu | 3 | ✗ | Không có vòng ôn nào trong game. Đo 30 ngày 9/12, nhưng cùng 12 câu đo lần thứ 4, nên có hiệu ứng quen câu. |
-| L01-58 Tự lực | 6 | ✗ | Game không có gợi ý; mức 3 bắt tự gõ. |
-| L01-59 Năng lực ngoài game | 5 | ✗ | Ngoài game (đo/dò) đúng 60–66%, so với 80% trong game. |
-
-### J. Động lực (suy ra từ màn hình)
-
-| ID | Điểm | KQ | Quan sát |
-|---|---|---|---|
-| L01-60 Muốn chơi tiếp | 3 | ✗ | Tiến độ thật giảm 4 → 1/36 sau 44 ngày; người thật rất dễ bỏ. |
-| L01-61 Phần thưởng không đánh lừa | 8 | ✓ | Tháp ghi "Thắng hay thua không đổi đánh giá năng lực" ngay cạnh tiến độ thật. |
-| L01-62 Sai không làm bỏ cuộc | 8 | ✓ | Thua 3/49 tầng, không mất gì. |
-| L01-63 Tiến độ có ý nghĩa | **2** | ✗ | Tầng 47, 3.980 xu, mà năng lực Đạt 1/36. Hai số đi ngược nhau. |
-
-### K. Lộ trình
-
-| ID | Điểm | KQ | Quan sát |
-|---|---|---|---|
-| L01-64 Cá nhân hoá | 7 | ✗ | Lộ trình dựng từ kết quả dò của bot (bỏ cấp dưới). Đúng ý, nhưng dựa trên ước lượng từ vựng cao. |
-| L01-65 Theo tiền đề | 8 | ✓ | Tiền đề cứng chặn; nhóm tiền đề thay thế (v67). |
-| L01-66 Không thừa | 5 | ✗ | Đúng phạm vi mục tiêu, nhưng lãng phí: khoảng 150 lượt cho 3 nút đã biết. |
-| L01-67 Có thể thay đổi | **3** | ✗ | Về thiết kế thì đổi được; thực tế đứng yên 40 ngày. |
-
-### L. Vòng khép kín
-
-| ID | Điểm | KQ | Quan sát |
-|---|---|---|---|
-| L01-68 Chơi → Quan sát | 9 | ✓ | Mọi lượt thành bằng chứng. |
-| L01-69 Quan sát → Suy luận | 8 | ✓ | Beta, độ tin cậy, xác minh, mở lại. |
-| L01-70 Suy luận → Thích ứng | 5 | ✗ | Chọn câu theo loại lỗ hổng: có. Trạng thái "cần xác minh" kẹt thì không đổi được hành động. |
-| L01-71 Thích ứng → Học | 6 | ✗ | Trại dạy phần vừa sai; không có luyện ngay sau đó. |
-| L01-72 Học → Kiểm tra | 3 | ✗ | Cổng xác minh có nhưng kẹt; không có câu kiểm tra sau bí kíp trong game. |
-| L01-73 Kiểm tra → Transfer | 5 | ✗ | Trùm câu mới 46 lượt, nhưng hỏi chủ yếu nút bot chưa biết, không phải nút vừa đạt. |
-| L01-74 Transfer → Nhớ lâu | 2 | ✗ | Không có lượt ôn nào. |
-| L01-75 Nhớ lâu → Chơi | 2 | ✗ | Rương có trong thiết kế, chưa xuất hiện lần nào. |
-
-### M. Hard gate
-
-| ID | Điểm | KQ | Chứng cứ |
-|---|---|---|---|
-| L01-76 Điểm game ≠ mastery | 10 | PASS | Xu/tầng chỉ nằm ở `e.q`; tầng 47 nhưng Đạt 1/36. Có test `engine-quest`. |
-| L01-77 Hoàn thành bài ≠ mastery | 10 | PASS | Chỉ câu trả lời mới vào sổ. Tiến độ cũ trước v55 chỉ là Claim. |
-| L01-78 Một lỗi ≠ thiếu kiến thức chắc chắn | 10 | PASS | 0 giả thuyết từ lỗi lẻ; luật bí kíp "log" cho lỗi lẻ. |
-| L01-79 Người học không phải tự quyết lộ trình | 10 | PASS | Mục tiêu tự đặt, game tự chọn câu. |
-| L01-80 Không phụ thuộc AI lúc chạy | 10 | PASS | Bot chạy hết 44 ngày không gọi API nào; app không có lời gọi AI; có `offline.spec`. |
-
-Các cổng khác trong danh sách Hard Gate của spec (có kiểm tra lại, có transfer, có trạng thái người học, có bằng chứng, NBA theo trạng thái) đều **có cơ chế**, nên PASS. Chạy thật thì cơ chế kiểm tra lại bị kẹt, đó là lý do các nhóm F, G, L thấp.
-
-## Đề xuất sửa (theo thứ tự gốc rễ)
-
-1. **Gỡ kẹt "cần xác minh"** (`ev/store.ts` derive, luật m3.3; chạy lại mô phỏng):
-   - Một câu đã gặp mà trả lời đúng sau ≥ 1 ngày không gặp (nhớ lại cách quãng) được tính như câu mới.
-   - Hoặc miễn khi đã hết câu mới ở mức đó, giống ngoại lệ của Readiness.
-   - Thêm test đúng kịch bản bot: 3 câu, sai lần đầu 2 câu, sau đó đúng nhiều ngày → phải Đạt.
-2. **Chống hỏi lại quá mức trong game:**
-   - Mỗi nút tối đa 2 lượt/tầng.
-   - Nút đang chờ xác minh mà hết câu mới → chuyển sang mức kế tiếp hoặc trùm transfer, hoặc tạm rời biên lộ trình.
-3. **Claim từ chẩn đoán không tính là Đạt:**
-   - Tiến độ và Readiness tách "đã Đạt" khỏi "suy ra, chờ xác nhận".
-   - Trinh sát trong game ưu tiên xác nhận Claim, nhiều nút mỗi tầng thay vì 1 nút/ngày ngoài game.
-4. **Khép vòng nhớ lâu trong game:** rương lấy cả Claim đã xác nhận và nút Đạt sắp quên. Sau trại thêm 1 câu kiểm tra cùng nút.
-5. **Phản hồi khi sai:** thêm một dòng "vì sao" lấy từ bí kíp của nút.
-6. **Giao diện người mới:**
-   - Ẩn bảng giờ học IELTS/VSTEP khi chỉ có CEFR.
-   - Thêm nút cho "Bước tiếp theo" trên tháp.
-   - Ghi đúng số câu dò.
-7. **Đo:** dùng bộ câu song song cho các lần đo sau, tránh hiệu ứng quen câu.
-
-Sau khi sửa: chạy lại bot cùng seed và vài seed khác, so bảng này.
+## Còn lại (theo thứ tự đáng làm)
+1. **Cần người học thật (nhóm I):** mở cohort nhỏ dùng bộ đo v63, với các lần đo trước, sau, 7 ngày và 30 ngày. Bot không chứng minh được hiệu quả học.
+2. **Xác nhận Claim nhanh hơn:** khoảng 1/3 Claim sai còn lại sau 44 ngày. Có thể thêm một lượt trinh sát mỗi tầng khi còn nhiều Claim.
+3. **Trùm transfer** ưu tiên nút vừa Đạt (VERIFY → TRANSFER).
+4. **Bài dò có phần nghe**, để thấy hồ sơ không đồng đều (L01-16).
+5. **Lộ trình hôm nay** bỏ thuật ngữ còn lại; bí kíp từ vựng giàu hơn.
