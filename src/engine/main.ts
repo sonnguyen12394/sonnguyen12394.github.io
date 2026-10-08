@@ -6,7 +6,7 @@ import { migrateE, sanitizeE, mergeE, E_V, GOAL_MAX, type EState } from './state
 import { GOALS, loadGraph, loaded, goalOn } from './data.ts';
 import { viewGoals, viewPick, viewGoal, dayOf, type ECtx } from './views.ts';
 import { viewDiagIntro, viewDiagRun, viewDiagResult, viewLoading, lrBand, type DiagRun } from './diagview.ts';
-import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, type Cand } from './diag.ts';
+import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, autoGoal, QUICK_PROBES, type Cand } from './diag.ts';
 import { ingest, setPrior } from './ev/store.ts';
 import { dev } from './core.ts';
 import { addSnap } from './ev/snapshot.ts';
@@ -37,6 +37,7 @@ export interface EngineModule {
   render(route: string): string;
   after(route: string): void;
   next(): { h: string; p: string; btn: string } | null;   // nút chính trang chủ theo lộ trình; null = dùng cách cũ
+  autoGoal(id: string, why: string): boolean;              // goal-first (v64): đặt mục tiêu khi người học chưa có mục tiêu nào
   sanitize(e: unknown): EState;
   merge(a: unknown, b: unknown): EState;
 }
@@ -59,16 +60,31 @@ export function init(host: EHost): EngineModule {
   const V = (): EState => { const e = E(); return { ...e, goals: e.goals.filter(g => goalOn(g.id, future())) }; };
   let loadErr = '';
   const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('probe') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout') || route.startsWith('xfer') || route.startsWith('micro') || route.startsWith('quest') || route.startsWith('measure');
+  // Tải đồ thị một lần; đang tải thì không gọi lại; lỗi thì chờ người học bấm "Thử lại" (retry). Trước v64-fix: màn chính (tháp) vẽ lại
+  // sau mỗi lần lỗi, mỗi lần vẽ lại gọi ensure() → tải lại → lỗi → vẽ lại… vòng lặp vô hạn khi mất mạng.
+  let loading = false;
   const ensure = () => {
-    if (loaded()) return;
-    loadGraph(host.fetchJson).then(() => { loadErr = ''; host.render(); })
-      .catch(() => { loadErr = 'Chưa tải được bản đồ năng lực. Kiểm tra mạng rồi thử lại.'; host.render(); });
+    if (loaded() || loading || loadErr) return;
+    loading = true;
+    loadGraph(host.fetchJson).then(() => { loading = false; loadErr = ''; host.render(); })
+      .catch(() => { loading = false; loadErr = 'Chưa tải được bản đồ năng lực. Kiểm tra mạng rồi thử lại.'; host.render(); });
   };
 
   // ---------- Chẩn đoán (M3) ----------
   let drun: DiagRun | null = null;
   const lr = () => lrBand(host.state());
   const norm = (s: string) => s.trim().toLowerCase().replace(/[‘’]/g, "'").replace(/[.!?]+$/, '').replace(/\s+/g, ' ');
+  // Thêm một mục tiêu (dùng chung cho chọn tay và tự đặt). Trả về false nếu không thêm được.
+  function addGoal(id: string, why: 'pick' | 'auto'): boolean {
+    const m = GOALS.get(id), e = E();
+    if (!m || !goalOn(id, future()) || e.goals.some(g => g.id === id)) return false;
+    if (e.goals.length >= GOAL_MAX) e.goals = e.goals.filter(g => goalOn(g.id, future()));   // nhường chỗ: bỏ mục tiêu đang ẩn trước
+    if (e.goals.length >= GOAL_MAX) { host.toast(`Tối đa ${GOAL_MAX} mục tiêu cùng lúc. Bỏ bớt một mục tiêu trước.`); return false; }
+    e.goals.push({ id, version: m.version, since: host.today(), date: null });
+    if (why === 'auto') addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `goal:${id}`, dec: 'goal:AUTO', rule: `${RULE_ID}/goal-auto-1`,
+      info: { goal: id, ...(e.diag ? { u: e.diag.u, g: e.diag.g } : {}) }, evs: [] }, false);
+    return true;
+  }
   function candidates(): Cand[] {
     const ix = loaded()!, e = V();
     const goals = e.goals.map(s => ix.goal.get(s.id)).filter((g): g is NonNullable<typeof g> => !!g);
@@ -104,6 +120,8 @@ export function init(host: EHost): EngineModule {
       if (p) setPrior(e.ev, e.m, n.id, defaultLevel(n), p[0], p[1], 'diag', host.today());
     }
     e.diag = { day: host.today(), u: est.u, g: est.g, n: d.probed.length };
+    // Goal-first (v64): chưa có mục tiêu nào đang mở thì tự đặt mục tiêu CEFR kế tiếp (đổi được ở Mục tiêu).
+    if (!V().goals.length) { const b = lr(); addGoal(autoGoal(est.u, est.g, [b.L, b.R].map(x => (x === null ? null : bandToCefr(x)))), 'auto'); }
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: 'diag', dec: `u=${est.u};g=${est.g}`, rule: `${RULE_ID}/diag-stair-1`,
       info: { u: est.u, g: est.g, probes: d.probed.length, start: d.stair.u.seen[0] ?? 0, rev: d.stair.u.rev + d.stair.g.rev },
       evs: e.ev.led.filter(x => x.src === 'diag').slice(-12).map(x => x.id) }, false);
@@ -341,7 +359,7 @@ export function init(host: EHost): EngineModule {
       if (qrun?.done) return viewQuestEnd(c, qrun);
       if (qrun) return viewQuestRun(c, qrun);
       const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-      return viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null);
+      return viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null);
     },
     micro: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -374,7 +392,7 @@ export function init(host: EHost): EngineModule {
       if (!tout && (!toutRes || toutRes.node !== node)) toutStart(node);
       return viewTout(c, tout, toutRes && toutRes.node === node ? toutRes : null);
     },
-    diag: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return drun ? viewDiagRun(c, drun) : viewDiagIntro(c, lr()); },
+    diag: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return drun ? viewDiagRun(c, drun) : viewDiagIntro(c, lr(), c.route === 'diag/quick'); },
     'diag-result': c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewDiagResult(c, lr()); },
     goals: viewGoals,
     why: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewWhy(c); },
@@ -389,21 +407,18 @@ export function init(host: EHost): EngineModule {
   const act: Record<string, (el: HTMLElement) => void> = {
     go(el) { host.go(el.dataset.r || 'goals'); },
     add(el) {
-      const id = el.dataset.g || '', m = GOALS.get(id), e = E();
-      if (!m || !goalOn(id, future()) || e.goals.some(g => g.id === id)) return;
-      if (e.goals.length >= GOAL_MAX) e.goals = e.goals.filter(g => goalOn(g.id, future()));   // nhường chỗ: bỏ mục tiêu đang ẩn trước
-      if (e.goals.length >= GOAL_MAX) { host.toast(`Tối đa ${GOAL_MAX} mục tiêu cùng lúc. Bỏ bớt một mục tiêu trước.`); return; }
-      e.goals.push({ id, version: m.version, since: host.today(), date: null });
-      host.save(); host.toast(`Đã chọn: ${m.vi}.`); host.go(`goal/${id}`);
+      const id = el.dataset.g || '';
+      if (!addGoal(id, 'pick')) return;
+      host.save(); host.toast(`Đã chọn: ${GOALS.get(id)!.vi}.`); host.go(`goal/${id}`);
     },
     rm(el) {
       const e = E(), id = el.dataset.g || '';
       e.goals = e.goals.filter(g => g.id !== id); host.save(); host.render();
     },
     retry() { loadErr = ''; ensure(); host.render(); },
-    dstart() {
+    dstart(el) {
       if (!loaded()) { ensure(); return; }
-      drun = loadNode(startDiag(startLevel(), Date.now()));
+      drun = loadNode(startDiag(startLevel(), Date.now(), el.dataset.q ? QUICK_PROBES : undefined));
       if (!drun) { host.toast('Không có gì để dò cho mục tiêu này.'); return; }
       host.render();
     },
@@ -493,6 +508,12 @@ export function init(host: EHost): EngineModule {
     version: MODULE_VERSION,
     render,
     after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } if (!route.startsWith('micro')) mrun = null; },
+    autoGoal(id, why) {
+      if (V().goals.length) return false;
+      const ok = addGoal(id, why === 'pick' ? 'pick' : 'auto');
+      if (ok) host.save();
+      return ok;
+    },
     next() {
       const e = V();
       if (!e.goals.length) return null;

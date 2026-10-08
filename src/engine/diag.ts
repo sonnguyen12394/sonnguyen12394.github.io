@@ -16,13 +16,14 @@ export interface DiagState {
   probed: string[];             // id nút đã dò
   turn: Kind;
   results: Array<{ id: string; kind: Kind; lv: number; got: number; of: number }>;
+  max?: number;                 // số nút dò tối đa (bài dò ngắn cho người mới: QUICK_PROBES)
 }
 
-export const MAX_PROBES = 16, MAX_MS = 20 * 60 * 1000, MIN_PER_KIND = 5;
+export const MAX_PROBES = 16, MAX_MS = 20 * 60 * 1000, MIN_PER_KIND = 5, QUICK_PROBES = 8;
 
-export function startDiag(startLv: number, now: number): DiagState {
+export function startDiag(startLv: number, now: number, max: number = MAX_PROBES): DiagState {
   const s = (): Stair => ({ est: Math.max(0, Math.min(5, startLv)), dir: 0, rev: 0, n: 0, seen: [] });
-  return { t0: now, stair: { u: s(), g: s() }, probed: [], turn: 'u', results: [] };
+  return { t0: now, stair: { u: s(), g: s() }, probed: [], turn: 'u', results: [], ...(max !== MAX_PROBES ? { max } : {}) };
 }
 
 // Nút dò tiếp theo cho lượt hiện tại: cùng loại, cấp gần mức ước tính nhất, chưa dò, nhiều năng lực mục tiêu phụ thuộc nhất.
@@ -52,8 +53,9 @@ export function answer(d: DiagState, c: Cand, got: number, of: number): void {
 }
 
 export function finished(d: DiagState, now: number, left: number): boolean {
-  if (left === 0 || now - d.t0 >= MAX_MS || d.probed.length >= MAX_PROBES) return true;
-  const ok = (s: Stair) => s.n >= MIN_PER_KIND && s.rev >= 2;
+  const max = d.max ?? MAX_PROBES;
+  if (left === 0 || now - d.t0 >= MAX_MS || d.probed.length >= max) return true;
+  const ok = (s: Stair) => s.n >= Math.min(MIN_PER_KIND, Math.floor(max / 2)) && s.rev >= 2;
   return ok(d.stair.u) && ok(d.stair.g);
 }
 
@@ -77,3 +79,13 @@ export const cefrIdx = (c: Cefr | null): number => (c ? CEFRS.indexOf(c) : 0);
 export const cefrOf = (lv: number): Cefr => CEFRS[Math.max(0, Math.min(5, Math.round(lv)))]!;
 // Band IELTS tiêu biểu của một cấp CEFR (giữa khoảng trong bảng quy đổi của app; A1/A2 dưới thang IELTS chính thức).
 export const BAND_OF: Record<Cefr, number> = { A1: 2.5, A2: 3.5, B1: 4.5, B2: 6, C1: 7.5, C2: 8.5 };
+
+// Goal-first (v64): mục tiêu tự đặt sau chẩn đoán = cấp CEFR kế tiếp của phần yếu nhất. Cấp đã biết của một cầu thang là cấp
+// ≤ ước tính − 0,5 (như priorFor); Nghe/Đọc từ bài kiểm tra đầu vào là cấp đã làm được. Chưa biết gì → A1.
+export function autoGoal(u: number, g: number, lr: Array<Cefr | null> = []): string {
+  const next = (est: number) => Math.floor(est - 0.5) + 1;
+  const idx = Math.min(next(u), next(g), ...lr.filter((c): c is Cefr => !!c).map(c => CEFRS.indexOf(c) + 1));
+  return `cefr-${CEFRS[Math.max(0, Math.min(5, idx))]!.toLowerCase()}`;
+}
+// Người dùng cũ chưa có mục tiêu: cấp kế tiếp của cấp đang học (unit hiện tại) — đang học ở cấp đó thì mục tiêu là chính cấp đó.
+export const goalOfLevel = (cefr: Cefr): string => `cefr-${cefr.toLowerCase()}`;

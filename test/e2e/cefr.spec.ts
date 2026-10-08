@@ -5,13 +5,11 @@ import { test, expect, openApp, navTo } from './fixtures.ts';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 test.use({ future: false });
 
-// "Bắt đầu học" mở thẳng bài đầu tiên (thanh điều hướng ẩn trong bài): thoát bài để về trang chính.
+// v64: "Bắt đầu" mở bài dò ngắn (goal-first); thanh điều hướng vẫn hiện.
 async function startCefr(page: import('@playwright/test').Page): Promise<void> {
   await page.waitForFunction(() => (window as any).ELREADY === true);
-  await page.getByRole('button', { name: 'Bắt đầu học' }).click();
-  await page.getByRole('button', { name: 'Thoát bài học' }).click();
-  const m = page.locator('#modal:not([hidden])');
-  if (await m.count()) await m.getByRole('button').first().click();
+  await page.getByRole('button', { name: 'Bắt đầu', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Bạn đang ở đâu?' })).toBeVisible({ timeout: 15000 });
   await expect(page.locator('#bnav:visible button, #nav:visible button').first()).toBeVisible();
 }
 
@@ -22,8 +20,9 @@ test('màn chào học CEFR; không có tab Ôn thi; chỉ mục tiêu CEFR', as
   await startCefr(page);
   const nav = page.locator('#bnav:visible button, #nav:visible button');
   await expect(nav.filter({ hasText: 'Ôn thi' })).toHaveCount(0);
-  await navTo(page, 'Tôi');
-  await page.getByRole('button', { name: /Mục tiêu của bạn/ }).click();
+  const goalsBtn = page.getByRole('button', { name: /Mục tiêu của bạn/ });   // bấm lại nếu cú bấm rơi vào lúc màn vẽ lại (mô-đun engine vừa nạp)
+  await expect(async () => { if (!(await goalsBtn.isVisible())) await navTo(page, 'Tôi'); await expect(goalsBtn).toBeVisible({ timeout: 3000 }); }).toPass({ timeout: 20000 });
+  await goalsBtn.click();
   await expect(page.getByRole('heading', { name: 'Mục tiêu của bạn', level: 1 })).toBeVisible();
   await expect(page.getByRole('button', { name: /^VSTEP/ })).toHaveCount(0);
   await expect(page.getByRole('button', { name: /^IELTS/ })).toHaveCount(0);

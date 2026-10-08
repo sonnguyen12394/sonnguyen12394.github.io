@@ -15,7 +15,7 @@ export interface QuestRun {
 
 const hearts = (hp: number, max: number): string => `<span aria-label="${hp}/${max} tim">${'❤️'.repeat(hp)}${'🤍'.repeat(Math.max(0, max - hp))}</span>`;
 
-export function viewQuestHome(c: ECtx, q: QuestSave, ready: { done: number; total: number; vi: string } | null): string {
+export function viewQuestHome(c: ECtx, q: QuestSave, ready: { done: number; total: number; vi: string } | null, next: { h: string; p: string; btn: string } | null = null): string {
   const esc = c.host.esc;
   if (!c.e.goals.length) return `<section class="stack"><span class="eyebrow">Ladder Quest</span><h1>Chọn cấp muốn leo</h1><p class="muted">Tháp được dựng từ mục tiêu CEFR của bạn: mỗi tầng là những gì bạn còn thiếu để lên cấp.</p></section><div class="row"><button class="btn primary" data-e="go" data-r="goals">Chọn mục tiêu</button></div>`;
   return `<section class="stack"><span class="eyebrow">Ladder Quest · tầng ${q.floor}</span><h1>🏰 Leo tháp tiếng Anh</h1>
@@ -23,7 +23,8 @@ export function viewQuestHome(c: ECtx, q: QuestSave, ready: { done: number; tota
     <div class="row" style="gap:12px"><span class="pill">🪙 ${q.coins} xu</span><span class="pill">🏆 Tầng cao nhất ${q.best}</span><span class="pill">✓ ${q.ok}/${q.ans} câu đúng</span></div>
     ${ready ? `<p class="hint">Tiến độ thật của bạn: ${ready.done}/${ready.total} năng lực ${esc(ready.vi)} đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.</p>` : ''}</section>
     <div class="row"><button class="btn primary big" data-e="qstart">▶ Leo tầng ${q.floor} (≈ 8 câu, 4–6 phút)</button></div>
-    <div class="row"><button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay</button></div>`;
+    ${next ? `<section class="panel stack"><span class="eyebrow">Ngoài tháp</span><b>${next.h}</b><p class="hint">${next.p}</p></section>` : ''}
+    <div class="row"><button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay</button><button class="btn ghost small" data-go="path">📚 Học bài</button><button class="btn ghost small" data-go="review">🔁 Ôn tập</button></div>`;
 }
 
 export function viewQuestRun(c: ECtx, r: QuestRun): string {

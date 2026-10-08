@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 63;
+const STATE_V = 18, APP_VERSION = 64;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1549,7 +1549,7 @@ function gExplain(ex,given){
 }
 
 /* ================== UI STATE ================== */
-const ui = { view:'path', unitId:null, sess:null, summary:null, learn:null, speak:null, filter:'learned', wb:{q:'',lv:'',st:'',ty:'',n:60}, openLv:{}, allUnits:{} };
+const ui = { view:'play', unitId:null, sess:null, summary:null, learn:null, speak:null, filter:'learned', wb:{q:'',lv:'',st:'',ty:'',n:60}, openLv:{}, allUnits:{} };
 function go(view,extra={}){ if(view!=='game') stopTimer(); if(view!=='exam') exStop(); if(!['summary','gsum','quiz','session','gsess'].includes(view)) ui.streakUp=null; const nh=extra._nohist; delete extra._nohist; Object.assign(ui,{view},extra); if(HAS_TTS) try{speechSynthesis.cancel();}catch(e){} recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
 /* ---------- Điều hướng: nút Quay lại của điện thoại/trình duyệt, hộp thoại, lượt dở ----------
    Mỗi lần go() ghi một mục lịch sử (history.pushState) nên nút Back về đúng màn trước, không thoát app.
@@ -1595,7 +1595,7 @@ function askOrQuit(){ if(activeRun()) askQuit(); else doQuit(); }
 if(typeof window!=='undefined'&&window.addEventListener) window.addEventListener('popstate',e=>{
   if(ui.modal){ closeModal(); try{ history.pushState(_hist,''); }catch(x){} return; }
   if(activeRun()){ try{ history.pushState(_hist,''); }catch(x){} return askQuit(); }
-  const s=e.state||{view:'path'}; let v=s.view;
+  const s=e.state||{view:'play'}; let v=s.view;
   if(TRANSIENT[v]&&!(v==='word'&&WORD[s.wordId])&&!(v==='dlg'&&DLG[s.dlgId])&&!(v==='fn'&&FN[s.fnId])) v=TRANSIENT[v];
   if(v==='unit'&&!UNITS.some(u=>u.id===s.unitId)) v='path';
   if(v==='gpoint'&&!GPT[s.gpId]) v='grammar';
@@ -2381,9 +2381,10 @@ const CD_REF={u:'unit',ul:'unit của cấp',g:'bài ngữ pháp',gl:'bài ngữ
 /* ================== VIEWS ================== */
 // Thanh điều hướng: trên máy tính là hàng tab ở đầu trang; trên điện thoại (≤ 640px) là thanh 5 mục dưới đáy,
 // các phần còn lại nằm trong “Thêm”. Cả hai dùng chung một cách tính mục đang mở.
-const BNAV=[['thi','Ôn thi','exam'],['path','Học','book'],['review','Ôn tập','repeat'],['talk','Kỹ năng','mic'],['more','Tôi','user']];
+const BNAV=[['thi','Ôn thi','exam'],['play','Chơi','trophy'],['path','Học','book'],['review','Ôn tập','repeat'],['talk','Kỹ năng','mic'],['more','Tôi','user']];
 const ico = n => `<svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${n}"/></svg>`;
 function navActive(){
+  if(ui.view==='play'||(ui.view==='goal'&&/^quest/.test(ui.er||''))) return 'play';   // v64: Ladder Quest là màn chính
   const v=ui.view, kind = v==='session' ? ui.sess?.kind : v==='summary' ? ui.summary?.kind : null;
   if(['talk','dlg','fn','rp','wtask','stask','lread','shadow','sounds','sound'].includes(v)||(v==='quiz'&&ui.qz)) return (ui.qz&&ui.qz.meta&&ui.qz.meta.nav)||'talk';
   if(['thi','exam','vx'].includes(v)) return 'thi';
@@ -4176,8 +4177,8 @@ function lessonChrome(){ const v=ui.view, app=document.getElementById('app'); if
 function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); renderChrome();
-  if(ui.view==='path'&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={thi:viewThi,goal:viewGoalE,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  if((ui.view==='path'||ui.view==='play')&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
+  const v={thi:viewThi,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   document.getElementById('app').innerHTML=html;
@@ -4195,7 +4196,7 @@ function render(){
     if(s.ans){ const n=document.getElementById('qznextbtn'); n&&n.focus({preventScroll:true}); } }
   if(ui.view==='exam') exArm();
   if(ui.view==='thi'&&XM) try{ XM.after(ui.xr||'hub'); }catch(e){}
-  if(ui.view==='goal'&&EM) try{ EM.after(ui.er||'goals'); }catch(e){}
+  if((ui.view==='goal'||ui.view==='play')&&EM) try{ EM.after(ui.view==='play'?'quest':ui.er||'goals'); }catch(e){}
   if(ui.view==='sound'&&ui.snd&&!ui.snd.done){
     const s=ui.snd;
     if(!s.ans&&s.played!==s.i){ s.played=s.i; say(sndWord(SND[s.id],s.q[s.i]).w); }
@@ -5071,7 +5072,7 @@ document.addEventListener('click',e=>{
     case 'classshare': return shareText(`${APP_NAME}: ${TAGLINE}. Cả lớp mình dùng app này để học từ vựng và ngữ pháp, mọi bài học miễn phí, không cần tài khoản.`,'class');
     case 'chcopy': { const c=ui.game&&ui.game.code; try{ navigator.clipboard.writeText(c).then(()=>toast('Đã sao chép mã thách đấu.'),()=>toast('Hãy chọn và sao chép mã trong ô.')); }catch(e){ toast('Hãy chọn và sao chép mã trong ô.'); } return; }
   }
-  if(d.go){ ui.sess=null; ui.gs=null; if(d.go==='review') return go('review'); return go(d.go); }
+  if(d.go){ ui.sess=null; ui.gs=null; if(d.go==='review') return go('review'); if(d.go==='goal') return go('goal',{er:'goals'}); return go(d.go); }   // Mục tiêu luôn mở danh sách mục tiêu, không mở lại màn engine cũ
   if(d.unit){ ui.sess=null; return go('unit',{unitId:d.unit}); }
   if(d.word) return go('word',{wordId:d.word});
   if(d.snd) return startSound(d.snd);
@@ -6732,7 +6733,13 @@ GLOSSARY.cefr[1]+=' Dưới A1 còn có Pre-A1 (người mới tinh): app có ph
    hướng dẫn cài cho mọi máy, rung nhẹ khi trả lời đúng, gợi ý giọng đọc tốt hơn, trang “Về app” minh bạch, thẻ chia sẻ tiến độ. */
 
 // 1. Bắt đầu 1 chạm: bài đầu tiên ngay, mục tiêu hỏi sau (lời nhắc “Cho app biết bạn học để làm gì” đã có sau 2 ngày).
-function quickStart(){ st.onboarded=true; st.me.since??=today(); save(); evc('onb:quick'); const cu=currentUnit(); return go('learn',{unitId:cu.id,learn:{uid:cu.id,i:0}}); }
+function quickStart(){ st.onboarded=true; st.me.since??=today(); save(); evc('onb:quick'); autoGoalOnce('cefr-'+currentUnit().level.toLowerCase(),'start'); const cu=currentUnit(); return go('learn',{unitId:cu.id,learn:{uid:cu.id,i:0}}); }
+// v64 goal-first: mọi lối vào đều có mục tiêu. "Bắt đầu" = bài dò ngắn → app tự đặt mục tiêu CEFR kế tiếp → màn chính là tháp.
+function startPlay(){ st.onboarded=true; st.me.since??=today(); save(); evc('onb:play'); return go('goal',{er:'diag/quick'}); }
+function startPreA1(){ st.onboarded=true; st.me.since??=today(); save(); evc('onb:pa'); autoGoalOnce('cefr-pre-a1','start'); return go('prea1'); }
+// Đặt mục tiêu khi người học chưa có (engine nạp lười nên chờ mô-đun). Chỉ một lần: người học tự bỏ hết mục tiêu thì không đặt lại.
+function autoGoalOnce(id,why){ if(st.set.autoGoal) return; emLoad(true).then(m=>{ if(st.set.autoGoal) return; st.set.autoGoal=1; save();
+  if(m.autoGoal(id,'auto')){ if(why==='old') toast('Lộ trình giờ đi theo mục tiêu CEFR '+id.slice(5).toUpperCase()+'. Đổi ở Tôi → Mục tiêu.'); render(); } }).catch(()=>{}); }
 
 // 2. Hướng dẫn cài theo từng loại máy (kể cả khi trình duyệt không tự hiện nút cài).
 const DEV = () => { const u=typeof navigator!=='undefined'?navigator.userAgent:''; return IS_IOS?'ios':/Android/i.test(u)?'android':'desktop'; };
@@ -6807,9 +6814,9 @@ async function shareCard(){ try{
 }catch(e){ if(!e||e.name!=='AbortError') toast('Không tạo được ảnh trên trình duyệt này.'); } }
 
 // Điều hướng, lối vào và mở nhanh từ biểu tượng (manifest shortcuts: ?go=review|talk|prea1)
-DETAIL_SAFE_VIEW.add('install'); DETAIL_SAFE_VIEW.add('about'); ['quickstart','igh','sharecard'].forEach(a=>DETAIL_SAFE_ACT.add(a)); DETAIL_SAFE_GO.add('install'); DETAIL_SAFE_GO.add('about');
+DETAIL_SAFE_VIEW.add('install'); DETAIL_SAFE_VIEW.add('about'); ['quickstart','startplay','startpa','igh','sharecard'].forEach(a=>DETAIL_SAFE_ACT.add(a)); DETAIL_SAFE_GO.add('install'); DETAIL_SAFE_GO.add('about');
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('button'); if(!t) return;
-  switch(t.dataset.act){ case 'quickstart': return quickStart(); case 'igh': st.set.installGuideHide=true; save(); return render(); case 'sharecard': return shareCard(); } });
+  switch(t.dataset.act){ case 'quickstart': return quickStart(); case 'startplay': return startPlay(); case 'startpa': return startPreA1(); case 'igh': st.set.installGuideHide=true; save(); return render(); case 'sharecard': return shareCard(); } });
 const _viewMore29 = viewMore; viewMore = function(){ const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
   return _viewMore29().replace('<div class="units">',`<div class="row"><button class="btn" data-act="sharecard">📤 Chia sẻ thẻ tiến độ</button></div>\n  <div class="units">`)
     .replace(/(<\/div>\s*)$/, `${IS_STANDALONE()?'':it('install','download','Cài lên máy','Hướng dẫn cho iPhone, Android, máy tính: mở một chạm, dùng khi mất mạng')}${it('about','info','Về English Ladder','Cam kết, nội dung hiện có, mã nguồn, góp ý')}$1`); };
@@ -6826,7 +6833,7 @@ const NEWBIE = () => st.days.length<3 && UNITS.filter(u=>U(u.id).passed).length<
 // Nút màn chào (giống bản vẽ sẵn trong index.html): mặc định học CEFR; bật mục tiêu tương lai thì có thêm "Bắt đầu ôn thi".
 const helloActs = () => FUTURE()
   ? '<button class="btn primary" data-act="xstart">Bắt đầu ôn thi</button><button class="btn" data-act="quickstart">Học tiếng Anh nền tảng A1 → C2</button>'
-  : '<button class="btn primary" data-act="quickstart">Bắt đầu học</button><button class="btn" data-go="prea1">Mới tinh: khởi động Pre-A1</button>';
+  : '<button class="btn primary" data-act="startplay">Bắt đầu</button><button class="btn" data-act="startpa">Mới tinh: khởi động Pre-A1</button>';
 const _viewWelcome30 = viewWelcome;
 viewWelcome = function(){ const h=_viewWelcome30();
   if(ui.wz) return h.replace(/<span class="eyebrow">Chào mừng · bước \d\/3<\/span><div class="dots"[^>]*>.*?<\/div>/,'').replace(/data-act="wz" data-s="1"/,'data-act="wz" data-s="0"');
@@ -8171,6 +8178,10 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:64,d:'2026-10-08',t:'Chơi là màn chính',big:true,items:[
+  'Mở app là vào tháp Ladder Quest (tab Chơi). Bài học, ôn tập, kỹ năng vẫn ở các tab còn lại.',
+  'Người mới: bấm "Bắt đầu" để làm bài dò ngắn (3–5 phút); app tự đặt mục tiêu là cấp CEFR kế tiếp của bạn. Đổi ở Tôi → Mục tiêu.',
+  'Đã học mà chưa có mục tiêu: app đặt mục tiêu theo cấp bạn đang học (một lần, có báo).']});
 CHANGELOG.unshift({v:63,d:'2026-10-08',t:'Đo tiến bộ thật',big:false,items:[
   'Mới: "Đo tiến bộ" (Lộ trình hôm nay, hoặc Tôi → Dữ liệu nghiên cứu). 12 câu ngữ cảnh mới giữ riêng, không xuất hiện khi luyện hay chơi; đo lúc bắt đầu, sau 14 ngày học, rồi sau 7 và 30 ngày để xem có nhớ lâu.',
   'Tuỳ chọn tham gia nghiên cứu: chỉ gán nhãn nhóm so sánh vào dữ liệu bạn tự tải, không đổi trải nghiệm học.']});
@@ -8301,10 +8312,10 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.10d27772b9.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.468d1893a8.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
-  go:r=>go('goal',{er:r}),
+  go:r=>r==='quest'?go('play'):go('goal',{er:r}),
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),
   cando:id=>{ const c=CANDO.find(x=>x.id===id); if(!c) return null; const p=cdProg(c); return {p:p.p,m:p.m,lb:p.lb,k:p.k,need:p.need}; },
   probe:node=>eProbe(node),
@@ -8401,10 +8412,12 @@ let _emP=null, _emErr='', _emN=0;
 // Lần tải lại dùng URL khác (?r=N): trình duyệt có thể nhớ lần import hỏng của cùng URL.
 // bg = tải trước khi rảnh: thất bại thì im lặng (không để lỗi nền "dính" lên màn Mục tiêu); mở màn sẽ tải lại và mới báo lỗi.
 function emLoad(bg){ if(EM) return Promise.resolve(EM);
-  return _emP ||= import('./'+ENGINE_JS+(_emN++?'?r='+_emN:'')).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal') render(); return EM; })
-    .catch(e=>{ _emP=null; if(!bg||ui.view==='goal'){ _emErr='Chưa tải được phần mục tiêu. Kiểm tra mạng rồi thử lại.'; if(ui.view==='goal') render(); } throw e; }); }
-function viewGoalE(){
-  if(EM) return EM.render(ui.er||'goals');
+  return _emP ||= import('./'+ENGINE_JS+(_emN++?'?r='+_emN:'')).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal'||ui.view==='play') render(); return EM; })
+    .catch(e=>{ _emP=null; if(!bg||ui.view==='goal'||ui.view==='play'){ _emErr='Chưa tải được phần mục tiêu. Kiểm tra mạng rồi thử lại.'; if(ui.view==='goal'||ui.view==='play') render(); } throw e; }); }
+// v64: tab Chơi = route quest của engine; không ghi đè ui.er (route của màn Mục tiêu).
+function viewPlay(){ return viewGoalE('quest'); }
+function viewGoalE(route){
+  if(EM) return EM.render(route||ui.er||'goals');
   if(!_emP&&!_emErr) emLoad().catch(()=>{});
   return _emErr?`<section class="panel stack"><p class="warnt" role="alert">${esc(_emErr)}</p><div class="row"><button class="btn primary" data-act="emretry">Thử lại</button></div></section>`
     :`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang mở phần mục tiêu…</p>`; }
@@ -8412,7 +8425,7 @@ function viewGoalE(){
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('[data-act="emretry"],[data-xr]'); if(!t) return;
   if(t.dataset.xr){ e.preventDefault(); return go('thi',{xr:t.dataset.xr}); }
   _emErr=''; emLoad().catch(()=>{}); render(); });
-DETAIL_SAFE_VIEW.add('goal'); DETAIL_SAFE_GO.add('goal'); DETAIL_SAFE_ACT.add('emretry');
+DETAIL_SAFE_VIEW.add('goal'); DETAIL_SAFE_VIEW.add('play'); DETAIL_SAFE_GO.add('play'); DETAIL_SAFE_GO.add('goal'); DETAIL_SAFE_ACT.add('emretry');
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,2500)))(()=>emLoad(true).catch(()=>{}));
 // Nạp sẵn khi rảnh để tab “Ôn thi” mở ngay và để gộp/lọc dữ liệu ôn thi khi đồng bộ.
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,1500)))(()=>xmLoad().catch(()=>{}));
@@ -8422,6 +8435,8 @@ function ePriors(){ try{ if(typeof ELCORE==='undefined'||ELCORE.priorsDone(st)) 
   for(const p of GPOINTS){ const g=st.gram[p.id]; if(g&&g.passed) ELCORE.seed(st,'g:'+p.id,4,6,.5); }
   ELCORE.markPriors(st); save(); }catch(e){} }
 ePriors();
+// v64: người dùng cũ đã học mà chưa có mục tiêu → mục tiêu là cấp đang học (một lần, có báo).
+if(st.onboarded&&!(st.e&&(st.e.goals||[]).length)&&ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) autoGoalOnce('cefr-'+currentUnit().level.toLowerCase(),'old');
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
