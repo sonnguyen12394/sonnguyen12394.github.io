@@ -60,10 +60,14 @@ export function init(host: EHost): EngineModule {
   const V = (): EState => { const e = E(); return { ...e, goals: e.goals.filter(g => goalOn(g.id, future())) }; };
   let loadErr = '';
   const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('probe') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout') || route.startsWith('xfer') || route.startsWith('micro') || route.startsWith('quest') || route.startsWith('measure');
+  // Tải đồ thị một lần; đang tải thì không gọi lại; lỗi thì chờ người học bấm "Thử lại" (retry). Trước v64-fix: màn chính (tháp) vẽ lại
+  // sau mỗi lần lỗi, mỗi lần vẽ lại gọi ensure() → tải lại → lỗi → vẽ lại… vòng lặp vô hạn khi mất mạng.
+  let loading = false;
   const ensure = () => {
-    if (loaded()) return;
-    loadGraph(host.fetchJson).then(() => { loadErr = ''; host.render(); })
-      .catch(() => { loadErr = 'Chưa tải được bản đồ năng lực. Kiểm tra mạng rồi thử lại.'; host.render(); });
+    if (loaded() || loading || loadErr) return;
+    loading = true;
+    loadGraph(host.fetchJson).then(() => { loading = false; loadErr = ''; host.render(); })
+      .catch(() => { loading = false; loadErr = 'Chưa tải được bản đồ năng lực. Kiểm tra mạng rồi thử lại.'; host.render(); });
   };
 
   // ---------- Chẩn đoán (M3) ----------
