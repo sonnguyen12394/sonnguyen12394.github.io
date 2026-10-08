@@ -15,6 +15,7 @@ import { gaps, GAP_VI } from './gap.ts';
 import { defaultLevel } from './graph.ts';
 import { xferStatus, XFER } from './transfer.ts';
 import type { NodeState } from './mastery.ts';
+import { recallOf } from './today.ts';
 
 const STATE_VI: Record<NodeState, string> = { unknown: 'chưa có gì', inferred: 'suy ra (chưa có bằng chứng thật)', learning: 'đang học', mastered: '✓ Đạt', verify: 'cần xác minh ở câu mới', reopened: 'mở lại: bằng chứng mới mâu thuẫn' };
 
@@ -66,7 +67,7 @@ function whyNode(c: ECtx, id: string): string {
   const misHtml = mis.length ? `<section class="panel stack"><h3>Có thể đang hiểu sai</h3><p class="muted">Bạn đã trả lời giống nhau nhiều lần mà đều sai, nên đây có thể là một cách hiểu sai hơn là quên:</p><ul>${mis.map(x => `<li lang="en"><b>${esc(x.t)}</b> <span class="hint">· ${n2(x.n)} lần</span></li>`).join('')}</ul></section>` : '';
   const dz = ([1, 2, 3, 4, 5] as Level[]).map(l => e.ev.dis[`${id}|${l}`]).find(x => x?.on);
   const needLv = (Math.max(0, ...e.goals.flatMap(sg => ix.goal.get(sg.id)?.req.filter(r => r.node === id).map(r => r.level) ?? [])) || defaultLevel(n)) as Level;
-  const gk = gaps({ m: e.m, ev: e.ev, node: id, need: needLv, blocked: (ix.pre.get(id) ?? []).some(x => x.type === 'hard' && !stat(e.m[x.to]?.[defaultLevel(ix.node.get(x.to)!)]).pass), recall: c.host.recall?.(id) ?? null });
+  const gk = gaps({ m: e.m, ev: e.ev, node: id, need: needLv, blocked: (ix.pre.get(id) ?? []).some(x => x.type === 'hard' && !stat(e.m[x.to]?.[defaultLevel(ix.node.get(x.to)!)]).pass), recall: recallOf(c.host, e, id) });
   const gapHtml = gk.length ? `<p><b>Loại lỗ hổng:</b> ${gk.map(k => esc(GAP_VI[k])).join(', ')}</p>` : '';
   const hy = e.ev.hyp[id];
   const hyHtml = hy ? `<p class="warnt">Nguyên nhân đã kiểm chứng: bạn hay sai phần này vì phần nền <button class="linkbtn" data-e="go" data-r="why/${esc(hy.cause)}">${esc(ix.node.get(hy.cause)?.vi ?? hy.cause)}</button> còn hổng (trượt câu dò ngày ${iso(hy.day)}). Lộ trình đưa phần nền lên trước.</p>` : '';

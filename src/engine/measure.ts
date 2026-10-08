@@ -1,7 +1,7 @@
 // Đo hiệu quả học (spec v2.4 Phần đánh giá L3–L5; nhóm G/I của bộ 400 tiêu chí, MT19). Thuần hàm.
 // Mastery do engine tự suy ra không chứng minh được là người học tiến bộ thật. Bộ đo này độc lập với luyện tập:
 //   - Bộ câu GIỮ RIÊNG: 12 câu chọn đều trên bao đóng mục tiêu, lấy từ kho câu ngữ cảnh mới (không phải câu luyện), được loại khỏi
-//     transfer / game để không bị học vẹt. Cùng một bộ câu cho mọi lần đo → so sánh được.
+//     transfer / game để không bị học vẹt. Lần đo sau dùng dạng song song (cùng nút, câu khác chưa gặp) để tránh quen câu (v69).
 //   - Bốn lần đo: trước (khi bắt đầu mục tiêu), sau (từ 14 ngày), trễ 7 ngày và 30 ngày sau lần "sau" (nhớ lâu).
 //   - Không hiện đáp án khi đo (không biến bài đo thành bài học). Kết quả: mức tăng, tỉ lệ giữ lại, mức tăng mỗi giờ học.
 //   - Cờ nghiên cứu A/B (adaptive vs cố định, game vs không game): chỉ GHI NHÃN khi người học bật chia sẻ dữ liệu nghiên cứu;

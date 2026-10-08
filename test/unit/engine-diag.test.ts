@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { startDiag, nextProbe, answer, finished, level, priorFor, MAX_PROBES, type Cand } from '../../src/engine/diag.ts';
+import { startDiag, nextProbe, answer, finished, level, priorFor, guessCorrected, MAX_PROBES, type Cand } from '../../src/engine/diag.ts';
 
 // 6 cấp × 2 loại × 5 nút mỗi cấp; nút có trọng số khác nhau
 const cands: Cand[] = [];
@@ -60,4 +60,17 @@ test('dừng khi hết giờ hoặc hết nút', () => {
   assert.equal(finished(d, 21 * 60 * 1000, 10), true);
   assert.equal(finished(d, 0, 0), true);
   assert.equal(finished(d, 0, 10), false);
+});
+
+test('v69 (bot L01): trừ đoán mò — biết 60% với câu 4 lựa chọn (đúng thô ≈ 70%) không đủ để lên cấp', () => {
+  assert.equal(guessCorrected(3, 3, 0), 1);
+  assert.equal(guessCorrected(0, 3, 0.75), 0);
+  // 3 câu chọn 4 phương án + "Không biết" (g = 0,25): đúng 2/3 thô → sau hiệu chỉnh ≈ 0,56 < 2/3 → giữ cấp, không lên.
+  const r = guessCorrected(2, 3, 0.75);
+  assert.ok(r < 2 / 3 && r > 0.5, String(r));
+  const d = startDiag(2, 0);
+  answer(d, { id: 'u:x', kind: 'u', lv: 2, weight: 0 }, r * 3, 3);
+  assert.equal(d.stair.u.est, 2);
+  // Câu tự gõ không có đoán mò: không trừ gì.
+  assert.equal(guessCorrected(2, 3, 0), 2 / 3);
 });

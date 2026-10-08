@@ -215,7 +215,9 @@ async function playFloor(page: Page): Promise<void> {
       await shot(page, 'camp');
       if (pk.node) learn(pk.node, DAY, 0.2);
       note('camp', { node: pk.node, title: pk.prompt });
-      await page.locator('[data-e="qnext"]').first().click(); continue;
+      if (await visible(page, '[data-e="qcheck"]')) await page.locator('[data-e="qcheck"]').first().click();   // "Thử ngay 1 câu"
+      else await page.locator('[data-e="qnext"]').first().click();
+      continue;
     }
     if (pk) { await answer(page, pk); await feedback(page); continue; }
     if (await visible(page, '[data-e="qnext"]')) { await page.locator('[data-e="qnext"]').first().click(); continue; }

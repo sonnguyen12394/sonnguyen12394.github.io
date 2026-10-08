@@ -16,7 +16,7 @@ test('đạt một cụm từ vựng → "Vì sao?" hiện số liệu, ngưỡn
   });
   await expect(page.locator('.eyebrow', { hasText: 'Vì sao?' })).toBeVisible();
   await expect(page.getByText('Lịch sử kết luận')).toBeVisible({ timeout: 15000 });
-  await expect(page.getByText(/luật ev1\.0\/m3\.2/).first()).toBeVisible();
+  await expect(page.getByText(/luật ev1\.0\/m3\.3/).first()).toBeVisible();
   await expect(page.getByText('Bằng chứng gần nhất')).toBeVisible();
   expect(errors).toEqual([]);
 });

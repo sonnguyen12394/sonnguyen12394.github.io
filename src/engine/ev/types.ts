@@ -108,6 +108,7 @@ export interface EvStore {
   obs: ObsRec[];                               // L0 (không đồng bộ, giữ ngắn)
   pri: Record<string, Prior>;                  // "node|level" → tiên nghiệm
   seen: Record<string, string>;                // nút → các mã băm câu đã gặp (6 ký tự mỗi câu), để biết câu mới
+  vok?: Record<string, string>;                // m3.3: "nút|mức" → mã băm các câu KHÁC NHAU đã đúng tự lực ở lần đầu gặp hoặc sau ≥ 1 ngày (xác minh)
   seq: number;                                 // số thứ tự sự kiện của thiết bị này
   integ: Integrity;
   snap: Snapshot[];                            // L4 Decision Snapshot

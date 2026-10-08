@@ -80,6 +80,7 @@ export function sanitizeEv(raw: unknown): EvStore {
     out.pri[k] = { a: num(p.a, 0, 1e4, 0), b: num(p.b, 0, 1e4, 0), src: p.src === 'diag' ? 'diag' : 'legacy', day: Math.round(num(p.day, 0, 1e6, 0)) } as Prior;
   }
   for (const [n, s] of Object.entries(obj(x.seen))) if (NODE.test(n) && typeof s === 'string' && /^[0-9a-z]*$/.test(s) && s.length % 6 === 0) out.seen[n] = s.slice(-SEEN_MAX * 6);
+  for (const [k, s] of Object.entries(obj(x.vok))) if (/^(cd|u|g|pa|x|xw|xs|ph|fn):[a-z0-9][a-z0-9._-]{0,60}\|[1-5]$/.test(k) && typeof s === 'string' && /^[0-9a-z]*$/.test(s) && s.length % 6 === 0 && s) (out.vok ||= {})[k] = s.slice(-40 * 6);
   out.seq = Math.round(num(x.seq, 0, 1e9, 0));
   const KINDS: SnapKind[] = ['mastery', 'testout', 'readiness', 'nba', 'diag'];
   out.snap = (Array.isArray(x.snap) ? x.snap : []).map(v => {

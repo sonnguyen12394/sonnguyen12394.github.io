@@ -39,7 +39,10 @@ export interface FloorIn {
   started: (node: string) => boolean;   // nút đã có bằng chứng (chưa thì hỏi mức nhận ra trước)
   floor: number;
   size?: number;
+  fresh?: (node: string) => boolean;    // v69: nút chưa bị hỏi quá QUEST.capDay lượt hôm nay (giãn cách, chống hỏi lặp một nút cả ngày)
+  claims?: string[];                    // v69: nút chẩn đoán "suy ra đã biết" (Claim) chưa xác nhận: trinh sát / rương rảnh thì kiểm tra
 }
+export const QUEST = { capDay: 3 } as const;
 
 const EVT: Record<Enc, string[]> = { monster: ['recognition', 'recall'], scout: ['diagnostic'], chest: ['retention'], camp: ['micro'], boss: ['transfer', 'novel'] };
 const BASE: Record<Enc, number> = { boss: 30, scout: 20, chest: 15, monster: 10, camp: 5 };
@@ -55,7 +58,9 @@ export function planFloor(x: FloorIn): Challenge[] {
     languageDifficulty: level, gameplayDifficulty: gp, expectedTime: kind === 'camp' ? 60 : kind === 'boss' ? 30 : 15,
     context: `quest-${kind}`, scoringRule: 'ok', value: Math.round(value * 100) / 100, version: QUEST_VER,
   });
-  const learn = [...x.open.filter(o => x.can(o.node))];
+  const all = x.open.filter(o => x.can(o.node)), rested = x.fresh ? all.filter(o => x.fresh!(o.node)) : all;
+  const learn = rested.length ? rested : all;
+  const claim = (): string | undefined => (x.claims ?? []).find(n => x.can(n) && !used.has(n));
   const take = (kind: Enc): Challenge | null => {
     if (kind === 'boss') {
       const a = x.acts.find(a => (a.kind === 'transfer' || a.kind === 'verify') && x.can(a.node) && !used.has(a.node));
@@ -66,10 +71,14 @@ export function planFloor(x: FloorIn): Challenge[] {
     if (kind === 'scout') {
       const a = x.acts.find(a => a.kind === 'probe' && x.can(a.node) && !used.has(a.node));
       if (a) { used.add(a.node); return mk('scout', a.node, a.level as Level, a.u + 0.3); }
+      const n = claim();
+      if (n) { used.add(n); return mk('scout', n, 3, 0.8); }
     }
     if (kind === 'chest') {
       const n = x.review.find(n => x.can(n) && !used.has(n));
       if (n) { used.add(n); return mk('chest', n, 3, (x.acts.find(a => a.kind === 'review')?.u ?? 1)); }
+      const cl = claim();   // chưa có gì sắp quên: dùng lượt này xác nhận một phần app mới chỉ đoán là bạn biết
+      if (cl) { used.add(cl); return mk('scout', cl, 3, 0.8); }
     }
     if (kind === 'camp') return mk('camp', '', 1, 0.3);
     const o = learn.find(o => !used.has(o.node)) ?? learn[out.length % Math.max(1, learn.length)];

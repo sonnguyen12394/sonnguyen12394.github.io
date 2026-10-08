@@ -12,7 +12,7 @@ import type { Observation, EvEvent, Src } from './types.ts';
 
 export const RULE = {
   evaluator: 'ev1.0',
-  mastery: 'm3.2',
+  mastery: 'm3.3',
   slip: 0.1,            // s: người đã biết vẫn có thể sai (spec §44)
   repeat: 0.5,          // cùng câu trong 24 giờ
   hint: 0.5,            // đúng nhờ gợi ý
@@ -26,6 +26,7 @@ export const RULE = {
   diffW: 0.2,           // v66 (m3.2): đúng câu khó hơn cấp nút nặng hơn 20%, đúng câu dễ hơn nhẹ hơn 20%; sai thì ngược lại (C118, C246)
   distinct: 2,          // v66: Đạt mức 1–3 cần đúng ở ≥ 2 câu khác nhau (không Đạt bằng một câu lặp qua nhiều ngày, C180)
   fatigue: 0.7,         // v66: sai lúc có dấu hiệu mệt (đúng giảm, chậm dần trong phiên) nhẹ hơn 30% (C295, C371)
+  spaced: 1,            // m3.3: đúng ở câu đã gặp sau ≥ 1 ngày không gặp = nhớ lại cách quãng, tính như câu mới khi xác minh (gỡ kẹt khi hết câu mới)
 } as const;
 export type Rule = { [K in keyof typeof RULE]: (typeof RULE)[K] extends string ? string : number };
 export const RULE_ID = `${RULE.evaluator}/${RULE.mastery}`;

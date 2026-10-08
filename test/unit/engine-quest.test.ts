@@ -58,3 +58,14 @@ test('kết quả game là telemetry: chỉ câu trả lời vào mastery; trạ
   assert.equal(sanitizeE({ v: 4 }).q, undefined);
   assert.equal(mergeQuest(undefined, e.q)!.floor, 3);
 });
+
+test('v69 (bot L01): giãn cách — nút đã hỏi đủ lượt hôm nay nhường chỗ nút khác; chưa có gì để ôn thì xác nhận Claim của chẩn đoán', () => {
+  const acts = rank({ open, probe: null, review: none, verify: [] });
+  const plan = planFloor({ acts, open, review: [], can: () => true, started: () => true, floor: 1, fresh: n => n !== 'u:a', claims: ['u:c1', 'u:c2'] });
+  assert.ok(!plan.some(c => c.node === 'u:a' && c.gameType === 'monster'), 'u:a đã hỏi đủ hôm nay');
+  const scouts = plan.filter(c => c.gameType === 'scout').map(c => c.node);
+  assert.deepEqual(scouts, ['u:c1', 'u:c2'], 'trinh sát và rương rảnh dùng để xác nhận Claim');
+  assert.ok(plan.filter(c => c.gameType === 'scout').every(c => c.level === 3), 'xác nhận bằng câu tự gõ (mức 3), khó đoán mò');
+  // Mọi nút đều hết lượt hôm nay: vẫn dựng được tầng (không kẹt người học).
+  assert.ok(planFloor({ acts, open, review: [], can: () => true, started: () => true, floor: 1, fresh: () => false }).length >= 6);
+});

@@ -17,6 +17,7 @@ import { rank, NBA_VER, W as NBA_W, type Action, type Kind } from './nba.ts';
 import { xferCandidates } from './transfer.ts';
 import { nextPhase, PHASE_VI } from './measure.ts';
 import { seenHas } from './ev/store.ts';
+import { evRecall } from './retain.ts';
 
 // Transfer (v60, §59): câu ở ngữ cảnh mới mà người học CHƯA gặp ở nút này (sổ "đã gặp" của kho bằng chứng). Tối đa 3 câu.
 export function xferItems(host: EHost, e: EState, node: string): ReturnType<EHost['probe']> {
@@ -37,6 +38,14 @@ export function probeFor(host: EHost, e: EState, ix: Index, p: PathOut): ProbeCa
   return pickProbe({ ix, m: e.m, need: p.all, open: new Set(p.open.map(x => x.node)), probeable: PROBEABLE }, used);
 }
 
+// Khả năng nhớ của một nút: thẻ FSRS của bài học nếu có, không thì dựng từ sổ bằng chứng (v69: người chỉ chơi tháp vẫn được ôn đúng lúc).
+export const recallOf = (host: EHost, e: EState, node: string): number | null => host.recall?.(node) ?? (e.ev ? evRecall(e.ev, node, host.today()) : null);
+// Nút đã Đạt mà khả năng nhớ (từ sổ) dưới 0,9 và không có thẻ FSRS: phần ôn của engine (rương trong tháp).
+export function evDue(host: EHost, e: EState, p: PathOut): Array<{ node: string; r: number }> {
+  return (p.all ?? []).filter(r => host.recall?.(r.node) == null && nodeStat(host, e, r.node, r.level).pass)
+    .map(r => ({ node: r.node, r: e.ev ? evRecall(e.ev, r.node, host.today()) ?? 1 : 1 })).filter(x => x.r < 0.9);
+}
+
 // Next Best Action (v59, spec §56–57): xếp hạng học / ôn / kiểm tra nhanh / xác minh bằng utility có phân rã.
 export function computeNba(host: EHost, e: EState, ix: Index, p: PathOut, inGame = false): Action[] {
   const day = host.dayInfo();
@@ -44,8 +53,11 @@ export function computeNba(host: EHost, e: EState, ix: Index, p: PathOut, inGame
   const last = [...(e.ev?.snap ?? [])].reverse().find(x => x.kind === 'nba');
   const prev = last ? { kind: (last.info?.k ?? 'learn') as Kind, node: last.subj } : null;
   // Nguy cơ quên (v65, C307): kỳ vọng số mục sẽ quên Σ(1 − R) trên các thẻ đến hạn (FSRS) → 1 − e^(−Σ/2); máy chưa có FSRS thì ước lượng thô.
-  const risk = typeof day.lost === 'number' ? 1 - Math.exp(-day.lost / 2) : Math.min(1, 0.4 + day.reviewItems / 30);
-  return rank({ open: p.open, probe: probeFor(host, e, ix, p), review: { items: day.reviewItems, mins: day.reviewMins, risk }, verify, prev, transfer: xferFor(host, e, ix, p), inGame });
+  // v69: không có thẻ FSRS đến hạn nhưng sổ bằng chứng cho thấy sắp quên → ôn trong tháp (rương), nguy cơ = 1 − e^(−Σ(1 − R)/2).
+  const ed = day.reviewItems ? [] : evDue(host, e, p), lost = ed.reduce((s, x) => s + (1 - x.r), 0);
+  const review = ed.length ? { items: ed.length, mins: Math.ceil(ed.length / 2), risk: 1 - Math.exp(-lost / 2) }
+    : { items: day.reviewItems, mins: day.reviewMins, risk: typeof day.lost === 'number' ? 1 - Math.exp(-day.lost / 2) : Math.min(1, 0.4 + day.reviewItems / 30) };
+  return rank({ open: p.open, probe: probeFor(host, e, ix, p), review, verify, prev, transfer: xferFor(host, e, ix, p), inGame });
 }
 
 // L4: bước tiếp theo được chọn → snapshot kèm 3 ứng viên đầu, utility và phân rã (HG30, HF10). Bỏ trùng khi lựa chọn không đổi.
@@ -119,7 +131,7 @@ export function nextStep(host: EHost, e: EState, ix: Index): { h: string; p: str
   const p = computePath(host, e, ix), acts = computeNba(host, e, ix, p), top = acts[0];
   const esc = host.esc;
   snapNba(host, e, acts);
-  if (top && top.kind === 'review') return { h: 'Bước tiếp theo: ôn phần sắp quên', p: `${esc(top.why)}. Ôn đúng lúc giữ những gì bạn đã đạt. Còn ${p.unmet.length}/${p.total} năng lực chưa đạt.`, btn: `<button class="btn primary big" data-act="review">▶ Ôn ngay</button><div class="row" style="justify-content:center;gap:6px"><button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay</button></div>` };
+  if (top && top.kind === 'review') return { h: 'Bước tiếp theo: ôn phần sắp quên', p: `${esc(top.why)}. Ôn đúng lúc giữ những gì bạn đã đạt. Còn ${p.unmet.length}/${p.total} năng lực chưa đạt.`, btn: `${host.dayInfo().reviewItems ? '<button class="btn primary big" data-act="review">▶ Ôn ngay</button>' : '<button class="btn primary big" data-e="go" data-r="quest">▶ Ôn trong tháp (rương)</button>'}<div class="row" style="justify-content:center;gap:6px"><button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay</button></div>` };
   if (top && (top.kind === 'probe' || top.kind === 'verify')) {
     const mode = top.kind === 'verify' ? 'verify' : top.probe!.mode, forN = top.probe?.for;
     return { h: `Bước tiếp theo: kiểm tra nhanh ${esc(ix.node.get(top.node)?.vi ?? top.node)}`, p: `${esc(MODE_VI[mode])}. 3 câu, không tốn năng lượng.`, btn: `<button class="btn primary big" data-e="go" data-r="probe/${esc(top.node)}/${top.level}/${mode}${forN ? '/' + esc(forN) : ''}">▶ Làm ngay</button><div class="row" style="justify-content:center;gap:6px"><button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay</button><button class="btn ghost small" data-e="go" data-r="why/${esc(top.node)}">Vì sao?</button></div>` };

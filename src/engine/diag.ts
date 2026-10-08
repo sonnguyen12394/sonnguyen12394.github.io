@@ -52,6 +52,13 @@ export function answer(d: DiagState, c: Cand, got: number, of: number): void {
   d.turn = c.kind === 'u' ? 'g' : 'u';
 }
 
+// Tỉ lệ đúng đã trừ đoán mò (v69): r' = (r − ḡ) / (1 − ḡ), ḡ = xác suất đoán trúng trung bình của các câu (0 với câu tự gõ).
+export function guessCorrected(got: number, of: number, gsum = 0): number {
+  if (!of) return 0;
+  const g = Math.min(0.95, gsum / of);
+  return Math.max(0, Math.min(1, (got / of - g) / (1 - g)));
+}
+
 export function finished(d: DiagState, now: number, left: number): boolean {
   const max = d.max ?? MAX_PROBES;
   if (left === 0 || now - d.t0 >= MAX_MS || d.probed.length >= max) return true;

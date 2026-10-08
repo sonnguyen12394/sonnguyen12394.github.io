@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { ingest, freshEv, fatigue } from '../../src/engine/ev/store.ts';
+import { ingest, freshEv, fatigue, mergeEv } from '../../src/engine/ev/store.ts';
+import { sanitizeEv } from '../../src/engine/ev/sanitize.ts';
 import { RULE, type Rule } from '../../src/engine/ev/evaluate.ts';
 import { drift, estimate } from '../../src/engine/ev/audit.ts';
 import { stat, type MasteryStore } from '../../src/engine/mastery.ts';
@@ -28,6 +29,26 @@ test('mức 1–3 không Đạt bằng một câu lặp qua nhiều ngày; đún
   assert.equal(stat(m['x:a']![3]).state, 'verify');
   put(st, m, { ok: true, item: 'other' }, 30);
   assert.equal(stat(m['x:a']![3]).pass, true);
+});
+
+test('m3.3: hết câu mới mà sai lần đầu → nhớ lại đúng cách quãng ở câu khác nhau thì Đạt, không kẹt "cần xác minh" (bot L01)', () => {
+  // Đúng kịch bản bot L01: nút ngữ pháp chỉ có 3 câu mức 3; sai lần đầu ở 2 câu (lúc chưa biết), sau đó đúng nhiều ngày.
+  const st = freshEv(), m: MasteryStore = {}, recent: Record<string, number> = {};
+  const go = (item: string, ok: boolean, day: number) => ingest(st, m, { node: 'g:x', level: 3, ok, item }, { dev: 'd', ts: ++T, day, recent });
+  go('t1', false, 1); go('t2', false, 2); go('t0', true, 4);
+  go('t1', true, 4); go('t2', true, 4);   // t1 gặp lần cuối ngày 1, t2 ngày 2: đã cách ≥ 1 ngày → nhớ lại cách quãng
+  for (let d = 5; d <= 9; d++) { go('t0', true, d); go('t1', true, d); go('t2', true, d); }
+  assert.equal(stat(m['g:x']![3]).state, 'mastered');
+  assert.ok((m['g:x']![3]!.nv ?? 0) >= 2);
+  // Lọc dữ liệu và gộp hai máy giữ nguyên danh sách câu đã xác minh.
+  assert.equal(sanitizeEv(JSON.parse(JSON.stringify(st))).vok?.['g:x|3'], st.vok?.['g:x|3']);
+  assert.equal(mergeEv(st, freshEv()).vok?.['g:x|3']?.length, st.vok?.['g:x|3']?.length);
+  // Cùng ngày (học vẹt ngay sau khi thấy đáp án) không tính là nhớ lại cách quãng.
+  const s2 = freshEv(), m2: MasteryStore = {}, r2: Record<string, number> = {};
+  const go2 = (item: string, ok: boolean, day: number) => ingest(s2, m2, { node: 'g:y', level: 3, ok, item }, { dev: 'd', ts: ++T, day, recent: r2 });
+  go2('a', false, 1); go2('b', false, 1); go2('a', true, 1); go2('b', true, 1); go2('a', true, 1); go2('b', true, 1);
+  assert.notEqual(stat(m2['g:y']![3]).state, 'mastered');
+  assert.equal(s2.vok?.['g:y|3'], undefined);
 });
 
 test('cùng một đề dưới id khác không được tính là câu mới (C242)', () => {

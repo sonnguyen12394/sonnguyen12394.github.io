@@ -39,6 +39,14 @@ export function seenHas(st: EvStore, node: string, item: string): boolean {
   for (let i = 0; i < s.length; i += 6) if (s.slice(i, i + 6) === h) return true;
   return false;
 }
+// m3.3: câu khác nhau đã đúng tự lực khi mới gặp hoặc khi nhớ lại cách quãng, theo ô (tối đa VOK_MAX mã mỗi ô).
+export const VOK_MAX = 40;
+function vokAdd(st: EvStore, ck: string, item: string): void {
+  const h = hash6(item), s = ((st.vok ||= {})[ck] ?? '');
+  for (let i = 0; i < s.length; i += 6) if (s.slice(i, i + 6) === h) return;
+  const t = s + h;
+  st.vok[ck] = t.length > VOK_MAX * 6 ? t.slice(t.length - VOK_MAX * 6) : t;
+}
 function seenAdd(st: EvStore, node: string, item: string): void {
   const s = (st.seen[node] ?? '') + hash6(item);
   st.seen[node] = s.length > SEEN_MAX * 6 ? s.slice(s.length - SEEN_MAX * 6) : s;
@@ -68,11 +76,15 @@ export function derive(st: EvStore, node: string, lv: Level, rule: Rule = RULE):
   // học phải bù các lần "sai giả định" mới Đạt được (mô phỏng: lộ trình thích ứng chậm hơn cả giáo trình cố định).
   if (pr && (n <= 0 || pr.a >= pr.b)) { a += pr.a; b += pr.b; }
   const cell: Cell = { a: round(a), b: round(b), n: round(n), q: [...q].sort().slice(0, 6), c: [...c].sort().slice(0, 8), d };
-  if (nv) cell.nv = nv;
+  // m3.3: số câu khác nhau đã đúng khi mới gặp hoặc khi nhớ lại cách quãng. Trước m3.3 chỉ tính câu mới: nút có ít câu (3 câu mức 3)
+  // mà người học sai lần đầu thì không bao giờ đủ 2 câu mới → kẹt "cần xác minh" vĩnh viễn dù đã đúng nhiều ngày (bot L01).
+  const vk = (st.vok?.[ck]?.length ?? 0) / 6, nd = Math.max(nv, vk);
+  if (nd) cell.nv = nd;
   if (st.dis[ck]?.on) cell.ro = 1;
-  if (lv >= 4 && n > 0 && nv < 1) cell.vf = 1;
+  // Mức 4–5: cần ≥ 1 lượt đúng ở câu mới, hoặc ≥ 2 câu khác nhau nhớ lại đúng cách quãng (khi đã hết câu mới).
+  if (lv >= 4 && n > 0 && nv < 1 && vk < rule.distinct) cell.vf = 1;
   // m3.2 (C180): mức 1–3 cũng không Đạt chỉ bằng một câu lặp lại: cần đúng ở ≥ 2 câu khác nhau. Claim "đã biết" từ chẩn đoán được miễn.
-  else if (lv <= 3 && n > 0 && nv < rule.distinct && !(pr && pr.a >= pr.b)) cell.vf = 1;
+  else if (lv <= 3 && n > 0 && nd < rule.distinct && !(pr && pr.a >= pr.b)) cell.vf = 1;
   return cell;
 }
 const round = (x: number): number => Math.round(x * 1e6) / 1e6;
@@ -115,6 +127,8 @@ export function ingest(st: EvStore, m: MasteryStore, o: Observation, c: IngestCt
   const lastSeen = o.item && c.recent ? c.recent[o.item] : undefined;
   st.seq++;
   const rule = c.rule ?? RULE;
+  // m3.3: câu đã gặp mà lần gần nhất cách ≥ 1 ngày (hoặc đã quá 2 ngày nên không còn trong e.r) → nhớ lại cách quãng.
+  const spaced = !novel && !!o.item && (lastSeen === undefined || c.day - lastSeen >= (rule.spaced ?? 1));
   const ev = evaluate(o, { day: c.day, ts: c.ts, id: `${c.dev}.${st.seq}`, lastSeenDay: lastSeen, novel, fatigued }, rule);
   if (o.item) { if (c.recent) c.recent[o.item] = c.day; if (novel) { seenAdd(st, o.node, o.item); if (tkey) seenAdd(st, o.node, tkey); } }
   // Trạng thái trước (để biết bằng chứng này có làm đổi quyết định không)
@@ -134,6 +148,7 @@ export function ingest(st: EvStore, m: MasteryStore, o: Observation, c: IngestCt
     const cell = (part[ck] ||= {}), x = (cell[subKey(ev)] ||= { n: 0, sw: 0, swOk: 0, swgOk: 0, swBad: 0, nov: 0, asst: 0, d0: c.day, d1: c.day });
     x.n++; x.sw = round(x.sw + ev.w); x.d1 = c.day; if (ev.nov) x.nov++; if (ev.asst) x.asst++;
     if (ev.ok) { x.swOk = round(x.swOk + ev.w); x.swgOk = round(x.swgOk + ev.w * ev.g); if (ev.nov && !ev.asst) x.novOk = (x.novOk ?? 0) + 1; } else x.swBad = round(x.swBad + ev.w);
+    if (ev.ok && !ev.asst && o.item && (ev.nov || spaced)) vokAdd(st, ck, o.item);
     // Model disagreement (spec §69): đang Đạt mà sai ở câu mới → đếm; đủ thì mở lại. Đang mở lại thì cần đúng ở câu mới để xác nhận.
     const was = before[lvls.indexOf(l)]!, dz: Dispute = st.dis[ck] ?? { bad: 0, ok: 0, on: 0, day: c.day };
     // §58: đang Đạt mà sai 2 lần LIÊN TIẾP (kể cả câu đã gặp, ví dụ khi ôn) → quay lại lộ trình.
@@ -278,6 +293,11 @@ export function mergeEv(a: EvStore, b: EvStore): EvStore {
     let acc = '';
     for (const x of [s, t]) for (let i = 0; i < x.length; i += 6) { const h = x.slice(i, i + 6); if (!have.has(h)) { have.add(h); acc += h; } }
     out.seen[n] = acc.length > SEEN_MAX * 6 ? acc.slice(acc.length - SEEN_MAX * 6) : acc;
+  }
+  for (const k of new Set([...Object.keys(a.vok ?? {}), ...Object.keys(b.vok ?? {})])) {
+    const have = new Set<string>(); let acc = '';
+    for (const x of [a.vok?.[k] ?? '', b.vok?.[k] ?? '']) for (let i = 0; i < x.length; i += 6) { const h = x.slice(i, i + 6); if (!have.has(h)) { have.add(h); acc += h; } }
+    (out.vok ||= {})[k] = acc.slice(-VOK_MAX * 6);
   }
   out.dis = { ...b.dis, ...a.dis };
   out.mis = { ...b.mis, ...a.mis };

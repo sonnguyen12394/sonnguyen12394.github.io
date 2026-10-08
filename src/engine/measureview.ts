@@ -14,7 +14,7 @@ export function viewMeasure(c: ECtx, ms: MeasureSave | undefined, nx: { phase: P
   const gain = r.gain === null ? '' : `<p><b>Mức tăng:</b> ${r.gain >= 0 ? '+' : ''}${Math.round(r.gain * 100)} điểm phần trăm${r.perHour !== null ? ` (≈ ${Math.round(r.perHour * 100)} điểm mỗi giờ học, thời gian học ước tính)` : ''}.</p>`;
   const keep = r.keep7 !== null || r.keep30 !== null ? `<p><b>Giữ lại:</b> sau 7 ngày ${pc(r.keep7)}, sau 30 ngày ${pc(r.keep30)} so với lần đo sau khi học.</p>` : '';
   return `<section class="stack"><span class="eyebrow">Đo tiến bộ</span><h1>Bạn tiến bộ thật bao nhiêu?</h1>
-    <p class="muted">${MEASURE.size} câu ngữ cảnh mới chọn đều trên mục tiêu, giữ riêng: không xuất hiện khi luyện hay chơi, nên đo được bạn dùng được thật chứ không phải nhớ câu. Đo lúc bắt đầu, sau ${MEASURE.postAfter} ngày học, rồi sau 7 và 30 ngày để xem có nhớ lâu. Khi đo, app không hiện đáp án.</p></section>
+    <p class="muted">${MEASURE.size} câu ngữ cảnh mới chọn đều trên mục tiêu, giữ riêng: không xuất hiện khi luyện hay chơi, nên đo được bạn dùng được thật chứ không phải nhớ câu. Đo lúc bắt đầu, sau ${MEASURE.postAfter} ngày học, rồi sau 7 và 30 ngày để xem có nhớ lâu. Khi đo, app không hiện đáp án; các lần đo sau dùng câu khác cùng phần (dạng song song) để bạn không quen câu.</p></section>
     <div class="tablewrap" tabindex="0" role="region" aria-label="Các lần đo"><table class="tbl"><thead><tr><th>Lần đo</th><th>Đúng</th><th>Ngày</th></tr></thead><tbody>${rows}</tbody></table></div>
     ${gain}${keep}
     <p class="hint">Đây là số đo trên chính bạn, không phải nghiên cứu có nhóm đối chứng. Câu đo hiện chỉ gồm từ vựng; ngữ pháp cần kho câu riêng chưa có.</p>
