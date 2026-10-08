@@ -13,6 +13,8 @@ import { RULE, RULE_ID } from './ev/evaluate.ts';
 import type { Observation, EvEvent } from './ev/types.ts';
 import type { Level } from './types.ts';
 import { microDecide, type MicroDecision } from './micro.ts';
+import { drift, estimate } from './ev/audit.ts';
+import { addSnap } from './ev/snapshot.ts';
 
 function eOf(st: { e?: unknown }): EState {
   const cur = st.e as EState | undefined;
@@ -76,7 +78,7 @@ export function recompute(st: { e?: unknown }): number {
 // Xuất bản nghiên cứu đầy đủ (§88 Full Research Export): kèm L0 quan sát, sổ L1 và provenance.
 export function research(st: { e?: unknown }): unknown {
   const e = eOf(st);
-  return { schema: 'english-ladder-research/1', rules: rules, dev: dev(), at: new Date().toISOString(), engine: e };
+  return { schema: 'english-ladder-research/1', rules: rules, dev: dev(), at: new Date().toISOString(), audit: { drift: drift(e.ev, e.m, Math.floor(Date.now() / 86400000)), est: estimate(e.ev, e.m) }, engine: e };
 }
 
 export const beta = betaStat;
@@ -87,3 +89,10 @@ export function micro(st: { e?: unknown }, node: string, level: Level, today: nu
   return microDecide({ ev: e.ev, m: e.m, node, lv: level, today, inGame });
 }
 export type { Card, Grade, Evidence, Status };
+
+// Kiểm toán model (v66): trôi model + ước lượng slip/guess từ sổ; trôi thì ghi snapshot (bỏ trùng khi kết quả không đổi).
+export function audit(st: { e?: unknown }, today: number): { drift: ReturnType<typeof drift>; est: ReturnType<typeof estimate> } {
+  const e = eOf(st), d = drift(e.ev, e.m, today), est = estimate(e.ev, e.m);
+  if (d.flag) addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: 'model', dec: 'drift', rule: `${RULE_ID}/audit-1`, info: { n: d.n, obs: d.obs, exp: d.exp, z: d.z }, evs: [] });
+  return { drift: d, est };
+}

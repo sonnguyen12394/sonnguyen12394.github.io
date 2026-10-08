@@ -69,7 +69,7 @@ test('Lỗ hổng: đang quên (FSRS < 0,85), yếu ở một ngữ cảnh, đú
 
 test('§58: đang Đạt mà sai 2 lần LIÊN TIẾP (kể cả câu đã gặp khi ôn) → quay lại lộ trình; sai xen kẽ đúng thì không', () => {
   const st = freshEv(), m: MasteryStore = {};
-  for (let i = 0; i < 25; i++) put(st, m, { level: 3, ok: true, item: 'same' });
+  for (let i = 0; i < 25; i++) put(st, m, { level: 3, ok: true, item: i < 3 ? `p${i}` : 'same' });
   put(st, m, { level: 3, ok: false, item: 'same' }); put(st, m, { level: 3, ok: true, item: 'same' }); put(st, m, { level: 3, ok: false, item: 'same' });
   assert.equal(stat(m['g:x']![3]).state, 'mastered');
   put(st, m, { level: 3, ok: false, item: 'same' });
