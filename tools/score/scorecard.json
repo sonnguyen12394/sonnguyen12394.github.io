@@ -1,0 +1,2385 @@
+{
+ "version": "v63",
+ "date": "2026-10-08",
+ "parts": {
+  "A": "Knowledge Model Validity",
+  "B": "CEFR Content & Level Validity",
+  "C": "Evidence Validity",
+  "D": "Statistical & Mastery Validation",
+  "E": "Diagnostic Science",
+  "F": "Next Best Action Validation",
+  "G": "Learning Effectiveness",
+  "H": "Game / Learning Validity",
+  "I": "Bias, Fairness & Robustness",
+  "J": "Data Engineering, Performance & Reliability"
+ },
+ "criteria": [
+  {
+   "id": "C201",
+   "name": "Knowledge Atomicity",
+   "group": "A",
+   "v51": 5,
+   "score": 5,
+   "evidence": "Mức hạt không đổi: g: nguyên tử, u: vẫn là cả unit từ vựng, cd: rộng; v57 chỉ thêm scope mô tả, chưa tách nút",
+   "tests": []
+  },
+  {
+   "id": "C202",
+   "name": "Knowledge Completeness",
+   "group": "A",
+   "v51": 6,
+   "score": 7,
+   "evidence": "audit() trong graph.ts: 0 nút không học được, 0 mồ côi trên đồ thị thật 1.005 nút; Can-Do có cạnh cứng tới ngữ pháp/unit",
+   "tests": [
+    "test/unit/engine-graph.test.ts::đồ thị thật sạch"
+   ]
+  },
+  {
+   "id": "C203",
+   "name": "Knowledge Boundary",
+   "group": "A",
+   "v51": 3,
+   "score": 5,
+   "evidence": "Mọi nút có trường scope (types.ts Node) nhưng phần lớn sinh tự động từ tên, chưa định nghĩa ranh giới thật",
+   "tests": [
+    "test/unit/engine-graph.test.ts::v57 Knowledge Model: mọi cạnh có lý do"
+   ]
+  },
+  {
+   "id": "C204",
+   "name": "Semantic Identity",
+   "group": "A",
+   "v51": 3,
+   "score": 4,
+   "evidence": "scope + en + dims (Universal Core) cho mỗi nút; chưa có định nghĩa ngữ nghĩa riêng ngoài nhãn",
+   "tests": []
+  },
+  {
+   "id": "C205",
+   "name": "Knowledge Versioning",
+   "group": "A",
+   "v51": 2,
+   "score": 7,
+   "evidence": "Nút và cạnh có ver (types.ts), test bắt buộc có; mọi bản đều 1.0, chưa có lịch sử đổi phiên bản nút",
+   "tests": [
+    "test/unit/engine-graph.test.ts::nút có phiên bản, phạm vi"
+   ]
+  },
+  {
+   "id": "C206",
+   "name": "Dependency Validity",
+   "group": "A",
+   "v51": 3,
+   "score": 5,
+   "evidence": "Mọi cạnh có why (cando-act, level-ladder...) và audit tiền đề ngược cấp; cạnh vẫn sinh tự động, chưa kiểm tính cần thiết bằng dữ liệu",
+   "tests": [
+    "test/unit/engine-graph.test.ts::mọi cạnh có lý do"
+   ]
+  },
+  {
+   "id": "C207",
+   "name": "Alternative Route",
+   "group": "A",
+   "v51": 1,
+   "score": 5,
+   "evidence": "blockedBy() hỗ trợ nhóm thay thế alt/need, có test; đồ thị thật chưa có cạnh alt nào (0/2.614)",
+   "tests": [
+    "test/unit/engine-graph.test.ts::v57 tiền đề thay thế (alt/need)"
+   ]
+  },
+  {
+   "id": "C208",
+   "name": "Overlap Detection",
+   "group": "A",
+   "v51": 1,
+   "score": 6,
+   "evidence": "audit().dup bắt nút cùng loại, cùng cấp, tên gần trùng; chưa so ngữ nghĩa/nội dung",
+   "tests": [
+    "test/unit/engine-graph.test.ts::trùng tên, nhóm thay thế sai"
+   ]
+  },
+  {
+   "id": "C209",
+   "name": "Gap Detectability",
+   "group": "A",
+   "v51": 6,
+   "score": 7,
+   "evidence": "Mọi nút có evReq (mức, loại bằng chứng) và hoạt động; audit unreachable = 0; gap.ts phân loại lỗ hổng",
+   "tests": [
+    "test/unit/engine-graph.test.ts::đồ thị thật sạch"
+   ]
+  },
+  {
+   "id": "C210",
+   "name": "Masterability",
+   "group": "A",
+   "v51": 8,
+   "score": 8,
+   "evidence": "Beta cho mọi nút × mức, có trạng thái nút (mastery.ts stat: unknown/inferred/learning/mastered/verify/reopened)",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::mức 4–5 cần ít nhất một lần đúng"
+   ]
+  },
+  {
+   "id": "C211",
+   "name": "Transferability",
+   "group": "A",
+   "v51": 1,
+   "score": 7,
+   "evidence": "imp.tr và uses cho từng nút; transfer.ts chọn nút cần thử ở câu mới, có test; giá trị imp đặt theo luật",
+   "tests": [
+    "test/unit/engine-transfer.test.ts::ứng viên transfer"
+   ]
+  },
+  {
+   "id": "C212",
+   "name": "Retentionability",
+   "group": "A",
+   "v51": 2,
+   "score": 5,
+   "evidence": "imp.re có trên mọi nút nhưng engine chưa dùng; luật nhớ: FSRS < 0,85 thành gap retention, sai 2 lần liên tiếp mở lại",
+   "tests": [
+    "test/unit/engine-nba.test.ts::đang quên (FSRS < 0,85)"
+   ]
+  },
+  {
+   "id": "C213",
+   "name": "Difficulty Calibration",
+   "group": "A",
+   "v51": 3,
+   "score": 4,
+   "evidence": "Node.diff 0–1 suy theo cấp và loại nút, không hiệu chỉnh thực nghiệm; câu thi có b + empiricalB",
+   "tests": []
+  },
+  {
+   "id": "C214",
+   "name": "Context Mapping",
+   "group": "A",
+   "v51": 5,
+   "score": 5,
+   "evidence": "ctx của nút theo từ khoá như v51; ngữ cảnh bằng chứng vẫn lẫn chiều bài tập",
+   "tests": []
+  },
+  {
+   "id": "C215",
+   "name": "Misconception Mapping",
+   "group": "A",
+   "v51": 3,
+   "score": 7,
+   "evidence": "Node.mis (28 điểm ngữ pháp) + phát hiện hiểu sai lúc chạy (store.ts misconceptions) dùng cho bí kíp",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::hiểu sai (misconception)"
+   ]
+  },
+  {
+   "id": "C216",
+   "name": "Contrast Mapping",
+   "group": "A",
+   "v51": 2,
+   "score": 7,
+   "evidence": "Node.contrast cho 73 nút, đối xứng, có test; hiện trong Vì sao và bí kíp; chưa dùng để chọn câu dò",
+   "tests": [
+    "test/unit/engine-graph.test.ts::cặp dễ nhầm đối xứng"
+   ]
+  },
+  {
+   "id": "C217",
+   "name": "Knowledge Reuse",
+   "group": "A",
+   "v51": 9,
+   "score": 9,
+   "evidence": "Một đồ thị cho mọi mục tiêu; đổi mục tiêu dùng lại năng lực đã có (S8/MT12); mục tiêu ngoài CEFR giữ trạng thái future",
+   "tests": [
+    "test/unit/scenarios.test.ts::S8 / MT12",
+    "test/unit/engine-graph.test.ts::đủ 4 nhóm mục tiêu"
+   ]
+  },
+  {
+   "id": "C218",
+   "name": "Coverage Audit",
+   "group": "A",
+   "v51": 8,
+   "score": 9,
+   "evidence": "coverage.md tự sinh + audit() (mồ côi, không học được, ngược cấp, trùng, cân bằng) chạy trong test",
+   "tests": [
+    "test/unit/engine-graph.test.ts::v57 audit: phát hiện mồ côi"
+   ]
+  },
+  {
+   "id": "C219",
+   "name": "Orphan Detection",
+   "group": "A",
+   "v51": 2,
+   "score": 9,
+   "evidence": "audit().orphan và unreachable có test với đồ thị giả và đồ thị thật (0 lỗi)",
+   "tests": [
+    "test/unit/engine-graph.test.ts::v57 audit: phát hiện mồ côi"
+   ]
+  },
+  {
+   "id": "C220",
+   "name": "Model Integrity",
+   "group": "A",
+   "v51": 8,
+   "score": 9,
+   "evidence": "validate(): trùng id, cạnh lạc, tự trỏ, vòng lặp, w ngoài (0,1], mục tiêu sai; chạy cả trên đồ thị thật",
+   "tests": [
+    "test/unit/engine-graph.test.ts::validate: bắt id trùng",
+    "test/unit/engine-graph.test.ts::đồ thị thật: toàn vẹn"
+   ]
+  },
+  {
+   "id": "C221",
+   "name": "Level Coverage",
+   "group": "B",
+   "v51": 7,
+   "score": 8,
+   "evidence": "A1–C2 mỗi cấp 47–50 Can-Do + mục tiêu Pre-A1 riêng (v52) với bài pa: là tiền đề cứng của A1",
+   "tests": [
+    "test/unit/engine-graph.test.ts::Pre-A1: mục tiêu riêng"
+   ]
+  },
+  {
+   "id": "C222",
+   "name": "Progression Validity",
+   "group": "B",
+   "v51": 6,
+   "score": 7,
+   "evidence": "Đóng tiền đề tăng theo cấp, có test; audit chặn tiền đề ngược cấp",
+   "tests": [
+    "test/unit/engine-graph.test.ts::mục tiêu cao hơn cần nhiều nút hơn"
+   ]
+  },
+  {
+   "id": "C223",
+   "name": "Cross-Level Dependency",
+   "group": "B",
+   "v51": 4,
+   "score": 8,
+   "evidence": "audit().inverse phát hiện tiền đề cứng ở cấp cao hơn nút cần nó; đồ thị thật 0 lỗi",
+   "tests": [
+    "test/unit/engine-graph.test.ts::tiền đề ngược cấp"
+   ]
+  },
+  {
+   "id": "C224",
+   "name": "Descriptor Traceability",
+   "group": "B",
+   "v51": 4,
+   "score": 4,
+   "evidence": "Can-Do có câu en, chưa gắn id descriptor CEFR Companion Volume",
+   "tests": []
+  },
+  {
+   "id": "C225",
+   "name": "Boundary Testing",
+   "group": "B",
+   "v51": 1,
+   "score": 3,
+   "evidence": "Chưa kiểm ranh giới giữa hai cấp CEFR; probe.ts chỉ có chế độ boundary quanh ngưỡng mastery 0,8",
+   "tests": []
+  },
+  {
+   "id": "C226",
+   "name": "Misclassification Detection",
+   "group": "B",
+   "v51": 3,
+   "score": 6,
+   "evidence": "Claim từ chẩn đoán được xác nhận (probe confirm) và bị bằng chứng mới phủ định (S10/MT11, disagreement reopen)",
+   "tests": [
+    "test/unit/scenarios.test.ts::S10 / MT11"
+   ]
+  },
+  {
+   "id": "C227",
+   "name": "Uneven Profile",
+   "group": "B",
+   "v51": 7,
+   "score": 8,
+   "evidence": "Cấp riêng từng kỹ năng, từng nút; chẩn đoán cho hai cấp khác nhau khi hồ sơ lệch",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT3 — hồ sơ lệch"
+   ]
+  },
+  {
+   "id": "C228",
+   "name": "Level-Specific Evidence",
+   "group": "B",
+   "v51": 5,
+   "score": 6,
+   "evidence": "evReq theo nút (mức + loại bằng chứng); chỉ yêu cầu câu mới ở mức 4–5 được thực thi, loại bằng chứng chưa bị bắt buộc",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::mức 4–5 cần ít nhất một lần đúng"
+   ]
+  },
+  {
+   "id": "C229",
+   "name": "Level-Specific Transfer",
+   "group": "B",
+   "v51": 1,
+   "score": 4,
+   "evidence": "transfer.ts có nhưng không phân theo cấp CEFR; ngưỡng transfer như nhau mọi cấp",
+   "tests": []
+  },
+  {
+   "id": "C230",
+   "name": "Level-Specific Performance",
+   "group": "B",
+   "v51": 6,
+   "score": 6,
+   "evidence": "Ngưỡng VSTEP/IELTS, perfEst theo cấp như v51; MVP chỉ CEFR",
+   "tests": []
+  },
+  {
+   "id": "C231",
+   "name": "Vocabulary Coverage",
+   "group": "B",
+   "v51": 8,
+   "score": 8,
+   "evidence": "9.345 từ gắn cấp, 515 nút từ vựng",
+   "tests": []
+  },
+  {
+   "id": "C232",
+   "name": "Grammar Coverage",
+   "group": "B",
+   "v51": 7,
+   "score": 7,
+   "evidence": "154 điểm ngữ pháp, có lỗi hay gặp cho 28 điểm",
+   "tests": []
+  },
+  {
+   "id": "C233",
+   "name": "Functional Coverage",
+   "group": "B",
+   "v51": 6,
+   "score": 6,
+   "evidence": "Nhóm Can-Do chức năng như v51",
+   "tests": []
+  },
+  {
+   "id": "C234",
+   "name": "Interaction Coverage",
+   "group": "B",
+   "v51": 5,
+   "score": 5,
+   "evidence": "69 nút gắn dims inter; 24 hội thoại mở; chưa có nút tương tác riêng",
+   "tests": []
+  },
+  {
+   "id": "C235",
+   "name": "Pragmatic Coverage",
+   "group": "B",
+   "v51": 3,
+   "score": 4,
+   "evidence": "33 nút gắn dims prag nhưng chưa có nút ngữ dụng riêng",
+   "tests": []
+  },
+  {
+   "id": "C236",
+   "name": "Discourse Coverage",
+   "group": "B",
+   "v51": 4,
+   "score": 4,
+   "evidence": "72 nút gắn dims disc; vẫn chủ yếu qua đọc/viết dài",
+   "tests": []
+  },
+  {
+   "id": "C237",
+   "name": "Reception Coverage",
+   "group": "B",
+   "v51": 8,
+   "score": 8,
+   "evidence": "Nghe/Đọc phong phú",
+   "tests": []
+  },
+  {
+   "id": "C238",
+   "name": "Production Coverage",
+   "group": "B",
+   "v51": 6,
+   "score": 6,
+   "evidence": "Viết/Nói có, chấm bằng luật + tự chấm",
+   "tests": []
+  },
+  {
+   "id": "C239",
+   "name": "Balance Audit",
+   "group": "B",
+   "v51": 3,
+   "score": 6,
+   "evidence": "audit().balance đếm 8 năng lực Universal Core theo bao đóng mỗi mục tiêu mở; chưa có ngưỡng cảnh báo mất cân bằng",
+   "tests": []
+  },
+  {
+   "id": "C240",
+   "name": "CEFR Model Versioning",
+   "group": "B",
+   "v51": 8,
+   "score": 8,
+   "evidence": "Goal 1.0, lưu phiên bản lúc chọn",
+   "tests": []
+  },
+  {
+   "id": "C241",
+   "name": "Independence",
+   "group": "C",
+   "v51": 3,
+   "score": 4,
+   "evidence": "Vẫn chỉ giảm ×0,5 cùng câu trong 24h; có đánh dấu câu mới (seen hash) nhưng không mô hình phụ thuộc giữa bằng chứng",
+   "tests": []
+  },
+  {
+   "id": "C242",
+   "name": "Redundancy Detection",
+   "group": "C",
+   "v51": 3,
+   "score": 4,
+   "evidence": "seen hash theo nút + giảm trọng số lặp; chưa phát hiện câu gần trùng",
+   "tests": []
+  },
+  {
+   "id": "C243",
+   "name": "Correlation",
+   "group": "C",
+   "v51": 1,
+   "score": 1,
+   "evidence": "Không có mô hình tương quan giữa bằng chứng",
+   "tests": []
+  },
+  {
+   "id": "C244",
+   "name": "Diversity",
+   "group": "C",
+   "v51": 6,
+   "score": 7,
+   "evidence": "L2 Agg giữ khoá ngữ cảnh, dạng câu, mới/cũ, độ khó (store.ts subKey); dùng trong confidence",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::ô Beta dẫn xuất khớp đúng công thức"
+   ]
+  },
+  {
+   "id": "C245",
+   "name": "Novelty",
+   "group": "C",
+   "v51": 1,
+   "score": 8,
+   "evidence": "Cờ nov và novOk theo ô; mức 4–5 cần đúng ở câu mới; transfer chỉ dùng câu chưa gặp",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::mức 4–5 cần ít nhất một lần đúng"
+   ]
+  },
+  {
+   "id": "C246",
+   "name": "Difficulty Adjustment",
+   "group": "C",
+   "v51": 4,
+   "score": 4,
+   "evidence": "Agg có khoá diff nhưng app chưa đặt độ khó câu; Beta không hiệu chỉnh theo độ khó",
+   "tests": []
+  },
+  {
+   "id": "C247",
+   "name": "Assistance Detection",
+   "group": "C",
+   "v51": 4,
+   "score": 7,
+   "evidence": "evaluate(): hint ×0,5, cờ asst, rel giảm; câu kiểm sau bí kíp tính như có trợ giúp; app từ vựng chưa có gợi ý gắn cờ",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::trợ giúp, làm lại và hết giờ",
+    "test/unit/engine-micro.test.ts::câu kiểm tra ngay sau bí kíp"
+   ]
+  },
+  {
+   "id": "C248",
+   "name": "Retry Detection",
+   "group": "C",
+   "v51": 5,
+   "score": 8,
+   "evidence": "retry ×0,3 trong evaluate(), app từ vựng truyền retry; ngữ pháp bỏ lượt làm lại",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::trợ giúp, làm lại và hết giờ"
+   ]
+  },
+  {
+   "id": "C249",
+   "name": "Guessing Detection",
+   "group": "C",
+   "v51": 8,
+   "score": 8,
+   "evidence": "g = 1/số phương án; tự nhận đoán ×0,5",
+   "tests": [
+    "test/unit/engine-mastery.test.ts::đoán mò làm bằng chứng đúng yếu đi"
+   ]
+  },
+  {
+   "id": "C250",
+   "name": "Speed Interpretation",
+   "group": "C",
+   "v51": 6,
+   "score": 8,
+   "evidence": "rt được ghi vào sự kiện, không vào trọng số (P15); chỉ dùng cho gap automaticity",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::tốc độ không đổi trọng số"
+   ]
+  },
+  {
+   "id": "C251",
+   "name": "Context Validity",
+   "group": "C",
+   "v51": 3,
+   "score": 4,
+   "evidence": "Có ngữ cảnh riêng transfer/probe/measure/quest, nhưng ctx luyện tập vẫn là chiều bài tập (rec/rcl)",
+   "tests": []
+  },
+  {
+   "id": "C252",
+   "name": "Task Validity",
+   "group": "C",
+   "v51": 5,
+   "score": 5,
+   "evidence": "Ánh xạ dạng câu → mức có lý do như v51",
+   "tests": []
+  },
+  {
+   "id": "C253",
+   "name": "Construct Validity",
+   "group": "C",
+   "v51": 5,
+   "score": 5,
+   "evidence": "Kiểm nội dung + soát độc lập như v51",
+   "tests": []
+  },
+  {
+   "id": "C254",
+   "name": "Contamination",
+   "group": "C",
+   "v51": 4,
+   "score": 7,
+   "evidence": "Hết giờ khi bị ép ×0,3; Quest không tính giờ; trên mô phỏng chênh mastery do kỹ năng game 0,05 so với 0,12",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT19 — thiên lệch"
+   ]
+  },
+  {
+   "id": "C255",
+   "name": "Reliability",
+   "group": "C",
+   "v51": 5,
+   "score": 5,
+   "evidence": "Mỗi sự kiện có rel 0–1 theo luật; thống kê rpb câu như v51; chưa đo độ tin cậy thực nghiệm",
+   "tests": []
+  },
+  {
+   "id": "C256",
+   "name": "Confidence Calibration",
+   "group": "C",
+   "v51": 1,
+   "score": 3,
+   "evidence": "Chỉ có ECE 0,14 trên mô phỏng (sim-report §3); chưa có dữ liệu người thật, chưa có test",
+   "tests": []
+  },
+  {
+   "id": "C257",
+   "name": "Drift Detection",
+   "group": "C",
+   "v51": 1,
+   "score": 1,
+   "evidence": "Không có phát hiện trôi theo thời gian",
+   "tests": []
+  },
+  {
+   "id": "C258",
+   "name": "Source Comparison",
+   "group": "C",
+   "v51": 3,
+   "score": 3,
+   "evidence": "Sự kiện ghi src nhưng chưa so sánh độ khớp giữa các nguồn",
+   "tests": []
+  },
+  {
+   "id": "C259",
+   "name": "Conflict Resolution",
+   "group": "C",
+   "v51": 4,
+   "score": 7,
+   "evidence": "Bằng chứng ngược kết luận làm cũ nhẹ đi (decay 0,9); disagreement mở lại nút; Claim cộng dồn với bằng chứng thật",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::model disagreement",
+    "test/unit/engine-evidence.test.ts::tiên nghiệm không đè ô đã có bằng chứng thật"
+   ]
+  },
+  {
+   "id": "C260",
+   "name": "Evidence Sufficiency",
+   "group": "C",
+   "v51": 8,
+   "score": 9,
+   "evidence": "Đạt cần m ≥ 0,8 và phân vị 10% chính xác ≥ 0,6; câu dò dừng khi giá trị thông tin thấp",
+   "tests": [
+    "test/unit/engine-mastery.test.ts::2 câu đúng chưa đủ",
+    "test/unit/engine-probe.test.ts::dừng khi đủ"
+   ]
+  },
+  {
+   "id": "C261",
+   "name": "Mastery Calibration",
+   "group": "D",
+   "v51": 1,
+   "score": 3,
+   "evidence": "Calibration chỉ đo trên mô phỏng: ECE 0,14, m dè dặt ở vùng 0,4–0,85; chưa có dữ liệu thật, chưa test",
+   "tests": []
+  },
+  {
+   "id": "C262",
+   "name": "Confidence Calibration",
+   "group": "D",
+   "v51": 1,
+   "score": 2,
+   "evidence": "Confidence chưa hiệu chỉnh; chỉ có số liệu mô phỏng, chưa có dữ liệu",
+   "tests": []
+  },
+  {
+   "id": "C263",
+   "name": "Beta Parameter Validation",
+   "group": "D",
+   "v51": 8,
+   "score": 9,
+   "evidence": "Công thức Beta và phân vị chính xác (betaQuantile) có test giá trị đã biết",
+   "tests": [
+    "test/unit/engine-mastery.test.ts::đúng tăng α",
+    "test/unit/engine-mastery3.test.ts::phân vị Beta chính xác"
+   ]
+  },
+  {
+   "id": "C264",
+   "name": "Guessing Parameter",
+   "group": "D",
+   "v51": 2,
+   "score": 2,
+   "evidence": "g vẫn là 1/số phương án theo lý thuyết, chưa ước lượng",
+   "tests": []
+  },
+  {
+   "id": "C265",
+   "name": "Slip Parameter",
+   "group": "D",
+   "v51": 2,
+   "score": 3,
+   "evidence": "slip cố định 0,1 nhưng đổi được và tính lại từ L2; chưa ước lượng",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::tính lại được khi đổi luật"
+   ]
+  },
+  {
+   "id": "C266",
+   "name": "Repetition Weight",
+   "group": "D",
+   "v51": 4,
+   "score": 4,
+   "evidence": "Trọng số lặp 0,5 có test cơ học, chưa kiểm thực nghiệm",
+   "tests": [
+    "test/unit/engine-mastery.test.ts::lặp cùng câu trong 24 giờ"
+   ]
+  },
+  {
+   "id": "C267",
+   "name": "Monotonicity",
+   "group": "D",
+   "v51": 7,
+   "score": 9,
+   "evidence": "Trả lời đúng không bao giờ làm mastery giảm (decay chỉ khi ngược chiều)",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::trả lời đúng không bao giờ làm mastery giảm"
+   ]
+  },
+  {
+   "id": "C268",
+   "name": "Contradictory Evidence",
+   "group": "D",
+   "v51": 6,
+   "score": 8,
+   "evidence": "Sai làm β tăng, decay bằng chứng cũ, đủ sai ở câu mới thì mở lại",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::model disagreement",
+    "test/unit/scenarios.test.ts::S6 / MT9"
+   ]
+  },
+  {
+   "id": "C269",
+   "name": "Small-Sample Protection",
+   "group": "D",
+   "v51": 8,
+   "score": 9,
+   "evidence": "2 câu đúng chưa Đạt; phân vị chính xác chặt hơn ở n nhỏ",
+   "tests": [
+    "test/unit/engine-mastery.test.ts::2 câu đúng chưa đủ"
+   ]
+  },
+  {
+   "id": "C270",
+   "name": "Large-Sample Stability",
+   "group": "D",
+   "v51": 6,
+   "score": 8,
+   "evidence": "Decay theo lượt ngược chiều tránh khóa cứng khi n lớn; 100.000 lượt ô vẫn khớp",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::hồi phục sau nhiều lần sai",
+    "test/unit/scenarios.test.ts::S9 / MT13"
+   ]
+  },
+  {
+   "id": "C271",
+   "name": "Boundary Sensitivity",
+   "group": "D",
+   "v51": 5,
+   "score": 6,
+   "evidence": "Test 12/13; câu dò chế độ boundary quanh ngưỡng; chưa phân tích độ nhạy quanh ranh giới",
+   "tests": [
+    "test/unit/engine-mastery.test.ts::12/13 câu đúng thì đạt"
+   ]
+  },
+  {
+   "id": "C272",
+   "name": "Threshold Sensitivity",
+   "group": "D",
+   "v51": 3,
+   "score": 8,
+   "evidence": "Trên mô phỏng: bảng FP/FN theo ngưỡng 0,70–0,90 (sim-report §2), test kiểm FN đổi đúng chiều",
+   "tests": [
+    "test/unit/scenarios.test.ts::ngưỡng đổi thì FP/FN đổi đúng chiều"
+   ]
+  },
+  {
+   "id": "C273",
+   "name": "Confidence Interval Validity",
+   "group": "D",
+   "v51": 5,
+   "score": 9,
+   "evidence": "Cận dưới là phân vị 10% chính xác của Beta, không còn xấp xỉ chuẩn",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::phân vị Beta chính xác"
+   ]
+  },
+  {
+   "id": "C274",
+   "name": "Weight Sensitivity",
+   "group": "D",
+   "v51": 2,
+   "score": 3,
+   "evidence": "Đổi luật (slip, trọng số) tính lại được nhưng chưa có phân tích độ nhạy trọng số",
+   "tests": []
+  },
+  {
+   "id": "C275",
+   "name": "Recovery",
+   "group": "D",
+   "v51": 5,
+   "score": 9,
+   "evidence": "Hồi phục: giảm bằng chứng cũ ngược chiều giúp Đạt lại sau ≤ 50 lượt đúng",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::hồi phục sau nhiều lần sai"
+   ]
+  },
+  {
+   "id": "C276",
+   "name": "Decay",
+   "group": "D",
+   "v51": 5,
+   "score": 6,
+   "evidence": "Không phân rã theo thời gian; quên đi qua FSRS (gap retention) và decay khi sai; chưa có decay Beta theo ngày",
+   "tests": [
+    "test/unit/scenarios.test.ts::S7 / MT10"
+   ]
+  },
+  {
+   "id": "C277",
+   "name": "Transfer Test",
+   "group": "D",
+   "v51": 1,
+   "score": 8,
+   "evidence": "transfer.ts: thử nút đã Đạt ở câu mới; sai thành tier 3, sai 2 lần mở lại",
+   "tests": [
+    "test/unit/engine-transfer.test.ts::trượt ở câu mới",
+    "test/unit/scenarios.test.ts::S6 / MT9"
+   ]
+  },
+  {
+   "id": "C278",
+   "name": "Cross-Context",
+   "group": "D",
+   "v51": 6,
+   "score": 6,
+   "evidence": "Số ngữ cảnh vào confidence; gap context khi một ngữ cảnh đúng < 50%",
+   "tests": []
+  },
+  {
+   "id": "C279",
+   "name": "False-Positive Rate",
+   "group": "D",
+   "v51": 1,
+   "score": 6,
+   "evidence": "Trên mô phỏng: dương tính giả 0,0% trên 265 lần Đạt, có test fp ≤ 2%; chưa có dữ liệu thật",
+   "tests": [
+    "test/unit/scenarios.test.ts::không có dương tính giả trên learner chưa biết"
+   ]
+  },
+  {
+   "id": "C280",
+   "name": "False-Negative Rate",
+   "group": "D",
+   "v51": 1,
+   "score": 5,
+   "evidence": "Trên mô phỏng: âm tính giả 22,9% (cao, dè dặt); chưa có dữ liệu thật",
+   "tests": []
+  },
+  {
+   "id": "C281",
+   "name": "Diagnostic Accuracy",
+   "group": "E",
+   "v51": 3,
+   "score": 5,
+   "evidence": "Trên mô phỏng: sai số trung bình 0,59 cấp, 13 nút dò; test hội tụ trên dữ liệu giả; chưa đo người thật",
+   "tests": [
+    "test/unit/engine-diag.test.ts::hội tụ gần cấp thật"
+   ]
+  },
+  {
+   "id": "C282",
+   "name": "Efficiency",
+   "group": "E",
+   "v51": 7,
+   "score": 7,
+   "evidence": "≤16 nút, ≤20 phút; ngân sách dò liên tục 6 lượt/ngày",
+   "tests": []
+  },
+  {
+   "id": "C283",
+   "name": "Information Gain",
+   "group": "E",
+   "v51": 6,
+   "score": 8,
+   "evidence": "probe.ts eig(): xác suất đổi kết luận + giảm sd; IRT theo information",
+   "tests": [
+    "test/unit/engine-probe.test.ts::giá trị thông tin"
+   ]
+  },
+  {
+   "id": "C284",
+   "name": "Information Gain / Effort",
+   "group": "E",
+   "v51": 3,
+   "score": 6,
+   "evidence": "score = (eig + thưởng chế độ) / nỗ lực; nỗ lực là hằng số 1,5 phút cho mọi câu dò",
+   "tests": []
+  },
+  {
+   "id": "C285",
+   "name": "Hypothesis Tracking",
+   "group": "E",
+   "v51": 2,
+   "score": 6,
+   "evidence": "Theo dõi giả thuyết: Claim (inferred), hyp tiền đề, mis hiểu sai, trạng thái nút",
+   "tests": [
+    "test/unit/engine-probe.test.ts::truy gốc được kiểm chứng"
+   ]
+  },
+  {
+   "id": "C286",
+   "name": "Hypothesis Updating",
+   "group": "E",
+   "v51": 4,
+   "score": 6,
+   "evidence": "hyp đặt/xoá theo kết quả dò (rootVerdict); mis yếu dần khi đúng; chưa có phân phối xác suất trên giả thuyết",
+   "tests": [
+    "test/unit/engine-micro.test.ts::thiếu tiền đề đã kiểm chứng"
+   ]
+  },
+  {
+   "id": "C287",
+   "name": "Stopping",
+   "group": "E",
+   "v51": 7,
+   "score": 8,
+   "evidence": "Dừng khi giá trị thông tin < 0,15 hoặc hết ngân sách ngày; chẩn đoán đầu theo đổi chiều/hết giờ",
+   "tests": [
+    "test/unit/engine-probe.test.ts::dừng khi đủ"
+   ]
+  },
+  {
+   "id": "C288",
+   "name": "Continuation",
+   "group": "E",
+   "v51": 3,
+   "score": 8,
+   "evidence": "Chẩn đoán liên tục: explore/confirm/boundary/verify/root mỗi lần tính lộ trình",
+   "tests": [
+    "test/unit/engine-probe.test.ts::chọn đúng chế độ"
+   ]
+  },
+  {
+   "id": "C289",
+   "name": "Probe Selection",
+   "group": "E",
+   "v51": 6,
+   "score": 8,
+   "evidence": "Chọn câu dò theo chế độ ưu tiên và giá trị/nỗ lực",
+   "tests": [
+    "test/unit/engine-probe.test.ts::chọn đúng chế độ"
+   ]
+  },
+  {
+   "id": "C290",
+   "name": "Root Cause Efficiency",
+   "group": "E",
+   "v51": 4,
+   "score": 7,
+   "evidence": "Truy gốc theo cạnh tiền đề cứng khi nút sai ≥ 3 lần; kiểm chứng trên learner mô phỏng",
+   "tests": [
+    "test/unit/engine-probe.test.ts::truy gốc trọn vòng"
+   ]
+  },
+  {
+   "id": "C291",
+   "name": "Prerequisite Diagnosis",
+   "group": "E",
+   "v51": 4,
+   "score": 8,
+   "evidence": "Dò tiền đề cứng; trượt thành giả thuyết thiếu tiền đề, lộ trình đưa tiền đề lên trước",
+   "tests": [
+    "test/unit/engine-probe.test.ts::truy gốc được kiểm chứng"
+   ]
+  },
+  {
+   "id": "C292",
+   "name": "Misconception Diagnosis",
+   "group": "E",
+   "v51": 2,
+   "score": 7,
+   "evidence": "Cùng câu trả lời sai ≥ 2 lần thành giả thuyết hiểu sai; bí kíp nhắm đúng cách hiểu sai",
+   "tests": [
+    "test/unit/scenarios.test.ts::S5 / MT5 / MT6",
+    "test/unit/engine-micro.test.ts::cùng một câu trả lời sai lặp lại"
+   ]
+  },
+  {
+   "id": "C293",
+   "name": "Guessing Diagnosis",
+   "group": "E",
+   "v51": 4,
+   "score": 4,
+   "evidence": "Tự nhận đoán, g, tham số c của 3PL; chưa chẩn đoán đoán mò theo mẫu trả lời",
+   "tests": []
+  },
+  {
+   "id": "C294",
+   "name": "Careless Error",
+   "group": "E",
+   "v51": 2,
+   "score": 4,
+   "evidence": "Một lỗi lẻ không mất Đạt, chỉ ghi nhận (micro log); slip vẫn cố định",
+   "tests": [
+    "test/unit/scenarios.test.ts::S4 / MT4"
+   ]
+  },
+  {
+   "id": "C295",
+   "name": "Fatigue Signal",
+   "group": "E",
+   "v51": 1,
+   "score": 1,
+   "evidence": "Không có tín hiệu mệt mỏi",
+   "tests": []
+  },
+  {
+   "id": "C296",
+   "name": "Interaction Effect",
+   "group": "E",
+   "v51": 1,
+   "score": 1,
+   "evidence": "Không có hiệu ứng tương tác",
+   "tests": []
+  },
+  {
+   "id": "C297",
+   "name": "Bias Detection",
+   "group": "E",
+   "v51": 1,
+   "score": 1,
+   "evidence": "Không có phát hiện thiên lệch trong chẩn đoán",
+   "tests": []
+  },
+  {
+   "id": "C298",
+   "name": "Repeatability",
+   "group": "E",
+   "v51": 5,
+   "score": 6,
+   "evidence": "Tất định theo câu trả lời; mô phỏng có hạt giống tái tạo được",
+   "tests": []
+  },
+  {
+   "id": "C299",
+   "name": "Recovery",
+   "group": "E",
+   "v51": 6,
+   "score": 7,
+   "evidence": "Bằng chứng thật đè/cộng dồn tiên nghiệm; Claim sai bị sửa; làm lại chẩn đoán được",
+   "tests": [
+    "test/unit/scenarios.test.ts::S10 / MT11"
+   ]
+  },
+  {
+   "id": "C300",
+   "name": "Auditability",
+   "group": "E",
+   "v51": 3,
+   "score": 8,
+   "evidence": "Snapshot diag cho chẩn đoán, câu dò (chế độ, eig, kết quả), transfer, bí kíp, kèm id bằng chứng",
+   "tests": [
+    "test/unit/engine-snapshot.test.ts::nút đổi trạng thái Đạt",
+    "test/e2e/probe.spec.ts::snapshot chẩn đoán"
+   ]
+  },
+  {
+   "id": "C301",
+   "name": "Candidate Generation",
+   "group": "F",
+   "v51": 6,
+   "score": 8,
+   "evidence": "Ứng viên learn/review/probe/verify/transfer (nba.ts rank)",
+   "tests": [
+    "test/unit/engine-nba.test.ts::NBA: utility có phân rã"
+   ]
+  },
+  {
+   "id": "C302",
+   "name": "Feasibility",
+   "group": "F",
+   "v51": 7,
+   "score": 8,
+   "evidence": "Chỉ nút đủ tiền đề cứng, có nhóm thay thế; nút không có câu bị lọc",
+   "tests": [
+    "test/unit/engine-path.test.ts::chỉ mở nút đã đủ tiền đề cứng"
+   ]
+  },
+  {
+   "id": "C303",
+   "name": "Goal Relevance",
+   "group": "F",
+   "v51": 9,
+   "score": 9,
+   "evidence": "Chỉ nút trong bao đóng mục tiêu",
+   "tests": [
+    "test/unit/engine-graph.test.ts::closure: chỉ kéo tiền đề cứng",
+    "test/unit/engine-path.test.ts::chỉ mở nút đã đủ tiền đề cứng"
+   ]
+  },
+  {
+   "id": "C304",
+   "name": "Prerequisite Relevance",
+   "group": "F",
+   "v51": 8,
+   "score": 8,
+   "evidence": "dep có trọng số cạnh, thành phần prereq trong utility",
+   "tests": []
+  },
+  {
+   "id": "C305",
+   "name": "Learning Value",
+   "group": "F",
+   "v51": 5,
+   "score": 7,
+   "evidence": "Thành phần learn tường minh theo dep; chưa ước lượng mức tăng mastery kỳ vọng",
+   "tests": [
+    "test/unit/engine-nba.test.ts::NBA: utility có phân rã"
+   ]
+  },
+  {
+   "id": "C306",
+   "name": "Information Value",
+   "group": "F",
+   "v51": 2,
+   "score": 8,
+   "evidence": "Thành phần info từ eig câu dò",
+   "tests": [
+    "test/unit/engine-nba.test.ts::kiểm tra nhanh truy gốc thắng"
+   ]
+  },
+  {
+   "id": "C307",
+   "name": "Retention Value",
+   "group": "F",
+   "v51": 5,
+   "score": 6,
+   "evidence": "Thành phần retain, nhưng nguy cơ quên là heuristic 0,4 + số mục/30 (today.ts), không từ R thật",
+   "tests": [
+    "test/unit/engine-nba.test.ts::ôn thắng học mới"
+   ]
+  },
+  {
+   "id": "C308",
+   "name": "Transfer Value",
+   "group": "F",
+   "v51": 1,
+   "score": 7,
+   "evidence": "Thành phần transfer theo imp.tr; chỉ một ứng viên transfer",
+   "tests": [
+    "test/unit/engine-transfer.test.ts::NBA: thử transfer thắng"
+   ]
+  },
+  {
+   "id": "C309",
+   "name": "Effort Cost",
+   "group": "F",
+   "v51": 7,
+   "score": 8,
+   "evidence": "effort = phút ÷ 20 bị trừ",
+   "tests": [
+    "test/unit/engine-nba.test.ts::nỗ lực bị trừ"
+   ]
+  },
+  {
+   "id": "C310",
+   "name": "Interruption Cost",
+   "group": "F",
+   "v51": 1,
+   "score": 6,
+   "evidence": "Thành phần interrupt khi inGame và chính sách ngắt của micro.ts; computeNba chưa truyền inGame",
+   "tests": [
+    "test/unit/engine-micro.test.ts::trong lượt game thì hoãn"
+   ]
+  },
+  {
+   "id": "C311",
+   "name": "Expected Utility",
+   "group": "F",
+   "v51": 5,
+   "score": 8,
+   "evidence": "U có phân rã đủ 8 thành phần §57, có phiên bản nba-3; trọng số đặt tay",
+   "tests": [
+    "test/unit/engine-nba.test.ts::NBA: utility có phân rã"
+   ]
+  },
+  {
+   "id": "C312",
+   "name": "Tie-Breaking",
+   "group": "F",
+   "v51": 8,
+   "score": 9,
+   "evidence": "Hoà điểm theo loại rồi id, tất định",
+   "tests": [
+    "test/unit/engine-nba.test.ts::hoà điểm xác định"
+   ]
+  },
+  {
+   "id": "C313",
+   "name": "Skip Capability",
+   "group": "F",
+   "v51": 8,
+   "score": 9,
+   "evidence": "Kiểm tra để bỏ qua ×4, tiên nghiệm chẩn đoán; learner biết nhiều tốn ít công sức hơn",
+   "tests": [
+    "test/unit/engine-path.test.ts::kiểm tra để bỏ qua",
+    "test/unit/scenarios.test.ts::S2 / MT2"
+   ]
+  },
+  {
+   "id": "C314",
+   "name": "Advance Capability",
+   "group": "F",
+   "v51": 7,
+   "score": 8,
+   "evidence": "Đạt thì ra khỏi lộ trình; Claim được xác nhận nhanh",
+   "tests": [
+    "test/unit/engine-path.test.ts::nút đã đạt ra khỏi lộ trình"
+   ]
+  },
+  {
+   "id": "C315",
+   "name": "Review Priority",
+   "group": "F",
+   "v51": 6,
+   "score": 8,
+   "evidence": "Ôn thắng học mới khi nhiều mục sắp quên",
+   "tests": [
+    "test/unit/engine-nba.test.ts::ôn thắng học mới"
+   ]
+  },
+  {
+   "id": "C316",
+   "name": "Diagnostic Priority",
+   "group": "F",
+   "v51": 4,
+   "score": 8,
+   "evidence": "Câu dò cạnh tranh trong NBA; truy gốc thắng khi kẹt",
+   "tests": [
+    "test/unit/engine-nba.test.ts::kiểm tra nhanh truy gốc thắng"
+   ]
+  },
+  {
+   "id": "C317",
+   "name": "Intervention Priority",
+   "group": "F",
+   "v51": 2,
+   "score": 7,
+   "evidence": "micro.ts: thiếu tiền đề đã kiểm chứng thì học phần nền ngay; lỗi lặp lại mời bí kíp",
+   "tests": [
+    "test/unit/engine-micro.test.ts::thiếu tiền đề đã kiểm chứng"
+   ]
+  },
+  {
+   "id": "C318",
+   "name": "NBA Stability",
+   "group": "F",
+   "v51": 6,
+   "score": 9,
+   "evidence": "Trễ 10% giữ lựa chọn trước",
+   "tests": [
+    "test/unit/engine-nba.test.ts::NBA ổn định (C318)"
+   ]
+  },
+  {
+   "id": "C319",
+   "name": "NBA Responsiveness",
+   "group": "F",
+   "v51": 8,
+   "score": 9,
+   "evidence": "Tính lại sau mỗi câu; chênh lớn thì đổi lựa chọn",
+   "tests": [
+    "test/unit/engine-nba.test.ts::chênh lớn thì đổi (C319)"
+   ]
+  },
+  {
+   "id": "C320",
+   "name": "NBA Explainability",
+   "group": "F",
+   "v51": 6,
+   "score": 9,
+   "evidence": "Snapshot NBA lưu top ứng viên, phân rã lợi ích; Vì sao? giải thích; replay được",
+   "tests": [
+    "test/unit/engine-snapshot.test.ts::tái tạo quyết định NBA",
+    "test/e2e/why.spec.ts::NBA: mở Lộ trình hôm nay"
+   ]
+  },
+  {
+   "id": "C321",
+   "name": "Pre/Post Gain",
+   "group": "G",
+   "v51": 2,
+   "score": 3,
+   "evidence": "Chỉ có công cụ đo, chưa có dữ liệu: measure.ts bộ 12 câu giữ riêng, đo trước/sau",
+   "tests": [
+    "test/unit/engine-measure.test.ts::lịch đo"
+   ]
+  },
+  {
+   "id": "C322",
+   "name": "Delayed Gain",
+   "group": "G",
+   "v51": 1,
+   "score": 3,
+   "evidence": "Chỉ có công cụ đo, chưa có dữ liệu: đo lại 7 và 30 ngày sau lần sau",
+   "tests": [
+    "test/unit/engine-measure.test.ts::lịch đo"
+   ]
+  },
+  {
+   "id": "C323",
+   "name": "Transfer Gain",
+   "group": "G",
+   "v51": 0,
+   "score": 2,
+   "evidence": "Chỉ có công cụ: trạng thái transfer theo nút; chưa đo mức tăng transfer, chưa có dữ liệu",
+   "tests": []
+  },
+  {
+   "id": "C324",
+   "name": "Retention Gain",
+   "group": "G",
+   "v51": 2,
+   "score": 3,
+   "evidence": "Chỉ có công cụ đo, chưa có dữ liệu: keep7/keep30 trong report()",
+   "tests": [
+    "test/unit/engine-measure.test.ts::báo cáo mức tăng, giữ lại"
+   ]
+  },
+  {
+   "id": "C325",
+   "name": "Adaptive vs Fixed",
+   "group": "G",
+   "v51": 0,
+   "score": 4,
+   "evidence": "Trên mô phỏng: thích ứng tốn 67–99% số lượt của giáo trình cố định; nhãn A/B chỉ khi đồng ý, chưa có dữ liệu thật",
+   "tests": [
+    "test/unit/scenarios.test.ts::S2 / MT2"
+   ]
+  },
+  {
+   "id": "C326",
+   "name": "Game vs Non-Game",
+   "group": "G",
+   "v51": 0,
+   "score": 2,
+   "evidence": "Chỉ có nhãn A/B game/plain khi đồng ý, chưa có dữ liệu",
+   "tests": [
+    "test/unit/engine-measure.test.ts::nhãn A/B ổn định theo thiết bị"
+   ]
+  },
+  {
+   "id": "C327",
+   "name": "Effort-Normalized Gain",
+   "group": "G",
+   "v51": 2,
+   "score": 3,
+   "evidence": "perHour = mức tăng / giờ học; giờ học ước tính 12 giây mỗi câu (main.ts studyMins), chưa có dữ liệu",
+   "tests": []
+  },
+  {
+   "id": "C328",
+   "name": "Time-Normalized Gain",
+   "group": "G",
+   "v51": 2,
+   "score": 3,
+   "evidence": "Như C327: chỉ có công cụ, thời gian là ước tính, chưa có dữ liệu",
+   "tests": []
+  },
+  {
+   "id": "C329",
+   "name": "Evidence-Normalized Gain",
+   "group": "G",
+   "v51": 0,
+   "score": 2,
+   "evidence": "Mô phỏng so số lượt bằng chứng giữa hai lộ trình; chưa có chỉ số mức tăng theo bằng chứng",
+   "tests": []
+  },
+  {
+   "id": "C330",
+   "name": "Intervention Effectiveness",
+   "group": "G",
+   "v51": 0,
+   "score": 3,
+   "evidence": "Snapshot bí kíp ghi m trước/sau và kết quả kiểm; chỉ có công cụ đo, chưa có dữ liệu",
+   "tests": [
+    "test/e2e/micro.spec.ts::snapshot trước/sau"
+   ]
+  },
+  {
+   "id": "C331",
+   "name": "Intervention Precision",
+   "group": "G",
+   "v51": 1,
+   "score": 2,
+   "evidence": "Chính sách log/probe/offer/now có test; chưa đo độ chính xác can thiệp",
+   "tests": []
+  },
+  {
+   "id": "C332",
+   "name": "Intervention Recall",
+   "group": "G",
+   "v51": 1,
+   "score": 2,
+   "evidence": "Chưa đo độ phủ can thiệp, chưa có dữ liệu",
+   "tests": []
+  },
+  {
+   "id": "C333",
+   "name": "Path Efficiency",
+   "group": "G",
+   "v51": 2,
+   "score": 4,
+   "evidence": "Trên mô phỏng: lộ trình thích ứng hiệu quả hơn cố định (sim-report §5); chưa đo người thật",
+   "tests": [
+    "test/unit/scenarios.test.ts::S1 / MT1"
+   ]
+  },
+  {
+   "id": "C334",
+   "name": "Relearning Efficiency",
+   "group": "G",
+   "v51": 5,
+   "score": 5,
+   "evidence": "Kiểm tra bỏ qua, tiên nghiệm, Claim cộng dồn; mô phỏng cho thấy bỏ qua được phần đã biết",
+   "tests": []
+  },
+  {
+   "id": "C335",
+   "name": "Bottleneck Resolution",
+   "group": "G",
+   "v51": 4,
+   "score": 5,
+   "evidence": "Truy gốc đưa tiền đề lên trước; kiểm chứng trên mô phỏng, chưa có dữ liệu thật",
+   "tests": [
+    "test/unit/engine-probe.test.ts::truy gốc trọn vòng"
+   ]
+  },
+  {
+   "id": "C336",
+   "name": "Learning Persistence",
+   "group": "G",
+   "v51": 2,
+   "score": 2,
+   "evidence": "Streak có, chưa đo",
+   "tests": []
+  },
+  {
+   "id": "C337",
+   "name": "Independent Performance",
+   "group": "G",
+   "v51": 4,
+   "score": 5,
+   "evidence": "Tách đúng có trợ giúp khỏi đúng độc lập (novOk chỉ tính không trợ giúp); chưa có dữ liệu người thật",
+   "tests": []
+  },
+  {
+   "id": "C338",
+   "name": "Spontaneous Use",
+   "group": "G",
+   "v51": 1,
+   "score": 1,
+   "evidence": "Chưa có dữ liệu / cơ chế",
+   "tests": []
+  },
+  {
+   "id": "C339",
+   "name": "Context Generalization",
+   "group": "G",
+   "v51": 1,
+   "score": 3,
+   "evidence": "Có công cụ: câu ngữ cảnh mới (transfer), bộ đo giữ riêng; chưa có dữ liệu",
+   "tests": []
+  },
+  {
+   "id": "C340",
+   "name": "Outcome Validity",
+   "group": "G",
+   "v51": 3,
+   "score": 3,
+   "evidence": "Bộ đo giữ riêng khỏi transfer/game, el_pair ước tính–điểm thật; chưa có dữ liệu",
+   "tests": [
+    "test/e2e/measure.spec.ts::bộ câu giữ riêng không xuất hiện"
+   ]
+  },
+  {
+   "id": "C341",
+   "name": "Fun ≠ Learning",
+   "group": "H",
+   "v51": 1,
+   "score": 3,
+   "evidence": "Quest thiết kế để lợi ích game = lợi ích học; chưa có dữ liệu tách vui và học",
+   "tests": []
+  },
+  {
+   "id": "C342",
+   "name": "Learning ≠ Game Score",
+   "group": "H",
+   "v51": 8,
+   "score": 9,
+   "evidence": "Xu, tầng, thắng thua là telemetry, không vào mastery; XP tách Readiness",
+   "tests": [
+    "test/unit/engine-quest.test.ts::kết quả game là telemetry",
+    "test/e2e/quest.spec.ts::kết quả game không vào mastery"
+   ]
+  },
+  {
+   "id": "C343",
+   "name": "Reaction Speed Confound",
+   "group": "H",
+   "v51": 6,
+   "score": 9,
+   "evidence": "Tốc độ không vào trọng số; Quest không tính giờ; trên mô phỏng tốc độ khác nhau chênh mastery 0,00",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT19 — thiên lệch",
+    "test/unit/engine-quest.test.ts::độ khó gameplay tách khỏi độ khó ngôn ngữ"
+   ]
+  },
+  {
+   "id": "C344",
+   "name": "Motor Skill Confound",
+   "group": "H",
+   "v51": 4,
+   "score": 6,
+   "evidence": "Hết giờ khi bị ép chỉ ×0,3; trên mô phỏng chênh 0,05 so với 0,12; chưa test thao tác chạm thật",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT19 — thiên lệch"
+   ]
+  },
+  {
+   "id": "C345",
+   "name": "Game Strategy Confound",
+   "group": "H",
+   "v51": 4,
+   "score": 6,
+   "evidence": "Xu tỉ lệ giá trị học nên chiến thuật game trùng đường học; chưa có dữ liệu",
+   "tests": [
+    "test/unit/engine-quest.test.ts::xu tỉ lệ giá trị học"
+   ]
+  },
+  {
+   "id": "C346",
+   "name": "Layout Memorization",
+   "group": "H",
+   "v51": 6,
+   "score": 6,
+   "evidence": "Xáo phương án như v51",
+   "tests": []
+  },
+  {
+   "id": "C347",
+   "name": "Pattern Memorization",
+   "group": "H",
+   "v51": 4,
+   "score": 6,
+   "evidence": "Câu đã gặp ít xu; Đạt mức cao cần câu mới; seen hash",
+   "tests": [
+    "test/unit/engine-quest.test.ts::câu đã gặp ít xu"
+   ]
+  },
+  {
+   "id": "C348",
+   "name": "Challenge Novelty",
+   "group": "H",
+   "v51": 3,
+   "score": 8,
+   "evidence": "Trùm là câu mới chưa gặp; mức 4–5 cần đúng ở câu mới",
+   "tests": [
+    "test/unit/engine-quest.test.ts::trùm = thử ở câu mới",
+    "test/unit/engine-mastery3.test.ts::mức 4–5 cần ít nhất một lần đúng"
+   ]
+  },
+  {
+   "id": "C349",
+   "name": "Game Difficulty Isolation",
+   "group": "H",
+   "v51": 1,
+   "score": 8,
+   "evidence": "gameplayDifficulty chỉ đổi theo tầng, không đổi câu; ảnh hưởng gameplay còn nhỏ (tim theo tầng)",
+   "tests": [
+    "test/unit/engine-quest.test.ts::độ khó gameplay tách khỏi độ khó ngôn ngữ"
+   ]
+  },
+  {
+   "id": "C350",
+   "name": "Language Difficulty Isolation",
+   "group": "H",
+   "v51": 1,
+   "score": 7,
+   "evidence": "languageDifficulty = mức mastery do engine chọn, độc lập tầng; chưa hiệu chỉnh độ khó câu",
+   "tests": [
+    "test/unit/engine-quest.test.ts::tầng cao hơn không đổi câu hỏi"
+   ]
+  },
+  {
+   "id": "C351",
+   "name": "Challenge Fairness",
+   "group": "H",
+   "v51": 5,
+   "score": 5,
+   "evidence": "Chưa có dữ liệu về công bằng thử thách",
+   "tests": []
+  },
+  {
+   "id": "C352",
+   "name": "Feedback Validity",
+   "group": "H",
+   "v51": 8,
+   "score": 8,
+   "evidence": "Giải thích tiếng Việt từng phương án; bí kíp có ví dụ, dễ nhầm",
+   "tests": []
+  },
+  {
+   "id": "C353",
+   "name": "Feedback Timing",
+   "group": "H",
+   "v51": 7,
+   "score": 7,
+   "evidence": "Ngay khi luyện; bí kíp trong game hoãn tới cuối lượt",
+   "tests": []
+  },
+  {
+   "id": "C354",
+   "name": "Challenge Variety",
+   "group": "H",
+   "v51": 8,
+   "score": 8,
+   "evidence": "26 dạng câu thi + nhiều dạng từ vựng/ngữ pháp; 5 loại cảnh Quest",
+   "tests": []
+  },
+  {
+   "id": "C355",
+   "name": "Game Flow",
+   "group": "H",
+   "v51": 5,
+   "score": 7,
+   "evidence": "Chính sách ngắt: lỗi lẻ không ngắt, mời bí kíp hoãn tới cuối lượt game; tầng có điểm dừng tự nhiên",
+   "tests": [
+    "test/unit/engine-micro.test.ts::lỗi lẻ chỉ ghi nhận",
+    "test/unit/engine-micro.test.ts::trong lượt game thì hoãn"
+   ]
+  },
+  {
+   "id": "C356",
+   "name": "Difficulty Adaptation",
+   "group": "H",
+   "v51": 6,
+   "score": 7,
+   "evidence": "Nút chưa có bằng chứng hỏi mức nhận ra trước; lên câu tự gõ; IRT",
+   "tests": [
+    "test/unit/engine-quest.test.ts::nút chưa có bằng chứng: hỏi mức nhận ra trước"
+   ]
+  },
+  {
+   "id": "C357",
+   "name": "Objective Visibility",
+   "group": "H",
+   "v51": 7,
+   "score": 7,
+   "evidence": "Bước tiếp theo và mục tiêu tầng hiển thị",
+   "tests": []
+  },
+  {
+   "id": "C358",
+   "name": "Completion Integrity",
+   "group": "H",
+   "v51": 8,
+   "score": 8,
+   "evidence": "cdProg tính từ điểm, không từ số bài",
+   "tests": []
+  },
+  {
+   "id": "C359",
+   "name": "Reward Integrity",
+   "group": "H",
+   "v51": 6,
+   "score": 8,
+   "evidence": "Xu ∝ giá trị học, câu sai không âm, không phạt khi nghỉ",
+   "tests": [
+    "test/unit/engine-quest.test.ts::câu sai không âm"
+   ]
+  },
+  {
+   "id": "C360",
+   "name": "Game Learning Attribution",
+   "group": "H",
+   "v51": 1,
+   "score": 3,
+   "evidence": "Câu trả lời trong game có src game và id thử thách, snapshot mỗi lượt; chưa có dữ liệu quy kết",
+   "tests": []
+  },
+  {
+   "id": "C361",
+   "name": "Demographic Bias",
+   "group": "I",
+   "v51": 0,
+   "score": 0,
+   "evidence": "Chưa có dữ liệu / cơ chế",
+   "tests": []
+  },
+  {
+   "id": "C362",
+   "name": "Language Background",
+   "group": "I",
+   "v51": 1,
+   "score": 1,
+   "evidence": "Chỉ người Việt",
+   "tests": []
+  },
+  {
+   "id": "C363",
+   "name": "Accent Robustness",
+   "group": "I",
+   "v51": 4,
+   "score": 4,
+   "evidence": "Giọng Anh/Mỹ, nghe nhiều giọng; chưa test bias",
+   "tests": []
+  },
+  {
+   "id": "C364",
+   "name": "World-Knowledge Bias",
+   "group": "I",
+   "v51": 6,
+   "score": 6,
+   "evidence": "Phép thử 'không có bài'",
+   "tests": []
+  },
+  {
+   "id": "C365",
+   "name": "Cultural Bias",
+   "group": "I",
+   "v51": 3,
+   "score": 3,
+   "evidence": "Chưa có dữ liệu / cơ chế",
+   "tests": []
+  },
+  {
+   "id": "C366",
+   "name": "Device Bias",
+   "group": "I",
+   "v51": 4,
+   "score": 4,
+   "evidence": "e2e Android/iOS/desktop (chức năng), chưa đo thiên lệch",
+   "tests": []
+  },
+  {
+   "id": "C367",
+   "name": "Screen Size Bias",
+   "group": "I",
+   "v51": 5,
+   "score": 5,
+   "evidence": "e2e mobile + desktop",
+   "tests": []
+  },
+  {
+   "id": "C368",
+   "name": "Network Bias",
+   "group": "I",
+   "v51": 8,
+   "score": 8,
+   "evidence": "Offline test, ghi bằng chứng tại máy",
+   "tests": [
+    "test/e2e/offline.spec.ts::mở lại khi mất mạng"
+   ]
+  },
+  {
+   "id": "C369",
+   "name": "Accessibility Bias",
+   "group": "I",
+   "v51": 6,
+   "score": 6,
+   "evidence": "axe WCAG AA, phím tắt",
+   "tests": []
+  },
+  {
+   "id": "C370",
+   "name": "Hint Bias",
+   "group": "I",
+   "v51": 5,
+   "score": 6,
+   "evidence": "Gợi ý ×0,5, làm lại ×0,3, có test; chưa đo thiên lệch thật",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::trợ giúp, làm lại và hết giờ"
+   ]
+  },
+  {
+   "id": "C371",
+   "name": "Fatigue Bias",
+   "group": "I",
+   "v51": 1,
+   "score": 1,
+   "evidence": "Chưa có dữ liệu / cơ chế",
+   "tests": []
+  },
+  {
+   "id": "C372",
+   "name": "Familiarity Bias",
+   "group": "I",
+   "v51": 3,
+   "score": 5,
+   "evidence": "Theo dõi câu mới/cũ, Đạt mức cao cần câu mới; chưa đo",
+   "tests": []
+  },
+  {
+   "id": "C373",
+   "name": "Speed Bias",
+   "group": "I",
+   "v51": 8,
+   "score": 8,
+   "evidence": "Chậm không bị phạt; trên mô phỏng tốc độ không đổi mastery (MT19)",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT19 — thiên lệch"
+   ]
+  },
+  {
+   "id": "C374",
+   "name": "Error Bias",
+   "group": "I",
+   "v51": 6,
+   "score": 6,
+   "evidence": "Sai chỉ tính ở đúng mức, decay đối xứng theo chiều kết luận",
+   "tests": []
+  },
+  {
+   "id": "C375",
+   "name": "Content (Author) Bias",
+   "group": "I",
+   "v51": 1,
+   "score": 1,
+   "evidence": "Chưa có dữ liệu / cơ chế",
+   "tests": []
+  },
+  {
+   "id": "C376",
+   "name": "Game Preference Bias",
+   "group": "I",
+   "v51": 2,
+   "score": 2,
+   "evidence": "Nhãn A/B game/plain khi đồng ý; chưa có dữ liệu",
+   "tests": []
+  },
+  {
+   "id": "C377",
+   "name": "Difficulty Feedback Loop",
+   "group": "I",
+   "v51": 2,
+   "score": 2,
+   "evidence": "Chưa có dữ liệu / cơ chế",
+   "tests": []
+  },
+  {
+   "id": "C378",
+   "name": "Cold Start Bias",
+   "group": "I",
+   "v51": 6,
+   "score": 7,
+   "evidence": "Claim tách khỏi Mastery (trạng thái inferred), câu dò confirm; tin cậy Thấp khi chưa có bằng chứng",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::tiên nghiệm là \"suy ra\", không phải Đạt thật"
+   ]
+  },
+  {
+   "id": "C379",
+   "name": "Model Drift Bias",
+   "group": "I",
+   "v51": 0,
+   "score": 1,
+   "evidence": "Luật có phiên bản và tính lại được nhưng chưa có phát hiện trôi model",
+   "tests": []
+  },
+  {
+   "id": "C380",
+   "name": "Bias Auditability",
+   "group": "I",
+   "v51": 1,
+   "score": 3,
+   "evidence": "Xuất dữ liệu nghiên cứu có provenance; test thiên lệch game/tốc độ chỉ trên mô phỏng; chưa có audit thiên lệch",
+   "tests": []
+  },
+  {
+   "id": "C381",
+   "name": "Offline Learning Loop",
+   "group": "J",
+   "v51": 9,
+   "score": 9,
+   "evidence": "Service worker, test offline",
+   "tests": [
+    "test/e2e/offline.spec.ts::mở lại khi mất mạng"
+   ]
+  },
+  {
+   "id": "C382",
+   "name": "Offline Evidence Queue",
+   "group": "J",
+   "v51": 8,
+   "score": 8,
+   "evidence": "Ghi localStorage ngay",
+   "tests": []
+  },
+  {
+   "id": "C383",
+   "name": "Sync Conflict",
+   "group": "J",
+   "v51": 6,
+   "score": 9,
+   "evidence": "Gộp hai máy kiểu G-counter theo thiết bị: không mất, không đếm trùng; sổ hợp theo id",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::gộp hai máy (G-counter"
+   ]
+  },
+  {
+   "id": "C384",
+   "name": "Atomic State Update",
+   "group": "J",
+   "v51": 7,
+   "score": 7,
+   "evidence": "Một setItem JSON",
+   "tests": []
+  },
+  {
+   "id": "C385",
+   "name": "Transaction Integrity",
+   "group": "J",
+   "v51": 6,
+   "score": 7,
+   "evidence": "Lỗi khi ghi bằng chứng được đếm và lưu (integ.err, core.ts ev), hiện trong Cài đặt; eEv vẫn nuốt lỗi",
+   "tests": []
+  },
+  {
+   "id": "C386",
+   "name": "Crash Recovery",
+   "group": "J",
+   "v51": 7,
+   "score": 8,
+   "evidence": "Ô Beta dẫn xuất tính lại từ thống kê khi nạp; ghi dở được sửa",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT15 — ghi dở giữa chừng"
+   ]
+  },
+  {
+   "id": "C387",
+   "name": "Data Migration",
+   "group": "J",
+   "v51": 9,
+   "score": 9,
+   "evidence": "migrateE có phiên bản; v3 → v4 giữ α, β",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::v3 → v4: ô Beta cũ giữ nguyên"
+   ]
+  },
+  {
+   "id": "C388",
+   "name": "Backward Compatibility",
+   "group": "J",
+   "v51": 8,
+   "score": 9,
+   "evidence": "Bản lưu cũ nâng cấp được, có e2e",
+   "tests": [
+    "test/e2e/evidence.spec.ts::bản lưu engine v3 (trước v53) nâng lên v4"
+   ]
+  },
+  {
+   "id": "C389",
+   "name": "Evidence Schema Versioning",
+   "group": "J",
+   "v51": 5,
+   "score": 8,
+   "evidence": "EV_SCHEMA cho kho bằng chứng; mỗi sự kiện ghi ev = luật; sanitize lọc theo lược đồ",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::mỗi sự kiện có provenance"
+   ]
+  },
+  {
+   "id": "C390",
+   "name": "Rule Versioning",
+   "group": "J",
+   "v51": 1,
+   "score": 9,
+   "evidence": "RULE_ID ghi vào từng sự kiện; đổi luật tính lại được từ L2",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::tính lại được khi đổi luật",
+    "test/unit/scenarios.test.ts::MT17 / MT18"
+   ]
+  },
+  {
+   "id": "C391",
+   "name": "Content Versioning",
+   "group": "J",
+   "v51": 3,
+   "score": 7,
+   "evidence": "cv = phiên bản app ghi vào từng sự kiện; chưa băm theo từng câu",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT17 / MT18"
+   ]
+  },
+  {
+   "id": "C392",
+   "name": "Deterministic Reproduction",
+   "group": "J",
+   "v51": 4,
+   "score": 9,
+   "evidence": "Decision Snapshot replay ra đúng kết luận; mô phỏng có hạt giống",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT20 — tái tạo quyết định"
+   ]
+  },
+  {
+   "id": "C393",
+   "name": "Runtime Query Efficiency",
+   "group": "J",
+   "v51": 8,
+   "score": 8,
+   "evidence": "derive() chỉ đọc đúng ô; O(số khoá con)",
+   "tests": []
+  },
+  {
+   "id": "C394",
+   "name": "Storage Growth Test",
+   "group": "J",
+   "v51": 6,
+   "score": 9,
+   "evidence": "100.000 tương tác: sổ có trần, kho < 1,5 MB",
+   "tests": [
+    "test/unit/scenarios.test.ts::S9 / MT13",
+    "test/unit/engine-evidence.test.ts::100.000 tương tác"
+   ]
+  },
+  {
+   "id": "C395",
+   "name": "Memory Footprint",
+   "group": "J",
+   "v51": 8,
+   "score": 8,
+   "evidence": "Giới hạn LED_MAX, OBS_MAX, SNAP_MAX, SEEN_MAX",
+   "tests": []
+  },
+  {
+   "id": "C396",
+   "name": "CPU Efficiency",
+   "group": "J",
+   "v51": 7,
+   "score": 7,
+   "evidence": "100.000 lượt mô phỏng < 20 giây trong test; chưa đo trên máy yếu",
+   "tests": []
+  },
+  {
+   "id": "C397",
+   "name": "Battery Efficiency",
+   "group": "J",
+   "v51": 4,
+   "score": 4,
+   "evidence": "Chưa đo",
+   "tests": []
+  },
+  {
+   "id": "C398",
+   "name": "Export Integrity",
+   "group": "J",
+   "v51": 7,
+   "score": 8,
+   "evidence": "Mã/file đồng bộ, sanitize; xuất dữ liệu nghiên cứu có e2e",
+   "tests": [
+    "test/e2e/evidence.spec.ts::tải được dữ liệu nghiên cứu đầy đủ"
+   ]
+  },
+  {
+   "id": "C399",
+   "name": "Corruption Detection",
+   "group": "J",
+   "v51": 7,
+   "score": 9,
+   "evidence": "verify() so ô lưu với ô tính lại, sửa và đếm; dữ liệu rác bị lọc",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::phát hiện và sửa ô Beta bị hỏng"
+   ]
+  },
+  {
+   "id": "C400",
+   "name": "Full Loop Integrity",
+   "group": "J",
+   "v51": 7,
+   "score": 8,
+   "evidence": "e2e: trả lời → sự kiện provenance → ô Beta khớp → Vì sao?; Quest trả lời thành bằng chứng",
+   "tests": [
+    "test/e2e/evidence.spec.ts::trả lời một câu ngữ pháp",
+    "test/e2e/quest.spec.ts::câu trả lời thành bằng chứng"
+   ]
+  }
+ ],
+ "hardFail": [
+  {
+   "id": "HF1",
+   "name": "Observation → Mastery trực tiếp",
+   "v51": true,
+   "pass": true,
+   "evidence": "Mọi quan sát đi qua L0 → evaluate() → L1 sổ + L2 thống kê → ô Beta dẫn xuất (store.ts ingest); một câu đúng không thành Đạt",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::mỗi sự kiện có provenance",
+    "test/e2e/evidence.spec.ts::ô Beta tính lại khớp thống kê"
+   ]
+  },
+  {
+   "id": "HF2",
+   "name": "Game score = năng lực",
+   "v51": true,
+   "pass": true,
+   "evidence": "Xu, tầng, thắng thua của Quest là telemetry trong e.q, không vào mastery; chỉ câu trả lời thành bằng chứng",
+   "tests": [
+    "test/unit/engine-quest.test.ts::kết quả game là telemetry",
+    "test/e2e/quest.spec.ts::kết quả game không vào mastery"
+   ]
+  },
+  {
+   "id": "HF3",
+   "name": "Hoàn thành bài = mastery",
+   "v51": true,
+   "pass": true,
+   "evidence": "cdProg tính Beta từ điểm từng hoạt động; làm đủ bài mà điểm thấp vẫn chưa đạt",
+   "tests": [
+    "test/e2e/mastery.spec.ts::Can-Do theo chất lượng"
+   ]
+  },
+  {
+   "id": "HF4",
+   "name": "CEFR là một con số",
+   "v51": true,
+   "pass": true,
+   "evidence": "Cấp riêng từng kỹ năng, từng nút; hồ sơ lệch cho hai cấp khác nhau",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT3 — hồ sơ lệch"
+   ]
+  },
+  {
+   "id": "HF5",
+   "name": "Model không sửa được khi có bằng chứng trái chiều",
+   "v51": true,
+   "pass": true,
+   "evidence": "Decay bằng chứng cũ ngược chiều, disagreement mở lại nút, Claim sai bị bằng chứng mới sửa",
+   "tests": [
+    "test/unit/engine-mastery3.test.ts::model disagreement",
+    "test/unit/scenarios.test.ts::S10 / MT11"
+   ]
+  },
+  {
+   "id": "HF6",
+   "name": "Readiness không có provenance",
+   "v51": false,
+   "pass": true,
+   "evidence": "Snapshot readiness ghi số liệu, ngưỡng, luật, id bằng chứng (readyview.ts) và replay được; Readiness kỳ thi (đang ẩn) chưa gắn id câu",
+   "tests": [
+    "test/unit/engine-snapshot.test.ts::tái tạo quyết định NBA, kiểm tra bỏ qua, Readiness"
+   ]
+  },
+  {
+   "id": "HF7",
+   "name": "Engine hard-code CEFR",
+   "v51": true,
+   "pass": true,
+   "evidence": "Mục tiêu IELTS/VSTEP/giao tiếp giữ dữ liệu ở trạng thái future trên cùng engine; readiness còn hard-code loại kỳ thi",
+   "tests": [
+    "test/unit/engine-graph.test.ts::IELTS/VSTEP/giao tiếp giữ dữ liệu ở trạng thái tương lai"
+   ]
+  },
+  {
+   "id": "HF8",
+   "name": "Aggregation làm mất thông tin để giải thích/sửa model",
+   "v51": false,
+   "pass": true,
+   "evidence": "L2 giữ chiều ngữ cảnh, dạng câu, câu mới, độ khó theo thiết bị; ô Beta tính lại khi đổi luật; snapshot giữ id bằng chứng",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::tính lại được khi đổi luật",
+    "test/unit/engine-snapshot.test.ts::bằng chứng mà snapshot tham chiếu sống qua đợt dọn sổ"
+   ]
+  },
+  {
+   "id": "HF9",
+   "name": "Lõi cần AI khi chạy",
+   "v51": true,
+   "pass": true,
+   "evidence": "Engine thuần hàm TypeScript, không gọi AI; mô phỏng và test chạy không mạng",
+   "tests": []
+  },
+  {
+   "id": "HF10",
+   "name": "Không chứng minh được vì sao chọn NBA",
+   "v51": true,
+   "pass": true,
+   "evidence": "Snapshot NBA lưu top ứng viên và phân rã utility, replay ra CHOSEN; Vì sao? hiển thị",
+   "tests": [
+    "test/unit/engine-snapshot.test.ts::tái tạo quyết định NBA",
+    "test/e2e/why.spec.ts::NBA: mở Lộ trình hôm nay"
+   ]
+  }
+ ],
+ "meta": [
+  {
+   "id": "MT1",
+   "name": "Unknown learner",
+   "v51": true,
+   "pass": true,
+   "evidence": "Learner mới tinh đi tới đích bằng lộ trình thích ứng (mô phỏng)",
+   "tests": [
+    "test/unit/scenarios.test.ts::S1 / MT1",
+    "test/unit/engine-path.test.ts::người mới với mục tiêu VSTEP B1"
+   ]
+  },
+  {
+   "id": "MT2",
+   "name": "Advanced learner",
+   "v51": false,
+   "pass": true,
+   "evidence": "Learner biết phần lớn tốn < 80% công sức giáo trình cố định (mô phỏng)",
+   "tests": [
+    "test/unit/scenarios.test.ts::S2 / MT2"
+   ]
+  },
+  {
+   "id": "MT3",
+   "name": "Uneven skill",
+   "v51": false,
+   "pass": true,
+   "evidence": "Từ vựng tốt, ngữ pháp yếu: chẩn đoán cho hai cấp cách ≥ 2",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT3 — hồ sơ lệch"
+   ]
+  },
+  {
+   "id": "MT4",
+   "name": "One error",
+   "v51": true,
+   "pass": true,
+   "evidence": "20 đúng 1 sai vẫn Đạt; một lỗi lẻ chỉ ghi nhận",
+   "tests": [
+    "test/unit/scenarios.test.ts::S4 / MT4",
+    "test/unit/engine-mastery3.test.ts::một lỗi đơn lẻ không làm mất Đạt"
+   ]
+  },
+  {
+   "id": "MT5",
+   "name": "Repeated failure",
+   "v51": false,
+   "pass": true,
+   "evidence": "Sai lặp lại: chưa Đạt, micro mời bí kíp hoặc hỏi thêm",
+   "tests": [
+    "test/unit/scenarios.test.ts::S5 / MT5 / MT6",
+    "test/unit/engine-micro.test.ts::lỗi lặp lại có ý nghĩa"
+   ]
+  },
+  {
+   "id": "MT6",
+   "name": "Misconception",
+   "v51": false,
+   "pass": true,
+   "evidence": "Cùng câu trả lời sai lặp lại thành giả thuyết hiểu sai cụ thể",
+   "tests": [
+    "test/unit/scenarios.test.ts::S5 / MT5 / MT6",
+    "test/unit/engine-micro.test.ts::cùng một câu trả lời sai lặp lại"
+   ]
+  },
+  {
+   "id": "MT7",
+   "name": "Recognition/Recall split",
+   "v51": true,
+   "pass": true,
+   "evidence": "Mức 1 Đạt, mức 3 chưa; sai mức cao không kéo mức thấp",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT7 — nhận ra tốt nhưng nhớ ra kém"
+   ]
+  },
+  {
+   "id": "MT8",
+   "name": "Recall/Use split",
+   "v51": false,
+   "pass": true,
+   "evidence": "Mức 3 Đạt, mức 4 chưa; đo production vẫn yếu khi chưa có AI",
+   "tests": [
+    "test/unit/scenarios.test.ts::S3 / MT8"
+   ]
+  },
+  {
+   "id": "MT9",
+   "name": "Training/Transfer split",
+   "v51": false,
+   "pass": true,
+   "evidence": "Luyện tốt nhưng trượt câu mới: mở lại, hạ tin cậy",
+   "tests": [
+    "test/unit/scenarios.test.ts::S6 / MT9",
+    "test/unit/engine-transfer.test.ts::trượt ở câu mới"
+   ]
+  },
+  {
+   "id": "MT10",
+   "name": "Forgetting",
+   "v51": false,
+   "pass": true,
+   "evidence": "FSRS < 0,85 đến hạn ôn; Đạt mà sai 2 lần liên tiếp quay lại lộ trình",
+   "tests": [
+    "test/unit/scenarios.test.ts::S7 / MT10",
+    "test/unit/engine-nba.test.ts::sai 2 lần LIÊN TIẾP"
+   ]
+  },
+  {
+   "id": "MT11",
+   "name": "Model error",
+   "v51": false,
+   "pass": true,
+   "evidence": "Claim sai từ chẩn đoán bị sửa; disagreement mở lại",
+   "tests": [
+    "test/unit/scenarios.test.ts::S10 / MT11",
+    "test/unit/engine-mastery3.test.ts::model disagreement"
+   ]
+  },
+  {
+   "id": "MT12",
+   "name": "Goal switch",
+   "v51": true,
+   "pass": true,
+   "evidence": "Đổi mục tiêu dùng lại năng lực đã có",
+   "tests": [
+    "test/unit/scenarios.test.ts::S8 / MT12"
+   ]
+  },
+  {
+   "id": "MT13",
+   "name": "Evidence explosion",
+   "v51": false,
+   "pass": true,
+   "evidence": "100.000 tương tác: kho có trần, ô khớp thống kê, < 20 giây",
+   "tests": [
+    "test/unit/scenarios.test.ts::S9 / MT13",
+    "test/unit/engine-evidence.test.ts::100.000 tương tác"
+   ]
+  },
+  {
+   "id": "MT14",
+   "name": "Offline",
+   "v51": true,
+   "pass": true,
+   "evidence": "e2e mở lại khi mất mạng",
+   "tests": [
+    "test/e2e/offline.spec.ts::mở lại khi mất mạng"
+   ]
+  },
+  {
+   "id": "MT15",
+   "name": "Crash recovery",
+   "v51": false,
+   "pass": true,
+   "evidence": "Ô Beta lệch khi nạp được phát hiện và tính lại từ thống kê; chưa giả lập ngắt giữa setItem",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT15 — ghi dở giữa chừng"
+   ]
+  },
+  {
+   "id": "MT16",
+   "name": "Migration",
+   "v51": true,
+   "pass": true,
+   "evidence": "Bản lưu v3 lên v4 giữ α, β (unit + e2e)",
+   "tests": [
+    "test/unit/engine-evidence.test.ts::v3 → v4",
+    "test/e2e/evidence.spec.ts::bản lưu engine v3"
+   ]
+  },
+  {
+   "id": "MT17",
+   "name": "Content version",
+   "v51": false,
+   "pass": true,
+   "evidence": "cv ghi vào từng sự kiện (phiên bản app, chưa theo từng câu)",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT17 / MT18"
+   ]
+  },
+  {
+   "id": "MT18",
+   "name": "Rule version",
+   "v51": false,
+   "pass": true,
+   "evidence": "Đổi slip tính lại từ L2; sự kiện ghi phiên bản luật",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT17 / MT18",
+    "test/unit/engine-evidence.test.ts::tính lại được khi đổi luật"
+   ]
+  },
+  {
+   "id": "MT19",
+   "name": "Bias",
+   "v51": false,
+   "pass": true,
+   "evidence": "Chỉ trên mô phỏng và chỉ thiên lệch kỹ năng game, tốc độ; chưa có thiên lệch nhân khẩu, chưa có dữ liệu thật",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT19 — thiên lệch"
+   ]
+  },
+  {
+   "id": "MT20",
+   "name": "Full reproducibility",
+   "v51": false,
+   "pass": true,
+   "evidence": "Mọi snapshot Đạt/mở lại trong phiên mô phỏng replay đúng kết luận",
+   "tests": [
+    "test/unit/scenarios.test.ts::MT20 — tái tạo quyết định",
+    "test/unit/engine-snapshot.test.ts::tái tạo ra đúng quyết định"
+   ]
+  }
+ ]
+}
