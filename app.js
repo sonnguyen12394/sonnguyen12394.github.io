@@ -1171,6 +1171,7 @@ function dueWords(){ const t=today(); return ALL_WORDS.filter(w=>{const s=W(w.id
 // v67 (C56): phiên bản nội dung TỪNG câu = băm nội dung câu (khớp content/engine/content-map.json); không tìm được câu thì dùng số bản app.
 const _cv={};
 function itemCv(item){ if(!item||typeof ELCORE==='undefined'||!ELCORE.contentHash) return null; if(_cv[item]) return _cv[item];
+  if(typeof DETAIL!=='undefined'&&!detailAll()) return null;   // nội dung chi tiết chưa tải xong: chưa băm (băm sẽ lệch bản đồ nội dung)
   let raw=null; const m=/^w:([^:]+):/.exec(item), g=/^g:([^|]+)\|(cho|typ|fix|ord)\|([a-z])(\d+)$/.exec(item);
   if(m&&WORD[m[1]]) raw=JSON.stringify(WORD[m[1]]);
   else if(g&&GPT[g[1]]){ const L={cho:'mc',typ:'ty',fix:'fx',ord:'or'}[g[2]], x=(GPT[g[1]][L]||[])[+g[4]]; if(x!==undefined&&!(g[2]==='ord'&&g[3]==='d')) raw=JSON.stringify(x); }

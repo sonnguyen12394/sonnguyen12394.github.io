@@ -53,6 +53,7 @@ test('v67: phiên bản nội dung TỪNG câu ghi vào sổ khớp bản đồ 
   await openApp(page);
   const map = JSON.parse(readFileSync('content/engine/content-map.json', 'utf8')).map as Record<string, Array<[string, number[], string]>>;
   const want = (node: string, id: string) => 'h' + map[node]!.find(x => x[0] === id)![2];
+  await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });   // băm khi nội dung đã đủ
   const got = await page.evaluate(() => {
     const w = window as any;
     w.eval("eEv({node:'u:a1-u1',level:3,ok:true,item:'w:breakfast:rcl',src:'vocab'})");
