@@ -114,5 +114,5 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     const cur = existsSync(join(ROOT, 'docs/SCORE.md')) ? readFileSync(join(ROOT, 'docs/SCORE.md'), 'utf8') : '';
     if (cur !== md) { console.error('score: docs/SCORE.md chưa sinh lại (npm run score)'); process.exit(1); }
   } else writeFileSync(join(ROOT, 'docs/SCORE.md'), md);
-  console.log(`score: hợp lệ; ${md.split('\n')[6]}`);
+  console.log(`score: hợp lệ; ${md.split('\n').find(l => l.startsWith('| Conformance 200'))}`);
 }
