@@ -79,3 +79,13 @@ test('v69 (bot L01): học xong phần đang dở trước khi mở phần mới
   assert.ok(plan.filter(c => c.gameType === 'monster').every(c => started.has(c.node) || c.node === 'u:n0'), JSON.stringify(plan.map(c => c.node)));
   assert.equal(plan[0]!.node, 'u:n0');
 });
+
+test('v70 (bot L02): người học đang sai nhiều → trinh sát không dò khám phá, vẫn xác nhận Claim', () => {
+  const acts = rank({ open, probe: { node: 'g:p', level: 3, mode: 'explore', eig: 0.5, effort: 1.5, score: 1 }, review: none, verify: [] });
+  const on = planFloor({ acts, open, review: [], can: () => true, started: () => true, floor: 1 });
+  const off = planFloor({ acts, open, review: [], can: () => true, started: () => true, floor: 1, explore: false });
+  const offC = planFloor({ acts, open, review: [], can: () => true, started: () => true, floor: 1, explore: false, claims: ['u:c1'] });
+  assert.ok(on.some(c => c.node === 'g:p'));
+  assert.ok(!off.some(c => c.node === 'g:p'));
+  assert.ok(offC.some(c => c.gameType === 'scout' && c.node === 'u:c1'));
+});

@@ -200,7 +200,7 @@ export async function run(P: Profile): Promise<void> {
         continue;
       }
       if (pk) {
-        if (await visible('[data-teach]')) { learn(pk.node, DAY, P.gain.teach); explained(pk.node, 'teach'); note('teach', { node: pk.node }); }   // đọc thẻ mới trước khi đánh
+        if (await visible('[data-teach]')) { const tt = await page.locator('[data-teach]').first().innerText(); learn(pk.node, DAY, P.gain.teach); explained(pk.node, /Bạn hay trả lời/.test(tt) ? 'targeted' : 'teach'); note('teach', { node: pk.node, targeted: /Bạn hay trả lời/.test(tt) }); }   // đọc thẻ mới trước khi đánh
         await answer(pk); await feedback(pk.node); continue;
       }
       if (await visible('[data-e="qnext"]')) { await page.locator('[data-e="qnext"]').first().click(); continue; }

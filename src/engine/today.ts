@@ -31,7 +31,7 @@ export function xferFor(host: EHost, e: EState, ix: Index, p: PathOut): Array<{ 
 }
 
 // Chẩn đoán liên tục (v58): câu dò có giá trị thông tin cao nhất cho mục tiêu đang mở, trong ngân sách hôm nay.
-const PROBEABLE = (id: string): boolean => id.startsWith('u:') || id.startsWith('g:');
+const PROBEABLE = (id: string): boolean => id.startsWith('u:') || id.startsWith('g:') || id.startsWith('ph:');   // v70: cả nghe phân biệt âm
 export function probeFor(host: EHost, e: EState, ix: Index, p: PathOut): ProbeCand | null {
   if (!p.all) return null;
   const used = e.ev.pb.day === host.today() ? e.ev.pb.n : 0;

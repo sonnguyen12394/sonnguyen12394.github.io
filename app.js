@@ -8342,7 +8342,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.7de5d05623.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.658a2dffa4.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8389,6 +8389,12 @@ function eProbe(node){ const out=[], pick=(xs,n)=>shuffle(xs.slice()).slice(0,n)
     if(ws[0]) out.push({...mcq(ws[0],'vi',1),prompt:`“${ws[0].word}” nghĩa là gì?`,en:ws[0].word});
     if(ws[1]) out.push({...mcq(ws[1],'word',2),prompt:`Từ nào nghĩa là “${ws[1].vi}”?`});
     const w3=ws[2]||ws[0]; out.push({id:'w:'+w3.id+':typ',level:3,g:0,prompt:`Gõ từ tiếng Anh nghĩa là “${w3.vi}” (${w3.pos||'từ'})`,accept:[w3.word]});
+    return out; }
+  // v70 (bot L02): nghe phân biệt cặp âm trong tháp — 3 câu, phát bằng giọng đọc của máy; máy không đọc được thì không có câu nghe
+  // (không hỏi thứ người học không thể nghe). Mức 2 = phân biệt được khi nghe (mức mặc định của nút âm).
+  if(node.startsWith('ph:')){ const s=SOUNDS.find(x=>x.id===node.slice(3)); if(!s||!HAS_TTS) return out;
+    for(const i of pick(s.pairs.map((_,j)=>j),3)){ const p=s.pairs[i], k=Math.random()<.5?0:1, w=p[k*2], opts=shuffle([p[0],p[2]]);
+      out.push({id:'snd:'+s.id+':'+i+':'+k,level:2,g:.5,prompt:`🎧 Nghe rồi chọn từ bạn nghe được (${s.a} hay ${s.b})`,say:w,opts,ans:opts.indexOf(w)}); }
     return out; }
   if(node.startsWith('g:')){ const p=GPT[node.slice(2)]; if(!p) return out; const used=new Set();
     for(let i=0;i<2&&p.mc&&p.mc.length;i++){ const q=gbuild(p,'cho',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:2,g:1/q.opts.length,prompt:q.prompt,opts:q.opts,ans:q.ans}); }

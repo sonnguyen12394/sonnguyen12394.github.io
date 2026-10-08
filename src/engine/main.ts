@@ -22,9 +22,10 @@ import { microVerdict, MICRO, MICRO_VER } from './micro.ts';
 import { planFloor, reward, hearts, freshQuest, QUEST_VER, QUEST } from './quest.ts';
 import { viewQuestHome, viewQuestRun, viewQuestEnd, type QuestRun, type QItem } from './questview.ts';
 import { computePath, computeNba, recallOf } from './today.ts';
-import { seenHas } from './ev/store.ts';
-import { remedyFor, pickFor } from './remedy.ts';
-import { gaps, weakContext } from './gap.ts';
+import { evRecall } from './retain.ts';
+import { seenHas, misconceptions } from './ev/store.ts';
+import { remedyFor, pickFor, REMEDY_VI } from './remedy.ts';
+import { gaps, weakContext, GAP_VI } from './gap.ts';
 import type { Level } from './types.ts';
 import { readinessOf } from './readyview.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
@@ -213,7 +214,7 @@ export function init(host: EHost): EngineModule {
   function xferAnswer(ok: boolean, given?: string): void {
     if (!xrun) return;
     const q = xrun.qs[xrun.i]!, e = E();
-    ingest(e.ev, e.m, { node: xrun.node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: 'transfer', src: 'transfer', ch: `xfer/${xrun.node}`, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node: xrun.node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: 'transfer', src: 'transfer', ch: `xfer/${xrun.node}`, ...(given ? { given, right: (q.opts ? q.opts[q.ans ?? 0] : q.accept?.[0]) ?? '' } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) xrun.got++;
     xrun.i++;
     if (xrun.i >= xrun.qs.length) {
@@ -238,7 +239,7 @@ export function init(host: EHost): EngineModule {
     const r = mrun?.run;
     if (!mrun || !r) return;
     const q = r.qs[r.i]!, e = E();
-    ingest(e.ev, e.m, { node: mrun.node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: 'micro', src: 'micro', hint: true, ch: `micro/${mrun.node}`, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node: mrun.node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: 'micro', src: 'micro', hint: true, ch: `micro/${mrun.node}`, ...(given ? { given, right: (q.opts ? q.opts[q.ans ?? 0] : q.accept?.[0]) ?? '' } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) r.got++;
     r.i++;
     if (r.i >= r.qs.length) {
@@ -278,9 +279,17 @@ export function init(host: EHost): EngineModule {
       const cause = e.ev.hyp[node]?.cause ?? (ix.pre.get(node) ?? []).find(x => x.type === 'hard' && !nodeStat(host, e, x.to, defaultLevel(ix.node.get(x.to)!)).pass)?.to;
       if (cause && (cause.startsWith('u:') || cause.startsWith('g:'))) { node = cause; const cn = ix.node.get(cause); r = { ...remedyFor([], (cn ? defaultLevel(cn) : 3) as Level), gap: 'prerequisite', act: 'root' }; }
     }
+    // v70 (bot L02): can thiệp vừa rồi ở nút này chưa hiệu quả (câu thử sau bí kíp sai, chưa có lần sửa được sau đó) → không lặp lại
+    // y nguyên: lùi một bậc (hỏi nhận ra trước, câu chọn) và đổi cách dạy (bí kíp "cách khác" ở trại).
+    if (flopped(node) && r.lv > 1 && r.act !== 'transfer') r = { ...r, act: 'step', lv: Math.max(1, r.lv - 1) as Level, typed: false, vi: REMEDY_VI.step };
     qcur = { node, gap: r.gap ?? '' };
     if (r.act === 'transfer') { const t = xferItems(host, e, node); if (t[0]) return { q: t[0], xfer: true }; }
     return { q: pickFor(host.probe(node), r, id => seenHas(e.ev, node, id)), xfer: false };
+  }
+  // Lần can thiệp gần nhất (trong 7 ngày) ở nút này chưa sửa được.
+  function flopped(node: string): boolean {
+    const today = host.today(), last = [...E().ev.snap].reverse().find(s => s.subj === node && s.dec.startsWith('micro:') && s.day >= today - 7);
+    return !!last && last.dec === 'micro:not-yet';
   }
   let qx = false;
   function qLoad(): void {
@@ -288,12 +297,16 @@ export function init(host: EHost): EngineModule {
     const ch = qrun.plan[qrun.i];
     if (!ch) return;
     if (ch.gameType === 'camp') {
-      // Trại: bí kíp cho phần vừa sai trong lượt này, chưa sai thì cho quái kế tiếp (dạy trước khi gặp).
-      const next = qrun.plan.slice(qrun.i + 1).find(p => p.gameType === 'monster')?.node, target = qrun.wrong[qrun.wrong.length - 1] ?? next;
-      const mc = target ? host.micro?.(target) ?? null : null;
-      qrun.card = mc?.card ?? null; qrun.q = null; qx = false;
+      // Trại: bí kíp cho phần vừa sai trong lượt này (ưu tiên phần ĐANG HIỂU SAI — v70), chưa sai thì cho quái kế tiếp (dạy trước khi gặp).
+      const next = qrun.plan.slice(qrun.i + 1).find(p => p.gameType === 'monster')?.node;
+      const target = [...qrun.wrong].reverse().find(n => misconceptions(E().ev, n).length) ?? qrun.wrong[qrun.wrong.length - 1] ?? next;
+      const mc = target ? host.micro?.(target) ?? null : null, esc = !!target && flopped(target);
+      // Bí kíp lần trước chưa hiệu quả → "cách khác": ví dụ trước, đối chiếu đúng / sai, rồi câu thử dễ hơn (nhận ra).
+      qrun.card = mc ? (esc ? { ...mc.card, title: `Cách khác: ${mc.card.title}`, concept: [...mc.card.examples.slice(0, 2).map(([en, vi]) => `${en}${vi ? ' — ' + vi : ''}`), ...mc.card.concept.slice(0, 1)] } : mc.card) : null;
+      qrun.q = null; qx = false;
       // v69: sau bí kíp có 1 câu thử ngay ở đúng phần vừa đọc (luyện ngay + kiểm tra sau can thiệp, §53); câu chưa gặp trước.
-      qrun.chk = mc && target ? mc.qs.find(q => !seenHas(E().ev, target, q.id)) ?? mc.qs[0] ?? null : null;
+      const pool = mc ? (esc ? mc.qs.filter(q => q.level <= 2) : mc.qs) : [];
+      qrun.chk = mc && target ? (pool.length ? pool : mc.qs).find(q => !seenHas(E().ev, target, q.id)) ?? (pool.length ? pool : mc.qs)[0] ?? null : null;
       qcur = { node: target ?? '', gap: '' };
       return;
     }
@@ -301,7 +314,12 @@ export function init(host: EHost): EngineModule {
     // v69: phần CHƯA TỪNG GẶP → dạy trước rồi mới hỏi (remedy "teach": dạy + nhận ra). Câu trả lời ngay sau thẻ là bằng chứng có trợ
     // giúp (hint), không được tính như tự lực, nên chỉ dạy trước đúng một lần: dạy lại mỗi lượt thì mọi câu đúng đều "có trợ giúp" và
     // nút không bao giờ được xác minh (bot L01, người học nhanh: đúng 55/55 lần mà vẫn "cần xác minh").
-    if (it.q && qcur.gap === 'knowledge' && !qrun.taught.includes(qcur.node) && !E().ev.led.some(x => x.node === qcur.node)) {
+    // v70 (bot L02): phần CHƯA CÓ BẰNG CHỨNG được hỏi thử trước (có thể người học đã biết — không dạy lại thứ đã biết); chỉ dạy trước
+    // khi đã có bằng chứng là chưa biết (sai, chưa lần nào đúng tự lực ở mức nhận ra) hoặc đang hiểu sai. Mỗi nút tối đa một lần mỗi ngày,
+    // vì câu ngay sau thẻ là bằng chứng có trợ giúp.
+    const today = host.today(), led = E().ev.led.filter(x => x.node === qcur.node);
+    const notKnown = qcur.gap === 'knowledge' && led.some(x => !x.ok) && !led.some(x => x.ok && !x.asst && x.lv <= 2);
+    if (it.q && (notKnown || qcur.gap === 'misconception') && !qrun.taught.includes(qcur.node) && !led.some(x => x.day === today && x.asst)) {
       const mc = host.micro?.(qcur.node);
       if (mc) { qrun.card = mc.card; qrun.teach = true; qrun.taught.push(qcur.node); }
     }
@@ -314,7 +332,12 @@ export function init(host: EHost): EngineModule {
     const today = host.today(), cnt = new Map<string, number>();
     for (const x of e.ev.led) if (x.day === today && x.ch?.startsWith(`${QUEST_VER}:`)) cnt.set(x.node, (cnt.get(x.node) ?? 0) + 1);
     const claims = (p.all ?? []).filter(r => nodeStat(host, v, r.node, r.level).state === 'inferred').map(r => r.node);
-    const plan = planFloor({ acts, open: p.open, review, can: n => n.startsWith('u:') || n.startsWith('g:'), started: n => Object.values(e.m[n] ?? {}).some(c => (c?.n ?? 0) > 0), floor: sv.floor, fresh: n => (cnt.get(n) ?? 0) < QUEST.capDay, claims });
+    // v70 (bot L02): ôn cả phần ĐANG HỌC sắp quên (khả năng nhớ từ sổ < 0,7), không chỉ phần đã Đạt: người học yếu quên trước khi kịp Đạt.
+    const learning = (p.all ?? []).filter(r => { const s = nodeStat(host, v, r.node, r.level); return !s.pass && !s.none && s.state !== 'inferred'; })
+      .map(r => ({ n: r.node, r: evRecall(e.ev, r.node, today) ?? 1 })).filter(x => x.r < 0.7).sort((a, b) => a.r - b.r).map(x => x.n);
+    // Người học đang trả lời sai nhiều (< 60% ở 24 lượt tự lực gần nhất) → bớt dò khám phá, dùng lượt trinh sát để củng cố phần đang học.
+    const recent = e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:`) && !x.asst).slice(-24), explore = recent.length < 12 || recent.filter(x => x.ok).length / recent.length >= 0.6;
+    const plan = planFloor({ acts, open: p.open, review: [...review, ...learning.filter(n => !review.includes(n))], can: n => /^(u|g|ph):/.test(n), started: n => Object.values(e.m[n] ?? {}).some(c => (c?.n ?? 0) > 0), floor: sv.floor, fresh: n => (cnt.get(n) ?? 0) < QUEST.capDay, claims, explore });
     if (!plan.length) { host.toast('Chưa có gì để leo: chọn mục tiêu CEFR trước.'); return; }
     const max = hearts(sv.floor);
     qrun = { plan, i: 0, hp: max, max, coins: 0, ok: 0, n: 0, floor: sv.floor, q: null, card: null, chk: null, teach: false, taught: [], ans: null, done: null, wrong: [], gaps: [] };
@@ -324,12 +347,12 @@ export function init(host: EHost): EngineModule {
     if (!qrun || !qrun.q || qrun.ans) return;
     const ch = qrun.plan[qrun.i]!, q = qrun.q, e = E(), node = qcur.node || ch.node, novel = !seenHas(e.ev, node, q.id), camp = ch.gameType === 'camp';
     if (qcur.gap) qrun.gaps.push(qcur.gap);
-    const m0 = camp ? stat(e.m[node]?.[q.level as 3]).m : 0;
+    const m0 = camp ? stat(e.m[node]?.[q.level as 3]).m : 0, right = q.opts ? q.opts[q.ans ?? 0] ?? '' : q.accept?.[0] ?? '';
     // Câu thử ở trại: vừa đọc bí kíp → bằng chứng có trợ giúp (hint, trọng số 0,5), ngữ cảnh micro như bí kíp 60 giây.
-    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: camp ? 'micro' : qx ? 'transfer' : ch.context, src: camp ? 'micro' : qx ? 'transfer' : 'game', ch: camp ? `micro/${node}` : ch.id, gp: ch.gameplayDifficulty, ...(camp || qrun.teach ? { hint: true } : {}), ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: camp ? 'micro' : qx ? 'transfer' : ch.context, src: camp ? 'micro' : qx ? 'transfer' : 'game', ch: camp ? `micro/${node}` : ch.id, gp: ch.gameplayDifficulty, ...(camp || qrun.teach ? { hint: true } : {}), ...(given ? { given, right } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (camp) addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: node, lv: q.level as 3, dec: `micro:${microVerdict(ok ? 1 : 0, 1)}`, rule: `${RULE_ID}/${MICRO_VER}`,
       info: { from: 'quest-camp', why: 'bí kíp ở trại', got: ok ? 1 : 0, of: 1, m0: Math.round(m0 * 100) / 100, m1: Math.round(stat(e.m[node]?.[q.level as 3]).m * 100) / 100 }, evs: e.ev.led.slice(-1).map(x => x.id) }, false);
-    const coins = camp ? 2 : reward(ch, ok, novel), right = q.opts ? q.opts[q.ans ?? 0] ?? '' : q.accept?.[0] ?? '';
+    const coins = camp ? 2 : reward(ch, ok, novel);
     // v69: sai thì kèm một dòng "vì sao" (ý chính của bí kíp phần đó), không chỉ đáp án.
     const why = ok ? undefined : host.micro?.(node)?.card.concept[0];
     qrun.ans = { ok, right, given, coins, novel, ...(why ? { why } : {}) }; qrun.coins += coins; qrun.n++;
@@ -365,6 +388,17 @@ export function init(host: EHost): EngineModule {
     for (const r of all) { const s = nodeStat(host, v, r.node, r.level); if (s.pass && s.state === 'mastered') { solid++; ids.add(`${r.node}|${r.level}`); } else if (s.pass && s.state === 'inferred') claimed++; }
     const week = new Set(v.ev.snap.filter(s => s.kind === 'mastery' && s.dec === 'PASS' && s.day > today - 7 && ids.has(`${s.subj}|${s.lv}`)).map(s => s.subj)).size;
     return { solid, total: all.length, week, claimed };
+  }
+
+  // Điểm nghẽn (v70, bot L02): "bạn đang yếu ở X, và X đang chặn bạn" — trong các phần đã có bằng chứng mà chưa Đạt ở biên lộ trình, phần
+  // mở đường cho nhiều năng lực nhất của mục tiêu; kèm loại lỗ hổng (đọc từ bằng chứng) để người học biết vì sao app cho luyện phần đó.
+  function neckOf(v: EState): { vi: string; dep: number; gap: string; pct: number } | null {
+    const ix = loaded()!, p = computePath(host, v, ix);
+    const cand = p.open.map(o => ({ o, s: nodeStat(host, v, o.node, o.level) })).filter(x => !x.s.none && !x.s.pass && x.s.state !== 'inferred' && /^(u|g|ph):/.test(x.o.node));
+    const top = cand.sort((a, b) => b.o.dep - a.o.dep || a.s.pct - b.s.pct)[0];
+    if (!top || top.o.dep < 1) return null;
+    const n = ix.node.get(top.o.node)!, k = gaps({ m: v.m, ev: v.ev, node: n.id, need: top.o.level as Level, blocked: false, recall: recallOf(host, v, n.id) });
+    return { vi: n.vi, dep: Math.round(top.o.dep), gap: k[0] ? GAP_VI[k[0]] : '', pct: Math.round(top.s.pct * 100) };
   }
 
   // ---------- Đo hiệu quả học (v63) ----------
@@ -424,7 +458,7 @@ export function init(host: EHost): EngineModule {
       if (qrun?.done) return viewQuestEnd(c, qrun);
       if (qrun) return viewQuestRun(c, qrun);
       const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-      return viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null);
+      return viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
     },
     micro: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }

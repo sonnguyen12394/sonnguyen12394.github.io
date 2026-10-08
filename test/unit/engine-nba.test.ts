@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { rank, W, HYST } from '../../src/engine/nba.ts';
 import { gaps } from '../../src/engine/gap.ts';
 import { stat, type MasteryStore } from '../../src/engine/mastery.ts';
-import { ingest, freshEv, setPrior } from '../../src/engine/ev/store.ts';
+import { ingest, freshEv, setPrior, misconceptions, errPattern } from '../../src/engine/ev/store.ts';
+import { remedyFor } from '../../src/engine/remedy.ts';
 import type { PathItem } from '../../src/engine/path.ts';
 import type { Level } from '../../src/engine/types.ts';
 
@@ -46,12 +47,42 @@ const put = (st: ReturnType<typeof freshEv>, m: MasteryStore, o: { node?: string
 test('Lỗ hổng: chưa biết / nhận ra nhưng chưa nhớ ra / nhớ nhưng chưa dùng được / thiếu tiền đề', () => {
   const st = freshEv(), m: MasteryStore = {};
   const g = (need: Level, blocked = false) => gaps({ m, ev: st, node: 'g:x', need, blocked });
+  assert.deepEqual(g(3), ['unproven']);   // v70: chưa có câu trả lời nào = chưa chứng minh, không phải chưa biết
+  put(st, m, { level: 1, ok: false });
   assert.deepEqual(g(3), ['knowledge']);
   for (let i = 0; i < 15; i++) put(st, m, { level: 2, ok: true });
   assert.deepEqual(g(3), ['recall']);
   for (let i = 0; i < 15; i++) put(st, m, { level: 3, ok: true });
   assert.deepEqual(g(4), ['skill']);
   assert.ok(g(4, true).includes('prerequisite'));
+});
+
+test('v70 (bot L02): lỗ hổng từ bằng chứng — thuộc câu mà câu mới sai → transfer; sai cùng một mẫu ở nhiều câu → đang hiểu sai', () => {
+  const st = freshEv(), m: MasteryStore = {};
+  for (let i = 0; i < 4; i++) put(st, m, { level: 3, ok: true, item: 'old' });           // câu quen: đúng
+  put(st, m, { level: 3, ok: false }); put(st, m, { level: 3, ok: false });               // câu mới: sai
+  assert.ok(gaps({ m, ev: st, node: 'g:x', need: 3, blocked: false }).includes('transfer'));
+  assert.equal(remedyFor(gaps({ m, ev: st, node: 'g:x', need: 3, blocked: false }), 3).act, 'transfer');
+  const s2 = freshEv(), m2: MasteryStore = {};
+  const bad = (given: string, right: string) => ingest(s2, m2, { node: 'g:h', level: 3, ok: false, item: `i${++T}`, given, right }, { dev: 'd', ts: T, day: 1 });
+  bad('She work every day', 'She works every day'); bad('He play football', 'He plays football');   // cùng mẫu bỏ -s, chữ khác nhau
+  const k = gaps({ m: m2, ev: s2, node: 'g:h', need: 3, blocked: false });
+  assert.equal(k[0], 'misconception');
+  assert.equal(remedyFor(k, 3).act, 'contrast');
+  assert.ok(misconceptions(s2, 'g:h').some(x => /work|play/.test(x.t)));
+});
+
+test('v70: mẫu lỗi — chỉ lỗi có hình thái (đuôi từ, từ chức năng, thừa/thiếu từ ngắn), không phải gõ bừa', () => {
+  assert.equal(errPattern('She work', 'She works')!.sig, errPattern('He play', 'He plays')!.sig);
+  assert.equal(errPattern('They is here', 'They are here')!.sig, errPattern('We is ok', 'We are ok')!.sig);
+  // "did + quá khứ" với động từ bất quy tắc: mỗi câu một cặp từ (go>went, eat>ate) → chưa gộp được thành một mẫu (cần từ điển dạng
+  // quá khứ); với động từ có quy tắc thì gộp được (play>played…).
+  assert.notEqual(errPattern('Did you went', 'Did you go')!.sig, errPattern('Did she ate', 'Did she eat')!.sig);
+  assert.equal(errPattern('Did you played', 'Did you play')!.sig, errPattern('Did he worked', 'Did he work')!.sig);
+  assert.ok(errPattern('Did she goes', 'Did she go'));
+  assert.equal(errPattern('xyzzy qwerty', 'She works every day'), null);
+  assert.equal(errPattern('', 'She works'), null);
+  assert.equal(errPattern('He does not likes it', 'He does not like it')!.vi, 'likes (thay vì like)');
 });
 
 test('Lỗ hổng: đang quên (FSRS < 0,85), yếu ở một ngữ cảnh, đúng nhưng chậm, chưa dùng được ở câu mới', () => {

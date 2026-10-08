@@ -41,6 +41,7 @@ export interface FloorIn {
   size?: number;
   fresh?: (node: string) => boolean;    // v69: nút chưa bị hỏi quá QUEST.capDay lượt hôm nay (giãn cách, chống hỏi lặp một nút cả ngày)
   claims?: string[];                    // v69: nút chẩn đoán "suy ra đã biết" (Claim) chưa xác nhận: trinh sát / rương rảnh thì kiểm tra
+  explore?: boolean;                    // v70: false = người học đang sai nhiều → trinh sát không dò khám phá (vẫn xác nhận Claim)
 }
 // capDay: số lượt tối đa mỗi nút mỗi ngày trong tháp (giãn cách). wip: số phần đang học dở tối đa trước khi mở phần mới — học xong
 // phần đã bắt đầu trước khi rải sang phần mới (bot L01: không giới hạn thì một tháng chạm 100 nút mà gần như không nút nào vững).
@@ -74,7 +75,7 @@ export function planFloor(x: FloorIn): Challenge[] {
       if (o) { used.add(o.node); return mk('boss', o.node, 3, val.get(`learn|${o.node}`) ?? 1); }
     }
     if (kind === 'scout') {
-      const a = x.acts.find(a => a.kind === 'probe' && x.can(a.node) && !used.has(a.node));
+      const a = x.explore === false ? undefined : x.acts.find(a => a.kind === 'probe' && x.can(a.node) && !used.has(a.node));
       if (a) { used.add(a.node); return mk('scout', a.node, a.level as Level, a.u + 0.3); }
       const n = claim();
       if (n) { used.add(n); return mk('scout', n, 3, 0.8); }

@@ -168,8 +168,12 @@ export function ingest(st: EvStore, m: MasteryStore, o: Observation, c: IngestCt
   if (!ev.ok && o.given) {
     const k = hash6(o.given.trim().toLowerCase()), x = (mis[k] ||= { t: o.given.trim().slice(0, 40), n: 0, d: c.day });
     x.n++; x.d = c.day;
+    // v70 (bot L02): hiểu sai theo MẪU — cùng một kiểu biến đổi sai lặp lại ở nhiều câu khác nhau (bỏ -s, thêm -ed, are → is…), không
+    // chỉ cùng một chuỗi. Trước đây chỉ bắt khi người học gõ lại y hệt một câu trả lời.
+    const pat = o.right ? errPattern(o.given, o.right) : null;
+    if (pat) { const pk = 'p' + hash6(pat.sig).slice(1), t = pat.vi.slice(0, 40), y = (mis[pk] ||= { t, n: 0, d: c.day }); y.n++; y.d = c.day; y.t = t; }
     const keys = Object.keys(mis);
-    if (keys.length > 5) delete mis[keys.sort((p, q) => mis[p]!.n - mis[q]!.n)[0]!];
+    if (keys.length > 6) delete mis[keys.sort((p, q) => mis[p]!.n - mis[q]!.n)[0]!];
   } else if (ev.ok) for (const [k, x] of Object.entries(mis)) { x.n -= 0.5; if (x.n <= 0) delete mis[k]; }
   if (!Object.keys(mis).length) delete st.mis[o.node];
   // L3
@@ -205,7 +209,34 @@ export function ingest(st: EvStore, m: MasteryStore, o: Observation, c: IngestCt
   return ev;
 }
 
-// Giả thuyết hiểu sai đang mạnh của một nút (≥ misMin lần cùng câu trả lời sai).
+// Mẫu lỗi của một câu trả lời sai so với đáp án (v70). Chỉ nhận lỗi "có hình thái": khác đúng một từ (đuôi từ: works → work, go → goed;
+// hoặc thay từ chức năng ngắn: are → is, a → an), hoặc thừa / thiếu một từ ngắn (did, does, the). Lỗi gõ ngẫu nhiên, câu bỏ trống, câu
+// đảo lộn không thành mẫu. sig giống nhau ở nhiều câu khác nhau = cùng một quy tắc sai.
+export function errPattern(given: string, right: string): { sig: string; vi: string } | null {
+  const tok = (s: string) => s.toLowerCase().replace(/[^a-z' ]+/g, ' ').trim().split(/\s+/).filter(Boolean);
+  const g = tok(given), r = tok(right);
+  if (!g.length || !r.length || g.join(' ') === r.join(' ')) return null;
+  if (g.length === r.length) {
+    const d = g.map((x, i) => i).filter(i => g[i] !== r[i]);
+    if (d.length !== 1) return null;
+    const a = g[d[0]!]!, b = r[d[0]!]!;
+    let p = 0; while (p < a.length && p < b.length && a[p] === b[p]) p++;
+    if (p >= 2 && a.length - p <= 3 && b.length - p <= 3) return { sig: `~-${b.slice(p)}+${a.slice(p)}`, vi: `${a} (thay vì ${b})` };
+    if (a.length <= 5 && b.length <= 5) return { sig: `~${b}>${a}`, vi: `${a} (thay vì ${b})` };
+    return null;
+  }
+  if (Math.abs(g.length - r.length) !== 1) return null;
+  const [lo, hi] = g.length < r.length ? [g, r] : [r, g];
+  for (let i = 0; i < hi.length; i++) {
+    if ([...hi.slice(0, i), ...hi.slice(i + 1)].join(' ') !== lo.join(' ')) continue;
+    const w = hi[i]!;
+    if (w.length > 5) return null;
+    return g.length > r.length ? { sig: `~+${w}`, vi: `thêm "${w}"` } : { sig: `~-${w}`, vi: `bỏ "${w}"` };
+  }
+  return null;
+}
+
+// Giả thuyết hiểu sai đang mạnh của một nút (≥ misMin lần cùng câu trả lời sai, hoặc cùng một mẫu lỗi ở nhiều câu).
 export function misconceptions(st: EvStore, node: string, rule: Rule = RULE): Array<{ t: string; n: number }> {
   return Object.values(st.mis[node] ?? {}).filter(x => x.n >= rule.misMin).sort((a, b) => b.n - a.n).map(x => ({ t: x.t, n: Math.round(x.n * 10) / 10 }));
 }

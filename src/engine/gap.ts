@@ -8,14 +8,19 @@
 //   transfer      — trượt ở câu mới chưa gặp (mở lại / cần xác minh)
 //   retention     — từng đạt, khả năng nhớ (FSRS) đã tụt dưới 0,85 (§58)
 //   automaticity  — đúng nhưng chậm rõ so với chính người học (tốc độ chỉ là tín hiệu phụ, P15: không làm mất Đạt)
+// v70 (bot L02) — phân loại từ BẰNG CHỨNG, không chỉ theo bậc mức:
+//   misconception — cùng một câu trả lời sai / cùng một mẫu lỗi lặp lại (≥ 2): sửa bằng bí kíp nhắm đúng chỗ hiểu sai, không luyện thêm
+//   transfer      — thêm trường hợp: câu đã gặp đúng ≥ 80% mà câu mới < 50% (thuộc câu, chưa dùng được)
+//   unproven      — chưa có câu trả lời nào ở nút: "chưa chứng minh" ≠ "chưa biết" → hỏi thử trước, chưa dạy
 
 import { stat, type MasteryStore } from './mastery.ts';
 import type { EvStore } from './ev/types.ts';
+import { misconceptions } from './ev/store.ts';
 import type { Level } from './types.ts';
 
-export type GapKind = 'prerequisite' | 'knowledge' | 'recall' | 'skill' | 'context' | 'transfer' | 'retention' | 'automaticity';
+export type GapKind = 'prerequisite' | 'misconception' | 'unproven' | 'knowledge' | 'recall' | 'skill' | 'context' | 'transfer' | 'retention' | 'automaticity';
 export const GAP_VI: Record<GapKind, string> = {
-  prerequisite: 'Thiếu phần nền', knowledge: 'Chưa biết', recall: 'Nhận ra nhưng chưa nhớ ra', skill: 'Nhớ nhưng chưa dùng được',
+  prerequisite: 'Thiếu phần nền', misconception: 'Đang hiểu sai', unproven: 'Chưa có bằng chứng', knowledge: 'Chưa biết', recall: 'Nhận ra nhưng chưa nhớ ra', skill: 'Nhớ nhưng chưa dùng được',
   context: 'Yếu ở một ngữ cảnh', transfer: 'Chưa dùng được ở câu mới', retention: 'Đang quên', automaticity: 'Đúng nhưng còn chậm',
 };
 export const RETAIN_R = 0.85, SLOW_MS = 12000;
@@ -34,8 +39,10 @@ const passAt = (m: MasteryStore, node: string, lv: Level) => stat(m[node]?.[lv])
 export function gaps(g: GapIn): GapKind[] {
   const out: GapKind[] = [], s = stat(g.m[g.node]?.[g.need]);
   if (g.blocked || g.ev.hyp[g.node]) out.push('prerequisite');
-  if (s.state === 'reopened' || s.state === 'verify') out.push('transfer');
-  if (!s.pass) {
+  if (misconceptions(g.ev, g.node).length) out.push('misconception');
+  if (s.state === 'reopened' || s.state === 'verify' || memorized(g.ev, g.node)) out.push('transfer');
+  if (!s.pass && !g.ev.led.some(x => x.node === g.node) && !Object.values(g.m[g.node] ?? {}).some(c => (c?.n ?? 0) > 0)) out.push('unproven');
+  else if (!s.pass) {
     if (!passAt(g.m, g.node, 1) && !passAt(g.m, g.node, 2)) out.push('knowledge');
     else if (g.need >= 3 && !passAt(g.m, g.node, 3)) out.push('recall');
     else if (g.need >= 4) out.push('skill');
@@ -51,6 +58,13 @@ export function gaps(g: GapIn): GapKind[] {
     if (rts.length >= 5 && rts[Math.floor(rts.length / 2)]! > slow) out.push('automaticity');
   }
   return out;
+}
+
+// Thuộc câu mà chưa dùng được: trong các lượt tự lực gần đây ở nút, câu đã gặp đúng ≥ 80% (≥ 3 lượt) mà câu mới < 50% (≥ 2 lượt).
+export function memorized(ev: EvStore, node: string): boolean {
+  const xs = ev.led.filter(x => x.node === node && !x.asst).slice(-16), seen = xs.filter(x => !x.nov), nov = xs.filter(x => x.nov).slice(-4);
+  const rate = (a: typeof xs) => a.filter(x => x.ok).length / a.length;
+  return seen.length >= 3 && nov.length >= 2 && rate(seen) >= 0.8 && rate(nov) < 0.5;
 }
 
 // Ngữ cảnh yếu nhất của một ô (≥ 3 lượt, đúng < 50%), để cách sửa hỏi đúng ngữ cảnh đó. null nếu không có.

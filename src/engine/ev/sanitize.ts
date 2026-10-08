@@ -109,7 +109,7 @@ export function sanitizeEv(raw: unknown): EvStore {
   for (const [n, v] of Object.entries(obj(x.mis))) {
     if (!NODE.test(n)) continue;
     const m: Record<string, { t: string; n: number; d: number }> = {};
-    for (const [k, y0] of Object.entries(obj(v)).slice(0, 5)) {
+    for (const [k, y0] of Object.entries(obj(v)).slice(0, 6)) {
       const y = obj(y0), t = str(y.t, 40);
       if (/^[0-9a-z]{6}$/.test(k) && t) m[k] = { t, n: num(y.n, 0, 1e6, 0), d: Math.round(num(y.d, 0, 1e6, 0)) };
     }

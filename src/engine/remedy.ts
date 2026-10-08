@@ -6,12 +6,12 @@
 import type { GapKind } from './gap.ts';
 import type { Level } from './types.ts';
 
-export type RemedyAct = 'root' | 'transfer' | 'teach' | 'recall' | 'produce' | 'context' | 'review' | 'speed' | 'practice';
+export type RemedyAct = 'root' | 'contrast' | 'check' | 'transfer' | 'teach' | 'recall' | 'produce' | 'context' | 'review' | 'speed' | 'practice' | 'step';
 export interface Remedy { gap: GapKind | null; act: RemedyAct; lv: Level; typed: boolean; ctx?: string; vi: string }
 
-const ORDER: GapKind[] = ['prerequisite', 'transfer', 'knowledge', 'recall', 'skill', 'context', 'retention', 'automaticity'];
+const ORDER: GapKind[] = ['prerequisite', 'misconception', 'transfer', 'unproven', 'knowledge', 'recall', 'skill', 'context', 'retention', 'automaticity'];
 export const REMEDY_VI: Record<RemedyAct, string> = {
-  root: 'học phần nền trước', transfer: 'thử ở câu mới chưa gặp', teach: 'dạy và hỏi nhận ra', recall: 'tự gõ để nhớ ra',
+  root: 'học phần nền trước', contrast: 'đối chiếu đúng / sai ở chỗ đang hiểu sai', check: 'hỏi thử trước khi dạy', step: 'lùi một bậc, dạy cách khác', transfer: 'thử ở câu mới chưa gặp', teach: 'dạy và hỏi nhận ra', recall: 'tự gõ để nhớ ra',
   produce: 'sửa lỗi / tự viết', context: 'luyện đúng ngữ cảnh còn yếu', review: 'ôn để khỏi quên', speed: 'luyện cho nhanh', practice: 'luyện ở mức cần',
 };
 
@@ -20,6 +20,8 @@ export function remedyFor(gaps: GapKind[], need: Level, weakCtx?: string | null)
   const mk = (act: RemedyAct, lv: Level, typed: boolean, ctx?: string): Remedy => ({ gap: g, act, lv, typed, ...(ctx ? { ctx } : {}), vi: REMEDY_VI[act] });
   switch (g) {
     case 'prerequisite': return mk('root', need, false);
+    case 'misconception': return mk('contrast', 2, false);
+    case 'unproven': return mk('check', Math.min(2, need) as Level, false);
     case 'transfer': return mk('transfer', need, true);
     case 'knowledge': return mk('teach', 1, false);
     case 'recall': return mk('recall', 3, true);

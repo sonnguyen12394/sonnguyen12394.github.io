@@ -24,6 +24,7 @@ export interface Observation {
   only?: boolean;        // chỉ ghi đúng mức này, không lan xuống mức thấp hơn
   rt?: number;           // thời gian trả lời (ms) — tín hiệu phụ (P15), không vào trọng số mastery
   given?: string;        // câu trả lời người học đưa ra (phương án chọn / chữ gõ) — để phát hiện hiểu sai lặp lại
+  right?: string;        // đáp án đúng (v70): so với given để nhận MẪU lỗi lặp lại qua nhiều câu khác nhau
   hint?: boolean;        // có dùng gợi ý
   retry?: boolean;       // lượt làm lại câu vừa sai trong cùng buổi
   timed?: boolean;       // câu nằm trong luật chơi có ép thời gian
