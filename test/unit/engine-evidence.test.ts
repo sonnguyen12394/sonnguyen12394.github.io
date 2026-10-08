@@ -88,9 +88,14 @@ test('tiên nghiệm không đè ô đã có bằng chứng thật; bằng chứ
   setPrior(s2, m2, 'u:z', 3, 6, 0.5, 'diag', 1);
   ingest(s2, m2, { node: 'u:z', level: 3, ok: true, item: 'a' }, { dev: 'd00001', ts: 1, day: 2 });
   assert.equal(stat(m2['u:z']![3]).pass, true);
-  // m3.3 (bot L01): một câu đúng chưa đủ xác nhận Claim (có thể đoán trúng): vẫn "suy ra"; câu thứ hai khác nhau mới thành Đạt thật.
-  assert.equal(stat(m2['u:z']![3]).state, 'inferred');
-  ingest(s2, m2, { node: 'u:z', level: 3, ok: true, item: 'b' }, { dev: 'd00001', ts: 2, day: 3 });
+  // m3.3 (bot L01): xác nhận Claim cần riêng bằng chứng thật đủ Đạt như một nút chưa có tiên nghiệm (ở đây: 4 câu đúng khác nhau);
+  // trong lúc đó vẫn "suy ra" và vẫn coi như biết (không quay lại lộ trình).
+  for (const [i, it] of ['b', 'c'].entries()) {
+    ingest(s2, m2, { node: 'u:z', level: 3, ok: true, item: it }, { dev: 'd00001', ts: 2 + i, day: 3 + i });
+    assert.equal(stat(m2['u:z']![3]).state, 'inferred');
+    assert.equal(stat(m2['u:z']![3]).pass, true);
+  }
+  ingest(s2, m2, { node: 'u:z', level: 3, ok: true, item: 'd' }, { dev: 'd00001', ts: 5, day: 6 });
   assert.equal(stat(m2['u:z']![3]).state, 'mastered');
 });
 

@@ -7,7 +7,7 @@
 //   mergeEv(): gộp hai máy không mất và không đếm trùng (thống kê theo thiết bị chỉ tăng; sổ hợp theo id sự kiện).
 
 import type { Level } from '../types.ts';
-import { freshCell, stat, type Cell, type MasteryStore } from '../mastery.ts';
+import { freshCell, stat, betaStat, PASS_M, PASS_LB, type Cell, type MasteryStore } from '../mastery.ts';
 import { evaluate, RULE, type Rule } from './evaluate.ts';
 import type { Agg, Dispute, EvEvent, EvStore, Observation, ObsRec, Prior, Tier } from './types.ts';
 import { EV_SCHEMA } from './types.ts';
@@ -74,7 +74,8 @@ export function derive(st: EvStore, node: string, lv: Level, rule: Rule = RULE):
   // Sai ở câu mới khi đang suy ra Đạt thì cơ chế mâu thuẫn (dis) phủ định Claim.
   // Claim "chưa biết" (b > a) chỉ để xếp thứ tự học, không phải bằng chứng thất bại: bỏ khi đã có câu trả lời thật, nếu không người
   // học phải bù các lần "sai giả định" mới Đạt được (mô phỏng: lộ trình thích ứng chậm hơn cả giáo trình cố định).
-  if (pr && (n <= 0 || pr.a >= pr.b)) { a += pr.a; b += pr.b; }
+  const a0 = a, b0 = b, claim = !!pr && pr.a >= pr.b;
+  if (pr && (n <= 0 || claim)) { a += pr.a; b += pr.b; }
   const cell: Cell = { a: round(a), b: round(b), n: round(n), q: [...q].sort().slice(0, 6), c: [...c].sort().slice(0, 8), d };
   // m3.3: số câu khác nhau đã đúng khi mới gặp hoặc khi nhớ lại cách quãng. Trước m3.3 chỉ tính câu mới: nút có ít câu (3 câu mức 3)
   // mà người học sai lần đầu thì không bao giờ đủ 2 câu mới → kẹt "cần xác minh" vĩnh viễn dù đã đúng nhiều ngày (bot L01).
@@ -84,10 +85,11 @@ export function derive(st: EvStore, node: string, lv: Level, rule: Rule = RULE):
   // Mức 4–5: cần ≥ 1 lượt đúng ở câu mới, hoặc ≥ 2 câu khác nhau nhớ lại đúng cách quãng (khi đã hết câu mới).
   if (lv >= 4 && n > 0 && nv < 1 && vk < rule.distinct) cell.vf = 1;
   // m3.2 (C180): mức 1–3 cũng không Đạt chỉ bằng một câu lặp lại: cần đúng ở ≥ 2 câu khác nhau.
-  // m3.3 (bot L01): Claim "đã biết" từ chẩn đoán đang được kiểm tra mà chưa đủ 2 câu khác nhau → vẫn coi như biết (không bắt học lại,
-  // P10) nhưng giữ trạng thái "suy ra" (cl), chưa tính là Đạt thật. Trước đây một câu đúng (có thể đoán trúng) là xác nhận Claim → 11–14
-  // nút "Đạt" mà người học chưa biết.
-  else if (lv <= 3 && n > 0 && nd < rule.distinct) { if (pr && pr.a >= pr.b) cell.cl = 1; else cell.vf = 1; }
+  else if (lv <= 3 && n > 0 && nd < rule.distinct && !claim) cell.vf = 1;
+  // m3.3 (bot L01): Claim "đã biết" từ chẩn đoán đang được kiểm tra → vẫn coi như biết (không bắt học lại, P10) nhưng giữ trạng thái
+  // "suy ra" (cl) cho tới khi RIÊNG bằng chứng thật đủ Đạt (ngưỡng m, cận dưới, ≥ 2 câu khác nhau). Trước đây tiên nghiệm mạnh cộng
+  // một–hai câu đúng (có thể đoán trúng với người biết lơ mơ) là thành Đạt → 10–15 nút "Đạt" mà bot chưa biết.
+  if (claim && n > 0 && !cell.vf) { const s0 = betaStat(a0, b0); if (!(s0.m >= PASS_M && s0.lb >= PASS_LB && nd >= rule.distinct)) cell.cl = 1; }
   return cell;
 }
 const round = (x: number): number => Math.round(x * 1e6) / 1e6;

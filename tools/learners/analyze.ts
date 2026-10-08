@@ -27,15 +27,16 @@ function claim(m: MasteryStore, node: string): { state: string; pass: boolean; n
 }
 // Độ chính xác của "Đạt" theo từng phiên: FP = app nói Đạt nhưng kỹ năng thật < 0,7; FN = kỹ năng thật ≥ 0,9, app có bằng chứng thật ≥ 4 lượt mà chưa Đạt.
 const perSess = ends.map(e => {
-  let tp = 0, fp = 0, fn = 0, claimed = 0, inferredFp = 0, inferred = 0;
+  let tp = 0, fp = 0, fn = 0, claimed = 0, inferredFp = 0, inferred = 0, solid = 0, solidFp = 0;
   const fps: string[] = [];
   for (const [node, t] of Object.entries(e.truth)) {
     const c = claim(e.m, node);
-    if (c.pass) { claimed++; if (t >= 0.7) tp++; else { fp++; if (c.n <= 0) inferredFp++; fps.push(`${node}:${t}`); } }
+    if (c.pass) { claimed++; if (t >= 0.7) tp++; else { fp++; if (c.state === 'inferred') inferredFp++; fps.push(`${node}:${t}`); } }
+    if (c.pass && c.state === 'mastered') { solid++; if (t < 0.7) solidFp++; }   // "Đạt" thật (không tính phần suy ra từ chẩn đoán)
     if (c.state === 'inferred') { inferred++; }
     if (!c.pass && t >= 0.9 && c.n >= 4) fn++;
   }
-  return { day: e.day, claimed, tp, fp, fn, inferredFp, inferred, fps: fps.slice(0, 6), floor: e.q?.floor, coins: e.q?.coins };
+  return { day: e.day, claimed, tp, fp, fn, inferredFp, inferred, solid, solidFp, fps: fps.slice(0, 6), floor: e.q?.floor, coins: e.q?.coins };
 });
 
 // Chuyển trạng thái: từng Đạt rồi bị mở lại.
