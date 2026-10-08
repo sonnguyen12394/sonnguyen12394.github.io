@@ -3,9 +3,10 @@
 
 import type { Host } from './host.ts';
 import { QT } from './content.ts';
+import { contentVer } from './packs.ts';
 
 export function examEvidence(host: Host, qtype: string, item: { id: string; b?: number }, ok: boolean, ctx: string): void {
   if (!host.evidence || qtype.startsWith('pl-') || !QT[qtype]) return;
   const b = item.b ?? 5.5, level = b < 5.5 ? 3 : b < 7 ? 4 : 5;
-  host.evidence({ node: `x:${qtype}`, level, ok, g: QT[qtype]!.guess, item: item.id, qt: qtype, ctx });
+  host.evidence({ node: `x:${qtype}`, level, ok, g: QT[qtype]!.guess, item: item.id, qt: qtype, ctx, src: 'exam', cv: contentVer(item.id) });
 }

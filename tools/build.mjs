@@ -54,7 +54,7 @@ for (const [name, gs] of Object.entries(packs).sort(([a], [b]) => (a < b ? -1 : 
   keep.add(file.slice('data/exam/'.length));
   if (!existsSync(P(file))) writeFileSync(P(file), body);
   index.packs[name] = { file, groups: gs.length, items: gs.reduce((n, g) => n + g.items.length, 0), qtypes: [...new Set(gs.map(g => g.qtype))].sort(), exams: [...new Set(gs.flatMap(g => g.exams))].sort() };
-  for (const g of gs) for (const it of g.items) index.items[it.id] = [it.b, guessOf(g, it), QSKILL(g.qtype), g.qtype];
+  for (const g of gs) for (const it of g.items) index.items[it.id] = [it.b, guessOf(g, it), QSKILL(g.qtype), g.qtype, hash(Buffer.from(JSON.stringify(it))).slice(0, 6)];   // [5]: phiên bản nội dung của câu (provenance, spec v2.4 §36)
 }
 function guessOf(g, it) {
   if (typeof it.ans === 'string') { const n = (it.opts || g.options || []).length; return n ? Math.round(100 / n) / 100 : 0; }

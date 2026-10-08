@@ -7,10 +7,13 @@ import type { MockTest } from './mock.ts';
 
 export interface PackInfo { file: string; groups: number; items: number; qtypes: string[]; exams: string[] }
 export interface MockEntry extends MockTest { n: { L: number; R: number }; dur: number }   // dur: giây âm thanh phần Nghe
-export interface Index { packs: Record<string, PackInfo>; items: Record<string, [number, number, 'L' | 'R', string]>; mocks: MockEntry[] }
+export interface Index { packs: Record<string, PackInfo>; items: Record<string, [number, number, 'L' | 'R', string, string?]>; mocks: MockEntry[] }
 
 export const IDX = INDEX as unknown as Index;
 export const X_CACHE = 'el-x';
+
+// Phiên bản nội dung của một câu (băm nội dung lúc build): đổi câu thì bằng chứng cũ vẫn truy được về bản đã làm.
+export const contentVer = (id: string): string | undefined => IDX.items[id]?.[4];
 
 export function itemParams(id: string): { b: number; g: number } | undefined {
   const r = IDX.items[id];
