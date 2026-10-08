@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 62;
+const STATE_V = 18, APP_VERSION = 63;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -3755,7 +3755,8 @@ async function download(name,text,type){
 // v53 (spec v2.4 §88): sổ bằng chứng trên máy + bản xuất nghiên cứu đầy đủ (quan sát thô, sổ L1, thống kê, luật, provenance).
 function evPanel(){ const e=st.e||{}, v=e.ev||{}, ig=v.integ||{}, n=(v.led||[]).length, crit=(v.led||[]).filter(x=>x.tier>=2).length, kb=Math.round(JSON.stringify(v).length/1024);
   return `<p class="note">Sổ bằng chứng trên máy này: ${n} sự kiện gần đây (${crit} quan trọng), ${kb} KB. Luật đang dùng: ${esc(ELCORE.rules.id)}.${ig.err?` Lỗi ghi: ${ig.err}.`:''}${ig.fixed?` Đã tự sửa ${ig.fixed} ô lệch.`:''} Bằng chứng ít giá trị được gộp thành thống kê, bằng chứng quan trọng được giữ.</p>
-    <div class="row"><button class="btn" data-act="evexport">Tải dữ liệu nghiên cứu đầy đủ</button></div>`; }
+    <div class="row"><button class="btn" data-act="evexport">Tải dữ liệu nghiên cứu đầy đủ</button><button class="btn ghost" data-act="msgo">📏 Đo tiến bộ</button></div>
+    <label class="row" style="gap:8px"><input type="checkbox" data-act="research" ${st.set.research?'checked':''}> <span>Tham gia nghiên cứu: gán nhãn nhóm so sánh (thích ứng / cố định, game / không game) vào dữ liệu nghiên cứu khi bạn đo tiến bộ. Không đổi trải nghiệm học; dữ liệu chỉ rời máy khi bạn tự tải và gửi.</span></label>`; }
 async function exportResearch(){ const d=new Date().toISOString().slice(0,10);
   await download(`english-ladder-research-${d}.json`,JSON.stringify(ELCORE.research(st),null,1),'application/json'); }
 async function exportBackup(){
@@ -5082,6 +5083,7 @@ document.addEventListener('click',e=>{
   if(d.gunord!=null){ ui.gs.ord.splice(+d.gunord,1); return render(); }
   if(d.act==='micro') return microGo(d.r);
   if(d.act==='quest') return go('goal',{er:'quest'});
+  if(d.act==='msgo') return go('goal',{er:'measure'});
   if(d.act&&d.act[0]==='g'&&gAct(d)!==false) return;
   if(d.flag!=null) return addFlag(+d.flag);
   if(d.rpick!=null){ const [i,k]=d.rpick.split(':').map(Number); if(!ui.read.done){ ui.read.picks[i]=k; render(); } return; }
@@ -5198,6 +5200,7 @@ document.addEventListener('click',e=>{
 // Bước 1 của speaking: phát ngay khi mở câu
 document.addEventListener('click',e=>{ const b=e.target.closest('[data-rate],[data-act="speak"]'); if(b&&ui.view==='speak'&&ui.speak&&ui.speak.i<ui.speak.items.length&&ui.speak.step===0) say(ui.speak.items[ui.speak.i].ex); });
 
+document.addEventListener('change',e=>{ const t=e.target; if(t&&t.dataset&&t.dataset.act==='research'){ st.set.research=!!t.checked; save(); } });
 document.addEventListener('toggle',e=>{ const d=e.target; if(d&&d.dataset&&d.dataset.sec&&ui.setOpen) ui.setOpen[d.dataset.sec]=d.open; if(d&&d.dataset&&d.dataset.plan) ui.planOpen=d.open; if(d&&d.dataset&&d.dataset.cdg) (ui.cdOpen||(ui.cdOpen={}))[d.dataset.cdg]=d.open; },true);
 document.addEventListener('submit',e=>{
   e.preventDefault();
@@ -8168,6 +8171,9 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:63,d:'2026-10-08',t:'Đo tiến bộ thật',big:false,items:[
+  'Mới: "Đo tiến bộ" (Lộ trình hôm nay, hoặc Tôi → Dữ liệu nghiên cứu). 12 câu ngữ cảnh mới giữ riêng, không xuất hiện khi luyện hay chơi; đo lúc bắt đầu, sau 14 ngày học, rồi sau 7 và 30 ngày để xem có nhớ lâu.',
+  'Tuỳ chọn tham gia nghiên cứu: chỉ gán nhãn nhóm so sánh vào dữ liệu bạn tự tải, không đổi trải nghiệm học.']});
 CHANGELOG.unshift({v:62,d:'2026-10-08',t:'Ladder Quest',big:true,items:[
   'Trò chơi mới trong Thử thách: leo tháp tiếng Anh. Mỗi đòn đánh, mỗi lần trinh sát, mở rương hay đánh trùm là một câu tiếng Anh app chọn từ đúng những gì bạn còn thiếu để lên cấp.',
   'Xu tỉ lệ với giá trị học: trùm ở câu chưa gặp, phần sắp quên và câu mới cho nhiều xu; câu đã thuộc cho rất ít. Trại cho bí kíp ngắn và hồi một tim.',
@@ -8295,7 +8301,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.7d55822793.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.985b82b5b2.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
@@ -8305,6 +8311,7 @@ const EHOST = {
   transfer:node=>eXfer(node),
   micro:node=>eMicroCard(node),
   back:()=>microBack(),
+  research:()=>!!(st.set&&st.set.research),
   dayInfo:()=>{ const dw=dueWords().length, dg=dueG().length, t=today();
     const lastPerf=Math.max(0,...Object.values(st.dlg||{}).map(d=>d&&d.day||0),...((st.x&&st.x.attempts)||[]).filter(a=>a.kind==='mock').map(a=>a.day||0),...((st.me&&st.me.vx)||[]).map(v=>v&&v.day||0));
     return {reviewItems:dw+dg, reviewMins:(dw?reviewMin(dw):0)+dg*2, mins:Math.round((st.x&&st.x.mins)||20), perfDue:t-lastPerf>=7}; },

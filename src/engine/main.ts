@@ -24,6 +24,8 @@ import { viewQuestHome, viewQuestRun, viewQuestEnd, type QuestRun, type QItem } 
 import { computePath, computeNba } from './today.ts';
 import { seenHas } from './ev/store.ts';
 import { readinessOf } from './readyview.ts';
+import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
+import { viewMeasure } from './measureview.ts';
 import type { MicroCard } from './host.ts';
 import { stat } from './mastery.ts';
 import { nodeStat } from './views.ts';
@@ -56,7 +58,7 @@ export function init(host: EHost): EngineModule {
   const future = (): boolean => !!host.future?.();
   const V = (): EState => { const e = E(); return { ...e, goals: e.goals.filter(g => goalOn(g.id, future())) }; };
   let loadErr = '';
-  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('probe') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout') || route.startsWith('xfer') || route.startsWith('micro') || route.startsWith('quest');
+  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('probe') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout') || route.startsWith('xfer') || route.startsWith('micro') || route.startsWith('quest') || route.startsWith('measure');
   const ensure = () => {
     if (loaded()) return;
     loadGraph(host.fetchJson).then(() => { loadErr = ''; host.render(); })
@@ -287,7 +289,52 @@ export function init(host: EHost): EngineModule {
     host.save(); host.render();
   }
 
+  // ---------- Đo hiệu quả học (v63) ----------
+  // Bộ 12 câu giữ riêng cho mục tiêu đầu tiên đang mở; đo trước / sau / trễ 7 và 30 ngày; không hiện đáp án khi đo.
+  let mrunM: { phase: Phase; run: ToutRun } | null = null;
+  const studyMins = (): number => Math.round((E().ev.seq * 12) / 60);   // ước tính: ≈ 12 giây mỗi câu đã trả lời
+  function measureStart(): void {
+    const e = E(), v = V(), ix = loaded()!, sg = v.goals[0], g = sg ? ix.goal.get(sg.id) : undefined;
+    if (!g) { host.toast('Chọn một mục tiêu CEFR trước.'); return; }
+    if (!e.ms || e.ms.goal !== g.id) {
+      const need = closure(ix, g.req.filter(r => r.type !== 'performance'), defaultLevel);
+      const nodes = pickNodes(need, n => n.startsWith('u:') && (host.transfer?.(n) ?? []).length > 0);
+      const set = nodes.flatMap(n => { const q = (host.transfer?.(n) ?? []).find(x => !seenHasE(n, x.id)); return q ? [{ node: n, item: q.id }] : []; });
+      e.ms = { goal: g.id, set, checks: [] };
+    }
+    const nx = nextPhase(e.ms, host.today());
+    if (!nx) return;
+    const byId = new Map(e.ms.set.map(x => [x.item, x.node]));
+    const qs = e.ms.set.flatMap(x => (host.transfer?.(x.node) ?? []).filter(q => q.id === x.item)).filter(q => byId.has(q.id));
+    mrunM = { phase: nx.phase, run: { node: e.ms.set[0]?.node ?? '', qs, i: 0, got: 0, x: true } };
+    host.save(); host.render();
+  }
+  const seenHasE = (n: string, id: string) => seenHas(E().ev, n, id);
+  function measureAnswer(ok: boolean): void {
+    if (!mrunM) return;
+    const r = mrunM.run, q = r.qs[r.i]!, e = E(), node = e.ms!.set.find(x => x.item === q.id)?.node ?? r.node;
+    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: `${q.id}#${mrunM.phase}`, qt: q.opts ? 'mcq' : 'typed', ctx: 'measure', src: 'diag', ch: `measure/${mrunM.phase}` }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    if (ok) r.got++;
+    r.i++;
+    if (r.i >= r.qs.length) {
+      const day = host.today();
+      e.ms!.checks.push({ phase: mrunM.phase, day, got: r.got, of: r.qs.length, mins: studyMins() });
+      if (host.research?.() && !e.ms!.arm) e.ms!.arm = armOf(dev(), day);
+      addSnap(e.ev, { ts: Date.now(), day, kind: 'diag', subj: `measure:${e.ms!.goal}`, dec: `measure:${mrunM.phase}`, rule: `${RULE_ID}/${MEASURE_VER}`,
+        info: { got: r.got, of: r.qs.length, mins: studyMins(), ...Object.fromEntries(Object.entries(report(e.ms)).map(([k, x]) => [k, x === null ? '-' : x])) },
+        evs: e.ev.led.filter(x => x.ctx === 'measure').slice(-r.qs.length).map(x => x.id) }, false);
+      mrunM = null;
+    }
+    host.save(); host.render();
+  }
+
   const routes: Record<string, (c: ECtx) => string> = {
+    measure: c => {
+      if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
+      if (mrunM) return viewTout(c, mrunM.run, null).replace('Thử ở câu mới', `${PHASE_VI[mrunM.phase]} · không hiện đáp án`);
+      const ms = E().ms;
+      return viewMeasure(c, ms, nextPhase(ms, host.today()), report(ms));
+    },
     quest: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
       if (qrun?.done) return viewQuestEnd(c, qrun);
@@ -367,6 +414,7 @@ export function init(host: EHost): EngineModule {
     dstop() { finishDiag(); },
     pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
     qstart() { qStart(); },
+    mstart() { measureStart(); },
     qhome() { qrun = null; host.render(); },
     qnext() { qNext(); },
     qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
@@ -374,7 +422,7 @@ export function init(host: EHost): EngineModule {
     mskip() { mrun = null; if (host.back) host.back(); else host.go('today'); },
     mback() { mrun = null; if (host.back) host.back(); else host.go('today'); },
     mans(el) { const r = mrun?.run; if (!r) return; const q = r.qs[r.i]!, i = Number(el.dataset.i); microAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] : undefined); },
-    xans(el) { if (!xrun) return; const q = xrun.qs[xrun.i]!, i = Number(el.dataset.i); xferAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] : undefined); },
+    xans(el) { if (mrunM) { const q = mrunM.run.qs[mrunM.run.i]!, i = Number(el.dataset.i); measureAnswer(i >= 0 && i === q.ans); return; } if (!xrun) return; const q = xrun.qs[xrun.i]!, i = Number(el.dataset.i); xferAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] : undefined); },
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
@@ -398,6 +446,11 @@ export function init(host: EHost): EngineModule {
       microAnswer((q.accept ?? []).some(x => norm(x) === a), raw.trim());
     },
     xtyped(f) {
+      if (mrunM) {
+        const q = mrunM.run.qs[mrunM.run.i]!, a = norm(String(new FormData(f).get('a') || ''));
+        if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
+        measureAnswer((q.accept ?? []).some(x => norm(x) === a)); return;
+      }
       if (!xrun) return;
       const q = xrun.qs[xrun.i]!, raw = String(new FormData(f).get('a') || ''), a = norm(raw);
       if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
