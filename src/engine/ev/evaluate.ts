@@ -12,7 +12,7 @@ import type { Observation, EvEvent, Src } from './types.ts';
 
 export const RULE = {
   evaluator: 'ev1.0',
-  mastery: 'm3.1',
+  mastery: 'm3.2',
   slip: 0.1,            // s: người đã biết vẫn có thể sai (spec §44)
   repeat: 0.5,          // cùng câu trong 24 giờ
   hint: 0.5,            // đúng nhờ gợi ý
@@ -23,6 +23,9 @@ export const RULE = {
   reopenBad: 2,         // nút đang Đạt mà sai ≥ 2 lần ở câu mới → mở lại (model disagreement, spec §69)
   reopenOk: 2,          // cần ≥ 2 lần đúng ở câu mới để xác nhận lại
   misMin: 2,            // chọn cùng một phương án sai ≥ 2 lần → giả thuyết hiểu sai (misconception)
+  diffW: 0.2,           // v66 (m3.2): đúng câu khó hơn cấp nút nặng hơn 20%, đúng câu dễ hơn nhẹ hơn 20%; sai thì ngược lại (C118, C246)
+  distinct: 2,          // v66: Đạt mức 1–3 cần đúng ở ≥ 2 câu khác nhau (không Đạt bằng một câu lặp qua nhiều ngày, C180)
+  fatigue: 0.7,         // v66: sai lúc có dấu hiệu mệt (đúng giảm, chậm dần trong phiên) nhẹ hơn 30% (C295, C371)
 } as const;
 export type Rule = { [K in keyof typeof RULE]: (typeof RULE)[K] extends string ? string : number };
 export const RULE_ID = `${RULE.evaluator}/${RULE.mastery}`;
@@ -33,6 +36,7 @@ export interface EvalCtx {
   id: string;
   lastSeenDay?: number;  // ngày gần nhất câu này được trả lời (để giảm trọng số khi lặp)
   novel: boolean;        // câu lần đầu gặp ở nút này
+  fatigued?: boolean;    // phiên hiện tại có dấu hiệu mệt (fatigue() trong store.ts)
 }
 
 export function evaluate(o: Observation, c: EvalCtx, rule: Rule = RULE): EvEvent {
@@ -42,9 +46,10 @@ export function evaluate(o: Observation, c: EvalCtx, rule: Rule = RULE): EvEvent
   if (o.ok && o.hint) w *= rule.hint;
   if (o.ok && o.retry) w *= rule.retry;
   if (!o.ok && o.timeout && o.timed) w *= rule.timeout;
+  if (!o.ok && c.fatigued) w *= rule.fatigue;
   const g = Math.min(rule.gMax, Math.max(0, o.g ?? 0));
   // Độ tin cậy: câu dễ đoán và câu có trợ giúp nói ít hơn về năng lực thật.
-  const rel = Math.round(Math.max(0.05, (1 - g) * (asst ? 0.5 : 1) * (o.timeout ? 0.5 : 1)) * 100) / 100;
+  const rel = Math.round(Math.max(0.05, (1 - g) * (asst ? 0.5 : 1) * (o.timeout ? 0.5 : 1) * (c.fatigued ? 0.7 : 1)) * 100) / 100;
   const ev: EvEvent = {
     id: c.id, ts: c.ts, day: c.day, node: o.node, lv: o.level, ok: o.ok ? 1 : 0, w: Math.round(w * 1000) / 1000, g,
     src: (o.src ?? 'vocab') as Src, nov: c.novel ? 1 : 0, rel, tier: 1, val: 0, ev: `${rule.evaluator}/${rule.mastery}`,

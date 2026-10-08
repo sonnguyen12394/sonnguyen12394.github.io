@@ -1,7 +1,7 @@
 // Service worker của English Ladder: lưu app để chạy offline. index.html lấy từ mạng trước (có bản mới thì dùng ngay),
 // mất mạng thì dùng bản đã lưu; tệp tĩnh khác lấy từ bộ nhớ trước. Đổi VERSION khi phát hành để xoá bộ nhớ cũ.
-const VERSION = 'vl-v65';
-const CORE = ['./', 'index.html', 'app.js?v=65', 'x/core.e6870ce30a.js', 'x/exam.1ab25a353a.js', 'x/engine.0eb0d5e167.js', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];
+const VERSION = 'vl-v66';
+const CORE = ['./', 'index.html', 'app.js?v=66', 'x/core.8ff4fe1730.js', 'x/exam.d67aa83691.js', 'x/engine.a8ba3dd4eb.js', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 const META = 'el-meta';   // trạng thái nhắc học do app ghi (service worker không đọc được localStorage); không xoá khi đổi bản
 const DATA = 'el-data';   // chi tiết bài học theo cấp (data/lv-<cấp>.<băm>.json): tên có băm nội dung nên giữ qua các bản; app tự dọn tệp cũ

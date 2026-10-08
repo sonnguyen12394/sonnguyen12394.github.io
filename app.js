@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 65;
+const STATE_V = 18, APP_VERSION = 66;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -3756,6 +3756,8 @@ async function download(name,text,type){
 // v53 (spec v2.4 §88): sổ bằng chứng trên máy + bản xuất nghiên cứu đầy đủ (quan sát thô, sổ L1, thống kê, luật, provenance).
 function evPanel(){ const e=st.e||{}, v=e.ev||{}, ig=v.integ||{}, n=(v.led||[]).length, crit=(v.led||[]).filter(x=>x.tier>=2).length, kb=Math.round(JSON.stringify(v).length/1024);
   return `<p class="note">Sổ bằng chứng trên máy này: ${n} sự kiện gần đây (${crit} quan trọng), ${kb} KB. Luật đang dùng: ${esc(ELCORE.rules.id)}.${ig.err?` Lỗi ghi: ${ig.err}.`:''}${ig.fixed?` Đã tự sửa ${ig.fixed} ô lệch.`:''} Bằng chứng ít giá trị được gộp thành thống kê, bằng chứng quan trọng được giữ.</p>
+    ${(()=>{ try{ const a=ELCORE.audit(st,today()), d=a.drift, x=a.est, f=v=>v==null?'chưa đủ dữ liệu':String(v).replace('.',',');
+      return `<p class="hint">Kiểm toán model trên dữ liệu của bạn: ${d.n>=20?`14 ngày qua ở các phần đã Đạt, đúng ${Math.round(d.obs*100)}% so với dự đoán ${Math.round(d.exp*100)}%${d.flag?' — <b>model đang lạc quan quá, app sẽ kiểm lại</b>':' (khớp)'}`:'chưa đủ lượt để kiểm trôi'}. Ước lượng tỉ lệ sai khi đã biết (slip): ${f(x.slip)} (luật dùng 0,1); đúng nhờ đoán: ${f(x.guess)}${x.guessTheory!=null?` (lý thuyết ${f(x.guessTheory)})`:''}. Chỉ báo cáo, không tự đổi luật.</p>`; }catch(e){ return ''; } })()}
     <div class="row"><button class="btn" data-act="evexport">Tải dữ liệu nghiên cứu đầy đủ</button><button class="btn ghost" data-act="msgo">📏 Đo tiến bộ</button></div>
     <label class="row" style="gap:8px"><input type="checkbox" data-act="research" ${st.set.research?'checked':''}> <span>Tham gia nghiên cứu: gán nhãn nhóm so sánh (thích ứng / cố định, game / không game) vào dữ liệu nghiên cứu khi bạn đo tiến bộ. Không đổi trải nghiệm học; dữ liệu chỉ rời máy khi bạn tự tải và gửi.</span></label>`; }
 async function exportResearch(){ const d=new Date().toISOString().slice(0,10);
@@ -8178,6 +8180,11 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:66,d:'2026-10-08',t:'Đánh giá công bằng hơn',big:false,items:[
+  'Muốn Đạt một phần, bạn cần đúng ở ít nhất 2 câu khác nhau: thuộc lòng một câu không còn đủ.',
+  'Đúng câu khó hơn cấp được tính nặng hơn, sai câu dễ tính nặng hơn (câu thi theo độ khó đã hiệu chỉnh).',
+  'Khi bạn mệt (đúng ít dần, chậm dần trong cùng một lượt), app đề nghị nghỉ và tính các lỗi lúc đó nhẹ hơn.',
+  'Tôi → Dữ liệu nghiên cứu: app tự kiểm xem đánh giá có đang lạc quan quá không, và ước lượng tỉ lệ nhầm tay / đoán mò từ chính dữ liệu của bạn.']});
 CHANGELOG.unshift({v:65,d:'2026-10-08',t:'Sửa đúng chỗ hổng',big:false,items:[
   'Trong tháp, mỗi câu được chọn theo đúng loại lỗ hổng của bạn: chưa biết thì hỏi nhận ra, nhận ra rồi thì tự gõ, nhớ rồi thì sửa lỗi, thiếu phần nền thì đưa phần nền lên trước.',
   '"Bước tiếp theo" tính nguy cơ quên từ chính lịch ôn của bạn (FSRS), không còn ước lượng thô. Rương trong tháp ưu tiên phần dễ quên và quan trọng để nhớ lâu.',
@@ -8289,7 +8296,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.1ab25a353a.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.d67aa83691.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8317,7 +8324,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.0eb0d5e167.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.a8ba3dd4eb.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8388,7 +8395,8 @@ function eXfer0(node){ const out=[];
   return out; }
 // v61 bí kíp 60 giây (§51–53): sau câu sai, lõi engine quyết ghi nhận / hỏi thêm / mời bí kíp / học phần nền ngay.
 function eMicro(node,level){ try{ return typeof ELCORE!=='undefined'&&ELCORE.micro?ELCORE.micro(st,node,level,today()):null; }catch(e){ return null; } }
-function microBox(node,level){ const d=eMicro(node,level); if(!d||(d.act!=='offer'&&d.act!=='now')) return '';
+function microBox(node,level){ const d=eMicro(node,level); if(d&&d.act==='rest') return `<p class="hint" style="margin-top:8px">☕ ${esc(d.why)}. Nghỉ vài phút rồi học tiếp sẽ hiệu quả hơn; lỗi lúc mệt được app tính nhẹ hơn.</p>`;
+  if(!d||(d.act!=='offer'&&d.act!=='now')) return '';
   const vi=d.target.startsWith('g:')?(GPT[d.target.slice(2)]||{}).vi:d.target.startsWith('u:')?uname(UNIT_BY_ID[d.target.slice(2)]||{words:[]}):d.target;
   const r=`micro/${d.target}/${d.lv}/${d.node}/${encodeURIComponent(d.why)}`;
   return d.act==='now'?`<div class="panel stack" style="margin-top:8px"><p class="warnt"><b>Lỗi này đến từ phần nền:</b> ${esc(vi||'')}. Học 1 phút phần nền trước sẽ nhanh hơn làm tiếp.</p><div class="row"><button class="btn primary small" data-act="micro" data-r="${esc(r)}">⚡ Học phần nền ngay</button></div></div>`

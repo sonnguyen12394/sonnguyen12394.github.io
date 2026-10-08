@@ -24,7 +24,7 @@ const cellKey = (node: string, lv: number): string => `${node}|${lv}`;
 const clean = (s: string | undefined): string => (s ? s.replace(/[|]/g, '/').slice(0, 40) : '-');
 // Thống kê lồng theo ô: thiết bị → "nút|mức" → "ngữ cảnh|dạng câu|câu mới|độ khó" → Agg. Tính một ô chỉ đọc đúng ô đó (C393).
 export const subKey = (e: Pick<EvEvent, 'ctx' | 'qt' | 'nov' | 'diff'>): string => `${clean(e.ctx)}|${clean(e.qt)}|${e.nov}|${e.diff ?? 0}`;
-const parseSub = (k: string) => { const [ctx, qt] = k.split('|'); return { ctx: ctx!, qt: qt! }; };
+const parseSub = (k: string) => { const [ctx, qt, , diff] = k.split('|'); return { ctx: ctx!, qt: qt!, diff: Number(diff) || 0 }; };
 export const levelsOf = (lv: Level, only?: boolean | 1): Level[] => (only ? [lv] : (Array.from({ length: lv }, (_, i) => (i + 1) as Level)));
 
 // Băm 31 bit (FNV-1a) → 6 ký tự base36: đánh dấu câu đã gặp ở mỗi nút mà không lưu cả id câu.
@@ -51,9 +51,9 @@ export function derive(st: EvStore, node: string, lv: Level, rule: Rule = RULE):
   const q = new Set<string>(), c = new Set<string>();
   for (const [dev, part] of Object.entries(st.agg)) for (const [k, x] of Object.entries(part[ck] ?? {})) {
     any = true;
-    a += x.swOk - x.swgOk; b += x.swBad * (1 - rule.slip); n += x.sw; d = Math.max(d, x.d1);
-    nv += dev === LEGACY ? (x.swOk > 0 ? 1 : 0) : x.novOk ?? 0;   // tiến độ trước v55: coi như đã có bằng chứng câu mới
-    const p = parseSub(k);
+    const p = parseSub(k), dw = rule.diffW * Math.max(-1, Math.min(1, p.diff));   // m3.2: hiệu chỉnh theo độ khó câu so với cấp nút
+    a += (x.swOk - x.swgOk) * (1 + dw); b += x.swBad * (1 - rule.slip) * (1 - dw); n += x.sw; d = Math.max(d, x.d1);
+    nv += dev === LEGACY ? (x.swOk > 0 ? rule.distinct : 0) : x.novOk ?? 0;   // tiến độ trước v55: coi như đã đủ câu khác nhau
     if (p.qt !== '-' && p.qt !== LEGACY) q.add(p.qt);
     if (p.ctx !== '-' && p.ctx !== LEGACY) c.add(p.ctx);
     for (const y of x.lq ?? []) q.add(y);
@@ -71,6 +71,8 @@ export function derive(st: EvStore, node: string, lv: Level, rule: Rule = RULE):
   if (nv) cell.nv = nv;
   if (st.dis[ck]?.on) cell.ro = 1;
   if (lv >= 4 && n > 0 && nv < 1) cell.vf = 1;
+  // m3.2 (C180): mức 1–3 cũng không Đạt chỉ bằng một câu lặp lại: cần đúng ở ≥ 2 câu khác nhau. Claim "đã biết" từ chẩn đoán được miễn.
+  else if (lv <= 3 && n > 0 && nv < rule.distinct && !(pr && pr.a >= pr.b)) cell.vf = 1;
   return cell;
 }
 const round = (x: number): number => Math.round(x * 1e6) / 1e6;
@@ -90,9 +92,9 @@ export function recomputeAll(st: EvStore, rule: Rule = RULE): MasteryStore {
   }
   return m;
 }
-function refreshNode(st: EvStore, m: MasteryStore, node: string): void {
+function refreshNode(st: EvStore, m: MasteryStore, node: string, rule: Rule = RULE): void {
   for (let l = 1 as Level; l <= 5; l = (l + 1) as Level) {
-    const c = derive(st, node, l);
+    const c = derive(st, node, l, rule);
     if (c) (m[node] ||= {})[l] = c;
   }
 }
@@ -107,12 +109,14 @@ export function ingest(st: EvStore, m: MasteryStore, o: Observation, c: IngestCt
   st.obs.push(rec);
   if (st.obs.length > OBS_MAX || (st.obs[0] && c.day - st.obs[0].day > OBS_DAYS)) st.obs = st.obs.filter(x => c.day - x.day <= OBS_DAYS).slice(-OBS_MAX);
   // Evaluator
-  const novel = !!o.item && !seenHas(st, o.node, o.item);
+  const tkey = o.text ? `t:${o.text.toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 120)}` : '';
+  const novel = !!o.item && !seenHas(st, o.node, o.item) && !(tkey && seenHas(st, o.node, tkey));
+  const fatigued = fatigue(st.obs.slice(0, -1), o.sess);
   const lastSeen = o.item && c.recent ? c.recent[o.item] : undefined;
   st.seq++;
   const rule = c.rule ?? RULE;
-  const ev = evaluate(o, { day: c.day, ts: c.ts, id: `${c.dev}.${st.seq}`, lastSeenDay: lastSeen, novel }, rule);
-  if (o.item) { if (c.recent) c.recent[o.item] = c.day; if (novel) seenAdd(st, o.node, o.item); }
+  const ev = evaluate(o, { day: c.day, ts: c.ts, id: `${c.dev}.${st.seq}`, lastSeenDay: lastSeen, novel, fatigued }, rule);
+  if (o.item) { if (c.recent) c.recent[o.item] = c.day; if (novel) { seenAdd(st, o.node, o.item); if (tkey) seenAdd(st, o.node, tkey); } }
   // Trạng thái trước (để biết bằng chứng này có làm đổi quyết định không)
   // Đúng ở mức cao thì cũng là bằng chứng cho mức thấp hơn; SAI ở mức cao chỉ là bằng chứng cho đúng mức đó (không dùng được
   // ≠ không nhận ra: MT7–MT8, spec §5 Knowledge ≠ Performance). Luật m3.1.
@@ -149,7 +153,7 @@ export function ingest(st: EvStore, m: MasteryStore, o: Observation, c: IngestCt
   } else if (ev.ok) for (const [k, x] of Object.entries(mis)) { x.n -= 0.5; if (x.n <= 0) delete mis[k]; }
   if (!Object.keys(mis).length) delete st.mis[o.node];
   // L3
-  refreshNode(st, m, o.node);
+  refreshNode(st, m, o.node, rule);   // v66: luật truyền vào ingest được dùng cả khi tính lại ô (trước đây luôn dùng luật mặc định)
   const after = lvls.map(l => stat(m[o.node]?.[l]));
   // Tier và giá trị (§29–30)
   const flip = before.some((s, i) => s.pass !== after[i]!.pass);
@@ -304,3 +308,17 @@ export function verify(st: EvStore, m: MasteryStore): number {
 }
 
 export { freshCell };
+
+// Tín hiệu mệt trong một phiên (v66, C295): ≥ 12 câu, tỉ lệ đúng nửa sau thấp hơn nửa đầu ≥ 34 điểm và (nếu có thời gian trả lời)
+// trung vị thời gian nửa sau chậm hơn ≥ 30%. Dùng L0 (quan sát thô) của phiên hiện tại; không có mã phiên thì không xét.
+export function fatigue(obs: Array<{ ok: boolean; rt?: number; sess?: string }>, sess?: string): boolean {
+  if (!sess) return false;
+  const xs = obs.filter(o => o.sess === sess).slice(-16);
+  if (xs.length < 12) return false;
+  const h = Math.floor(xs.length / 2), A = xs.slice(0, h), B = xs.slice(h);
+  const acc = (ys: typeof xs) => ys.filter(y => y.ok).length / ys.length;
+  if (acc(A) - acc(B) < 0.34) return false;
+  const med = (ys: typeof xs) => { const r = ys.map(y => y.rt ?? 0).filter(v => v > 0).sort((p, q) => p - q); return r.length >= 3 ? r[Math.floor(r.length / 2)]! : null; };
+  const ma = med(A), mb = med(B);
+  return ma === null || mb === null ? acc(A) - acc(B) >= 0.5 : mb >= ma * 1.3;
+}

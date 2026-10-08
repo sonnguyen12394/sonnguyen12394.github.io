@@ -5,13 +5,16 @@ import { writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as S from '../../src/engine/sim/sim.ts';
-import { RULE_ID } from '../../src/engine/ev/evaluate.ts';
+import { RULE_ID, RULE } from '../../src/engine/ev/evaluate.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 const pct = (x: number) => `${(x * 100).toFixed(1).replace('.', ',')}%`;
 const n2 = (x: number) => x.toFixed(2).replace('.', ',');
 const cal = S.calibration(600), ff = S.fpfn(800), dg = S.diagAccuracy(), gc = S.gameContamination(), sp = S.speedBias(), th = S.thresholdSensitivity();
 const paths = [-1, 0, 1, 2].map(k => ({ k, ...S.pathEfficiencyAvg(20, k) }));
+// v66 (C274): độ nhạy trọng số — đổi từng tham số của luật, giữ nguyên các tham số khác, đo lại dương tính / âm tính giả.
+const sens = ([['slip', [0.05, 0.1, 0.2]], ['repeat', [0.3, 0.5, 0.7]], ['decay', [0.8, 0.9, 1]]] as const)
+  .flatMap(([k, vs]) => vs.map(v => ({ k, v, ...S.fpfn(300, 11, { ...RULE, [k]: v }) })));
 const L: string[] = [
   '# Báo cáo mô phỏng learner', '',
   `Sinh bởi \`npm run sim\` (tools/sim/run.ts → src/engine/sim/sim.ts), luật \`${RULE_ID}\`, ${new Date().toISOString().slice(0, 10)}.`, '',
@@ -33,6 +36,9 @@ const L: string[] = [
   '## 6. Kỹ năng chơi game và tốc độ không thành điểm ngôn ngữ (C343–C345, C373, HG12)', '',
   `- Hai nhóm learner cùng năng lực, kỹ năng chơi 0,95 so với 0,2, chơi có ép thời gian. Chênh lệch mastery trung bình: **${n2(gc.withEvaluator)}** với Evidence Evaluator (hết giờ ×0,3), so với **${n2(gc.naive)}** nếu coi hết giờ là sai đủ trọng số.`,
   `- Hai nhóm cùng năng lực, tốc độ 0,95 so với 0,05: chênh lệch mastery **${n2(sp)}** (tốc độ chỉ ghi lại, không vào trọng số).`, '',
+  '## 7. Độ nhạy trọng số của luật (C274)', '', 'Đổi một tham số, giữ nguyên các tham số khác (300 learner). Kết luận Đạt ổn định khi dương tính giả giữ ở 0% trong cả dải.', '',
+  '| Tham số | Giá trị | Dương tính giả | Âm tính giả |', '|---|---|---|---|',
+  ...sens.map(x => `| ${x.k} | ${String(x.v).replace('.', ',')}${(RULE as Record<string, unknown>)[x.k] === x.v ? ' (đang dùng)' : ''} | ${pct(x.fp)} | ${pct(x.fn)} |`), '',
   '## Giới hạn', '', '- Learner giả lập đơn giản hơn người thật (học và quên theo xác suất cố định).', '- Đồ thị tổng hợp nhỏ hơn đồ thị thật (1.005 nút).', '- Các con số trên là bằng chứng cho tính đúng của thuật toán và để so sánh giữa các phiên bản luật, không phải dự báo hiệu quả học.', '',
 ];
 writeFileSync(join(ROOT, 'docs/sim-report.md'), L.join('\n'));

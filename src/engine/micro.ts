@@ -9,17 +9,17 @@
 // Chống làm phiền (C166): mỗi nút tối đa một bí kíp mỗi ngày; trong lượt game, "offer" hoãn tới cuối lượt.
 
 import { stat, type MasteryStore } from './mastery.ts';
-import { misconceptions } from './ev/store.ts';
+import { misconceptions, fatigue } from './ev/store.ts';
 import type { EvStore } from './ev/types.ts';
 import type { Level } from './types.ts';
 
 export const MICRO_VER = 'micro-1';
 export const MICRO = { window: 6, repeat: 2, minN: 3, perDay: 1, checkN: 3 } as const;
-export type MicroAct = 'log' | 'probe' | 'offer' | 'now';
+export type MicroAct = 'log' | 'probe' | 'offer' | 'now' | 'rest';
 export interface MicroDecision { act: MicroAct; node: string; target: string; lv: Level; why: string; mis?: string; defer?: boolean }
 
 export const MICRO_VI: Record<MicroAct, string> = {
-  log: 'Ghi nhận, không ngắt', probe: 'Hỏi thêm trước khi dạy', offer: 'Mời bí kíp 60 giây', now: 'Học phần nền ngay',
+  log: 'Ghi nhận, không ngắt', rest: 'Đề nghị nghỉ một chút', probe: 'Hỏi thêm trước khi dạy', offer: 'Mời bí kíp 60 giây', now: 'Học phần nền ngay',
 };
 
 export interface MicroIn { ev: EvStore; m: MasteryStore; node: string; lv: Level; today: number; inGame?: boolean }
@@ -32,6 +32,8 @@ export function microDecide(x: MicroIn): MicroDecision {
   const doneToday = ev.led.some(e => e.src === 'micro' && e.day === today && (e.ch === `micro/${node}` || (hyp && e.ch === `micro/${hyp.cause}`)));
   if (doneToday) return { ...base, act: 'log', why: 'đã học bí kíp phần này hôm nay' };
   if (hyp) return { ...base, target: hyp.cause, act: 'now', why: 'đã kiểm chứng: thiếu phần nền' };
+  // v66 (C295): dấu hiệu mệt trong phiên (đúng giảm rõ, chậm dần) → đề nghị nghỉ thay vì dạy thêm; lỗi lúc này đã được tính nhẹ hơn.
+  if (fatigue(ev.obs, ev.obs[ev.obs.length - 1]?.sess)) return { ...base, act: 'rest', why: 'bạn đang mệt: đúng ít hơn và chậm hơn so với đầu phiên' };
   const recent = ev.led.filter(e => e.node === node && e.src !== 'micro').slice(-MICRO.window);
   const wrong = recent.filter(e => !e.ok).length;
   const mis = misconceptions(ev, node)[0];

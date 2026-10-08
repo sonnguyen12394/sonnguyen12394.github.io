@@ -133,7 +133,7 @@ export function init(host: EHost): EngineModule {
   function diagAnswer(ok: boolean, q: DiagRun['qs'][number]): void {
     if (!drun) return;
     const e = E();
-    ingest(e.ev, e.m, { node: drun.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'diag', src: 'diag', ch: 'diag' }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node: drun.node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: 'diag', src: 'diag', ch: 'diag' }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) drun.got++;
     drun.i++;
     if (drun.i >= drun.qs.length) {
@@ -156,7 +156,7 @@ export function init(host: EHost): EngineModule {
     if (!tout) return;
     const q = tout.qs[tout.i]!, e = E();
     // Bài kiểm tra có chủ đích ở mức cần: mỗi câu nặng gấp 4 câu luyện (đúng hết thì đủ bằng chứng để Đạt).
-    ingest(e.ev, e.m, { node: tout.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'testout', w: 4, src: 'testout', ch: `tout/${tout.node}` }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node: tout.node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: 'testout', w: 4, src: 'testout', ch: `tout/${tout.node}` }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) tout.got++;
     tout.i++;
     if (tout.i >= tout.qs.length) {
@@ -180,7 +180,7 @@ export function init(host: EHost): EngineModule {
   function probeAnswer(ok: boolean): void {
     if (!prun) return;
     const q = prun.qs[prun.i]!, e = E();
-    ingest(e.ev, e.m, { node: prun.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'probe', src: 'diag', ch: `probe/${prun.mode}` }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node: prun.node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: 'probe', src: 'diag', ch: `probe/${prun.mode}` }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) prun.got++;
     prun.i++;
     if (prun.i >= prun.qs.length) {
@@ -208,7 +208,7 @@ export function init(host: EHost): EngineModule {
   function xferAnswer(ok: boolean, given?: string): void {
     if (!xrun) return;
     const q = xrun.qs[xrun.i]!, e = E();
-    ingest(e.ev, e.m, { node: xrun.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'transfer', src: 'transfer', ch: `xfer/${xrun.node}`, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node: xrun.node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: 'transfer', src: 'transfer', ch: `xfer/${xrun.node}`, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) xrun.got++;
     xrun.i++;
     if (xrun.i >= xrun.qs.length) {
@@ -233,7 +233,7 @@ export function init(host: EHost): EngineModule {
     const r = mrun?.run;
     if (!mrun || !r) return;
     const q = r.qs[r.i]!, e = E();
-    ingest(e.ev, e.m, { node: mrun.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'micro', src: 'micro', hint: true, ch: `micro/${mrun.node}`, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node: mrun.node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: 'micro', src: 'micro', hint: true, ch: `micro/${mrun.node}`, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) r.got++;
     r.i++;
     if (r.i >= r.qs.length) {
@@ -303,7 +303,7 @@ export function init(host: EHost): EngineModule {
     if (!qrun || !qrun.q || qrun.ans) return;
     const ch = qrun.plan[qrun.i]!, q = qrun.q, e = E(), node = qcur.node || ch.node, novel = !seenHas(e.ev, node, q.id);
     if (qcur.gap) qrun.gaps.push(qcur.gap);
-    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: qx ? 'transfer' : ch.context, src: qx ? 'transfer' : 'game', ch: ch.id, gp: ch.gameplayDifficulty, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: qx ? 'transfer' : ch.context, src: qx ? 'transfer' : 'game', ch: ch.id, gp: ch.gameplayDifficulty, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     const coins = reward(ch, ok, novel), right = q.opts ? q.opts[q.ans ?? 0] ?? '' : q.accept?.[0] ?? '';
     qrun.ans = { ok, right, given, coins, novel }; qrun.coins += coins; qrun.n++;
     if (ok) qrun.ok++; else { qrun.hp--; qrun.wrong.push(node); }
@@ -353,7 +353,7 @@ export function init(host: EHost): EngineModule {
   function measureAnswer(ok: boolean): void {
     if (!mrunM) return;
     const r = mrunM.run, q = r.qs[r.i]!, e = E(), node = e.ms!.set.find(x => x.item === q.id)?.node ?? r.node;
-    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'measure', src: 'diag', ch: `measure/${mrunM.phase}` }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: 'measure', src: 'diag', ch: `measure/${mrunM.phase}` }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) r.got++;
     r.i++;
     if (r.i >= r.qs.length) {

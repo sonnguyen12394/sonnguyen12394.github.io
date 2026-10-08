@@ -1,6 +1,6 @@
 # Báo cáo mô phỏng learner
 
-Sinh bởi `npm run sim` (tools/sim/run.ts → src/engine/sim/sim.ts), luật `ev1.0/m3.1`, 2026-10-08.
+Sinh bởi `npm run sim` (tools/sim/run.ts → src/engine/sim/sim.ts), luật `ev1.0/m3.2`, 2026-10-08.
 
 > Learner ở đây là learner **giả lập** có trạng thái thật biết trước (biết/chưa biết, hiểu sai, quên, đoán mò, nhầm tay; kỹ năng chơi game và tốc độ độc lập với năng lực ngôn ngữ), chạy qua chính engine của app. Báo cáo này kiểm chứng **thuật toán** (tầng L2–L3 của Evaluation Framework). Nó **không** chứng minh người thật học được (L4–L5): việc đó cần dữ liệu người học thật.
 
@@ -60,6 +60,22 @@ Trung bình 20 learner, mục tiêu cấp 3 trên đồ thị tổng hợp 6 c�
 
 - Hai nhóm learner cùng năng lực, kỹ năng chơi 0,95 so với 0,2, chơi có ép thời gian. Chênh lệch mastery trung bình: **0,05** với Evidence Evaluator (hết giờ ×0,3), so với **0,12** nếu coi hết giờ là sai đủ trọng số.
 - Hai nhóm cùng năng lực, tốc độ 0,95 so với 0,05: chênh lệch mastery **0,00** (tốc độ chỉ ghi lại, không vào trọng số).
+
+## 7. Độ nhạy trọng số của luật (C274)
+
+Đổi một tham số, giữ nguyên các tham số khác (300 learner). Kết luận Đạt ổn định khi dương tính giả giữ ở 0% trong cả dải.
+
+| Tham số | Giá trị | Dương tính giả | Âm tính giả |
+|---|---|---|---|
+| slip | 0,05 | 0,0% | 20,6% |
+| slip | 0,1 (đang dùng) | 0,0% | 18,6% |
+| slip | 0,2 | 0,0% | 13,4% |
+| repeat | 0,3 | 0,0% | 18,6% |
+| repeat | 0,5 (đang dùng) | 0,0% | 18,6% |
+| repeat | 0,7 | 0,0% | 18,6% |
+| decay | 0,8 | 0,0% | 24,7% |
+| decay | 0,9 (đang dùng) | 0,0% | 18,6% |
+| decay | 1 | 0,0% | 15,5% |
 
 ## Giới hạn
 

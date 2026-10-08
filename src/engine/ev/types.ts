@@ -32,6 +32,7 @@ export interface Observation {
   diff?: number;         // độ khó ngôn ngữ của câu: −1 dễ hơn cấp nút, 0 đúng cấp, 1 khó hơn
   cv?: string;           // phiên bản nội dung của câu
   sess?: string;         // phiên học
+  text?: string;         // đề câu (v66): cùng một câu dưới id khác vẫn là câu đã gặp (phát hiện câu trùng, C242)
 }
 
 // L0 lưu kèm thời điểm và id.

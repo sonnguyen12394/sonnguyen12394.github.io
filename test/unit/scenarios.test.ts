@@ -61,7 +61,10 @@ test('S5 / MT5 / MT6 — sai liên tiếp cùng một kiểu: chưa Đạt, có 
 
 test('S6 / MT9 — luyện tốt nhưng thất bại ở câu mới: mâu thuẫn → hạ tin cậy, mở lại', () => {
   const E = S.newEngine();
+  // Luyện tốt trên vài câu quen (m3.2: Đạt cần đúng ở ≥ 2 câu khác nhau; một câu lặp qua nhiều ngày thì chưa Đạt).
   for (let i = 0; i < 25; i++) ingest(E.st, E.m, { node: 'u:t', level: 3, ok: true, item: 'u:t#same' }, { dev: 's', ts: i, day: 1 + i });
+  assert.equal(stat(E.m['u:t']![3]).pass, false, 'C180: một câu lặp không đủ để Đạt');
+  for (let i = 0; i < 3; i++) ingest(E.st, E.m, { node: 'u:t', level: 3, ok: true, item: `u:t#p${i}` }, { dev: 's', ts: 50 + i, day: 30 });
   assert.ok(S.passed(E, 'u:t', 3));
   for (let i = 0; i < 2; i++) ingest(E.st, E.m, { node: 'u:t', level: 3, ok: false, item: `u:t#new${i}`, ctx: 'transfer', src: 'transfer' }, { dev: 's', ts: 100 + i, day: 40 });
   const s = stat(E.m['u:t']![3]);
