@@ -1,0 +1,760 @@
+{
+ "answers": 473,
+ "sessions": 23,
+ "pageErrors": 0,
+ "stuck": [],
+ "diag": {
+  "probes": {
+   "probes": 28,
+   "head": "Chẩn đoán · 8 phần đã dò | Bạn đang ở đâu | A2 | từ vựng | A1 | ngữ pháp"
+  },
+  "rows": {
+   "n": 28,
+   "ok": 53.6,
+   "truthKnow": 0,
+   "pTrue": 0.411
+  }
+ },
+ "byRun": {
+  "diag": {
+   "n": 28,
+   "ok": 53.6,
+   "truthKnow": 0,
+   "pTrue": 0.411
+  },
+  "measure": {
+   "n": 48,
+   "ok": 60.4,
+   "truthKnow": 0,
+   "pTrue": 0.67
+  },
+  "quest": {
+   "n": 338,
+   "ok": 80.5,
+   "truthKnow": 32.5,
+   "pTrue": 0.766
+  },
+  "probe": {
+   "n": 59,
+   "ok": 66.1,
+   "truthKnow": 10.2,
+   "pTrue": 0.729
+  }
+ },
+ "byGame": {
+  "monster": {
+   "n": 243,
+   "ok": 83.5,
+   "truthKnow": 42.8,
+   "pTrue": 0.82
+  },
+  "scout": {
+   "n": 49,
+   "ok": 81.6,
+   "truthKnow": 2,
+   "pTrue": 0.72
+  },
+  "boss": {
+   "n": 46,
+   "ok": 63,
+   "truthKnow": 10.9,
+   "pTrue": 0.532
+  }
+ },
+ "byGap": {
+  "knowledge": {
+   "n": 62,
+   "ok": 64.5,
+   "truthKnow": 0,
+   "pTrue": 0.622
+  },
+  "transfer": {
+   "n": 46,
+   "ok": 63,
+   "truthKnow": 10.9,
+   "pTrue": 0.532
+  },
+  "recall": {
+   "n": 178,
+   "ok": 89.9,
+   "truthKnow": 56.7,
+   "pTrue": 0.888
+  },
+  "skill": {
+   "n": 3,
+   "ok": 100,
+   "truthKnow": 100,
+   "pTrue": 0.857
+  }
+ },
+ "novel": {
+  "n": 134,
+  "ok": 67.9,
+  "truthKnow": 5.2,
+  "pTrue": 0.607
+ },
+ "seen": {
+  "n": 204,
+  "ok": 88.7,
+  "truthKnow": 50.5,
+  "pTrue": 0.871
+ },
+ "repeatsItems": 59,
+ "distinctItems": 223,
+ "distinctNodes": 42,
+ "mastery": [
+  {
+   "day": 0,
+   "claimed": 79,
+   "tp": 16,
+   "fp": 63,
+   "fn": 0,
+   "inferredFp": 60,
+   "inferred": 540,
+   "fps": [
+    "u:a1-u10:0.64",
+    "u:a1-u11:0.652",
+    "u:a1-u14:0.457",
+    "u:a1-u17:0.458",
+    "u:a1-u18:0.697",
+    "u:a1-u19:0.596"
+   ],
+   "floor": 3,
+   "coins": 224
+  },
+  {
+   "day": 1,
+   "claimed": 78,
+   "tp": 17,
+   "fp": 61,
+   "fn": 0,
+   "inferredFp": 58,
+   "inferred": 539,
+   "fps": [
+    "u:a1-u14:0.457",
+    "u:a1-u17:0.458",
+    "u:a1-u18:0.697",
+    "u:a1-u19:0.586",
+    "u:a1-u2:0.612",
+    "u:a1-u20:0.619"
+   ],
+   "floor": 4,
+   "coins": 369
+  },
+  {
+   "day": 2,
+   "claimed": 77,
+   "tp": 16,
+   "fp": 61,
+   "fn": 0,
+   "inferredFp": 58,
+   "inferred": 538,
+   "fps": [
+    "u:a1-u14:0.457",
+    "u:a1-u17:0.458",
+    "u:a1-u18:0.697",
+    "u:a1-u19:0.58",
+    "u:a1-u2:0.612",
+    "u:a1-u20:0.619"
+   ],
+   "floor": 6,
+   "coins": 588
+  },
+  {
+   "day": 3,
+   "claimed": 76,
+   "tp": 15,
+   "fp": 61,
+   "fn": 0,
+   "inferredFp": 58,
+   "inferred": 537,
+   "fps": [
+    "u:a1-u14:0.499",
+    "u:a1-u17:0.458",
+    "u:a1-u18:0.697",
+    "u:a1-u19:0.576",
+    "u:a1-u2:0.612",
+    "u:a1-u20:0.619"
+   ],
+   "floor": 8,
+   "coins": 777
+  },
+  {
+   "day": 4,
+   "claimed": 75,
+   "tp": 15,
+   "fp": 60,
+   "fn": 0,
+   "inferredFp": 57,
+   "inferred": 536,
+   "fps": [
+    "u:a1-u17:0.458",
+    "u:a1-u18:0.697",
+    "u:a1-u19:0.574",
+    "u:a1-u2:0.612",
+    "u:a1-u20:0.619",
+    "u:a1-u21:0.562"
+   ],
+   "floor": 11,
+   "coins": 1021
+  },
+  {
+   "day": 5,
+   "claimed": 76,
+   "tp": 15,
+   "fp": 61,
+   "fn": 0,
+   "inferredFp": 57,
+   "inferred": 536,
+   "fps": [
+    "g:g-a1-03:0.59",
+    "u:a1-u17:0.458",
+    "u:a1-u18:0.697",
+    "u:a1-u19:0.573",
+    "u:a1-u2:0.612",
+    "u:a1-u20:0.619"
+   ],
+   "floor": 13,
+   "coins": 1155
+  },
+  {
+   "day": 6,
+   "claimed": 76,
+   "tp": 15,
+   "fp": 61,
+   "fn": 0,
+   "inferredFp": 57,
+   "inferred": 535,
+   "fps": [
+    "g:g-a1-03:0.571",
+    "u:a1-u17:0.458",
+    "u:a1-u18:0.697",
+    "u:a1-u19:0.572",
+    "u:a1-u2:0.612",
+    "u:a1-u20:0.619"
+   ],
+   "floor": 14,
+   "coins": 1296
+  },
+  {
+   "day": 7,
+   "claimed": 76,
+   "tp": 15,
+   "fp": 61,
+   "fn": 0,
+   "inferredFp": 57,
+   "inferred": 534,
+   "fps": [
+    "g:g-a1-03:0.554",
+    "u:a1-u17:0.5",
+    "u:a1-u18:0.697",
+    "u:a1-u19:0.571",
+    "u:a1-u2:0.612",
+    "u:a1-u20:0.619"
+   ],
+   "floor": 15,
+   "coins": 1437
+  },
+  {
+   "day": 8,
+   "claimed": 75,
+   "tp": 16,
+   "fp": 59,
+   "fn": 0,
+   "inferredFp": 55,
+   "inferred": 533,
+   "fps": [
+    "g:g-a1-03:0.539",
+    "u:a1-u19:0.571",
+    "u:a1-u2:0.612",
+    "u:a1-u20:0.619",
+    "u:a1-u21:0.562",
+    "u:a1-u22:0.482"
+   ],
+   "floor": 17,
+   "coins": 1545
+  },
+  {
+   "day": 9,
+   "claimed": 75,
+   "tp": 17,
+   "fp": 58,
+   "fn": 0,
+   "inferredFp": 54,
+   "inferred": 532,
+   "fps": [
+    "g:g-a1-03:0.526",
+    "u:a1-u19:0.571",
+    "u:a1-u20:0.619",
+    "u:a1-u21:0.562",
+    "u:a1-u22:0.482",
+    "u:a1-u23:0.475"
+   ],
+   "floor": 19,
+   "coins": 1670
+  },
+  {
+   "day": 10,
+   "claimed": 74,
+   "tp": 16,
+   "fp": 58,
+   "fn": 0,
+   "inferredFp": 54,
+   "inferred": 531,
+   "fps": [
+    "g:g-a1-03:0.515",
+    "u:a1-u19:0.571",
+    "u:a1-u20:0.663",
+    "u:a1-u21:0.562",
+    "u:a1-u22:0.482",
+    "u:a1-u23:0.475"
+   ],
+   "floor": 22,
+   "coins": 1908
+  },
+  {
+   "day": 11,
+   "claimed": 73,
+   "tp": 16,
+   "fp": 57,
+   "fn": 0,
+   "inferredFp": 53,
+   "inferred": 530,
+   "fps": [
+    "g:g-a1-03:0.504",
+    "u:a1-u19:0.571",
+    "u:a1-u21:0.698",
+    "u:a1-u22:0.482",
+    "u:a1-u23:0.475",
+    "u:a1-u24:0.655"
+   ],
+   "floor": 24,
+   "coins": 2061
+  },
+  {
+   "day": 12,
+   "claimed": 72,
+   "tp": 16,
+   "fp": 56,
+   "fn": 0,
+   "inferredFp": 52,
+   "inferred": 529,
+   "fps": [
+    "g:g-a1-03:0.495",
+    "u:a1-u19:0.571",
+    "u:a1-u22:0.642",
+    "u:a1-u23:0.475",
+    "u:a1-u24:0.655",
+    "u:a1-u25:0.563"
+   ],
+   "floor": 26,
+   "coins": 2191
+  },
+  {
+   "day": 13,
+   "claimed": 73,
+   "tp": 18,
+   "fp": 55,
+   "fn": 0,
+   "inferredFp": 51,
+   "inferred": 529,
+   "fps": [
+    "g:g-a1-03:0.487",
+    "u:a1-u19:0.571",
+    "u:a1-u23:0.475",
+    "u:a1-u24:0.655",
+    "u:a1-u25:0.563",
+    "u:a1-u27:0.454"
+   ],
+   "floor": 28,
+   "coins": 2370
+  },
+  {
+   "day": 14,
+   "claimed": 71,
+   "tp": 17,
+   "fp": 54,
+   "fn": 0,
+   "inferredFp": 52,
+   "inferred": 529,
+   "fps": [
+    "g:g-a1-03:0.48",
+    "u:a1-u22:0.686",
+    "u:a1-u23:0.475",
+    "u:a1-u24:0.655",
+    "u:a1-u25:0.563",
+    "u:a1-u27:0.454"
+   ],
+   "floor": 30,
+   "coins": 2520
+  },
+  {
+   "day": 15,
+   "claimed": 70,
+   "tp": 17,
+   "fp": 53,
+   "fn": 0,
+   "inferredFp": 51,
+   "inferred": 528,
+   "fps": [
+    "g:g-a1-03:0.474",
+    "u:a1-u23:0.516",
+    "u:a1-u24:0.655",
+    "u:a1-u25:0.563",
+    "u:a1-u27:0.454",
+    "u:a1-u28:0.602"
+   ],
+   "floor": 32,
+   "coins": 2673
+  },
+  {
+   "day": 17,
+   "claimed": 70,
+   "tp": 17,
+   "fp": 53,
+   "fn": 0,
+   "inferredFp": 50,
+   "inferred": 527,
+   "fps": [
+    "g:g-a1-03:0.464",
+    "u:a1-u23:0.627",
+    "u:a1-u24:0.695",
+    "u:a1-u25:0.563",
+    "u:a1-u27:0.454",
+    "u:a1-u28:0.602"
+   ],
+   "floor": 35,
+   "coins": 2948
+  },
+  {
+   "day": 19,
+   "claimed": 69,
+   "tp": 17,
+   "fp": 52,
+   "fn": 0,
+   "inferredFp": 49,
+   "inferred": 526,
+   "fps": [
+    "g:g-a1-03:0.456",
+    "u:a1-u23:0.567",
+    "u:a1-u25:0.698",
+    "u:a1-u27:0.454",
+    "u:a1-u28:0.602",
+    "u:a1-u29:0.615"
+   ],
+   "floor": 37,
+   "coins": 3066
+  },
+  {
+   "day": 21,
+   "claimed": 71,
+   "tp": 18,
+   "fp": 53,
+   "fn": 0,
+   "inferredFp": 49,
+   "inferred": 526,
+   "fps": [
+    "g:g-a1-03:0.45",
+    "u:a1-u23:0.531",
+    "u:a1-u25:0.645",
+    "u:a1-u27:0.454",
+    "u:a1-u28:0.602",
+    "u:a1-u29:0.615"
+   ],
+   "floor": 39,
+   "coins": 3289
+  },
+  {
+   "day": 24,
+   "claimed": 71,
+   "tp": 17,
+   "fp": 54,
+   "fn": 0,
+   "inferredFp": 49,
+   "inferred": 526,
+   "fps": [
+    "g:g-a1-03:0.443",
+    "u:a1-u18:0.699",
+    "u:a1-u23:0.501",
+    "u:a1-u25:0.601",
+    "u:a1-u27:0.454",
+    "u:a1-u28:0.602"
+   ],
+   "floor": 41,
+   "coins": 3439
+  },
+  {
+   "day": 28,
+   "claimed": 71,
+   "tp": 17,
+   "fp": 54,
+   "fn": 0,
+   "inferredFp": 49,
+   "inferred": 526,
+   "fps": [
+    "g:g-a1-03:0.437",
+    "u:a1-u18:0.698",
+    "u:a1-u23:0.485",
+    "u:a1-u25:0.61",
+    "u:a1-u27:0.454",
+    "u:a1-u28:0.602"
+   ],
+   "floor": 43,
+   "coins": 3559
+  },
+  {
+   "day": 35,
+   "claimed": 70,
+   "tp": 17,
+   "fp": 53,
+   "fn": 0,
+   "inferredFp": 48,
+   "inferred": 525,
+   "fps": [
+    "g:g-a1-03:0.431",
+    "u:a1-u18:0.697",
+    "u:a1-u23:0.477",
+    "u:a1-u27:0.497",
+    "u:a1-u28:0.602",
+    "u:a1-u29:0.615"
+   ],
+   "floor": 45,
+   "coins": 3819
+  },
+  {
+   "day": 44,
+   "claimed": 70,
+   "tp": 17,
+   "fp": 53,
+   "fn": 0,
+   "inferredFp": 48,
+   "inferred": 525,
+   "fps": [
+    "g:g-a1-03:0.429",
+    "u:a1-u18:0.697",
+    "u:a1-u23:0.475",
+    "u:a1-u27:0.501",
+    "u:a1-u28:0.602",
+    "u:a1-u29:0.615"
+   ],
+   "floor": 47,
+   "coins": 3980
+  }
+ ],
+ "reopened": 13,
+ "truthMean": {
+  "first": 0.16,
+  "last": 0.167,
+  "nodes": 566
+ },
+ "measure": [
+  {
+   "phase": "pre",
+   "day": 20734,
+   "got": 6,
+   "of": 12,
+   "mins": 8
+  },
+  {
+   "phase": "post",
+   "day": 20748,
+   "got": 7,
+   "of": 12,
+   "mins": 60
+  },
+  {
+   "phase": "d7",
+   "day": 20755,
+   "got": 7,
+   "of": 12,
+   "mins": 76
+  },
+  {
+   "phase": "d30",
+   "day": 20778,
+   "got": 9,
+   "of": 12,
+   "mins": 92
+  }
+ ],
+ "todayActions": [
+  "1:probe/u:a1-u10/3/confirm",
+  "2:probe/u:a1-u11/3/confirm",
+  "3:probe/u:a1-u13/3/confirm",
+  "4:probe/u:a1-u14/3/confirm",
+  "5:probe/g:g-a1-03/4/boundary",
+  "6:probe/u:a1-u15/3/confirm",
+  "7:probe/u:a1-u16/3/confirm",
+  "8:probe/u:a1-u17/3/confirm",
+  "9:probe/u:a1-u18/3/confirm",
+  "10:probe/u:a1-u2/3/confirm",
+  "11:probe/u:a1-u20/3/confirm",
+  "12:probe/u:a1-u21/3/confirm",
+  "13:probe/g:g-a1-16/4/boundary",
+  "15:probe/u:a1-u22/3/confirm",
+  "17:probe/u:a1-u23/3/confirm",
+  "19:probe/u:a1-u24/3/confirm",
+  "24:probe/u:a1-u32/3/boundary",
+  "28:probe/u:a1-u59/3/boundary",
+  "35:probe/u:a1-u25/3/confirm"
+ ],
+ "camps": 48,
+ "hyp": 0,
+ "decisions": {
+  "quest:win": 46,
+  "FAIL": 37,
+  "PASS": 31,
+  "probe:confirm": 15,
+  "NOT_READY": 5,
+  "probe:boundary": 4,
+  "CHOSEN": 3,
+  "quest:lose": 3,
+  "goal:AUTO": 1,
+  "u=1;g=0": 1,
+  "measure:pre": 1,
+  "measure:post": 1,
+  "measure:d7": 1,
+  "REOPEN": 1,
+  "measure:d30": 1
+ },
+ "targeting": [
+  {
+   "day": 0,
+   "n": 14,
+   "unknownShare": 100,
+   "ok": 78.6
+  },
+  {
+   "day": 1,
+   "n": 11,
+   "unknownShare": 100,
+   "ok": 54.5
+  },
+  {
+   "day": 2,
+   "n": 14,
+   "unknownShare": 100,
+   "ok": 64.3
+  },
+  {
+   "day": 3,
+   "n": 14,
+   "unknownShare": 100,
+   "ok": 78.6
+  },
+  {
+   "day": 4,
+   "n": 21,
+   "unknownShare": 100,
+   "ok": 81
+  },
+  {
+   "day": 5,
+   "n": 14,
+   "unknownShare": 100,
+   "ok": 71.4
+  },
+  {
+   "day": 6,
+   "n": 13,
+   "unknownShare": 92.3,
+   "ok": 61.5
+  },
+  {
+   "day": 7,
+   "n": 13,
+   "unknownShare": 92.3,
+   "ok": 61.5
+  },
+  {
+   "day": 8,
+   "n": 14,
+   "unknownShare": 100,
+   "ok": 71.4
+  },
+  {
+   "day": 9,
+   "n": 14,
+   "unknownShare": 100,
+   "ok": 64.3
+  },
+  {
+   "day": 10,
+   "n": 21,
+   "unknownShare": 66.7,
+   "ok": 95.2
+  },
+  {
+   "day": 11,
+   "n": 14,
+   "unknownShare": 50,
+   "ok": 85.7
+  },
+  {
+   "day": 12,
+   "n": 14,
+   "unknownShare": 42.9,
+   "ok": 85.7
+  },
+  {
+   "day": 13,
+   "n": 14,
+   "unknownShare": 50,
+   "ok": 85.7
+  },
+  {
+   "day": 14,
+   "n": 14,
+   "unknownShare": 42.9,
+   "ok": 85.7
+  },
+  {
+   "day": 15,
+   "n": 14,
+   "unknownShare": 42.9,
+   "ok": 92.9
+  },
+  {
+   "day": 17,
+   "n": 21,
+   "unknownShare": 38.1,
+   "ok": 90.5
+  },
+  {
+   "day": 19,
+   "n": 14,
+   "unknownShare": 42.9,
+   "ok": 78.6
+  },
+  {
+   "day": 21,
+   "n": 14,
+   "unknownShare": 35.7,
+   "ok": 92.9
+  },
+  {
+   "day": 24,
+   "n": 14,
+   "unknownShare": 35.7,
+   "ok": 78.6
+  },
+  {
+   "day": 28,
+   "n": 14,
+   "unknownShare": 42.9,
+   "ok": 85.7
+  },
+  {
+   "day": 35,
+   "n": 14,
+   "unknownShare": 42.9,
+   "ok": 100
+  },
+  {
+   "day": 44,
+   "n": 14,
+   "unknownShare": 42.9,
+   "ok": 85.7
+  }
+ ]
+}

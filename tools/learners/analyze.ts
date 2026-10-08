@@ -7,7 +7,7 @@ import { stat, type MasteryStore } from '../../src/engine/mastery.ts';
 import { defaultLevel } from '../../src/engine/graph.ts';
 import type { Node } from '../../src/engine/types.ts';
 
-const DIR = process.argv[2] ?? 'reports/learners/L01';
+const DIR = process.argv[2] ?? 'reports/learners/L01';   // cần ends.json + state.json (không commit: lớn), chạy l01.ts trước
 const J = (f: string) => JSON.parse(readFileSync(join(DIR, f), 'utf8'));
 const rows = J('rows.json') as { day: number; sess: string; run: string; game?: string; gap?: string; node: string; level: number; item: string; novel: boolean; opts: number; pTrue: number; trueKnow: boolean; ok: boolean; dunno: boolean; appState?: string }[];
 const ends = J('ends.json') as { day: number; sess: string; m: MasteryStore; truth: Record<string, number>; snaps: number; q: { floor: number; coins: number; runs: number; wins: number } }[];
