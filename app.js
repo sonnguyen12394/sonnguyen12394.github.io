@@ -5072,7 +5072,7 @@ document.addEventListener('click',e=>{
     case 'classshare': return shareText(`${APP_NAME}: ${TAGLINE}. Cả lớp mình dùng app này để học từ vựng và ngữ pháp, mọi bài học miễn phí, không cần tài khoản.`,'class');
     case 'chcopy': { const c=ui.game&&ui.game.code; try{ navigator.clipboard.writeText(c).then(()=>toast('Đã sao chép mã thách đấu.'),()=>toast('Hãy chọn và sao chép mã trong ô.')); }catch(e){ toast('Hãy chọn và sao chép mã trong ô.'); } return; }
   }
-  if(d.go){ ui.sess=null; ui.gs=null; if(d.go==='review') return go('review'); return go(d.go); }
+  if(d.go){ ui.sess=null; ui.gs=null; if(d.go==='review') return go('review'); if(d.go==='goal') return go('goal',{er:'goals'}); return go(d.go); }   // Mục tiêu luôn mở danh sách mục tiêu, không mở lại màn engine cũ
   if(d.unit){ ui.sess=null; return go('unit',{unitId:d.unit}); }
   if(d.word) return go('word',{wordId:d.word});
   if(d.snd) return startSound(d.snd);
