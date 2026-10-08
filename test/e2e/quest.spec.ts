@@ -44,7 +44,7 @@ test('Ladder Quest: vào từ Thử thách, leo một tầng, câu trả lời t
   expect(errors).toEqual([]);
 });
 
-test('v69 (bot L01): phần chưa biết được dạy trước (thẻ mới); trại có 1 câu thử ngay sau bí kíp; sai có một dòng "vì sao"', async ({ page, errors }) => {
+test('v69–v70: phần chưa có bằng chứng được hỏi thử trước (không dạy thứ có thể đã biết); trại có 1 câu thử ngay sau bí kíp; sai có một dòng "vì sao"', async ({ page, errors }) => {
   await page.goto('/');
   await page.waitForFunction(() => (window as any).ELREADY === true);
   await page.evaluate(() => {
@@ -70,11 +70,12 @@ test('v69 (bot L01): phần chưa biết được dạy trước (thẻ mới); 
     else { await page.locator('input[name="a"]').fill(pk.accept[0]); await page.locator('input[name="a"]').press('Enter'); }
   }
   await expect(end).toBeVisible();
-  expect(taught).toBeGreaterThan(0);
+  expect(taught).toBe(0);   // v70 (bot L02): chưa có bằng chứng ≠ chưa biết → hỏi thử trước; thẻ dạy chỉ khi đã sai / đang hiểu sai
   expect(checked).toBe(1);
   expect(why).toBeGreaterThan(0);
   const e = await page.evaluate(() => (window as any).eval('st').e);
   expect(e.ev.led.some((x: any) => x.src === 'micro' && x.ctx === 'micro' && x.asst === 1)).toBe(true);   // câu thử sau trại: có trợ giúp
   expect(e.ev.snap.some((s: any) => String(s.dec).startsWith('micro:') && s.info?.from === 'quest-camp')).toBe(true);
+  expect(e.ev.snap.find((s: any) => String(s.dec).startsWith('quest:')).info.gaps).toContain('unproven');
   expect(errors).toEqual([]);
 });
