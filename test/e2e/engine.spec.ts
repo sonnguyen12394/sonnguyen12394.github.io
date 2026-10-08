@@ -89,8 +89,8 @@ test('lộ trình: trang Học hiện bước tiếp theo của engine, lộ tr�
   await page.getByRole('button', { name: /^VSTEP/ }).click();
   await page.getByRole('button', { name: 'Chọn VSTEP Bậc 3 (B1)' }).click();
   await expect(page.getByRole('heading', { name: 'VSTEP Bậc 3 (B1)', level: 1 })).toBeVisible();
-  await navTo(page, 'Học');
-  await expect(page.getByText(/^Bước tiếp theo: /)).toBeVisible();
+  const next = page.getByText(/^Bước tiếp theo: /);   // bấm lại nếu cú bấm rơi vào lúc màn vẽ lại (WebKit)
+  await expect(async () => { if (!(await next.isVisible())) await navTo(page, 'Học'); await expect(next).toBeVisible({ timeout: 3000 }); }).toPass({ timeout: 20000 });
   await expect(page.getByText(/Cần cho VSTEP Bậc 3 \(B1\)/)).toBeVisible();
   await page.getByRole('button', { name: 'Lộ trình hôm nay' }).click();
   await expect(page.getByRole('heading', { name: 'Hôm nay học gì', level: 1 })).toBeVisible();
