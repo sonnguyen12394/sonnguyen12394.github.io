@@ -318,7 +318,9 @@ export function init(host: EHost): EngineModule {
     // khi đã có bằng chứng là chưa biết (sai, chưa lần nào đúng tự lực ở mức nhận ra) hoặc đang hiểu sai. Mỗi nút tối đa một lần mỗi ngày,
     // vì câu ngay sau thẻ là bằng chứng có trợ giúp.
     const today = host.today(), led = E().ev.led.filter(x => x.node === qcur.node);
-    const notKnown = qcur.gap === 'knowledge' && led.some(x => !x.ok) && !led.some(x => x.ok && !x.asst && x.lv <= 2);
+    // Hoặc sai lặp lại gần đây (≥ 2 trong 3 lượt cuối) ở nút đang học: giải thích rõ lại thay vì để người học đoán tiếp (W02-03).
+    const last3 = led.slice(-3), repeated = last3.length >= 2 && last3.filter(x => !x.ok).length >= 2;
+    const notKnown = (qcur.gap === 'knowledge' && led.some(x => !x.ok) && !led.some(x => x.ok && !x.asst && x.lv <= 2)) || repeated;
     if (it.q && (notKnown || qcur.gap === 'misconception') && !qrun.taught.includes(qcur.node) && !led.some(x => x.day === today && x.asst)) {
       const mc = host.micro?.(qcur.node);
       if (mc) { qrun.card = mc.card; qrun.teach = true; qrun.taught.push(qcur.node); }

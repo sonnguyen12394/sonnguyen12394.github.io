@@ -107,7 +107,10 @@ const eff = {
 
 // 8. Tiến bộ thật / giả.
 const practiced = [...new Set(rows.filter(r => r.run !== 'diag' && r.run !== 'measure').map(r => r.node))];
-const t0 = (n: string) => { for (const e of ends) if (e.truth[n] != null) return e.truth[n]!; return 0; };
+// Kỹ năng ban đầu = tiên nghiệm ẩn của bot (trước mọi lượt học); trước đây lấy kỹ năng ở cuối phiên đầu tiên có nút → đã gồm phần học
+// trong phiên đó, làm "mức tăng" bị đánh giá thấp (báo cáo L02 v69 sửa lại).
+const P0 = new Map(state.mind.map(x => [x.n, x.p]));
+const t0 = (n: string) => P0.get(n) ?? 0;
 const half = (xs: Row[]) => { const h = Math.floor(xs.length / 2); return [xs.slice(0, h), xs.slice(h)] as const; };
 const [qa, qb] = half(quest.filter(natural));
 const acc = (xs: Row[]) => pct(xs.filter(r => r.ok).length, xs.length);
