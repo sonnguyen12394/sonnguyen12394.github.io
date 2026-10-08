@@ -291,6 +291,7 @@ export function init(host: EHost): EngineModule {
 
   // ---------- Đo hiệu quả học (v63) ----------
   // Bộ 12 câu giữ riêng cho mục tiêu đầu tiên đang mở; đo trước / sau / trễ 7 và 30 ngày; không hiện đáp án khi đo.
+  // Cùng mã câu cho mọi lần đo: chỉ lần đầu là "câu mới" (lần sau không được tính thêm bằng chứng câu mới).
   let mrunM: { phase: Phase; run: ToutRun } | null = null;
   const studyMins = (): number => Math.round((E().ev.seq * 12) / 60);   // ước tính: ≈ 12 giây mỗi câu đã trả lời
   function measureStart(): void {
@@ -313,7 +314,7 @@ export function init(host: EHost): EngineModule {
   function measureAnswer(ok: boolean): void {
     if (!mrunM) return;
     const r = mrunM.run, q = r.qs[r.i]!, e = E(), node = e.ms!.set.find(x => x.item === q.id)?.node ?? r.node;
-    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: `${q.id}#${mrunM.phase}`, qt: q.opts ? 'mcq' : 'typed', ctx: 'measure', src: 'diag', ch: `measure/${mrunM.phase}` }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'measure', src: 'diag', ch: `measure/${mrunM.phase}` }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) r.got++;
     r.i++;
     if (r.i >= r.qs.length) {
