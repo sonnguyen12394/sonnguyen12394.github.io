@@ -11,7 +11,16 @@ import { LEVEL_VI } from './types.ts';
 import { readinessOf, readyChip } from './readyview.ts';
 import type { Index } from './graph.ts';
 import { addSnap } from './ev/snapshot.ts';
+import { nextProbe as pickProbe, MODE_VI, type Mode, type ProbeCand } from './probe.ts';
 import { RULE_ID } from './ev/evaluate.ts';
+
+// Chẩn đoán liên tục (v58): câu dò có giá trị thông tin cao nhất cho mục tiêu đang mở, trong ngân sách hôm nay.
+const PROBEABLE = (id: string): boolean => id.startsWith('u:') || id.startsWith('g:');
+export function probeFor(host: EHost, e: EState, ix: Index, p: PathOut): ProbeCand | null {
+  if (!p.all) return null;
+  const used = e.ev.pb.day === host.today() ? e.ev.pb.n : 0;
+  return pickProbe({ ix, m: e.m, need: p.all, open: new Set(p.open.map(x => x.node)), probeable: PROBEABLE }, used);
+}
 
 // L4: bước tiếp theo được chọn → snapshot kèm 3 ứng viên đầu và điểm ưu tiên (HG30, HF10). Bỏ trùng khi lựa chọn không đổi.
 export const NBA_RULE = 'nba-path-1';
@@ -30,7 +39,8 @@ export interface DayInfo { reviewItems: number; reviewMins: number; mins: number
 
 export function computePath(host: EHost, e: EState, ix: Index): PathOut {
   const goals = e.goals.map(s => ({ goal: ix.goal.get(s.id)!, date: s.date })).filter(g => !!g.goal);
-  return plan(ix, goals, host.today(), (node, level) => nodeStat(host, e, node, level).pass);
+  const boost = new Map(Object.values(e.ev?.hyp ?? {}).map(h => [h.cause, 3] as [string, number]));   // nguyên nhân gốc đã kiểm chứng: học trước
+  return plan(ix, goals, host.today(), (node, level) => nodeStat(host, e, node, level).pass, boost);
 }
 
 export function computeSession(host: EHost, e: EState, ix: Index, p: PathOut, day: DayInfo): Session {
@@ -60,11 +70,13 @@ export function viewToday(c: ECtx, day: DayInfo): string {
     <p class="muted">Còn ${p.unmet.length}/${p.total} năng lực chưa đạt (≈ ${Math.max(1, Math.round(p.minutes / 60))} giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.${e.diag ? '' : ' Chưa làm bài chẩn đoán: lộ trình có thể gồm cả thứ bạn đã biết.'}</p>
     <div class="row" style="gap:6px">${e.goals.map(sg => { const g = ix.goal.get(sg.id); return g ? `<button class="btn ghost small" data-e="go" data-r="goal/${esc(g.id)}">${esc(g.vi)}</button>${readyChip(readinessOf(host, e, g))}` : ''; }).join('')}</div>
     ${e.diag ? '' : '<div class="row"><button class="btn small" data-e="go" data-r="diag">Làm bài chẩn đoán</button></div>'}</section>`;
+  const pc = probeFor(host, e, ix, p);
+  const probe = pc ? `<section class="panel stack"><span class="eyebrow">Kiểm tra nhanh · 3 câu · không tốn năng lượng</span><div><b>${esc(ix.node.get(pc.node)?.vi ?? pc.node)}</b><br><span class="hint">${esc(MODE_VI[pc.mode])}${pc.for ? ` (vì ${esc(ix.node.get(pc.for)?.vi ?? pc.for)})` : ''}</span></div><div class="row"><button class="btn small" data-e="go" data-r="probe/${esc(pc.node)}/${pc.level}/${pc.mode}${pc.for ? '/' + esc(pc.for) : ''}">Làm ngay</button></div></section>` : '';
   const review = s.review > 0 ? `<section class="panel stack"><span class="eyebrow">Ôn duy trì</span><div><b>${day.reviewItems} mục đến hạn ôn</b><br><span class="hint">Những gì đã đạt nhưng sắp quên · ≈ ${s.review} phút</span></div><div class="row"><button class="btn primary small" data-act="review">Ôn ngay</button></div></section>` : '';
   const perf = s.perf ? itemHtml(host, ix, s.perf, 'Bài làm thật trong tuần') : '';
   const items = s.items.map((it, i) => itemHtml(host, ix, it, i === 0 ? 'Bước tiếp theo' : '')).join('');
   const done = !p.unmet.length ? '<section class="panel stack"><h3>Đã đạt mọi năng lực của mục tiêu</h3><p class="muted">Tiếp tục ôn duy trì. Với kỳ thi, mục tiêu chỉ được xác nhận bằng điểm thi thật.</p></section>' : '';
-  return `${head}${review}${perf}${items}${done}<div class="row"><button class="btn ghost" data-e="go" data-r="goals">Mục tiêu của bạn</button></div>`;
+  return `${head}${probe}${review}${perf}${items}${done}<div class="row"><button class="btn ghost" data-e="go" data-r="goals">Mục tiêu của bạn</button></div>`;
 }
 
 // Nút chính trang chủ (thay "unit kế tiếp" của khoá học cũ). null = chưa sẵn sàng / chưa có mục tiêu → app dùng cách cũ.
@@ -82,7 +94,7 @@ export function nextStep(host: EHost, e: EState, ix: Index): { h: string; p: str
   };
 }
 
-export interface ToutRun { node: string; qs: ReturnType<EHost['probe']>; i: number; got: number }
+export interface ToutRun { node: string; qs: ReturnType<EHost['probe']>; i: number; got: number; mode?: Mode; for?: string; eig?: number }
 export function viewTout(c: ECtx, run: ToutRun | null, result: { node: string; pass: boolean } | null): string {
   const { host } = c, esc = host.esc, ix = loaded()!;
   if (result) {
@@ -92,9 +104,20 @@ export function viewTout(c: ECtx, run: ToutRun | null, result: { node: string; p
       <div class="row"><button class="btn primary" data-e="go" data-r="today">Về lộ trình hôm nay</button></div>`;
   }
   if (!run) return `<p class="muted">Không có câu kiểm tra cho phần này.</p><div class="row"><button class="btn" data-e="go" data-r="today">Về lộ trình</button></div>`;
-  const q = run.qs[run.i]!, n = ix.node.get(run.node)!;
+  const q = run.qs[run.i]!, n = ix.node.get(run.node)!, act = run.mode ? 'pans' : 'tans', form = run.mode ? 'ptyped' : 'ttyped';
   const body = q.opts
-    ? `<div class="stack" style="gap:8px">${q.opts.map((o, i) => `<button class="btn" style="justify-content:flex-start" data-e="tans" data-i="${i}">${esc(o)}</button>`).join('')}<button class="btn ghost" data-e="tans" data-i="-1">Không biết</button></div>`
-    : `<form class="stack" data-eform="ttyped"><input class="field" name="a" autocomplete="off" autocapitalize="off" spellcheck="false" lang="en" aria-label="Câu trả lời"><div class="row"><button class="btn primary">Trả lời</button><button class="btn ghost" type="button" data-e="tans" data-i="-1">Không biết</button></div></form>`;
-  return `<section class="stack"><span class="eyebrow">Kiểm tra để bỏ qua · ${esc(n.vi)} · câu ${run.i + 1}/${run.qs.length}</span><h2 style="font-size:20px">${esc(q.prompt)}</h2></section>${body}`;
+    ? `<div class="stack" style="gap:8px">${q.opts.map((o, i) => `<button class="btn" style="justify-content:flex-start" data-e="${act}" data-i="${i}">${esc(o)}</button>`).join('')}<button class="btn ghost" data-e="${act}" data-i="-1">Không biết</button></div>`
+    : `<form class="stack" data-eform="${form}"><input class="field" name="a" autocomplete="off" autocapitalize="off" spellcheck="false" lang="en" aria-label="Câu trả lời"><div class="row"><button class="btn primary">Trả lời</button><button class="btn ghost" type="button" data-e="${act}" data-i="-1">Không biết</button></div></form>`;
+  return `<section class="stack"><span class="eyebrow">${run.mode ? 'Kiểm tra nhanh' : 'Kiểm tra để bỏ qua'} · ${esc(n.vi)} · câu ${run.i + 1}/${run.qs.length}</span>${run.mode ? `<p class="hint">${esc(MODE_VI[run.mode])}</p>` : ''}<h2 style="font-size:20px">${esc(q.prompt)}</h2></section>${body}`;
+}
+
+// Kết quả kiểm tra nhanh (chẩn đoán liên tục).
+export function viewProbeDone(c: ECtx, r: { node: string; verdict: string; mode: Mode; for?: string }): string {
+  const { host } = c, esc = host.esc, ix = loaded()!, vi = (id: string) => esc(ix.node.get(id)?.vi ?? id);
+  const msg = r.mode === 'root' && r.for
+    ? r.verdict === 'gap' ? `Đã tìm ra nguyên nhân: phần nền <b>${vi(r.node)}</b> còn yếu, nên <b>${vi(r.for)}</b> mới hay sai. Lộ trình sẽ đưa phần nền lên trước.`
+      : r.verdict === 'ok' ? `Phần nền <b>${vi(r.node)}</b> ổn: lỗi ở <b>${vi(r.for)}</b> không do thiếu nền. App sẽ dạy thẳng phần đó.` : 'Chưa rõ: app sẽ dò thêm trong lúc bạn học.'
+    : r.verdict === 'ok' ? `Bạn làm tốt <b>${vi(r.node)}</b>: bằng chứng đã được ghi.` : r.verdict === 'gap' ? `<b>${vi(r.node)}</b> còn hổng: lộ trình sẽ đưa phần này vào.` : 'Đã ghi nhận; app sẽ kiểm lại sau.';
+  return `<section class="stack"><span class="eyebrow">Kiểm tra nhanh xong</span><h1>Đã cập nhật bản đồ năng lực</h1><p>${msg}</p></section>
+    <div class="row"><button class="btn primary" data-e="go" data-r="today">Về lộ trình hôm nay</button><button class="btn ghost" data-e="go" data-r="why/${esc(r.for ?? r.node)}">Vì sao?</button></div>`;
 }

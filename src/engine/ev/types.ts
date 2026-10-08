@@ -95,6 +95,9 @@ export interface Dispute { bad: number; ok: number; on: 0 | 1; day: number }
 // Một câu trả lời sai lặp lại ở cùng nút (phương án nhiễu / chữ gõ giống nhau).
 export interface Mis { t: string; n: number; d: number }
 
+// Nguyên nhân gốc đã kiểm chứng: nút `cause` (tiền đề cứng) trượt câu dò khi nút này sai lặp lại.
+export interface Hyp { kind: 'prereq'; cause: string; day: number }
+
 export interface Integrity { err: number; last: string; fixed: number }
 
 export interface EvStore {
@@ -109,6 +112,8 @@ export interface EvStore {
   snap: Snapshot[];                            // L4 Decision Snapshot
   dis: Record<string, Dispute>;                // "nút|mức" → bằng chứng mâu thuẫn với kết luận Đạt (model disagreement)
   mis: Record<string, Record<string, Mis>>;    // nút → mã câu trả lời sai → số lần (giả thuyết hiểu sai)
+  hyp: Record<string, Hyp>;                    // nút → giả thuyết nguyên nhân gốc đã kiểm chứng bằng câu dò (v58)
+  pb: { day: number; n: number };              // số lượt dò chẩn đoán liên tục trong ngày (ngân sách §38)
   sseq?: number;
 }
 

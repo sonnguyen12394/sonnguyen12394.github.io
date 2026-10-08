@@ -114,6 +114,12 @@ export function sanitizeEv(raw: unknown): EvStore {
     }
     if (Object.keys(m).length) out.mis[n] = m;
   }
+  for (const [n, v] of Object.entries(obj(x.hyp))) {
+    const h = obj(v), cause = str(h.cause);
+    if (NODE.test(n) && cause && NODE.test(cause)) out.hyp[n] = { kind: 'prereq', cause, day: Math.round(num(h.day, 0, 1e6, 0)) };
+  }
+  const pb = obj(x.pb);
+  out.pb = { day: Math.round(num(pb.day, 0, 1e6, 0)), n: Math.round(num(pb.n, 0, 1000, 0)) };
   const ig = obj(x.integ);
   out.integ = { err: Math.round(num(ig.err, 0, 1e9, 0)), last: str(ig.last, 200) ?? '', fixed: Math.round(num(ig.fixed, 0, 1e9, 0)) };
   return out;
