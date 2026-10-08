@@ -302,7 +302,7 @@ export function init(host: EHost): EngineModule {
       const target = [...qrun.wrong].reverse().find(n => misconceptions(E().ev, n).length) ?? qrun.wrong[qrun.wrong.length - 1] ?? next;
       const mc = target ? host.micro?.(target) ?? null : null, esc = !!target && flopped(target);
       // Bí kíp lần trước chưa hiệu quả → "cách khác": ví dụ trước, đối chiếu đúng / sai, rồi câu thử dễ hơn (nhận ra).
-      qrun.card = mc ? (esc ? { ...mc.card, title: `Cách khác: ${mc.card.title}`, concept: [...mc.card.examples.slice(0, 2).map(([en, vi]) => `${en}${vi ? ' — ' + vi : ''}`), ...mc.card.concept.slice(0, 1)] } : mc.card) : null;
+      qrun.card = mc ? (esc ? { ...mc.card, title: `Cách khác: ${mc.card.title}`, concept: [...mc.card.examples.slice(0, 2).map(([en, vi]) => `${en}${vi ? ' — ' + vi : ''}`), ...mc.card.concept.slice(0, 1)], examples: mc.card.examples.slice(2) } : mc.card) : null;
       qrun.q = null; qx = false;
       // v69: sau bí kíp có 1 câu thử ngay ở đúng phần vừa đọc (luyện ngay + kiểm tra sau can thiệp, §53); câu chưa gặp trước.
       const pool = mc ? (esc ? mc.qs.filter(q => q.level <= 2) : mc.qs) : [];
