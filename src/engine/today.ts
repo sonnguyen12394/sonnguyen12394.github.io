@@ -15,11 +15,13 @@ import { nextProbe as pickProbe, MODE_VI, type Mode, type ProbeCand } from './pr
 import { RULE_ID } from './ev/evaluate.ts';
 import { rank, NBA_VER, W as NBA_W, type Action, type Kind } from './nba.ts';
 import { xferCandidates } from './transfer.ts';
+import { nextPhase, PHASE_VI } from './measure.ts';
 import { seenHas } from './ev/store.ts';
 
 // Transfer (v60, §59): câu ở ngữ cảnh mới mà người học CHƯA gặp ở nút này (sổ "đã gặp" của kho bằng chứng). Tối đa 3 câu.
 export function xferItems(host: EHost, e: EState, node: string): ReturnType<EHost['probe']> {
-  return (host.transfer?.(node) ?? []).filter(q => !seenHas(e.ev, node, q.id)).slice(0, 3);
+  const held = new Set((e.ms?.set ?? []).map(x => x.item));   // câu giữ riêng cho bộ đo (v63): không dùng để luyện / thử
+  return (host.transfer?.(node) ?? []).filter(q => !held.has(q.id) && !seenHas(e.ev, node, q.id)).slice(0, 3);
 }
 // Ứng viên transfer cho NBA: chỉ nút còn câu mới (xét tối đa 3 nút quan trọng nhất để không tốn thời gian dựng câu).
 export function xferFor(host: EHost, e: EState, ix: Index, p: PathOut): Array<{ node: string; level: number; imp: number }> {
@@ -94,7 +96,7 @@ export function viewToday(c: ECtx, day: DayInfo): string {
   const head = `<section class="stack"><span class="eyebrow">Lộ trình hôm nay · ${day.mins} phút</span><h1>Hôm nay học gì</h1>
     <p class="muted">Còn ${p.unmet.length}/${p.total} năng lực chưa đạt (≈ ${Math.max(1, Math.round(p.minutes / 60))} giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.${e.diag ? '' : ' Chưa làm bài chẩn đoán: lộ trình có thể gồm cả thứ bạn đã biết.'}</p>
     <div class="row" style="gap:6px">${e.goals.map(sg => { const g = ix.goal.get(sg.id); return g ? `<button class="btn ghost small" data-e="go" data-r="goal/${esc(g.id)}">${esc(g.vi)}</button>${readyChip(readinessOf(host, e, g))}` : ''; }).join('')}</div>
-    <div class="row">${e.diag ? '' : '<button class="btn small" data-e="go" data-r="diag">Làm bài chẩn đoán</button>'}<button class="btn small" data-e="go" data-r="quest">🏰 Học bằng Ladder Quest</button></div></section>`;
+    <div class="row">${e.diag ? '' : '<button class="btn small" data-e="go" data-r="diag">Làm bài chẩn đoán</button>'}<button class="btn small" data-e="go" data-r="quest">🏰 Học bằng Ladder Quest</button>${(() => { const nx = nextPhase(e.ms, host.today()); return nx?.due ? `<button class="btn small ghost" data-e="go" data-r="measure">📏 ${PHASE_VI[nx.phase]}</button>` : ''; })()}</div></section>`;
   const vf = acts.find(a => a.kind === 'verify'), pc = probeFor(host, e, ix, p) ?? (vf ? { node: vf.node, level: vf.level as 3, mode: 'verify' as Mode, eig: 0, effort: 1.5, score: 0 } : null);
   const probeTop = top && (top.kind === 'probe' || top.kind === 'verify');
   const probe = pc ? `<section class="panel stack"><span class="eyebrow">${probeTop ? `${NEXT} · ` : ''}Kiểm tra nhanh · 3 câu · không tốn năng lượng</span><div><b>${esc(ix.node.get(pc.node)?.vi ?? pc.node)}</b><br><span class="hint">${esc(MODE_VI[pc.mode])}${pc.for ? ` (vì ${esc(ix.node.get(pc.for)?.vi ?? pc.for)})` : ''}</span></div><div class="row"><button class="btn small" data-e="go" data-r="probe/${esc(pc.node)}/${pc.level}/${pc.mode}${pc.for ? '/' + esc(pc.for) : ''}">Làm ngay</button></div></section>` : '';
