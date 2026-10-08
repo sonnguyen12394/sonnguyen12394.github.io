@@ -5,7 +5,7 @@
 // Nút đã Đạt ra khỏi lộ trình (spec mục 17); việc giữ nó là của ôn duy trì.
 
 import type { Goal, Level, Req } from './types.ts';
-import { closure, defaultLevel, mergeGoals, topo, type Index } from './graph.ts';
+import { blockedBy, closure, defaultLevel, mergeGoals, topo, type Index } from './graph.ts';
 
 export interface GoalIn { goal: Goal; date: number | null }
 export interface PathItem { node: string; level: Level; minutes: number; score: number; dep: number; goals: string[] }
@@ -42,7 +42,7 @@ export function plan(ix: Index, goals: GoalIn[], today: number, isPass: (node: s
   }
   const open: PathItem[] = [];
   for (const id of ids) {
-    const blocked = (ix.pre.get(id) ?? []).some(e => e.type === 'hard' && ids.has(e.to));
+    const blocked = blockedBy(ix, id, to => ids.has(to));   // v57: hỗ trợ nhóm tiền đề thay thế (alt/need)
     if (blocked) continue;
     const n = ix.node.get(id)!, minutes = Math.max(5, n.minutes), d = dep.get(id) ?? 0;
     open.push({ node: id, level: level.get(id)!, minutes, dep: d, score: d / minutes, goals: [...(who.get(id) ?? [])].sort() });
