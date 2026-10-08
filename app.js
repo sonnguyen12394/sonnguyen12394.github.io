@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 64;
+const STATE_V = 18, APP_VERSION = 65;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -8178,6 +8178,11 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:65,d:'2026-10-08',t:'Sửa đúng chỗ hổng',big:false,items:[
+  'Trong tháp, mỗi câu được chọn theo đúng loại lỗ hổng của bạn: chưa biết thì hỏi nhận ra, nhận ra rồi thì tự gõ, nhớ rồi thì sửa lỗi, thiếu phần nền thì đưa phần nền lên trước.',
+  '"Bước tiếp theo" tính nguy cơ quên từ chính lịch ôn của bạn (FSRS), không còn ước lượng thô. Rương trong tháp ưu tiên phần dễ quên và quan trọng để nhớ lâu.',
+  'Đạt mục tiêu CEFR giờ cần dùng được các năng lực quan trọng ở câu mới chưa gặp; năng lực đã hết câu mới để thử được miễn và ghi rõ.',
+  '"Đúng nhưng còn chậm" so với tốc độ của chính bạn, không theo một ngưỡng chung.']});
 CHANGELOG.unshift({v:64,d:'2026-10-08',t:'Chơi là màn chính',big:true,items:[
   'Mở app là vào tháp Ladder Quest (tab Chơi). Bài học, ôn tập, kỹ năng vẫn ở các tab còn lại.',
   'Người mới: bấm "Bắt đầu" để làm bài dò ngắn (3–5 phút); app tự đặt mục tiêu là cấp CEFR kế tiếp của bạn. Đổi ở Tôi → Mục tiêu.',
@@ -8312,7 +8317,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.b778d19bd7.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.33b7938de7.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8325,7 +8330,9 @@ const EHOST = {
   research:()=>!!(st.set&&st.set.research),
   dayInfo:()=>{ const dw=dueWords().length, dg=dueG().length, t=today();
     const lastPerf=Math.max(0,...Object.values(st.dlg||{}).map(d=>d&&d.day||0),...((st.x&&st.x.attempts)||[]).filter(a=>a.kind==='mock').map(a=>a.day||0),...((st.me&&st.me.vx)||[]).map(v=>v&&v.day||0));
-    return {reviewItems:dw+dg, reviewMins:(dw?reviewMin(dw):0)+dg*2, mins:Math.round((st.x&&st.x.mins)||20), perfDue:t-lastPerf>=7}; },
+    const F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null, cards=[...dueWords().map(w=>W(w.id)),...dueG().map(p=>G(p.id))].filter(c=>c&&c.fs!=null&&c.fl!=null);
+    const lost=F&&cards.length?Math.round(cards.reduce((s,c)=>s+1-F.retrievability(Math.max(0,t-c.fl),c.fs),0)*100)/100:(dw+dg?null:0);
+    return {reviewItems:dw+dg, reviewMins:(dw?reviewMin(dw):0)+dg*2, mins:Math.round((st.x&&st.x.mins)||20), perfDue:t-lastPerf>=7, lost}; },
   // Người chấm Viết/Nói (M5, src/engine/grader.ts): tự chấm + máy chấm luật của thi thử VSTEP, máy chấm luật của bài viết theo đề.
   grades:()=>{ const out=[];
     for(const v of ((st.me&&st.me.vx)||[])){ if(!v||(v.m!=='w'&&v.m!=='s')||!(v.day>0)) continue; const skill=v.m==='w'?'W':'S';

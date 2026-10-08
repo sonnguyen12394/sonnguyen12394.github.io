@@ -42,18 +42,26 @@ export function gaps(g: GapIn): GapKind[] {
   } else {
     if (typeof g.recall === 'number' && g.recall < RETAIN_R) out.push('retention');
     // Ngữ cảnh: trong thống kê của mức cần, một ngữ cảnh có ≥ 3 lượt mà tỉ lệ đúng < 50%.
-    const ck = `${g.node}|${g.need}`;
-    const byCtx = new Map<string, { ok: number; all: number }>();
-    for (const part of Object.values(g.ev.agg)) for (const [k, x] of Object.entries(part[ck] ?? {})) {
-      const ctx = k.split('|')[0]!;
-      if (ctx === '-' || ctx === 'legacy') continue;
-      const c = byCtx.get(ctx) ?? { ok: 0, all: 0 };
-      c.ok += x.swOk; c.all += x.sw; byCtx.set(ctx, c);
-    }
-    if ([...byCtx.values()].some(c => c.all >= 3 && c.ok / c.all < 0.5)) out.push('context');
-    // Tự động hoá: trung vị thời gian các lần đúng gần đây > ngưỡng.
+    if (weakContext(g.ev, g.node, g.need)) out.push('context');
+    // Tự động hoá: trung vị thời gian các lần đúng gần đây chậm rõ so với CHÍNH người học (trung vị các lần đúng ở nút khác × 1,5,
+    // tối thiểu 4 giây); chưa đủ dữ liệu so sánh thì dùng ngưỡng tuyệt đối SLOW_MS (v65, C145).
     const rts = g.ev.led.filter(x => x.node === g.node && x.ok && x.rt).slice(-7).map(x => x.rt!).sort((a, b) => a - b);
-    if (rts.length >= 5 && rts[Math.floor(rts.length / 2)]! > SLOW_MS) out.push('automaticity');
+    const base = g.ev.led.filter(x => x.node !== g.node && x.ok && x.rt).slice(-60).map(x => x.rt!).sort((a, b) => a - b);
+    const slow = base.length >= 10 ? Math.max(4000, base[Math.floor(base.length / 2)]! * 1.5) : SLOW_MS;
+    if (rts.length >= 5 && rts[Math.floor(rts.length / 2)]! > slow) out.push('automaticity');
   }
   return out;
+}
+
+// Ngữ cảnh yếu nhất của một ô (≥ 3 lượt, đúng < 50%), để cách sửa hỏi đúng ngữ cảnh đó. null nếu không có.
+export function weakContext(ev: EvStore, node: string, need: Level): string | null {
+  const ck = `${node}|${need}`, byCtx = new Map<string, { ok: number; all: number }>();
+  for (const part of Object.values(ev.agg)) for (const [k, x] of Object.entries(part[ck] ?? {})) {
+    const ctx = k.split('|')[0]!;
+    if (ctx === '-' || ctx === 'legacy') continue;
+    const c = byCtx.get(ctx) ?? { ok: 0, all: 0 };
+    c.ok += x.swOk; c.all += x.sw; byCtx.set(ctx, c);
+  }
+  const weak = [...byCtx.entries()].filter(([, c]) => c.all >= 3 && c.ok / c.all < 0.5).sort((a, b) => a[1].ok / a[1].all - b[1].ok / b[1].all);
+  return weak[0]?.[0] ?? null;
 }

@@ -110,14 +110,17 @@ export interface MasteryReady {
   ready: boolean;
   lapse: boolean;                       // có quên khi ôn trong 14 ngày qua
   achieved: boolean;
+  xfer?: { important: number; ok: number; exempt: number };   // v65: năng lực quan trọng đã đúng ở câu mới / được miễn (hết câu mới)
 }
 
-export function masteryReadiness(req: Req[], stat: (r: Req) => { pass: boolean; conf: Conf }, lastLapse: number | null, today: number): MasteryReady {
+// v65 (quyết định 08/10, C184): Đạt CEFR cần mọi năng lực quan trọng cho transfer đã đúng ở câu mới; nút đã hết câu mới được miễn.
+export function masteryReadiness(req: Req[], stat: (r: Req) => { pass: boolean; conf: Conf }, lastLapse: number | null, today: number, xfer?: { important: number; ok: number; exempt: number }): MasteryReady {
   const perf = req.filter(r => r.type === 'performance'), base = req.filter(r => r.type !== 'performance');
   const done = base.filter(r => { const s = stat(r); return s.pass && s.conf !== 'low'; }).length;
   const perfDone = perf.filter(r => stat(r).pass).length;
   const total = base.length, all = total + perf.length;
-  const ready = done === total && perfDone === perf.length;
+  const xferOk = !xfer || xfer.ok + xfer.exempt >= xfer.important;
+  const ready = done === total && perfDone === perf.length && xferOk;
   const lapse = lastLapse !== null && today - lastLapse < 14;
-  return { kind: 'mastery', p: all ? (done + perfDone) / all : 0, done, total, perfDone, perfTotal: perf.length, ready, lapse, achieved: ready && !lapse };
+  return { kind: 'mastery', p: all ? (done + perfDone) / all : 0, done, total, perfDone, perfTotal: perf.length, ready, lapse, achieved: ready && !lapse, ...(xfer ? { xfer } : {}) };
 }
