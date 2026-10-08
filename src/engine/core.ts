@@ -12,6 +12,7 @@ import { ingest, setPrior, recomputeAll } from './ev/store.ts';
 import { RULE, RULE_ID } from './ev/evaluate.ts';
 import type { Observation, EvEvent } from './ev/types.ts';
 import type { Level } from './types.ts';
+import { microDecide, type MicroDecision } from './micro.ts';
 
 function eOf(st: { e?: unknown }): EState {
   const cur = st.e as EState | undefined;
@@ -79,4 +80,10 @@ export function research(st: { e?: unknown }): unknown {
 }
 
 export const beta = betaStat;
+
+// Sau một câu sai: ghi nhận / hỏi thêm / mời bí kíp / học phần nền ngay (§51–53). app.js gọi ngay trong màn phản hồi.
+export function micro(st: { e?: unknown }, node: string, level: Level, today: number, inGame = false): MicroDecision {
+  const e = eOf(st);
+  return microDecide({ ev: e.ev, m: e.m, node, lv: level, today, inGame });
+}
 export type { Card, Grade, Evidence, Status };
