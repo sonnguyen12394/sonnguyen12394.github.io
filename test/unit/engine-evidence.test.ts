@@ -75,12 +75,19 @@ test('v3 → v4: ô Beta cũ giữ nguyên α, β, n, dạng câu, ngữ cảnh;
   assert.equal(stat(e.m['u:a1-u1']![3]).pass, stat({ a: 9.5, b: 2.8, n: 11, q: [], c: [], d: 0 }).pass);
 });
 
-test('tiên nghiệm không đè bằng chứng thật; bằng chứng thật đến sau thì tiên nghiệm thôi tác dụng', () => {
+test('tiên nghiệm không đè ô đã có bằng chứng thật; bằng chứng thật đến sau thì cộng dồn với tiên nghiệm (pseudo-count)', () => {
   const st = freshEv(), m: MasteryStore = {};
   setPrior(st, m, 'u:y', 3, 6, 0.5, 'diag', 1);
   assert.ok(stat(m['u:y']![3]).pass);
   ingest(st, m, { node: 'u:y', level: 3, ok: false, item: 'a' }, { dev: 'd00001', ts: 1, day: 2 });
-  assert.equal(m['u:y']![3]!.a, 1);   // chỉ còn bằng chứng thật
+  assert.equal(m['u:y']![3]!.a, 7);                         // 1 + tiên nghiệm 6
+  assert.ok(Math.abs(m['u:y']![3]!.b - (1 + 0.5 + 0.9)) < 1e-9);   // + một lượt sai
+  assert.equal(stat(m['u:y']![3]).state, 'learning');        // Claim chưa có bằng chứng thật: một lỗi đủ làm yếu
+  // Chiều ngược lại (lỗi trước v58): một câu ĐÚNG không được làm mất Đạt của nút suy ra
+  const s2 = freshEv(), m2: MasteryStore = {};
+  setPrior(s2, m2, 'u:z', 3, 6, 0.5, 'diag', 1);
+  ingest(s2, m2, { node: 'u:z', level: 3, ok: true, item: 'a' }, { dev: 'd00001', ts: 1, day: 2 });
+  assert.equal(stat(m2['u:z']![3]).pass, true);
 });
 
 test('gộp hai máy (G-counter theo thiết bị): không mất, không đếm trùng, gộp lặp lại không đổi kết quả', () => {

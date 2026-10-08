@@ -12,9 +12,11 @@ import { dev } from './core.ts';
 import { addSnap } from './ev/snapshot.ts';
 import { RULE_ID } from './ev/evaluate.ts';
 import { viewWhy } from './whyview.ts';
+import { rootVerdict, MODE_VI, type Mode } from './probe.ts';
+import { eig } from './probe.ts';
 import { closure, defaultLevel, mergeGoals } from './graph.ts';
 import { bandToCefr } from '../exam/scales.ts';
-import { viewToday, viewTout, nextStep, type ToutRun } from './today.ts';
+import { viewToday, viewTout, viewProbeDone, nextStep, type ToutRun } from './today.ts';
 import { nodeStat } from './views.ts';
 
 export const MODULE_VERSION = 1;
@@ -45,7 +47,7 @@ export function init(host: EHost): EngineModule {
   const future = (): boolean => !!host.future?.();
   const V = (): EState => { const e = E(); return { ...e, goals: e.goals.filter(g => goalOn(g.id, future())) }; };
   let loadErr = '';
-  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout');
+  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('probe') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout');
   const ensure = () => {
     if (loaded()) return;
     loadGraph(host.fetchJson).then(() => { loadErr = ''; host.render(); })
@@ -136,7 +138,42 @@ export function init(host: EHost): EngineModule {
     host.save(); host.render();
   }
 
+  // ---------- Kiểm tra nhanh: chẩn đoán liên tục (v58) ----------
+  // Bằng chứng thường (trọng số 1, khác kiểm tra bỏ qua ×4). Truy gốc: tiền đề trượt → giả thuyết "thiếu tiền đề" đã kiểm chứng.
+  let prun: ToutRun | null = null, pres: { node: string; verdict: string; mode: Mode; for?: string } | null = null;
+  function probeStart(node: string, lv: number, mode: Mode, forNode?: string): void {
+    const qs = host.probe(node).filter(q => q.level <= Math.max(3, lv));
+    prun = qs.length ? { node, qs, i: 0, got: 0, mode, ...(forNode ? { for: forNode } : {}), eig: eig(E().m[node]?.[lv as 3]) } : null; pres = null;
+  }
+  function probeAnswer(ok: boolean): void {
+    if (!prun) return;
+    const q = prun.qs[prun.i]!, e = E();
+    ingest(e.ev, e.m, { node: prun.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'probe', src: 'diag', ch: `probe/${prun.mode}` }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    if (ok) prun.got++;
+    prun.i++;
+    if (prun.i >= prun.qs.length) {
+      const verdict = rootVerdict(prun.got, prun.qs.length), today = host.today();
+      e.ev.pb = e.ev.pb.day === today ? { day: today, n: e.ev.pb.n + 1 } : { day: today, n: 1 };
+      if (prun.mode === 'root' && prun.for) {
+        if (verdict === 'gap') e.ev.hyp[prun.for] = { kind: 'prereq', cause: prun.node, day: today };
+        else if (verdict === 'ok' && e.ev.hyp[prun.for]?.cause === prun.node) delete e.ev.hyp[prun.for];
+      }
+      addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: prun.node, dec: `probe:${prun.mode}:${verdict}`, rule: `${RULE_ID}/probe-1`,
+        info: { mode: prun.mode ?? 'explore', got: prun.got, of: prun.qs.length, eig: prun.eig ?? 0, ...(prun.for ? { for: prun.for as string } : {}) },
+        evs: e.ev.led.filter(x => x.node === prun!.node && x.ctx === 'probe').slice(-prun.qs.length).map(x => x.id) }, false);
+      pres = { node: prun.node, verdict, mode: prun.mode!, ...(prun.for ? { for: prun.for } : {}) }; prun = null;
+    }
+    host.save(); host.render();
+  }
+
   const routes: Record<string, (c: ECtx) => string> = {
+    probe: c => {
+      if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
+      const [, node = '', lv = '3', mode = 'explore', forNode] = c.route.split('/');   // probe/<nút>/<mức>/<chế độ>[/<nút cần nó>]
+      if (!prun && (!pres || pres.node !== node)) probeStart(node, Number(lv), mode as Mode, forNode);
+      if (pres && pres.node === node) return viewProbeDone(c, pres);
+      return viewTout(c, prun, null);
+    },
     today: c => (loaded() ? viewToday(c, host.dayInfo()) : (ensure(), viewLoading(c, loadErr))),
     tout: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -183,9 +220,16 @@ export function init(host: EHost): EngineModule {
       diagAnswer(i >= 0 && i === q.ans, q);
     },
     dstop() { finishDiag(); },
+    pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
+    ptyped(f) {
+      if (!prun) return;
+      const q = prun.qs[prun.i]!, a = norm(String(new FormData(f).get('a') || ''));
+      if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
+      probeAnswer((q.accept ?? []).some(x => norm(x) === a));
+    },
     ttyped(f) {
       if (!tout) return;
       const q = tout.qs[tout.i]!, a = norm(String(new FormData(f).get('a') || ''));
@@ -221,7 +265,7 @@ export function init(host: EHost): EngineModule {
   return {
     version: MODULE_VERSION,
     render,
-    after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('tout')) { tout = null; toutRes = null; } },
+    after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } },
     next() {
       const e = V();
       if (!e.goals.length) return null;

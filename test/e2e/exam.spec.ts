@@ -15,8 +15,13 @@ test('tab Ôn thi: chọn kỳ thi, xem cách tính điểm có nguồn', async 
   await noHorizontalScroll(page);
   // lựa chọn được lưu: mở lại vẫn nhớ kỳ thi
   await page.reload();
-  await navTo(page, 'Ôn thi');
-  await expect(page.getByRole('heading', { name: 'Ôn IELTS Academic' })).toBeVisible();
+  // Chờ app khởi động xong và bấm lại nếu cú bấm rơi vào lúc màn đang vẽ lại (WebKit).
+  await page.waitForFunction(() => (window as unknown as { ELREADY?: boolean }).ELREADY === true);
+  const examHead = page.getByRole('heading', { name: 'Ôn IELTS Academic' });
+  await expect(async () => {
+    if (!(await examHead.isVisible())) await navTo(page, 'Ôn thi');
+    await expect(examHead).toBeVisible({ timeout: 3000 });
+  }).toPass({ timeout: 20000 });
   // nút Quay lại của trình duyệt về đúng màn trước
   await page.getByRole('button', { name: /Cách tính điểm và nguồn/ }).click();
   await page.goBack();

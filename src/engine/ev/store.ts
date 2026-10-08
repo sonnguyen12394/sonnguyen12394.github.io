@@ -17,7 +17,7 @@ export const LED_MAX = 2000, LED_KEEP = 1700, OBS_MAX = 300, OBS_DAYS = 7, SEEN_
 const LEGACY = 'legacy';
 
 export function freshEv(): EvStore {
-  return { v: EV_SCHEMA, agg: {}, led: [], obs: [], pri: {}, seen: {}, seq: 0, integ: { err: 0, last: '', fixed: 0 }, snap: [], sseq: 0, dis: {}, mis: {} };
+  return { v: EV_SCHEMA, agg: {}, led: [], obs: [], pri: {}, seen: {}, seq: 0, integ: { err: 0, last: '', fixed: 0 }, snap: [], sseq: 0, dis: {}, mis: {}, hyp: {}, pb: { day: 0, n: 0 } };
 }
 
 const cellKey = (node: string, lv: number): string => `${node}|${lv}`;
@@ -61,7 +61,12 @@ export function derive(st: EvStore, node: string, lv: Level, rule: Rule = RULE):
   }
   const pr = st.pri[cellKey(node, lv)];
   if (!any && !pr) return undefined;
-  if (n <= 0 && pr) { a = 1 + pr.a; b = 1 + pr.b; }
+  // Tiên nghiệm (Claim từ chẩn đoán / tiến độ cũ) là pseudo-count cộng dồn với bằng chứng thật (v58). Trước đây tiên nghiệm bị bỏ
+  // ngay khi có câu trả lời thật đầu tiên: đúng một câu mà nút "suy ra đã biết" lại rơi khỏi Đạt → bắt kiểm tra quá mức (P10, §72).
+  // Sai ở câu mới khi đang suy ra Đạt thì cơ chế mâu thuẫn (dis) phủ định Claim.
+  // Claim "chưa biết" (b > a) chỉ để xếp thứ tự học, không phải bằng chứng thất bại: bỏ khi đã có câu trả lời thật, nếu không người
+  // học phải bù các lần "sai giả định" mới Đạt được (mô phỏng: lộ trình thích ứng chậm hơn cả giáo trình cố định).
+  if (pr && (n <= 0 || pr.a >= pr.b)) { a += pr.a; b += pr.b; }
   const cell: Cell = { a: round(a), b: round(b), n: round(n), q: [...q].sort().slice(0, 6), c: [...c].sort().slice(0, 8), d };
   if (nv) cell.nv = nv;
   if (st.dis[ck]?.on) cell.ro = 1;
@@ -269,6 +274,8 @@ export function mergeEv(a: EvStore, b: EvStore): EvStore {
   }
   out.dis = { ...b.dis, ...a.dis };
   out.mis = { ...b.mis, ...a.mis };
+  out.hyp = { ...b.hyp, ...a.hyp };
+  out.pb = a.pb;
   out.seq = a.seq;
   out.integ = { err: a.integ.err + b.integ.err, last: a.integ.last || b.integ.last, fixed: a.integ.fixed + b.integ.fixed };
   return out;
