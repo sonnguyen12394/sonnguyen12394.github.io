@@ -24,7 +24,8 @@ test('người mới: Bắt đầu → dò ngắn (≤ 8 phần) → mục tiêu
   await page.getByRole('button', { name: /Bắt đầu leo tháp/ }).click();
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible();
   await expect(page.locator('#bnav button[aria-current="page"], #nav button[aria-current="page"]').first()).toContainText('Chơi');
-  // Mở lại app: màn chính là tháp.
+  // Mở lại app: màn chính là tháp (chờ dữ liệu nền tải xong trước, như trên).
+  await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
   await page.reload();
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible({ timeout: 15000 });
   expect(errors).toEqual([]);
@@ -39,15 +40,20 @@ test('người dùng cũ đã học mà chưa có mục tiêu: app đặt mục 
     const wd = w.eval('UNITS')[0].words[0]; w.eval('W')(wd.id).learned = true;
     w.eval('save()');
   });
+  // Chờ dữ liệu bài học nền tải xong trước khi tải lại trang: WebKit báo lỗi khi một lượt tải bị huỷ giữa chừng.
+  const settled = () => page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
+  await settled();
   await page.reload();
   await page.waitForFunction(() => ((window as any).eval('st').e.goals || []).length === 1, null, { timeout: 15000 });
   const e = await page.evaluate(() => (window as any).eval('st'));
   expect(e.e.goals[0].id).toBe('cefr-a1'); expect(e.set.autoGoal).toBe(1);
   // Bỏ hết mục tiêu rồi mở lại: không tự đặt lại.
+  await settled();
   await page.evaluate(() => { const st = (window as any).eval('st'); st.e.goals = []; (window as any).eval('save()'); });
   await page.reload();
   await page.waitForFunction(() => (window as any).ELREADY === true);
   await page.waitForTimeout(1500);
+  await settled();
   expect(await page.evaluate(() => (window as any).eval('st').e.goals.length)).toBe(0);
   expect(errors).toEqual([]);
 });
