@@ -3,6 +3,7 @@
 import type { Level } from '../types.ts';
 import type { Agg, EvEvent, EvStore, ObsRec, Prior, Src, Tier } from './types.ts';
 import { freshEv, LED_MAX, OBS_MAX, SEEN_MAX } from './store.ts';
+import { SNAP_MAX, type Snapshot, type SnapKind } from './snapshot.ts';
 
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
 const num = (v: unknown, lo: number, hi: number, d: number): number => (typeof v === 'number' && Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d);
@@ -78,6 +79,25 @@ export function sanitizeEv(raw: unknown): EvStore {
   }
   for (const [n, s] of Object.entries(obj(x.seen))) if (NODE.test(n) && typeof s === 'string' && /^[0-9a-z]*$/.test(s) && s.length % 6 === 0) out.seen[n] = s.slice(-SEEN_MAX * 6);
   out.seq = Math.round(num(x.seq, 0, 1e9, 0));
+  const KINDS: SnapKind[] = ['mastery', 'testout', 'readiness', 'nba', 'diag'];
+  out.snap = (Array.isArray(x.snap) ? x.snap : []).map(v => {
+    const y = obj(v), id = str(y.id, 40), subj = str(y.subj), dec = str(y.dec, 40);
+    if (!id || !subj || !dec || !KINDS.includes(y.kind as SnapKind)) return null;
+    const sn: Snapshot = { id, ts: num(y.ts, 0, 1e14, 0), day: Math.round(num(y.day, 0, 1e6, 0)), kind: y.kind as SnapKind, subj, dec, rule: str(y.rule, 40) ?? '?',
+      evs: (Array.isArray(y.evs) ? y.evs : []).filter((s): s is string => typeof s === 'string' && s.length <= 40).slice(-12) };
+    if (typeof y.lv === 'number') sn.lv = lvl(y.lv);
+    const mm = obj(y.m);
+    if (typeof mm.a === 'number') sn.m = { a: num(mm.a, 0, 1e7, 1), b: num(mm.b, 0, 1e7, 1), n: num(mm.n, 0, 1e7, 0), mean: num(mm.mean, 0, 1, 0), lb: num(mm.lb, 0, 1, 0), ctx: num(mm.ctx, 0, 99, 0), qt: num(mm.qt, 0, 99, 0), nov: num(mm.nov, 0, 1e7, 0) };
+    const th = obj(y.thr);
+    if (typeof th.m === 'number') sn.thr = { m: num(th.m, 0, 1, 0.8), lb: num(th.lb, 0, 1, 0.6) };
+    const inf = obj(y.info), info: Record<string, number | string> = {};
+    for (const [k, w] of Object.entries(inf).slice(0, 20)) if (k.length <= 20 && (typeof w === 'number' || (typeof w === 'string' && w.length <= 200))) info[k] = w;
+    if (Object.keys(info).length) sn.info = info;
+    if (Array.isArray(y.alt)) sn.alt = y.alt.slice(0, 5).map(obj).filter(a => typeof a.node === 'string' && NODE.test(a.node as string))
+      .map(a => ({ node: a.node as string, score: num(a.score, -1e6, 1e6, 0), dep: num(a.dep, 0, 1e6, 0), min: num(a.min, 0, 1e5, 0) }));
+    return sn;
+  }).filter((v): v is Snapshot => !!v).slice(-SNAP_MAX);
+  out.sseq = Math.round(num(x.sseq, 0, 1e9, out.snap.length));
   const ig = obj(x.integ);
   out.integ = { err: Math.round(num(ig.err, 0, 1e9, 0)), last: str(ig.last, 200) ?? '', fixed: Math.round(num(ig.fixed, 0, 1e9, 0)) };
   return out;

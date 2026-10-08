@@ -11,12 +11,13 @@ import { freshCell, stat, type Cell, type MasteryStore } from '../mastery.ts';
 import { evaluate, RULE, type Rule } from './evaluate.ts';
 import type { Agg, EvEvent, EvStore, Observation, ObsRec, Prior, Tier } from './types.ts';
 import { EV_SCHEMA } from './types.ts';
+import { addSnap, protectedEvents, MASTERY_THR, SNAP_MAX, type Snapshot } from './snapshot.ts';
 
 export const LED_MAX = 2000, LED_KEEP = 1700, OBS_MAX = 300, OBS_DAYS = 7, SEEN_MAX = 150;
 const LEGACY = 'legacy';
 
 export function freshEv(): EvStore {
-  return { v: EV_SCHEMA, agg: {}, led: [], obs: [], pri: {}, seen: {}, seq: 0, integ: { err: 0, last: '', fixed: 0 } };
+  return { v: EV_SCHEMA, agg: {}, led: [], obs: [], pri: {}, seen: {}, seq: 0, integ: { err: 0, last: '', fixed: 0 }, snap: [], sseq: 0 };
 }
 
 const cellKey = (node: string, lv: number): string => `${node}|${lv}`;
@@ -128,14 +129,32 @@ export function ingest(st: EvStore, m: MasteryStore, o: Observation, c: IngestCt
   const TIER_VAL = [0, 1, 3, 6] as const;
   ev.val = Math.round((TIER_VAL[tier] + ev.nov + (ev.asst ? -0.3 : 0) + Math.min(2, sdDrop * 20)) * 100) / 100;
   st.led.push(ev);
-  if (st.led.length > LED_MAX) st.led = prune(st.led, LED_KEEP, c.day);
+  // L4: nút đổi trạng thái Đạt ở một mức → snapshot (§37), kèm id các sự kiện gần nhất của ô đó.
+  if (flip) lvls.forEach((l, i) => {
+    if (before[i]!.pass === after[i]!.pass) return;
+    const cell = m[o.node]?.[l];
+    if (!cell) return;
+    const evs = st.led.filter(x => x.node === o.node && x.lv >= l && (!x.only || x.lv === l)).slice(-12).map(x => x.id);
+    addSnap(st, { ts: c.ts, day: c.day, kind: 'mastery', subj: o.node, lv: l, dec: after[i]!.pass ? 'PASS' : 'FAIL', rule: ev.ev,
+      m: { a: cell.a, b: cell.b, n: cell.n, mean: round(after[i]!.m), lb: round(after[i]!.lb), ctx: cell.c.length, qt: cell.q.length, nov: novCount(st, o.node, l) },
+      thr: { ...MASTERY_THR }, evs }, false);
+  });
+  if (st.led.length > LED_MAX) st.led = prune(st.led, LED_KEEP, c.day, protectedEvents(st));
   return ev;
 }
 
+// Số lượt ở câu mới của một ô (cộng mọi thiết bị).
+function novCount(st: EvStore, node: string, lv: number): number {
+  let k = 0;
+  for (const part of Object.values(st.agg)) for (const x of Object.values(part[cellKey(node, lv)] ?? {})) k += x.nov;
+  return k;
+}
+
 // ---------- Dọn sổ L1 theo giá trị ----------
-export function prune(led: EvEvent[], keep: number, today: number): EvEvent[] {
+// keepIds: sự kiện mà snapshot quan trọng tham chiếu — giữ như bằng chứng critical.
+export function prune(led: EvEvent[], keep: number, today: number, keepIds: Set<string> = new Set()): EvEvent[] {
   if (led.length <= keep) return led;
-  const protect = new Set<string>();
+  const protect = new Set<string>(keepIds);
   const lastOk = new Map<string, EvEvent>(), lastBad = new Map<string, EvEvent>();
   for (const e of led) (e.ok ? lastOk : lastBad).set(e.node, e);          // đại diện mỗi nút (§35)
   for (const e of [...lastOk.values(), ...lastBad.values()]) protect.add(e.id);
@@ -200,7 +219,11 @@ export function mergeEv(a: EvStore, b: EvStore): EvStore {
   for (const e of [...a.led, ...b.led]) byId.set(e.id, e);
   out.led = [...byId.values()].sort((x, y) => x.ts - y.ts || (x.id < y.id ? -1 : 1));
   const today = Math.max(0, ...out.led.map(e => e.day));
-  if (out.led.length > LED_MAX) out.led = prune(out.led, LED_KEEP, today);
+  const snaps = new Map<string, Snapshot>();
+  for (const x of [...a.snap, ...b.snap]) snaps.set(x.id + '@' + x.ts, x);
+  out.snap = [...snaps.values()].sort((x, y) => x.ts - y.ts).slice(-SNAP_MAX);
+  out.sseq = Math.max(a.sseq ?? 0, b.sseq ?? 0);
+  if (out.led.length > LED_MAX) out.led = prune(out.led, LED_KEEP, today, protectedEvents(out));
   out.obs = a.obs;   // L0 chỉ của máy này
   out.pri = { ...b.pri, ...a.pri };
   for (const n of new Set([...Object.keys(a.seen), ...Object.keys(b.seen)])) {

@@ -86,14 +86,14 @@ export function viewGoal(c: ECtx, loadErr: string): string {
   const stats = new Map(g.req.map(r => [r.node, nodeStat(host, e, r.node, r.level)]));
   const passed = g.req.filter(r => stats.get(r.node)!.pass).length;
   const row = (r: Req) => { const n = node(r), act = n.acts[0];
-    return `<li style="display:flex;gap:8px;align-items:center;justify-content:space-between"><span style="flex:1;min-width:0">${esc(n.vi)} <span class="hint">· cần mức ${r.level}: ${esc(LEVEL_VI[r.level])}</span><br>${statChip(stats.get(r.node)!)}</span>${act ? `<button class="btn small ghost" style="flex:none" ${act.at} aria-label="Học: ${esc(n.vi)}">Học</button>` : '<span class="pill" style="flex:none" title="Nội dung sẽ được bổ sung">chưa có bài</span>'}</li>`; };
+    return `<li style="display:flex;gap:8px;align-items:center;justify-content:space-between"><span style="flex:1;min-width:0">${esc(n.vi)} <span class="hint">· cần mức ${r.level}: ${esc(LEVEL_VI[r.level])}</span><br>${statChip(stats.get(r.node)!)} <button class="linkbtn" data-e="go" data-r="why/${esc(r.node)}" aria-label="Vì sao: ${esc(n.vi)}">Vì sao?</button></span>${act ? `<button class="btn small ghost" style="flex:none" ${act.at} aria-label="Học: ${esc(n.vi)}">Học</button>` : '<span class="pill" style="flex:none" title="Nội dung sẽ được bổ sung">chưa có bài</span>'}</li>`; };
   return `${head}
     <section class="panel stack"><div class="me-stats me3">
       <div class="stat"><b>${passed}/${g.req.length}</b><span class="muted">tiến độ học: năng lực đã đạt</span></div>
       <div class="stat"><b>${all.length}</b><span class="muted">kể cả tiền đề</span></div>
       <div class="stat"><b>${esc(hours(minutes))}</b><span class="muted">học từ đầu (ước tính thô)</span></div></div>
       <p class="hint">Tiền đề gồm ${count(n => n.kind === 'vocab')} cụm từ vựng, ${count(n => n.kind === 'grammar')} điểm ngữ pháp và ${count(n => n.kind === 'cando')} năng lực cấp dưới. Thứ bạn đã thành thạo sẽ được bỏ khỏi lộ trình sau bài chẩn đoán, nên con số thật thường nhỏ hơn.</p></section>
-    ${viewReady(host, g, readinessOf(host, e, g))}
+    ${viewReady(host, g, readinessOf(host, e, g), e)}
     ${sel ? `<form class="panel stack" data-eform="date" data-g="${esc(id)}"><label class="stack" style="gap:4px"><b>Ngày thi hoặc hạn muốn đạt</b><input class="field" type="date" name="date" value="${sel.date !== null ? isoOf(sel.date) : ''}" min="${isoOf(host.today())}"></label><div class="row"><button class="btn small">Lưu</button></div></form>`
       : `<div class="row"><button class="btn primary" data-e="add" data-g="${esc(id)}">Chọn mục tiêu này</button></div>`}
     ${groups.map(([a, rs]) => `<section class="stack"><h2>${esc(AREA_VI[a])} <span class="hint">(${rs.length})</span></h2><ul class="stack" style="list-style:none;padding:0;margin:0;gap:6px">${rs.map(row).join('')}</ul></section>`).join('')}
