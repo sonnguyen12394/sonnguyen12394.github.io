@@ -20,7 +20,7 @@ const STATE_VI: Record<NodeState, string> = { unknown: 'chưa có gì', inferred
 
 const SRC_VI: Record<string, string> = {
   vocab: 'luyện từ vựng', gram: 'luyện ngữ pháp', exam: 'câu đọc/nghe', pa: 'bài Pre-A1', diag: 'bài chẩn đoán', testout: 'kiểm tra bỏ qua',
-  perf: 'bài làm thật', game: 'thử thách game', micro: 'bí kíp (micro)', transfer: 'thử thách transfer', legacy: 'tiến độ trước v53',
+  perf: 'bài làm thật', game: 'thử thách game', micro: 'bí kíp (micro)', transfer: 'thử thách transfer', pron: 'luyện cặp âm', talk: 'hội thoại / chức năng giao tiếp', legacy: 'tiến độ trước v53',
 };
 const DEC_VI: Record<string, string> = { 'micro:fixed': 'Bí kíp: đúng hết câu kiểm tra', 'micro:partial': 'Bí kíp: đúng một phần', 'micro:not-yet': 'Bí kíp: chưa nắm', 'transfer:ok': 'Đúng hết ở câu mới', 'transfer:partial': 'Đúng một phần ở câu mới', 'transfer:fail': 'Trượt ở câu mới', PASS: 'Đạt', FAIL: 'Chưa đạt / mất Đạt', READY: 'Sẵn sàng', NOT_READY: 'Chưa sẵn sàng', ACHIEVED: 'Đạt mục tiêu', CHOSEN: 'Chọn làm bước tiếp theo' };
 const n2 = (x: number): string => String(Math.round(x * 100) / 100).replace('.', ',');

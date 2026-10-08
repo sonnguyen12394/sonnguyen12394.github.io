@@ -5,7 +5,7 @@ import type { EState } from './state.ts';
 import type { Index } from './graph.ts';
 import type { Goal } from './types.ts';
 import { nodeStat } from './views.ts';
-import { examOf, examReadiness, masteryReadiness, skillDists, type ExamReady, type MasteryReady, type SkillK } from './readiness.ts';
+import { readinessFor, skillDists, type ExamReady, type MasteryReady, type SkillK } from './readiness.ts';
 import { selfBias, type Conf, type RawGrade } from './grader.ts';
 import { bandToVstep, roundHalf } from '../exam/scales.ts';
 import { addSnap } from './ev/snapshot.ts';
@@ -18,14 +18,11 @@ import { xferItems } from './today.ts';
 export type Ready = ExamReady | MasteryReady;
 
 export function readinessOf(host: EHost, e: EState, g: Goal): Ready {
-  let r: Ready;
-  if (examOf(g)) {
-    const { resp, real } = host.exam();
-    r = examReadiness(g, skillDists(resp, host.grades() as RawGrade[], real, host.today()), real);
-  } else {
-    const ix = loaded(), x = ix && e.ev ? xferSummary(ix, e.m, e.ev, g.req, n => xferItems(host, e, n).length < 2) : null;
-    r = masteryReadiness(g.req, q => nodeStat(host, e, q.node, q.level), host.lapse(), host.today(), x ? { important: x.important, ok: x.ok, exempt: x.exempt } : undefined);
-  }
+  const r: Ready = readinessFor(g, {
+    mastery: q => nodeStat(host, e, q.node, q.level), lapse: host.lapse(), today: host.today(),
+    xfer: () => { const ix = loaded(), x = ix && e.ev ? xferSummary(ix, e.m, e.ev, g.req, n => xferItems(host, e, n).length < 2) : null; return x ? { important: x.important, ok: x.ok, exempt: x.exempt } : undefined; },
+    exam: () => { const { resp, real } = host.exam(); return { dists: skillDists(resp, host.grades() as RawGrade[], real, host.today()), real }; },
+  });
   snapReady(host, e, g, r);
   return r;
 }

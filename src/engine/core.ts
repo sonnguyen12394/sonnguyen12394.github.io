@@ -8,7 +8,7 @@
 import { review, newCard, interval, retrievability, type Card, type Grade } from '../exam/fsrs.ts';
 import { statusOf, betaStat, type Evidence, type Status } from './mastery.ts';
 import { migrateE, mergeE, E_V, type EState } from './state.ts';
-import { ingest, setPrior, recomputeAll } from './ev/store.ts';
+import { ingest, setPrior, recomputeAll, hash6 } from './ev/store.ts';
 import { RULE, RULE_ID } from './ev/evaluate.ts';
 import type { Observation, EvEvent } from './ev/types.ts';
 import type { Level } from './types.ts';
@@ -96,3 +96,6 @@ export function audit(st: { e?: unknown }, today: number): { drift: ReturnType<t
   if (d.flag) addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: 'model', dec: 'drift', rule: `${RULE_ID}/audit-1`, info: { n: d.n, obs: d.obs, exp: d.exp, z: d.z }, evs: [] });
   return { drift: d, est };
 }
+
+// v67 (C56): băm nội dung một câu → phiên bản từng câu, cùng thuật toán với bản đồ nội dung (tools/engine-gen.ts).
+export const contentHash = (raw: string): string => hash6(raw);

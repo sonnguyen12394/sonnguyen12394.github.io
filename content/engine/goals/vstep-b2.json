@@ -302,5 +302,6 @@
    "level": 4,
    "type": "performance"
   }
- ]
+ ],
+ "readiness": "exam-score"
 }

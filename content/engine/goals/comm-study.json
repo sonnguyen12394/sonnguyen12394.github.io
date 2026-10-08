@@ -87,5 +87,6 @@
    "level": 3,
    "type": "skill"
   }
- ]
+ ],
+ "readiness": "mastery"
 }

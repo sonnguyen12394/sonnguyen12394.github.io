@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { test, expect, openApp } from './fixtures.ts';
 
 // v53 (spec v2.4 §23–37): câu trả lời thật → quan sát L0 → sự kiện L1 có provenance → thống kê L2 → ô Beta L3.
@@ -45,5 +46,21 @@ test('Cài đặt: thấy tình trạng sổ bằng chứng, tải được dữ
   await expect(page.getByText(/Sổ bằng chứng trên máy này/)).toBeVisible();
   const [dl] = await Promise.all([page.waitForEvent('download'), page.locator('[data-act="evexport"]').click()]);
   expect(dl.suggestedFilename()).toMatch(/^english-ladder-research-.*\.json$/);
+  expect(errors).toEqual([]);
+});
+
+test('v67: phiên bản nội dung TỪNG câu ghi vào sổ khớp bản đồ nội dung (từ vựng, ngữ pháp, cặp âm) (C56)', async ({ page, errors }) => {
+  await openApp(page);
+  const map = JSON.parse(readFileSync('content/engine/content-map.json', 'utf8')).map as Record<string, Array<[string, number[], string]>>;
+  const want = (node: string, id: string) => 'h' + map[node]!.find(x => x[0] === id)![2];
+  const got = await page.evaluate(() => {
+    const w = window as any;
+    w.eval("eEv({node:'u:a1-u1',level:3,ok:true,item:'w:breakfast:rcl',src:'vocab'})");
+    w.eval("eEv({node:'g:g-a1-01',level:3,ok:true,item:'g:g-a1-01|typ|t0',src:'gram'})");
+    const led = w.eval('st').e.ev.led;
+    return { w: led.find((x: any) => x.item === 'w:breakfast:rcl').cv, g: led.find((x: any) => x.item === 'g:g-a1-01|typ|t0').cv };
+  });
+  expect(got.w).toBe(want('u:a1-u1', 'w:breakfast:rcl'));
+  expect(got.g).toBe(want('g:g-a1-01', 'g:g-a1-01|typ|t0'));
   expect(errors).toEqual([]);
 });

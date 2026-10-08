@@ -387,5 +387,6 @@
    "level": 3,
    "type": "performance"
   }
- ]
+ ],
+ "readiness": "exam-score"
 }

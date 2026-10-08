@@ -12,7 +12,7 @@ export const CEFRS: Cefr[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 export type Area = 'voc' | 'gra' | 'pro' | 'lis' | 'rd' | 'wr' | 'spk' | 'task';
 export type Skill = 'L' | 'R' | 'W' | 'S';
 export type Ctx = 'daily' | 'work' | 'travel' | 'study' | 'exam';
-export type NodeKind = 'cando' | 'vocab' | 'grammar' | 'task';
+export type NodeKind = 'cando' | 'vocab' | 'grammar' | 'task' | 'sound' | 'func';   // v67: sound = âm vị (cặp âm), func = chức năng giao tiếp
 
 // Hoạt động học sẵn có trong app mà nút dẫn tới: `at` là thuộc tính HTML mở đúng màn (data-unit="…", data-gp="…", data-dlg="…").
 export interface Act { at: string; t: string }
@@ -66,6 +66,7 @@ export interface Goal {
   vi: string;
   target: string;        // "Pre-A1", "B1", "6.5", "daily"…
   status: GoalStatus;
+  readiness?: 'mastery' | 'exam-score';   // v67: mô hình Readiness (mặc định mastery); mục tiêu mới chỉ cần khai dữ liệu
   cefr: Cefr | null;     // cấp tham chiếu của mục tiêu
   req: Req[];
 }
