@@ -19,6 +19,11 @@ import { bandToCefr } from '../exam/scales.ts';
 import { viewToday, viewTout, viewProbeDone, viewXferDone, viewMicroCard, viewMicroDone, nextStep, xferItems, type ToutRun } from './today.ts';
 import { xferStatus } from './transfer.ts';
 import { microVerdict, MICRO, MICRO_VER } from './micro.ts';
+import { planFloor, reward, hearts, freshQuest, QUEST_VER } from './quest.ts';
+import { viewQuestHome, viewQuestRun, viewQuestEnd, type QuestRun, type QItem } from './questview.ts';
+import { computePath, computeNba } from './today.ts';
+import { seenHas } from './ev/store.ts';
+import { readinessOf } from './readyview.ts';
 import type { MicroCard } from './host.ts';
 import { stat } from './mastery.ts';
 import { nodeStat } from './views.ts';
@@ -51,7 +56,7 @@ export function init(host: EHost): EngineModule {
   const future = (): boolean => !!host.future?.();
   const V = (): EState => { const e = E(); return { ...e, goals: e.goals.filter(g => goalOn(g.id, future())) }; };
   let loadErr = '';
-  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('probe') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout') || route.startsWith('xfer') || route.startsWith('micro');
+  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('probe') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout') || route.startsWith('xfer') || route.startsWith('micro') || route.startsWith('quest');
   const ensure = () => {
     if (loaded()) return;
     loadGraph(host.fetchJson).then(() => { loadErr = ''; host.render(); })
@@ -218,7 +223,78 @@ export function init(host: EHost): EngineModule {
     host.save(); host.render();
   }
 
+  // ---------- Ladder Quest (v62): học ẩn trong game ----------
+  // Mỗi lượt là một câu do engine chọn (quest.ts dựng tầng từ NBA). Câu trả lời → bằng chứng thật (src 'game', hoặc 'transfer'
+  // với trùm câu mới); xu / tim / tầng chỉ là telemetry trong e.q, không bao giờ vào mastery (P14).
+  let qrun: QuestRun | null = null;
+  const qsave = () => { const e = E(); return (e.q ||= freshQuest()); };
+  function qItem(ch: QuestRun['plan'][number]): { q: QItem | null; xfer: boolean } {
+    const e = E();
+    if (ch.gameType === 'camp') return { q: null, xfer: false };
+    if (ch.gameType === 'boss') { const t = xferItems(host, e, ch.node); if (t[0]) return { q: t[0], xfer: true }; }
+    const all = host.probe(ch.node), fit = all.filter(q => q.level <= Math.max(1, ch.level));
+    const pool = fit.length ? fit : all;
+    return { q: pool.find(q => !seenHas(e.ev, ch.node, q.id)) ?? pool[0] ?? null, xfer: false };
+  }
+  let qx = false;
+  function qLoad(): void {
+    if (!qrun) return;
+    const ch = qrun.plan[qrun.i];
+    if (!ch) return;
+    if (ch.gameType === 'camp') {
+      // Trại: bí kíp cho phần vừa sai trong lượt này, chưa sai thì cho quái kế tiếp (dạy trước khi gặp).
+      const next = qrun.plan.slice(qrun.i + 1).find(p => p.gameType === 'monster')?.node, target = qrun.wrong[qrun.wrong.length - 1] ?? next;
+      qrun.card = target ? host.micro?.(target)?.card ?? null : null; qrun.q = null; qx = false;
+      return;
+    }
+    const it = qItem(ch); qrun.q = it.q; qrun.card = null; qx = it.xfer;
+  }
+  function qStart(): void {
+    if (!loaded()) { ensure(); return; }
+    const e = E(), v = V(), ix = loaded()!, p = computePath(host, v, ix), acts = computeNba(host, v, ix, p), sv = qsave();
+    const review = (p.all ?? []).filter(r => nodeStat(host, v, r.node, r.level).pass).map(r => ({ n: r.node, r: host.recall?.(r.node) ?? 1 })).filter(x => x.r < 0.9).sort((a, b) => a.r - b.r).map(x => x.n);
+    const plan = planFloor({ acts, open: p.open, review, can: n => n.startsWith('u:') || n.startsWith('g:'), started: n => !!e.m[n], floor: sv.floor });
+    if (!plan.length) { host.toast('Chưa có gì để leo: chọn mục tiêu CEFR trước.'); return; }
+    const max = hearts(sv.floor);
+    qrun = { plan, i: 0, hp: max, max, coins: 0, ok: 0, n: 0, floor: sv.floor, q: null, card: null, ans: null, done: null, wrong: [] };
+    qLoad(); host.render();
+  }
+  function qAnswer(ok: boolean, given: string): void {
+    if (!qrun || !qrun.q || qrun.ans) return;
+    const ch = qrun.plan[qrun.i]!, q = qrun.q, e = E(), novel = !seenHas(e.ev, ch.node, q.id);
+    ingest(e.ev, e.m, { node: ch.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: qx ? 'transfer' : ch.context, src: qx ? 'transfer' : 'game', ch: ch.id, gp: ch.gameplayDifficulty, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    const coins = reward(ch, ok, novel), right = q.opts ? q.opts[q.ans ?? 0] ?? '' : q.accept?.[0] ?? '';
+    qrun.ans = { ok, right, given, coins, novel }; qrun.coins += coins; qrun.n++;
+    if (ok) qrun.ok++; else { qrun.hp--; qrun.wrong.push(ch.node); }
+    const sv = qsave(); sv.ans++; if (ok) sv.ok++; sv.coins += coins; sv.day = host.today();
+    host.save(); host.render();
+  }
+  function qNext(): void {
+    if (!qrun) return;
+    const ch = qrun.plan[qrun.i];
+    if (ch?.gameType === 'camp') { qrun.hp = Math.min(qrun.max, qrun.hp + 1); const sv = qsave(); sv.coins += 5; qrun.coins += 5; }
+    if (qrun.hp <= 0 || qrun.i + 1 >= qrun.plan.length) { qEnd(qrun.hp > 0 ? 'win' : 'lose'); return; }
+    qrun.i++; qrun.ans = null; qLoad(); host.save(); host.render();
+  }
+  function qEnd(how: 'win' | 'lose'): void {
+    if (!qrun) return;
+    const sv = qsave(), e = E();
+    qrun.done = how; sv.runs++;
+    if (how === 'win') { sv.wins++; sv.best = Math.max(sv.best, sv.floor); sv.floor++; }
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `quest:${qrun.floor}`, dec: `quest:${how}`, rule: `${RULE_ID}/${QUEST_VER}`,
+      info: { floor: qrun.floor, ok: qrun.ok, of: qrun.n, coins: qrun.coins, plan: qrun.plan.map(p => p.gameType[0]).join('') },
+      evs: e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:${qrun!.floor}:`)).slice(-qrun.n).map(x => x.id) }, false);
+    host.save(); host.render();
+  }
+
   const routes: Record<string, (c: ECtx) => string> = {
+    quest: c => {
+      if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
+      if (qrun?.done) return viewQuestEnd(c, qrun);
+      if (qrun) return viewQuestRun(c, qrun);
+      const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
+      return viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null);
+    },
     micro: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
       const [, node = '', lv = '3', from = node, ...rest] = c.route.split('/');   // micro/<nút>/<mức>/<nút đang sai>/<lý do>
@@ -290,6 +366,10 @@ export function init(host: EHost): EngineModule {
     },
     dstop() { finishDiag(); },
     pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
+    qstart() { qStart(); },
+    qhome() { qrun = null; host.render(); },
+    qnext() { qNext(); },
+    qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
     mgo() { if (!mrun) return; mrun.run = mrun.qs.length ? { node: mrun.node, qs: mrun.qs, i: 0, got: 0, micro: true } : null; if (!mrun.run) mrun.res = { got: 0, of: 0, verdict: 'not-yet' }; host.render(); },
     mskip() { mrun = null; if (host.back) host.back(); else host.go('today'); },
     mback() { mrun = null; if (host.back) host.back(); else host.go('today'); },
@@ -303,6 +383,12 @@ export function init(host: EHost): EngineModule {
       const q = prun.qs[prun.i]!, a = norm(String(new FormData(f).get('a') || ''));
       if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
       probeAnswer((q.accept ?? []).some(x => norm(x) === a));
+    },
+    qtyped(f) {
+      if (!qrun?.q) return;
+      const q = qrun.q, raw = String(new FormData(f).get('a') || ''), a = norm(raw);
+      if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
+      qAnswer((q.accept ?? []).some(x => norm(x) === a), raw.trim());
     },
     mtyped(f) {
       const r = mrun?.run;

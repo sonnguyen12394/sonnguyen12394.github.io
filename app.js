@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 61;
+const STATE_V = 18, APP_VERSION = 62;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -3174,6 +3174,8 @@ function viewGames(){
   return `<section class="stack"><span class="eyebrow">Thử thách</span><h1>Chơi mà học</h1><p class="muted note">Mỗi trò vài phút, dùng những từ bạn đã học (chưa đủ thì lấy từ các unit đầu). Câu trả lời cũng tính vào mục tiêu ngày, XP và nhiệm vụ.</p></section>
   ${leaguePanel()}
   ${(()=>{ const ex=(st.exam||[])[0]; return `<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>${ico('exam')} Thi thử VSTEP rút gọn</h3><p class="muted">Nghe + Đọc có tính giờ, B1 → C1, ước tính bậc.${ex?` Lần gần nhất: ${exLevel((ex.l+ex.r)/2)} (Nghe ${ex.l}, Đọc ${ex.r}).`:''}</p></div><div class="row"><button class="btn primary" data-act="exgo">Vào thi</button></div></section>`; })()}
+  <section class="panel stack"><h3>🏰 Ladder Quest</h3><p class="muted">Leo tháp: mỗi đòn đánh là một câu tiếng Anh app chọn từ đúng những gì bạn còn thiếu để lên cấp. Câu càng giúp bạn tiến bộ, càng nhiều xu.</p>
+    <div class="row"><button class="btn primary" data-act="quest">▶ Chơi</button>${st.e&&st.e.q?`<span class="hint">Tầng ${st.e.q.floor} · 🪙 ${st.e.q.coins}</span>`:''}</div></section>
   <div class="goals">
     <div class="panel stack"><h3>⚡ Tốc độ 60 giây</h3><p class="muted">Chọn nghĩa đúng càng nhiều càng tốt trong 60 giây.</p><p class="num">Kỷ lục: ${G.speed||0} từ</p><button class="btn primary" data-act="speed">Chơi</button></div>
     <div class="panel stack"><h3>🧠 Ghép cặp</h3><p class="muted">Ghép 6 từ với nghĩa tiếng Việt, càng nhanh càng tốt.</p><p class="num">Kỷ lục: ${G.match?G.match+' giây':'—'}</p><button class="btn primary" data-act="match">Chơi</button></div>
@@ -5079,6 +5081,7 @@ document.addEventListener('click',e=>{
   if(d.gord!=null){ ui.gs.ord.push(+d.gord); return render(); }
   if(d.gunord!=null){ ui.gs.ord.splice(+d.gunord,1); return render(); }
   if(d.act==='micro') return microGo(d.r);
+  if(d.act==='quest') return go('goal',{er:'quest'});
   if(d.act&&d.act[0]==='g'&&gAct(d)!==false) return;
   if(d.flag!=null) return addFlag(+d.flag);
   if(d.rpick!=null){ const [i,k]=d.rpick.split(':').map(Number); if(!ui.read.done){ ui.read.picks[i]=k; render(); } return; }
@@ -8165,6 +8168,10 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:62,d:'2026-10-08',t:'Ladder Quest',big:true,items:[
+  'Trò chơi mới trong Thử thách: leo tháp tiếng Anh. Mỗi đòn đánh, mỗi lần trinh sát, mở rương hay đánh trùm là một câu tiếng Anh app chọn từ đúng những gì bạn còn thiếu để lên cấp.',
+  'Xu tỉ lệ với giá trị học: trùm ở câu chưa gặp, phần sắp quên và câu mới cho nhiều xu; câu đã thuộc cho rất ít. Trại cho bí kíp ngắn và hồi một tim.',
+  'Không tính giờ. Mỗi tầng khoảng 8 câu, có điểm dừng; thắng thua trong game không đổi đánh giá năng lực, chỉ câu trả lời mới được tính.']});
 CHANGELOG.unshift({v:61,d:'2026-10-08',t:'Bí kíp 60 giây',big:true,items:[
   'Sai một câu lẻ thì app chỉ ghi nhận, không làm bạn mất mạch. Sai lặp lại, hoặc cứ trả lời cùng một đáp án sai, app mời "Bí kíp 60 giây": cách dùng, lỗi người Việt hay gặp, 3 ví dụ, rồi 3 câu kiểm tra và quay lại đúng câu đang làm.',
   'Nếu app đã kiểm chứng lỗi đến từ phần nền còn hổng, app đề nghị học phần nền 1 phút trước, vì luyện tiếp phần trên chỉ thêm lỗi.',
@@ -8288,7 +8295,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.5e196342f4.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.7d55822793.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
