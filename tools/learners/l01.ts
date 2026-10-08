@@ -219,7 +219,10 @@ async function playFloor(page: Page): Promise<void> {
       else await page.locator('[data-e="qnext"]').first().click();
       continue;
     }
-    if (pk) { await answer(page, pk); await feedback(page); continue; }
+    if (pk) {
+      if (await visible(page, '[data-teach]')) { learn(pk.node, DAY, 0.2); note('teach', { node: pk.node }); }   // đọc thẻ mới trước khi đánh
+      await answer(page, pk); await feedback(page); continue;
+    }
     if (await visible(page, '[data-e="qnext"]')) { await page.locator('[data-e="qnext"]').first().click(); continue; }
     note('stuck', { why: 'tầng: không có câu, không có nút đi tiếp', text: (await text(page)).slice(0, 200) }); break;
   }

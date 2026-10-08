@@ -9,6 +9,7 @@ export type QItem = ReturnType<EHost['probe']>[number];
 export interface QuestRun {
   plan: Challenge[]; i: number; hp: number; max: number; coins: number; ok: number; n: number; floor: number;
   q: QItem | null; card: MicroCard | null; chk: QItem | null;   // chk: câu thử ngay sau bí kíp ở trại (v69)
+  teach: boolean; taught: string[];                              // teach: lượt này dạy trước (thẻ mới) rồi mới hỏi (v69)
   ans: { ok: boolean; right: string; given: string; coins: number; novel: boolean; why?: string } | null;
   done: 'win' | 'lose' | null; wrong: string[]; gaps: string[];
 }
@@ -50,7 +51,8 @@ export function viewQuestRun(c: ECtx, r: QuestRun): string {
   const body = q.opts
     ? `<div class="stack" style="gap:8px">${q.opts.map((o, i) => `<button class="btn" style="justify-content:flex-start" data-e="qans" data-i="${i}">${esc(o)}</button>`).join('')}<button class="btn ghost" data-e="qans" data-i="-1">Không biết</button></div>`
     : `<form class="stack" data-eform="qtyped"><input class="field" name="a" autocomplete="off" autocapitalize="off" spellcheck="false" lang="en" aria-label="Câu trả lời"><div class="row"><button class="btn primary">Tấn công</button><button class="btn ghost" type="button" data-e="qans" data-i="-1">Không biết</button></div></form>`;
-  return `${top}<section class="stack"><p style="font-size:20px;font-weight:600">${esc(q.prompt)}</p></section>${body}`;
+  const card = r.teach && r.card ? `<details class="panel stack" open data-teach><summary><b>📜 Thẻ mới: ${esc(r.card.title)}</b> <span class="hint">(đọc rồi đánh)</span></summary>${r.card.concept.slice(0, 2).map(x => `<p>${esc(x)}</p>`).join('')}<ul>${r.card.examples.slice(0, 2).map(([en, vi]) => `<li><b lang="en">${esc(en)}</b>${vi ? ` <span class="hint">· ${esc(vi)}</span>` : ''}</li>`).join('')}</ul></details>` : '';
+  return `${top}${card}<section class="stack"><p style="font-size:20px;font-weight:600">${esc(q.prompt)}</p></section>${body}`;
 }
 
 export function viewQuestEnd(c: ECtx, r: QuestRun): string {

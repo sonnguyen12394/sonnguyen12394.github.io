@@ -297,7 +297,13 @@ export function init(host: EHost): EngineModule {
       qcur = { node: target ?? '', gap: '' };
       return;
     }
-    const it = qItem(ch); qrun.q = it.q; qrun.card = null; qx = it.xfer;
+    const it = qItem(ch); qrun.q = it.q; qrun.card = null; qrun.teach = false; qx = it.xfer;
+    // v69: lỗ hổng "chưa biết" (chưa từng có bằng chứng ở nút) → dạy trước rồi mới hỏi (remedy "teach": dạy + nhận ra). Câu trả lời ngay
+    // sau thẻ là bằng chứng có trợ giúp (hint), không được tính như tự lực. Mỗi nút chỉ dạy trước một lần mỗi lượt chơi.
+    if (it.q && qcur.gap === 'knowledge' && !qrun.taught.includes(qcur.node)) {
+      const mc = host.micro?.(qcur.node);
+      if (mc) { qrun.card = mc.card; qrun.teach = true; qrun.taught.push(qcur.node); }
+    }
   }
   function qStart(): void {
     if (!loaded()) { ensure(); return; }
@@ -310,7 +316,7 @@ export function init(host: EHost): EngineModule {
     const plan = planFloor({ acts, open: p.open, review, can: n => n.startsWith('u:') || n.startsWith('g:'), started: n => !!e.m[n], floor: sv.floor, fresh: n => (cnt.get(n) ?? 0) < QUEST.capDay, claims });
     if (!plan.length) { host.toast('Chưa có gì để leo: chọn mục tiêu CEFR trước.'); return; }
     const max = hearts(sv.floor);
-    qrun = { plan, i: 0, hp: max, max, coins: 0, ok: 0, n: 0, floor: sv.floor, q: null, card: null, chk: null, ans: null, done: null, wrong: [], gaps: [] };
+    qrun = { plan, i: 0, hp: max, max, coins: 0, ok: 0, n: 0, floor: sv.floor, q: null, card: null, chk: null, teach: false, taught: [], ans: null, done: null, wrong: [], gaps: [] };
     qLoad(); host.render();
   }
   function qAnswer(ok: boolean, given: string): void {
@@ -319,7 +325,7 @@ export function init(host: EHost): EngineModule {
     if (qcur.gap) qrun.gaps.push(qcur.gap);
     const m0 = camp ? stat(e.m[node]?.[q.level as 3]).m : 0;
     // Câu thử ở trại: vừa đọc bí kíp → bằng chứng có trợ giúp (hint, trọng số 0,5), ngữ cảnh micro như bí kíp 60 giây.
-    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: camp ? 'micro' : qx ? 'transfer' : ch.context, src: camp ? 'micro' : qx ? 'transfer' : 'game', ch: camp ? `micro/${node}` : ch.id, gp: ch.gameplayDifficulty, ...(camp ? { hint: true } : {}), ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: camp ? 'micro' : qx ? 'transfer' : ch.context, src: camp ? 'micro' : qx ? 'transfer' : 'game', ch: camp ? `micro/${node}` : ch.id, gp: ch.gameplayDifficulty, ...(camp || qrun.teach ? { hint: true } : {}), ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (camp) addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: node, lv: q.level as 3, dec: `micro:${microVerdict(ok ? 1 : 0, 1)}`, rule: `${RULE_ID}/${MICRO_VER}`,
       info: { from: 'quest-camp', why: 'bí kíp ở trại', got: ok ? 1 : 0, of: 1, m0: Math.round(m0 * 100) / 100, m1: Math.round(stat(e.m[node]?.[q.level as 3]).m * 100) / 100 }, evs: e.ev.led.slice(-1).map(x => x.id) }, false);
     const coins = camp ? 2 : reward(ch, ok, novel), right = q.opts ? q.opts[q.ans ?? 0] ?? '' : q.accept?.[0] ?? '';
