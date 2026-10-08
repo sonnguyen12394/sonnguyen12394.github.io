@@ -75,5 +75,7 @@ test('v69 (bot L01): học xong phần đang dở trước khi mở phần mới
   const acts = rank({ open: many, probe: null, review: none, verify: [] });
   const started = new Set(['u:n3', 'u:n5', 'u:n7', 'u:n8', 'u:n9', 'u:n10']);   // đã đủ 6 phần đang học
   const plan = planFloor({ acts, open: many, review: [], can: () => true, started: n => started.has(n), floor: 1 });
-  assert.ok(plan.filter(c => c.gameType === 'monster').every(c => started.has(c.node)), JSON.stringify(plan.map(c => c.node)));
+  // Phần mới duy nhất được mở là phần ưu tiên số 1 (trùng "Bước tiếp theo" hiển thị); còn lại là phần đang học dở.
+  assert.ok(plan.filter(c => c.gameType === 'monster').every(c => started.has(c.node) || c.node === 'u:n0'), JSON.stringify(plan.map(c => c.node)));
+  assert.equal(plan[0]!.node, 'u:n0');
 });

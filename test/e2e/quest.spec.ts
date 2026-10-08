@@ -43,3 +43,38 @@ test('Ladder Quest: vào từ Thử thách, leo một tầng, câu trả lời t
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible();
   expect(errors).toEqual([]);
 });
+
+test('v69 (bot L01): phần chưa biết được dạy trước (thẻ mới); trại có 1 câu thử ngay sau bí kíp; sai có một dòng "vì sao"', async ({ page, errors }) => {
+  await page.goto('/');
+  await page.waitForFunction(() => (window as any).ELREADY === true);
+  await page.evaluate(() => {
+    const w = window as any, st = w.eval('st');
+    st.onboarded = true;
+    st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
+    w.eval('save()'); w.eval("go('play')");
+  });
+  await page.getByRole('button', { name: /Leo tầng 1/ }).click();
+  const end = page.getByRole('heading', { name: /Qua tầng|Hết tim/ });
+  let taught = 0, checked = 0, why = 0;
+  for (let i = 0; i < 30 && !(await end.isVisible()); i++) {
+    const next = page.locator('[data-e="qnext"]'), chk = page.locator('[data-e="qcheck"]'), dunno = page.getByRole('button', { name: 'Không biết' }).first();
+    await expect(next.or(chk).or(dunno).or(end).first()).toBeVisible();
+    if (await end.isVisible()) break;
+    if (await chk.isVisible()) { await chk.click(); checked++; continue; }
+    if (await next.isVisible()) { if (await page.getByText('💡').count()) why++; await next.click(); continue; }
+    if (await page.locator('[data-teach]').count()) taught++;
+    // Câu đầu "Không biết" (để thấy dòng vì sao), các câu sau trả lời đúng (đáp án lấy từ EM.peek, chỉ đọc) để còn tim tới trại.
+    const pk = i === 0 ? null : await page.evaluate(() => (window as any).eval('EM').peek());
+    if (!pk) { await dunno.click(); continue; }
+    if (pk.opts) await page.locator(`[data-e="qans"][data-i="${pk.ans}"]`).click();
+    else { await page.locator('input[name="a"]').fill(pk.accept[0]); await page.locator('input[name="a"]').press('Enter'); }
+  }
+  await expect(end).toBeVisible();
+  expect(taught).toBeGreaterThan(0);
+  expect(checked).toBe(1);
+  expect(why).toBeGreaterThan(0);
+  const e = await page.evaluate(() => (window as any).eval('st').e);
+  expect(e.ev.led.some((x: any) => x.src === 'micro' && x.ctx === 'micro' && x.asst === 1)).toBe(true);   // câu thử sau trại: có trợ giúp
+  expect(e.ev.snap.some((s: any) => String(s.dec).startsWith('micro:') && s.info?.from === 'quest-camp')).toBe(true);
+  expect(errors).toEqual([]);
+});

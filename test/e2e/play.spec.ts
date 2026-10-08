@@ -17,12 +17,16 @@ test('người mới: Bắt đầu → dò ngắn (≤ 8 phần) → mục tiêu
     await dunno.click();
   }
   await expect(page.getByRole('heading', { name: /App đã đặt mục tiêu/ })).toBeVisible();
+  // v69 (bot L01): kết quả nói rõ là ước lượng, sẽ kiểm tra lại khi chơi; bản chỉ CEFR không có bảng giờ học các kỳ thi.
+  await expect(page.getByText(/có thể lệch khoảng nửa cấp/)).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Số giờ học ước tính tới từng kỳ thi' })).toHaveCount(0);
   const e = await page.evaluate(() => (window as any).eval('st').e);
   expect(e.goals.map((g: any) => g.id)).toEqual(['cefr-a1']);   // không biết gì → A1
   expect(e.diag.n).toBeLessThanOrEqual(8);
   expect(e.ev.snap.some((s: any) => s.dec === 'goal:AUTO')).toBe(true);
   await page.getByRole('button', { name: /Bắt đầu leo tháp/ }).click();
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible();
+  await expect(page.getByText(/kỹ năng đã vững/)).toBeVisible();   // v69: tiến độ kỹ năng con, không chỉ số năng lực Can-do
   await expect(page.locator('#bnav button[aria-current="page"], #nav button[aria-current="page"]').first()).toContainText('Chơi');
   // Mở lại app: màn chính là tháp (chờ dữ liệu nền tải xong trước, như trên).
   await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });

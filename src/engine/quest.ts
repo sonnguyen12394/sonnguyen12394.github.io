@@ -62,7 +62,8 @@ export function planFloor(x: FloorIn): Challenge[] {
   });
   const all = x.open.filter(o => x.can(o.node)), rested = x.fresh ? all.filter(o => x.fresh!(o.node)) : all;
   const busy = all.filter(o => x.started(o.node)).length, room = Math.max(0, QUEST.wip - busy);
-  const focus = (xs: PathItem[]): PathItem[] => { let k = 0; return xs.filter(o => x.started(o.node) || k++ < room); };
+  // Phần ưu tiên số 1 của lộ trình (chính là "Bước tiếp theo" hiển thị) luôn được vào, kể cả khi đã đủ phần đang học dở.
+  const focus = (xs: PathItem[]): PathItem[] => { let k = 0; return xs.filter((o, i) => i === 0 || x.started(o.node) || k++ < room); };
   const learn = [focus(rested), focus(all)].find(xs => xs.length) ?? all;
   const claim = (): string | undefined => (x.claims ?? []).find(n => x.can(n) && !used.has(n));
   const take = (kind: Enc): Challenge | null => {
