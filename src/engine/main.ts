@@ -16,8 +16,10 @@ import { rootVerdict, MODE_VI, type Mode } from './probe.ts';
 import { eig } from './probe.ts';
 import { closure, defaultLevel, mergeGoals } from './graph.ts';
 import { bandToCefr } from '../exam/scales.ts';
-import { viewToday, viewTout, viewProbeDone, viewXferDone, nextStep, xferItems, type ToutRun } from './today.ts';
+import { viewToday, viewTout, viewProbeDone, viewXferDone, viewMicroCard, viewMicroDone, nextStep, xferItems, type ToutRun } from './today.ts';
 import { xferStatus } from './transfer.ts';
+import { microVerdict, MICRO, MICRO_VER } from './micro.ts';
+import type { MicroCard } from './host.ts';
 import { stat } from './mastery.ts';
 import { nodeStat } from './views.ts';
 
@@ -49,7 +51,7 @@ export function init(host: EHost): EngineModule {
   const future = (): boolean => !!host.future?.();
   const V = (): EState => { const e = E(); return { ...e, goals: e.goals.filter(g => goalOn(g.id, future())) }; };
   let loadErr = '';
-  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('probe') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout') || route.startsWith('xfer');
+  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('probe') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout') || route.startsWith('xfer') || route.startsWith('micro');
   const ensure = () => {
     if (loaded()) return;
     loadGraph(host.fetchJson).then(() => { loadErr = ''; host.render(); })
@@ -191,7 +193,42 @@ export function init(host: EHost): EngineModule {
     host.save(); host.render();
   }
 
+  // ---------- Bí kíp 60 giây (v61, §51–53) ----------
+  // Đọc bí kíp → vài câu kiểm tra → quay lại bài đang làm. Câu ngay sau khi vừa được dạy tính như có trợ giúp (trọng số nhỏ,
+  // không tính là "đúng ở câu mới"): kết quả tức thì đánh giá cao việc học thật (§53). Hiệu quả đo bằng snapshot trước/sau.
+  let mrun: { key: string; node: string; lv: number; from: string; why: string; card: MicroCard; qs: ToutRun['qs']; run: ToutRun | null; m0: number; res?: { got: number; of: number; verdict: string } } | null = null;
+  function microStart(key: string, node: string, lv: number, from: string, why: string): void {
+    const x = host.micro?.(node);
+    mrun = x ? { key, node, lv, from, why, card: x.card, qs: x.qs.slice(0, MICRO.checkN), run: null, m0: stat(E().m[node]?.[lv as 3]).m } : null;
+  }
+  function microAnswer(ok: boolean, given?: string): void {
+    const r = mrun?.run;
+    if (!mrun || !r) return;
+    const q = r.qs[r.i]!, e = E();
+    ingest(e.ev, e.m, { node: mrun.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'micro', src: 'micro', hint: true, ch: `micro/${mrun.node}`, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    if (ok) r.got++;
+    r.i++;
+    if (r.i >= r.qs.length) {
+      const verdict = microVerdict(r.got, r.qs.length), m1 = stat(e.m[mrun.node]?.[mrun.lv as 3]).m;
+      addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: mrun.node, lv: mrun.lv as 3, dec: `micro:${verdict}`, rule: `${RULE_ID}/${MICRO_VER}`,
+        info: { from: mrun.from, why: mrun.why, got: r.got, of: r.qs.length, m0: Math.round(mrun.m0 * 100) / 100, m1: Math.round(m1 * 100) / 100 },
+        evs: e.ev.led.filter(x => x.node === mrun!.node && x.ctx === 'micro').slice(-r.qs.length).map(x => x.id) }, false);
+      mrun.res = { got: r.got, of: r.qs.length, verdict }; mrun.run = null;
+    }
+    host.save(); host.render();
+  }
+
   const routes: Record<string, (c: ECtx) => string> = {
+    micro: c => {
+      if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
+      const [, node = '', lv = '3', from = node, ...rest] = c.route.split('/');   // micro/<nút>/<mức>/<nút đang sai>/<lý do>
+      const why = decodeURIComponent(rest.join('/') || 'bạn sai phần này vài lần gần đây');
+      if (!mrun || mrun.key !== c.route) microStart(c.route, node, Number(lv), from, why);
+      if (!mrun) return `<p class="muted">Chưa có bí kíp cho phần này.</p><div class="row"><button class="btn" data-e="mback">Quay lại</button></div>`;
+      if (mrun.res) return viewMicroDone(c, { node: mrun.node, ...mrun.res, back: !!host.back });
+      if (mrun.run) return viewTout(c, mrun.run, null);
+      return viewMicroCard(c, mrun.card, mrun.why, from !== node);
+    },
     xfer: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
       const [, node = '', lv = '3'] = c.route.split('/');   // xfer/<nút>/<mức>
@@ -253,6 +290,10 @@ export function init(host: EHost): EngineModule {
     },
     dstop() { finishDiag(); },
     pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
+    mgo() { if (!mrun) return; mrun.run = mrun.qs.length ? { node: mrun.node, qs: mrun.qs, i: 0, got: 0, micro: true } : null; if (!mrun.run) mrun.res = { got: 0, of: 0, verdict: 'not-yet' }; host.render(); },
+    mskip() { mrun = null; if (host.back) host.back(); else host.go('today'); },
+    mback() { mrun = null; if (host.back) host.back(); else host.go('today'); },
+    mans(el) { const r = mrun?.run; if (!r) return; const q = r.qs[r.i]!, i = Number(el.dataset.i); microAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] : undefined); },
     xans(el) { if (!xrun) return; const q = xrun.qs[xrun.i]!, i = Number(el.dataset.i); xferAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] : undefined); },
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
@@ -262,6 +303,13 @@ export function init(host: EHost): EngineModule {
       const q = prun.qs[prun.i]!, a = norm(String(new FormData(f).get('a') || ''));
       if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
       probeAnswer((q.accept ?? []).some(x => norm(x) === a));
+    },
+    mtyped(f) {
+      const r = mrun?.run;
+      if (!r) return;
+      const q = r.qs[r.i]!, raw = String(new FormData(f).get('a') || ''), a = norm(raw);
+      if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
+      microAnswer((q.accept ?? []).some(x => norm(x) === a), raw.trim());
     },
     xtyped(f) {
       if (!xrun) return;
@@ -304,7 +352,7 @@ export function init(host: EHost): EngineModule {
   return {
     version: MODULE_VERSION,
     render,
-    after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } },
+    after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } if (!route.startsWith('micro')) mrun = null; },
     next() {
       const e = V();
       if (!e.goals.length) return null;

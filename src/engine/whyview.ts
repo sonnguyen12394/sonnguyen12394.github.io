@@ -22,14 +22,14 @@ const SRC_VI: Record<string, string> = {
   vocab: 'luyện từ vựng', gram: 'luyện ngữ pháp', exam: 'câu đọc/nghe', pa: 'bài Pre-A1', diag: 'bài chẩn đoán', testout: 'kiểm tra bỏ qua',
   perf: 'bài làm thật', game: 'thử thách game', micro: 'bí kíp (micro)', transfer: 'thử thách transfer', legacy: 'tiến độ trước v53',
 };
-const DEC_VI: Record<string, string> = { 'transfer:ok': 'Đúng hết ở câu mới', 'transfer:partial': 'Đúng một phần ở câu mới', 'transfer:fail': 'Trượt ở câu mới', PASS: 'Đạt', FAIL: 'Chưa đạt / mất Đạt', READY: 'Sẵn sàng', NOT_READY: 'Chưa sẵn sàng', ACHIEVED: 'Đạt mục tiêu', CHOSEN: 'Chọn làm bước tiếp theo' };
+const DEC_VI: Record<string, string> = { 'micro:fixed': 'Bí kíp: đúng hết câu kiểm tra', 'micro:partial': 'Bí kíp: đúng một phần', 'micro:not-yet': 'Bí kíp: chưa nắm', 'transfer:ok': 'Đúng hết ở câu mới', 'transfer:partial': 'Đúng một phần ở câu mới', 'transfer:fail': 'Trượt ở câu mới', PASS: 'Đạt', FAIL: 'Chưa đạt / mất Đạt', READY: 'Sẵn sàng', NOT_READY: 'Chưa sẵn sàng', ACHIEVED: 'Đạt mục tiêu', CHOSEN: 'Chọn làm bước tiếp theo' };
 const n2 = (x: number): string => String(Math.round(x * 100) / 100).replace('.', ',');
 const iso = (d: number): string => new Date(d * 86400000).toISOString().slice(0, 10);
 
 function snapRow(c: ECtx, s: Snapshot): string {
   const esc = c.host.esc, again = replay(s), ok = again === s.dec || s.kind === 'diag' ? '' : ` <span class="pill warn">tái tạo ra ${esc(again)}</span>`;
   const m = s.m ? ` · mastery ${n2(s.m.mean)}, cận dưới ${n2(s.m.lb)} (cần ${n2(s.thr!.m)} / ${n2(s.thr!.lb)}) · ${n2(s.m.n)} lượt có trọng số, ${s.m.ctx} ngữ cảnh, ${s.m.qt} dạng câu, ${s.m.nov} lượt câu mới` : '';
-  const info = s.kind === 'readiness' ? ` · ${s.info?.done ?? ''}${s.info?.total ? `/${s.info.total} năng lực` : ''}` : s.kind === 'testout' || s.dec.startsWith('transfer:') ? ` · đúng ${s.info?.got}/${s.info?.of}` : '';
+  const info = s.kind === 'readiness' ? ` · ${s.info?.done ?? ''}${s.info?.total ? `/${s.info.total} năng lực` : ''}` : s.kind === 'testout' || s.dec.startsWith('transfer:') || s.dec.startsWith('micro:') ? ` · đúng ${s.info?.got}/${s.info?.of}` : '';
   return `<li>${iso(s.day)} · <b>${esc(DEC_VI[s.dec] ?? s.dec)}</b>${s.lv ? ` (mức ${s.lv})` : ''}${m}${info} · luật <code>${esc(s.rule)}</code> · ${s.evs.length} bằng chứng${ok}</li>`;
 }
 

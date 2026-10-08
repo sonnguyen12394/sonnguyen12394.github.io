@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 60;
+const STATE_V = 18, APP_VERSION = 61;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -2744,7 +2744,7 @@ function viewSession(){
         <details class="fbmore"><summary>Xem ví dụ và mẹo nhớ</summary><span lang="en">${highlight(w.ex,w)}</span>
         <span class="hint">${esc(w.exVi||'')}</span>
         ${tipBox(w)}
-        <span class="hint"><span lang="en">${esc(w.word)}</span> (${esc(w.pos)}): ${esc(w.vi)}.</span></details>${a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}</div>`;
+        <span class="hint"><span lang="en">${esc(w.word)}</span> (${esc(w.pos)}): ${esc(w.vi)}.</span></details>${a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${UNIT_OF[ex.wid]?microBox('u:'+UNIT_OF[ex.wid].id,ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3):''}</div>`;
     }
     fb+=xpFloat(s);
     fb+=`<div class="row"><button class="btn primary" data-act="next" id="nextbtn">${s.i+1<s.q.length?'Tiếp tục':'Xem kết quả'} <span class="hint" style="color:inherit;opacity:.7">Enter</span></button>${flagBox()}</div>`;
@@ -4107,7 +4107,7 @@ function viewGSess(){
       const close=a.text!=null&&ex.accept&&lev(gcanon(a.text),gcanon(closest(a.text,ex.accept)))<=2;
       fb=`<div class="fb bad" role="status"><strong>${a.dunno?'Chưa biết — xem đáp án và nhớ lại nhé':`Chưa đúng${close?' — gần đúng, chỉ sai 1–2 chữ':''}`}</strong>${a.text!=null?`<span>Bạn viết: <s lang="en">${esc(a.text)}</s></span>`:''}
         <span>Đáp án: <b lang="en">${esc(gRight(ex))}</b></span>${why?`<p class="why"><b>Vì sao sai:</b> ${esc(why)}</p>`:''}
-        <span class="hint">Nhắc lại: <span lang="en">${esc(p.form[0])}</span> — xem đủ công thức trong bài học.</span>${a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}</div>`; }
+        <span class="hint">Nhắc lại: <span lang="en">${esc(p.form[0])}</span> — xem đủ công thức trong bài học.</span>${a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${microBox('g:'+ex.gid,{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2)}</div>`; }
     fb+=xpFloat(s);
     fb+=`<div class="row"><button class="btn primary" data-act="gnext" id="gnextbtn">${s.i+1<s.q.length?'Tiếp tục':'Xem kết quả'} <span class="hint" style="color:inherit;opacity:.7">Enter</span></button>${flagBox()}</div>`;
   }
@@ -5078,6 +5078,7 @@ document.addEventListener('click',e=>{
   if(d.gpick!=null){ const ex=ui.gs.q[ui.gs.i]; return gAnswer(+d.gpick===ex.ans,{picked:+d.gpick}); }
   if(d.gord!=null){ ui.gs.ord.push(+d.gord); return render(); }
   if(d.gunord!=null){ ui.gs.ord.splice(+d.gunord,1); return render(); }
+  if(d.act==='micro') return microGo(d.r);
   if(d.act&&d.act[0]==='g'&&gAct(d)!==false) return;
   if(d.flag!=null) return addFlag(+d.flag);
   if(d.rpick!=null){ const [i,k]=d.rpick.split(':').map(Number); if(!ui.read.done){ ui.read.picks[i]=k; render(); } return; }
@@ -8164,6 +8165,10 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:61,d:'2026-10-08',t:'Bí kíp 60 giây',big:true,items:[
+  'Sai một câu lẻ thì app chỉ ghi nhận, không làm bạn mất mạch. Sai lặp lại, hoặc cứ trả lời cùng một đáp án sai, app mời "Bí kíp 60 giây": cách dùng, lỗi người Việt hay gặp, 3 ví dụ, rồi 3 câu kiểm tra và quay lại đúng câu đang làm.',
+  'Nếu app đã kiểm chứng lỗi đến từ phần nền còn hổng, app đề nghị học phần nền 1 phút trước, vì luyện tiếp phần trên chỉ thêm lỗi.',
+  'Mỗi phần tối đa một bí kíp mỗi ngày. Câu kiểm tra ngay sau bí kíp được tính nhẹ (vừa được nhắc), app sẽ kiểm lại sau ở câu khác.']});
 CHANGELOG.unshift({v:60,d:'2026-10-08',t:'Biết thật, không chỉ thuộc bài',big:true,items:[
   'Phần nào bạn đã Đạt khi luyện, app sẽ thử ở câu mới chưa gặp: câu điền từ lấy từ bài đọc khác trong app, câu ngữ pháp tự gõ hoặc sửa lỗi bạn chưa làm. 3 câu, không tốn năng lượng.',
   'Đúng ở câu mới là bằng chứng mạnh nhất rằng bạn biết thật. Trượt 2 lần ở câu mới thì phần đó được mở lại để luyện thêm ở nhiều ngữ cảnh.',
@@ -8283,7 +8288,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.ff3a69ca03.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.5e196342f4.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
@@ -8291,6 +8296,8 @@ const EHOST = {
   cando:id=>{ const c=CANDO.find(x=>x.id===id); if(!c) return null; const p=cdProg(c); return {p:p.p,m:p.m,lb:p.lb,k:p.k,need:p.need}; },
   probe:node=>eProbe(node),
   transfer:node=>eXfer(node),
+  micro:node=>eMicroCard(node),
+  back:()=>microBack(),
   dayInfo:()=>{ const dw=dueWords().length, dg=dueG().length, t=today();
     const lastPerf=Math.max(0,...Object.values(st.dlg||{}).map(d=>d&&d.day||0),...((st.x&&st.x.attempts)||[]).filter(a=>a.kind==='mock').map(a=>a.day||0),...((st.me&&st.me.vx)||[]).map(v=>v&&v.day||0));
     return {reviewItems:dw+dg, reviewMins:(dw?reviewMin(dw):0)+dg*2, mins:Math.round((st.x&&st.x.mins)||20), perfDue:t-lastPerf>=7}; },
@@ -8347,6 +8354,35 @@ function eXfer0(node){ const out=[];
     (p.fx||[]).forEach((x,i)=>out.push({id:'g:'+p.id+'|fix|x'+i,level:4,g:0,prompt:'Sửa câu sai: '+x.bad,accept:[x.good,...(x.alt||[])]}));
     return out; }
   return out; }
+// v61 bí kíp 60 giây (§51–53): sau câu sai, lõi engine quyết ghi nhận / hỏi thêm / mời bí kíp / học phần nền ngay.
+function eMicro(node,level){ try{ return typeof ELCORE!=='undefined'&&ELCORE.micro?ELCORE.micro(st,node,level,today()):null; }catch(e){ return null; } }
+function microBox(node,level){ const d=eMicro(node,level); if(!d||(d.act!=='offer'&&d.act!=='now')) return '';
+  const vi=d.target.startsWith('g:')?(GPT[d.target.slice(2)]||{}).vi:d.target.startsWith('u:')?uname(UNIT_BY_ID[d.target.slice(2)]||{words:[]}):d.target;
+  const r=`micro/${d.target}/${d.lv}/${d.node}/${encodeURIComponent(d.why)}`;
+  return d.act==='now'?`<div class="panel stack" style="margin-top:8px"><p class="warnt"><b>Lỗi này đến từ phần nền:</b> ${esc(vi||'')}. Học 1 phút phần nền trước sẽ nhanh hơn làm tiếp.</p><div class="row"><button class="btn primary small" data-act="micro" data-r="${esc(r)}">⚡ Học phần nền ngay</button></div></div>`
+    :`<div class="row" style="margin-top:8px"><button class="btn small" data-act="micro" data-r="${esc(r)}">⚡ Bí kíp 60 giây: ${esc(vi||'')}</button><span class="hint">${esc(d.why)}</span></div>`; }
+function microGo(r){ ui.mback=ui.view; save(); go('goal',{er:r}); }
+function microBack(){ const v=ui.mback; ui.mback=null;
+  if(v==='gsess'&&ui.gs) return go('gsess'); if(v==='session'&&ui.sess) return go('session'); return go('goal',{er:'today'}); }
+// Nội dung bí kíp: ngữ pháp = cách dùng + công thức + lỗi người Việt hay gặp + 3 ví dụ; từ vựng = những từ vừa sai trong unit.
+function eMicroCard(node){
+  if(node.startsWith('g:')){ const p=GPT[node.slice(2)]; if(!p) return null;
+    const mis=(()=>{ try{ const m=ELCORE.ev&&st.e&&st.e.ev&&st.e.ev.mis[node]; const t=m&&Object.values(m).sort((a,b)=>b.n-a.n)[0]; return t&&t.n>=2?t.t:''; }catch(e){ return ''; } })();
+    const why=mis?[...(p.mc||[]),...(p.ty||[])].map(x=>(x.why||{})[mis]).find(Boolean):'';
+    return {card:{title:p.vi,en:p.title,concept:[(p.use||[])[0]||'',p.form[0]].filter(Boolean),contrast:why||p.note||'',...(mis?{mis}:{}),examples:p.ex.slice(0,3)},qs:eProbe(node).filter(q=>q.level<=3)}; }
+  if(node.startsWith('u:')){ const u=UNIT_BY_ID[node.slice(2)]; if(!u) return null;
+    const led=((st.e&&st.e.ev&&st.e.ev.led)||[]).filter(x=>x.node===node&&!x.ok&&x.item).slice(-12).reverse();
+    const ids=[...new Set(led.map(x=>String(x.item).split(':')[1]).filter(id=>WORD[id]&&UNIT_OF[id]===u))].slice(0,3);
+    const ws=(ids.length?ids:u.words.slice(0,3).map(w=>w.id)).map(id=>WORD[id]);
+    // Câu kiểm tra xoay vòng trên các từ vừa sai: tự gõ (nhớ ra) → chọn nghĩa → điền vào câu ví dụ → chọn từ; lấy 3 câu khác nhau.
+    const pool=u.words.filter(w=>!ws.includes(w)), qs=[];
+    ws.forEach(w=>qs.push({id:'w:'+w.id+':mic',level:3,g:0,prompt:`Gõ từ tiếng Anh nghĩa là “${w.vi}” (${w.pos||'từ'})`,accept:[w.word]}));
+    ws.forEach(w=>{ const opts=shuffle([w.vi,...shuffle(pool.slice()).slice(0,3).map(x=>x.vi)]); qs.push({id:'w:'+w.id+':micr',level:1,g:1/opts.length,prompt:`“${w.word}” nghĩa là gì?`,opts,ans:opts.indexOf(w.vi)}); });
+    ws.forEach(w=>{ const m=String(w.ex).match(inflRe(w)); if(m) qs.push({id:'w:'+w.id+':micc',level:3,g:0,prompt:`Điền từ: ${String(w.ex).replace(m[0],'___')}`,accept:[m[0]]}); });
+    ws.forEach(w=>{ const opts=shuffle([w.word,...shuffle(pool.slice()).slice(0,3).map(x=>x.word)]); qs.push({id:'w:'+w.id+':micw',level:2,g:1/opts.length,prompt:`Từ nào nghĩa là “${w.vi}”?`,opts,ans:opts.indexOf(w.word)}); });
+    const pick=[qs[0],qs[ws.length],qs[2*ws.length],...qs].filter((q,i,a)=>q&&a.indexOf(q)===i).slice(0,3);
+    return {card:{title:uname(u),concept:ws.map(w=>`${w.word} (${w.pos||'từ'}): ${w.vi}`),contrast:ws.map(w=>w.tip).filter(Boolean)[0]||'',examples:ws.map(w=>[w.ex,w.exVi||''])},qs:pick}; }
+  return null; }
 let _emP=null, _emErr='', _emN=0;
 // Lần tải lại dùng URL khác (?r=N): trình duyệt có thể nhớ lần import hỏng của cùng URL.
 // bg = tải trước khi rảnh: thất bại thì im lặng (không để lỗi nền "dính" lên màn Mục tiêu); mở màn sẽ tải lại và mới báo lỗi.

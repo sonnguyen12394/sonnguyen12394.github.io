@@ -3,7 +3,7 @@
 
 import type { ECtx } from './views.ts';
 import { nodeStat } from './views.ts';
-import type { EHost } from './host.ts';
+import type { EHost, MicroCard } from './host.ts';
 import type { EState } from './state.ts';
 import { GOALS, loaded } from './data.ts';
 import { plan, session, type PathOut, type Session, type PathItem } from './path.ts';
@@ -131,7 +131,7 @@ export function nextStep(host: EHost, e: EState, ix: Index): { h: string; p: str
   };
 }
 
-export interface ToutRun { node: string; qs: ReturnType<EHost['probe']>; i: number; got: number; mode?: Mode; for?: string; eig?: number; x?: boolean }
+export interface ToutRun { node: string; qs: ReturnType<EHost['probe']>; i: number; got: number; mode?: Mode; for?: string; eig?: number; x?: boolean; micro?: boolean }
 export function viewTout(c: ECtx, run: ToutRun | null, result: { node: string; pass: boolean } | null): string {
   const { host } = c, esc = host.esc, ix = loaded()!;
   if (result) {
@@ -141,11 +141,29 @@ export function viewTout(c: ECtx, run: ToutRun | null, result: { node: string; p
       <div class="row"><button class="btn primary" data-e="go" data-r="today">Về lộ trình hôm nay</button></div>`;
   }
   if (!run) return `<p class="muted">Không có câu kiểm tra cho phần này.</p><div class="row"><button class="btn" data-e="go" data-r="today">Về lộ trình</button></div>`;
-  const q = run.qs[run.i]!, n = ix.node.get(run.node)!, act = run.x ? 'xans' : run.mode ? 'pans' : 'tans', form = run.x ? 'xtyped' : run.mode ? 'ptyped' : 'ttyped';
+  const q = run.qs[run.i]!, n = ix.node.get(run.node)!, act = run.micro ? 'mans' : run.x ? 'xans' : run.mode ? 'pans' : 'tans', form = run.micro ? 'mtyped' : run.x ? 'xtyped' : run.mode ? 'ptyped' : 'ttyped';
   const body = q.opts
     ? `<div class="stack" style="gap:8px">${q.opts.map((o, i) => `<button class="btn" style="justify-content:flex-start" data-e="${act}" data-i="${i}">${esc(o)}</button>`).join('')}<button class="btn ghost" data-e="${act}" data-i="-1">Không biết</button></div>`
     : `<form class="stack" data-eform="${form}"><input class="field" name="a" autocomplete="off" autocapitalize="off" spellcheck="false" lang="en" aria-label="Câu trả lời"><div class="row"><button class="btn primary">Trả lời</button><button class="btn ghost" type="button" data-e="${act}" data-i="-1">Không biết</button></div></form>`;
-  return `<section class="stack"><span class="eyebrow">${run.x ? 'Thử ở câu mới' : run.mode ? 'Kiểm tra nhanh' : 'Kiểm tra để bỏ qua'} · ${esc(n.vi)} · câu ${run.i + 1}/${run.qs.length}</span>${run.mode ? `<p class="hint">${esc(MODE_VI[run.mode])}</p>` : ''}<h2 style="font-size:20px">${esc(q.prompt)}</h2></section>${body}`;
+  return `<section class="stack"><span class="eyebrow">${run.micro ? 'Kiểm tra sau bí kíp' : run.x ? 'Thử ở câu mới' : run.mode ? 'Kiểm tra nhanh' : 'Kiểm tra để bỏ qua'} · ${esc(n.vi)} · câu ${run.i + 1}/${run.qs.length}</span>${run.mode ? `<p class="hint">${esc(MODE_VI[run.mode])}</p>` : ''}<h2 style="font-size:20px">${esc(q.prompt)}</h2></section>${body}`;
+}
+
+// Bí kíp 60 giây (v61, §52): một khái niệm + một đối chiếu + 2–3 ví dụ, rồi vài câu kiểm tra, rồi quay lại bài đang làm.
+export function viewMicroCard(c: ECtx, card: MicroCard, why: string, now: boolean): string {
+  const esc = c.host.esc;
+  return `<section class="stack"><span class="eyebrow">${now ? 'Học phần nền trước · 1 phút' : 'Bí kíp 60 giây'}</span><h1>${esc(card.title)}${card.en ? ` <span class="muted" style="font-weight:400" lang="en">· ${esc(card.en)}</span>` : ''}</h1>
+    <p class="hint">Vì sao app dừng lại ở đây: ${esc(why)}.</p></section>
+    <section class="panel stack">${card.concept.map((x, i) => `<p${i ? ' lang="en" class="gform"' : ''}>${esc(x)}</p>`).join('')}
+      ${card.mis ? `<p class="warnt"><b>Bạn hay trả lời “<span lang="en">${esc(card.mis)}</span>”.</b>${card.contrast ? ` ${esc(card.contrast)}` : ''}</p>` : card.contrast ? `<p class="warnt">${esc(card.contrast)}</p>` : ''}
+      <ul>${card.examples.slice(0, 3).map(([en, vi]) => `<li><span lang="en"><b>${esc(en)}</b></span>${vi ? ` <span class="hint">· ${esc(vi)}</span>` : ''}</li>`).join('')}</ul></section>
+    <div class="row"><button class="btn primary" data-e="mgo">Đã hiểu: làm 3 câu kiểm tra</button><button class="btn ghost" data-e="mskip">Bỏ qua</button></div>`;
+}
+export function viewMicroDone(c: ECtx, r: { node: string; got: number; of: number; verdict: string; back: boolean }): string {
+  const { host } = c, esc = host.esc, ix = loaded()!, vi = esc(ix.node.get(r.node)?.vi ?? r.node);
+  const msg = r.verdict === 'fixed' ? `Đúng ${r.got}/${r.of}: bạn đã nắm <b>${vi}</b>. App sẽ kiểm lại sau vài ngày ở câu khác để chắc là nhớ lâu.`
+    : r.verdict === 'partial' ? `Đúng ${r.got}/${r.of}. Phần <b>${vi}</b> sẽ xuất hiện thêm trong lúc học để bạn luyện tiếp.` : `Đúng ${r.got}/${r.of}. Không sao: <b>${vi}</b> được đưa lên trước trong lộ trình.`;
+  return `<section class="stack"><span class="eyebrow">Bí kíp xong</span><h1>${r.verdict === 'fixed' ? 'Đã mở chiêu mới' : 'Đã ghi nhận'}</h1><p>${msg}</p></section>
+    <div class="row">${r.back ? '<button class="btn primary" data-e="mback">Quay lại bài đang làm</button>' : '<button class="btn primary" data-e="go" data-r="today">Về lộ trình hôm nay</button>'}<button class="btn ghost" data-e="go" data-r="why/${esc(r.node)}">Vì sao?</button></div>`;
 }
 
 // Kết quả thử transfer (v60).
