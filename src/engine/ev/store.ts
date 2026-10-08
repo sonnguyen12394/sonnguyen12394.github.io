@@ -109,7 +109,9 @@ export function ingest(st: EvStore, m: MasteryStore, o: Observation, c: IngestCt
   const ev = evaluate(o, { day: c.day, ts: c.ts, id: `${c.dev}.${st.seq}`, lastSeenDay: lastSeen, novel }, rule);
   if (o.item) { if (c.recent) c.recent[o.item] = c.day; if (novel) seenAdd(st, o.node, o.item); }
   // Trạng thái trước (để biết bằng chứng này có làm đổi quyết định không)
-  const lvls = levelsOf(ev.lv, ev.only), before = lvls.map(l => stat(m[o.node]?.[l]));
+  // Đúng ở mức cao thì cũng là bằng chứng cho mức thấp hơn; SAI ở mức cao chỉ là bằng chứng cho đúng mức đó (không dùng được
+  // ≠ không nhận ra: MT7–MT8, spec §5 Knowledge ≠ Performance). Luật m3.1.
+  const lvls = levelsOf(ev.lv, ev.only || !ev.ok), before = lvls.map(l => stat(m[o.node]?.[l]));
   // L2 (phân vùng của thiết bị này)
   const part = (st.agg[c.dev] ||= {});
   for (const l of lvls) {
@@ -161,7 +163,7 @@ export function ingest(st: EvStore, m: MasteryStore, o: Observation, c: IngestCt
     if (before[i]!.pass === after[i]!.pass) return;
     const cell = m[o.node]?.[l];
     if (!cell) return;
-    const evs = st.led.filter(x => x.node === o.node && x.lv >= l && (!x.only || x.lv === l)).slice(-12).map(x => x.id);
+    const evs = st.led.filter(x => x.node === o.node && (x.lv === l || (x.lv > l && !x.only && x.ok))).slice(-12).map(x => x.id);
     const dec = after[i]!.pass ? 'PASS' : after[i]!.state === 'reopened' ? 'REOPEN' : after[i]!.state === 'verify' ? 'VERIFY' : 'FAIL';
     addSnap(st, { ts: c.ts, day: c.day, kind: 'mastery', subj: o.node, lv: l, dec, rule: ev.ev, info: { ro: cell.ro ? 'yes' : 'no', vf: cell.vf ? 'yes' : 'no', nv: cell.nv ?? 0 },
       m: { a: cell.a, b: cell.b, n: cell.n, mean: round(after[i]!.m), lb: round(after[i]!.lb), ctx: cell.c.length, qt: cell.q.length, nov: novCount(st, o.node, l) },

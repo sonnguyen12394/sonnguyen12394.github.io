@@ -63,9 +63,12 @@ export function level(s: Stair): number {
   return Math.round((last.reduce((a, b) => a + b, 0) / last.length) * 2) / 2;
 }
 
-// Tiên nghiệm sau chẩn đoán: cấp ≤ mức ước tính − 1 coi như đã biết (≈ đạt), cấp ≥ mức ước tính + 1 coi như chưa biết; cấp ở giữa để trống.
+// Tiên nghiệm sau chẩn đoán: cấp ≤ mức ước tính − 0,5 (người học đã qua câu dò ở cấp đó) coi như đã biết, cấp ≥ mức ước tính + 1 coi
+// như chưa biết; cấp đúng bằng mức ước tính (cầu thang còn dao động ở đó) để trống. v56: trước đây chỉ coi cấp ≤ ước tính − 1 là đã biết,
+// nên cấp người học vừa chứng minh trong bài dò vẫn phải học lại (mô phỏng: lộ trình thích ứng không nhanh hơn giáo trình cố định).
+// "Đã biết" ở đây là Claim (trạng thái inferred, tin cậy thấp): không tính vào Readiness, tự mở lại khi sai ở câu mới.
 export function priorFor(lv: number, est: number): [number, number] | null {
-  if (lv <= est - 1) return [6, 0.5];
+  if (lv <= est - 0.5) return [6, 0.5];
   if (lv >= est + 1) return [1, 3];
   return null;
 }
