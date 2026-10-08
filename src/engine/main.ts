@@ -23,6 +23,9 @@ import { planFloor, reward, hearts, freshQuest, QUEST_VER } from './quest.ts';
 import { viewQuestHome, viewQuestRun, viewQuestEnd, type QuestRun, type QItem } from './questview.ts';
 import { computePath, computeNba } from './today.ts';
 import { seenHas } from './ev/store.ts';
+import { remedyFor, pickFor } from './remedy.ts';
+import { gaps, weakContext } from './gap.ts';
+import type { Level } from './types.ts';
 import { readinessOf } from './readyview.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
 import { viewMeasure } from './measureview.ts';
@@ -248,13 +251,30 @@ export function init(host: EHost): EngineModule {
   // với trùm câu mới); xu / tim / tầng chỉ là telemetry trong e.q, không bao giờ vào mastery (P14).
   let qrun: QuestRun | null = null;
   const qsave = () => { const e = E(); return (e.q ||= freshQuest()); };
+  // Câu cho một lượt (v65): lỗ hổng của nút quyết định cách sửa (remedy.ts) — chưa biết thì hỏi nhận ra, nhận ra rồi thì bắt tự gõ,
+  // nhớ rồi thì sửa lỗi / sản sinh, thiếu phần nền đã kiểm chứng thì đổi sang phần nền, cần transfer thì câu mới.
+  let qcur: { node: string; gap: string } = { node: '', gap: '' };
   function qItem(ch: QuestRun['plan'][number]): { q: QItem | null; xfer: boolean } {
-    const e = E();
+    const e = E(), ix = loaded()!;
+    qcur = { node: ch.node, gap: '' };
     if (ch.gameType === 'camp') return { q: null, xfer: false };
-    if (ch.gameType === 'boss') { const t = xferItems(host, e, ch.node); if (t[0]) return { q: t[0], xfer: true }; }
-    const all = host.probe(ch.node), fit = all.filter(q => q.level <= Math.max(1, ch.level));
-    const pool = fit.length ? fit : all;
-    return { q: pool.find(q => !seenHas(e.ev, ch.node, q.id)) ?? pool[0] ?? null, xfer: false };
+    if (ch.gameType === 'boss') { const t = xferItems(host, e, ch.node); if (t[0]) { qcur.gap = 'transfer'; return { q: t[0], xfer: true }; } }
+    if (ch.gameType === 'scout') {   // trinh sát giữ đúng mức của câu dò chẩn đoán
+      const all = host.probe(ch.node), fit = all.filter(q => q.level <= Math.max(1, ch.level)), pool = fit.length ? fit : all;
+      return { q: pool.find(q => !seenHas(e.ev, ch.node, q.id)) ?? pool[0] ?? null, xfer: false };
+    }
+    let node = ch.node;
+    const n = ix.node.get(node), need = (n ? defaultLevel(n) : 3) as Level;
+    const blocked = (ix.pre.get(node) ?? []).some(x => x.type === 'hard' && !nodeStat(host, e, x.to, defaultLevel(ix.node.get(x.to)!)).pass);
+    let r = remedyFor(gaps({ m: e.m, ev: e.ev, node, need, blocked, recall: host.recall?.(node) ?? null }), need, weakContext(e.ev, node, need));
+    if (ch.gameType === 'chest' && r.act === 'practice') r = remedyFor(['retention'], need);
+    if (r.act === 'root') {
+      const cause = e.ev.hyp[node]?.cause ?? (ix.pre.get(node) ?? []).find(x => x.type === 'hard' && !nodeStat(host, e, x.to, defaultLevel(ix.node.get(x.to)!)).pass)?.to;
+      if (cause && (cause.startsWith('u:') || cause.startsWith('g:'))) { node = cause; const cn = ix.node.get(cause); r = { ...remedyFor([], (cn ? defaultLevel(cn) : 3) as Level), gap: 'prerequisite', act: 'root' }; }
+    }
+    qcur = { node, gap: r.gap ?? '' };
+    if (r.act === 'transfer') { const t = xferItems(host, e, node); if (t[0]) return { q: t[0], xfer: true }; }
+    return { q: pickFor(host.probe(node), r, id => seenHas(e.ev, node, id)), xfer: false };
   }
   let qx = false;
   function qLoad(): void {
@@ -271,21 +291,22 @@ export function init(host: EHost): EngineModule {
   }
   function qStart(): void {
     if (!loaded()) { ensure(); return; }
-    const e = E(), v = V(), ix = loaded()!, p = computePath(host, v, ix), acts = computeNba(host, v, ix, p), sv = qsave();
-    const review = (p.all ?? []).filter(r => nodeStat(host, v, r.node, r.level).pass).map(r => ({ n: r.node, r: host.recall?.(r.node) ?? 1 })).filter(x => x.r < 0.9).sort((a, b) => a.r - b.r).map(x => x.n);
+    const e = E(), v = V(), ix = loaded()!, p = computePath(host, v, ix), acts = computeNba(host, v, ix, p, true), sv = qsave();
+    const review = (p.all ?? []).filter(r => nodeStat(host, v, r.node, r.level).pass).map(r => ({ n: r.node, r: host.recall?.(r.node) ?? 1 })).filter(x => x.r < 0.9).sort((a, b) => (1 - b.r) * (ix.node.get(b.n)?.imp?.re ?? 0.5) - (1 - a.r) * (ix.node.get(a.n)?.imp?.re ?? 0.5)).map(x => x.n);   // nguy cơ quên × độ quan trọng ghi nhớ (imp.re)
     const plan = planFloor({ acts, open: p.open, review, can: n => n.startsWith('u:') || n.startsWith('g:'), started: n => !!e.m[n], floor: sv.floor });
     if (!plan.length) { host.toast('Chưa có gì để leo: chọn mục tiêu CEFR trước.'); return; }
     const max = hearts(sv.floor);
-    qrun = { plan, i: 0, hp: max, max, coins: 0, ok: 0, n: 0, floor: sv.floor, q: null, card: null, ans: null, done: null, wrong: [] };
+    qrun = { plan, i: 0, hp: max, max, coins: 0, ok: 0, n: 0, floor: sv.floor, q: null, card: null, ans: null, done: null, wrong: [], gaps: [] };
     qLoad(); host.render();
   }
   function qAnswer(ok: boolean, given: string): void {
     if (!qrun || !qrun.q || qrun.ans) return;
-    const ch = qrun.plan[qrun.i]!, q = qrun.q, e = E(), novel = !seenHas(e.ev, ch.node, q.id);
-    ingest(e.ev, e.m, { node: ch.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: qx ? 'transfer' : ch.context, src: qx ? 'transfer' : 'game', ch: ch.id, gp: ch.gameplayDifficulty, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    const ch = qrun.plan[qrun.i]!, q = qrun.q, e = E(), node = qcur.node || ch.node, novel = !seenHas(e.ev, node, q.id);
+    if (qcur.gap) qrun.gaps.push(qcur.gap);
+    ingest(e.ev, e.m, { node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: qx ? 'transfer' : ch.context, src: qx ? 'transfer' : 'game', ch: ch.id, gp: ch.gameplayDifficulty, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     const coins = reward(ch, ok, novel), right = q.opts ? q.opts[q.ans ?? 0] ?? '' : q.accept?.[0] ?? '';
     qrun.ans = { ok, right, given, coins, novel }; qrun.coins += coins; qrun.n++;
-    if (ok) qrun.ok++; else { qrun.hp--; qrun.wrong.push(ch.node); }
+    if (ok) qrun.ok++; else { qrun.hp--; qrun.wrong.push(node); }
     const sv = qsave(); sv.ans++; if (ok) sv.ok++; sv.coins += coins; sv.day = host.today();
     host.save(); host.render();
   }
@@ -302,7 +323,7 @@ export function init(host: EHost): EngineModule {
     qrun.done = how; sv.runs++;
     if (how === 'win') { sv.wins++; sv.best = Math.max(sv.best, sv.floor); sv.floor++; }
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `quest:${qrun.floor}`, dec: `quest:${how}`, rule: `${RULE_ID}/${QUEST_VER}`,
-      info: { floor: qrun.floor, ok: qrun.ok, of: qrun.n, coins: qrun.coins, plan: qrun.plan.map(p => p.gameType[0]).join('') },
+      info: { floor: qrun.floor, ok: qrun.ok, of: qrun.n, coins: qrun.coins, plan: qrun.plan.map(p => p.gameType[0]).join(''), gaps: qrun.gaps.join(',') },
       evs: e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:${qrun!.floor}:`)).slice(-qrun.n).map(x => x.id) }, false);
     host.save(); host.render();
   }

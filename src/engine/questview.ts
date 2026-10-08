@@ -10,7 +10,7 @@ export interface QuestRun {
   plan: Challenge[]; i: number; hp: number; max: number; coins: number; ok: number; n: number; floor: number;
   q: QItem | null; card: MicroCard | null;
   ans: { ok: boolean; right: string; given: string; coins: number; novel: boolean } | null;
-  done: 'win' | 'lose' | null; wrong: string[];
+  done: 'win' | 'lose' | null; wrong: string[]; gaps: string[];
 }
 
 const hearts = (hp: number, max: number): string => `<span aria-label="${hp}/${max} tim">${'❤️'.repeat(hp)}${'🤍'.repeat(Math.max(0, max - hp))}</span>`;

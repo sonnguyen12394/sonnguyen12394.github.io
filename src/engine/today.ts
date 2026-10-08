@@ -38,12 +38,14 @@ export function probeFor(host: EHost, e: EState, ix: Index, p: PathOut): ProbeCa
 }
 
 // Next Best Action (v59, spec §56–57): xếp hạng học / ôn / kiểm tra nhanh / xác minh bằng utility có phân rã.
-export function computeNba(host: EHost, e: EState, ix: Index, p: PathOut): Action[] {
+export function computeNba(host: EHost, e: EState, ix: Index, p: PathOut, inGame = false): Action[] {
   const day = host.dayInfo();
   const verify = (p.all ?? []).filter(r => { const st = nodeStat(host, e, r.node, r.level).state; return st === 'verify' || st === 'reopened'; }).map(r => ({ node: r.node, level: r.level }));
   const last = [...(e.ev?.snap ?? [])].reverse().find(x => x.kind === 'nba');
   const prev = last ? { kind: (last.info?.k ?? 'learn') as Kind, node: last.subj } : null;
-  return rank({ open: p.open, probe: probeFor(host, e, ix, p), review: { items: day.reviewItems, mins: day.reviewMins, risk: Math.min(1, 0.4 + day.reviewItems / 30) }, verify, prev, transfer: xferFor(host, e, ix, p) });
+  // Nguy cơ quên (v65, C307): kỳ vọng số mục sẽ quên Σ(1 − R) trên các thẻ đến hạn (FSRS) → 1 − e^(−Σ/2); máy chưa có FSRS thì ước lượng thô.
+  const risk = typeof day.lost === 'number' ? 1 - Math.exp(-day.lost / 2) : Math.min(1, 0.4 + day.reviewItems / 30);
+  return rank({ open: p.open, probe: probeFor(host, e, ix, p), review: { items: day.reviewItems, mins: day.reviewMins, risk }, verify, prev, transfer: xferFor(host, e, ix, p), inGame });
 }
 
 // L4: bước tiếp theo được chọn → snapshot kèm 3 ứng viên đầu, utility và phân rã (HG30, HF10). Bỏ trùng khi lựa chọn không đổi.
@@ -61,7 +63,7 @@ export function snapNba(host: EHost, e: EState, acts: Action[]): void {
   });
 }
 
-export interface DayInfo { reviewItems: number; reviewMins: number; mins: number; perfDue: boolean }
+export interface DayInfo { reviewItems: number; reviewMins: number; mins: number; perfDue: boolean; lost?: number | null }
 
 export function computePath(host: EHost, e: EState, ix: Index): PathOut {
   const goals = e.goals.map(s => ({ goal: ix.goal.get(s.id)!, date: s.date })).filter(g => !!g.goal);

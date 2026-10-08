@@ -7,7 +7,7 @@ import type { ECtx } from './views.ts';
 import { loaded, GOALS } from './data.ts';
 import { stat } from './mastery.ts';
 import { DIM_VI, LEVEL_VI, type Level } from './types.ts';
-import { missingOf, readinessOf } from './readyview.ts';
+import { missingOf, readinessOf, xferLine } from './readyview.ts';
 import { replay, type Snapshot } from './ev/snapshot.ts';
 import type { EvEvent } from './ev/types.ts';
 import { misconceptions } from './ev/store.ts';
@@ -90,8 +90,9 @@ function whyGoal(c: ECtx, id: string): string {
   const snaps = e.ev.snap.filter(s => s.kind === 'readiness' && s.subj === id).slice(-8).reverse();
   const head = r.achieved ? `<h1>Đã đạt: ${esc(meta.vi)}</h1>` : `<h1>Vì sao chưa đạt ${esc(meta.vi)}</h1>`;
   return `<section class="stack"><span class="eyebrow">Vì sao?</span>${head}
-      <p class="muted">Đạt mục tiêu CEFR không phải điểm trung bình: mọi năng lực mục tiêu cần phải Đạt với độ tin cậy từ Vừa, mọi bài làm thật phải qua, và 14 ngày không quên khi ôn (spec §60).</p></section>
+      <p class="muted">Đạt mục tiêu CEFR không phải điểm trung bình: mọi năng lực mục tiêu cần phải Đạt với độ tin cậy từ Vừa, mọi bài làm thật phải qua, năng lực quan trọng phải đúng ở câu mới chưa gặp, và 14 ngày không quên khi ôn (spec §60).</p></section>
     ${miss.length ? `<section class="stack"><h2>Còn thiếu ${miss.length} năng lực</h2><ul>${miss.slice(0, 30).map(x => `<li><button class="linkbtn" data-e="go" data-r="why/${esc(x.node)}">${esc(x.vi)}</button> <span class="hint">· cần mức ${x.level} · đang ${Math.round(x.pct * 100)}%</span></li>`).join('')}</ul>${miss.length > 30 ? `<p class="hint">và ${miss.length - 30} năng lực khác.</p>` : ''}</section>` : ''}
+    ${r.kind === 'mastery' ? xferLine(host, e, g, r) : ''}
     ${snaps.length ? `<section class="stack"><h2>Lịch sử Readiness</h2><ul>${snaps.map(s => snapRow(c, s)).join('')}</ul></section>` : ''}
     <div class="row"><button class="btn ghost" data-e="go" data-r="goal/${esc(id)}">← ${esc(meta.vi)}</button></div>`;
 }

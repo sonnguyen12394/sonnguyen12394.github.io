@@ -46,16 +46,20 @@ export function xferCandidates(ix: Index, m: MasteryStore, ev: EvStore, need: Re
   return out.sort((a, b) => b.imp - a.imp || (a.node < b.node ? -1 : 1));
 }
 
-// Tổng hợp transfer cho Readiness (§60): trong bao đóng mục tiêu, bao nhiêu nút quan trọng đã chứng minh ở câu mới, bao nhiêu thất bại.
-export function xferSummary(ix: Index, m: MasteryStore, ev: EvStore, need: Req[]): { important: number; ok: number; failed: number } {
-  let important = 0, ok = 0, failed = 0;
+// Tổng hợp transfer cho Readiness (§60): trong yêu cầu mục tiêu, bao nhiêu nút quan trọng đã chứng minh ở câu mới, bao nhiêu thất bại
+// (đang mở lại), bao nhiêu được miễn (đã Đạt nhưng hết câu mới để thử: `exhausted`). `pending` = nút còn phải thử.
+export function xferSummary(ix: Index, m: MasteryStore, ev: EvStore, need: Req[], exhausted: (node: string) => boolean = () => false): { important: number; ok: number; failed: number; exempt: number; pending: string[] } {
+  let important = 0, ok = 0, failed = 0, exempt = 0;
+  const pending: string[] = [];
   for (const r of need) {
     const n = ix.node.get(r.node);
     if (!n || (n.imp?.tr ?? 0) < XFER.minImp || (n.kind !== 'vocab' && n.kind !== 'grammar')) continue;
     important++;
-    if (transferred(ev, r.node)) ok++;
     const st = stat(m[r.node]?.[r.level]).state;
     if (st === 'reopened') failed++;
+    if (transferred(ev, r.node)) ok++;
+    else if (st === 'mastered' && exhausted(r.node)) exempt++;
+    else pending.push(r.node);
   }
-  return { important, ok, failed };
+  return { important, ok, failed, exempt, pending };
 }

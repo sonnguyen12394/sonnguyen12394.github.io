@@ -35,6 +35,8 @@ test('Ladder Quest: vào từ Thử thách, leo một tầng, câu trả lời t
   expect(e.q.runs).toBe(1);
   expect(e.q.ans).toBe(ev.length);
   expect(e.ev.snap.some((s: any) => String(s.dec).startsWith('quest:'))).toBe(true);
+  // v65: snapshot tầng ghi loại lỗ hổng đã quyết định câu hỏi.
+  expect(typeof e.ev.snap.find((s: any) => String(s.dec).startsWith('quest:')).info.gaps).toBe('string');
   // Giới hạn trung thực: một tầng là lượt hữu hạn, có điểm dừng.
   await expect(page.getByText(/Nghỉ ở đây cũng tốt/)).toBeVisible();
   await page.getByRole('button', { name: 'Về tháp' }).click();
