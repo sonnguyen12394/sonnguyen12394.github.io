@@ -23,6 +23,7 @@ export interface Observation {
   w?: number;            // trọng số do hoạt động đặt (bài kiểm tra bỏ qua ×4, bài làm thật ×2, tự nhận là đoán ×0,5)
   only?: boolean;        // chỉ ghi đúng mức này, không lan xuống mức thấp hơn
   rt?: number;           // thời gian trả lời (ms) — tín hiệu phụ (P15), không vào trọng số mastery
+  given?: string;        // câu trả lời người học đưa ra (phương án chọn / chữ gõ) — để phát hiện hiểu sai lặp lại
   hint?: boolean;        // có dùng gợi ý
   retry?: boolean;       // lượt làm lại câu vừa sai trong cùng buổi
   timed?: boolean;       // câu nằm trong luật chơi có ép thời gian
@@ -78,6 +79,8 @@ export interface Agg {
   swBad: number;         // Σ w của lượt sai
   nov: number;           // số lượt ở câu mới
   asst: number;          // số lượt có trợ giúp
+  novOk?: number;        // số lượt ĐÚNG ở câu mới
+  dv?: number;           // số lần đã giảm trọng số theo lượt mới (để gộp hai máy chọn bản mới hơn)
   d0: number;            // ngày đầu
   d1: number;            // ngày cuối
   lq?: string[];         // chỉ phân vùng legacy: dạng câu đã đo trước v53
@@ -86,6 +89,11 @@ export interface Agg {
 
 // Tiên nghiệm (Claim, không phải Mastery — §82): từ chẩn đoán hoặc tiến độ cũ. Chỉ dùng cho ô chưa có bằng chứng thật.
 export interface Prior { a: number; b: number; src: 'diag' | 'legacy'; day: number }
+
+// Mâu thuẫn với kết luận Đạt: đếm lượt sai ở câu mới khi đang Đạt; đủ thì mở lại (on = 1) tới khi đúng đủ ở câu mới.
+export interface Dispute { bad: number; ok: number; on: 0 | 1; day: number }
+// Một câu trả lời sai lặp lại ở cùng nút (phương án nhiễu / chữ gõ giống nhau).
+export interface Mis { t: string; n: number; d: number }
 
 export interface Integrity { err: number; last: string; fixed: number }
 
@@ -99,6 +107,8 @@ export interface EvStore {
   seq: number;                                 // số thứ tự sự kiện của thiết bị này
   integ: Integrity;
   snap: Snapshot[];                            // L4 Decision Snapshot
+  dis: Record<string, Dispute>;                // "nút|mức" → bằng chứng mâu thuẫn với kết luận Đạt (model disagreement)
+  mis: Record<string, Record<string, Mis>>;    // nút → mã câu trả lời sai → số lần (giả thuyết hiểu sai)
   sseq?: number;
 }
 

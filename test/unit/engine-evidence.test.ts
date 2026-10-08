@@ -4,6 +4,7 @@ import { record, stat, type MasteryStore } from '../../src/engine/mastery.ts';
 import { ingest, recomputeAll, fromCells, mergeEv, verify, freshEv, setPrior, LED_MAX, prune } from '../../src/engine/ev/store.ts';
 import { sanitizeEv } from '../../src/engine/ev/sanitize.ts';
 import { RULE } from '../../src/engine/ev/evaluate.ts';
+const EXACT = { ...RULE, decay: 1 };   // tắt giảm theo lượt khi kiểm phép tính chính xác
 import { migrateE, mergeE, E_V } from '../../src/engine/state.ts';
 import type { Observation } from '../../src/engine/ev/types.ts';
 import type { Level } from '../../src/engine/types.ts';
@@ -17,11 +18,11 @@ function randObs(r: () => number, i: number): Observation {
   return { node, level: (1 + Math.floor(r() * 4)) as Level, ok: r() < 0.7, g: r() < 0.5 ? 0.25 : 0, item: `q${Math.floor(r() * 40)}`, qt: r() < 0.5 ? 'mcq' : 'typed', ctx: `c${i % 3}`, only: r() < 0.1 };
 }
 
-test('ô Beta dẫn xuất khớp đúng công thức spec §44 (cùng kết quả với record() cũ), có cả lặp 24h và "only"', () => {
+test('ô Beta dẫn xuất khớp đúng công thức spec §44 (khi tắt giảm theo lượt), có cả lặp 24h và "only"', () => {
   const r = rng(7), st = freshEv(), m: MasteryStore = {}, old: MasteryStore = {}, rec1: Record<string, number> = {}, rec2: Record<string, number> = {};
   for (let i = 0; i < 400; i++) {
     const o = randObs(r, i), day = 100 + Math.floor(i / 50);
-    ingest(st, m, o, { dev: 'dev001', ts: i, day, recent: rec1 });
+    ingest(st, m, o, { dev: 'dev001', ts: i, day, recent: rec1, rule: { ...RULE, decay: 1 } });   // không giảm theo lượt: đúng công thức §44 gốc
     record(old, { ...o }, day, rec2);
   }
   for (const [id, cs] of Object.entries(old)) for (const [l, c] of Object.entries(cs)) {
@@ -53,9 +54,9 @@ test('trợ giúp, làm lại và hết giờ trong game làm bằng chứng y�
 
 test('tính lại được khi đổi luật (HG33): đổi slip thì β đổi đúng theo thống kê, không cần dữ liệu gốc', () => {
   const st = freshEv(), m: MasteryStore = {};
-  for (let i = 0; i < 10; i++) ingest(st, m, { node: 'u:x', level: 1, ok: i % 3 !== 0, item: `q${i}` }, { dev: 'd00001', ts: i, day: i });
+  for (let i = 0; i < 10; i++) ingest(st, m, { node: 'u:x', level: 1, ok: i % 3 !== 0, item: `q${i}` }, { dev: 'd00001', ts: i, day: i, rule: EXACT });
   const bad = 4, good = 6;
-  const s2 = recomputeAll(st, { ...RULE, slip: 0.3 });
+  const s2 = recomputeAll(st, { ...EXACT, slip: 0.3 });
   assert.ok(near(s2['u:x']![1]!.b, 1 + bad * 0.7));
   assert.ok(near(s2['u:x']![1]!.a, 1 + good));
   assert.ok(near(recomputeAll(st)['u:x']![1]!.b, m['u:x']![1]!.b));
@@ -84,8 +85,8 @@ test('tiên nghiệm không đè bằng chứng thật; bằng chứng thật đ
 
 test('gộp hai máy (G-counter theo thiết bị): không mất, không đếm trùng, gộp lặp lại không đổi kết quả', () => {
   const A = freshEv(), B = freshEv(), mA: MasteryStore = {}, mB: MasteryStore = {};
-  for (let i = 0; i < 6; i++) ingest(A, mA, { node: 'u:x', level: 1, ok: true, item: `a${i}` }, { dev: 'aaaaaa', ts: i, day: 1 });
-  for (let i = 0; i < 4; i++) ingest(B, mB, { node: 'u:x', level: 1, ok: false, item: `b${i}` }, { dev: 'bbbbbb', ts: 10 + i, day: 1 });
+  for (let i = 0; i < 6; i++) ingest(A, mA, { node: 'u:x', level: 1, ok: true, item: `a${i}` }, { dev: 'aaaaaa', ts: i, day: 1, rule: EXACT });
+  for (let i = 0; i < 4; i++) ingest(B, mB, { node: 'u:x', level: 1, ok: false, item: `b${i}` }, { dev: 'bbbbbb', ts: 10 + i, day: 1, rule: EXACT });
   const AB = mergeEv(A, B), twice = mergeEv(AB, mergeEv(B, AB));
   const c = recomputeAll(AB)['u:x']![1]!, c2 = recomputeAll(twice)['u:x']![1]!;
   assert.ok(near(c.a, 7) && near(c.b, 1 + 4 * 0.9) && near(c.n, 10));
@@ -119,7 +120,7 @@ test('dọn sổ theo giá trị: giữ tier 2–3 và bằng chứng đại di�
 
 test('phát hiện và sửa ô Beta bị hỏng theo thống kê (C399); dữ liệu rác từ ngoài bị lọc', () => {
   const st = freshEv(), m: MasteryStore = {};
-  for (let i = 0; i < 5; i++) ingest(st, m, { node: 'u:x', level: 1, ok: true, item: `q${i}` }, { dev: 'd00001', ts: i, day: 1 });
+  for (let i = 0; i < 5; i++) ingest(st, m, { node: 'u:x', level: 1, ok: true, item: `q${i}` }, { dev: 'd00001', ts: i, day: 1, rule: EXACT });
   m['u:x']![1]!.a = 99;
   assert.equal(verify(st, m), 1);
   assert.equal(m['u:x']![1]!.a, 6);

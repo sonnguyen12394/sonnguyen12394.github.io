@@ -5,7 +5,7 @@ import type { EState } from './state.ts';
 import { GOAL_MAX } from './state.ts';
 import { META, GOALS, loaded, goalOn, type GoalMeta } from './data.ts';
 import { closure, defaultLevel } from './graph.ts';
-import { statusOf } from './mastery.ts';
+import { statusOf, type NodeState } from './mastery.ts';
 import { readinessOf, readyChip, viewReady } from './readyview.ts';
 import { LEVEL_VI, type Area, type GoalKind, type Node, type Req } from './types.ts';
 
@@ -21,7 +21,7 @@ export const KIND_VI: Record<GoalKind, [string, string]> = {
 const KINDS = Object.keys(KIND_VI) as GoalKind[];
 const AREA_VI: Record<Area, string> = { voc: 'Từ vựng', gra: 'Ngữ pháp', pro: 'Phát âm', lis: 'Nghe', rd: 'Đọc', wr: 'Viết', spk: 'Nói', task: 'Dạng bài thi' };
 const AREA_ORDER: Area[] = ['voc', 'gra', 'pro', 'lis', 'rd', 'wr', 'spk', 'task'];
-export interface NStat { pass: boolean; pct: number; conf: 'low' | 'mid' | 'high'; none: boolean }
+export interface NStat { pass: boolean; pct: number; conf: 'low' | 'mid' | 'high'; none: boolean; state?: NodeState }
 // Trạng thái một nút ở mức cần: Can-Do lấy từ app (bằng chứng hoạt động), nút khác lấy từ kho mastery của engine.
 export function nodeStat(host: EHost, e: EState, node: string, level: Req['level']): NStat {
   if (node.startsWith('cd:')) {
@@ -31,10 +31,15 @@ export function nodeStat(host: EHost, e: EState, node: string, level: Req['level
   }
   const s = statusOf(e.m, node, level), cell = e.m[node]?.[level];
   if (!cell) return { pass: false, pct: 0, conf: 'low', none: true };
-  return { pass: s.pass, pct: s.pass ? 1 : Math.min(0.79, s.m), conf: s.conf, none: false };
+  return { pass: s.pass, pct: s.pass ? 1 : Math.min(0.79, s.m), conf: s.conf, none: false, state: s.state };
 }
 const CONF_VI = { low: 'tin cậy thấp', mid: 'tin cậy vừa', high: 'tin cậy cao' } as const;
+const STATE_CHIP: Partial<Record<NodeState, string>> = {
+  inferred: 'suy ra từ chẩn đoán, chưa có bằng chứng', verify: 'cần xác minh ở câu mới', reopened: 'mở lại: bằng chứng mới mâu thuẫn',
+};
 export const statChip = (st: NStat): string => st.none ? '<span class="pill">chưa có bằng chứng</span>'
+  : st.state && STATE_CHIP[st.state] && !(st.state === 'inferred' && st.pass) ? `<span class="pill warn">${STATE_CHIP[st.state]} · ${Math.round(st.pct * 100)}%</span>`
+  : st.state === 'inferred' ? `<span class="pill">≈ Đạt (${STATE_CHIP.inferred})</span>`
   : st.pass ? `<span class="pill" style="color:var(--good)">✓ Đạt · ${CONF_VI[st.conf]}</span>` : `<span class="pill">${Math.round(st.pct * 100)}% · ${CONF_VI[st.conf]}</span>`;
 const back = (r = 'goals', t = 'Mục tiêu của bạn') => `<div class="row"><button class="btn ghost" data-e="go" data-r="${r}">← ${t}</button></div>`;
 const hours = (min: number): string => (min < 90 ? `${Math.max(1, Math.round(min))} phút` : `≈ ${Math.round(min / 60)} giờ`);
