@@ -20,6 +20,11 @@ const PRIOR: Record<string, Record<string, number>> = {
   ph: { 'Pre-A1': 0.25, A1: 0.2, A2: 0.15, B1: 0.08, B2: 0.04, C1: 0.02 },
   fn: { 'Pre-A1': 0.5, A1: 0.4, A2: 0.25, B1: 0.1, B2: 0.04, C1: 0.02 },
 };
+// Năng lực thật ở một mức với câu MỚI, tự lực (không quen câu, không đoán): thước đo "yếu / vững" để so với kết luận của app.
+export function truthAt(s: number, level: number): number {
+  const sn = s * 0.7;
+  return level <= 2 ? sn : Math.pow(sn, level >= 4 ? 2.8 : 2.2);
+}
 export const MIS: Record<string, 1 | 2> = { 'g:g-a1-01': 1, 'g:g-a1-04': 1, 'g:g-a1-08': 2 };
 
 // Kiểu 2: sai cùng mẫu, chữ khác nhau (bỏ -s ngôi thứ ba, hoặc thêm -ed).
@@ -46,10 +51,11 @@ export const L02: Profile = {
     if ((x.mis ?? (MIS[q.node] ? 0.7 : 0)) > 0.3) return 'misconception';
     if (x.peak >= 0.8 && s < x.peak - 0.2) return 'retention';
     if (s < 0.35) return 'knowledge';
-    if (s < 0.75) return q.level >= 4 ? 'use' : q.level === 3 ? 'recall' : 'partial';   // biết lơ mơ: nhận ra được một phần
-    if (novel && s * 0.7 < 0.6) return 'transfer';
-    if (q.level >= 4 && Math.pow(s, 2.8) < 0.5) return 'use';
-    if (q.level === 3 && Math.pow(s, 2.2) < 0.5) return 'recall';
+    if (q.level <= 2) return s < 0.75 ? 'partial' : 'none';   // nhận ra: biết lơ mơ hay biết
+    // Mức 3 (tự nhớ ra) / 4 (dùng có kiểm soát): câu quen mà vẫn khó → lỗ hổng nhớ lại / dùng; câu quen được mà câu mới không → transfer.
+    const e = q.level >= 4 ? 2.8 : 2.2, fam = Math.pow(Math.min(1, s + 0.2), e), nov = Math.pow(s * 0.7, e);
+    if (fam < 0.5) return q.level >= 4 ? 'use' : 'recall';
+    if (novel && nov < 0.5) return 'transfer';
     return 'none';
   },
   // Giải thích chung (thẻ, bí kíp, dòng vì sao) chỉ làm hiểu sai yếu đi chút ít; giải thích nhắm đúng câu sai hay gặp ("Bạn hay trả lời…")
