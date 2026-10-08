@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 58;
+const STATE_V = 18, APP_VERSION = 59;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -8158,6 +8158,10 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:59,d:'2026-10-08',t:'Bước tiếp theo thông minh hơn',big:true,items:[
+  '"Bước tiếp theo" giờ so mọi việc bạn có thể làm (học phần mới, ôn phần sắp quên, kiểm tra nhanh, xác minh) bằng một điểm lợi ích, rồi chọn việc giúp bạn tiến nhanh nhất so với công sức. "Vì sao?" hiện điểm từng thành phần.',
+  'App phân biệt loại lỗ hổng: chưa biết, nhận ra nhưng chưa nhớ ra, nhớ nhưng chưa dùng được, thiếu phần nền, yếu ở một ngữ cảnh, chưa dùng được ở câu mới, đang quên, đúng nhưng còn chậm.',
+  'Phần đã đạt mà bạn sai 2 lần liên tiếp sẽ quay lại lộ trình.']});
 CHANGELOG.unshift({v:58,d:'2026-10-08',t:'Chẩn đoán không bao giờ dừng',big:true,items:[
   'Lộ trình hôm nay có ô "Kiểm tra nhanh" (3 câu, không tốn năng lượng) chỉ khi một vài câu có thể đổi kết luận: khám phá phần mới, xác nhận phần app đoán bạn đã biết, quyết định phần sát ngưỡng, xác minh phần bị mở lại. Tối đa 6 lần mỗi ngày; đủ chắc thì app không hỏi thêm.',
   'Hay sai một phần? App kiểm tra phần nền của nó. Nếu phần nền còn hổng, đó là nguyên nhân: lộ trình đưa phần nền lên trước thay vì bắt bạn học lại phần sau.',
@@ -8269,7 +8273,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.ac98b9be61.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.5d2110fbda.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
@@ -8291,6 +8295,11 @@ const EHOST = {
     return out; },
   exam:()=>({resp:(st.x&&st.x.resp)||[], real:(st.x&&st.x.real)||[]}),
   future:()=>FUTURE(),
+  // §58: khả năng nhớ trung bình (FSRS) của các thẻ đã học thuộc một nút: cụm từ (unit) hoặc điểm ngữ pháp.
+  recall:node=>{ const F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null, t=today(); if(!F) return null;
+    const cards=node.startsWith('u:')?((UNIT_BY_ID[node.slice(2)]||{}).words||[]).map(w=>W(w.id)):node.startsWith('g:')&&GPT[node.slice(2)]?[G(node.slice(2))]:[];
+    const rs=cards.filter(w=>w.learned&&w.fs!=null&&w.fl!=null).map(w=>F.retrievability(Math.max(0,t-w.fl),w.fs));
+    return rs.length?rs.reduce((a,b)=>a+b,0)/rs.length:null; },
   lapse:()=>{ let d=0; for(const m of [st.words||{},st.gram||{}]) for(const v of Object.values(m)) if(v&&v.ld>d) d=v.ld; return d||null; },
 };
 const E_PE = new Map();   // điểm máy chấm luật của bài viết theo đề (perfEst chậm, chỉ tính lại khi bài đổi)
