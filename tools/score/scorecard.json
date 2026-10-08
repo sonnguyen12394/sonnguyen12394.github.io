@@ -1,5 +1,5 @@
 {
- "version": "v63",
+ "version": "v67",
  "date": "2026-10-08",
  "parts": {
   "A": "Knowledge Model Validity",
@@ -19,19 +19,21 @@
    "name": "Knowledge Atomicity",
    "group": "A",
    "v51": 5,
-   "score": 5,
-   "evidence": "Mức hạt không đổi: g: nguyên tử, u: vẫn là cả unit từ vựng, cd: rộng; v57 chỉ thêm scope mô tả, chưa tách nút",
-   "tests": []
+   "score": 6,
+   "evidence": "Thêm nút nguyên tử mới: 26 nút âm vị ph: (một cặp âm) và 58 nút chức năng fn:; u: vẫn là cả unit từ vựng, cd: rộng",
+   "tests": [
+    "test/unit/engine-content.test.ts::nút âm vị và nút chức năng giao tiếp riêng"
+   ]
   },
   {
    "id": "C202",
    "name": "Knowledge Completeness",
    "group": "A",
    "v51": 6,
-   "score": 7,
-   "evidence": "audit() trong graph.ts: 0 nút không học được, 0 mồ côi trên đồ thị thật 1.005 nút; Can-Do có cạnh cứng tới ngữ pháp/unit",
+   "score": 8,
+   "evidence": "audit() 0 mồ côi/không học được; v67 bản đồ nội dung bảo đảm mọi nút từ vựng, ngữ pháp, âm vị có câu (content-check + test)",
    "tests": [
-    "test/unit/engine-graph.test.ts::đồ thị thật sạch"
+    "test/unit/engine-content.test.ts::không nút từ vựng / ngữ pháp nào thiếu câu"
    ]
   },
   {
@@ -39,10 +41,10 @@
    "name": "Knowledge Boundary",
    "group": "A",
    "v51": 3,
-   "score": 5,
-   "evidence": "Mọi nút có trường scope (types.ts Node) nhưng phần lớn sinh tự động từ tên, chưa định nghĩa ranh giới thật",
+   "score": 6,
+   "evidence": "scope theo tên + v67 content-map.json định ranh giới vận hành: tập câu thuộc từng nút và mức; chưa có định nghĩa ranh giới ngữ nghĩa",
    "tests": [
-    "test/unit/engine-graph.test.ts::v57 Knowledge Model: mọi cạnh có lý do"
+    "test/unit/engine-content.test.ts::bản đồ nội dung: mọi câu học nền gắn một nút có thật"
    ]
   },
   {
@@ -81,10 +83,10 @@
    "name": "Alternative Route",
    "group": "A",
    "v51": 1,
-   "score": 5,
-   "evidence": "blockedBy() hỗ trợ nhóm thay thế alt/need, có test; đồ thị thật chưa có cạnh alt nào (0/2.614)",
+   "score": 7,
+   "evidence": "Đồ thị thật có 681 cạnh alt trong 38 nhóm (Can-Do vốn từ mở khi Đạt ≥ 80% số unit), blockedBy có test trên đồ thị thật; chỉ áp cho vốn từ, need đặt theo luật",
    "tests": [
-    "test/unit/engine-graph.test.ts::v57 tiền đề thay thế (alt/need)"
+    "test/unit/engine-content.test.ts::đồ thị thật có tiền đề thay thế"
    ]
   },
   {
@@ -103,10 +105,10 @@
    "name": "Gap Detectability",
    "group": "A",
    "v51": 6,
-   "score": 7,
-   "evidence": "Mọi nút có evReq (mức, loại bằng chứng) và hoạt động; audit unreachable = 0; gap.ts phân loại lỗ hổng",
+   "score": 8,
+   "evidence": "Mọi nút có evReq, hoạt động; gap.ts phân loại lỗ hổng và remedy.ts đổi cách sửa; bản đồ nội dung bảo đảm nút nền có câu để đo",
    "tests": [
-    "test/unit/engine-graph.test.ts::đồ thị thật sạch"
+    "test/unit/engine-remedy.test.ts::mỗi loại lỗ hổng cho một cách sửa khác nhau"
    ]
   },
   {
@@ -136,8 +138,8 @@
    "name": "Retentionability",
    "group": "A",
    "v51": 2,
-   "score": 5,
-   "evidence": "imp.re có trên mọi nút nhưng engine chưa dùng; luật nhớ: FSRS < 0,85 thành gap retention, sai 2 lần liên tiếp mở lại",
+   "score": 7,
+   "evidence": "imp.re nay được dùng: ôn trong Quest xếp theo (1 − R) × imp.re; nguy cơ quên NBA từ FSRS Σ(1 − R); chưa có test riêng cho imp.re",
    "tests": [
     "test/unit/engine-nba.test.ts::đang quên (FSRS < 0,85)"
    ]
@@ -147,18 +149,22 @@
    "name": "Difficulty Calibration",
    "group": "A",
    "v51": 3,
-   "score": 4,
-   "evidence": "Node.diff 0–1 suy theo cấp và loại nút, không hiệu chỉnh thực nghiệm; câu thi có b + empiricalB",
-   "tests": []
+   "score": 5,
+   "evidence": "Luật m3.2 hiệu chỉnh trọng số theo độ khó câu so với cấp nút (diff −1/0/1), câu thi gửi diff; Node.diff vẫn suy theo cấp, chưa hiệu chỉnh thực nghiệm",
+   "tests": [
+    "test/unit/engine-evq.test.ts::độ khó câu: đúng câu khó nặng hơn"
+   ]
   },
   {
    "id": "C214",
    "name": "Context Mapping",
    "group": "A",
    "v51": 5,
-   "score": 5,
-   "evidence": "ctx của nút theo từ khoá như v51; ngữ cảnh bằng chứng vẫn lẫn chiều bài tập",
-   "tests": []
+   "score": 6,
+   "evidence": "Ngữ cảnh bằng chứng thêm function, dialogue, listen-pair; weakContext() chỉ ra ngữ cảnh yếu để luyện đúng chỗ; ctx của nút vẫn theo từ khoá",
+   "tests": [
+    "test/unit/engine-remedy.test.ts::ngữ cảnh yếu nhất được chỉ ra"
+   ]
   },
   {
    "id": "C215",
@@ -306,10 +312,10 @@
    "name": "Level-Specific Evidence",
    "group": "B",
    "v51": 5,
-   "score": 6,
-   "evidence": "evReq theo nút (mức + loại bằng chứng); chỉ yêu cầu câu mới ở mức 4–5 được thực thi, loại bằng chứng chưa bị bắt buộc",
+   "score": 7,
+   "evidence": "evReq theo nút; m3.2 bắt mức 1–3 cần đúng ở ≥ 2 câu khác nhau, mức 4–5 cần câu mới; loại bằng chứng vẫn chưa bắt buộc",
    "tests": [
-    "test/unit/engine-mastery3.test.ts::mức 4–5 cần ít nhất một lần đúng"
+    "test/unit/engine-evq.test.ts::mức 1–3 không Đạt bằng một câu lặp"
    ]
   },
   {
@@ -353,26 +359,30 @@
    "name": "Functional Coverage",
    "group": "B",
    "v51": 6,
-   "score": 6,
-   "evidence": "Nhóm Can-Do chức năng như v51",
-   "tests": []
+   "score": 8,
+   "evidence": "58 nút chức năng giao tiếp fn: có hoạt động, bằng chứng từ quiz chức năng và hội thoại; mục tiêu A1 đòi fn:; chưa đối chiếu danh mục chức năng CEFR",
+   "tests": [
+    "test/unit/engine-content.test.ts::mục tiêu A1 đòi chức năng giao tiếp"
+   ]
   },
   {
    "id": "C234",
    "name": "Interaction Coverage",
    "group": "B",
    "v51": 5,
-   "score": 5,
-   "evidence": "69 nút gắn dims inter; 24 hội thoại mở; chưa có nút tương tác riêng",
-   "tests": []
+   "score": 7,
+   "evidence": "Nút fn: gắn dims inter, có bằng chứng từ quiz hội thoại (ctx dialogue); chưa chấm tương tác thật, chưa có nhiệm vụ tương tác trực tiếp",
+   "tests": [
+    "test/unit/engine-content.test.ts::nút âm vị và nút chức năng giao tiếp riêng"
+   ]
   },
   {
    "id": "C235",
    "name": "Pragmatic Coverage",
    "group": "B",
    "v51": 3,
-   "score": 4,
-   "evidence": "33 nút gắn dims prag nhưng chưa có nút ngữ dụng riêng",
+   "score": 6,
+   "evidence": "Nút fn: gắn dims prag (58 nút) và đo bằng quiz chức năng; chưa có nút ngữ dụng riêng (lịch sự, sắc thái), chưa có test riêng ngữ dụng",
    "tests": []
   },
   {
@@ -425,18 +435,22 @@
    "name": "Independence",
    "group": "C",
    "v51": 3,
-   "score": 4,
-   "evidence": "Vẫn chỉ giảm ×0,5 cùng câu trong 24h; có đánh dấu câu mới (seen hash) nhưng không mô hình phụ thuộc giữa bằng chứng",
-   "tests": []
+   "score": 5,
+   "evidence": "Giảm ×0,5 cùng câu trong 24h; m3.2 đòi ≥ 2 câu khác nhau ở mức 1–3, câu trùng đề không tính mới; chưa mô hình phụ thuộc giữa bằng chứng",
+   "tests": [
+    "test/unit/engine-evq.test.ts::mức 1–3 không Đạt bằng một câu lặp"
+   ]
   },
   {
    "id": "C242",
    "name": "Redundancy Detection",
    "group": "C",
    "v51": 3,
-   "score": 4,
-   "evidence": "seen hash theo nút + giảm trọng số lặp; chưa phát hiện câu gần trùng",
-   "tests": []
+   "score": 6,
+   "evidence": "Phát hiện câu trùng đề dưới id khác (chuẩn hoá chữ hoa, dấu, khoảng trắng) không tính là câu mới; chưa bắt câu gần trùng về nghĩa",
+   "tests": [
+    "test/unit/engine-evq.test.ts::cùng một đề dưới id khác không được tính là câu mới"
+   ]
   },
   {
    "id": "C243",
@@ -452,10 +466,10 @@
    "name": "Diversity",
    "group": "C",
    "v51": 6,
-   "score": 7,
-   "evidence": "L2 Agg giữ khoá ngữ cảnh, dạng câu, mới/cũ, độ khó (store.ts subKey); dùng trong confidence",
+   "score": 8,
+   "evidence": "L2 giữ khoá ngữ cảnh, dạng câu, mới/cũ, độ khó; m3.2 đòi đa dạng ≥ 2 câu ở mức 1–3; ngữ cảnh mới function/dialogue/listen-pair",
    "tests": [
-    "test/unit/engine-evidence.test.ts::ô Beta dẫn xuất khớp đúng công thức"
+    "test/unit/engine-evq.test.ts::đúng ở ≥ 2 câu khác nhau thì Đạt"
    ]
   },
   {
@@ -474,9 +488,11 @@
    "name": "Difficulty Adjustment",
    "group": "C",
    "v51": 4,
-   "score": 4,
-   "evidence": "Agg có khoá diff nhưng app chưa đặt độ khó câu; Beta không hiệu chỉnh theo độ khó",
-   "tests": []
+   "score": 5,
+   "evidence": "m3.2: diffW 0,2 theo độ khó câu so với cấp nút vào Beta, khoá diff trong L2; câu thi gửi diff; câu từ vựng/ngữ pháp app chưa gắn diff",
+   "tests": [
+    "test/unit/engine-evq.test.ts::độ khó câu: đúng câu khó nặng hơn"
+   ]
   },
   {
    "id": "C247",
@@ -528,8 +544,8 @@
    "name": "Context Validity",
    "group": "C",
    "v51": 3,
-   "score": 4,
-   "evidence": "Có ngữ cảnh riêng transfer/probe/measure/quest, nhưng ctx luyện tập vẫn là chiều bài tập (rec/rcl)",
+   "score": 5,
+   "evidence": "Thêm ngữ cảnh thật function, dialogue, listen-pair cùng transfer/probe/measure/quest; luyện tập vẫn dùng chiều bài tập (rec/rcl)",
    "tests": []
   },
   {
@@ -584,9 +600,11 @@
    "name": "Drift Detection",
    "group": "C",
    "v51": 1,
-   "score": 1,
-   "evidence": "Không có phát hiện trôi theo thời gian",
-   "tests": []
+   "score": 5,
+   "evidence": "audit.ts drift(): ô Đạt mà 14 ngày gần đây đúng thấp rõ so với m (z < −2,5) → báo, ghi snapshot, hiện trong Cài đặt; chỉ báo cáo, chưa tự xử lý",
+   "tests": [
+    "test/unit/engine-evq.test.ts::trôi model: ở phần đã Đạt"
+   ]
   },
   {
    "id": "C258",
@@ -656,19 +674,21 @@
    "name": "Guessing Parameter",
    "group": "D",
    "v51": 2,
-   "score": 2,
-   "evidence": "g vẫn là 1/số phương án theo lý thuyết, chưa ước lượng",
-   "tests": []
+   "score": 5,
+   "evidence": "estimate() ước lượng guess từ sổ (câu trắc nghiệm ở ô gần như chưa biết) so với 1/số phương án; chỉ báo cáo, luật vẫn dùng g lý thuyết; test chỉ kiểm slip",
+   "tests": [
+    "test/unit/engine-evq.test.ts::ước lượng slip từ sổ"
+   ]
   },
   {
    "id": "C265",
    "name": "Slip Parameter",
    "group": "D",
    "v51": 2,
-   "score": 3,
-   "evidence": "slip cố định 0,1 nhưng đổi được và tính lại từ L2; chưa ước lượng",
+   "score": 6,
+   "evidence": "slip 0,1 trong luật; estimate() ước lượng slip từ ô Đạt chắc (≥ 30 lượt), hiện trong Cài đặt và dữ liệu nghiên cứu; chưa tự cập nhật luật",
    "tests": [
-    "test/unit/engine-evidence.test.ts::tính lại được khi đổi luật"
+    "test/unit/engine-evq.test.ts::ước lượng slip từ sổ"
    ]
   },
   {
@@ -676,8 +696,8 @@
    "name": "Repetition Weight",
    "group": "D",
    "v51": 4,
-   "score": 4,
-   "evidence": "Trọng số lặp 0,5 có test cơ học, chưa kiểm thực nghiệm",
+   "score": 5,
+   "evidence": "Trọng số lặp 0,5 có test cơ học; sim-report §7: repeat 0,3–0,7 không đổi FP/FN trên mô phỏng; chưa kiểm người thật",
    "tests": [
     "test/unit/engine-mastery.test.ts::lặp cùng câu trong 24 giờ"
    ]
@@ -766,8 +786,8 @@
    "name": "Weight Sensitivity",
    "group": "D",
    "v51": 2,
-   "score": 3,
-   "evidence": "Đổi luật (slip, trọng số) tính lại được nhưng chưa có phân tích độ nhạy trọng số",
+   "score": 5,
+   "evidence": "sim-report §7: đổi slip, repeat, decay từng cái trên 300 learner giả, FP giữ 0%, FN 13–25%; chỉ mô phỏng, chưa có test tự động",
    "tests": []
   },
   {
@@ -849,9 +869,11 @@
    "name": "Efficiency",
    "group": "E",
    "v51": 7,
-   "score": 7,
-   "evidence": "≤16 nút, ≤20 phút; ngân sách dò liên tục 6 lượt/ngày",
-   "tests": []
+   "score": 8,
+   "evidence": "Bài dò ngắn tối đa 8 phần cho người mới (QUICK_PROBES), đầy đủ 16; ngân sách dò liên tục 6 lượt/ngày",
+   "tests": [
+    "test/unit/engine-goalfirst.test.ts::bài dò ngắn dừng sau tối đa 8 phần"
+   ]
   },
   {
    "id": "C283",
@@ -967,8 +989,8 @@
    "name": "Guessing Diagnosis",
    "group": "E",
    "v51": 4,
-   "score": 4,
-   "evidence": "Tự nhận đoán, g, tham số c của 3PL; chưa chẩn đoán đoán mò theo mẫu trả lời",
+   "score": 5,
+   "evidence": "Tự nhận đoán, g, c của 3PL; estimate() so tỉ lệ đúng trắc nghiệm ở ô chưa biết với 1/số phương án; chưa chẩn đoán đoán mò theo mẫu từng người",
    "tests": []
   },
   {
@@ -976,8 +998,8 @@
    "name": "Careless Error",
    "group": "E",
    "v51": 2,
-   "score": 4,
-   "evidence": "Một lỗi lẻ không mất Đạt, chỉ ghi nhận (micro log); slip vẫn cố định",
+   "score": 5,
+   "evidence": "Một lỗi lẻ chỉ ghi nhận; sai lúc mệt nhẹ hơn 30%; slip ước lượng từ sổ nhưng luật vẫn cố định",
    "tests": [
     "test/unit/scenarios.test.ts::S4 / MT4"
    ]
@@ -987,9 +1009,11 @@
    "name": "Fatigue Signal",
    "group": "E",
    "v51": 1,
-   "score": 1,
-   "evidence": "Không có tín hiệu mệt mỏi",
-   "tests": []
+   "score": 5,
+   "evidence": "fatigue(): trong phiên đúng giảm rõ và chậm dần → sai nhẹ hơn ×0,7, rel thấp, micro đề nghị nghỉ (rest); ngưỡng đặt tay, chưa kiểm người thật",
+   "tests": [
+    "test/unit/engine-evq.test.ts::mệt trong phiên"
+   ]
   },
   {
    "id": "C296",
@@ -1057,10 +1081,10 @@
    "name": "Feasibility",
    "group": "F",
    "v51": 7,
-   "score": 8,
-   "evidence": "Chỉ nút đủ tiền đề cứng, có nhóm thay thế; nút không có câu bị lọc",
+   "score": 9,
+   "evidence": "Chỉ nút đủ tiền đề cứng; nhóm thay thế có thật trên đồ thị (38 nhóm), blockedBy có test trên dữ liệu thật; nút không có câu bị lọc",
    "tests": [
-    "test/unit/engine-path.test.ts::chỉ mở nút đã đủ tiền đề cứng"
+    "test/unit/engine-content.test.ts::đồ thị thật có tiền đề thay thế"
    ]
   },
   {
@@ -1111,8 +1135,8 @@
    "name": "Retention Value",
    "group": "F",
    "v51": 5,
-   "score": 6,
-   "evidence": "Thành phần retain, nhưng nguy cơ quên là heuristic 0,4 + số mục/30 (today.ts), không từ R thật",
+   "score": 7,
+   "evidence": "Nguy cơ quên NBA = 1 − e^(−lost/2), lost = Σ(1 − R) FSRS trên thẻ đến hạn (today.ts, app dayInfo); không còn heuristic; chưa có test cho lost",
    "tests": [
     "test/unit/engine-nba.test.ts::ôn thắng học mới"
    ]
@@ -1144,8 +1168,8 @@
    "name": "Interruption Cost",
    "group": "F",
    "v51": 1,
-   "score": 6,
-   "evidence": "Thành phần interrupt khi inGame và chính sách ngắt của micro.ts; computeNba chưa truyền inGame",
+   "score": 7,
+   "evidence": "Quest gọi computeNba(..., inGame = true) nên hành động ngắt mạch bị trừ; micro hoãn tới cuối lượt; chưa có test NBA với inGame",
    "tests": [
     "test/unit/engine-micro.test.ts::trong lượt game thì hoãn"
    ]
@@ -1222,10 +1246,10 @@
    "name": "Intervention Priority",
    "group": "F",
    "v51": 2,
-   "score": 7,
-   "evidence": "micro.ts: thiếu tiền đề đã kiểm chứng thì học phần nền ngay; lỗi lặp lại mời bí kíp",
+   "score": 8,
+   "evidence": "Lỗ hổng quyết định cách sửa theo thứ tự: nền, transfer, kiến thức, nhớ, dùng, ngữ cảnh, ôn, tốc độ (remedy.ts); Quest dùng; micro: nền ngay, bí kíp, nghỉ",
    "tests": [
-    "test/unit/engine-micro.test.ts::thiếu tiền đề đã kiểm chứng"
+    "test/unit/engine-remedy.test.ts::phần nền và transfer được ưu tiên"
    ]
   },
   {
@@ -1465,8 +1489,8 @@
    "name": "Fun ≠ Learning",
    "group": "H",
    "v51": 1,
-   "score": 3,
-   "evidence": "Quest thiết kế để lợi ích game = lợi ích học; chưa có dữ liệu tách vui và học",
+   "score": 4,
+   "evidence": "Quest là màn chính, câu trong Quest chọn theo lỗ hổng → cách sửa nên lượt chơi là lượt học; chưa có dữ liệu tách vui và học",
    "tests": []
   },
   {
@@ -1529,10 +1553,10 @@
    "name": "Pattern Memorization",
    "group": "H",
    "v51": 4,
-   "score": 6,
-   "evidence": "Câu đã gặp ít xu; Đạt mức cao cần câu mới; seen hash",
+   "score": 7,
+   "evidence": "Câu đã gặp ít xu; Đạt mức 1–3 cần ≥ 2 câu khác nhau, mức cao cần câu mới; câu trùng đề dưới id khác không tính mới",
    "tests": [
-    "test/unit/engine-quest.test.ts::câu đã gặp ít xu"
+    "test/unit/engine-evq.test.ts::cùng một đề dưới id khác"
    ]
   },
   {
@@ -1610,8 +1634,8 @@
    "name": "Game Flow",
    "group": "H",
    "v51": 5,
-   "score": 7,
-   "evidence": "Chính sách ngắt: lỗi lẻ không ngắt, mời bí kíp hoãn tới cuối lượt game; tầng có điểm dừng tự nhiên",
+   "score": 8,
+   "evidence": "Lỗi lẻ không ngắt; bí kíp hoãn tới cuối lượt; NBA trong Quest trừ hành động ngắt (inGame); tầng có điểm dừng tự nhiên",
    "tests": [
     "test/unit/engine-micro.test.ts::lỗi lẻ chỉ ghi nhận",
     "test/unit/engine-micro.test.ts::trong lượt game thì hoãn"
@@ -1622,9 +1646,10 @@
    "name": "Difficulty Adaptation",
    "group": "H",
    "v51": 6,
-   "score": 7,
-   "evidence": "Nút chưa có bằng chứng hỏi mức nhận ra trước; lên câu tự gõ; IRT",
+   "score": 8,
+   "evidence": "Câu Quest chọn theo cách sửa: đúng mức, dạng tự gõ/chọn, câu chưa gặp (pickFor); nút chưa có bằng chứng hỏi nhận ra trước; IRT",
    "tests": [
+    "test/unit/engine-remedy.test.ts::chọn câu theo cách sửa",
     "test/unit/engine-quest.test.ts::nút chưa có bằng chứng: hỏi mức nhận ra trước"
    ]
   },
@@ -1633,9 +1658,11 @@
    "name": "Objective Visibility",
    "group": "H",
    "v51": 7,
-   "score": 7,
-   "evidence": "Bước tiếp theo và mục tiêu tầng hiển thị",
-   "tests": []
+   "score": 8,
+   "evidence": "Goal-first: dò ngắn → app tự đặt mục tiêu (snapshot goal:AUTO) → tháp là màn chính; bước tiếp và mục tiêu tầng hiển thị",
+   "tests": [
+    "test/e2e/play.spec.ts::mục tiêu tự đặt → tab Chơi là màn chính"
+   ]
   },
   {
    "id": "C358",
@@ -1765,18 +1792,22 @@
    "name": "Fatigue Bias",
    "group": "I",
    "v51": 1,
-   "score": 1,
-   "evidence": "Chưa có dữ liệu / cơ chế",
-   "tests": []
+   "score": 4,
+   "evidence": "Cơ chế: sai lúc mệt (đúng giảm, chậm dần trong phiên) nhẹ hơn, rel thấp, đề nghị nghỉ; chưa có dữ liệu người thật để đo thiên lệch",
+   "tests": [
+    "test/unit/engine-evq.test.ts::mệt trong phiên"
+   ]
   },
   {
    "id": "C372",
    "name": "Familiarity Bias",
    "group": "I",
    "v51": 3,
-   "score": 5,
-   "evidence": "Theo dõi câu mới/cũ, Đạt mức cao cần câu mới; chưa đo",
-   "tests": []
+   "score": 6,
+   "evidence": "Theo dõi câu mới/cũ, ≥ 2 câu khác nhau ở mức 1–3, câu trùng đề không tính mới; chưa đo trên người thật",
+   "tests": [
+    "test/unit/engine-evq.test.ts::cùng một đề dưới id khác"
+   ]
   },
   {
    "id": "C373",
@@ -1841,17 +1872,19 @@
    "name": "Model Drift Bias",
    "group": "I",
    "v51": 0,
-   "score": 1,
-   "evidence": "Luật có phiên bản và tính lại được nhưng chưa có phát hiện trôi model",
-   "tests": []
+   "score": 4,
+   "evidence": "drift() báo khi model quá lạc quan ở ô Đạt, ghi snapshot; chỉ báo cáo, chưa phân theo nhóm người học, chưa có dữ liệu thật",
+   "tests": [
+    "test/unit/engine-evq.test.ts::trôi model: ở phần đã Đạt"
+   ]
   },
   {
    "id": "C380",
    "name": "Bias Auditability",
    "group": "I",
    "v51": 1,
-   "score": 3,
-   "evidence": "Xuất dữ liệu nghiên cứu có provenance; test thiên lệch game/tốc độ chỉ trên mô phỏng; chưa có audit thiên lệch",
+   "score": 4,
+   "evidence": "Dữ liệu nghiên cứu kèm audit (drift, ước lượng slip/guess) và provenance; test thiên lệch chỉ trên mô phỏng; chưa có audit thiên lệch nhóm",
    "tests": []
   },
   {
@@ -1964,10 +1997,10 @@
    "name": "Content Versioning",
    "group": "J",
    "v51": 3,
-   "score": 7,
-   "evidence": "cv = phiên bản app ghi vào từng sự kiện; chưa băm theo từng câu",
+   "score": 9,
+   "evidence": "Mỗi câu có băm nội dung trong content-map.json; app ghi cv theo từng câu (itemCv), e2e khớp bản đồ; câu ngoài bản đồ dùng phiên bản app",
    "tests": [
-    "test/unit/scenarios.test.ts::MT17 / MT18"
+    "test/e2e/evidence.spec.ts::phiên bản nội dung TỪNG câu ghi vào sổ khớp bản đồ nội dung"
    ]
   },
   {
@@ -2133,9 +2166,10 @@
    "name": "Engine hard-code CEFR",
    "v51": true,
    "pass": true,
-   "evidence": "Mục tiêu IELTS/VSTEP/giao tiếp giữ dữ liệu ở trạng thái future trên cùng engine; readiness còn hard-code loại kỳ thi",
+   "evidence": "Mục tiêu khai readiness trong dữ liệu (READINESS_MODELS: mastery, exam-score); mục tiêu mới chỉ cần dữ liệu, chạy trên cùng engine",
    "tests": [
-    "test/unit/engine-graph.test.ts::IELTS/VSTEP/giao tiếp giữ dữ liệu ở trạng thái tương lai"
+    "test/unit/engine-graph.test.ts::IELTS/VSTEP/giao tiếp giữ dữ liệu ở trạng thái tương lai",
+    "test/unit/engine-content.test.ts::Readiness theo mô hình khai trong dữ liệu mục tiêu"
    ]
   },
   {
@@ -2175,10 +2209,11 @@
    "name": "Unknown learner",
    "v51": true,
    "pass": true,
-   "evidence": "Learner mới tinh đi tới đích bằng lộ trình thích ứng (mô phỏng)",
+   "evidence": "Learner mới: dò ngắn ≤ 8 phần, app tự đặt mục tiêu, đi tới đích bằng lộ trình thích ứng (mô phỏng + e2e goal-first)",
    "tests": [
     "test/unit/scenarios.test.ts::S1 / MT1",
-    "test/unit/engine-path.test.ts::người mới với mục tiêu VSTEP B1"
+    "test/unit/engine-path.test.ts::người mới với mục tiêu VSTEP B1",
+    "test/e2e/play.spec.ts::dò ngắn (≤ 8 phần)"
    ]
   },
   {
@@ -2259,10 +2294,11 @@
    "name": "Training/Transfer split",
    "v51": false,
    "pass": true,
-   "evidence": "Luyện tốt nhưng trượt câu mới: mở lại, hạ tin cậy",
+   "evidence": "Luyện tốt nhưng trượt câu mới: mở lại, hạ tin cậy; Readiness CEFR chưa Đạt khi chưa đúng ở câu mới (có miễn)",
    "tests": [
     "test/unit/scenarios.test.ts::S6 / MT9",
-    "test/unit/engine-transfer.test.ts::trượt ở câu mới"
+    "test/unit/engine-transfer.test.ts::trượt ở câu mới",
+    "test/unit/engine-remedy.test.ts::Readiness CEFR: đủ năng lực nhưng chưa đúng ở câu mới"
    ]
   },
   {
@@ -2270,7 +2306,7 @@
    "name": "Forgetting",
    "v51": false,
    "pass": true,
-   "evidence": "FSRS < 0,85 đến hạn ôn; Đạt mà sai 2 lần liên tiếp quay lại lộ trình",
+   "evidence": "FSRS < 0,85 đến hạn ôn; nguy cơ quên NBA từ Σ(1 − R); Đạt mà sai 2 lần liên tiếp quay lại lộ trình",
    "tests": [
     "test/unit/scenarios.test.ts::S7 / MT10",
     "test/unit/engine-nba.test.ts::sai 2 lần LIÊN TIẾP"
@@ -2344,9 +2380,10 @@
    "name": "Content version",
    "v51": false,
    "pass": true,
-   "evidence": "cv ghi vào từng sự kiện (phiên bản app, chưa theo từng câu)",
+   "evidence": "cv theo từng câu: băm nội dung trong content-map.json, ghi vào từng sự kiện, e2e khớp",
    "tests": [
-    "test/unit/scenarios.test.ts::MT17 / MT18"
+    "test/unit/scenarios.test.ts::MT17 / MT18",
+    "test/e2e/evidence.spec.ts::phiên bản nội dung TỪNG câu"
    ]
   },
   {
@@ -2354,10 +2391,11 @@
    "name": "Rule version",
    "v51": false,
    "pass": true,
-   "evidence": "Đổi slip tính lại từ L2; sự kiện ghi phiên bản luật",
+   "evidence": "Đổi slip tính lại từ L2; luật truyền vào ingest được dùng khi tính lại ô (sửa lỗi v66); sự kiện ghi phiên bản luật",
    "tests": [
     "test/unit/scenarios.test.ts::MT17 / MT18",
-    "test/unit/engine-evidence.test.ts::tính lại được khi đổi luật"
+    "test/unit/engine-evidence.test.ts::tính lại được khi đổi luật",
+    "test/unit/engine-evq.test.ts::luật truyền vào ingest được dùng khi tính lại ô"
    ]
   },
   {

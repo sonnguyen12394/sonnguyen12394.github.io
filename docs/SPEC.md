@@ -5,7 +5,7 @@
 > 2. **Game là trải nghiệm chính**: người học chơi để thắng, việc học tiếng Anh nằm ẩn trong luật chơi (stealth learning) — mỗi hành động trong game là một thử thách ngôn ngữ do engine chọn, nhằm lên cấp nhanh nhất. Không dùng dark pattern; tiến độ học và dữ liệu luôn xem được.
 > 3. Kiến trúc evidence theo v2.4 (Observation → Evidence → Ledger → Aggregate → Learner State → Decision Snapshot), đo bằng `docs/CONFORMANCE-200-v2.4.md` và `docs/SCORECARD-v2.4.md`.
 >
-> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v63 (xem phần "Lộ trình v2.4" cuối tệp).
+> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v68 (xem phần "Lộ trình v2.4" cuối tệp).
 
 Cập nhật: 03/10/2026. Bản đọc và bình luận: Claude Docs "English Ladder — Master Spec v2". Tệp này là bản AI đọc khi xây; hai bản phải giống nhau.
 
@@ -262,3 +262,8 @@ Mỗi mốc một PR, chấm lại 200 + 400 tiêu chí sau mỗi mốc.
 | v61 | Micro-learning | Chính sách ngắt §53, giải thích → luyện → kiểm lại → về game |
 | v62 | Game Ladder Quest | Game Challenge Model, học ẩn trong game, tách kỹ năng game khỏi ngôn ngữ |
 | v63 | Đo hiệu quả + chấm lại | Bộ câu giữ riêng đo trước / sau / trễ 7 và 30 ngày, nhãn A/B khi đồng ý; `npm run score` chấm lại 200 + 400 tiêu chí từ dữ liệu có test chứng minh (`docs/SCORE.md`) |
+| v64 | Goal-first + Ladder Quest là màn chính | Bài dò ngắn → mục tiêu CEFR tự đặt (đổi được); mọi lối vào đều có mục tiêu; tab Chơi là màn mặc định |
+| v65 | Lỗ hổng → cách sửa | remedy.ts quyết định câu theo loại lỗ hổng; nguy cơ quên từ FSRS; cờ trong game; Đạt CEFR đòi transfer (có miễn) |
+| v66 | Chất lượng bằng chứng (m3.2) | Độ khó câu, ≥ 2 câu khác nhau, câu trùng nội dung, mệt; kiểm toán trôi model, ước lượng slip/guess, độ nhạy trọng số |
+| v67 | Mô hình nội dung | Bản đồ câu → nút (28.114 câu, 0 mồ côi), phiên bản từng câu, nút âm vị + chức năng giao tiếp, tiền đề thay thế, Readiness theo mô hình dữ liệu |
+| v68 | Chấm lại | `npm run score` trên dữ liệu chấm mới (`docs/SCORE.md`) |
