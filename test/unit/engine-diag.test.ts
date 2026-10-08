@@ -47,11 +47,12 @@ test('hội tụ gần cấp thật của người học, trong giới hạn s�
   }
 });
 
-test('tiên nghiệm sau chẩn đoán: dưới mức ước tính coi như biết, trên coi như chưa, sát mức để trống', () => {
+test('tiên nghiệm sau chẩn đoán: cấp đã qua câu dò coi như biết, trên một cấp coi như chưa, đúng mức để trống', () => {
   assert.deepEqual(priorFor(0, 2), [6, 0.5]);
   assert.deepEqual(priorFor(4, 2), [1, 3]);
-  assert.equal(priorFor(2, 2), null);
-  assert.equal(priorFor(2, 2.5), null);
+  assert.equal(priorFor(2, 2), null);           // cầu thang còn dao động ở cấp 2: để trống
+  assert.deepEqual(priorFor(2, 2.5), [6, 0.5]);   // đã qua câu dò cấp 2, trượt cấp 3: cấp 2 coi như biết (v56)
+  assert.equal(priorFor(3, 2.5), null);
 });
 
 test('dừng khi hết giờ hoặc hết nút', () => {

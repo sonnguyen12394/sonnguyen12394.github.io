@@ -17,7 +17,8 @@
     "e2e": "playwright test",
     "lh": "node tools/lighthouse.mjs",
     "serve": "node tools/serve.mjs",
-    "engine": "node tools/engine-dump.mjs && node --experimental-strip-types --no-warnings tools/engine-gen.ts"
+    "engine": "node tools/engine-dump.mjs && node --experimental-strip-types --no-warnings tools/engine-gen.ts",
+    "sim": "node --experimental-strip-types --no-warnings tools/sim/run.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",

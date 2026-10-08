@@ -12,7 +12,7 @@ import type { Observation, EvEvent, Src } from './types.ts';
 
 export const RULE = {
   evaluator: 'ev1.0',
-  mastery: 'm3.0',
+  mastery: 'm3.1',
   slip: 0.1,            // s: người đã biết vẫn có thể sai (spec §44)
   repeat: 0.5,          // cùng câu trong 24 giờ
   hint: 0.5,            // đúng nhờ gợi ý
