@@ -54,3 +54,25 @@ test('model disagreement: Đạt rồi sai 2 lần ở câu mới → "Vì sao?"
   await expect(page.getByText('I is', { exact: true })).toBeVisible();
   expect(errors).toEqual([]);
 });
+
+test('NBA: mở Lộ trình hôm nay ghi snapshot bước tiếp theo kèm phân rã lợi ích; "Vì sao?" giải thích lựa chọn', async ({ page, errors }) => {
+  await page.goto('/');
+  await page.waitForFunction(() => (window as any).ELREADY === true);
+  await page.evaluate(() => {
+    const w = window as any, st = w.eval('st');
+    st.onboarded = true;
+    st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
+    w.eval('save()');
+    w.eval("go('goal',{er:'today'})");
+  });
+  await expect(page.getByText(/Bước tiếp theo/).first()).toBeVisible({ timeout: 15000 });
+  const snap = await page.evaluate(() => [...(window as any).eval('st').e.ev.snap].reverse().find((s: any) => s.kind === 'nba'));
+  expect(snap.info.k).toMatch(/^(learn|review|probe|verify)$/);
+  expect(String(snap.info.parts)).toContain('×');
+  expect(snap.rule).toMatch(/nba-2$/);
+  if (snap.subj !== 'review') {
+    await page.evaluate((id: string) => (window as any).eval(`go('goal',{er:'why/${id}'})`), snap.subj);
+    await expect(page.getByText('Vì sao app chọn phần này làm bước tiếp theo')).toBeVisible();
+  }
+  expect(errors).toEqual([]);
+});

@@ -13,6 +13,7 @@ import type { Index } from './graph.ts';
 import { addSnap } from './ev/snapshot.ts';
 import { nextProbe as pickProbe, MODE_VI, type Mode, type ProbeCand } from './probe.ts';
 import { RULE_ID } from './ev/evaluate.ts';
+import { rank, NBA_VER, W as NBA_W, type Action, type Kind } from './nba.ts';
 
 // Chẩn đoán liên tục (v58): câu dò có giá trị thông tin cao nhất cho mục tiêu đang mở, trong ngân sách hôm nay.
 const PROBEABLE = (id: string): boolean => id.startsWith('u:') || id.startsWith('g:');
@@ -22,15 +23,26 @@ export function probeFor(host: EHost, e: EState, ix: Index, p: PathOut): ProbeCa
   return pickProbe({ ix, m: e.m, need: p.all, open: new Set(p.open.map(x => x.node)), probeable: PROBEABLE }, used);
 }
 
-// L4: bước tiếp theo được chọn → snapshot kèm 3 ứng viên đầu và điểm ưu tiên (HG30, HF10). Bỏ trùng khi lựa chọn không đổi.
-export const NBA_RULE = 'nba-path-1';
-export function snapNba(host: EHost, e: EState, p: PathOut): void {
-  const top = p.open[0];
+// Next Best Action (v59, spec §56–57): xếp hạng học / ôn / kiểm tra nhanh / xác minh bằng utility có phân rã.
+export function computeNba(host: EHost, e: EState, ix: Index, p: PathOut): Action[] {
+  const day = host.dayInfo();
+  const verify = (p.all ?? []).filter(r => { const st = nodeStat(host, e, r.node, r.level).state; return st === 'verify' || st === 'reopened'; }).map(r => ({ node: r.node, level: r.level }));
+  const last = [...(e.ev?.snap ?? [])].reverse().find(x => x.kind === 'nba');
+  const prev = last ? { kind: (last.info?.k ?? 'learn') as Kind, node: last.subj } : null;
+  return rank({ open: p.open, probe: probeFor(host, e, ix, p), review: { items: day.reviewItems, mins: day.reviewMins, risk: Math.min(1, 0.4 + day.reviewItems / 30) }, verify, prev });
+}
+
+// L4: bước tiếp theo được chọn → snapshot kèm 3 ứng viên đầu, utility và phân rã (HG30, HF10). Bỏ trùng khi lựa chọn không đổi.
+export const NBA_RULE = NBA_VER;
+const PART_VI: Record<string, string> = { learn: 'học', info: 'thông tin', goal: 'mục tiêu', prereq: 'tiền đề', retain: 'nguy cơ quên', transfer: 'transfer', effort: 'nỗ lực', interrupt: 'ngắt mạch' };
+export const partsText = (a: Action): string => Object.entries(a.parts).filter(([, v]) => v).map(([k, v]) => `${PART_VI[k]} ${(Math.round(v * 100) / 100).toString().replace('.', ',')}×${String(NBA_W[k as keyof typeof NBA_W]).replace('.', ',')}${k === 'effort' || k === 'interrupt' ? ' (trừ)' : ''}`).join(' · ');
+export function snapNba(host: EHost, e: EState, acts: Action[]): void {
+  const top = acts[0];
   if (!top || !e.ev) return;
   addSnap(e.ev, {
-    ts: Date.now(), day: host.today(), kind: 'nba', subj: top.node, lv: top.level, dec: 'CHOSEN', rule: `${RULE_ID}/${NBA_RULE}`,
-    alt: p.open.slice(0, 3).map(x => ({ node: x.node, score: Math.round(x.score * 1e4) / 1e4, dep: Math.round(x.dep * 100) / 100, min: x.minutes })),
-    info: { unmet: p.unmet.length, total: p.total, goals: e.goals.map(g => g.id).join(',') },
+    ts: Date.now(), day: host.today(), kind: 'nba', subj: top.node, lv: (top.level || 1) as 1, dec: 'CHOSEN', rule: `${RULE_ID}/${NBA_RULE}`,
+    alt: acts.slice(0, 3).map(x => ({ node: x.node, score: x.u, dep: Math.round(x.parts.prereq * 100) / 100, min: Math.round(x.parts.effort * 20) })),
+    info: { k: top.kind, why: top.why, parts: partsText(top), alts: acts.slice(0, 3).map(x => x.kind).join(',') },
     evs: e.ev.led.filter(x => x.node === top.node).slice(-6).map(x => x.id),
   });
 }
@@ -64,27 +76,37 @@ function itemHtml(host: EHost, ix: Index, it: PathItem, tag = ''): string {
 export function viewToday(c: ECtx, day: DayInfo): string {
   const { host, e } = c, esc = host.esc, ix = loaded()!;
   if (!e.goals.length) return `<section class="stack"><span class="eyebrow">Lộ trình</span><h1>Chưa có mục tiêu</h1><p class="muted">Chọn một mục tiêu để app xếp lộ trình chỉ gồm những gì bạn còn thiếu.</p></section><div class="row"><button class="btn primary" data-e="go" data-r="goals">Chọn mục tiêu</button></div>`;
-  const p = computePath(host, e, ix), s = computeSession(host, e, ix, p, day);
-  snapNba(host, e, p);
+  const p = computePath(host, e, ix), s = computeSession(host, e, ix, p, day), acts = computeNba(host, e, ix, p), top = acts[0];
+  snapNba(host, e, acts);
+  const NEXT = 'Bước tiếp theo';
   const head = `<section class="stack"><span class="eyebrow">Lộ trình hôm nay · ${day.mins} phút</span><h1>Hôm nay học gì</h1>
     <p class="muted">Còn ${p.unmet.length}/${p.total} năng lực chưa đạt (≈ ${Math.max(1, Math.round(p.minutes / 60))} giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.${e.diag ? '' : ' Chưa làm bài chẩn đoán: lộ trình có thể gồm cả thứ bạn đã biết.'}</p>
     <div class="row" style="gap:6px">${e.goals.map(sg => { const g = ix.goal.get(sg.id); return g ? `<button class="btn ghost small" data-e="go" data-r="goal/${esc(g.id)}">${esc(g.vi)}</button>${readyChip(readinessOf(host, e, g))}` : ''; }).join('')}</div>
     ${e.diag ? '' : '<div class="row"><button class="btn small" data-e="go" data-r="diag">Làm bài chẩn đoán</button></div>'}</section>`;
-  const pc = probeFor(host, e, ix, p);
-  const probe = pc ? `<section class="panel stack"><span class="eyebrow">Kiểm tra nhanh · 3 câu · không tốn năng lượng</span><div><b>${esc(ix.node.get(pc.node)?.vi ?? pc.node)}</b><br><span class="hint">${esc(MODE_VI[pc.mode])}${pc.for ? ` (vì ${esc(ix.node.get(pc.for)?.vi ?? pc.for)})` : ''}</span></div><div class="row"><button class="btn small" data-e="go" data-r="probe/${esc(pc.node)}/${pc.level}/${pc.mode}${pc.for ? '/' + esc(pc.for) : ''}">Làm ngay</button></div></section>` : '';
-  const review = s.review > 0 ? `<section class="panel stack"><span class="eyebrow">Ôn duy trì</span><div><b>${day.reviewItems} mục đến hạn ôn</b><br><span class="hint">Những gì đã đạt nhưng sắp quên · ≈ ${s.review} phút</span></div><div class="row"><button class="btn primary small" data-act="review">Ôn ngay</button></div></section>` : '';
+  const vf = acts.find(a => a.kind === 'verify'), pc = probeFor(host, e, ix, p) ?? (vf ? { node: vf.node, level: vf.level as 3, mode: 'verify' as Mode, eig: 0, effort: 1.5, score: 0 } : null);
+  const probeTop = top && (top.kind === 'probe' || top.kind === 'verify');
+  const probe = pc ? `<section class="panel stack"><span class="eyebrow">${probeTop ? `${NEXT} · ` : ''}Kiểm tra nhanh · 3 câu · không tốn năng lượng</span><div><b>${esc(ix.node.get(pc.node)?.vi ?? pc.node)}</b><br><span class="hint">${esc(MODE_VI[pc.mode])}${pc.for ? ` (vì ${esc(ix.node.get(pc.for)?.vi ?? pc.for)})` : ''}</span></div><div class="row"><button class="btn small" data-e="go" data-r="probe/${esc(pc.node)}/${pc.level}/${pc.mode}${pc.for ? '/' + esc(pc.for) : ''}">Làm ngay</button></div></section>` : '';
+  const review = s.review > 0 ? `<section class="panel stack"><span class="eyebrow">${top?.kind === 'review' ? `${NEXT} · ` : ''}Ôn duy trì</span><div><b>${day.reviewItems} mục đến hạn ôn</b><br><span class="hint">Những gì đã đạt nhưng sắp quên · ≈ ${s.review} phút</span></div><div class="row"><button class="btn primary small" data-act="review">Ôn ngay</button></div></section>` : '';
   const perf = s.perf ? itemHtml(host, ix, s.perf, 'Bài làm thật trong tuần') : '';
-  const items = s.items.map((it, i) => itemHtml(host, ix, it, i === 0 ? 'Bước tiếp theo' : '')).join('');
+  const items = s.items.map((it, i) => itemHtml(host, ix, it, i === 0 && (!top || top.kind === 'learn') ? NEXT : '')).join('');
   const done = !p.unmet.length ? '<section class="panel stack"><h3>Đã đạt mọi năng lực của mục tiêu</h3><p class="muted">Tiếp tục ôn duy trì. Với kỳ thi, mục tiêu chỉ được xác nhận bằng điểm thi thật.</p></section>' : '';
-  return `${head}${probe}${review}${perf}${items}${done}<div class="row"><button class="btn ghost" data-e="go" data-r="goals">Mục tiêu của bạn</button></div>`;
+  // Thứ tự khối theo Bước tiếp theo của NBA: hành động có utility cao nhất lên đầu.
+  const blocks = top?.kind === 'review' ? [review, probe, perf, items] : probeTop ? [probe, review, perf, items] : [review, probe, perf, items];
+  return `${head}${blocks.join('')}${done}<div class="row"><button class="btn ghost" data-e="go" data-r="goals">Mục tiêu của bạn</button></div>`;
 }
 
 // Nút chính trang chủ (thay "unit kế tiếp" của khoá học cũ). null = chưa sẵn sàng / chưa có mục tiêu → app dùng cách cũ.
 export function nextStep(host: EHost, e: EState, ix: Index): { h: string; p: string; btn: string } | null {
   if (!e.goals.length) return null;
-  const p = computePath(host, e, ix), it = p.open[0];
+  const p = computePath(host, e, ix), acts = computeNba(host, e, ix, p), top = acts[0];
   const esc = host.esc;
-  snapNba(host, e, p);
+  snapNba(host, e, acts);
+  if (top && top.kind === 'review') return { h: 'Bước tiếp theo: ôn phần sắp quên', p: `${esc(top.why)}. Ôn đúng lúc giữ những gì bạn đã đạt. Còn ${p.unmet.length}/${p.total} năng lực chưa đạt.`, btn: `<button class="btn primary big" data-act="review">▶ Ôn ngay</button><div class="row" style="justify-content:center;gap:6px"><button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay</button></div>` };
+  if (top && (top.kind === 'probe' || top.kind === 'verify')) {
+    const mode = top.kind === 'verify' ? 'verify' : top.probe!.mode, forN = top.probe?.for;
+    return { h: `Bước tiếp theo: kiểm tra nhanh ${esc(ix.node.get(top.node)?.vi ?? top.node)}`, p: `${esc(MODE_VI[mode])}. 3 câu, không tốn năng lượng.`, btn: `<button class="btn primary big" data-e="go" data-r="probe/${esc(top.node)}/${top.level}/${mode}${forN ? '/' + esc(forN) : ''}">▶ Làm ngay</button><div class="row" style="justify-content:center;gap:6px"><button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay</button><button class="btn ghost small" data-e="go" data-r="why/${esc(top.node)}">Vì sao?</button></div>` };
+  }
+  const it = p.open.find(o => o.node === top?.node) ?? p.open[0];
   if (!it) return { h: 'Đã đạt mọi năng lực của mục tiêu', p: 'Ôn duy trì để giữ, hoặc thêm mục tiêu mới.', btn: '<button class="btn primary big" data-e="go" data-r="goals">Mục tiêu của bạn</button>' };
   const n = ix.node.get(it.node)!, act = n.acts[0];
   return {

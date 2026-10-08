@@ -132,7 +132,10 @@ export function ingest(st: EvStore, m: MasteryStore, o: Observation, c: IngestCt
     if (ev.ok) { x.swOk = round(x.swOk + ev.w); x.swgOk = round(x.swgOk + ev.w * ev.g); if (ev.nov && !ev.asst) x.novOk = (x.novOk ?? 0) + 1; } else x.swBad = round(x.swBad + ev.w);
     // Model disagreement (spec §69): đang Đạt mà sai ở câu mới → đếm; đủ thì mở lại. Đang mở lại thì cần đúng ở câu mới để xác nhận.
     const was = before[lvls.indexOf(l)]!, dz: Dispute = st.dis[ck] ?? { bad: 0, ok: 0, on: 0, day: c.day };
+    // §58: đang Đạt mà sai 2 lần LIÊN TIẾP (kể cả câu đã gặp, ví dụ khi ôn) → quay lại lộ trình.
+    if (!dz.on && was.pass && !ev.ok) { dz.cw = (dz.cw ?? 0) + 1; if (dz.cw >= 2) { dz.on = 1; dz.ok = 0; dz.day = c.day; } st.dis[ck] = dz; }
     if (!dz.on && was.pass && !ev.ok && ev.nov) { dz.bad++; dz.day = c.day; if (dz.bad >= rule.reopenBad) { dz.on = 1; dz.ok = 0; } st.dis[ck] = dz; }
+    else if (!dz.on && ev.ok && st.dis[ck]?.cw) { st.dis[ck]!.cw = 0; }
     else if (dz.on && ev.ok && ev.nov && !ev.asst) { dz.ok++; if (dz.ok >= rule.reopenOk) delete st.dis[ck]; else st.dis[ck] = dz; }
     else if (!dz.on && was.pass && ev.ok && st.dis[ck]) { dz.bad = Math.max(0, dz.bad - 0.5); st.dis[ck] = dz; }
   }

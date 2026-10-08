@@ -91,7 +91,7 @@ export interface Agg {
 export interface Prior { a: number; b: number; src: 'diag' | 'legacy'; day: number }
 
 // Mâu thuẫn với kết luận Đạt: đếm lượt sai ở câu mới khi đang Đạt; đủ thì mở lại (on = 1) tới khi đúng đủ ở câu mới.
-export interface Dispute { bad: number; ok: number; on: 0 | 1; day: number }
+export interface Dispute { bad: number; ok: number; on: 0 | 1; day: number; cw?: number }   // cw: số lần sai liên tiếp khi đang Đạt (§58)
 // Một câu trả lời sai lặp lại ở cùng nút (phương án nhiễu / chữ gõ giống nhau).
 export interface Mis { t: string; n: number; d: number }
 

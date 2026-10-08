@@ -95,7 +95,7 @@ export function sanitizeEv(raw: unknown): EvStore {
     const inf = obj(y.info), info: Record<string, number | string> = {};
     for (const [k, w] of Object.entries(inf).slice(0, 20)) if (k.length <= 20 && (typeof w === 'number' || (typeof w === 'string' && w.length <= 200))) info[k] = w;
     if (Object.keys(info).length) sn.info = info;
-    if (Array.isArray(y.alt)) sn.alt = y.alt.slice(0, 5).map(obj).filter(a => typeof a.node === 'string' && NODE.test(a.node as string))
+    if (Array.isArray(y.alt)) sn.alt = y.alt.slice(0, 5).map(obj).filter(a => typeof a.node === 'string' && (NODE.test(a.node as string) || a.node === 'review'))
       .map(a => ({ node: a.node as string, score: num(a.score, -1e6, 1e6, 0), dep: num(a.dep, 0, 1e6, 0), min: num(a.min, 0, 1e5, 0) }));
     return sn;
   }).filter((v): v is Snapshot => !!v).slice(-SNAP_MAX);
@@ -103,7 +103,7 @@ export function sanitizeEv(raw: unknown): EvStore {
   for (const [k, v] of Object.entries(obj(x.dis))) {
     if (!/^(cd|u|g|pa|x|xw|xs):[a-z0-9][a-z0-9._-]{0,60}\|[1-5]$/.test(k)) continue;
     const d = obj(v);
-    out.dis[k] = { bad: num(d.bad, 0, 1e6, 0), ok: num(d.ok, 0, 1e6, 0), on: d.on === 1 ? 1 : 0, day: Math.round(num(d.day, 0, 1e6, 0)) };
+    out.dis[k] = { bad: num(d.bad, 0, 1e6, 0), ok: num(d.ok, 0, 1e6, 0), on: d.on === 1 ? 1 : 0, day: Math.round(num(d.day, 0, 1e6, 0)), ...(typeof d.cw === 'number' ? { cw: Math.round(num(d.cw, 0, 1e6, 0)) } : {}) };
   }
   for (const [n, v] of Object.entries(obj(x.mis))) {
     if (!NODE.test(n)) continue;
