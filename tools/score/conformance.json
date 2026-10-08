@@ -1,5 +1,5 @@
 {
- "version": "v63",
+ "version": "v67",
  "date": "2026-10-08",
  "groups": {
   "1": "Product Vision & Goal",
@@ -30,9 +30,13 @@
    "layer": "Critical",
    "group": 1,
    "v51": 2,
-   "score": 2,
-   "evidence": "Vẫn như v51: chưa chọn mục tiêu thì nextStep() (today.ts) trả null, app chạy bài cũ; chọn mục tiêu ở Tôi → Mục tiêu. Màn chào CEFR mở thẳng bài đầu",
-   "tests": []
+   "score": 4,
+   "evidence": "v64: Bắt đầu → dò ngắn ≤ 8 phần → autoGoal (diag.ts) tự đặt mục tiêu CEFR, snapshot goal:AUTO; người cũ được đặt một lần (autoGoalOnce); màn chính là tháp",
+   "tests": [
+    "test/e2e/play.spec.ts::người mới: Bắt đầu → dò ngắn (≤ 8 phần) → mục tiêu tự đặt → tab Chơi là màn chính",
+    "test/unit/engine-goalfirst.test.ts::mục tiêu tự đặt = cấp kế tiếp của phần yếu nhất",
+    "test/e2e/play.spec.ts::người dùng cũ đã học mà chưa có mục tiêu"
+   ]
   },
   {
    "id": "C2",
@@ -79,9 +83,11 @@
    "layer": "Critical",
    "group": 1,
    "v51": 3,
-   "score": 3,
-   "evidence": "Graph/mastery/path/NBA/probe dùng chung; readiness.ts vẫn rẽ nhánh theo loại kỳ thi (examOf)",
-   "tests": []
+   "score": 4,
+   "evidence": "v67: readinessFor() chọn mô hình theo goal.readiness (READINESS_MODELS); không còn rẽ nhánh examOf ở lớp gọi; mục tiêu mới chỉ cần dữ liệu, có test",
+   "tests": [
+    "test/unit/engine-content.test.ts::Readiness theo mô hình khai trong dữ liệu mục tiêu"
+   ]
   },
   {
    "id": "C6",
@@ -182,9 +188,11 @@
    "layer": "Core",
    "group": 2,
    "v51": 2,
-   "score": 2,
-   "evidence": "dims phon trên 39 nút (Can-Do pro, pa:abc); chưa có nút âm vị riêng",
-   "tests": []
+   "score": 3,
+   "evidence": "v67: 26 nút âm vị ph: (dims phon), bằng chứng từ luyện cặp âm (mức 1, chọn); chưa đo phát âm sản sinh",
+   "tests": [
+    "test/unit/engine-content.test.ts::nút âm vị và nút chức năng giao tiếp riêng"
+   ]
   },
   {
    "id": "C15",
@@ -212,9 +220,11 @@
    "layer": "Core",
    "group": 2,
    "v51": 1,
-   "score": 2,
-   "evidence": "dims inter gắn cho 69 nút Can-Do theo regex (engine-gen.ts); chưa có bằng chứng tương tác riêng",
-   "tests": []
+   "score": 3,
+   "evidence": "v67: 58 nút chức năng fn: (dims inter), bằng chứng từ quiz chức năng và hội thoại (eEv fn:); vẫn là câu chọn/gõ, chưa đo tương tác thật",
+   "tests": [
+    "test/unit/engine-content.test.ts::nút âm vị và nút chức năng giao tiếp riêng"
+   ]
   },
   {
    "id": "C18",
@@ -222,9 +232,11 @@
    "layer": "Core",
    "group": 2,
    "v51": 1,
-   "score": 2,
-   "evidence": "dims prag gắn cho 33 nút theo regex; chưa có hoạt động/đo riêng",
-   "tests": []
+   "score": 3,
+   "evidence": "v67: 58 nút fn: mang prag, có hoạt động và bằng chứng từ quiz chức năng/hội thoại; chưa chấm tính phù hợp ngữ dụng riêng",
+   "tests": [
+    "test/unit/engine-content.test.ts::nút âm vị và nút chức năng giao tiếp riêng"
+   ]
   },
   {
    "id": "C19",
@@ -233,7 +245,7 @@
    "group": 2,
    "v51": 1,
    "score": 2,
-   "evidence": "dims disc gắn cho 72 nút theo regex (kể cả xw:); chưa đo riêng",
+   "evidence": "dims disc vẫn gắn theo regex (engine-gen.ts); nút fn: v67 không mang disc; chưa đo diễn ngôn riêng",
    "tests": []
   },
   {
@@ -320,11 +332,11 @@
    "layer": "Core",
    "group": 3,
    "v51": 0,
-   "score": 3,
-   "evidence": "node.imp.tr + transfer.ts: nút quan trọng phải thử ở câu mới; mức 4–5 cần đúng câu mới; Readiness chưa bắt buộc transfer",
+   "score": 4,
+   "evidence": "imp.tr + transfer.ts; mức 4–5 cần câu mới; v65 Readiness CEFR đòi transfer (miễn khi hết câu mới), có test",
    "tests": [
-    "test/unit/engine-transfer.test.ts::ứng viên transfer: chỉ nút đã Đạt",
-    "test/unit/engine-mastery3.test.ts::mức 4–5 cần ít nhất một lần đúng ở câu mới"
+    "test/unit/engine-mastery3.test.ts::mức 4–5 cần ít nhất một lần đúng ở câu mới",
+    "test/unit/engine-remedy.test.ts::Readiness CEFR: đủ năng lực nhưng chưa đúng ở câu mới thì chưa Đạt"
    ]
   },
   {
@@ -333,8 +345,8 @@
    "layer": "Core",
    "group": 3,
    "v51": 1,
-   "score": 2,
-   "evidence": "imp.re có trong dữ liệu nhưng không dùng; retention vẫn là luật 14 ngày + §58 mở lại",
+   "score": 3,
+   "evidence": "v65: imp.re nhân nguy cơ quên khi xếp câu rương (main.ts qStart); retention vẫn là luật 14 ngày + §58; chưa có test cho imp.re",
    "tests": []
   },
   {
@@ -408,10 +420,11 @@
    "layer": "Quality",
    "group": 4,
    "v51": 0,
-   "score": 3,
-   "evidence": "v57: Edge.alt/need, blockedBy() mở nút khi đủ need; có test tổng hợp nhưng đồ thị thật chưa có cạnh alt nào",
+   "score": 4,
+   "evidence": "v67: đồ thị thật có 38 nhóm alt/need (681 cạnh) cho Can-Do vốn từ; blockedBy() mở khi đủ need; có test trên đồ thị thật",
    "tests": [
-    "test/unit/engine-graph.test.ts::v57 tiền đề thay thế (alt/need)"
+    "test/unit/engine-graph.test.ts::v57 tiền đề thay thế (alt/need)",
+    "test/unit/engine-content.test.ts::đồ thị thật có tiền đề thay thế"
    ]
   },
   {
@@ -573,9 +586,11 @@
    "layer": "Core",
    "group": 5,
    "v51": 3,
-   "score": 3,
-   "evidence": "acts mở đúng màn; coverage 0 nút không đo được",
-   "tests": []
+   "score": 4,
+   "evidence": "acts mở đúng màn; v67 content-map.json gắn mọi câu học nền vào nút; mọi nút từ vựng/ngữ pháp/âm có câu (content-check + test)",
+   "tests": [
+    "test/unit/engine-content.test.ts::bản đồ nội dung: mọi câu học nền gắn một nút có thật"
+   ]
   },
   {
    "id": "C49",
@@ -648,9 +663,11 @@
    "layer": "Core",
    "group": 6,
    "v51": 2,
-   "score": 2,
-   "evidence": "Ánh xạ câu → nút/mức vẫn trong code (eEv, examEvidence); chỉ Challenge của Quest có evidenceTypes",
-   "tests": []
+   "score": 3,
+   "evidence": "v67: content-map.json (engine-gen.ts) ánh xạ câu → nút + mức + băm; content-check.ts kiểm; câu thi vẫn ánh xạ trong code (examEvidence) Hạ còn 3 khi rà: câu thi vẫn ánh xạ trong code.",
+   "tests": [
+    "test/unit/engine-content.test.ts::bản đồ nội dung: mọi câu học nền gắn một nút có thật"
+   ]
   },
   {
    "id": "C56",
@@ -658,9 +675,12 @@
    "layer": "Quality",
    "group": 6,
    "v51": 1,
-   "score": 2,
-   "evidence": "cv = phiên bản app cho câu học nền; câu thi có cv theo gói (contentVer); chưa có version từng câu học nền",
-   "tests": []
+   "score": 4,
+   "evidence": "v67: itemCv() ghi băm nội dung từng câu vào cv của sự kiện, khớp content-map; câu thi theo gói (contentVer)",
+   "tests": [
+    "test/e2e/evidence.spec.ts::v67: phiên bản nội dung TỪNG câu ghi vào sổ khớp bản đồ nội dung",
+    "test/unit/engine-content.test.ts::bản đồ nội dung: mọi câu học nền gắn một nút có thật"
+   ]
   },
   {
    "id": "C57",
@@ -701,9 +721,11 @@
    "layer": "Quality",
    "group": 6,
    "v51": 1,
-   "score": 1,
-   "evidence": "Không kiểm nội dung không gắn nút",
-   "tests": []
+   "score": 3,
+   "evidence": "v67: content-check.ts báo nút không có trong đồ thị (mồ côi) và nút từ vựng/ngữ pháp không có câu; phạm vi là câu học nền Hạ còn 3 khi rà: kiểm mồ côi mới phủ câu học nền, chưa phủ câu thi.",
+   "tests": [
+    "test/unit/engine-content.test.ts::bản đồ nội dung: mọi câu học nền gắn một nút có thật"
+   ]
   },
   {
    "id": "C61",
@@ -711,9 +733,10 @@
    "layer": "Core",
    "group": 7,
    "v51": 1,
-   "score": 2,
-   "evidence": "v62 Ladder Quest (quest.ts, questview.ts) có nhưng vào từ Thử thách/Lộ trình; giao diện chính vẫn là bài học",
+   "score": 3,
+   "evidence": "v64: ui.view mặc định play, tab Chơi, mở lại app vào tháp Ladder Quest; tháp chỉ phủ nút u:/g:, bài học thường vẫn còn Hạ còn 3 khi rà: tháp mới phủ nút từ vựng/ngữ pháp, chưa phủ mọi năng lực.",
    "tests": [
+    "test/e2e/play.spec.ts::người mới: Bắt đầu → dò ngắn (≤ 8 phần) → mục tiêu tự đặt → tab Chơi là màn chính",
     "test/e2e/quest.spec.ts::Ladder Quest: vào từ Thử thách"
    ]
   },
@@ -843,9 +866,11 @@
    "layer": "Quality",
    "group": 8,
    "v51": 1,
-   "score": 3,
-   "evidence": "ObsRec/EvEvent có ts (ms) + day; chưa có test khẳng định ts",
-   "tests": []
+   "score": 4,
+   "evidence": "ObsRec/EvEvent có ts (ms) + day; v66 có test khẳng định ts, day của sự kiện",
+   "tests": [
+    "test/unit/engine-evq.test.ts::độ tin cậy và thời điểm của từng sự kiện"
+   ]
   },
   {
    "id": "C73",
@@ -1002,9 +1027,11 @@
    "layer": "Core",
    "group": 9,
    "v51": 1,
-   "score": 3,
-   "evidence": "rel 0–1 theo g, trợ giúp, hết giờ (evaluate.ts); chưa có test khẳng định rel",
-   "tests": []
+   "score": 4,
+   "evidence": "rel 0–1 theo g, trợ giúp, hết giờ, mệt (evaluate.ts, fatigue); có test khẳng định rel",
+   "tests": [
+    "test/unit/engine-evq.test.ts::độ tin cậy và thời điểm của từng sự kiện"
+   ]
   },
   {
    "id": "C86",
@@ -1012,9 +1039,11 @@
    "layer": "Quality",
    "group": 9,
    "v51": 1,
-   "score": 2,
-   "evidence": "Trường diff có trong Observation/khoá L2 nhưng app không truyền; câu thi quy b → mức",
-   "tests": []
+   "score": 3,
+   "evidence": "v66: diff −1..1 vào khoá L2 và trọng số (diffW); chỉ câu thi truyền diff (exam/evidence.ts), câu học nền chưa truyền",
+   "tests": [
+    "test/unit/engine-evq.test.ts::độ khó câu: đúng câu khó nặng hơn"
+   ]
   },
   {
    "id": "C87",
@@ -1035,10 +1064,11 @@
    "layer": "Quality",
    "group": 9,
    "v51": 1,
-   "score": 3,
-   "evidence": "Lặp 24h ×0,5, trợ giúp, novelty qua seen; có test lặp 24h",
+   "score": 4,
+   "evidence": "Lặp 24h ×0,5; v66 câu trùng nội dung (text) dưới id khác không tính là mới; mức 1–3 cần ≥ 2 câu khác nhau; có test",
    "tests": [
-    "test/unit/engine-mastery.test.ts::lặp cùng câu trong 24 giờ chỉ được nửa trọng số"
+    "test/unit/engine-mastery.test.ts::lặp cùng câu trong 24 giờ chỉ được nửa trọng số",
+    "test/unit/engine-evq.test.ts::cùng một đề dưới id khác không được tính là câu mới"
    ]
   },
   {
@@ -1258,10 +1288,11 @@
    "layer": "Quality",
    "group": 11,
    "v51": 0,
-   "score": 3,
-   "evidence": "cv ghi theo sự kiện (có test MT17) nhưng câu học nền chỉ mang phiên bản app",
+   "score": 4,
+   "evidence": "cv theo sự kiện; v67 câu học nền mang băm nội dung từng câu (itemCv), e2e kiểm khớp content-map",
    "tests": [
-    "test/unit/scenarios.test.ts::phiên bản nội dung được ghi"
+    "test/unit/scenarios.test.ts::phiên bản nội dung được ghi",
+    "test/e2e/evidence.spec.ts::v67: phiên bản nội dung TỪNG câu ghi vào sổ khớp bản đồ nội dung"
    ]
   },
   {
@@ -1270,9 +1301,11 @@
    "layer": "Quality",
    "group": 11,
    "v51": 1,
-   "score": 3,
-   "evidence": "ts ms + day mỗi sự kiện và snapshot; chưa có test khẳng định ts",
-   "tests": []
+   "score": 4,
+   "evidence": "ts ms + day mỗi sự kiện và snapshot; v66 có test khẳng định ts",
+   "tests": [
+    "test/unit/engine-evq.test.ts::độ tin cậy và thời điểm của từng sự kiện"
+   ]
   },
   {
    "id": "C108",
@@ -1403,9 +1436,11 @@
    "layer": "Quality",
    "group": 12,
    "v51": 2,
-   "score": 2,
-   "evidence": "Beta không xét độ khó câu; IRT chỉ cho Nghe/Đọc thi",
-   "tests": []
+   "score": 3,
+   "evidence": "v66: Beta hiệu chỉnh theo diff (diffW 0,2) khi tính ô; chỉ câu thi mang diff nên câu học nền vẫn như nhau",
+   "tests": [
+    "test/unit/engine-evq.test.ts::độ khó câu: đúng câu khó nặng hơn"
+   ]
   },
   {
    "id": "C119",
@@ -1623,9 +1658,11 @@
    "layer": "Core",
    "group": 14,
    "v51": 2,
-   "score": 3,
-   "evidence": "Chế độ verify cho nút reopened/verify; chưa có test riêng cho chế độ này",
-   "tests": []
+   "score": 4,
+   "evidence": "candidates() dò nút reopened/verify ở chế độ verify; v66 có test riêng",
+   "tests": [
+    "test/unit/engine-evq.test.ts::chế độ xác minh của chẩn đoán"
+   ]
   },
   {
    "id": "C137",
@@ -1693,10 +1730,11 @@
    "layer": "Core",
    "group": 15,
    "v51": 2,
-   "score": 3,
-   "evidence": "gap.ts knowledge (mức 1–2 chưa đạt), hiện ở Vì sao?; có test Hạ còn 3: loại lỗ hổng mới hiển thị ở \"Vì sao?\", chưa điều khiển cách sửa.",
+   "score": 4,
+   "evidence": "v65: knowledge → remedy teach (mức 1, chọn), qItem của Quest chọn câu theo remedy (pickFor); có test",
    "tests": [
-    "test/unit/engine-nba.test.ts::Lỗ hổng: chưa biết / nhận ra nhưng chưa nhớ ra"
+    "test/unit/engine-remedy.test.ts::mỗi loại lỗ hổng cho một cách sửa khác nhau",
+    "test/unit/engine-remedy.test.ts::chọn câu theo cách sửa: đúng mức"
    ]
   },
   {
@@ -1705,10 +1743,11 @@
    "layer": "Core",
    "group": 15,
    "v51": 2,
-   "score": 3,
-   "evidence": "gap.ts recall; có test Hạ còn 3: loại lỗ hổng mới hiển thị ở \"Vì sao?\", chưa điều khiển cách sửa.",
+   "score": 4,
+   "evidence": "v65: recall → remedy tự gõ mức 3, Quest chọn câu gõ chưa gặp; có test",
    "tests": [
-    "test/unit/engine-nba.test.ts::Lỗ hổng: chưa biết / nhận ra nhưng chưa nhớ ra"
+    "test/unit/engine-remedy.test.ts::mỗi loại lỗ hổng cho một cách sửa khác nhau",
+    "test/unit/engine-remedy.test.ts::chọn câu theo cách sửa: đúng mức"
    ]
   },
   {
@@ -1717,10 +1756,10 @@
    "layer": "Core",
    "group": 15,
    "v51": 2,
-   "score": 3,
-   "evidence": "gap.ts skill; có test Hạ còn 3: loại lỗ hổng mới hiển thị ở \"Vì sao?\", chưa điều khiển cách sửa.",
+   "score": 4,
+   "evidence": "v65: skill → remedy produce (mức ≥ 4, gõ) trong qItem; có test",
    "tests": [
-    "test/unit/engine-nba.test.ts::Lỗ hổng: chưa biết / nhận ra nhưng chưa nhớ ra"
+    "test/unit/engine-remedy.test.ts::mỗi loại lỗ hổng cho một cách sửa khác nhau"
    ]
   },
   {
@@ -1729,10 +1768,11 @@
    "layer": "Core",
    "group": 15,
    "v51": 0,
-   "score": 3,
-   "evidence": "automaticity: trung vị rt > 12 giây (ngưỡng tuyệt đối, không theo chính người học); có test",
+   "score": 4,
+   "evidence": "v65: automaticity so với tốc độ chính người học (gap.ts), remedy speed; có test người vốn chậm không bị gắn nhãn",
    "tests": [
-    "test/unit/engine-nba.test.ts::Lỗ hổng: đang quên (FSRS < 0,85)"
+    "test/unit/engine-remedy.test.ts::mỗi loại lỗ hổng cho một cách sửa khác nhau",
+    "test/unit/engine-remedy.test.ts::\"đúng nhưng chậm\" so với chính người học"
    ]
   },
   {
@@ -1741,10 +1781,11 @@
    "layer": "Core",
    "group": 15,
    "v51": 0,
-   "score": 3,
-   "evidence": "context: ngữ cảnh ≥ 3 lượt, đúng < 50%; có test Hạ còn 3: loại lỗ hổng mới hiển thị ở \"Vì sao?\", chưa điều khiển cách sửa.",
+   "score": 4,
+   "evidence": "v65: weakContext() chỉ ngữ cảnh yếu nhất, remedy context luyện đúng ngữ cảnh đó; có test",
    "tests": [
-    "test/unit/engine-nba.test.ts::Lỗ hổng: đang quên (FSRS < 0,85)"
+    "test/unit/engine-remedy.test.ts::mỗi loại lỗ hổng cho một cách sửa khác nhau",
+    "test/unit/engine-remedy.test.ts::ngữ cảnh yếu nhất được chỉ ra"
    ]
   },
   {
@@ -1753,10 +1794,10 @@
    "layer": "Core",
    "group": 15,
    "v51": 0,
-   "score": 3,
-   "evidence": "transfer: reopened/verify; có test Hạ còn 3: loại lỗ hổng mới hiển thị ở \"Vì sao?\", chưa điều khiển cách sửa.",
+   "score": 4,
+   "evidence": "v65: transfer → remedy câu mới (xferItems) trong qItem, ưu tiên sau phần nền; có test",
    "tests": [
-    "test/unit/engine-nba.test.ts::Lỗ hổng: đang quên (FSRS < 0,85)"
+    "test/unit/engine-remedy.test.ts::mỗi loại lỗ hổng cho một cách sửa khác nhau"
    ]
   },
   {
@@ -1765,9 +1806,10 @@
    "layer": "Core",
    "group": 15,
    "v51": 2,
-   "score": 3,
-   "evidence": "retention: FSRS < 0,85 khi đang Đạt; có test Hạ còn 3: loại lỗ hổng mới hiển thị ở \"Vì sao?\", chưa điều khiển cách sửa.",
+   "score": 4,
+   "evidence": "v65: retention → remedy ôn (gõ, mức ≤ 3); rương dùng retention; có test",
    "tests": [
+    "test/unit/engine-remedy.test.ts::mỗi loại lỗ hổng cho một cách sửa khác nhau",
     "test/unit/engine-nba.test.ts::Lỗ hổng: đang quên (FSRS < 0,85)"
    ]
   },
@@ -1777,10 +1819,10 @@
    "layer": "Critical",
    "group": 15,
    "v51": 3,
-   "score": 3,
-   "evidence": "prerequisite: tiền đề cứng chưa đạt hoặc giả thuyết gốc; có test Hạ còn 3: loại lỗ hổng mới hiển thị ở \"Vì sao?\", chưa điều khiển cách sửa.",
+   "score": 4,
+   "evidence": "v65: prerequisite → remedy root, qItem đổi sang nút gốc (hyp.cause hoặc tiền đề cứng); có test",
    "tests": [
-    "test/unit/engine-nba.test.ts::Lỗ hổng: chưa biết / nhận ra nhưng chưa nhớ ra",
+    "test/unit/engine-remedy.test.ts::mỗi loại lỗ hổng cho một cách sửa khác nhau",
     "test/unit/engine-path.test.ts::chỉ mở nút đã đủ tiền đề cứng; nút đã đạt ra khỏi lộ trình"
    ]
   },
@@ -1866,9 +1908,11 @@
    "layer": "Quality",
    "group": 16,
    "v51": 1,
-   "score": 2,
-   "evidence": "Cơ chế alt/need có nhưng đồ thị thật chưa dùng; lộ trình vẫn một route",
-   "tests": []
+   "score": 3,
+   "evidence": "v67: 38 nhóm tiền đề thay thế thật cho Can-Do vốn từ (cần ≥ 80% unit), plan() dùng blockedBy; ngữ pháp vẫn một route",
+   "tests": [
+    "test/unit/engine-content.test.ts::đồ thị thật có tiền đề thay thế"
+   ]
   },
   {
    "id": "C157",
@@ -1915,7 +1959,7 @@
    "group": 16,
    "v51": 2,
    "score": 3,
-   "evidence": "Trừ nỗ lực theo phút, có test; ngắt mạch chỉ khi inGame, chưa truyền từ app",
+   "evidence": "Trừ nỗ lực theo phút, có test; v65 Quest gọi computeNba(..., true) nên ngắt mạch được trừ; hệ số ngắt chưa có test riêng",
    "tests": [
     "test/unit/engine-nba.test.ts::NBA: utility có phân rã"
    ]
@@ -2161,10 +2205,12 @@
    "layer": "Critical",
    "group": 18,
    "v51": 2,
-   "score": 3,
-   "evidence": "Mức 4–5 cần đúng câu mới (vf); mức 1–3 vẫn Đạt được bằng một câu lặp qua nhiều ngày (S6 dùng chính điều này)",
+   "score": 4,
+   "evidence": "Mức 4–5 cần đúng câu mới; v66 mức 1–3 cần ≥ 2 câu khác nhau, câu trùng nội dung không tính; có test",
    "tests": [
-    "test/unit/engine-mastery3.test.ts::mức 4–5 cần ít nhất một lần đúng ở câu mới"
+    "test/unit/engine-mastery3.test.ts::mức 4–5 cần ít nhất một lần đúng ở câu mới",
+    "test/unit/engine-evq.test.ts::mức 1–3 không Đạt bằng một câu lặp qua nhiều ngày",
+    "test/unit/engine-evq.test.ts::cùng một đề dưới id khác không được tính là câu mới"
    ]
   },
   {
@@ -2208,9 +2254,11 @@
    "layer": "Core",
    "group": 19,
    "v51": 0,
-   "score": 2,
-   "evidence": "xferSummary hiện và ghi vào snapshot readiness; nút trượt transfer bị mở lại; ready không đòi transfer",
-   "tests": []
+   "score": 4,
+   "evidence": "v65: masteryReadiness đòi ok + exempt ≥ important (xferSummary, miễn khi hết câu mới), readyview hiện phần chờ; có test",
+   "tests": [
+    "test/unit/engine-remedy.test.ts::Readiness CEFR: đủ năng lực nhưng chưa đúng ở câu mới thì chưa Đạt"
+   ]
   },
   {
    "id": "C185",
@@ -2316,9 +2364,10 @@
    "layer": "Quality",
    "group": 20,
    "v51": 1,
-   "score": 3,
-   "evidence": "Sao lưu chứa toàn bộ st.e (sổ, thống kê, snapshot); xuất nghiên cứu kèm L0; chưa có test khẳng định sổ còn sau xuất/nhập",
+   "score": 4,
+   "evidence": "Sao lưu chứa toàn bộ st.e; v66 e2e: mã sao lưu giữ nguyên sổ, thống kê, snapshot, khôi phục đúng mastery",
    "tests": [
+    "test/e2e/data.spec.ts::mã sao lưu giữ nguyên sổ bằng chứng, thống kê và snapshot",
     "test/e2e/evidence.spec.ts::tải được dữ liệu nghiên cứu đầy đủ"
    ]
   },
@@ -2364,9 +2413,11 @@
    "layer": "Critical",
    "group": 20,
    "v51": 3,
-   "score": 3,
-   "evidence": "Mục tiêu tương lai giữ dữ liệu; readiness còn rẽ nhánh theo kỳ thi",
-   "tests": []
+   "score": 4,
+   "evidence": "v67: mục tiêu khai readiness trong dữ liệu (READINESS_MODELS); test thêm mục tiêu mới chỉ bằng dữ liệu, plan và Readiness chạy không sửa core",
+   "tests": [
+    "test/unit/engine-content.test.ts::Readiness theo mô hình khai trong dữ liệu mục tiêu"
+   ]
   },
   {
    "id": "C198",
@@ -2375,7 +2426,7 @@
    "group": 20,
    "v51": 3,
    "score": 3,
-   "evidence": "Nút x: của kỳ thi đi qua cùng ingest/Beta; chưa có test cho mục tiêu mới",
+   "evidence": "Nút x:, fn:, ph: đi qua cùng ingest/Beta; test mục tiêu mới chỉ chạy plan/Readiness với mastery giả, chưa nạp bằng chứng thật",
    "tests": []
   },
   {
