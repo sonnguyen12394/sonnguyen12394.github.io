@@ -8,10 +8,10 @@ import { SNAP_MAX, type Snapshot, type SnapKind } from './snapshot.ts';
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
 const num = (v: unknown, lo: number, hi: number, d: number): number => (typeof v === 'number' && Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d);
 const str = (v: unknown, max = 80): string | undefined => (typeof v === 'string' && v.length > 0 && v.length <= max ? v : undefined);
-const NODE = /^(cd|u|g|pa|x|xw|xs):[a-z0-9][a-z0-9._-]{0,60}$/;
-const CELL = /^(cd|u|g|pa|x|xw|xs):[a-z0-9][a-z0-9._-]{0,60}\|[1-5]$/;
+const NODE = /^(cd|u|g|pa|x|xw|xs|ph|fn):[a-z0-9][a-z0-9._-]{0,60}$/;
+const CELL = /^(cd|u|g|pa|x|xw|xs|ph|fn):[a-z0-9][a-z0-9._-]{0,60}\|[1-5]$/;
 const SUB = /^[^|]{1,40}\|[^|]{1,40}\|[01]\|-?[01]$/;
-const SRCS: Src[] = ['vocab', 'gram', 'exam', 'pa', 'diag', 'testout', 'perf', 'game', 'micro', 'transfer', 'legacy'];
+const SRCS: Src[] = ['vocab', 'gram', 'exam', 'pa', 'diag', 'testout', 'perf', 'game', 'micro', 'transfer', 'pron', 'talk', 'legacy'];
 const src = (v: unknown): Src => (SRCS.includes(v as Src) ? (v as Src) : 'vocab');
 const lvl = (v: unknown): Level => Math.round(num(v, 1, 5, 1)) as Level;
 
@@ -75,7 +75,7 @@ export function sanitizeEv(raw: unknown): EvStore {
     return r;
   }).filter((o): o is ObsRec => !!o).slice(-OBS_MAX);
   for (const [k, v] of Object.entries(obj(x.pri))) {
-    if (!/^(cd|u|g|pa|x|xw|xs):[a-z0-9][a-z0-9._-]{0,60}\|[1-5]$/.test(k)) continue;
+    if (!/^(cd|u|g|pa|x|xw|xs|ph|fn):[a-z0-9][a-z0-9._-]{0,60}\|[1-5]$/.test(k)) continue;
     const p = obj(v);
     out.pri[k] = { a: num(p.a, 0, 1e4, 0), b: num(p.b, 0, 1e4, 0), src: p.src === 'diag' ? 'diag' : 'legacy', day: Math.round(num(p.day, 0, 1e6, 0)) } as Prior;
   }
@@ -101,7 +101,7 @@ export function sanitizeEv(raw: unknown): EvStore {
   }).filter((v): v is Snapshot => !!v).slice(-SNAP_MAX);
   out.sseq = Math.round(num(x.sseq, 0, 1e9, out.snap.length));
   for (const [k, v] of Object.entries(obj(x.dis))) {
-    if (!/^(cd|u|g|pa|x|xw|xs):[a-z0-9][a-z0-9._-]{0,60}\|[1-5]$/.test(k)) continue;
+    if (!/^(cd|u|g|pa|x|xw|xs|ph|fn):[a-z0-9][a-z0-9._-]{0,60}\|[1-5]$/.test(k)) continue;
     const d = obj(v);
     out.dis[k] = { bad: num(d.bad, 0, 1e6, 0), ok: num(d.ok, 0, 1e6, 0), on: d.on === 1 ? 1 : 0, day: Math.round(num(d.day, 0, 1e6, 0)), ...(typeof d.cw === 'number' ? { cw: Math.round(num(d.cw, 0, 1e6, 0)) } : {}) };
   }

@@ -7,7 +7,7 @@ import type { Level } from '../types.ts';
 import type { Snapshot } from './snapshot.ts';
 
 // Nguồn hoạt động sinh ra quan sát (provenance §36: activity).
-export type Src = 'vocab' | 'gram' | 'exam' | 'pa' | 'diag' | 'testout' | 'perf' | 'game' | 'micro' | 'transfer' | 'legacy';
+export type Src = 'vocab' | 'gram' | 'exam' | 'pa' | 'diag' | 'testout' | 'perf' | 'game' | 'micro' | 'transfer' | 'pron' | 'talk' | 'legacy';
 
 // L0 — quan sát thô. Chỉ chứa sự kiện, không chứa diễn giải.
 export interface Observation {

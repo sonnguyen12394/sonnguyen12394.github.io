@@ -120,5 +120,21 @@ const worst = groups.map(g => ({ id: g.id, r: levelReport(g, list).ratio })).sor
   for (const t of tasks) if (new Set((ws.samples ?? []).filter(s => s.task === t).map(s => s.band)).size < 3) { schemaErr++; console.error(`✗ ws: bài mẫu ${t} cần ≥ 3 mức band`); }
   console.log(`ws: ${(ws.w1ac ?? []).length + (ws.w1gt ?? []).length + (ws.w2 ?? []).length} đề Viết, ${(ws.s ?? []).length} bộ đề Nói, ${(ws.samples ?? []).length} bài mẫu`);
 }
+// v67 bản đồ nội dung → nút (C55, C60): mọi câu học nền gắn với một nút có thật của đồ thị; mọi nút từ vựng / ngữ pháp có câu.
+{
+  const CM = join(ROOT, 'content/engine/content-map.json'), NJ = join(ROOT, 'content/engine/nodes.json');
+  if (existsSync(CM) && existsSync(NJ)) {
+    const cm = JSON.parse(readFileSync(CM, 'utf8')) as { items: number; map: Record<string, Array<[string, number[], string]>> };
+    const nodes = JSON.parse(readFileSync(NJ, 'utf8')) as Array<{ id: string; kind: string }>, have = new Set(nodes.map(n => n.id));
+    let n = 0;
+    for (const [node, xs] of Object.entries(cm.map)) {
+      if (!have.has(node)) { schemaErr++; console.error(`✗ content-map: nút ${node} không có trong đồ thị (nội dung mồ côi)`); }
+      for (const [id, lv, h] of xs) { n++; if (!id || !lv.length || lv.some(l => l < 1 || l > 5) || !/^[0-9a-z]{1,8}$/.test(h)) { schemaErr++; console.error(`✗ content-map: câu ${id} sai dạng`); } }
+    }
+    for (const nd of nodes) if ((nd.kind === 'vocab' || nd.kind === 'grammar') && !cm.map[nd.id]?.length) { schemaErr++; console.error(`✗ content-map: nút ${nd.id} không có câu nào`); }
+    if (n !== cm.items) { schemaErr++; console.error(`✗ content-map: đếm ${n} ≠ ${cm.items}`); }
+    console.log(`content-map: ${n} câu học nền → ${Object.keys(cm.map).length} nút, mỗi câu có mức và băm nội dung`);
+  }
+}
 console.log(`content: ${groups.length} nhóm, ${items} câu; ${schemaErr + issues.length} lỗi${worst ? `; tỉ lệ từ vượt cấp cao nhất ${(worst.r * 100).toFixed(1)}% (${worst.id})` : ''}`);
 process.exit(schemaErr + issues.length ? 1 : 0);

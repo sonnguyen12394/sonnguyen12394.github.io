@@ -124,3 +124,19 @@ export function masteryReadiness(req: Req[], stat: (r: Req) => { pass: boolean; 
   const lapse = lastLapse !== null && today - lastLapse < 14;
   return { kind: 'mastery', p: all ? (done + perfDone) / all : 0, done, total, perfDone, perfTotal: perf.length, ready, lapse, achieved: ready && !lapse, ...(xfer ? { xfer } : {}) };
 }
+
+// v67 (C5, C197, C198): Readiness theo mô hình đăng ký. Mỗi mục tiêu khai `readiness` trong dữ liệu; engine lấy mô hình tương ứng.
+// Thêm loại mục tiêu mới = thêm dữ liệu (dùng mô hình có sẵn) hoặc đăng ký một mô hình mới, không sửa lõi.
+export interface ReadyIn {
+  mastery: (r: Req) => { pass: boolean; conf: Conf };
+  lapse: number | null;
+  today: number;
+  xfer?: () => { important: number; ok: number; exempt: number } | undefined;
+  exam?: () => { dists: Record<SkillK, Dist | null>; real: RealScore[] };
+}
+export interface ReadinessModel { id: NonNullable<Goal['readiness']>; run(g: Goal, x: ReadyIn): ExamReady | MasteryReady }
+export const READINESS_MODELS: Record<NonNullable<Goal['readiness']>, ReadinessModel> = {
+  mastery: { id: 'mastery', run: (g, x) => masteryReadiness(g.req, x.mastery, x.lapse, x.today, x.xfer?.()) },
+  'exam-score': { id: 'exam-score', run: (g, x) => { const d = x.exam!(); return examReadiness(g, d.dists, d.real); } },
+};
+export const readinessFor = (g: Goal, x: ReadyIn): ExamReady | MasteryReady => READINESS_MODELS[g.readiness ?? 'mastery'].run(g, x);

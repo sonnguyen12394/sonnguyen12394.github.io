@@ -5,6 +5,7 @@
 //   - chỉnh tay trong content/engine/overrides.json (thẻ ngữ cảnh, thêm/bớt cạnh).
 // Ghi content/engine/{nodes.json, edges.json, goals/*.json, coverage.md}. Kết quả xác định (chạy lại ra y hệt).
 // Dùng: node --experimental-strip-types tools/engine-gen.ts
+import { hash6 } from '../src/engine/ev/store.ts';
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, unlinkSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -23,6 +24,8 @@ interface Dump {
   cando: Array<{ id: string; lv: Cefr; grp: string; grp0: string | null; vi: string; en: string; refs: Array<{ t: string; acts: DumpAct[] }> }>;
   units: Array<{ id: string; level: Cefr; title: string; vi: string; words: number }>;
   gpoints: Array<{ id: string; level: Cefr; title: string; vi: string }>;
+  content?: { words: Array<{ id: string; unit: string; cloze: boolean; col: boolean; raw: string }>; gram: Array<{ id: string; mc: string[]; ty: string[]; fx: string[]; or: string[] }>; pa: Array<{ id: string; n: number }>;
+    sounds: Array<{ id: string; a: string; b: string; title: string; vi: string; pairs: string[] }>; funcs: Array<{ id: string; lv: Cefr; en: string; vi: string; exps: string[] }> };
 }
 interface Overrides { ctx?: Record<string, Ctx[]>; edgesAdd?: Edge[]; edgesDel?: Array<{ from: string; to: string }> }
 
@@ -77,6 +80,16 @@ for (const p of preA1) nodes.push({
   id: `pa:${p.id}`, kind: 'cando', area: 'voc', skill: 'L', cefr: null, vi: `Pre-A1: ${p.vi}`, en: p.en, ctx: ['daily'],
   acts: [{ at: `data-pa="pa-${p.id}"`, t: `Pre-A1: ${p.vi}` }], minutes: 10,
 });
+// v67 (C14, C17–C19): nút âm vị riêng (26 cặp âm tối thiểu) và nút chức năng giao tiếp riêng (chào hỏi, đề nghị, xin lỗi…),
+// mỗi nút có hoạt động để đo; Can-Do tham chiếu cặp âm / chức năng thì nối tới các nút này như với unit, điểm ngữ pháp.
+for (const x of dump.content?.sounds ?? []) nodes.push({
+  id: `ph:${x.id}`, kind: 'sound', area: 'pro', skill: 'L', cefr: 'A1', vi: `Phân biệt âm ${x.a} – ${x.b} (${x.vi})`, en: x.title, ctx: ['daily'],
+  acts: [{ at: `data-snd="${x.id}"`, t: `Cặp âm ${x.title}` }], minutes: 10,
+});
+for (const f of dump.content?.funcs ?? []) nodes.push({
+  id: `fn:${f.id}`, kind: 'func', area: 'spk', skill: 'S', cefr: f.lv, vi: f.vi, en: f.en, ctx: ['daily'],
+  acts: [{ at: `data-fn="${f.id}"`, t: f.vi }], minutes: 15,
+});
 // Dạng câu thi Nghe/Đọc (bỏ dạng chỉ dùng cho kiểm tra đầu vào) và bài Viết/Nói thi.
 for (const q of QTYPES.filter(q => !q.id.startsWith('pl-'))) nodes.push({
   id: `x:${q.id}`, kind: 'task', area: 'task', skill: q.skill as Skill, cefr: null, vi: q.vi, en: q.en, ctx: ['exam'],
@@ -100,16 +113,24 @@ nodes.sort((a, b) => (a.id < b.id ? -1 : 1));
 
 // ---------- Cạnh ----------
 const edges: Edge[] = [];
-const add = (from: string, to: string, type: Edge['type'], w: number, why: NonNullable<Edge['why']>) => edges.push({ from, to, type, w, why, ver: VERSION });
+const add = (from: string, to: string, type: Edge['type'], w: number, why: NonNullable<Edge['why']>, alt?: { alt: string; need: number }) => edges.push({ from, to, type, w, why, ver: VERSION, ...(alt ?? {}) });
 const unitIds = new Set(dump.units.map(u => u.id)), gpIds = new Set(dump.gpoints.map(p => p.id));
+const sndIds = new Set((dump.content?.sounds ?? []).map(x => x.id)), fnIds = new Set((dump.content?.funcs ?? []).map(x => x.id));
 for (const c of dump.cando) {
   const to = new Set<string>();
   for (const r of c.refs) for (const a of r.acts) {
     const mu = /data-unit="([^"]+)"/.exec(a.at), mg = /data-gp="([^"]+)"/.exec(a.at);
     if ((r.t === 'u' || r.t === 'ul') && mu && unitIds.has(mu[1]!)) to.add(`u:${mu[1]}`);
     if ((r.t === 'g' || r.t === 'gl') && mg && gpIds.has(mg[1]!)) to.add(`g:${mg[1]}`);
+    const ms = /data-snd="([^"]+)"/.exec(a.at), mf = /data-fn="([^"]+)"/.exec(a.at);
+    if (r.t === 'snd' && ms && sndIds.has(ms[1]!)) to.add(`ph:${ms[1]}`);
+    if (r.t === 'f' && mf && fnIds.has(mf[1]!)) to.add(`fn:${mf[1]}`);
   }
-  for (const t of [...to].sort()) add(`cd:${c.id}`, t, 'hard', 1, 'cando-act');
+  // v67 tiền đề thay thế (spec §15, C34/C156/C207): Can-Do về VỐN TỪ theo chủ đề (≥ 4 unit) đo độ rộng, không đòi đủ từng unit —
+  // mở khi đã Đạt ≥ 80% số unit của nó (nhiều đường tới cùng một Can-Do). Can-Do ngữ pháp giữ nguyên: mỗi cấu trúc đều cần.
+  const units = [...to].filter(t => t.startsWith('u:'));
+  const alt = /-voc\d+$/.test(c.id) && units.length >= 4 ? { alt: `cd:${c.id}#voc`, need: Math.ceil(units.length * 0.8) } : undefined;
+  for (const t of [...to].sort()) add(`cd:${c.id}`, t, 'hard', 1, 'cando-act', t.startsWith('u:') ? alt : undefined);
 }
 // Cùng mảng, cấp dưới liền kề là tiền đề cứng (muốn đọc ở B2 phải đọc được ở B1); cùng nhóm gốc (grp0) nếu có thì chỉ nối nhóm đó.
 for (const c of dump.cando) {
@@ -155,6 +176,8 @@ for (const n of nodes) {
   if (n.area === 'lis' || n.area === 'rd' || n.skill === 'L' || n.skill === 'R') dims.add('rec');
   if (n.area === 'wr' || n.area === 'spk' || n.skill === 'W' || n.skill === 'S') dims.add('prod');
   if (n.id === 'pa:class') dims.add('inter');   // hỏi lại, xin nhắc lại: tương tác đầu tiên
+  if (n.kind === 'sound') dims.add('phon');
+  if (n.kind === 'func') { dims.add('inter'); dims.add('prag'); }
   if (n.kind === 'cando' || n.kind === 'task') { if (INTER.test(text) || n.id.startsWith('xs:')) dims.add('inter'); if (PRAG.test(text)) dims.add('prag'); if (DISC.test(text) || n.id.startsWith('xw:')) dims.add('disc'); }
   if (!dims.size) dims.add(n.kind === 'vocab' ? 'lex' : 'rec');
   n.ver = VERSION;
@@ -164,8 +187,10 @@ for (const n of nodes) {
   n.evReq = n.kind === 'vocab' || n.id.startsWith('pa:') ? { lv: [1, 3], types: ['choice', 'typed'] as EvType[] }
     : n.kind === 'grammar' ? { lv: [2, 3, 4], types: ['choice', 'typed', 'production'] as EvType[] }
     : n.kind === 'task' ? { lv: [3, 4, 5], types: ['task'] as EvType[] }
+    : n.kind === 'sound' ? { lv: [1, 2], types: ['choice'] as EvType[] }
+    : n.kind === 'func' ? { lv: [2, 3], types: ['choice', 'typed'] as EvType[] }
     : prod ? { lv: [4, 5], types: ['production', 'task'] as EvType[] } : { lv: [3], types: ['task'] as EvType[] };
-  n.imp = { tr: n.kind === 'grammar' ? 0.8 : prod ? 0.9 : n.kind === 'vocab' ? 0.5 : 0.7, re: n.id.startsWith('pa:') ? 1 : n.kind === 'vocab' ? 0.9 : n.kind === 'grammar' ? 0.8 : 0.5 };
+  n.imp = { tr: n.kind === 'sound' ? 0.6 : n.kind === 'func' ? 0.8 : n.kind === 'grammar' ? 0.8 : prod ? 0.9 : n.kind === 'vocab' ? 0.5 : 0.7, re: n.id.startsWith('pa:') ? 1 : n.kind === 'vocab' ? 0.9 : n.kind === 'grammar' ? 0.8 : 0.5 };
   n.scope = n.kind === 'vocab' ? `${unitWordsN.get(n.id) ?? 0} từ của chủ đề “${n.en ?? n.vi}”` : n.kind === 'grammar' ? `Điểm ngữ pháp: ${n.en ?? n.vi}` : n.en ?? n.vi;
   const ct = contrastOf.get(n.id); if (ct) n.contrast = [...ct].sort();
   const ms = know.mis[n.id]; if (ms) n.mis = ms;
@@ -230,11 +255,40 @@ const au = audit(graph);
 if (au.unreachable.length) { console.error(`nút mục tiêu không có hoạt động nào để học: ${au.unreachable.join(', ')}`); process.exit(1); }
 mkdirSync(P('content/engine/goals'), { recursive: true });
 const json = (x: unknown) => JSON.stringify(x, null, 1) + '\n';
+// v67 (C5, C197): mục tiêu tự khai mô hình Readiness của nó; engine chọn mô hình theo dữ liệu, không rẽ nhánh theo loại kỳ thi.
+for (const g of goals) g.readiness = g.kind === 'cefr' || g.kind === 'comm' ? 'mastery' : 'exam-score';
 writeFileSync(P('content/engine/nodes.json'), json(nodes));
 writeFileSync(P('content/engine/edges.json'), json(finalEdges));
 const keep = new Set(goals.map(g => `${g.id}.json`));
 for (const f of readdirSync(P('content/engine/goals'))) if (!keep.has(f)) unlinkSync(P(`content/engine/goals/${f}`));
 for (const g of goals) writeFileSync(P(`content/engine/goals/${g.id}.json`), json(g));
+
+// ---------- v67 Bản đồ nội dung → nút (C55, C56, C60) ----------
+// Mỗi câu học nền: id câu (đúng id app ghi vào bằng chứng) → nút, các mức nó đo, băm nội dung (phiên bản từng câu).
+// Nội dung không gắn được nút (mồ côi) hoặc nút học nền không có câu nào → dừng build.
+if (dump.content) {
+  const nodeIds = new Set(nodes.map(n => n.id)), map: Record<string, Array<[string, number[], string]>> = {}, orphans: string[] = [];
+  const put = (node: string, id: string, lv: number[], raw: string) => { if (!nodeIds.has(node)) { orphans.push(`${id} → ${node}`); return; } (map[node] ||= []).push([id, lv, hash6(raw)]); };
+  for (const w of dump.content.words) {
+    const node = `u:${w.unit}`;
+    put(node, `w:${w.id}:rec`, [1, 2], w.raw); put(node, `w:${w.id}:rcl`, [3], w.raw); put(node, `w:${w.id}:spl`, [3], w.raw);
+    if (w.cloze) put(node, `w:${w.id}:ctx`, [4], w.raw);
+    if (w.col) put(node, `w:${w.id}:col`, [4], w.raw);
+  }
+  for (const p of dump.content.gram) {
+    const node = `g:${p.id}`;
+    p.mc.forEach((x, i) => put(node, `g:${p.id}|cho|c${i}`, [2], x)); p.ty.forEach((x, i) => put(node, `g:${p.id}|typ|t${i}`, [3], x));
+    p.fx.forEach((x, i) => put(node, `g:${p.id}|fix|x${i}`, [4], x)); p.or.forEach((x, i) => put(node, `g:${p.id}|ord|o${i}`, [3], x));
+  }
+  for (const a of dump.content.pa) put(`pa:${a.id.replace(/^pa-/, '')}`, `pa:${a.id}`, [1, 3], `${a.id}:${a.n}`);
+  for (const x of dump.content.sounds ?? []) x.pairs.forEach((p, i) => put(`ph:${x.id}`, `snd:${x.id}:${i}`, [1, 2], p));
+  for (const f of dump.content.funcs ?? []) f.exps.forEach((p, i) => put(`fn:${f.id}`, `fn:${f.id}:${i}`, [2, 3], p));
+  const empty = nodes.filter(n => (n.kind === 'vocab' || n.kind === 'grammar') && !map[n.id]?.length).map(n => n.id);
+  if (orphans.length || empty.length) throw new Error(`engine-gen: nội dung mồ côi ${orphans.length} (${orphans.slice(0, 3).join(', ')}), nút không có câu ${empty.length} (${empty.slice(0, 3).join(', ')})`);
+  const total = Object.values(map).reduce((t, xs) => t + xs.length, 0);
+  writeFileSync(P('content/engine/content-map.json'), JSON.stringify({ version: VERSION, items: total, nodes: Object.keys(map).length, map }) + '\n');
+  console.log(`engine-gen: bản đồ nội dung ${total} câu → ${Object.keys(map).length} nút, 0 mồ côi`);
+}
 
 // ---------- Bảng phủ: mỗi nút cần có cái để đo ở mức mục tiêu đòi ----------
 const ix = index(graph);

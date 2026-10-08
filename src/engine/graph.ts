@@ -69,6 +69,8 @@ export function closure(ix: Index, req: Req[], defaultLevel: (n: Node) => Level)
 export function defaultLevel(n: Node): Level {
   if (n.kind === 'vocab') return 3;
   if (n.kind === 'grammar') return 4;
+  if (n.kind === 'sound') return 2;   // v67: nghe phân biệt được cặp âm
+  if (n.kind === 'func') return 3;    // v67: dùng được chức năng giao tiếp
   if (n.skill === 'W' || n.skill === 'S') return 4;
   return 3;
 }

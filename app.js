@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 66;
+const STATE_V = 18, APP_VERSION = 67;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1168,7 +1168,15 @@ function reviewItems(ws){ return spread(ws.flatMap(w=>{ const d=weakestDims(w.id
 function dueWords(){ const t=today(); return ALL_WORDS.filter(w=>{const s=W(w.id);return s.learned&&s.due!=null&&s.due<=t;}); }
 // Bằng chứng mastery cho engine (docs/SPEC.md §2): ghi ngay vào st.e qua lõi dùng chung, kể cả khi mô-đun engine chưa tải.
 // v53: phiên bản nội dung mặc định của câu học nền = số bản phát hành (nội dung nằm trong app.js / data/lv-*); câu thi có băm riêng.
-function eEv(e){ try{ if(typeof ELCORE!=='undefined'&&e.node&&!/undefined$/.test(e.node)) ELCORE.ev(st,{cv:'a'+APP_VERSION,...e},today()); }catch(x){ try{ console.warn('eEv',x); }catch(y){} } }
+// v67 (C56): phiên bản nội dung TỪNG câu = băm nội dung câu (khớp content/engine/content-map.json); không tìm được câu thì dùng số bản app.
+const _cv={};
+function itemCv(item){ if(!item||typeof ELCORE==='undefined'||!ELCORE.contentHash) return null; if(_cv[item]) return _cv[item];
+  if(typeof DETAIL!=='undefined'&&!detailAll()) return null;   // nội dung chi tiết chưa tải xong: chưa băm (băm sẽ lệch bản đồ nội dung)
+  let raw=null; const m=/^w:([^:]+):/.exec(item), g=/^g:([^|]+)\|(cho|typ|fix|ord)\|([a-z])(\d+)$/.exec(item);
+  if(m&&WORD[m[1]]) raw=JSON.stringify(WORD[m[1]]);
+  else if(g&&GPT[g[1]]){ const L={cho:'mc',typ:'ty',fix:'fx',ord:'or'}[g[2]], x=(GPT[g[1]][L]||[])[+g[4]]; if(x!==undefined&&!(g[2]==='ord'&&g[3]==='d')) raw=JSON.stringify(x); }
+  return raw?(_cv[item]='h'+ELCORE.contentHash(raw)):null; }
+function eEv(e){ try{ if(typeof ELCORE!=='undefined'&&e.node&&!/undefined$/.test(e.node)) ELCORE.ev(st,{cv:itemCv(e.item)||'a'+APP_VERSION,...e},today()); }catch(x){ try{ console.warn('eEv',x); }catch(y){} } }
 function markActive(){ const t=today(); if(!st.days.includes(t)){ st.days.push(t); try{ ui.streakUp=streak(); }catch(e){} } }
 function streak(){ const set=new Set([...st.days,...((st.freeze&&st.freeze.used)||[])]); let n=0,t=today(); if(!set.has(t)) t--; while(set.has(t)){n++;t--;} return n; }
 
@@ -1885,6 +1893,10 @@ const qzRight = it => it.t==='mc'?it.opts[it.ans]:it.t==='order'?it.ans.map(i=>i
 function qzAnswer(correct,extra={}){ const s=ui.qz; if(!s||s.ans) return; const it=s.q[s.i];
   s.ans={correct,...extra}; s.wrongRun=correct?0:(s.wrongRun||0)+1;
   // Bài Pre-A1 là bằng chứng cho nút pa:<bài> (v52): nghe rồi chọn = nhận ra (mức 1), nghe rồi gõ = nhớ ra (mức 3).
+  // v67: chức năng giao tiếp và hội thoại là bằng chứng cho nút fn:<chức năng> (tương tác, ngữ dụng). Câu hỏi hội thoại = nhận ra chức năng
+  // trong ngữ cảnh (mức 2), câu tự gõ của bài chức năng = dùng được (mức 3).
+  if(s.kind==='fn'&&FN[s.ref]) eEv({node:'fn:'+s.ref,level:it.t==='typed'?3:2,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'fn:'+s.ref+':'+(it.plain||s.i),text:it.plain||undefined,qt:it.t==='typed'?'typed':'mcq',ctx:'function',src:'talk',ch:'fn:'+s.ref});
+  if(s.kind==='dlg'&&DLG[s.ref]) for(const f of (DLG[s.ref].fn||[]).filter(id=>FN[id])) eEv({node:'fn:'+f,level:2,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'dlg:'+s.ref+':'+(it.plain||s.i),text:it.plain||undefined,qt:'mcq',ctx:'dialogue',src:'talk',ch:'dlg:'+s.ref});
   if(s.kind==='pa') eEv({node:'pa:'+String(s.ref).replace(/^pa-/,''),level:it.t==='typed'?3:1,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'pa:'+s.ref+':'+(it.plain||s.i),qt:it.t==='typed'?'typed':'mcq',ctx:'prea1',src:'pa',ch:'pa:'+s.ref});
   tally(correct, xpFor('q:'+s.kind+':'+s.ref+':'+(it.plain||s.i),it.t==='typed'?15:10,correct)); sfx(correct?'ok':'bad');
   s.res.push({correct,q:it.plain||'',right:qzRight(it)}); render(); }
@@ -3235,6 +3247,8 @@ function startSound(id){ go('sound',{snd:{id,q:soundItems(SND[id]),i:0,ans:null,
 function sAnswer(pick){
   const s=ui.snd, set=SND[s.id], q=s.q[s.i]; if(s.ans||s.done) return;
   const correct=pick===q.k; s.ans={pick,correct}; sfx(correct?'ok':'bad'); tally(correct,xpFor('snd:'+s.id+':'+(q.w||s.i),10,correct));
+  // v67: nghe phân biệt cặp âm = bằng chứng cho nút âm vị ph:<cặp> (mức 1: nhận ra, 2 lựa chọn nên đoán mò 0,5). Lượt làm lại không tính.
+  if(!q.retry) eEv({node:'ph:'+s.id,level:1,ok:correct,g:.5,item:'snd:'+s.id+':'+q.p,qt:'mcq',ctx:'listen-pair',src:'pron',ch:'snd:'+s.id});
   if(!q.retry){ s.res.push({p:q.p,correct}); if(!correct) s.q.push({...sndQ(q.p),retry:true}); }
   render();
 }
@@ -8180,6 +8194,10 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:67,d:'2026-10-08',t:'Bản đồ năng lực đầy đủ hơn',big:false,items:[
+  'Phát âm (26 cặp âm) và chức năng giao tiếp (chào hỏi, đề nghị, xin lỗi…) giờ là năng lực riêng trong bản đồ: luyện cặp âm, bài chức năng và hội thoại đều được ghi làm bằng chứng.',
+  'Can-Do về vốn từ theo chủ đề mở khi bạn đã đạt khoảng 80% số unit của nó: nhiều đường tới cùng một mục tiêu, không bắt học đủ từng unit.',
+  'Mỗi câu học được ghi kèm phiên bản nội dung của chính câu đó, để khi câu được sửa vẫn biết bằng chứng nào đến từ bản nào.']});
 CHANGELOG.unshift({v:66,d:'2026-10-08',t:'Đánh giá công bằng hơn',big:false,items:[
   'Muốn Đạt một phần, bạn cần đúng ở ít nhất 2 câu khác nhau: thuộc lòng một câu không còn đủ.',
   'Đúng câu khó hơn cấp được tính nặng hơn, sai câu dễ tính nặng hơn (câu thi theo độ khó đã hiệu chỉnh).',
@@ -8324,7 +8342,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.a8ba3dd4eb.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.205cf823b2.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),

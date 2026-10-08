@@ -19792,6 +19792,2561 @@
   "scope": "Understand idioms of irony, nuance and politics"
  },
  {
+  "id": "fn:a1-greet",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A1",
+  "vi": "Chào hỏi và tạm biệt",
+  "en": "Greeting and saying goodbye",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a1-greet\"",
+    "t": "Chào hỏi và tạm biệt"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Greeting and saying goodbye",
+  "uses": [
+   "cd:a1-fun1"
+  ]
+ },
+ {
+  "id": "fn:a1-intro",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A1",
+  "vi": "Giới thiệu bản thân và người khác",
+  "en": "Introducing yourself and others",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a1-intro\"",
+    "t": "Giới thiệu bản thân và người khác"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Introducing yourself and others",
+  "uses": [
+   "cd:a1-fun1"
+  ]
+ },
+ {
+  "id": "fn:a1-likes",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A1",
+  "vi": "Nói điều mình thích và không thích",
+  "en": "Talking about likes and dislikes",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a1-likes\"",
+    "t": "Nói điều mình thích và không thích"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Talking about likes and dislikes",
+  "uses": [
+   "cd:a1-fun5"
+  ]
+ },
+ {
+  "id": "fn:a1-personal",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A1",
+  "vi": "Hỏi thông tin cá nhân",
+  "en": "Asking for personal information",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a1-personal\"",
+    "t": "Hỏi thông tin cá nhân"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Asking for personal information",
+  "uses": [
+   "cd:a1-fun3"
+  ]
+ },
+ {
+  "id": "fn:a1-price",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A1",
+  "vi": "Hỏi giá và mua hàng",
+  "en": "Asking about prices and buying things",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a1-price\"",
+    "t": "Hỏi giá và mua hàng"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Asking about prices and buying things",
+  "uses": [
+   "cd:a1-fun4"
+  ]
+ },
+ {
+  "id": "fn:a1-request",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A1",
+  "vi": "Xin, nhờ một cách lịch sự",
+  "en": "Asking for things politely",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a1-request\"",
+    "t": "Xin, nhờ một cách lịch sự"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Asking for things politely",
+  "uses": [
+   "cd:a1-fun4"
+  ]
+ },
+ {
+  "id": "fn:a1-sorry",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A1",
+  "vi": "Xin lỗi",
+  "en": "Apologising",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a1-sorry\"",
+    "t": "Xin lỗi"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Apologising",
+  "uses": [
+   "cd:a1-fun2"
+  ]
+ },
+ {
+  "id": "fn:a1-thank",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A1",
+  "vi": "Cảm ơn và đáp lời cảm ơn",
+  "en": "Thanking and responding",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a1-thank\"",
+    "t": "Cảm ơn và đáp lời cảm ơn"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Thanking and responding",
+  "uses": [
+   "cd:a1-fun2"
+  ]
+ },
+ {
+  "id": "fn:a2-arrange",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A2",
+  "vi": "Hẹn gặp",
+  "en": "Making arrangements to meet",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a2-arrange\"",
+    "t": "Hẹn gặp"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.18,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Making arrangements to meet",
+  "uses": [
+   "cd:a2-fun5"
+  ]
+ },
+ {
+  "id": "fn:a2-clarify",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A2",
+  "vi": "Hỏi lại khi không nghe rõ, không hiểu",
+  "en": "Asking someone to repeat or explain",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a2-clarify\"",
+    "t": "Hỏi lại khi không nghe rõ, không hiểu"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.18,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Asking someone to repeat or explain",
+  "uses": [
+   "cd:a2-fun4"
+  ]
+ },
+ {
+  "id": "fn:a2-directions",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A2",
+  "vi": "Hỏi và chỉ đường",
+  "en": "Asking for and giving directions",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a2-directions\"",
+    "t": "Hỏi và chỉ đường"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.18,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Asking for and giving directions",
+  "uses": [
+   "cd:a2-fun3"
+  ]
+ },
+ {
+  "id": "fn:a2-feelings",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A2",
+  "vi": "Hỏi thăm và nói về cảm xúc",
+  "en": "Asking how someone feels and responding",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a2-feelings\"",
+    "t": "Hỏi thăm và nói về cảm xúc"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.18,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Asking how someone feels and responding",
+  "uses": [
+   "cd:a2-fun5"
+  ]
+ },
+ {
+  "id": "fn:a2-invite",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A2",
+  "vi": "Mời, nhận lời và từ chối",
+  "en": "Inviting, accepting and refusing",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a2-invite\"",
+    "t": "Mời, nhận lời và từ chối"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.18,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Inviting, accepting and refusing",
+  "uses": [
+   "cd:a2-fun1"
+  ]
+ },
+ {
+  "id": "fn:a2-offer",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A2",
+  "vi": "Đề nghị giúp đỡ",
+  "en": "Offering help",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a2-offer\"",
+    "t": "Đề nghị giúp đỡ"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.18,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Offering help",
+  "uses": [
+   "cd:a2-fun2"
+  ]
+ },
+ {
+  "id": "fn:a2-order",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A2",
+  "vi": "Gọi món",
+  "en": "Ordering food",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a2-order\"",
+    "t": "Gọi món"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.18,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Ordering food",
+  "uses": [
+   "cd:a2-com1"
+  ]
+ },
+ {
+  "id": "fn:a2-permission",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A2",
+  "vi": "Xin phép",
+  "en": "Asking for permission",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a2-permission\"",
+    "t": "Xin phép"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.18,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Asking for permission",
+  "uses": [
+   "cd:a2-fun4"
+  ]
+ },
+ {
+  "id": "fn:a2-prefer",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A2",
+  "vi": "Nói điều mình thích hơn",
+  "en": "Saying what you prefer",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a2-prefer\"",
+    "t": "Nói điều mình thích hơn"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.18,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Saying what you prefer",
+  "uses": [
+   "cd:a2-fun5"
+  ]
+ },
+ {
+  "id": "fn:a2-suggest",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A2",
+  "vi": "Gợi ý, rủ làm gì",
+  "en": "Making suggestions",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"a2-suggest\"",
+    "t": "Gợi ý, rủ làm gì"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.18,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Making suggestions",
+  "uses": [
+   "cd:a2-fun2"
+  ]
+ },
+ {
+  "id": "fn:b1-advice",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B1",
+  "vi": "Xin lời khuyên và khuyên",
+  "en": "Asking for and giving advice",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b1-advice\"",
+    "t": "Xin lời khuyên và khuyên"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.36,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Asking for and giving advice",
+  "uses": [
+   "cd:b1-fun2"
+  ]
+ },
+ {
+  "id": "fn:b1-agree",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B1",
+  "vi": "Đồng ý và không đồng ý",
+  "en": "Agreeing and disagreeing",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b1-agree\"",
+    "t": "Đồng ý và không đồng ý"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.36,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Agreeing and disagreeing",
+  "uses": [
+   "cd:b1-fun1"
+  ]
+ },
+ {
+  "id": "fn:b1-check",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B1",
+  "vi": "Kiểm tra mình hiểu đúng chưa",
+  "en": "Checking that you understand",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b1-check\"",
+    "t": "Kiểm tra mình hiểu đúng chưa"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.36,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Checking that you understand",
+  "uses": [
+   "cd:b1-com4",
+   "cd:b1-fun4"
+  ]
+ },
+ {
+  "id": "fn:b1-complain",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B1",
+  "vi": "Phàn nàn lịch sự",
+  "en": "Complaining politely",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b1-complain\"",
+    "t": "Phàn nàn lịch sự"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.36,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Complaining politely",
+  "uses": [
+   "cd:b1-fun3"
+  ]
+ },
+ {
+  "id": "fn:b1-group",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B1",
+  "vi": "Mời người khác nói và giữ cho cuộc thảo luận tiếp tục",
+  "en": "Inviting others to speak and keeping a discussion going",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b1-group\"",
+    "t": "Mời người khác nói và giữ cho cuộc thảo luận tiếp tục"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.36,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Inviting others to speak and keeping a discussion going",
+  "uses": [
+   "cd:b1-fun6"
+  ]
+ },
+ {
+  "id": "fn:b1-narrate",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B1",
+  "vi": "Kể chuyện theo trình tự",
+  "en": "Telling a story in order",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b1-narrate\"",
+    "t": "Kể chuyện theo trình tự"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.36,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Telling a story in order",
+  "uses": [
+   "cd:b1-fun5"
+  ]
+ },
+ {
+  "id": "fn:b1-opinion",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B1",
+  "vi": "Nêu ý kiến",
+  "en": "Giving your opinion",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b1-opinion\"",
+    "t": "Nêu ý kiến"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.36,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Giving your opinion",
+  "uses": [
+   "cd:b1-fun1"
+  ]
+ },
+ {
+  "id": "fn:b1-phone",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B1",
+  "vi": "Gọi điện thoại",
+  "en": "Making phone calls",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b1-phone\"",
+    "t": "Gọi điện thoại"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.36,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Making phone calls",
+  "uses": [
+   "cd:b1-fun5"
+  ]
+ },
+ {
+  "id": "fn:b1-reason",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B1",
+  "vi": "Giải thích lý do và kết quả",
+  "en": "Explaining reasons and results",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b1-reason\"",
+    "t": "Giải thích lý do và kết quả"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.36,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Explaining reasons and results",
+  "uses": [
+   "cd:b1-fun3"
+  ]
+ },
+ {
+  "id": "fn:b1-rephrase",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B1",
+  "vi": "Diễn đạt khi không biết từ",
+  "en": "Explaining a word you don't know",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b1-rephrase\"",
+    "t": "Diễn đạt khi không biết từ"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.36,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Explaining a word you don't know",
+  "uses": [
+   "cd:b1-com4",
+   "cd:b1-fun4"
+  ]
+ },
+ {
+  "id": "fn:b1-sympathy",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B1",
+  "vi": "Cảm thông và động viên",
+  "en": "Showing sympathy and encouraging",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b1-sympathy\"",
+    "t": "Cảm thông và động viên"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.36,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Showing sympathy and encouraging",
+  "uses": [
+   "cd:b1-fun2"
+  ]
+ },
+ {
+  "id": "fn:b2-build",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B2",
+  "vi": "Phát triển ý người khác và kiểm tra cả nhóm có đồng ý không",
+  "en": "Building on others' ideas and checking agreement",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b2-build\"",
+    "t": "Phát triển ý người khác và kiểm tra cả nhóm có đồng ý không"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.55,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Building on others' ideas and checking agreement",
+  "uses": [
+   "cd:b2-fun6"
+  ]
+ },
+ {
+  "id": "fn:b2-buytime",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B2",
+  "vi": "Câu giờ để suy nghĩ",
+  "en": "Buying time to think",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b2-buytime\"",
+    "t": "Câu giờ để suy nghĩ"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.55,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Buying time to think",
+  "uses": [
+   "cd:b2-fun3"
+  ]
+ },
+ {
+  "id": "fn:b2-compare",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B2",
+  "vi": "So sánh các phương án",
+  "en": "Comparing options",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b2-compare\"",
+    "t": "So sánh các phương án"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.55,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Comparing options",
+  "uses": [
+   "cd:b2-fun2"
+  ]
+ },
+ {
+  "id": "fn:b2-counter",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B2",
+  "vi": "Phản bác lập luận",
+  "en": "Challenging an argument",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b2-counter\"",
+    "t": "Phản bác lập luận"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.55,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Challenging an argument",
+  "uses": [
+   "cd:b2-fun1"
+  ]
+ },
+ {
+  "id": "fn:b2-emphasise",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B2",
+  "vi": "Nhấn mạnh ý",
+  "en": "Emphasising a point",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b2-emphasise\"",
+    "t": "Nhấn mạnh ý"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.55,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Emphasising a point",
+  "uses": [
+   "cd:b2-fun5"
+  ]
+ },
+ {
+  "id": "fn:b2-interrupt",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B2",
+  "vi": "Ngắt lời lịch sự",
+  "en": "Interrupting politely",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b2-interrupt\"",
+    "t": "Ngắt lời lịch sự"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.55,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Interrupting politely",
+  "uses": [
+   "cd:b2-fun3"
+  ]
+ },
+ {
+  "id": "fn:b2-negotiate",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B2",
+  "vi": "Thương lượng và đặt điều kiện",
+  "en": "Negotiating and setting conditions",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b2-negotiate\"",
+    "t": "Thương lượng và đặt điều kiện"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.55,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Negotiating and setting conditions",
+  "uses": [
+   "cd:b2-com3",
+   "cd:b2-fun4"
+  ]
+ },
+ {
+  "id": "fn:b2-partial",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B2",
+  "vi": "Đồng ý một phần",
+  "en": "Agreeing partly",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b2-partial\"",
+    "t": "Đồng ý một phần"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.55,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Agreeing partly",
+  "uses": [
+   "cd:b2-fun1"
+  ]
+ },
+ {
+  "id": "fn:b2-persuade",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B2",
+  "vi": "Thuyết phục",
+  "en": "Persuading",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b2-persuade\"",
+    "t": "Thuyết phục"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.55,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Persuading",
+  "uses": [
+   "cd:b2-fun1"
+  ]
+ },
+ {
+  "id": "fn:b2-speculate",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B2",
+  "vi": "Phỏng đoán",
+  "en": "Speculating and guessing",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b2-speculate\"",
+    "t": "Phỏng đoán"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.55,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Speculating and guessing",
+  "uses": [
+   "cd:b2-fun2"
+  ]
+ },
+ {
+  "id": "fn:b2-summarise",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "B2",
+  "vi": "Tóm tắt",
+  "en": "Summarising",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"b2-summarise\"",
+    "t": "Tóm tắt"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.55,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Summarising",
+  "uses": [
+   "cd:b2-fun5"
+  ]
+ },
+ {
+  "id": "fn:c1-concede",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C1",
+  "vi": "Nhượng bộ một ý",
+  "en": "Conceding a point",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c1-concede\"",
+    "t": "Nhượng bộ một ý"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.73,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Conceding a point",
+  "uses": [
+   "cd:c1-fun2"
+  ]
+ },
+ {
+  "id": "fn:c1-data",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C1",
+  "vi": "Trình bày số liệu và xu hướng",
+  "en": "Presenting data and trends",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c1-data\"",
+    "t": "Trình bày số liệu và xu hướng"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.73,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Presenting data and trends",
+  "uses": [
+   "cd:c1-fun5"
+  ]
+ },
+ {
+  "id": "fn:c1-digress",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C1",
+  "vi": "Lạc đề và quay lại chủ đề",
+  "en": "Digressing and returning to the point",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c1-digress\"",
+    "t": "Lạc đề và quay lại chủ đề"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.73,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Digressing and returning to the point",
+  "uses": [
+   "cd:c1-fun4"
+  ]
+ },
+ {
+  "id": "fn:c1-disagree",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C1",
+  "vi": "Phản đối một cách khéo léo",
+  "en": "Disagreeing diplomatically",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c1-disagree\"",
+    "t": "Phản đối một cách khéo léo"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.73,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Disagreeing diplomatically",
+  "uses": [
+   "cd:c1-fun2"
+  ]
+ },
+ {
+  "id": "fn:c1-facilitate",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C1",
+  "vi": "Điều phối một nhiệm vụ nhóm",
+  "en": "Facilitating a group task",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c1-facilitate\"",
+    "t": "Điều phối một nhiệm vụ nhóm"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.73,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Facilitating a group task",
+  "uses": [
+   "cd:c1-fun6"
+  ]
+ },
+ {
+  "id": "fn:c1-feedback",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C1",
+  "vi": "Góp ý mang tính xây dựng",
+  "en": "Giving constructive criticism",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c1-feedback\"",
+    "t": "Góp ý mang tính xây dựng"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.73,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Giving constructive criticism",
+  "uses": [
+   "cd:c1-fun3"
+  ]
+ },
+ {
+  "id": "fn:c1-hedge",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C1",
+  "vi": "Rào đón, nói giảm mức chắc chắn",
+  "en": "Hedging and softening claims",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c1-hedge\"",
+    "t": "Rào đón, nói giảm mức chắc chắn"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.73,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Hedging and softening claims",
+  "uses": [
+   "cd:c1-fun1"
+  ]
+ },
+ {
+  "id": "fn:c1-position",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C1",
+  "vi": "Làm rõ lập trường của mình",
+  "en": "Clarifying your position",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c1-position\"",
+    "t": "Làm rõ lập trường của mình"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.73,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Clarifying your position",
+  "uses": [
+   "cd:c1-fun4"
+  ]
+ },
+ {
+  "id": "fn:c1-reassure",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C1",
+  "vi": "Trấn an",
+  "en": "Reassuring someone",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c1-reassure\"",
+    "t": "Trấn an"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.73,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Reassuring someone",
+  "uses": [
+   "cd:c1-fun3"
+  ]
+ },
+ {
+  "id": "fn:c1-request",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C1",
+  "vi": "Yêu cầu trang trọng",
+  "en": "Making formal requests",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c1-request\"",
+    "t": "Yêu cầu trang trọng"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.73,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Making formal requests",
+  "uses": [
+   "cd:c1-fun5"
+  ]
+ },
+ {
+  "id": "fn:c2-challenge",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C2",
+  "vi": "Chất vấn giả định",
+  "en": "Challenging assumptions",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c2-challenge\"",
+    "t": "Chất vấn giả định"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.91,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Challenging assumptions",
+  "uses": [
+   "cd:c2-fun3"
+  ]
+ },
+ {
+  "id": "fn:c2-conclude",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C2",
+  "vi": "Kết luận và chốt vấn đề",
+  "en": "Drawing conclusions and closing",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c2-conclude\"",
+    "t": "Kết luận và chốt vấn đề"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.91,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Drawing conclusions and closing",
+  "uses": [
+   "cd:c2-fun5"
+  ]
+ },
+ {
+  "id": "fn:c2-evaluate",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C2",
+  "vi": "Đánh giá có sắc thái",
+  "en": "Evaluating with nuance",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c2-evaluate\"",
+    "t": "Đánh giá có sắc thái"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.91,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Evaluating with nuance",
+  "uses": [
+   "cd:c2-fun3"
+  ]
+ },
+ {
+  "id": "fn:c2-mediate",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C2",
+  "vi": "Hoà giải hai bên",
+  "en": "Mediating between two sides",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c2-mediate\"",
+    "t": "Hoà giải hai bên"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.91,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Mediating between two sides",
+  "uses": [
+   "cd:c2-fun2"
+  ]
+ },
+ {
+  "id": "fn:c2-network",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C2",
+  "vi": "Giao lưu xã giao chuyên nghiệp",
+  "en": "Professional small talk and networking",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c2-network\"",
+    "t": "Giao lưu xã giao chuyên nghiệp"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.91,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Professional small talk and networking",
+  "uses": [
+   "cd:c2-fun4"
+  ]
+ },
+ {
+  "id": "fn:c2-nuance",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C2",
+  "vi": "Nói giảm và nói hàm ý",
+  "en": "Understatement and implied meaning",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c2-nuance\"",
+    "t": "Nói giảm và nói hàm ý"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.91,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Understatement and implied meaning",
+  "uses": [
+   "cd:c2-fun1"
+  ]
+ },
+ {
+  "id": "fn:c2-refuse",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C2",
+  "vi": "Từ chối khéo léo",
+  "en": "Refusing tactfully",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c2-refuse\"",
+    "t": "Từ chối khéo léo"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.91,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Refusing tactfully",
+  "uses": [
+   "cd:c2-fun4"
+  ]
+ },
+ {
+  "id": "fn:c2-steer",
+  "kind": "func",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "C2",
+  "vi": "Điều hướng cuộc thảo luận",
+  "en": "Steering a discussion",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-fn=\"c2-steer\"",
+    "t": "Điều hướng cuộc thảo luận"
+   }
+  ],
+  "minutes": 15,
+  "ver": "1.0",
+  "dims": [
+   "inter",
+   "prag",
+   "prod"
+  ],
+  "diff": 0.91,
+  "evReq": {
+   "lv": [
+    2,
+    3
+   ],
+   "types": [
+    "choice",
+    "typed"
+   ]
+  },
+  "imp": {
+   "tr": 0.8,
+   "re": 0.5
+  },
+  "scope": "Steering a discussion",
+  "uses": [
+   "cd:c2-fun2"
+  ]
+ },
+ {
   "id": "g:g-a1-01",
   "kind": "grammar",
   "area": "gra",
@@ -27087,6 +29642,1150 @@
    "re": 1
   },
   "scope": "Telling the time"
+ },
+ {
+  "id": "ph:s-01",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài)",
+  "en": "ship – sheep",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-01\"",
+    "t": "Cặp âm ship – sheep"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "ship – sheep",
+  "uses": [
+   "cd:a1-pro1",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-02",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /æ/ – /e/ (a bẹt – e)",
+  "en": "bad – bed",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-02\"",
+    "t": "Cặp âm bad – bed"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "bad – bed",
+  "uses": [
+   "cd:a1-pro1",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-03",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /ʌ/ – /ɑː/ (ơ ngắn – a dài)",
+  "en": "cut – cart",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-03\"",
+    "t": "Cặp âm cut – cart"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "cut – cart",
+  "uses": [
+   "cd:a2-pro6",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-04",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /ɒ/ – /əʊ/ (o ngắn – âu)",
+  "en": "not – note",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-04\"",
+    "t": "Cặp âm not – note"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "not – note",
+  "uses": [
+   "cd:a2-pro6",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-05",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /θ/ – /t/ (th (lưỡi giữa răng) – t)",
+  "en": "thin – tin",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-05\"",
+    "t": "Cặp âm thin – tin"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "thin – tin",
+  "uses": [
+   "cd:a1-pro6",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-06",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /ð/ – /d/ (th hữu thanh – đ)",
+  "en": "they – day",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-06\"",
+    "t": "Cặp âm they – day"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "they – day",
+  "uses": [
+   "cd:a1-pro6",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-07",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /ʃ/ – /s/ (s cong lưỡi – x)",
+  "en": "she – see",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-07\"",
+    "t": "Cặp âm she – see"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "she – see",
+  "uses": [
+   "cd:a2-pro5",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-08",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /tʃ/ – /ʃ/ (ch – s cong lưỡi)",
+  "en": "chip – ship",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-08\"",
+    "t": "Cặp âm chip – ship"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "chip – ship",
+  "uses": [
+   "cd:a2-pro5",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-09",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /p/ – /b/ (p bật hơi – b)",
+  "en": "pie – buy",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-09\"",
+    "t": "Cặp âm pie – buy"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "pie – buy",
+  "uses": [
+   "cd:a1-pro2",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-10",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /t/ – /d/ (âm cuối t – d)",
+  "en": "bet – bed",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-10\"",
+    "t": "Cặp âm bet – bed"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "bet – bed",
+  "uses": [
+   "cd:a1-pro2",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-11",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /s/ – /z/ (âm cuối s – z)",
+  "en": "price – prize",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-11\"",
+    "t": "Cặp âm price – prize"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "price – prize",
+  "uses": [
+   "cd:a2-pro5",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-12",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm không có âm cuối – có âm cuối (nuốt âm cuối)",
+  "en": "why – white",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-12\"",
+    "t": "Cặp âm why – white"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "why – white",
+  "uses": [
+   "cd:a1-pro2",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-13",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /l/ – /n/ (l – n đầu từ)",
+  "en": "light – night",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-13\"",
+    "t": "Cặp âm light – night"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "light – night",
+  "uses": [
+   "cd:a2-pro5",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-14",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /r/ – /l/ (r – l)",
+  "en": "right – light",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-14\"",
+    "t": "Cặp âm right – light"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "right – light",
+  "uses": [
+   "cd:a2-pro5",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-15",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /æ/ – /ʌ/ (a bẹt – ă ngắn)",
+  "en": "cat – cut",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-15\"",
+    "t": "Cặp âm cat – cut"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "cat – cut",
+  "uses": [
+   "cd:a2-pro6",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-16",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /uː/ – /ʊ/ (u dài – u ngắn)",
+  "en": "pool – pull",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-16\"",
+    "t": "Cặp âm pool – pull"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "pool – pull",
+  "uses": [
+   "cd:a2-pro6",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-17",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /ɜː/ – /ɔː/ (ơ dài – o dài)",
+  "en": "bird – board",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-17\"",
+    "t": "Cặp âm bird – board"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "bird – board",
+  "uses": [
+   "cd:b1-pro5",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-18",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /v/ – /w/ (v – w)",
+  "en": "vest – west",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-18\"",
+    "t": "Cặp âm vest – west"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "vest – west",
+  "uses": [
+   "cd:b1-pro5",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-19",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /k/ cuối – /ɡ/ cuối (k – g ở cuối từ)",
+  "en": "back – bag",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-19\"",
+    "t": "Cặp âm back – bag"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "back – bag",
+  "uses": [
+   "cd:b1-pro5",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-20",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm một phụ âm đầu – cụm phụ âm đầu (cụm phụ âm đầu từ)",
+  "en": "pay – play",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-20\"",
+    "t": "Cặp âm pay – play"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "pay – play",
+  "uses": [
+   "cd:b1-pro5",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-21",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm một phụ âm cuối – cụm phụ âm cuối (cụm phụ âm cuối từ)",
+  "en": "ten – tent",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-21\"",
+    "t": "Cặp âm ten – tent"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "ten – tent",
+  "uses": [
+   "cd:b1-pro5",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-22",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /θ/ – /s/ (th – s)",
+  "en": "think – sink",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-22\"",
+    "t": "Cặp âm think – sink"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "think – sink",
+  "uses": [
+   "cd:b1-pro5",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-23",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /eɪ/ – /e/ (ây – e)",
+  "en": "late – let",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-23\"",
+    "t": "Cặp âm late – let"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "late – let",
+  "uses": [
+   "cd:b2-pro4",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-24",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /əʊ/ – /ɔː/ (âu – o dài)",
+  "en": "coat – caught",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-24\"",
+    "t": "Cặp âm coat – caught"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "coat – caught",
+  "uses": [
+   "cd:b2-pro4",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-25",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /n/ cuối – /ŋ/ cuối (n – ng ở cuối từ)",
+  "en": "sin – sing",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-25\"",
+    "t": "Cặp âm sin – sing"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "sin – sing",
+  "uses": [
+   "cd:b2-pro4",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
+ },
+ {
+  "id": "ph:s-26",
+  "kind": "sound",
+  "area": "pro",
+  "skill": "L",
+  "cefr": "A1",
+  "vi": "Phân biệt âm /tʃ/ – /dʒ/ (ch – j)",
+  "en": "cheap – jeep",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-snd=\"s-26\"",
+    "t": "Cặp âm cheap – jeep"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "phon",
+   "rec"
+  ],
+  "diff": 0,
+  "evReq": {
+   "lv": [
+    1,
+    2
+   ],
+   "types": [
+    "choice"
+   ]
+  },
+  "imp": {
+   "tr": 0.6,
+   "re": 0.5
+  },
+  "scope": "cheap – jeep",
+  "uses": [
+   "cd:b2-pro4",
+   "cd:c1-pro4",
+   "cd:c2-pro5"
+  ]
  },
  {
   "id": "u:a1-u1",
