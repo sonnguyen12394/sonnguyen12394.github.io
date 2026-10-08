@@ -18,7 +18,7 @@ export type NodeKind = 'cando' | 'vocab' | 'grammar' | 'task';
 export interface Act { at: string; t: string }
 
 export interface Node {
-  id: string;            // cd:<CANDO id> | u:<unit id> | g:<grammar point id> | x:<dạng câu thi> | xw:/xs:<bài Viết/Nói thi>
+  id: string;            // cd:<CANDO id> | u:<unit id> | g:<grammar point id> | pa:<bài Pre-A1> | x:<dạng câu thi> | xw:/xs:<bài Viết/Nói thi>
   kind: NodeKind;
   area: Area;
   skill: Skill | null;
@@ -38,12 +38,16 @@ export type ReqType = 'foundation' | 'skill' | 'performance';
 export interface Req { node: string; level: Level; type: ReqType }
 
 export type GoalKind = 'cefr' | 'ielts-ac' | 'ielts-gt' | 'vstep' | 'comm';
+// Spec v2.4 §7: MVP chỉ triển khai CEFR (Pre-A1 → C2). Các Target Model khác giữ dữ liệu ở trạng thái "future"
+// (ẩn khỏi người học, không vào lộ trình) cho tới mốc M10 — kiểm chứng engine mở rộng được.
+export type GoalStatus = 'active' | 'future';
 export interface Goal {
   id: string;            // ví dụ ielts-ac-6.5
   version: string;       // Target Model có phiên bản (spec mục 5): "1.0"
   kind: GoalKind;
   vi: string;
-  target: string;        // "B1", "6.5", "daily"…
+  target: string;        // "Pre-A1", "B1", "6.5", "daily"…
+  status: GoalStatus;
   cefr: Cefr | null;     // cấp tham chiếu của mục tiêu
   req: Req[];
 }

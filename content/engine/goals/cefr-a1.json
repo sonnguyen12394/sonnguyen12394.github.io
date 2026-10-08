@@ -5,6 +5,7 @@
  "vi": "Tiếng Anh tổng quát A1 (Sơ cấp)",
  "target": "A1",
  "cefr": "A1",
+ "status": "active",
  "req": [
   {
    "node": "cd:a1-voc1",

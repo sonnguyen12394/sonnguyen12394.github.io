@@ -5,6 +5,7 @@
  "vi": "IELTS Academic 5.5",
  "target": "5.5",
  "cefr": "B2",
+ "status": "future",
  "req": [
   {
    "node": "cd:b2-voc1",

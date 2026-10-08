@@ -8,7 +8,7 @@ import type { Edge, Goal, Graph, Node } from '../../src/engine/types.ts';
 
 const n = (id: string, minutes = 10, kind: Node['kind'] = 'cando'): Node => ({ id, kind, area: 'rd', skill: 'R', cefr: 'B1', vi: id, ctx: [], acts: [], minutes });
 const e = (from: string, to: string, type: Edge['type'] = 'hard', w = 1): Edge => ({ from, to, type, w });
-const goal = (id: string, nodes: string[]): Goal => ({ id, version: '1.0', kind: 'cefr', vi: id, target: 'B1', cefr: 'B1', req: nodes.map(node => ({ node, level: 3, type: 'skill' })) });
+const goal = (id: string, nodes: string[]): Goal => ({ id, version: '1.0', kind: 'cefr', vi: id, target: 'B1', cefr: 'B1', status: 'active', req: nodes.map(node => ({ node, level: 3, type: 'skill' })) });
 
 // cd:top cần cd:mid (cứng), cd:mid cần u:a và u:b (cứng); u:c chỉ là tiền đề mềm của cd:top
 const g: Graph = { nodes: [n('cd:top'), n('cd:mid'), n('u:a', 20, 'vocab'), n('u:b', 5, 'vocab'), n('u:c', 5, 'vocab')], edges: [e('cd:top', 'cd:mid'), e('cd:mid', 'u:a'), e('cd:mid', 'u:b'), e('cd:top', 'u:c', 'soft', 0.5)], goals: [goal('g1', ['cd:top'])] };

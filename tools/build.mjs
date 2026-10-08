@@ -109,7 +109,7 @@ for (const f of readdirSync(P('data/engine'))) if (`data/engine/${f}` !== gFile)
 if (!existsSync(P(gFile))) writeFileSync(P(gFile), gBody);
 mkdirSync(P('src/engine/gen'), { recursive: true });
 const metaText = JSON.stringify({ file: gFile, nodes: eNodes.length, edges: eEdges.length,
-  goals: eGoals.map(g => ({ id: g.id, kind: g.kind, vi: g.vi, target: g.target, cefr: g.cefr, version: g.version, n: g.req.length })) }) + '\n';
+  goals: eGoals.map(g => ({ id: g.id, kind: g.kind, vi: g.vi, target: g.target, cefr: g.cefr, version: g.version, status: g.status, n: g.req.length })) }) + '\n';
 if (!existsSync(P('src/engine/gen/meta.json')) || readFileSync(P('src/engine/gen/meta.json'), 'utf8') !== metaText) writeFileSync(P('src/engine/gen/meta.json'), metaText);
 
 // 1. Mô-đun ôn thi

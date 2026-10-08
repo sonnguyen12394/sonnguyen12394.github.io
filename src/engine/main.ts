@@ -3,7 +3,7 @@
 
 import type { EHost } from './host.ts';
 import { migrateE, sanitizeE, mergeE, E_V, GOAL_MAX, type EState } from './state.ts';
-import { GOALS, loadGraph, loaded } from './data.ts';
+import { GOALS, loadGraph, loaded, goalOn } from './data.ts';
 import { viewGoals, viewPick, viewGoal, dayOf, type ECtx } from './views.ts';
 import { viewDiagIntro, viewDiagRun, viewDiagResult, viewLoading, lrBand, type DiagRun } from './diagview.ts';
 import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, type Cand } from './diag.ts';
@@ -36,6 +36,10 @@ export function init(host: EHost): EngineModule {
     return next;
   };
   E();
+  // Mục tiêu đang mở (spec v2.4: MVP chỉ CEFR). Mục tiêu "tương lai" đã chọn trước đây vẫn nằm trong bản lưu nhưng
+  // không vào lộ trình, chẩn đoán hay Readiness. V() là bản nhìn của E() chỉ gồm mục tiêu đang mở (dùng chung kho bằng chứng).
+  const future = (): boolean => !!host.future?.();
+  const V = (): EState => { const e = E(); return { ...e, goals: e.goals.filter(g => goalOn(g.id, future())) }; };
   let loadErr = '';
   const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout');
   const ensure = () => {
@@ -49,7 +53,7 @@ export function init(host: EHost): EngineModule {
   const lr = () => lrBand(host.state());
   const norm = (s: string) => s.trim().toLowerCase().replace(/[‘’]/g, "'").replace(/[.!?]+$/, '').replace(/\s+/g, ' ');
   function candidates(): Cand[] {
-    const ix = loaded()!, e = E();
+    const ix = loaded()!, e = V();
     const goals = e.goals.map(s => ix.goal.get(s.id)).filter((g): g is NonNullable<typeof g> => !!g);
     const ids = goals.length ? new Set(closure(ix, mergeGoals(goals), defaultLevel).map(r => r.node)) : null;
     const out: Cand[] = [];
@@ -137,15 +141,16 @@ export function init(host: EHost): EngineModule {
     goal: c => { if (!loaded() && !loadErr) ensure(); return viewGoal(c, loadErr); },
   };
   function render(route: string): string {
-    const name = route.split('/')[0] || 'goals';
-    return (routes[name] ?? viewGoals)({ host, e: E(), route });
+    const name = route.split('/')[0] || 'goals', v = V();
+    return (routes[name] ?? viewGoals)({ host, e: v, route, future: future(), hidden: E().goals.length - v.goals.length });
   }
 
   const act: Record<string, (el: HTMLElement) => void> = {
     go(el) { host.go(el.dataset.r || 'goals'); },
     add(el) {
       const id = el.dataset.g || '', m = GOALS.get(id), e = E();
-      if (!m || e.goals.some(g => g.id === id)) return;
+      if (!m || !goalOn(id, future()) || e.goals.some(g => g.id === id)) return;
+      if (e.goals.length >= GOAL_MAX) e.goals = e.goals.filter(g => goalOn(g.id, future()));   // nhường chỗ: bỏ mục tiêu đang ẩn trước
       if (e.goals.length >= GOAL_MAX) { host.toast(`Tối đa ${GOAL_MAX} mục tiêu cùng lúc. Bỏ bớt một mục tiêu trước.`); return; }
       e.goals.push({ id, version: m.version, since: host.today(), date: null });
       host.save(); host.toast(`Đã chọn: ${m.vi}.`); host.go(`goal/${id}`);
@@ -207,7 +212,7 @@ export function init(host: EHost): EngineModule {
     render,
     after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('tout')) { tout = null; toutRes = null; } },
     next() {
-      const e = E();
+      const e = V();
       if (!e.goals.length) return null;
       const ix = loaded();
       if (!ix) { ensure(); return null; }

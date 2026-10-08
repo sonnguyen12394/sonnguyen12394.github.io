@@ -5,6 +5,7 @@
  "vi": "VSTEP Bậc 5 (C1)",
  "target": "C1",
  "cefr": "C1",
+ "status": "future",
  "req": [
   {
    "node": "cd:c1-voc1",

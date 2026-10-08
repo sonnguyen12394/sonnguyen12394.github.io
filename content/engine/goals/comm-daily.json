@@ -5,6 +5,7 @@
  "vi": "Giao tiếp hằng ngày",
  "target": "daily",
  "cefr": "B1",
+ "status": "future",
  "req": [
   {
    "node": "cd:a1-voc1",

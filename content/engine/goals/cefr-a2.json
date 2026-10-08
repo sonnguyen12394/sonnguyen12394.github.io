@@ -5,6 +5,7 @@
  "vi": "Tiếng Anh tổng quát A2 (Sơ trung cấp)",
  "target": "A2",
  "cefr": "A2",
+ "status": "active",
  "req": [
   {
    "node": "cd:a2-voc1",

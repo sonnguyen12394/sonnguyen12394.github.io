@@ -5,6 +5,7 @@
  "vi": "Giao tiếp trong học tập",
  "target": "study",
  "cefr": "C1",
+ "status": "future",
  "req": [
   {
    "node": "cd:b1-voc1",

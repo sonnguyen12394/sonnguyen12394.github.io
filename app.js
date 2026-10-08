@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 51;
+const STATE_V = 18, APP_VERSION = 52;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1881,6 +1881,8 @@ function startQuiz(kind,ref,items,meta={}){ if(!items.length) return toast('Chư
 const qzRight = it => it.t==='mc'?it.opts[it.ans]:it.t==='order'?it.ans.map(i=>it.parts[i]).join(' → '):it.t==='multi'?it.ans.map(i=>it.words[i]).join(', '):it.accept[0];
 function qzAnswer(correct,extra={}){ const s=ui.qz; if(!s||s.ans) return; const it=s.q[s.i];
   s.ans={correct,...extra}; s.wrongRun=correct?0:(s.wrongRun||0)+1;
+  // Bài Pre-A1 là bằng chứng cho nút pa:<bài> (v52): nghe rồi chọn = nhận ra (mức 1), nghe rồi gõ = nhớ ra (mức 3).
+  if(s.kind==='pa') eEv({node:'pa:'+String(s.ref).replace(/^pa-/,''),level:it.t==='typed'?3:1,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'pa:'+s.ref+':'+(it.plain||s.i),qt:it.t==='typed'?'typed':'mcq',ctx:'prea1'});
   tally(correct, xpFor('q:'+s.kind+':'+s.ref+':'+(it.plain||s.i),it.t==='typed'?15:10,correct)); sfx(correct?'ok':'bad');
   s.res.push({correct,q:it.plain||'',right:qzRight(it)}); render(); }
 function qzCheck(){ const s=ui.qz, it=s.q[s.i]; if(s.ans) return;
@@ -2559,7 +2561,10 @@ const learnSeg = cur => `<h1 class="sr-only">${cur==='path'?'Học từ vựng':
    Thi thử khi qua A2. Người đã học lâu thấy đủ; Cài đặt có nút "Hiện tất cả tính năng". Mỗi lần mở khoá báo một lần. */
 const FEAT_NEW = [['talk','Kỹ năng','Luyện nghe, nói, đọc, viết và hội thoại theo cấp của bạn.'],['games','Thử thách','Trò chơi nhanh, thách đấu bạn bè và giải đấu tuần.'],['exam','Thi thử VSTEP','Bài thi rút gọn Nghe + Đọc có tính giờ, trong mục Thử thách.']];
 // v35: không khoá nội dung theo ngày học hay cấp (yêu cầu 3.1 “không khoá nội dung”): mọi tính năng mở ngay từ đầu.
-function featOn(k){ return true; }
+// v52 (spec v2.4 §7): MVP chỉ CEFR Pre-A1 → C2. IELTS/VSTEP/giao tiếp là Target Model "tương lai": tab Ôn thi ẩn,
+// bật lại trong Cài đặt → Nâng cao (hoặc localStorage 'el-future' = '1', dùng cho test phần ôn thi).
+function FUTURE(){ try{ if(localStorage.getItem('el-future')==='1') return true; }catch(e){} return !!(st&&st.set&&st.set.future); }
+function featOn(k){ return k==='thi' ? FUTURE() : true; }
 function featCheck(){ if(!['path','review','more'].includes(ui.view)||ui.modal) return; const fs=st.set.featSeen||(st.set.featSeen=[]);
   for(const [k,t,d] of FEAT_NEW) if(featOn(k)&&!fs.includes(k)){ fs.push(k); save(); setTimeout(()=>celebrate('🔓','Mở khoá: '+t,d),300); return; } }
 // Trang Học: một thanh vị trí (bấm để xem lộ trình), tối đa một lời nhắc.
@@ -3952,6 +3957,7 @@ function viewSettings0(){
   <section class="panel stack"><h3>Tính năng</h3><p class="note">Để app gọn cho người mới: Kỹ năng mở sau 3 ngày học, Thử thách sau 7 ngày, Thi thử khi qua A2.</p><div class="row"><button class="btn" data-act="allfeat">${st.set.allFeat?'Trở lại chế độ gọn':'Hiện tất cả tính năng ngay'}</button></div></section>
   <section class="panel stack"><h3>Dành cho giáo viên</h3><p class="note">Gộp tiến độ cả lớp từ file dữ liệu ẩn danh của học sinh, in bảng theo dõi.</p><div class="row"><button class="btn" data-go="class">${ico('users')} Công cụ lớp học</button></div></section>
   <section class="panel stack"><h3>Nâng cao</h3>
+    <div class="setrow"><span>Mục tiêu tương lai (thử nghiệm): hiện tab Ôn thi và mục tiêu IELTS, VSTEP, giao tiếp. Bản này tập trung vào CEFR Pre-A1 → C2</span><button class="btn" data-act="future" aria-pressed="${FUTURE()}">${FUTURE()?'Tắt':'Bật'}</button></div>
     <div class="setrow"><span>Âm thanh khi trả lời đúng/sai, lên bậc</span><button class="btn" data-act="sfx">${st.set.sfx?'Tắt':'Bật'}</button></div>
     <div class="setrow"><span>Chế độ tập trung: ẩn XP, combo, từ vàng, màn thưởng và chuỗi ngày; giữ phản hồi đúng/sai và lời giải thích ${info('focus')}</span><button class="btn" data-act="focus" aria-pressed="${FOCUS()}">${FOCUS()?'Tắt':'Bật'}</button></div>
     <div class="setrow"><span>Chế độ demo: nút “+1 ngày”, nạp tiến độ mẫu, tab Kiến trúc</span><button class="btn" data-act="demo">${st.set.demo?'Tắt':'Bật'}</button></div>
@@ -5114,6 +5120,7 @@ document.addEventListener('click',e=>{
     case 'goalall': ui.goalAll=!ui.goalAll; return render();
     case 'allunits': ui.allUnits[d.l]=true; return render();
     case 'focus': st.set.focus=!st.set.focus; save(); toast(st.set.focus?'Đã bật chế độ tập trung.':'Đã tắt chế độ tập trung.'); return render();
+    case 'future': st.set.future=!st.set.future; if(!st.set.future) try{ localStorage.removeItem('el-future'); }catch(e){} save(); toast(FUTURE()?'Đã hiện tab Ôn thi và mục tiêu tương lai.':'Đã ẩn tab Ôn thi: tập trung CEFR.'); return render();
     case 'sfx': st.set.sfx=!st.set.sfx; save(); sfx('ok'); toast(st.set.sfx?'Đã bật âm thanh.':'Đã tắt âm thanh.'); return render();
     case 'demo': st.set.demo=!st.set.demo; save(); toast(st.set.demo?'Đã bật chế độ demo.':'Đã tắt chế độ demo.'); return render();
     case 'export': return exportBackup();
@@ -6792,15 +6799,19 @@ try{ const g=new URLSearchParams(location.search).get('go'); if(st.onboarded&&['
 const NEWBIE = () => st.days.length<3 && UNITS.filter(u=>U(u.id).passed).length<2;
 
 // 1. Màn chào: Tí, một câu, một nút chính. Kiểm tra trình độ và chuyển tiến độ là lối phụ.
+// Nút màn chào (giống bản vẽ sẵn trong index.html): mặc định học CEFR; bật mục tiêu tương lai thì có thêm "Bắt đầu ôn thi".
+const helloActs = () => FUTURE()
+  ? '<button class="btn primary" data-act="xstart">Bắt đầu ôn thi</button><button class="btn" data-act="quickstart">Học tiếng Anh nền tảng A1 → C2</button>'
+  : '<button class="btn primary" data-act="quickstart">Bắt đầu học</button><button class="btn" data-go="prea1">Mới tinh: khởi động Pre-A1</button>';
 const _viewWelcome30 = viewWelcome;
 viewWelcome = function(){ const h=_viewWelcome30();
   if(ui.wz) return h.replace(/<span class="eyebrow">Chào mừng · bước \d\/3<\/span><div class="dots"[^>]*>.*?<\/div>/,'').replace(/data-act="wz" data-s="1"/,'data-act="wz" data-s="0"');
   const restore=(/<details class="panel"><summary>Đã học ở máy khác[\s\S]*?<\/details>/.exec(h)||[''])[0].replace('<details class="panel">','<details class="panel hello-more">').replace(/<summary>[^<]*<\/summary>/,'<summary>Đã học trên máy khác? Chuyển tiến độ</summary>');
   // v35: cùng bố cục với màn chào tĩnh trong index.html (vẽ trước khi app.js nạp xong), nên khi app vẽ lại không xô lệch bố cục.
-  return `<section class="hello"><h1>Ôn IELTS và VSTEP miễn phí</h1>
-    <p class="muted">Biết band ước tính từng kỹ năng, học theo kế hoạch tới ngày thi.<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
+  return `<section class="hello"><h1>${FUTURE()?'Ôn IELTS và VSTEP miễn phí':'Tiếng Anh từ con số 0 tới C2'}</h1>
+    <p class="muted">${FUTURE()?'Biết band ước tính từng kỹ năng, học theo kế hoạch tới ngày thi.':'App tự tìm chỗ bạn còn thiếu và chỉ cho học đúng phần đó, tới khi có bằng chứng bạn đạt cấp.'}<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
   <p class="hint hello-trust">Bản thử chưa thu tiền · Không quảng cáo bên thứ ba · Không bán dữ liệu · <button class="linkbtn" data-go="about">Về app</button></p>
-  <div class="actbar hello-act"><button class="btn primary" data-act="xstart">Bắt đầu ôn thi</button><button class="btn" data-act="quickstart">Học tiếng Anh nền tảng A1 → C2</button></div>
+  <div class="actbar hello-act">${helloActs()}</div>
   ${restore}`; };
 
 // 2. Thẻ từ gọn: từ, nghe, phiên âm, nghĩa, một câu ví dụ, lưu ý. Còn lại để “Xem thêm” (Sổ từ vẫn dùng thẻ đầy đủ).
@@ -8136,6 +8147,9 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:52,d:'2026-10-08',t:'Tập trung vào CEFR: Pre-A1 tới C2',big:true,items:[
+  'App tập trung vào một mục tiêu: tiếng Anh tổng quát theo khung CEFR, từ Pre-A1 (người mới tinh) tới C2. Thêm mục tiêu "Khởi động Pre-A1"; bài Pre-A1 giờ là bằng chứng năng lực như mọi bài khác.',
+  'Tab Ôn thi và các mục tiêu IELTS, VSTEP, giao tiếp tạm ẩn (vẫn giữ nguyên dữ liệu và bằng chứng). Muốn dùng: Cài đặt → Nâng cao → Mục tiêu tương lai.']});
 CHANGELOG.unshift({v:51,d:'2026-10-03',t:'Năng lượng và gói Super (bản thử, chưa thu tiền)',big:true,items:[
   'Năng lượng theo lượt như Duolingo: mỗi bài mới hoặc luyện tập tốn 1 lượt (tối đa 5, hồi 1 lượt mỗi 2 giờ), đúng hay sai không mất thêm. Số năng lượng ở góc trên màn hình.',
   'Không tốn năng lượng: ôn tập đến hạn, bài chẩn đoán, kiểm tra cấp, bài làm thật (hội thoại, viết/nói theo đề, thi thử) và đề thi thử.',
@@ -8217,7 +8231,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.3768ea79dd.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.d9ffb5bc24.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
@@ -8238,6 +8252,7 @@ const EHOST = {
       const p=E_PE.get(k); if(p!=null) out.push({by:'rule',skill:'W',day:w.day,v:p,scale:'cefr',src:'Bài viết theo đề'}); }
     return out; },
   exam:()=>({resp:(st.x&&st.x.resp)||[], real:(st.x&&st.x.real)||[]}),
+  future:()=>FUTURE(),
   lapse:()=>{ let d=0; for(const m of [st.words||{},st.gram||{}]) for(const v of Object.values(m)) if(v&&v.ld>d) d=v.ld; return d||null; },
 };
 const E_PE = new Map();   // điểm máy chấm luật của bài viết theo đề (perfEst chậm, chỉ tính lại khi bài đổi)

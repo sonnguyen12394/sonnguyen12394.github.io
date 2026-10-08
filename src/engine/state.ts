@@ -53,7 +53,7 @@ export function sanitizeE(raw: unknown): EState {
   const num = (v: unknown, lo: number, hi: number, d: number): number => (typeof v === 'number' && Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d);
   const strs = (v: unknown, max: number): string[] => (Array.isArray(v) ? v.filter((s): s is string => typeof s === 'string' && s.length <= 40).slice(0, max) : []);
   for (const [id, cells0] of Object.entries(obj(x.m))) {
-    if (!/^(cd|u|g|x|xw|xs):[a-z0-9][a-z0-9._-]{0,60}$/.test(id)) continue;
+    if (!/^(cd|u|g|pa|x|xw|xs):[a-z0-9][a-z0-9._-]{0,60}$/.test(id)) continue;
     const cells: Partial<Record<Level, Cell>> = {};
     for (const [k, c0] of Object.entries(obj(cells0))) {
       const l = Number(k), c = obj(c0);

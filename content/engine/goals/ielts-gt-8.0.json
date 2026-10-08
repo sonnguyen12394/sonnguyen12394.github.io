@@ -5,6 +5,7 @@
  "vi": "IELTS General Training 8.0",
  "target": "8.0",
  "cefr": "C1",
+ "status": "future",
  "req": [
   {
    "node": "cd:c1-voc1",

@@ -1,5 +1,12 @@
 # English Ladder — Master Spec v2
 
+> **08/10/2026 — Spec v2.4 thay hướng sản phẩm.** Người sáng lập chốt: nguồn sự thật là **Master Spec v2.4** (`docs/SPEC-v2.4.md`), triển khai **thuần v2.4**:
+> 1. MVP chỉ một Target Model là **CEFR Pre-A1 → C2**. IELTS, VSTEP, giao tiếp là Future Target Models: dữ liệu giữ nguyên (`status: "future"` trong `content/engine/goals/`), ẩn khỏi người học, bật lại được trong Cài đặt → Nâng cao; dùng để kiểm chứng mở rộng ở M10 của v2.4.
+> 2. **Game là trải nghiệm chính**: người học chơi để thắng, việc học tiếng Anh nằm ẩn trong luật chơi (stealth learning) — mỗi hành động trong game là một thử thách ngôn ngữ do engine chọn, nhằm lên cấp nhanh nhất. Không dùng dark pattern; tiến độ học và dữ liệu luôn xem được.
+> 3. Kiến trúc evidence theo v2.4 (Observation → Evidence → Ledger → Aggregate → Learner State → Decision Snapshot), đo bằng `docs/CONFORMANCE-200-v2.4.md` và `docs/SCORECARD-v2.4.md`.
+>
+> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v62 (xem phần "Lộ trình v2.4" cuối tệp).
+
 Cập nhật: 03/10/2026. Bản đọc và bình luận: Claude Docs "English Ladder — Master Spec v2". Tệp này là bản AI đọc khi xây; hai bản phải giống nhau.
 
 ## Cách đọc
@@ -236,3 +243,21 @@ Các rủi ro dưới đây được theo dõi trong lúc xây, không dùng đ�
 | XP theo hoạt động kéo người học đi cày XP thay vì lấp khoảng thiếu | Tỉ lệ phút học ngoài Learning Path | Nút chính luôn là "Bước tiếp theo"; Readiness hiển thị ngang hàng XP |
 | Điểm trong app của người sáng lập bị thổi phồng vì đã duyệt nội dung | Điểm app cao hơn đề ngoài | Đo mốc bằng đề ngoài chưa từng xem trước khi đăng ký thi thật |
 | `app.js` lớn (3,8 MB) làm chậm máy yếu | Thời gian mở app trên Android rẻ | Engine viết thành mô-đun riêng, nội dung tải theo nút |
+
+## Lộ trình v2.4 (từ 08/10/2026)
+
+Mỗi mốc một PR, chấm lại 200 + 400 tiêu chí sau mỗi mốc.
+
+| Bản | Mốc | Tiêu chí xong |
+| --- | --- | --- |
+| v52 | Chốt hướng: chỉ CEFR + Pre-A1 | Mục tiêu ngoài CEFR ở trạng thái tương lai, tab Ôn thi ẩn; mục tiêu Pre-A1; bài Pre-A1 là bằng chứng |
+| v53 | Evidence L0–L4 | Observation, Evidence Evaluator, Ledger theo giá trị, Aggregate bảo toàn thông tin, Beta là trạng thái dẫn xuất tính lại được |
+| v54 | Decision Snapshot | Quyết định quan trọng có snapshot, tái tạo được; màn "Vì sao?" |
+| v55 | Mastery v3 | Phân vị Beta chính xác, giảm theo thời gian, trạng thái nút, model disagreement, misconception |
+| v56 | Mô phỏng learner | 10 Scenario + 20 Meta-Test chạy tự động; báo cáo calibration, FP/FN |
+| v57 | Knowledge/Graph | Universal Language Core, rationale/version cạnh, tiền đề thay thế, kiểm orphan/unreachable |
+| v58 | Chẩn đoán liên tục | 5 chế độ, giá trị thông tin ÷ nỗ lực, truy gốc theo cạnh |
+| v59 | Gap + NBA | 8 loại gap, utility §57, luật retention §58 |
+| v60 | Transfer | Câu/ngữ cảnh mới, thất bại transfer → disagreement |
+| v61 | Micro-learning | Chính sách ngắt §53, giải thích → luyện → kiểm lại → về game |
+| v62 | Game Ladder Quest | Game Challenge Model, học ẩn trong game, tách kỹ năng game khỏi ngôn ngữ |

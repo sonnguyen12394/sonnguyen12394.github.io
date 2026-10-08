@@ -1,5 +1,47 @@
 [
  {
+  "from": "cd:a1-com-pa",
+  "to": "pa:abc",
+  "type": "hard",
+  "w": 1
+ },
+ {
+  "from": "cd:a1-com-pa",
+  "to": "pa:class",
+  "type": "hard",
+  "w": 1
+ },
+ {
+  "from": "cd:a1-com-pa",
+  "to": "pa:date",
+  "type": "hard",
+  "w": 1
+ },
+ {
+  "from": "cd:a1-com-pa",
+  "to": "pa:num",
+  "type": "hard",
+  "w": 1
+ },
+ {
+  "from": "cd:a1-com-pa",
+  "to": "pa:num2",
+  "type": "hard",
+  "w": 1
+ },
+ {
+  "from": "cd:a1-com-pa",
+  "to": "pa:spell",
+  "type": "hard",
+  "w": 1
+ },
+ {
+  "from": "cd:a1-com-pa",
+  "to": "pa:time",
+  "type": "hard",
+  "w": 1
+ },
+ {
   "from": "cd:a1-gra1",
   "to": "g:g-a1-01",
   "type": "hard",

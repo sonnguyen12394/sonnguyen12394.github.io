@@ -5,6 +5,7 @@
  "vi": "Giao tiếp nơi làm việc",
  "target": "work",
  "cefr": "B2",
+ "status": "future",
  "req": [
   {
    "node": "cd:a2-voc4",

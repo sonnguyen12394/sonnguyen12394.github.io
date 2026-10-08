@@ -9,7 +9,7 @@
       "required": ["id", "kind", "area", "skill", "cefr", "vi", "ctx", "acts", "minutes"],
       "additionalProperties": false,
       "properties": {
-        "id": { "type": "string", "pattern": "^(cd|u|g|x|xw|xs):[a-z0-9][a-z0-9._-]*$" },
+        "id": { "type": "string", "pattern": "^(cd|u|g|pa|x|xw|xs):[a-z0-9][a-z0-9._-]*$" },
         "kind": { "enum": ["cando", "vocab", "grammar", "task"] },
         "area": { "enum": ["voc", "gra", "pro", "lis", "rd", "wr", "spk", "task"] },
         "skill": { "enum": ["L", "R", "W", "S", null] },
@@ -37,7 +37,7 @@
     },
     "goal": {
       "type": "object",
-      "required": ["id", "version", "kind", "vi", "target", "cefr", "req"],
+      "required": ["id", "version", "kind", "vi", "target", "cefr", "status", "req"],
       "additionalProperties": false,
       "properties": {
         "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]*$" },
@@ -45,6 +45,7 @@
         "kind": { "enum": ["cefr", "ielts-ac", "ielts-gt", "vstep", "comm"] },
         "vi": { "type": "string", "minLength": 1 },
         "target": { "type": "string" },
+        "status": { "enum": ["active", "future"] },
         "cefr": { "anyOf": [{ "$ref": "#/definitions/cefr" }, { "type": "null" }] },
         "req": {
           "type": "array", "minItems": 1,

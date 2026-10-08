@@ -5,6 +5,7 @@
  "vi": "Tiếng Anh tổng quát C2 (Thành thạo)",
  "target": "C2",
  "cefr": "C2",
+ "status": "active",
  "req": [
   {
    "node": "cd:c2-voc1",

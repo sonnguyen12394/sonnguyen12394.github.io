@@ -642,13 +642,14 @@ body.lesson main{max-width:720px}
   <nav id="nav"></nav>
   <div class="clock" id="clock"></div>
 </div></header>
-<main id="app"><div id="boot-hello" hidden><section class="hello"><h1>Ôn IELTS và VSTEP miễn phí</h1>
-<p class="muted">Biết band ước tính từng kỹ năng, học theo kế hoạch tới ngày thi.<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
+<main id="app"><div id="boot-hello" hidden><section class="hello"><h1>Tiếng Anh từ con số 0 tới C2</h1>
+<p class="muted">App tự tìm chỗ bạn còn thiếu và chỉ cho học đúng phần đó, tới khi có bằng chứng bạn đạt cấp.<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
 <p class="hint hello-trust">Bản thử chưa thu tiền · Không quảng cáo bên thứ ba · Không bán dữ liệu · <button class="linkbtn" data-go="about">Về app</button></p>
-<div class="actbar hello-act"><button class="btn primary" data-act="xstart">Bắt đầu ôn thi</button><button class="btn" data-act="quickstart">Học tiếng Anh nền tảng A1 → C2</button></div></div>
+<div class="actbar hello-act"><button class="btn primary" data-act="quickstart">Bắt đầu học</button><button class="btn" data-go="prea1">Mới tinh: khởi động Pre-A1</button></div></div>
 <p id="boot-wait" class="muted" style="padding:40px 0;text-align:center" role="status">Đang mở English Ladder…</p>
 <script>/* Màn đầu vẽ ngay từ HTML (không chờ app.js): người mới thấy màn chào tức thì; bấm trước khi app sẵn sàng thì app làm tiếp khi nạp xong. */
 try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('bare'); document.getElementById('boot-hello').hidden=false; document.getElementById('boot-wait').hidden=true;
+  if(localStorage.getItem('el-future')==='1'){ var h=document.querySelector('#boot-hello'); h.querySelector('h1').textContent='Ôn IELTS và VSTEP miễn phí'; h.querySelector('.hello-act').innerHTML='<button class="btn primary" data-act="xstart">Bắt đầu ôn thi</button><button class="btn" data-act="quickstart">Học tiếng Anh nền tảng A1 → C2</button>'; }
   document.getElementById('boot-hello').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b||window.ELREADY) return; window.ELPEND={act:b.dataset.act,go:b.dataset.go}; b.setAttribute('aria-busy','true'); b.textContent='Đang mở…'; }); } }catch(e){}</script>
 <noscript><section style="max-width:680px;margin:0 auto;padding:0 16px"><h1>English Ladder: học tiếng Anh miễn phí A1 → C2</h1>
 <p>Biết mình làm được gì bằng tiếng Anh ở từng cấp A1 → C2, mỗi lỗi sai được giải thích bằng tiếng Việt. Mọi bài học miễn phí, không cần tài khoản.</p>
@@ -659,4 +660,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.1fbe094c40.js" defer></script><script src="app.js?v=51" defer></script>
+<script src="x/core.804fdf1672.js" defer></script><script src="app.js?v=52" defer></script>

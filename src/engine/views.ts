@@ -3,13 +3,13 @@
 import type { EHost } from './host.ts';
 import type { EState } from './state.ts';
 import { GOAL_MAX } from './state.ts';
-import { META, GOALS, loaded, type GoalMeta } from './data.ts';
+import { META, GOALS, loaded, goalOn, type GoalMeta } from './data.ts';
 import { closure, defaultLevel } from './graph.ts';
 import { statusOf } from './mastery.ts';
 import { readinessOf, readyChip, viewReady } from './readyview.ts';
 import { LEVEL_VI, type Area, type GoalKind, type Node, type Req } from './types.ts';
 
-export interface ECtx { host: EHost; e: EState; route: string }
+export interface ECtx { host: EHost; e: EState; route: string; future?: boolean; hidden?: number }   // e.goals chỉ gồm mục tiêu đang mở; hidden = số mục tiêu tạm ẩn
 
 export const KIND_VI: Record<GoalKind, [string, string]> = {
   cefr: ['Tiếng Anh tổng quát (CEFR)', 'Từ A1 đến C2: đủ từ vựng, ngữ pháp, phát âm và bốn kỹ năng của một cấp.'],
@@ -44,22 +44,23 @@ export function viewGoals(c: ECtx): string {
   const mine = e.goals.map(s => ({ s, m: GOALS.get(s.id) })).filter((x): x is { s: EState['goals'][number]; m: GoalMeta } => !!x.m);
   const head = `<section class="stack"><span class="eyebrow">Mục tiêu</span><h1>Mục tiêu của bạn</h1>
     <p class="muted">App chỉ cho bạn học những gì mục tiêu thật sự cần và bạn chưa thành thạo. Mỗi mục tiêu là một danh sách năng lực cần đạt (Target Model), có phiên bản.</p></section>`;
-  const kinds = `<div class="units">${KINDS.map(k => `<button class="unit morei" data-e="go" data-r="pick/${k}"><span class="no">${host.ico(k === 'comm' ? 'mic' : k === 'cefr' ? 'map' : 'exam')}</span><span class="t"><strong>${esc(KIND_VI[k][0])}</strong><span class="muted">${esc(KIND_VI[k][1])}</span></span></button>`).join('')}</div>`;
+  const kinds = `<div class="units">${KINDS.filter(k => META.goals.some(g => g.kind === k && goalOn(g.id, !!c.future))).map(k => `<button class="unit morei" data-e="go" data-r="pick/${k}"><span class="no">${host.ico(k === 'comm' ? 'mic' : k === 'cefr' ? 'map' : 'exam')}</span><span class="t"><strong>${esc(KIND_VI[k][0])}</strong><span class="muted">${esc(KIND_VI[k][1])}</span></span></button>`).join('')}</div>`;
   const diag = e.diag ? `<section class="panel spread"><span>Chẩn đoán gần nhất: từ vựng ≈ ${esc(cefrName(e.diag.u))}, ngữ pháp ≈ ${esc(cefrName(e.diag.g))}</span><button class="btn small" data-e="go" data-r="diag-result">Xem</button></section>`
     : `<section class="panel stack"><h3>Bạn đang ở đâu?</h3><p class="muted">Bài dò 10–20 phút để app bỏ qua những gì bạn đã biết.</p><div class="row"><button class="btn primary small" data-e="go" data-r="diag">Làm bài chẩn đoán</button></div></section>`;
-  if (!mine.length) return `${head}${diag}<section class="stack"><h2>Bạn muốn đạt gì?</h2></section>${kinds}`;
+  const hid = c.hidden ? `<p class="hint">${c.hidden} mục tiêu kỳ thi/giao tiếp đã chọn trước đây đang tạm ẩn: bản này tập trung vào CEFR (Pre-A1 → C2). Bằng chứng đã có vẫn được giữ.</p>` : '';
+  if (!mine.length) return `${head}${diag}${hid}<section class="stack"><h2>Bạn muốn đạt gì?</h2></section>${kinds}`;
   const cards = mine.map(({ s, m }) => `<section class="panel stack" aria-label="${esc(m.vi)}">
       <div class="spread"><h3>${esc(m.vi)}</h3><span class="pill">Target Model ${esc(s.version)}</span></div>
       <p class="muted">${m.n} năng lực ghi trực tiếp${s.date !== null ? ` · hạn ${esc(isoOf(s.date))}` : ''}</p>
       ${(() => { const g = loaded()?.goal.get(m.id); return g ? `<div class="row" style="gap:6px">${readyChip(readinessOf(host, e, g))}</div>` : ''; })()}
       <div class="row"><button class="btn primary small" data-e="go" data-r="goal/${esc(m.id)}">Xem cần đạt gì</button><button class="btn ghost small" data-e="rm" data-g="${esc(m.id)}" aria-label="Bỏ mục tiêu ${esc(m.vi)}">Bỏ</button></div></section>`).join('');
-  return `${head}${diag}${cards}${mine.length < GOAL_MAX ? `<section class="stack"><h2>Thêm mục tiêu</h2><p class="muted">Có nhiều mục tiêu thì app gộp lại: năng lực chung chỉ học một lần, lấy mức cao nhất.</p></section>${kinds}` : `<p class="hint">Tối đa ${GOAL_MAX} mục tiêu cùng lúc.</p>`}`;
+  return `${head}${diag}${hid}${cards}${mine.length < GOAL_MAX ? `<section class="stack"><h2>Thêm mục tiêu</h2><p class="muted">Có nhiều mục tiêu thì app gộp lại: năng lực chung chỉ học một lần, lấy mức cao nhất.</p></section>${kinds}` : `<p class="hint">Tối đa ${GOAL_MAX} mục tiêu cùng lúc.</p>`}`;
 }
 
 export function viewPick(c: ECtx): string {
   const { host, e } = c, esc = host.esc, k = c.route.split('/')[1] as GoalKind;
   if (!KIND_VI[k]) return viewGoals(c);
-  const have = new Set(e.goals.map(g => g.id)), list = META.goals.filter(g => g.kind === k);
+  const have = new Set(e.goals.map(g => g.id)), list = META.goals.filter(g => g.kind === k && goalOn(g.id, !!c.future));
   const btn = (g: GoalMeta, label: string) => have.has(g.id)
     ? `<button class="btn small" disabled aria-label="${esc(g.vi)} (đã chọn)">✓ ${esc(label)}</button>`
     : `<button class="btn small" data-e="add" data-g="${esc(g.id)}" aria-label="Chọn ${esc(g.vi)}">${esc(label)}</button>`;

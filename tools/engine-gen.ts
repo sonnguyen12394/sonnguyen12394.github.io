@@ -28,6 +28,10 @@ interface Overrides { ctx?: Record<string, Ctx[]>; edgesAdd?: Edge[]; edgesDel?:
 
 const dump = JSON.parse(readFileSync(P('content/engine/src/app-dump.json'), 'utf8')) as Dump;
 const ov = (existsSync(P('content/engine/overrides.json')) ? JSON.parse(readFileSync(P('content/engine/overrides.json'), 'utf8')) : {}) as Overrides;
+// Pre-A1 (khởi động cho người mới tinh): danh sách bài là hằng PREA1 viết tĩnh trong app.js.
+const appSrc = readFileSync(P('app.js'), 'utf8');
+const preA1 = [...appSrc.matchAll(/^ \{id:'pa-([a-z0-9]+)',vi:'([^']+)',en:'([^']+)'/gm)].map(m => ({ id: m[1]!, vi: m[2]!, en: m[3]! }));
+if (preA1.length < 5) throw new Error(`Pre-A1: chỉ đọc được ${preA1.length} bài từ PREA1 trong app.js`);
 const examIdx = JSON.parse(readFileSync(P('src/exam/gen/index.json'), 'utf8')) as { items: Record<string, [number, number, string, string]> };
 
 const SKILL: Partial<Record<string, Skill>> = { lis: 'L', rd: 'R', wr: 'W', spk: 'S' };
@@ -69,6 +73,10 @@ for (const c of dump.cando) {
     ctx: ov.ctx?.[`cd:${c.id}`] ?? ctxOf(c), acts, minutes: Math.max(10, acts.reduce((s, a) => s + actMinutes(a), 0)),
   });
 }
+for (const p of preA1) nodes.push({
+  id: `pa:${p.id}`, kind: 'cando', area: 'voc', skill: 'L', cefr: null, vi: `Pre-A1: ${p.vi}`, en: p.en, ctx: ['daily'],
+  acts: [{ at: `data-pa="pa-${p.id}"`, t: `Pre-A1: ${p.vi}` }], minutes: 10,
+});
 // Dạng câu thi Nghe/Đọc (bỏ dạng chỉ dùng cho kiểm tra đầu vào) và bài Viết/Nói thi.
 for (const q of QTYPES.filter(q => !q.id.startsWith('pl-'))) nodes.push({
   id: `x:${q.id}`, kind: 'task', area: 'task', skill: q.skill as Skill, cefr: null, vi: q.vi, en: q.en, ctx: ['exam'],
@@ -111,6 +119,11 @@ for (const c of dump.cando) {
   const same = below.filter(d => d.grp0 && d.grp0 === c.grp0);
   for (const d of (same.length ? same : below)) add(`cd:${c.id}`, `cd:${d.id}`, 'hard', 0.8);
 }
+// Can-Do A1 "đánh vần, số, giờ…" là đích của các bài Pre-A1 (cdActs tham chiếu t:'pa'): mỗi bài là tiền đề cứng.
+for (const c of dump.cando) for (const r of c.refs) if (r.t === 'pa') for (const a of r.acts) {
+  const m = /data-pa="pa-([a-z0-9]+)"/.exec(a.at);
+  if (m && preA1.some(p => p.id === m[1])) add(`cd:${c.id}`, `pa:${m[1]}`, 'hard', 1);
+}
 // Ngữ pháp: điểm trước là tiền đề mềm của điểm sau (thứ tự bài trong app).
 for (let i = 1; i < dump.gpoints.length; i++) add(`g:${dump.gpoints[i]!.id}`, `g:${dump.gpoints[i - 1]!.id}`, 'soft', 0.5);
 // Bài thi → Can-Do kỹ năng cùng loại ở B1 (tiền đề mềm: làm bài thi cần nền kỹ năng).
@@ -131,9 +144,13 @@ function cdReq(c: Dump['cando'][number], high: boolean): Req {
   return { node: `cd:${c.id}`, level, type: c.grp0 === 'com' ? 'performance' : REQ_TYPE[c.grp]! };
 }
 const goals: Goal[] = [];
+goals.push({
+  id: 'cefr-pre-a1', version: VERSION, kind: 'cefr', vi: 'Khởi động Pre-A1 (người mới tinh)', target: 'Pre-A1', cefr: null, status: 'active',
+  req: preA1.map(p => ({ node: `pa:${p.id}`, level: 3 as Level, type: 'foundation' as const })),
+});
 const CEFR_VI: Record<Cefr, string> = { A1: 'Sơ cấp', A2: 'Sơ trung cấp', B1: 'Trung cấp', B2: 'Trung cao cấp', C1: 'Cao cấp', C2: 'Thành thạo' };
 for (const L of CEFRS) goals.push({
-  id: `cefr-${L.toLowerCase()}`, version: VERSION, kind: 'cefr', vi: `Tiếng Anh tổng quát ${L} (${CEFR_VI[L]})`, target: L, cefr: L,
+  id: `cefr-${L.toLowerCase()}`, version: VERSION, kind: 'cefr', vi: `Tiếng Anh tổng quát ${L} (${CEFR_VI[L]})`, target: L, cefr: L, status: 'active',
   req: candos(c => c.lv === L).map(c => cdReq(c, L === 'C1' || L === 'C2')),
 });
 const taskLevel = (x: number, lo: number, hi: number): Level => (x < lo ? 3 : x < hi ? 4 : 5);
@@ -146,10 +163,10 @@ for (const kind of ['ielts-ac', 'ielts-gt'] as const) for (let b = 4; b <= 9; b 
     ...IEXAM.map(q => ({ node: `x:${q.id}`, level: lv, type: 'performance' as const })),
     ...[t1, 'xw:ielts-t2', 'xs:ielts-p1', 'xs:ielts-p2', 'xs:ielts-p3'].map(node => ({ node, level: lv, type: 'performance' as const })),
   ];
-  goals.push({ id: `${kind}-${b.toFixed(1)}`, version: VERSION, kind, vi: `IELTS ${kind === 'ielts-ac' ? 'Academic' : 'General Training'} ${b.toFixed(1)}`, target: b.toFixed(1), cefr: L, req });
+  goals.push({ id: `${kind}-${b.toFixed(1)}`, version: VERSION, kind, vi: `IELTS ${kind === 'ielts-ac' ? 'Academic' : 'General Training'} ${b.toFixed(1)}`, target: b.toFixed(1), cefr: L, status: 'future', req });
 }
 for (const [L, lv, vi] of [['B1', 3, 'Bậc 3 (B1)'], ['B2', 4, 'Bậc 4 (B2)'], ['C1', 5, 'Bậc 5 (C1)']] as Array<[Cefr, Level, string]>) goals.push({
-  id: `vstep-${L.toLowerCase()}`, version: VERSION, kind: 'vstep', vi: `VSTEP ${vi}`, target: L, cefr: L,
+  id: `vstep-${L.toLowerCase()}`, version: VERSION, kind: 'vstep', vi: `VSTEP ${vi}`, target: L, cefr: L, status: 'future',
   req: [
     ...candos(c => c.lv === L).map(c => cdReq(c, L === 'C1')),
     ...['v-l1', 'v-l2', 'v-l3', 'v-r'].map(q => ({ node: `x:${q}`, level: lv, type: 'performance' as const })),
@@ -162,7 +179,7 @@ const COMM: Array<[Ctx, string, Cefr[]]> = [
 ];
 const nodeById = new Map(nodes.map(n => [n.id, n]));
 for (const [ctx, vi, lvs] of COMM) goals.push({
-  id: `comm-${ctx}`, version: VERSION, kind: 'comm', vi, target: ctx, cefr: lvs[lvs.length - 1]!,
+  id: `comm-${ctx}`, version: VERSION, kind: 'comm', vi, target: ctx, cefr: lvs[lvs.length - 1]!, status: 'future',
   req: candos(c => lvs.includes(c.lv) && nodeById.get(`cd:${c.id}`)!.ctx.includes(ctx)).map(c => cdReq(c, false)),
 });
 
@@ -184,18 +201,19 @@ const itemsByType: Record<string, number> = {};
 for (const [, , , qt] of Object.values(examIdx.items)) itemsByType[qt] = (itemsByType[qt] ?? 0) + 1;
 const unitWords = new Map(dump.units.map(u => [`u:${u.id}`, u.words]));
 function measures(n: Node): number {
+  if (n.id.startsWith('pa:')) return n.acts.length;
   if (n.kind === 'vocab') return unitWords.get(n.id) ?? 0;
   if (n.kind === 'task') return n.id.startsWith('x:') ? itemsByType[n.id.slice(2)] ?? 0 : n.acts.length;
   return n.acts.length;
 }
 const lines = ['# Bảng phủ engine', '', 'Tạo bởi `tools/engine-gen.ts`. Mỗi mục tiêu: số nút ghi trực tiếp, số nút sau khi đóng tiền đề cứng, số nút chưa có gì để đo (cần nội dung ở M6).', '',
-  '| Mục tiêu | Phiên bản | Nút ghi | Sau đóng tiền đề | Chưa có gì để đo |', '|---|---|---|---|---|'];
+  '| Mục tiêu | Trạng thái | Phiên bản | Nút ghi | Sau đóng tiền đề | Chưa có gì để đo |', '|---|---|---|---|---|---|'];
 const empty = new Set<string>();
 for (const g of goals) {
   const all = closure(ix, g.req, defaultLevel);
   const none = all.filter(r => measures(ix.node.get(r.node)!) === 0);
   none.forEach(r => empty.add(r.node));
-  lines.push(`| ${g.vi} (\`${g.id}\`) | ${g.version} | ${g.req.length} | ${all.length} | ${none.length ? none.map(r => r.node).join(', ') : '0'} |`);
+  lines.push(`| ${g.vi} (\`${g.id}\`) | ${g.status === 'active' ? 'MVP' : 'tương lai'} | ${g.version} | ${g.req.length} | ${all.length} | ${none.length ? none.map(r => r.node).join(', ') : '0'} |`);
 }
 lines.push('', `Tổng: ${nodes.length} nút (${nodes.filter(n => n.kind === 'cando').length} Can-Do, ${nodes.filter(n => n.kind === 'vocab').length} cụm từ vựng, ${nodes.filter(n => n.kind === 'grammar').length} điểm ngữ pháp, ${nodes.filter(n => n.kind === 'task').length} dạng bài thi), ${finalEdges.length} cạnh (${finalEdges.filter(e => e.type === 'hard').length} cứng), ${goals.length} mục tiêu. Nút chưa có gì để đo: ${empty.size}.`, '');
 writeFileSync(P('content/engine/coverage.md'), lines.join('\n'));

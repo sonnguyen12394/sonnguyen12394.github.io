@@ -16,5 +16,6 @@ export interface EHost {
   probe(node: string): Array<{ id: string; level: 1 | 2 | 3; g: number; prompt: string; opts?: string[]; ans?: number; accept?: string[]; en?: string }>;   // câu dò cho chẩn đoán (app.js eProbe)
   grades(): Array<{ by: 'rule' | 'self' | 'ai'; skill: 'W' | 'S'; day: number; v: number; scale: 'band' | 'vstep' | 'cefr'; src?: string }>;   // các lần chấm Viết/Nói (grader.ts)
   exam(): { resp: import('../exam/state.ts').Resp[]; real: import('../exam/state.ts').RealScore[] };   // câu Nghe/Đọc đã làm + điểm thi thật (phần ôn thi)
-  lapse(): number | null;                           // ngày gần nhất quên một thẻ khi đến hạn ôn
+  lapse(): number | null;
+  future?(): boolean;                               // bật mục tiêu tương lai (IELTS, VSTEP, giao tiếp); mặc định tắt                           // ngày gần nhất quên một thẻ khi đến hạn ôn
 }

@@ -16774,6 +16774,139 @@
   "minutes": 20
  },
  {
+  "id": "pa:abc",
+  "kind": "cando",
+  "area": "voc",
+  "skill": "L",
+  "cefr": null,
+  "vi": "Pre-A1: Bảng chữ cái",
+  "en": "The alphabet",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-pa=\"pa-abc\"",
+    "t": "Pre-A1: Bảng chữ cái"
+   }
+  ],
+  "minutes": 10
+ },
+ {
+  "id": "pa:class",
+  "kind": "cando",
+  "area": "voc",
+  "skill": "L",
+  "cefr": null,
+  "vi": "Pre-A1: Câu đầu tiên và câu dùng trong lớp",
+  "en": "First phrases and classroom language",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-pa=\"pa-class\"",
+    "t": "Pre-A1: Câu đầu tiên và câu dùng trong lớp"
+   }
+  ],
+  "minutes": 10
+ },
+ {
+  "id": "pa:date",
+  "kind": "cando",
+  "area": "voc",
+  "skill": "L",
+  "cefr": null,
+  "vi": "Pre-A1: Thứ, tháng, ngày và năm",
+  "en": "Days, months, dates and years",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-pa=\"pa-date\"",
+    "t": "Pre-A1: Thứ, tháng, ngày và năm"
+   }
+  ],
+  "minutes": 10
+ },
+ {
+  "id": "pa:num",
+  "kind": "cando",
+  "area": "voc",
+  "skill": "L",
+  "cefr": null,
+  "vi": "Pre-A1: Số 0 đến 20",
+  "en": "Numbers 0–20",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-pa=\"pa-num\"",
+    "t": "Pre-A1: Số 0 đến 20"
+   }
+  ],
+  "minutes": 10
+ },
+ {
+  "id": "pa:num2",
+  "kind": "cando",
+  "area": "voc",
+  "skill": "L",
+  "cefr": null,
+  "vi": "Pre-A1: Số đến 100 và giá tiền",
+  "en": "Numbers to 100 and prices",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-pa=\"pa-num2\"",
+    "t": "Pre-A1: Số đến 100 và giá tiền"
+   }
+  ],
+  "minutes": 10
+ },
+ {
+  "id": "pa:spell",
+  "kind": "cando",
+  "area": "voc",
+  "skill": "L",
+  "cefr": null,
+  "vi": "Pre-A1: Đánh vần tên, số điện thoại, email",
+  "en": "Spelling",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-pa=\"pa-spell\"",
+    "t": "Pre-A1: Đánh vần tên, số điện thoại, email"
+   }
+  ],
+  "minutes": 10
+ },
+ {
+  "id": "pa:time",
+  "kind": "cando",
+  "area": "voc",
+  "skill": "L",
+  "cefr": null,
+  "vi": "Pre-A1: Nói giờ",
+  "en": "Telling the time",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-pa=\"pa-time\"",
+    "t": "Pre-A1: Nói giờ"
+   }
+  ],
+  "minutes": 10
+ },
+ {
   "id": "u:a1-u1",
   "kind": "vocab",
   "area": "voc",

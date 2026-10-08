@@ -89,6 +89,7 @@ export function validate(g: Graph): string[] {
     if (gids.has(x.id)) err.push(`mục tiêu trùng id: ${x.id}`);
     gids.add(x.id);
     if (!/^\d+\.\d+$/.test(x.version)) err.push(`${x.id}: phiên bản phải dạng 1.0`);
+    if (x.status !== 'active' && x.status !== 'future') err.push(`${x.id}: trạng thái phải là active hoặc future`);
     if (!x.req.length) err.push(`${x.id}: mục tiêu rỗng`);
     for (const r of x.req) if (!seen.has(r.node)) err.push(`${x.id}: nút không có ${r.node}`);
   }
