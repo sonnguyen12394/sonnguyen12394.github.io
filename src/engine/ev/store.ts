@@ -33,7 +33,7 @@ export function hash6(s: string): string {
   for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); }
   return ((h >>> 1) % 2176782336).toString(36).padStart(6, '0');
 }
-function seenHas(st: EvStore, node: string, item: string): boolean {
+export function seenHas(st: EvStore, node: string, item: string): boolean {
   const s = st.seen[node], h = hash6(item);
   if (!s) return false;
   for (let i = 0; i < s.length; i += 6) if (s.slice(i, i + 6) === h) return true;

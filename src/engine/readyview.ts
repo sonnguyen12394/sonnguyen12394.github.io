@@ -12,6 +12,7 @@ import { addSnap } from './ev/snapshot.ts';
 import { RULE_ID } from './ev/evaluate.ts';
 import { READY_P } from './readiness.ts';
 import { loaded } from './data.ts';
+import { xferSummary } from './transfer.ts';
 
 export type Ready = ExamReady | MasteryReady;
 
@@ -33,9 +34,18 @@ function snapReady(host: EHost, e: EState, g: Goal, r: Ready): void {
   const dec = achieved ? 'ACHIEVED' : r.ready ? 'READY' : 'NOT_READY';
   const info: Record<string, number | string> = r.kind === 'exam'
     ? { p, need: READY_P, achieved: achieved ? 'yes' : 'no', missing: r.missing.join('') }
-    : { p, need: 1, achieved: achieved ? 'yes' : 'no', done: r.done, total: r.total, perf: `${r.perfDone}/${r.perfTotal}`, lapse: r.lapse ? 'yes' : 'no' };
+    : { p, need: 1, achieved: achieved ? 'yes' : 'no', done: r.done, total: r.total, perf: `${r.perfDone}/${r.perfTotal}`, lapse: r.lapse ? 'yes' : 'no', ...xferInfo(e, g) };
   const evs = r.kind === 'mastery' ? e.ev.led.filter(x => g.req.some(q => q.node === x.node)).slice(-12).map(x => x.id) : [];
   addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'readiness', subj: g.id, dec, info, rule: `${RULE_ID}/ready-1`, evs });
+}
+
+// Transfer trong Readiness (§59–60): bao nhiêu năng lực quan trọng cho transfer đã dùng được ở câu mới. Hiển thị và ghi vào snapshot;
+// chưa là điều kiện Đạt mục tiêu (để không chặn người học khi kho câu mới của một nút đã cạn).
+function xferInfo(e: EState, g: Goal): Record<string, string> {
+  const ix = loaded();
+  if (!ix || !e.ev) return {};
+  const x = xferSummary(ix, e.m, e.ev, g.req);
+  return x.important ? { xfer: `${x.ok}/${x.important}`, xfail: String(x.failed) } : {};
 }
 
 // Năng lực còn thiếu (§61: "chưa đạt B1 vì còn thiếu X, Y, Z" thay vì "đang 72%").
@@ -44,6 +54,12 @@ export function missingOf(host: EHost, e: EState, g: Goal): Array<{ node: string
   return g.req.map(r => ({ r, s: nodeStat(host, e, r.node, r.level) })).filter(x => !(x.s.pass && x.s.conf !== 'low'))
     .map(x => ({ node: x.r.node, vi: ix?.node.get(x.r.node)?.vi ?? x.r.node, level: x.r.level, pct: x.s.pct }))
     .sort((a, b) => b.pct - a.pct);
+}
+
+function xferLine(e: EState | undefined, g: Goal): string {
+  const x = e ? xferInfo(e, g) : {};
+  if (!x.xfer) return '';
+  return `<p class="hint">Dùng được ở câu mới chưa gặp: ${x.xfer} năng lực quan trọng${x.xfail !== '0' ? ` · ${x.xfail} năng lực đã trượt ở câu mới và được mở lại` : ''}. App thử mỗi năng lực đã Đạt ở câu khác với câu đã luyện.</p>`;
 }
 
 const SK_VI: Record<SkillK, string> = { L: 'Nghe', R: 'Đọc', W: 'Viết', S: 'Nói' };
@@ -84,7 +100,7 @@ export function viewReady(host: EHost, g: Goal, r: Ready, e?: EState): string {
     const gap = miss.length ? `<p><b>Chưa đạt ${esc(g.target)} vì còn thiếu:</b> ${miss.slice(0, 5).map(x => esc(x.vi)).join('; ')}${miss.length > 5 ? `; và ${miss.length - 5} năng lực khác` : ''}.</p>` : '';
     return `<section class="panel stack"><h3>Sẵn sàng · ${r.done + r.perfDone}/${r.total + r.perfTotal} năng lực</h3>
       <p class="muted">${r.done}/${r.total} năng lực đã Đạt với độ tin cậy từ Vừa trở lên · ${r.perfDone}/${r.perfTotal} bài làm thật đã qua.</p>
-      ${gap}<div class="row"><button class="btn ghost small" data-e="go" data-r="why/goal/${esc(g.id)}">Vì sao?</button></div>
+      ${gap}${xferLine(e, g)}<div class="row"><button class="btn ghost small" data-e="go" data-r="why/goal/${esc(g.id)}">Vì sao?</button></div>
       <p class="hint">${r.achieved ? '✓ Đạt mục tiêu: mọi năng lực và bài làm thật đã qua, không quên khi ôn trong 14 ngày.' : r.ready && r.lapse ? 'Đã đủ năng lực; còn chờ 14 ngày không quên khi ôn để xác nhận đạt.' : 'Mục tiêu này không có kỳ thi ngoài: đạt khi mọi năng lực Đạt, mọi bài làm thật qua và 14 ngày không quên khi ôn.'}</p></section>`;
   }
   const unit = r.exam === 'vstep' ? 'điểm VSTEP (trung bình 4 kỹ năng)' : 'band tổng';

@@ -16,7 +16,9 @@ import { rootVerdict, MODE_VI, type Mode } from './probe.ts';
 import { eig } from './probe.ts';
 import { closure, defaultLevel, mergeGoals } from './graph.ts';
 import { bandToCefr } from '../exam/scales.ts';
-import { viewToday, viewTout, viewProbeDone, nextStep, type ToutRun } from './today.ts';
+import { viewToday, viewTout, viewProbeDone, viewXferDone, nextStep, xferItems, type ToutRun } from './today.ts';
+import { xferStatus } from './transfer.ts';
+import { stat } from './mastery.ts';
 import { nodeStat } from './views.ts';
 
 export const MODULE_VERSION = 1;
@@ -47,7 +49,7 @@ export function init(host: EHost): EngineModule {
   const future = (): boolean => !!host.future?.();
   const V = (): EState => { const e = E(); return { ...e, goals: e.goals.filter(g => goalOn(g.id, future())) }; };
   let loadErr = '';
-  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('probe') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout');
+  const needGraph = (route: string) => route.startsWith('goal/') || route.startsWith('why') || route.startsWith('probe') || route.startsWith('diag') || route.startsWith('today') || route.startsWith('tout') || route.startsWith('xfer');
   const ensure = () => {
     if (loaded()) return;
     loadGraph(host.fetchJson).then(() => { loadErr = ''; host.render(); })
@@ -166,7 +168,37 @@ export function init(host: EHost): EngineModule {
     host.save(); host.render();
   }
 
+  // ---------- Transfer: thử nút đã Đạt ở câu mới (v60, §59) ----------
+  // Câu chưa gặp, ngữ cảnh mới, không gợi ý, trọng số 1. Sai ở câu mới khi đang Đạt → cơ chế mâu thuẫn (§69) mở lại nút.
+  let xrun: ToutRun | null = null, xres: { node: string; got: number; of: number; state: string } | null = null, xlv = 3;
+  function xferStart(node: string, lv: number): void {
+    const qs = xferItems(host, E(), node);
+    xrun = qs.length ? { node, qs, i: 0, got: 0, x: true } : null; xres = null; xlv = lv;
+  }
+  function xferAnswer(ok: boolean, given?: string): void {
+    if (!xrun) return;
+    const q = xrun.qs[xrun.i]!, e = E();
+    ingest(e.ev, e.m, { node: xrun.node, level: q.level, ok, g: q.g, item: q.id, qt: q.opts ? 'mcq' : 'typed', ctx: 'transfer', src: 'transfer', ch: `xfer/${xrun.node}`, ...(given ? { given } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    if (ok) xrun.got++;
+    xrun.i++;
+    if (xrun.i >= xrun.qs.length) {
+      const st = stat(e.m[xrun.node]?.[xlv as 3]), xs = xferStatus(e.ev, xrun.node);
+      addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: xrun.node, lv: xlv as 3, dec: `transfer:${xrun.got === xrun.qs.length ? 'ok' : xrun.got === 0 ? 'fail' : 'partial'}`, rule: `${RULE_ID}/transfer-1`,
+        info: { got: xrun.got, of: xrun.qs.length, state: st.state, ok: xs.ok, fail: xs.fail },
+        evs: e.ev.led.filter(x => x.node === xrun!.node && x.ctx === 'transfer').slice(-xrun.qs.length).map(x => x.id) }, false);
+      xres = { node: xrun.node, got: xrun.got, of: xrun.qs.length, state: st.state }; xrun = null;
+    }
+    host.save(); host.render();
+  }
+
   const routes: Record<string, (c: ECtx) => string> = {
+    xfer: c => {
+      if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
+      const [, node = '', lv = '3'] = c.route.split('/');   // xfer/<nút>/<mức>
+      if (!xrun && (!xres || xres.node !== node)) xferStart(node, Number(lv));
+      if (xres && xres.node === node) return viewXferDone(c, xres);
+      return viewTout(c, xrun, null);
+    },
     probe: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
       const [, node = '', lv = '3', mode = 'explore', forNode] = c.route.split('/');   // probe/<nút>/<mức>/<chế độ>[/<nút cần nó>]
@@ -221,6 +253,7 @@ export function init(host: EHost): EngineModule {
     },
     dstop() { finishDiag(); },
     pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
+    xans(el) { if (!xrun) return; const q = xrun.qs[xrun.i]!, i = Number(el.dataset.i); xferAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] : undefined); },
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
@@ -229,6 +262,12 @@ export function init(host: EHost): EngineModule {
       const q = prun.qs[prun.i]!, a = norm(String(new FormData(f).get('a') || ''));
       if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
       probeAnswer((q.accept ?? []).some(x => norm(x) === a));
+    },
+    xtyped(f) {
+      if (!xrun) return;
+      const q = xrun.qs[xrun.i]!, raw = String(new FormData(f).get('a') || ''), a = norm(raw);
+      if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
+      xferAnswer((q.accept ?? []).some(x => norm(x) === a), raw.trim());
     },
     ttyped(f) {
       if (!tout) return;
@@ -265,7 +304,7 @@ export function init(host: EHost): EngineModule {
   return {
     version: MODULE_VERSION,
     render,
-    after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } },
+    after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } },
     next() {
       const e = V();
       if (!e.goals.length) return null;
