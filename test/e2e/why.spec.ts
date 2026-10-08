@@ -67,9 +67,9 @@ test('NBA: mở Lộ trình hôm nay ghi snapshot bước tiếp theo kèm phân
   });
   await expect(page.getByText(/Bước tiếp theo/).first()).toBeVisible({ timeout: 15000 });
   const snap = await page.evaluate(() => [...(window as any).eval('st').e.ev.snap].reverse().find((s: any) => s.kind === 'nba'));
-  expect(snap.info.k).toMatch(/^(learn|review|probe|verify)$/);
+  expect(snap.info.k).toMatch(/^(learn|review|probe|verify|transfer)$/);
   expect(String(snap.info.parts)).toContain('×');
-  expect(snap.rule).toMatch(/nba-2$/);
+  expect(snap.rule).toMatch(/nba-3$/);
   if (snap.subj !== 'review') {
     await page.evaluate((id: string) => (window as any).eval(`go('goal',{er:'why/${id}'})`), snap.subj);
     await expect(page.getByText('Vì sao app chọn phần này làm bước tiếp theo')).toBeVisible();

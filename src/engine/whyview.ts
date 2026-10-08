@@ -13,6 +13,7 @@ import type { EvEvent } from './ev/types.ts';
 import { misconceptions } from './ev/store.ts';
 import { gaps, GAP_VI } from './gap.ts';
 import { defaultLevel } from './graph.ts';
+import { xferStatus, XFER } from './transfer.ts';
 import type { NodeState } from './mastery.ts';
 
 const STATE_VI: Record<NodeState, string> = { unknown: 'chưa có gì', inferred: 'suy ra (chưa có bằng chứng thật)', learning: 'đang học', mastered: '✓ Đạt', verify: 'cần xác minh ở câu mới', reopened: 'mở lại: bằng chứng mới mâu thuẫn' };
@@ -21,20 +22,20 @@ const SRC_VI: Record<string, string> = {
   vocab: 'luyện từ vựng', gram: 'luyện ngữ pháp', exam: 'câu đọc/nghe', pa: 'bài Pre-A1', diag: 'bài chẩn đoán', testout: 'kiểm tra bỏ qua',
   perf: 'bài làm thật', game: 'thử thách game', micro: 'bí kíp (micro)', transfer: 'thử thách transfer', legacy: 'tiến độ trước v53',
 };
-const DEC_VI: Record<string, string> = { PASS: 'Đạt', FAIL: 'Chưa đạt / mất Đạt', READY: 'Sẵn sàng', NOT_READY: 'Chưa sẵn sàng', ACHIEVED: 'Đạt mục tiêu', CHOSEN: 'Chọn làm bước tiếp theo' };
+const DEC_VI: Record<string, string> = { 'transfer:ok': 'Đúng hết ở câu mới', 'transfer:partial': 'Đúng một phần ở câu mới', 'transfer:fail': 'Trượt ở câu mới', PASS: 'Đạt', FAIL: 'Chưa đạt / mất Đạt', READY: 'Sẵn sàng', NOT_READY: 'Chưa sẵn sàng', ACHIEVED: 'Đạt mục tiêu', CHOSEN: 'Chọn làm bước tiếp theo' };
 const n2 = (x: number): string => String(Math.round(x * 100) / 100).replace('.', ',');
 const iso = (d: number): string => new Date(d * 86400000).toISOString().slice(0, 10);
 
 function snapRow(c: ECtx, s: Snapshot): string {
   const esc = c.host.esc, again = replay(s), ok = again === s.dec || s.kind === 'diag' ? '' : ` <span class="pill warn">tái tạo ra ${esc(again)}</span>`;
   const m = s.m ? ` · mastery ${n2(s.m.mean)}, cận dưới ${n2(s.m.lb)} (cần ${n2(s.thr!.m)} / ${n2(s.thr!.lb)}) · ${n2(s.m.n)} lượt có trọng số, ${s.m.ctx} ngữ cảnh, ${s.m.qt} dạng câu, ${s.m.nov} lượt câu mới` : '';
-  const info = s.kind === 'readiness' ? ` · ${s.info?.done ?? ''}${s.info?.total ? `/${s.info.total} năng lực` : ''}` : s.kind === 'testout' ? ` · đúng ${s.info?.got}/${s.info?.of}` : '';
+  const info = s.kind === 'readiness' ? ` · ${s.info?.done ?? ''}${s.info?.total ? `/${s.info.total} năng lực` : ''}` : s.kind === 'testout' || s.dec.startsWith('transfer:') ? ` · đúng ${s.info?.got}/${s.info?.of}` : '';
   return `<li>${iso(s.day)} · <b>${esc(DEC_VI[s.dec] ?? s.dec)}</b>${s.lv ? ` (mức ${s.lv})` : ''}${m}${info} · luật <code>${esc(s.rule)}</code> · ${s.evs.length} bằng chứng${ok}</li>`;
 }
 
 function evRow(c: ECtx, x: EvEvent): string {
   const esc = c.host.esc;
-  const tags = [x.nov ? 'câu mới' : '', x.asst ? 'có trợ giúp' : '', x.tier >= 2 ? (x.why === 'disagree' ? 'mâu thuẫn kết luận cũ' : x.why === 'flip' ? 'làm đổi kết luận' : x.why === 'boundary' ? 'sát ngưỡng' : 'quan trọng') : ''].filter(Boolean);
+  const tags = [x.nov ? 'câu mới' : '', x.asst ? 'có trợ giúp' : '', x.tier >= 2 ? (x.why === 'disagree' ? 'mâu thuẫn kết luận cũ' : x.why === 'flip' ? 'làm đổi kết luận' : x.why === 'boundary' ? 'sát ngưỡng' : x.why === 'transfer' ? 'thử ở câu mới' : 'quan trọng') : ''].filter(Boolean);
   return `<li>${iso(x.day)} · ${x.ok ? '✓ đúng' : '✗ sai'} · mức ${x.lv} · ${esc(SRC_VI[x.src] ?? x.src)}${x.qt ? ` (${esc(x.qt)})` : ''} · trọng số ${n2(x.w)}${x.g ? `, đoán mò ${n2(x.g)}` : ''}${tags.length ? ` · ${esc(tags.join(', '))}` : ''}</li>`;
 }
 
@@ -69,11 +70,14 @@ function whyNode(c: ECtx, id: string): string {
   const gapHtml = gk.length ? `<p><b>Loại lỗ hổng:</b> ${gk.map(k => esc(GAP_VI[k])).join(', ')}</p>` : '';
   const hy = e.ev.hyp[id];
   const hyHtml = hy ? `<p class="warnt">Nguyên nhân đã kiểm chứng: bạn hay sai phần này vì phần nền <button class="linkbtn" data-e="go" data-r="why/${esc(hy.cause)}">${esc(ix.node.get(hy.cause)?.vi ?? hy.cause)}</button> còn hổng (trượt câu dò ngày ${iso(hy.day)}). Lộ trình đưa phần nền lên trước.</p>` : '';
+  const xs = xferStatus(e.ev, id), imp = n.imp?.tr ?? 0;
+  const xfHtml = xs.tried ? `<p><b>Ở câu mới chưa gặp (transfer):</b> đúng ${xs.ok}, sai ${xs.fail}${xs.ok >= XFER.need ? ' · đã chứng minh dùng được ngoài câu đã luyện' : ''}.</p>`
+    : imp >= XFER.minImp ? `<p class="hint">Phần này quan trọng cho transfer: sau khi Đạt, app sẽ thử ở câu mới chưa gặp để chắc là dùng được thật.</p>` : '';
   const dzHtml = dz ? `<p class="warnt">Phần này từng Đạt, nhưng bạn đã sai ${dz.bad} lần ở câu mới chưa gặp: app mở lại và cần ${2 - dz.ok} lần đúng nữa ở câu mới để xác nhận lại (spec §69).</p>` : '';
   return `<section class="stack"><span class="eyebrow">Vì sao?</span><h1>${esc(n.vi)}</h1>
       <p class="muted">Đạt một mức khi mastery ≥ 0,80 và cận dưới khoảng tin cậy 80% ≥ 0,60 (phân vị chính xác, spec §45); mức 4–5 cần thêm ít nhất một lần đúng ở câu mới. Bằng chứng ở mức cao tính cho cả mức thấp hơn. Đúng nhờ gợi ý, làm lại, câu lặp trong 24 giờ hay câu dễ đoán được tính nhẹ hơn; khi bạn đổi hướng (sai sau nhiều lần đúng, hoặc ngược lại), bằng chứng cũ nhẹ dần để app theo kịp.</p></section>
     ${cells.length ? `<div class="tablewrap" tabindex="0" role="region" aria-label="Trạng thái từng mức"><table class="tbl"><thead><tr><th>Mức</th><th>Mastery</th><th>Cận dưới</th><th>Lượt</th><th>Ngữ cảnh</th><th>Dạng câu</th><th>Kết luận</th></tr></thead><tbody>${lvRows}</tbody></table></div>` : '<p class="muted">Chưa có bằng chứng nào cho phần này.</p>'}
-    ${gapHtml}${hyHtml}${dzHtml}${misHtml}${know}${nbaHtml}
+    ${gapHtml}${hyHtml}${xfHtml}${dzHtml}${misHtml}${know}${nbaHtml}
     ${snaps.length ? `<section class="stack"><h2>Lịch sử kết luận</h2><ul>${snaps.map(s => snapRow(c, s)).join('')}</ul></section>` : ''}
     ${evs.length ? `<section class="stack"><h2>Bằng chứng gần nhất</h2><ul>${evs.map(x => evRow(c, x)).join('')}</ul><p class="hint">Bằng chứng cũ ít giá trị đã được gộp vào thống kê (vẫn tính trong mastery); bằng chứng quan trọng được giữ.</p></section>` : ''}
     <div class="row"><button class="btn ghost" data-e="go" data-r="today">Lộ trình hôm nay</button><button class="btn ghost" data-e="go" data-r="goals">Mục tiêu của bạn</button></div>`;

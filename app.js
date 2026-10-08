@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 59;
+const STATE_V = 18, APP_VERSION = 60;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -2647,7 +2647,7 @@ function viewUnit(){
 
 // Các câu khác trong app có dùng từ này (câu ví dụ của từ khác, bài đọc, ví dụ ngữ pháp): chỉ dạng chia, không từ phái sinh.
 // Ưu tiên câu cùng cấp độ, rồi cấp thấp hơn (dễ hiểu hơn), cuối cùng mới đến cấp cao hơn.
-let _corpus=null; const _ctx={};
+let _corpus=null; const _ctx={}, _xf={};   // _xf: câu transfer theo nút (eXfer)
 const LV_I = id => CONTENT.levels.findIndex(L=>L.id===id);
 function corpus(){
   if(_corpus) return _corpus; _corpus=[];
@@ -2657,12 +2657,18 @@ function corpus(){
   GPOINTS.forEach(p=>p.ex.forEach(e=>_corpus.push({t:e[0],vi:e[1],lv:LV_I(p.level),src:'Ngữ pháp · '+gname(p)})));
   return _corpus;
 }
+// Chỉ mục 3 chữ cái đầu của từng từ → câu trong corpus: lọc trước khi thử regex (corpus đủ 6 cấp có hàng chục nghìn câu).
+let _cix=null;
+function corpusHits(w){ const c=corpus(), k=String(w.word).toLowerCase().split(/[^a-z']+/).find(Boolean)||'';
+  if(k.length<3) return c;
+  if(!_cix||_cix.n!==c.length){ _cix={n:c.length,m:new Map()}; c.forEach((x,i)=>{ for(const t of new Set(String(x.t).toLowerCase().split(/[^a-z']+/))){ if(t.length<3) continue; const p=t.slice(0,3); let a=_cix.m.get(p); if(!a) _cix.m.set(p,a=[]); if(a[a.length-1]!==i) a.push(i); } }); }
+  return (_cix.m.get(k.slice(0,3))||[]).map(i=>c[i]); }
 const inflRe = w => new RegExp('\\b'+w.word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?:s|es|ed|d|ing|er|est)?\\b','i');
 function contextsOf(w,n=3){
   if(_ctx[w.id]) return _ctx[w.id];
   const re=inflRe(w), lv=LV_I(UNIT_OF[w.id].level), rank=x=>x.lv===lv?0:x.lv<lv?1+(lv-x.lv):10+(x.lv-lv);
   const seen=new Set([norm(w.ex),norm(w.ex2||'')]);
-  return _ctx[w.id]=corpus().filter(x=>x.own!==w.id&&re.test(x.t)&&!seen.has(norm(x.t))&&(seen.add(norm(x.t)),true)).sort((a,b)=>rank(a)-rank(b)||a.t.length-b.t.length).slice(0,n);
+  return _ctx[w.id]=corpusHits(w).filter(x=>x.own!==w.id&&re.test(x.t)&&!seen.has(norm(x.t))&&(seen.add(norm(x.t)),true)).sort((a,b)=>rank(a)-rank(b)||a.t.length-b.t.length).slice(0,n);
 }
 function wordCard(w){
   const u=UNIT_OF[w.id], cx=contextsOf(w);
@@ -5549,7 +5555,7 @@ const detailUrl = L => `data/lv-${L}.${DETAIL_HASH[L]}.json`;
 function detailMerge(d){
   for(const [id,x] of Object.entries(d.units||{})){ const u=UNIT_BY_ID[id]; if(u) Object.assign(u,x); }
   for(const [id,x] of Object.entries(d.words||{})){ const w=WORD[id]; if(w){ Object.assign(w,x); delete w._f; } }
-  _corpus=null; for(const k of Object.keys(_ctx)) delete _ctx[k];   // bộ nhớ tạm tính từ câu ví dụ, bài đọc
+  _corpus=null; _cix=null; for(const k of Object.keys(_ctx)) delete _ctx[k]; for(const k of Object.keys(_xf)) delete _xf[k];   // bộ nhớ tạm tính từ câu ví dụ, bài đọc
 }
 function detailLoad(L){ if(DETAIL.ready.has(L)) return Promise.resolve();
   return DETAIL.p[L] ||= fetch(detailUrl(L)).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); })
@@ -8158,6 +8164,10 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:60,d:'2026-10-08',t:'Biết thật, không chỉ thuộc bài',big:true,items:[
+  'Phần nào bạn đã Đạt khi luyện, app sẽ thử ở câu mới chưa gặp: câu điền từ lấy từ bài đọc khác trong app, câu ngữ pháp tự gõ hoặc sửa lỗi bạn chưa làm. 3 câu, không tốn năng lượng.',
+  'Đúng ở câu mới là bằng chứng mạnh nhất rằng bạn biết thật. Trượt 2 lần ở câu mới thì phần đó được mở lại để luyện thêm ở nhiều ngữ cảnh.',
+  'Khối "Sẵn sàng" và màn "Vì sao?" hiện bao nhiêu năng lực đã dùng được ở câu mới.']});
 CHANGELOG.unshift({v:59,d:'2026-10-08',t:'Bước tiếp theo thông minh hơn',big:true,items:[
   '"Bước tiếp theo" giờ so mọi việc bạn có thể làm (học phần mới, ôn phần sắp quên, kiểm tra nhanh, xác minh) bằng một điểm lợi ích, rồi chọn việc giúp bạn tiến nhanh nhất so với công sức. "Vì sao?" hiện điểm từng thành phần.',
   'App phân biệt loại lỗ hổng: chưa biết, nhận ra nhưng chưa nhớ ra, nhớ nhưng chưa dùng được, thiếu phần nền, yếu ở một ngữ cảnh, chưa dùng được ở câu mới, đang quên, đúng nhưng còn chậm.',
@@ -8273,13 +8283,14 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.5d2110fbda.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.ff3a69ca03.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),
   cando:id=>{ const c=CANDO.find(x=>x.id===id); if(!c) return null; const p=cdProg(c); return {p:p.p,m:p.m,lb:p.lb,k:p.k,need:p.need}; },
   probe:node=>eProbe(node),
+  transfer:node=>eXfer(node),
   dayInfo:()=>{ const dw=dueWords().length, dg=dueG().length, t=today();
     const lastPerf=Math.max(0,...Object.values(st.dlg||{}).map(d=>d&&d.day||0),...((st.x&&st.x.attempts)||[]).filter(a=>a.kind==='mock').map(a=>a.day||0),...((st.me&&st.me.vx)||[]).map(v=>v&&v.day||0));
     return {reviewItems:dw+dg, reviewMins:(dw?reviewMin(dw):0)+dg*2, mins:Math.round((st.x&&st.x.mins)||20), perfDue:t-lastPerf>=7}; },
@@ -8319,6 +8330,21 @@ function eProbe(node){ const out=[], pick=(xs,n)=>shuffle(xs.slice()).slice(0,n)
     for(let i=0;i<2&&p.mc&&p.mc.length;i++){ const q=gbuild(p,'cho',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:2,g:1/q.opts.length,prompt:q.prompt,opts:q.opts,ans:q.ans}); }
     if(p.ty&&p.ty.length){ const q=gbuild(p,'typ',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:3,g:0,prompt:q.prompt,accept:q.accept}); }
     if(p.fx&&p.fx.length){ const q=gbuild(p,'fix',{test:true,used}); if(q.type==='gfx') out.push({id:'g:'+p.id+':'+q.key,level:4,g:0,prompt:'Sửa câu sai: '+q.prompt,accept:q.accept}); }
+    return out; }
+  return out; }
+// v60 Transfer (§59): câu ở NGỮ CẢNH MỚI cho nút đã Đạt. Từ vựng: câu điền từ lấy từ bài đọc / câu ví dụ của phần khác trong app
+// (không phải câu ví dụ của chính từ đó; ưu tiên câu không hiện trên thẻ từ). Ngữ pháp: mọi câu tự gõ / sửa lỗi của điểm, engine lọc câu đã gặp.
+function eXfer(node){ if(!_xf[node]) _xf[node]=eXfer0(node); return shuffle(_xf[node].slice()); }
+function eXfer0(node){ const out=[];
+  if(node.startsWith('u:')){ const u=UNIT_BY_ID[node.slice(2)]; if(!u) return out;
+    for(const w of u.words){ const re=inflRe(w), shown=new Set(contextsOf(w).map(x=>norm(x.t))), own=new Set([norm(w.ex),norm(w.ex2||'')]);
+      const cx=corpusHits(w).filter(x=>x.own!==w.id&&!own.has(norm(x.t))&&re.test(x.t)&&x.t.length<=160).sort((a,b)=>(shown.has(norm(a.t))?1:0)-(shown.has(norm(b.t))?1:0)||a.t.length-b.t.length);
+      for(const x of cx.slice(0,2)){ const m=x.t.match(re); if(!m) continue;
+        out.push({id:'w:'+w.id+':tr:'+x.t.length+norm(x.t).slice(0,24),level:3,g:0,prompt:`Điền từ nghĩa là “${w.vi}”: ${x.t.replace(m[0],'___')}`,accept:[m[0]],en:x.t}); } }
+    return out; }
+  if(node.startsWith('g:')){ const p=GPT[node.slice(2)]; if(!p) return out;
+    (p.ty||[]).forEach((t,i)=>out.push({id:'g:'+p.id+'|typ|t'+i,level:3,g:0,prompt:t.s,accept:t.a}));
+    (p.fx||[]).forEach((x,i)=>out.push({id:'g:'+p.id+'|fix|x'+i,level:4,g:0,prompt:'Sửa câu sai: '+x.bad,accept:[x.good,...(x.alt||[])]}));
     return out; }
   return out; }
 let _emP=null, _emErr='', _emN=0;

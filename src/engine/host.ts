@@ -14,6 +14,7 @@ export interface EHost {
   cando(id: string): { p: number; m: number; lb: number; k: number; need: number } | null;   // tiến độ Can-Do tính từ bằng chứng (app.js cdProg)
   dayInfo(): { reviewItems: number; reviewMins: number; mins: number; perfDue: boolean };   // ôn đến hạn, phút học mỗi ngày, đã có bài làm thật trong 7 ngày chưa
   probe(node: string): Array<{ id: string; level: 1 | 2 | 3; g: number; prompt: string; opts?: string[]; ans?: number; accept?: string[]; en?: string }>;   // câu dò cho chẩn đoán (app.js eProbe)
+  transfer?(node: string): ReturnType<EHost['probe']>;   // câu ở ngữ cảnh mới cho transfer (app.js eXfer): engine lọc câu đã gặp (§59)
   grades(): Array<{ by: 'rule' | 'self' | 'ai'; skill: 'W' | 'S'; day: number; v: number; scale: 'band' | 'vstep' | 'cefr'; src?: string }>;   // các lần chấm Viết/Nói (grader.ts)
   exam(): { resp: import('../exam/state.ts').Resp[]; real: import('../exam/state.ts').RealScore[] };   // câu Nghe/Đọc đã làm + điểm thi thật (phần ôn thi)
   lapse(): number | null;
