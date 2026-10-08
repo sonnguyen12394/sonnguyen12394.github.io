@@ -10,8 +10,8 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { QTYPES } from '../src/exam/content.ts';
 import { bandToCefr } from '../src/exam/scales.ts';
-import { validate, index, closure, defaultLevel } from '../src/engine/graph.ts';
-import type { Area, Cefr, Ctx, Edge, Goal, Level, Node, Req, ReqType, Skill } from '../src/engine/types.ts';
+import { validate, audit, index, closure, defaultLevel } from '../src/engine/graph.ts';
+import type { Area, Cefr, Ctx, Dim, Edge, EvType, Goal, Level, Node, Req, ReqType, Skill } from '../src/engine/types.ts';
 import { CEFRS } from '../src/engine/types.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -100,7 +100,7 @@ nodes.sort((a, b) => (a.id < b.id ? -1 : 1));
 
 // ---------- Cạnh ----------
 const edges: Edge[] = [];
-const add = (from: string, to: string, type: Edge['type'], w: number) => edges.push({ from, to, type, w });
+const add = (from: string, to: string, type: Edge['type'], w: number, why: NonNullable<Edge['why']>) => edges.push({ from, to, type, w, why, ver: VERSION });
 const unitIds = new Set(dump.units.map(u => u.id)), gpIds = new Set(dump.gpoints.map(p => p.id));
 for (const c of dump.cando) {
   const to = new Set<string>();
@@ -109,7 +109,7 @@ for (const c of dump.cando) {
     if ((r.t === 'u' || r.t === 'ul') && mu && unitIds.has(mu[1]!)) to.add(`u:${mu[1]}`);
     if ((r.t === 'g' || r.t === 'gl') && mg && gpIds.has(mg[1]!)) to.add(`g:${mg[1]}`);
   }
-  for (const t of [...to].sort()) add(`cd:${c.id}`, t, 'hard', 1);
+  for (const t of [...to].sort()) add(`cd:${c.id}`, t, 'hard', 1, 'cando-act');
 }
 // Cùng mảng, cấp dưới liền kề là tiền đề cứng (muốn đọc ở B2 phải đọc được ở B1); cùng nhóm gốc (grp0) nếu có thì chỉ nối nhóm đó.
 for (const c of dump.cando) {
@@ -117,23 +117,62 @@ for (const c of dump.cando) {
   if (i <= 0) continue;
   const below = dump.cando.filter(d => d.grp === c.grp && d.lv === CEFRS[i - 1]);
   const same = below.filter(d => d.grp0 && d.grp0 === c.grp0);
-  for (const d of (same.length ? same : below)) add(`cd:${c.id}`, `cd:${d.id}`, 'hard', 0.8);
+  for (const d of (same.length ? same : below)) add(`cd:${c.id}`, `cd:${d.id}`, 'hard', 0.8, 'level-ladder');
 }
 // Can-Do A1 "đánh vần, số, giờ…" là đích của các bài Pre-A1 (cdActs tham chiếu t:'pa'): mỗi bài là tiền đề cứng.
 for (const c of dump.cando) for (const r of c.refs) if (r.t === 'pa') for (const a of r.acts) {
   const m = /data-pa="pa-([a-z0-9]+)"/.exec(a.at);
-  if (m && preA1.some(p => p.id === m[1])) add(`cd:${c.id}`, `pa:${m[1]}`, 'hard', 1);
+  if (m && preA1.some(p => p.id === m[1])) add(`cd:${c.id}`, `pa:${m[1]}`, 'hard', 1, 'pa-act');
 }
 // Ngữ pháp: điểm trước là tiền đề mềm của điểm sau (thứ tự bài trong app).
-for (let i = 1; i < dump.gpoints.length; i++) add(`g:${dump.gpoints[i]!.id}`, `g:${dump.gpoints[i - 1]!.id}`, 'soft', 0.5);
+for (let i = 1; i < dump.gpoints.length; i++) add(`g:${dump.gpoints[i]!.id}`, `g:${dump.gpoints[i - 1]!.id}`, 'soft', 0.5, 'gram-order');
 // Bài thi → Can-Do kỹ năng cùng loại ở B1 (tiền đề mềm: làm bài thi cần nền kỹ năng).
 const B1 = (area: string) => dump.cando.filter(c => c.grp === area && c.lv === 'B1').map(c => `cd:${c.id}`);
 const AREA_OF: Record<Skill, string> = { L: 'lis', R: 'rd', W: 'wr', S: 'spk' };
-for (const n of nodes) if (n.kind === 'task') for (const t of B1(AREA_OF[n.skill!])) add(n.id, t, 'soft', 0.5);
-for (const e of ov.edgesAdd ?? []) edges.push(e);
+for (const n of nodes) if (n.kind === 'task') for (const t of B1(AREA_OF[n.skill!])) add(n.id, t, 'soft', 0.5, 'exam-base');
+for (const e of ov.edgesAdd ?? []) edges.push({ why: 'manual', ver: VERSION, ...e });
 const del = new Set((ov.edgesDel ?? []).map(e => `${e.from}>${e.to}`));
 const finalEdges = [...new Map(edges.filter(e => !del.has(`${e.from}>${e.to}`)).map(e => [`${e.from}>${e.to}`, e])).values()]
   .sort((a, b) => (a.from + a.to < b.from + b.to ? -1 : 1));
+
+// ---------- Knowledge Model (v57, spec v2.4 §14, §17) ----------
+interface Knowledge { contrast: Array<{ ids: string[]; why: string }>; mis: Record<string, string[]> }
+const know = JSON.parse(readFileSync(P('content/engine/knowledge.json'), 'utf8')) as Knowledge;
+const INTER = /conversation|discuss|interact|respond|reply|exchange|negotiat|take part|phone|interview|ask (and|for|simple|questions)|hội thoại|trao đổi|thảo luận|đáp lời|phỏng vấn/i;
+const PRAG = /polite|formal|informal|register|appropriate|tone|tactful|diplomatic|lịch sự|trang trọng|thân mật|phù hợp|tế nhị/i;
+const DISC = /paragraph|essay|organi[sz]|coheren|link|structure|argument|summar|report|narrat|story|mediat|đoạn văn|bài luận|mạch lạc|tóm tắt|lập luận|kể lại|chuyển ý/i;
+const cefrI = (c: Cefr | null) => (c ? CEFRS.indexOf(c) : -1);
+const usesBy = new Map<string, string[]>();
+for (const e of finalEdges) if (e.type === 'hard' && e.why === 'cando-act') (usesBy.get(e.to) ?? usesBy.set(e.to, []).get(e.to)!).push(e.from);
+const contrastOf = new Map<string, Set<string>>();
+for (const grp of know.contrast) for (const a of grp.ids) for (const b of grp.ids) if (a !== b) (contrastOf.get(a) ?? contrastOf.set(a, new Set()).get(a)!).add(b);
+const unitWordsN = new Map(dump.units.map(u => [`u:${u.id}`, u.words]));
+for (const n of nodes) {
+  const text = `${n.en ?? ''} ${n.vi}`, dims = new Set<Dim>();
+  if (n.area === 'voc') dims.add('lex');
+  if (n.area === 'gra') dims.add('gram');
+  if (n.area === 'pro' || n.id.startsWith('pa:abc') || n.id.startsWith('pa:spell')) dims.add('phon');
+  if (n.area === 'lis' || n.area === 'rd' || n.skill === 'L' || n.skill === 'R') dims.add('rec');
+  if (n.area === 'wr' || n.area === 'spk' || n.skill === 'W' || n.skill === 'S') dims.add('prod');
+  if (n.id === 'pa:class') dims.add('inter');   // hỏi lại, xin nhắc lại: tương tác đầu tiên
+  if (n.kind === 'cando' || n.kind === 'task') { if (INTER.test(text) || n.id.startsWith('xs:')) dims.add('inter'); if (PRAG.test(text)) dims.add('prag'); if (DISC.test(text) || n.id.startsWith('xw:')) dims.add('disc'); }
+  if (!dims.size) dims.add(n.kind === 'vocab' ? 'lex' : 'rec');
+  n.ver = VERSION;
+  n.dims = [...dims].sort();
+  n.diff = n.id.startsWith('pa:') ? 0 : Math.round(((cefrI(n.cefr) < 0 ? 2.5 : cefrI(n.cefr)) + (n.kind === 'task' ? 0.5 : n.kind === 'cando' ? 0.3 : 0)) / 5.5 * 100) / 100;
+  const prod = n.skill === 'W' || n.skill === 'S';
+  n.evReq = n.kind === 'vocab' || n.id.startsWith('pa:') ? { lv: [1, 3], types: ['choice', 'typed'] as EvType[] }
+    : n.kind === 'grammar' ? { lv: [2, 3, 4], types: ['choice', 'typed', 'production'] as EvType[] }
+    : n.kind === 'task' ? { lv: [3, 4, 5], types: ['task'] as EvType[] }
+    : prod ? { lv: [4, 5], types: ['production', 'task'] as EvType[] } : { lv: [3], types: ['task'] as EvType[] };
+  n.imp = { tr: n.kind === 'grammar' ? 0.8 : prod ? 0.9 : n.kind === 'vocab' ? 0.5 : 0.7, re: n.id.startsWith('pa:') ? 1 : n.kind === 'vocab' ? 0.9 : n.kind === 'grammar' ? 0.8 : 0.5 };
+  n.scope = n.kind === 'vocab' ? `${unitWordsN.get(n.id) ?? 0} từ của chủ đề “${n.en ?? n.vi}”` : n.kind === 'grammar' ? `Điểm ngữ pháp: ${n.en ?? n.vi}` : n.en ?? n.vi;
+  const ct = contrastOf.get(n.id); if (ct) n.contrast = [...ct].sort();
+  const ms = know.mis[n.id]; if (ms) n.mis = ms;
+  const us = usesBy.get(n.id); if (us) n.uses = [...new Set(us)].sort();
+}
+const unknownK = [...know.contrast.flatMap(g => g.ids), ...Object.keys(know.mis)].filter(id => !nodes.some(n => n.id === id));
+if (unknownK.length) throw new Error(`knowledge.json trỏ tới nút không có: ${unknownK.join(', ')}`);
 
 // ---------- Target Model ----------
 const candos = (pred: (c: Dump['cando'][number]) => boolean) => dump.cando.filter(pred);
@@ -187,6 +226,8 @@ for (const [ctx, vi, lvs] of COMM) goals.push({
 const graph = { nodes, edges: finalEdges, goals };
 const errs = validate(graph);
 if (errs.length) { console.error(errs.join('\n')); process.exit(1); }
+const au = audit(graph);
+if (au.unreachable.length) { console.error(`nút mục tiêu không có hoạt động nào để học: ${au.unreachable.join(', ')}`); process.exit(1); }
 mkdirSync(P('content/engine/goals'), { recursive: true });
 const json = (x: unknown) => JSON.stringify(x, null, 1) + '\n';
 writeFileSync(P('content/engine/nodes.json'), json(nodes));
@@ -216,5 +257,21 @@ for (const g of goals) {
   lines.push(`| ${g.vi} (\`${g.id}\`) | ${g.status === 'active' ? 'MVP' : 'tương lai'} | ${g.version} | ${g.req.length} | ${all.length} | ${none.length ? none.map(r => r.node).join(', ') : '0'} |`);
 }
 lines.push('', `Tổng: ${nodes.length} nút (${nodes.filter(n => n.kind === 'cando').length} Can-Do, ${nodes.filter(n => n.kind === 'vocab').length} cụm từ vựng, ${nodes.filter(n => n.kind === 'grammar').length} điểm ngữ pháp, ${nodes.filter(n => n.kind === 'task').length} dạng bài thi), ${finalEdges.length} cạnh (${finalEdges.filter(e => e.type === 'hard').length} cứng), ${goals.length} mục tiêu. Nút chưa có gì để đo: ${empty.size}.`, '');
+// ---------- Kiểm định Knowledge/Graph (v57) ----------
+const DIMS: Dim[] = ['lex', 'gram', 'phon', 'rec', 'prod', 'inter', 'prag', 'disc'];
+const DIMV: Record<Dim, string> = { lex: 'Từ vựng', gram: 'Ngữ pháp', phon: 'Âm vị', rec: 'Tiếp nhận', prod: 'Sản sinh', inter: 'Tương tác', prag: 'Ngữ dụng', disc: 'Diễn ngôn' };
+lines.push('## Universal Language Core theo mục tiêu đang mở', '', 'Số nút (kể cả tiền đề) thuộc từng năng lực của spec v2.4 §14. Một nút có thể thuộc nhiều năng lực.', '',
+  `| Mục tiêu | ${DIMS.map(d => DIMV[d]).join(' | ')} |`, `|---|${DIMS.map(() => '---').join('|')}|`,
+  ...Object.entries(au.balance).map(([id, b]) => `| \`${id}\` | ${DIMS.map(d => b[d] ?? 0).join(' | ')} |`), '');
+const thin = Object.entries(au.balance).flatMap(([id, b]) => DIMS.filter(d => !b[d]).map(d => `${id}: ${DIMV[d]}`));
+lines.push('## Kiểm định đồ thị', '',
+  `- Nút mồ côi (không thuộc mục tiêu nào, không có cạnh): ${au.orphan.length ? au.orphan.join(', ') : '0'}.`,
+  `- Nút mục tiêu không học được (không có hoạt động): ${au.unreachable.length || 0}.`,
+  `- Tiền đề cứng ngược cấp (tiền đề ở cấp cao hơn): ${au.inverse.length ? au.inverse.slice(0, 20).join('; ') + (au.inverse.length > 20 ? ` … (${au.inverse.length})` : '') : '0'}.`,
+  `- Nút trùng tên cùng loại: ${au.dup.length ? au.dup.map(d => d.join(' = ')).slice(0, 20).join('; ') : '0'}.`,
+  `- Nhóm tiền đề thay thế sai (need > số nút): ${au.altBad.length || 0}.`,
+  `- Năng lực Universal Core chưa có nút ở mục tiêu: ${thin.length ? thin.join('; ') : 'không'}.`,
+  `- Cạnh có lý do: ${finalEdges.filter(e => e.why).length}/${finalEdges.length}; nút có cặp dễ nhầm: ${nodes.filter(n => n.contrast).length}; nút có lỗi hay gặp: ${nodes.filter(n => n.mis).length}.`, '');
+
 writeFileSync(P('content/engine/coverage.md'), lines.join('\n'));
 console.log(`engine-gen: ${nodes.length} nút, ${finalEdges.length} cạnh, ${goals.length} mục tiêu; nút chưa có gì để đo: ${empty.size}`);

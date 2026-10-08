@@ -6,7 +6,7 @@
 import type { ECtx } from './views.ts';
 import { loaded, GOALS } from './data.ts';
 import { stat } from './mastery.ts';
-import { LEVEL_VI, type Level } from './types.ts';
+import { DIM_VI, LEVEL_VI, type Level } from './types.ts';
 import { missingOf, readinessOf } from './readyview.ts';
 import { replay, type Snapshot } from './ev/snapshot.ts';
 import type { EvEvent } from './ev/types.ts';
@@ -51,6 +51,13 @@ function whyNode(c: ECtx, id: string): string {
     <ol>${(nba.alt ?? []).map(a => `<li>${esc(ix.node.get(a.node)?.vi ?? a.node)} · ưu tiên ${n2(a.score)} = ${n2(a.dep)} ÷ ${a.min} phút${a.node === id ? ' ← đã chọn' : ''}</li>`).join('')}</ol>
     <p class="hint">Còn ${nba.info?.unmet}/${nba.info?.total} năng lực chưa đạt · luật <code>${esc(nba.rule)}</code></p></section>` : '';
   const evs = e.ev.led.filter(x => x.node === id).slice(-10).reverse();
+  const link = (x: string) => `<button class="linkbtn" data-e="go" data-r="why/${esc(x)}">${esc(ix.node.get(x)?.vi ?? x)}</button>`;
+  const know = `<section class="panel stack"><h3>Phần này là gì</h3>
+    ${n.scope ? `<p>${esc(n.scope)}</p>` : ''}
+    ${n.dims?.length ? `<p class="hint">Thuộc năng lực: ${n.dims.map(d => esc(DIM_VI[d])).join(', ')}${n.evReq ? ` · cần bằng chứng ở mức ${n.evReq.lv.join(', ')}` : ''}</p>` : ''}
+    ${n.contrast?.length ? `<p><b>Dễ nhầm với:</b> ${n.contrast.map(link).join(', ')}</p>` : ''}
+    ${n.mis?.length ? `<p><b>Lỗi người Việt hay gặp:</b></p><ul>${n.mis.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+    ${n.uses?.length ? `<p class="hint">Dùng trong ${n.uses.length} năng lực làm việc thật, ví dụ: ${n.uses.slice(0, 3).map(link).join(', ')}</p>` : ''}</section>`;
   const mis = misconceptions(e.ev, id);
   const misHtml = mis.length ? `<section class="panel stack"><h3>Có thể đang hiểu sai</h3><p class="muted">Bạn đã trả lời giống nhau nhiều lần mà đều sai, nên đây có thể là một cách hiểu sai hơn là quên:</p><ul>${mis.map(x => `<li lang="en"><b>${esc(x.t)}</b> <span class="hint">· ${n2(x.n)} lần</span></li>`).join('')}</ul></section>` : '';
   const dz = ([1, 2, 3, 4, 5] as Level[]).map(l => e.ev.dis[`${id}|${l}`]).find(x => x?.on);
@@ -58,7 +65,7 @@ function whyNode(c: ECtx, id: string): string {
   return `<section class="stack"><span class="eyebrow">Vì sao?</span><h1>${esc(n.vi)}</h1>
       <p class="muted">Đạt một mức khi mastery ≥ 0,80 và cận dưới khoảng tin cậy 80% ≥ 0,60 (phân vị chính xác, spec §45); mức 4–5 cần thêm ít nhất một lần đúng ở câu mới. Bằng chứng ở mức cao tính cho cả mức thấp hơn. Đúng nhờ gợi ý, làm lại, câu lặp trong 24 giờ hay câu dễ đoán được tính nhẹ hơn; khi bạn đổi hướng (sai sau nhiều lần đúng, hoặc ngược lại), bằng chứng cũ nhẹ dần để app theo kịp.</p></section>
     ${cells.length ? `<div class="tablewrap" tabindex="0" role="region" aria-label="Trạng thái từng mức"><table class="tbl"><thead><tr><th>Mức</th><th>Mastery</th><th>Cận dưới</th><th>Lượt</th><th>Ngữ cảnh</th><th>Dạng câu</th><th>Kết luận</th></tr></thead><tbody>${lvRows}</tbody></table></div>` : '<p class="muted">Chưa có bằng chứng nào cho phần này.</p>'}
-    ${dzHtml}${misHtml}${nbaHtml}
+    ${dzHtml}${misHtml}${know}${nbaHtml}
     ${snaps.length ? `<section class="stack"><h2>Lịch sử kết luận</h2><ul>${snaps.map(s => snapRow(c, s)).join('')}</ul></section>` : ''}
     ${evs.length ? `<section class="stack"><h2>Bằng chứng gần nhất</h2><ul>${evs.map(x => evRow(c, x)).join('')}</ul><p class="hint">Bằng chứng cũ ít giá trị đã được gộp vào thống kê (vẫn tính trong mastery); bằng chứng quan trọng được giữ.</p></section>` : ''}
     <div class="row"><button class="btn ghost" data-e="go" data-r="today">Lộ trình hôm nay</button><button class="btn ghost" data-e="go" data-r="goals">Mục tiêu của bạn</button></div>`;

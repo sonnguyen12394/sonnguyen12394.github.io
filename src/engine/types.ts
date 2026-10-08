@@ -17,6 +17,11 @@ export type NodeKind = 'cando' | 'vocab' | 'grammar' | 'task';
 // Hoạt động học sẵn có trong app mà nút dẫn tới: `at` là thuộc tính HTML mở đúng màn (data-unit="…", data-gp="…", data-dlg="…").
 export interface Act { at: string; t: string }
 
+// Universal Language Core (spec v2.4 §14): 8 năng lực ngôn ngữ dùng lại được cho mọi Target Model.
+export type Dim = 'lex' | 'gram' | 'phon' | 'rec' | 'prod' | 'inter' | 'prag' | 'disc';
+export const DIM_VI: Record<Dim, string> = { lex: 'Từ vựng', gram: 'Ngữ pháp', phon: 'Âm vị', rec: 'Tiếp nhận (nghe, đọc)', prod: 'Sản sinh (nói, viết)', inter: 'Tương tác', prag: 'Ngữ dụng', disc: 'Diễn ngôn' };
+export type EvType = 'choice' | 'typed' | 'production' | 'task';
+
 export interface Node {
   id: string;            // cd:<CANDO id> | u:<unit id> | g:<grammar point id> | pa:<bài Pre-A1> | x:<dạng câu thi> | xw:/xs:<bài Viết/Nói thi>
   kind: NodeKind;
@@ -28,11 +33,24 @@ export interface Node {
   ctx: Ctx[];
   acts: Act[];
   minutes: number;       // phút ước tính để đạt nút từ đầu (dùng xếp ưu tiên lộ trình)
+  // v57 Knowledge Model (spec v2.4 §17, C201–C220):
+  ver?: string;          // phiên bản nút
+  scope?: string;        // phạm vi: nút này gồm gì (để không chồng lấn)
+  diff?: number;         // độ khó tham chiếu 0–1 (theo cấp, loại nút)
+  dims?: Dim[];          // thuộc năng lực nào của Universal Core
+  evReq?: { lv: Level[]; types: EvType[] };   // bằng chứng cần để chứng minh nút
+  imp?: { tr: number; re: number };           // mức quan trọng của transfer và ghi nhớ lâu (0–1)
+  contrast?: string[];   // các nút dễ nhầm với nút này
+  mis?: string[];        // lỗi hay gặp (người Việt)
+  uses?: string[];       // năng lực (Can-Do) dùng nút này — quan hệ transfer
 }
 
 export type EdgeType = 'hard' | 'soft';
 // from → to: muốn đạt `from` thì `to` là tiền đề (cứng: phải đạt trước; mềm: giúp học nhanh hơn).
-export interface Edge { from: string; to: string; type: EdgeType; w: number }
+// why: lý do có cạnh (cando-act: hoạt động của Can-Do dùng nút này; level-ladder: cùng mảng cấp dưới; gram-order: thứ tự bài;
+// exam-base: bài thi cần nền kỹ năng; pa-act: bài Pre-A1; manual: chỉnh tay). alt + need: nhóm tiền đề thay thế (cần ≥ need
+// nút trong nhóm, spec §15 alternative prerequisite).
+export interface Edge { from: string; to: string; type: EdgeType; w: number; why?: string; ver?: string; alt?: string; need?: number }
 
 export type ReqType = 'foundation' | 'skill' | 'performance';
 export interface Req { node: string; level: Level; type: ReqType }

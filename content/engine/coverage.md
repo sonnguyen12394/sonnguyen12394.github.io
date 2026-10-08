@@ -42,3 +42,27 @@ Tạo bởi `tools/engine-gen.ts`. Mỗi mục tiêu: số nút ghi trực tiế
 | Giao tiếp trong học tập (`comm-study`) | tương lai | 1.0 | 16 | 610 | 0 |
 
 Tổng: 1005 nút (299 Can-Do, 515 cụm từ vựng, 154 điểm ngữ pháp, 37 dạng bài thi), 2614 cạnh (2237 cứng), 36 mục tiêu. Nút chưa có gì để đo: 0.
+
+## Universal Language Core theo mục tiêu đang mở
+
+Số nút (kể cả tiền đề) thuộc từng năng lực của spec v2.4 §14. Một nút có thể thuộc nhiều năng lực.
+
+| Mục tiêu | Từ vựng | Ngữ pháp | Âm vị | Tiếp nhận | Sản sinh | Tương tác | Ngữ dụng | Diễn ngôn |
+|---|---|---|---|---|---|---|---|---|
+| `cefr-pre-a1` | 7 | 0 | 2 | 7 | 0 | 1 | 0 | 0 |
+| `cefr-a1` | 101 | 34 | 9 | 16 | 18 | 12 | 4 | 6 |
+| `cefr-a2` | 188 | 70 | 13 | 18 | 36 | 20 | 8 | 12 |
+| `cefr-b1` | 278 | 104 | 19 | 27 | 55 | 30 | 13 | 23 |
+| `cefr-b2` | 390 | 136 | 25 | 36 | 74 | 44 | 17 | 36 |
+| `cefr-c1` | 501 | 164 | 31 | 46 | 93 | 53 | 24 | 52 |
+| `cefr-c2` | 566 | 190 | 37 | 56 | 111 | 60 | 33 | 64 |
+
+## Kiểm định đồ thị
+
+- Nút mồ côi (không thuộc mục tiêu nào, không có cạnh): 0.
+- Nút mục tiêu không học được (không có hoạt động): 0.
+- Tiền đề cứng ngược cấp (tiền đề ở cấp cao hơn): 0.
+- Nút trùng tên cùng loại: u:c1-u13 = u:c1-u58; u:c1-u27 = u:c1-u94.
+- Nhóm tiền đề thay thế sai (need > số nút): 0.
+- Năng lực Universal Core chưa có nút ở mục tiêu: cefr-pre-a1: Ngữ pháp; cefr-pre-a1: Sản sinh; cefr-pre-a1: Ngữ dụng; cefr-pre-a1: Diễn ngôn.
+- Cạnh có lý do: 2614/2614; nút có cặp dễ nhầm: 73; nút có lỗi hay gặp: 28.

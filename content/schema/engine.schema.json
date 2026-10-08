@@ -22,7 +22,18 @@
           "items": { "type": "object", "required": ["at", "t"], "additionalProperties": false,
             "properties": { "at": { "type": "string", "pattern": "^data-[a-z]+=\"[^\"]+\"( data-[a-z]+=\"[^\"]+\"){0,2}$" }, "t": { "type": "string" } } }
         },
-        "minutes": { "type": "number", "minimum": 1 }
+        "minutes": { "type": "number", "minimum": 1 },
+        "ver": { "type": "string", "pattern": "^\\d+\\.\\d+$" },
+        "scope": { "type": "string" },
+        "diff": { "type": "number", "minimum": 0, "maximum": 1 },
+        "dims": { "type": "array", "items": { "enum": ["lex", "gram", "phon", "rec", "prod", "inter", "prag", "disc"] }, "uniqueItems": true, "minItems": 1 },
+        "evReq": { "type": "object", "required": ["lv", "types"], "additionalProperties": false, "properties": {
+          "lv": { "type": "array", "items": { "$ref": "#/definitions/level" }, "minItems": 1 },
+          "types": { "type": "array", "items": { "enum": ["choice", "typed", "production", "task"] }, "minItems": 1 } } },
+        "imp": { "type": "object", "required": ["tr", "re"], "additionalProperties": false, "properties": { "tr": { "type": "number", "minimum": 0, "maximum": 1 }, "re": { "type": "number", "minimum": 0, "maximum": 1 } } },
+        "contrast": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "mis": { "type": "array", "items": { "type": "string", "minLength": 3 } },
+        "uses": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
       }
     },
     "edge": {
@@ -32,7 +43,11 @@
       "properties": {
         "from": { "type": "string" }, "to": { "type": "string" },
         "type": { "enum": ["hard", "soft"] },
-        "w": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+        "w": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "why": { "enum": ["cando-act", "level-ladder", "gram-order", "exam-base", "pa-act", "manual"] },
+        "ver": { "type": "string" },
+        "alt": { "type": "string" },
+        "need": { "type": "integer", "minimum": 1 }
       }
     },
     "goal": {

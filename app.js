@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 56;
+const STATE_V = 18, APP_VERSION = 57;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -8158,6 +8158,10 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:57,d:'2026-10-08',t:'Bản đồ năng lực hiểu tiếng Anh sâu hơn',items:[
+  'Mỗi phần học nói rõ nó gồm gì, thuộc năng lực nào (từ vựng, ngữ pháp, âm, nghe/đọc, nói/viết, tương tác, ngữ dụng, diễn ngôn) và cần chứng minh bằng loại bài nào.',
+  'Điểm ngữ pháp dễ nhầm được liên kết với nhau (ví dụ quá khứ đơn và hiện tại hoàn thành), kèm lỗi người Việt hay gặp; xem trong "Vì sao?".',
+  'Mỗi quan hệ "cần học trước" trong bản đồ năng lực có lý do và phiên bản; bản đồ được kiểm tự động.']});
 CHANGELOG.unshift({v:56,d:'2026-10-08',t:'Học lại ít hơn sau bài chẩn đoán',items:[
   'Cấp bạn đã trả lời đúng trong bài chẩn đoán được coi là đã biết (đánh dấu "suy ra", app vẫn kiểm lại khi bạn chơi), không bắt học lại từ đầu.',
   'Trả lời sai một câu khó (dùng từ, viết câu) không còn làm giảm mức "nhận ra / nhớ ra" của bạn: không dùng được chưa có nghĩa là không nhận ra.',
@@ -8261,7 +8265,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.253656bdb5.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.65c9ef43bd.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>go('goal',{er:r}),
