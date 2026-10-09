@@ -704,8 +704,8 @@ span.bkslot:empty{border-style:dashed;opacity:.4;cursor:default}
 .dtclue.on{background:var(--good-soft);border-color:var(--good);transform:rotateY(180deg) scaleX(-1)}
 .dtclue.cur{outline:2px solid var(--accent);outline-offset:1px}
 .dtdoc{padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:16px;line-height:1.6;max-height:46vh;overflow:auto}
-.dtw{all:unset;cursor:pointer;border-bottom:1px dotted var(--muted)}
-.dtw.new{border-bottom:2px solid var(--accent)}
+.dtw{cursor:pointer;text-decoration:underline dotted color-mix(in srgb,var(--muted) 60%,transparent);text-underline-offset:3px}
+.dtw.new{text-decoration-color:var(--accent)}
 .dtw:focus-visible{outline:2px solid var(--accent)}
 .dtlook{margin:6px 0 0;padding:6px 10px;border-radius:8px;background:var(--accent-soft)}
 .dtdoc mark{background:var(--warn-soft,#FFF1C2);color:inherit;border-radius:3px;padding:0 2px}

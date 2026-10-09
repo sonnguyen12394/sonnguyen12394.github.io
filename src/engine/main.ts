@@ -1133,6 +1133,10 @@ export function init(host: EHost): EngineModule {
       const f = t && act[t.dataset.e || ''];
       if (f) { ev.preventDefault(); f(t); }
     });
+    document.addEventListener('keydown', ev => {   // phần tử data-e không phải nút (từ trong hồ sơ): Enter / Space như bấm
+      const t = ev.target as HTMLElement | null;
+      if ((ev.key === 'Enter' || ev.key === ' ') && t?.getAttribute?.('role') === 'button' && t.dataset.e && act[t.dataset.e]) { ev.preventDefault(); act[t.dataset.e]!(t); }
+    });
     document.addEventListener('submit', ev => {
       const f = ev.target as HTMLFormElement | null, k = f?.dataset?.eform;
       if (!f || !k || !forms[k]) return;

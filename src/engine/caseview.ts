@@ -25,9 +25,9 @@ const head = (c: ECtx, r: CaseRun): string => {
 // Văn bản (đọc): luôn hiện để đọc lại; khi sai, tô sáng câu chứa đáp án.
 function doc(c: ECtx, r: CaseRun, mark: number): string {
   const esc = c.host.esc, ss = sentences(r.text.paras);
-  const words = (s: string) => s.split(/([A-Za-z][A-Za-z'-]{3,})/).map((p, k) => (k % 2 && r.gloss[p.toLowerCase()] ? `<button class="dtw${r.gloss[p.toLowerCase()]!.learned ? '' : ' new'}" data-e="dtgloss" data-w="${esc(p.toLowerCase())}">${esc(p)}</button>` : esc(p))).join('');
+  const words = (s: string) => s.split(/([A-Za-z][A-Za-z'-]{3,})/).map((p, k) => (k % 2 && r.gloss[p.toLowerCase()] ? `<span class="dtw${r.gloss[p.toLowerCase()]!.learned ? '' : ' new'}" role="button" tabindex="0" data-e="dtgloss" data-w="${esc(p.toLowerCase())}">${esc(p)}</span>` : esc(p))).join('');
   const look = r.look && r.gloss[r.look] ? `<p class="dtlook" role="status"><b lang="en">${esc(r.look)}</b> = ${esc(r.gloss[r.look]!.vi)} <button class="btn ghost small" data-say="${esc(r.look)}">🔊</button></p>` : '';
-  return `<article class="dtdoc" lang="en">${ss.map((s, k) => (k === mark ? `<mark>${words(s)}</mark>` : words(s))).join(' ')}</article>${look || '<p class="hint">Chạm một từ gạch chân để xem nghĩa (từ chưa học gạch đậm).</p>'}`;
+  return `<article class="dtdoc" lang="en">${ss.map((s, k) => (k === mark ? `<mark>${words(s)}</mark>` : words(s))).join(' ')}</article>${look || '<p class="hint">Chạm một từ có gạch chấm để xem nghĩa.</p>'}`;
 }
 const player = (c: ECtx, r: CaseRun, tts: boolean): string => tts
   ? `<div class="row"><button class="btn${r.plays ? '' : ' primary'}" data-e="rdplay">▶ ${r.plays ? 'Nghe lại' : 'Phát bản tin'}</button><button class="btn ghost" data-e="rdplay" data-slow="1">🐢 Nghe chậm</button></div>`

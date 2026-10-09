@@ -103,7 +103,7 @@ export async function run(P: Profile): Promise<void> {
   page.on('pageerror', e => errors.push(String(e)));
 
   const text = () => page.evaluate(() => ((document.querySelector('main') ?? document.body) as HTMLElement).innerText.replace(/\n{2,}/g, '\n').trim());
-  const shot = async (where: string): Promise<string> => { const t = await text(); screens.push({ day: DAY, sess: SESS, where, text: t.slice(0, 1500) }); return t; };
+  const shot = async (where: string): Promise<string> => { const t = await text(); screens.push({ day: DAY, sess: SESS, where, text: t.slice(0, 4000) }); return t; };
   const visible = async (sel: string) => (await page.locator(sel).filter({ visible: true }).count()) > 0;
   const click = async (name: RegExp | string): Promise<boolean> => {
     const b = page.getByRole('button', { name, exact: typeof name === 'string' }).filter({ visible: true }).first();
