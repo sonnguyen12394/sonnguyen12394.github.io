@@ -699,6 +699,21 @@ span.bkslot:empty{border-style:dashed;opacity:.4;cursor:default}
 .cfbub{font-size:26px;align-self:start;animation:pop .3s ease-out}
 
 /* v76 Bắt Âm: bong bóng trôi vào rồi đứng yên (không bắt người chơi chạm đích di động: tránh nhiễu kỹ năng tay, P13) */
+/* v82 Xưởng sửa câu: băng chuyền hộp, câu hỏng như phiếu sửa chữa */
+.wsbelt{display:flex;gap:6px;padding:6px 8px;border-radius:10px;background:repeating-linear-gradient(90deg,var(--surface-2) 0 14px,var(--line) 14px 16px);border:1px solid var(--line)}
+.wsbox{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:7px;background:var(--surface);border:1px solid var(--line);font-size:18px}
+.wsbox.cur{outline:2px solid var(--accent)}
+.wsbox.done{background:var(--good-soft);border-color:var(--good)}
+.wsbad{padding:10px 14px;border-radius:10px;border:1px dashed var(--bad);background:var(--bad-soft)}
+.wsbad p{margin:4px 0 0;font-size:18px;font-weight:600}
+.wsfix{color:var(--good);text-decoration:underline}
+/* v81 Karaoke: lời thoại cuộn, câu đang nói to và nổi bật, câu của bạn có viền */
+.krlyric{display:flex;flex-direction:column;gap:4px;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line)}
+.krline{margin:0;line-height:1.4;color:var(--muted)}
+.krline small{font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.krline.cur{color:var(--ink);font-size:20px;font-weight:600}
+.krline.next{opacity:.55}
+.krline.me.cur{border-left:3px solid var(--accent);padding-left:8px}
 /* v78 Thám tử / v79 Đài phát thanh: thẻ manh mối, hồ sơ có tô sáng câu chứa đáp án, sóng rè giảm dần khi nghe đúng */
 .dtclue{display:inline-grid;place-items:center;width:34px;height:42px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);font-size:17px;transition:transform .25s}
 .dtclue.on{background:var(--good-soft);border-color:var(--good);transform:rotateY(180deg) scaleX(-1)}
@@ -756,4 +771,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.a569361289.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.244bd1dfbb.js" defer></script><script src="app.js?v=67" defer></script>
