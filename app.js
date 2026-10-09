@@ -8342,7 +8342,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.a492f3d610.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.06c635ec6a.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8351,6 +8351,7 @@ const EHOST = {
   probe:node=>eProbe(node),
   order:node=>eOrder(node),
   fn:node=>eFn(node),
+  group:node=>eGroup(node),
   say:t=>{ try{ say(t); }catch(e){} },
   transfer:node=>eXfer(node),
   micro:node=>eMicroCard(node),
@@ -8434,6 +8435,9 @@ function eFn(node){ if(!node.startsWith('fn:')) return []; const f=FN[node.slice
     const ws=[...sameWrongReg,...shuffle(others.map(x=>x.t).filter(t=>nt(t)!==nt(e.t)))].slice(0,3), o2=shuffle([e.t,...ws]);
     out.push({id:`fn:${f.id}:r:${i}`,level:3,g:1/o2.length,kind:'reply',prompt:`Bạn muốn ${f.vi.toLowerCase()} (văn phong ${REG_VI[e.reg].toLowerCase()}). Nói câu nào?`,en:e.t,vi:e.vi,opts:o2,ans:o2.indexOf(e.t),why:(sameWrongReg.length?`Câu “${sameWrongReg[0]}” cùng ý nhưng ${e.reg==='f'?'thân mật':'trang trọng'} quá. `:'')+(f.tip||'')}); });
   return out; }
+// v77 Câu đố ngày: chủ đề + 10 từ của một cụm (u:), kèm đã học / đến hạn ôn để engine chọn từ lên bàn và từ để nhớ lại.
+function eGroup(node){ if(!node.startsWith('u:')) return null; const u=UNIT_BY_ID[node.slice(2)]; if(!u||!u.words||u.words.length<5) return null; const t=today();
+  return {node, topic:u.title, vi:u.vi||u.title, words:u.words.map(w=>{ const c=W(w.id); return {id:w.id, en:w.word, vi:w.vi, pos:w.pos||'', pic:w.pic||'', learned:!!c.learned, due:!!(c.learned&&c.due!=null&&c.due<=t)}; })}; }
 // v60 Transfer (§59): câu ở NGỮ CẢNH MỚI cho nút đã Đạt. Từ vựng: câu điền từ lấy từ bài đọc / câu ví dụ của phần khác trong app
 // (không phải câu ví dụ của chính từ đó; ưu tiên câu không hiện trên thẻ từ). Ngữ pháp: mọi câu tự gõ / sửa lỗi của điểm, engine lọc câu đã gặp.
 function eXfer(node){ if(!_xf[node]) _xf[node]=eXfer0(node); return shuffle(_xf[node].slice()); }
