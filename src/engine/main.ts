@@ -35,6 +35,9 @@ import { GROUPS, PER, deal as pzDeal, judge as pzJudge, stars as pzStars, distin
 import { rand } from './blocks.ts';
 import { viewCase, viewCaseEnd, type CaseRun } from './caseview.ts';
 import { viewKara, viewKaraEnd, karaKey, type KaraRun } from './karaview.ts';
+import { viewLetter, viewLetterEnd, pickTask, verdict as letterVerdict, folk, gift as letterGift, freshLetterSave, type LetterRun } from './letters.ts';
+import { viewRobot, viewRobotEnd, robotKey, type RobotRun } from './robotview.ts';
+import { layout as robotLayout, parse as robotParse, run as robotRun, won as robotWon, freshRobotSave } from './robot.ts';
 import { viewShop, viewShopEnd, accepted as shopOk, ORDERS, freshShopSave, type ShopRun } from './workshop.ts';
 import { pick as karaPick, linePoints, verdict as karaVerdict, ROLE, freshKaraSave } from './karaoke.ts';
 import { choose as caseChoose, order as caseOrder, options as caseOptions, solved as caseSolved, caseStars, freshCaseSave } from './detective.ts';
@@ -64,7 +67,7 @@ export interface EngineModule {
   merge(a: unknown, b: unknown): EState;
   peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
-export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }> }
+export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> } }
 
 let bound = false;
 
@@ -828,6 +831,87 @@ export function init(host: EHost): EngineModule {
     sfx('end'); host.save(); host.render();
   }
 
+  // ---------- Thư gửi cư dân phố (v83, F9 viết đoạn) ----------
+  // Đề viết đúng cấp đang học (chưa viết trước); máy kiểm thư của app; hồi âm theo đúng điều kiện của màn Viết theo đề; lưu ở đó (Can-Do).
+  let lrun: LetterRun | null = null;
+  const lsave = () => { const e = E(); return (e.gl ||= freshLetterSave()); };
+  function lStart(): void {
+    if (!loaded()) { ensure(); return; }
+    const e = E(), sv = lsave() as ReturnType<typeof lsave> & { lastId?: string }, lv0 = curLv(), seed = (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0;
+    const at = LVS.indexOf(lv0), tries = [lv0, ...LVS.slice(0, Math.max(0, at)).reverse(), ...LVS.slice(at + 1)];
+    let t = null as ReturnType<typeof pickTask>;
+    for (const L of tries) { t = pickTask(host.wtasks?.(L) ?? [], seed, sv.lastId ?? ''); if (t) break; }
+    if (!t) { host.toast('Chưa có đề viết nào.'); return; }
+    lrun = { floor: sv.runs + 1, seed, t, who: folk(seed), text: t.text, ideas: t.c.map(() => false), sends: 0, phase: 'write', res: null, self: [], gift: null };
+    host.render();
+  }
+  function lSend(text: string, ideas: boolean[]): void {
+    const r = lrun;
+    if (!r || r.phase !== 'write') return;
+    const res = host.wcheck?.(r.t.id, text);
+    if (!res) return;
+    r.text = text; r.ideas = ideas; r.sends++;
+    const v = letterVerdict(res.checks, ideas);
+    r.res = { ...v, n: res.n, checks: res.checks, hints: res.hints };
+    if (v.ok && !r.gift) r.gift = letterGift(lsave().gifts);
+    r.phase = 'reply';
+    host.wsave?.(r.t.id, text);   // lưu bản thư (như màn Viết theo đề); tự chấm ghi sau
+    sfx(v.ok ? 'clear' : 'place'); host.save(); host.render();
+  }
+  function lDone(): void {
+    const r = lrun;
+    if (!r || r.phase !== 'rate') return;
+    const e = E(), sv = lsave() as ReturnType<typeof lsave> & { lastId?: string };
+    host.wsave?.(r.t.id, r.text, r.self);
+    r.phase = 'done';
+    sv.runs++; sv.sent += r.sends; if (r.gift) sv.gifts++; sv.day = host.today(); sv.lastId = r.t.id;
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `letter:${r.floor}`, dec: 'letter:end', rule: `${RULE_ID}/${QUEST_VER}`,
+      info: { task: r.t.id, sends: r.sends, words: r.res?.n ?? 0, self: r.self.join(',') }, evs: [] }, false);
+    sfx('end'); host.save(); host.render();
+  }
+
+  // ---------- Ra lệnh cho robot (v84, F8 nói + F2) ----------
+  // Đồ vật trên bàn là từ (có hình) của cụm từ do engine chọn (ôn → đang học → lộ trình). Lệnh nói / gõ không vào mức thuộc.
+  let rrun: RobotRun | null = null;
+  const rsave = () => { const e = E(); return (e.gb ||= freshRobotSave()); };
+  const robotWords = (n: string) => (host.group?.(n)?.words ?? []).filter(w => /^[a-z]{3,}$/i.test(w.en) && !!w.pic && /noun/.test(w.pos ?? ''));
+  function rStart(): void {
+    if (!loaded()) { ensure(); return; }
+    const e = E(), sv = rsave(), seed = (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0;
+    const pick = kindPicker(n => n.startsWith('u:') && robotWords(n).length >= 2, 'r', sv.runs + 1);
+    const ws: Array<{ en: string; vi: string; pic: string }> = [], seen = new Set<string>();
+    let node = '';
+    for (const k of ['chest', 'monster', 'monster', 'scout', 'monster'] as Enc[]) {
+      const ch = pick(k); if (!ch || seen.has(ch.node)) continue; seen.add(ch.node); node ||= ch.node;
+      for (const w of robotWords(ch.node)) if (ws.length < 4 && !ws.some(x => x.en.toLowerCase() === w.en.toLowerCase() || x.pic === w.pic)) ws.push({ en: w.en, vi: w.vi, pic: w.pic! });
+      if (ws.length >= 4) break;
+    }
+    if (ws.length < 3) { host.toast('Chưa đủ đồ vật để chơi: chọn mục tiêu CEFR trước.'); return; }
+    const r0 = rand(seed ^ 0x2545f491), sh = ws.slice(); for (let i = sh.length - 1; i > 0; i--) { const j = Math.floor(r0() * (i + 1)); [sh[i], sh[j]] = [sh[j]!, sh[i]!]; }
+    rrun = { floor: sv.runs + 1, seed, t0: Date.now(), node, b: robotLayout(seed, sh, 2), log: [], done: false, asr: !!host.hasAsr?.(), heard: null, picked: 0, misnamed: 0 };
+    host.render();
+  }
+  function rExec(text: string): void {
+    const r = rrun;
+    if (!r || r.done) return;
+    const res = robotRun(r.b, robotParse(text));
+    host.asrOff?.();
+    r.b = res.b; r.heard = null; r.log.push({ ok: true, msg: `Lệnh: “${text}”` }, ...res.log); r.picked += res.picked.length; r.misnamed += res.misnamed.length;
+    sfx(res.picked.length ? 'clear' : res.log.some(l => !l.ok) ? 'bad' : 'place');
+    if (robotWon(r.b)) { rEnd(); return; }
+    host.render();
+  }
+  function rEnd(): void {
+    const r = rrun;
+    if (!r) return;
+    const e = E(), sv = rsave(), win = robotWon(r.b);
+    r.done = true; host.asrOff?.();
+    sv.runs++; sv.picked += r.picked; if (win) { sv.wins++; sv.best = sv.best ? Math.min(sv.best, r.b.cmds) : r.b.cmds; } sv.day = host.today();
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `robot:${r.floor}`, dec: `robot:${win ? 'win' : 'lose'}`, rule: `${RULE_ID}/${QUEST_VER}`,
+      info: { node: r.node, cmds: r.b.cmds, moves: r.b.moves, picked: r.picked, misnamed: r.misnamed, asr: r.asr ? 1 : 0 }, evs: [] }, false);
+    sfx(win ? 'end' : 'place'); host.save(); host.render();
+  }
+
   // ---------- Bàn Cờ Phố (v73) ----------
   const bsave = () => { const e = E(); return (e.bd ||= freshBoardSave()); };
   const wallet = () => Math.max(0, qsave().coins - bsave().spent);
@@ -1038,6 +1122,8 @@ export function init(host: EHost): EngineModule {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
       if (brun) return brun.done ? viewBubblesEnd(c, brun, (brun as BubbleRun & { prevBest?: number }).prevBest ?? 0) : viewBubbles(c, brun, host.probe('ph:s-01').length > 0);
       if (frun) return frun.done ? viewCafeEnd(c, frun, fsave().stars) : viewCafe(c, frun, fsave().stars);
+      if (rrun) { if (!rrun.done) rrun.heard = host.asrHeard?.(robotKey(rrun))?.heard ?? rrun.heard; return rrun.done ? viewRobotEnd(c, rrun) : viewRobot(c, rrun, host.asrBusy?.(robotKey(rrun)) ?? false); }
+      if (lrun) return lrun.phase === 'done' ? viewLetterEnd(c, lrun, lsave().gifts) : viewLetter(c, lrun, host.wrub?.() ?? null, lsave().gifts);
       if (wrun) return wrun.done ? viewShopEnd(c, wrun, (wrun as ShopRun & { prevBest?: number }).prevBest ?? 0) : viewShop(c, wrun, loaded()?.node.get(wrun.node)?.vi ?? '');
       if (krun) return krun.done ? viewKaraEnd(c, krun) : viewKara(c, krun);
       if (trun) return trun.done ? viewCaseEnd(c, trun, tsave(trun.mode).solved) : viewCase(c, trun, !!host.tts?.());
@@ -1048,7 +1134,7 @@ export function init(host: EHost): EngineModule {
       if (qrun?.done) return viewQuestEnd(c, qrun);
       if (qrun) return viewQuestRun(c, qrun);
       const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-      return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
+      return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
     },
     micro: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -1119,37 +1205,46 @@ export function init(host: EHost): EngineModule {
     },
     dstop() { finishDiag(); },
     pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
-    qstart() { crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; qStart(); },
-    bkstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; qStart('blocks'); },
-    bdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; qStart('board'); },
-    cdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; cStart(); },
+    qstart() { crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; qStart(); },
+    bkstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; qStart('blocks'); },
+    bdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; qStart('board'); },
+    cdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; cStart(); },
     cdtile(el) { const r = crun, i = Number(el.dataset.i); if (!r || r.ans || r.built.includes(i) || !(i >= 0 && i < r.hand.length)) return; r.built.push(i); sfx('place'); host.render(); },
     cdback(el) { const r = crun, k = Number(el.dataset.k); if (!r || r.ans) return; r.built.splice(k, 1); host.render(); },
     cdclear() { if (crun && !crun.ans) { crun.built = []; host.render(); } },
     cdplay() { cPlay(false); },
     cdskip() { cPlay(true); },
     cdnext() { cNext(); },
-    cfstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; fStart(); },
+    cfstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; fStart(); },
     cfans(el) { fAnswer(Number(el.dataset.i)); },
     cfnext() { fNext(); },
-    bbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; bStart(); },
+    bbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; bStart(); },
     bbans(el) { bAnswer(Number(el.dataset.i)); },
     bbnext() { bNext(); },
-    pzstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; zStart(); },
+    pzstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; zStart(); },
     pztile(el) { const r = zrun, i = Number(el.dataset.i); if (!r || r.recall || !(i >= 0 && i < r.tiles.length) || r.solved.includes(r.tiles[i]![0])) return; const k = r.sel.indexOf(i); if (k >= 0) r.sel.splice(k, 1); else if (r.sel.length < PER) r.sel.push(i); r.msg = null; sfx('place'); host.render(); },
     pzclear() { if (zrun && !zrun.recall) { zrun.sel = []; zrun.msg = null; host.render(); } },
     pzhint() { const r = zrun; if (!r || r.recall) return; const cand = [...r.sel, ...r.tiles.map((_, i) => i)].find(i => !r.shown.includes(i) && !r.solved.includes(r.tiles[i]![0])); if (cand !== undefined) { r.shown.push(cand); host.render(); } },
     pzsubmit() { zSubmit(); },
     pzans(el) { const it = zrun?.recall?.item, i = Number(el.dataset.i); if (!it) return; zAnswer(i >= 0 && !!it.opts && i === it.ans, i >= 0 ? it.opts?.[i] ?? '' : ''); },
     pznext() { zNext(); },
-    dtstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; tStart('read'); },
-    rdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; tStart('listen'); },
+    dtstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; tStart('read'); },
+    rdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; tStart('listen'); },
     dtans(el) { tAnswer(Number(el.dataset.i)); },
     dtretry() { const r = trun; if (!r || !r.ans || r.ans.ok || r.ans.retry) return; r.ans = null; r.retry = true; if (r.mode === 'listen' && r.text.lines) { host.sayLines?.(r.text.lines, false); r.plays++; } host.render(); },
     dtnext() { tNext(); },
     dtgloss(el) { const r = trun, w = el.dataset.w || ''; if (!r || !r.gloss[w]) return; r.look = w; r.looked++; host.render(); },
-    krstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; kStart(); },
-    wsstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; wStart(); },
+    krstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; kStart(); },
+    wsstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; wStart(); },
+    ltstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; lStart(); },
+    rbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; rStart(); },
+    rbmic() { if (rrun && !rrun.done) { rrun.heard = null; host.asrHear?.(robotKey(rrun)); } },
+    rbrun() { const h = rrun?.heard; if (h) rExec(h); },
+    rbgive() { rEnd(); },
+    ltedit() { if (lrun?.phase === 'reply') { lrun.phase = 'write'; host.render(); } },
+    ltrate() { if (lrun?.phase === 'reply' && lrun.res?.ok) { lrun.phase = 'rate'; host.render(); } },
+    ltrub(el) { const r = lrun, i = Number(el.dataset.i), v = Number(el.dataset.v); if (!r || r.phase !== 'rate' || !(i >= 0 && i < 8) || !(v >= 1 && v <= 8)) return; r.self[i] = v; host.render(); },
+    ltdone() { lDone(); },
     wsskip() { wAnswer(''); },
     wsnext() { wNext(); },
     krnext() { const r = krun; if (!r) return; const l = r.d.lines[r.i]; kScore(l?.s === ROLE ? host.asrRes?.(karaKey(r))?.p ?? 0 : null); },
@@ -1163,7 +1258,7 @@ export function init(host: EHost): EngineModule {
     bksel(el) { const bk = qrun?.bk, i = Number(el.dataset.p); if (!bk || bk.phase !== 'place' || !bk.tray[i] || !fits(bk.g, bk.tray[i]!)) return; bk.sel = i; host.render(); },
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
-    qhome() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; host.render(); },
+    qhome() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
     qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
@@ -1175,6 +1270,18 @@ export function init(host: EHost): EngineModule {
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
+    rbcmd(f) {
+      const raw = String(new FormData(f).get('a') || '').trim();
+      if (!raw) { host.toast('Gõ một lệnh, ví dụ: go right two steps'); return; }
+      rExec(raw);
+    },
+    ltsend(f) {
+      const r = lrun;
+      if (!r || r.phase !== 'write') return;
+      const fd = new FormData(f), text = String(fd.get('t') || '').trim();
+      if (!text) { host.toast('Viết thư trước khi gửi nhé.'); return; }
+      lSend(text, r.t.c.map((_, i) => fd.get(`c${i}`) === 'on'));
+    },
     wstyped(f) {
       if (!wrun?.item || wrun.ans) return;
       const raw = String(new FormData(f).get('a') || '').trim();
@@ -1277,6 +1384,8 @@ export function init(host: EHost): EngineModule {
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;
       if (drun) return of('diag', drun.node, drun.qs[drun.i]);
+      if (rrun) return rrun.done ? null : { run: 'robot', node: rrun.node, level: 0, id: robotKey(rrun), prompt: '', game: 'robot', robot: { r: rrun.b.r, c: rrun.b.c, items: rrun.b.items.map(i => ({ r: i.r, c: i.c, en: i.en, target: i.target, got: i.got })) } };
+      if (lrun) return lrun.phase === 'done' ? null : { run: 'letter', node: '', level: 0, id: `${lrun.t.id}:${lrun.phase}`, prompt: lrun.t.p, game: 'letter', accept: lrun.t.m.slice(0, 1) };
       if (wrun) return wrun.done || wrun.ans || !wrun.item ? null : { run: 'shop', node: wrun.node, level: 4, id: wrun.item.id, prompt: wrun.item.bad, accept: wrun.item.accept, game: 'shop' };
       if (krun) {   // Karaoke: câu của vai người học (bot đặt kết quả máy nghe thay cho giọng thật), câu vai kia: bấm tiếp
         if (krun.done) return null;

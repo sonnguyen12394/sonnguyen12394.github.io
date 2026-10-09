@@ -465,6 +465,48 @@ Cột G: G1 · G2 · G3 · G4 · G5 · G6 · G7 · G8 · G9 · G10.
 - 🤖 Ra lệnh cho robot (F8, game thứ hai cho nói).
 - Chuyển Tốc độ 60 giây / Ghép cặp sang engine.
 
+### 6.5 Đã làm đợt 4 (v83–v85): chấm theo bản thật
+
+| Tiêu chí | ✉️ Thư gửi cư dân phố | 🤖 Ra lệnh cho robot | ⏱️ Tốc độ 60 giây (v85) | 🔗 Ghép cặp (v85) |
+|---|---|---|---|---|
+| G1 Học là luật chơi (×2) | 9 | 9 | 4 | 6 |
+| G2 Đúng mục đích (×2) | 9 | 8 | 6 | 6 |
+| G3 Bằng chứng sạch (×2) | 8 | 8 | 7 | 7 |
+| G4 Engine chọn nội dung | 6 | 8 | 7 | 7 |
+| G5 Độ khó tách đôi | 7 | 7 | 3 | 3 |
+| G6 Phản hồi học tập | 8 | 7 | 4 | 7 |
+| G7 Hấp dẫn thật (×2) | 7 | 8 | 6 | 6 |
+| G8 Mật độ học | 4 | 6 | 9 | 7 |
+| G9 Động lực trung thực | 9 | 9 | 8 | 9 |
+| G10 Phát hành được | 9 | 8 | 8 | 8 |
+| **Điểm có trọng số (÷ 14)** | **7,8** | **7,9** | 6,1 (trước 5,6) | 6,5 (trước 5,9) |
+
+| Game | Chức năng | Tiêu chí riêng | Điểm |
+|---|---|---|---|
+| ✉️ Thư gửi cư dân phố | F9 viết | F9a 9 · F9b 7 · F9c 7 | **7,7** ✓ (trước 6,0) |
+| 🤖 Ra lệnh cho robot | F8 nói | F8a 7 · F8b 7 · F8c 9 | **7,7** ✓ |
+
+**✉️ Thư gửi cư dân phố** (`letters.ts`, `app.js` host `wtasks` / `wcheck` / `wsave`)
+- Cư dân nhờ viết thư theo 48 đề viết của app, đúng cấp đang học. Đề chưa viết được chọn trước.
+- Máy kiểm thư là `writeChecks` của màn Viết theo đề (độ dài, đoạn, từ nối, cụm của đề, lặp từ, câu, viết hoa / dấu câu) cộng lỗi hay gặp `grammarHints`.
+- Cư dân hồi âm:
+  - đạt đúng điều kiện của màn Viết theo đề → cảm ơn + quà trang trí phố;
+  - thiếu → hỏi lại đúng mục thiếu.
+- Sửa, gửi lại không mất gì. Tự chấm 4 tiêu chí rồi lưu như màn Viết theo đề, nên Can-Do viết tăng (e2e `play4.spec.ts`).
+- G4 = 6: chọn đề theo cấp và trạng thái, chưa theo từng nút.
+- G8 = 4: một thư mất 5–10 phút.
+
+**🤖 Ra lệnh cho robot** (`robot.ts`)
+- Đồ vật trên lưới là hình của từ thuộc cụm do engine chọn.
+- Lệnh tiếng Anh nói (máy nghe tự do) hoặc gõ, cùng bộ phân tích: đi, số bước, nhặt, về Nhà, nối bằng "then".
+- Robot chỉ nhặt khi gọi đúng tên tiếng Anh. Gọi sai thì gợi chữ cái đầu.
+- Lệnh không vào mức thuộc (G3).
+- Máy không nghe được giọng thì gõ lệnh (G10 = 8), nhưng khi đó không còn là nói (F8a = 7).
+
+**⏱️ Tốc độ 60 giây / 🔗 Ghép cặp (v85)**
+- Nguồn từ (`gamePool`) đổi sang: từ đến hạn ôn trước, rồi từ mới học. Ghép nhầm có giải thích nghĩa cả hai từ.
+- Vẫn dưới ngưỡng phát hành, vì G1 / G5 thấp do luật chơi cũ. Giữ như trò phụ; chưa nên quảng bá.
+
 Nguồn xu hướng:
 - [PocketGamer.biz: H1 2026 genre analysis](https://www.pocketgamer.biz/h1-2026-genre-analysis-strategy-stumbles-rpgs-fall-and-puzzle-revenue-ramps-up/)
 - [Top mobile puzzle games 2026](https://respawn.outlookindia.com/gaming/gaming-news/top-mobile-puzzle-games-ruling-the-global-grossing-charts-in-2026)

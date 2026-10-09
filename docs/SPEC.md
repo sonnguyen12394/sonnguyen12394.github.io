@@ -5,7 +5,7 @@
 > 2. **Game là trải nghiệm chính**: người học chơi để thắng, việc học tiếng Anh nằm ẩn trong luật chơi (stealth learning) — mỗi hành động trong game là một thử thách ngôn ngữ do engine chọn, nhằm lên cấp nhanh nhất. Không dùng dark pattern; tiến độ học và dữ liệu luôn xem được.
 > 3. Kiến trúc evidence theo v2.4 (Observation → Evidence → Ledger → Aggregate → Learner State → Decision Snapshot), đo bằng `docs/CONFORMANCE-200-v2.4.md` và `docs/SCORECARD-v2.4.md`.
 >
-> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v82 (xem phần "Lộ trình v2.4" cuối tệp).
+> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v85 (xem phần "Lộ trình v2.4" cuối tệp).
 
 Cập nhật: 03/10/2026. Bản đọc và bình luận: Claude Docs "English Ladder — Master Spec v2". Tệp này là bản AI đọc khi xây; hai bản phải giống nhau.
 
@@ -281,4 +281,7 @@ Mỗi mốc một PR, chấm lại 200 + 400 tiêu chí sau mỗi mốc.
 | v80 | Bắt Âm: vòng nói thử (F4) | Sau mỗi từ có nút "Nói thử" (máy nghe giọng của app, `asrBox`): máy nghe ra đúng từ hay từ kia của cặp âm; đúng +5 điểm (telemetry, không vào năng lực); máy không nghe được giọng thì ẩn |
 | v81 | Karaoke hội thoại (F8 nói) | Hội thoại đúng cấp đang học (chưa đóng vai, có chức năng đang học); người học nói vai B, máy đọc vai A; máy nghe khớp từ hoặc tự chấm; kết quả lưu như màn Đóng vai (Can-Do nói); không ghi bằng chứng vào nút; telemetry `e.gk` |
 | v82 | Xưởng sửa câu (F3 + F9) | Câu sai hay gặp (`fx`) của điểm ngữ pháp do engine chọn; tự gõ lại câu đúng = bằng chứng mức 4 (g = 0); sai thì tô từ cần sửa + vì sao; 6 đơn / ca; telemetry `e.gw` |
+| v83 | Thư gửi cư dân phố (F9 viết đoạn) | Đề viết (`WTASKS`) đúng cấp đang học, chưa viết trước; máy kiểm thư `writeChecks` + lỗi hay gặp; cư dân hồi âm (đạt như màn Viết theo đề → quà, thiếu → hỏi lại đúng mục); tự chấm 4 tiêu chí; lưu như màn Viết theo đề (Can-Do viết); telemetry `e.gl` |
+| v84 | Ra lệnh cho robot (F8 nói + F2) | Lưới 5 × 5, đồ vật là hình của từ thuộc cụm do engine chọn; lệnh tiếng Anh nói (máy nghe tự do) hoặc gõ; robot chỉ nhặt khi gọi đúng tên; không vào mức thuộc; telemetry `e.gb` |
+| v85 | Tốc độ 60 giây / Ghép cặp | Nguồn từ: đến hạn ôn trước, rồi từ mới học (thay cho ngẫu nhiên); ghép nhầm giải thích nghĩa cả hai từ |
 | — | Tiêu chí game theo chức năng | `docs/GAME-CRITERIA.md`: 13 chức năng học của app; 10 tiêu chí chung (G1–G10, thang 10, trọng số; bắt buộc G3 ≥ 8 và G9 ≥ 8) + tiêu chí riêng theo chức năng; chấm 5 game hiện có (Leo tháp 7,1 · Xếp Khối 7,6 · Bàn Cờ 7,1 · Tốc độ 60 giây 5,6 · Ghép cặp 5,9); thứ tự game nên làm tiếp |
