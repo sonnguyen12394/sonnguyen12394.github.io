@@ -43,7 +43,22 @@ export interface Profile {
   cause?(c: Ctx, q: Peek, x: K, novel: boolean): string;
   explained?(c: Ctx, node: string, how: 'card' | 'teach' | 'why' | 'targeted'): void;   // vừa đọc lời giải thích của nút; targeted = nêu đúng câu trả lời sai hay gặp
   afterDiag?(c: Ctx): Promise<void>;
+  floors?(day: number, rnd: () => number): number;   // số tầng mỗi phiên (mặc định 2, đôi khi 3); phiên ngắn = 1
   rate?: number;
+}
+
+// Người học chọn một mục tiêu CEFR ở màn "Mục tiêu" (việc người học được làm; giữ mục tiêu app đã tự đặt), rồi về tab Chơi.
+export async function pickGoal(c: Ctx, id: string): Promise<void> {
+  const goals = c.page.locator('[data-e="go"][data-r="goals"]').filter({ visible: true }).first();
+  if (await goals.count()) { await goals.click(); await c.sleep(400); }
+  const pick = c.page.locator('[data-r="pick/cefr"]').filter({ visible: true }).first();
+  if (await pick.count()) { await pick.click(); await c.sleep(300); }
+  const add = c.page.locator(`[data-e="add"][data-g="${id}"]`).filter({ visible: true }).first();
+  if (await add.count()) { await add.click(); await c.sleep(400); c.note(`goal:${id}`); } else c.note('stuck', `không thấy nút chọn ${id}`);
+  await c.shot(`goal:${id}`);
+  const tab = c.page.locator('#bnav button, #nav button').filter({ hasText: 'Chơi' }).filter({ visible: true }).first();
+  if (await tab.count()) await tab.click();
+  await c.sleep(400);
 }
 
 export async function run(P: Profile): Promise<void> {
@@ -255,7 +270,7 @@ export async function run(P: Profile): Promise<void> {
     const t0 = await shot('open');
     note('open', { first: t0.split('\n').slice(0, 3).join(' | ') });
     await followToday();
-    const floors = day === 0 ? 2 : 2 + (rnd() < 0.3 ? 1 : 0);
+    const floors = P.floors ? P.floors(day, rnd) : day === 0 ? 2 : 2 + (rnd() < 0.3 ? 1 : 0);
     for (let f = 0; f < floors; f++) await playFloor();
     // Cuối phiên: mastery của app, giả thuyết hiểu sai của app, kỹ năng thật của bot trên mọi nút đã gặp.
     const e = await page.evaluate(() => { const st = (window as any).eval('st'); return { m: st.e.m, snaps: st.e.ev.snap.length, q: st.e.q, mis: st.e.ev.mis }; });   // eslint-disable-line @typescript-eslint/no-explicit-any

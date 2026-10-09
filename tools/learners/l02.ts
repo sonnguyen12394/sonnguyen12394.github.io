@@ -12,7 +12,7 @@
 // S04 câu quen đúng / câu mới sai; S06 sai khi rương ôn hỏi phần đã Đạt. S05, S07, S10 lấy từ hành vi tự nhiên (analyze-l02.ts).
 // Chạy: node --experimental-strip-types --no-warnings tools/learners/l02.ts [--seed 1] [--rate 1] [--out reports/learners/L02]
 
-import { run, NODE, type Profile, type Decision } from './core.ts';
+import { run, NODE, pickGoal, type Profile, type Decision } from './core.ts';
 
 const PRIOR: Record<string, Record<string, number>> = {
   u: { 'Pre-A1': 0.9, A1: 0.85, A2: 0.6, B1: 0.2, B2: 0.05, C1: 0.02 },
@@ -93,19 +93,8 @@ export const L02: Profile = {
     }
     return null;
   },
-  afterDiag: async c => {
-    // Người học muốn B1: vào Mục tiêu và chọn CEFR B1 (giữ mục tiêu app đã tự đặt; bao đóng B1 gồm cả A1–A2).
-    const goals = c.page.locator('[data-e="go"][data-r="goals"]').filter({ visible: true }).first();
-    if (await goals.count()) { await goals.click(); await c.sleep(400); }
-    const pick = c.page.locator('[data-r="pick/cefr"]').filter({ visible: true }).first();
-    if (await pick.count()) { await pick.click(); await c.sleep(300); }
-    const add = c.page.locator('[data-e="add"][data-g="cefr-b1"]').filter({ visible: true }).first();
-    if (await add.count()) { await add.click(); await c.sleep(400); c.note('goal-b1'); } else c.note('stuck', 'không thấy nút chọn CEFR B1');
-    await c.shot('goal-b1');
-    const tab = c.page.locator('#bnav button, #nav button').filter({ hasText: 'Chơi' }).filter({ visible: true }).first();
-    if (await tab.count()) await tab.click();
-    await c.sleep(400);
-  },
+  // Người học muốn B1: chọn CEFR B1 ở màn Mục tiêu (bao đóng B1 gồm cả A1–A2).
+  afterDiag: c => pickGoal(c, 'cefr-b1'),
 };
 
 if (import.meta.url === `file://${process.argv[1]}`) run(L02).catch(e => { console.error(e); process.exit(1); });
