@@ -5,6 +5,9 @@ import type { EHost, MicroCard } from './host.ts';
 import { loaded } from './data.ts';
 import { ENC_VI, type Challenge, type QuestSave } from './quest.ts';
 import type { BlockState } from './blocks.ts';
+import type { Move } from './board.ts';
+
+export interface BoardRun { phase: 'roll' | 'ask' | 'lot'; rolls: number; seed: number; n: number; move: Move | null; msg: string; built: number }
 
 export interface BlockRun extends BlockState { phase: 'ask' | 'place'; sel: number | null; last: number[]; gain: number; best: number; saves: number; rescue: boolean }
 
@@ -14,7 +17,8 @@ export interface QuestRun {
   q: QItem | null; card: MicroCard | null; chk: QItem | null;   // chk: câu thử ngay sau bí kíp ở trại (v69)
   teach: boolean; taught: string[];                              // teach: lượt này dạy trước (thẻ mới) rồi mới hỏi (v69)
   t0?: number; passed?: string[];                                // v71: phần vừa vững trong lượt chơi này (lên cấp thật, từ bằng chứng)
-  mode?: 'tower' | 'blocks';                                     // v72: game đang chơi (cùng chuỗi câu do engine chọn)
+  mode?: 'tower' | 'blocks' | 'board';                           // v72: game đang chơi (cùng chuỗi câu do engine chọn)
+  bd?: BoardRun;                                                 // v73: Bàn Cờ Phố
   bk?: BlockRun;                                                 // v72: bàn Xếp Khối
   ans: { ok: boolean; right: string; given: string; coins: number; novel: boolean; why?: string } | null;
   done: 'win' | 'lose' | null; wrong: string[]; gaps: string[];
@@ -46,25 +50,25 @@ export function viewQuestRun(c: ECtx, r: QuestRun): string {
 
 // Phần câu hỏi / phản hồi / bí kíp của một lượt, dùng chung cho mọi game (v72). Lời thoại theo game đang chơi.
 export function questInner(c: ECtx, r: QuestRun): string {
-  const { host } = c, esc = host.esc, ch = r.plan[r.i]!, blk = r.mode === 'blocks', top = '';
+  const { host } = c, esc = host.esc, ch = r.plan[r.i]!, blk = r.mode === 'blocks', brd = r.mode === 'board', top = '';
   if (ch.gameType === 'camp' && !r.q) {
     const card = r.card;
     return `${top}<section class="panel stack">${card ? `<h3>Bí kíp: ${esc(card.title)}</h3>${card.concept.map(x => `<p>${esc(x)}</p>`).join('')}${card.mis ? `<p class="warnt"><b>Bạn hay trả lời “<span lang="en">${esc(card.mis)}</span>”.</b>${card.contrast ? ` ${esc(card.contrast)}` : ''}</p>` : card.contrast ? `<p class="warnt">${esc(card.contrast)}</p>` : ''}<ul>${card.examples.slice(0, 2).map(([en, vi]) => `<li><b lang="en">${esc(en)}</b>${vi ? ` <span class="hint">· ${esc(vi)}</span>` : ''}</li>`).join('')}</ul>` : '<p>Nghỉ chân bên đống lửa.</p>'}</section>
-      <div class="row">${r.chk ? `<button class="btn primary" data-e="qcheck">Thử ngay 1 câu</button><button class="btn ghost" data-e="qnext">${blk ? 'Bỏ qua, nhận khối' : 'Bỏ qua, hồi tim'}</button>` : `<button class="btn primary" data-e="qnext">${blk ? 'Nhận khối thưởng' : 'Hồi một tim và đi tiếp'}</button>`}</div>`;
+      <div class="row">${r.chk ? `<button class="btn primary" data-e="qcheck">Thử ngay 1 câu</button><button class="btn ghost" data-e="qnext">${blk ? 'Bỏ qua, nhận khối' : brd ? 'Bỏ qua, đi tiếp' : 'Bỏ qua, hồi tim'}</button>` : `<button class="btn primary" data-e="qnext">${blk ? 'Nhận khối thưởng' : brd ? 'Đi tiếp' : 'Hồi một tim và đi tiếp'}</button>`}</div>`;
   }
   const q = r.q;
   if (!q) return `${top}<p class="muted">Không dựng được câu cho lượt này.</p><div class="row"><button class="btn primary" data-e="qnext">Đi tiếp</button></div>`;
   if (r.ans) {
     const a = r.ans, camp = ch.gameType === 'camp';
     return `${top}<section class="stack"><p style="font-size:18px">${esc(q.prompt)}</p></section>
-      <div class="fb ${a.ok ? 'good' : 'bad'}" role="status"><strong>${camp ? (a.ok ? 'Đúng rồi: bí kíp đã vào!' : 'Chưa đúng, không sao: đây là lượt luyện') : blk ? (a.ok ? 'Chính xác! Có thêm khối đặc biệt' : 'Chưa đúng, vẫn nhận khối') : a.ok ? (ch.gameType === 'boss' ? 'Trùm gục ngã!' : 'Trúng đòn!') : 'Hụt! Mất một tim'}</strong>${a.ok ? '' : `<span>Đáp án: <b lang="en">${esc(a.right)}</b></span>${a.given ? `<span>Bạn trả lời: <s lang="en">${esc(a.given)}</s></span>` : ''}${a.why ? `<span class="hint">💡 ${esc(a.why)}</span>` : ''}`}
+      <div class="fb ${a.ok ? 'good' : 'bad'}" role="status"><strong>${camp ? (a.ok ? 'Đúng rồi: bí kíp đã vào!' : 'Chưa đúng, không sao: đây là lượt luyện') : blk ? (a.ok ? 'Chính xác! Có thêm khối đặc biệt' : 'Chưa đúng, vẫn nhận khối') : brd ? (a.ok ? 'Chính xác! Đi tiếp nào' : 'Chưa đúng, không sao: đi tiếp') : a.ok ? (ch.gameType === 'boss' ? 'Trùm gục ngã!' : 'Trúng đòn!') : 'Hụt! Mất một tim'}</strong>${a.ok ? '' : `<span>Đáp án: <b lang="en">${esc(a.right)}</b></span>${a.given ? `<span>Bạn trả lời: <s lang="en">${esc(a.given)}</s></span>` : ''}${a.why ? `<span class="hint">💡 ${esc(a.why)}</span>` : ''}`}
         <span class="hint">+${a.coins} xu${a.novel ? ' · câu mới' : ''}</span></div>
-      <div class="row"><button class="btn primary" data-e="qnext" id="qnextbtn">${blk ? 'Nhận khối ▸' : camp ? 'Hồi một tim và đi tiếp' : r.hp <= 0 ? 'Kết thúc lượt' : r.i + 1 < r.plan.length ? 'Đi tiếp' : 'Hoàn thành tầng'}</button></div>`;
+      <div class="row"><button class="btn primary" data-e="qnext" id="qnextbtn">${blk ? 'Nhận khối ▸' : brd ? '🎲 Đi tiếp' : camp ? 'Hồi một tim và đi tiếp' : r.hp <= 0 ? 'Kết thúc lượt' : r.i + 1 < r.plan.length ? 'Đi tiếp' : 'Hoàn thành tầng'}</button></div>`;
   }
   const body = q.opts
     ? `<div class="stack" style="gap:8px">${q.opts.map((o, i) => `<button class="btn" style="justify-content:flex-start" data-e="qans" data-i="${i}">${esc(o)}</button>`).join('')}<button class="btn ghost" data-e="qans" data-i="-1">Không biết</button></div>`
-    : `<form class="stack" data-eform="qtyped"><input class="field" name="a" autocomplete="off" autocapitalize="off" spellcheck="false" lang="en" aria-label="Câu trả lời"><div class="row"><button class="btn primary">${blk ? 'Trả lời' : 'Tấn công'}</button><button class="btn ghost" type="button" data-e="qans" data-i="-1">Không biết</button></div></form>`;
-  const card = r.teach && r.card ? `<details class="panel stack" open data-teach><summary><b>📜 Thẻ mới: ${esc(r.card.title)}</b> <span class="hint">(đọc rồi ${blk ? 'trả lời' : 'đánh'})</span></summary>${r.card.concept.slice(0, 2).map(x => `<p>${esc(x)}</p>`).join('')}${r.card.mis ? `<p class="warnt"><b>Bạn hay trả lời “<span lang="en">${esc(r.card.mis)}</span>”.</b>${r.card.contrast ? ` ${esc(r.card.contrast)}` : ''}</p>` : ''}<ul>${r.card.examples.slice(0, 2).map(([en, vi]) => `<li><b lang="en">${esc(en)}</b>${vi ? ` <span class="hint">· ${esc(vi)}</span>` : ''}</li>`).join('')}</ul></details>` : '';
+    : `<form class="stack" data-eform="qtyped"><input class="field" name="a" autocomplete="off" autocapitalize="off" spellcheck="false" lang="en" aria-label="Câu trả lời"><div class="row"><button class="btn primary">${blk || brd ? 'Trả lời' : 'Tấn công'}</button><button class="btn ghost" type="button" data-e="qans" data-i="-1">Không biết</button></div></form>`;
+  const card = r.teach && r.card ? `<details class="panel stack" open data-teach><summary><b>📜 Thẻ mới: ${esc(r.card.title)}</b> <span class="hint">(đọc rồi ${blk || brd ? 'trả lời' : 'đánh'})</span></summary>${r.card.concept.slice(0, 2).map(x => `<p>${esc(x)}</p>`).join('')}${r.card.mis ? `<p class="warnt"><b>Bạn hay trả lời “<span lang="en">${esc(r.card.mis)}</span>”.</b>${r.card.contrast ? ` ${esc(r.card.contrast)}` : ''}</p>` : ''}<ul>${r.card.examples.slice(0, 2).map(([en, vi]) => `<li><b lang="en">${esc(en)}</b>${vi ? ` <span class="hint">· ${esc(vi)}</span>` : ''}</li>`).join('')}</ul></details>` : '';
   const say = q.say ? `<div class="row"><button class="btn" data-say="${esc(q.say)}">🔊 Nghe</button><button class="btn ghost" data-say="${esc(q.say)}" data-slow="1">🐢 Nghe chậm</button></div>` : '';
   return `${top}${card}<section class="stack"><p style="font-size:20px;font-weight:600">${esc(q.prompt)}</p>${say}</section>${body}`;
 }

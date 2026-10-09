@@ -259,6 +259,39 @@ export async function run(P: Profile): Promise<void> {
     await click('Về sảnh');
   }
 
+  // v73 Bàn Cờ Phố: tung xúc xắc; dừng ở ô cảnh thì trả lời như ở tháp; lô đất: xây khi đủ xu (người chơi thích sưu tầm nhà).
+  async function playBoard(): Promise<void> {
+    await shot('lobby');
+    const start = page.locator('[data-e="bdstart"]').filter({ visible: true }).first();
+    if (!(await start.count())) { note('stuck', 'không thấy Bàn Cờ'); return; }
+    await start.click(); await sleep(120);
+    for (let steps = 0; steps < 120; steps++) {
+      await sleep(40);
+      if (await visible('h1:has-text("Hết lượt tung")')) break;
+      if (await visible('[data-e="bdroll"]')) { await page.locator('[data-e="bdroll"]').first().click(); continue; }
+      if (await visible('[data-e="bdbuild"]')) { await page.locator('[data-e="bdbuild"]').first().click(); continue; }
+      if (await visible('[data-e="bdskip"]')) { await page.locator('[data-e="bdskip"]').first().click(); continue; }
+      const pk = await peek();
+      if (pk?.run === 'camp') {
+        const ct = await shot('camp');
+        if (pk.node) { learn(pk.node, DAY, P.gain.card); explained(pk.node, /Bạn hay trả lời/.test(ct) ? 'targeted' : 'card'); }
+        note('camp', { node: pk.node, title: pk.prompt });
+        if (await visible('[data-e="qcheck"]')) await page.locator('[data-e="qcheck"]').first().click();
+        else await page.locator('[data-e="qnext"]').first().click();
+        continue;
+      }
+      if (pk) {
+        if (await visible('[data-teach]')) { const tt = await page.locator('[data-teach]').first().innerText(); learn(pk.node, DAY, P.gain.teach); explained(pk.node, /Bạn hay trả lời/.test(tt) ? 'targeted' : 'teach'); note('teach', { node: pk.node, targeted: /Bạn hay trả lời/.test(tt) }); }
+        await answer(pk); await feedback(pk.node); continue;
+      }
+      if (await visible('[data-e="qnext"]')) { await page.locator('[data-e="qnext"]').first().click(); continue; }
+      note('stuck', { why: 'bàn cờ: không có nút tung / câu / đi tiếp', text: (await text()).slice(0, 200) }); break;
+    }
+    const end = await shot('board-end');
+    note('board-end', { head: end.split('\n').slice(0, 3).join(' | ') });
+    await click('Về sảnh');
+  }
+
   async function runQuiz(kind: string): Promise<void> {
     for (let i = 0; i < 30; i++) {
       await sleep(80);
@@ -304,8 +337,8 @@ export async function run(P: Profile): Promise<void> {
     note('open', { first: t0.split('\n').slice(0, 3).join(' | ') });
     await followToday();
     const floors = P.floors ? P.floors(day, rnd) : day === 0 ? 2 : 2 + (rnd() < 0.3 ? 1 : 0);
-    // v72: sảnh có nhiều game; mặc định bot luân phiên tháp và Xếp Khối (--games tower: chỉ tháp, như trước v72).
-    for (let f = 0; f < floors; f++) { if (GAMES === 'mix' && (day + f) % 2 === 1) await playBlocks(); else await playFloor(); }
+    // v72–v73: sảnh có nhiều game; mặc định bot luân phiên tháp, Xếp Khối, Bàn Cờ (--games tower: chỉ tháp, như trước v72).
+    for (let f = 0; f < floors; f++) { const g = GAMES === 'mix' ? (day + f) % 3 : 0; if (g === 1) await playBlocks(); else if (g === 2) await playBoard(); else await playFloor(); }
     // Cuối phiên: mastery của app, giả thuyết hiểu sai của app, kỹ năng thật của bot trên mọi nút đã gặp.
     const e = await page.evaluate(() => { const st = (window as any).eval('st'); return { m: st.e.m, snaps: st.e.ev.snap.length, q: st.e.q, mis: st.e.ev.mis }; });   // eslint-disable-line @typescript-eslint/no-explicit-any
     const truth: Record<string, number> = {}, stab: Record<string, number> = {};

@@ -6,15 +6,18 @@ import { loaded } from './data.ts';
 import { questInner, type QuestRun } from './questview.ts';
 import { N, SHAPES, canPlace, fits, anchor, type Piece } from './blocks.ts';
 import type { BlocksSave } from './blocks.ts';
+import { TILES, SIZE, ROLLS, price, canBuild, type BoardSave } from './board.ts';
+import { ENC_VI } from './quest.ts';
 
 // Sảnh: thẻ các game ở trên, tháp (Leo nhanh) giữ nguyên ở dưới.
-export function viewLobby(c: ECtx, bk: BlocksSave | undefined): string {
+export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave): string {
   if (!c.e.goals.length) return '';
-  const s = bk ?? { best: 0, runs: 0, day: 0, streak: 0 };
+  const s = bk ?? { best: 0, runs: 0, day: 0, streak: 0 }, houses = (bd?.lots ?? []).reduce((a, b) => a + b, 0);
   return `<section class="stack"><span class="eyebrow">Chơi</span><h1>🎮 Hôm nay chơi gì?</h1>
     <p class="hint">Mọi game đều dùng cùng một bộ câu tiếng Anh app chọn cho bạn. Chỉ câu trả lời được tính vào năng lực; điểm game chỉ để vui.</p></section>
     <section class="gcards">
       <button class="gcard" data-e="bkstart"><span class="gico" aria-hidden="true">${miniBoard()}</span><span class="stack" style="gap:2px;text-align:left"><b>Xếp Khối Chữ</b><span class="hint">Trả lời đúng để nhận khối, xếp đầy hàng để nổ. Ván 3–5 phút.</span><span class="hint">🏆 ${s.best} · 🔥 ${s.streak} ngày</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
+      <button class="gcard" data-e="bdstart"><span class="gico" aria-hidden="true" style="font-size:30px">🎲</span><span class="stack" style="gap:2px;text-align:left"><b>Bàn Cờ Phố</b><span class="hint">Tung xúc xắc đi quanh phố, gặp thử thách tiếng Anh, xây nhà bằng xu. ${ROLLS} lượt tung.</span><span class="hint">🏠 ${houses} tầng nhà · vòng phố ${bd?.laps ?? 0}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
     </section>`;
 }
 const miniBoard = () => `<span class="bkmini">${[1, 0, 2, 3, 3, 0, 0, 4, 5].map(v => `<i class="c${v}"></i>`).join('')}</span>`;
@@ -62,3 +65,48 @@ export function viewBlocksEnd(c: ECtx, r: QuestRun): string {
     <p class="hint">Điểm và kỷ lục chỉ để vui, không đổi đánh giá năng lực. Mọi câu trả lời đã được ghi vào bản đồ năng lực.</p></section>
     <div class="row"><button class="btn primary" data-e="bkstart">▶ Ván mới</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
 }
+
+// ---------- Bàn Cờ Phố (v73) ----------
+const DIE = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+const HOUSE = ['', '🏠', '🏡', '🏘️'];
+// Vị trí 16 ô trên vòng 5 × 5 (đi theo chiều kim đồng hồ từ góc trên trái).
+const RING: Array<[number, number]> = [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [2, 5], [3, 5], [4, 5], [5, 5], [5, 4], [5, 3], [5, 2], [5, 1], [4, 1], [3, 1], [2, 1]];
+function tileHtml(i: number, s: BoardSave, here: boolean, landed: boolean): string {
+  const t = TILES[i]!, [r, col] = RING[i]!;
+  const face = t.t === 'home' ? '🏁' : t.t === 'lot' ? (s.lots[i] ? HOUSE[s.lots[i]!] : t.ico) : ENC_VI[t.k].ico;
+  const name = t.t === 'home' ? 'Nhà' : t.t === 'lot' ? t.name : ENC_VI[t.k].vi;
+  return `<div class="bdt${t.t === 'lot' ? ' lot' : ''}${landed ? ' land' : ''}" style="grid-row:${r};grid-column:${col}" aria-label="${name}${t.t === 'lot' && s.lots[i] ? `, nhà cấp ${s.lots[i]}` : ''}${here ? ', bạn đang ở đây' : ''}"><span class="f">${face}</span><span class="n">${name}</span>${here ? '<span class="me" aria-hidden="true">🧑‍🎓</span>' : ''}</div>`;
+}
+export function viewBoard(c: ECtx, r: QuestRun, s: BoardSave, wallet: number): string {
+  const esc = c.host.esc, bd = r.bd!, ix = loaded()!, m = bd.move;
+  const top = `<section class="stack" style="gap:6px"><div class="spread"><span class="eyebrow">🎲 Bàn Cờ Phố · còn ${bd.rolls}/${ROLLS} lượt tung</span><span>🪙 <b>${wallet}</b> · ✓ ${r.ok}/${r.n}</span></div></section>`;
+  if (bd.phase === 'ask') {
+    const ch = r.plan[r.i]!, t = ENC_VI[ch.gameType];
+    return `${top}<p class="hint">${m ? `${DIE[m.die]} Đi ${m.die} ô → ` : ''}<b>${t.ico} ${esc(t.vi)}</b>${ch.node ? ` · ${esc(ix.node.get(ch.node)?.vi ?? '')}` : ''}</p>${questInner(c, r)}`;
+  }
+  const at = s.pos, tile = TILES[at]!;
+  let center = '';
+  if (bd.phase === 'lot' && tile.t === 'lot') {
+    const lv = s.lots[at] ?? 0, can = canBuild(s, at, wallet);
+    center = `<p><b>${tile.ico} ${esc(tile.name)}</b>${lv ? ` · nhà cấp ${lv}` : ' · lô đất trống'}</p>
+      ${lv >= 3 ? '<p class="hint">Nhà đã cấp cao nhất.</p>' : `<p class="hint">${can ? `Xây ${lv ? 'thêm tầng' : 'nhà'}: ${price(lv)} xu. Lần sau đi qua được thêm xu.` : `Cần ${price(lv)} xu để xây (bạn có ${wallet}).`}</p>`}
+      <div class="row" style="justify-content:center">${can ? `<button class="btn primary" data-e="bdbuild">🏗 Xây (${price(lv)} xu)</button>` : ''}<button class="btn ghost" data-e="bdskip">Đi tiếp</button></div>`;
+  } else {
+    center = `<p class="bddie" aria-live="polite">${m ? DIE[m.die] : '🎲'}</p>${bd.msg ? `<p class="hint">${esc(bd.msg)}</p>` : m && tile.t === 'home' ? '<p class="hint">Về Nhà!</p>' : ''}
+      <button class="btn primary big" data-e="bdroll">🎲 Tung xúc xắc</button>`;
+  }
+  const tiles = TILES.map((_, i) => tileHtml(i, s, i === at, !!m && m.to === i)).join('');
+  return `${top}<div class="bdg">${tiles}<div class="bdc stack">${center}</div></div>
+    <p class="hint" style="text-align:center">${ENC_VI.monster.ico} câu mới · ${ENC_VI.chest.ico} ôn lại · ${ENC_VI.scout.ico} thử sức · ${ENC_VI.camp.ico} bí kíp · ${ENC_VI.boss.ico} câu khó · 🥐📚🍵🚉 lô đất: xây nhà bằng xu</p>`;
+}
+export function viewBoardEnd(c: ECtx, r: QuestRun, s: BoardSave): string {
+  const esc = c.host.esc, ix = loaded()!, houses = s.lots.reduce((a, b) => a + b, 0);
+  const weak = [...new Set(r.wrong)].slice(0, 3).map(n => ix.node.get(n)?.vi ?? n);
+  return `<section class="stack"><span class="eyebrow">🎲 Bàn Cờ Phố</span><h1>🏙️ Hết lượt tung</h1>
+    <p>${r.ok}/${r.n} câu đúng · +${r.coins} xu · ${r.bd?.built ? `xây ${r.bd.built} lần · ` : ''}phố có ${houses} tầng nhà.</p>
+    ${r.passed?.length ? `<div class="fb good" role="status"><strong>⬆ Lên cấp: ${r.passed.slice(0, 4).map(esc).join(', ')}</strong><span>đã vững (từ câu trả lời của bạn, không phải từ xu hay nhà)</span></div>` : ''}
+    ${weak.length ? `<p class="muted">Lượt sau app sẽ hỏi lại: ${weak.map(esc).join(', ')}.</p>` : ''}
+    <p class="hint">Xu, nhà và vị trí trên bàn chỉ để vui, không đổi đánh giá năng lực. Mọi câu trả lời đã được ghi vào bản đồ năng lực.</p></section>
+    <div class="row"><button class="btn primary" data-e="bdstart">🎲 Chơi tiếp</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+}
+void SIZE;
