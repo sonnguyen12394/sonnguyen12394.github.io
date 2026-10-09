@@ -71,3 +71,17 @@ test('truy gốc trọn vòng trên learner mô phỏng: sai lặp lại ở nú
   for (let q = 0; q < 3; q++) if (S.ask(E, L, 'g:base', 3, 1, { mc: false })) got++;
   assert.equal(rootVerdict(got, 3), 'gap');
 });
+
+test('v71 (bot L03): vùng kỹ năng gần như chưa có bằng chứng (nghe) → khám phá ở đó thắng xác nhận Claim', () => {
+  const ids = 'abcdefghij'.split('').map(x => `ph:${x}`), gr: Graph = { nodes: [...ids.map(id => nn(id)), nn('g:c')], edges: [], goals: [] };
+  const st = freshEv(), m: MasteryStore = {};
+  for (let i = 0; i < 6; i++) put(st, m, 'ph:a', true, i);
+  setPrior(st, m, 'g:c', 3, 6, 0.5, 'diag', 1);
+  const nd: Req[] = [...ids, 'g:c'].map(node => ({ node, level: 3 as Level, type: 'foundation' }));
+  const c = candidates({ ix: index(gr), m, need: nd, open: new Set([...ids, 'g:c']), probeable: () => true });
+  assert.equal(c[0]!.mode, 'explore'); assert.ok(c[0]!.node.startsWith('ph:'));
+  // Cùng tình huống nhưng vùng đã phủ ≥ 50%: xác nhận Claim đi trước như cũ.
+  for (const n of ['ph:b', 'ph:c', 'ph:d', 'ph:e']) for (let i = 0; i < 6; i++) put(st, m, n, true, 10 + i);
+  const c2 = candidates({ ix: index(gr), m, need: nd, open: new Set([...ids, 'g:c']), probeable: () => true });
+  assert.equal(c2[0]!.mode, 'confirm');
+});

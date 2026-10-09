@@ -43,6 +43,7 @@ export interface FloorIn {
   claims?: string[];                    // v69: nút chẩn đoán "suy ra đã biết" (Claim) chưa xác nhận: trinh sát / rương rảnh thì kiểm tra
   explore?: boolean;                    // v70: false = người học đang sai nhiều → trinh sát không dò khám phá (vẫn xác nhận Claim)
   neck?: string;                        // v71: điểm nghẽn hiện tại (yếu × quan trọng) → quái đầu tiên của tầng
+  claimLv?: (node: string) => Level;    // v71: mức của Claim (mức cần của nút); không có thì mức 3
 }
 // capDay: số lượt tối đa mỗi nút mỗi ngày trong tháp (giãn cách). wip: số phần đang học dở tối đa trước khi mở phần mới — học xong
 // phần đã bắt đầu trước khi rải sang phần mới (bot L01: không giới hạn thì một tháng chạm 100 nút mà gần như không nút nào vững).
@@ -67,7 +68,10 @@ export function planFloor(x: FloorIn): Challenge[] {
   // Phần ưu tiên số 1 của lộ trình (chính là "Bước tiếp theo" hiển thị) luôn được vào, kể cả khi đã đủ phần đang học dở.
   const focus = (xs: PathItem[]): PathItem[] => { let k = 0; return xs.filter((o, i) => i === 0 || x.started(o.node) || k++ < room); };
   const learn = [focus(rested), focus(all)].find(xs => xs.length) ?? all;
-  const claim = (): string | undefined => (x.claims ?? []).find(n => x.can(n) && !used.has(n));
+  // v71 (bot L03): Claim được kiểm ở đúng mức đã suy ra (ngữ pháp mức 4): trước đây luôn hỏi mức 3 nên Claim mức 4 không bao giờ xác nhận
+  // được; không hỏi một Claim quá giới hạn lượt / ngày.
+  const claim = (): string | undefined => (x.claims ?? []).find(n => x.can(n) && !used.has(n) && (!x.fresh || x.fresh(n)));
+  const clv = (n: string): Level => x.claimLv?.(n) ?? 3;
   const take = (kind: Enc): Challenge | null => {
     if (kind === 'boss') {
       const a = x.acts.find(a => (a.kind === 'transfer' || a.kind === 'verify') && x.can(a.node) && !used.has(a.node));
@@ -79,13 +83,13 @@ export function planFloor(x: FloorIn): Challenge[] {
       const a = x.explore === false ? undefined : x.acts.find(a => a.kind === 'probe' && x.can(a.node) && !used.has(a.node));
       if (a) { used.add(a.node); return mk('scout', a.node, a.level as Level, a.u + 0.3); }
       const n = claim();
-      if (n) { used.add(n); return mk('scout', n, 3, 0.8); }
+      if (n) { used.add(n); return mk('scout', n, clv(n), 0.8); }
     }
     if (kind === 'chest') {
       const n = x.review.find(n => x.can(n) && !used.has(n));
       if (n) { used.add(n); return mk('chest', n, 3, (x.acts.find(a => a.kind === 'review')?.u ?? 1)); }
       const cl = claim();   // chưa có gì sắp quên: dùng lượt này xác nhận một phần app mới chỉ đoán là bạn biết
-      if (cl) { used.add(cl); return mk('scout', cl, 3, 0.8); }
+      if (cl) { used.add(cl); return mk('scout', cl, clv(cl), 0.8); }
     }
     if (kind === 'camp') return mk('camp', '', 1, 0.3);
     if (x.neck && !used.has(x.neck) && x.can(x.neck) && (!x.fresh || x.fresh(x.neck))) { const o = x.open.find(o => o.node === x.neck); used.add(x.neck); return mk('monster', x.neck, (x.started(x.neck) ? o?.level ?? 3 : 1) as Level, (val.get(`learn|${x.neck}`) ?? 0.8) + 0.3); }

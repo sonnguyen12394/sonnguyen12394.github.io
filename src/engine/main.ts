@@ -359,7 +359,9 @@ export function init(host: EHost): EngineModule {
     // v69: giãn cách (mỗi nút tối đa QUEST.capDay lượt/ngày trong tháp) và xác nhận Claim của chẩn đoán ngay trong game.
     const today = host.today(), cnt = new Map<string, number>();
     for (const x of e.ev.led) if (x.day === today && x.ch?.startsWith(`${QUEST_VER}:`)) cnt.set(x.node, (cnt.get(x.node) ?? 0) + 1);
-    const claims = (p.all ?? []).filter(r => nodeStat(host, v, r.node, r.level).state === 'inferred').map(r => r.node);
+    // v71 (bot L03): Claim đã có bằng chứng thật được kiểm tiếp trước (xác nhận xong từng phần thay vì mỗi phần một câu rồi bỏ đó).
+    const claimRows = (p.all ?? []).filter(r => nodeStat(host, v, r.node, r.level).state === 'inferred').map(r => ({ r, n: statusOf(v.m, r.node, r.level as Level).n })).sort((a, b) => b.n - a.n);
+    const claims = claimRows.map(x => x.r.node), claimLv = new Map(claimRows.map(x => [x.r.node, x.r.level as Level]));
     // v70 (bot L02): ôn cả phần ĐANG HỌC sắp quên (khả năng nhớ từ sổ < 0,7), không chỉ phần đã Đạt: người học yếu quên trước khi kịp Đạt.
     const learning = (p.all ?? []).filter(r => { const s = nodeStat(host, v, r.node, r.level); return !s.pass && !s.none && s.state !== 'inferred'; })
       .map(r => ({ n: r.node, r: evRecall(e.ev, r.node, today) ?? 1 })).filter(x => x.r < 0.7).sort((a, b) => a.r - b.r).map(x => x.n);
@@ -367,7 +369,7 @@ export function init(host: EHost): EngineModule {
     const acc = recentAcc(), explore = acc === null || acc >= 0.6, strong = acc !== null && acc >= 0.85;
     // v71 (bot L03): người học đang đúng nhiều → nới giới hạn lượt / nút / ngày (5 thay vì 3) để tiến nhanh hơn; tầng ưu tiên điểm nghẽn.
     const cap = strong ? 5 : QUEST.capDay, neck = neckOf(v)?.node;
-    const plan = planFloor({ acts, open: p.open, review: [...review, ...learning.filter(n => !review.includes(n))], can: n => /^(u|g|ph):/.test(n), started: n => Object.values(e.m[n] ?? {}).some(c => (c?.n ?? 0) > 0), floor: sv.floor, fresh: n => (cnt.get(n) ?? 0) < cap, claims, explore, ...(neck ? { neck } : {}) });
+    const plan = planFloor({ acts, open: p.open, review: [...review, ...learning.filter(n => !review.includes(n))], can: n => /^(u|g|ph):/.test(n), started: n => Object.values(e.m[n] ?? {}).some(c => (c?.n ?? 0) > 0), floor: sv.floor, fresh: n => (cnt.get(n) ?? 0) < cap, claims, claimLv: n => claimLv.get(n) ?? 3, explore, ...(neck ? { neck } : {}) });
     if (!plan.length) { host.toast('Chưa có gì để leo: chọn mục tiêu CEFR trước.'); return; }
     const max = hearts(sv.floor);
     qrun = { plan, i: 0, hp: max, max, coins: 0, ok: 0, n: 0, floor: sv.floor, q: null, card: null, chk: null, teach: false, taught: [], t0: Date.now(), ans: null, done: null, wrong: [], gaps: [] };

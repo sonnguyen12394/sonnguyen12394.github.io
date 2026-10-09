@@ -96,3 +96,12 @@ test('v71 (bot L03): điểm nghẽn là quái đầu tiên của tầng (kể c
   assert.equal(plan.find(c => c.gameType === 'monster')!.node, 'ph:s-01');
   assert.equal(plan.filter(c => c.node === 'ph:s-01').length, 1);
 });
+
+test('v71 (bot L03): Claim kiểm ở đúng mức đã suy ra (ngữ pháp mức 4), không hỏi Claim đã hết lượt hôm nay', () => {
+  const acts = rank({ open, probe: null, review: none, verify: [] });
+  const plan = planFloor({ acts, open, review: [], can: () => true, started: () => true, floor: 1, claims: ['g:c4', 'u:c3'], claimLv: n => (n.startsWith('g:') ? 4 : 3) });
+  const sc = plan.filter(c => c.gameType === 'scout');
+  assert.deepEqual(sc.map(c => [c.node, c.level]), [['g:c4', 4], ['u:c3', 3]]);
+  const capped = planFloor({ acts, open, review: [], can: () => true, started: () => true, floor: 1, fresh: n => n !== 'g:c4', claims: ['g:c4', 'u:c3'] });
+  assert.ok(!capped.some(c => c.node === 'g:c4'));
+});

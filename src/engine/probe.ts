@@ -53,13 +53,23 @@ export function candidates(p: ProbeIn): ProbeCand[] {
   // Một nút có thể được nhiều chế độ đề xuất (ví dụ vừa là biên lộ trình, vừa là tiền đề cần truy gốc): giữ chế độ ưu tiên cao nhất.
   const RANK: Record<Mode, number> = { root: 4, verify: 3, confirm: 2, boundary: 1, explore: 0 };
   const best = new Map<string, ProbeCand>();
+  // v71 (bot L03): độ phủ theo vùng kỹ năng (từ vựng / ngữ pháp / nghe…): vùng mới có bằng chứng ở rất ít phần thì một câu khám phá ở đó
+  // đáng giá hơn (biết thêm cả một kỹ năng, không chỉ một nút). Trước đây khám phá luôn thua xác nhận Claim → 25/26 phần nghe chưa từng
+  // được hỏi suốt 44 ngày, app không thể thấy người học nghe yếu.
+  const area = (id: string) => id.split(':')[0]!, cov = new Map<string, [number, number]>();
+  for (const r of p.need) {
+    if (!p.probeable(r.node)) continue;
+    const k = area(r.node), x = cov.get(k) ?? [0, 0], ev = Object.values(p.m[r.node] ?? {}).some(c => (c?.n ?? 0) > 0);
+    cov.set(k, [x[0] + (ev ? 1 : 0), x[1] + 1]);
+  }
+  const thin = (id: string) => { const x = cov.get(area(id)); return x && x[1] >= 4 ? Math.max(0, 0.6 - 1.2 * (x[0] / x[1])) : 0; };   // phủ 0% → +0,6; ≥ 50% → 0
   const push = (node: string, level: Level, mode: Mode, forNode?: string) => {
     if (!p.probeable(node)) return;
     const cur = best.get(node);
     if (cur && RANK[cur.mode] >= RANK[mode]) return;
     const c = p.m[node]?.[level], e = eig(c), effort = PROBE.effort;
     let bonus = mode === 'root' ? 0.8 : mode === 'verify' ? 0.3 : mode === 'confirm' ? 0.2 : 0;
-    if (mode === 'explore') bonus += 0.1;
+    if (mode === 'explore') bonus += 0.1 + thin(node);
     best.set(node, { node, level, mode, eig: e, effort, score: Math.round(((e + bonus) / effort) * 1000) / 1000, ...(forNode ? { for: forNode } : {}) });
   };
   for (const r of p.need) {
