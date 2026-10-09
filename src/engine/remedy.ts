@@ -35,8 +35,11 @@ export function remedyFor(gaps: GapKind[], need: Level, weakCtx?: string | null)
 
 // Chọn câu theo cách sửa: đúng mức (hoặc gần nhất không vượt), ưu tiên dạng câu (tự gõ / chọn), câu chưa gặp trước.
 export interface QLike { id: string; level: number; opts?: string[] }
+// v71 (bot L03): câu THẤP hơn mức cần phạt nặng hơn câu đã gặp ở đúng mức. Trước đây hết câu mức 3 chưa gặp thì lấy câu chọn mức 2 chưa
+// gặp (lệch 1 + lệch dạng 3 < đã gặp 5) dù mức 2 đã Đạt: không thêm bằng chứng nào cho mức cần (bot B2: 29 lượt như vậy). Câu cũ ở đúng mức,
+// hỏi lại cách quãng, vẫn là bằng chứng nhớ lại.
 export function pickFor<T extends QLike>(qs: T[], r: Remedy, seen: (id: string) => boolean): T | null {
   if (!qs.length) return null;
-  const score = (q: T) => (q.level === r.lv ? 0 : q.level < r.lv ? (r.lv - q.level) : 10 + q.level - r.lv) + (r.typed === !q.opts ? 0 : 3) + (seen(q.id) ? 5 : 0);
+  const score = (q: T) => (q.level === r.lv ? 0 : q.level < r.lv ? 6 * (r.lv - q.level) : 10 + q.level - r.lv) + (r.typed === !q.opts ? 0 : 3) + (seen(q.id) ? 5 : 0);
   return [...qs].sort((a, b) => score(a) - score(b))[0]!;
 }

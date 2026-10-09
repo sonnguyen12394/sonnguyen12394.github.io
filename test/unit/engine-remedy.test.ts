@@ -28,6 +28,10 @@ test('chọn câu theo cách sửa: đúng mức, đúng dạng (tự gõ / ch�
   assert.equal(pickFor(qs, remedyFor(['knowledge'], 3), () => false)!.id, 'a');
   assert.equal(pickFor(qs, remedyFor(['recall'], 3), id => id === 'c')!.id, 'd');
   assert.equal(pickFor([], remedyFor([], 3), () => false), null);
+  // v71: hết câu mức 3 chưa gặp → hỏi lại câu mức 3 (cách quãng), không lùi về câu chọn mức 2 chưa gặp
+  assert.equal(pickFor(qs, remedyFor(['recall'], 3), id => id === 'c' || id === 'd')!.level, 3);
+  // Không có câu đúng mức thì vẫn lấy mức gần nhất bên dưới
+  assert.equal(pickFor(qs.slice(0, 2), remedyFor(['recall'], 3), () => false)!.id, 'b');
 });
 
 let T = 0;
