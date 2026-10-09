@@ -418,6 +418,53 @@ Cột G: G1 · G2 · G3 · G4 · G5 · G6 · G7 · G8 · G9 · G10.
 | 4 | Chuyển Tốc độ 60 giây / Ghép cặp sang engine | F10, F2 | G4 2 → 9 |
 | sau | ⚔️ Đấu trường đề · ⚓ Chợ ghép đồ · 📒 Sổ sưu tập | F12, F7, F13 | Chờ bật mục tiêu thi / công sức lớn |
 
+### 6.4 Đã làm đợt 3 (v80–v82): chấm theo bản thật
+
+| Tiêu chí | 🎯 Bắt Âm + nói thử | 🎤 Karaoke hội thoại | 🛠️ Xưởng sửa câu |
+|---|---|---|---|
+| G1 Học là luật chơi (×2) | 8 | 8 | 8 |
+| G2 Đúng mục đích (×2) | 9 | 8 | 9 |
+| G3 Bằng chứng sạch (×2) | 8 | 8 | 9 |
+| G4 Engine chọn nội dung | 9 | 7 | 9 |
+| G5 Độ khó tách đôi | 8 | 7 | 8 |
+| G6 Phản hồi học tập | 9 | 7 | 9 |
+| G7 Hấp dẫn thật (×2) | 7 | 7 | 6 |
+| G8 Mật độ học | 9 | 7 | 6 |
+| G9 Động lực trung thực | 9 | 9 | 9 |
+| G10 Phát hành được | 7 | 7 | 9 |
+| **Điểm có trọng số (÷ 14)** | **8,2** | **7,6** | **8,1** |
+
+| Game | Chức năng | Tiêu chí riêng | Điểm |
+|---|---|---|---|
+| 🎯 Bắt Âm + nói thử | F4 phát âm | F4a 9 · F4b 8 · F4c 7 | **8,0** ✓ (trước 6,7) |
+| 🎤 Karaoke hội thoại | F8 nói | F8a 9 · F8b 7 · F8c 9 | **8,3** ✓ |
+| 🛠️ Xưởng sửa câu | F3 ngữ pháp | F3a 9 · F3b 9 · F3c 9 | **9,0** ✓ |
+| 🛠️ Xưởng sửa câu | F9 viết | F9a 8 · F9b 3 · F9c 7 | 6,0 (phụ: mới ở mức câu) |
+
+**🎯 Bắt Âm + nói thử** (`bubbleview.ts`, `host.asr`)
+- Sau mỗi từ, nút "Nói thử" dùng chung máy nghe giọng của app (`asrBox`). Máy nghe ra đúng từ, hay nghe thành từ kia của cặp âm.
+- Đúng thì +5 điểm. Đây là telemetry, không vào năng lực, đúng quy định chung của app với nhận diện giọng (G3).
+- Máy không nghe được giọng thì không hiện phần nói (G10 = 7).
+
+**🎤 Karaoke hội thoại** (`karaoke.ts`, `karaview.ts`)
+- Engine chọn một hội thoại ở cấp người học đang học: chưa đóng vai trước, ưu tiên hội thoại có chức năng giao tiếp đang học.
+- Người học nói vai B, máy đọc vai A. Mỗi câu: nghe mẫu / nghe chậm, nói, máy tô xanh từ nghe ra.
+- Máy không nghe được giọng thì tự chấm (Dễ / Được / Khó), như màn Đóng vai. Nhờ vậy game vẫn chơi được trên mọi trình duyệt (G10 = 7).
+- Kết quả lưu như màn Đóng vai (`st.dlg[].rp`), tính vào Can-Do nói. Không ghi bằng chứng vào nút (e2e `speak.spec.ts`).
+
+**🛠️ Xưởng sửa câu** (`workshop.ts`, `app.js eFixes`)
+- Mỗi đơn là một câu sai hay gặp của điểm ngữ pháp engine chọn (154 / 154 điểm có câu sai). Ô nhập điền sẵn câu hỏng để sửa đúng chỗ.
+- Đúng = bằng chứng mức 4, `g = 0`.
+- Sai thì tô xanh từ cần sửa + "vì sao" (G6).
+- 6 đơn mỗi ca, mỗi câu mất khoảng 20–30 giây (G8 = 6).
+
+**Còn lại sau đợt 3:**
+- F9 viết đoạn: ✉️ Thư gửi cư dân phố.
+- F1: 🗺️ Thám hiểm sương mù, phải sửa G1 trước.
+- F12: ⚔️ Đấu trường đề, chờ bật mục tiêu thi.
+- 🤖 Ra lệnh cho robot (F8, game thứ hai cho nói).
+- Chuyển Tốc độ 60 giây / Ghép cặp sang engine.
+
 Nguồn xu hướng:
 - [PocketGamer.biz: H1 2026 genre analysis](https://www.pocketgamer.biz/h1-2026-genre-analysis-strategy-stumbles-rpgs-fall-and-puzzle-revenue-ramps-up/)
 - [Top mobile puzzle games 2026](https://respawn.outlookindia.com/gaming/gaming-news/top-mobile-puzzle-games-ruling-the-global-grossing-charts-in-2026)

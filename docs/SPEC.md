@@ -5,7 +5,7 @@
 > 2. **Game là trải nghiệm chính**: người học chơi để thắng, việc học tiếng Anh nằm ẩn trong luật chơi (stealth learning) — mỗi hành động trong game là một thử thách ngôn ngữ do engine chọn, nhằm lên cấp nhanh nhất. Không dùng dark pattern; tiến độ học và dữ liệu luôn xem được.
 > 3. Kiến trúc evidence theo v2.4 (Observation → Evidence → Ledger → Aggregate → Learner State → Decision Snapshot), đo bằng `docs/CONFORMANCE-200-v2.4.md` và `docs/SCORECARD-v2.4.md`.
 >
-> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v79 (xem phần "Lộ trình v2.4" cuối tệp).
+> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v82 (xem phần "Lộ trình v2.4" cuối tệp).
 
 Cập nhật: 03/10/2026. Bản đọc và bình luận: Claude Docs "English Ladder — Master Spec v2". Tệp này là bản AI đọc khi xây; hai bản phải giống nhau.
 
@@ -278,4 +278,7 @@ Mỗi mốc một PR, chấm lại 200 + 400 tiêu chí sau mỗi mốc.
 | v77 | Câu đố ngày (F10 ôn tập + F2) | 16 ô từ của 4 cụm (u:) do engine chọn (ôn → đang học → lộ trình), mỗi cụm một họ chủ đề khác (`puzzle.ts family`); ghép nhóm không vào năng lực; sau mỗi nhóm nhớ lại một từ khác của cụm (tự gõ mức 3 nếu đã học, chọn trong 4 mức 2 nếu mới); không giới hạn lượt nộp; câu đố mỗi ngày + ván luyện thêm; telemetry `e.gd` |
 | v78 | Thám tử (F6 đọc + F11) | Một bài đọc đúng cấp đang học (`app.js eTexts`: văn bản đời thường, bài dài, bài của unit), chưa làm trước, bài của unit đã học trước; mỗi câu hỏi là một manh mối (3 lựa chọn), câu ý chính là kết luận; sai thì tô sáng câu chứa đáp án + vì sao + thử lại không tính điểm; chạm từ để xem nghĩa; điểm lưu như tab Đọc (Can-Do); telemetry `e.gt` |
 | v79 | Đài phát thanh (F5 nghe đoạn) | Cùng lõi với Thám tử nhưng nghe cả bài bằng giọng máy (hai giọng), lời ẩn tới cuối, nghe lại / chậm không giới hạn; điểm lưu như tab Nghe (Can-Do); máy không có giọng thì ẩn game; telemetry `e.gr` |
+| v80 | Bắt Âm: vòng nói thử (F4) | Sau mỗi từ có nút "Nói thử" (máy nghe giọng của app, `asrBox`): máy nghe ra đúng từ hay từ kia của cặp âm; đúng +5 điểm (telemetry, không vào năng lực); máy không nghe được giọng thì ẩn |
+| v81 | Karaoke hội thoại (F8 nói) | Hội thoại đúng cấp đang học (chưa đóng vai, có chức năng đang học); người học nói vai B, máy đọc vai A; máy nghe khớp từ hoặc tự chấm; kết quả lưu như màn Đóng vai (Can-Do nói); không ghi bằng chứng vào nút; telemetry `e.gk` |
+| v82 | Xưởng sửa câu (F3 + F9) | Câu sai hay gặp (`fx`) của điểm ngữ pháp do engine chọn; tự gõ lại câu đúng = bằng chứng mức 4 (g = 0); sai thì tô từ cần sửa + vì sao; 6 đơn / ca; telemetry `e.gw` |
 | — | Tiêu chí game theo chức năng | `docs/GAME-CRITERIA.md`: 13 chức năng học của app; 10 tiêu chí chung (G1–G10, thang 10, trọng số; bắt buộc G3 ≥ 8 và G9 ≥ 8) + tiêu chí riêng theo chức năng; chấm 5 game hiện có (Leo tháp 7,1 · Xếp Khối 7,6 · Bàn Cờ 7,1 · Tốc độ 60 giây 5,6 · Ghép cặp 5,9); thứ tự game nên làm tiếp |
