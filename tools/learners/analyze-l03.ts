@@ -62,7 +62,7 @@ for (const n of new Set(quest.map(r => r.node))) {
   const xs = quest.filter(r => r.node === n);
   for (let i = 0; i + 1 < xs.length; i++) {
     const a = xs[i]!, nx = xs[i + 1]!, prev = xs.slice(Math.max(0, i - 2), i + 1);
-    if (prev.length === 3 && prev.every(r => r.ok && r.level === a.level)) { upOpp++; if (nx.level > a.level || nx.game === 'boss') up++; }
+    if (prev.length === 3 && prev.every(r => r.ok && r.level === a.level) && a.level < lvOf(n)) { upOpp++; if (nx.level > a.level || nx.game === 'boss') up++; }
     if (i >= 1 && !a.ok && !xs[i - 1]!.ok && xs[i - 1]!.level === a.level) { downOpp++; if (nx.level < a.level) down++; }
     if (!a.ok && i >= 2 && xs[i - 1]!.ok && xs[i - 2]!.ok) { oneErrOpp++; if (nx.level < a.level) oneErrDrop++; }
   }
