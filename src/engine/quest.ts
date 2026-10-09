@@ -58,7 +58,19 @@ export function gameplayDifficulty(floor: number): number { return Math.min(1, 0
 
 // Dựng một tầng: thứ tự cảnh cố định cho nhịp chơi (quái → trinh sát → quái → rương → trại → quái → quái → trùm), nội dung do NBA.
 export function planFloor(x: FloorIn): Challenge[] {
-  const size = x.size ?? 8, gp = gameplayDifficulty(x.floor), used = new Set<string>(), out: Challenge[] = [];
+  const size = x.size ?? 8, pick = picker(x), out: Challenge[] = [];
+  const order: Enc[] = x.order ?? ['monster', 'scout', 'monster', 'chest', 'camp', 'monster', 'monster', 'boss'];
+  for (const k of order.slice(0, x.order ? order.length : size)) {
+    const c = pick(k);
+    if (c) out.push(c);
+  }
+  return out;
+}
+
+// v73: bộ chọn nội dung theo loại cảnh, dùng chung cho tầng tháp (thứ tự cố định) và Bàn Cờ (loại cảnh do xúc xắc). Mỗi lần gọi trả
+// lượt kế tiếp cho loại cảnh đó; loại cảnh không có gì phù hợp thì về quái (học phần ưu tiên của lộ trình), như tầng tháp.
+export function picker(x: FloorIn): (kind: Enc) => Challenge | null {
+  const gp = gameplayDifficulty(x.floor), used = new Set<string>(), out: Challenge[] = [];
   const val = new Map(x.acts.map(a => [`${a.kind}|${a.node}`, a.u]));
   const mk = (kind: Enc, node: string, level: Level, value: number): Challenge => ({
     id: `${QUEST_VER}:${x.tag ?? ''}${x.floor}:${out.length}:${node}`, gameType: kind, node, level, targetCompetencies: [node], evidenceTypes: EVT[kind],
@@ -100,12 +112,7 @@ export function planFloor(x: FloorIn): Challenge[] {
     used.add(o.node);
     return mk('monster', o.node, (x.started(o.node) ? o.level : 1) as Level, val.get(`learn|${o.node}`) ?? 0.8);
   };
-  const order: Enc[] = x.order ?? ['monster', 'scout', 'monster', 'chest', 'camp', 'monster', 'monster', 'boss'];
-  for (const k of order.slice(0, x.order ? order.length : size)) {
-    const c = take(k) ?? (k !== 'monster' ? take('monster') : null);
-    if (c) out.push(c);
-  }
-  return out;
+  return (kind: Enc) => { const c = take(kind) ?? (kind !== 'monster' ? take('monster') : null); if (c) out.push(c); return c; };
 }
 
 // Xu tỉ lệ với giá trị học của lượt (C346–C347); câu sai vẫn được ít xu nếu là câu mới (được học từ đáp án), không bao giờ âm.
