@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { startDiag, nextProbe, answer, finished, level, priorFor, guessCorrected, MAX_PROBES, type Cand } from '../../src/engine/diag.ts';
+import { startDiag, nextProbe, answer, finished, level, priorFor, guessCorrected, recognitionLevel, MAX_PROBES, type Cand } from '../../src/engine/diag.ts';
 
 // 6 cấp × 2 loại × 5 nút mỗi cấp; nút có trọng số khác nhau
 const cands: Cand[] = [];
@@ -73,4 +73,10 @@ test('v69 (bot L01): trừ đoán mò — biết 60% với câu 4 lựa chọn (
   assert.equal(d.stair.u.est, 2);
   // Câu tự gõ không có đoán mò: không trừ gì.
   assert.equal(guessCorrected(2, 3, 0), 2 / 3);
+});
+
+test('v71 (bot L03): cấp nhận ra tách khỏi cấp chung — người học nhận ra tốt tới B1 dù tự nhớ ra chỉ A2', () => {
+  const rs = [{ kind: 'u' as const, lv: 1, rc: 1 }, { kind: 'u' as const, lv: 2, rc: 0.8 }, { kind: 'u' as const, lv: 3, rc: 0.7 }, { kind: 'u' as const, lv: 4, rc: 0.2 }, { kind: 'g' as const, lv: 2, rc: 0.5 }];
+  assert.equal(recognitionLevel(rs, 'u'), 3);
+  assert.equal(recognitionLevel(rs, 'g'), null);
 });

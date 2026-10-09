@@ -76,6 +76,9 @@ export function viewDiagResult(c: ECtx, lr: { L: number | null; R: number | null
       <div class="stat"><b>${lvl(r.u)}</b><span class="muted">từ vựng</span></div>
       <div class="stat"><b>${lvl(r.g)}</b><span class="muted">ngữ pháp</span></div>
       ${lr.L !== null || lr.R !== null ? `<div class="stat"><b>${lr.L ?? '–'} / ${lr.R ?? '–'}</b><span class="muted">Nghe / Đọc (band)</span></div>` : ''}</div>
+      ${(() => { const sn = [...e.ev.snap].reverse().find(x => x.subj === 'diag' && x.day === r.day), ru = sn?.info?.ru, rg = sn?.info?.rg;
+        const part = [typeof ru === 'number' && ru > Math.floor(r.u) ? `từ vựng ${cefrOf(ru)}` : '', typeof rg === 'number' && rg > Math.floor(r.g) ? `ngữ pháp ${cefrOf(rg)}` : ''].filter(Boolean);
+        return part.length ? `<p class="hint"><b>Điểm mạnh:</b> bạn nhận ra tốt tới ${part.join(', ')} (tự nhớ ra thì chưa chắc). App không dạy lại phần nhận ra này, chỉ luyện cho bạn tự nhớ ra và dùng được.</p>` : ''; })()}
       <p class="hint">Đây là ước lượng sau ${r.n} phần, có thể lệch khoảng nửa cấp. Phần thấp hơn mức này app tạm coi là bạn đã biết để bạn không phải học lại, nhưng sẽ kiểm tra dần trong lúc chơi (lượt 🔭 trinh sát): sai thì phần đó tự quay lại lộ trình.</p></section>
     ${(() => { const a = [...e.ev.snap].reverse().find(x => x.dec === 'goal:AUTO' && x.day === r.day), m = a ? GOALS.get(String(a.info?.goal)) : null;
       return m ? `<section class="panel stack"><h3>App đã đặt mục tiêu: ${esc(m.vi)}</h3><p class="muted">Cấp kế tiếp của phần bạn còn yếu nhất. Đổi hoặc thêm mục tiêu ở Mục tiêu bất cứ lúc nào.</p></section>` : ''; })()}

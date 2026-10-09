@@ -1,6 +1,6 @@
 # Báo cáo mô phỏng learner
 
-Sinh bởi `npm run sim` (tools/sim/run.ts → src/engine/sim/sim.ts), luật `ev1.0/m3.3`, 2026-10-08.
+Sinh bởi `npm run sim` (tools/sim/run.ts → src/engine/sim/sim.ts), luật `ev1.0/m3.3`, 2026-10-09.
 
 > Learner ở đây là learner **giả lập** có trạng thái thật biết trước (biết/chưa biết, hiểu sai, quên, đoán mò, nhầm tay; kỹ năng chơi game và tốc độ độc lập với năng lực ngôn ngữ), chạy qua chính engine của app. Báo cáo này kiểm chứng **thuật toán** (tầng L2–L3 của Evaluation Framework). Nó **không** chứng minh người thật học được (L4–L5): việc đó cần dữ liệu người học thật.
 

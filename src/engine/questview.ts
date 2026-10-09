@@ -10,6 +10,7 @@ export interface QuestRun {
   plan: Challenge[]; i: number; hp: number; max: number; coins: number; ok: number; n: number; floor: number;
   q: QItem | null; card: MicroCard | null; chk: QItem | null;   // chk: câu thử ngay sau bí kíp ở trại (v69)
   teach: boolean; taught: string[];                              // teach: lượt này dạy trước (thẻ mới) rồi mới hỏi (v69)
+  t0?: number; passed?: string[];                                // v71: phần vừa vững trong lượt chơi này (lên cấp thật, từ bằng chứng)
   ans: { ok: boolean; right: string; given: string; coins: number; novel: boolean; why?: string } | null;
   done: 'win' | 'lose' | null; wrong: string[]; gaps: string[];
 }
@@ -62,6 +63,7 @@ export function viewQuestEnd(c: ECtx, r: QuestRun): string {
   const weak = [...new Set(r.wrong)].slice(0, 3).map(n => ix.node.get(n)?.vi ?? n);
   return `<section class="stack"><span class="eyebrow">Tầng ${r.floor}</span><h1>${r.done === 'win' ? '🏆 Qua tầng!' : '💤 Hết tim'}</h1>
     <p>${r.ok}/${r.n} câu đúng · +${r.coins} xu.${r.done === 'win' ? ` Tầng ${r.floor + 1} đã mở.` : ' Tầng này vẫn chờ bạn, không mất gì.'}</p>
+    ${r.passed?.length ? `<div class="fb good" role="status"><strong>⬆ Lên cấp: ${r.passed.slice(0, 4).map(esc).join(', ')}</strong><span>đã vững (từ câu trả lời của bạn, không phải từ xu)</span></div>` : ''}
     ${weak.length ? `<p class="muted">Lượt sau app sẽ đưa lại: ${weak.map(esc).join(', ')}.</p>` : ''}
     <p class="hint">Mọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.</p></section>
     <div class="row"><button class="btn primary" data-e="qhome">Về tháp</button><button class="btn ghost" data-e="go" data-r="today">Lộ trình hôm nay</button></div>`;

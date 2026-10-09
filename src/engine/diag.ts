@@ -59,6 +59,14 @@ export function guessCorrected(got: number, of: number, gsum = 0): number {
   return Math.max(0, Math.min(1, (got / of - g) / (1 - g)));
 }
 
+// v71 (bot L03): cấp NHẬN RA của một loại (từ vựng / ngữ pháp) = cấp cao nhất mà câu chọn (đã trừ đoán mò) đúng ≥ 2/3. Người học trung
+// bình thường nhận ra tốt hơn tự nhớ ra; cấp chung của bài dò (tính cả câu tự gõ) vì vậy thấp hơn — dùng cấp nhận ra để không bắt học lại
+// phần nhận ra đã vững (chỉ tiên nghiệm mức 1–2; mức 3 trở lên vẫn cần bằng chứng).
+export function recognitionLevel(rs: Array<{ kind: Kind; lv: number; rc: number }>, kind: Kind): number | null {
+  const ok = rs.filter(r => r.kind === kind && r.rc >= 2 / 3).map(r => r.lv);
+  return ok.length ? Math.max(...ok) : null;
+}
+
 export function finished(d: DiagState, now: number, left: number): boolean {
   const max = d.max ?? MAX_PROBES;
   if (left === 0 || now - d.t0 >= MAX_MS || d.probed.length >= max) return true;

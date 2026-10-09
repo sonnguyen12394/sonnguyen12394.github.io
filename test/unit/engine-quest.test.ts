@@ -89,3 +89,10 @@ test('v70 (bot L02): người học đang sai nhiều → trinh sát không dò 
   assert.ok(!off.some(c => c.node === 'g:p'));
   assert.ok(offC.some(c => c.gameType === 'scout' && c.node === 'u:c1'));
 });
+
+test('v71 (bot L03): điểm nghẽn là quái đầu tiên của tầng (kể cả khi chặn ít năng lực)', () => {
+  const acts = rank({ open, probe: null, review: none, verify: [] });
+  const plan = planFloor({ acts, open: [...open, item('ph:s-01', 0)], review: [], can: () => true, started: () => true, floor: 1, neck: 'ph:s-01' });
+  assert.equal(plan.find(c => c.gameType === 'monster')!.node, 'ph:s-01');
+  assert.equal(plan.filter(c => c.node === 'ph:s-01').length, 1);
+});

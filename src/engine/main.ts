@@ -6,7 +6,7 @@ import { migrateE, sanitizeE, mergeE, E_V, GOAL_MAX, type EState } from './state
 import { GOALS, loadGraph, loaded, goalOn } from './data.ts';
 import { viewGoals, viewPick, viewGoal, dayOf, type ECtx } from './views.ts';
 import { viewDiagIntro, viewDiagRun, viewDiagResult, viewLoading, lrBand, type DiagRun } from './diagview.ts';
-import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, autoGoal, guessCorrected, QUICK_PROBES, type Cand } from './diag.ts';
+import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, autoGoal, guessCorrected, recognitionLevel, QUICK_PROBES, type Cand } from './diag.ts';
 import { ingest, setPrior } from './ev/store.ts';
 import { dev } from './core.ts';
 import { addSnap } from './ev/snapshot.ts';
@@ -31,7 +31,7 @@ import { readinessOf } from './readyview.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
 import { viewMeasure } from './measureview.ts';
 import type { MicroCard } from './host.ts';
-import { stat } from './mastery.ts';
+import { stat, statusOf } from './mastery.ts';
 import { nodeStat } from './views.ts';
 
 export const MODULE_VERSION = 1;
@@ -77,20 +77,30 @@ export function init(host: EHost): EngineModule {
   };
 
   // ---------- Chẩn đoán (M3) ----------
-  let drun: DiagRun | null = null;
+  let drun: DiagRun | null = null, drec: Array<{ kind: 'u' | 'g'; lv: number; rc: number }> = [], dmcq = { got: 0, n: 0, gs: 0 };
   const lr = () => lrBand(host.state());
   const norm = (s: string) => s.trim().toLowerCase().replace(/[‘’]/g, "'").replace(/[.!?]+$/, '').replace(/\s+/g, ' ');
   // Thêm một mục tiêu (dùng chung cho chọn tay và tự đặt). Trả về false nếu không thêm được.
   function addGoal(id: string, why: 'pick' | 'auto'): boolean {
     const m = GOALS.get(id), e = E();
     if (!m || !goalOn(id, future()) || e.goals.some(g => g.id === id)) return false;
+    // v71 (bot L03): người học tự chọn một cấp CEFR cao hơn mục tiêu app TỰ ĐẶT sau bài dò → mục tiêu tự đặt (đã nằm trong bao đóng của
+    // cấp cao hơn) được thay, mục tiêu người học chọn thành mục tiêu chính: tiến độ, kỹ năng vững, Readiness đều đo theo nó.
+    if (why === 'pick' && id.startsWith('cefr-')) {
+      const autos = new Set(e.ev.snap.filter(s => s.dec === 'goal:AUTO').map(s => String(s.info?.goal ?? '')));
+      e.goals = e.goals.filter(g => !(autos.has(g.id) && g.id.startsWith('cefr-') && cefrRank(g.id) < cefrRank(id)));
+    }
     if (e.goals.length >= GOAL_MAX) e.goals = e.goals.filter(g => goalOn(g.id, future()));   // nhường chỗ: bỏ mục tiêu đang ẩn trước
     if (e.goals.length >= GOAL_MAX) { host.toast(`Tối đa ${GOAL_MAX} mục tiêu cùng lúc. Bỏ bớt một mục tiêu trước.`); return false; }
-    e.goals.push({ id, version: m.version, since: host.today(), date: null });
+    const g0 = { id, version: m.version, since: host.today(), date: null };
+    // Cấp CEFR người học chọn cao hơn mọi mục tiêu CEFR đang có → đứng đầu (mục tiêu chính).
+    if (why === 'pick' && id.startsWith('cefr-') && e.goals.every(g => !g.id.startsWith('cefr-') || cefrRank(g.id) < cefrRank(id))) e.goals.unshift(g0); else e.goals.push(g0);
     if (why === 'auto') addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `goal:${id}`, dec: 'goal:AUTO', rule: `${RULE_ID}/goal-auto-1`,
       info: { goal: id, ...(e.diag ? { u: e.diag.u, g: e.diag.g } : {}) }, evs: [] }, false);
     return true;
   }
+  const CEFR_ORDER = ['cefr-pre-a1', 'cefr-a1', 'cefr-a2', 'cefr-b1', 'cefr-b2', 'cefr-c1', 'cefr-c2'];
+  const cefrRank = (id: string): number => CEFR_ORDER.indexOf(id);
   function candidates(): Cand[] {
     const ix = loaded()!, e = V();
     const goals = e.goals.map(s => ix.goal.get(s.id)).filter((g): g is NonNullable<typeof g> => !!g);
@@ -120,16 +130,20 @@ export function init(host: EHost): EngineModule {
   function finishDiag(): void {
     if (!drun) return;
     const ix = loaded()!, e = E(), d = drun.d, est = { u: level(d.stair.u), g: level(d.stair.g) };
+    const rec = { u: recognitionLevel(drec, 'u'), g: recognitionLevel(drec, 'g') };
     for (const n of ix.node.values()) {
       if (n.kind !== 'vocab' && n.kind !== 'grammar') continue;
-      const p = priorFor(cefrIdx(n.cefr), n.kind === 'vocab' ? est.u : est.g);
+      const k = n.kind === 'vocab' ? 'u' : 'g', p = priorFor(cefrIdx(n.cefr), est[k]);
       if (p) setPrior(e.ev, e.m, n.id, defaultLevel(n), p[0], p[1], 'diag', host.today());
+      // v71: nhận ra đã vững tới cấp rec → tiên nghiệm "đã biết" chỉ ở mức 1–2 (vẫn phải chứng minh tự nhớ ra / dùng được).
+      const r = rec[k];
+      if (r !== null && cefrIdx(n.cefr) <= r && !(p && p[0] > p[1])) setPrior(e.ev, e.m, n.id, Math.min(2, defaultLevel(n)) as Level, 6, 0.5, 'diag', host.today());
     }
     e.diag = { day: host.today(), u: est.u, g: est.g, n: d.probed.length };
     // Goal-first (v64): chưa có mục tiêu nào đang mở thì tự đặt mục tiêu CEFR kế tiếp (đổi được ở Mục tiêu).
     if (!V().goals.length) { const b = lr(); addGoal(autoGoal(est.u, est.g, [b.L, b.R].map(x => (x === null ? null : bandToCefr(x)))), 'auto'); }
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: 'diag', dec: `u=${est.u};g=${est.g}`, rule: `${RULE_ID}/diag-stair-1`,
-      info: { u: est.u, g: est.g, probes: d.probed.length, start: d.stair.u.seen[0] ?? 0, rev: d.stair.u.rev + d.stair.g.rev },
+      info: { u: est.u, g: est.g, ...(rec.u !== null ? { ru: rec.u } : {}), ...(rec.g !== null ? { rg: rec.g } : {}), probes: d.probed.length, start: d.stair.u.seen[0] ?? 0, rev: d.stair.u.rev + d.stair.g.rev },
       evs: e.ev.led.filter(x => x.src === 'diag').slice(-12).map(x => x.id) }, false);
     drun = null; host.save(); host.go('diag-result');
   }
@@ -139,12 +153,15 @@ export function init(host: EHost): EngineModule {
     ingest(e.ev, e.m, { node: drun.node, level: q.level, ok, g: q.g, item: q.id, text: q.prompt, qt: q.opts ? 'mcq' : 'typed', ctx: 'diag', src: 'diag', ch: 'diag' }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     if (ok) drun.got++;
     drun.gs = (drun.gs ?? 0) + (q.opts ? Math.max(q.g ?? 0, 1 / (q.opts.length + 1)) : 0);
+    if (q.opts) { dmcq.n++; if (ok) dmcq.got++; dmcq.gs += Math.max(q.g ?? 0, 1 / (q.opts.length + 1)); }
     drun.i++;
     if (drun.i >= drun.qs.length) {
       const ix = loaded()!, n = ix.node.get(drun.node)!;
       // v69 (bot L01): trừ phần đoán mò trước khi lên/xuống cấp. Biết 60% mà đoán trúng phần còn lại → tỉ lệ đúng thô 70% → trước đây
       // lên cấp, coi cả cấp dưới là đã biết. Hiệu chỉnh cổ điển: r' = (r − ḡ) / (1 − ḡ).
       answer(drun.d, { id: n.id, kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), weight: 0 }, guessCorrected(drun.got, drun.total, drun.gs) * drun.total, drun.total);
+      if (dmcq.n) drec.push({ kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), rc: guessCorrected(dmcq.got, dmcq.n, dmcq.gs) });
+      dmcq = { got: 0, n: 0, gs: 0 };
       const next = loadNode(drun.d);
       if (!next) { finishDiag(); return; }
       drun = next;
@@ -281,10 +298,19 @@ export function init(host: EHost): EngineModule {
     }
     // v70 (bot L02): can thiệp vừa rồi ở nút này chưa hiệu quả (câu thử sau bí kíp sai, chưa có lần sửa được sau đó) → không lặp lại
     // y nguyên: lùi một bậc (hỏi nhận ra trước, câu chọn) và đổi cách dạy (bí kíp "cách khác" ở trại).
+    // v71 (bot L03): người học đang đúng nhiều (≥ 85%) → phần chưa có bằng chứng / chưa từng sai không đi từng bậc mà hỏi thẳng ở mức cần
+    // (câu đúng ở mức cao được tính cho các mức dưới); sai thì thang mức tự lùi lại.
+    const ra = recentAcc();
+    if (ra !== null && ra >= 0.85 && need >= 3 && (r.act === 'check' || (r.act === 'teach' && !e.ev.led.some(x => x.node === node && !x.ok)))) r = { ...r, act: 'check', lv: need, typed: true, vi: 'hỏi thẳng ở mức cần (bạn đang đúng nhiều)' };
     if (flopped(node) && r.lv > 1 && r.act !== 'transfer') r = { ...r, act: 'step', lv: Math.max(1, r.lv - 1) as Level, typed: false, vi: REMEDY_VI.step };
     qcur = { node, gap: r.gap ?? '' };
     if (r.act === 'transfer') { const t = xferItems(host, e, node); if (t[0]) return { q: t[0], xfer: true }; }
     return { q: pickFor(host.probe(node), r, id => seenHas(e.ev, node, id)), xfer: false };
+  }
+  // Tỉ lệ đúng tự lực ở 24 lượt tháp gần nhất (null khi chưa đủ 12 lượt).
+  function recentAcc(): number | null {
+    const xs = E().ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:`) && !x.asst).slice(-24);
+    return xs.length < 12 ? null : xs.filter(x => x.ok).length / xs.length;
   }
   // Lần can thiệp gần nhất (trong 7 ngày) ở nút này chưa sửa được.
   function flopped(node: string): boolean {
@@ -338,11 +364,13 @@ export function init(host: EHost): EngineModule {
     const learning = (p.all ?? []).filter(r => { const s = nodeStat(host, v, r.node, r.level); return !s.pass && !s.none && s.state !== 'inferred'; })
       .map(r => ({ n: r.node, r: evRecall(e.ev, r.node, today) ?? 1 })).filter(x => x.r < 0.7).sort((a, b) => a.r - b.r).map(x => x.n);
     // Người học đang trả lời sai nhiều (< 60% ở 24 lượt tự lực gần nhất) → bớt dò khám phá, dùng lượt trinh sát để củng cố phần đang học.
-    const recent = e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:`) && !x.asst).slice(-24), explore = recent.length < 12 || recent.filter(x => x.ok).length / recent.length >= 0.6;
-    const plan = planFloor({ acts, open: p.open, review: [...review, ...learning.filter(n => !review.includes(n))], can: n => /^(u|g|ph):/.test(n), started: n => Object.values(e.m[n] ?? {}).some(c => (c?.n ?? 0) > 0), floor: sv.floor, fresh: n => (cnt.get(n) ?? 0) < QUEST.capDay, claims, explore });
+    const acc = recentAcc(), explore = acc === null || acc >= 0.6, strong = acc !== null && acc >= 0.85;
+    // v71 (bot L03): người học đang đúng nhiều → nới giới hạn lượt / nút / ngày (5 thay vì 3) để tiến nhanh hơn; tầng ưu tiên điểm nghẽn.
+    const cap = strong ? 5 : QUEST.capDay, neck = neckOf(v)?.node;
+    const plan = planFloor({ acts, open: p.open, review: [...review, ...learning.filter(n => !review.includes(n))], can: n => /^(u|g|ph):/.test(n), started: n => Object.values(e.m[n] ?? {}).some(c => (c?.n ?? 0) > 0), floor: sv.floor, fresh: n => (cnt.get(n) ?? 0) < cap, claims, explore, ...(neck ? { neck } : {}) });
     if (!plan.length) { host.toast('Chưa có gì để leo: chọn mục tiêu CEFR trước.'); return; }
     const max = hearts(sv.floor);
-    qrun = { plan, i: 0, hp: max, max, coins: 0, ok: 0, n: 0, floor: sv.floor, q: null, card: null, chk: null, teach: false, taught: [], ans: null, done: null, wrong: [], gaps: [] };
+    qrun = { plan, i: 0, hp: max, max, coins: 0, ok: 0, n: 0, floor: sv.floor, q: null, card: null, chk: null, teach: false, taught: [], t0: Date.now(), ans: null, done: null, wrong: [], gaps: [] };
     qLoad(); host.render();
   }
   function qAnswer(ok: boolean, given: string): void {
@@ -373,6 +401,8 @@ export function init(host: EHost): EngineModule {
     if (!qrun) return;
     const sv = qsave(), e = E();
     qrun.done = how; sv.runs++;
+    const t0 = qrun.t0 ?? 0, ixq = loaded()!;
+    qrun.passed = [...new Set(e.ev.snap.filter(s => s.kind === 'mastery' && s.dec === 'PASS' && s.ts >= t0).map(s => s.subj))].map(n => ixq.node.get(n)?.vi ?? n);
     if (how === 'win') { sv.wins++; sv.best = Math.max(sv.best, sv.floor); sv.floor++; }
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `quest:${qrun.floor}`, dec: `quest:${how}`, rule: `${RULE_ID}/${QUEST_VER}`,
       info: { floor: qrun.floor, ok: qrun.ok, of: qrun.n, coins: qrun.coins, plan: qrun.plan.map(p => p.gameType[0]).join(''), gaps: qrun.gaps.join(',') },
@@ -394,13 +424,17 @@ export function init(host: EHost): EngineModule {
 
   // Điểm nghẽn (v70, bot L02): "bạn đang yếu ở X, và X đang chặn bạn" — trong các phần đã có bằng chứng mà chưa Đạt ở biên lộ trình, phần
   // mở đường cho nhiều năng lực nhất của mục tiêu; kèm loại lỗ hổng (đọc từ bằng chứng) để người học biết vì sao app cho luyện phần đó.
-  function neckOf(v: EState): { vi: string; dep: number; gap: string; pct: number } | null {
+  // v71 (bot L03): điểm nghẽn = độ YẾU (1 − m, cần ≥ 2 lượt bằng chứng) × tầm quan trọng (1 + ln(1 + số năng lực bị chặn)). Trước đây chỉ
+  // xếp theo số năng lực bị chặn, nên phần yếu nhất mà chặn ít (nghe phân biệt âm) không bao giờ được nêu.
+  function neckOf(v: EState): { node: string; vi: string; dep: number; gap: string; pct: number } | null {
     const ix = loaded()!, p = computePath(host, v, ix);
-    const cand = p.open.map(o => ({ o, s: nodeStat(host, v, o.node, o.level) })).filter(x => !x.s.none && !x.s.pass && x.s.state !== 'inferred' && /^(u|g|ph):/.test(x.o.node));
-    const top = cand.sort((a, b) => b.o.dep - a.o.dep || a.s.pct - b.s.pct)[0];
-    if (!top || top.o.dep < 1) return null;
+    const cand = p.open.map(o => ({ o, s: nodeStat(host, v, o.node, o.level), c: statusOf(v.m, o.node, o.level as Level) }))
+      .filter(x => !x.s.none && !x.s.pass && x.s.state !== 'inferred' && x.c.n >= 2 && /^(u|g|ph):/.test(x.o.node));
+    const score = (x: typeof cand[number]) => (1 - x.c.m) * (1 + Math.log1p(Math.max(0, x.o.dep)));
+    const top = cand.sort((a, b) => score(b) - score(a))[0];
+    if (!top) return null;
     const n = ix.node.get(top.o.node)!, k = gaps({ m: v.m, ev: v.ev, node: n.id, need: top.o.level as Level, blocked: false, recall: recallOf(host, v, n.id) });
-    return { vi: n.vi, dep: Math.round(top.o.dep), gap: k[0] ? GAP_VI[k[0]] : '', pct: Math.round(top.s.pct * 100) };
+    return { node: n.id, vi: n.vi, dep: Math.round(top.o.dep), gap: k[0] ? GAP_VI[k[0]] : '', pct: Math.round(top.c.m * 100) };
   }
 
   // ---------- Đo hiệu quả học (v63) ----------
@@ -519,6 +553,7 @@ export function init(host: EHost): EngineModule {
     retry() { loadErr = ''; ensure(); host.render(); },
     dstart(el) {
       if (!loaded()) { ensure(); return; }
+      drec = []; dmcq = { got: 0, n: 0, gs: 0 };
       drun = loadNode(startDiag(startLevel(), Date.now(), el.dataset.q ? QUICK_PROBES : undefined));
       if (!drun) { host.toast('Không có gì để dò cho mục tiêu này.'); return; }
       host.render();
