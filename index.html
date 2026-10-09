@@ -699,6 +699,23 @@ span.bkslot:empty{border-style:dashed;opacity:.4;cursor:default}
 .cfbub{font-size:26px;align-self:start;animation:pop .3s ease-out}
 
 /* v76 Bắt Âm: bong bóng trôi vào rồi đứng yên (không bắt người chơi chạm đích di động: tránh nhiễu kỹ năng tay, P13) */
+/* v84 Robot: lưới 5 × 5 */
+.rbgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;max-width:340px;margin:6px auto}
+.rbcell{aspect-ratio:1;display:grid;place-items:center;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);font-size:26px;position:relative}
+.rbcell.home{background:var(--warn-soft)}
+.rbcell.bot{outline:2px solid var(--accent);background:var(--accent-soft)}
+.rbcell small{position:absolute;right:2px;bottom:0;font-size:14px}
+.rblog{margin:2px 0;font-size:14px}
+.rblog.ok{color:var(--good)}
+.rblog.no{color:var(--bad)}
+/* v83 Thư gửi cư dân phố: lá thư như tờ giấy, danh sách máy kiểm */
+.ltcard{padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:var(--surface);box-shadow:0 1px 0 var(--line);border-left:4px solid var(--warn)}
+.ltcard p{margin:4px 0}
+.ltfrom{font-size:16px}
+.ltidea{display:flex;gap:8px;align-items:center}
+.ltchk{margin:6px 0;padding-left:18px}
+.ltchk li.ok{color:var(--good)}
+.ltchk li.no{color:var(--bad)}
 /* v82 Xưởng sửa câu: băng chuyền hộp, câu hỏng như phiếu sửa chữa */
 .wsbelt{display:flex;gap:6px;padding:6px 8px;border-radius:10px;background:repeating-linear-gradient(90deg,var(--surface-2) 0 14px,var(--line) 14px 16px);border:1px solid var(--line)}
 .wsbox{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:7px;background:var(--surface);border:1px solid var(--line);font-size:18px}
@@ -771,4 +788,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.244bd1dfbb.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.0ae249774e.js" defer></script><script src="app.js?v=67" defer></script>

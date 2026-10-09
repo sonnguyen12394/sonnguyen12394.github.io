@@ -3121,7 +3121,9 @@ function storySubmit(){
 
 /* ---------- Thử thách: trò chơi ngắn để đổi nhịp (Tốc độ 60 giây, Ghép cặp) và thách đấu bạn bè bằng mã (không cần server) ---------- */
 // Từ dùng cho trò chơi: từ đã học (nếu ≥ 12), không thì từ của các unit đã mở tới unit hiện tại.
-function gamePool(){ const L=ALL_WORDS.filter(w=>W(w.id).learned); if(L.length>=12) return L;
+// v85: từ đến hạn ôn trước (FSRS), rồi từ mới học (khoảng ôn ngắn) — không lấy ngẫu nhiên trong mọi từ đã học. Vẫn chỉ là thống kê phụ.
+function gamePool(){ const L=ALL_WORDS.filter(w=>W(w.id).learned); if(L.length>=12){ const t=today(), due=L.filter(w=>{ const c=W(w.id); return c.due!=null&&c.due<=t; }), ds=new Set(due.map(w=>w.id));
+    const rest=L.filter(w=>!ds.has(w.id)).sort((a,b)=>(W(a.id).ivl||0)-(W(b.id).ivl||0)); return [...shuffle(due),...rest].slice(0,Math.max(12,Math.min(40,due.length))); }
   const i=UNITS.indexOf(currentUnit()); return UNITS.slice(0,Math.max(3,i+1)).flatMap(u=>u.words); }
 const gq = w => { const opts=shuffle([w.vi,...others(w,3).map(x=>x.vi)]); return {wid:w.id,opts,ans:opts.indexOf(w.vi)}; };
 let _gt=null; const stopTimer = () => { if(_gt){ clearInterval(_gt); _gt=null; } };
@@ -3154,7 +3156,7 @@ function matchPick(side,id){
   const g=ui.game; if(g.done||g.got.includes(id)) return;
   if(side==='l'){ g.sel=id; g.flash=null; return render(); }
   if(!g.sel) return; const ok=g.sel===id;
-  if(ok){ g.got.push(id); sfx('ok'); } else { g.wrong++; sfx('bad'); g.flash=`“${WORD[g.sel].word}” không phải “${WORD[id].vi}”.`; }
+  if(ok){ g.got.push(id); sfx('ok'); } else { g.wrong++; sfx('bad'); g.flash=`“${WORD[g.sel].word}” nghĩa là “${WORD[g.sel].vi}”, không phải “${WORD[id].vi}” (“${WORD[id].word}”).`; }
   tally(ok, capXP('gxp',ok?5:1,GAME_XP_DAY), true); g.sel=null;
   if(g.got.length===g.ids.length){ g.done=true; g.secs=Math.round((Date.now()-g.start)/1000); bump('game');
     const rec=!st.games.match||g.secs<st.games.match; if(rec) st.games.match=g.secs; st.games.last=today(); save(); questCheck();
@@ -3590,7 +3592,7 @@ function asrStart(key,target,other){
   r.onresult=e=>{ if(ASR.r!==r) return; const res=e.results||[], alts=[];
     if(res[0]) for(let j=0;j<res[0].length;j++) alts.push(res[0][j].transcript);
     if(res.length>1) alts.unshift(Array.from(res).map(x=>x[0].transcript).join(' '));
-    ASR.res=/\s/.test(target.trim())?asrMatch(target,alts):asrWord(target,other,alts); ASR.on=false;
+    ASR.res=target==='*'?{free:true,heard:alts[0]||'',alts,p:1,k:'ok'}:/\s/.test(target.trim())?asrMatch(target,alts):asrWord(target,other,alts); ASR.on=false;   // '*': nghe tự do (v84 Robot: lệnh)
     evc('asr'); if(ASR.res.word?ASR.res.k==='ok':ASR.res.p>=.8) evc('asr:ok'); save(); render(); };
   r.onerror=e=>{ if(ASR.r!==r) return; ASR.err=ASR_ERR[e.error]||'Máy chưa nhận diện được lần này. Thử lại.'; ASR.on=false; render(); };
   r.onend=()=>{ if(ASR.r!==r||!ASR.on) return; ASR.on=false; if(!ASR.res&&!ASR.err) ASR.err=ASR_ERR['no-speech']; render(); };
@@ -8342,7 +8344,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.62b04c5180.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.884039325f.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8359,10 +8361,19 @@ const EHOST = {
   gloss:paras=>eGloss(paras),
   // v80–v81: nói. Máy nghe giọng của trình duyệt (asrBox / ASR) — chỉ là phản hồi, không vào mức thuộc (như mọi chỗ khác của app).
   fixes:node=>eFixes(node),
+  // v83 Thư gửi cư dân phố: đề viết (WTASKS), máy kiểm bài viết (writeChecks + lỗi hay gặp), lưu như màn Viết theo đề (Can-Do viết).
+  wtasks:lv=>WTASKS.filter(t=>t.lv===lv).map(t=>({id:t.id,lv:t.lv,genre:t.genre,en:t.en,vi:t.vi,p:t.p,pv:t.pv,min:t.min,max:t.max,par:t.par,c:t.c.slice(),u:t.u.map(x=>[x[0],x[1]]),m:(t.m||[]).slice(),text:(st.wtask[t.id]||{}).text||'',done:wtDone(t.id)})),
+  wcheck:(id,text)=>{ const t=WT[id]; if(!t) return null; return {n:wc(text),checks:writeChecks(t,text).map(([ok,l])=>[!!ok,l]),hints:grammarHints(text).slice(0,4).map(h=>({m:h.m,why:h.why,snip:h.snip}))}; },
+  wsave:(id,text,self)=>{ const t=WT[id]; if(!t||!text) return; const s=st.wtask[id]||={}, first=!s.text; s.text=String(text).slice(0,8000); s.day=today(); try{ markActive(); }catch(e){}
+    if(first){ try{ addXP(20); bump('talk'); questCheck(); }catch(e){} } if(Array.isArray(self)&&self.length===WRUB.length) s.self=self.map(v=>Math.max(1,Math.min(RUBL.length,Math.round(+v||1)))); save(); try{ checkBadges(); }catch(e){} },
+  wrub:()=>({crit:WRUB.map(x=>[x[0],x[1]]),levels:RUBL.slice(),ok:SELF_OK}),
   hasAsr:()=>HAS_ASR,
   asr:(key,target,other,label)=>asrBox(key,target,other,label),
   asrRes:key=>ASR.key===key&&ASR.res?{p:ASR.res.word?(ASR.res.k==='ok'?1:0):ASR.res.p,k:ASR.res.k||''}:null,
   asrOff:()=>{ try{ asrReset(); }catch(e){} },
+  asrHear:key=>asrStart(key,'*',''),
+  asrHeard:key=>ASR.key===key&&ASR.res&&ASR.res.free?{heard:ASR.res.heard,alts:ASR.res.alts.slice(0,5)}:null,
+  asrBusy:key=>ASR.key===key&&ASR.on?true:ASR.key===key&&ASR.err?ASR.err:false,
   dialogs:lv=>DIALOGUES.filter(d=>d.lv===lv&&d.lines.some(l=>l.s==='B')).map(d=>({id:d.id,lv:d.lv,title:d.title,vi:d.vi,place:d.place||'',fn:d.fn||[],names:d.names||{A:'A',B:'B'},lines:d.lines.map(l=>({s:l.s,t:l.t,vi:l.vi||''})),rp:(st.dlg[d.id]||{}).rp||null})),
   // Kết quả đóng vai (như nút "Dễ / Được / Khó" của màn Đóng vai): giữ mức tốt nhất, tính vào Can-Do nói.
   rpSave:(id,k)=>{ if(!DLG[id]||!['easy','ok','hard'].includes(k)) return; const o={hard:0,ok:1,easy:2}, r=st.dlg[id]||={best:0,n:0}; if(!r.rp||o[k]>o[r.rp]) r.rp=k; r.day=today(); bump('talk'); save(); try{ checkBadges(); }catch(e){} },
