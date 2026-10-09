@@ -9,7 +9,7 @@ import { CEFRS } from './types.ts';
 
 export type Kind = 'u' | 'g';
 export interface Cand { id: string; kind: Kind; lv: number; weight: number }   // lv = chỉ số CEFR 0–5; weight = số nút mục tiêu phụ thuộc
-export interface Stair { est: number; dir: 0 | 1 | -1; rev: number; n: number; seen: number[] }
+export interface Stair { est: number; dir: 0 | 1 | -1; rev: number; n: number; seen: number[]; up?: number }   // up: cấp dò nhận ra kế tiếp (v71)
 export interface DiagState {
   t0: number;                   // ms lúc bắt đầu
   stair: Record<Kind, Stair>;
@@ -29,7 +29,7 @@ export function startDiag(startLv: number, now: number, max: number = MAX_PROBES
 // Nút dò tiếp theo cho lượt hiện tại: cùng loại, cấp gần mức ước tính nhất, chưa dò, nhiều năng lực mục tiêu phụ thuộc nhất.
 export function nextProbe(d: DiagState, cands: Cand[]): Cand | null {
   for (const kind of [d.turn, d.turn === 'u' ? 'g' : 'u'] as Kind[]) {
-    const lv = Math.round(d.stair[kind].est), done = new Set(d.probed);
+    const lv = d.stair[kind].up ?? Math.round(d.stair[kind].est), done = new Set(d.probed);
     const pool = cands.filter(c => c.kind === kind && !done.has(c.id));
     if (!pool.length) continue;
     pool.sort((a, b) => Math.abs(a.lv - lv) - Math.abs(b.lv - lv) || b.weight - a.weight || (a.id < b.id ? -1 : 1));
@@ -39,11 +39,18 @@ export function nextProbe(d: DiagState, cands: Cand[]): Cand | null {
 }
 
 // Ghi kết quả một nút: đạt khi đúng ≥ 2/3, trượt khi ≤ 1/3, ở giữa thì giữ nguyên cầu thang.
-export function answer(d: DiagState, c: Cand, got: number, of: number): void {
+// v71 (bot L03): `rec` = các câu chọn của nút đúng ≥ 2/3 (đã trừ đoán mò). Ở giữa mà nhận ra tốt (người học nhận ra tốt hơn tự nhớ ra)
+// → nút kế tiếp của loại này dò cao hơn một cấp để tìm trần NHẬN RA; trước đây cầu thang đứng yên ở cấp đó tới hết bài dò ngắn nên người
+// học B1 bị xếp từ vựng A1–A2 và phải luyện lại phần đã biết. Câu dò trên mức ước tính mà trượt không kéo ước tính xuống.
+export function answer(d: DiagState, c: Cand, got: number, of: number, rec = false): void {
   d.probed.push(c.id);
   d.results.push({ id: c.id, kind: c.kind, lv: c.lv, got, of });
   const s = d.stair[c.kind], r = of ? got / of : 0, dir: 0 | 1 | -1 = r >= 2 / 3 ? 1 : r <= 1 / 3 ? -1 : 0;
-  s.n++; s.seen.push(c.lv);
+  const peek = s.up !== undefined && c.lv > Math.round(s.est);   // câu dò trần nhận ra (trên mức ước tính)
+  s.n++; s.seen.push(peek ? Math.round(s.est) : c.lv);
+  delete s.up;
+  if (!dir && rec && c.lv < 5) s.up = c.lv + 1;
+  if (peek && dir === -1) { d.turn = c.kind === 'u' ? 'g' : 'u'; return; }
   if (dir) {
     if (s.dir && dir !== s.dir) s.rev++;
     s.dir = dir;
@@ -69,7 +76,11 @@ export function recognitionLevel(rs: Array<{ kind: Kind; lv: number; rc: number 
 
 export function finished(d: DiagState, now: number, left: number): boolean {
   const max = d.max ?? MAX_PROBES;
-  if (left === 0 || now - d.t0 >= MAX_MS || d.probed.length >= max) return true;
+  // Bài dò ngắn: hết 8 phần mà một cầu thang vẫn đang lên (chưa đổi chiều lần nào) hoặc đang dò trần nhận ra → dò tiếp tới tối đa
+  // MAX_PROBES (v71: người học trung bình / khá không bị chặn ở A2 chỉ vì bài dò ngắn bắt đầu từ A1).
+  const rising = (s: Stair) => s.up !== undefined || (s.dir === 1 && s.rev === 0);
+  if (left === 0 || now - d.t0 >= MAX_MS || d.probed.length >= MAX_PROBES) return true;
+  if (d.probed.length >= max && !(max < MAX_PROBES && (rising(d.stair.u) || rising(d.stair.g)))) return true;
   const ok = (s: Stair) => s.n >= Math.min(MIN_PER_KIND, Math.floor(max / 2)) && s.rev >= 2;
   return ok(d.stair.u) && ok(d.stair.g);
 }

@@ -41,7 +41,8 @@ for (const n of Object.keys(last.truth).filter(n => /^(u|g|ph):/.test(n))) {
 const corr = (() => { const n = pairs.length; if (n < 3) return null; const mx = avg(pairs.map(p => p[0])), my = avg(pairs.map(p => p[1])); let sxy = 0, sxx = 0, syy = 0; for (const [x, y] of pairs) { sxy += (x - mx) * (y - my); sxx += (x - mx) ** 2; syy += (y - my) ** 2; } return r2(sxy / Math.sqrt(sxx * syy)); })();
 const diag = events.find(e => e.what === 'diag-result')?.info;
 const share = (f: (r: Row) => boolean) => pct(quest.filter(f).length, quest.length);
-const PH_VI = new Set([...NODE.values()].filter(n => n.id.startsWith('ph:')).map(n => n.vi));
+// Tên phần nghe có ngoặc ("… (i ngắn – i dài)") mà màn hình bị cắt ở "(" khi đọc: so phần trước ngoặc.
+const PH_VI = new Set([...NODE.values()].filter(n => n.id.startsWith('ph:')).map(n => n.vi.split('(')[0]!.trim()));
 const necks = screens.filter(s => s.where === 'tower').map(s => (s.text.match(/Điểm nghẽn: ([^(]+)\(/) ?? [])[1]?.trim()).filter(Boolean) as string[];
 const model = {
   judged: pairs.length, agree3: pct(agree, pairs.length), oppositeOnExtremes: pct(opposite, extremes), classes: cls, corr, diag,

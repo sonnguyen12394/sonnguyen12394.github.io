@@ -80,3 +80,26 @@ test('v71 (bot L03): cấp nhận ra tách khỏi cấp chung — người học
   assert.equal(recognitionLevel(rs, 'u'), 3);
   assert.equal(recognitionLevel(rs, 'g'), null);
 });
+
+test('v71 (bot L03): ở giữa mà nhận ra tốt → dò cao hơn một cấp tìm trần nhận ra; trượt ở cấp trên không kéo ước tính xuống', () => {
+  const d = startDiag(0, 0, 8);
+  const c0 = nextProbe(d, cands)!; assert.equal(c0.lv, 0);
+  answer(d, c0, 1.8, 3, true);                      // câu chọn đúng, câu tự gõ sai: ở giữa, nhận ra tốt
+  assert.equal(d.stair.u.est, 0); assert.equal(d.stair.u.up, 1);
+  answer(d, nextProbe(d, cands)!, 3, 3);            // lượt ngữ pháp
+  const c1 = nextProbe(d, cands)!; assert.equal(c1.kind, 'u'); assert.equal(c1.lv, 1, 'dò từ vựng cao hơn một cấp');
+  answer(d, c1, 0, 3);                              // cấp trên trượt hẳn
+  assert.equal(d.stair.u.est, 0, 'không bị kéo xuống'); assert.equal(d.stair.u.up, undefined);
+  assert.equal(level(d.stair.u), 0, 'cấp dò trên mức ước tính không thổi phồng cấp cuối');
+});
+
+test('v71 (bot L03): bài dò ngắn dò tiếp khi một cầu thang vẫn đang lên — người học B1 không bị chặn ở A2', () => {
+  const d = startDiag(0, 0, 8);
+  for (let k = 0; k < 40 && !finished(d, 0, cands.length - d.probed.length); k++) { const c = nextProbe(d, cands)!; answer(d, c, c.lv <= 3 ? 3 : 0, 3); }
+  assert.ok(d.probed.length > 8 && d.probed.length <= MAX_PROBES, String(d.probed.length));
+  assert.ok(level(d.stair.u) >= 2.5, `từ vựng ${level(d.stair.u)}`);
+  // Người mới trượt ngay: vẫn dừng ở 8 phần hoặc sớm hơn.
+  const b = startDiag(0, 0, 8);
+  for (let k = 0; k < 40 && !finished(b, 0, cands.length - b.probed.length); k++) { const c = nextProbe(b, cands)!; answer(b, c, 0, 3); }
+  assert.ok(b.probed.length <= 8);
+});

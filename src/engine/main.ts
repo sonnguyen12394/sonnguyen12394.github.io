@@ -159,8 +159,9 @@ export function init(host: EHost): EngineModule {
       const ix = loaded()!, n = ix.node.get(drun.node)!;
       // v69 (bot L01): trừ phần đoán mò trước khi lên/xuống cấp. Biết 60% mà đoán trúng phần còn lại → tỉ lệ đúng thô 70% → trước đây
       // lên cấp, coi cả cấp dưới là đã biết. Hiệu chỉnh cổ điển: r' = (r − ḡ) / (1 − ḡ).
-      answer(drun.d, { id: n.id, kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), weight: 0 }, guessCorrected(drun.got, drun.total, drun.gs) * drun.total, drun.total);
-      if (dmcq.n) drec.push({ kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), rc: guessCorrected(dmcq.got, dmcq.n, dmcq.gs) });
+      const rc = dmcq.n ? guessCorrected(dmcq.got, dmcq.n, dmcq.gs) : null;
+      answer(drun.d, { id: n.id, kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), weight: 0 }, guessCorrected(drun.got, drun.total, drun.gs) * drun.total, drun.total, rc !== null && rc >= 2 / 3);
+      if (rc !== null) drec.push({ kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), rc });
       dmcq = { got: 0, n: 0, gs: 0 };
       const next = loadNode(drun.d);
       if (!next) { finishDiag(); return; }
