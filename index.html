@@ -634,6 +634,38 @@ body.lesson main{max-width:720px}
 .skprof{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.skprof .stat{padding:10px 6px;text-align:center;justify-items:center}.skprof .stat span{font-size:13px;color:var(--muted)}
 .skgrid{display:grid;gap:8px}.skrow{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:6px;background:var(--surface)}.skrow.done{border-color:color-mix(in srgb,var(--good) 55%,var(--line))}
 .sklist{list-style:none;margin:0;padding:0;display:grid;gap:2px;font-size:14px;color:var(--muted)}.sklist li.ok{color:var(--ink)}.sklist li.ok span{color:var(--good);font-weight:700}
+
+/* v72 Sảnh Chơi + Xếp Khối Chữ: bảng màu riêng của app (6 màu), ô vẽ bằng CSS */
+:root{--k1:#F2766B;--k2:#2BB3A3;--k3:#5B6CF0;--k4:#F2B33D;--k5:#B05FD6;--k6:#6BBF59;--kcell:color-mix(in srgb,var(--line) 55%,var(--surface))}
+.gcards{display:grid;gap:10px;margin:10px 0 18px}
+.gcard{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:14px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,var(--surface),var(--accent-soft));cursor:pointer;text-align:left}
+.gcard:hover{border-color:var(--accent)}
+.gcard b{font:700 17px/1.2 var(--display)}
+.gico{display:grid;place-items:center;width:56px;height:56px;border-radius:12px;background:var(--surface)}
+.bkmini{display:grid;grid-template-columns:repeat(3,14px);gap:2px}
+.bkmini i,.bkp i{display:block;width:14px;height:14px;border-radius:3px;background:var(--kcell)}
+.c1{--kc:var(--k1)}.c2{--kc:var(--k2)}.c3{--kc:var(--k3)}.c4{--kc:var(--k4)}.c5{--kc:var(--k5)}.c6{--kc:var(--k6)}
+.bkmini i[class^="c"]:not(.c0),.bkp i[class^="c"]:not(.c0){background:var(--kc);box-shadow:inset 0 -3px 0 rgb(0 0 0/.18),inset 0 2px 0 rgb(255 255 255/.25)}
+.bkg{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;width:min(100%,360px);aspect-ratio:1;margin:8px auto;padding:6px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line)}
+.bkc{display:block;border:0;padding:0;margin:0;border-radius:5px;background:var(--kcell);min-width:0;aspect-ratio:1}
+.bkc[class*=" c"]:not(.c0){background:var(--kc);box-shadow:inset 0 -3px 0 rgb(0 0 0/.18),inset 0 2px 0 rgb(255 255 255/.25)}
+.bkg.live .bkc{cursor:pointer}
+.bkg.mini{width:min(62%,220px);gap:2px;padding:4px;margin-top:14px;opacity:.9}
+.bkg.mini .bkc{border-radius:3px}
+.bkg.live .bkc.ok{background-image:radial-gradient(circle,color-mix(in srgb,var(--accent) 65%,transparent) 0 18%,transparent 20%)}
+.bkg.live .bkc.ok:hover{background:var(--accent-soft)}
+.bkc.boom{animation:bkboom .45s ease-out}
+@keyframes bkboom{0%{transform:scale(1.25);background:var(--mark)}100%{transform:scale(1)}}
+.bktray{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;min-height:96px;margin:6px 0 12px}
+.bkslot{display:grid;place-items:center;min-width:84px;min-height:84px;padding:8px;border-radius:12px;border:2px solid var(--line);background:var(--surface);cursor:pointer}
+.bkslot.on{border-color:var(--accent);background:var(--accent-soft);animation:pop .2s ease-out}
+.bkslot.off{opacity:.35;cursor:not-allowed}
+span.bkslot:empty{border-style:dashed;opacity:.4;cursor:default}
+.bkp{display:grid;grid-template-columns:repeat(var(--w),14px);gap:2px}
+.bkp i:not([class]){background:transparent;box-shadow:none}
+.bkp .sp{display:grid;place-items:center;width:30px;height:30px;font-size:24px;background:none!important;box-shadow:none!important}
+.bkcombo{margin:0;font-weight:700;color:var(--warn);animation:pop .25s ease-out}
+.bkgain{align-self:flex-end;font:700 15px/1 var(--mono);color:var(--good);animation:floatup .6s ease-out}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.7L20 8"/><path d="M20 3v5h-5"/><path d="M20 12a8 8 0 0 1-13.7 5.7L4 16"/><path d="M4 21v-5h5"/></symbol><symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></symbol><symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4"/><path d="M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4"/><path d="M8 21h8"/><path d="M10 17h4"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol><symbol id="i-headphones" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/></symbol><symbol id="i-read" viewBox="0 0 24 24"><path d="M12 6C10 4.5 7 4 4 4v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2z"/><path d="M12 6v14"/></symbol><symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 7l3 3"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8"/><path d="M8 12h5"/></symbol><symbol id="i-ear" viewBox="0 0 24 24"><path d="M7 9a5 5 0 0 1 10 0c0 3-3 4-3 7a3 3 0 0 1-5.5 1.5"/><path d="M10 9a2 2 0 0 1 4 0"/></symbol><symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/></symbol><symbol id="i-map" viewBox="0 0 24 24"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15"/><path d="M15 6v15"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol><symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7.5h.01"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7v.5"/><path d="M12 17h.01"/></symbol><symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.5M8.2 13.2l7.6 4.5"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14a6 6 0 0 1 3.5 6"/></symbol><symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 3L3 6l2 4 3-1v12h8V9l3 1 2-4-5-3a4 4 0 0 1-8 0z"/></symbol><symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14 6a4 4 0 0 0 5 5l-9 9a2 2 0 0 1-3-3l9-9a4 4 0 0 0-2-2z"/></symbol><symbol id="i-exam" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></symbol></defs></svg>
@@ -660,4 +692,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.a9f4be7187.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.7f5e07ec61.js" defer></script><script src="app.js?v=67" defer></script>

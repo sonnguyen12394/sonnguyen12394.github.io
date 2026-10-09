@@ -11,6 +11,7 @@ import { readFileSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 export const arg = (k: string, d: string): string => { const i = process.argv.indexOf(`--${k}`); return i > 0 ? process.argv[i + 1]! : d; };
+const GAMES = arg('games', 'mix');
 export const SCHEDULE_DAYS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 21, 24, 28, 35, 44];
 
 const gf = readdirSync('data/engine').find(f => /^graph\..*\.json$/.test(f))!;
@@ -226,6 +227,38 @@ export async function run(P: Profile): Promise<void> {
     await click('Về tháp');
   }
 
+  // v72 Xếp Khối: trả lời như ở tháp; đặt khối ở ô hợp lệ đầu tiên (bot không cần chơi giỏi — cứu bàn giữ đủ số câu của ván).
+  async function playBlocks(): Promise<void> {
+    await shot('lobby');
+    const start = page.locator('[data-e="bkstart"]').filter({ visible: true }).first();
+    if (!(await start.count())) { note('stuck', 'không thấy Xếp Khối'); return; }
+    await start.click(); await sleep(120);
+    for (let steps = 0; steps < 240; steps++) {
+      await sleep(40);
+      if (await visible('h1:has-text("Xong ván"), h1:has-text("Hết chỗ đặt")')) break;
+      const put = page.locator('[data-e="bkput"][data-ok]');
+      if (await put.count()) { await put.first().click(); continue; }
+      const pk = await peek();
+      if (pk?.run === 'camp') {
+        const ct = await shot('camp');
+        if (pk.node) { learn(pk.node, DAY, P.gain.card); explained(pk.node, /Bạn hay trả lời/.test(ct) ? 'targeted' : 'card'); }
+        note('camp', { node: pk.node, title: pk.prompt });
+        if (await visible('[data-e="qcheck"]')) await page.locator('[data-e="qcheck"]').first().click();
+        else await page.locator('[data-e="qnext"]').first().click();
+        continue;
+      }
+      if (pk) {
+        if (await visible('[data-teach]')) { const tt = await page.locator('[data-teach]').first().innerText(); learn(pk.node, DAY, P.gain.teach); explained(pk.node, /Bạn hay trả lời/.test(tt) ? 'targeted' : 'teach'); note('teach', { node: pk.node, targeted: /Bạn hay trả lời/.test(tt) }); }
+        await answer(pk); await feedback(pk.node); continue;
+      }
+      if (await visible('[data-e="qnext"]')) { await page.locator('[data-e="qnext"]').first().click(); continue; }
+      note('stuck', { why: 'xếp khối: không có câu, không có ô đặt', text: (await text()).slice(0, 200) }); break;
+    }
+    const end = await shot('blocks-end');
+    note('blocks-end', { head: end.split('\n').slice(0, 4).join(' | ') });
+    await click('Về sảnh');
+  }
+
   async function runQuiz(kind: string): Promise<void> {
     for (let i = 0; i < 30; i++) {
       await sleep(80);
@@ -271,7 +304,8 @@ export async function run(P: Profile): Promise<void> {
     note('open', { first: t0.split('\n').slice(0, 3).join(' | ') });
     await followToday();
     const floors = P.floors ? P.floors(day, rnd) : day === 0 ? 2 : 2 + (rnd() < 0.3 ? 1 : 0);
-    for (let f = 0; f < floors; f++) await playFloor();
+    // v72: sảnh có nhiều game; mặc định bot luân phiên tháp và Xếp Khối (--games tower: chỉ tháp, như trước v72).
+    for (let f = 0; f < floors; f++) { if (GAMES === 'mix' && (day + f) % 2 === 1) await playBlocks(); else await playFloor(); }
     // Cuối phiên: mastery của app, giả thuyết hiểu sai của app, kỹ năng thật của bot trên mọi nút đã gặp.
     const e = await page.evaluate(() => { const st = (window as any).eval('st'); return { m: st.e.m, snaps: st.e.ev.snap.length, q: st.e.q, mis: st.e.ev.mis }; });   // eslint-disable-line @typescript-eslint/no-explicit-any
     const truth: Record<string, number> = {}, stab: Record<string, number> = {};
