@@ -8342,13 +8342,16 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.563a0c7497.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.a492f3d610.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),
   cando:id=>{ const c=CANDO.find(x=>x.id===id); if(!c) return null; const p=cdProg(c); return {p:p.p,m:p.m,lb:p.lb,k:p.k,need:p.need}; },
   probe:node=>eProbe(node),
+  order:node=>eOrder(node),
+  fn:node=>eFn(node),
+  say:t=>{ try{ say(t); }catch(e){} },
   transfer:node=>eXfer(node),
   micro:node=>eMicroCard(node),
   back:()=>microBack(),
@@ -8393,14 +8396,43 @@ function eProbe(node){ const out=[], pick=(xs,n)=>shuffle(xs.slice()).slice(0,n)
   // v70 (bot L02): nghe phân biệt cặp âm trong tháp — 3 câu, phát bằng giọng đọc của máy; máy không đọc được thì không có câu nghe
   // (không hỏi thứ người học không thể nghe). Mức 2 = phân biệt được khi nghe (mức mặc định của nút âm).
   if(node.startsWith('ph:')){ const s=SOUNDS.find(x=>x.id===node.slice(3)); if(!s||!HAS_TTS) return out;
-    for(const i of pick(s.pairs.map((_,j)=>j),3)){ const p=s.pairs[i], k=Math.random()<.5?0:1, w=p[k*2], opts=shuffle([p[0],p[2]]);
-      out.push({id:'snd:'+s.id+':'+i+':'+k,level:2,g:.5,prompt:`🎧 Nghe rồi chọn từ bạn nghe được (${s.a} hay ${s.b})`,say:w,opts,ans:opts.indexOf(w)}); }
+    // v76: thêm phương án thứ 3 (từ của cặp âm khác) — 2 phương án thì đoán mò trúng 50%, đủ để "Đạt" nhờ may (báo cáo bot L03).
+    const other=SOUNDS.filter(x=>x.id!==s.id).flatMap(x=>x.pairs.flatMap(q=>[q[0],q[2]]));
+    for(const i of pick(s.pairs.map((_,j)=>j),3)){ const p=s.pairs[i], k=Math.random()<.5?0:1, w=p[k*2], x=pick(other.filter(o=>o!==p[0]&&o!==p[2]),1)[0], opts=shuffle([p[0],p[2],...(x?[x]:[])]);
+      out.push({id:'snd:'+s.id+':'+i+':'+k,level:2,g:1/opts.length,prompt:`🎧 Nghe rồi chọn từ bạn nghe được (${s.a} hay ${s.b})`,say:w,opts,ans:opts.indexOf(w),pair:[p[0],p[2]],tip:s.tip}); }
     return out; }
   if(node.startsWith('g:')){ const p=GPT[node.slice(2)]; if(!p) return out; const used=new Set();
     for(let i=0;i<2&&p.mc&&p.mc.length;i++){ const q=gbuild(p,'cho',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:2,g:1/q.opts.length,prompt:q.prompt,opts:q.opts,ans:q.ans}); }
     if(p.ty&&p.ty.length){ const q=gbuild(p,'typ',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:3,g:0,prompt:q.prompt,accept:q.accept}); }
     if(p.fx&&p.fx.length){ const q=gbuild(p,'fix',{test:true,used}); if(q.type==='gfx') out.push({id:'g:'+p.id+':'+q.key,level:4,g:0,prompt:'Sửa câu sai: '+q.prompt,accept:q.accept}); }
     return out; }
+  return out; }
+// v74 Bài Câu: câu để xếp lá cho điểm ngữ pháp — câu sắp xếp (or), câu tự gõ đã điền đáp án, câu sửa lỗi bản đúng. Lá nhiễu lấy từ đáp án
+// sai của chính điểm đó (mc.w) và nhắm đúng chỗ hay sai: chỉ thêm lá nhiễu khi đáp án đúng tương ứng có trong câu (kèm "vì sao").
+function eOrder(node){ if(!node.startsWith('g:')) return []; const p=GPT[node.slice(2)]; if(!p) return [];
+  const clean=t=>String(t||'').replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim();
+  const sents=[...(p.or||[]).map(x=>x[0]),...(p.ty||[]).filter(t=>t.s.includes('___')&&t.a&&t.a[0]).map(t=>clean(t.s.replace('___',t.a[0]))),...(p.fx||[]).map(x=>x.good)]
+    .map(clean).filter(x=>x&&x.split(' ').length>=3&&x.split(' ').length<=12);
+  const out=[], seen=new Set();
+  for(const s of sents){ const k=norm(s); if(seen.has(k)) continue; seen.add(k);
+    const toks=s.split(' '), low=toks.map(t=>t.toLowerCase().replace(/[.,!?]+$/,''));
+    const traps=(p.mc||[]).filter(m=>low.includes(String(m.a).toLowerCase())).flatMap(m=>(m.w||[]).filter(w=>!low.includes(String(w).toLowerCase())&&!/\s/.test(w)).map(w=>({w,why:(m.why||{})[w]||''})));
+    const uniq=[...new Map(traps.map(t=>[t.w.toLowerCase(),t])).values()].slice(0,2);
+    let h=0; for(const ch of k) h=(h*31+ch.charCodeAt(0))>>>0;
+    out.push({id:'g:'+p.id+':ord:'+h.toString(36),level:3,g:0,prompt:`Xếp thành câu đúng · ${p.vi}`,tokens:toks,distract:uniq.map(t=>t.w),why:uniq.map(t=>t.why).filter(Boolean)[0]||p.note||''}); }
+  return out; }
+// v75 Quán Cà Phê: câu cho nút chức năng giao tiếp (fn:). "hear" (mức 2): nghe khách nói (giọng máy) → chọn nghĩa đúng trong 4;
+// "reply" (mức 3): tình huống + văn phong → chọn câu tiếng Anh đúng trong 4 (nhiễu: chức năng khác gần cấp, hoặc cùng chức năng sai văn phong).
+function eFn(node){ if(!node.startsWith('fn:')) return []; const f=FN[node.slice(3)]; if(!f) return [];
+  const near=g=>Math.abs(LVS.indexOf(g.lv)-LVS.indexOf(f.lv))<=1, pool=FUNCTIONS.filter(g=>g.id!==f.id), others=(pool.filter(near).length>=3?pool.filter(near):pool).flatMap(g=>g.exps);
+  const out=[];
+  f.exps.forEach((e,i)=>{
+    const vis=shuffle([...new Set(others.map(x=>x.vi))].filter(v=>v.toLowerCase()!==e.vi.toLowerCase())).slice(0,3), o1=shuffle([e.vi,...vis]);
+    out.push({id:`fn:${f.id}:h:${i}`,level:2,g:1/o1.length,kind:'hear',prompt:HAS_TTS?'🎧 Khách vừa nói gì?':'📖 Khách nói gì? (máy không có giọng đọc: đọc câu)',say:HAS_TTS?e.t:undefined,en:e.t,vi:e.vi,opts:o1,ans:o1.indexOf(e.vi),why:f.tip||''});
+    if(e.reg==='n'&&f.exps.length<3) return;
+    const sameWrongReg=f.exps.filter(x=>x.reg!==e.reg&&x.reg!=='n'&&e.reg!=='n').map(x=>x.t).slice(0,1);
+    const ws=[...sameWrongReg,...shuffle(others.map(x=>x.t).filter(t=>nt(t)!==nt(e.t)))].slice(0,3), o2=shuffle([e.t,...ws]);
+    out.push({id:`fn:${f.id}:r:${i}`,level:3,g:1/o2.length,kind:'reply',prompt:`Bạn muốn ${f.vi.toLowerCase()} (văn phong ${REG_VI[e.reg].toLowerCase()}). Nói câu nào?`,en:e.t,vi:e.vi,opts:o2,ans:o2.indexOf(e.t),why:(sameWrongReg.length?`Câu “${sameWrongReg[0]}” cùng ý nhưng ${e.reg==='f'?'thân mật':'trang trọng'} quá. `:'')+(f.tip||'')}); });
   return out; }
 // v60 Transfer (§59): câu ở NGỮ CẢNH MỚI cho nút đã Đạt. Từ vựng: câu điền từ lấy từ bài đọc / câu ví dụ của phần khác trong app
 // (không phải câu ví dụ của chính từ đó; ưu tiên câu không hiện trên thẻ từ). Ngữ pháp: mọi câu tự gõ / sửa lỗi của điểm, engine lọc câu đã gặp.

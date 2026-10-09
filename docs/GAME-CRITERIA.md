@@ -220,6 +220,60 @@ Mỗi tiêu chí có mốc chấm:
 - Muốn lên 9–10 phải có game mà **hành động chơi chính là dùng tiếng Anh**: Bài Câu (xếp câu), Quán cà phê (nghe để phục vụ), Thám tử (đọc để phá án).
 - Hai game cũ cần chuyển sang **câu do engine chọn** (dùng lại `qItem` / `qAnswer` như ba game mới) thì mới tính là học: G4 2 → 9.
 
+## 4b. Chấm 3 game mới (v74–v76)
+
+| Tiêu chí | 🃏 Bài Câu | ☕ Quán Cà Phê | 🎯 Bắt Âm |
+|---|---|---|---|
+| G1 Học là luật chơi (×2) | 8 | 7 | 8 |
+| G2 Đúng mục đích (×2) | 9 | 8 | 9 |
+| G3 Bằng chứng sạch (×2) | 9 | 8 | 9 |
+| G4 Engine chọn nội dung | 9 | 9 | 9 |
+| G5 Độ khó tách đôi | 9 | 9 | 8 |
+| G6 Phản hồi học tập | 8 | 8 | 9 |
+| G7 Hấp dẫn thật (×2) | 7 | 7 | 7 |
+| G8 Mật độ học | 6 | 8 | 9 |
+| G9 Động lực trung thực | 9 | 9 | 9 |
+| G10 Phát hành được | 9 | 9 | 8 |
+| **Điểm có trọng số (÷ 14)** | **8,3** | **8,0** | **8,4** |
+
+### Điểm theo chức năng
+
+| Game | Chức năng | Tiêu chí riêng | Điểm |
+|---|---|---|---|
+| 🃏 Bài Câu | F3 ngữ pháp | F3a 9 · F3b 7 · F3c 7 | **7,7** ✓ |
+| ☕ Quán Cà Phê | F7 giao tiếp | F7a 8 · F7b 8 · F7c 5 | **7,0** ✓ |
+| ☕ Quán Cà Phê | F5 nghe | F5a 8 · F5b 5 · F5c 5 | **6,0** ✗ |
+| 🎯 Bắt Âm | F4 phát âm | F4a 9 · F4b 8 · F4c 3 | **6,7** ✗ |
+
+Ghi chú tiêu chí riêng:
+- **F3b 7:** chỉ có lá bẫy khi câu chứa đúng từ hay sai.
+- **F3c 7:** mới đo mức 3, chưa đo mức 4.
+- **F7c 5:** chưa có cốt truyện rẽ nhánh.
+- **F5b / F5c 5:** chỉ có câu đơn, chưa có đoạn và câu hỏi ý chính.
+- **F4c 3:** chưa có phần nói.
+
+### Căn cứ từng game
+
+**🃏 Bài Câu** (`cards.ts`, `app.js eOrder`)
+- Người chơi tự dựng câu: lá bài là từ của câu → bằng chứng mức 3, `g = 0` (G1, G3; e2e `cards.spec.ts`).
+- Bùa và mục tiêu bàn chỉ đổi cách tính điểm (G5; test `engine-cards.test.ts`).
+- Thua bàn không kết thúc ván (G9).
+- Mỗi câu mất khoảng 20–30 giây để xếp, nên khoảng 2 câu / phút (G8 = 6).
+
+**☕ Quán Cà Phê** (`cafe.ts`, `app.js eFn`)
+- Nghe câu khách nói bằng giọng máy → nghe hiểu mức 2; chọn câu đáp đúng văn phong → mức 3; luôn 4 lựa chọn (G3; e2e `cafe.spec.ts`).
+- Mới dùng câu đơn, chưa có đoạn hội thoại và câu hỏi ý chính → chưa đủ cho F5.
+
+**🎯 Bắt Âm** (`bubbles.ts`)
+- 3 bong bóng: đoán mò chỉ trúng 1/3. Câu nghe phân biệt âm dùng chung (tháp, dò) cũng đổi từ 2 lên 3 lựa chọn: sửa lỗi Đạt nhờ đoán mà báo cáo L03 nêu.
+- Bong bóng trôi vào rồi đứng yên, không bắt chạm đích di động: tránh nhiễu kỹ năng tay (G3).
+- Cần giọng đọc của máy (G10 = 8). Máy không có giọng thì báo rõ, không hỏi.
+
+**Kết luận:**
+- Cả 3 game đạt ngưỡng phát hành: G3 ≥ 8, G9 ≥ 8, tổng ≥ 7,5, G1 ≥ 7.
+- F3 và F7 đạt.
+- **F5 (nghe đoạn) và F4 (nói)** chưa đạt: cần 📻 Đài phát thanh và 🎤 Karaoke / 🤖 Robot ở đợt sau.
+
 ## 5. Đề xuất ưu tiên (chức năng chưa có game, xếp theo lợi ích ÷ công sức)
 
 | Thứ tự | Game | Chức năng phục vụ | Lý do |

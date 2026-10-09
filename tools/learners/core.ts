@@ -11,7 +11,7 @@ import { readFileSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 export const arg = (k: string, d: string): string => { const i = process.argv.indexOf(`--${k}`); return i > 0 ? process.argv[i + 1]! : d; };
-const GAMES = arg('games', 'mix');
+const GAMES = arg('games', 'mix'), GAME_N = 6;   // tháp, Xếp Khối, Bàn Cờ, Bài Câu, Quán Cà Phê, Bắt Âm (thêm game thì tăng)
 export const SCHEDULE_DAYS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 21, 24, 28, 35, 44];
 
 const gf = readdirSync('data/engine').find(f => /^graph\..*\.json$/.test(f))!;
@@ -19,7 +19,7 @@ export const GRAPH = JSON.parse(readFileSync(join('data/engine', gf), 'utf8')) a
 export const NODE = new Map(GRAPH.nodes.map(n => [n.id, n]));
 
 export interface K { p: number; s: number; S: number; last: number; seen: Set<string>; peak: number; mis?: number; belief?: string }
-export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string }
+export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[] }
 export interface Row {
   day: number; sess: string; run: string; game?: string; gap?: string; node: string; level: number; item: string; novel: boolean; opts: number;
   pTrue: number; trueKnow: boolean; ok: boolean; dunno: boolean; appState?: string; appM?: number; appN?: number; ms: number;
@@ -135,9 +135,19 @@ export async function run(P: Profile): Promise<void> {
     if (!ok && P.dunno(s, rnd)) dunno = true;
     const d = P.decide?.(C, q, x, p, ok) ?? null;
     if (d) { ok = d.ok; dunno = false; }
-    const act = { diag: 'dans', quest: 'qans', measure: 'xans', micro: 'mans', probe: 'pans', xfer: 'xans', tout: 'tans' }[q.run] ?? 'qans';
+    const act = { diag: 'dans', quest: 'qans', measure: 'xans', micro: 'mans', probe: 'pans', xfer: 'xans', tout: 'tans', cafe: 'cfans', bubbles: 'bbans' }[q.run] ?? 'qans';
     let given = '';
-    if (q.opts) {
+    if (q.tiles && q.order) {   // v74 Bài Câu: xếp lá theo thứ tự (biết) / đổi chỗ hai lá liền nhau hoặc lấy lá bẫy (chưa biết)
+      if (dunno) await page.locator('[data-e="cdskip"]').first().click();
+      else {
+        let seq = [...q.order];
+        if (!ok) { const trap = q.tiles.findIndex((_, i) => !q.order!.includes(i)); const k = Math.floor(rnd() * Math.max(1, seq.length - 1)); if (trap >= 0 && rnd() < 0.5) seq[k] = trap; else if (seq.length > 1) [seq[k], seq[k + 1]] = [seq[k + 1]!, seq[k]!]; }
+        for (const i of seq) await page.locator(`[data-e="cdtile"][data-i="${i}"]`).first().click();
+        await page.locator('[data-e="cdplay"]').first().click();
+        given = seq.map(i => q.tiles![i]).join(' ');
+        ok = given.toLowerCase() === (q.accept?.[0] ?? '').toLowerCase();
+      }
+    } else if (q.opts) {
       let i = d?.i !== undefined ? d.i : dunno ? -1 : ok ? q.ans! : (() => { const w = q.opts!.map((_, j) => j).filter(j => j !== q.ans); return w[Math.floor(rnd() * w.length)] ?? -1; })();
       if (d && d.i === undefined) i = ok ? q.ans! : (q.opts.findIndex((_, j) => j !== q.ans));
       if (i < 0) dunno = true;
@@ -292,6 +302,64 @@ export async function run(P: Profile): Promise<void> {
     await click('Về sảnh');
   }
 
+  // v74 Bài Câu: 3 bàn × 3 lượt; chọn bùa đầu tiên được mời.
+  async function playCards(): Promise<void> {
+    await shot('lobby');
+    const start = page.locator('[data-e="cdstart"]').filter({ visible: true }).first();
+    if (!(await start.count())) { note('stuck', 'không thấy Bài Câu'); return; }
+    await start.click(); await sleep(120);
+    for (let steps = 0; steps < 60; steps++) {
+      await sleep(40);
+      if (await visible('h1:has-text("Xong ván!")')) break;
+      if (await visible('[data-e="cdcharm"]')) { await page.locator('[data-e="cdcharm"]').first().click(); continue; }
+      const pk = await peek();
+      if (pk?.run === 'cards') { await answer(pk); await feedback(pk.node); if (await visible('[data-e="cdnext"]')) await page.locator('[data-e="cdnext"]').first().click(); continue; }
+      if (await visible('[data-e="cdnext"]')) { await page.locator('[data-e="cdnext"]').first().click(); continue; }
+      note('stuck', { why: 'bài câu: không có câu / nút tiếp', text: (await text()).slice(0, 200) }); break;
+    }
+    const end = await shot('cards-end');
+    note('cards-end', { head: end.split('\n').slice(0, 3).join(' | ') });
+    await click('Về sảnh');
+  }
+
+  // v75 Quán Cà Phê: 6 khách; nghe / chọn câu đáp như câu chọn thường.
+  async function playCafe(): Promise<void> {
+    await shot('lobby');
+    const start = page.locator('[data-e="cfstart"]').filter({ visible: true }).first();
+    if (!(await start.count())) { note('stuck', 'không thấy Quán Cà Phê'); return; }
+    await start.click(); await sleep(120);
+    for (let steps = 0; steps < 30; steps++) {
+      await sleep(40);
+      if (await visible('h1:has-text("Đóng ca")')) break;
+      const pk = await peek();
+      if (pk?.run === 'cafe') { await answer(pk); await feedback(pk.node); if (await visible('[data-e="cfnext"]')) await page.locator('[data-e="cfnext"]').first().click(); continue; }
+      if (await visible('[data-e="cfnext"]')) { await page.locator('[data-e="cfnext"]').first().click(); continue; }
+      note('stuck', { why: 'quán: không có khách / nút tiếp', text: (await text()).slice(0, 200) }); break;
+    }
+    const end = await shot('cafe-end');
+    note('cafe-end', { head: end.split('\n').slice(0, 3).join(' | ') });
+    await click('Về sảnh');
+  }
+
+  // v76 Bắt Âm: 10 từ; nghe rồi chạm bong bóng như câu chọn thường.
+  async function playBubbles(): Promise<void> {
+    await shot('lobby');
+    const start = page.locator('[data-e="bbstart"]').filter({ visible: true }).first();
+    if (!(await start.count())) { note('stuck', 'không thấy Bắt Âm'); return; }
+    await start.click(); await sleep(120);
+    for (let steps = 0; steps < 40; steps++) {
+      await sleep(40);
+      if (await visible('h1:has-text("Xong màn")')) break;
+      const pk = await peek();
+      if (pk?.run === 'bubbles') { await answer(pk); await feedback(pk.node); if (await visible('[data-e="bbnext"]')) await page.locator('[data-e="bbnext"]').first().click(); continue; }
+      if (await visible('[data-e="bbnext"]')) { await page.locator('[data-e="bbnext"]').first().click(); continue; }
+      note('stuck', { why: 'bắt âm: không có từ / nút tiếp', text: (await text()).slice(0, 200) }); break;
+    }
+    const end = await shot('bubbles-end');
+    note('bubbles-end', { head: end.split('\n').slice(0, 3).join(' | ') });
+    await click('Về sảnh');
+  }
+
   async function runQuiz(kind: string): Promise<void> {
     for (let i = 0; i < 30; i++) {
       await sleep(80);
@@ -338,7 +406,7 @@ export async function run(P: Profile): Promise<void> {
     await followToday();
     const floors = P.floors ? P.floors(day, rnd) : day === 0 ? 2 : 2 + (rnd() < 0.3 ? 1 : 0);
     // v72–v73: sảnh có nhiều game; mặc định bot luân phiên tháp, Xếp Khối, Bàn Cờ (--games tower: chỉ tháp, như trước v72).
-    for (let f = 0; f < floors; f++) { const g = GAMES === 'mix' ? (day + f) % 3 : 0; if (g === 1) await playBlocks(); else if (g === 2) await playBoard(); else await playFloor(); }
+    for (let f = 0; f < floors; f++) { const g = GAMES === 'mix' ? (day + f) % GAME_N : 0; if (g === 1) await playBlocks(); else if (g === 2) await playBoard(); else if (g === 3) await playCards(); else if (g === 4) await playCafe(); else if (g === 5) await playBubbles(); else await playFloor(); }
     // Cuối phiên: mastery của app, giả thuyết hiểu sai của app, kỹ năng thật của bot trên mọi nút đã gặp.
     const e = await page.evaluate(() => { const st = (window as any).eval('st'); return { m: st.e.m, snaps: st.e.ev.snap.length, q: st.e.q, mis: st.e.ev.mis }; });   // eslint-disable-line @typescript-eslint/no-explicit-any
     const truth: Record<string, number> = {}, stab: Record<string, number> = {};
