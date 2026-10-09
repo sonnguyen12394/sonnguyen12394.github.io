@@ -14,6 +14,7 @@ export interface EHost {
   cando(id: string): { p: number; m: number; lb: number; k: number; need: number } | null;   // tiến độ Can-Do tính từ bằng chứng (app.js cdProg)
   dayInfo(): { reviewItems: number; reviewMins: number; mins: number; perfDue: boolean; lost?: number | null };   // lost: Σ(1 − R) FSRS trên thẻ đến hạn   // ôn đến hạn, phút học mỗi ngày, đã có bài làm thật trong 7 ngày chưa
   probe(node: string): Array<{ id: string; level: 1 | 2 | 3; g: number; prompt: string; opts?: string[]; ans?: number; accept?: string[]; en?: string; say?: string }>;   // say: câu nghe (đọc bằng giọng máy)   // câu dò cho chẩn đoán (app.js eProbe)
+  order?(node: string): OrderItem[];                 // v74 Bài Câu: câu để xếp lá (app.js eOrder)
   transfer?(node: string): ReturnType<EHost['probe']>;   // câu ở ngữ cảnh mới cho transfer (app.js eXfer): engine lọc câu đã gặp (§59)
   micro?(node: string): { card: MicroCard; qs: ReturnType<EHost['probe']> } | null;   // bí kíp 60 giây + câu kiểm tra (app.js eMicroCard)
   back?(): void;
@@ -27,3 +28,6 @@ export interface EHost {
 
 // Nội dung bí kíp (§52): một khái niệm, một đối chiếu (lỗi hay gặp / cách hiểu sai), 2–3 ví dụ. Đọc trong ≤ 60 giây.
 export interface MicroCard { title: string; en?: string; concept: string[]; contrast?: string; mis?: string; examples: Array<[string, string]> }
+
+// v74: câu để xếp lá (Bài Câu): tokens = đáp án theo thứ tự; distract = lá nhiễu (đáp án sai hay gặp của chính điểm ngữ pháp).
+export interface OrderItem { id: string; level: 1 | 2 | 3; g: number; prompt: string; tokens: string[]; distract: string[]; why?: string }

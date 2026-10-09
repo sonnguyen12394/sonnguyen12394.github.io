@@ -12,6 +12,7 @@ import { sanitizeQuest, mergeQuest, type QuestSave } from './quest.ts';
 import { sanitizeMeasure, mergeMeasure, type MeasureSave } from './measure.ts';
 import { sanitizeBlocks, mergeBlocks, type BlocksSave } from './blocks.ts';
 import { sanitizeBoard, mergeBoard, type BoardSave } from './board.ts';
+import { sanitizeCards, mergeCards, type CardsSave } from './cards.ts';
 
 export const E_V = 4;
 
@@ -36,6 +37,7 @@ export interface EState {
   ms?: MeasureSave;                // v63 đo hiệu quả học: bộ câu giữ riêng + các lần đo trước / sau / trễ
   bk?: BlocksSave;                 // v72 Xếp Khối: kỷ lục, số ván, chuỗi ngày (telemetry, không vào mastery)
   bd?: BoardSave;                  // v73 Bàn Cờ Phố: vị trí, nhà đã xây, xu đã tiêu (telemetry, không vào mastery)
+  gc?: CardsSave;                  // v74 Bài Câu: kỷ lục, số ván, bàn thắng (telemetry, không vào mastery)
 }
 
 export const GOAL_MAX = 4;
@@ -95,6 +97,8 @@ export function sanitizeE(raw: unknown): EState {
   if (bk) out.bk = bk;
   const bd = sanitizeBoard(x.bd);
   if (bd) out.bd = bd;
+  const gc = sanitizeCards(x.gc);
+  if (gc) out.gc = gc;
   return out;
 }
 
@@ -107,5 +111,5 @@ export function mergeE(a: unknown, b: unknown): EState {
     else by.set(g.id, { ...cur, since: Math.min(cur.since, g.since), date: cur.date ?? g.date });
   }
   const ev = mergeEv(A.ev, B.ev);
-  return sanitizeE({ v: E_V, goals: [...by.values()].sort((p, q) => p.since - q.since), m: recomputeAll(ev), ev, r: { ...B.r, ...A.r }, pri: A.pri || B.pri ? 1 : 0, diag: !A.diag ? B.diag : !B.diag ? A.diag : A.diag.day >= B.diag.day ? A.diag : B.diag, q: mergeQuest(A.q, B.q), ms: mergeMeasure(A.ms, B.ms), bk: mergeBlocks(A.bk, B.bk), bd: mergeBoard(A.bd, B.bd) });
+  return sanitizeE({ v: E_V, goals: [...by.values()].sort((p, q) => p.since - q.since), m: recomputeAll(ev), ev, r: { ...B.r, ...A.r }, pri: A.pri || B.pri ? 1 : 0, diag: !A.diag ? B.diag : !B.diag ? A.diag : A.diag.day >= B.diag.day ? A.diag : B.diag, q: mergeQuest(A.q, B.q), ms: mergeMeasure(A.ms, B.ms), bk: mergeBlocks(A.bk, B.bk), bd: mergeBoard(A.bd, B.bd), gc: mergeCards(A.gc, B.gc) });
 }

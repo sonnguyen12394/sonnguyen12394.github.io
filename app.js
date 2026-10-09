@@ -8342,13 +8342,14 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.563a0c7497.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.985f5d07a9.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),
   cando:id=>{ const c=CANDO.find(x=>x.id===id); if(!c) return null; const p=cdProg(c); return {p:p.p,m:p.m,lb:p.lb,k:p.k,need:p.need}; },
   probe:node=>eProbe(node),
+  order:node=>eOrder(node),
   transfer:node=>eXfer(node),
   micro:node=>eMicroCard(node),
   back:()=>microBack(),
@@ -8401,6 +8402,20 @@ function eProbe(node){ const out=[], pick=(xs,n)=>shuffle(xs.slice()).slice(0,n)
     if(p.ty&&p.ty.length){ const q=gbuild(p,'typ',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:3,g:0,prompt:q.prompt,accept:q.accept}); }
     if(p.fx&&p.fx.length){ const q=gbuild(p,'fix',{test:true,used}); if(q.type==='gfx') out.push({id:'g:'+p.id+':'+q.key,level:4,g:0,prompt:'Sửa câu sai: '+q.prompt,accept:q.accept}); }
     return out; }
+  return out; }
+// v74 Bài Câu: câu để xếp lá cho điểm ngữ pháp — câu sắp xếp (or), câu tự gõ đã điền đáp án, câu sửa lỗi bản đúng. Lá nhiễu lấy từ đáp án
+// sai của chính điểm đó (mc.w) và nhắm đúng chỗ hay sai: chỉ thêm lá nhiễu khi đáp án đúng tương ứng có trong câu (kèm "vì sao").
+function eOrder(node){ if(!node.startsWith('g:')) return []; const p=GPT[node.slice(2)]; if(!p) return [];
+  const clean=t=>String(t||'').replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim();
+  const sents=[...(p.or||[]).map(x=>x[0]),...(p.ty||[]).filter(t=>t.s.includes('___')&&t.a&&t.a[0]).map(t=>clean(t.s.replace('___',t.a[0]))),...(p.fx||[]).map(x=>x.good)]
+    .map(clean).filter(x=>x&&x.split(' ').length>=3&&x.split(' ').length<=12);
+  const out=[], seen=new Set();
+  for(const s of sents){ const k=norm(s); if(seen.has(k)) continue; seen.add(k);
+    const toks=s.split(' '), low=toks.map(t=>t.toLowerCase().replace(/[.,!?]+$/,''));
+    const traps=(p.mc||[]).filter(m=>low.includes(String(m.a).toLowerCase())).flatMap(m=>(m.w||[]).filter(w=>!low.includes(String(w).toLowerCase())&&!/\s/.test(w)).map(w=>({w,why:(m.why||{})[w]||''})));
+    const uniq=[...new Map(traps.map(t=>[t.w.toLowerCase(),t])).values()].slice(0,2);
+    let h=0; for(const ch of k) h=(h*31+ch.charCodeAt(0))>>>0;
+    out.push({id:'g:'+p.id+':ord:'+h.toString(36),level:3,g:0,prompt:`Xếp thành câu đúng · ${p.vi}`,tokens:toks,distract:uniq.map(t=>t.w),why:uniq.map(t=>t.why).filter(Boolean)[0]||p.note||''}); }
   return out; }
 // v60 Transfer (§59): câu ở NGỮ CẢNH MỚI cho nút đã Đạt. Từ vựng: câu điền từ lấy từ bài đọc / câu ví dụ của phần khác trong app
 // (không phải câu ví dụ của chính từ đó; ưu tiên câu không hiện trên thẻ từ). Ngữ pháp: mọi câu tự gõ / sửa lỗi của điểm, engine lọc câu đã gặp.
