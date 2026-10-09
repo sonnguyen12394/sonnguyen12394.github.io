@@ -84,16 +84,12 @@ export function init(host: EHost): EngineModule {
   function addGoal(id: string, why: 'pick' | 'auto'): boolean {
     const m = GOALS.get(id), e = E();
     if (!m || !goalOn(id, future()) || e.goals.some(g => g.id === id)) return false;
-    // v71 (bot L03): người học tự chọn một cấp CEFR cao hơn mục tiêu app TỰ ĐẶT sau bài dò → mục tiêu tự đặt (đã nằm trong bao đóng của
-    // cấp cao hơn) được thay, mục tiêu người học chọn thành mục tiêu chính: tiến độ, kỹ năng vững, Readiness đều đo theo nó.
-    if (why === 'pick' && id.startsWith('cefr-')) {
-      const autos = new Set(e.ev.snap.filter(s => s.dec === 'goal:AUTO').map(s => String(s.info?.goal ?? '')));
-      e.goals = e.goals.filter(g => !(autos.has(g.id) && g.id.startsWith('cefr-') && cefrRank(g.id) < cefrRank(id)));
-    }
     if (e.goals.length >= GOAL_MAX) e.goals = e.goals.filter(g => goalOn(g.id, future()));   // nhường chỗ: bỏ mục tiêu đang ẩn trước
     if (e.goals.length >= GOAL_MAX) { host.toast(`Tối đa ${GOAL_MAX} mục tiêu cùng lúc. Bỏ bớt một mục tiêu trước.`); return false; }
     const g0 = { id, version: m.version, since: host.today(), date: null };
-    // Cấp CEFR người học chọn cao hơn mọi mục tiêu CEFR đang có → đứng đầu (mục tiêu chính).
+    // v71 (bot L03): cấp CEFR người học chọn cao hơn mọi mục tiêu CEFR đang có → đứng đầu (mục tiêu chính: tiến độ, kỹ năng vững,
+    // Readiness đo theo nó). Mục tiêu app tự đặt thấp hơn được GIỮ làm bậc đệm: mục tiêu CEFR chỉ gồm Can-do đúng cấp (B1 = 49 Can-do B1),
+    // nên bỏ nó thì phần nền A1–A2 chỉ còn được tính gián tiếp qua tiền đề (bot L02: ngữ pháp A1–A2 từ 34–58% xuống 9% số lượt).
     if (why === 'pick' && id.startsWith('cefr-') && e.goals.every(g => !g.id.startsWith('cefr-') || cefrRank(g.id) < cefrRank(id))) e.goals.unshift(g0); else e.goals.push(g0);
     if (why === 'auto') addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `goal:${id}`, dec: 'goal:AUTO', rule: `${RULE_ID}/goal-auto-1`,
       info: { goal: id, ...(e.diag ? { u: e.diag.u, g: e.diag.g } : {}) }, evs: [] }, false);

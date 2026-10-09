@@ -62,7 +62,7 @@ test('người dùng cũ đã học mà chưa có mục tiêu: app đặt mục 
   expect(errors).toEqual([]);
 });
 
-test('v71 (bot L03): người học chọn B1 sau khi app tự đặt A1 → B1 thành mục tiêu chính, A1 tự đặt được thay', async ({ page, errors }) => {
+test('v71 (bot L03): người học chọn B1 sau khi app tự đặt A1 → B1 thành mục tiêu chính (đứng đầu), A1 tự đặt giữ làm bậc đệm', async ({ page, errors }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Bắt đầu', exact: true }).click();
   await page.getByRole('button', { name: 'Bắt đầu dò' }).click();
@@ -72,6 +72,6 @@ test('v71 (bot L03): người học chọn B1 sau khi app tự đặt A1 → B1 
   await page.locator('[data-e="go"][data-r="goals"]').first().click();
   await page.locator('[data-r="pick/cefr"]').first().click();
   await page.locator('[data-e="add"][data-g="cefr-b1"]').first().click();
-  await expect.poll(() => page.evaluate(() => (window as any).eval('st').e.goals.map((g: any) => g.id))).toEqual(['cefr-b1']);
+  await expect.poll(() => page.evaluate(() => (window as any).eval('st').e.goals.map((g: any) => g.id))).toEqual(['cefr-b1', 'cefr-a1']);
   expect(errors).toEqual([]);
 });
