@@ -10,6 +10,7 @@ import { sanitizeEv } from './ev/sanitize.ts';
 import type { Level } from './types.ts';
 import { sanitizeQuest, mergeQuest, type QuestSave } from './quest.ts';
 import { sanitizeMeasure, mergeMeasure, type MeasureSave } from './measure.ts';
+import { sanitizeBlocks, mergeBlocks, type BlocksSave } from './blocks.ts';
 
 export const E_V = 4;
 
@@ -32,6 +33,7 @@ export interface EState {
   diag: DiagResult | null;
   q?: QuestSave;                   // v62 Ladder Quest: tiến độ game (telemetry, không vào mastery)
   ms?: MeasureSave;                // v63 đo hiệu quả học: bộ câu giữ riêng + các lần đo trước / sau / trễ
+  bk?: BlocksSave;                 // v72 Xếp Khối: kỷ lục, số ván, chuỗi ngày (telemetry, không vào mastery)
 }
 
 export const GOAL_MAX = 4;
@@ -87,6 +89,8 @@ export function sanitizeE(raw: unknown): EState {
   if (q) out.q = q;
   const ms = sanitizeMeasure(x.ms);
   if (ms) out.ms = ms;
+  const bk = sanitizeBlocks(x.bk);
+  if (bk) out.bk = bk;
   return out;
 }
 
@@ -99,5 +103,5 @@ export function mergeE(a: unknown, b: unknown): EState {
     else by.set(g.id, { ...cur, since: Math.min(cur.since, g.since), date: cur.date ?? g.date });
   }
   const ev = mergeEv(A.ev, B.ev);
-  return sanitizeE({ v: E_V, goals: [...by.values()].sort((p, q) => p.since - q.since), m: recomputeAll(ev), ev, r: { ...B.r, ...A.r }, pri: A.pri || B.pri ? 1 : 0, diag: !A.diag ? B.diag : !B.diag ? A.diag : A.diag.day >= B.diag.day ? A.diag : B.diag, q: mergeQuest(A.q, B.q), ms: mergeMeasure(A.ms, B.ms) });
+  return sanitizeE({ v: E_V, goals: [...by.values()].sort((p, q) => p.since - q.since), m: recomputeAll(ev), ev, r: { ...B.r, ...A.r }, pri: A.pri || B.pri ? 1 : 0, diag: !A.diag ? B.diag : !B.diag ? A.diag : A.diag.day >= B.diag.day ? A.diag : B.diag, q: mergeQuest(A.q, B.q), ms: mergeMeasure(A.ms, B.ms), bk: mergeBlocks(A.bk, B.bk) });
 }

@@ -44,6 +44,8 @@ export interface FloorIn {
   explore?: boolean;                    // v70: false = người học đang sai nhiều → trinh sát không dò khám phá (vẫn xác nhận Claim)
   neck?: string;                        // v71: điểm nghẽn hiện tại (yếu × quan trọng) → quái đầu tiên của tầng
   claimLv?: (node: string) => Level;    // v71: mức của Claim (mức cần của nút); không có thì mức 3
+  order?: Enc[];                        // v72: thứ tự cảnh của game khác (Xếp Khối: nhiều rương ôn hơn); mặc định thứ tự tầng tháp
+  tag?: string;                         // v72: tiền tố id lượt theo game ('b' = Xếp Khối) — id vẫn bắt đầu bằng QUEST_VER
 }
 // capDay: số lượt tối đa mỗi nút mỗi ngày trong tháp (giãn cách). wip: số phần đang học dở tối đa trước khi mở phần mới — học xong
 // phần đã bắt đầu trước khi rải sang phần mới (bot L01: không giới hạn thì một tháng chạm 100 nút mà gần như không nút nào vững).
@@ -59,7 +61,7 @@ export function planFloor(x: FloorIn): Challenge[] {
   const size = x.size ?? 8, gp = gameplayDifficulty(x.floor), used = new Set<string>(), out: Challenge[] = [];
   const val = new Map(x.acts.map(a => [`${a.kind}|${a.node}`, a.u]));
   const mk = (kind: Enc, node: string, level: Level, value: number): Challenge => ({
-    id: `${QUEST_VER}:${x.floor}:${out.length}:${node}`, gameType: kind, node, level, targetCompetencies: [node], evidenceTypes: EVT[kind],
+    id: `${QUEST_VER}:${x.tag ?? ''}${x.floor}:${out.length}:${node}`, gameType: kind, node, level, targetCompetencies: [node], evidenceTypes: EVT[kind],
     languageDifficulty: level, gameplayDifficulty: gp, expectedTime: kind === 'camp' ? 60 : kind === 'boss' ? 30 : 15,
     context: `quest-${kind}`, scoringRule: 'ok', value: Math.round(value * 100) / 100, version: QUEST_VER,
   });
@@ -98,8 +100,8 @@ export function planFloor(x: FloorIn): Challenge[] {
     used.add(o.node);
     return mk('monster', o.node, (x.started(o.node) ? o.level : 1) as Level, val.get(`learn|${o.node}`) ?? 0.8);
   };
-  const order: Enc[] = ['monster', 'scout', 'monster', 'chest', 'camp', 'monster', 'monster', 'boss'];
-  for (const k of order.slice(0, size)) {
+  const order: Enc[] = x.order ?? ['monster', 'scout', 'monster', 'chest', 'camp', 'monster', 'monster', 'boss'];
+  for (const k of order.slice(0, x.order ? order.length : size)) {
     const c = take(k) ?? (k !== 'monster' ? take('monster') : null);
     if (c) out.push(c);
   }
