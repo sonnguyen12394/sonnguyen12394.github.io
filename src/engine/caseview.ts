@@ -8,6 +8,7 @@ export interface CaseRun {
   mode: 'read' | 'listen'; floor: number; seed: number; t0: number; node: string; text: ReadText; qs: ReadQ[]; opts: Array<{ opts: string[]; ans: number }>;
   i: number; first: Array<boolean | null>; flipped: boolean[]; retry: boolean; ans: { ok: boolean; i: number; coins: number; retry: boolean } | null;
   ok: number; coins: number; done: boolean; plays: number;
+  gloss: Record<string, { vi: string; learned: boolean }>; look: string | null; looked: number;   // v78: chạm từ trong hồ sơ để xem nghĩa
 }
 
 const head = (c: ECtx, r: CaseRun): string => {
@@ -24,7 +25,9 @@ const head = (c: ECtx, r: CaseRun): string => {
 // Văn bản (đọc): luôn hiện để đọc lại; khi sai, tô sáng câu chứa đáp án.
 function doc(c: ECtx, r: CaseRun, mark: number): string {
   const esc = c.host.esc, ss = sentences(r.text.paras);
-  return `<article class="dtdoc" lang="en">${ss.map((s, k) => (k === mark ? `<mark>${esc(s)}</mark>` : esc(s))).join(' ')}</article>`;
+  const words = (s: string) => s.split(/([A-Za-z][A-Za-z'-]{3,})/).map((p, k) => (k % 2 && r.gloss[p.toLowerCase()] ? `<button class="dtw${r.gloss[p.toLowerCase()]!.learned ? '' : ' new'}" data-e="dtgloss" data-w="${esc(p.toLowerCase())}">${esc(p)}</button>` : esc(p))).join('');
+  const look = r.look && r.gloss[r.look] ? `<p class="dtlook" role="status"><b lang="en">${esc(r.look)}</b> = ${esc(r.gloss[r.look]!.vi)} <button class="btn ghost small" data-say="${esc(r.look)}">🔊</button></p>` : '';
+  return `<article class="dtdoc" lang="en">${ss.map((s, k) => (k === mark ? `<mark>${words(s)}</mark>` : words(s))).join(' ')}</article>${look || '<p class="hint">Chạm một từ gạch chân để xem nghĩa (từ chưa học gạch đậm).</p>'}`;
 }
 const player = (c: ECtx, r: CaseRun, tts: boolean): string => tts
   ? `<div class="row"><button class="btn${r.plays ? '' : ' primary'}" data-e="rdplay">▶ ${r.plays ? 'Nghe lại' : 'Phát bản tin'}</button><button class="btn ghost" data-e="rdplay" data-slow="1">🐢 Nghe chậm</button></div>`

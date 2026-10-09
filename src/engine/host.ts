@@ -21,7 +21,8 @@ export interface EHost {
   texts?(mode: 'read' | 'listen', lv: string): ReadText[];   // v78 / v79: bài đọc / nghe có câu hỏi ở một cấp (app.js eTexts)
   readSave?(id: string, src: 'lr' | 'unit', mode: 'read' | 'listen', score: number): void;   // lưu điểm như tab Đọc / Nghe (Can-Do)
   sayLines?(lines: Array<{ s: string; t: string }>, slow?: boolean): void;   // đọc cả bài (hai giọng A / B)
-  tts?(): boolean;                                   // máy có giọng đọc tiếng Anh            // v77 Câu đố ngày: chủ đề + các từ của một cụm từ (app.js eGroup)
+  tts?(): boolean;
+  gloss?(paras: string[]): Record<string, { vi: string; learned: boolean }>;   // v78: nghĩa các từ của bài có trong kho từ                                   // máy có giọng đọc tiếng Anh            // v77 Câu đố ngày: chủ đề + các từ của một cụm từ (app.js eGroup)
   transfer?(node: string): ReturnType<EHost['probe']>;   // câu ở ngữ cảnh mới cho transfer (app.js eXfer): engine lọc câu đã gặp (§59)
   micro?(node: string): { card: MicroCard; qs: ReturnType<EHost['probe']> } | null;   // bí kíp 60 giây + câu kiểm tra (app.js eMicroCard)
   back?(): void;

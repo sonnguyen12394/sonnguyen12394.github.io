@@ -700,7 +700,7 @@ export function init(host: EHost): EngineModule {
     for (const L of tries) { const xs = host.texts?.(mode, L) ?? []; text = caseChoose(xs, seed, (sv as { lastId?: string }).lastId ?? ''); if (text) { lv = L; break; } }
     if (!text) { host.toast(mode === 'read' ? 'Chưa có bài đọc nào (đang tải bài học, thử lại sau).' : 'Chưa có bản tin nào.'); return; }
     const qs = caseOrder(text.qs), node = [...ix.node.values()].find(n => n.kind === 'cando' && n.skill === (mode === 'read' ? 'R' : 'L') && n.cefr === lv)?.id ?? '';
-    trun = { mode, floor: sv.runs + 1, seed, t0: Date.now(), node, text, qs, opts: qs.map((q, k) => caseOptions(q, seed + k * 131)), i: 0, first: qs.map(() => null), flipped: qs.map(() => false), retry: false, ans: null, ok: 0, coins: 0, done: false, plays: 0 };
+    trun = { mode, floor: sv.runs + 1, seed, t0: Date.now(), node, text, qs, opts: qs.map((q, k) => caseOptions(q, seed + k * 131)), i: 0, first: qs.map(() => null), flipped: qs.map(() => false), retry: false, ans: null, ok: 0, coins: 0, done: false, plays: 0, gloss: mode === 'read' ? host.gloss?.(text.paras) ?? {} : {}, look: null, looked: 0 };
     if (mode === 'listen' && text.lines) { host.sayLines?.(text.lines, false); trun.plays = 1; }
     host.render();
   }
@@ -729,7 +729,7 @@ export function init(host: EHost): EngineModule {
     host.readSave?.(r.text.id, r.text.src, r.mode, n ? r.ok / n : 0);
     sv.runs++; if (win) sv.solved++; sv.stars += caseStars(r.ok, n); sv.day = host.today(); sv.lastId = r.text.id;
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `${r.mode === 'read' ? 'case' : 'radio'}:${r.floor}`, dec: `${r.mode === 'read' ? 'case' : 'radio'}:${win ? 'win' : 'lose'}`, rule: `${RULE_ID}/${QUEST_VER}`,
-      info: { ok: r.ok, of: n, text: r.text.id, src: r.text.src, lv: r.text.lv, node: r.node, coins: r.coins }, evs: [] }, false);
+      info: { ok: r.ok, of: n, looked: r.looked, text: r.text.id, src: r.text.src, lv: r.text.lv, node: r.node, coins: r.coins }, evs: [] }, false);
     sfx('end'); host.save(); host.render();
   }
 
@@ -1050,6 +1050,7 @@ export function init(host: EHost): EngineModule {
     dtans(el) { tAnswer(Number(el.dataset.i)); },
     dtretry() { const r = trun; if (!r || !r.ans || r.ans.ok || r.ans.retry) return; r.ans = null; r.retry = true; if (r.mode === 'listen' && r.text.lines) { host.sayLines?.(r.text.lines, false); r.plays++; } host.render(); },
     dtnext() { tNext(); },
+    dtgloss(el) { const r = trun, w = el.dataset.w || ''; if (!r || !r.gloss[w]) return; r.look = w; r.looked++; host.render(); },
     rdplay(el) { const r = trun; if (!r?.text.lines) return; host.sayLines?.(r.text.lines, el.dataset.slow === '1'); r.plays++; host.render(); },
     cdcharm(el) { const r = crun, id = el.dataset.c || ''; if (!r?.offer?.some(o => o.id === id)) return; r.charms.push(id); r.offer = null; cNext(); },
     bdroll() { bdRoll(); },

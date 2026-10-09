@@ -25,6 +25,7 @@ test('Thám tử: đọc hồ sơ, manh mối 3 lựa chọn; sai thì tô sáng
   const before = await saved(page);
   await page.locator('[data-e="dtstart"]').first().click();
   await expect(page.locator('.dtdoc')).toBeVisible();
+  if (await page.locator('.dtw').count()) { await page.locator('.dtw').first().click(); await expect(page.locator('.dtlook')).toBeVisible(); }   // chạm từ → nghĩa
   const end = page.getByRole('heading', { name: /Phá án|Hồ sơ còn bỏ ngỏ/ });
   let n = 0, firstOk = 0, id = '';
   for (let i = 0; i < 30 && !(await end.isVisible()); i++) {

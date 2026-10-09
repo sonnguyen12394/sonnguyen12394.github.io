@@ -8356,6 +8356,7 @@ const EHOST = {
   readSave:(id,src,mode,score)=>eReadSave(id,src,mode,score),
   sayLines:(lines,slow)=>{ try{ sayLines(lines,slow); }catch(e){} },
   tts:()=>!!HAS_TTS,
+  gloss:paras=>eGloss(paras),
   say:t=>{ try{ say(t); }catch(e){} },
   transfer:node=>eXfer(node),
   micro:node=>eMicroCard(node),
@@ -8453,6 +8454,10 @@ function eTexts(mode,lv){ const out=[], qs=xs=>(xs||[]).filter(q=>q&&q.a&&(q.w||
     out.push({id:u.id,src:'unit',lv:u.level,title:u.reading.title,tvi:u.reading.tvi||'',kind:(mode==='listen'?'Bản tin chủ đề “':'Bài đọc của unit “')+u.title+'”',mine,best:s[mode==='listen'?'listen':'read']??null,
       paras:[txt],lines:mode==='listen'?sents.map(t=>({s:'A',t:t.trim()})).filter(l=>l.t):null,qs:q}); }
   return out; }
+// v78: từ trong bài có trong kho từ của app → nghĩa (chạm từ trong hồ sơ để xem nghĩa, nối về thẻ từ). Chỉ từ ≥ 4 chữ cái.
+let _gl=null;
+function eGloss(paras){ if(!_gl){ _gl=new Map(); for(const w of ALL_WORDS){ const k=String(w.word||'').toLowerCase(); if(/^[a-z][a-z'-]{3,}$/.test(k)&&!_gl.has(k)) _gl.set(k,{id:w.id,vi:w.vi,learned:!!W(w.id).learned}); } }
+  const out={}; for(const t of (paras||[]).join(' ').toLowerCase().match(/[a-z][a-z'-]{3,}/g)||[]){ const g=_gl.get(t); if(g) out[t]={vi:g.vi,learned:!!W(g.id).learned}; } return out; }
 function eReadSave(id,src,mode,score){ const sc=Math.max(0,Math.min(1,+score||0)); bump('read');
   if(src==='lr'){ const x=st.lread[id]||={best:0,n:0}; x.best=Math.max(x.best||0,sc); x.n=(x.n||0)+1; x.day=today(); }
   else if(src==='unit'&&UNIT_BY_ID[id]){ const s=U(id), k=mode==='listen'?'listen':'read'; s[k]=Math.max(s[k]??0,sc); }
