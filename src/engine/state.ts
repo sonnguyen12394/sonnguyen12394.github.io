@@ -17,6 +17,8 @@ import { sanitizeCafe, mergeCafe, type CafeSave } from './cafe.ts';
 import { sanitizeBubbles, mergeBubbles, type BubblesSave } from './bubbles.ts';
 import { sanitizePuzzle, mergePuzzle, type PuzzleSave } from './puzzle.ts';
 import { sanitizeCase, mergeCase, type CaseSave } from './detective.ts';
+import { sanitizeKara, mergeKara, type KaraSave } from './karaoke.ts';
+import { sanitizeShop, mergeShop, type ShopSave } from './workshop.ts';
 
 export const E_V = 4;
 
@@ -46,6 +48,8 @@ export interface EState {
   gs?: BubblesSave;                // v76 Bắt Âm: kỷ lục, màn (telemetry, không vào mastery)
   gt?: CaseSave & { lastId?: string };   // v78 Thám tử: số hồ sơ / phá án (telemetry)
   gr?: CaseSave & { lastId?: string };   // v79 Đài phát thanh: số bản tin (telemetry)
+  gk?: KaraSave & { lastId?: string };   // v81 Karaoke: số bài / kỷ lục (telemetry)
+  gw?: ShopSave;                   // v82 Xưởng sửa câu: số hộp / kỷ lục (telemetry)
   gd?: PuzzleSave;                 // v77 Câu đố ngày: số ngày giải, sao (telemetry, không vào mastery)
 }
 
@@ -114,6 +118,9 @@ export function sanitizeE(raw: unknown): EState {
   if (gs) out.gs = gs;
   const gd = sanitizePuzzle(x.gd);
   if (gd) out.gd = gd;
+  const gw = sanitizeShop(x.gw);
+  if (gw) out.gw = gw;
+  { const raw = x.gk as { lastId?: unknown } | undefined, v = sanitizeKara(raw); if (v) out.gk = { ...v, ...(typeof raw?.lastId === 'string' ? { lastId: raw.lastId.slice(0, 40) } : {}) }; }
   for (const k of ['gt', 'gr'] as const) { const raw = x[k] as { lastId?: unknown } | undefined, v = sanitizeCase(raw); if (v) out[k] = { ...v, ...(typeof raw?.lastId === 'string' ? { lastId: raw.lastId.slice(0, 40) } : {}) }; }
   return out;
 }
@@ -127,5 +134,5 @@ export function mergeE(a: unknown, b: unknown): EState {
     else by.set(g.id, { ...cur, since: Math.min(cur.since, g.since), date: cur.date ?? g.date });
   }
   const ev = mergeEv(A.ev, B.ev);
-  return sanitizeE({ v: E_V, goals: [...by.values()].sort((p, q) => p.since - q.since), m: recomputeAll(ev), ev, r: { ...B.r, ...A.r }, pri: A.pri || B.pri ? 1 : 0, diag: !A.diag ? B.diag : !B.diag ? A.diag : A.diag.day >= B.diag.day ? A.diag : B.diag, q: mergeQuest(A.q, B.q), ms: mergeMeasure(A.ms, B.ms), bk: mergeBlocks(A.bk, B.bk), bd: mergeBoard(A.bd, B.bd), gc: mergeCards(A.gc, B.gc), gq: mergeCafe(A.gq, B.gq), gs: mergeBubbles(A.gs, B.gs), gd: mergePuzzle(A.gd, B.gd), gt: mergeCase(A.gt, B.gt), gr: mergeCase(A.gr, B.gr) });
+  return sanitizeE({ v: E_V, goals: [...by.values()].sort((p, q) => p.since - q.since), m: recomputeAll(ev), ev, r: { ...B.r, ...A.r }, pri: A.pri || B.pri ? 1 : 0, diag: !A.diag ? B.diag : !B.diag ? A.diag : A.diag.day >= B.diag.day ? A.diag : B.diag, q: mergeQuest(A.q, B.q), ms: mergeMeasure(A.ms, B.ms), bk: mergeBlocks(A.bk, B.bk), bd: mergeBoard(A.bd, B.bd), gc: mergeCards(A.gc, B.gc), gq: mergeCafe(A.gq, B.gq), gs: mergeBubbles(A.gs, B.gs), gd: mergePuzzle(A.gd, B.gd), gt: mergeCase(A.gt, B.gt), gr: mergeCase(A.gr, B.gr), gk: mergeKara(A.gk, B.gk), gw: mergeShop(A.gw, B.gw) });
 }

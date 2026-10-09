@@ -22,7 +22,14 @@ export interface EHost {
   readSave?(id: string, src: 'lr' | 'unit', mode: 'read' | 'listen', score: number): void;   // lưu điểm như tab Đọc / Nghe (Can-Do)
   sayLines?(lines: Array<{ s: string; t: string }>, slow?: boolean): void;   // đọc cả bài (hai giọng A / B)
   tts?(): boolean;
-  gloss?(paras: string[]): Record<string, { vi: string; learned: boolean }>;   // v78: nghĩa các từ của bài có trong kho từ                                   // máy có giọng đọc tiếng Anh            // v77 Câu đố ngày: chủ đề + các từ của một cụm từ (app.js eGroup)
+  gloss?(paras: string[]): Record<string, { vi: string; learned: boolean }>;
+  fixes?(node: string): FixItem[];                    // v82 Xưởng sửa câu: câu sai của một điểm ngữ pháp
+  hasAsr?(): boolean;                                // v80–v81: trình duyệt nghe được giọng nói
+  asr?(key: string, target: string, other?: string, label?: string): string;   // nút "🎙 Nói" + kết quả (HTML của app, asrBox)
+  asrRes?(key: string): { p: number; k: string } | null;   // tỉ lệ từ máy nghe ra (câu) hoặc 1 / 0 (một từ của cặp âm)
+  asrOff?(): void;
+  dialogs?(lv: string): Dialog[];                    // v81 Karaoke: hội thoại ở một cấp
+  rpSave?(id: string, k: 'easy' | 'ok' | 'hard'): void;   // lưu như màn Đóng vai (Can-Do nói)   // v78: nghĩa các từ của bài có trong kho từ                                   // máy có giọng đọc tiếng Anh            // v77 Câu đố ngày: chủ đề + các từ của một cụm từ (app.js eGroup)
   transfer?(node: string): ReturnType<EHost['probe']>;   // câu ở ngữ cảnh mới cho transfer (app.js eXfer): engine lọc câu đã gặp (§59)
   micro?(node: string): { card: MicroCard; qs: ReturnType<EHost['probe']> } | null;   // bí kíp 60 giây + câu kiểm tra (app.js eMicroCard)
   back?(): void;
@@ -45,4 +52,6 @@ export interface GroupInfo { node: string; topic: string; vi: string; words: Arr
 // v78 / v79: một bài đọc / nghe. best: điểm cao nhất đã có (0–1, null = chưa làm); mine: bài của unit người học đã / đang học.
 export interface ReadQ { k: string; q: string; a: string; w: string[]; why: string }
 export interface ReadText { id: string; src: 'lr' | 'unit'; lv: string; title: string; tvi: string; kind: string; mine: boolean; best: number | null; paras: string[]; lines: Array<{ s: string; t: string }> | null; qs: ReadQ[] }
+export interface FixItem { id: string; level: 4; g: 0; prompt: string; bad: string; good: string; accept: string[]; why: string; vi: string }
+export interface Dialog { id: string; lv: string; title: string; vi: string; place: string; fn: string[]; names: { A: string; B: string }; lines: Array<{ s: string; t: string; vi: string }>; rp: string | null }
 export interface FnItem { id: string; level: 1 | 2 | 3; g: number; kind: 'hear' | 'reply'; prompt: string; say?: string; en: string; vi: string; opts: string[]; ans: number; why?: string }

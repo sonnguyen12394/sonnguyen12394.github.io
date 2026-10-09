@@ -8342,7 +8342,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.abad80f04e.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.62b04c5180.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8357,6 +8357,15 @@ const EHOST = {
   sayLines:(lines,slow)=>{ try{ sayLines(lines,slow); }catch(e){} },
   tts:()=>!!HAS_TTS,
   gloss:paras=>eGloss(paras),
+  // v80–v81: nói. Máy nghe giọng của trình duyệt (asrBox / ASR) — chỉ là phản hồi, không vào mức thuộc (như mọi chỗ khác của app).
+  fixes:node=>eFixes(node),
+  hasAsr:()=>HAS_ASR,
+  asr:(key,target,other,label)=>asrBox(key,target,other,label),
+  asrRes:key=>ASR.key===key&&ASR.res?{p:ASR.res.word?(ASR.res.k==='ok'?1:0):ASR.res.p,k:ASR.res.k||''}:null,
+  asrOff:()=>{ try{ asrReset(); }catch(e){} },
+  dialogs:lv=>DIALOGUES.filter(d=>d.lv===lv&&d.lines.some(l=>l.s==='B')).map(d=>({id:d.id,lv:d.lv,title:d.title,vi:d.vi,place:d.place||'',fn:d.fn||[],names:d.names||{A:'A',B:'B'},lines:d.lines.map(l=>({s:l.s,t:l.t,vi:l.vi||''})),rp:(st.dlg[d.id]||{}).rp||null})),
+  // Kết quả đóng vai (như nút "Dễ / Được / Khó" của màn Đóng vai): giữ mức tốt nhất, tính vào Can-Do nói.
+  rpSave:(id,k)=>{ if(!DLG[id]||!['easy','ok','hard'].includes(k)) return; const o={hard:0,ok:1,easy:2}, r=st.dlg[id]||={best:0,n:0}; if(!r.rp||o[k]>o[r.rp]) r.rp=k; r.day=today(); bump('talk'); save(); try{ checkBadges(); }catch(e){} },
   say:t=>{ try{ say(t); }catch(e){} },
   transfer:node=>eXfer(node),
   micro:node=>eMicroCard(node),
@@ -8440,6 +8449,9 @@ function eFn(node){ if(!node.startsWith('fn:')) return []; const f=FN[node.slice
     const ws=[...sameWrongReg,...shuffle(others.map(x=>x.t).filter(t=>nt(t)!==nt(e.t)))].slice(0,3), o2=shuffle([e.t,...ws]);
     out.push({id:`fn:${f.id}:r:${i}`,level:3,g:1/o2.length,kind:'reply',prompt:`Bạn muốn ${f.vi.toLowerCase()} (văn phong ${REG_VI[e.reg].toLowerCase()}). Nói câu nào?`,en:e.t,vi:e.vi,opts:o2,ans:o2.indexOf(e.t),why:(sameWrongReg.length?`Câu “${sameWrongReg[0]}” cùng ý nhưng ${e.reg==='f'?'thân mật':'trang trọng'} quá. `:'')+(f.tip||'')}); });
   return out; }
+// v82 Xưởng sửa câu: mọi câu sai của một điểm ngữ pháp (fx) → tự gõ lại câu đúng (mức 4, g = 0), kèm "vì sao".
+function eFixes(node){ if(!node.startsWith('g:')) return []; const p=GPT[node.slice(2)]; if(!p||!p.fx) return [];
+  return p.fx.map((x,i)=>({id:'g:'+p.id+':x'+i,level:4,g:0,prompt:'Sửa câu sai',bad:x.bad,good:x.good,accept:[x.good,...(x.alt||[])],why:x.why||'',vi:p.vi||''})); }
 // v77 Câu đố ngày: chủ đề + 10 từ của một cụm (u:), kèm đã học / đến hạn ôn để engine chọn từ lên bàn và từ để nhớ lại.
 function eGroup(node){ if(!node.startsWith('u:')) return null; const u=UNIT_BY_ID[node.slice(2)]; if(!u||!u.words||u.words.length<5) return null; const t=today();
   return {node, topic:u.title, vi:u.vi||u.title, words:u.words.map(w=>{ const c=W(w.id); return {id:w.id, en:w.word, vi:w.vi, pos:w.pos||'', pic:w.pic||'', learned:!!c.learned, due:!!(c.learned&&c.due!=null&&c.due<=t)}; })}; }

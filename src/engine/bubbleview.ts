@@ -11,7 +11,11 @@ export interface BubbleRun {
   floor: number; stage: number; seed: number; t0: number; k: number; n: number; ok: number; coins: number; score: number; streak: number; wrong: string[]; passed?: string[]; done: boolean;
   ch: Challenge | null; node: string; item: SoundItem | null; novel: boolean;
   ans: { ok: boolean; i: number; pts: number; coins: number } | null;
+  spoke?: number;   // v80: số từ máy nghe ra đúng khi nói thử (telemetry, không vào năng lực)
 }
+
+// v80: khoá câu nói thử của một từ (để main.ts đọc kết quả khi sang từ kế).
+export const speakKey = (r: BubbleRun): string => `bb:${r.floor}:${r.n}`;
 
 export function viewBubbles(c: ECtx, r: BubbleRun, tts: boolean): string {
   const esc = c.host.esc, ix = loaded()!, it = r.item;
@@ -28,6 +32,7 @@ export function viewBubbles(c: ECtx, r: BubbleRun, tts: boolean): string {
     return `${head}<p class="hint">${esc(node)}</p>${field}
       <div class="fb ${a.ok ? 'good' : 'bad'}" role="status"><strong>${a.ok ? `Bắt trúng! +${a.pts}` : 'Trượt rồi, nghe lại hai từ nhé'}</strong>${a.ok ? '' : `<span>Từ vừa đọc: <b lang="en">${esc(right)}</b></span>`}
         ${!a.ok && it.pair ? `<span class="row" style="gap:6px">${it.pair.map(w => `<button class="btn small" data-say="${esc(w)}" lang="en">🔊 ${esc(w)}</button>`).join('')}</span>` : ''}${!a.ok && it.tip ? `<span class="hint">💡 ${esc(it.tip)}</span>` : ''}<span class="hint">+${a.coins} xu</span></div>
+      ${it.pair && c.host.asr && c.host.hasAsr?.() ? `<div class="stack" style="gap:4px"><p class="hint">🗣️ Nói thử: máy có nghe ra “<span lang="en">${esc(right)}</span>” không, hay nghe thành từ kia? (+5 điểm, không tính vào năng lực)</p>${c.host.asr(speakKey(r), right, it.pair.find(w => w !== right) ?? '', 'Nói thử từ này')}</div>` : ''}
       <div class="row"><button class="btn primary" data-e="bbnext" id="qnextbtn">${r.k + 1 >= WORDS ? 'Xong màn' : 'Từ kế ▸'}</button></div>`;
   }
   return `${head}<p class="hint">🎧 Nghe rồi chạm bong bóng có từ vừa đọc · ${esc(node)}</p>${say}${field}

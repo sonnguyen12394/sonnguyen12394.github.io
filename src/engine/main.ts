@@ -26,7 +26,7 @@ import { viewLobby, viewBlocks, viewBlocksEnd, viewBoard, viewBoardEnd } from '.
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
 import { GUESTS, stars as cafeStars, freshCafeSave } from './cafe.ts';
-import { viewBubbles, viewBubblesEnd, type BubbleRun } from './bubbleview.ts';
+import { viewBubbles, viewBubblesEnd, speakKey, type BubbleRun } from './bubbleview.ts';
 import { WORDS, points as bubblePoints, freshBubblesSave } from './bubbles.ts';
 import { TABLES, PLAYS, score as cardScore, offer as cardOffer, deal as cardDeal, check as cardCheck, target as cardTarget, freshCardsSave } from './cards.ts';
 import { sfx } from './sfx.ts';
@@ -34,6 +34,9 @@ import { viewPuzzle, viewPuzzleEnd, type PuzzleRun, type RecallItem } from './pu
 import { GROUPS, PER, deal as pzDeal, judge as pzJudge, stars as pzStars, distinct as pzDistinct, family as pzFamily, freshPuzzleSave, type PzGroup, type PzWord } from './puzzle.ts';
 import { rand } from './blocks.ts';
 import { viewCase, viewCaseEnd, type CaseRun } from './caseview.ts';
+import { viewKara, viewKaraEnd, karaKey, type KaraRun } from './karaview.ts';
+import { viewShop, viewShopEnd, accepted as shopOk, ORDERS, freshShopSave, type ShopRun } from './workshop.ts';
+import { pick as karaPick, linePoints, verdict as karaVerdict, ROLE, freshKaraSave } from './karaoke.ts';
 import { choose as caseChoose, order as caseOrder, options as caseOptions, solved as caseSolved, caseStars, freshCaseSave } from './detective.ts';
 import { viewQuestHome, viewQuestRun, viewQuestEnd, type QuestRun, type QItem } from './questview.ts';
 import { computePath, computeNba, recallOf } from './today.ts';
@@ -565,6 +568,8 @@ export function init(host: EHost): EngineModule {
   function bNext(): void {
     const r = brun;
     if (!r) return;
+    if (host.asrRes?.(speakKey(r))?.p === 1) { r.score += 5; r.spoke = (r.spoke ?? 0) + 1; }   // v80: nói thử đúng → điểm thưởng (telemetry)
+    host.asrOff?.();
     if (r.k + 1 >= WORDS || !r.item) { bEnd(); return; }
     r.k++; bLoad(); host.save(); host.render();
   }
@@ -576,7 +581,7 @@ export function init(host: EHost): EngineModule {
     (r as BubbleRun & { prevBest?: number }).prevBest = s.best;
     s.runs++; s.best = Math.max(s.best, r.score); if (r.n && r.ok / r.n >= 0.7) s.stage++; s.day = host.today();
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `bubbles:${r.floor}`, dec: 'bubbles:end', rule: `${RULE_ID}/${QUEST_VER}`,
-      info: { ok: r.ok, of: r.n, score: r.score, coins: r.coins, stage: r.stage },
+      info: { ok: r.ok, of: r.n, score: r.score, coins: r.coins, stage: r.stage, spoke: r.spoke ?? 0 },
       evs: e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:s${r.floor}:`)).slice(-r.n).map(x => x.id) }, false);
     sfx('end'); host.save(); host.render();
   }
@@ -730,6 +735,96 @@ export function init(host: EHost): EngineModule {
     sv.runs++; if (win) sv.solved++; sv.stars += caseStars(r.ok, n); sv.day = host.today(); sv.lastId = r.text.id;
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `${r.mode === 'read' ? 'case' : 'radio'}:${r.floor}`, dec: `${r.mode === 'read' ? 'case' : 'radio'}:${win ? 'win' : 'lose'}`, rule: `${RULE_ID}/${QUEST_VER}`,
       info: { ok: r.ok, of: n, looked: r.looked, text: r.text.id, src: r.text.src, lv: r.text.lv, node: r.node, coins: r.coins }, evs: [] }, false);
+    sfx('end'); host.save(); host.render();
+  }
+
+  // ---------- Karaoke hội thoại (v81, F8 nói) ----------
+  // Hội thoại đúng cấp đang học, chưa đóng vai trước, có chức năng giao tiếp đang học (lộ trình). Kết quả lưu như màn Đóng vai (Can-Do).
+  let krun: KaraRun | null = null;
+  const ksave = () => { const e = E(); return (e.gk ||= freshKaraSave()); };
+  function kStart(): void {
+    if (!loaded()) { ensure(); return; }
+    const e = E(), sv = ksave(), ix = loaded()!, lv0 = curLv(), seed = (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0;
+    const want = computePath(host, V(), ix).open.map(o => o.node).filter(n => n.startsWith('fn:')).map(n => n.slice(3));
+    const at = LVS.indexOf(lv0), tries = [lv0, ...LVS.slice(0, Math.max(0, at)).reverse(), ...LVS.slice(at + 1)];
+    let d = null as ReturnType<typeof karaPick>;
+    for (const L of tries) { d = karaPick(host.dialogs?.(L) ?? [], want, seed, (sv as { lastId?: string }).lastId ?? ''); if (d) break; }
+    if (!d) { host.toast('Chưa có hội thoại nào.'); return; }
+    krun = { floor: sv.runs + 1, seed, t0: Date.now(), d, i: 0, asr: !!host.hasAsr?.(), ps: d.lines.map(() => null), score: 0, combo: 0, done: false, k: null };
+    kEnter(); host.render();
+  }
+  function kEnter(): void { const r = krun!, l = r.d.lines[r.i]; host.asrOff?.(); if (l && l.s !== ROLE) host.say?.(l.t); }
+  function kScore(p: number | null): void {
+    const r = krun;
+    if (!r || r.done) return;
+    const l = r.d.lines[r.i]!;
+    if (l.s === ROLE) {
+      const v = p ?? 0;
+      r.ps[r.i] = v; r.combo = v >= 0.8 ? r.combo + 1 : 0; r.score += linePoints(v, r.combo);
+      if (p !== null) sfx(v >= 0.8 ? 'ok' : 'place');
+    }
+    if (r.i + 1 >= r.d.lines.length) { kEnd(); return; }
+    r.i++; kEnter(); host.render();
+  }
+  function kEnd(): void {
+    const r = krun;
+    if (!r) return;
+    const e = E(), sv = ksave() as ReturnType<typeof ksave> & { lastId?: string }, mine = r.ps.filter((p): p is number => p !== null);
+    r.done = true; r.k = karaVerdict(mine);
+    host.asrOff?.();
+    host.rpSave?.(r.d.id, r.k);
+    sv.runs++; sv.best = Math.max(sv.best, r.score); sv.lines += mine.length; sv.day = host.today(); sv.lastId = r.d.id;
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `karaoke:${r.floor}`, dec: `karaoke:${r.k}`, rule: `${RULE_ID}/${QUEST_VER}`,
+      info: { dlg: r.d.id, lines: mine.length, mean: Math.round((mine.reduce((a, b) => a + b, 0) / Math.max(1, mine.length)) * 100) / 100, asr: r.asr ? 1 : 0, score: r.score }, evs: [] }, false);
+    sfx('end'); host.save(); host.render();
+  }
+
+  // ---------- Xưởng sửa câu (v82, F3 + F9) ----------
+  // Mỗi đơn là một câu sai hay gặp của điểm ngữ pháp do engine chọn (nút g:); tự gõ lại câu đúng = bằng chứng mức 4 (g = 0).
+  let wrun: ShopRun | null = null, wPick: ((k: Enc) => Challenge | null) | null = null;
+  const SHOP_KINDS: Enc[] = ['chest', 'monster', 'monster', 'scout', 'monster', 'boss'];
+  const wsave = () => { const e = E(); return (e.gw ||= freshShopSave()); };
+  function wStart(): void {
+    if (!loaded()) { ensure(); return; }
+    const sv = wsave();
+    wPick = kindPicker(n => n.startsWith('g:') && (host.fixes?.(n)?.length ?? 0) > 0, 'w', sv.runs + 1);
+    wrun = { floor: sv.runs + 1, t0: Date.now(), k: 0, n: 0, ok: 0, coins: 0, wrong: [], done: false, ch: null, node: '', item: null, novel: false, ans: null };
+    wLoad(); host.render();
+  }
+  function wLoad(): void {
+    if (!wrun || !wPick) return;
+    const e = E(), ch = wPick(SHOP_KINDS[wrun.k] ?? 'monster') ?? wPick('monster');
+    wrun.ch = ch; wrun.ans = null;
+    if (!ch) { wrun.item = null; wrun.node = ''; return; }
+    const items = host.fixes?.(ch.node) ?? [], fresh = items.filter(x => !seenHas(e.ev, ch.node, x.id)), it = fresh[0] ?? items[(wrun.floor + wrun.k) % Math.max(1, items.length)] ?? null;
+    wrun.node = ch.node; wrun.item = it; wrun.novel = !!it && !seenHas(e.ev, ch.node, it.id);
+  }
+  function wAnswer(given: string): void {
+    const r = wrun;
+    if (!r || !r.item || !r.ch || r.ans) return;
+    const e = E(), it = r.item, ok = !!given && shopOk(given, it.accept);
+    ingest(e.ev, e.m, { node: r.node, level: 4, ok, g: 0, item: it.id, text: it.bad, qt: 'typed', ctx: 'fix', src: 'game', ch: r.ch.id, gp: r.ch.gameplayDifficulty, ...(given ? { given, right: it.good } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    const coins = reward(r.ch, ok, r.novel);
+    r.n++; r.coins += coins; if (ok) r.ok++; else r.wrong.push(r.node);
+    const sv = qsave(); sv.ans++; if (ok) sv.ok++; sv.coins += coins; sv.day = host.today();
+    r.ans = { ok, given, coins };
+    sfx(ok ? 'clear' : 'bad'); host.save(); host.render();
+  }
+  function wNext(): void {
+    const r = wrun;
+    if (!r) return;
+    if (r.k + 1 >= ORDERS || !r.item) { wEnd(); return; }
+    r.k++; wLoad(); host.render();
+  }
+  function wEnd(): void {
+    const r = wrun;
+    if (!r) return;
+    const e = E(), s = wsave(), ixq = loaded()!;
+    r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
+    (r as ShopRun & { prevBest?: number }).prevBest = s.best;
+    s.runs++; s.packed += r.ok; s.best = Math.max(s.best, r.ok); s.day = host.today();
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `shop:${r.floor}`, dec: 'shop:end', rule: `${RULE_ID}/${QUEST_VER}`,
+      info: { ok: r.ok, of: r.n, coins: r.coins }, evs: e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:w${r.floor}:`)).slice(-r.n).map(x => x.id) }, false);
     sfx('end'); host.save(); host.render();
   }
 
@@ -943,6 +1038,8 @@ export function init(host: EHost): EngineModule {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
       if (brun) return brun.done ? viewBubblesEnd(c, brun, (brun as BubbleRun & { prevBest?: number }).prevBest ?? 0) : viewBubbles(c, brun, host.probe('ph:s-01').length > 0);
       if (frun) return frun.done ? viewCafeEnd(c, frun, fsave().stars) : viewCafe(c, frun, fsave().stars);
+      if (wrun) return wrun.done ? viewShopEnd(c, wrun, (wrun as ShopRun & { prevBest?: number }).prevBest ?? 0) : viewShop(c, wrun, loaded()?.node.get(wrun.node)?.vi ?? '');
+      if (krun) return krun.done ? viewKaraEnd(c, krun) : viewKara(c, krun);
       if (trun) return trun.done ? viewCaseEnd(c, trun, tsave(trun.mode).solved) : viewCase(c, trun, !!host.tts?.());
       if (zrun) return zrun.done ? viewPuzzleEnd(c, zrun, zsave().days) : viewPuzzle(c, zrun);
       if (crun) return crun.done ? viewCardsEnd(c, crun, (crun as CardsRun & { prevBest?: number }).prevBest ?? 0) : viewCards(c, crun);
@@ -951,7 +1048,7 @@ export function init(host: EHost): EngineModule {
       if (qrun?.done) return viewQuestEnd(c, qrun);
       if (qrun) return viewQuestRun(c, qrun);
       const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-      return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.()) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
+      return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
     },
     micro: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -1022,35 +1119,42 @@ export function init(host: EHost): EngineModule {
     },
     dstop() { finishDiag(); },
     pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
-    qstart() { crun = null; frun = null; brun = null; zrun = null; trun = null; qStart(); },
-    bkstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; qStart('blocks'); },
-    bdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; qStart('board'); },
-    cdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; cStart(); },
+    qstart() { crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; qStart(); },
+    bkstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; qStart('blocks'); },
+    bdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; qStart('board'); },
+    cdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; cStart(); },
     cdtile(el) { const r = crun, i = Number(el.dataset.i); if (!r || r.ans || r.built.includes(i) || !(i >= 0 && i < r.hand.length)) return; r.built.push(i); sfx('place'); host.render(); },
     cdback(el) { const r = crun, k = Number(el.dataset.k); if (!r || r.ans) return; r.built.splice(k, 1); host.render(); },
     cdclear() { if (crun && !crun.ans) { crun.built = []; host.render(); } },
     cdplay() { cPlay(false); },
     cdskip() { cPlay(true); },
     cdnext() { cNext(); },
-    cfstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; fStart(); },
+    cfstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; fStart(); },
     cfans(el) { fAnswer(Number(el.dataset.i)); },
     cfnext() { fNext(); },
-    bbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; bStart(); },
+    bbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; bStart(); },
     bbans(el) { bAnswer(Number(el.dataset.i)); },
     bbnext() { bNext(); },
-    pzstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; zStart(); },
+    pzstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; zStart(); },
     pztile(el) { const r = zrun, i = Number(el.dataset.i); if (!r || r.recall || !(i >= 0 && i < r.tiles.length) || r.solved.includes(r.tiles[i]![0])) return; const k = r.sel.indexOf(i); if (k >= 0) r.sel.splice(k, 1); else if (r.sel.length < PER) r.sel.push(i); r.msg = null; sfx('place'); host.render(); },
     pzclear() { if (zrun && !zrun.recall) { zrun.sel = []; zrun.msg = null; host.render(); } },
     pzhint() { const r = zrun; if (!r || r.recall) return; const cand = [...r.sel, ...r.tiles.map((_, i) => i)].find(i => !r.shown.includes(i) && !r.solved.includes(r.tiles[i]![0])); if (cand !== undefined) { r.shown.push(cand); host.render(); } },
     pzsubmit() { zSubmit(); },
     pzans(el) { const it = zrun?.recall?.item, i = Number(el.dataset.i); if (!it) return; zAnswer(i >= 0 && !!it.opts && i === it.ans, i >= 0 ? it.opts?.[i] ?? '' : ''); },
     pznext() { zNext(); },
-    dtstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; tStart('read'); },
-    rdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; tStart('listen'); },
+    dtstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; tStart('read'); },
+    rdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; tStart('listen'); },
     dtans(el) { tAnswer(Number(el.dataset.i)); },
     dtretry() { const r = trun; if (!r || !r.ans || r.ans.ok || r.ans.retry) return; r.ans = null; r.retry = true; if (r.mode === 'listen' && r.text.lines) { host.sayLines?.(r.text.lines, false); r.plays++; } host.render(); },
     dtnext() { tNext(); },
     dtgloss(el) { const r = trun, w = el.dataset.w || ''; if (!r || !r.gloss[w]) return; r.look = w; r.looked++; host.render(); },
+    krstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; kStart(); },
+    wsstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; wStart(); },
+    wsskip() { wAnswer(''); },
+    wsnext() { wNext(); },
+    krnext() { const r = krun; if (!r) return; const l = r.d.lines[r.i]; kScore(l?.s === ROLE ? host.asrRes?.(karaKey(r))?.p ?? 0 : null); },
+    krskip() { kScore(0); },
+    krself(el) { const v = Number(el.dataset.v); if (krun && !krun.asr && v >= 0 && v <= 1) kScore(v); },
     rdplay(el) { const r = trun; if (!r?.text.lines) return; host.sayLines?.(r.text.lines, el.dataset.slow === '1'); r.plays++; host.render(); },
     cdcharm(el) { const r = crun, id = el.dataset.c || ''; if (!r?.offer?.some(o => o.id === id)) return; r.charms.push(id); r.offer = null; cNext(); },
     bdroll() { bdRoll(); },
@@ -1059,7 +1163,7 @@ export function init(host: EHost): EngineModule {
     bksel(el) { const bk = qrun?.bk, i = Number(el.dataset.p); if (!bk || bk.phase !== 'place' || !bk.tray[i] || !fits(bk.g, bk.tray[i]!)) return; bk.sel = i; host.render(); },
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
-    qhome() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; host.render(); },
+    qhome() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
     qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
@@ -1071,6 +1175,12 @@ export function init(host: EHost): EngineModule {
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
+    wstyped(f) {
+      if (!wrun?.item || wrun.ans) return;
+      const raw = String(new FormData(f).get('a') || '').trim();
+      if (!raw) { host.toast('Gõ câu đã sửa, hoặc chọn "Không biết".'); return; }
+      wAnswer(raw);
+    },
     pztyped(f) {
       const it = zrun?.recall?.item;
       if (!it || zrun?.recall?.ans) return;
@@ -1167,6 +1277,12 @@ export function init(host: EHost): EngineModule {
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;
       if (drun) return of('diag', drun.node, drun.qs[drun.i]);
+      if (wrun) return wrun.done || wrun.ans || !wrun.item ? null : { run: 'shop', node: wrun.node, level: 4, id: wrun.item.id, prompt: wrun.item.bad, accept: wrun.item.accept, game: 'shop' };
+      if (krun) {   // Karaoke: câu của vai người học (bot đặt kết quả máy nghe thay cho giọng thật), câu vai kia: bấm tiếp
+        if (krun.done) return null;
+        const l = krun.d.lines[krun.i]!;
+        return { run: l.s === ROLE ? 'karaoke' : 'krwait', node: krun.d.fn[0] ? `fn:${krun.d.fn[0]}` : '', level: 3, id: karaKey(krun), prompt: l.t, accept: [l.t], game: 'karaoke' };
+      }
       if (trun) {   // Thám tử / Đài: câu hỏi hiểu của bài (nút Can-Do đọc / nghe đúng cấp, để bot dùng năng lực đọc / nghe của nó)
         if (trun.done || trun.ans) return null;
         const q = trun.qs[trun.i]!, o = trun.opts[trun.i]!;
