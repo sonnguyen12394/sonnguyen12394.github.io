@@ -15,6 +15,8 @@ export interface EHost {
   dayInfo(): { reviewItems: number; reviewMins: number; mins: number; perfDue: boolean; lost?: number | null };   // lost: Σ(1 − R) FSRS trên thẻ đến hạn   // ôn đến hạn, phút học mỗi ngày, đã có bài làm thật trong 7 ngày chưa
   probe(node: string): Array<{ id: string; level: 1 | 2 | 3; g: number; prompt: string; opts?: string[]; ans?: number; accept?: string[]; en?: string; say?: string }>;   // say: câu nghe (đọc bằng giọng máy)   // câu dò cho chẩn đoán (app.js eProbe)
   order?(node: string): OrderItem[];                 // v74 Bài Câu: câu để xếp lá (app.js eOrder)
+  fn?(node: string): FnItem[];                       // v75 Quán Cà Phê: câu chức năng giao tiếp (app.js eFn)
+  say?(text: string): void;                          // đọc to bằng giọng máy (nếu có)
   transfer?(node: string): ReturnType<EHost['probe']>;   // câu ở ngữ cảnh mới cho transfer (app.js eXfer): engine lọc câu đã gặp (§59)
   micro?(node: string): { card: MicroCard; qs: ReturnType<EHost['probe']> } | null;   // bí kíp 60 giây + câu kiểm tra (app.js eMicroCard)
   back?(): void;
@@ -31,3 +33,5 @@ export interface MicroCard { title: string; en?: string; concept: string[]; cont
 
 // v74: câu để xếp lá (Bài Câu): tokens = đáp án theo thứ tự; distract = lá nhiễu (đáp án sai hay gặp của chính điểm ngữ pháp).
 export interface OrderItem { id: string; level: 1 | 2 | 3; g: number; prompt: string; tokens: string[]; distract: string[]; why?: string }
+// v75: câu chức năng giao tiếp: hear = nghe khách nói → chọn nghĩa (mức 2); reply = tình huống + văn phong → chọn câu đáp (mức 3).
+export interface FnItem { id: string; level: 1 | 2 | 3; g: number; kind: 'hear' | 'reply'; prompt: string; say?: string; en: string; vi: string; opts: string[]; ans: number; why?: string }

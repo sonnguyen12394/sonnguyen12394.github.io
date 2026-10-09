@@ -8342,7 +8342,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.985f5d07a9.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.4ea8c362c1.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8350,6 +8350,8 @@ const EHOST = {
   cando:id=>{ const c=CANDO.find(x=>x.id===id); if(!c) return null; const p=cdProg(c); return {p:p.p,m:p.m,lb:p.lb,k:p.k,need:p.need}; },
   probe:node=>eProbe(node),
   order:node=>eOrder(node),
+  fn:node=>eFn(node),
+  say:t=>{ try{ say(t); }catch(e){} },
   transfer:node=>eXfer(node),
   micro:node=>eMicroCard(node),
   back:()=>microBack(),
@@ -8416,6 +8418,19 @@ function eOrder(node){ if(!node.startsWith('g:')) return []; const p=GPT[node.sl
     const uniq=[...new Map(traps.map(t=>[t.w.toLowerCase(),t])).values()].slice(0,2);
     let h=0; for(const ch of k) h=(h*31+ch.charCodeAt(0))>>>0;
     out.push({id:'g:'+p.id+':ord:'+h.toString(36),level:3,g:0,prompt:`Xếp thành câu đúng · ${p.vi}`,tokens:toks,distract:uniq.map(t=>t.w),why:uniq.map(t=>t.why).filter(Boolean)[0]||p.note||''}); }
+  return out; }
+// v75 Quán Cà Phê: câu cho nút chức năng giao tiếp (fn:). "hear" (mức 2): nghe khách nói (giọng máy) → chọn nghĩa đúng trong 4;
+// "reply" (mức 3): tình huống + văn phong → chọn câu tiếng Anh đúng trong 4 (nhiễu: chức năng khác gần cấp, hoặc cùng chức năng sai văn phong).
+function eFn(node){ if(!node.startsWith('fn:')) return []; const f=FN[node.slice(3)]; if(!f) return [];
+  const near=g=>Math.abs(LVS.indexOf(g.lv)-LVS.indexOf(f.lv))<=1, pool=FUNCTIONS.filter(g=>g.id!==f.id), others=(pool.filter(near).length>=3?pool.filter(near):pool).flatMap(g=>g.exps);
+  const out=[];
+  f.exps.forEach((e,i)=>{
+    const vis=shuffle([...new Set(others.map(x=>x.vi))].filter(v=>v.toLowerCase()!==e.vi.toLowerCase())).slice(0,3), o1=shuffle([e.vi,...vis]);
+    out.push({id:`fn:${f.id}:h:${i}`,level:2,g:1/o1.length,kind:'hear',prompt:HAS_TTS?'🎧 Khách vừa nói gì?':'📖 Khách nói gì? (máy không có giọng đọc: đọc câu)',say:HAS_TTS?e.t:undefined,en:e.t,vi:e.vi,opts:o1,ans:o1.indexOf(e.vi),why:f.tip||''});
+    if(e.reg==='n'&&f.exps.length<3) return;
+    const sameWrongReg=f.exps.filter(x=>x.reg!==e.reg&&x.reg!=='n'&&e.reg!=='n').map(x=>x.t).slice(0,1);
+    const ws=[...sameWrongReg,...shuffle(others.map(x=>x.t).filter(t=>nt(t)!==nt(e.t)))].slice(0,3), o2=shuffle([e.t,...ws]);
+    out.push({id:`fn:${f.id}:r:${i}`,level:3,g:1/o2.length,kind:'reply',prompt:`Bạn muốn ${f.vi.toLowerCase()} (văn phong ${REG_VI[e.reg].toLowerCase()}). Nói câu nào?`,en:e.t,vi:e.vi,opts:o2,ans:o2.indexOf(e.t),why:(sameWrongReg.length?`Câu “${sameWrongReg[0]}” cùng ý nhưng ${e.reg==='f'?'thân mật':'trang trọng'} quá. `:'')+(f.tip||'')}); });
   return out; }
 // v60 Transfer (§59): câu ở NGỮ CẢNH MỚI cho nút đã Đạt. Từ vựng: câu điền từ lấy từ bài đọc / câu ví dụ của phần khác trong app
 // (không phải câu ví dụ của chính từ đó; ưu tiên câu không hiện trên thẻ từ). Ngữ pháp: mọi câu tự gõ / sửa lỗi của điểm, engine lọc câu đã gặp.

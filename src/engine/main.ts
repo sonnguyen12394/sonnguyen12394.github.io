@@ -24,6 +24,8 @@ import { roll, move, build, canBuild, freshBoardSave, TILES, ROLLS, price } from
 import { freshBlocks, deal, place, anyFits, fits, trayEmpty, anchor, freshBlocksSave, bumpStreak } from './blocks.ts';
 import { viewLobby, viewBlocks, viewBlocksEnd, viewBoard, viewBoardEnd } from './gameview.ts';
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
+import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
+import { GUESTS, stars as cafeStars, freshCafeSave } from './cafe.ts';
 import { TABLES, PLAYS, score as cardScore, offer as cardOffer, deal as cardDeal, check as cardCheck, target as cardTarget, freshCardsSave } from './cards.ts';
 import { sfx } from './sfx.ts';
 import { viewQuestHome, viewQuestRun, viewQuestEnd, type QuestRun, type QItem } from './questview.ts';
@@ -399,12 +401,17 @@ export function init(host: EHost): EngineModule {
   let crun: CardsRun | null = null, cPick: ((k: Enc) => Challenge | null) | null = null;
   const CARD_KINDS: Enc[] = ['chest', 'monster', 'monster', 'monster', 'scout', 'monster', 'chest', 'monster', 'boss'];
   const csave = () => { const e = E(); return (e.gc ||= freshCardsSave()); };
+  // Bộ chọn cho game chỉ dùng một loại nút (ngữ pháp / chức năng giao tiếp / âm): biên lộ trình có ít nút loại đó → thêm nút chưa Đạt của
+  // mục tiêu (sau phần mở, ưu tiên thấp hơn) để game vẫn có nội dung đúng mục đích.
+  function kindPicker(has: (n: string) => boolean, tag: string, floor: number): (k: Enc) => Challenge | null {
+    const { fi, p } = floorBase();
+    const open = fi.open.filter(o => has(o.node)), extra = open.length >= 3 ? [] : (p.all ?? []).filter(r => has(r.node) && !open.some(o => o.node === r.node) && !nodeStat(host, V(), r.node, r.level).pass).slice(0, 8).map(r => ({ node: r.node, level: r.level as Level, minutes: 10, score: 0, dep: 0, goals: [] as string[] }));
+    return picker({ ...fi, open: [...fi.open, ...extra], can: has, tag, floor });
+  }
   function cStart(): void {
     if (!loaded()) { ensure(); return; }
-    const e = E(), { fi, p } = floorBase(), has = (n: string) => n.startsWith('g:') && (host.order?.(n)?.length ?? 0) > 0;
-    // Biên lộ trình có ít điểm ngữ pháp có câu xếp → thêm điểm ngữ pháp chưa Đạt của mục tiêu (sau phần mở, ưu tiên thấp hơn).
-    const open = fi.open.filter(o => has(o.node)), extra = open.length >= 3 ? [] : (p.all ?? []).filter(r => has(r.node) && !open.some(o => o.node === r.node) && !nodeStat(host, V(), r.node, r.level).pass).slice(0, 8).map(r => ({ node: r.node, level: r.level as Level, minutes: 10, score: 0, dep: 0, goals: [] as string[] }));
-    cPick = picker({ ...fi, open: [...fi.open, ...extra], can: has, tag: 'c', floor: (e.gc?.runs ?? 0) + 1 });
+    const e = E();
+    cPick = kindPicker(n => n.startsWith('g:') && (host.order?.(n)?.length ?? 0) > 0, 'c', (e.gc?.runs ?? 0) + 1);
     crun = { floor: (e.gc?.runs ?? 0) + 1, seed: (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0, t0: Date.now(), n: 0, ok: 0, coins: 0, wrong: [], done: false,
       table: 0, play: 0, tableScore: 0, total: 0, streak: 0, charms: [], won: 0, ch: null, node: '', item: null, novel: false, hand: [], built: [], ans: null, offer: null, tableEnd: null };
     cLoad(); host.render();
@@ -458,6 +465,60 @@ export function init(host: EHost): EngineModule {
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `cards:${r.floor}`, dec: 'cards:end', rule: `${RULE_ID}/${QUEST_VER}`,
       info: { ok: r.ok, of: r.n, won: r.won, score: r.total, coins: r.coins, charms: r.charms.join(',') },
       evs: e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:c${r.floor}:`)).slice(-r.n).map(x => x.id) }, false);
+    sfx('end'); host.save(); host.render();
+  }
+
+  // ---------- Quán Cà Phê (v75, F5 nghe + F7 giao tiếp) ----------
+  // Mỗi khách là một câu của nút chức năng giao tiếp (fn:) do engine chọn: nghe hiểu (mức 2) hoặc chọn câu đáp đúng văn phong (mức 3),
+  // luôn 4 lựa chọn. Sao / trang trí là telemetry (e.gq).
+  let frun: CafeRun | null = null, fPick: ((k: Enc) => Challenge | null) | null = null;
+  const CAFE_KINDS: Enc[] = ['chest', 'monster', 'monster', 'scout', 'monster', 'boss'];
+  const fsave = () => { const e = E(); return (e.gq ||= freshCafeSave()); };
+  function fStart(): void {
+    if (!loaded()) { ensure(); return; }
+    const e = E();
+    fPick = kindPicker(n => n.startsWith('fn:') && (host.fn?.(n)?.length ?? 0) > 0, 'q', (e.gq?.runs ?? 0) + 1);
+    frun = { floor: (e.gq?.runs ?? 0) + 1, seed: (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0, t0: Date.now(), k: 0, n: 0, ok: 0, coins: 0, stars: 0, streak: 0, wrong: [], done: false, ch: null, node: '', item: null, novel: false, ans: null };
+    fLoad(); host.render();
+  }
+  function fLoad(): void {
+    if (!frun || !fPick) return;
+    const e = E(), ch = fPick(CAFE_KINDS[frun.k] ?? 'monster') ?? fPick('monster');
+    frun.ch = ch; frun.ans = null;
+    if (!ch) { frun.item = null; frun.node = ''; return; }
+    // Xen kẽ nghe hiểu / chọn câu đáp; câu chưa gặp trước.
+    const items = host.fn?.(ch.node) ?? [], want = frun.k % 2 ? 'reply' : 'hear', fresh = items.filter(x => !seenHas(e.ev, ch.node, x.id));
+    const it = fresh.find(x => x.kind === want) ?? fresh[0] ?? items.find(x => x.kind === want) ?? items[0] ?? null;
+    frun.node = ch.node; frun.item = it; frun.novel = !!it && !seenHas(e.ev, ch.node, it.id);
+    if (it?.say) host.say?.(it.say);
+  }
+  function fAnswer(i: number): void {
+    const r = frun;
+    if (!r || !r.item || !r.ch || r.ans) return;
+    const e = E(), it = r.item, ok = i >= 0 && i === it.ans;
+    ingest(e.ev, e.m, { node: r.node, level: it.level, ok, g: it.g, item: it.id, text: it.prompt, qt: 'mcq', ctx: it.kind === 'hear' ? (it.say ? 'listen' : 'read') : 'function', src: 'game', ch: r.ch.id, gp: r.ch.gameplayDifficulty, ...(i >= 0 ? { given: it.opts[i] ?? '', right: it.opts[it.ans] ?? '' } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    r.streak = ok ? r.streak + 1 : 0;
+    const st = cafeStars(ok, r.streak), coins = reward(r.ch, ok, r.novel);
+    r.n++; r.coins += coins; r.stars += st; if (ok) r.ok++; else r.wrong.push(r.node);
+    const sv = qsave(); sv.ans++; if (ok) sv.ok++; sv.coins += coins; sv.day = host.today();
+    r.ans = { ok, i, stars: st, coins };
+    sfx(ok ? 'ok' : 'bad'); host.save(); host.render();
+  }
+  function fNext(): void {
+    const r = frun;
+    if (!r) return;
+    if (r.k + 1 >= GUESTS || !r.item) { fEnd(); return; }
+    r.k++; fLoad(); host.save(); host.render();
+  }
+  function fEnd(): void {
+    const r = frun;
+    if (!r) return;
+    const e = E(), s = fsave(), ixq = loaded()!;
+    r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
+    s.runs++; s.stars += r.stars; s.best = Math.max(s.best, r.ok); s.day = host.today();
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `cafe:${r.floor}`, dec: 'cafe:end', rule: `${RULE_ID}/${QUEST_VER}`,
+      info: { ok: r.ok, of: r.n, stars: r.stars, coins: r.coins },
+      evs: e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:q${r.floor}:`)).slice(-r.n).map(x => x.id) }, false);
     sfx('end'); host.save(); host.render();
   }
 
@@ -669,13 +730,14 @@ export function init(host: EHost): EngineModule {
     },
     quest: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
+      if (frun) return frun.done ? viewCafeEnd(c, frun, fsave().stars) : viewCafe(c, frun, fsave().stars);
       if (crun) return crun.done ? viewCardsEnd(c, crun, (crun as CardsRun & { prevBest?: number }).prevBest ?? 0) : viewCards(c, crun);
       if (qrun?.mode === 'blocks') return qrun.done ? viewBlocksEnd(c, qrun) : viewBlocks(c, qrun);
       if (qrun?.mode === 'board') return qrun.done ? viewBoardEnd(c, qrun, bsave()) : viewBoard(c, qrun, bsave(), wallet());
       if (qrun?.done) return viewQuestEnd(c, qrun);
       if (qrun) return viewQuestRun(c, qrun);
       const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-      return viewLobby(c, E().bk, E().bd, E().gc) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
+      return viewLobby(c, E().bk, E().bd, E().gc, E().gq) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
     },
     micro: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -746,16 +808,19 @@ export function init(host: EHost): EngineModule {
     },
     dstop() { finishDiag(); },
     pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
-    qstart() { crun = null; qStart(); },
-    bkstart() { qrun = null; crun = null; qStart('blocks'); },
-    bdstart() { qrun = null; crun = null; qStart('board'); },
-    cdstart() { qrun = null; crun = null; cStart(); },
+    qstart() { crun = null; frun = null; qStart(); },
+    bkstart() { qrun = null; crun = null; frun = null; qStart('blocks'); },
+    bdstart() { qrun = null; crun = null; frun = null; qStart('board'); },
+    cdstart() { qrun = null; crun = null; frun = null; cStart(); },
     cdtile(el) { const r = crun, i = Number(el.dataset.i); if (!r || r.ans || r.built.includes(i) || !(i >= 0 && i < r.hand.length)) return; r.built.push(i); sfx('place'); host.render(); },
     cdback(el) { const r = crun, k = Number(el.dataset.k); if (!r || r.ans) return; r.built.splice(k, 1); host.render(); },
     cdclear() { if (crun && !crun.ans) { crun.built = []; host.render(); } },
     cdplay() { cPlay(false); },
     cdskip() { cPlay(true); },
     cdnext() { cNext(); },
+    cfstart() { qrun = null; crun = null; frun = null; fStart(); },
+    cfans(el) { fAnswer(Number(el.dataset.i)); },
+    cfnext() { fNext(); },
     cdcharm(el) { const r = crun, id = el.dataset.c || ''; if (!r?.offer?.some(o => o.id === id)) return; r.charms.push(id); r.offer = null; cNext(); },
     bdroll() { bdRoll(); },
     bdbuild() { bdBuild(); },
@@ -763,7 +828,7 @@ export function init(host: EHost): EngineModule {
     bksel(el) { const bk = qrun?.bk, i = Number(el.dataset.p); if (!bk || bk.phase !== 'place' || !bk.tray[i] || !fits(bk.g, bk.tray[i]!)) return; bk.sel = i; host.render(); },
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
-    qhome() { qrun = null; crun = null; host.render(); },
+    qhome() { qrun = null; crun = null; frun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
     qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
@@ -860,6 +925,7 @@ export function init(host: EHost): EngineModule {
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;
       if (drun) return of('diag', drun.node, drun.qs[drun.i]);
+      if (frun) return frun.done || frun.ans || !frun.item ? null : { run: 'cafe', node: frun.node, level: frun.item.level, id: frun.item.id, prompt: frun.item.prompt, opts: frun.item.opts, ans: frun.item.ans, game: 'cafe' };
       if (crun) {   // Bài Câu: lá trong tay + thứ tự đúng (chỉ số lá) để bot xếp
         if (crun.done || crun.ans || crun.tableEnd || !crun.item) return null;
         const used = new Set<number>(), order = crun.item.tokens.map(t => { const i = crun!.hand.findIndex((h, j) => h === t && !used.has(j)); used.add(i); return i; });
