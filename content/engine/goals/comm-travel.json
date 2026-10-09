@@ -5,6 +5,7 @@
  "vi": "Giao tiếp khi du lịch",
  "target": "travel",
  "cefr": "B1",
+ "status": "future",
  "req": [
   {
    "node": "cd:a2-voc2",
@@ -46,5 +47,6 @@
    "level": 4,
    "type": "performance"
   }
- ]
+ ],
+ "readiness": "mastery"
 }

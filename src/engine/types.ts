@@ -12,13 +12,18 @@ export const CEFRS: Cefr[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 export type Area = 'voc' | 'gra' | 'pro' | 'lis' | 'rd' | 'wr' | 'spk' | 'task';
 export type Skill = 'L' | 'R' | 'W' | 'S';
 export type Ctx = 'daily' | 'work' | 'travel' | 'study' | 'exam';
-export type NodeKind = 'cando' | 'vocab' | 'grammar' | 'task';
+export type NodeKind = 'cando' | 'vocab' | 'grammar' | 'task' | 'sound' | 'func';   // v67: sound = âm vị (cặp âm), func = chức năng giao tiếp
 
 // Hoạt động học sẵn có trong app mà nút dẫn tới: `at` là thuộc tính HTML mở đúng màn (data-unit="…", data-gp="…", data-dlg="…").
 export interface Act { at: string; t: string }
 
+// Universal Language Core (spec v2.4 §14): 8 năng lực ngôn ngữ dùng lại được cho mọi Target Model.
+export type Dim = 'lex' | 'gram' | 'phon' | 'rec' | 'prod' | 'inter' | 'prag' | 'disc';
+export const DIM_VI: Record<Dim, string> = { lex: 'Từ vựng', gram: 'Ngữ pháp', phon: 'Âm vị', rec: 'Tiếp nhận (nghe, đọc)', prod: 'Sản sinh (nói, viết)', inter: 'Tương tác', prag: 'Ngữ dụng', disc: 'Diễn ngôn' };
+export type EvType = 'choice' | 'typed' | 'production' | 'task';
+
 export interface Node {
-  id: string;            // cd:<CANDO id> | u:<unit id> | g:<grammar point id> | x:<dạng câu thi> | xw:/xs:<bài Viết/Nói thi>
+  id: string;            // cd:<CANDO id> | u:<unit id> | g:<grammar point id> | pa:<bài Pre-A1> | x:<dạng câu thi> | xw:/xs:<bài Viết/Nói thi>
   kind: NodeKind;
   area: Area;
   skill: Skill | null;
@@ -28,22 +33,40 @@ export interface Node {
   ctx: Ctx[];
   acts: Act[];
   minutes: number;       // phút ước tính để đạt nút từ đầu (dùng xếp ưu tiên lộ trình)
+  // v57 Knowledge Model (spec v2.4 §17, C201–C220):
+  ver?: string;          // phiên bản nút
+  scope?: string;        // phạm vi: nút này gồm gì (để không chồng lấn)
+  diff?: number;         // độ khó tham chiếu 0–1 (theo cấp, loại nút)
+  dims?: Dim[];          // thuộc năng lực nào của Universal Core
+  evReq?: { lv: Level[]; types: EvType[] };   // bằng chứng cần để chứng minh nút
+  imp?: { tr: number; re: number };           // mức quan trọng của transfer và ghi nhớ lâu (0–1)
+  contrast?: string[];   // các nút dễ nhầm với nút này
+  mis?: string[];        // lỗi hay gặp (người Việt)
+  uses?: string[];       // năng lực (Can-Do) dùng nút này — quan hệ transfer
 }
 
 export type EdgeType = 'hard' | 'soft';
 // from → to: muốn đạt `from` thì `to` là tiền đề (cứng: phải đạt trước; mềm: giúp học nhanh hơn).
-export interface Edge { from: string; to: string; type: EdgeType; w: number }
+// why: lý do có cạnh (cando-act: hoạt động của Can-Do dùng nút này; level-ladder: cùng mảng cấp dưới; gram-order: thứ tự bài;
+// exam-base: bài thi cần nền kỹ năng; pa-act: bài Pre-A1; manual: chỉnh tay). alt + need: nhóm tiền đề thay thế (cần ≥ need
+// nút trong nhóm, spec §15 alternative prerequisite).
+export interface Edge { from: string; to: string; type: EdgeType; w: number; why?: string; ver?: string; alt?: string; need?: number }
 
 export type ReqType = 'foundation' | 'skill' | 'performance';
 export interface Req { node: string; level: Level; type: ReqType }
 
 export type GoalKind = 'cefr' | 'ielts-ac' | 'ielts-gt' | 'vstep' | 'comm';
+// Spec v2.4 §7: MVP chỉ triển khai CEFR (Pre-A1 → C2). Các Target Model khác giữ dữ liệu ở trạng thái "future"
+// (ẩn khỏi người học, không vào lộ trình) cho tới mốc M10 — kiểm chứng engine mở rộng được.
+export type GoalStatus = 'active' | 'future';
 export interface Goal {
   id: string;            // ví dụ ielts-ac-6.5
   version: string;       // Target Model có phiên bản (spec mục 5): "1.0"
   kind: GoalKind;
   vi: string;
-  target: string;        // "B1", "6.5", "daily"…
+  target: string;        // "Pre-A1", "B1", "6.5", "daily"…
+  status: GoalStatus;
+  readiness?: 'mastery' | 'exam-score';   // v67: mô hình Readiness (mặc định mastery); mục tiêu mới chỉ cần khai dữ liệu
   cefr: Cefr | null;     // cấp tham chiếu của mục tiêu
   req: Req[];
 }

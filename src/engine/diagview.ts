@@ -11,7 +11,7 @@ import type { Cefr } from './types.ts';
 import { CEFRS } from './types.ts';
 
 export interface ProbeQ { id: string; level: 1 | 2 | 3; g: number; prompt: string; opts?: string[]; ans?: number; accept?: string[]; en?: string }
-export interface DiagRun { d: DiagState; node: string; qs: ProbeQ[]; i: number; got: number; total: number }
+export interface DiagRun { d: DiagState; node: string; qs: ProbeQ[]; i: number; got: number; total: number; gs?: number }   // gs: tổng xác suất đoán trúng của các câu trong phần
 
 // Band Nghe/Đọc gần nhất từ bài kiểm tra đầu vào của phần Ôn thi (st.x.attempts, kind 'place').
 export function lrBand(root: Record<string, unknown>): { L: number | null; R: number | null } {
@@ -23,11 +23,15 @@ export function lrBand(root: Record<string, unknown>): { L: number | null; R: nu
 
 export function viewLoading(c: ECtx, err: string): string {
   const esc = c.host.esc;
-  return err ? `<p class="warnt" role="alert">${esc(err)}</p><div class="row"><button class="btn primary" data-e="retry">Thử lại</button></div>` : '<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bản đồ năng lực…</p>';
+  return err ? `<p class="warnt" role="alert">${esc(err)}</p><div class="row"><button class="btn primary" data-e="retry">Thử lại</button><button class="btn ghost" data-go="path">📚 Học bài (không cần mạng)</button></div>` : '<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bản đồ năng lực…</p>';
 }
 
-export function viewDiagIntro(c: ECtx, lr: { L: number | null; R: number | null }): string {
+export function viewDiagIntro(c: ECtx, lr: { L: number | null; R: number | null }, quick = false): string {
   const { host } = c, has = lr.L !== null || lr.R !== null;
+  if (quick) return `<section class="stack"><span class="eyebrow">Bắt đầu</span><h1>Bạn đang ở đâu?</h1>
+    <p class="muted">Khoảng 3–5 phút, tối đa 8 phần (mỗi phần 2–4 câu): app hỏi vài câu từ vựng và ngữ pháp, đúng thì lên cấp, sai thì xuống. Xong, app tự đặt mục tiêu là cấp CEFR kế tiếp của bạn (đổi được bất cứ lúc nào) và bỏ khỏi lộ trình những gì bạn đã biết.</p></section>
+    <p class="hint">Không chắc thì chọn "Không biết" để kết quả đúng hơn.</p>
+    <div class="row"><button class="btn primary" data-e="dstart" data-q="1">Bắt đầu dò</button></div>`;
   return `<section class="stack"><span class="eyebrow">Mục tiêu · Chẩn đoán</span><h1>Bạn đang ở đâu?</h1>
     <p class="muted">Bài dò khoảng 10–20 phút: app hỏi vài câu ở từng cụm từ vựng và điểm ngữ pháp, bắt đầu ở cấp dễ rồi lên dần. Đúng thì lên cấp, sai thì dò xuống phần nền. Xong là những gì bạn đã biết được bỏ khỏi lộ trình.</p></section>
     <section class="panel stack"><h3>Nghe và Đọc</h3>
@@ -44,7 +48,7 @@ export function viewDiagRun(c: ECtx, run: DiagRun): string {
         <button class="btn ghost" data-e="dans" data-i="-1">Không biết</button></div>`
     : `<form class="stack" data-eform="dtyped"><input class="field" name="a" autocomplete="off" autocapitalize="off" spellcheck="false" lang="en" aria-label="Câu trả lời"><div class="row"><button class="btn primary">Trả lời</button><button class="btn ghost" type="button" data-e="dans" data-i="-1">Không biết</button></div></form>`;
   return `<section class="stack"><span class="eyebrow">Chẩn đoán · phần ${n}</span>
-    <div class="bar" role="progressbar" aria-label="Tiến độ bài dò" aria-valuemin="0" aria-valuemax="16" aria-valuenow="${n - 1}"><i style="width:${Math.min(100, Math.round(((n - 1) / 16) * 100))}%"></i></div>
+    <div class="bar" role="progressbar" aria-label="Tiến độ bài dò" aria-valuemin="0" aria-valuemax="${run.d.max ?? 16}" aria-valuenow="${n - 1}"><i style="width:${Math.min(100, Math.round(((n - 1) / (run.d.max ?? 16)) * 100))}%"></i></div>
     <h2 style="font-size:20px">${esc(q.prompt)}</h2></section>${body}
     <div class="row"><button class="btn ghost small" data-e="dstop">Dừng và xem kết quả</button></div>`;
 }
@@ -68,14 +72,19 @@ export function viewDiagResult(c: ECtx, lr: { L: number | null; R: number | null
   }).join('') : '';
   const lvl = (x: number) => `${cefrOf(Math.floor(x))}${x % 1 ? '–' + cefrOf(Math.ceil(x)) : ''}`;
   return `<section class="stack"><span class="eyebrow">Chẩn đoán · ${r.n} phần đã dò</span><h1>Bạn đang ở đâu</h1></section>
-    <section class="panel stack"><div class="me-stats me3">
+    <section class="panel stack"><div class="me-stats ${lr.L !== null || lr.R !== null ? 'me3' : ''}">
       <div class="stat"><b>${lvl(r.u)}</b><span class="muted">từ vựng</span></div>
       <div class="stat"><b>${lvl(r.g)}</b><span class="muted">ngữ pháp</span></div>
-      <div class="stat"><b>${lr.L !== null || lr.R !== null ? `${lr.L ?? '–'} / ${lr.R ?? '–'}` : 'chưa đo'}</b><span class="muted">Nghe / Đọc (band)</span></div></div>
-      <p class="hint">Cấp thấp hơn mức ước tính được coi là đã biết và bỏ khỏi lộ trình; nếu sai, bài học sau sẽ tự đưa phần đó trở lại.</p></section>
+      ${lr.L !== null || lr.R !== null ? `<div class="stat"><b>${lr.L ?? '–'} / ${lr.R ?? '–'}</b><span class="muted">Nghe / Đọc (band)</span></div>` : ''}</div>
+      ${(() => { const sn = [...e.ev.snap].reverse().find(x => x.subj === 'diag' && x.day === r.day), ru = sn?.info?.ru, rg = sn?.info?.rg;
+        const part = [typeof ru === 'number' && ru > Math.floor(r.u) ? `từ vựng ${cefrOf(ru)}` : '', typeof rg === 'number' && rg > Math.floor(r.g) ? `ngữ pháp ${cefrOf(rg)}` : ''].filter(Boolean);
+        return part.length ? `<p class="hint"><b>Điểm mạnh:</b> bạn nhận ra tốt tới ${part.join(', ')} (tự nhớ ra thì chưa chắc). App không dạy lại phần nhận ra này, chỉ luyện cho bạn tự nhớ ra và dùng được.</p>` : ''; })()}
+      <p class="hint">Đây là ước lượng sau ${r.n} phần, có thể lệch khoảng nửa cấp. Phần thấp hơn mức này app tạm coi là bạn đã biết để bạn không phải học lại, nhưng sẽ kiểm tra dần trong lúc chơi (lượt 🔭 trinh sát): sai thì phần đó tự quay lại lộ trình.</p></section>
+    ${(() => { const a = [...e.ev.snap].reverse().find(x => x.dec === 'goal:AUTO' && x.day === r.day), m = a ? GOALS.get(String(a.info?.goal)) : null;
+      return m ? `<section class="panel stack"><h3>App đã đặt mục tiêu: ${esc(m.vi)}</h3><p class="muted">Cấp kế tiếp của phần bạn còn yếu nhất. Đổi hoặc thêm mục tiêu ở Mục tiêu bất cứ lúc nào.</p></section>` : ''; })()}
     ${goalRows ? `<section class="stack"><h2>Còn thiếu so với mục tiêu</h2><div class="tablewrap"><table style="min-width:0"><thead><tr><th>Mục tiêu</th><th>Năng lực chưa đạt</th><th>Học thêm</th></tr></thead><tbody>${goalRows}</tbody></table></div></section>` : ''}
-    <section class="stack"><h2>Số giờ học ước tính tới từng kỳ thi</h2>
+    ${!c.future ? '' : `<section class="stack"><h2>Số giờ học ước tính tới từng kỳ thi</h2>
       <div class="tablewrap"><table style="min-width:0"><thead><tr><th>Kỳ thi</th><th>Giờ học có hướng dẫn</th></tr></thead><tbody>${exams.map(([n, b]) => `<tr><td>${esc(n)}</td><td class="num">${b <= band ? 'đã ở mức này' : `≈ ${Math.round(hoursAt(b) - have)} giờ`}</td></tr>`).join('')}</tbody></table></div>
-      <p class="hint">Theo số giờ học có hướng dẫn Cambridge công bố cho từng cấp (ước tính thô, mỗi người một khác). Dùng bảng này để chọn kỳ thi đầu tiên vừa sức.</p></section>
-    <div class="row"><button class="btn primary" data-e="go" data-r="goals">Về mục tiêu</button><button class="btn ghost" data-e="go" data-r="diag">Dò lại</button></div>`;
+      <p class="hint">Theo số giờ học có hướng dẫn Cambridge công bố cho từng cấp (ước tính thô, mỗi người một khác). Dùng bảng này để chọn kỳ thi đầu tiên vừa sức.</p></section>`}
+    <div class="row">${e.goals.length ? '<button class="btn primary" data-e="go" data-r="quest">🏰 Bắt đầu leo tháp</button><button class="btn ghost" data-e="go" data-r="goals">Mục tiêu</button>' : '<button class="btn primary" data-e="go" data-r="goals">Về mục tiêu</button>'}<button class="btn ghost" data-e="go" data-r="diag">Dò lại</button></div>`;
 }

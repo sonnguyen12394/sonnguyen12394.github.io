@@ -1,0 +1,1196 @@
+[
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "hello",
+  "text": "Tiếng Anh từ con số 0 tới C2\nChơi game leo tháp: mỗi đòn đánh là một câu tiếng Anh. App tự tìm chỗ bạn còn thiếu và chỉ cho học đúng phần đó, tới khi có bằng chứng bạn đạt cấp.\nGiải thích bằng tiếng Việt, không cần tài khoản.\nBản thử chưa thu tiền · Không quảng cáo bên thứ ba · Không bán dữ liệu · Về app\nBẮT ĐẦU\nMới tinh: khởi động Pre-A1\nĐã học trên máy khác? Chuyển tiến độ"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "diag-intro",
+  "text": "Bắt đầu\nBạn đang ở đâu?\nKhoảng 3–5 phút, tối đa 8 phần (mỗi phần 2–4 câu): app hỏi vài câu từ vựng và ngữ pháp, đúng thì lên cấp, sai thì xuống. Xong, app tự đặt mục tiêu là cấp CEFR kế tiếp của bạn (đổi được bất cứ lúc nào) và bỏ khỏi lộ trình những gì bạn đã biết.\nKhông chắc thì chọn \"Không biết\" để kết quả đúng hơn.\nBắt đầu dò"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "diag-result",
+  "text": "Chẩn đoán · 16 phần đã dò\nBạn đang ở đâu\nA2\ntừ vựng\nA1–A2\nngữ pháp\nĐiểm mạnh: bạn nhận ra tốt tới từ vựng B1, ngữ pháp A2 (tự nhớ ra thì chưa chắc). App không dạy lại phần nhận ra này, chỉ luyện cho bạn tự nhớ ra và dùng được.\nĐây là ước lượng sau 16 phần, có thể lệch khoảng nửa cấp. Phần thấp hơn mức này app tạm coi là bạn đã biết để bạn không phải học lại, nhưng sẽ kiểm tra dần trong lúc chơi (lượt 🔭 trinh sát): sai thì phần đó tự quay lại lộ trình.\nApp đã đặt mục tiêu: Tiếng Anh tổng quát A2 (Sơ trung cấp)\nCấp kế tiếp của phần bạn còn yếu nhất. Đổi hoặc thêm mục tiêu ở Mục tiêu bất cứ lúc nào.\nCòn thiếu so với mục tiêu\nMỤC TIÊU\tNĂNG LỰC CHƯA ĐẠT\tHỌC THÊM\nTiếng Anh tổng quát A2 (Sơ trung cấp)\t243/359\t≈ 78 giờ\n🏰 Bắt đầu leo tháp\nMục tiêu\nDò lại"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "goal:cefr-b1",
+  "text": "Mục tiêu · Target Model 1.0\nTiếng Anh tổng quát B1 (Trung cấp)\n0/49\ntiến độ học: năng lực đã đạt\n534\nkể cả tiền đề\n≈ 172 giờ\nhọc từ đầu (ước tính thô)\nTiền đề gồm 255 cụm từ vựng, 86 điểm ngữ pháp và 93 năng lực cấp dưới. Thứ bạn đã thành thạo sẽ được bỏ khỏi lộ trình sau bài chẩn đoán, nên con số thật thường nhỏ hơn.\nSẵn sàng · 0/49 năng lực\n0/39 năng lực đã Đạt với độ tin cậy từ Vừa trở lên · 0/10 bài làm thật đã qua.\nChưa đạt B1 vì còn thiếu: Nói về khoảng thời gian kéo dài tới hiện tại; Hiểu các thành ngữ thông dụng trong hội thoại; Kể chuyện bằng các thì quá khứ, used to; Nói về điều giả định và tương lai có điều kiện; Nắm toàn bộ ngữ pháp cấp B1; và 44 năng lực khác.\nVì sao?\nMục tiêu này không có kỳ thi ngoài: đạt khi mọi năng lực Đạt, năng lực quan trọng đúng ở câu mới, mọi bài làm thật qua và 14 ngày không quên khi ôn.\nNgày thi hoặc hạn muốn đạt\nLưu\nTừ vựng (9)\nNói về công việc, nghề nghiệp và học tập · cần mức 3: Nhớ ra\n35% · tin cậy vừa Vì sao?\nHọc\nDiễn tả cảm xúc và tính cách có sắc thái (-ed/-ing) · cần mức 3: Nhớ ra\n34% · tin cậy vừa Vì sao?\nHọc\nNói về tin tức, xã hội, pháp luật và kinh tế ở mức cơ bản · cần mức 3: Nhớ ra\n34% · tin cậy vừa Vì sao?\nHọc\nNói về du lịch, nơi chốn, thiên nhiên và thảm hoạ · cần mức 3: Nhớ ra\n35% · tin cậy vừa Vì sao?\nHọc\nDùng trạng từ và từ nối để diễn đạt mạch lạc · cần mức 3: Nhớ ra\n35% · tin cậy vừa Vì sao?\nHọc\nNắm vốn từ cốt lõi của cấp B1 · cần mức 3: Nhớ ra\n33% · tin cậy vừa Vì sao?\nHọc\nHiểu và dùng cụm động từ về kế hoạch, quan"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "open",
+  "text": "Ladder Quest · tầng 1\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 0 xu\n🏆 Tầng cao nhất 0\n✓ 0/0 câu đúng\n📈 0/391 kỹ năng đã vững\n110 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 1 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 418/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 418/534 năng lực chưa đạt (≈ 135 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\n📏 Đo đầu vào\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nPhân biệt âm /ɪ/ – /iː/ (i ngắn – i dài)\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "measure-result",
+  "text": "Đo tiến bộ\nBạn tiến bộ thật bao nhiêu?\n12 câu ngữ cảnh mới chọn đều trên mục tiêu, giữ riêng: không xuất hiện khi luyện hay chơi, nên đo được bạn dùng được thật chứ không phải nhớ câu. Đo lúc bắt đầu, sau 14 ngày học, rồi sau 7 và 30 ngày để xem có nhớ lâu. Khi đo, app không hiện đáp án; các lần đo sau dùng câu khác cùng phần (dạng song song) để bạn không quen câu.\nLẦN ĐO\tĐÚNG\tNGÀY\nĐo đầu vào\t7/12\t2026-10-09\nĐo sau khi học\t—\ttừ 2026-10-23\nĐo lại sau 7 ngày\t—\t\nĐo lại sau 30 ngày\t—\t\nĐây là số đo trên chính bạn, không phải nghiên cứu có nhóm đối chứng. Câu đo hiện chỉ gồm từ vựng; ngữ pháp cần kho câu riêng chưa có.\nĐo sau khi học: từ 2026-10-23\nLộ trình hôm nay"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 1\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 0 xu\n🏆 Tầng cao nhất 0\n✓ 0/0 câu đúng\n📈 0/391 kỹ năng đã vững\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 1 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 420/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: fill\nBạn trả lời: feel\n+2 xu · câu mới"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: hundred\nBạn trả lời: hunddred\n💡 hundred (number): trăm\n+2 xu · câu mới"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: happy\nBạn trả lời: hap\n💡 happy (adjective): vui, hạnh phúc\n+2 xu · câu mới"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "camp",
+  "text": "Tầng 1 · 5/8\n❤️🤍🤍🤍 · 🪙 14\n👾\n🔭\n👾\n🔭\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: A1 · Unit 36\nhappy (adjective): vui, hạnh phúc\nhappy (tính từ) → happily (trạng từ) → happiness (danh từ). Ngược nghĩa: unhappy, sad.\nShe is very happy because she passed the exam. · Cô ấy rất vui vì đã thi đỗ.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "feedback-wrong",
+  "text": "Đúng rồi: bí kíp đã vào!\n+2 xu · câu mới"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "where": "floor-end",
+  "text": "Tầng 1\n🏆 Qua tầng!\n5/8 câu đúng · +67 xu. Tầng 2 đã mở.\nLượt sau app sẽ đưa lại: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài), Số lớn, Sức khoẻ và cảm xúc.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "where": "open",
+  "text": "Ladder Quest · tầng 2\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 67 xu\n🏆 Tầng cao nhất 1\n✓ 5/8 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Mạo từ a / an (75% · chưa biết): đang chặn 42 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 2 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 422/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 422/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nPhân biệt âm /æ/ – /e/ (a bẹt – e)\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Phân biệt âm /æ/ – /e/ (a bẹt – e): bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 2\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 67 xu\n🏆 Tầng cao nhất 1\n✓ 5/8 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /æ/ – /e/ (a bẹt – e) (51% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 2 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 422/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: sad\nBạn trả lời: said\n+2 xu · câu mới"
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: sit\nBạn trả lời: seat\n+2 xu · câu mới"
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: cost an arm and a leg\nBạn trả lời: cost an arm and a l\n💡 cost an arm and a leg (idiom): đắt cắt cổ\n+2 xu · câu mới"
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "where": "camp",
+  "text": "Tầng 2 · 5/8\n❤️🤍🤍🤍 · 🪙 24\n👾\n🔭\n👾\n🔭\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: B1 · Unit 62\ncost an arm and a leg (idiom): đắt cắt cổ\nCùng nghĩa: cost a fortune.\nHouses in the city centre cost an arm and a leg. · Nhà ở trung tâm thành phố đắt cắt cổ.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "where": "feedback-wrong",
+  "text": "Đúng rồi: bí kíp đã vào!\n+2 xu · câu mới"
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: their\nBạn trả lời: the\n💡 Đại từ (I, he, she…) đứng trước động từ, thay cho tên người/vật.\n+2 xu · câu mới"
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "where": "floor-end",
+  "text": "Tầng 2\n🏆 Qua tầng!\n4/8 câu đúng · +49 xu. Tầng 3 đã mở.\n⬆ Lên cấp: Động từ to be (am/is/are)\nđã vững (từ câu trả lời của bạn, không phải từ xu)\nLượt sau app sẽ đưa lại: Phân biệt âm /æ/ – /e/ (a bẹt – e), Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài), Thành ngữ: cảm xúc và tình huống.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "where": "open",
+  "text": "Ladder Quest · tầng 3\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 116 xu\n🏆 Tầng cao nhất 2\n✓ 9/16 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 3 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 423/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nTrong bếp\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nĐộng từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 20 phút\nHọc\nTôi biết rồi: kiểm tra để bỏ qua\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Trong bếp: bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 3\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 116 xu\n🏆 Tầng cao nhất 2\n✓ 9/16 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 3 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: Is\nBạn trả lời: Iss\n💡 Nói tên, tuổi, nghề nghiệp, quốc tịch, tính chất: I am 20. She is a nurse.\n+3 xu · câu mới"
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "where": "camp",
+  "text": "Tầng 3 · 5/8\n❤️❤️🤍 · 🪙 45\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: Động từ to be (am/is/are)\nNói tên, tuổi, nghề nghiệp, quốc tịch, tính chất: I am 20. She is a nurse.\nI am (I'm) · He/She/It is ('s) · We/You/They are ('re)\nTiếng Việt thường bỏ “là/thì” trước tính từ (“Cô ấy đẹp”), nhưng tiếng Anh luôn cần to be: She is beautiful.\nI am a student. · Tôi là sinh viên.\nMy parents are not at home. · Bố mẹ tôi không có nhà.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "where": "feedback-wrong",
+  "text": "Đúng rồi: bí kíp đã vào!\n+2 xu"
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: Those women are nurses.\nBạn trả lời: Those women are nurse\n💡 Dùng khi có từ hai người/vật trở lên: two cats, many people.\n+2 xu · câu mới"
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "where": "floor-end",
+  "text": "Tầng 3\n🏆 Qua tầng!\n6/8 câu đúng · +78 xu. Tầng 4 đã mở.\nLượt sau app sẽ đưa lại: Động từ to be (am/is/are), Danh từ số nhiều.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "where": "open",
+  "text": "Ladder Quest · tầng 4\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 194 xu\n🏆 Tầng cao nhất 3\n✓ 15/24 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (36% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 4 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 423/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nThực phẩm và hương vị\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nĐộng từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 20 phút\nHọc\nTôi biết rồi: kiểm tra để bỏ qua\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nThực phẩm và hương vị còn hổng: lộ trình sẽ đưa phần này vào.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 4\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 194 xu\n🏆 Tầng cao nhất 3\n✓ 15/24 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (36% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 4 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: sheep\nBạn trả lời: ship\n+2 xu · câu mới"
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: are\nBạn trả lời: x\n💡 Nói tên, tuổi, nghề nghiệp, quốc tịch, tính chất: I am 20. She is a nurse.\n+3 xu · câu mới"
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: wifi\nBạn trả lời: ifiw\n💡 wifi (noun): mạng không dây\n+2 xu · câu mới"
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "where": "floor-end",
+  "text": "Tầng 4\n💤 Hết tim\n1/4 câu đúng · +23 xu. Tầng này vẫn chờ bạn, không mất gì.\nLượt sau app sẽ đưa lại: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài), Động từ to be (am/is/are), Thiết bị và tài khoản.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "where": "open",
+  "text": "Ladder Quest · tầng 4\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 217 xu\n🏆 Tầng cao nhất 3\n✓ 16/28 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (30% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 4 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 423/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nPhân biệt âm /ʌ/ – /ɑː/ (ơ ngắn – a dài)\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nĐộng từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 20 phút\nHọc\nTôi biết rồi: kiểm tra để bỏ qua\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nPhân biệt âm /ʌ/ – /ɑː/ (ơ ngắn – a dài) còn hổng: lộ trình sẽ đưa phần này vào.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 4\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 217 xu\n🏆 Tầng cao nhất 3\n✓ 16/28 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (30% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 4 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: cheap\nBạn trả lời: chip\n+2 xu · câu mới"
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: get over\nBạn trả lời: get oover\n💡 get over (phrasal verb): vượt qua, hồi phục\n+2 xu · câu mới"
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: waiting\nBạn trả lời: waited\n💡 Hành động bắt đầu trong quá khứ, kéo dài đến bây giờ (nhấn mạnh quá trình): I've been learning English for five years.\n+2 xu · câu mới"
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "where": "floor-end",
+  "text": "Tầng 4\n💤 Hết tim\n1/4 câu đúng · +12 xu. Tầng này vẫn chờ bạn, không mất gì.\nLượt sau app sẽ đưa lại: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài), Cụm động từ: con người và các mối quan hệ, Hiện tại hoàn thành tiếp diễn.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "where": "open",
+  "text": "Ladder Quest · tầng 4\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 229 xu\n🏆 Tầng cao nhất 3\n✓ 17/32 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (25% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 4 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 423/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nTrạng từ chỉ cách thức\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nĐộng từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 20 phút\nHọc\nTôi biết rồi: kiểm tra để bỏ qua\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Trạng từ chỉ cách thức: bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 4\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 229 xu\n🏆 Tầng cao nhất 3\n✓ 17/32 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (25% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 4 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: sit\nBạn trả lời: seat\n+2 xu · câu mới"
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: go over\nBạn trả lời: go oover\n💡 go over (phrasal verb): xem lại, ôn lại\n+2 xu · câu mới"
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: relax\nBạn trả lời: rel\n💡 relax (verb): thư giãn\n+2 xu · câu mới"
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "where": "floor-end",
+  "text": "Tầng 4\n💤 Hết tim\n1/4 câu đúng · +12 xu. Tầng này vẫn chờ bạn, không mất gì.\nLượt sau app sẽ đưa lại: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài), Cụm động từ: công việc và học tập, Thích và muốn.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "where": "open",
+  "text": "Ladder Quest · tầng 4\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 241 xu\n🏆 Tầng cao nhất 3\n✓ 18/36 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (22% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 4 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 423/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nĐộng vật hoang dã và môi trường\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nĐộng từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 20 phút\nHọc\nTôi biết rồi: kiểm tra để bỏ qua\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Động vật hoang dã và môi trường: bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 4\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 241 xu\n🏆 Tầng cao nhất 3\n✓ 18/36 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (22% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 4 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: beat\nBạn trả lời: bit\n+2 xu · câu mới"
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "where": "camp",
+  "text": "Tầng 4 · 5/8\n❤️❤️🤍 · 🪙 39\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nNghỉ chân bên đống lửa.\nHồi một tim và đi tiếp"
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: her\nBạn trả lời: she\n💡 Đại từ (I, he, she…) đứng trước động từ, thay cho tên người/vật.\n+3 xu · câu mới"
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "where": "floor-end",
+  "text": "Tầng 4\n🏆 Qua tầng!\n5/7 câu đúng · +88 xu. Tầng 5 đã mở.\n⬆ Lên cấp: Mạo từ a / an, Danh từ số nhiều\nđã vững (từ câu trả lời của bạn, không phải từ xu)\nLượt sau app sẽ đưa lại: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài), Đại từ nhân xưng và tính từ sở hữu.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "where": "open",
+  "text": "Ladder Quest · tầng 5\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 329 xu\n🏆 Tầng cao nhất 4\n✓ 23/43 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (19% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 5 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 423/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nHiện tại đơn và hiện tại tiếp diễn\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nĐộng từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 20 phút\nHọc\nTôi biết rồi: kiểm tra để bỏ qua\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nĐã ghi nhận; app sẽ kiểm lại sau.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 5\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 329 xu\n🏆 Tầng cao nhất 4\n✓ 23/43 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (19% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 5 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Động từ to be (am/is/are)\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 104 năng lực. Khoảng 20 phút. Còn 423/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nTôi biết rồi\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: peanut\nBạn trả lời: pean\n💡 peanut (noun): hạt lạc, đậu phộng\n+2 xu · câu mới"
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "where": "camp",
+  "text": "Tầng 5 · 5/8\n❤️❤️🤍 · 🪙 35\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: A2 · Unit 75\npeanut (noun): hạt lạc, đậu phộng\ngrape (noun): quả nho\npeanut butter = bơ lạc.\nHe is allergic to peanuts. · Anh ấy bị dị ứng lạc.\nI bought a bunch of grapes at the market. · Tôi mua một chùm nho ở chợ.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "where": "feedback-wrong",
+  "text": "Đúng rồi: bí kíp đã vào!\n+2 xu · câu mới"
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "where": "floor-end",
+  "text": "Tầng 5\n🏆 Qua tầng!\n7/8 câu đúng · +96 xu. Tầng 6 đã mở.\n⬆ Lên cấp: Mạo từ a / an, Danh từ số nhiều\nđã vững (từ câu trả lời của bạn, không phải từ xu)\nLượt sau app sẽ đưa lại: Trái cây và các loại hạt.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "where": "open",
+  "text": "Ladder Quest · tầng 6\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 425 xu\n🏆 Tầng cao nhất 5\n✓ 30/51 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (25% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 6 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 421/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nCông trình trong thị trấn\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nCông trình trong thị trấn còn hổng: lộ trình sẽ đưa phần này vào.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 6\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 425 xu\n🏆 Tầng cao nhất 5\n✓ 30/51 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài) (25% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 6 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: bomb\nBạn trả lời: bmob\n💡 bomb (noun): quả bom\n+2 xu · câu mới"
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: oldest\nBạn trả lời: olde\n💡 So sánh một người/vật với cả nhóm (từ ba trở lên).\n+2 xu · câu mới"
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "where": "camp",
+  "text": "Tầng 6 · 5/8\n❤️🤍🤍 · 🪙 23\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: So sánh nhất của tính từ\nSo sánh một người/vật với cả nhóm (từ ba trở lên).\nthe + tính từ ngắn + -est: the tallest · -y → -iest: the happiest\nLuôn có “the” trước so sánh nhất: “She is tallest” là thiếu.\nMount Everest is the highest mountain in the world. · Everest là ngọn núi cao nhất thế giới.\nThis is the most delicious cake I have ever eaten. · Đây là chiếc bánh ngon nhất tôi từng ăn.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "where": "feedback-wrong",
+  "text": "Đúng rồi: bí kíp đã vào!\n+2 xu · câu mới"
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: She is my sister.\nBạn trả lời: She is myy sister.\n💡 Đại từ (I, he, she…) đứng trước động từ, thay cho tên người/vật.\n+2 xu · câu mới"
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "where": "floor-end",
+  "text": "Tầng 6\n🏆 Qua tầng!\n5/8 câu đúng · +43 xu. Tầng 7 đã mở.\n⬆ Lên cấp: Đồ ăn & thức uống\nđã vững (từ câu trả lời của bạn, không phải từ xu)\nLượt sau app sẽ đưa lại: Thảm hoạ, So sánh nhất của tính từ, Đại từ nhân xưng và tính từ sở hữu.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "where": "open",
+  "text": "Ladder Quest · tầng 7\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 468 xu\n🏆 Tầng cao nhất 6\n✓ 35/59 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 7 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 421/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nHiện tại tiếp diễn nói về kế hoạch tương lai\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Hiện tại tiếp diễn nói về kế hoạch tương lai: bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 7\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 468 xu\n🏆 Tầng cao nhất 6\n✓ 35/59 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 7 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: court\nBạn trả lời: couurt\n💡 court (noun): toà án; sân (tennis)\n+2 xu · câu mới"
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: cost an arm and a leg\nBạn trả lời: cost an arm and a l\n💡 cost an arm and a leg (idiom): đắt cắt cổ\n+1 xu"
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "where": "camp",
+  "text": "Tầng 7 · 5/8\n❤️🤍🤍 · 🪙 15\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: B1 · Unit 62\ncost an arm and a leg (idiom): đắt cắt cổ\nCùng nghĩa: cost a fortune.\nHouses in the city centre cost an arm and a leg. · Nhà ở trung tâm thành phố đắt cắt cổ.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "where": "feedback-wrong",
+  "text": "Đúng rồi: bí kíp đã vào!\n+2 xu · câu mới"
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "where": "floor-end",
+  "text": "Tầng 7\n🏆 Qua tầng!\n6/8 câu đúng · +68 xu. Tầng 8 đã mở.\nLượt sau app sẽ đưa lại: Tội phạm và công lý, Thành ngữ: cảm xúc và tình huống.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "where": "open",
+  "text": "Ladder Quest · tầng 8\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 536 xu\n🏆 Tầng cao nhất 7\n✓ 41/67 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 8 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 421/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nPhương tiện giao thông\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Phương tiện giao thông: bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 8\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 536 xu\n🏆 Tầng cao nhất 7\n✓ 41/67 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 8 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: knife\nBạn trả lời: efink\n💡 knife (noun): con dao\n+2 xu · câu mới"
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "where": "camp",
+  "text": "Tầng 8 · 5/8\n❤️❤️🤍 · 🪙 32\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: A2 · Unit 11\nknife (noun): con dao\nfork (noun): cái nĩa\n“k” không đọc: /naɪf/. Số nhiều: knives.\nBe careful, that knife is very sharp. · Cẩn thận, con dao đó rất sắc.\nEat your salad with a fork. · Ăn salad bằng nĩa.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "where": "feedback-wrong",
+  "text": "Chưa đúng, không sao: đây là lượt luyện\nĐáp án: knife\nBạn trả lời: kni\n💡 knife (noun): con dao\n+2 xu · câu mới"
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: isn't\nBạn trả lời: isnn't\n💡 Nói tên, tuổi, nghề nghiệp, quốc tịch, tính chất: I am 20. She is a nurse.\n+2 xu · câu mới"
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "where": "floor-end",
+  "text": "Tầng 8\n🏆 Qua tầng!\n5/8 câu đúng · +52 xu. Tầng 9 đã mở.\nLượt sau app sẽ đưa lại: Trong bếp, Động từ to be (am/is/are).\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "where": "open",
+  "text": "Ladder Quest · tầng 9\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 588 xu\n🏆 Tầng cao nhất 8\n✓ 46/75 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 9 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 421/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nWill: dự đoán, đề nghị, quyết định tức thì\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Will: dự đoán, đề nghị, quyết định tức thì: bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 9\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 588 xu\n🏆 Tầng cao nhất 8\n✓ 46/75 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 9 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: microphone\nBạn trả lời: micropphone\n💡 microphone (noun): micro\n+2 xu · câu mới"
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "where": "camp",
+  "text": "Tầng 9 · 5/8\n❤️❤️🤍 · 🪙 39\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: B1 · Unit 73\nmicrophone (noun): micro\nwifi (noun): mạng không dây\nlogin (noun): việc đăng nhập, thông tin đăng nhập\nViết tắt thân mật: mic.\nSpeak into the microphone, please. · Vui lòng nói vào micro.\nIs there free wifi in this café? · Quán cà phê này có wifi miễn phí không?\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "where": "feedback-wrong",
+  "text": "Đúng rồi: bí kíp đã vào!\n+2 xu · câu mới"
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: sad\nBạn trả lời: said\n+2 xu · câu mới"
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "where": "floor-end",
+  "text": "Tầng 9\n🏆 Qua tầng!\n6/8 câu đúng · +86 xu. Tầng 10 đã mở.\n⬆ Lên cấp: Đồ ăn & thức uống\nđã vững (từ câu trả lời của bạn, không phải từ xu)\nLượt sau app sẽ đưa lại: Thiết bị và tài khoản, Phân biệt âm /æ/ – /e/ (a bẹt – e).\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "where": "open",
+  "text": "Ladder Quest · tầng 10\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 674 xu\n🏆 Tầng cao nhất 9\n✓ 52/83 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 10 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 421/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nTừ ngữ khi đi lại\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Từ ngữ khi đi lại: bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 10\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 674 xu\n🏆 Tầng cao nhất 9\n✓ 52/83 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 10 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: hope\nBạn trả lời: hop\n+2 xu · câu mới"
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: hit\nBạn trả lời: heat\n+2 xu · câu mới"
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: ngửi; có mùi\nBạn trả lời: xăng\n💡 smell (verb): ngửi; có mùi\n+2 xu · câu mới"
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "where": "floor-end",
+  "text": "Tầng 10\n💤 Hết tim\n1/4 câu đúng · +10 xu. Tầng này vẫn chờ bạn, không mất gì.\nLượt sau app sẽ đưa lại: Phân biệt âm /ɒ/ – /əʊ/ (o ngắn – âu), Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài), Thực phẩm và hương vị.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "where": "open",
+  "text": "Ladder Quest · tầng 10\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 684 xu\n🏆 Tầng cao nhất 9\n✓ 53/87 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 10 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 421/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nThể thao (tiếp)\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Thể thao (tiếp): bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 10\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 684 xu\n🏆 Tầng cao nhất 9\n✓ 53/87 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 10 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: \"It's hot in here.\" – \"I'll open the window.\"\nBạn trả lời: \"It's hot in here.\" – \"\"I'll open the window.\"\n💡 Chọn đúng: đã lên kế hoạch → going to; vừa quyết định → will.\n+2 xu · câu mới"
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: look up to\nBạn trả lời: ot pu kool\n💡 look up to (phrasal verb): ngưỡng mộ, kính trọng\n+2 xu · câu mới"
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "where": "camp",
+  "text": "Tầng 10 · 5/8\n❤️🤍🤍 · 🪙 16\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: B1 · Unit 59\nlook up to (phrasal verb): ngưỡng mộ, kính trọng\nget over (phrasal verb): vượt qua, hồi phục\nlook up to ↔ look down on.\nMany young players look up to him. · Nhiều cầu thủ trẻ ngưỡng mộ anh ấy.\nIt took her months to get over the shock. · Cô ấy mất nhiều tháng để vượt qua cú sốc.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "where": "feedback-wrong",
+  "text": "Chưa đúng, không sao: đây là lượt luyện\nĐáp án: look up to\nBạn trả lời: look up\n💡 look up to (phrasal verb): ngưỡng mộ, kính trọng\n+2 xu · câu mới"
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "where": "floor-end",
+  "text": "Tầng 10\n🏆 Qua tầng!\n5/8 câu đúng · +69 xu. Tầng 11 đã mở.\nLượt sau app sẽ đưa lại: Will và be going to, Cụm động từ: con người và các mối quan hệ.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "where": "open",
+  "text": "Ladder Quest · tầng 11\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 753 xu\n🏆 Tầng cao nhất 10\n✓ 58/95 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 11 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 421/534 năng lực chưa đạt (≈ 136 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\n📏 Đo sau khi học\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nThi đấu\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "where": "measure-result",
+  "text": "Đo tiến bộ\nBạn tiến bộ thật bao nhiêu?\n12 câu ngữ cảnh mới chọn đều trên mục tiêu, giữ riêng: không xuất hiện khi luyện hay chơi, nên đo được bạn dùng được thật chứ không phải nhớ câu. Đo lúc bắt đầu, sau 14 ngày học, rồi sau 7 và 30 ngày để xem có nhớ lâu. Khi đo, app không hiện đáp án; các lần đo sau dùng câu khác cùng phần (dạng song song) để bạn không quen câu.\nLẦN ĐO\tĐÚNG\tNGÀY\nĐo đầu vào\t7/12\t2026-10-09\nĐo sau khi học\t7/12\t2026-10-23\nĐo lại sau 7 ngày\t—\ttừ 2026-10-30\nĐo lại sau 30 ngày\t—\t\nMức tăng: +0 điểm phần trăm (≈ 0 điểm mỗi giờ học, thời gian học ước tính).\nĐây là số đo trên chính bạn, không phải nghiên cứu có nhóm đối chứng. Câu đo hiện chỉ gồm từ vựng; ngữ pháp cần kho câu riêng chưa có.\nĐo lại sau 7 ngày: từ 2026-10-30\nLộ trình hôm nay"
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 11\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 753 xu\n🏆 Tầng cao nhất 10\n✓ 58/95 câu đúng\n📈 0/391 kỹ năng đã vững\n106 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 11 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 421/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "where": "camp",
+  "text": "Tầng 11 · 5/8\n❤️❤️❤️ · 🪙 60\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nNghỉ chân bên đống lửa.\nHồi một tim và đi tiếp"
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "where": "floor-end",
+  "text": "Tầng 11\n🏆 Qua tầng!\n7/7 câu đúng · +111 xu. Tầng 12 đã mở.\n⬆ Lên cấp: Sức khoẻ và cảm xúc, Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài)\nđã vững (từ câu trả lời của bạn, không phải từ xu)\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "where": "open",
+  "text": "Ladder Quest · tầng 12\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 864 xu\n🏆 Tầng cao nhất 11\n✓ 65/102 câu đúng\n📈 0/391 kỹ năng đã vững\n107 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 12 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 420/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 420/534 năng lực chưa đạt (≈ 135 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nMệnh lệnh trong lớp học\nRanh giới: vài câu nữa sẽ quyết định Đạt hay chưa\nLàm ngay\nBước tiếp theo\nGọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Mệnh lệnh trong lớp học: bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 12\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 864 xu\n🏆 Tầng cao nhất 11\n✓ 65/102 câu đúng\n📈 0/391 kỹ năng đã vững\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 12 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Gọi tên đồ ăn, thức uống và các bữa ăn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 419/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: award\nBạn trả lời: awa\n💡 award (noun): giải thưởng (danh hiệu)\n+2 xu · câu mới"
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "where": "camp",
+  "text": "Tầng 12 · 5/8\n❤️❤️🤍 · 🪙 36\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: A2 · Unit 22\naward (noun): giải thưởng (danh hiệu)\nĐộng từ award = trao giải.\nThe film won three awards. · Bộ phim giành được ba giải thưởng.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "where": "feedback-wrong",
+  "text": "Chưa đúng, không sao: đây là lượt luyện\nĐáp án: award\nBạn trả lời: awa\n💡 award (noun): giải thưởng (danh hiệu)\n+2 xu · câu mới"
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "where": "floor-end",
+  "text": "Tầng 12\n🏆 Qua tầng!\n6/8 câu đúng · +89 xu. Tầng 13 đã mở.\n⬆ Lên cấp: Phân biệt âm /æ/ – /e/ (a bẹt – e)\nđã vững (từ câu trả lời của bạn, không phải từ xu)\nLượt sau app sẽ đưa lại: Thi đấu.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "where": "open",
+  "text": "Ladder Quest · tầng 13\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 953 xu\n🏆 Tầng cao nhất 12\n✓ 71/110 câu đúng\n📈 0/391 kỹ năng đã vững\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 13 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 418/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 418/534 năng lực chưa đạt (≈ 135 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nĐồ ăn & thức uống\nRanh giới: vài câu nữa sẽ quyết định Đạt hay chưa\nLàm ngay\nBước tiếp theo\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nNói về thói quen hằng ngày bằng thì hiện tại đơn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Đồ ăn & thức uống: bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 13\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 953 xu\n🏆 Tầng cao nhất 12\n✓ 71/110 câu đúng\n📈 1/391 kỹ năng đã vững · +1 trong 7 ngày qua\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 13 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 417/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: point out\nBạn trả lời: tuo tniop\n💡 point out (phrasal verb): chỉ ra\n+2 xu · câu mới"
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "where": "camp",
+  "text": "Tầng 13 · 5/8\n❤️❤️🤍 · 🪙 32\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: B1 · Unit 60\npoint out (phrasal verb): chỉ ra\ngo over (phrasal verb): xem lại, ôn lại\npoint out that + mệnh đề: She pointed out that it was late.\nI'd like to point out a mistake in the report. · Tôi muốn chỉ ra một lỗi trong báo cáo.\nLet's go over the main points again. · Hãy xem lại các ý chính một lần nữa.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "where": "feedback-wrong",
+  "text": "Chưa đúng, không sao: đây là lượt luyện\nĐáp án: point out\nBạn trả lời: point o\n💡 point out (phrasal verb): chỉ ra\n+2 xu · câu mới"
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "where": "floor-end",
+  "text": "Tầng 13\n🏆 Qua tầng!\n6/8 câu đúng · +96 xu. Tầng 14 đã mở.\nLượt sau app sẽ đưa lại: Cụm động từ: công việc và học tập.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "where": "open",
+  "text": "Ladder Quest · tầng 14\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1049 xu\n🏆 Tầng cao nhất 13\n✓ 77/118 câu đúng\n📈 1/391 kỹ năng đã vững · +1 trong 7 ngày qua\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 14 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 417/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 417/534 năng lực chưa đạt (≈ 135 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nHành động (tiếp)\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nNói về thói quen hằng ngày bằng thì hiện tại đơn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Hành động (tiếp): bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 14\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1049 xu\n🏆 Tầng cao nhất 13\n✓ 77/118 câu đúng\n📈 1/391 kỹ năng đã vững · +1 trong 7 ngày qua\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 14 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 417/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: I was watching TV at nine last night.\nBạn trả lời: I was watching TV at nine last nigh\n💡 Hành động đang diễn ra tại một thời điểm trong quá khứ: At 8 p.m. yesterday I was having dinner.\n+2 xu · câu mới"
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "where": "camp",
+  "text": "Tầng 14 · 5/8\n❤️❤️🤍 · 🪙 29\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: Quá khứ tiếp diễn\nHành động đang diễn ra tại một thời điểm trong quá khứ: At 8 p.m. yesterday I was having dinner.\nwas/were + V-ing: I was sleeping. They were playing.\nKhông bỏ was/were: “I watching TV at 9 p.m.” là sai.\nAt ten o'clock last night I was reading a book. · Lúc mười giờ tối qua tôi đang đọc sách.\nThe children were playing in the garden. · Bọn trẻ đang chơi trong vườn.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "where": "feedback-wrong",
+  "text": "Chưa đúng, không sao: đây là lượt luyện\nĐáp án: wasn't\nBạn trả lời: weren't\n💡 Hành động đang diễn ra tại một thời điểm trong quá khứ: At 8 p.m. yesterday I was having dinner.\n+2 xu · câu mới"
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: am not working\nBạn trả lời: gnikrow ton ma\n💡 Kế hoạch đã sắp xếp, có hẹn giờ, địa điểm, người: We're flying to Da Nang on Friday.\n+2 xu · câu mới"
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "where": "floor-end",
+  "text": "Tầng 14\n🏆 Qua tầng!\n5/8 câu đúng · +49 xu. Tầng 15 đã mở.\n⬆ Lên cấp: Động vật hoang dã và môi trường\nđã vững (từ câu trả lời của bạn, không phải từ xu)\nLượt sau app sẽ đưa lại: Quá khứ tiếp diễn, Hiện tại tiếp diễn nói về kế hoạch tương lai.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "where": "open",
+  "text": "Ladder Quest · tầng 15\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1098 xu\n🏆 Tầng cao nhất 14\n✓ 82/126 câu đúng\n📈 1/391 kỹ năng đã vững · +1 trong 7 ngày qua\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 15 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 417/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 417/534 năng lực chưa đạt (≈ 135 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\n📏 Đo lại sau 7 ngày\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nGiao tiếp\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nNói về thói quen hằng ngày bằng thì hiện tại đơn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "where": "measure-result",
+  "text": "Đo tiến bộ\nBạn tiến bộ thật bao nhiêu?\n12 câu ngữ cảnh mới chọn đều trên mục tiêu, giữ riêng: không xuất hiện khi luyện hay chơi, nên đo được bạn dùng được thật chứ không phải nhớ câu. Đo lúc bắt đầu, sau 14 ngày học, rồi sau 7 và 30 ngày để xem có nhớ lâu. Khi đo, app không hiện đáp án; các lần đo sau dùng câu khác cùng phần (dạng song song) để bạn không quen câu.\nLẦN ĐO\tĐÚNG\tNGÀY\nĐo đầu vào\t7/12\t2026-10-09\nĐo sau khi học\t7/12\t2026-10-23\nĐo lại sau 7 ngày\t6/12\t2026-10-30\nĐo lại sau 30 ngày\t—\ttừ 2026-11-22\nMức tăng: +0 điểm phần trăm (≈ 0 điểm mỗi giờ học, thời gian học ước tính).\nGiữ lại: sau 7 ngày 86%, sau 30 ngày — so với lần đo sau khi học.\nĐây là số đo trên chính bạn, không phải nghiên cứu có nhóm đối chứng. Câu đo hiện chỉ gồm từ vựng; ngữ pháp cần kho câu riêng chưa có.\nĐo lại sau 30 ngày: từ 2026-11-22\nLộ trình hôm nay"
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 15\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1098 xu\n🏆 Tầng cao nhất 14\n✓ 82/126 câu đúng\n📈 1/391 kỹ năng đã vững · +1 trong 7 ngày qua\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 15 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Dùng số, giờ, ngày, tháng và giá tiền\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 52 năng lực. Khoảng 10 phút. Còn 418/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "where": "camp",
+  "text": "Tầng 15 · 5/8\n❤️❤️❤️ · 🪙 36\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nNghỉ chân bên đống lửa.\nHồi một tim và đi tiếp"
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "where": "floor-end",
+  "text": "Tầng 15\n🏆 Qua tầng!\n7/7 câu đúng · +87 xu. Tầng 16 đã mở.\n⬆ Lên cấp: Hiện tại đơn và hiện tại tiếp diễn, Động từ to be (am/is/are)\nđã vững (từ câu trả lời của bạn, không phải từ xu)\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "where": "open",
+  "text": "Ladder Quest · tầng 16\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1185 xu\n🏆 Tầng cao nhất 15\n✓ 89/133 câu đúng\n📈 1/391 kỹ năng đã vững\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 16 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 417/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 417/534 năng lực chưa đạt (≈ 135 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nBày tỏ ý kiến\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nNói về thói quen hằng ngày bằng thì hiện tại đơn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt Bày tỏ ý kiến: bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 16\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1185 xu\n🏆 Tầng cao nhất 15\n✓ 89/133 câu đúng\n📈 1/391 kỹ năng đã vững\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 16 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 417/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: damage\nBạn trả lời: dama\n💡 damage (verb): làm hư hại\n+2 xu · câu mới"
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "where": "camp",
+  "text": "Tầng 16 · 5/8\n❤️❤️🤍 · 🪙 39\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: B1 · Unit 12\ndamage (verb): làm hư hại\nbomb (noun): quả bom\nDanh từ damage không đếm được: a lot of damage.\nThe storm damaged many houses. · Cơn bão làm hư hại nhiều ngôi nhà.\nA bomb exploded in the city. · Một quả bom phát nổ trong thành phố.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "where": "feedback-wrong",
+  "text": "Đúng rồi: bí kíp đã vào!\n+2 xu · câu mới"
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "where": "floor-end",
+  "text": "Tầng 16\n🏆 Qua tầng!\n7/8 câu đúng · +92 xu. Tầng 17 đã mở.\nLượt sau app sẽ đưa lại: Thảm hoạ.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "where": "open",
+  "text": "Ladder Quest · tầng 17\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1277 xu\n🏆 Tầng cao nhất 16\n✓ 96/141 câu đúng\n📈 1/391 kỹ năng đã vững\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 17 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 417/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 417/534 năng lực chưa đạt (≈ 135 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nQuá khứ tiếp diễn và quá khứ đơn\nKhám phá: bạn biết phần này chưa?\nLàm ngay\nBước tiếp theo\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nNói về thói quen hằng ngày bằng thì hiện tại đơn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nQuá khứ tiếp diễn và quá khứ đơn còn hổng: lộ trình sẽ đưa phần này vào.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 17\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1277 xu\n🏆 Tầng cao nhất 16\n✓ 96/141 câu đúng\n📈 1/391 kỹ năng đã vững\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 17 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 417/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: instruction\nBạn trả lời: instruuction\n💡 instruction (noun): hướng dẫn, chỉ dẫn\n+2 xu · câu mới"
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "where": "camp",
+  "text": "Tầng 17 · 5/8\n❤️❤️🤍 · 🪙 36\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: A2 · Unit 28\ninstruction (noun): hướng dẫn, chỉ dẫn\nThường dùng số nhiều: instructions.\nRead the instructions before you start. · Đọc hướng dẫn trước khi bắt đầu.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "where": "feedback-wrong",
+  "text": "Đúng rồi: bí kíp đã vào!\n+2 xu · câu mới"
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: sat\nBạn trả lời: set\n+2 xu · câu mới"
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: are getting\nBạn trả lời: gnitteg era\n💡 Kế hoạch đã sắp xếp, có hẹn giờ, địa điểm, người: We're flying to Da Nang on Friday.\n+2 xu · câu mới"
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "where": "floor-end",
+  "text": "Tầng 17\n🏆 Qua tầng!\n5/8 câu đúng · +50 xu. Tầng 18 đã mở.\nLượt sau app sẽ đưa lại: Khám phá và phát minh, Phân biệt âm /æ/ – /e/ (a bẹt – e), Hiện tại tiếp diễn nói về kế hoạch tương lai.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "where": "open",
+  "text": "Ladder Quest · tầng 18\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1327 xu\n🏆 Tầng cao nhất 17\n✓ 101/149 câu đúng\n📈 1/391 kỹ năng đã vững\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 18 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 417/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 417/534 năng lực chưa đạt (≈ 135 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nThis / that / these / those\nXác nhận: chẩn đoán đoán là bạn biết, kiểm lại nhanh\nLàm ngay\nBước tiếp theo\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nNói về thói quen hằng ngày bằng thì hiện tại đơn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "where": "action-result",
+  "text": "Kiểm tra nhanh xong\nĐã cập nhật bản đồ năng lực\nBạn làm tốt This / that / these / those: bằng chứng đã được ghi.\nVề lộ trình hôm nay\nVì sao?"
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 18\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1327 xu\n🏆 Tầng cao nhất 17\n✓ 101/149 câu đúng\n📈 1/391 kỹ năng đã vững\n108 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 18 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 417/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: He has got a dog.\nBạn trả lời: He has goot a dog.\n💡 Nói về sở hữu, gia đình, ngoại hình, bệnh: I've got a car. She's got blue eyes. He's got a cold.\n+3 xu · câu mới"
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "where": "camp",
+  "text": "Tầng 18 · 5/8\n❤️❤️🤍 · 🪙 37\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nBí kíp: Have got / has got (sở hữu)\nNói về sở hữu, gia đình, ngoại hình, bệnh: I've got a car. She's got blue eyes. He's got a cold.\nI/You/We/They have got ('ve got) · He/She/It has got ('s got)\nKhông dùng “do/does” với have got: “Do you have got…” là sai.\nI have got two sisters. · Tôi có hai chị gái.\nShe has got long black hair. · Cô ấy có mái tóc đen dài.\nThử ngay 1 câu\nBỏ qua, hồi tim"
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "where": "feedback-wrong",
+  "text": "Đúng rồi: bí kíp đã vào!\n+2 xu · câu mới"
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: said\nBạn trả lời: sad\n+2 xu · câu mới"
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "where": "floor-end",
+  "text": "Tầng 18\n🏆 Qua tầng!\n6/8 câu đúng · +84 xu. Tầng 19 đã mở.\nLượt sau app sẽ đưa lại: Have got / has got (sở hữu), Phân biệt âm /æ/ – /e/ (a bẹt – e).\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "where": "open",
+  "text": "Ladder Quest · tầng 19\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1411 xu\n🏆 Tầng cao nhất 18\n✓ 107/157 câu đúng\n📈 1/391 kỹ năng đã vững\n107 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 19 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 418/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "where": "today",
+  "text": "Lộ trình hôm nay · 30 phút\nHôm nay học gì\nCòn 418/534 năng lực chưa đạt (≈ 135 giờ học). App chỉ đưa vào những gì mục tiêu cần và bạn chưa thành thạo.\nTiếng Anh tổng quát B1 (Trung cấp)\nSẵn sàng: 0%\nTiếng Anh tổng quát A2 (Sơ trung cấp)\nSẵn sàng: 0%\n🏰 Học bằng Ladder Quest\n📏 Đo lại sau 30 ngày\nKiểm tra nhanh · 3 câu · không tốn năng lượng\nThere is / there are\nXác nhận: chẩn đoán đoán là bạn biết, kiểm lại nhanh\nLàm ngay\nBước tiếp theo\nHỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nGọi taxi và nói nơi muốn đến\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 4: Dùng có kiểm soát · ≈ 10 phút\nHọc\nVì sao?\nNói về thói quen hằng ngày bằng thì hiện tại đơn\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực · cần mức 3: Nhớ ra · ≈ 10 phút\nHọc\nVì sao?\nMục tiêu của bạn"
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "where": "measure-result",
+  "text": "Đo tiến bộ\nBạn tiến bộ thật bao nhiêu?\n12 câu ngữ cảnh mới chọn đều trên mục tiêu, giữ riêng: không xuất hiện khi luyện hay chơi, nên đo được bạn dùng được thật chứ không phải nhớ câu. Đo lúc bắt đầu, sau 14 ngày học, rồi sau 7 và 30 ngày để xem có nhớ lâu. Khi đo, app không hiện đáp án; các lần đo sau dùng câu khác cùng phần (dạng song song) để bạn không quen câu.\nLẦN ĐO\tĐÚNG\tNGÀY\nĐo đầu vào\t7/12\t2026-10-09\nĐo sau khi học\t7/12\t2026-10-23\nĐo lại sau 7 ngày\t6/12\t2026-10-30\nĐo lại sau 30 ngày\t6/12\t2026-11-22\nMức tăng: +0 điểm phần trăm (≈ 0 điểm mỗi giờ học, thời gian học ước tính).\nGiữ lại: sau 7 ngày 86%, sau 30 ngày 86% so với lần đo sau khi học.\nĐây là số đo trên chính bạn, không phải nghiên cứu có nhóm đối chứng. Câu đo hiện chỉ gồm từ vựng; ngữ pháp cần kho câu riêng chưa có.\nĐã đo đủ 4 lần\nLộ trình hôm nay"
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "where": "tower",
+  "text": "Ladder Quest · tầng 19\n🏰 Leo tháp tiếng Anh\nMỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.\n🪙 1411 xu\n🏆 Tầng cao nhất 18\n✓ 107/157 câu đúng\n📈 1/391 kỹ năng đã vững\n107 kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).\n🚧 Điểm nghẽn: Đại từ nhân xưng và tính từ sở hữu (26% · chưa biết): đang chặn 28 năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.\nTiến độ thật của bạn: 0/39 năng lực Tiếng Anh tổng quát B1 (Trung cấp) đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.\n▶ Leo tầng 19 (≈ 8 câu, 4–6 phút)\nNgoài tháp\nBước tiếp theo: Hỏi lại giáo viên khi chưa hiểu\nCần cho Tiếng Anh tổng quát A2 (Sơ trung cấp), Tiếng Anh tổng quát B1 (Trung cấp) · mở đường cho 27 năng lực. Khoảng 10 phút. Còn 418/534 năng lực chưa đạt.\n▶ Học ngay\nVì sao?\nLộ trình hôm nay\n📚 Học bài\n🔁 Ôn tập"
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "where": "camp",
+  "text": "Tầng 19 · 5/8\n❤️❤️❤️ · 🪙 44\n👾\n🔭\n👾\n🎁\n🔥\n👾\n👾\n🐉\n🔥 Trại\nĐọc bí kíp, hồi một tim\nNghỉ chân bên đống lửa.\nHồi một tim và đi tiếp"
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "where": "feedback-wrong",
+  "text": "Hụt! Mất một tim\nĐáp án: am not working\nBạn trả lời: am not worki\n💡 Kế hoạch đã sắp xếp, có hẹn giờ, địa điểm, người: We're flying to Da Nang on Friday.\n+2 xu · câu mới"
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "where": "floor-end",
+  "text": "Tầng 19\n🏆 Qua tầng!\n6/7 câu đúng · +62 xu. Tầng 20 đã mở.\nLượt sau app sẽ đưa lại: Hiện tại tiếp diễn nói về kế hoạch tương lai.\nMọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố.\nVề tháp\nLộ trình hôm nay"
+ }
+]

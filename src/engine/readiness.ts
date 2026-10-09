@@ -110,14 +110,33 @@ export interface MasteryReady {
   ready: boolean;
   lapse: boolean;                       // có quên khi ôn trong 14 ngày qua
   achieved: boolean;
+  xfer?: { important: number; ok: number; exempt: number };   // v65: năng lực quan trọng đã đúng ở câu mới / được miễn (hết câu mới)
 }
 
-export function masteryReadiness(req: Req[], stat: (r: Req) => { pass: boolean; conf: Conf }, lastLapse: number | null, today: number): MasteryReady {
+// v65 (quyết định 08/10, C184): Đạt CEFR cần mọi năng lực quan trọng cho transfer đã đúng ở câu mới; nút đã hết câu mới được miễn.
+export function masteryReadiness(req: Req[], stat: (r: Req) => { pass: boolean; conf: Conf }, lastLapse: number | null, today: number, xfer?: { important: number; ok: number; exempt: number }): MasteryReady {
   const perf = req.filter(r => r.type === 'performance'), base = req.filter(r => r.type !== 'performance');
   const done = base.filter(r => { const s = stat(r); return s.pass && s.conf !== 'low'; }).length;
   const perfDone = perf.filter(r => stat(r).pass).length;
   const total = base.length, all = total + perf.length;
-  const ready = done === total && perfDone === perf.length;
+  const xferOk = !xfer || xfer.ok + xfer.exempt >= xfer.important;
+  const ready = done === total && perfDone === perf.length && xferOk;
   const lapse = lastLapse !== null && today - lastLapse < 14;
-  return { kind: 'mastery', p: all ? (done + perfDone) / all : 0, done, total, perfDone, perfTotal: perf.length, ready, lapse, achieved: ready && !lapse };
+  return { kind: 'mastery', p: all ? (done + perfDone) / all : 0, done, total, perfDone, perfTotal: perf.length, ready, lapse, achieved: ready && !lapse, ...(xfer ? { xfer } : {}) };
 }
+
+// v67 (C5, C197, C198): Readiness theo mô hình đăng ký. Mỗi mục tiêu khai `readiness` trong dữ liệu; engine lấy mô hình tương ứng.
+// Thêm loại mục tiêu mới = thêm dữ liệu (dùng mô hình có sẵn) hoặc đăng ký một mô hình mới, không sửa lõi.
+export interface ReadyIn {
+  mastery: (r: Req) => { pass: boolean; conf: Conf };
+  lapse: number | null;
+  today: number;
+  xfer?: () => { important: number; ok: number; exempt: number } | undefined;
+  exam?: () => { dists: Record<SkillK, Dist | null>; real: RealScore[] };
+}
+export interface ReadinessModel { id: NonNullable<Goal['readiness']>; run(g: Goal, x: ReadyIn): ExamReady | MasteryReady }
+export const READINESS_MODELS: Record<NonNullable<Goal['readiness']>, ReadinessModel> = {
+  mastery: { id: 'mastery', run: (g, x) => masteryReadiness(g.req, x.mastery, x.lapse, x.today, x.xfer?.()) },
+  'exam-score': { id: 'exam-score', run: (g, x) => { const d = x.exam!(); return examReadiness(g, d.dists, d.real); } },
+};
+export const readinessFor = (g: Goal, x: ReadyIn): ExamReady | MasteryReady => READINESS_MODELS[g.readiness ?? 'mastery'].run(g, x);

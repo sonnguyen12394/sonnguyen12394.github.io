@@ -1,0 +1,268 @@
+{
+ "pageErrors": 0,
+ "stuck": 0,
+ "model": {
+  "judged": 20,
+  "agree3": 45,
+  "oppositeOnExtremes": 0,
+  "classes": {
+   "weak|mid": 4,
+   "mid|strong": 7,
+   "mid|mid": 6,
+   "weak|weak": 2,
+   "strong|strong": 1
+  },
+  "corr": 0.65,
+  "diag": {
+   "probes": 28,
+   "head": "Chẩn đoán · 8 phần đã dò | Bạn đang ở đâu | A1–A2 | từ vựng | A1–A2 | ngữ pháp"
+  },
+  "alloc": {
+   "vocab": 24.1,
+   "vocabA1A2": 19,
+   "grammar": 69.6,
+   "listening": 6.3
+  },
+  "strongRepractice": 10.1,
+  "neckShown": 23,
+  "neckIsListening": 0,
+  "neckTop": [
+   "Đồ ăn & thức uống",
+   "Động từ to be",
+   "Sở hữu cách"
+  ]
+ },
+ "difficulty": {
+  "byLevel": {
+   "1": {
+    "n": 10,
+    "ok": 100
+   },
+   "2": {
+    "n": 29,
+    "ok": 82.8
+   },
+   "3": {
+    "n": 79,
+    "ok": 72.2
+   },
+   "4": {
+    "n": 31,
+    "ok": 54.8
+   }
+  },
+  "sessionsInBand": 43.5,
+  "sessAccMin": 0.25,
+  "sessAccMax": 1,
+  "upAfter3ok": 7.7,
+  "upOpp": 13,
+  "downAfter2bad": 75,
+  "downOpp": 4,
+  "dropAfterOneError": 22.2,
+  "oneErrOpp": 9
+ },
+ "latency": {
+  "nodes": 5,
+  "median": 0,
+  "mean": 0,
+  "neverChanged": 0,
+  "overPracticeAfterPassMean": 1
+ },
+ "nba": {
+  "nbaKinds": {
+   "learn": 18,
+   "review": 6
+  },
+  "games": {
+   "monster": 90,
+   "scout": 25,
+   "camp": 22,
+   "boss": 22,
+   "chest": 21
+  },
+  "gapLabels": {
+   "unproven": 1,
+   "-": 25,
+   "knowledge": 27,
+   "recall": 50,
+   "transfer": 20,
+   "skill": 16,
+   "retention": 19
+  },
+  "nextChanges": 8,
+  "rootCause": {
+   "labelled": 124,
+   "hit": 11.3,
+   "byCause": {
+    "knowledge": {
+     "n": 2,
+     "hit": 2
+    },
+    "none": {
+     "n": 102,
+     "hit": 0
+    },
+    "transfer": {
+     "n": 8,
+     "hit": 3
+    },
+    "partial": {
+     "n": 12,
+     "hit": 9
+    }
+   }
+  }
+ },
+ "efficiency": {
+  "answers": 329,
+  "quest": 158,
+  "repeatAsks": 20.3,
+  "practiceOnUsable": 20.3,
+  "reviewOnStrong": 4.8,
+  "reviews": 21,
+  "probeShare": 29.8,
+  "probesOnSolid": 10
+ },
+ "learning": {
+  "vocab": "17: 0.72 → 0.73",
+  "grammar": "28: 0.78 → 0.81",
+  "listening": "1: 0.32 → 0.47",
+  "all": "46: 0.75 → 0.77",
+  "usableStart": 0,
+  "usableEnd": 8,
+  "practiced": 46,
+  "accFirst": 66.2,
+  "accSecond": 78.7,
+  "novelFirst": 62.9,
+  "novelSecond": 66.7,
+  "seenFirst": 83.3,
+  "seenSecond": 96.7,
+  "S07": {
+   "nodes": 6,
+   "before": 0.51,
+   "after": 0.71
+  },
+  "S08": {
+   "plateaus": 0,
+   "appChangedSomething": 0
+  },
+  "measure": [
+   "pre:5/12",
+   "post:5/12",
+   "d7:8/12",
+   "d30:7/12"
+  ],
+  "solidEnd": 1,
+  "solidFalse": 0
+ },
+ "scenarios": {
+  "S05": {
+   "node": "u:a1-u1",
+   "forced": 1,
+   "appBefore": "L1 learning/0.8",
+   "appAfter": [
+    "L1:learning/0.66"
+   ],
+   "next": [
+    "d2 L3 camp ✓ learning",
+    "d5 L1 monster knowledge ✓ learning",
+    "d6 L1 monster knowledge ✓ learning",
+    "d24 L1 monster knowledge ✓ learning"
+   ],
+   "snaps": [
+    "d20737 micro:fixed"
+   ]
+  },
+  "S06": {
+   "node": "g:g-a1-01",
+   "forced": 4,
+   "appBefore": "L3 learning/0.55",
+   "appAfter": [
+    "L2:learning/0.65",
+    "L2:learning/0.55",
+    "L4:learning/0.3",
+    "L3:learning/0.45"
+   ],
+   "next": [
+    "d7 L2 monster knowledge ✓ learning",
+    "d8 L2 monster knowledge ✓ learning",
+    "d9 L3 monster recall ✗ learning",
+    "d10 L3 monster recall ✓ learning"
+   ],
+   "snaps": [
+    "d20739 micro:fixed"
+   ]
+  },
+  "S11": {
+   "node": "ph:s-01",
+   "forced": 2,
+   "appBefore": "L2 learning/0.57",
+   "appAfter": [
+    "L2:learning/0.46",
+    "L3:learning/0.71"
+   ],
+   "next": [
+    "d24 L2 monster knowledge ✓ learning",
+    "d28 L2 monster knowledge ✗ learning",
+    "d44 L2 monster knowledge ✓ learning"
+   ],
+   "snaps": []
+  },
+  "S13": {
+   "node": "g:g-a1-04",
+   "forced": 2,
+   "appBefore": "L4 inferred/0.84",
+   "appAfter": [
+    "L3:learning/0.71",
+    "L3:learning/0.71"
+   ],
+   "next": [
+    "d11 L3 chest retention ✓ learning"
+   ],
+   "snaps": [
+    "d20736 FAIL",
+    "d20742 micro:fixed"
+   ]
+  },
+  "S12": {
+   "nodesWith2NovelCorrect": 21,
+   "mastered": 1
+  },
+  "S14": {
+   "chestCorrect": 15,
+   "laterChestSameNodeMean": 0.07
+  },
+  "S09_S10": "không tạo được qua giao diện: game không có kỹ năng thao tác (không tính giờ, không phản xạ); điểm game chỉ sinh từ câu trả lời (P14, test engine-quest)"
+ },
+ "goal": {
+  "goals": [
+   "cefr-a2",
+   "cefr-b1"
+  ],
+  "readinessFirst": "0/37",
+  "readinessLast": "0/37",
+  "skillsFirst": "0/265",
+  "skillsLast": "1/265",
+  "why": [
+   "NOT_READY"
+  ]
+ },
+ "decisions": {
+  "FAIL": 41,
+  "CHOSEN": 24,
+  "PASS": 24,
+  "quest:win": 21,
+  "micro:fixed": 19,
+  "probe:confirm": 14,
+  "probe:boundary": 5,
+  "micro:not-yet": 3,
+  "NOT_READY": 2,
+  "quest:lose": 2,
+  "goal:AUTO": 1,
+  "u=0.5;g=0.5": 1,
+  "measure:pre": 1,
+  "REOPEN": 1,
+  "measure:post": 1,
+  "measure:d7": 1
+ }
+}

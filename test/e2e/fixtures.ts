@@ -1,7 +1,14 @@
 import { test as base, expect, type Page } from '@playwright/test';
 
 // Mỗi test: chặn font Google (không phụ thuộc mạng ngoài), gom lỗi JavaScript của trang để kiểm "không im lặng hỏng".
-export const test = base.extend<{ errors: string[] }>({
+// future (mặc định bật cho các test cũ): localStorage 'el-future' = '1' trước khi trang nạp, để tab Ôn thi và mục tiêu
+// IELTS/VSTEP/giao tiếp hiện như trước v52. Test của bản MVP chỉ CEFR dùng test.use({ future: false }).
+export const test = base.extend<{ errors: string[]; future: boolean; futureInit: void }>({
+  future: [true, { option: true }],
+  futureInit: [async ({ page, future }, use) => {
+    if (future) await page.addInitScript(() => { try { localStorage.setItem('el-future', '1'); } catch { /* bỏ qua */ } });
+    await use();
+  }, { auto: true }],
   errors: async ({ page }, use) => {
     const errors: string[] = [];
     page.on('pageerror', e => errors.push(String(e)));

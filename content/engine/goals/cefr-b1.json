@@ -5,6 +5,7 @@
  "vi": "Tiếng Anh tổng quát B1 (Trung cấp)",
  "target": "B1",
  "cefr": "B1",
+ "status": "active",
  "req": [
   {
    "node": "cd:b1-voc1",
@@ -251,5 +252,6 @@
    "level": 4,
    "type": "skill"
   }
- ]
+ ],
+ "readiness": "mastery"
 }

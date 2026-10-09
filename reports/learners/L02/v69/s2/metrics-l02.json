@@ -1,0 +1,297 @@
+{
+ "goals": [
+  "cefr-a1",
+  "cefr-b1"
+ ],
+ "pageErrors": 0,
+ "stuck": 0,
+ "weakness": {
+  "judged": 20,
+  "agree3": 35,
+  "oppositeOnExtremes": 0,
+  "classes": {
+   "strong|strong": 1,
+   "mid|strong": 3,
+   "mid|mid": 5,
+   "mid|weak": 9,
+   "weak|weak": 1,
+   "strong|mid": 1
+  },
+  "missed": [],
+  "falseWeak": [],
+  "corrAppVsTruth": 0.55,
+  "noEvidence": 449,
+  "noEvidenceStates": {
+   "inferred": 448,
+   "unknown": 1
+  }
+ },
+ "profile": {
+  "diag": {
+   "probes": 28,
+   "head": "Chẩn đoán · 8 phần đã dò | Bạn đang ở đâu | A1–A2 | từ vựng | A1 | ngữ pháp"
+  },
+  "listeningAsks": 0,
+  "readingAsks": 0
+ },
+ "alloc": {
+  "grammarA1A2": 33.4,
+  "vocab": 66.6,
+  "knownNodes": 19.3
+ },
+ "rootCause": {
+  "labelled": 229,
+  "hit": 19.2,
+  "truthNoneButGap": 56.3,
+  "byCause": {
+   "partial": {
+    "n": 17,
+    "hit": 15
+   },
+   "transfer": {
+    "n": 69,
+    "hit": 18
+   },
+   "misconception": {
+    "n": 10,
+    "hit": 9
+   },
+   "none": {
+    "n": 129,
+    "hit": 0
+   },
+   "retention": {
+    "n": 2,
+    "hit": 0
+   },
+   "recall": {
+    "n": 2,
+    "hit": 2
+   }
+  },
+  "matrix": {
+   "knowledge": {
+    "partial": 15,
+    "misconception": 9,
+    "none": 32,
+    "retention": 1
+   },
+   "transfer": {
+    "transfer": 18,
+    "none": 16
+   },
+   "recall": {
+    "recall": 2,
+    "transfer": 30,
+    "retention": 1,
+    "none": 68,
+    "misconception": 1
+   },
+   "retention": {
+    "transfer": 21,
+    "none": 4,
+    "partial": 2
+   },
+   "skill": {
+    "none": 9
+   }
+  }
+ },
+ "misconception": {
+  "detect": [
+   {
+    "node": "g:g-a1-01",
+    "kind": 1,
+    "misAnswers": 12,
+    "detectedDay": null,
+    "botMisEnd": 0.061147953370876154,
+    "targeted": 0,
+    "generic": 15
+   },
+   {
+    "node": "g:g-a1-04",
+    "kind": 1,
+    "misAnswers": 0,
+    "detectedDay": null,
+    "botMisEnd": null,
+    "targeted": 0,
+    "generic": 0
+   },
+   {
+    "node": "g:g-a1-08",
+    "kind": 2,
+    "misAnswers": 8,
+    "detectedDay": null,
+    "botMisEnd": 0.16213186239824215,
+    "targeted": 0,
+    "generic": 9
+   }
+  ],
+  "falseMis": [
+   "u:a1-u32",
+   "u:b1-u11",
+   "u:b1-u14",
+   "u:b1-u19",
+   "u:a1-u13",
+   "u:b1-u25",
+   "u:a1-u17",
+   "u:a1-u67"
+  ],
+  "hyp": 0
+ },
+ "scenarios": {
+  "S01": {
+   "node": "g:g-a1-02",
+   "forced": 1,
+   "appBefore": "learning/0.79",
+   "appAfterForced": [
+    "L3typed:learning/0.26"
+   ],
+   "nextAsks": [
+    "d1 L2 monster knowledge ✓ learning",
+    "d2 L2 monster knowledge ✓ mastered",
+    "d3 L3 monster recall ✗ learning",
+    "d4 L3 monster recall ✗ learning"
+   ],
+   "endState": "1:mastered 2:mastered 3:learning 4:learning",
+   "snaps": [
+    "d20741 micro:fixed"
+   ]
+  },
+  "S02": {
+   "node": "g:g-a1-07",
+   "forced": 3,
+   "appBefore": "learning/0.41",
+   "appAfterForced": [
+    "L3typed:learning/0.34",
+    "L3typed:learning/0.26",
+    "L2mcq:learning/0.4"
+   ],
+   "nextAsks": [
+    "d3 L2 monster knowledge ✓ learning",
+    "d4 L2 monster knowledge ✓ learning",
+    "d4 L2 monster knowledge ✓ learning",
+    "d4 L2 monster knowledge ✓ learning"
+   ],
+   "endState": "1:mastered 2:mastered 3:mastered 4:mastered",
+   "snaps": [
+    "d20736 micro:fixed"
+   ]
+  },
+  "S03": "không tạo được",
+  "S04": {
+   "node": "u:a1-u11",
+   "forced": 2,
+   "appBefore": "learning/0.37",
+   "appAfterForced": [
+    "L3typed:learning/0.32",
+    "L3typed:learning/0.28"
+   ],
+   "nextAsks": [
+    "d5 L3 boss transfer ✗ learning",
+    "d6 L3 boss transfer ✗ learning",
+    "d6 L3 boss transfer ✗ learning",
+    "d7 L3 boss transfer ✓ learning"
+   ],
+   "endState": "1:mastered 2:mastered 3:learning",
+   "snaps": [
+    "d20753 micro:fixed"
+   ]
+  },
+  "S06": {
+   "node": "u:a1-u10",
+   "forced": 2,
+   "appBefore": "inferred/0.84",
+   "appAfterForced": [
+    "L2mcq:learning/0.77",
+    "L3typed:learning/0.77"
+   ],
+   "nextAsks": [
+    "d6 L3 chest retention ✗ learning",
+    "d6 L3 camp ✗ learning"
+   ],
+   "endState": "1:inferred 2:learning 3:learning",
+   "snaps": [
+    "d20738 FAIL",
+    "d20740 FAIL",
+    "d20740 micro:not-yet"
+   ]
+  },
+  "S05": {
+   "campCorrect": 15,
+   "laterChecked": 4,
+   "laterOk": 100
+  },
+  "S07": {
+   "guesses": 16,
+   "guessCorrectRate": 15.5,
+   "masteredMostlyGuessed": []
+  },
+  "S08": "không có trong luồng chính (tháp không có nút gợi ý); engine giảm trọng số câu có gợi ý ×0,5 (evaluate.ts, test engine-evidence)",
+  "S09": "không có trong luồng chính (tháp không cho làm lại); engine có cờ retry ×0,3 (evaluate.ts)",
+  "S10": {
+   "nodes": 4,
+   "before": 0.48,
+   "after": 0.75
+  }
+ },
+ "efficiency": {
+  "answers": 501,
+  "quest": 368,
+  "distinctItems": 264,
+  "repeatAsks": 28.3,
+  "practiceOnKnown": 18.8,
+  "probesOnSolid": 2,
+  "probes": 134,
+  "maxAsksOneNodeOneDay": 4
+ },
+ "gain": {
+  "truthStart": 0.69,
+  "truthEnd": 0.69,
+  "knownStart": 48,
+  "knownEnd": 53,
+  "practiced": 105,
+  "usableStart": 0,
+  "usableEnd": 4,
+  "accFirstHalf": 55,
+  "accSecondHalf": 61,
+  "novelFirst": 37.3,
+  "novelSecond": 50.7,
+  "seenFirst": 86.9,
+  "seenSecond": 100,
+  "grammarA1A2TruthStart": 0.64,
+  "grammarA1A2TruthEnd": 0.73,
+  "measure": [
+   "pre:4/12",
+   "post:3/12",
+   "d7:5/12",
+   "d30:3/12"
+  ],
+  "solidEnd": 2,
+  "solidFalse": 0
+ },
+ "errorReduction": {
+  "nodes": 8,
+  "first": 0.54,
+  "last": 0.08
+ },
+ "nextChanges": 3,
+ "decisions": {
+  "FAIL": 86,
+  "quest:win": 30,
+  "micro:not-yet": 24,
+  "quest:lose": 24,
+  "probe:confirm": 18,
+  "PASS": 18,
+  "micro:fixed": 15,
+  "NOT_READY": 5,
+  "CHOSEN": 4,
+  "goal:AUTO": 1,
+  "u=0.5;g=0": 1,
+  "measure:pre": 1,
+  "measure:post": 1,
+  "measure:d7": 1,
+  "probe:boundary": 1,
+  "REOPEN": 1
+ }
+}

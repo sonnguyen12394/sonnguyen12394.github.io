@@ -5,6 +5,7 @@
  "vi": "IELTS Academic 4.5",
  "target": "4.5",
  "cefr": "B1",
+ "status": "future",
  "req": [
   {
    "node": "cd:b1-voc1",
@@ -386,5 +387,6 @@
    "level": 3,
    "type": "performance"
   }
- ]
+ ],
+ "readiness": "exam-score"
 }

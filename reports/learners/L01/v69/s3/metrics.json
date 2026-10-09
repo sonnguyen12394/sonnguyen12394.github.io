@@ -1,0 +1,827 @@
+{
+ "answers": 573,
+ "sessions": 23,
+ "pageErrors": 0,
+ "stuck": [],
+ "diag": {
+  "probes": {
+   "probes": 28,
+   "head": "Chẩn đoán · 8 phần đã dò | Bạn đang ở đâu | A1–A2 | từ vựng | A1 | ngữ pháp"
+  },
+  "rows": {
+   "n": 28,
+   "ok": 50,
+   "truthKnow": 0,
+   "pTrue": 0.454
+  }
+ },
+ "byRun": {
+  "diag": {
+   "n": 28,
+   "ok": 50,
+   "truthKnow": 0,
+   "pTrue": 0.454
+  },
+  "measure": {
+   "n": 48,
+   "ok": 60.4,
+   "truthKnow": 4.2,
+   "pTrue": 0.536
+  },
+  "quest": {
+   "n": 436,
+   "ok": 72.9,
+   "truthKnow": 30.5,
+   "pTrue": 0.707
+  },
+  "probe": {
+   "n": 61,
+   "ok": 68.9,
+   "truthKnow": 23,
+   "pTrue": 0.759
+  }
+ },
+ "byGame": {
+  "monster": {
+   "n": 218,
+   "ok": 81.7,
+   "truthKnow": 44,
+   "pTrue": 0.787
+  },
+  "scout": {
+   "n": 71,
+   "ok": 59.2,
+   "truthKnow": 8.5,
+   "pTrue": 0.546
+  },
+  "camp": {
+   "n": 53,
+   "ok": 81.1,
+   "truthKnow": 26.4,
+   "pTrue": 0.723
+  },
+  "boss": {
+   "n": 53,
+   "ok": 73.6,
+   "truthKnow": 32.1,
+   "pTrue": 0.715
+  },
+  "chest": {
+   "n": 41,
+   "ok": 39,
+   "truthKnow": 0,
+   "pTrue": 0.531
+  }
+ },
+ "byGap": {
+  "knowledge": {
+   "n": 26,
+   "ok": 65.4,
+   "truthKnow": 0,
+   "pTrue": 0.558
+  },
+  "transfer": {
+   "n": 53,
+   "ok": 73.6,
+   "truthKnow": 32.1,
+   "pTrue": 0.715
+  },
+  "recall": {
+   "n": 166,
+   "ok": 82.5,
+   "truthKnow": 43.4,
+   "pTrue": 0.802
+  },
+  "retention": {
+   "n": 41,
+   "ok": 39,
+   "truthKnow": 0,
+   "pTrue": 0.531
+  },
+  "skill": {
+   "n": 26,
+   "ok": 92.3,
+   "truthKnow": 92.3,
+   "pTrue": 0.921
+  }
+ },
+ "novel": {
+  "n": 289,
+  "ok": 66.8,
+  "truthKnow": 22.1,
+  "pTrue": 0.636
+ },
+ "seen": {
+  "n": 147,
+  "ok": 85,
+  "truthKnow": 46.9,
+  "pTrue": 0.846
+ },
+ "repeatsItems": 52,
+ "distinctItems": 410,
+ "distinctNodes": 86,
+ "mastery": [
+  {
+   "day": 0,
+   "claimed": 75,
+   "tp": 17,
+   "fp": 58,
+   "fn": 0,
+   "inferredFp": 58,
+   "inferred": 541,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u14:0.63",
+    "u:a1-u17:0.529",
+    "u:a1-u18:0.665",
+    "u:a1-u2:0.527",
+    "u:a1-u21:0.52",
+    "u:a1-u22:0.59"
+   ],
+   "floor": 2,
+   "coins": 143
+  },
+  {
+   "day": 1,
+   "claimed": 71,
+   "tp": 15,
+   "fp": 56,
+   "fn": 0,
+   "inferredFp": 56,
+   "inferred": 537,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u17:0.566",
+    "u:a1-u18:0.679",
+    "u:a1-u21:0.52",
+    "u:a1-u22:0.59",
+    "u:a1-u23:0.64",
+    "u:a1-u25:0.686"
+   ],
+   "floor": 5,
+   "coins": 358
+  },
+  {
+   "day": 2,
+   "claimed": 70,
+   "tp": 15,
+   "fp": 55,
+   "fn": 0,
+   "inferredFp": 55,
+   "inferred": 536,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.676",
+    "u:a1-u21:0.539",
+    "u:a1-u22:0.607",
+    "u:a1-u23:0.64",
+    "u:a1-u25:0.686",
+    "u:a1-u27:0.472"
+   ],
+   "floor": 7,
+   "coins": 527
+  },
+  {
+   "day": 3,
+   "claimed": 69,
+   "tp": 15,
+   "fp": 54,
+   "fn": 0,
+   "inferredFp": 54,
+   "inferred": 535,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.674",
+    "u:a1-u21:0.535",
+    "u:a1-u22:0.603",
+    "u:a1-u23:0.682",
+    "u:a1-u27:0.472",
+    "u:a1-u29:0.52"
+   ],
+   "floor": 8,
+   "coins": 634
+  },
+  {
+   "day": 4,
+   "claimed": 66,
+   "tp": 14,
+   "fp": 52,
+   "fn": 0,
+   "inferredFp": 52,
+   "inferred": 532,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.672",
+    "u:a1-u21:0.532",
+    "u:a1-u22:0.6",
+    "u:a1-u23:0.672",
+    "u:a1-u29:0.539",
+    "u:a1-u31:0.664"
+   ],
+   "floor": 11,
+   "coins": 828
+  },
+  {
+   "day": 5,
+   "claimed": 63,
+   "tp": 13,
+   "fp": 50,
+   "fn": 0,
+   "inferredFp": 50,
+   "inferred": 529,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.684",
+    "u:a1-u21:0.529",
+    "u:a1-u22:0.598",
+    "u:a1-u23:0.665",
+    "u:a1-u29:0.535",
+    "u:a1-u33:0.682"
+   ],
+   "floor": 12,
+   "coins": 920
+  },
+  {
+   "day": 6,
+   "claimed": 60,
+   "tp": 13,
+   "fp": 47,
+   "fn": 0,
+   "inferredFp": 47,
+   "inferred": 526,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.681",
+    "u:a1-u22:0.612",
+    "u:a1-u23:0.66",
+    "u:a1-u29:0.532",
+    "u:a1-u33:0.679",
+    "u:a1-u34:0.647"
+   ],
+   "floor": 15,
+   "coins": 1140
+  },
+  {
+   "day": 7,
+   "claimed": 60,
+   "tp": 13,
+   "fp": 47,
+   "fn": 0,
+   "inferredFp": 47,
+   "inferred": 526,
+   "solid": 0,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.679",
+    "u:a1-u22:0.61",
+    "u:a1-u23:0.669",
+    "u:a1-u29:0.529",
+    "u:a1-u33:0.677",
+    "u:a1-u34:0.631"
+   ],
+   "floor": 17,
+   "coins": 1304
+  },
+  {
+   "day": 8,
+   "claimed": 59,
+   "tp": 12,
+   "fp": 47,
+   "fn": 0,
+   "inferredFp": 47,
+   "inferred": 524,
+   "solid": 1,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u17:0.696",
+    "u:a1-u18:0.678",
+    "u:a1-u22:0.608",
+    "u:a1-u23:0.666",
+    "u:a1-u29:0.546",
+    "u:a1-u33:0.675"
+   ],
+   "floor": 19,
+   "coins": 1484
+  },
+  {
+   "day": 9,
+   "claimed": 57,
+   "tp": 13,
+   "fp": 44,
+   "fn": 0,
+   "inferredFp": 44,
+   "inferred": 522,
+   "solid": 1,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.676",
+    "u:a1-u22:0.606",
+    "u:a1-u23:0.663",
+    "u:a1-u29:0.543",
+    "u:a1-u34:0.609",
+    "u:a1-u36:0.529"
+   ],
+   "floor": 21,
+   "coins": 1619
+  },
+  {
+   "day": 10,
+   "claimed": 55,
+   "tp": 12,
+   "fp": 43,
+   "fn": 1,
+   "inferredFp": 43,
+   "inferred": 520,
+   "solid": 1,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.675",
+    "u:a1-u22:0.604",
+    "u:a1-u23:0.66",
+    "u:a1-u29:0.54",
+    "u:a1-u34:0.617",
+    "u:a1-u38:0.635"
+   ],
+   "floor": 24,
+   "coins": 1871
+  },
+  {
+   "day": 11,
+   "claimed": 52,
+   "tp": 11,
+   "fp": 41,
+   "fn": 1,
+   "inferredFp": 41,
+   "inferred": 516,
+   "solid": 2,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.674",
+    "u:a1-u22:0.602",
+    "u:a1-u23:0.658",
+    "u:a1-u29:0.538",
+    "u:a1-u34:0.612",
+    "u:a1-u4:0.615"
+   ],
+   "floor": 26,
+   "coins": 2054
+  },
+  {
+   "day": 12,
+   "claimed": 50,
+   "tp": 12,
+   "fp": 38,
+   "fn": 1,
+   "inferredFp": 38,
+   "inferred": 514,
+   "solid": 2,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.673",
+    "u:a1-u22:0.601",
+    "u:a1-u23:0.656",
+    "u:a1-u29:0.536",
+    "u:a1-u34:0.608",
+    "u:a1-u40:0.654"
+   ],
+   "floor": 29,
+   "coins": 2279
+  },
+  {
+   "day": 13,
+   "claimed": 47,
+   "tp": 12,
+   "fp": 35,
+   "fn": 1,
+   "inferredFp": 35,
+   "inferred": 511,
+   "solid": 2,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.672",
+    "u:a1-u22:0.6",
+    "u:a1-u23:0.654",
+    "u:a1-u29:0.534",
+    "u:a1-u34:0.604",
+    "u:a1-u40:0.652"
+   ],
+   "floor": 32,
+   "coins": 2503
+  },
+  {
+   "day": 14,
+   "claimed": 46,
+   "tp": 11,
+   "fp": 35,
+   "fn": 2,
+   "inferredFp": 35,
+   "inferred": 510,
+   "solid": 2,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.671",
+    "u:a1-u22:0.598",
+    "u:a1-u23:0.652",
+    "u:a1-u29:0.532",
+    "u:a1-u34:0.6",
+    "u:a1-u4:0.697"
+   ],
+   "floor": 34,
+   "coins": 2693
+  },
+  {
+   "day": 15,
+   "claimed": 45,
+   "tp": 10,
+   "fp": 35,
+   "fn": 2,
+   "inferredFp": 35,
+   "inferred": 509,
+   "solid": 2,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.671",
+    "u:a1-u22:0.597",
+    "u:a1-u23:0.651",
+    "u:a1-u29:0.531",
+    "u:a1-u34:0.597",
+    "u:a1-u4:0.687"
+   ],
+   "floor": 37,
+   "coins": 3003
+  },
+  {
+   "day": 17,
+   "claimed": 41,
+   "tp": 10,
+   "fp": 31,
+   "fn": 1,
+   "inferredFp": 31,
+   "inferred": 504,
+   "solid": 3,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u18:0.669",
+    "u:a1-u22:0.596",
+    "u:a1-u23:0.648",
+    "u:a1-u29:0.528",
+    "u:a1-u34:0.592",
+    "u:a1-u4:0.669"
+   ],
+   "floor": 40,
+   "coins": 3251
+  },
+  {
+   "day": 19,
+   "claimed": 40,
+   "tp": 9,
+   "fp": 31,
+   "fn": 1,
+   "inferredFp": 31,
+   "inferred": 503,
+   "solid": 3,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u17:0.699",
+    "u:a1-u18:0.669",
+    "u:a1-u22:0.595",
+    "u:a1-u23:0.647",
+    "u:a1-u29:0.526",
+    "u:a1-u34:0.588"
+   ],
+   "floor": 42,
+   "coins": 3455
+  },
+  {
+   "day": 21,
+   "claimed": 40,
+   "tp": 10,
+   "fp": 30,
+   "fn": 1,
+   "inferredFp": 30,
+   "inferred": 502,
+   "solid": 4,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u17:0.696",
+    "u:a1-u18:0.668",
+    "u:a1-u19:0.678",
+    "u:a1-u22:0.594",
+    "u:a1-u23:0.645",
+    "u:a1-u29:0.525"
+   ],
+   "floor": 45,
+   "coins": 3699
+  },
+  {
+   "day": 24,
+   "claimed": 37,
+   "tp": 9,
+   "fp": 28,
+   "fn": 1,
+   "inferredFp": 28,
+   "inferred": 499,
+   "solid": 4,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u17:0.692",
+    "u:a1-u18:0.667",
+    "u:a1-u19:0.671",
+    "u:a1-u22:0.593",
+    "u:a1-u23:0.644",
+    "u:a1-u29:0.523"
+   ],
+   "floor": 47,
+   "coins": 3939
+  },
+  {
+   "day": 28,
+   "claimed": 39,
+   "tp": 12,
+   "fp": 27,
+   "fn": 0,
+   "inferredFp": 27,
+   "inferred": 498,
+   "solid": 7,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u17:0.687",
+    "u:a1-u19:0.666",
+    "u:a1-u22:0.608",
+    "u:a1-u23:0.642",
+    "u:a1-u29:0.522",
+    "u:a1-u34:0.579"
+   ],
+   "floor": 50,
+   "coins": 4303
+  },
+  {
+   "day": 35,
+   "claimed": 36,
+   "tp": 12,
+   "fp": 24,
+   "fn": 0,
+   "inferredFp": 24,
+   "inferred": 495,
+   "solid": 7,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u17:0.678",
+    "u:a1-u19:0.66",
+    "u:a1-u22:0.602",
+    "u:a1-u23:0.641",
+    "u:a1-u29:0.521",
+    "u:a1-u34:0.576"
+   ],
+   "floor": 52,
+   "coins": 4487
+  },
+  {
+   "day": 44,
+   "claimed": 31,
+   "tp": 12,
+   "fp": 19,
+   "fn": 0,
+   "inferredFp": 19,
+   "inferred": 489,
+   "solid": 8,
+   "solidFp": 0,
+   "fps": [
+    "u:a1-u17:0.667",
+    "u:a1-u22:0.597",
+    "u:a1-u23:0.64",
+    "u:a1-u29:0.52",
+    "u:a1-u34:0.575",
+    "u:a1-u40:0.636"
+   ],
+   "floor": 52,
+   "coins": 4561
+  }
+ ],
+ "reopened": 54,
+ "stuckNodes": [],
+ "truthMean": {
+  "first": 0.162,
+  "last": 0.166,
+  "nodes": 561
+ },
+ "measure": [
+  {
+   "phase": "pre",
+   "day": 20734,
+   "got": 4,
+   "of": 12,
+   "mins": 8
+  },
+  {
+   "phase": "post",
+   "day": 20748,
+   "got": 10,
+   "of": 12,
+   "mins": 71
+  },
+  {
+   "phase": "d7",
+   "day": 20755,
+   "got": 8,
+   "of": 12,
+   "mins": 92
+  },
+  {
+   "phase": "d30",
+   "day": 20778,
+   "got": 7,
+   "of": 12,
+   "mins": 112
+  }
+ ],
+ "todayActions": [
+  "1:probe/u:a1-u16/3/confirm",
+  "2:probe/u:a1-u20/3/confirm",
+  "3:probe/u:a1-u23/3/confirm",
+  "4:probe/u:a1-u27/3/confirm",
+  "5:probe/u:a1-u30/3/confirm",
+  "6:probe/u:a1-u34/3/confirm",
+  "7:probe/u:a1-u38/3/confirm",
+  "8:probe/g:g-a1-01/4/boundary",
+  "9:probe/u:a1-u43/3/confirm",
+  "10:probe/u:a1-u47/3/confirm",
+  "11:probe/g:g-a1-02/4/boundary",
+  "12:probe/u:a1-u51/3/confirm",
+  "13:probe/u:a1-u55/3/confirm",
+  "15:probe/u:a1-u60/3/confirm",
+  "17:probe/g:g-a1-07/4/boundary",
+  "19:probe/u:a1-u68/3/confirm",
+  "24:probe/u:a1-u70/3/confirm",
+  "28:probe/g:g-a1-03/4/boundary",
+  "35:probe/u:a1-u4/3/boundary"
+ ],
+ "camps": 53,
+ "hyp": 0,
+ "decisions": {
+  "FAIL": 75,
+  "quest:win": 51,
+  "micro:fixed": 43,
+  "PASS": 33,
+  "probe:confirm": 14,
+  "CHOSEN": 12,
+  "micro:not-yet": 10,
+  "NOT_READY": 6,
+  "quest:lose": 5,
+  "probe:boundary": 5,
+  "REOPEN": 4,
+  "goal:AUTO": 1,
+  "u=0.5;g=0": 1,
+  "measure:pre": 1,
+  "measure:post": 1,
+  "measure:d7": 1,
+  "measure:d30": 1
+ },
+ "targeting": [
+  {
+   "day": 0,
+   "n": 16,
+   "unknownShare": 100,
+   "ok": 50
+  },
+  {
+   "day": 1,
+   "n": 24,
+   "unknownShare": 100,
+   "ok": 50
+  },
+  {
+   "day": 2,
+   "n": 16,
+   "unknownShare": 100,
+   "ok": 68.8
+  },
+  {
+   "day": 3,
+   "n": 12,
+   "unknownShare": 100,
+   "ok": 66.7
+  },
+  {
+   "day": 4,
+   "n": 24,
+   "unknownShare": 100,
+   "ok": 66.7
+  },
+  {
+   "day": 5,
+   "n": 12,
+   "unknownShare": 91.7,
+   "ok": 66.7
+  },
+  {
+   "day": 6,
+   "n": 24,
+   "unknownShare": 91.7,
+   "ok": 83.3
+  },
+  {
+   "day": 7,
+   "n": 16,
+   "unknownShare": 68.8,
+   "ok": 87.5
+  },
+  {
+   "day": 8,
+   "n": 16,
+   "unknownShare": 50,
+   "ok": 75
+  },
+  {
+   "day": 9,
+   "n": 16,
+   "unknownShare": 62.5,
+   "ok": 68.8
+  },
+  {
+   "day": 10,
+   "n": 24,
+   "unknownShare": 54.2,
+   "ok": 91.7
+  },
+  {
+   "day": 11,
+   "n": 16,
+   "unknownShare": 56.3,
+   "ok": 75
+  },
+  {
+   "day": 12,
+   "n": 24,
+   "unknownShare": 62.5,
+   "ok": 70.8
+  },
+  {
+   "day": 13,
+   "n": 24,
+   "unknownShare": 54.2,
+   "ok": 79.2
+  },
+  {
+   "day": 14,
+   "n": 16,
+   "unknownShare": 31.3,
+   "ok": 81.3
+  },
+  {
+   "day": 15,
+   "n": 24,
+   "unknownShare": 25,
+   "ok": 91.7
+  },
+  {
+   "day": 17,
+   "n": 24,
+   "unknownShare": 54.2,
+   "ok": 70.8
+  },
+  {
+   "day": 19,
+   "n": 16,
+   "unknownShare": 56.3,
+   "ok": 87.5
+  },
+  {
+   "day": 21,
+   "n": 24,
+   "unknownShare": 54.2,
+   "ok": 70.8
+  },
+  {
+   "day": 24,
+   "n": 16,
+   "unknownShare": 56.3,
+   "ok": 81.3
+  },
+  {
+   "day": 28,
+   "n": 24,
+   "unknownShare": 66.7,
+   "ok": 75
+  },
+  {
+   "day": 35,
+   "n": 16,
+   "unknownShare": 100,
+   "ok": 62.5
+  },
+  {
+   "day": 44,
+   "n": 12,
+   "unknownShare": 100,
+   "ok": 33.3
+  }
+ ]
+}

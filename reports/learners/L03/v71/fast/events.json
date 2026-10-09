@@ -1,0 +1,1890 @@
+[
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "hello",
+  "info": {
+   "words": 86
+  }
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "diag-intro",
+  "info": {
+   "words": 76
+  }
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "diag-result",
+  "info": {
+   "probes": 42,
+   "head": "Chẩn đoán · 12 phần đã dò | Bạn đang ở đâu | A2 | từ vựng | A2 | ngữ pháp"
+  }
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "goal:cefr-b1"
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 1 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "quiz-done",
+  "info": {
+   "kind": "measure"
+  }
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "camp",
+  "info": {
+   "node": "u:a1-u1",
+   "title": "A1 · Unit 09"
+  }
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-06",
+   "targeted": false
+  }
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-01",
+   "targeted": false
+  }
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 1 | 🏆 Qua tầng! | 4/8 câu đúng · +47 xu. Tầng 2 đã mở. | Lượt sau app sẽ đưa lại: Số lớn, Đồ ăn & thức uống, Động từ to be (am/is/are)."
+  }
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "camp",
+  "info": {
+   "node": "ph:s-02",
+   "title": ""
+  }
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a1-01",
+   "targeted": false
+  }
+ },
+ {
+  "day": 0,
+  "sess": "S001",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 2 | 🏆 Qua tầng! | 5/7 câu đúng · +60 xu. Tầng 3 đã mở. | Lượt sau app sẽ đưa lại: Phân biệt âm /æ/ – /e/ (a bẹt – e), Hiện tại tiếp diễn nói về kế hoạch tương lai."
+  }
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 3 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "what": "today-action",
+  "info": {
+   "route": "probe/u:a2-u10/3/explore"
+  }
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-06",
+   "targeted": false
+  }
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "what": "camp",
+  "info": {
+   "node": "u:a1-u36",
+   "title": "A1 · Unit 36"
+  }
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a1-01",
+   "targeted": false
+  }
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 3 | 💤 Hết tim | 4/8 câu đúng · +49 xu. Tầng này vẫn chờ bạn, không mất gì. | Lượt sau app sẽ đưa lại: Hiện tại tiếp diễn nói về kế hoạch tương lai, Sức khoẻ và cảm xúc, Phân biệt âm /æ/ – /e/ (a bẹt – e)."
+  }
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "what": "camp",
+  "info": {
+   "node": "u:a1-u56",
+   "title": "A1 · Unit 56"
+  }
+ },
+ {
+  "day": 1,
+  "sess": "S002",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 3 | 🏆 Qua tầng! | 5/8 câu đúng · +57 xu. Tầng 4 đã mở. | Lượt sau app sẽ đưa lại: Thích và muốn, Hiện tại tiếp diễn nói về kế hoạch tương lai."
+  }
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 4 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "what": "today-action",
+  "info": {
+   "route": "probe/g:g-a2-04/4/explore"
+  }
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-06",
+   "targeted": true
+  }
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "what": "S05",
+  "info": {
+   "node": "ph:s-01"
+  }
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "what": "camp",
+  "info": {
+   "node": "u:a1-u36",
+   "title": "A1 · Unit 36"
+  }
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 4 | 🏆 Qua tầng! | 4/8 câu đúng · +67 xu. Tầng 5 đã mở. | ⬆ Lên cấp: Động từ to be (am/is/are)"
+  }
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "what": "camp",
+  "info": {
+   "node": "u:b1-u29",
+   "title": "B1 · Unit 29"
+  }
+ },
+ {
+  "day": 2,
+  "sess": "S003",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 5 | 💤 Hết tim | 4/8 câu đúng · +35 xu. Tầng này vẫn chờ bạn, không mất gì. | Lượt sau app sẽ đưa lại: Động vật hoang dã và môi trường, Tôn giáo và truyền thống, Phân biệt âm /æ/ – /e/ (a bẹt – e)."
+  }
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 5 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "what": "today-action",
+  "info": {
+   "route": "probe/u:a2-u17/3/explore"
+  }
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "what": "S06",
+  "info": {
+   "node": "ph:s-02"
+  }
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 5 | 💤 Hết tim | 1/4 câu đúng · +14 xu. Tầng này vẫn chờ bạn, không mất gì. | Lượt sau app sẽ đưa lại: Phân biệt âm /æ/ – /e/ (a bẹt – e), Thành ngữ: cảm xúc và tình huống, Thiết bị và tài khoản."
+  }
+ },
+ {
+  "day": 3,
+  "sess": "S004",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 5 | 💤 Hết tim | 1/4 câu đúng · +22 xu. Tầng này vẫn chờ bạn, không mất gì. | Lượt sau app sẽ đưa lại: Phân biệt âm /æ/ – /e/ (a bẹt – e), Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài), Hiện tại hoàn thành tiếp diễn."
+  }
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 5 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "what": "today-action",
+  "info": {
+   "route": "probe/g:g-a2-05/4/explore"
+  }
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "what": "camp",
+  "info": {
+   "node": "u:b1-u58",
+   "title": "B1 · Unit 58"
+  }
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "what": "S11",
+  "info": {
+   "node": "g:g-a2-06"
+  }
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 5 | 🏆 Qua tầng! | 4/8 câu đúng · +47 xu. Tầng 6 đã mở. | Lượt sau app sẽ đưa lại: Phân biệt âm /æ/ – /e/ (a bẹt – e), Cụm động từ: kế hoạch và sự cố, Hiện tại tiếp diễn nói về kế hoạch tương lai."
+  }
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "what": "camp",
+  "info": {
+   "node": "ph:s-02",
+   "title": ""
+  }
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 6 | 🏆 Qua tầng! | 6/7 câu đúng · +92 xu. Tầng 7 đã mở. | ⬆ Lên cấp: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài), Đồ ăn & thức uống"
+  }
+ },
+ {
+  "day": 4,
+  "sess": "S005",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 7 | 💤 Hết tim | 1/4 câu đúng · +17 xu. Tầng này vẫn chờ bạn, không mất gì. | Lượt sau app sẽ đưa lại: Cụm động từ: công việc và học tập, Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài), So sánh nhất của tính từ."
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 7 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "today-action",
+  "info": {
+   "route": "probe/ph:s-03/2/explore"
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u29",
+   "targeted": false
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "camp",
+  "info": {
+   "node": "u:b1-u61",
+   "title": "B1 · Unit 61"
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u61",
+   "targeted": false
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 7 | 🏆 Qua tầng! | 6/8 câu đúng · +75 xu. Tầng 8 đã mở. | ⬆ Lên cấp: Động từ to be (am/is/are), Hiện tại tiếp diễn nói về kế hoạch tương lai"
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "camp",
+  "info": {
+   "node": "u:a2-u16",
+   "title": "A2 · Unit 16"
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 8 | 🏆 Qua tầng! | 7/8 câu đúng · +92 xu. Tầng 9 đã mở. | Lượt sau app sẽ đưa lại: Động vật hoang dã và môi trường."
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "teach",
+  "info": {
+   "node": "u:a1-u36",
+   "targeted": false
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "camp",
+  "info": {
+   "node": "ph:s-02",
+   "title": ""
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "S11",
+  "info": {
+   "node": "g:g-a1-01"
+  }
+ },
+ {
+  "day": 5,
+  "sess": "S006",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 9 | 🏆 Qua tầng! | 6/7 câu đúng · +63 xu. Tầng 10 đã mở. | ⬆ Lên cấp: Đồ ăn & thức uống"
+  }
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 10 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "what": "today-action",
+  "info": {
+   "route": "probe/u:a2-u18/3/explore"
+  }
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "what": "camp",
+  "info": {
+   "node": "u:b1-u62",
+   "title": "B1 · Unit 62"
+  }
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 10 | 🏆 Qua tầng! | 6/8 câu đúng · +76 xu. Tầng 11 đã mở. | ⬆ Lên cấp: Hiện tại tiếp diễn nói về kế hoạch tương lai, Động từ to be (am/is/are)"
+  }
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u73",
+   "targeted": false
+  }
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "what": "camp",
+  "info": {
+   "node": "u:b1-u73",
+   "title": "B1 · Unit 73"
+  }
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u73",
+   "targeted": false
+  }
+ },
+ {
+  "day": 6,
+  "sess": "S007",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 11 | 🏆 Qua tầng! | 5/8 câu đúng · +36 xu. Tầng 12 đã mở. | Lượt sau app sẽ đưa lại: Đường đi & giao thông, Thiết bị và tài khoản, Động từ to be (am/is/are)."
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 12 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "today-action",
+  "info": {
+   "route": "probe/u:a1-u1/3/boundary"
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "teach",
+  "info": {
+   "node": "g:g-b1-01",
+   "targeted": false
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "S13",
+  "info": {
+   "node": "g:g-b1-01"
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "camp",
+  "info": {
+   "node": "g:g-b1-01",
+   "title": "Hiện tại hoàn thành tiếp diễn"
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "teach",
+  "info": {
+   "node": "g:g-b1-01",
+   "targeted": false
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a1-01",
+   "targeted": false
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 12 | 🏆 Qua tầng! | 6/8 câu đúng · +80 xu. Tầng 13 đã mở. | ⬆ Lên cấp: Phân biệt âm /æ/ – /e/ (a bẹt – e)"
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u58",
+   "targeted": false
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "S13",
+  "info": {
+   "node": "u:b1-u58"
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "camp",
+  "info": {
+   "node": "u:b1-u58",
+   "title": "Cách khác: B1 · Unit 58"
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u58",
+   "targeted": false
+  }
+ },
+ {
+  "day": 7,
+  "sess": "S008",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 13 | 🏆 Qua tầng! | 5/8 câu đúng · +41 xu. Tầng 14 đã mở. | Lượt sau app sẽ đưa lại: Từ ngữ khi đi lại, Cụm động từ: kế hoạch và sự cố, Will: dự đoán, đề nghị, quyết định tức thì."
+  }
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 14 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "what": "today-action",
+  "info": {
+   "route": "probe/u:a2-u21/3/explore"
+  }
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "what": "camp",
+  "info": {
+   "node": "u:b1-u60",
+   "title": "B1 · Unit 60"
+  }
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 14 | 🏆 Qua tầng! | 4/8 câu đúng · +47 xu. Tầng 15 đã mở. | Lượt sau app sẽ đưa lại: Thi đấu, Cụm động từ: công việc và học tập, Will: dự đoán, đề nghị, quyết định tức thì."
+  }
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a2-10",
+   "title": "Quá khứ tiếp diễn và quá khứ đơn"
+  }
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-07",
+   "targeted": false
+  }
+ },
+ {
+  "day": 8,
+  "sess": "S009",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 15 | 🏆 Qua tầng! | 6/8 câu đúng · +75 xu. Tầng 16 đã mở. | Lượt sau app sẽ đưa lại: Hiện tại tiếp diễn nói về kế hoạch tương lai, Quá khứ tiếp diễn và quá khứ đơn."
+  }
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 16 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "what": "today-action",
+  "info": {
+   "route": "probe/u:a2-u23/3/explore"
+  }
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "what": "camp",
+  "info": {
+   "node": "u:a2-u24",
+   "title": "A2 · Unit 24"
+  }
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-07",
+   "targeted": false
+  }
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 16 | 🏆 Qua tầng! | 6/8 câu đúng · +77 xu. Tầng 17 đã mở. | ⬆ Lên cấp: Hiện tại đơn và hiện tại tiếp diễn, Động từ to be (am/is/are)"
+  }
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u61",
+   "targeted": false
+  }
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "what": "camp",
+  "info": {
+   "node": "ph:s-02",
+   "title": ""
+  }
+ },
+ {
+  "day": 9,
+  "sess": "S010",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 17 | 🏆 Qua tầng! | 7/7 câu đúng · +96 xu. Tầng 18 đã mở. | Mọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố."
+  }
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 18 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "what": "today-action",
+  "info": {
+   "route": "probe/u:a2-u25/3/explore"
+  }
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "what": "teach",
+  "info": {
+   "node": "u:a2-u16",
+   "targeted": false
+  }
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "what": "camp",
+  "info": {
+   "node": "ph:s-02",
+   "title": ""
+  }
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 18 | 🏆 Qua tầng! | 7/7 câu đúng · +96 xu. Tầng 19 đã mở. | ⬆ Lên cấp: Will: dự đoán, đề nghị, quyết định tức thì"
+  }
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "what": "camp",
+  "info": {
+   "node": "u:a2-u26",
+   "title": "A2 · Unit 26"
+  }
+ },
+ {
+  "day": 10,
+  "sess": "S011",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 19 | 🏆 Qua tầng! | 6/8 câu đúng · +49 xu. Tầng 20 đã mở. | Lượt sau app sẽ đưa lại: Bày tỏ ý kiến, Will và be going to."
+  }
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 20 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "what": "today-action",
+  "info": {
+   "route": "probe/u:a2-u27/3/explore"
+  }
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u73",
+   "targeted": false
+  }
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "what": "camp",
+  "info": {
+   "node": "ph:s-02",
+   "title": ""
+  }
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 20 | 🏆 Qua tầng! | 7/7 câu đúng · +96 xu. Tầng 21 đã mở. | ⬆ Lên cấp: Hiện tại tiếp diễn nói về kế hoạch tương lai"
+  }
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u62",
+   "targeted": false
+  }
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a2-12",
+   "title": "Hiện tại hoàn thành với just / already / yet"
+  }
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-12",
+   "targeted": false
+  }
+ },
+ {
+  "day": 11,
+  "sess": "S012",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 21 | 🏆 Qua tầng! | 6/8 câu đúng · +89 xu. Tầng 22 đã mở. | Lượt sau app sẽ đưa lại: Hiện tại hoàn thành với just / already / yet."
+  }
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 22 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "what": "today-action",
+  "info": {
+   "route": "probe/u:a2-u29/3/explore"
+  }
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-01",
+   "targeted": false
+  }
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "what": "camp",
+  "info": {
+   "node": "u:a2-u19",
+   "title": "A2 · Unit 19"
+  }
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 22 | 🏆 Qua tầng! | 6/8 câu đúng · +92 xu. Tầng 23 đã mở. | Lượt sau app sẽ đưa lại: Đi nước ngoài."
+  }
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "what": "camp",
+  "info": {
+   "node": "u:a2-u2",
+   "title": "A2 · Unit 02"
+  }
+ },
+ {
+  "day": 12,
+  "sess": "S013",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 23 | 🏆 Qua tầng! | 5/8 câu đúng · +64 xu. Tầng 24 đã mở. | Lượt sau app sẽ đưa lại: Những người quan trọng, Đường đi & giao thông."
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 24 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "today-action",
+  "info": {
+   "route": "probe/g:g-a2-13/4/explore"
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u58",
+   "targeted": false
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "camp",
+  "info": {
+   "node": "u:b1-u58",
+   "title": "B1 · Unit 58"
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u58",
+   "targeted": false
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 24 | 🏆 Qua tầng! | 7/8 câu đúng · +80 xu. Tầng 25 đã mở. | ⬆ Lên cấp: So sánh hơn của tính từ"
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "teach",
+  "info": {
+   "node": "g:g-b1-01",
+   "targeted": false
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a2-01",
+   "title": "So sánh hơn của tính từ"
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-01",
+   "targeted": false
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 25 | 🏆 Qua tầng! | 7/8 câu đúng · +102 xu. Tầng 26 đã mở. | Lượt sau app sẽ đưa lại: So sánh hơn của tính từ."
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "camp",
+  "info": {
+   "node": "u:a2-u20",
+   "title": "A2 · Unit 20"
+  }
+ },
+ {
+  "day": 13,
+  "sess": "S014",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 26 | 🏆 Qua tầng! | 6/8 câu đúng · +94 xu. Tầng 27 đã mở. | ⬆ Lên cấp: Phân biệt âm /ɪ/ – /iː/ (i ngắn – i dài), Will và be going to"
+  }
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 27 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "what": "quiz-done",
+  "info": {
+   "kind": "measure"
+  }
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a2-09",
+   "title": "Quá khứ tiếp diễn"
+  }
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 27 | 🏆 Qua tầng! | 5/8 câu đúng · +65 xu. Tầng 28 đã mở. | ⬆ Lên cấp: Will: dự đoán, đề nghị, quyết định tức thì"
+  }
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "what": "teach",
+  "info": {
+   "node": "u:b1-u60",
+   "targeted": false
+  }
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a2-08",
+   "title": "Will và be going to"
+  }
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-08",
+   "targeted": false
+  }
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-10",
+   "targeted": false
+  }
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 28 | 🏆 Qua tầng! | 7/8 câu đúng · +85 xu. Tầng 29 đã mở. | ⬆ Lên cấp: Mệnh lệnh trong lớp học"
+  }
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "what": "camp",
+  "info": {
+   "node": "u:a2-u22",
+   "title": "A2 · Unit 22"
+  }
+ },
+ {
+  "day": 14,
+  "sess": "S015",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 29 | 🏆 Qua tầng! | 4/8 câu đúng · +39 xu. Tầng 30 đã mở. | Lượt sau app sẽ đưa lại: Đại từ nhân xưng và tính từ sở hữu, Thi đấu, Hiện tại hoàn thành: kinh nghiệm (ever, never)."
+  }
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 30 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "what": "today-action",
+  "info": {
+   "route": "probe/g:g-a1-03/4/confirm"
+  }
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-10",
+   "targeted": false
+  }
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "what": "teach",
+  "info": {
+   "node": "u:a2-u24",
+   "targeted": false
+  }
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a2-08",
+   "title": "Will và be going to"
+  }
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-08",
+   "targeted": false
+  }
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 30 | 🏆 Qua tầng! | 7/8 câu đúng · +101 xu. Tầng 31 đã mở. | Lượt sau app sẽ đưa lại: Quá khứ tiếp diễn."
+  }
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a2-09",
+   "title": "Quá khứ tiếp diễn"
+  }
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-12",
+   "targeted": false
+  }
+ },
+ {
+  "day": 15,
+  "sess": "S016",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 31 | 🏆 Qua tầng! | 6/8 câu đúng · +65 xu. Tầng 32 đã mở. | Lượt sau app sẽ đưa lại: Hiện tại hoàn thành: kinh nghiệm (ever, never), Hiện tại hoàn thành với just / already / yet."
+  }
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 32 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "what": "today-action",
+  "info": {
+   "route": "probe/g:g-a2-08/4/boundary"
+  }
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "what": "camp",
+  "info": {
+   "node": "u:a2-u27",
+   "title": "A2 · Unit 27"
+  }
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-11",
+   "targeted": false
+  }
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-12",
+   "targeted": false
+  }
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 32 | 🏆 Qua tầng! | 6/8 câu đúng · +87 xu. Tầng 33 đã mở. | Lượt sau app sẽ đưa lại: Suy nghĩ và ghi nhớ."
+  }
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "what": "teach",
+  "info": {
+   "node": "u:a2-u19",
+   "targeted": false
+  }
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "what": "camp",
+  "info": {
+   "node": "u:a2-u19",
+   "title": "Cách khác: A2 · Unit 19"
+  }
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "what": "teach",
+  "info": {
+   "node": "u:a2-u19",
+   "targeted": false
+  }
+ },
+ {
+  "day": 17,
+  "sess": "S017",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 33 | 🏆 Qua tầng! | 5/8 câu đúng · +58 xu. Tầng 34 đã mở. | ⬆ Lên cấp: Quá khứ tiếp diễn và quá khứ đơn"
+  }
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 34 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "what": "today-action",
+  "info": {
+   "route": "probe/g:g-a1-07/4/confirm"
+  }
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a1-08",
+   "title": "Hiện tại đơn: câu khẳng định"
+  }
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-12",
+   "targeted": false
+  }
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 34 | 🏆 Qua tầng! | 5/8 câu đúng · +69 xu. Tầng 35 đã mở. | Lượt sau app sẽ đưa lại: Quá khứ tiếp diễn và quá khứ đơn, Hiện tại đơn: câu khẳng định."
+  }
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a1-08",
+   "title": "Cách khác: Hiện tại đơn: câu khẳng định"
+  }
+ },
+ {
+  "day": 19,
+  "sess": "S018",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 35 | 🏆 Qua tầng! | 8/8 câu đúng · +91 xu. Tầng 36 đã mở. | Mọi câu trả lời đã được ghi vào bản đồ năng lực. Nghỉ ở đây cũng tốt: bộ nhớ cần thời gian để củng cố."
+  }
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 36 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "what": "quiz-done",
+  "info": {
+   "kind": "measure"
+  }
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "what": "camp",
+  "info": {
+   "node": "u:a2-u34",
+   "title": "A2 · Unit 34"
+  }
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "what": "teach",
+  "info": {
+   "node": "u:a1-u17",
+   "targeted": false
+  }
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 36 | 🏆 Qua tầng! | 6/8 câu đúng · +69 xu. Tầng 37 đã mở. | Lượt sau app sẽ đưa lại: Quá khứ tiếp diễn và quá khứ đơn, Học đại học."
+  }
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-10",
+   "targeted": false
+  }
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a1-06",
+   "title": "Have got / has got (sở hữu)"
+  }
+ },
+ {
+  "day": 21,
+  "sess": "S019",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 37 | 🏆 Qua tầng! | 5/8 câu đúng · +69 xu. Tầng 38 đã mở. | ⬆ Lên cấp: Trái cây và các loại hạt"
+  }
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 38 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "what": "today-action",
+  "info": {
+   "route": "probe/ph:s-02/2/boundary"
+  }
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a1-06",
+   "targeted": false
+  }
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a1-10",
+   "title": "Trạng từ chỉ tần suất"
+  }
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a1-10",
+   "targeted": false
+  }
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 38 | 🏆 Qua tầng! | 7/8 câu đúng · +86 xu. Tầng 39 đã mở. | Lượt sau app sẽ đưa lại: Trạng từ chỉ tần suất."
+  }
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "what": "camp",
+  "info": {
+   "node": "ph:s-05",
+   "title": ""
+  }
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-12",
+   "targeted": false
+  }
+ },
+ {
+  "day": 24,
+  "sess": "S020",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 39 | 🏆 Qua tầng! | 5/7 câu đúng · +58 xu. Tầng 40 đã mở. | ⬆ Lên cấp: Quá khứ tiếp diễn"
+  }
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 40 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "what": "today-action",
+  "info": {
+   "route": "probe/g:g-a1-12/4/confirm"
+  }
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a1-09",
+   "title": "Hiện tại đơn: phủ định và câu hỏi"
+  }
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a1-12",
+   "targeted": false
+  }
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 40 | 🏆 Qua tầng! | 6/8 câu đúng · +81 xu. Tầng 41 đã mở. | Lượt sau app sẽ đưa lại: Phân biệt âm /θ/ – /t/ (th (lưỡi giữa răng) – t), Hiện tại đơn: phủ định và câu hỏi."
+  }
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a2-10",
+   "title": "Quá khứ tiếp diễn và quá khứ đơn"
+  }
+ },
+ {
+  "day": 28,
+  "sess": "S021",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 41 | 🏆 Qua tầng! | 6/8 câu đúng · +92 xu. Tầng 42 đã mở. | Lượt sau app sẽ đưa lại: Quá khứ tiếp diễn và quá khứ đơn, Hiện tại đơn: câu khẳng định."
+  }
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 42 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "what": "today-action",
+  "info": {
+   "route": "probe/g:g-a1-15/4/confirm"
+  }
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "what": "quiz-done",
+  "info": {
+   "kind": "probe"
+  }
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a1-08",
+   "title": "Hiện tại đơn: câu khẳng định"
+  }
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 42 | 🏆 Qua tầng! | 8/8 câu đúng · +106 xu. Tầng 43 đã mở. | ⬆ Lên cấp: Hiện tại đơn: câu khẳng định"
+  }
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a1-06",
+   "targeted": false
+  }
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a1-12",
+   "title": "Can / can't (khả năng, xin phép)"
+  }
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a1-12",
+   "targeted": false
+  }
+ },
+ {
+  "day": 35,
+  "sess": "S022",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 43 | 🏆 Qua tầng! | 6/8 câu đúng · +94 xu. Tầng 44 đã mở. | Lượt sau app sẽ đưa lại: Can / can't (khả năng, xin phép), Quá khứ tiếp diễn."
+  }
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "what": "open",
+  "info": {
+   "first": "Ladder Quest · tầng 44 | 🏰 Leo tháp tiếng Anh | Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu."
+  }
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "what": "quiz-done",
+  "info": {
+   "kind": "measure"
+  }
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a1-11",
+   "title": "Câu hỏi với từ để hỏi (Wh-)"
+  }
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-12",
+   "targeted": false
+  }
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 44 | 🏆 Qua tầng! | 7/8 câu đúng · +92 xu. Tầng 45 đã mở. | Lượt sau app sẽ đưa lại: Câu hỏi với từ để hỏi (Wh-)."
+  }
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "what": "camp",
+  "info": {
+   "node": "g:g-a1-13",
+   "title": "Câu mệnh lệnh"
+  }
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 45 | 🏆 Qua tầng! | 7/8 câu đúng · +97 xu. Tầng 46 đã mở. | ⬆ Lên cấp: Hiện tại hoàn thành: kinh nghiệm (ever, never)"
+  }
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "what": "camp",
+  "info": {
+   "node": "ph:s-05",
+   "title": ""
+  }
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "what": "teach",
+  "info": {
+   "node": "g:g-a2-13",
+   "targeted": false
+  }
+ },
+ {
+  "day": 44,
+  "sess": "S023",
+  "what": "floor-end",
+  "info": {
+   "head": "Tầng 46 | 🏆 Qua tầng! | 4/7 câu đúng · +104 xu. Tầng 47 đã mở. | Lượt sau app sẽ đưa lại: So sánh hơn của tính từ, Phân biệt âm /θ/ – /t/ (th (lưỡi giữa răng) – t), Hiện tại hoàn thành với just / already / yet."
+  }
+ }
+]

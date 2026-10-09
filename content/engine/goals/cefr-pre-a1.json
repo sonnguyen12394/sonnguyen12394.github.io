@@ -1,0 +1,47 @@
+{
+ "id": "cefr-pre-a1",
+ "version": "1.0",
+ "kind": "cefr",
+ "vi": "Khởi động Pre-A1 (người mới tinh)",
+ "target": "Pre-A1",
+ "cefr": null,
+ "status": "active",
+ "req": [
+  {
+   "node": "pa:abc",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "pa:spell",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "pa:num",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "pa:num2",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "pa:time",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "pa:date",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
+   "node": "pa:class",
+   "level": 3,
+   "type": "foundation"
+  }
+ ],
+ "readiness": "mastery"
+}

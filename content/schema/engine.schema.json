@@ -9,8 +9,8 @@
       "required": ["id", "kind", "area", "skill", "cefr", "vi", "ctx", "acts", "minutes"],
       "additionalProperties": false,
       "properties": {
-        "id": { "type": "string", "pattern": "^(cd|u|g|x|xw|xs):[a-z0-9][a-z0-9._-]*$" },
-        "kind": { "enum": ["cando", "vocab", "grammar", "task"] },
+        "id": { "type": "string", "pattern": "^(cd|u|g|pa|x|xw|xs|ph|fn):[a-z0-9][a-z0-9._-]*$" },
+        "kind": { "enum": ["cando", "vocab", "grammar", "task", "sound", "func"] },
         "area": { "enum": ["voc", "gra", "pro", "lis", "rd", "wr", "spk", "task"] },
         "skill": { "enum": ["L", "R", "W", "S", null] },
         "cefr": { "anyOf": [{ "$ref": "#/definitions/cefr" }, { "type": "null" }] },
@@ -22,7 +22,18 @@
           "items": { "type": "object", "required": ["at", "t"], "additionalProperties": false,
             "properties": { "at": { "type": "string", "pattern": "^data-[a-z]+=\"[^\"]+\"( data-[a-z]+=\"[^\"]+\"){0,2}$" }, "t": { "type": "string" } } }
         },
-        "minutes": { "type": "number", "minimum": 1 }
+        "minutes": { "type": "number", "minimum": 1 },
+        "ver": { "type": "string", "pattern": "^\\d+\\.\\d+$" },
+        "scope": { "type": "string" },
+        "diff": { "type": "number", "minimum": 0, "maximum": 1 },
+        "dims": { "type": "array", "items": { "enum": ["lex", "gram", "phon", "rec", "prod", "inter", "prag", "disc"] }, "uniqueItems": true, "minItems": 1 },
+        "evReq": { "type": "object", "required": ["lv", "types"], "additionalProperties": false, "properties": {
+          "lv": { "type": "array", "items": { "$ref": "#/definitions/level" }, "minItems": 1 },
+          "types": { "type": "array", "items": { "enum": ["choice", "typed", "production", "task"] }, "minItems": 1 } } },
+        "imp": { "type": "object", "required": ["tr", "re"], "additionalProperties": false, "properties": { "tr": { "type": "number", "minimum": 0, "maximum": 1 }, "re": { "type": "number", "minimum": 0, "maximum": 1 } } },
+        "contrast": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "mis": { "type": "array", "items": { "type": "string", "minLength": 3 } },
+        "uses": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
       }
     },
     "edge": {
@@ -32,12 +43,16 @@
       "properties": {
         "from": { "type": "string" }, "to": { "type": "string" },
         "type": { "enum": ["hard", "soft"] },
-        "w": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+        "w": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "why": { "enum": ["cando-act", "level-ladder", "gram-order", "exam-base", "pa-act", "manual"] },
+        "ver": { "type": "string" },
+        "alt": { "type": "string" },
+        "need": { "type": "integer", "minimum": 1 }
       }
     },
     "goal": {
       "type": "object",
-      "required": ["id", "version", "kind", "vi", "target", "cefr", "req"],
+      "required": ["id", "version", "kind", "vi", "target", "cefr", "status", "req"],
       "additionalProperties": false,
       "properties": {
         "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]*$" },
@@ -45,6 +60,8 @@
         "kind": { "enum": ["cefr", "ielts-ac", "ielts-gt", "vstep", "comm"] },
         "vi": { "type": "string", "minLength": 1 },
         "target": { "type": "string" },
+        "status": { "enum": ["active", "future"] },
+        "readiness": { "enum": ["mastery", "exam-score"] },
         "cefr": { "anyOf": [{ "$ref": "#/definitions/cefr" }, { "type": "null" }] },
         "req": {
           "type": "array", "minItems": 1,

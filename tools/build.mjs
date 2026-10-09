@@ -54,7 +54,7 @@ for (const [name, gs] of Object.entries(packs).sort(([a], [b]) => (a < b ? -1 : 
   keep.add(file.slice('data/exam/'.length));
   if (!existsSync(P(file))) writeFileSync(P(file), body);
   index.packs[name] = { file, groups: gs.length, items: gs.reduce((n, g) => n + g.items.length, 0), qtypes: [...new Set(gs.map(g => g.qtype))].sort(), exams: [...new Set(gs.flatMap(g => g.exams))].sort() };
-  for (const g of gs) for (const it of g.items) index.items[it.id] = [it.b, guessOf(g, it), QSKILL(g.qtype), g.qtype];
+  for (const g of gs) for (const it of g.items) index.items[it.id] = [it.b, guessOf(g, it), QSKILL(g.qtype), g.qtype, hash(Buffer.from(JSON.stringify(it))).slice(0, 6)];   // [5]: phiên bản nội dung của câu (provenance, spec v2.4 §36)
 }
 function guessOf(g, it) {
   if (typeof it.ans === 'string') { const n = (it.opts || g.options || []).length; return n ? Math.round(100 / n) / 100 : 0; }
@@ -109,7 +109,7 @@ for (const f of readdirSync(P('data/engine'))) if (`data/engine/${f}` !== gFile)
 if (!existsSync(P(gFile))) writeFileSync(P(gFile), gBody);
 mkdirSync(P('src/engine/gen'), { recursive: true });
 const metaText = JSON.stringify({ file: gFile, nodes: eNodes.length, edges: eEdges.length,
-  goals: eGoals.map(g => ({ id: g.id, kind: g.kind, vi: g.vi, target: g.target, cefr: g.cefr, version: g.version, n: g.req.length })) }) + '\n';
+  goals: eGoals.map(g => ({ id: g.id, kind: g.kind, vi: g.vi, target: g.target, cefr: g.cefr, version: g.version, status: g.status, n: g.req.length })) }) + '\n';
 if (!existsSync(P('src/engine/gen/meta.json')) || readFileSync(P('src/engine/gen/meta.json'), 'utf8') !== metaText) writeFileSync(P('src/engine/gen/meta.json'), metaText);
 
 // 1. Mô-đun ôn thi

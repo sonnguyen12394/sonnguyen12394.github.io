@@ -1,0 +1,64 @@
+// Evidence Evaluator (spec v2.4 §24, §41, §67): nơi DUY NHẤT biến một quan sát thô thành bằng chứng có trọng số.
+// Luật có phiên bản (RULE): mỗi sự kiện ghi `ev` = phiên bản luật đã dùng, để audit và tính lại khi luật đổi (HG33).
+//
+// Trọng số hiệu dụng w (vào công thức mastery §44: đúng α += w·(1 − g), sai β += w·(1 − s)):
+//   - w gốc = trọng số hoạt động đặt (mặc định 1);
+//   - cùng câu lặp lại trong 24 giờ: ×0,5 (spec §44);
+//   - đúng nhờ gợi ý hoặc ở lượt làm lại câu vừa sai: ×0,5 / ×0,3 (assisted ≠ independent, C247–C248);
+//   - hết giờ trong luật chơi ép thời gian: tính là sai nhưng chỉ ×0,3 (kỹ năng game không thành điểm ngôn ngữ, P13–P14);
+//   - tốc độ trả lời (rt) chỉ được ghi lại, không đổi w (P15).
+
+import type { Observation, EvEvent, Src } from './types.ts';
+
+export const RULE = {
+  evaluator: 'ev1.0',
+  mastery: 'm3.3',
+  slip: 0.1,            // s: người đã biết vẫn có thể sai (spec §44)
+  repeat: 0.5,          // cùng câu trong 24 giờ
+  hint: 0.5,            // đúng nhờ gợi ý
+  retry: 0.3,           // đúng ở lượt làm lại
+  timeout: 0.3,         // hết giờ khi bị ép thời gian
+  gMax: 0.9,
+  decay: 0.9,           // v55: lượt mới đi ngược kết luận hiện tại → bằng chứng cũ của ô nhân 0,9 — model hồi phục/đổi hướng được
+  reopenBad: 2,         // nút đang Đạt mà sai ≥ 2 lần ở câu mới → mở lại (model disagreement, spec §69)
+  reopenOk: 2,          // cần ≥ 2 lần đúng ở câu mới để xác nhận lại
+  misMin: 2,            // chọn cùng một phương án sai ≥ 2 lần → giả thuyết hiểu sai (misconception)
+  diffW: 0.2,           // v66 (m3.2): đúng câu khó hơn cấp nút nặng hơn 20%, đúng câu dễ hơn nhẹ hơn 20%; sai thì ngược lại (C118, C246)
+  distinct: 2,          // v66: Đạt mức 1–3 cần đúng ở ≥ 2 câu khác nhau (không Đạt bằng một câu lặp qua nhiều ngày, C180)
+  fatigue: 0.7,         // v66: sai lúc có dấu hiệu mệt (đúng giảm, chậm dần trong phiên) nhẹ hơn 30% (C295, C371)
+  spaced: 1,            // m3.3: đúng ở câu đã gặp sau ≥ 1 ngày không gặp = nhớ lại cách quãng, tính như câu mới khi xác minh (gỡ kẹt khi hết câu mới)
+} as const;
+export type Rule = { [K in keyof typeof RULE]: (typeof RULE)[K] extends string ? string : number };
+export const RULE_ID = `${RULE.evaluator}/${RULE.mastery}`;
+
+export interface EvalCtx {
+  day: number;
+  ts: number;
+  id: string;
+  lastSeenDay?: number;  // ngày gần nhất câu này được trả lời (để giảm trọng số khi lặp)
+  novel: boolean;        // câu lần đầu gặp ở nút này
+  fatigued?: boolean;    // phiên hiện tại có dấu hiệu mệt (fatigue() trong store.ts)
+}
+
+export function evaluate(o: Observation, c: EvalCtx, rule: Rule = RULE): EvEvent {
+  let w = o.w ?? 1;
+  const asst = !!(o.hint || o.retry || (o.w !== undefined && o.w < 1));
+  if (c.lastSeenDay !== undefined && c.day - c.lastSeenDay < 1) w *= rule.repeat;
+  if (o.ok && o.hint) w *= rule.hint;
+  if (o.ok && o.retry) w *= rule.retry;
+  if (!o.ok && o.timeout && o.timed) w *= rule.timeout;
+  if (!o.ok && c.fatigued) w *= rule.fatigue;
+  const g = Math.min(rule.gMax, Math.max(0, o.g ?? 0));
+  // Độ tin cậy: câu dễ đoán và câu có trợ giúp nói ít hơn về năng lực thật.
+  const rel = Math.round(Math.max(0.05, (1 - g) * (asst ? 0.5 : 1) * (o.timeout ? 0.5 : 1) * (c.fatigued ? 0.7 : 1)) * 100) / 100;
+  const ev: EvEvent = {
+    id: c.id, ts: c.ts, day: c.day, node: o.node, lv: o.level, ok: o.ok ? 1 : 0, w: Math.round(w * 1000) / 1000, g,
+    src: (o.src ?? 'vocab') as Src, nov: c.novel ? 1 : 0, rel, tier: 1, val: 0, ev: `${rule.evaluator}/${rule.mastery}`,
+  };
+  if (o.only) ev.only = 1;
+  if (asst) ev.asst = 1;
+  for (const k of ['item', 'ch', 'qt', 'ctx', 'cv', 'sess'] as const) { const v = o[k]; if (typeof v === 'string' && v) ev[k] = v.slice(0, 80); }
+  if (typeof o.diff === 'number') ev.diff = Math.max(-1, Math.min(1, Math.round(o.diff)));
+  if (typeof o.rt === 'number' && o.rt > 0) ev.rt = Math.round(Math.min(o.rt, 600000));
+  return ev;
+}

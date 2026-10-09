@@ -1,6 +1,6 @@
 # English Ladder
 
-Ôn VSTEP và IELTS miễn phí 100% cho người Việt tự học: band ước tính từng kỹ năng kèm sai số, kế hoạch tới ngày thi, giải thích bằng tiếng Việt. Nền tảng tiếng Anh A1 → C2 đi kèm. Không cần tài khoản, không quảng cáo của bên thứ ba. Bản thử trên web có cơ chế kiểu Duolingo ở dạng giả lập, chưa thu tiền: năng lượng theo lượt (bài mới/luyện tập tốn 1 lượt, hồi theo giờ; ôn đến hạn, chẩn đoán, bài làm thật, đề thi thử không tốn), gói Super là công tắc trong Cài đặt, ô quảng cáo giả lập ở màn kết quả.
+Học tiếng Anh miễn phí theo khung CEFR, từ Pre-A1 (người mới tinh) tới C2, cho người Việt tự học. Từ v52 app theo **Master Spec v2.4** (`docs/SPEC-v2.4.md`): mục tiêu duy nhất của bản MVP là CEFR; app thu bằng chứng từ từng câu trả lời, tìm chỗ còn thiếu, chỉ cho học đúng phần đó và chỉ xác nhận đạt cấp khi có đủ bằng chứng. Phần ôn IELTS/VSTEP vẫn còn nguyên nhưng tạm ẩn (Cài đặt → Nâng cao → Mục tiêu tương lai). Không cần tài khoản, không quảng cáo của bên thứ ba. Bản thử có năng lượng theo lượt và gói Super giả lập, chưa thu tiền.
 
 👉 **https://sonnguyen12394.github.io/**
 

@@ -1,14 +1,20 @@
 // Dữ liệu engine: danh mục mục tiêu (đóng vào mô-đun để màn chọn mở ngay) + đồ thị đầy đủ (tệp data/engine/graph.<băm>.json, tải khi cần).
 
 import meta from './gen/meta.json';
-import type { Goal, GoalKind, Graph } from './types.ts';
+import type { Goal, GoalKind, GoalStatus, Graph } from './types.ts';
 import { index, type Index } from './graph.ts';
 
-export interface GoalMeta { id: string; kind: GoalKind; vi: string; target: string; cefr: string | null; version: string; n: number }
+export interface GoalMeta { id: string; kind: GoalKind; vi: string; target: string; cefr: string | null; version: string; status: GoalStatus; n: number }
 export const META = meta as { file: string; nodes: number; edges: number; goals: GoalMeta[] };
 export const GOALS: Map<string, GoalMeta> = new Map(META.goals.map(g => [g.id, g]));
 
 let graph: Graph | null = null, ix: Index | null = null, p: Promise<Index> | null = null;
+
+// Mục tiêu đang mở cho người học: MVP chỉ CEFR (spec v2.4 §7); bật "mục tiêu tương lai" trong Cài đặt thì hiện cả IELTS/VSTEP/giao tiếp.
+export function goalOn(id: string, future: boolean): boolean {
+  const m = GOALS.get(id);
+  return !!m && (future || m.status === 'active');
+}
 
 export function loaded(): Index | null { return ix; }
 

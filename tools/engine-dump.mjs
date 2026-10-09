@@ -29,6 +29,16 @@ try {
     })),
     units: UNITS.map(u => ({ id: u.id, level: u.level, title: u.title, vi: u.vi || '', words: (u.words || []).length })),
     gpoints: GPOINTS.map(p => ({ id: p.id, level: p.level, title: p.title, vi: p.vi || '' })),
+    // v67 bản đồ nội dung → nút (C55, C56, C60): mọi câu học nền với nội dung để băm phiên bản từng câu.
+    /* global PREA1, paItems */
+    content: {
+      words: UNITS.flatMap(u => (u.words || []).map(w => ({ id: w.id, unit: u.id, cloze: !!w.cloze, col: !!w.col, raw: JSON.stringify(w) }))),
+      gram: GPOINTS.map(p => ({ id: p.id, mc: (p.mc || []).map(x => JSON.stringify(x)), ty: (p.ty || []).map(x => JSON.stringify(x)), fx: (p.fx || []).map(x => JSON.stringify(x)), or: (p.or || []).map(x => JSON.stringify(x)) })),
+      pa: PREA1.map(x => ({ id: x.id, n: paItems(x.id).length })),
+      /* global SOUNDS, FUNCTIONS */
+      sounds: SOUNDS.map(x => ({ id: x.id, a: x.a, b: x.b, title: x.title, vi: x.vi, pairs: x.pairs.map(p => JSON.stringify(p)) })),
+      funcs: FUNCTIONS.map(f => ({ id: f.id, lv: f.lv, en: f.en, vi: f.vi, exps: (f.exps || []).map(x => JSON.stringify(x)) })),
+    },
   }));
   await browser.close();
   mkdirSync(join(ROOT, 'content/engine/src'), { recursive: true });

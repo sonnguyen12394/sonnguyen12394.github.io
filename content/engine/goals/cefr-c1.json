@@ -5,6 +5,7 @@
  "vi": "Tiếng Anh tổng quát C1 (Cao cấp)",
  "target": "C1",
  "cefr": "C1",
+ "status": "active",
  "req": [
   {
    "node": "cd:c1-voc1",
@@ -256,5 +257,6 @@
    "level": 3,
    "type": "skill"
   }
- ]
+ ],
+ "readiness": "mastery"
 }

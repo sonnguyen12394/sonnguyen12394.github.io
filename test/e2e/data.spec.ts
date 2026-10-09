@@ -44,3 +44,21 @@ test('mã sao lưu mang theo phần ôn thi và khôi phục được', async ({
   expect(back.x.exam).toBe('vstep');
   expect(errors).toEqual([]);
 });
+
+test('mã sao lưu giữ nguyên sổ bằng chứng, thống kê và snapshot; khôi phục ra đúng mastery (C193)', async ({ page, errors }) => {
+  await openApp(page);
+  const r = await page.evaluate(async () => {
+    const w = window as any, st = w.eval('st'), t = w.eval('today()');
+    for (let i = 0; i < 6; i++) w.ELCORE.ev(st, { node: 'g:g-a1-01', level: 3, ok: i !== 2, item: 'g:bk' + i, src: 'gram', ctx: 'typ', qt: 'gty' }, t);
+    w.eval('save()');
+    const code = await w.eval('makeCode')(), back = await w.eval('readCode')(code), x = w.eval('sanitizeState')(back);
+    const e0 = st.e, e1 = x.e;
+    return { led0: e0.ev.led.map((l: any) => l.id), led1: e1.ev.led.map((l: any) => l.id), snap0: e0.ev.snap.length, snap1: e1.ev.snap.length,
+      agg: JSON.stringify(e0.ev.agg) === JSON.stringify(e1.ev.agg), m0: e0.m['g:g-a1-01'][3], m1: e1.m['g:g-a1-01'][3] };
+  });
+  expect(r.led1).toEqual(r.led0);
+  expect(r.snap1).toBe(r.snap0);
+  expect(r.agg).toBe(true);
+  expect(r.m1.a).toBeCloseTo(r.m0.a, 6); expect(r.m1.b).toBeCloseTo(r.m0.b, 6);
+  expect(errors).toEqual([]);
+});

@@ -1,5 +1,12 @@
 # English Ladder — Master Spec v2
 
+> **08/10/2026 — Spec v2.4 thay hướng sản phẩm.** Người sáng lập chốt: nguồn sự thật là **Master Spec v2.4** (`docs/SPEC-v2.4.md`), triển khai **thuần v2.4**:
+> 1. MVP chỉ một Target Model là **CEFR Pre-A1 → C2**. IELTS, VSTEP, giao tiếp là Future Target Models: dữ liệu giữ nguyên (`status: "future"` trong `content/engine/goals/`), ẩn khỏi người học, bật lại được trong Cài đặt → Nâng cao; dùng để kiểm chứng mở rộng ở M10 của v2.4.
+> 2. **Game là trải nghiệm chính**: người học chơi để thắng, việc học tiếng Anh nằm ẩn trong luật chơi (stealth learning) — mỗi hành động trong game là một thử thách ngôn ngữ do engine chọn, nhằm lên cấp nhanh nhất. Không dùng dark pattern; tiến độ học và dữ liệu luôn xem được.
+> 3. Kiến trúc evidence theo v2.4 (Observation → Evidence → Ledger → Aggregate → Learner State → Decision Snapshot), đo bằng `docs/CONFORMANCE-200-v2.4.md` và `docs/SCORECARD-v2.4.md`.
+>
+> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v71 (xem phần "Lộ trình v2.4" cuối tệp).
+
 Cập nhật: 03/10/2026. Bản đọc và bình luận: Claude Docs "English Ladder — Master Spec v2". Tệp này là bản AI đọc khi xây; hai bản phải giống nhau.
 
 ## Cách đọc
@@ -236,3 +243,30 @@ Các rủi ro dưới đây được theo dõi trong lúc xây, không dùng đ�
 | XP theo hoạt động kéo người học đi cày XP thay vì lấp khoảng thiếu | Tỉ lệ phút học ngoài Learning Path | Nút chính luôn là "Bước tiếp theo"; Readiness hiển thị ngang hàng XP |
 | Điểm trong app của người sáng lập bị thổi phồng vì đã duyệt nội dung | Điểm app cao hơn đề ngoài | Đo mốc bằng đề ngoài chưa từng xem trước khi đăng ký thi thật |
 | `app.js` lớn (3,8 MB) làm chậm máy yếu | Thời gian mở app trên Android rẻ | Engine viết thành mô-đun riêng, nội dung tải theo nút |
+
+## Lộ trình v2.4 (từ 08/10/2026)
+
+Mỗi mốc một PR, chấm lại 200 + 400 tiêu chí sau mỗi mốc.
+
+| Bản | Mốc | Tiêu chí xong |
+| --- | --- | --- |
+| v52 | Chốt hướng: chỉ CEFR + Pre-A1 | Mục tiêu ngoài CEFR ở trạng thái tương lai, tab Ôn thi ẩn; mục tiêu Pre-A1; bài Pre-A1 là bằng chứng |
+| v53 | Evidence L0–L4 | Observation, Evidence Evaluator, Ledger theo giá trị, Aggregate bảo toàn thông tin, Beta là trạng thái dẫn xuất tính lại được |
+| v54 | Decision Snapshot | Quyết định quan trọng có snapshot, tái tạo được; màn "Vì sao?" |
+| v55 | Mastery v3 | Phân vị Beta chính xác, giảm theo thời gian, trạng thái nút, model disagreement, misconception |
+| v56 | Mô phỏng learner | 10 Scenario + 20 Meta-Test chạy tự động; báo cáo calibration, FP/FN |
+| v57 | Knowledge/Graph | Universal Language Core, rationale/version cạnh, tiền đề thay thế, kiểm orphan/unreachable |
+| v58 | Chẩn đoán liên tục | 5 chế độ, giá trị thông tin ÷ nỗ lực, truy gốc theo cạnh |
+| v59 | Gap + NBA | 8 loại gap, utility §57, luật retention §58 |
+| v60 | Transfer | Câu/ngữ cảnh mới, thất bại transfer → disagreement |
+| v61 | Micro-learning | Chính sách ngắt §53, giải thích → luyện → kiểm lại → về game |
+| v62 | Game Ladder Quest | Game Challenge Model, học ẩn trong game, tách kỹ năng game khỏi ngôn ngữ |
+| v63 | Đo hiệu quả + chấm lại | Bộ câu giữ riêng đo trước / sau / trễ 7 và 30 ngày, nhãn A/B khi đồng ý; `npm run score` chấm lại 200 + 400 tiêu chí từ dữ liệu có test chứng minh (`docs/SCORE.md`) |
+| v64 | Goal-first + Ladder Quest là màn chính | Bài dò ngắn → mục tiêu CEFR tự đặt (đổi được); mọi lối vào đều có mục tiêu; tab Chơi là màn mặc định |
+| v65 | Lỗ hổng → cách sửa | remedy.ts quyết định câu theo loại lỗ hổng; nguy cơ quên từ FSRS; cờ trong game; Đạt CEFR đòi transfer (có miễn) |
+| v66 | Chất lượng bằng chứng (m3.2) | Độ khó câu, ≥ 2 câu khác nhau, câu trùng nội dung, mệt; kiểm toán trôi model, ước lượng slip/guess, độ nhạy trọng số |
+| v67 | Mô hình nội dung | Bản đồ câu → nút (28.114 câu, 0 mồ côi), phiên bản từng câu, nút âm vị + chức năng giao tiếp, tiền đề thay thế, Readiness theo mô hình dữ liệu |
+| v68 | Chấm lại | `npm run score` trên dữ liệu chấm mới (`docs/SCORE.md`) |
+| v69 | Bot người học L01 (người mới hoàn toàn) | `tools/learners/l01.ts` chơi app qua giao diện 44 ngày mô phỏng; luật m3.3 (nhớ lại cách quãng gỡ kẹt xác minh, Claim chỉ thành Đạt bằng bằng chứng thật), ôn từ sổ bằng chứng, tháp giãn cách + dạy trước + câu thử sau trại, chẩn đoán trừ đoán mò; báo cáo `reports/learners/L01/REPORT.md` |
+| v70 | Bot người học L02 (người học yếu) | Lõi bot chung (`tools/learners/core.ts`); lỗ hổng từ bằng chứng (hiểu sai theo mẫu lỗi, thuộc câu → transfer, chưa có bằng chứng → hỏi thử), bí kíp nhắm đúng hiểu sai trong tháp, leo thang khi can thiệp chưa hiệu quả, ôn phần đang học, bớt dò khi sai nhiều, điểm nghẽn trên tháp, nghe phân biệt âm trong tháp; báo cáo `reports/learners/L02/REPORT.md` |
+| v71 | Bot người học L03 (người học trung bình) | Mục tiêu người học chọn đứng đầu (mục tiêu tự đặt giữ làm bậc đệm); bài dò tìm trần nhận ra và dò tiếp khi còn đang lên cấp; Claim kiểm ở đúng mức đã suy ra, xác nhận xong từng phần; khám phá theo độ phủ vùng kỹ năng (nghe); điểm nghẽn = yếu × quan trọng, ưu tiên trong tầng; người học đúng ≥ 85% → hỏi thẳng mức cần, nới lượt/nút/ngày; không lùi về câu mức thấp đã Đạt; báo lên cấp cuối tầng; báo cáo `reports/learners/L03/REPORT.md` |

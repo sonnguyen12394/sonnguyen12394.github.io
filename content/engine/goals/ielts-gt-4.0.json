@@ -5,6 +5,7 @@
  "vi": "IELTS General Training 4.0",
  "target": "4.0",
  "cefr": "B1",
+ "status": "future",
  "req": [
   {
    "node": "cd:b1-voc1",
@@ -386,5 +387,6 @@
    "level": 3,
    "type": "performance"
   }
- ]
+ ],
+ "readiness": "exam-score"
 }

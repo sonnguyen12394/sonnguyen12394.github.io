@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 51;
+const STATE_V = 18, APP_VERSION = 67;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1117,6 +1117,8 @@ function compactState(){ DEF.w??=JSON.stringify({d:{rec:null,rcl:null,spl:null,c
   DEF.l??=JSON.stringify({best:null,passed:false});
   const f=(bag,d)=>Object.fromEntries(Object.entries(bag||{}).filter(([,v])=>JSON.stringify(v)!==d));
   return {...st,words:f(st.words,DEF.w),units:f(st.units,DEF.u),gram:f(st.gram,DEF.g),levels:f(st.levels,DEF.l),glevels:f(st.glevels,DEF.l)}; }
+// Bản gửi máy chủ đồng bộ: bỏ quan sát thô L0 (chỉ của máy này, spec v2.4 §88 Standard Export).
+function syncState(){ const x=compactState(); if(x.e&&x.e.ev&&x.e.ev.obs) x.e={...x.e,ev:{...x.e.ev,obs:[]}}; return x; }
 let _saveWarned=false;
 function save(){ if(LOAD_ISSUE&&!LOAD_ISSUE.ok) return; try{ localStorage.setItem(KEY,JSON.stringify(compactState())); }catch(e){ return saveFailed(e); } try{ syncDirty(); }catch(e){} try{ remindWrite(); }catch(e){} try{ netTouch(); }catch(e){} }   // đồng bộ khai báo sau (TDZ khi lưu lúc khởi động)
 function saveFailed(e){ try{ (EV().err||(EV().err={})).save=((EV().err||{}).save||0)+1; }catch(x){}
@@ -1165,7 +1167,16 @@ const LONG_IVL = 21;
 function reviewItems(ws){ return spread(ws.flatMap(w=>{ const d=weakestDims(w.id), a=build(w,d[0]); return (W(w.id).ivl||1)>=LONG_IVL ? [a,Object.assign(build(w,d[1],{test:true}),{noSrs:true})] : [a]; })); }
 function dueWords(){ const t=today(); return ALL_WORDS.filter(w=>{const s=W(w.id);return s.learned&&s.due!=null&&s.due<=t;}); }
 // Bằng chứng mastery cho engine (docs/SPEC.md §2): ghi ngay vào st.e qua lõi dùng chung, kể cả khi mô-đun engine chưa tải.
-function eEv(e){ try{ if(typeof ELCORE!=='undefined'&&e.node&&!/undefined$/.test(e.node)) ELCORE.ev(st,e,today()); }catch(x){} }
+// v53: phiên bản nội dung mặc định của câu học nền = số bản phát hành (nội dung nằm trong app.js / data/lv-*); câu thi có băm riêng.
+// v67 (C56): phiên bản nội dung TỪNG câu = băm nội dung câu (khớp content/engine/content-map.json); không tìm được câu thì dùng số bản app.
+const _cv={};
+function itemCv(item){ if(!item||typeof ELCORE==='undefined'||!ELCORE.contentHash) return null; if(_cv[item]) return _cv[item];
+  if(typeof DETAIL!=='undefined'&&!detailAll()) return null;   // nội dung chi tiết chưa tải xong: chưa băm (băm sẽ lệch bản đồ nội dung)
+  let raw=null; const m=/^w:([^:]+):/.exec(item), g=/^g:([^|]+)\|(cho|typ|fix|ord)\|([a-z])(\d+)$/.exec(item);
+  if(m&&WORD[m[1]]) raw=JSON.stringify(WORD[m[1]]);
+  else if(g&&GPT[g[1]]){ const L={cho:'mc',typ:'ty',fix:'fx',ord:'or'}[g[2]], x=(GPT[g[1]][L]||[])[+g[4]]; if(x!==undefined&&!(g[2]==='ord'&&g[3]==='d')) raw=JSON.stringify(x); }
+  return raw?(_cv[item]='h'+ELCORE.contentHash(raw)):null; }
+function eEv(e){ try{ if(typeof ELCORE!=='undefined'&&e.node&&!/undefined$/.test(e.node)) ELCORE.ev(st,{cv:itemCv(e.item)||'a'+APP_VERSION,...e},today()); }catch(x){ try{ console.warn('eEv',x); }catch(y){} } }
 function markActive(){ const t=today(); if(!st.days.includes(t)){ st.days.push(t); try{ ui.streakUp=streak(); }catch(e){} } }
 function streak(){ const set=new Set([...st.days,...((st.freeze&&st.freeze.used)||[])]); let n=0,t=today(); if(!set.has(t)) t--; while(set.has(t)){n++;t--;} return n; }
 
@@ -1185,7 +1196,7 @@ function grade(ex,correct){
   if(correct&&typed&&ex.dim!=='rec'&&!ex.guess){ const r=w.d.rec??0; w.d.rec=r+a*(1-r); }
   if(old<HARD&&w.d[ex.dim]>=HARD&&['rcl','spl','ctx'].includes(ex.dim)&&W(ex.wid).learned) toast(`💪 Lên độ khó: lần sau “${WORD[ex.wid].word}” (${DIM[ex.dim].vi}) sẽ là câu tự gõ.`);
   if(!ex.noSrs) srsStep(w,correct,typed&&!ex.guess);
-  eEv({node:'u:'+(UNIT_OF[ex.wid]||{}).id,level:ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'w:'+ex.wid+':'+ex.dim,qt:ex.opts?'mcq':'typed',ctx:ex.dim,w:correct&&ex.guess?.5:1});
+  eEv({node:'u:'+(UNIT_OF[ex.wid]||{}).id,level:ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'w:'+ex.wid+':'+ex.dim,qt:ex.opts?'mcq':'typed',ctx:ex.dim,w:correct&&ex.guess?.5:1,src:'vocab',retry:!!ex.retry,ch:'u:'+((UNIT_OF[ex.wid]||{}).id||''),given:ex._given,rt:ex._rt||undefined});
   if(correct&&typed) bump('typed');
   tally(correct, xpFor(xpKind((ui.sess||{}).kind)+':w:'+ex.wid,(typed?15:10)+(wasDue&&!ex.noSrs?5:0),correct,ex._dn));
 }
@@ -1546,7 +1557,7 @@ function gExplain(ex,given){
 }
 
 /* ================== UI STATE ================== */
-const ui = { view:'path', unitId:null, sess:null, summary:null, learn:null, speak:null, filter:'learned', wb:{q:'',lv:'',st:'',ty:'',n:60}, openLv:{}, allUnits:{} };
+const ui = { view:'play', unitId:null, sess:null, summary:null, learn:null, speak:null, filter:'learned', wb:{q:'',lv:'',st:'',ty:'',n:60}, openLv:{}, allUnits:{} };
 function go(view,extra={}){ if(view!=='game') stopTimer(); if(view!=='exam') exStop(); if(!['summary','gsum','quiz','session','gsess'].includes(view)) ui.streakUp=null; const nh=extra._nohist; delete extra._nohist; Object.assign(ui,{view},extra); if(HAS_TTS) try{speechSynthesis.cancel();}catch(e){} recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
 /* ---------- Điều hướng: nút Quay lại của điện thoại/trình duyệt, hộp thoại, lượt dở ----------
    Mỗi lần go() ghi một mục lịch sử (history.pushState) nên nút Back về đúng màn trước, không thoát app.
@@ -1592,7 +1603,7 @@ function askOrQuit(){ if(activeRun()) askQuit(); else doQuit(); }
 if(typeof window!=='undefined'&&window.addEventListener) window.addEventListener('popstate',e=>{
   if(ui.modal){ closeModal(); try{ history.pushState(_hist,''); }catch(x){} return; }
   if(activeRun()){ try{ history.pushState(_hist,''); }catch(x){} return askQuit(); }
-  const s=e.state||{view:'path'}; let v=s.view;
+  const s=e.state||{view:'play'}; let v=s.view;
   if(TRANSIENT[v]&&!(v==='word'&&WORD[s.wordId])&&!(v==='dlg'&&DLG[s.dlgId])&&!(v==='fn'&&FN[s.fnId])) v=TRANSIENT[v];
   if(v==='unit'&&!UNITS.some(u=>u.id===s.unitId)) v='path';
   if(v==='gpoint'&&!GPT[s.gpId]) v='grammar';
@@ -1881,6 +1892,12 @@ function startQuiz(kind,ref,items,meta={}){ if(!items.length) return toast('Chư
 const qzRight = it => it.t==='mc'?it.opts[it.ans]:it.t==='order'?it.ans.map(i=>it.parts[i]).join(' → '):it.t==='multi'?it.ans.map(i=>it.words[i]).join(', '):it.accept[0];
 function qzAnswer(correct,extra={}){ const s=ui.qz; if(!s||s.ans) return; const it=s.q[s.i];
   s.ans={correct,...extra}; s.wrongRun=correct?0:(s.wrongRun||0)+1;
+  // Bài Pre-A1 là bằng chứng cho nút pa:<bài> (v52): nghe rồi chọn = nhận ra (mức 1), nghe rồi gõ = nhớ ra (mức 3).
+  // v67: chức năng giao tiếp và hội thoại là bằng chứng cho nút fn:<chức năng> (tương tác, ngữ dụng). Câu hỏi hội thoại = nhận ra chức năng
+  // trong ngữ cảnh (mức 2), câu tự gõ của bài chức năng = dùng được (mức 3).
+  if(s.kind==='fn'&&FN[s.ref]) eEv({node:'fn:'+s.ref,level:it.t==='typed'?3:2,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'fn:'+s.ref+':'+(it.plain||s.i),text:it.plain||undefined,qt:it.t==='typed'?'typed':'mcq',ctx:'function',src:'talk',ch:'fn:'+s.ref});
+  if(s.kind==='dlg'&&DLG[s.ref]) for(const f of (DLG[s.ref].fn||[]).filter(id=>FN[id])) eEv({node:'fn:'+f,level:2,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'dlg:'+s.ref+':'+(it.plain||s.i),text:it.plain||undefined,qt:'mcq',ctx:'dialogue',src:'talk',ch:'dlg:'+s.ref});
+  if(s.kind==='pa') eEv({node:'pa:'+String(s.ref).replace(/^pa-/,''),level:it.t==='typed'?3:1,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'pa:'+s.ref+':'+(it.plain||s.i),qt:it.t==='typed'?'typed':'mcq',ctx:'prea1',src:'pa',ch:'pa:'+s.ref});
   tally(correct, xpFor('q:'+s.kind+':'+s.ref+':'+(it.plain||s.i),it.t==='typed'?15:10,correct)); sfx(correct?'ok':'bad');
   s.res.push({correct,q:it.plain||'',right:qzRight(it)}); render(); }
 function qzCheck(){ const s=ui.qz, it=s.q[s.i]; if(s.ans) return;
@@ -2376,9 +2393,10 @@ const CD_REF={u:'unit',ul:'unit của cấp',g:'bài ngữ pháp',gl:'bài ngữ
 /* ================== VIEWS ================== */
 // Thanh điều hướng: trên máy tính là hàng tab ở đầu trang; trên điện thoại (≤ 640px) là thanh 5 mục dưới đáy,
 // các phần còn lại nằm trong “Thêm”. Cả hai dùng chung một cách tính mục đang mở.
-const BNAV=[['thi','Ôn thi','exam'],['path','Học','book'],['review','Ôn tập','repeat'],['talk','Kỹ năng','mic'],['more','Tôi','user']];
+const BNAV=[['thi','Ôn thi','exam'],['play','Chơi','trophy'],['path','Học','book'],['review','Ôn tập','repeat'],['talk','Kỹ năng','mic'],['more','Tôi','user']];
 const ico = n => `<svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${n}"/></svg>`;
 function navActive(){
+  if(ui.view==='play'||(ui.view==='goal'&&/^quest/.test(ui.er||''))) return 'play';   // v64: Ladder Quest là màn chính
   const v=ui.view, kind = v==='session' ? ui.sess?.kind : v==='summary' ? ui.summary?.kind : null;
   if(['talk','dlg','fn','rp','wtask','stask','lread','shadow','sounds','sound'].includes(v)||(v==='quiz'&&ui.qz)) return (ui.qz&&ui.qz.meta&&ui.qz.meta.nav)||'talk';
   if(['thi','exam','vx'].includes(v)) return 'thi';
@@ -2559,7 +2577,10 @@ const learnSeg = cur => `<h1 class="sr-only">${cur==='path'?'Học từ vựng':
    Thi thử khi qua A2. Người đã học lâu thấy đủ; Cài đặt có nút "Hiện tất cả tính năng". Mỗi lần mở khoá báo một lần. */
 const FEAT_NEW = [['talk','Kỹ năng','Luyện nghe, nói, đọc, viết và hội thoại theo cấp của bạn.'],['games','Thử thách','Trò chơi nhanh, thách đấu bạn bè và giải đấu tuần.'],['exam','Thi thử VSTEP','Bài thi rút gọn Nghe + Đọc có tính giờ, trong mục Thử thách.']];
 // v35: không khoá nội dung theo ngày học hay cấp (yêu cầu 3.1 “không khoá nội dung”): mọi tính năng mở ngay từ đầu.
-function featOn(k){ return true; }
+// v52 (spec v2.4 §7): MVP chỉ CEFR Pre-A1 → C2. IELTS/VSTEP/giao tiếp là Target Model "tương lai": tab Ôn thi ẩn,
+// bật lại trong Cài đặt → Nâng cao (hoặc localStorage 'el-future' = '1', dùng cho test phần ôn thi).
+function FUTURE(){ try{ if(localStorage.getItem('el-future')==='1') return true; }catch(e){} return !!(st&&st.set&&st.set.future); }
+function featOn(k){ return k==='thi' ? FUTURE() : true; }
 function featCheck(){ if(!['path','review','more'].includes(ui.view)||ui.modal) return; const fs=st.set.featSeen||(st.set.featSeen=[]);
   for(const [k,t,d] of FEAT_NEW) if(featOn(k)&&!fs.includes(k)){ fs.push(k); save(); setTimeout(()=>celebrate('🔓','Mở khoá: '+t,d),300); return; } }
 // Trang Học: một thanh vị trí (bấm để xem lộ trình), tối đa một lời nhắc.
@@ -2639,7 +2660,7 @@ function viewUnit(){
 
 // Các câu khác trong app có dùng từ này (câu ví dụ của từ khác, bài đọc, ví dụ ngữ pháp): chỉ dạng chia, không từ phái sinh.
 // Ưu tiên câu cùng cấp độ, rồi cấp thấp hơn (dễ hiểu hơn), cuối cùng mới đến cấp cao hơn.
-let _corpus=null; const _ctx={};
+let _corpus=null; const _ctx={}, _xf={};   // _xf: câu transfer theo nút (eXfer)
 const LV_I = id => CONTENT.levels.findIndex(L=>L.id===id);
 function corpus(){
   if(_corpus) return _corpus; _corpus=[];
@@ -2649,12 +2670,18 @@ function corpus(){
   GPOINTS.forEach(p=>p.ex.forEach(e=>_corpus.push({t:e[0],vi:e[1],lv:LV_I(p.level),src:'Ngữ pháp · '+gname(p)})));
   return _corpus;
 }
+// Chỉ mục 3 chữ cái đầu của từng từ → câu trong corpus: lọc trước khi thử regex (corpus đủ 6 cấp có hàng chục nghìn câu).
+let _cix=null;
+function corpusHits(w){ const c=corpus(), k=String(w.word).toLowerCase().split(/[^a-z']+/).find(Boolean)||'';
+  if(k.length<3) return c;
+  if(!_cix||_cix.n!==c.length){ _cix={n:c.length,m:new Map()}; c.forEach((x,i)=>{ for(const t of new Set(String(x.t).toLowerCase().split(/[^a-z']+/))){ if(t.length<3) continue; const p=t.slice(0,3); let a=_cix.m.get(p); if(!a) _cix.m.set(p,a=[]); if(a[a.length-1]!==i) a.push(i); } }); }
+  return (_cix.m.get(k.slice(0,3))||[]).map(i=>c[i]); }
 const inflRe = w => new RegExp('\\b'+w.word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?:s|es|ed|d|ing|er|est)?\\b','i');
 function contextsOf(w,n=3){
   if(_ctx[w.id]) return _ctx[w.id];
   const re=inflRe(w), lv=LV_I(UNIT_OF[w.id].level), rank=x=>x.lv===lv?0:x.lv<lv?1+(lv-x.lv):10+(x.lv-lv);
   const seen=new Set([norm(w.ex),norm(w.ex2||'')]);
-  return _ctx[w.id]=corpus().filter(x=>x.own!==w.id&&re.test(x.t)&&!seen.has(norm(x.t))&&(seen.add(norm(x.t)),true)).sort((a,b)=>rank(a)-rank(b)||a.t.length-b.t.length).slice(0,n);
+  return _ctx[w.id]=corpusHits(w).filter(x=>x.own!==w.id&&re.test(x.t)&&!seen.has(norm(x.t))&&(seen.add(norm(x.t)),true)).sort((a,b)=>rank(a)-rank(b)||a.t.length-b.t.length).slice(0,n);
 }
 function wordCard(w){
   const u=UNIT_OF[w.id], cx=contextsOf(w);
@@ -2730,7 +2757,7 @@ function viewSession(){
         <details class="fbmore"><summary>Xem ví dụ và mẹo nhớ</summary><span lang="en">${highlight(w.ex,w)}</span>
         <span class="hint">${esc(w.exVi||'')}</span>
         ${tipBox(w)}
-        <span class="hint"><span lang="en">${esc(w.word)}</span> (${esc(w.pos)}): ${esc(w.vi)}.</span></details>${a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}</div>`;
+        <span class="hint"><span lang="en">${esc(w.word)}</span> (${esc(w.pos)}): ${esc(w.vi)}.</span></details>${a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${UNIT_OF[ex.wid]?microBox('u:'+UNIT_OF[ex.wid].id,ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3):''}</div>`;
     }
     fb+=xpFloat(s);
     fb+=`<div class="row"><button class="btn primary" data-act="next" id="nextbtn">${s.i+1<s.q.length?'Tiếp tục':'Xem kết quả'} <span class="hint" style="color:inherit;opacity:.7">Enter</span></button>${flagBox()}</div>`;
@@ -3160,6 +3187,8 @@ function viewGames(){
   return `<section class="stack"><span class="eyebrow">Thử thách</span><h1>Chơi mà học</h1><p class="muted note">Mỗi trò vài phút, dùng những từ bạn đã học (chưa đủ thì lấy từ các unit đầu). Câu trả lời cũng tính vào mục tiêu ngày, XP và nhiệm vụ.</p></section>
   ${leaguePanel()}
   ${(()=>{ const ex=(st.exam||[])[0]; return `<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>${ico('exam')} Thi thử VSTEP rút gọn</h3><p class="muted">Nghe + Đọc có tính giờ, B1 → C1, ước tính bậc.${ex?` Lần gần nhất: ${exLevel((ex.l+ex.r)/2)} (Nghe ${ex.l}, Đọc ${ex.r}).`:''}</p></div><div class="row"><button class="btn primary" data-act="exgo">Vào thi</button></div></section>`; })()}
+  <section class="panel stack"><h3>🏰 Ladder Quest</h3><p class="muted">Leo tháp: mỗi đòn đánh là một câu tiếng Anh app chọn từ đúng những gì bạn còn thiếu để lên cấp. Câu càng giúp bạn tiến bộ, càng nhiều xu.</p>
+    <div class="row"><button class="btn primary" data-act="quest">▶ Chơi</button>${st.e&&st.e.q?`<span class="hint">Tầng ${st.e.q.floor} · 🪙 ${st.e.q.coins}</span>`:''}</div></section>
   <div class="goals">
     <div class="panel stack"><h3>⚡ Tốc độ 60 giây</h3><p class="muted">Chọn nghĩa đúng càng nhiều càng tốt trong 60 giây.</p><p class="num">Kỷ lục: ${G.speed||0} từ</p><button class="btn primary" data-act="speed">Chơi</button></div>
     <div class="panel stack"><h3>🧠 Ghép cặp</h3><p class="muted">Ghép 6 từ với nghĩa tiếng Việt, càng nhanh càng tốt.</p><p class="num">Kỷ lục: ${G.match?G.match+' giây':'—'}</p><button class="btn primary" data-act="match">Chơi</button></div>
@@ -3218,6 +3247,8 @@ function startSound(id){ go('sound',{snd:{id,q:soundItems(SND[id]),i:0,ans:null,
 function sAnswer(pick){
   const s=ui.snd, set=SND[s.id], q=s.q[s.i]; if(s.ans||s.done) return;
   const correct=pick===q.k; s.ans={pick,correct}; sfx(correct?'ok':'bad'); tally(correct,xpFor('snd:'+s.id+':'+(q.w||s.i),10,correct));
+  // v67: nghe phân biệt cặp âm = bằng chứng cho nút âm vị ph:<cặp> (mức 1: nhận ra, 2 lựa chọn nên đoán mò 0,5). Lượt làm lại không tính.
+  if(!q.retry) eEv({node:'ph:'+s.id,level:1,ok:correct,g:.5,item:'snd:'+s.id+':'+q.p,qt:'mcq',ctx:'listen-pair',src:'pron',ch:'snd:'+s.id});
   if(!q.retry){ s.res.push({p:q.p,correct}); if(!correct) s.q.push({...sndQ(q.p),retry:true}); }
   render();
 }
@@ -3736,6 +3767,15 @@ async function download(name,text,type){
   catch(e){ toast('Trình duyệt không cho tải file.'); return false; }
   return true;
 }
+// v53 (spec v2.4 §88): sổ bằng chứng trên máy + bản xuất nghiên cứu đầy đủ (quan sát thô, sổ L1, thống kê, luật, provenance).
+function evPanel(){ const e=st.e||{}, v=e.ev||{}, ig=v.integ||{}, n=(v.led||[]).length, crit=(v.led||[]).filter(x=>x.tier>=2).length, kb=Math.round(JSON.stringify(v).length/1024);
+  return `<p class="note">Sổ bằng chứng trên máy này: ${n} sự kiện gần đây (${crit} quan trọng), ${kb} KB. Luật đang dùng: ${esc(ELCORE.rules.id)}.${ig.err?` Lỗi ghi: ${ig.err}.`:''}${ig.fixed?` Đã tự sửa ${ig.fixed} ô lệch.`:''} Bằng chứng ít giá trị được gộp thành thống kê, bằng chứng quan trọng được giữ.</p>
+    ${(()=>{ try{ const a=ELCORE.audit(st,today()), d=a.drift, x=a.est, f=v=>v==null?'chưa đủ dữ liệu':String(v).replace('.',',');
+      return `<p class="hint">Kiểm toán model trên dữ liệu của bạn: ${d.n>=20?`14 ngày qua ở các phần đã Đạt, đúng ${Math.round(d.obs*100)}% so với dự đoán ${Math.round(d.exp*100)}%${d.flag?' — <b>model đang lạc quan quá, app sẽ kiểm lại</b>':' (khớp)'}`:'chưa đủ lượt để kiểm trôi'}. Ước lượng tỉ lệ sai khi đã biết (slip): ${f(x.slip)} (luật dùng 0,1); đúng nhờ đoán: ${f(x.guess)}${x.guessTheory!=null?` (lý thuyết ${f(x.guessTheory)})`:''}. Chỉ báo cáo, không tự đổi luật.</p>`; }catch(e){ return ''; } })()}
+    <div class="row"><button class="btn" data-act="evexport">Tải dữ liệu nghiên cứu đầy đủ</button><button class="btn ghost" data-act="msgo">📏 Đo tiến bộ</button></div>
+    <label class="row" style="gap:8px"><input type="checkbox" data-act="research" ${st.set.research?'checked':''}> <span>Tham gia nghiên cứu: gán nhãn nhóm so sánh (thích ứng / cố định, game / không game) vào dữ liệu nghiên cứu khi bạn đo tiến bộ. Không đổi trải nghiệm học; dữ liệu chỉ rời máy khi bạn tự tải và gửi.</span></label>`; }
+async function exportResearch(){ const d=new Date().toISOString().slice(0,10);
+  await download(`english-ladder-research-${d}.json`,JSON.stringify(ELCORE.research(st),null,1),'application/json'); }
 async function exportBackup(){
   const d=new Date().toISOString().slice(0,10);
   if(await download(`vocab-ladder-${d}.json`,JSON.stringify({app:'vocab-ladder',saved:new Date().toISOString(),state:st},null,1),'application/json')){
@@ -3782,7 +3822,7 @@ function mergeState(a,b){
   for(const k of ['story','cando','dlg','fn','pron','lread','sounds','wtask','stask','oral','gwrite','lis','shadow','rx','pv','med','sp','pa']) x[k]={...(b[k]||{}),...(a[k]||{})};
   { const seen=new Set(); x.exam=[...(a.exam||[]),...(b.exam||[])].filter(e=>{ const k=JSON.stringify(e); return seen.has(k)?false:seen.add(k); }).sort((p,q)=>q.day-p.day).slice(0,10); }
   x.app={seen:Math.max((a.app||{}).seen||0,(b.app||{}).seen||0),vh:((a.app||{}).vh||[]).slice()};
-  x.e=EM?EM.merge(a.e,b.e):((a.e&&(a.e.goals||[]).length?a.e:b.e)||{});   // engine: hợp mục tiêu hai máy
+  x.e=typeof ELCORE!=='undefined'?ELCORE.merge(a.e,b.e):EM?EM.merge(a.e,b.e):((a.e&&(a.e.goals||[]).length?a.e:b.e)||{});   // engine: hợp mục tiêu hai máy
   x.x=XM?XM.merge(a.x,b.x):((a.x&&a.x.attempts||[]).length>=((b.x&&b.x.attempts)||[]).length?a.x:b.x)||{};   // phần ôn thi: mô-đun gộp (lịch sử lấy hợp); chưa nạp thì giữ bản nhiều bài hơn
   { const seen=new Set(); x.ev={...(a.ev||{}),log:[...((b.ev||{}).log||[]),...((a.ev||{}).log||[])].filter(e=>{ const k=JSON.stringify(e); return seen.has(k)?false:seen.add(k); }).sort((p,q)=>p[0]-q[0]).slice(-LOG_MAX)}; }   // bỏ mục trùng: đồng bộ gộp nhiều lần
   return x;
@@ -3833,7 +3873,7 @@ async function syncNow(){
       if(row&&row.rev!==s.rev){ const x=sanitizeState(await readCode(row.data)); if(x&&x.words&&x.units){ st=mergeState(st,x); merged=true; } s.rev=row.rev; }
       if(!row) s.rev=0;
       if(!s.dirty&&row) break;
-      const [p]=await syncRpc('el_push',{k:s.k,d:await makeCode(compactState()),base:s.rev});
+      const [p]=await syncRpc('el_push',{k:s.k,d:await makeCode(syncState()),base:s.rev});
       if(p&&!p.conflict){ s.rev=p.rev; s.dirty=false; break; }
     }
     s.at=Date.now(); syncSet(s);
@@ -3934,6 +3974,7 @@ function viewSettings0(){
     <p class="note">Tiến độ chỉ lưu trong trình duyệt này. Xoá dữ liệu trình duyệt hoặc đổi máy sẽ mất, vì vậy hãy sao lưu định kỳ.${lb!=null?` Lần sao lưu gần nhất: ${today()-lb===0?'hôm nay':`${today()-lb} ngày trước`}.`:' Bạn chưa sao lưu lần nào.'}</p>
     <div class="row"><button class="btn primary" data-act="export">Tải file sao lưu</button><button class="btn" data-act="import">Khôi phục từ file</button>
     <input type="file" id="importfile" accept=".json,application/json" hidden></div>
+    ${typeof ELCORE!=='undefined'?evPanel():''}
     <h3 style="margin-top:6px">Chuyển sang máy khác bằng mã</h3>
     <p class="note">Không muốn dùng file? Sao chép mã sao lưu, gửi cho chính mình (Zalo, email…), rồi dán vào ô dưới đây trên máy kia.</p>
     <div class="row"><button class="btn" data-act="copycode">Sao chép mã sao lưu</button></div>
@@ -3952,6 +3993,7 @@ function viewSettings0(){
   <section class="panel stack"><h3>Tính năng</h3><p class="note">Để app gọn cho người mới: Kỹ năng mở sau 3 ngày học, Thử thách sau 7 ngày, Thi thử khi qua A2.</p><div class="row"><button class="btn" data-act="allfeat">${st.set.allFeat?'Trở lại chế độ gọn':'Hiện tất cả tính năng ngay'}</button></div></section>
   <section class="panel stack"><h3>Dành cho giáo viên</h3><p class="note">Gộp tiến độ cả lớp từ file dữ liệu ẩn danh của học sinh, in bảng theo dõi.</p><div class="row"><button class="btn" data-go="class">${ico('users')} Công cụ lớp học</button></div></section>
   <section class="panel stack"><h3>Nâng cao</h3>
+    <div class="setrow"><span>Mục tiêu tương lai (thử nghiệm): hiện tab Ôn thi và mục tiêu IELTS, VSTEP, giao tiếp. Bản này tập trung vào CEFR Pre-A1 → C2</span><button class="btn" data-act="future" aria-pressed="${FUTURE()}">${FUTURE()?'Tắt':'Bật'}</button></div>
     <div class="setrow"><span>Âm thanh khi trả lời đúng/sai, lên bậc</span><button class="btn" data-act="sfx">${st.set.sfx?'Tắt':'Bật'}</button></div>
     <div class="setrow"><span>Chế độ tập trung: ẩn XP, combo, từ vàng, màn thưởng và chuỗi ngày; giữ phản hồi đúng/sai và lời giải thích ${info('focus')}</span><button class="btn" data-act="focus" aria-pressed="${FOCUS()}">${FOCUS()?'Tắt':'Bật'}</button></div>
     <div class="setrow"><span>Chế độ demo: nút “+1 ngày”, nạp tiến độ mẫu, tab Kiến trúc</span><button class="btn" data-act="demo">${st.set.demo?'Tắt':'Bật'}</button></div>
@@ -4085,7 +4127,7 @@ function viewGSess(){
       const close=a.text!=null&&ex.accept&&lev(gcanon(a.text),gcanon(closest(a.text,ex.accept)))<=2;
       fb=`<div class="fb bad" role="status"><strong>${a.dunno?'Chưa biết — xem đáp án và nhớ lại nhé':`Chưa đúng${close?' — gần đúng, chỉ sai 1–2 chữ':''}`}</strong>${a.text!=null?`<span>Bạn viết: <s lang="en">${esc(a.text)}</s></span>`:''}
         <span>Đáp án: <b lang="en">${esc(gRight(ex))}</b></span>${why?`<p class="why"><b>Vì sao sai:</b> ${esc(why)}</p>`:''}
-        <span class="hint">Nhắc lại: <span lang="en">${esc(p.form[0])}</span> — xem đủ công thức trong bài học.</span>${a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}</div>`; }
+        <span class="hint">Nhắc lại: <span lang="en">${esc(p.form[0])}</span> — xem đủ công thức trong bài học.</span>${a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${microBox('g:'+ex.gid,{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2)}</div>`; }
     fb+=xpFloat(s);
     fb+=`<div class="row"><button class="btn primary" data-act="gnext" id="gnextbtn">${s.i+1<s.q.length?'Tiếp tục':'Xem kết quả'} <span class="hint" style="color:inherit;opacity:.7">Enter</span></button>${flagBox()}</div>`;
   }
@@ -4151,8 +4193,8 @@ function lessonChrome(){ const v=ui.view, app=document.getElementById('app'); if
 function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); renderChrome();
-  if(ui.view==='path'&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={thi:viewThi,goal:viewGoalE,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  if((ui.view==='path'||ui.view==='play')&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
+  const v={thi:viewThi,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   document.getElementById('app').innerHTML=html;
@@ -4170,7 +4212,7 @@ function render(){
     if(s.ans){ const n=document.getElementById('qznextbtn'); n&&n.focus({preventScroll:true}); } }
   if(ui.view==='exam') exArm();
   if(ui.view==='thi'&&XM) try{ XM.after(ui.xr||'hub'); }catch(e){}
-  if(ui.view==='goal'&&EM) try{ EM.after(ui.er||'goals'); }catch(e){}
+  if((ui.view==='goal'||ui.view==='play')&&EM) try{ EM.after(ui.view==='play'?'quest':ui.er||'goals'); }catch(e){}
   if(ui.view==='sound'&&ui.snd&&!ui.snd.done){
     const s=ui.snd;
     if(!s.ans&&s.played!==s.i){ s.played=s.i; say(sndWord(SND[s.id],s.q[s.i]).w); }
@@ -4837,11 +4879,11 @@ function answer(correct,extra={}){
   if(!s.retried.has(k0)&&!extra.dunno){ evCal(ex.guess,correct); const c=s.cal||={sure:[0,0],guess:[0,0]}, x=c[ex.guess?'guess':'sure']; x[0]++; if(correct) x[1]++; }
   s.ans={correct,...extra}; s.snap={w:JSON.stringify(W(ex.wid)),res:s.res.length,q:s.q.length}; const ms=answerMs(ex), due=W(ex.wid).learned&&W(ex.wid).due!=null&&W(ex.wid).due<=today(), first=!s.retried.has(k0); evTime(ex.type,ms);
   if(due){ bump('review'); if(first&&!s.retried.has('r:'+ex.wid)){ s.retried.add('r:'+ex.wid); evRecall(W(ex.wid),correct,ex); evLog(W(ex.wid),ex,correct,ms,true); if(!ex.opts&&!ex.guess&&!extra.dunno&&(W(ex.wid).ivl||1)>=3) srsCal(); } }
-  else if(first&&!extra.dunno) evLog(W(ex.wid),ex,correct,ms,false); s.wrongRun=correct?0:(s.wrongRun||0)+1; grade(ex,correct); if(!TEST_KINDS.includes(s.kind)) sfx(correct?'ok':'bad');
+  else if(first&&!extra.dunno) evLog(W(ex.wid),ex,correct,ms,false); s.wrongRun=correct?0:(s.wrongRun||0)+1; ex._given=extra.text??(extra.picked!=null&&ex.opts?ex.opts[extra.picked]:undefined); ex._rt=ms; grade(ex,correct); if(!TEST_KINDS.includes(s.kind)) sfx(correct?'ok':'bad');
   const key=ex.wid+'|'+ex.dim;
   if(!s.retried.has(key)) evItem(ex.type,UNIT_OF[ex.wid].level,correct);
   if(!s.retried.has(key)) s.res.push({wid:ex.wid,dim:ex.dim,type:ex.type,correct,right:rightAnswer(ex),given:extra.text??(extra.picked!=null?ex.opts[extra.picked]:null)});
-  if(!correct && !TEST_KINDS.includes(s.kind) && !s.retried.has(key)){ s.retried.add(key); s.q.push(build(WORD[ex.wid],ex.dim,{noAudio:true})); }
+  if(!correct && !TEST_KINDS.includes(s.kind) && !s.retried.has(key)){ s.retried.add(key); s.q.push(Object.assign(build(WORD[ex.wid],ex.dim,{noAudio:true}),{retry:true})); }
   else s.retried.add(key);
   render();
 }
@@ -4909,7 +4951,7 @@ function gAnswer(correct,extra={}){
   srsStep(g,correct,G_TYPED.includes(ex.type)); bump('gram'); if(correct&&G_TYPED.includes(ex.type)) bump('typed'); tally(correct, xpFor(xpKind(s.kind)+':g:'+ex.gid+':'+ex.key,G_TYPED.includes(ex.type)?15:10,correct,extra.dunno)); if(!TEST_KINDS.includes(s.kind)) sfx(correct?'ok':'bad');
   const key=ex.gid+'|'+ex.dim+'|'+ex.key, given=extra.text??(extra.picked!=null?ex.opts[extra.picked]:null);
   if(!s.retried.has(key)){ evItem(ex.type,GPT[ex.gid].level,correct);
-    eEv({node:'g:'+ex.gid,level:{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'g:'+key,qt:ex.type,ctx:ex.dim}); }
+    eEv({node:'g:'+ex.gid,level:{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'g:'+key,qt:ex.type,ctx:ex.dim,src:'gram',ch:'g:'+ex.gid,given:given==null?undefined:String(given),rt:answerMs(ex)||undefined}); }
   if(!s.retried.has(key)) s.res.push({gid:ex.gid,dim:ex.dim,type:ex.type,correct,right:gRight(ex),given,prompt:ex.type==='gfc'?'Chọn câu đúng ngữ pháp':ex.type==='gor'?'Sắp xếp câu':ex.type==='gdi'?'Nghe và chép lại câu':ex.prompt,why:correct?'':gExplain(ex,given)});
   if(!correct&&!TEST_KINDS.includes(s.kind)&&!s.retried.has(key)){ s.retried.add(key); s.q.push(gbuild(GPT[ex.gid],ex.dim)); }
   else s.retried.add(key);
@@ -5046,7 +5088,7 @@ document.addEventListener('click',e=>{
     case 'classshare': return shareText(`${APP_NAME}: ${TAGLINE}. Cả lớp mình dùng app này để học từ vựng và ngữ pháp, mọi bài học miễn phí, không cần tài khoản.`,'class');
     case 'chcopy': { const c=ui.game&&ui.game.code; try{ navigator.clipboard.writeText(c).then(()=>toast('Đã sao chép mã thách đấu.'),()=>toast('Hãy chọn và sao chép mã trong ô.')); }catch(e){ toast('Hãy chọn và sao chép mã trong ô.'); } return; }
   }
-  if(d.go){ ui.sess=null; ui.gs=null; if(d.go==='review') return go('review'); return go(d.go); }
+  if(d.go){ ui.sess=null; ui.gs=null; if(d.go==='review') return go('review'); if(d.go==='goal') return go('goal',{er:'goals'}); return go(d.go); }   // Mục tiêu luôn mở danh sách mục tiêu, không mở lại màn engine cũ
   if(d.unit){ ui.sess=null; return go('unit',{unitId:d.unit}); }
   if(d.word) return go('word',{wordId:d.word});
   if(d.snd) return startSound(d.snd);
@@ -5056,6 +5098,9 @@ document.addEventListener('click',e=>{
   if(d.gpick!=null){ const ex=ui.gs.q[ui.gs.i]; return gAnswer(+d.gpick===ex.ans,{picked:+d.gpick}); }
   if(d.gord!=null){ ui.gs.ord.push(+d.gord); return render(); }
   if(d.gunord!=null){ ui.gs.ord.splice(+d.gunord,1); return render(); }
+  if(d.act==='micro') return microGo(d.r);
+  if(d.act==='quest') return go('goal',{er:'quest'});
+  if(d.act==='msgo') return go('goal',{er:'measure'});
   if(d.act&&d.act[0]==='g'&&gAct(d)!==false) return;
   if(d.flag!=null) return addFlag(+d.flag);
   if(d.rpick!=null){ const [i,k]=d.rpick.split(':').map(Number); if(!ui.read.done){ ui.read.picks[i]=k; render(); } return; }
@@ -5114,9 +5159,11 @@ document.addEventListener('click',e=>{
     case 'goalall': ui.goalAll=!ui.goalAll; return render();
     case 'allunits': ui.allUnits[d.l]=true; return render();
     case 'focus': st.set.focus=!st.set.focus; save(); toast(st.set.focus?'Đã bật chế độ tập trung.':'Đã tắt chế độ tập trung.'); return render();
+    case 'future': st.set.future=!st.set.future; if(!st.set.future) try{ localStorage.removeItem('el-future'); }catch(e){} save(); toast(FUTURE()?'Đã hiện tab Ôn thi và mục tiêu tương lai.':'Đã ẩn tab Ôn thi: tập trung CEFR.'); return render();
     case 'sfx': st.set.sfx=!st.set.sfx; save(); sfx('ok'); toast(st.set.sfx?'Đã bật âm thanh.':'Đã tắt âm thanh.'); return render();
     case 'demo': st.set.demo=!st.set.demo; save(); toast(st.set.demo?'Đã bật chế độ demo.':'Đã tắt chế độ demo.'); return render();
     case 'export': return exportBackup();
+    case 'evexport': return exportResearch();
     case 'import': return document.getElementById('importfile').click();
     case 'ics': return downloadReminder();
     case 'report': return exportReport();
@@ -5170,6 +5217,7 @@ document.addEventListener('click',e=>{
 // Bước 1 của speaking: phát ngay khi mở câu
 document.addEventListener('click',e=>{ const b=e.target.closest('[data-rate],[data-act="speak"]'); if(b&&ui.view==='speak'&&ui.speak&&ui.speak.i<ui.speak.items.length&&ui.speak.step===0) say(ui.speak.items[ui.speak.i].ex); });
 
+document.addEventListener('change',e=>{ const t=e.target; if(t&&t.dataset&&t.dataset.act==='research'){ st.set.research=!!t.checked; save(); } });
 document.addEventListener('toggle',e=>{ const d=e.target; if(d&&d.dataset&&d.dataset.sec&&ui.setOpen) ui.setOpen[d.dataset.sec]=d.open; if(d&&d.dataset&&d.dataset.plan) ui.planOpen=d.open; if(d&&d.dataset&&d.dataset.cdg) (ui.cdOpen||(ui.cdOpen={}))[d.dataset.cdg]=d.open; },true);
 document.addEventListener('submit',e=>{
   e.preventDefault();
@@ -5531,7 +5579,7 @@ const detailUrl = L => `data/lv-${L}.${DETAIL_HASH[L]}.json`;
 function detailMerge(d){
   for(const [id,x] of Object.entries(d.units||{})){ const u=UNIT_BY_ID[id]; if(u) Object.assign(u,x); }
   for(const [id,x] of Object.entries(d.words||{})){ const w=WORD[id]; if(w){ Object.assign(w,x); delete w._f; } }
-  _corpus=null; for(const k of Object.keys(_ctx)) delete _ctx[k];   // bộ nhớ tạm tính từ câu ví dụ, bài đọc
+  _corpus=null; _cix=null; for(const k of Object.keys(_ctx)) delete _ctx[k]; for(const k of Object.keys(_xf)) delete _xf[k];   // bộ nhớ tạm tính từ câu ví dụ, bài đọc
 }
 function detailLoad(L){ if(DETAIL.ready.has(L)) return Promise.resolve();
   return DETAIL.p[L] ||= fetch(detailUrl(L)).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); })
@@ -6160,7 +6208,7 @@ function vxSave(){ const V=ui.vx, me=st.me||(st.me={}), h=me.vx||(me.vx=[]); if(
 // Mỗi phần thi thử là một bằng chứng cho nút bài thi (xw:vstep-t1/t2, xs:vstep-p1..p3) ở mức 3/4/5 = ngưỡng bậc 3/4/5 (4 / 6 / 8,5 điểm).
 function vxEvidence(V){ if(typeof ELCORE==='undefined') return; const t=today();
   const parts=V.mode==='w'?['w1','w2'].map((k,i)=>{ const x=vxBand(V.self[k],4); return ['xw:vstep-t'+(i+1),x==null?null:vxWChecks(k,V.text[k]||'').ok?x:Math.min(x,4)]; }):['s1','s2','s3'].map((k,i)=>['xs:vstep-p'+(i+1),vxBand(V.self[k]||[],5)]);
-  for(const [node,sc] of parts){ if(sc==null) continue; [[3,4],[4,6],[5,8.5]].forEach(([level,thr])=>ELCORE.ev(st,{node,level,ok:sc>=thr,w:2,only:true,qt:'vx'},t)); } }
+  for(const [node,sc] of parts){ if(sc==null) continue; [[3,4],[4,6],[5,8.5]].forEach(([level,thr])=>ELCORE.ev(st,{node,level,ok:sc>=thr,w:2,only:true,qt:'vx',src:'perf',ch:'vx'},t)); } }
 // ---------- Thi thử Viết/Nói IELTS (M6) + bài mẫu chú thích band ----------
 // Đề và bài mẫu là dữ liệu (content/ws/*.json → WS_JSON, tải khi cần). Dùng chung hẹn giờ, ghi âm, máy chép lời với thi thử VSTEP.
 // Tự chấm 4 tiêu chí công khai của IELTS ở thang band 4–9, so với bài mẫu có chú thích; máy chấm luật chấm cùng bài (engine/grader.ts).
@@ -6242,7 +6290,7 @@ function ixSave(V,me,h){ let b;
 function ixEvidence(V,b){ if(typeof ELCORE==='undefined') return; const t=today();
   const nodes=V.mode==='w'?[V.ex==='ielts-ac'?'xw:ielts-t1-ac':'xw:ielts-t1-gt','xw:ielts-t2']:['xs:ielts-p1','xs:ielts-p2','xs:ielts-p3'];
   const per=V.mode==='w'?[ixTask(V.self.w1,true),ixTask(V.self.w2,true)]:nodes.map(()=>b);
-  nodes.forEach((node,i)=>{ const sc=per[i]; if(sc==null) return; [[3,4.5],[4,5.5],[5,7]].forEach(([level,thr])=>ELCORE.ev(st,{node,level,ok:sc>=thr,w:2,only:true,qt:'ix'},t)); }); }
+  nodes.forEach((node,i)=>{ const sc=per[i]; if(sc==null) return; [[3,4.5],[4,5.5],[5,7]].forEach(([level,thr])=>ELCORE.ev(st,{node,level,ok:sc>=thr,w:2,only:true,qt:'ix',src:'perf',ch:'ix'},t)); }); }
 const vxLast = (m,ex) => ((st.me||{}).vx||[]).find(x=>x.m===m&&(x.ex||'')===(ex||''));
 
 // ---------- Câu “Tôi có thể…”, móc nối, sự kiện ----------
@@ -6701,7 +6749,13 @@ GLOSSARY.cefr[1]+=' Dưới A1 còn có Pre-A1 (người mới tinh): app có ph
    hướng dẫn cài cho mọi máy, rung nhẹ khi trả lời đúng, gợi ý giọng đọc tốt hơn, trang “Về app” minh bạch, thẻ chia sẻ tiến độ. */
 
 // 1. Bắt đầu 1 chạm: bài đầu tiên ngay, mục tiêu hỏi sau (lời nhắc “Cho app biết bạn học để làm gì” đã có sau 2 ngày).
-function quickStart(){ st.onboarded=true; st.me.since??=today(); save(); evc('onb:quick'); const cu=currentUnit(); return go('learn',{unitId:cu.id,learn:{uid:cu.id,i:0}}); }
+function quickStart(){ st.onboarded=true; st.me.since??=today(); save(); evc('onb:quick'); autoGoalOnce('cefr-'+currentUnit().level.toLowerCase(),'start'); const cu=currentUnit(); return go('learn',{unitId:cu.id,learn:{uid:cu.id,i:0}}); }
+// v64 goal-first: mọi lối vào đều có mục tiêu. "Bắt đầu" = bài dò ngắn → app tự đặt mục tiêu CEFR kế tiếp → màn chính là tháp.
+function startPlay(){ st.onboarded=true; st.me.since??=today(); save(); evc('onb:play'); return go('goal',{er:'diag/quick'}); }
+function startPreA1(){ st.onboarded=true; st.me.since??=today(); save(); evc('onb:pa'); autoGoalOnce('cefr-pre-a1','start'); return go('prea1'); }
+// Đặt mục tiêu khi người học chưa có (engine nạp lười nên chờ mô-đun). Chỉ một lần: người học tự bỏ hết mục tiêu thì không đặt lại.
+function autoGoalOnce(id,why){ if(st.set.autoGoal) return; emLoad(true).then(m=>{ if(st.set.autoGoal) return; st.set.autoGoal=1; save();
+  if(m.autoGoal(id,'auto')){ if(why==='old') toast('Lộ trình giờ đi theo mục tiêu CEFR '+id.slice(5).toUpperCase()+'. Đổi ở Tôi → Mục tiêu.'); render(); } }).catch(()=>{}); }
 
 // 2. Hướng dẫn cài theo từng loại máy (kể cả khi trình duyệt không tự hiện nút cài).
 const DEV = () => { const u=typeof navigator!=='undefined'?navigator.userAgent:''; return IS_IOS?'ios':/Android/i.test(u)?'android':'desktop'; };
@@ -6776,9 +6830,9 @@ async function shareCard(){ try{
 }catch(e){ if(!e||e.name!=='AbortError') toast('Không tạo được ảnh trên trình duyệt này.'); } }
 
 // Điều hướng, lối vào và mở nhanh từ biểu tượng (manifest shortcuts: ?go=review|talk|prea1)
-DETAIL_SAFE_VIEW.add('install'); DETAIL_SAFE_VIEW.add('about'); ['quickstart','igh','sharecard'].forEach(a=>DETAIL_SAFE_ACT.add(a)); DETAIL_SAFE_GO.add('install'); DETAIL_SAFE_GO.add('about');
+DETAIL_SAFE_VIEW.add('install'); DETAIL_SAFE_VIEW.add('about'); ['quickstart','startplay','startpa','igh','sharecard'].forEach(a=>DETAIL_SAFE_ACT.add(a)); DETAIL_SAFE_GO.add('install'); DETAIL_SAFE_GO.add('about');
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('button'); if(!t) return;
-  switch(t.dataset.act){ case 'quickstart': return quickStart(); case 'igh': st.set.installGuideHide=true; save(); return render(); case 'sharecard': return shareCard(); } });
+  switch(t.dataset.act){ case 'quickstart': return quickStart(); case 'startplay': return startPlay(); case 'startpa': return startPreA1(); case 'igh': st.set.installGuideHide=true; save(); return render(); case 'sharecard': return shareCard(); } });
 const _viewMore29 = viewMore; viewMore = function(){ const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
   return _viewMore29().replace('<div class="units">',`<div class="row"><button class="btn" data-act="sharecard">📤 Chia sẻ thẻ tiến độ</button></div>\n  <div class="units">`)
     .replace(/(<\/div>\s*)$/, `${IS_STANDALONE()?'':it('install','download','Cài lên máy','Hướng dẫn cho iPhone, Android, máy tính: mở một chạm, dùng khi mất mạng')}${it('about','info','Về English Ladder','Cam kết, nội dung hiện có, mã nguồn, góp ý')}$1`); };
@@ -6792,15 +6846,19 @@ try{ const g=new URLSearchParams(location.search).get('go'); if(st.onboarded&&['
 const NEWBIE = () => st.days.length<3 && UNITS.filter(u=>U(u.id).passed).length<2;
 
 // 1. Màn chào: Tí, một câu, một nút chính. Kiểm tra trình độ và chuyển tiến độ là lối phụ.
+// Nút màn chào (giống bản vẽ sẵn trong index.html): mặc định học CEFR; bật mục tiêu tương lai thì có thêm "Bắt đầu ôn thi".
+const helloActs = () => FUTURE()
+  ? '<button class="btn primary" data-act="xstart">Bắt đầu ôn thi</button><button class="btn" data-act="quickstart">Học tiếng Anh nền tảng A1 → C2</button>'
+  : '<button class="btn primary" data-act="startplay">Bắt đầu</button><button class="btn" data-act="startpa">Mới tinh: khởi động Pre-A1</button>';
 const _viewWelcome30 = viewWelcome;
 viewWelcome = function(){ const h=_viewWelcome30();
   if(ui.wz) return h.replace(/<span class="eyebrow">Chào mừng · bước \d\/3<\/span><div class="dots"[^>]*>.*?<\/div>/,'').replace(/data-act="wz" data-s="1"/,'data-act="wz" data-s="0"');
   const restore=(/<details class="panel"><summary>Đã học ở máy khác[\s\S]*?<\/details>/.exec(h)||[''])[0].replace('<details class="panel">','<details class="panel hello-more">').replace(/<summary>[^<]*<\/summary>/,'<summary>Đã học trên máy khác? Chuyển tiến độ</summary>');
   // v35: cùng bố cục với màn chào tĩnh trong index.html (vẽ trước khi app.js nạp xong), nên khi app vẽ lại không xô lệch bố cục.
-  return `<section class="hello"><h1>Ôn IELTS và VSTEP miễn phí</h1>
-    <p class="muted">Biết band ước tính từng kỹ năng, học theo kế hoạch tới ngày thi.<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
+  return `<section class="hello"><h1>${FUTURE()?'Ôn IELTS và VSTEP miễn phí':'Tiếng Anh từ con số 0 tới C2'}</h1>
+    <p class="muted">${FUTURE()?'Biết band ước tính từng kỹ năng, học theo kế hoạch tới ngày thi.':'Chơi game leo tháp: mỗi đòn đánh là một câu tiếng Anh. App tự tìm chỗ bạn còn thiếu và chỉ cho học đúng phần đó, tới khi có bằng chứng bạn đạt cấp.'}<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
   <p class="hint hello-trust">Bản thử chưa thu tiền · Không quảng cáo bên thứ ba · Không bán dữ liệu · <button class="linkbtn" data-go="about">Về app</button></p>
-  <div class="actbar hello-act"><button class="btn primary" data-act="xstart">Bắt đầu ôn thi</button><button class="btn" data-act="quickstart">Học tiếng Anh nền tảng A1 → C2</button></div>
+  <div class="actbar hello-act">${helloActs()}</div>
   ${restore}`; };
 
 // 2. Thẻ từ gọn: từ, nghe, phiên âm, nghĩa, một câu ví dụ, lưu ý. Còn lại để “Xem thêm” (Sổ từ vẫn dùng thẻ đầy đủ).
@@ -8136,6 +8194,73 @@ CHANGELOG.unshift({v:50,d:'2026-10-03',t:'Thi thử Viết và Nói IELTS, bài 
   'Trước khi tự chấm, đọc bài mẫu band 5,0 / 6,5 / 7,5 cho đúng loại bài, mỗi bài có chú thích theo 4 tiêu chí (trích chính câu trong bài) và cách lên band tiếp theo. VSTEP Viết cũng có bài mẫu điểm 4,5 / 6,5 / 8,5.',
   'Tự chấm 4 tiêu chí công khai của IELTS ở thang band; máy chấm luật chấm cùng bài để đối chiếu. Kết quả đưa vào mức sẵn sàng của mục tiêu IELTS.',
   '12 đề Viết, 4 bộ đề Nói do app soạn theo định dạng công khai; band là ước tính, không phải điểm chính thức.']});
+CHANGELOG.unshift({v:67,d:'2026-10-08',t:'Bản đồ năng lực đầy đủ hơn',big:false,items:[
+  'Phát âm (26 cặp âm) và chức năng giao tiếp (chào hỏi, đề nghị, xin lỗi…) giờ là năng lực riêng trong bản đồ: luyện cặp âm, bài chức năng và hội thoại đều được ghi làm bằng chứng.',
+  'Can-Do về vốn từ theo chủ đề mở khi bạn đã đạt khoảng 80% số unit của nó: nhiều đường tới cùng một mục tiêu, không bắt học đủ từng unit.',
+  'Mỗi câu học được ghi kèm phiên bản nội dung của chính câu đó, để khi câu được sửa vẫn biết bằng chứng nào đến từ bản nào.']});
+CHANGELOG.unshift({v:66,d:'2026-10-08',t:'Đánh giá công bằng hơn',big:false,items:[
+  'Muốn Đạt một phần, bạn cần đúng ở ít nhất 2 câu khác nhau: thuộc lòng một câu không còn đủ.',
+  'Đúng câu khó hơn cấp được tính nặng hơn, sai câu dễ tính nặng hơn (câu thi theo độ khó đã hiệu chỉnh).',
+  'Khi bạn mệt (đúng ít dần, chậm dần trong cùng một lượt), app đề nghị nghỉ và tính các lỗi lúc đó nhẹ hơn.',
+  'Tôi → Dữ liệu nghiên cứu: app tự kiểm xem đánh giá có đang lạc quan quá không, và ước lượng tỉ lệ nhầm tay / đoán mò từ chính dữ liệu của bạn.']});
+CHANGELOG.unshift({v:65,d:'2026-10-08',t:'Sửa đúng chỗ hổng',big:false,items:[
+  'Trong tháp, mỗi câu được chọn theo đúng loại lỗ hổng của bạn: chưa biết thì hỏi nhận ra, nhận ra rồi thì tự gõ, nhớ rồi thì sửa lỗi, thiếu phần nền thì đưa phần nền lên trước.',
+  '"Bước tiếp theo" tính nguy cơ quên từ chính lịch ôn của bạn (FSRS), không còn ước lượng thô. Rương trong tháp ưu tiên phần dễ quên và quan trọng để nhớ lâu.',
+  'Đạt mục tiêu CEFR giờ cần dùng được các năng lực quan trọng ở câu mới chưa gặp; năng lực đã hết câu mới để thử được miễn và ghi rõ.',
+  '"Đúng nhưng còn chậm" so với tốc độ của chính bạn, không theo một ngưỡng chung.']});
+CHANGELOG.unshift({v:64,d:'2026-10-08',t:'Chơi là màn chính',big:true,items:[
+  'Mở app là vào tháp Ladder Quest (tab Chơi). Bài học, ôn tập, kỹ năng vẫn ở các tab còn lại.',
+  'Người mới: bấm "Bắt đầu" để làm bài dò ngắn (3–5 phút); app tự đặt mục tiêu là cấp CEFR kế tiếp của bạn. Đổi ở Tôi → Mục tiêu.',
+  'Đã học mà chưa có mục tiêu: app đặt mục tiêu theo cấp bạn đang học (một lần, có báo).']});
+CHANGELOG.unshift({v:63,d:'2026-10-08',t:'Đo tiến bộ thật',big:false,items:[
+  'Mới: "Đo tiến bộ" (Lộ trình hôm nay, hoặc Tôi → Dữ liệu nghiên cứu). 12 câu ngữ cảnh mới giữ riêng, không xuất hiện khi luyện hay chơi; đo lúc bắt đầu, sau 14 ngày học, rồi sau 7 và 30 ngày để xem có nhớ lâu.',
+  'Tuỳ chọn tham gia nghiên cứu: chỉ gán nhãn nhóm so sánh vào dữ liệu bạn tự tải, không đổi trải nghiệm học.']});
+CHANGELOG.unshift({v:62,d:'2026-10-08',t:'Ladder Quest',big:true,items:[
+  'Trò chơi mới trong Thử thách: leo tháp tiếng Anh. Mỗi đòn đánh, mỗi lần trinh sát, mở rương hay đánh trùm là một câu tiếng Anh app chọn từ đúng những gì bạn còn thiếu để lên cấp.',
+  'Xu tỉ lệ với giá trị học: trùm ở câu chưa gặp, phần sắp quên và câu mới cho nhiều xu; câu đã thuộc cho rất ít. Trại cho bí kíp ngắn và hồi một tim.',
+  'Không tính giờ. Mỗi tầng khoảng 8 câu, có điểm dừng; thắng thua trong game không đổi đánh giá năng lực, chỉ câu trả lời mới được tính.']});
+CHANGELOG.unshift({v:61,d:'2026-10-08',t:'Bí kíp 60 giây',big:true,items:[
+  'Sai một câu lẻ thì app chỉ ghi nhận, không làm bạn mất mạch. Sai lặp lại, hoặc cứ trả lời cùng một đáp án sai, app mời "Bí kíp 60 giây": cách dùng, lỗi người Việt hay gặp, 3 ví dụ, rồi 3 câu kiểm tra và quay lại đúng câu đang làm.',
+  'Nếu app đã kiểm chứng lỗi đến từ phần nền còn hổng, app đề nghị học phần nền 1 phút trước, vì luyện tiếp phần trên chỉ thêm lỗi.',
+  'Mỗi phần tối đa một bí kíp mỗi ngày. Câu kiểm tra ngay sau bí kíp được tính nhẹ (vừa được nhắc), app sẽ kiểm lại sau ở câu khác.']});
+CHANGELOG.unshift({v:60,d:'2026-10-08',t:'Biết thật, không chỉ thuộc bài',big:true,items:[
+  'Phần nào bạn đã Đạt khi luyện, app sẽ thử ở câu mới chưa gặp: câu điền từ lấy từ bài đọc khác trong app, câu ngữ pháp tự gõ hoặc sửa lỗi bạn chưa làm. 3 câu, không tốn năng lượng.',
+  'Đúng ở câu mới là bằng chứng mạnh nhất rằng bạn biết thật. Trượt 2 lần ở câu mới thì phần đó được mở lại để luyện thêm ở nhiều ngữ cảnh.',
+  'Khối "Sẵn sàng" và màn "Vì sao?" hiện bao nhiêu năng lực đã dùng được ở câu mới.']});
+CHANGELOG.unshift({v:59,d:'2026-10-08',t:'Bước tiếp theo thông minh hơn',big:true,items:[
+  '"Bước tiếp theo" giờ so mọi việc bạn có thể làm (học phần mới, ôn phần sắp quên, kiểm tra nhanh, xác minh) bằng một điểm lợi ích, rồi chọn việc giúp bạn tiến nhanh nhất so với công sức. "Vì sao?" hiện điểm từng thành phần.',
+  'App phân biệt loại lỗ hổng: chưa biết, nhận ra nhưng chưa nhớ ra, nhớ nhưng chưa dùng được, thiếu phần nền, yếu ở một ngữ cảnh, chưa dùng được ở câu mới, đang quên, đúng nhưng còn chậm.',
+  'Phần đã đạt mà bạn sai 2 lần liên tiếp sẽ quay lại lộ trình.']});
+CHANGELOG.unshift({v:58,d:'2026-10-08',t:'Chẩn đoán không bao giờ dừng',big:true,items:[
+  'Lộ trình hôm nay có ô "Kiểm tra nhanh" (3 câu, không tốn năng lượng) chỉ khi một vài câu có thể đổi kết luận: khám phá phần mới, xác nhận phần app đoán bạn đã biết, quyết định phần sát ngưỡng, xác minh phần bị mở lại. Tối đa 6 lần mỗi ngày; đủ chắc thì app không hỏi thêm.',
+  'Hay sai một phần? App kiểm tra phần nền của nó. Nếu phần nền còn hổng, đó là nguyên nhân: lộ trình đưa phần nền lên trước thay vì bắt bạn học lại phần sau.',
+  'Trả lời đúng một câu ở phần app đoán bạn đã biết không còn làm mất "Đạt".']});
+CHANGELOG.unshift({v:57,d:'2026-10-08',t:'Bản đồ năng lực hiểu tiếng Anh sâu hơn',items:[
+  'Mỗi phần học nói rõ nó gồm gì, thuộc năng lực nào (từ vựng, ngữ pháp, âm, nghe/đọc, nói/viết, tương tác, ngữ dụng, diễn ngôn) và cần chứng minh bằng loại bài nào.',
+  'Điểm ngữ pháp dễ nhầm được liên kết với nhau (ví dụ quá khứ đơn và hiện tại hoàn thành), kèm lỗi người Việt hay gặp; xem trong "Vì sao?".',
+  'Mỗi quan hệ "cần học trước" trong bản đồ năng lực có lý do và phiên bản; bản đồ được kiểm tự động.']});
+CHANGELOG.unshift({v:56,d:'2026-10-08',t:'Học lại ít hơn sau bài chẩn đoán',items:[
+  'Cấp bạn đã trả lời đúng trong bài chẩn đoán được coi là đã biết (đánh dấu "suy ra", app vẫn kiểm lại khi bạn chơi), không bắt học lại từ đầu.',
+  'Trả lời sai một câu khó (dùng từ, viết câu) không còn làm giảm mức "nhận ra / nhớ ra" của bạn: không dùng được chưa có nghĩa là không nhận ra.',
+  'Kiểm chứng engine bằng mô phỏng hàng nghìn người học giả lập (docs/sim-report.md).']});
+CHANGELOG.unshift({v:55,d:'2026-10-08',t:'Đo thành thạo chặt hơn và biết tự sửa',big:true,items:[
+  'Ngưỡng tin cậy tính chính xác thay cho ước lượng gần đúng, nên app không còn kết luận "Đạt" sớm khi mới có vài câu đúng.',
+  'Một lỗi lẻ không làm mất Đạt. Nhưng nếu đã Đạt mà sai 2 lần ở câu mới chưa gặp, app "mở lại" phần đó và cần bạn đúng ở câu mới để xác nhận lại.',
+  'Dùng tự do / có kiểm soát (mức 4–5) chỉ Đạt khi đã đúng ít nhất một lần ở câu mới, không chỉ ở câu đã luyện.',
+  'Chọn cùng một đáp án sai nhiều lần: app ghi nhận có thể bạn đang hiểu sai, hiện trong "Vì sao?".',
+  'Khi bạn tiến bộ sau một thời gian sai nhiều (hoặc quên sau thời gian đúng nhiều), app theo kịp nhanh hơn.']});
+CHANGELOG.unshift({v:54,d:'2026-10-08',t:'Nút "Vì sao?": app giải thích mọi kết luận',big:true,items:[
+  'Mỗi năng lực, mỗi bước tiếp theo và mỗi mục tiêu có nút "Vì sao?": xem mastery, cận dưới tin cậy, ngưỡng cần, số lượt, số ngữ cảnh, dạng câu, luật đang dùng và các bằng chứng gần nhất.',
+  'App ghi lại mỗi quyết định quan trọng (đạt hoặc mất Đạt một năng lực, kiểm tra bỏ qua, mức sẵn sàng, bước tiếp theo, kết quả chẩn đoán) cùng bằng chứng dẫn tới nó; bằng chứng đó được giữ lâu dài.',
+  'Trang mục tiêu CEFR nói rõ "chưa đạt vì còn thiếu…" thay cho một con số phần trăm.']});
+CHANGELOG.unshift({v:53,d:'2026-10-08',t:'Sổ bằng chứng: app nhớ vì sao nó kết luận',big:true,items:[
+  'Mỗi câu trả lời giờ đi qua ba bước: ghi lại đúng điều đã xảy ra (có dùng gợi ý, làm lại, thời gian), đánh giá thành bằng chứng có trọng số, rồi mới cập nhật mức thành thạo. Đúng nhờ gợi ý hoặc ở lượt làm lại được tính nhẹ hơn.',
+  'App giữ một sổ bằng chứng: bằng chứng quan trọng (làm đổi kết luận, sát ngưỡng, mâu thuẫn với kết luận cũ) được giữ lâu; bằng chứng lặp lại ít giá trị được gộp thành thống kê. Dung lượng không tăng mãi theo số câu bạn làm.',
+  'Đồng bộ hai máy không còn bỏ bằng chứng của một máy: mỗi máy giữ phần thống kê riêng rồi cộng lại.',
+  'Cài đặt → Sao lưu: xem tình trạng sổ bằng chứng, tải dữ liệu nghiên cứu đầy đủ.']});
+CHANGELOG.unshift({v:52,d:'2026-10-08',t:'Tập trung vào CEFR: Pre-A1 tới C2',big:true,items:[
+  'App tập trung vào một mục tiêu: tiếng Anh tổng quát theo khung CEFR, từ Pre-A1 (người mới tinh) tới C2. Thêm mục tiêu "Khởi động Pre-A1"; bài Pre-A1 giờ là bằng chứng năng lực như mọi bài khác.',
+  'Tab Ôn thi và các mục tiêu IELTS, VSTEP, giao tiếp tạm ẩn (vẫn giữ nguyên dữ liệu và bằng chứng). Muốn dùng: Cài đặt → Nâng cao → Mục tiêu tương lai.']});
 CHANGELOG.unshift({v:51,d:'2026-10-03',t:'Năng lượng và gói Super (bản thử, chưa thu tiền)',big:true,items:[
   'Năng lượng theo lượt như Duolingo: mỗi bài mới hoặc luyện tập tốn 1 lượt (tối đa 5, hồi 1 lượt mỗi 2 giờ), đúng hay sai không mất thêm. Số năng lượng ở góc trên màn hình.',
   'Không tốn năng lượng: ôn tập đến hạn, bài chẩn đoán, kiểm tra cấp, bài làm thật (hội thoại, viết/nói theo đề, thi thử) và đề thi thử.',
@@ -8189,7 +8314,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.1c579b6716.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.d67aa83691.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8217,16 +8342,22 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.3768ea79dd.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.0f35a67219.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
-  go:r=>go('goal',{er:r}),
+  go:r=>r==='quest'?go('play'):go('goal',{er:r}),
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),
   cando:id=>{ const c=CANDO.find(x=>x.id===id); if(!c) return null; const p=cdProg(c); return {p:p.p,m:p.m,lb:p.lb,k:p.k,need:p.need}; },
   probe:node=>eProbe(node),
+  transfer:node=>eXfer(node),
+  micro:node=>eMicroCard(node),
+  back:()=>microBack(),
+  research:()=>!!(st.set&&st.set.research),
   dayInfo:()=>{ const dw=dueWords().length, dg=dueG().length, t=today();
     const lastPerf=Math.max(0,...Object.values(st.dlg||{}).map(d=>d&&d.day||0),...((st.x&&st.x.attempts)||[]).filter(a=>a.kind==='mock').map(a=>a.day||0),...((st.me&&st.me.vx)||[]).map(v=>v&&v.day||0));
-    return {reviewItems:dw+dg, reviewMins:(dw?reviewMin(dw):0)+dg*2, mins:Math.round((st.x&&st.x.mins)||20), perfDue:t-lastPerf>=7}; },
+    const F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null, cards=[...dueWords().map(w=>W(w.id)),...dueG().map(p=>G(p.id))].filter(c=>c&&c.fs!=null&&c.fl!=null);
+    const lost=F&&cards.length?Math.round(cards.reduce((s,c)=>s+1-F.retrievability(Math.max(0,t-c.fl),c.fs),0)*100)/100:(dw+dg?null:0);
+    return {reviewItems:dw+dg, reviewMins:(dw?reviewMin(dw):0)+dg*2, mins:Math.round((st.x&&st.x.mins)||20), perfDue:t-lastPerf>=7, lost}; },
   // Người chấm Viết/Nói (M5, src/engine/grader.ts): tự chấm + máy chấm luật của thi thử VSTEP, máy chấm luật của bài viết theo đề.
   grades:()=>{ const out=[];
     for(const v of ((st.me&&st.me.vx)||[])){ if(!v||(v.m!=='w'&&v.m!=='s')||!(v.day>0)) continue; const skill=v.m==='w'?'W':'S';
@@ -8238,6 +8369,12 @@ const EHOST = {
       const p=E_PE.get(k); if(p!=null) out.push({by:'rule',skill:'W',day:w.day,v:p,scale:'cefr',src:'Bài viết theo đề'}); }
     return out; },
   exam:()=>({resp:(st.x&&st.x.resp)||[], real:(st.x&&st.x.real)||[]}),
+  future:()=>FUTURE(),
+  // §58: khả năng nhớ trung bình (FSRS) của các thẻ đã học thuộc một nút: cụm từ (unit) hoặc điểm ngữ pháp.
+  recall:node=>{ const F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null, t=today(); if(!F) return null;
+    const cards=node.startsWith('u:')?((UNIT_BY_ID[node.slice(2)]||{}).words||[]).map(w=>W(w.id)):node.startsWith('g:')&&GPT[node.slice(2)]?[G(node.slice(2))]:[];
+    const rs=cards.filter(w=>w.learned&&w.fs!=null&&w.fl!=null).map(w=>F.retrievability(Math.max(0,t-w.fl),w.fs));
+    return rs.length?rs.reduce((a,b)=>a+b,0)/rs.length:null; },
   lapse:()=>{ let d=0; for(const m of [st.words||{},st.gram||{}]) for(const v of Object.values(m)) if(v&&v.ld>d) d=v.ld; return d||null; },
 };
 const E_PE = new Map();   // điểm máy chấm luật của bài viết theo đề (perfEst chậm, chỉ tính lại khi bài đổi)
@@ -8253,20 +8390,73 @@ function eProbe(node){ const out=[], pick=(xs,n)=>shuffle(xs.slice()).slice(0,n)
     if(ws[1]) out.push({...mcq(ws[1],'word',2),prompt:`Từ nào nghĩa là “${ws[1].vi}”?`});
     const w3=ws[2]||ws[0]; out.push({id:'w:'+w3.id+':typ',level:3,g:0,prompt:`Gõ từ tiếng Anh nghĩa là “${w3.vi}” (${w3.pos||'từ'})`,accept:[w3.word]});
     return out; }
+  // v70 (bot L02): nghe phân biệt cặp âm trong tháp — 3 câu, phát bằng giọng đọc của máy; máy không đọc được thì không có câu nghe
+  // (không hỏi thứ người học không thể nghe). Mức 2 = phân biệt được khi nghe (mức mặc định của nút âm).
+  if(node.startsWith('ph:')){ const s=SOUNDS.find(x=>x.id===node.slice(3)); if(!s||!HAS_TTS) return out;
+    for(const i of pick(s.pairs.map((_,j)=>j),3)){ const p=s.pairs[i], k=Math.random()<.5?0:1, w=p[k*2], opts=shuffle([p[0],p[2]]);
+      out.push({id:'snd:'+s.id+':'+i+':'+k,level:2,g:.5,prompt:`🎧 Nghe rồi chọn từ bạn nghe được (${s.a} hay ${s.b})`,say:w,opts,ans:opts.indexOf(w)}); }
+    return out; }
   if(node.startsWith('g:')){ const p=GPT[node.slice(2)]; if(!p) return out; const used=new Set();
     for(let i=0;i<2&&p.mc&&p.mc.length;i++){ const q=gbuild(p,'cho',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:2,g:1/q.opts.length,prompt:q.prompt,opts:q.opts,ans:q.ans}); }
     if(p.ty&&p.ty.length){ const q=gbuild(p,'typ',{test:true,used}); out.push({id:'g:'+p.id+':'+q.key,level:3,g:0,prompt:q.prompt,accept:q.accept}); }
     if(p.fx&&p.fx.length){ const q=gbuild(p,'fix',{test:true,used}); if(q.type==='gfx') out.push({id:'g:'+p.id+':'+q.key,level:4,g:0,prompt:'Sửa câu sai: '+q.prompt,accept:q.accept}); }
     return out; }
   return out; }
+// v60 Transfer (§59): câu ở NGỮ CẢNH MỚI cho nút đã Đạt. Từ vựng: câu điền từ lấy từ bài đọc / câu ví dụ của phần khác trong app
+// (không phải câu ví dụ của chính từ đó; ưu tiên câu không hiện trên thẻ từ). Ngữ pháp: mọi câu tự gõ / sửa lỗi của điểm, engine lọc câu đã gặp.
+function eXfer(node){ if(!_xf[node]) _xf[node]=eXfer0(node); return shuffle(_xf[node].slice()); }
+function eXfer0(node){ const out=[];
+  if(node.startsWith('u:')){ const u=UNIT_BY_ID[node.slice(2)]; if(!u) return out;
+    for(const w of u.words){ const re=inflRe(w), shown=new Set(contextsOf(w).map(x=>norm(x.t))), own=new Set([norm(w.ex),norm(w.ex2||'')]);
+      const cx=corpusHits(w).filter(x=>x.own!==w.id&&!own.has(norm(x.t))&&re.test(x.t)&&x.t.length<=160).sort((a,b)=>(shown.has(norm(a.t))?1:0)-(shown.has(norm(b.t))?1:0)||a.t.length-b.t.length);
+      for(const x of cx.slice(0,2)){ const m=x.t.match(re); if(!m) continue;
+        out.push({id:'w:'+w.id+':tr:'+x.t.length+norm(x.t).slice(0,24),level:3,g:0,prompt:`Điền từ nghĩa là “${w.vi}”: ${x.t.replace(m[0],'___')}`,accept:[m[0]],en:x.t}); } }
+    return out; }
+  if(node.startsWith('g:')){ const p=GPT[node.slice(2)]; if(!p) return out;
+    (p.ty||[]).forEach((t,i)=>out.push({id:'g:'+p.id+'|typ|t'+i,level:3,g:0,prompt:t.s,accept:t.a}));
+    (p.fx||[]).forEach((x,i)=>out.push({id:'g:'+p.id+'|fix|x'+i,level:4,g:0,prompt:'Sửa câu sai: '+x.bad,accept:[x.good,...(x.alt||[])]}));
+    return out; }
+  return out; }
+// v61 bí kíp 60 giây (§51–53): sau câu sai, lõi engine quyết ghi nhận / hỏi thêm / mời bí kíp / học phần nền ngay.
+function eMicro(node,level){ try{ return typeof ELCORE!=='undefined'&&ELCORE.micro?ELCORE.micro(st,node,level,today()):null; }catch(e){ return null; } }
+function microBox(node,level){ const d=eMicro(node,level); if(d&&d.act==='rest') return `<p class="hint" style="margin-top:8px">☕ ${esc(d.why)}. Nghỉ vài phút rồi học tiếp sẽ hiệu quả hơn; lỗi lúc mệt được app tính nhẹ hơn.</p>`;
+  if(!d||(d.act!=='offer'&&d.act!=='now')) return '';
+  const vi=d.target.startsWith('g:')?(GPT[d.target.slice(2)]||{}).vi:d.target.startsWith('u:')?uname(UNIT_BY_ID[d.target.slice(2)]||{words:[]}):d.target;
+  const r=`micro/${d.target}/${d.lv}/${d.node}/${encodeURIComponent(d.why)}`;
+  return d.act==='now'?`<div class="panel stack" style="margin-top:8px"><p class="warnt"><b>Lỗi này đến từ phần nền:</b> ${esc(vi||'')}. Học 1 phút phần nền trước sẽ nhanh hơn làm tiếp.</p><div class="row"><button class="btn primary small" data-act="micro" data-r="${esc(r)}">⚡ Học phần nền ngay</button></div></div>`
+    :`<div class="row" style="margin-top:8px"><button class="btn small" data-act="micro" data-r="${esc(r)}">⚡ Bí kíp 60 giây: ${esc(vi||'')}</button><span class="hint">${esc(d.why)}</span></div>`; }
+function microGo(r){ ui.mback=ui.view; save(); go('goal',{er:r}); }
+function microBack(){ const v=ui.mback; ui.mback=null;
+  if(v==='gsess'&&ui.gs) return go('gsess'); if(v==='session'&&ui.sess) return go('session'); return go('goal',{er:'today'}); }
+// Nội dung bí kíp: ngữ pháp = cách dùng + công thức + lỗi người Việt hay gặp + 3 ví dụ; từ vựng = những từ vừa sai trong unit.
+function eMicroCard(node){
+  if(node.startsWith('g:')){ const p=GPT[node.slice(2)]; if(!p) return null;
+    const mis=(()=>{ try{ const m=ELCORE.ev&&st.e&&st.e.ev&&st.e.ev.mis[node]; const t=m&&Object.values(m).sort((a,b)=>b.n-a.n)[0]; return t&&t.n>=2?t.t:''; }catch(e){ return ''; } })();
+    const why=mis?[...(p.mc||[]),...(p.ty||[])].map(x=>(x.why||{})[mis]).find(Boolean):'';
+    return {card:{title:p.vi,en:p.title,concept:[(p.use||[])[0]||'',p.form[0]].filter(Boolean),contrast:why||p.note||'',...(mis?{mis}:{}),examples:p.ex.slice(0,3)},qs:eProbe(node).filter(q=>q.level<=3)}; }
+  if(node.startsWith('u:')){ const u=UNIT_BY_ID[node.slice(2)]; if(!u) return null;
+    const led=((st.e&&st.e.ev&&st.e.ev.led)||[]).filter(x=>x.node===node&&!x.ok&&x.item).slice(-12).reverse();
+    const ids=[...new Set(led.map(x=>String(x.item).split(':')[1]).filter(id=>WORD[id]&&UNIT_OF[id]===u))].slice(0,3);
+    const ws=(ids.length?ids:u.words.slice(0,3).map(w=>w.id)).map(id=>WORD[id]);
+    // Câu kiểm tra xoay vòng trên các từ vừa sai: tự gõ (nhớ ra) → chọn nghĩa → điền vào câu ví dụ → chọn từ; lấy 3 câu khác nhau.
+    const pool=u.words.filter(w=>!ws.includes(w)), qs=[];
+    ws.forEach(w=>qs.push({id:'w:'+w.id+':mic',level:3,g:0,prompt:`Gõ từ tiếng Anh nghĩa là “${w.vi}” (${w.pos||'từ'})`,accept:[w.word]}));
+    ws.forEach(w=>{ const opts=shuffle([w.vi,...shuffle(pool.slice()).slice(0,3).map(x=>x.vi)]); qs.push({id:'w:'+w.id+':micr',level:1,g:1/opts.length,prompt:`“${w.word}” nghĩa là gì?`,opts,ans:opts.indexOf(w.vi)}); });
+    ws.forEach(w=>{ const m=String(w.ex).match(inflRe(w)); if(m) qs.push({id:'w:'+w.id+':micc',level:3,g:0,prompt:`Điền từ: ${String(w.ex).replace(m[0],'___')}`,accept:[m[0]]}); });
+    ws.forEach(w=>{ const opts=shuffle([w.word,...shuffle(pool.slice()).slice(0,3).map(x=>x.word)]); qs.push({id:'w:'+w.id+':micw',level:2,g:1/opts.length,prompt:`Từ nào nghĩa là “${w.vi}”?`,opts,ans:opts.indexOf(w.word)}); });
+    const pick=[qs[0],qs[ws.length],qs[2*ws.length],...qs].filter((q,i,a)=>q&&a.indexOf(q)===i).slice(0,3);
+    return {card:{title:uname(u),concept:ws.map(w=>`${w.word} (${w.pos||'từ'}): ${w.vi}`),contrast:ws.map(w=>w.tip).filter(Boolean)[0]||'',examples:ws.map(w=>[w.ex,w.exVi||''])},qs:pick}; }
+  return null; }
 let _emP=null, _emErr='', _emN=0;
 // Lần tải lại dùng URL khác (?r=N): trình duyệt có thể nhớ lần import hỏng của cùng URL.
 // bg = tải trước khi rảnh: thất bại thì im lặng (không để lỗi nền "dính" lên màn Mục tiêu); mở màn sẽ tải lại và mới báo lỗi.
 function emLoad(bg){ if(EM) return Promise.resolve(EM);
-  return _emP ||= import('./'+ENGINE_JS+(_emN++?'?r='+_emN:'')).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal') render(); return EM; })
-    .catch(e=>{ _emP=null; if(!bg||ui.view==='goal'){ _emErr='Chưa tải được phần mục tiêu. Kiểm tra mạng rồi thử lại.'; if(ui.view==='goal') render(); } throw e; }); }
-function viewGoalE(){
-  if(EM) return EM.render(ui.er||'goals');
+  return _emP ||= import('./'+ENGINE_JS+(_emN++?'?r='+_emN:'')).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal'||ui.view==='play') render(); return EM; })
+    .catch(e=>{ _emP=null; if(!bg||ui.view==='goal'||ui.view==='play'){ _emErr='Chưa tải được phần mục tiêu. Kiểm tra mạng rồi thử lại.'; if(ui.view==='goal'||ui.view==='play') render(); } throw e; }); }
+// v64: tab Chơi = route quest của engine; không ghi đè ui.er (route của màn Mục tiêu).
+function viewPlay(){ return viewGoalE('quest'); }
+function viewGoalE(route){
+  if(EM) return EM.render(route||ui.er||'goals');
   if(!_emP&&!_emErr) emLoad().catch(()=>{});
   return _emErr?`<section class="panel stack"><p class="warnt" role="alert">${esc(_emErr)}</p><div class="row"><button class="btn primary" data-act="emretry">Thử lại</button></div></section>`
     :`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang mở phần mục tiêu…</p>`; }
@@ -8274,7 +8464,7 @@ function viewGoalE(){
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('[data-act="emretry"],[data-xr]'); if(!t) return;
   if(t.dataset.xr){ e.preventDefault(); return go('thi',{xr:t.dataset.xr}); }
   _emErr=''; emLoad().catch(()=>{}); render(); });
-DETAIL_SAFE_VIEW.add('goal'); DETAIL_SAFE_GO.add('goal'); DETAIL_SAFE_ACT.add('emretry');
+DETAIL_SAFE_VIEW.add('goal'); DETAIL_SAFE_VIEW.add('play'); DETAIL_SAFE_GO.add('play'); DETAIL_SAFE_GO.add('goal'); DETAIL_SAFE_ACT.add('emretry');
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,2500)))(()=>emLoad(true).catch(()=>{}));
 // Nạp sẵn khi rảnh để tab “Ôn thi” mở ngay và để gộp/lọc dữ liệu ôn thi khi đồng bộ.
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,1500)))(()=>xmLoad().catch(()=>{}));
@@ -8284,6 +8474,8 @@ function ePriors(){ try{ if(typeof ELCORE==='undefined'||ELCORE.priorsDone(st)) 
   for(const p of GPOINTS){ const g=st.gram[p.id]; if(g&&g.passed) ELCORE.seed(st,'g:'+p.id,4,6,.5); }
   ELCORE.markPriors(st); save(); }catch(e){} }
 ePriors();
+// v64: người dùng cũ đã học mà chưa có mục tiêu → mục tiêu là cấp đang học (một lần, có báo).
+if(st.onboarded&&!(st.e&&(st.e.goals||[]).length)&&ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) autoGoalOnce('cefr-'+currentUnit().level.toLowerCase(),'old');
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();

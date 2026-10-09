@@ -1,0 +1,314 @@
+{
+ "goals": [
+  "cefr-a1",
+  "cefr-b1"
+ ],
+ "pageErrors": 0,
+ "stuck": 0,
+ "weakness": {
+  "judged": 21,
+  "agree3": 76.2,
+  "oppositeOnExtremes": 6.7,
+  "classes": {
+   "mid|strong": 1,
+   "strong|mid": 2,
+   "weak|mid": 1,
+   "weak|strong": 1,
+   "weak|weak": 12,
+   "mid|mid": 3,
+   "strong|strong": 1
+  },
+  "missed": [],
+  "falseWeak": [
+   "u:a1-u11:0.84"
+  ],
+  "corrAppVsTruth": 0.79,
+  "noEvidence": 536,
+  "noEvidenceStates": {
+   "inferred": 536
+  }
+ },
+ "profile": {
+  "diag": {
+   "probes": 28,
+   "head": "Chẩn đoán · 8 phần đã dò | Bạn đang ở đâu | A1 | từ vựng | A1 | ngữ pháp"
+  },
+  "listeningAsks": 32,
+  "readingAsks": 0
+ },
+ "alloc": {
+  "grammarA1A2": 57.8,
+  "vocab": 38,
+  "knownNodes": 26.7
+ },
+ "rootCause": {
+  "labelled": 280,
+  "hit": 21.1,
+  "truthNoneButGap": 66.4,
+  "byCause": {
+   "partial": {
+    "n": 21,
+    "hit": 19
+   },
+   "none": {
+    "n": 186,
+    "hit": 0
+   },
+   "transfer": {
+    "n": 61,
+    "hit": 33
+   },
+   "misconception": {
+    "n": 8,
+    "hit": 7
+   },
+   "retention": {
+    "n": 4,
+    "hit": 0
+   }
+  },
+  "matrix": {
+   "unproven": {
+    "partial": 1
+   },
+   "knowledge": {
+    "partial": 19,
+    "none": 52,
+    "misconception": 7,
+    "transfer": 6,
+    "retention": 4
+   },
+   "transfer": {
+    "transfer": 33,
+    "none": 40
+   },
+   "recall": {
+    "misconception": 1,
+    "transfer": 21,
+    "none": 38
+   },
+   "misconception": {
+    "none": 2,
+    "partial": 1
+   },
+   "skill": {
+    "transfer": 1,
+    "none": 50
+   },
+   "retention": {
+    "none": 4
+   }
+  }
+ },
+ "misconception": {
+  "detect": [
+   {
+    "node": "g:g-a1-01",
+    "kind": 1,
+    "misAnswers": 9,
+    "detectedDay": null,
+    "botMisEnd": 0,
+    "targeted": 2,
+    "generic": 8
+   },
+   {
+    "node": "g:g-a1-04",
+    "kind": 1,
+    "misAnswers": 4,
+    "detectedDay": null,
+    "botMisEnd": 0.19074336752734372,
+    "targeted": 0,
+    "generic": 8
+   },
+   {
+    "node": "g:g-a1-08",
+    "kind": 2,
+    "misAnswers": 4,
+    "detectedDay": null,
+    "botMisEnd": 0,
+    "targeted": 0,
+    "generic": 17
+   }
+  ],
+  "falseMis": [
+   "u:a2-u73",
+   "u:a1-u21"
+  ],
+  "hyp": 0
+ },
+ "scenarios": {
+  "S01": {
+   "node": "g:g-a1-07",
+   "forced": 1,
+   "appBefore": "learning/0.34",
+   "appAfterForced": [
+    "L2mcq:learning/0.57"
+   ],
+   "nextAsks": [
+    "d1 L3 monster knowledge ✗ learning",
+    "d2 L3 monster knowledge ✗ learning",
+    "d2 L2 monster knowledge ✓ learning",
+    "d3 L2 monster knowledge ✓ learning"
+   ],
+   "endState": "1:mastered 2:mastered 3:mastered 4:mastered",
+   "snaps": [
+    "d20735 probe:explore:ok",
+    "d20740 micro:fixed"
+   ]
+  },
+  "S02": {
+   "node": "u:b1-u62",
+   "forced": 3,
+   "appBefore": "learning/0.34",
+   "appAfterForced": [
+    "L1mcq:learning/0.34",
+    "L1mcq:learning/0.26",
+    "L1mcq:learning/0.3"
+   ],
+   "nextAsks": [
+    "d15 L3 camp ✓ learning"
+   ],
+   "endState": "1:learning 2:learning 3:learning",
+   "snaps": [
+    "d20742 micro:fixed",
+    "d20749 micro:fixed"
+   ]
+  },
+  "S03": {
+   "node": "g:g-a1-02",
+   "forced": 6,
+   "appBefore": "learning/0.79",
+   "appAfterForced": [
+    "L2mcq:learning/0.81",
+    "L2mcq:mastered/0.83",
+    "L3typed:learning/0.21",
+    "L3typed:learning/0.18",
+    "L3typed:learning/0.15",
+    "L2mcq:mastered/0.85"
+   ],
+   "nextAsks": [
+    "d5 L3 monster recall ✓ learning",
+    "d6 L3 monster transfer ✓ learning",
+    "d6 L4 monster transfer ✗ learning",
+    "d6 L3 monster recall ✓ learning"
+   ],
+   "endState": "1:mastered 2:mastered 3:mastered 4:learning",
+   "snaps": []
+  },
+  "S04": {
+   "node": "g:g-a1-09",
+   "forced": 2,
+   "appBefore": "learning/0.18",
+   "appAfterForced": [
+    "L3typed:learning/0.26",
+    "L3typed:learning/0.36"
+   ],
+   "nextAsks": [
+    "d5 L3 boss transfer ✓ learning",
+    "d5 L3 boss transfer ✓ learning",
+    "d6 L4 boss transfer ✓ learning",
+    "d6 L3 boss transfer ✓ learning"
+   ],
+   "endState": "1:mastered 2:mastered 3:mastered 4:mastered",
+   "snaps": [
+    "d20736 probe:explore:unclear",
+    "d20762 probe:boundary:ok"
+   ]
+  },
+  "S06": {
+   "node": "u:b1-u63",
+   "forced": 2,
+   "appBefore": "learning/0.26",
+   "appAfterForced": [
+    "L1mcq:learning/0.34",
+    "L1mcq:learning/0.45"
+   ],
+   "nextAsks": [
+    "d8 L1 chest knowledge ✗ learning",
+    "d8 L3 camp ✗ learning",
+    "d17 L1 chest knowledge ✓ learning"
+   ],
+   "endState": "1:learning 2:inferred 3:learning",
+   "snaps": [
+    "d20734 micro:not-yet",
+    "d20736 micro:fixed",
+    "d20742 micro:not-yet"
+   ]
+  },
+  "S05": {
+   "campCorrect": 28,
+   "laterChecked": 18,
+   "laterOk": 66.7
+  },
+  "S07": {
+   "guesses": 39,
+   "guessCorrectRate": 28.5,
+   "masteredMostlyGuessed": []
+  },
+  "S08": "không có trong luồng chính (tháp không có nút gợi ý); engine giảm trọng số câu có gợi ý ×0,5 (evaluate.ts, test engine-evidence)",
+  "S09": "không có trong luồng chính (tháp không cho làm lại); engine có cờ retry ×0,3 (evaluate.ts)",
+  "S10": {
+   "nodes": 6,
+   "before": 0.56,
+   "after": 0.68
+  }
+ },
+ "efficiency": {
+  "answers": 550,
+  "quest": 405,
+  "distinctItems": 262,
+  "repeatAsks": 35.3,
+  "practiceOnKnown": 26.2,
+  "probesOnSolid": 10,
+  "probes": 127,
+  "maxAsksOneNodeOneDay": 4
+ },
+ "gain": {
+  "truthStart": 0.53,
+  "truthEnd": 0.55,
+  "knownStart": 16,
+  "knownEnd": 23,
+  "practiced": 88,
+  "usableStart": 0,
+  "usableEnd": 3,
+  "accFirstHalf": 67.9,
+  "accSecondHalf": 73.2,
+  "novelFirst": 44,
+  "novelSecond": 59.2,
+  "seenFirst": 100,
+  "seenSecond": 100,
+  "grammarA1A2TruthStart": 0.54,
+  "grammarA1A2TruthEnd": 0.6,
+  "measure": [
+   "pre:3/12",
+   "post:4/12",
+   "d7:5/12",
+   "d30:4/12"
+  ],
+  "solidEnd": 3,
+  "solidFalse": 0
+ },
+ "errorReduction": {
+  "nodes": 8,
+  "first": 0.46,
+  "last": 0.17
+ },
+ "nextChanges": 3,
+ "decisions": {
+  "quest:win": 46,
+  "micro:fixed": 28,
+  "PASS": 24,
+  "probe:explore": 17,
+  "micro:not-yet": 15,
+  "quest:lose": 8,
+  "CHOSEN": 4,
+  "NOT_READY": 2,
+  "probe:boundary": 2,
+  "goal:AUTO": 1,
+  "u=0;g=0": 1,
+  "measure:pre": 1,
+  "measure:post": 1,
+  "measure:d7": 1,
+  "measure:d30": 1
+ }
+}

@@ -5,6 +5,7 @@
  "vi": "VSTEP Bậc 4 (B2)",
  "target": "B2",
  "cefr": "B2",
+ "status": "future",
  "req": [
   {
    "node": "cd:b2-voc1",
@@ -301,5 +302,6 @@
    "level": 4,
    "type": "performance"
   }
- ]
+ ],
+ "readiness": "exam-score"
 }

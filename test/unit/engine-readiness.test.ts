@@ -6,7 +6,7 @@ import type { Dist } from '../../src/engine/grader.ts';
 import type { Goal, Req } from '../../src/engine/types.ts';
 import type { RealScore, Resp } from '../../src/exam/state.ts';
 
-const goal = (kind: Goal['kind'], target: string): Goal => ({ id: `${kind}-${target}`, version: '1.0', kind, vi: '', target, cefr: 'B1', req: [] });
+const goal = (kind: Goal['kind'], target: string): Goal => ({ id: `${kind}-${target}`, version: '1.0', kind, vi: '', target, cefr: 'B1', status: 'active', req: [] });
 const d = (mean: number, se = 0.3): Dist => ({ mean, se, n: 10, conf: se <= 0.3 ? 'high' : 'mid', src: ['irt'] });
 const all = (m: number, se?: number): Record<SkillK, Dist> => ({ L: d(m, se), R: d(m, se), W: d(m, se), S: d(m, se) });
 

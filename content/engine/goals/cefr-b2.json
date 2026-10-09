@@ -5,6 +5,7 @@
  "vi": "Tiếng Anh tổng quát B2 (Trung cao cấp)",
  "target": "B2",
  "cefr": "B2",
+ "status": "active",
  "req": [
   {
    "node": "cd:b2-voc1",
@@ -256,5 +257,6 @@
    "level": 3,
    "type": "skill"
   }
- ]
+ ],
+ "readiness": "mastery"
 }

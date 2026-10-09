@@ -5,11 +5,11 @@
 // Nút đã Đạt ra khỏi lộ trình (spec mục 17); việc giữ nó là của ôn duy trì.
 
 import type { Goal, Level, Req } from './types.ts';
-import { closure, defaultLevel, mergeGoals, topo, type Index } from './graph.ts';
+import { blockedBy, closure, defaultLevel, mergeGoals, topo, type Index } from './graph.ts';
 
 export interface GoalIn { goal: Goal; date: number | null }
 export interface PathItem { node: string; level: Level; minutes: number; score: number; dep: number; goals: string[] }
-export interface PathOut { unmet: Req[]; open: PathItem[]; total: number; minutes: number }
+export interface PathOut { unmet: Req[]; open: PathItem[]; total: number; minutes: number; all?: Req[] }
 
 // Mục tiêu có ngày thi gần thì nặng hơn (tối đa ×3 khi còn ≤ 0 ngày, về ×1 khi còn ≥ 180 ngày).
 export function goalWeight(date: number | null, today: number): number {
@@ -17,7 +17,8 @@ export function goalWeight(date: number | null, today: number): number {
   return 1 + 2 * Math.max(0, Math.min(1, 1 - (date - today) / 180));
 }
 
-export function plan(ix: Index, goals: GoalIn[], today: number, isPass: (node: string, level: Level) => boolean): PathOut {
+// boost: hệ số ưu tiên thêm cho nút (v58: tiền đề đã được kiểm chứng là nguyên nhân gốc của lỗi lặp lại → học trước, §50).
+export function plan(ix: Index, goals: GoalIn[], today: number, isPass: (node: string, level: Level) => boolean, boost?: Map<string, number>): PathOut {
   if (!goals.length) return { unmet: [], open: [], total: 0, minutes: 0 };
   const req = mergeGoals(goals.map(g => g.goal));
   const all = closure(ix, req, defaultLevel);
@@ -42,13 +43,13 @@ export function plan(ix: Index, goals: GoalIn[], today: number, isPass: (node: s
   }
   const open: PathItem[] = [];
   for (const id of ids) {
-    const blocked = (ix.pre.get(id) ?? []).some(e => e.type === 'hard' && ids.has(e.to));
+    const blocked = blockedBy(ix, id, to => ids.has(to));   // v57: hỗ trợ nhóm tiền đề thay thế (alt/need)
     if (blocked) continue;
     const n = ix.node.get(id)!, minutes = Math.max(5, n.minutes), d = dep.get(id) ?? 0;
-    open.push({ node: id, level: level.get(id)!, minutes, dep: d, score: d / minutes, goals: [...(who.get(id) ?? [])].sort() });
+    open.push({ node: id, level: level.get(id)!, minutes, dep: d, score: (d * (boost?.get(id) ?? 1)) / minutes, goals: [...(who.get(id) ?? [])].sort() });
   }
   open.sort((a, b) => b.score - a.score || (a.node < b.node ? -1 : 1));
-  return { unmet, open, total: all.length, minutes: unmet.reduce((t, r) => t + (ix.node.get(r.node)?.minutes ?? 0), 0) };
+  return { unmet, open, total: all.length, minutes: unmet.reduce((t, r) => t + (ix.node.get(r.node)?.minutes ?? 0), 0), all };
 }
 
 export interface Session { review: number; items: PathItem[]; perf: PathItem | null; minutes: number }

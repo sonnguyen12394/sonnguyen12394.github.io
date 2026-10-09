@@ -5,19 +5,57 @@ import type { EState } from './state.ts';
 import type { Index } from './graph.ts';
 import type { Goal } from './types.ts';
 import { nodeStat } from './views.ts';
-import { examOf, examReadiness, masteryReadiness, skillDists, type ExamReady, type MasteryReady, type SkillK } from './readiness.ts';
+import { readinessFor, skillDists, type ExamReady, type MasteryReady, type SkillK } from './readiness.ts';
 import { selfBias, type Conf, type RawGrade } from './grader.ts';
 import { bandToVstep, roundHalf } from '../exam/scales.ts';
+import { addSnap } from './ev/snapshot.ts';
+import { RULE_ID } from './ev/evaluate.ts';
+import { READY_P } from './readiness.ts';
+import { loaded } from './data.ts';
+import { xferSummary } from './transfer.ts';
+import { xferItems } from './today.ts';
 
 export type Ready = ExamReady | MasteryReady;
 
 export function readinessOf(host: EHost, e: EState, g: Goal): Ready {
-  if (examOf(g)) {
-    const { resp, real } = host.exam();
-    return examReadiness(g, skillDists(resp, host.grades() as RawGrade[], real, host.today()), real);
-  }
-  return masteryReadiness(g.req, r => nodeStat(host, e, r.node, r.level), host.lapse(), host.today());
+  const r: Ready = readinessFor(g, {
+    mastery: q => nodeStat(host, e, q.node, q.level), lapse: host.lapse(), today: host.today(),
+    xfer: () => { const ix = loaded(), x = ix && e.ev ? xferSummary(ix, e.m, e.ev, g.req, n => xferItems(host, e, n).length < 2) : null; return x ? { important: x.important, ok: x.ok, exempt: x.exempt } : undefined; },
+    exam: () => { const { resp, real } = host.exam(); return { dists: skillDists(resp, host.grades() as RawGrade[], real, host.today()), real }; },
+  });
+  snapReady(host, e, g, r);
+  return r;
 }
+
+// L4: Readiness đổi mức → snapshot (spec v2.4 §28, HG11, HF6). Bỏ trùng khi kết quả không đổi.
+function snapReady(host: EHost, e: EState, g: Goal, r: Ready): void {
+  if (!e.ev) return;
+  const p = r.p === null ? -1 : Math.round(r.p * 100) / 100;
+  const achieved = r.kind === 'exam' ? !!r.achieved : r.achieved;
+  const dec = achieved ? 'ACHIEVED' : r.ready ? 'READY' : 'NOT_READY';
+  const info: Record<string, number | string> = r.kind === 'exam'
+    ? { p, need: READY_P, achieved: achieved ? 'yes' : 'no', missing: r.missing.join('') }
+    : { p, need: 1, achieved: achieved ? 'yes' : 'no', done: r.done, total: r.total, perf: `${r.perfDone}/${r.perfTotal}`, lapse: r.lapse ? 'yes' : 'no', ...(r.xfer && r.xfer.important ? { xfer: `${r.xfer.ok}/${r.xfer.important}`, xexempt: r.xfer.exempt } : {}) };
+  const evs = r.kind === 'mastery' ? e.ev.led.filter(x => g.req.some(q => q.node === x.node)).slice(-12).map(x => x.id) : [];
+  addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'readiness', subj: g.id, dec, info, rule: `${RULE_ID}/ready-1`, evs });
+}
+
+// Năng lực còn thiếu (§61: "chưa đạt B1 vì còn thiếu X, Y, Z" thay vì "đang 72%").
+export function missingOf(host: EHost, e: EState, g: Goal): Array<{ node: string; vi: string; level: number; pct: number }> {
+  const ix = loaded();
+  return g.req.map(r => ({ r, s: nodeStat(host, e, r.node, r.level) })).filter(x => !(x.s.pass && x.s.conf !== 'low'))
+    .map(x => ({ node: x.r.node, vi: ix?.node.get(x.r.node)?.vi ?? x.r.node, level: x.r.level, pct: x.s.pct }))
+    .sort((a, b) => b.pct - a.pct);
+}
+
+// Transfer trong Readiness (v65, §59–60): Đạt CEFR cần mọi năng lực quan trọng đúng ở câu mới; nút đã hết câu mới được miễn.
+export function xferLine(host: EHost, e: EState | undefined, g: Goal, r: MasteryReady): string {
+  const x = r.xfer, ix = loaded();
+  if (!x || !x.important || !e || !ix) return '';
+  const pend = xferSummary(ix, e.m, e.ev, g.req, n => xferItems(host, e, n).length < 2).pending.filter(n => nodeStat(host, e, n, defaultLevelOf(ix, n)).pass);
+  return `<p class="hint">Dùng được ở câu mới chưa gặp: ${x.ok}/${x.important} năng lực quan trọng${x.exempt ? ` · ${x.exempt} được miễn vì đã hết câu mới để thử` : ''}. Đạt mục tiêu cần đủ phần này.${pend.length ? ` Còn chờ thử: ${pend.slice(0, 4).map(n => host.esc(ix.node.get(n)?.vi ?? n)).join('; ')}${pend.length > 4 ? '…' : ''}.` : ''}</p>`;
+}
+const defaultLevelOf = (ix: Index, n: string) => (ix.node.get(n)?.kind === 'vocab' ? 3 : 4) as 3 | 4;
 
 const SK_VI: Record<SkillK, string> = { L: 'Nghe', R: 'Đọc', W: 'Viết', S: 'Nói' };
 const CONF_VI: Record<Conf, string> = { low: 'tin cậy thấp', mid: 'tin cậy vừa', high: 'tin cậy cao' };
@@ -50,12 +88,15 @@ function missingActs(r: ExamReady): string {
   return b.length ? `<div class="row">${b.join('')}</div>` : '';
 }
 
-export function viewReady(host: EHost, g: Goal, r: Ready): string {
+export function viewReady(host: EHost, g: Goal, r: Ready, e?: EState): string {
   const esc = host.esc;
   if (r.kind === 'mastery') {
-    return `<section class="panel stack"><h3>Sẵn sàng · ${pct(r.p)}</h3>
+    const miss = e ? missingOf(host, e, g) : [];
+    const gap = miss.length ? `<p><b>Chưa đạt ${esc(g.target)} vì còn thiếu:</b> ${miss.slice(0, 5).map(x => esc(x.vi)).join('; ')}${miss.length > 5 ? `; và ${miss.length - 5} năng lực khác` : ''}.</p>` : '';
+    return `<section class="panel stack"><h3>Sẵn sàng · ${r.done + r.perfDone}/${r.total + r.perfTotal} năng lực</h3>
       <p class="muted">${r.done}/${r.total} năng lực đã Đạt với độ tin cậy từ Vừa trở lên · ${r.perfDone}/${r.perfTotal} bài làm thật đã qua.</p>
-      <p class="hint">${r.achieved ? '✓ Đạt mục tiêu: mọi năng lực và bài làm thật đã qua, không quên khi ôn trong 14 ngày.' : r.ready && r.lapse ? 'Đã đủ năng lực; còn chờ 14 ngày không quên khi ôn để xác nhận đạt.' : 'Mục tiêu này không có kỳ thi ngoài: đạt khi mọi năng lực Đạt, mọi bài làm thật qua và 14 ngày không quên khi ôn.'}</p></section>`;
+      ${gap}${xferLine(host, e, g, r)}<div class="row"><button class="btn ghost small" data-e="go" data-r="why/goal/${esc(g.id)}">Vì sao?</button></div>
+      <p class="hint">${r.achieved ? '✓ Đạt mục tiêu: mọi năng lực và bài làm thật đã qua, không quên khi ôn trong 14 ngày.' : r.ready && r.lapse ? 'Đã đủ năng lực; còn chờ 14 ngày không quên khi ôn để xác nhận đạt.' : 'Mục tiêu này không có kỳ thi ngoài: đạt khi mọi năng lực Đạt, năng lực quan trọng đúng ở câu mới, mọi bài làm thật qua và 14 ngày không quên khi ôn.'}</p></section>`;
   }
   const unit = r.exam === 'vstep' ? 'điểm VSTEP (trung bình 4 kỹ năng)' : 'band tổng';
   const rows = r.skills.map(s => {
