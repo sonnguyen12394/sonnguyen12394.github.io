@@ -342,3 +342,84 @@ Ghi chú tiêu chí riêng:
 
 ---
 
+## 6. Ứng viên đợt 3: chức năng còn thiếu game và các thể loại đang thịnh hành (2026)
+
+Xu hướng thị trường 2026 (AppMagic, Sensor Tower qua PocketGamer.biz):
+- xếp hình / match-3 dẫn đầu doanh thu casual;
+- **merge** tăng nhanh nhất (+74%);
+- game xếp khối dẫn lượt tải;
+- game điều khiển bằng giọng nói và nhập vai hội thoại AI đang nổi trong mảng học ngôn ngữ.
+
+Chỉ lấy **thể loại**, không dùng tên / hình / âm thanh của game nào (test `ip-names`).
+
+Năng lực app dùng được:
+- nhận diện giọng của trình duyệt `asrMatch` / `asrWord` (`app.js`): Chrome / Edge / Safari iOS, cần mạng; hiện chỉ là phản hồi, không vào mức thuộc;
+- ghi âm `HAS_REC`;
+- chấm viết theo luật `perfEst`;
+- `WTASKS` / `STASKS`;
+- 26 dạng câu thi `x:` (mục tiêu thi đang tắt).
+
+### 6.1 Chức năng còn trống / chưa đạt
+
+| Chức năng | Tình trạng | Điểm hiện tại |
+|---|---|---|
+| **F8 Nói** | chưa có game | — |
+| **F9 Viết** | chưa có game | — |
+| **F1 Xếp lớp & chẩn đoán** | chỉ có bài chẩn đoán dạng câu hỏi | — |
+| **F12 Luyện thi** | chưa có game (mục tiêu thi đang tắt) | — |
+| F4 Phát âm | Bắt Âm thiếu phần **nói** | 6,7 ✗ |
+| F2 Từ mới | Câu đố ngày (phụ) | 6,7 ✗ |
+| F13 Thói quen | Bàn Cờ Phố | 7,1 (tạm) |
+| (game cũ) | Tốc độ 60 giây 5,6 · Ghép cặp 5,9: chưa dùng engine | ✗ |
+
+### 6.2 Chấm các thể loại ứng viên
+
+Cột G: G1 · G2 · G3 · G4 · G5 · G6 · G7 · G8 · G9 · G10. 
+
+| Ứng viên (thể loại thịnh hành) | Chức năng | G1 | G2 | G3 | G4 | G5 | G6 | G7 | G8 | G9 | G10 | **Tổng** | Điểm chức năng | Phát hành? |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 🎤 **Karaoke nói nhại** (nhịp điệu) | F8 | 8 | 8 | 8 | 7 | 7 | 7 | 7 | 8 | 9 | 6 | **7,6** | F8 8,0 | ✓ |
+| 🤖 **Ra lệnh cho robot** (điều khiển bằng giọng) | F8 | 9 | 8 | 8 | 8 | 8 | 7 | 8 | 7 | 9 | 6 | **7,9** | F8 8,3 | ✓ |
+| 🎭 Lồng tiếng cảnh phim | F8 | 8 | 7 | 8 | 6 | 6 | 6 | 8 | 6 | 9 | 6 | 7,2 | F8 7,3 | ✗ (tổng < 7,5) |
+| 🗣️ Nhập vai hội thoại AI | F7, F8 | 9 | 8 | 5 | 6 | 6 | 8 | 9 | 7 | 8 | 2 | 6,9 | — | ✗ (cần máy chủ / chi phí, không offline, chấm khó kiểm) |
+| 🎯 Bắt Âm + vòng **nói thử** cặp âm | F4 | 8 | 9 | 8 | 9 | 8 | 9 | 7 | 9 | 9 | 7 | **8,2** | F4 6,7 → **8,0** | ✓ |
+| ✍️ **Xưởng câu tự gõ** (Bài Câu chế độ gõ, mức 4) | F9, F3 | 8 | 8 | 9 | 9 | 8 | 8 | 7 | 6 | 9 | 9 | **8,1** | F9 6,3 | ✓ game · F9 ✗ (chỉ ở mức câu) |
+| ✉️ **Thư gửi cư dân phố** (cozy, nhân vật hồi âm) | F9 | 9 | 9 | 8* | 7 | 7 | 8 | 7 | 4 | 9 | 9 | **7,9** | F9 7,7 | ✓ |
+| 🔠 Ô chữ (crossword) | F2 chính tả | 8 | 7 | 9 | 8 | 8 | 7 | 7 | 7 | 9 | 9 | **7,9** | F2 6,3 | ✓ game · F2 ✗ |
+| 🃏 Lật thẻ ghép đôi (trí nhớ vị trí) | F2 | 6 | 7 | 6 | 7 | 7 | 6 | 7 | 6 | 9 | 9 | 6,9 | — | ✗ (nhớ vị trí ≠ tiếng Anh) |
+| 💎 Ghép 3 (match-3, doanh thu số 1) | F2 | 3 | 5 | 4 | 6 | 6 | 4 | 9 | 4 | 7 | 9 | 5,5 | — | ✗ (G1, G3: xếp màu không phải tiếng Anh) |
+| ⚓ Chợ ghép đồ (merge, tăng nhanh nhất) | F7, F2 | 7 | 7 | 8* | 8 | 8 | 7 | 9 | 5 | 8 | 9 | **7,7** | F7 7,0 | ✓ (*chỉ câu đọc đơn hàng vào năng lực) |
+| 🗺️ **Thám hiểm sương mù** (bản đồ khám phá) | F1 | 6 | 9 | 9 | 9 | 9 | 5 | 6 | 8 | 9 | 9 | **7,8** | F1 8,3 | ✗ (G1 6 < 7) → sửa: mở ô theo **loại câu**, không theo đúng / sai |
+| ⚔️ **Đấu trường đề** (roguelike đánh bài) | F12 | 7 | 9 | 8 | 8 | 7 | 8 | 8 | 7 | 8 | 9 | **7,9** | F12 8,0 | ✓ nhưng cần bật lại mục tiêu thi |
+| 📒 Sổ sưu tập + giải đấu tuần (lớp meta) | F13 | — | — | — | — | — | — | — | — | — | — | — | F13 8,7 | lớp phủ mọi game, không phải game riêng |
+
+\* G3 chỉ đạt 8 khi **chỉ phần chấm khách quan** vào năng lực:
+- nói: khớp từ của nhận diện giọng là phản hồi, hoặc chỉ đếm từ khớp, như quy định hiện tại;
+- viết: chỉ tính từ khoá / cấu trúc bắt buộc;
+- `perfEst` chỉ là ước tính, không vào năng lực.
+
+**Nhận xét gốc rễ:**
+- **F8 / F4 nói:** điểm trần là **G10 = 6**, vì nhận diện giọng cần trình duyệt hỗ trợ và cần mạng.
+  - Firefox không có; máy không có thì phải ẩn game và báo rõ.
+- **Match-3 / lật thẻ** phổ biến nhất nhưng **không học được**: hành động chơi không phải tiếng Anh. Không nên làm dù thịnh hành.
+- **Merge** là cơ hội tốt cho F7 nếu đơn hàng đến bằng hội thoại.
+- **Nhập vai AI** bị loại vì app là PWA offline, miễn phí, không máy chủ.
+
+### 6.3 Đề xuất thứ tự (dễ trước, theo chức năng)
+
+| Đợt | Game | Chức năng | Vì sao trước |
+|---|---|---|---|
+| 1 | 🎯 Bắt Âm thêm vòng nói thử (`asrWord`) | F4 | Sửa nhỏ, nâng F4 lên ≥ 7 |
+| 1 | 🎤 Karaoke nói nhại (`asrMatch` + câu thoại `DIALOGUES`) | F8 | Dùng lại ASR + 525 câu thoại có sẵn |
+| 2 | 🤖 Ra lệnh cho robot | F8 | Hấp dẫn nhất cho nói; cần làm mê cung |
+| 2 | ✍️ Xưởng câu tự gõ | F9, F3 | Nâng cấp Bài Câu, gần như miễn phí |
+| 3 | ✉️ Thư gửi cư dân phố | F9 | Cần soạn đề thư + luật chấm khách quan |
+| 3 | 🗺️ Thám hiểm sương mù | F1 | Đặt lại câu dò của chẩn đoán vào bản đồ |
+| 4 | Chuyển Tốc độ 60 giây / Ghép cặp sang engine | F10, F2 | G4 2 → 9 |
+| sau | ⚔️ Đấu trường đề · ⚓ Chợ ghép đồ · 📒 Sổ sưu tập | F12, F7, F13 | Chờ bật mục tiêu thi / công sức lớn |
+
+Nguồn xu hướng:
+- [PocketGamer.biz: H1 2026 genre analysis](https://www.pocketgamer.biz/h1-2026-genre-analysis-strategy-stumbles-rpgs-fall-and-puzzle-revenue-ramps-up/)
+- [Top mobile puzzle games 2026](https://respawn.outlookindia.com/gaming/gaming-news/top-mobile-puzzle-games-ruling-the-global-grossing-charts-in-2026)
+- [Biggest mobile games of August 2026](https://www.globalgamesforum.com/news-media/the-biggest-mobile-games-of-august-2026)
+- [Voice Filter: Speak Challenge](https://apps.apple.com/us/app/-/id6739994048) (ví dụ thể loại điều khiển bằng giọng)
