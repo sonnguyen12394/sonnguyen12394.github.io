@@ -11,7 +11,7 @@ import { readFileSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 export const arg = (k: string, d: string): string => { const i = process.argv.indexOf(`--${k}`); return i > 0 ? process.argv[i + 1]! : d; };
-const GAMES = arg('games', 'mix'), GAME_N = 5;   // tháp, Xếp Khối, Bàn Cờ, Bài Câu, Quán Cà Phê (thêm game thì tăng)
+const GAMES = arg('games', 'mix'), GAME_N = 6;   // tháp, Xếp Khối, Bàn Cờ, Bài Câu, Quán Cà Phê, Bắt Âm (thêm game thì tăng)
 export const SCHEDULE_DAYS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 21, 24, 28, 35, 44];
 
 const gf = readdirSync('data/engine').find(f => /^graph\..*\.json$/.test(f))!;
@@ -135,7 +135,7 @@ export async function run(P: Profile): Promise<void> {
     if (!ok && P.dunno(s, rnd)) dunno = true;
     const d = P.decide?.(C, q, x, p, ok) ?? null;
     if (d) { ok = d.ok; dunno = false; }
-    const act = { diag: 'dans', quest: 'qans', measure: 'xans', micro: 'mans', probe: 'pans', xfer: 'xans', tout: 'tans', cafe: 'cfans' }[q.run] ?? 'qans';
+    const act = { diag: 'dans', quest: 'qans', measure: 'xans', micro: 'mans', probe: 'pans', xfer: 'xans', tout: 'tans', cafe: 'cfans', bubbles: 'bbans' }[q.run] ?? 'qans';
     let given = '';
     if (q.tiles && q.order) {   // v74 Bài Câu: xếp lá theo thứ tự (biết) / đổi chỗ hai lá liền nhau hoặc lấy lá bẫy (chưa biết)
       if (dunno) await page.locator('[data-e="cdskip"]').first().click();
@@ -341,6 +341,25 @@ export async function run(P: Profile): Promise<void> {
     await click('Về sảnh');
   }
 
+  // v76 Bắt Âm: 10 từ; nghe rồi chạm bong bóng như câu chọn thường.
+  async function playBubbles(): Promise<void> {
+    await shot('lobby');
+    const start = page.locator('[data-e="bbstart"]').filter({ visible: true }).first();
+    if (!(await start.count())) { note('stuck', 'không thấy Bắt Âm'); return; }
+    await start.click(); await sleep(120);
+    for (let steps = 0; steps < 40; steps++) {
+      await sleep(40);
+      if (await visible('h1:has-text("Xong màn")')) break;
+      const pk = await peek();
+      if (pk?.run === 'bubbles') { await answer(pk); await feedback(pk.node); if (await visible('[data-e="bbnext"]')) await page.locator('[data-e="bbnext"]').first().click(); continue; }
+      if (await visible('[data-e="bbnext"]')) { await page.locator('[data-e="bbnext"]').first().click(); continue; }
+      note('stuck', { why: 'bắt âm: không có từ / nút tiếp', text: (await text()).slice(0, 200) }); break;
+    }
+    const end = await shot('bubbles-end');
+    note('bubbles-end', { head: end.split('\n').slice(0, 3).join(' | ') });
+    await click('Về sảnh');
+  }
+
   async function runQuiz(kind: string): Promise<void> {
     for (let i = 0; i < 30; i++) {
       await sleep(80);
@@ -387,7 +406,7 @@ export async function run(P: Profile): Promise<void> {
     await followToday();
     const floors = P.floors ? P.floors(day, rnd) : day === 0 ? 2 : 2 + (rnd() < 0.3 ? 1 : 0);
     // v72–v73: sảnh có nhiều game; mặc định bot luân phiên tháp, Xếp Khối, Bàn Cờ (--games tower: chỉ tháp, như trước v72).
-    for (let f = 0; f < floors; f++) { const g = GAMES === 'mix' ? (day + f) % GAME_N : 0; if (g === 1) await playBlocks(); else if (g === 2) await playBoard(); else if (g === 3) await playCards(); else if (g === 4) await playCafe(); else await playFloor(); }
+    for (let f = 0; f < floors; f++) { const g = GAMES === 'mix' ? (day + f) % GAME_N : 0; if (g === 1) await playBlocks(); else if (g === 2) await playBoard(); else if (g === 3) await playCards(); else if (g === 4) await playCafe(); else if (g === 5) await playBubbles(); else await playFloor(); }
     // Cuối phiên: mastery của app, giả thuyết hiểu sai của app, kỹ năng thật của bot trên mọi nút đã gặp.
     const e = await page.evaluate(() => { const st = (window as any).eval('st'); return { m: st.e.m, snaps: st.e.ev.snap.length, q: st.e.q, mis: st.e.ev.mis }; });   // eslint-disable-line @typescript-eslint/no-explicit-any
     const truth: Record<string, number> = {}, stab: Record<string, number> = {};

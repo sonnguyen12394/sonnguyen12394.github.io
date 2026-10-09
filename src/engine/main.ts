@@ -26,6 +26,8 @@ import { viewLobby, viewBlocks, viewBlocksEnd, viewBoard, viewBoardEnd } from '.
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
 import { GUESTS, stars as cafeStars, freshCafeSave } from './cafe.ts';
+import { viewBubbles, viewBubblesEnd, type BubbleRun } from './bubbleview.ts';
+import { WORDS, points as bubblePoints, freshBubblesSave } from './bubbles.ts';
 import { TABLES, PLAYS, score as cardScore, offer as cardOffer, deal as cardDeal, check as cardCheck, target as cardTarget, freshCardsSave } from './cards.ts';
 import { sfx } from './sfx.ts';
 import { viewQuestHome, viewQuestRun, viewQuestEnd, type QuestRun, type QItem } from './questview.ts';
@@ -522,6 +524,58 @@ export function init(host: EHost): EngineModule {
     sfx('end'); host.save(); host.render();
   }
 
+  // ---------- Bắt Âm (v76, F4 phát âm) ----------
+  // Mỗi từ là câu nghe phân biệt âm của nút ph: do engine chọn (3 lựa chọn: đoán mò 1/3). Không hết giờ. Điểm / màn là telemetry (e.gs).
+  let brun: BubbleRun | null = null, bPick: ((k: Enc) => Challenge | null) | null = null;
+  const BUBBLE_KINDS: Enc[] = ['chest', 'monster', 'monster', 'monster', 'scout', 'monster', 'chest', 'monster', 'monster', 'boss'];
+  const gsave = () => { const e = E(); return (e.gs ||= freshBubblesSave()); };
+  function bStart(): void {
+    if (!loaded()) { ensure(); return; }
+    const e = E(), sv = gsave();
+    bPick = kindPicker(n => n.startsWith('ph:') && host.probe(n).length > 0, 's', sv.runs + 1);
+    brun = { floor: sv.runs + 1, stage: sv.stage, seed: (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0, t0: Date.now(), k: 0, n: 0, ok: 0, coins: 0, score: 0, streak: 0, wrong: [], done: false, ch: null, node: '', item: null, novel: false, ans: null };
+    bLoad(); host.render();
+  }
+  function bLoad(): void {
+    if (!brun || !bPick) return;
+    const e = E(), ch = bPick(BUBBLE_KINDS[brun.k] ?? 'monster') ?? bPick('monster');
+    brun.ch = ch; brun.ans = null;
+    if (!ch) { brun.item = null; brun.node = ''; return; }
+    const items = host.probe(ch.node), fresh = items.filter(x => !seenHas(e.ev, ch.node, x.id)), it = fresh[0] ?? items[0] ?? null;
+    brun.node = ch.node; brun.item = it; brun.novel = !!it && !seenHas(e.ev, ch.node, it.id);
+    if (it?.say) host.say?.(it.say);
+  }
+  function bAnswer(i: number): void {
+    const r = brun;
+    if (!r || !r.item || !r.ch || r.ans) return;
+    const e = E(), it = r.item, ok = i >= 0 && i === it.ans;
+    ingest(e.ev, e.m, { node: r.node, level: it.level, ok, g: it.g, item: it.id, text: it.prompt, qt: 'mcq', ctx: 'listen', src: 'game', ch: r.ch.id, gp: r.ch.gameplayDifficulty, ...(i >= 0 ? { given: it.opts?.[i] ?? '', right: it.opts?.[it.ans ?? 0] ?? '' } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    r.streak = ok ? r.streak + 1 : 0;
+    const pts = bubblePoints(ok, r.streak), coins = reward(r.ch, ok, r.novel);
+    r.n++; r.coins += coins; r.score += pts; if (ok) r.ok++; else r.wrong.push(r.node);
+    const sv = qsave(); sv.ans++; if (ok) sv.ok++; sv.coins += coins; sv.day = host.today();
+    r.ans = { ok, i, pts, coins };
+    sfx(ok ? 'clear' : 'bad'); host.save(); host.render();
+  }
+  function bNext(): void {
+    const r = brun;
+    if (!r) return;
+    if (r.k + 1 >= WORDS || !r.item) { bEnd(); return; }
+    r.k++; bLoad(); host.save(); host.render();
+  }
+  function bEnd(): void {
+    const r = brun;
+    if (!r) return;
+    const e = E(), s = gsave(), ixq = loaded()!;
+    r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
+    (r as BubbleRun & { prevBest?: number }).prevBest = s.best;
+    s.runs++; s.best = Math.max(s.best, r.score); if (r.n && r.ok / r.n >= 0.7) s.stage++; s.day = host.today();
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `bubbles:${r.floor}`, dec: 'bubbles:end', rule: `${RULE_ID}/${QUEST_VER}`,
+      info: { ok: r.ok, of: r.n, score: r.score, coins: r.coins, stage: r.stage },
+      evs: e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:s${r.floor}:`)).slice(-r.n).map(x => x.id) }, false);
+    sfx('end'); host.save(); host.render();
+  }
+
   // ---------- Bàn Cờ Phố (v73) ----------
   const bsave = () => { const e = E(); return (e.bd ||= freshBoardSave()); };
   const wallet = () => Math.max(0, qsave().coins - bsave().spent);
@@ -730,6 +784,7 @@ export function init(host: EHost): EngineModule {
     },
     quest: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
+      if (brun) return brun.done ? viewBubblesEnd(c, brun, (brun as BubbleRun & { prevBest?: number }).prevBest ?? 0) : viewBubbles(c, brun, host.probe('ph:s-01').length > 0);
       if (frun) return frun.done ? viewCafeEnd(c, frun, fsave().stars) : viewCafe(c, frun, fsave().stars);
       if (crun) return crun.done ? viewCardsEnd(c, crun, (crun as CardsRun & { prevBest?: number }).prevBest ?? 0) : viewCards(c, crun);
       if (qrun?.mode === 'blocks') return qrun.done ? viewBlocksEnd(c, qrun) : viewBlocks(c, qrun);
@@ -737,7 +792,7 @@ export function init(host: EHost): EngineModule {
       if (qrun?.done) return viewQuestEnd(c, qrun);
       if (qrun) return viewQuestRun(c, qrun);
       const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-      return viewLobby(c, E().bk, E().bd, E().gc, E().gq) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
+      return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
     },
     micro: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -808,19 +863,22 @@ export function init(host: EHost): EngineModule {
     },
     dstop() { finishDiag(); },
     pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
-    qstart() { crun = null; frun = null; qStart(); },
-    bkstart() { qrun = null; crun = null; frun = null; qStart('blocks'); },
-    bdstart() { qrun = null; crun = null; frun = null; qStart('board'); },
-    cdstart() { qrun = null; crun = null; frun = null; cStart(); },
+    qstart() { crun = null; frun = null; brun = null; qStart(); },
+    bkstart() { qrun = null; crun = null; frun = null; brun = null; qStart('blocks'); },
+    bdstart() { qrun = null; crun = null; frun = null; brun = null; qStart('board'); },
+    cdstart() { qrun = null; crun = null; frun = null; brun = null; cStart(); },
     cdtile(el) { const r = crun, i = Number(el.dataset.i); if (!r || r.ans || r.built.includes(i) || !(i >= 0 && i < r.hand.length)) return; r.built.push(i); sfx('place'); host.render(); },
     cdback(el) { const r = crun, k = Number(el.dataset.k); if (!r || r.ans) return; r.built.splice(k, 1); host.render(); },
     cdclear() { if (crun && !crun.ans) { crun.built = []; host.render(); } },
     cdplay() { cPlay(false); },
     cdskip() { cPlay(true); },
     cdnext() { cNext(); },
-    cfstart() { qrun = null; crun = null; frun = null; fStart(); },
+    cfstart() { qrun = null; crun = null; frun = null; brun = null; fStart(); },
     cfans(el) { fAnswer(Number(el.dataset.i)); },
     cfnext() { fNext(); },
+    bbstart() { qrun = null; crun = null; frun = null; brun = null; bStart(); },
+    bbans(el) { bAnswer(Number(el.dataset.i)); },
+    bbnext() { bNext(); },
     cdcharm(el) { const r = crun, id = el.dataset.c || ''; if (!r?.offer?.some(o => o.id === id)) return; r.charms.push(id); r.offer = null; cNext(); },
     bdroll() { bdRoll(); },
     bdbuild() { bdBuild(); },
@@ -828,7 +886,7 @@ export function init(host: EHost): EngineModule {
     bksel(el) { const bk = qrun?.bk, i = Number(el.dataset.p); if (!bk || bk.phase !== 'place' || !bk.tray[i] || !fits(bk.g, bk.tray[i]!)) return; bk.sel = i; host.render(); },
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
-    qhome() { qrun = null; crun = null; frun = null; host.render(); },
+    qhome() { qrun = null; crun = null; frun = null; brun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
     qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
@@ -925,6 +983,7 @@ export function init(host: EHost): EngineModule {
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;
       if (drun) return of('diag', drun.node, drun.qs[drun.i]);
+      if (brun) return brun.done || brun.ans || !brun.item ? null : { run: 'bubbles', node: brun.node, level: brun.item.level, id: brun.item.id, prompt: brun.item.prompt, opts: brun.item.opts ?? [], ans: brun.item.ans ?? 0, game: 'bubbles' };
       if (frun) return frun.done || frun.ans || !frun.item ? null : { run: 'cafe', node: frun.node, level: frun.item.level, id: frun.item.id, prompt: frun.item.prompt, opts: frun.item.opts, ans: frun.item.ans, game: 'cafe' };
       if (crun) {   // Bài Câu: lá trong tay + thứ tự đúng (chỉ số lá) để bot xếp
         if (crun.done || crun.ans || crun.tableEnd || !crun.item) return null;

@@ -9,10 +9,11 @@ import type { BlocksSave } from './blocks.ts';
 import { TILES, SIZE, ROLLS, price, canBuild, type BoardSave } from './board.ts';
 import type { CardsSave } from './cards.ts';
 import type { CafeSave } from './cafe.ts';
+import type { BubblesSave } from './bubbles.ts';
 import { ENC_VI } from './quest.ts';
 
 // Sảnh: thẻ các game ở trên, tháp (Leo nhanh) giữ nguyên ở dưới.
-export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave): string {
+export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave): string {
   if (!c.e.goals.length) return '';
   const s = bk ?? { best: 0, runs: 0, day: 0, streak: 0 }, houses = (bd?.lots ?? []).reduce((a, b) => a + b, 0);
   return `<section class="stack"><span class="eyebrow">Chơi</span><h1>🎮 Hôm nay chơi gì?</h1>
@@ -21,6 +22,7 @@ export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, g
       <button class="gcard" data-e="bkstart"><span class="gico" aria-hidden="true">${miniBoard()}</span><span class="stack" style="gap:2px;text-align:left"><b>Xếp Khối Chữ</b><span class="hint">Trả lời đúng để nhận khối, xếp đầy hàng để nổ. Ván 3–5 phút.</span><span class="hint">🏆 ${s.best} · 🔥 ${s.streak} ngày</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <button class="gcard" data-e="cdstart"><span class="gico" aria-hidden="true" style="font-size:30px">🃏</span><span class="stack" style="gap:2px;text-align:left"><b>Bài Câu</b><span class="hint">Ngữ pháp: xếp lá từ thành câu đúng để ra bài, chọn bùa nhân điểm. 3 bàn × 3 lượt.</span><span class="hint">🏆 ${gc?.best ?? 0} điểm · ${gc?.wins ?? 0} bàn thắng</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <button class="gcard" data-e="cfstart"><span class="gico" aria-hidden="true" style="font-size:30px">☕</span><span class="stack" style="gap:2px;text-align:left"><b>Quán Cà Phê</b><span class="hint">Nghe & giao tiếp: nghe khách nói, hiểu ý, chọn câu đáp đúng văn phong. 6 khách mỗi ca.</span><span class="hint">⭐ ${gq?.stars ?? 0} sao · ${gq?.runs ?? 0} ca</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
+      <button class="gcard" data-e="bbstart"><span class="gico" aria-hidden="true" style="font-size:30px">🎯</span><span class="stack" style="gap:2px;text-align:left"><b>Bắt Âm</b><span class="hint">Phát âm: nghe một từ, chạm đúng bong bóng (ship hay sheep?). 10 từ mỗi màn, không tính giờ.</span><span class="hint">🏆 ${gs?.best ?? 0} điểm · màn ${gs?.stage ?? 1}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <button class="gcard" data-e="bdstart"><span class="gico" aria-hidden="true" style="font-size:30px">🎲</span><span class="stack" style="gap:2px;text-align:left"><b>Bàn Cờ Phố</b><span class="hint">Tung xúc xắc đi quanh phố, gặp thử thách tiếng Anh, xây nhà bằng xu. ${ROLLS} lượt tung.</span><span class="hint">🏠 ${houses} tầng nhà · vòng phố ${bd?.laps ?? 0}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
     </section>`;
 }
