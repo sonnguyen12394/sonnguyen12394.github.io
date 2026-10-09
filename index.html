@@ -699,6 +699,31 @@ span.bkslot:empty{border-style:dashed;opacity:.4;cursor:default}
 .cfbub{font-size:26px;align-self:start;animation:pop .3s ease-out}
 
 /* v76 Bắt Âm: bong bóng trôi vào rồi đứng yên (không bắt người chơi chạm đích di động: tránh nhiễu kỹ năng tay, P13) */
+/* v78 Thám tử / v79 Đài phát thanh: thẻ manh mối, hồ sơ có tô sáng câu chứa đáp án, sóng rè giảm dần khi nghe đúng */
+.dtclue{display:inline-grid;place-items:center;width:34px;height:42px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);font-size:17px;transition:transform .25s}
+.dtclue.on{background:var(--good-soft);border-color:var(--good);transform:rotateY(180deg) scaleX(-1)}
+.dtclue.cur{outline:2px solid var(--accent);outline-offset:1px}
+.dtdoc{padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:16px;line-height:1.6;max-height:46vh;overflow:auto}
+.dtw{cursor:pointer;text-decoration:underline dotted color-mix(in srgb,var(--muted) 60%,transparent);text-underline-offset:3px}
+.dtw.new{text-decoration-color:var(--accent)}
+.dtw:focus-visible{outline:2px solid var(--accent)}
+.dtlook{margin:6px 0 0;padding:6px 10px;border-radius:8px;background:var(--accent-soft)}
+.dtdoc mark{background:var(--warn-soft,#FFF1C2);color:inherit;border-radius:3px;padding:0 2px}
+.btn.right{background:var(--good-soft);border-color:var(--good)}
+.btn.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.rdwave{display:flex;align-items:center;gap:3px;height:34px;padding:0 6px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line)}
+.rdwave i{flex:1;border-radius:2px;background:var(--accent);transition:height .4s}
+/* v77 Câu đố ngày: lưới 4 × 4 ô từ, nhóm đã tìm thành dải màu của app */
+.pzgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0}
+.pztile{min-height:58px;padding:6px 4px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);font-weight:600;font-size:14px;line-height:1.2;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;overflow-wrap:anywhere;text-align:center}
+.pztile small{font-weight:400;font-size:11px;color:var(--muted)}
+.pztile.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);transform:scale(.97)}
+.pztile.on small{color:var(--accent-ink)}
+.pzband{display:flex;flex-direction:column;gap:2px;padding:8px 12px;margin:4px 0;border-radius:10px;background:hsl(var(--h) 55% 88%);color:hsl(var(--h) 60% 18%);animation:pzin .35s ease-out both}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pzband{background:hsl(var(--h) 35% 26%);color:hsl(var(--h) 60% 90%)}}
+:root[data-theme="dark"] .pzband{background:hsl(var(--h) 35% 26%);color:hsl(var(--h) 60% 90%)}
+@keyframes pzin{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.pzband{animation:none}}
 .bbfield{position:relative;height:260px;margin:10px 0;border-radius:18px;background:linear-gradient(180deg,var(--accent-soft),var(--surface));overflow:hidden;border:1px solid var(--line)}
 .bbub{position:absolute;top:30%;width:28%;max-width:120px;aspect-ratio:1;transform:translateX(-10%) scale(var(--s,1));border-radius:50%;border:2px solid hsl(var(--h) 70% 55% / .7);background:radial-gradient(circle at 30% 30%,#fff9 0 12%,hsl(var(--h) 80% 70% / .45) 13% 60%,hsl(var(--h) 70% 50% / .35));font:700 17px/1.1 var(--body);color:var(--ink);cursor:pointer;animation:bbfloat .9s ease-out var(--d,0ms) both}
 .bbub.right{background:var(--good-soft);border-color:var(--good);animation:pop .3s}
@@ -731,4 +756,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.61bb4be8f3.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.a569361289.js" defer></script><script src="app.js?v=67" defer></script>

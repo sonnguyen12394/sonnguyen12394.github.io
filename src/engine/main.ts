@@ -30,6 +30,11 @@ import { viewBubbles, viewBubblesEnd, type BubbleRun } from './bubbleview.ts';
 import { WORDS, points as bubblePoints, freshBubblesSave } from './bubbles.ts';
 import { TABLES, PLAYS, score as cardScore, offer as cardOffer, deal as cardDeal, check as cardCheck, target as cardTarget, freshCardsSave } from './cards.ts';
 import { sfx } from './sfx.ts';
+import { viewPuzzle, viewPuzzleEnd, type PuzzleRun, type RecallItem } from './puzzleview.ts';
+import { GROUPS, PER, deal as pzDeal, judge as pzJudge, stars as pzStars, distinct as pzDistinct, family as pzFamily, freshPuzzleSave, type PzGroup, type PzWord } from './puzzle.ts';
+import { rand } from './blocks.ts';
+import { viewCase, viewCaseEnd, type CaseRun } from './caseview.ts';
+import { choose as caseChoose, order as caseOrder, options as caseOptions, solved as caseSolved, caseStars, freshCaseSave } from './detective.ts';
 import { viewQuestHome, viewQuestRun, viewQuestEnd, type QuestRun, type QItem } from './questview.ts';
 import { computePath, computeNba, recallOf } from './today.ts';
 import { evRecall } from './retain.ts';
@@ -56,7 +61,7 @@ export interface EngineModule {
   merge(a: unknown, b: unknown): EState;
   peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
-export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[] }
+export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }> }
 
 let bound = false;
 
@@ -576,6 +581,158 @@ export function init(host: EHost): EngineModule {
     sfx('end'); host.save(); host.render();
   }
 
+  // ---------- Câu đố ngày (v77, F10 ôn tập + F2 từ vựng) ----------
+  // 4 cụm từ (u:) do engine chọn (ôn sắp quên → đang học → lộ trình); ghép nhóm không vào năng lực. Sau mỗi nhóm: nhớ lại một từ khác của
+  // cụm, không có trên bàn — tự gõ (mức 3, g = 0) nếu cụm đã học, chọn từ theo nghĩa trong 4 (mức 2) nếu cụm còn mới. Sao là telemetry (e.gd).
+  let zrun: PuzzleRun | null = null;
+  const PZ_KINDS: Enc[] = ['chest', 'monster', 'chest', 'monster', 'scout', 'monster', 'boss', 'monster', 'monster', 'monster', 'monster', 'monster'];
+  const zsave = () => { const e = E(); return (e.gd ||= freshPuzzleSave()); };
+  function zStart(): void {
+    if (!loaded()) { ensure(); return; }
+    const e = E(), sv = zsave(), today = host.today(), daily = sv.last !== today, floor = sv.runs + 1;
+    const pick = kindPicker(n => n.startsWith('u:') && !!pzFamily(host.group?.(n)?.topic ?? ''), 'z', floor), seed = daily ? (today * 2654435761) >>> 0 : (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0;
+    const cand: Array<{ g: PzGroup & { all: PzWord[] }; ch: Challenge | null }> = [], seen = new Set<string>();
+    for (const k of PZ_KINDS) {
+      const ch = pick(k); if (!ch || seen.has(ch.node)) continue; seen.add(ch.node);
+      const gi = host.group?.(ch.node); if (gi) cand.push({ g: { ...gi, words: gi.words, all: gi.words }, ch });
+      if (pzDistinct(cand.map(x => x.g)).length >= GROUPS) break;
+    }
+    // Lộ trình chưa đủ 4 cụm khác chủ đề → thêm cụm cùng bậc với cụm đầu (để bàn đủ 16 ô); các cụm thêm không có lượt engine riêng.
+    if (pzDistinct(cand.map(x => x.g)).length < GROUPS) {
+      const ix = loaded()!, lv = cand[0] ? ix.node.get(cand[0].g.node)?.cefr : undefined;
+      for (const [id, n] of ix.node) { if (!id.startsWith('u:') || seen.has(id) || (lv && n.cefr !== lv)) continue; const gi = host.group?.(id); if (gi && pzFamily(gi.topic)) { cand.push({ g: { ...gi, all: gi.words }, ch: null }); seen.add(id); } if (pzDistinct(cand.map(x => x.g)).length >= GROUPS) break; }
+    }
+    const chosen = pzDistinct(cand.map(x => x.g)) as Array<PzGroup & { all: PzWord[] }>;
+    if (chosen.length < GROUPS) { host.toast('Chưa đủ từ để ra câu đố: chọn mục tiêu CEFR trước.'); return; }
+    const r0 = rand(seed ^ 0x5bd1e995), shuf = <T,>(xs: T[]) => { const a = xs.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r0() * (i + 1)); [a[i], a[j]] = [a[j]!, a[i]!]; } return a; };
+    const groups: PzGroup[] = [], rest: PzWord[][] = [], chs: Array<Challenge | null> = [];
+    for (const G of chosen) {
+      // Từ để nhớ lại: đã học, đến hạn trước; còn lại lên bàn (đã học trước). Mỗi cụm giữ ít nhất một từ ngoài bàn.
+      const ws = shuf(G.all), keep = ws.filter(w => w.learned).sort((a, b) => Number(!!b.due) - Number(!!a.due));
+      const off = keep[0] ?? ws[ws.length - 1]!, board = ws.filter(w => w !== off).sort((a, b) => Number(!!b.learned) - Number(!!a.learned)).slice(0, PER);
+      groups.push({ node: G.node, topic: G.topic, vi: G.vi, words: board }); rest.push(G.all.filter(w => !board.includes(w)).sort((a, b) => Number(b === off) - Number(a === off)));
+      chs.push(cand.find(x => x.g.node === G.node)?.ch ?? null);
+    }
+    zrun = { floor, seed, t0: Date.now(), daily, n: 0, ok: 0, coins: 0, wrong: [], done: false, groups, chs, rest, tiles: pzDeal(seed, groups.length), sel: [], solved: [], mistakes: 0, shown: [], msg: null, recall: null };
+    host.render();
+  }
+  function zRecall(g: number): RecallItem | null {
+    const r = zrun!, G = r.groups[g]!, w = r.rest[g]?.[0];
+    if (!w) return null;
+    if (w.learned || Object.values(E().m[G.node] ?? {}).some(c => (c?.n ?? 0) > 0))
+      return { id: 'w:' + w.id + ':typ', level: 3, g: 0, prompt: `Gõ từ tiếng Anh nghĩa là “${w.vi}”${w.pos ? ` (${w.pos})` : ''}`, accept: [w.en], en: w.en, vi: w.vi };
+    // Phương án nhiễu cùng cụm (cùng chủ đề): nhiễu khác chủ đề thì loại trừ bằng chủ đề vừa tìm được, không cần biết từ.
+    const others = (r.rest[g] ?? []).slice(1).map(x => x.en).filter(x => x.toLowerCase() !== w.en.toLowerCase());
+    const rr = rand(r.seed + g * 97), pickO: string[] = [];
+    while (pickO.length < 3 && others.length) pickO.push(others.splice(Math.floor(rr() * others.length), 1)[0]!);
+    const opts = [w.en, ...pickO]; for (let i = opts.length - 1; i > 0; i--) { const j = Math.floor(rr() * (i + 1)); [opts[i], opts[j]] = [opts[j]!, opts[i]!]; }
+    return { id: 'w:' + w.id + ':word', level: 2, g: 1 / opts.length, prompt: `Từ nào nghĩa là “${w.vi}”?`, opts, ans: opts.indexOf(w.en), en: w.en, vi: w.vi };
+  }
+  function zSubmit(): void {
+    const r = zrun;
+    if (!r || r.recall || r.sel.length !== PER) return;
+    const j = pzJudge(r.sel.map(i => r.tiles[i]![0]));
+    if (j.res !== 'ok') { r.mistakes++; r.msg = j.res; sfx('bad'); host.render(); return; }
+    zSolve(j.g);
+  }
+  function zSolve(g: number): void {
+    const r = zrun!;
+    r.solved.push(g); r.sel = []; r.msg = null; sfx('clear');
+    const it = zRecall(g), node = r.groups[g]!.node;
+    r.recall = { g, item: it, novel: !!it && !seenHas(E().ev, node, it.id), ans: null };
+    host.save(); host.render();
+  }
+  function zAnswer(ok: boolean, given: string): void {
+    const r = zrun, R = r?.recall;
+    if (!r || !R || !R.item || R.ans) return;
+    const e = E(), it = R.item, G = r.groups[R.g]!, ch = r.chs[R.g] ?? null;
+    ingest(e.ev, e.m, { node: G.node, level: it.level, ok, g: it.g, item: it.id, text: it.prompt, qt: it.opts ? 'mcq' : 'typed', ctx: 'recall', src: 'game', ch: ch?.id ?? `${QUEST_VER}:z${r.floor}:x:${G.node}`, gp: ch?.gameplayDifficulty ?? 1, ...(given ? { given, right: it.en } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    const coins = ch ? reward(ch, ok, R.novel) : ok ? 3 : 1;
+    r.n++; r.coins += coins; if (ok) r.ok++; else r.wrong.push(G.node);
+    const sv = qsave(); sv.ans++; if (ok) sv.ok++; sv.coins += coins; sv.day = host.today();
+    R.ans = { ok, given, coins };
+    sfx(ok ? 'ok' : 'bad'); host.save(); host.render();
+  }
+  function zNext(): void {
+    const r = zrun;
+    if (!r || !r.recall) return;
+    r.recall = null;
+    const left = r.groups.map((_, g) => g).filter(g => !r.solved.includes(g));
+    if (!left.length) { zEnd(); return; }
+    if (left.length === 1) { zSolve(left[0]!); return; }   // nhóm cuối tự lộ ra (4 ô còn lại)
+    host.render();
+  }
+  function zEnd(): void {
+    const r = zrun;
+    if (!r) return;
+    const e = E(), s = zsave(), ixq = loaded()!, today = host.today();
+    r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
+    s.runs++; s.best = Math.max(s.best, pzStars(r.mistakes)); s.stars += pzStars(r.mistakes);
+    if (r.daily && s.last !== today) { s.days++; s.last = today; }
+    addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: `puzzle:${r.floor}`, dec: 'puzzle:end', rule: `${RULE_ID}/${QUEST_VER}`,
+      info: { ok: r.ok, of: r.n, mistakes: r.mistakes, daily: r.daily ? 1 : 0, coins: r.coins },
+      evs: e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:z${r.floor}:`)).slice(-r.n).map(x => x.id) }, false);
+    sfx('end'); host.save(); host.render();
+  }
+
+  // ---------- Thám tử (v78, F6 đọc) / Đài phát thanh (v79, F5 nghe đoạn) ----------
+  // Một bài đọc / nghe ở đúng cấp người học đang học (theo lộ trình), engine chọn bài chưa làm (bài của unit đã học trước: từ quen trong
+  // ngữ cảnh mới). Điểm bài lưu như tab Đọc / Nghe (Can-Do). Không gửi bằng chứng vào nút từ / ngữ pháp: hiểu bài không chứng minh một từ.
+  let trun: CaseRun | null = null;
+  const tsave = (mode: 'read' | 'listen') => { const e = E(); return mode === 'read' ? (e.gt ||= freshCaseSave()) : (e.gr ||= freshCaseSave()); };
+  const LVS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+  // Cấp đang học: cấp hay gặp nhất trong 8 phần mở đầu tiên của lộ trình (không phải cấp mục tiêu: đọc bài quá khó không học được gì).
+  function curLv(): string {
+    const v = V(), ix = loaded()!, p = computePath(host, v, ix), cnt = new Map<string, number>();
+    for (const o of p.open.slice(0, 8)) { const c = ix.node.get(o.node)?.cefr; if (c && LVS.includes(c)) cnt.set(c, (cnt.get(c) ?? 0) + 1); }
+    const top = [...cnt.entries()].sort((a, b) => b[1] - a[1] || LVS.indexOf(a[0]) - LVS.indexOf(b[0]))[0]?.[0];
+    if (top) return top;
+    const g = v.goals.map(x => x.id).find(x => /^cefr-[abc][12]$/.test(x));
+    return g ? g.slice(5).toUpperCase() : 'A1';
+  }
+  function tStart(mode: 'read' | 'listen'): void {
+    if (!loaded()) { ensure(); return; }
+    const e = E(), sv = tsave(mode), ix = loaded()!, lv0 = curLv(), seed = (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0;
+    if (mode === 'listen' && !host.tts?.()) { host.toast('Máy này không có giọng đọc tiếng Anh nên chưa nghe được bản tin.'); return; }
+    // Cấp đang học chưa có bài → thử cấp dưới rồi cấp trên gần nhất.
+    const at = LVS.indexOf(lv0), tries = [lv0, ...LVS.slice(0, Math.max(0, at)).reverse(), ...LVS.slice(at + 1)];
+    let text = null as ReturnType<typeof caseChoose>, lv = lv0;
+    for (const L of tries) { const xs = host.texts?.(mode, L) ?? []; text = caseChoose(xs, seed, (sv as { lastId?: string }).lastId ?? ''); if (text) { lv = L; break; } }
+    if (!text) { host.toast(mode === 'read' ? 'Chưa có bài đọc nào (đang tải bài học, thử lại sau).' : 'Chưa có bản tin nào.'); return; }
+    const qs = caseOrder(text.qs), node = [...ix.node.values()].find(n => n.kind === 'cando' && n.skill === (mode === 'read' ? 'R' : 'L') && n.cefr === lv)?.id ?? '';
+    trun = { mode, floor: sv.runs + 1, seed, t0: Date.now(), node, text, qs, opts: qs.map((q, k) => caseOptions(q, seed + k * 131)), i: 0, first: qs.map(() => null), flipped: qs.map(() => false), retry: false, ans: null, ok: 0, coins: 0, done: false, plays: 0, gloss: mode === 'read' ? host.gloss?.(text.paras) ?? {} : {}, look: null, looked: 0 };
+    if (mode === 'listen' && text.lines) { host.sayLines?.(text.lines, false); trun.plays = 1; }
+    host.render();
+  }
+  function tAnswer(i: number): void {
+    const r = trun;
+    if (!r || r.done || r.ans) return;
+    const o = r.opts[r.i]!, ok = i >= 0 && i === o.ans;
+    if (r.retry) { if (ok) r.flipped[r.i] = true; r.ans = { ok, i, coins: 0, retry: true }; sfx(ok ? 'ok' : 'bad'); host.render(); return; }
+    const coins = ok ? 6 : 1;
+    r.first[r.i] = ok; if (ok) { r.ok++; r.flipped[r.i] = true; } r.coins += coins;
+    const sv = qsave(); sv.coins += coins; sv.day = host.today();
+    r.ans = { ok, i, coins, retry: false };
+    sfx(ok ? 'clear' : 'bad'); host.save(); host.render();
+  }
+  function tNext(): void {
+    const r = trun;
+    if (!r || r.done) return;
+    if (r.i + 1 >= r.qs.length) { tEnd(); return; }
+    r.i++; r.ans = null; r.retry = false; host.render();
+  }
+  function tEnd(): void {
+    const r = trun;
+    if (!r) return;
+    const e = E(), sv = tsave(r.mode) as ReturnType<typeof tsave> & { lastId?: string }, n = r.qs.length, win = caseSolved(r.ok, n);
+    r.done = true;
+    host.readSave?.(r.text.id, r.text.src, r.mode, n ? r.ok / n : 0);
+    sv.runs++; if (win) sv.solved++; sv.stars += caseStars(r.ok, n); sv.day = host.today(); sv.lastId = r.text.id;
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `${r.mode === 'read' ? 'case' : 'radio'}:${r.floor}`, dec: `${r.mode === 'read' ? 'case' : 'radio'}:${win ? 'win' : 'lose'}`, rule: `${RULE_ID}/${QUEST_VER}`,
+      info: { ok: r.ok, of: n, looked: r.looked, text: r.text.id, src: r.text.src, lv: r.text.lv, node: r.node, coins: r.coins }, evs: [] }, false);
+    sfx('end'); host.save(); host.render();
+  }
+
   // ---------- Bàn Cờ Phố (v73) ----------
   const bsave = () => { const e = E(); return (e.bd ||= freshBoardSave()); };
   const wallet = () => Math.max(0, qsave().coins - bsave().spent);
@@ -786,13 +943,15 @@ export function init(host: EHost): EngineModule {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
       if (brun) return brun.done ? viewBubblesEnd(c, brun, (brun as BubbleRun & { prevBest?: number }).prevBest ?? 0) : viewBubbles(c, brun, host.probe('ph:s-01').length > 0);
       if (frun) return frun.done ? viewCafeEnd(c, frun, fsave().stars) : viewCafe(c, frun, fsave().stars);
+      if (trun) return trun.done ? viewCaseEnd(c, trun, tsave(trun.mode).solved) : viewCase(c, trun, !!host.tts?.());
+      if (zrun) return zrun.done ? viewPuzzleEnd(c, zrun, zsave().days) : viewPuzzle(c, zrun);
       if (crun) return crun.done ? viewCardsEnd(c, crun, (crun as CardsRun & { prevBest?: number }).prevBest ?? 0) : viewCards(c, crun);
       if (qrun?.mode === 'blocks') return qrun.done ? viewBlocksEnd(c, qrun) : viewBlocks(c, qrun);
       if (qrun?.mode === 'board') return qrun.done ? viewBoardEnd(c, qrun, bsave()) : viewBoard(c, qrun, bsave(), wallet());
       if (qrun?.done) return viewQuestEnd(c, qrun);
       if (qrun) return viewQuestRun(c, qrun);
       const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-      return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
+      return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.()) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
     },
     micro: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -863,22 +1022,36 @@ export function init(host: EHost): EngineModule {
     },
     dstop() { finishDiag(); },
     pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
-    qstart() { crun = null; frun = null; brun = null; qStart(); },
-    bkstart() { qrun = null; crun = null; frun = null; brun = null; qStart('blocks'); },
-    bdstart() { qrun = null; crun = null; frun = null; brun = null; qStart('board'); },
-    cdstart() { qrun = null; crun = null; frun = null; brun = null; cStart(); },
+    qstart() { crun = null; frun = null; brun = null; zrun = null; trun = null; qStart(); },
+    bkstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; qStart('blocks'); },
+    bdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; qStart('board'); },
+    cdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; cStart(); },
     cdtile(el) { const r = crun, i = Number(el.dataset.i); if (!r || r.ans || r.built.includes(i) || !(i >= 0 && i < r.hand.length)) return; r.built.push(i); sfx('place'); host.render(); },
     cdback(el) { const r = crun, k = Number(el.dataset.k); if (!r || r.ans) return; r.built.splice(k, 1); host.render(); },
     cdclear() { if (crun && !crun.ans) { crun.built = []; host.render(); } },
     cdplay() { cPlay(false); },
     cdskip() { cPlay(true); },
     cdnext() { cNext(); },
-    cfstart() { qrun = null; crun = null; frun = null; brun = null; fStart(); },
+    cfstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; fStart(); },
     cfans(el) { fAnswer(Number(el.dataset.i)); },
     cfnext() { fNext(); },
-    bbstart() { qrun = null; crun = null; frun = null; brun = null; bStart(); },
+    bbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; bStart(); },
     bbans(el) { bAnswer(Number(el.dataset.i)); },
     bbnext() { bNext(); },
+    pzstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; zStart(); },
+    pztile(el) { const r = zrun, i = Number(el.dataset.i); if (!r || r.recall || !(i >= 0 && i < r.tiles.length) || r.solved.includes(r.tiles[i]![0])) return; const k = r.sel.indexOf(i); if (k >= 0) r.sel.splice(k, 1); else if (r.sel.length < PER) r.sel.push(i); r.msg = null; sfx('place'); host.render(); },
+    pzclear() { if (zrun && !zrun.recall) { zrun.sel = []; zrun.msg = null; host.render(); } },
+    pzhint() { const r = zrun; if (!r || r.recall) return; const cand = [...r.sel, ...r.tiles.map((_, i) => i)].find(i => !r.shown.includes(i) && !r.solved.includes(r.tiles[i]![0])); if (cand !== undefined) { r.shown.push(cand); host.render(); } },
+    pzsubmit() { zSubmit(); },
+    pzans(el) { const it = zrun?.recall?.item, i = Number(el.dataset.i); if (!it) return; zAnswer(i >= 0 && !!it.opts && i === it.ans, i >= 0 ? it.opts?.[i] ?? '' : ''); },
+    pznext() { zNext(); },
+    dtstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; tStart('read'); },
+    rdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; tStart('listen'); },
+    dtans(el) { tAnswer(Number(el.dataset.i)); },
+    dtretry() { const r = trun; if (!r || !r.ans || r.ans.ok || r.ans.retry) return; r.ans = null; r.retry = true; if (r.mode === 'listen' && r.text.lines) { host.sayLines?.(r.text.lines, false); r.plays++; } host.render(); },
+    dtnext() { tNext(); },
+    dtgloss(el) { const r = trun, w = el.dataset.w || ''; if (!r || !r.gloss[w]) return; r.look = w; r.looked++; host.render(); },
+    rdplay(el) { const r = trun; if (!r?.text.lines) return; host.sayLines?.(r.text.lines, el.dataset.slow === '1'); r.plays++; host.render(); },
     cdcharm(el) { const r = crun, id = el.dataset.c || ''; if (!r?.offer?.some(o => o.id === id)) return; r.charms.push(id); r.offer = null; cNext(); },
     bdroll() { bdRoll(); },
     bdbuild() { bdBuild(); },
@@ -886,7 +1059,7 @@ export function init(host: EHost): EngineModule {
     bksel(el) { const bk = qrun?.bk, i = Number(el.dataset.p); if (!bk || bk.phase !== 'place' || !bk.tray[i] || !fits(bk.g, bk.tray[i]!)) return; bk.sel = i; host.render(); },
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
-    qhome() { qrun = null; crun = null; frun = null; brun = null; host.render(); },
+    qhome() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
     qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
@@ -898,6 +1071,13 @@ export function init(host: EHost): EngineModule {
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
+    pztyped(f) {
+      const it = zrun?.recall?.item;
+      if (!it || zrun?.recall?.ans) return;
+      const raw = String(new FormData(f).get('a') || ''), a = norm(raw);
+      if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
+      zAnswer((it.accept ?? []).some(x => norm(x) === a), raw.trim());
+    },
     ptyped(f) {
       if (!prun) return;
       const q = prun.qs[prun.i]!, a = norm(String(new FormData(f).get('a') || ''));
@@ -953,6 +1133,10 @@ export function init(host: EHost): EngineModule {
       const f = t && act[t.dataset.e || ''];
       if (f) { ev.preventDefault(); f(t); }
     });
+    document.addEventListener('keydown', ev => {   // phần tử data-e không phải nút (từ trong hồ sơ): Enter / Space như bấm
+      const t = ev.target as HTMLElement | null;
+      if ((ev.key === 'Enter' || ev.key === ' ') && t?.getAttribute?.('role') === 'button' && t.dataset.e && act[t.dataset.e]) { ev.preventDefault(); act[t.dataset.e]!(t); }
+    });
     document.addEventListener('submit', ev => {
       const f = ev.target as HTMLFormElement | null, k = f?.dataset?.eform;
       if (!f || !k || !forms[k]) return;
@@ -983,6 +1167,17 @@ export function init(host: EHost): EngineModule {
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;
       if (drun) return of('diag', drun.node, drun.qs[drun.i]);
+      if (trun) {   // Thám tử / Đài: câu hỏi hiểu của bài (nút Can-Do đọc / nghe đúng cấp, để bot dùng năng lực đọc / nghe của nó)
+        if (trun.done || trun.ans) return null;
+        const q = trun.qs[trun.i]!, o = trun.opts[trun.i]!;
+        return { run: trun.mode === 'read' ? 'case' : 'radio', node: trun.node, level: 2, id: `${trun.text.id}:${trun.i}`, prompt: q.q, opts: o.opts, ans: o.ans, game: trun.mode === 'read' ? 'case' : 'radio' };
+      }
+      if (zrun) {   // Câu đố ngày: bàn (nhóm đúng để bot ghép) hoặc câu nhớ lại
+        if (zrun.done) return null;
+        const R = zrun.recall;
+        if (R) return R.ans || !R.item ? null : { run: 'puzzle', node: zrun.groups[R.g]!.node, level: R.item.level, id: R.item.id, prompt: R.item.prompt, ...(R.item.opts ? { opts: R.item.opts, ans: R.item.ans ?? 0 } : { accept: R.item.accept ?? [] }), game: 'puzzle' };
+        return { run: 'pzboard', node: '', level: 0, id: '', prompt: '', groups: zrun.groups.map((G, g) => ({ node: G.node, tiles: zrun!.tiles.map((t, i) => (t[0] === g ? i : -1)).filter(i => i >= 0), solved: zrun!.solved.includes(g) })) };
+      }
       if (brun) return brun.done || brun.ans || !brun.item ? null : { run: 'bubbles', node: brun.node, level: brun.item.level, id: brun.item.id, prompt: brun.item.prompt, opts: brun.item.opts ?? [], ans: brun.item.ans ?? 0, game: 'bubbles' };
       if (frun) return frun.done || frun.ans || !frun.item ? null : { run: 'cafe', node: frun.node, level: frun.item.level, id: frun.item.id, prompt: frun.item.prompt, opts: frun.item.opts, ans: frun.item.ans, game: 'cafe' };
       if (crun) {   // Bài Câu: lá trong tay + thứ tự đúng (chỉ số lá) để bot xếp

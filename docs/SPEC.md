@@ -5,7 +5,7 @@
 > 2. **Game là trải nghiệm chính**: người học chơi để thắng, việc học tiếng Anh nằm ẩn trong luật chơi (stealth learning) — mỗi hành động trong game là một thử thách ngôn ngữ do engine chọn, nhằm lên cấp nhanh nhất. Không dùng dark pattern; tiến độ học và dữ liệu luôn xem được.
 > 3. Kiến trúc evidence theo v2.4 (Observation → Evidence → Ledger → Aggregate → Learner State → Decision Snapshot), đo bằng `docs/CONFORMANCE-200-v2.4.md` và `docs/SCORECARD-v2.4.md`.
 >
-> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v76 (xem phần "Lộ trình v2.4" cuối tệp).
+> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v79 (xem phần "Lộ trình v2.4" cuối tệp).
 
 Cập nhật: 03/10/2026. Bản đọc và bình luận: Claude Docs "English Ladder — Master Spec v2". Tệp này là bản AI đọc khi xây; hai bản phải giống nhau.
 
@@ -275,4 +275,7 @@ Mỗi mốc một PR, chấm lại 200 + 400 tiêu chí sau mỗi mốc.
 | v74 | Bài Câu (F3 ngữ pháp) | Lá bài = từ của câu ngữ pháp do engine chọn (`picker`, nút g:, `app.js eOrder`: câu sắp xếp / câu tự gõ đã điền / câu sửa đúng + lá bẫy từ đáp án sai hay gặp); tự dựng câu = bằng chứng mức 3 (g = 0); 3 bàn × 3 lượt, chip × nhân, bùa chọn sau mỗi bàn; thua bàn không kết thúc ván; telemetry `e.gc` |
 | v75 | Quán Cà Phê (F5 nghe + F7 giao tiếp) | 6 khách / ca; câu của nút fn: (`app.js eFn`): nghe khách nói bằng giọng máy → chọn nghĩa (mức 2), tình huống + văn phong → chọn câu đáp (mức 3), luôn 4 lựa chọn; sao + đồ trang trí quán; telemetry `e.gq` |
 | v76 | Bắt Âm (F4 phát âm) | Nghe một từ của cặp âm, chạm đúng 1 trong 3 bong bóng (đoán mò 1/3); câu nghe phân biệt âm dùng chung đổi từ 2 → 3 lựa chọn; không hết giờ, bong bóng đứng yên khi chạm; sai thì nghe lại hai từ của cặp + mẹo khẩu hình; telemetry `e.gs`; sảnh Chơi nhóm theo mục đích học |
+| v77 | Câu đố ngày (F10 ôn tập + F2) | 16 ô từ của 4 cụm (u:) do engine chọn (ôn → đang học → lộ trình), mỗi cụm một họ chủ đề khác (`puzzle.ts family`); ghép nhóm không vào năng lực; sau mỗi nhóm nhớ lại một từ khác của cụm (tự gõ mức 3 nếu đã học, chọn trong 4 mức 2 nếu mới); không giới hạn lượt nộp; câu đố mỗi ngày + ván luyện thêm; telemetry `e.gd` |
+| v78 | Thám tử (F6 đọc + F11) | Một bài đọc đúng cấp đang học (`app.js eTexts`: văn bản đời thường, bài dài, bài của unit), chưa làm trước, bài của unit đã học trước; mỗi câu hỏi là một manh mối (3 lựa chọn), câu ý chính là kết luận; sai thì tô sáng câu chứa đáp án + vì sao + thử lại không tính điểm; chạm từ để xem nghĩa; điểm lưu như tab Đọc (Can-Do); telemetry `e.gt` |
+| v79 | Đài phát thanh (F5 nghe đoạn) | Cùng lõi với Thám tử nhưng nghe cả bài bằng giọng máy (hai giọng), lời ẩn tới cuối, nghe lại / chậm không giới hạn; điểm lưu như tab Nghe (Can-Do); máy không có giọng thì ẩn game; telemetry `e.gr` |
 | — | Tiêu chí game theo chức năng | `docs/GAME-CRITERIA.md`: 13 chức năng học của app; 10 tiêu chí chung (G1–G10, thang 10, trọng số; bắt buộc G3 ≥ 8 và G9 ≥ 8) + tiêu chí riêng theo chức năng; chấm 5 game hiện có (Leo tháp 7,1 · Xếp Khối 7,6 · Bàn Cờ 7,1 · Tốc độ 60 giây 5,6 · Ghép cặp 5,9); thứ tự game nên làm tiếp |

@@ -274,6 +274,61 @@ Ghi chú tiêu chí riêng:
 - F3 và F7 đạt.
 - **F5 (nghe đoạn) và F4 (nói)** chưa đạt: cần 📻 Đài phát thanh và 🎤 Karaoke / 🤖 Robot ở đợt sau.
 
+## 4c. Chấm 3 game đợt 2 (v77–v79)
+
+| Tiêu chí | 📅 Câu đố ngày | 🔍 Thám tử | 📻 Đài phát thanh |
+|---|---|---|---|
+| G1 Học là luật chơi (×2) | 7 | 8 | 8 |
+| G2 Đúng mục đích (×2) | 8 | 9 | 9 |
+| G3 Bằng chứng sạch (×2) | 9 | 8 | 8 |
+| G4 Engine chọn nội dung | 9 | 7 | 7 |
+| G5 Độ khó tách đôi | 8 | 8 | 8 |
+| G6 Phản hồi học tập | 7 | 9 | 8 |
+| G7 Hấp dẫn thật (×2) | 7 | 6 | 6 |
+| G8 Mật độ học | 6 | 5 | 5 |
+| G9 Động lực trung thực | 9 | 9 | 9 |
+| G10 Phát hành được | 9 | 9 | 8 |
+| **Điểm có trọng số (÷ 14)** | **7,9** | **7,8** | **7,6** |
+
+### Điểm theo chức năng
+
+| Game | Chức năng | Tiêu chí riêng | Điểm |
+|---|---|---|---|
+| 📅 Câu đố ngày | F10 ôn tập | F10a 8 · F10b 9 · F10c 7 | **8,0** ✓ |
+| 📅 Câu đố ngày | F2 từ mới | F2a 7 · F2b 6 · F2c 7 | **6,7** (phụ) |
+| 🔍 Thám tử | F6 đọc hiểu | F6a 7 · F6b 7 · F6c 8 | **7,3** ✓ |
+| 📻 Đài phát thanh | F5 nghe | F5a 9 · F5b 8 · F5c 7 | **8,0** ✓ |
+
+Ghi chú tiêu chí riêng:
+- **F10c 7:** cụm đã học thì nhớ lại tự gõ; cụm còn mới thì chọn từ theo nghĩa trong 4 (mức 2).
+- **F2b 6:** từ chưa học có hình emoji và nút xem nghĩa, nhưng chưa có thẻ dạy riêng.
+- **F6a 7:** bài A1 thường ngắn hơn 60 từ; câu hỏi bài của unit không có nhãn ý chính / chi tiết.
+- **F6c 8:** chạm từ trong hồ sơ để xem nghĩa và nghe; từ chưa học gạch đậm.
+- **F5c 7:** bài nghe dài và bài A1–A2 có câu ý chính / chi tiết / suy luận; bản tin từ bài của unit chỉ có câu chi tiết.
+
+### Căn cứ từng game
+
+**📅 Câu đố ngày** (`puzzle.ts`, `app.js eGroup`)
+- 4 cụm từ do engine chọn: cụm sắp quên trước, rồi đang học, rồi lộ trình (G4, F10a).
+- Mỗi bàn 4 **họ chủ đề** khác nhau (`family()`): cụm gần nghĩa (Ngày / Tháng / Giờ) không cùng bàn, cụm trừu tượng (đại từ, giới từ, thành ngữ…) không dùng. Đây là gốc rễ của lỗi "một từ hợp hai nhóm" thấy khi chạy thử.
+- Ghép nhóm **không** vào năng lực (sai một nhóm không chỉ ra được hổng nút nào). Bằng chứng chỉ từ câu nhớ lại sau mỗi nhóm: từ khác của cùng cụm, không có trên bàn; nhiễu cùng chủ đề (G3; e2e `puzzle.spec.ts`).
+- Không giới hạn lượt nộp, sai chỉ bớt sao; bỏ ngày không mất gì (G9).
+
+**🔍 Thám tử** (`detective.ts`, `app.js eTexts`)
+- Bài đúng cấp người học đang học (cấp hay gặp nhất của lộ trình), chưa làm trước, bài của unit đã học trước: từ quen trong ngữ cảnh mới (F11).
+- Mỗi manh mối 3 lựa chọn; câu ý chính là "kết luận vụ án". Sai thì tô sáng câu chứa đáp án + "vì sao" + thử lại một lần (không tính điểm) (G6).
+- Điểm bài lưu như tab Đọc (`st.lread`, `st.units[].read`), nên Can-Do đọc tăng như làm ở tab đó. Không gửi bằng chứng vào nút từ / ngữ pháp (G3; e2e `case.spec.ts`).
+- Mỗi bài 3–6 câu trong 2–4 phút (G8 = 5).
+
+**📻 Đài phát thanh** (`detective.ts` dùng chung, `caseview.ts`)
+- Nghe cả bài bằng giọng máy (hai giọng với bài hội thoại); lời ẩn tới cuối; nghe lại / nghe chậm không giới hạn (F5a, F5b).
+- Điểm lưu như tab Nghe (`st.lread`, `st.units[].listen`). Máy không có giọng thì ẩn thẻ game và báo rõ (G10 = 8).
+
+**Kết luận:**
+- Cả 3 game đạt ngưỡng phát hành: G3 ≥ 8, G9 ≥ 8, G1 ≥ 7, tổng ≥ 7,5.
+- F10, F6 và **F5** đạt (F5 trước đây 6,0 ✗ vì chỉ có câu đơn).
+- Còn chưa có game: F8 nói, F9 viết, F12 luyện thi, F1 chẩn đoán.
+
 ## 5. Đề xuất ưu tiên (chức năng chưa có game, xếp theo lợi ích ÷ công sức)
 
 | Thứ tự | Game | Chức năng phục vụ | Lý do |

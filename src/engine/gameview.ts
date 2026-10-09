@@ -10,10 +10,12 @@ import { TILES, SIZE, ROLLS, price, canBuild, type BoardSave } from './board.ts'
 import type { CardsSave } from './cards.ts';
 import type { CafeSave } from './cafe.ts';
 import type { BubblesSave } from './bubbles.ts';
+import type { PuzzleSave } from './puzzle.ts';
+import type { CaseSave } from './detective.ts';
 import { ENC_VI } from './quest.ts';
 
 // Sảnh: thẻ các game ở trên, tháp (Leo nhanh) giữ nguyên ở dưới.
-export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave): string {
+export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave, gd?: PuzzleSave, gt?: CaseSave, gr?: CaseSave, tts = true): string {
   if (!c.e.goals.length) return '';
   const s = bk ?? { best: 0, runs: 0, day: 0, streak: 0 }, houses = (bd?.lots ?? []).reduce((a, b) => a + b, 0);
   return `<section class="stack"><span class="eyebrow">Chơi</span><h1>🎮 Hôm nay chơi gì?</h1>
@@ -21,9 +23,13 @@ export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, g
     <section class="gcards">
       <span class="eyebrow gsec">🔁 Ôn tập mỗi ngày</span>
       <button class="gcard" data-e="bkstart"><span class="gico" aria-hidden="true">${miniBoard()}</span><span class="stack" style="gap:2px;text-align:left"><b>Xếp Khối Chữ</b><span class="hint">Trả lời đúng để nhận khối, xếp đầy hàng để nổ. Ván 3–5 phút.</span><span class="hint">🏆 ${s.best} · 🔥 ${s.streak} ngày</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
+      <button class="gcard" data-e="pzstart"><span class="gico" aria-hidden="true" style="font-size:30px">📅</span><span class="stack" style="gap:2px;text-align:left"><b>Câu đố ngày</b><span class="hint">Ôn từ: tìm 4 nhóm từ cùng chủ đề trong 16 ô, rồi nhớ lại thêm một từ mỗi nhóm. Mỗi ngày một câu đố mới.</span><span class="hint">${gd && gd.last === c.host.today() ? '✅ Đã giải hôm nay' : '🆕 Câu đố hôm nay đang chờ'} · ${gd?.days ?? 0} ngày đã giải</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <span class="eyebrow gsec">✍️ Ngữ pháp</span>
       <button class="gcard" data-e="cdstart"><span class="gico" aria-hidden="true" style="font-size:30px">🃏</span><span class="stack" style="gap:2px;text-align:left"><b>Bài Câu</b><span class="hint">Ngữ pháp: xếp lá từ thành câu đúng để ra bài, chọn bùa nhân điểm. 3 bàn × 3 lượt.</span><span class="hint">🏆 ${gc?.best ?? 0} điểm · ${gc?.wins ?? 0} bàn thắng</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
+      <span class="eyebrow gsec">📖 Đọc hiểu</span>
+      <button class="gcard" data-e="dtstart"><span class="gico" aria-hidden="true" style="font-size:30px">🔍</span><span class="stack" style="gap:2px;text-align:left"><b>Thám tử</b><span class="hint">Đọc hồ sơ (biển báo, thư, bài báo) để tìm manh mối và phá án. Bài đúng cấp bạn đang học.</span><span class="hint">🗂️ ${gt?.solved ?? 0} hồ sơ đã phá · ${gt?.runs ?? 0} hồ sơ</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <span class="eyebrow gsec">🎧 Nghe & giao tiếp</span>
+      ${tts ? `<button class="gcard" data-e="rdstart"><span class="gico" aria-hidden="true" style="font-size:30px">📻</span><span class="stack" style="gap:2px;text-align:left"><b>Đài phát thanh</b><span class="hint">Nghe cả bản tin / cuộc trò chuyện rồi trả lời ý chính và chi tiết. Nghe lại, nghe chậm thoải mái.</span><span class="hint">📼 ${gr?.solved ?? 0} bản tin bắt được sóng</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>` : '<p class="hint gsec">📻 Đài phát thanh cần giọng đọc tiếng Anh của máy (máy này chưa có).</p>'}
       <button class="gcard" data-e="cfstart"><span class="gico" aria-hidden="true" style="font-size:30px">☕</span><span class="stack" style="gap:2px;text-align:left"><b>Quán Cà Phê</b><span class="hint">Nghe & giao tiếp: nghe khách nói, hiểu ý, chọn câu đáp đúng văn phong. 6 khách mỗi ca.</span><span class="hint">⭐ ${gq?.stars ?? 0} sao · ${gq?.runs ?? 0} ca</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <span class="eyebrow gsec">🗣️ Phát âm</span>
       <button class="gcard" data-e="bbstart"><span class="gico" aria-hidden="true" style="font-size:30px">🎯</span><span class="stack" style="gap:2px;text-align:left"><b>Bắt Âm</b><span class="hint">Phát âm: nghe một từ, chạm đúng bong bóng (ship hay sheep?). 10 từ mỗi màn, không tính giờ.</span><span class="hint">🏆 ${gs?.best ?? 0} điểm · màn ${gs?.stage ?? 1}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
