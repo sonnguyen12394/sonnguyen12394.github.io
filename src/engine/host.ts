@@ -17,7 +17,11 @@ export interface EHost {
   order?(node: string): OrderItem[];                 // v74 Bài Câu: câu để xếp lá (app.js eOrder)
   fn?(node: string): FnItem[];                       // v75 Quán Cà Phê: câu chức năng giao tiếp (app.js eFn)
   say?(text: string): void;                          // đọc to bằng giọng máy (nếu có)
-  group?(node: string): GroupInfo | null;            // v77 Câu đố ngày: chủ đề + các từ của một cụm từ (app.js eGroup)
+  group?(node: string): GroupInfo | null;
+  texts?(mode: 'read' | 'listen', lv: string): ReadText[];   // v78 / v79: bài đọc / nghe có câu hỏi ở một cấp (app.js eTexts)
+  readSave?(id: string, src: 'lr' | 'unit', mode: 'read' | 'listen', score: number): void;   // lưu điểm như tab Đọc / Nghe (Can-Do)
+  sayLines?(lines: Array<{ s: string; t: string }>, slow?: boolean): void;   // đọc cả bài (hai giọng A / B)
+  tts?(): boolean;                                   // máy có giọng đọc tiếng Anh            // v77 Câu đố ngày: chủ đề + các từ của một cụm từ (app.js eGroup)
   transfer?(node: string): ReturnType<EHost['probe']>;   // câu ở ngữ cảnh mới cho transfer (app.js eXfer): engine lọc câu đã gặp (§59)
   micro?(node: string): { card: MicroCard; qs: ReturnType<EHost['probe']> } | null;   // bí kíp 60 giây + câu kiểm tra (app.js eMicroCard)
   back?(): void;
@@ -37,4 +41,7 @@ export interface OrderItem { id: string; level: 1 | 2 | 3; g: number; prompt: st
 // v75: câu chức năng giao tiếp: hear = nghe khách nói → chọn nghĩa (mức 2); reply = tình huống + văn phong → chọn câu đáp (mức 3).
 // v77: từ của cụm (u:) cho Câu đố ngày. learned: đã học thẻ; due: đến hạn ôn.
 export interface GroupInfo { node: string; topic: string; vi: string; words: Array<{ id: string; en: string; vi: string; pos?: string; pic?: string; learned?: boolean; due?: boolean }> }
+// v78 / v79: một bài đọc / nghe. best: điểm cao nhất đã có (0–1, null = chưa làm); mine: bài của unit người học đã / đang học.
+export interface ReadQ { k: string; q: string; a: string; w: string[]; why: string }
+export interface ReadText { id: string; src: 'lr' | 'unit'; lv: string; title: string; tvi: string; kind: string; mine: boolean; best: number | null; paras: string[]; lines: Array<{ s: string; t: string }> | null; qs: ReadQ[] }
 export interface FnItem { id: string; level: 1 | 2 | 3; g: number; kind: 'hear' | 'reply'; prompt: string; say?: string; en: string; vi: string; opts: string[]; ans: number; why?: string }

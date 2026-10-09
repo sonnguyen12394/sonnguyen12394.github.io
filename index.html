@@ -699,6 +699,16 @@ span.bkslot:empty{border-style:dashed;opacity:.4;cursor:default}
 .cfbub{font-size:26px;align-self:start;animation:pop .3s ease-out}
 
 /* v76 Bắt Âm: bong bóng trôi vào rồi đứng yên (không bắt người chơi chạm đích di động: tránh nhiễu kỹ năng tay, P13) */
+/* v78 Thám tử / v79 Đài phát thanh: thẻ manh mối, hồ sơ có tô sáng câu chứa đáp án, sóng rè giảm dần khi nghe đúng */
+.dtclue{display:inline-grid;place-items:center;width:34px;height:42px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);font-size:17px;transition:transform .25s}
+.dtclue.on{background:var(--good-soft);border-color:var(--good);transform:rotateY(180deg) scaleX(-1)}
+.dtclue.cur{outline:2px solid var(--accent);outline-offset:1px}
+.dtdoc{padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:16px;line-height:1.6;max-height:46vh;overflow:auto}
+.dtdoc mark{background:var(--warn-soft,#FFF1C2);color:inherit;border-radius:3px;padding:0 2px}
+.btn.right{background:var(--good-soft);border-color:var(--good)}
+.btn.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.rdwave{display:flex;align-items:center;gap:3px;height:34px;padding:0 6px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line)}
+.rdwave i{flex:1;border-radius:2px;background:var(--accent);transition:height .4s}
 /* v77 Câu đố ngày: lưới 4 × 4 ô từ, nhóm đã tìm thành dải màu của app */
 .pzgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0}
 .pztile{min-height:58px;padding:6px 4px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);font-weight:600;font-size:14px;line-height:1.2;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;overflow-wrap:anywhere;text-align:center}
@@ -742,4 +752,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.87bc1606bf.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.a569361289.js" defer></script><script src="app.js?v=67" defer></script>

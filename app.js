@@ -8342,7 +8342,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.06c635ec6a.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.98796447f4.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8352,6 +8352,10 @@ const EHOST = {
   order:node=>eOrder(node),
   fn:node=>eFn(node),
   group:node=>eGroup(node),
+  texts:(mode,lv)=>eTexts(mode,lv),
+  readSave:(id,src,mode,score)=>eReadSave(id,src,mode,score),
+  sayLines:(lines,slow)=>{ try{ sayLines(lines,slow); }catch(e){} },
+  tts:()=>!!HAS_TTS,
   say:t=>{ try{ say(t); }catch(e){} },
   transfer:node=>eXfer(node),
   micro:node=>eMicroCard(node),
@@ -8438,6 +8442,21 @@ function eFn(node){ if(!node.startsWith('fn:')) return []; const f=FN[node.slice
 // v77 Câu đố ngày: chủ đề + 10 từ của một cụm (u:), kèm đã học / đến hạn ôn để engine chọn từ lên bàn và từ để nhớ lại.
 function eGroup(node){ if(!node.startsWith('u:')) return null; const u=UNIT_BY_ID[node.slice(2)]; if(!u||!u.words||u.words.length<5) return null; const t=today();
   return {node, topic:u.title, vi:u.vi||u.title, words:u.words.map(w=>{ const c=W(w.id); return {id:w.id, en:w.word, vi:w.vi, pos:w.pos||'', pic:w.pic||'', learned:!!c.learned, due:!!(c.learned&&c.due!=null&&c.due<=t)}; })}; }
+// v78 Thám tử / v79 Đài phát thanh: bài đọc / bài nghe có câu hỏi ở một cấp CEFR. Nguồn: văn bản đời thường + bài dài (LREAD) và bài đọc
+// của unit (đã tải). Điểm lưu đúng chỗ của tab Đọc / Nghe (st.lread, st.units[].read|listen) nên Can-Do đọc / nghe tăng như làm ở tab đó.
+function eTexts(mode,lv){ const out=[], qs=xs=>(xs||[]).filter(q=>q&&q.a&&(q.w||[]).length>=2).map(q=>({k:q.k||'',q:q.q,a:q.a,w:q.w.slice(0,3),why:q.why||''}));
+  for(const x of LREAD){ if(x.lv!==lv) continue; const isL=!!(x.lines&&x.lines.length); if(mode==='listen'?!isL:isL) continue; const q=qs(x.qs); if(q.length<2) continue;
+    out.push({id:x.id,src:'lr',lv:x.lv,title:x.title,tvi:x.tvi||'',kind:x.life?(x.kind||'Văn bản'):isL?(x.talk||'Bài nghe'):(x.genre||'Bài đọc'),mine:false,best:(st.lread[x.id]||{}).best??null,
+      paras:isL?x.lines.map(l=>((x.sp||{})[l.s]?x.sp[l.s]+': ':'')+l.t):x.text.slice(),lines:isL?x.lines.map(l=>({s:l.s,t:l.t})):null,qs:q}); }
+  for(const u of UNITS){ if(u.level!==lv||!u.reading||!u.reading.text) continue; const q=qs(u.reading.qs); if(q.length<2) continue; const s=st.units[u.id]||{};
+    const mine=!!(s.learned||s.practiced||(u.words||[]).some(w=>W(w.id).learned)), txt=u.reading.text, sents=txt.match(/[^.!?]+[.!?]+["”’]?|[^.!?]+$/g)||[txt];
+    out.push({id:u.id,src:'unit',lv:u.level,title:u.reading.title,tvi:u.reading.tvi||'',kind:(mode==='listen'?'Bản tin chủ đề “':'Bài đọc của unit “')+u.title+'”',mine,best:s[mode==='listen'?'listen':'read']??null,
+      paras:[txt],lines:mode==='listen'?sents.map(t=>({s:'A',t:t.trim()})).filter(l=>l.t):null,qs:q}); }
+  return out; }
+function eReadSave(id,src,mode,score){ const sc=Math.max(0,Math.min(1,+score||0)); bump('read');
+  if(src==='lr'){ const x=st.lread[id]||={best:0,n:0}; x.best=Math.max(x.best||0,sc); x.n=(x.n||0)+1; x.day=today(); }
+  else if(src==='unit'&&UNIT_BY_ID[id]){ const s=U(id), k=mode==='listen'?'listen':'read'; s[k]=Math.max(s[k]??0,sc); }
+  save(); try{ checkBadges(); }catch(e){} }
 // v60 Transfer (§59): câu ở NGỮ CẢNH MỚI cho nút đã Đạt. Từ vựng: câu điền từ lấy từ bài đọc / câu ví dụ của phần khác trong app
 // (không phải câu ví dụ của chính từ đó; ưu tiên câu không hiện trên thẻ từ). Ngữ pháp: mọi câu tự gõ / sửa lỗi của điểm, engine lọc câu đã gặp.
 function eXfer(node){ if(!_xf[node]) _xf[node]=eXfer0(node); return shuffle(_xf[node].slice()); }
