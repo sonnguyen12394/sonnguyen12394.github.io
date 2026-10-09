@@ -19,10 +19,15 @@ export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, g
   return `<section class="stack"><span class="eyebrow">Chơi</span><h1>🎮 Hôm nay chơi gì?</h1>
     <p class="hint">Mọi game đều dùng cùng một bộ câu tiếng Anh app chọn cho bạn. Chỉ câu trả lời được tính vào năng lực; điểm game chỉ để vui.</p></section>
     <section class="gcards">
+      <span class="eyebrow gsec">🔁 Ôn tập mỗi ngày</span>
       <button class="gcard" data-e="bkstart"><span class="gico" aria-hidden="true">${miniBoard()}</span><span class="stack" style="gap:2px;text-align:left"><b>Xếp Khối Chữ</b><span class="hint">Trả lời đúng để nhận khối, xếp đầy hàng để nổ. Ván 3–5 phút.</span><span class="hint">🏆 ${s.best} · 🔥 ${s.streak} ngày</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
+      <span class="eyebrow gsec">✍️ Ngữ pháp</span>
       <button class="gcard" data-e="cdstart"><span class="gico" aria-hidden="true" style="font-size:30px">🃏</span><span class="stack" style="gap:2px;text-align:left"><b>Bài Câu</b><span class="hint">Ngữ pháp: xếp lá từ thành câu đúng để ra bài, chọn bùa nhân điểm. 3 bàn × 3 lượt.</span><span class="hint">🏆 ${gc?.best ?? 0} điểm · ${gc?.wins ?? 0} bàn thắng</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
+      <span class="eyebrow gsec">🎧 Nghe & giao tiếp</span>
       <button class="gcard" data-e="cfstart"><span class="gico" aria-hidden="true" style="font-size:30px">☕</span><span class="stack" style="gap:2px;text-align:left"><b>Quán Cà Phê</b><span class="hint">Nghe & giao tiếp: nghe khách nói, hiểu ý, chọn câu đáp đúng văn phong. 6 khách mỗi ca.</span><span class="hint">⭐ ${gq?.stars ?? 0} sao · ${gq?.runs ?? 0} ca</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
+      <span class="eyebrow gsec">🗣️ Phát âm</span>
       <button class="gcard" data-e="bbstart"><span class="gico" aria-hidden="true" style="font-size:30px">🎯</span><span class="stack" style="gap:2px;text-align:left"><b>Bắt Âm</b><span class="hint">Phát âm: nghe một từ, chạm đúng bong bóng (ship hay sheep?). 10 từ mỗi màn, không tính giờ.</span><span class="hint">🏆 ${gs?.best ?? 0} điểm · màn ${gs?.stage ?? 1}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
+      <span class="eyebrow gsec">🏙️ Thói quen & sưu tập</span>
       <button class="gcard" data-e="bdstart"><span class="gico" aria-hidden="true" style="font-size:30px">🎲</span><span class="stack" style="gap:2px;text-align:left"><b>Bàn Cờ Phố</b><span class="hint">Tung xúc xắc đi quanh phố, gặp thử thách tiếng Anh, xây nhà bằng xu. ${ROLLS} lượt tung.</span><span class="hint">🏠 ${houses} tầng nhà · vòng phố ${bd?.laps ?? 0}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
     </section>`;
 }
