@@ -25,7 +25,7 @@ import { freshBlocks, deal, place, anyFits, fits, trayEmpty, anchor, freshBlocks
 import { viewLobby, viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoardEnd } from './gameview.ts';
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
-import { GUESTS, stars as cafeStars, freshCafeSave } from './cafe.ts';
+import { GUESTS, stars as cafeStars, freshCafeSave, reactOf, tip as cafeTip } from './cafe.ts';
 import { viewBubbles, viewBubblesEnd, speakKey, type BubbleRun } from './bubbleview.ts';
 import { WORDS, points as bubblePoints, freshBubblesSave } from './bubbles.ts';
 import { TABLES, PLAYS, score as cardScore, offer as cardOffer, deal as cardDeal, check as cardCheck, target as cardTarget, freshCardsSave } from './cards.ts';
@@ -42,9 +42,9 @@ import { viewGarden, viewGardenEnd, type GardenRun } from './gardenview.ts';
 import { pickToday, itemFor, grow as gardenGrow, freshGardenSave, PER_DAY } from './garden.ts';
 import { direct, planDay, nextGame, isGame, freshDirSave, GAMES, type DirIn, type DirPick, type GameId, type Need } from './director.ts';
 import { freshPlay, playStart, playAct, playDone, playQuit, playReport, type Via } from './play.ts';
-import { town, townKey, townGain } from './town.ts';
+import { town, townKey, townGain, freshTown, buyDeco, spend } from './town.ts';
 import { viewTown, viewTownGain, viewPlayStats } from './townview.ts';
-import { viewShop, viewShopEnd, accepted as shopOk, ORDERS, freshShopSave, type ShopRun } from './workshop.ts';
+import { viewShop, viewShopEnd, accepted as shopOk, badSpots, ORDERS, freshShopSave, type ShopRun } from './workshop.ts';
 import { pick as karaPick, linePoints, verdict as karaVerdict, ROLE, freshKaraSave } from './karaoke.ts';
 import { choose as caseChoose, order as caseOrder, options as caseOptions, solved as caseSolved, caseStars, freshCaseSave } from './detective.ts';
 import { viewQuestHome, viewQuestRun, viewQuestEnd, type QuestRun, type QItem } from './questview.ts';
@@ -528,10 +528,12 @@ export function init(host: EHost): EngineModule {
     const e = E(), it = r.item, ok = i >= 0 && i === it.ans;
     ingest(e.ev, e.m, { node: r.node, level: it.level, ok, g: it.g, item: it.id, text: it.prompt, qt: 'mcq', ctx: it.kind === 'hear' ? (it.say ? 'listen' : 'read') : 'function', src: 'game', ch: r.ch.id, gp: r.ch.gameplayDifficulty, ...(i >= 0 ? { given: it.opts[i] ?? '', right: it.opts[it.ans] ?? '' } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     r.streak = ok ? r.streak + 1 : 0;
-    const st = cafeStars(ok, r.streak), coins = reward(r.ch, ok, r.novel);
+    // v90: khách phản ứng theo loại câu đáp (đúng ý / lệch văn phong / không đúng ý); tiền boa theo văn phong hợp (telemetry).
+    const react = reactOf(it.react, it.ans, i), tp = cafeTip(react);
+    const st = cafeStars(ok, r.streak), coins = reward(r.ch, ok, r.novel) + tp;
     r.n++; r.coins += coins; r.stars += st; if (ok) r.ok++; else r.wrong.push(r.node);
     const sv = qsave(); sv.ans++; if (ok) sv.ok++; sv.coins += coins; sv.day = host.today();
-    r.ans = { ok, i, stars: st, coins };
+    r.ans = { ok, i, stars: st, coins, react, tip: tp };
     sfx(ok ? 'ok' : 'bad'); host.save(); host.render();
   }
   function fNext(): void {
@@ -814,7 +816,7 @@ export function init(host: EHost): EngineModule {
   function wLoad(): void {
     if (!wrun || !wPick) return;
     const e = E(), ch = wPick(SHOP_KINDS[wrun.k] ?? 'monster') ?? wPick('monster');
-    wrun.ch = ch; wrun.ans = null;
+    wrun.ch = ch; wrun.ans = null; wrun.spot = null;
     if (!ch) { wrun.item = null; wrun.node = ''; return; }
     const items = host.fixes?.(ch.node) ?? [], fresh = items.filter(x => !seenHas(e.ev, ch.node, x.id)), it = fresh[0] ?? items[(wrun.floor + wrun.k) % Math.max(1, items.length)] ?? null;
     wrun.node = ch.node; wrun.item = it; wrun.novel = !!it && !seenHas(e.ev, ch.node, it.id);
@@ -822,8 +824,8 @@ export function init(host: EHost): EngineModule {
   function wAnswer(given: string): void {
     const r = wrun;
     if (!r || !r.item || !r.ch || r.ans) return;
-    const e = E(), it = r.item, ok = !!given && shopOk(given, it.accept);
-    ingest(e.ev, e.m, { node: r.node, level: 4, ok, g: 0, item: it.id, text: it.bad, qt: 'typed', ctx: 'fix', src: 'game', ch: r.ch.id, gp: r.ch.gameplayDifficulty, ...(given ? { given, right: it.good } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    const e = E(), it = r.item, ok = !!given && shopOk(given, it.accept), helped = !!r.spot && !r.spot.ok;   // v90: chạm sai → app đã chỉ chỗ hỏng
+    ingest(e.ev, e.m, { node: r.node, level: 4, ok, g: 0, item: it.id, text: it.bad, qt: 'typed', ctx: 'fix', src: 'game', ch: r.ch.id, gp: r.ch.gameplayDifficulty, ...(helped ? { hint: true } : {}), ...(given ? { given, right: it.good } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     const coins = reward(r.ch, ok, r.novel);
     r.n++; r.coins += coins; if (ok) r.ok++; else r.wrong.push(r.node);
     const sv = qsave(); sv.ans++; if (ok) sv.ok++; sv.coins += coins; sv.day = host.today();
@@ -993,7 +995,10 @@ export function init(host: EHost): EngineModule {
 
   // ---------- Bàn Cờ Phố (v73) ----------
   const bsave = () => { const e = E(); return (e.bd ||= freshBoardSave()); };
-  const wallet = () => Math.max(0, qsave().coins - bsave().spent);
+  // Ví xu chung = xu kiếm được ở mọi game − xu tiêu ở Bàn Cờ − xu tiêu ở Phố / hồi tim (v91).
+  const twsave = () => { const e = E(); return (e.tw ||= freshTown()); };
+  const wallet = () => Math.max(0, qsave().coins - bsave().spent - (E().tw?.spent ?? 0));
+  const REVIVE = 25;
   function bdRoll(): void {
     const bd = qrun?.bd;
     if (!qrun || !bd || bd.phase !== 'roll' || bd.rolls <= 0) return;
@@ -1277,9 +1282,9 @@ export function init(host: EHost): EngineModule {
     if (qrun?.mode === 'blocks') return qrun.done ? viewBlocksEnd(c, qrun) : viewBlocks(c, qrun);
     if (qrun?.mode === 'board') return qrun.done ? viewBoardEnd(c, qrun, bsave()) : viewBoard(c, qrun, bsave(), wallet());
     if (qrun?.done) return viewQuestEnd(c, qrun);
-    if (qrun) return viewQuestRun(c, qrun);
+    if (qrun) { qrun.revive = qrun.mode === 'tower' && !qrun.revived && qrun.i + 1 < qrun.plan.length && wallet() >= REVIVE ? REVIVE : 0; return viewQuestRun(c, qrun); }
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null) + (c.e.goals.length ? viewTown(c, town(E())) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null) + viewPlayStats(c, playReport(pmsave()));
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null) + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null) + viewPlayStats(c, playReport(pmsave()));
   }
   const routes: Record<string, (c: ECtx) => string> = {
     measure: c => {
@@ -1434,6 +1439,27 @@ export function init(host: EHost): EngineModule {
     ltrub(el) { const r = lrun, i = Number(el.dataset.i), v = Number(el.dataset.v); if (!r || r.phase !== 'rate' || !(i >= 0 && i < 8) || !(v >= 1 && v <= 8)) return; r.self[i] = v; host.render(); },
     ltdone() { lDone(); },
     wsskip() { wAnswer(''); },
+    // v91 Hồi tim bằng xu (một lần mỗi tầng): quyết định meta — tiêu xu để học tiếp hay giữ cho phố. Tim là độ khó game (P14), câu không đổi.
+    qrevive() {
+      const r = qrun;
+      if (!r || r.mode !== 'tower' || r.revived || r.hp > 0 || !r.ans || r.i + 1 >= r.plan.length) return;
+      if (!spend(twsave(), wallet(), REVIVE)) return;
+      r.revived = true; r.hp = 1; r.i++; r.ans = null; qLoad(); sfx('clear'); host.save(); host.render();
+    },
+    twbuy(el) {
+      const g = el.dataset.g, b = town(E()).find(x => x.game === g);
+      if (!b || !buyDeco(twsave(), b, wallet())) return;
+      sfx('clear'); host.save(); host.render();
+    },
+    // v90 Tìm chỗ hỏng: một lần mỗi đơn, trước khi gõ. Đúng chỗ +1 xu (telemetry); sai thì app chỉ chỗ hỏng (câu gõ sau đó có gợi ý).
+    wsspot(el) {
+      const r = wrun, i = Number(el.dataset.i);
+      if (!r?.item || r.ans || r.spot || !(i >= 0)) return;
+      const ok = badSpots(r.item.bad, r.item.good).includes(i);
+      r.spot = { i, ok };
+      if (ok) { r.spots = (r.spots ?? 0) + 1; r.coins += 1; const sv = qsave(); sv.coins += 1; }
+      sfx(ok ? 'ok' : 'place'); host.save(); host.render();
+    },
     wsnext() { wNext(); },
     krnext() { const r = krun; if (!r) return; const l = r.d.lines[r.i]; kScore(l?.s === ROLE ? host.asrRes?.(karaKey(r))?.p ?? 0 : null); },
     krskip() { kScore(0); },

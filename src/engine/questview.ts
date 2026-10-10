@@ -21,6 +21,7 @@ export interface QuestRun {
   bd?: BoardRun;                                                 // v73: Bàn Cờ Phố
   bk?: BlockRun;                                                 // v72: bàn Xếp Khối
   ans: { ok: boolean; right: string; given: string; coins: number; novel: boolean; why?: string } | null;
+  revive?: number; revived?: boolean;   // v91: giá hồi tim bằng xu khi hết tim (0 / không có = không được), đã hồi trong tầng này chưa
   done: 'win' | 'lose' | null; wrong: string[]; gaps: string[];
 }
 
@@ -63,7 +64,7 @@ export function questInner(c: ECtx, r: QuestRun): string {
     return `${top}<section class="stack"><p style="font-size:18px">${esc(q.prompt)}</p></section>
       <div class="fb ${a.ok ? 'good' : 'bad'}" role="status"><strong>${camp ? (a.ok ? 'Đúng rồi: bí kíp đã vào!' : 'Chưa đúng, không sao: đây là lượt luyện') : blk ? (a.ok ? 'Chính xác! Có thêm khối đặc biệt' : 'Chưa đúng, vẫn nhận khối') : brd ? (a.ok ? 'Chính xác! Đi tiếp nào' : 'Chưa đúng, không sao: đi tiếp') : a.ok ? (ch.gameType === 'boss' ? 'Trùm gục ngã!' : 'Trúng đòn!') : 'Hụt! Mất một tim'}</strong>${a.ok ? '' : `<span>Đáp án: <b lang="en">${esc(a.right)}</b></span>${a.given ? `<span>Bạn trả lời: <s lang="en">${esc(a.given)}</s></span>` : ''}${a.why ? `<span class="hint">💡 ${esc(a.why)}</span>` : ''}`}
         <span class="hint">+${a.coins} xu${a.novel ? ' · câu mới' : ''}</span></div>
-      <div class="row"><button class="btn primary" data-e="qnext" id="qnextbtn">${blk ? 'Nhận khối ▸' : brd ? '🎲 Đi tiếp' : camp ? 'Hồi một tim và đi tiếp' : r.hp <= 0 ? 'Kết thúc lượt' : r.i + 1 < r.plan.length ? 'Đi tiếp' : 'Hoàn thành tầng'}</button></div>`;
+      <div class="row"><button class="btn primary" data-e="qnext" id="qnextbtn">${blk ? 'Nhận khối ▸' : brd ? '🎲 Đi tiếp' : camp ? 'Hồi một tim và đi tiếp' : r.hp <= 0 ? 'Kết thúc lượt' : r.i + 1 < r.plan.length ? 'Đi tiếp' : 'Hoàn thành tầng'}</button>${r.hp <= 0 && !blk && !brd && r.revive ? `<button class="btn" data-e="qrevive">💖 Hồi 1 tim, leo tiếp (−${r.revive} xu)</button>` : ''}</div>`;
   }
   const body = q.opts
     ? `<div class="stack" style="gap:8px">${q.opts.map((o, i) => `<button class="btn" style="justify-content:flex-start" data-e="qans" data-i="${i}">${esc(o)}</button>`).join('')}<button class="btn ghost" data-e="qans" data-i="-1">Không biết</button></div>`

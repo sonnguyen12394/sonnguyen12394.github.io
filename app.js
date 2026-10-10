@@ -8345,7 +8345,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.eb1fc5dca5.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.97971443e9.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8461,11 +8461,11 @@ function eFn(node){ if(!node.startsWith('fn:')) return []; const f=FN[node.slice
   const out=[];
   f.exps.forEach((e,i)=>{
     const vis=shuffle([...new Set(others.map(x=>x.vi))].filter(v=>v.toLowerCase()!==e.vi.toLowerCase())).slice(0,3), o1=shuffle([e.vi,...vis]);
-    out.push({id:`fn:${f.id}:h:${i}`,level:2,g:1/o1.length,kind:'hear',prompt:HAS_TTS?'🎧 Khách vừa nói gì?':'📖 Khách nói gì? (máy không có giọng đọc: đọc câu)',say:HAS_TTS?e.t:undefined,en:e.t,vi:e.vi,opts:o1,ans:o1.indexOf(e.vi),why:f.tip||''});
+    out.push({id:`fn:${f.id}:h:${i}`,level:2,g:1/o1.length,kind:'hear',prompt:HAS_TTS?'🎧 Khách vừa nói gì?':'📖 Khách nói gì? (máy không có giọng đọc: đọc câu)',say:HAS_TTS?e.t:undefined,en:e.t,vi:e.vi,opts:o1,ans:o1.indexOf(e.vi),why:f.tip||'',react:o1.map(o=>o===e.vi?'ok':'off')});
     if(e.reg==='n'&&f.exps.length<3) return;
     const sameWrongReg=f.exps.filter(x=>x.reg!==e.reg&&x.reg!=='n'&&e.reg!=='n').map(x=>x.t).slice(0,1);
     const ws=[...sameWrongReg,...shuffle(others.map(x=>x.t).filter(t=>nt(t)!==nt(e.t)))].slice(0,3), o2=shuffle([e.t,...ws]);
-    out.push({id:`fn:${f.id}:r:${i}`,level:3,g:1/o2.length,kind:'reply',prompt:`Bạn muốn ${f.vi.toLowerCase()} (văn phong ${REG_VI[e.reg].toLowerCase()}). Nói câu nào?`,en:e.t,vi:e.vi,opts:o2,ans:o2.indexOf(e.t),why:(sameWrongReg.length?`Câu “${sameWrongReg[0]}” cùng ý nhưng ${e.reg==='f'?'thân mật':'trang trọng'} quá. `:'')+(f.tip||'')}); });
+    out.push({id:`fn:${f.id}:r:${i}`,level:3,g:1/o2.length,kind:'reply',prompt:`Bạn muốn ${f.vi.toLowerCase()} (văn phong ${REG_VI[e.reg].toLowerCase()}). Nói câu nào?`,en:e.t,vi:e.vi,opts:o2,ans:o2.indexOf(e.t),react:o2.map(o=>o===e.t?'ok':sameWrongReg.includes(o)?'reg':'off'),regs:o2.map(o=>{ const x=f.exps.find(y=>y.t===o); return x&&x.reg!=='n'?REG_VI[x.reg]:''; }),why:(sameWrongReg.length?`Câu “${sameWrongReg[0]}” cùng ý nhưng ${e.reg==='f'?'thân mật':'trang trọng'} quá. `:'')+(f.tip||'')}); });
   return out; }
 // v82 Xưởng sửa câu: mọi câu sai của một điểm ngữ pháp (fx) → tự gõ lại câu đúng (mức 4, g = 0), kèm "vì sao".
 function eFixes(node){ if(!node.startsWith('g:')) return []; const p=GPT[node.slice(2)]; if(!p||!p.fx) return [];

@@ -66,4 +66,6 @@ export interface WTask { id: string; lv: string; genre: string; en: string; vi: 
 export interface GWord { id: string; en: string; vi: string; pos: string; pic: string; ipa: string; ex: string; exVi: string }
 export interface FixItem { id: string; level: 4; g: 0; prompt: string; bad: string; good: string; accept: string[]; why: string; vi: string }
 export interface Dialog { id: string; lv: string; title: string; vi: string; place: string; fn: string[]; names: { A: string; B: string }; lines: Array<{ s: string; t: string; vi: string }>; rp: string | null }
-export interface FnItem { id: string; level: 1 | 2 | 3; g: number; kind: 'hear' | 'reply'; prompt: string; say?: string; en: string; vi: string; opts: string[]; ans: number; why?: string }
+// v90: react = khách phản ứng thế nào với từng phương án (ok: đúng ý, đúng văn phong · reg: đúng ý nhưng lệch văn phong · off: không đúng ý);
+// regs = văn phong của phương án (nếu biết). Chỉ để trình bày hậu quả (F7c, ngữ dụng); đúng / sai vẫn chỉ theo ans.
+export interface FnItem { id: string; level: 1 | 2 | 3; g: number; kind: 'hear' | 'reply'; prompt: string; say?: string; en: string; vi: string; opts: string[]; ans: number; why?: string; react?: Array<'ok' | 'reg' | 'off'>; regs?: string[] }

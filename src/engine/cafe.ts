@@ -18,6 +18,24 @@ export const face = (seed: number, k: number): string => FACES[Math.floor(rand(s
 // Sao của một khách: đúng 1 sao, đúng 3 khách liền trở lên 2 sao; sai 0 (không trừ).
 export const stars = (ok: boolean, streak: number): number => (!ok ? 0 : streak >= 3 ? 2 : 1);
 
+// v90 Hậu quả theo câu đáp (F7c, ngữ dụng — GAME-CRITERIA §9.3): khách phản ứng theo đúng loại lựa chọn của người chơi, không chỉ đúng / sai.
+//   ok: đúng việc cần nói, đúng văn phong · reg: đúng việc cần nói (cùng chức năng giao tiếp) nhưng lệch văn phong · off: sai việc · dunno: "Không biết".
+// Đúng / sai (bằng chứng) vẫn chỉ theo đáp án; phản ứng và tiền boa là trình bày + telemetry (P13). Tiền boa thưởng đúng thứ cần học
+// (văn phong hợp), nên chiến thuật kiếm boa trùng đường học (C345).
+export type React = 'ok' | 'reg' | 'off' | 'dunno';
+export function reactOf(react: ReadonlyArray<string> | undefined, ans: number, i: number): React {
+  if (i < 0) return 'dunno';
+  if (i === ans) return 'ok';
+  return react?.[i] === 'reg' ? 'reg' : 'off';
+}
+export const MOOD: Record<React, { ico: string; vi: string }> = {
+  ok: { ico: '😊', vi: 'Khách hài lòng' },
+  reg: { ico: '😮', vi: 'Khách thấy câu hơi lạ tai' },
+  off: { ico: '😕', vi: 'Khách không hiểu bạn muốn nói gì' },
+  dunno: { ico: '🙂', vi: 'Khách kiên nhẫn nói lại cho bạn' },
+};
+export const tip = (r: React): number => (r === 'ok' ? 2 : r === 'reg' ? 1 : 0);
+
 export interface CafeSave { stars: number; runs: number; best: number; day: number }
 export const freshCafeSave = (): CafeSave => ({ stars: 0, runs: 0, best: 0, day: 0 });
 export function sanitizeCafe(raw: unknown): CafeSave | undefined {

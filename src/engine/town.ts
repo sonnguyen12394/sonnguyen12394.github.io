@@ -43,3 +43,46 @@ export function townGain(before: string, now: Building[]): Building[] {
   const was = new Map(before.split(',').filter(Boolean).map(p => { const [g, l] = p.split(':'); return [g!, Number(l) || 0] as const; }));
   return now.filter(b => b.lv > (was.get(b.game) ?? 0));
 }
+
+// v91 Xu chung có chỗ tiêu (GAME-CRITERIA §9.3, T2 meta + T5): mỗi công trình có 4 đồ trang trí, ★ thứ k mở chỗ cho món thứ k.
+// Người chơi chọn công trình nào trang trí trước bằng xu kiếm được; xu tỉ lệ giá trị học (reward() của quest), nên muốn phố đẹp thì phải
+// đi đúng đường học (C345). Quyết định nằm ngoài vòng câu hỏi, không đổi nội dung hay bằng chứng (C69, P13).
+export const DECO: Record<GameId, string[]> = {
+  fog: ['🚩', '🧭', '🏮', '⛩️'], garden: ['🌻', '🦋', '🪺', '⛲'], blocks: ['🚧', '🎈', '🏗️', '🏆'], puzzle: ['🔔', '🕊️', '🌙', '⭐'],
+  cards: ['🎲', '♟️', '🎩', '🏅'], shop: ['🔧', '⚙️', '📦', '🧰'], letter: ['📮', '💌', '🎀', '🎁'], case: ['🔎', '🗝️', '🕯️', '🎻'],
+  radio: ['🎙️', '📻', '🎧', '🛰️'], cafe: ['☂️', '🪴', '🧁', '🎶'], bubbles: ['🦆', '🐟', '🪷', '🌈'], kara: ['🎤', '🎸', '🥁', '✨'],
+  robot: ['🔋', '🔩', '💡', '🛸'], board: ['🌳', '🚲', '🏡', '🚗'], tower: ['🚩', '🛡️', '🐉', '👑'],
+};
+export const decoPrice = (k: number): number => 30 * (k + 1);   // món thứ k (0–3): 30, 60, 90, 120 xu
+export interface TownSave { spent: number; deco: Partial<Record<GameId, number>> }   // deco: số món đã mua của từng công trình
+export const freshTown = (): TownSave => ({ spent: 0, deco: {} });
+// Món kế tiếp có mua được không: cần ★ đủ (món thứ k cần ★ thứ k + 1) và đủ xu.
+export function canDeco(t: TownSave, b: Building, wallet: number): { ok: boolean; k: number; price: number; why: string } {
+  const k = t.deco[b.game] ?? 0, price = decoPrice(k);
+  if (k >= DECO[b.game].length) return { ok: false, k, price, why: 'đủ đồ' };
+  if (b.lv < k + 1) return { ok: false, k, price, why: `cần ★ thứ ${k + 1}` };
+  if (wallet < price) return { ok: false, k, price, why: `cần ${price} xu` };
+  return { ok: true, k, price, why: '' };
+}
+export function buyDeco(t: TownSave, b: Building, wallet: number): boolean {
+  const c = canDeco(t, b, wallet);
+  if (!c.ok) return false;
+  t.deco[b.game] = c.k + 1; t.spent += c.price;
+  return true;
+}
+// Tiêu xu khác (v91: hồi tim ở Leo tháp) ghi chung một sổ chi.
+export function spend(t: TownSave, wallet: number, price: number): boolean { if (wallet < price) return false; t.spent += price; return true; }
+export function sanitizeTown(raw: unknown): TownSave | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const x = raw as Record<string, unknown>, n = (v: unknown, hi: number) => (typeof v === 'number' && Number.isFinite(v) ? Math.max(0, Math.min(hi, Math.round(v))) : 0);
+  const out = freshTown(); out.spent = n(x.spent, 1e9);
+  if (x.deco && typeof x.deco === 'object') for (const [g, v] of Object.entries(x.deco as Record<string, unknown>)) if (g in DECO) out.deco[g as GameId] = n(v, 4);
+  return out;
+}
+// Gộp hai máy: lấy bản chi nhiều hơn (sổ chi chỉ tăng), đồ trang trí lấy số món lớn hơn của từng công trình.
+export function mergeTown(a?: TownSave, b?: TownSave): TownSave | undefined {
+  if (!a) return b; if (!b) return a;
+  const deco: TownSave['deco'] = { ...a.deco };
+  for (const [g, v] of Object.entries(b.deco)) deco[g as GameId] = Math.max(deco[g as GameId] ?? 0, v ?? 0);
+  return { spent: Math.max(a.spent, b.spent), deco };
+}

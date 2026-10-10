@@ -30,7 +30,7 @@
   --bg:#EDF0F4; --surface:#FFFFFF; --surface-2:#F5F7FA; --ink:#162033; --muted:#5A6477; --line:#D6DCE6;
   --accent:#1F4FD8; --accent-ink:#FFFFFF; --accent-soft:#E3EAFD; --chart:#1F4FD8;
   --mark:#FFE36E; --mark-ink:#1A1A1A;
-  --good:#16805A; --good-soft:#DDF3E9; --bad:#C0392B; --bad-soft:#FBE3DF; --warn:#9A5F0C; --warn-soft:#FBEFD9;
+  --good:#16805A; --good-soft:#DDF3E9; --bad:#B83426; --bad-soft:#FBE3DF; --warn:#9A5F0C; --warn-soft:#FBEFD9;
   --display:'Literata',Georgia,'Times New Roman',serif;
   --body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
@@ -656,6 +656,11 @@ body.lesson main{max-width:720px}
 .gall{margin-top:12px}
 .gall>summary{font-weight:600;padding:10px 0}
 .gico{display:grid;place-items:center;width:56px;height:56px;border-radius:12px;background:var(--surface)}
+.wsspot{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.wsw{font:inherit;font-size:17px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+button.wsw{cursor:pointer}
+.wsw.ok{border:2px solid var(--good);background:color-mix(in srgb,var(--good) 14%,var(--surface))}
+.wsw.no{border:2px solid var(--bad);text-decoration:line-through}
 .twbox{margin:14px 0;gap:8px}
 .twg{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
 .twt{display:grid;justify-items:center;gap:2px;padding:8px 4px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,var(--surface),var(--accent-soft));cursor:pointer;text-align:center;font:inherit;color:var(--ink)}
@@ -663,6 +668,9 @@ body.lesson main{max-width:720px}
 .twt.off .twi{filter:grayscale(1);opacity:.45}
 .twt b{font-size:12px;line-height:1.2}
 .twi{font-size:28px;line-height:1.1}
+.twd{font-size:13px;line-height:1}
+.twlist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.twlist li{padding:6px 0;border-bottom:1px solid var(--line);gap:8px}
 .tws{font-size:11px;letter-spacing:1px;color:var(--ink)}
 .twn{font-size:11px;line-height:1.2;color:var(--muted)}
 .twgain{display:flex;gap:10px;align-items:center;margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
@@ -831,4 +839,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.cab3692e72.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.617007aa63.js" defer></script><script src="app.js?v=67" defer></script>

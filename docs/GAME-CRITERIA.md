@@ -838,3 +838,53 @@ Mỗi dòng phải qua 4 câu hỏi:
 **Đọc kết quả:** đợt 1 nâng mọi game khoảng +0,4 nhưng **chưa game nào qua cổng §8.4**, vì hai chỗ đợt 1 không chạm tới:
 - **T2 ≤ 4 ở 9 game:** đúng điểm nghẽn mà đợt 2 (§9.3) nhắm tới;
 - **T10 = 5 cho mọi game:** chỉ lên được khi có số liệu thật, ít nhất 2 tuần sau khi phát hành v89.
+
+### 9.6 Đã làm v90–v91 (đợt 2, phần 1): chấm lại theo bản thật
+
+| Bản | Việc | Hành động tiếng Anh / meta | Bằng chứng | Kiểm |
+|---|---|---|---|---|
+| v90 | ☕ **Quán: khách phản ứng theo loại câu đáp.** 😊 đúng việc + đúng văn phong (tiền boa +2); 😮 đúng việc cần nói nhưng lệch văn phong (+1); 😕 sai việc; 🙂 "Không biết" | Ngữ dụng: chọn câu hợp văn phong (Universal Core 7, F7c) | Đúng / sai vẫn chỉ theo đáp án (`app.js eFn` thêm `react`, `regs` để trình bày) | `engine-v90.test.ts`, e2e `v90.spec.ts` (+ WCAG AA) |
+| v90 | 🛠️ **Xưởng: tìm chỗ hỏng.** Trước khi gõ, chạm từ sai (tuỳ chọn). Đúng chỗ +1 xu. Sai chỗ thì app tô chỗ hỏng và câu gõ sau đó là **câu có gợi ý** | Nhận ra lỗi (F3b) | Chạm đúng: bằng chứng như cũ; chạm sai: `hint` → trọng số thấp hơn (G3). Chỗ hỏng tính bằng dãy con chung dài nhất; 463/463 câu sai của app đều có chỗ chạm | như trên |
+| v91 | 🏙️ **Trang trí phố bằng xu chung.** Mỗi công trình 4 món, ★ thứ k mở món thứ k, giá 30 / 60 / 90 / 120 xu | Meta ngoài vòng câu: chọn công trình nào đẹp trước | Xu tỉ lệ giá trị học (C345); ví = xu kiếm − xu Bàn Cờ − xu Phố | `engine-v91.test.ts`, e2e `v91.spec.ts` |
+| v91 | 🏰 **Leo tháp: hết tim thì hồi 1 tim bằng 25 xu** (một lần mỗi tầng) để leo tiếp | Meta: tiêu xu để học tiếp hay giữ cho phố | Tim là độ khó game (P14); câu vẫn do engine chọn | như trên |
+| v91 | Màu chữ báo sai `--bad` #C0392B → #B83426 | — | — | Test trợ năng mới phát hiện lỗi có sẵn: chữ đậm báo sai trên nền hồng chỉ đạt 4,44:1 (< 4,5). Nay 4,82:1 |
+
+**Bot người học L01, 8 ngày, seed 1, `--games director`, v89 so với v90:**
+
+| | v89 | v90 |
+|---|---|---|
+| Câu trả lời | 218 | 234 |
+| Đúng | 122 (56%) | 129 (55%) |
+| Ô mastery Đạt cuối kỳ | 712 / 2.039 | 710 / 2.040 |
+
+- Hai lần chạy chọn game hơi khác nhau, vì hạt ngẫu nhiên của ván game lấy theo thời gian. Mức chênh vì vậy nằm trong nhiễu.
+- Không thấy giảm số câu bằng chứng hay tiến độ Đạt.
+- Bot không chạm chỗ hỏng và không chọn câu lệch văn phong một cách có chủ đích, nên đây chỉ là kiểm "không hỏng". Nó không chứng minh hiệu quả.
+
+**Ước lượng T sau v90–v91** (vẫn chấm theo mã, T10 = 5): Phố có chỗ tiêu xu nên T5 +1 cho mọi game (tối đa 9).
+
+| Game | Sau đợt 1 | Sau v91 | T2 | Ghi chú |
+|---|---|---|---|---|
+| 📅 Câu đố ngày | 7,0 | 7,1 | 7 | |
+| 🧱 Xếp Khối Chữ | 6,9 | 7,0 | 8 | |
+| ☕ Quán Cà Phê | 6,5 | **7,0** | 4 → 6 | phản ứng + tiền boa (T6 +1) |
+| 🤖 Robot | 6,8 | 6,9 | 9 | |
+| 🛠️ Xưởng | 6,1 | **6,6** | 3 → 6 | tìm chỗ hỏng: rủi ro (lộ gợi ý) đổi lấy thưởng |
+| 🌱 Vườn từ | 6,6 | 6,6 | 3 | |
+| 🃏 Bài Câu | 6,4 | 6,6 | 8 | |
+| 🗺️ Thám hiểm | 6,4 | 6,5 | 6 | |
+| 🏰 Leo tháp | 6,0 | **6,5** | 3 → 5 | hồi tim (T4 +1) |
+| ✉️ Thư | 6,3 | 6,4 | 6 | |
+| 🎲 Bàn Cờ Phố | 6,4 | 6,4 | 5 | |
+| 🎯 Bắt Âm | 6,1 | 6,3 | 3 | |
+| 🔍 Thám tử | 6,1 | 6,2 | 4 | |
+| 📻 Đài phát thanh | 5,6 | 5,8 | 3 | |
+| 🎤 Karaoke | 5,6 | 5,7 | 3 | |
+
+**Gốc rễ còn lại:**
+- Bốn game thấp nhất (Karaoke, Đài, Thám tử, Bắt Âm) đều là game **tiếp nhận / trình diễn**, T2 = 3–4. Theo §9.0 mục 5, các game này nâng bằng **câu chuyện, khoảnh khắc trình diễn, nhịp chuỗi**, không thêm thao tác.
+- Việc kế tiếp:
+  - 🔍 / 📻 bảng manh mối (mỗi câu đúng ghim một mảnh, kết luận ghép từ các mảnh);
+  - 🎤 màn tổng kết "biểu diễn" (điểm khớp từng câu, câu hay nhất);
+  - 🎯 chuỗi nghe đúng mở bong bóng màu mới.
+- T10 vẫn khoá ở 5 cho tới khi có số liệu thật. Vì vậy không game nào vượt khoảng 7,5 chỉ bằng sửa mã: phần còn lại phải đo.
