@@ -124,3 +124,20 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(errors).toEqual([]);
   });
 }
+
+// v108: hạt nổ vẽ ở lớp trong suốt TRÊN thẻ (trước đây nằm sau thẻ đặc nên không thấy), không chặn chạm; bàn chơi có sẵn có hiệu ứng riêng.
+test('v108 hiệu ứng: lớp hạt nổ ở trên thẻ, không chặn chạm; Bàn Cờ đổ xúc xắc → xúc xắc xoay / ô tới nảy', async ({ page, errors }) => {
+  await lobby(page);
+  await play(page, 'bdstart');
+  const pop = await page.evaluate(() => { const p = document.getElementById('stagepop')!, cs = getComputedStyle(p); return { z: Number(cs.zIndex), pe: cs.pointerEvents, hidden: p.getAttribute('aria-hidden') }; });
+  expect(pop).toEqual({ z: 40, pe: 'none', hidden: 'true' });
+  const roll = page.locator('[data-e="bdroll"]');
+  await expect(roll).toBeVisible();
+  const hit = await roll.evaluate(b => { const r = b.getBoundingClientRect(); return document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)?.closest('[data-e]')?.getAttribute('data-e'); });
+  expect(hit).toBe('bdroll');
+  await roll.click();
+  await expect(page.locator('#app .bddie.stspin, #app .bdt.land.stpop')).toHaveCount(1);   // tới lô đất thì ô vừa tới nảy
+  await page.locator('.stagebar [data-e="stexit"]').click();
+  await expect(page.locator('#stagepop')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});

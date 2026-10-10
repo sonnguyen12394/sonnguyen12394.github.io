@@ -28,7 +28,7 @@ import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
 import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, TIER_COINS, type WkKind } from './weekly.ts';
 import { FACE, resident, sideDone, SIDE_COINS, CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind } from './story.ts';
 import { openScene } from './storyfx.ts';
-import { stageSync, type Scene } from './stagefx.ts';
+import { stageSync, stageBurst, type Scene } from './stagefx.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
 import { GUESTS, MOOD, face as cafeFace, stars as cafeStars, freshCafeSave, reactOf, tip as cafeTip } from './cafe.ts';
 import { viewBubbles, viewBubblesEnd, speakKey, type BubbleRun } from './bubbleview.ts';
@@ -1421,6 +1421,7 @@ export function init(host: EHost): EngineModule {
     return { x, plan, next: pick, inPlan };
   }
   // Game đang chạy (để ghi "vừa chơi" khi bắt đầu, "xong" khi tới màn kết).
+  const bfx = new Map<string, { run: object; n: number }>();   // v108: số đếm hiệu ứng bàn chơi theo lượt
   function activeGame(): { game: GameId; done: boolean } | null {
     if (nrun) return { game: 'hunt', done: nrun.over };
     if (hrun) return { game: 'wheel', done: hrun.done };
@@ -1934,6 +1935,18 @@ export function init(host: EHost): EngineModule {
       if (g === 'robot' && rrun && !rrun.done) { const ts = rrun.b.items.filter(x => x.target), l = rrun.log[rrun.log.length - 1]; sc = { kind: 'robot', got: ts.filter(x => x.got).length, total: ts.length, ok: l ? l.ok : null, key: `${rrun.log.length}` }; }
       if (g === 'tower' && qrun && !qrun.done) sc = { kind: 'tower', floor: qrun.floor, hp: qrun.hp, max: qrun.max, i: qrun.i, n: qrun.plan.length, ok: qrun.ans ? qrun.ans.ok : null, key: `${qrun.i}|${!!qrun.ans}` };
       stageSync(g, sc);
+      // v108 hiệu ứng trên bàn có sẵn: so số đếm của lượt với lần vẽ trước (đổi lượt thì chỉ ghi nhận, không nổ).
+      const bump = (run: object | null | undefined, key: string, n: number, fire: () => void) => {
+        if (!run) return; const was = bfx.get(key);
+        if (!was || was.run !== run) bfx.set(key, { run, n }); else if (n > was.n) { was.n = n; fire(); } else was.n = n;
+      };
+      if (g === 'blocks') bump(qrun?.bk, 'bk', qrun?.bk?.lines ?? 0, () => stageBurst('#app .bkc.boom', { all: true, cls: 'stpop' }));
+      if (g === 'board') {
+        bump(qrun?.bd, 'roll', ROLLS - (qrun?.bd?.rolls ?? ROLLS), () => typeof document !== 'undefined' && document.querySelector('#app .bddie') ? stageBurst('#app .bddie', { cls: 'stspin' }) : stageBurst('#app .bdt.land', { cls: 'stpop' }));   // tới lô đất thì không hiện xúc xắc: nảy ô vừa tới
+        bump(qrun?.bd, 'lot', qrun?.bd?.built ?? 0, () => stageBurst('#app .bdt.land', { big: true, cls: 'stpop' }));
+      }
+      if (g === 'puzzle') bump(zrun, 'pz', zrun?.solved.length ?? 0, () => stageBurst('#app .pzband', { last: true, big: true, cls: 'stpop' }));
+      if (g === 'fog' && drun?.fog) { const f = drun.fog, last = f.open[f.open.length - 1] ?? 0; bump(f, 'fog', f.open.length, () => stageBurst(`#app .fggrid .fgcell:nth-child(${last + 1})`, { big: true, cls: 'stpop' })); }
     },
     peek() {
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>

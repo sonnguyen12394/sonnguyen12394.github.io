@@ -34,6 +34,8 @@ export type Scene =
   | { kind: 'cafe'; guest: string; prop?: string; mood: string | null; name: string; k: number; total: number; key: string }
   | MoreScene;
 const POT = ['🌰', '🌱', '🌿', '🌸'];
+// pop: canvas trong suốt phía TRÊN thẻ câu hỏi cho hạt nổ (v108: trước đây hạt vẽ ở canvas nền, nằm sau thẻ đặc nên gần như không thấy).
+let pop: HTMLCanvasElement | null = null, popUsed = false;
 let cv: HTMLCanvasElement | null = null, raf = 0, game = '', parts: P[] = [], amb: P[] = [], lastFb = '';
 let scene: Scene | null = null, sceneKey = '', sceneAt = 0, guestKey = '', guestAt = 0;
 export const sceneH = () => Math.round(Math.min(innerHeight * 0.3, 240));
@@ -102,6 +104,8 @@ function loop(now: number): void {
   if (!cv || !game) return;
   const t = STAGES[game]!, g = cv.getContext('2d')!, dpr = Math.min(2, devicePixelRatio || 1), W = innerWidth, H = innerHeight;
   if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); amb = ambient(t, W, H); }
+  const pg = pop?.getContext('2d') ?? null;
+  if (pop && pg) { if (pop.width !== cv.width || pop.height !== cv.height) { pop.width = cv.width; pop.height = cv.height; } pg.setTransform(dpr, 0, 0, dpr, 0, 0); if (popUsed) pg.clearRect(0, 0, W, H); }   // chỉ xoá khi khung trước có hạt (WebKit chậm)
   g.setTransform(dpr, 0, 0, dpr, 0, 0);
   const bg = g.createLinearGradient(0, 0, W * 0.4, H); bg.addColorStop(0, t.a); bg.addColorStop(1, t.b); g.fillStyle = bg; g.fillRect(0, 0, W, H);
   const still = STILL();
@@ -113,16 +117,32 @@ function loop(now: number): void {
   for (let k = parts.length - 1; k >= 0; k--) {
     const p = parts[k]!; p.x += p.vx; p.y += p.vy; p.vy += 0.18; p.life -= 0.022;
     if (p.life <= 0) { parts.splice(k, 1); continue; }
-    g.globalAlpha = p.life; g.fillStyle = p.c; g.beginPath(); g.arc(p.x, p.y, p.r, 0, Math.PI * 2); g.fill();
+    const q = pg ?? g; q.globalAlpha = p.life; q.fillStyle = p.c; q.beginPath(); q.arc(p.x, p.y, p.r, 0, Math.PI * 2); q.fill();
   }
+  if (pg) pg.globalAlpha = 1;
+  popUsed = parts.length > 0;
   g.globalAlpha = 1;
   raf = requestAnimationFrame(loop);
 }
 
-function burst(x: number, y: number, good: boolean): void {
+function burst(x: number, y: number, good: boolean, k = 1): void {
   if (STILL()) return;
   const cs = good ? ['#fde68a', '#86efac', '#67e8f9', '#f9a8d4'] : ['#fca5a5', '#fdba74'];
-  for (let k = 0; k < (good ? 34 : 12); k++) { const a = Math.random() * Math.PI * 2, v = 2 + Math.random() * (good ? 5 : 2.5); parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - (good ? 3 : 0), r: 2 + Math.random() * 3, life: 1, c: cs[k % cs.length]!, rot: 0 }); }
+  for (let j = 0, m = Math.round((good ? 34 : 12) * k); j < m; j++) { const a = Math.random() * Math.PI * 2, v = 2 + Math.random() * (good ? 5 : 2.5); parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - (good ? 3 : 0), r: 2 + Math.random() * 3, life: 1, c: cs[j % cs.length]!, rot: 0 }); }
+}
+
+// v108 Hiệu ứng trên bàn chơi có sẵn (Xếp Khối nổ hàng, Câu đố giải nhóm, Thám hiểm mở ô, Bàn Cờ đổ xúc xắc / xây nhà):
+// hạt nổ ở đúng phần tử, âm, lớp CSS nảy / xoay. Chỉ trình bày; gọi sau khi app vẽ lại.
+export function stageBurst(sel: string, opts: { big?: boolean; cls?: string; all?: boolean; last?: boolean } = {}): void {
+  if (typeof document === 'undefined') return;
+  const found = [...document.querySelectorAll<HTMLElement>(sel)], els = opts.all ? found.slice(0, 16) : opts.last ? found.slice(-1) : found.slice(0, 1);
+  if (!els.length) return;
+  for (const el of els) {
+    const r = el.getBoundingClientRect();
+    if (cv) burst(r.left + r.width / 2, r.top + r.height / 2, true, opts.big ? 2 : 1);
+    if (opts.cls) { el.classList.remove(opts.cls); void el.offsetWidth; el.classList.add(opts.cls); }
+  }
+  snd.found();
 }
 
 // Gọi sau mỗi lần app vẽ lại #app. g: game cũ đang chạy (null = không có, hoặc game chủ lực / màn khác).
@@ -133,10 +153,11 @@ export function stageSync(g: string | null, sc: Scene | null = null): void {
   b.classList.toggle('scene', on && !!sc);
   if (on && sc) { b.style.setProperty('--sceneh', `${sceneH()}px`); if (sc.key !== sceneKey) { sceneKey = sc.key; sceneAt = performance.now(); } if (sc.kind === 'cafe' && `${sc.k}` !== guestKey) { guestKey = `${sc.k}`; guestAt = performance.now(); } }
   scene = on ? sc : null;
-  if (!on) { if (game) { cancelAnimationFrame(raf); cv?.remove(); cv = null; game = ''; parts = []; lastFb = ''; delete b.dataset.game; } return; }
+  if (!on) { if (game) { cancelAnimationFrame(raf); cv?.remove(); cv = null; pop?.remove(); pop = null; game = ''; parts = []; lastFb = ''; delete b.dataset.game; } return; }
   const t = STAGES[g!]!;
   b.dataset.game = g!;
   if (!cv) { cv = document.createElement('canvas'); cv.id = 'stagefx'; cv.setAttribute('aria-hidden', 'true'); b.prepend(cv); }
+  if (!pop) { pop = document.createElement('canvas'); pop.id = 'stagepop'; pop.setAttribute('aria-hidden', 'true'); b.appendChild(pop); }
   if (game !== g) { game = g!; amb = ambient(t, innerWidth, innerHeight); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); }
   const app = document.getElementById('app'); if (!app) return;
   // Thanh sân khấu: ✕ về sảnh + tên game (app vẽ lại #app mỗi thao tác nên chèn lại mỗi lần).

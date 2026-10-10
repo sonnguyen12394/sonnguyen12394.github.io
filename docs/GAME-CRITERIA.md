@@ -1542,3 +1542,36 @@ Vẫn thấp hơn game chủ lực, vì lõi chơi còn là chọn đáp án.
 | Leo tháp | ≈ 3,5 |
 
 Lõi chơi vẫn là chọn / gõ đáp án, nên chưa lên mức game chủ lực.
+
+### 10.19 Đã làm v108: hiệu ứng trên bàn chơi có sẵn + sửa lớp hạt nổ bị che
+
+**Phản biện:** Thám hiểm, Câu đố ngày, Xếp Khối, Bàn Cờ đã có bàn chơi bằng hình (bản đồ 4 × 4, lưới 16 ô, bàn 8 × 8, bàn cờ). Thêm cảnh 1/3 trên chỉ đẩy bàn xuống dưới màn hình. Thứ chúng thiếu là **khoảnh khắc lớn có hiệu ứng** (M2): nổ hàng, giải nhóm, mở ô, đổ xúc xắc.
+
+**Gốc rễ tìm ra khi làm:**
+- Từ v102, hạt nổ của "phản hồi đúng / sai" được vẽ trên canvas nền.
+- Canvas này nằm **sau** thẻ câu hỏi, mà thẻ có nền đặc (để giữ tương phản WCAG). Kết quả: hạt nổ gần như không ai thấy.
+- **Sửa:** thêm lớp canvas trong suốt `#stagepop` phía trên thẻ, không nhận chạm (`pointer-events: none`). Lớp này chỉ xoá khi khung trước có hạt.
+
+**Việc làm:** `stageBurst(selector)` nổ hạt + âm + lớp CSS ngay tại phần tử. Engine so số đếm của lượt chơi với lần vẽ trước; đổi lượt thì chỉ ghi nhận, không nổ.
+
+| Game | Khoảnh khắc | Hiệu ứng |
+|---|---|---|
+| 🧱 Xếp Khối | nổ hàng / cột | hạt ở từng ô vừa nổ, ô nảy |
+| 📅 Câu đố ngày | giải xong một nhóm | hạt lớn ở dải nhóm vừa giải, dải nảy |
+| 🗺️ Thám hiểm | mở thêm ô bản đồ | hạt lớn ở đúng ô vừa mở |
+| 🎲 Bàn Cờ | đổ xúc xắc; xây nhà | xúc xắc xoay vào (tới lô đất thì ô vừa tới nảy); xây nhà: hạt lớn ở lô |
+
+Bật giảm chuyển động thì không có hạt, không xoay / nảy.
+
+**Kiểm:**
+- e2e:
+  - `#stagepop` ở trên (z 40), `aria-hidden`, không chặn chạm (điểm giữa nút vẫn là nút);
+  - Bàn Cờ đổ xúc xắc thì có hiệu ứng, chạy 4 lần đều qua;
+  - rời game thì lớp này bị gỡ.
+- Toàn bộ: 282 đơn vị, 235 e2e. Bot 8 ngày: 0 kẹt.
+
+**Chấm (tự chấm):**
+- M2 +1 cho bốn game này;
+- M2 +1 cho mọi game sân khấu (hạt nổ giờ mới thật sự thấy được).
+
+Ước lượng: Câu đố ngày ≈ 5,4 · Xếp Khối ≈ 3,9 · Bàn Cờ ≈ 3,9 · Thám hiểm ≈ 3,1.

@@ -712,6 +712,7 @@ html.whopen,html.whopen body{overflow:hidden}
 /* v102 sân khấu game kỹ năng: ẩn khung app, cảnh động phía sau, nội dung trên thẻ nền đặc (giữ tương phản) */
 body.stage .top,body.stage #bnav,body.stage #nav{display:none}
 #stagefx{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+#stagepop{position:fixed;inset:0;width:100vw;height:100vh;z-index:40;pointer-events:none}
 body.stage #app{position:relative;z-index:1;background:var(--surface);border-radius:22px;max-width:760px;margin:62px auto 18px;padding:16px 16px 20px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
 @media (max-width:560px){body.stage #app{margin:58px 8px 12px;padding:14px 12px 18px;border-radius:18px}}
 .stagebar{position:fixed;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;gap:10px;padding:max(10px,env(safe-area-inset-top)) 12px 10px;color:#fff;font:800 17px system-ui,sans-serif;text-shadow:0 1px 3px rgba(0,0,0,.5)}
@@ -721,10 +722,11 @@ body.stage{background:#14121f}
 .stagex:focus-visible{outline:3px solid #ffd166;outline-offset:2px}
 body.stage .fb{font-size:17px}
 body.stage .opt,body.stage .choice,body.stage .gcard{min-height:48px}
-.stpop{animation:stpop .42s cubic-bezier(.2,1.6,.4,1)}.stshake{animation:stshake .4s}
+.stpop{animation:stpop .42s cubic-bezier(.2,1.6,.4,1)}.stshake{animation:stshake .4s}.stspin{animation:stspin .6s cubic-bezier(.2,1.2,.4,1)}
+@keyframes stspin{0%{transform:rotate(-200deg) scale(.6)}100%{transform:rotate(0) scale(1)}}
 @keyframes stpop{0%{transform:scale(.92)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
 @keyframes stshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
-@media (prefers-reduced-motion:reduce){.stpop,.stshake{animation:none}}
+@media (prefers-reduced-motion:reduce){.stpop,.stshake,.stspin{animation:none}}
 .cfvip{margin:6px 0 0;font-weight:700;color:var(--ink)}
 .bbfx [hidden]{display:none!important}
 .bbsay{position:absolute;top:70px;left:16px;right:16px;display:grid;justify-items:center;gap:8px;z-index:1}

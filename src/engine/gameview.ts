@@ -153,7 +153,7 @@ export function viewBoard(c: ECtx, r: QuestRun, s: BoardSave, wallet: number): s
   const top = `<section class="stack" style="gap:6px"><div class="spread"><span class="eyebrow">🎲 Bàn Cờ Phố · còn ${bd.rolls}/${ROLLS} lượt tung</span><span>🪙 <b>${wallet}</b> · ✓ ${r.ok}/${r.n}</span></div></section>`;
   if (bd.phase === 'ask') {
     const ch = r.plan[r.i]!, t = ENC_VI[ch.gameType];
-    return `${top}<p class="hint">${m ? `${DIE[m.die]} Đi ${m.die} ô → ` : ''}<b>${t.ico} ${esc(t.vi)}</b>${ch.node ? ` · ${esc(ix.node.get(ch.node)?.vi ?? '')}` : ''}</p>${questInner(c, r)}`;
+    return `${top}<p class="hint">${m ? `<span class="bddie" style="display:inline-block">${DIE[m.die]}</span> Đi ${m.die} ô → ` : ''}<b>${t.ico} ${esc(t.vi)}</b>${ch.node ? ` · ${esc(ix.node.get(ch.node)?.vi ?? '')}` : ''}</p>${questInner(c, r)}`;
   }
   const at = s.pos, tile = TILES[at]!;
   let center = '';
