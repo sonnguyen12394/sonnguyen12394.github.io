@@ -54,7 +54,8 @@ function needs(x: DirIn): DirPick[] {
   const top = x.top, k = top?.node.split(':')[0] ?? '';
   if (!x.placed) add('fog', 'place', 100, 'App chưa biết bạn đang ở cấp nào. Thám hiểm một lần để lộ trình bỏ qua thứ bạn đã biết.');
   if (x.garden > 0) add('garden', 'water', 92, `${x.garden} từ đến ngày tưới hôm nay: ôn đúng ngày thì nhớ lâu, để lỡ thì chậm nhớ.`);
-  if (x.review >= 5 || top?.kind === 'review') {
+  // Ôn: chỉ đứng đầu khi NBA chọn ôn hoặc nhiều phần sắp quên (≥ 8). Bot L03 (B2): ngưỡng 5 làm người học khá ôn quá nhiều phần đã vững.
+  if (x.review >= 8 || top?.kind === 'review') {
     const n = Math.max(1, x.review);
     add('blocks', 'review', 88, `${n} phần bạn đã học đang sắp quên: ôn ngay trước khi học mới.`);
     if (!x.puzzleToday) add('puzzle', 'review', 84, `${n} phần sắp quên: câu đố hôm nay nhắc lại từ theo nhóm chủ đề.`);
@@ -67,9 +68,11 @@ function needs(x: DirIn): DirPick[] {
     if (k === 'cd') add('tower', 'check', 60, `Phần đang học: ${top.vi}.`);
   }
   if (top && (top.kind === 'probe' || top.kind === 'verify' || top.kind === 'transfer')) add('tower', 'check', 74, `Kiểm tra xem bạn biết thật “${top.vi}” chưa (câu mới, chưa gặp).`);
-  if (x.neck?.node.startsWith('ph:')) add('bubbles', 'sound', 76, `Điểm nghẽn của bạn: ${x.neck.vi}. Nghe phân biệt âm để gỡ.`);
-  else if (x.neck?.node.startsWith('g:')) add('cards', 'grammar', 72, `Điểm nghẽn của bạn: ${x.neck.vi}.`);
-  else if (x.neck?.node.startsWith('u:')) add('blocks', 'vocab', 70, `Điểm nghẽn của bạn: ${x.neck.vi}.`);
+  // Điểm nghẽn = phần yếu đang chặn nhiều năng lực: ưu tiên ngay sau ôn / tưới, trên bước học mới. Bot L02: để dưới bước học thì người chơi
+  // 2–3 game / ngày không bao giờ tới lượt điểm nghẽn (phần nghe tụt từ 56% xuống 22% số câu).
+  if (x.neck?.node.startsWith('ph:')) add('bubbles', 'sound', 86, `Điểm nghẽn của bạn: ${x.neck.vi}. Nghe phân biệt âm để gỡ.`);
+  else if (x.neck?.node.startsWith('g:')) add(x.gWrong ? 'shop' : 'cards', 'grammar', 84, `Điểm nghẽn của bạn: ${x.neck.vi}.`);
+  else if (x.neck?.node.startsWith('u:')) add('blocks', 'vocab', 82, `Điểm nghẽn của bạn: ${x.neck.vi}.`);
   // Phần nền còn mở trên lộ trình (không phải bước đầu): điểm thấp hơn, để lộ trình ngày phủ nhiều mặt.
   if (x.first.u) add('garden', 'vocab', 58, `Từ mới cần cho mục tiêu: ${x.first.u}.`);
   if (x.first.g) add(x.gWrong ? 'shop' : 'cards', 'grammar', 60, `Ngữ pháp cần cho mục tiêu: ${x.first.g}.`);

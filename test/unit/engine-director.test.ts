@@ -19,6 +19,13 @@ test('v88 bộ não: cây đến ngày tưới → Vườn từ; nhiều phần 
   const r = direct(base({ review: 8, top: { kind: 'review', node: 'review', vi: 'ôn' } }));
   assert.equal(r[0]!.game, 'blocks'); assert.equal(r[1]!.game, 'puzzle'); assert.match(r[0]!.why, /8 phần/);
   assert.ok(!direct(base({ review: 8, puzzleToday: true })).some(p => p.game === 'puzzle'), 'câu đố mỗi ngày một lần');
+  assert.notEqual(direct(base({ review: 6 }))[0]!.game, 'blocks', 'ít phần sắp quên → không ôn trước học mới (người học khá)');
+});
+
+test('v88 bộ não: điểm nghẽn đứng trên bước học mới (người chơi ít game / ngày vẫn tới lượt)', () => {
+  const x = base({ top: { kind: 'learn', node: 'g:be', vi: 'be' }, first: { g: 'be' }, neck: { node: 'ph:s-01', vi: 'ship/sheep' } });
+  assert.equal(direct(x)[0]!.game, 'bubbles');
+  assert.ok(planDay(x).some(p => p.game === 'bubbles'));
 });
 
 test('v88 bộ não: loại nút đầu lộ trình quyết định dạng game (ngữ pháp / giao tiếp / âm)', () => {
