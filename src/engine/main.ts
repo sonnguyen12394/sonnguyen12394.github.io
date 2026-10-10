@@ -1167,7 +1167,8 @@ export function init(host: EHost): EngineModule {
       top: top ? { kind: top.kind, node: top.node, vi: top.node === 'review' ? 'ôn' : vi(top.node) } : null,
       review: fi.review.length, first, neck: (() => { const n = neckOf(v); return n ? { node: n.node, vi: n.vi } : null; })(), gWrong, fnSeen, cd, lv: curLv(),
       garden: Object.values(gv?.plants ?? {}).filter(x => x.s < 3 && x.d < today).length, puzzleToday: e.gd?.last === today,
-      played, last: sv.last, tts: !!host.tts?.(), asr: !!host.hasAsr?.(),
+      played, last: sv.last, tts: !!host.tts?.(), asr: !!host.hasAsr?.(), acc: recentAcc(),
+      recent: (() => { const r: Record<string, number> = { u: 0, g: 0, fn: 0, ph: 0 }; for (const l of e.ev.led) if (l.day > today - 7) { const k = l.node.split(':')[0]!; if (k in r) r[k]!++; } return r; })(),
     };
   }
   // Lộ trình hôm nay + game chơi tiếp. Ghi snapshot (Vì sao?) khi game được chọn đổi.

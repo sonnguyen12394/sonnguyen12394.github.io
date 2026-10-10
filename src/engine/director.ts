@@ -42,6 +42,8 @@ export interface DirIn {
   played: string[];                // game đã chơi xong hôm nay
   last: string;                    // game vừa bắt đầu gần nhất
   tts: boolean; asr: boolean;
+  recent?: Partial<Record<'u' | 'g' | 'fn' | 'ph', number>>;   // số câu trả lời 7 ngày qua theo loại nút (cân đối các mảng nền)
+  acc?: number | null;             // tỉ lệ đúng gần đây (24 câu tự lực)
 }
 export interface DirPick { game: GameId; need: Need; why: string; score: number }
 
@@ -54,8 +56,9 @@ function needs(x: DirIn): DirPick[] {
   const top = x.top, k = top?.node.split(':')[0] ?? '';
   if (!x.placed) add('fog', 'place', 100, 'App chưa biết bạn đang ở cấp nào. Thám hiểm một lần để lộ trình bỏ qua thứ bạn đã biết.');
   if (x.garden > 0) add('garden', 'water', 92, `${x.garden} từ đến ngày tưới hôm nay: ôn đúng ngày thì nhớ lâu, để lỡ thì chậm nhớ.`);
-  // Ôn: chỉ đứng đầu khi NBA chọn ôn hoặc nhiều phần sắp quên (≥ 8). Bot L03 (B2): ngưỡng 5 làm người học khá ôn quá nhiều phần đã vững.
-  if (x.review >= 8 || top?.kind === 'review') {
+  // Ôn: chỉ đứng đầu khi NBA chọn ôn hoặc nhiều phần sắp quên (≥ 8; ≥ 12 khi đang đúng nhiều). Bot L03 (B2): ngưỡng 5 làm người học khá ôn quá nhiều phần đã vững.
+  const revMin = (x.acc ?? 0) >= 0.85 ? 12 : 8;   // người đang đúng nhiều: phần "sắp quên" thường vẫn nhớ → ngưỡng cao hơn
+  if (x.review >= revMin || top?.kind === 'review') {
     const n = Math.max(1, x.review);
     add('blocks', 'review', 88, `${n} phần bạn đã học đang sắp quên: ôn ngay trước khi học mới.`);
     if (!x.puzzleToday) add('puzzle', 'review', 84, `${n} phần sắp quên: câu đố hôm nay nhắc lại từ theo nhóm chủ đề.`);
@@ -74,10 +77,14 @@ function needs(x: DirIn): DirPick[] {
   else if (x.neck?.node.startsWith('g:')) add(x.gWrong ? 'shop' : 'cards', 'grammar', 84, `Điểm nghẽn của bạn: ${x.neck.vi}.`);
   else if (x.neck?.node.startsWith('u:')) add('blocks', 'vocab', 82, `Điểm nghẽn của bạn: ${x.neck.vi}.`);
   // Phần nền còn mở trên lộ trình (không phải bước đầu): điểm thấp hơn, để lộ trình ngày phủ nhiều mặt.
-  if (x.first.u) add('garden', 'vocab', 58, `Từ mới cần cho mục tiêu: ${x.first.u}.`);
-  if (x.first.g) add(x.gWrong ? 'shop' : 'cards', 'grammar', 60, `Ngữ pháp cần cho mục tiêu: ${x.first.g}.`);
-  if (x.first.fn) add('cafe', 'func', 57, `Giao tiếp cần cho mục tiêu: ${x.first.fn}.`);
-  if (x.first.ph) add('bubbles', 'sound', 56, `Âm cần cho mục tiêu: ${x.first.ph}.`);
+  // Mảng nền còn trên lộ trình mà 7 ngày qua gần như không luyện (< 10% số câu): +22 điểm. Bot L02: không có câu âm thì không có bằng chứng,
+  // nên điểm nghẽn âm không bao giờ lộ ra (câu về âm 56 → 21 khi chỉ theo bước học mới).
+  const tot = Object.values(x.recent ?? {}).reduce((a, b) => a + (b ?? 0), 0), under = (k: 'u' | 'g' | 'fn' | 'ph') => (x.recent && tot >= 20 && (x.recent[k] ?? 0) / tot < 0.1 ? 22 : 0);
+  const lag = (k: 'u' | 'g' | 'fn' | 'ph') => (under(k) ? ' Mấy ngày nay bạn ít luyện phần này.' : '');
+  if (x.first.u) add('garden', 'vocab', 58 + under('u'), `Từ mới cần cho mục tiêu: ${x.first.u}.${lag('u')}`);
+  if (x.first.g) add(x.gWrong ? 'shop' : 'cards', 'grammar', 60 + under('g'), `Ngữ pháp cần cho mục tiêu: ${x.first.g}.${lag('g')}`);
+  if (x.first.fn) add('cafe', 'func', 57 + under('fn'), `Giao tiếp cần cho mục tiêu: ${x.first.fn}.${lag('fn')}`);
+  if (x.first.ph) add('bubbles', 'sound', 56 + under('ph'), `Âm cần cho mục tiêu: ${x.first.ph}.${lag('ph')}`);
   // Kỹ năng (Can-Do) còn thiếu ở cấp đang học.
   const cd = (s: 'R' | 'L' | 'W' | 'S') => x.cd[s], g = (s: 'R' | 'L' | 'W' | 'S') => 50 + Math.round(15 * (cd(s)?.gap ?? 0));
   if (cd('R')) add('case', 'read', g('R'), `Đọc ở cấp ${x.lv}: ${cd('R')!.vi}.`);

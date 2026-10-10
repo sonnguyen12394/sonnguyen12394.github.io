@@ -577,6 +577,9 @@ Nguồn xu hướng:
 | Nhiều phần "tạm Đạt" + hết hạn chờ 7 ngày (62) | 🗺️ Thám hiểm lại |
 | Chơi thêm (20–40) | 🏰 Tháp / 🎲 Bàn Cờ / 🤖 Robot |
 
+- **Điểm nghẽn** được ưu tiên ngay sau ôn / tưới, trên bước học mới (86 / 84 / 82).
+- **Mảng nền ít luyện:** mảng nền còn trên lộ trình mà 7 ngày qua chiếm dưới 10% số câu được cộng 22 điểm.
+- **Ngưỡng ôn:** cần ≥ 8 phần sắp quên, hoặc ≥ 12 khi tỉ lệ đúng gần đây ≥ 85%.
 - **Đổi dạng (interleaving):** game vừa chơi bị trừ 45 điểm, game đã chơi xong hôm nay bị trừ 25.
 - **Lộ trình hôm nay:** 3 chặng chốt một lần mỗi ngày. Mỗi chặng phục vụ một nhu cầu khác nhau, tối đa một chặng kỹ năng, thứ tự ôn / tưới trước rồi học mới. Lý do: người mới thiếu mọi Can-Do, nên nếu không giới hạn thì kỹ năng chiếm hết lộ trình trong khi từ và ngữ pháp nền mới là thứ mở đường.
 - **"▶ Chơi tiếp"** là chặng đầu tiên chưa xong. Hết lộ trình thì app vẫn chọn game đầu bảng.

@@ -28,6 +28,14 @@ test('v88 bộ não: điểm nghẽn đứng trên bước học mới (người
   assert.ok(planDay(x).some(p => p.game === 'bubbles'));
 });
 
+test('v88 bộ não: mảng nền 7 ngày qua gần như không luyện được đưa vào lộ trình; người đang đúng nhiều ôn ít hơn', () => {
+  const x = base({ top: { kind: 'learn', node: 'g:be', vi: 'be' }, first: { u: 'Chào', g: 'be', ph: 'ship/sheep' }, review: 9, recent: { u: 40, g: 40, fn: 0, ph: 1 } });
+  assert.ok(planDay(x).some(p => p.game === 'bubbles'), 'âm chưa luyện → có chặng Bắt Âm');
+  assert.ok(!planDay({ ...x, recent: { u: 40, g: 40, ph: 30 } }).some(p => p.game === 'bubbles'));
+  assert.equal(direct(x)[0]!.game, 'blocks');
+  assert.notEqual(direct({ ...x, acc: 0.9 })[0]!.game, 'blocks');
+});
+
 test('v88 bộ não: loại nút đầu lộ trình quyết định dạng game (ngữ pháp / giao tiếp / âm)', () => {
   assert.equal(direct(base({ top: { kind: 'learn', node: 'g:be', vi: 'be' }, first: {} }))[0]!.game, 'cards');
   assert.equal(direct(base({ top: { kind: 'learn', node: 'g:be', vi: 'be' }, first: {}, gWrong: true }))[0]!.game, 'shop', 'đang sai nhiều → sửa câu sai');
