@@ -709,6 +709,22 @@ html.whopen,html.whopen body{overflow:hidden}
 .stwho{display:flex;align-items:center;gap:12px;font:800 20px system-ui,sans-serif}.stico{font-size:56px;line-height:1}
 .sten{margin:0;font:800 24px/1.35 system-ui,sans-serif;min-height:2.7em}.stvi{margin:0;font:500 17px/1.4 system-ui,sans-serif;color:#f1ecff}
 .stdots{display:flex;gap:6px;justify-content:center}.stdots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35)}.stdots i.on{background:#ffd166}
+/* v102 sân khấu game kỹ năng: ẩn khung app, cảnh động phía sau, nội dung trên thẻ nền đặc (giữ tương phản) */
+body.stage .top,body.stage #bnav,body.stage #nav{display:none}
+#stagefx{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+body.stage #app{position:relative;z-index:1;background:var(--surface);border-radius:22px;max-width:760px;margin:62px auto 18px;padding:16px 16px 20px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+@media (max-width:560px){body.stage #app{margin:58px 8px 12px;padding:14px 12px 18px;border-radius:18px}}
+.stagebar{position:fixed;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;gap:10px;padding:max(10px,env(safe-area-inset-top)) 12px 10px;color:#fff;font:800 17px system-ui,sans-serif;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+body.stage{background:#14121f}
+.stagebar b{background:rgba(0,0,0,.55);padding:6px 12px;border-radius:12px}
+.stagex{min-width:44px;height:44px;border:0;border-radius:14px;background:rgba(0,0,0,.45);color:#fff;font:700 18px system-ui,sans-serif;cursor:pointer}
+.stagex:focus-visible{outline:3px solid #ffd166;outline-offset:2px}
+body.stage .fb{font-size:17px}
+body.stage .opt,body.stage .choice,body.stage .gcard{min-height:48px}
+.stpop{animation:stpop .42s cubic-bezier(.2,1.6,.4,1)}.stshake{animation:stshake .4s}
+@keyframes stpop{0%{transform:scale(.92)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes stshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+@media (prefers-reduced-motion:reduce){.stpop,.stshake{animation:none}}
 .cdhud{position:absolute;top:62px;left:16px;right:16px;display:grid;gap:6px;z-index:1}
 .cdbar{height:8px;border-radius:8px;background:rgba(0,0,0,.35);overflow:hidden}.cdbar i{display:block;height:100%;background:linear-gradient(90deg,#fde68a,#f59e0b);transition:width .4s}
 .cdcharms{display:flex;gap:6px;flex-wrap:wrap}.cdcharm-on{font:600 12px system-ui,sans-serif;color:#1d1b3a;background:#fde68a;border-radius:999px;padding:3px 10px}

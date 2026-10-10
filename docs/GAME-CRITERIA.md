@@ -1387,3 +1387,42 @@ Chế độ `?playtest=1` thêm nút nhảy tới màn rương 5, màn mốc 10,
 - Bài Câu 5,9 → 6,1
 
 Cảnh truyện vẫn là chữ + emoji, chưa có tranh (M4).
+
+### 10.14 Đã làm v102: "sân khấu" dùng chung cho 14 game kỹ năng
+
+**Yêu cầu:** "Làm tiếp những game còn lại" (13 game cũ + Leo tháp, chấm 2,2–4,6 / 10).
+
+**Phản biện:**
+- Làm lại cả 14 game bằng canvas riêng thì tốn khoảng 14 đợt, lại dàn trải đúng lỗi §10.3.
+- Gốc rễ chung là: nằm trong khung app (M5), không hình / tiếng (M4), phản hồi nhạt (M2). Cả ba sửa được **một lần cho mọi game**.
+- Riêng 3 game được chơi nhiều nhất (Bắt Âm, Vườn từ, Quán) sẽ làm lại ở v104–v106.
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Bật / tắt | Engine nhớ route vừa vẽ. Khi đang ở route game và có game kỹ năng chạy (`activeGame()`, cả Thám hiểm), `body.stage` bật. Rời tab Chơi hoặc về sảnh thì tắt. Ba game chủ lực có lớp phủ riêng nên không tính | `EM.stage()` trong `main.ts`, `app.js` `render()` |
+| Toàn màn | Ẩn thanh trên / thanh tab của app. Thanh sân khấu gồm ✕ (`stexit`, tách khỏi "Về sảnh" của từng game) và tên game trên nền tối riêng | `stagefx.ts`, `index.html` |
+| Cảnh động | Canvas phía sau, mỗi game một cảnh: bong bóng (Bắt Âm), hơi cà phê (Quán), lá (Vườn, Thư), bánh răng (Xưởng), sóng (Đài), nốt nhạc (Karaoke), sương (Thám tử, Thám hiểm), sao (Leo tháp, Bàn Cờ, Câu đố), tia sáng (Robot, Xếp Khối). Giảm chuyển động thì cảnh đứng yên | `STAGES`, `ambient()` |
+| Nội dung | Vẫn trên thẻ nền đặc ở giữa, nên tương phản chữ giữ nguyên (WCAG AA) | CSS `body.stage #app` |
+| Phản hồi | Phản hồi đúng / sai mới: hạt nổ (đúng thì nhiều màu, sai thì đỏ cam), âm (dùng chung của Vòng Chữ), khung phản hồi nảy / rung | `stageSync()` |
+
+Không đổi luật, câu hỏi hay bằng chứng của game nào. e2e kiểm sổ bằng chứng tăng đúng 1 cho một câu.
+
+**Lỗi tìm ra khi kiểm:**
+1. Màn game là `ui.view === 'goal'` (route `quest`), không phải `'play'`. Lần chạy e2e đầu "qua hết" chỉ vì sân khấu chưa hề bật. Đã sửa bằng cách cho engine tự nhớ route.
+2. Nút ✕ dùng chung `data-e="qhome"` làm 10 test bắt trúng 2 nút. Đã đổi sang `stexit`.
+3. Chữ tên game trắng đặt thẳng lên canvas: trình kiểm WCAG, và máy chậm khi canvas chưa vẽ, chỉ thấy nền sáng. Đã thêm khối nền tối riêng và nền `body` tối dự phòng.
+
+**Kiểm:**
+- e2e `stage.spec` (4):
+  - 11 game kỹ năng mở ra toàn màn, ✕ về sảnh có lại khung app;
+  - Quán đúng → khung nảy, Bắt Âm sai → rung, bằng chứng +1;
+  - WCAG AA sáng / tối ở 390 px (Quán, Xưởng), không cuộn ngang.
+- Toàn bộ: 281 đơn vị, 220 e2e.
+- Bot L01, 8 ngày: không hồi quy (72 % lượt chơi ở game chủ lực, kiểm tra nhanh mỗi ngày, 0 kẹt).
+
+**Chấm lại (tự chấm, ước lượng chung cho 14 game):**
+- M4 +1 (cảnh động, âm);
+- M5 +3 (toàn màn, không còn khung app);
+- M2 +1 (phản hồi có hạt / nảy).
+
+Điểm 14 game tăng khoảng **+0,6** (ví dụ Quán 2,5 → 3,1; Bắt Âm 2,9 → 3,5). Vẫn thấp vì lõi chơi còn là chọn đáp án trong HTML; v104–v106 sẽ làm lại 3 game chơi nhiều nhất.

@@ -28,6 +28,7 @@ import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
 import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, TIER_COINS, type WkKind } from './weekly.ts';
 import { CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind } from './story.ts';
 import { openScene } from './storyfx.ts';
+import { stageSync } from './stagefx.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
 import { GUESTS, stars as cafeStars, freshCafeSave, reactOf, tip as cafeTip } from './cafe.ts';
 import { viewBubbles, viewBubblesEnd, speakKey, type BubbleRun } from './bubbleview.ts';
@@ -76,6 +77,7 @@ export interface EngineModule {
   version: number;
   render(route: string): string;
   after(route: string): void;
+  stage?(on: boolean): void;                               // v102 sân khấu dùng chung cho game kỹ năng (app gọi sau mỗi lần vẽ)
   next(): { h: string; p: string; btn: string } | null;   // nút chính trang chủ theo lộ trình; null = dùng cách cũ
   autoGoal(id: string, why: string): boolean;              // goal-first (v64): đặt mục tiêu khi người học chưa có mục tiêu nào
   sanitize(e: unknown): EState;
@@ -1554,8 +1556,9 @@ export function init(host: EHost): EngineModule {
     pick: viewPick,
     goal: c => { if (!loaded() && !loadErr) ensure(); return viewGoal(c, loadErr); },
   };
+  let lastRoute = '';   // v102: route vừa vẽ (sân khấu chỉ bật ở route game 'quest')
   function render(route: string): string {
-    const name = route.split('/')[0] || 'goals', v = V();
+    const name = route.split('/')[0] || 'goals', v = V(); lastRoute = name;
     return (routes[name] ?? viewGoals)({ host, e: v, route, future: future(), hidden: E().goals.length - v.goals.length });
   }
 
@@ -1734,6 +1737,7 @@ export function init(host: EHost): EngineModule {
     bksel(el) { const bk = qrun?.bk, i = Number(el.dataset.p); if (!bk || bk.phase !== 'place' || !bk.tray[i] || !fits(bk.g, bk.tray[i]!)) return; bk.sel = i; host.render(); },
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
+    stexit(el) { act.qhome!(el); },   // v102 nút ✕ của sân khấu (tách khỏi qhome để không trùng nút "Về sảnh" của từng game)
     qhome() { cClose(); nClose(); nrun = null; hClose(); hrun = null; qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
@@ -1892,6 +1896,8 @@ export function init(host: EHost): EngineModule {
     },
     sanitize: sanitizeE,
     merge: mergeE,
+    // v102: game kỹ năng đang chạy → sân khấu (game chủ lực có lớp phủ riêng nên không tính).
+    stage(on) { const a = drun?.fog ? 'fog' : activeGame()?.game ?? null; stageSync(on && lastRoute === 'quest' && a && !['hunt', 'wheel', 'cards'].includes(a) ? a : null); },
     peek() {
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;

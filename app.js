@@ -4220,6 +4220,7 @@ function render(){
   if(ui.view==='exam') exArm();
   if(ui.view==='thi'&&XM) try{ XM.after(ui.xr||'hub'); }catch(e){}
   if((ui.view==='goal'||ui.view==='play')&&EM) try{ EM.after(ui.view==='play'?'quest':ui.er||'goals'); }catch(e){}
+  if(EM&&EM.stage) try{ EM.stage(ui.view==='play'||ui.view==='goal'); }catch(e){}   // v102 sân khấu game kỹ năng (tắt khi rời tab Chơi)
   if(ui.view==='sound'&&ui.snd&&!ui.snd.done){
     const s=ui.snd;
     if(!s.ans&&s.played!==s.i){ s.played=s.i; say(sndWord(SND[s.id],s.q[s.i]).w); }
@@ -8349,7 +8350,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.7f6ab2c351.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.8c1c1d6881.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
