@@ -1,4 +1,4 @@
-import { test, expect, play } from './fixtures.ts';
+import { test, expect, play, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v86 Thám hiểm sương mù (bài chẩn đoán dạng bản đồ), v87 Vườn từ (từ mới: hạt → mầm → cây → hoa).
@@ -14,8 +14,7 @@ async function open(page: Page): Promise<void> {
     st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
     w.eval('save()'); w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 

@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { test, expect } from './fixtures.ts';
+import { test, expect, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v93 Vòng Chữ (game chủ lực, GAME-CRITERIA §10): màn toàn màn hình vẽ bằng canvas; vuốt qua chữ trên vòng để ghép từ; từ của cụm engine
@@ -18,8 +18,7 @@ async function lobby(page: Page, coins = 0): Promise<void> {
     if (c) st.e.q = { floor: 1, best: 0, coins: c, runs: 0, wins: 0, ans: 0, ok: 0, day: 0 };
     w.eval('save()'); w.eval("go('games')");
   }, coins);
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 const centers = (page: Page) => page.evaluate(() => { const r = document.getElementById('whfx') as any; return r?._pos ? r._pos() : []; });

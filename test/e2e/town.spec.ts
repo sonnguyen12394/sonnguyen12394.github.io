@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { test, expect, noHorizontalScroll } from './fixtures.ts';
+import { test, expect, noHorizontalScroll, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v89 Phố chung + số liệu chơi (GAME-CRITERIA §8–§9): sảnh có phố 15 công trình (chạm để chơi); màn kết báo công trình lên cấp
@@ -17,8 +17,7 @@ async function lobby(page: Page): Promise<void> {
     st.e.gf = { runs: 1, day: w.eval('today()') - 1 };
     w.eval('save()'); w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 

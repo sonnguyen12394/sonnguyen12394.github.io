@@ -1,4 +1,4 @@
-import { test, expect, play, openAll } from './fixtures.ts';
+import { test, expect, play, openAll, toLobby } from './fixtures.ts';
 
 // v72 Xếp Khối Chữ: trả lời câu do engine chọn → nhận khối → đặt khối. Câu trả lời thành bằng chứng (id lượt "quest-1:b…"),
 // điểm / kỷ lục chỉ là telemetry (e.bk), không vào mastery.
@@ -15,8 +15,7 @@ test('Xếp Khối: sảnh Chơi → ván mới → trả lời, đặt khối �
     w.eval('save()');
     w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
   await page.getByRole('heading', { name: /Hôm nay chơi gì/ }).waitFor({ timeout: 15000 }); await openAll(page);
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible();   // tháp vẫn còn (Leo nhanh)
   await play(page, 'bkstart');

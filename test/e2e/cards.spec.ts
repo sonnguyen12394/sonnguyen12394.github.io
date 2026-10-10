@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { test, expect, play } from './fixtures.ts';
+import { test, expect, play, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v74 Bài Câu: lá từ của câu ngữ pháp do engine chọn; tự xếp câu = bằng chứng mức 3 (id lượt "quest-1:c…"); điểm / bùa là telemetry.
@@ -16,8 +16,7 @@ async function open(page: Page): Promise<void> {
     st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
     w.eval('save()'); w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
   await play(page, 'cdstart');
   await expect(page.locator('#whfx.cdfx')).toBeVisible();
   await page.waitForTimeout(500);   // lá bay từ cỗ bài vào chỗ (0,22 s)

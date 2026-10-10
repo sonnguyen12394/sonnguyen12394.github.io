@@ -1,4 +1,4 @@
-import { test, expect, play } from './fixtures.ts';
+import { test, expect, play, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v91 (GAME-CRITERIA §9.3): xu chung có chỗ tiêu, quyết định nằm ngoài vòng câu hỏi — trang trí Phố, hồi tim ở Leo tháp.
@@ -17,8 +17,7 @@ async function open(page: Page, coins: number): Promise<void> {
     st.e.gq = { stars: 23, runs: 4, best: 6, day: 1 };
     w.eval('save()'); w.eval("go('games')");
   }, coins);
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 

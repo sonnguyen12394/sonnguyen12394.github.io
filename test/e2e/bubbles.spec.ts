@@ -1,4 +1,4 @@
-import { test, expect, play } from './fixtures.ts';
+import { test, expect, play, toLobby } from './fixtures.ts';
 
 // v104: lớp phủ toàn màn hình, bong bóng là nút thật; đúng tự sang từ kế.
 // v76 Bắt Âm: từ nghe của nút âm (ph:) do engine chọn, 3 bong bóng (đoán mò 1/3), không hết giờ; điểm / màn là telemetry.
@@ -14,8 +14,7 @@ test('Bắt Âm: 10 từ, 3 lựa chọn, sai thì nghe lại hai từ của c�
     st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
     w.eval('save()'); w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
   await play(page, 'bbstart');
   const end = page.getByRole('heading', { name: /Xong màn/ });
   let n = 0;

@@ -1,4 +1,4 @@
-import { test, expect, play } from './fixtures.ts';
+import { test, expect, play, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v83 Thư gửi cư dân phố, v84 Ra lệnh cho robot, v85 Tốc độ 60 giây / Ghép cặp ưu tiên từ đến hạn.
@@ -14,8 +14,7 @@ async function open(page: Page): Promise<void> {
     st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
     w.eval('save()'); w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 
 test('Thư: gửi thư thiếu → cư dân hỏi lại đúng chỗ thiếu; sửa, gửi đủ → hồi âm + quà; tự chấm; lưu như màn Viết theo đề', async ({ page, errors }) => {

@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { test, expect } from './fixtures.ts';
+import { test, expect, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v101 cốt truyện "Phố Chữ mất tiếng" (GAME-CRITERIA §10.13): thẻ truyện ở sảnh, cảnh truyện, nhiệm vụ nối ba game, chương cuối khu cần
@@ -18,8 +18,7 @@ async function lobby(page: Page, sy?: unknown): Promise<void> {
     if (y) st.e.sy = y;
     w.eval('save()'); w.eval("go('games')");
   }, sy);
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 async function watch(page: Page): Promise<void> {
   await expect(page.locator('#stfx')).toBeVisible();

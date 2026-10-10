@@ -1,4 +1,4 @@
-import { test, expect, play } from './fixtures.ts';
+import { test, expect, play, toLobby } from './fixtures.ts';
 
 // v77 Câu đố ngày: 16 ô của 4 cụm từ (u:) do engine chọn; ghép nhóm không vào năng lực; sau mỗi nhóm một câu nhớ lại (bằng chứng ở nút u:).
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -13,8 +13,7 @@ test('Câu đố ngày: nộp sai không mất gì, 4 nhóm + 4 câu nhớ lại
     st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
     w.eval('save()'); w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
   await expect(page.getByText(/Câu đố hôm nay đang chờ/)).toBeAttached();   // v88: thẻ game nằm trong mục thu gọn "Tất cả trò chơi"
   await play(page, 'pzstart');
   await expect(page.locator('.pztile')).toHaveCount(16);

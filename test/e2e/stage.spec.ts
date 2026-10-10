@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { test, expect, play } from './fixtures.ts';
+import { test, expect, play, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v102 sân khấu dùng chung cho game kỹ năng (GAME-CRITERIA §10.14): khi một game cũ chạy, khung app ẩn, cảnh động theo game phía sau,
@@ -17,8 +17,7 @@ async function lobby(page: Page): Promise<void> {
     st.e.gf = { runs: 1, day: w.eval('today()') - 1 };
     w.eval('save()'); w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 const onStage = (page: Page) => page.evaluate(() => ({ stage: document.body.classList.contains('stage'), game: document.body.dataset.game ?? '', fx: !!document.getElementById('stagefx'), top: !!(document.querySelector('.top') as HTMLElement | null)?.offsetParent }));
 

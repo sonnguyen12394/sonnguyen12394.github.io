@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v88 Bộ não chọn game: sảnh mở đầu bằng "▶ Chơi tiếp" kèm lý do + lộ trình 3 chặng; xong game thì màn kết đưa thẳng tới game kế.
@@ -15,8 +15,7 @@ async function open(page: Page, placed: boolean): Promise<void> {
     if (pl) st.e.gf = { runs: 1, day: w.eval('today()') - 1 };
     w.eval('save()'); w.eval("go('games')");
   }, placed);
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 
