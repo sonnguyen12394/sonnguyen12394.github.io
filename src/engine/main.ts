@@ -25,6 +25,7 @@ import { freshBlocks, deal, place, anyFits, fits, trayEmpty, anchor, freshBlocks
 import { viewLobby, viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoardEnd } from './gameview.ts';
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
+import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, TIER_COINS, type WkKind } from './weekly.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
 import { GUESTS, stars as cafeStars, freshCafeSave, reactOf, tip as cafeTip } from './cafe.ts';
 import { viewBubbles, viewBubblesEnd, speakKey, type BubbleRun } from './bubbleview.ts';
@@ -44,7 +45,7 @@ import { pickToday, itemFor, grow as gardenGrow, freshGardenSave, PER_DAY } from
 import { buildLevel, dailyLevel, curve, judge, nextHint, evidenceOf, stars as wheelStars, chapterOf, CHAPTERS, shareText as wheelShare, freshWheelSave, GUESS, HINT_COST, addBook, comboMult, goldSlot, GOLD, fillJar, JAR, nextStreak, type Lex, type Level as WLevel } from './wordwheel.ts';
 import { openWheel, type WheelState, type WheelHandle } from './wheelview.ts';
 import { viewWheelHero, viewWheelBehind, viewHuntHero, viewHuntBehind, viewCardsHero } from './wheelhome.ts';
-import { goalLevel, goalWord, collectChests, breakIce, applyWord, keepSolvable, findPath, wordOf, points as huntPoints, huntStars, huntCurve, dailyHunt, freshHuntSave, type Mission } from './wordhunt.ts';
+import { goalLevel, goalWord, collectChests, breakIce, applyWord, keepSolvable, findPath, wordOf, points as huntPoints, huntStars, huntCurve, dailyHunt, freshHuntSave, type Mission , keepGoalReachable } from './wordhunt.ts';
 import { openHunt, type HuntState, type HuntHandle, type HuntResult } from './huntview.ts';
 import { direct, planDay, nextGame, isGame, freshDirSave, GAMES, type DirIn, type DirPick, type GameId, type Need } from './director.ts';
 import { freshPlay, playStart, playAct, playDone, playQuit, playReport, type Via } from './play.ts';
@@ -437,6 +438,11 @@ export function init(host: EHost): EngineModule {
   let crun: CardsRun | null = null, cPick: ((k: Enc) => Challenge | null) | null = null, cview: CardsHandle | null = null;
   const CARD_KINDS: Enc[] = ['chest', 'monster', 'monster', 'monster', 'scout', 'monster', 'chest', 'monster', 'boss'];
   const csave = () => { const e = E(); return (e.gc ||= freshCardsSave()); };
+  // v98 Sự kiện tuần: cộng tiến độ; đạt mốc thì thưởng xu (telemetry, không ghi bằng chứng).
+  function wk(kind: WkKind, n: number, game: string): void {
+    const e = E(), today = host.today(), s = (e.wk ||= freshWeek(weekOf(today)));
+    for (const k of wkAdd(s, today, kind, n, game)) { qsave().coins += TIER_COINS[k]!; host.toast(`🏅 ${themeOf(s.week).vi}: mốc ${k + 1}/3 · +${TIER_COINS[k]} xu${k === 2 ? ' · huy hiệu tuần!' : ''}`); }
+  }
   // Bộ chọn cho game chỉ dùng một loại nút (ngữ pháp / chức năng giao tiếp / âm): biên lộ trình có ít nút loại đó → thêm nút chưa Đạt của
   // mục tiêu (sau phần mở, ưu tiên thấp hơn) để game vẫn có nội dung đúng mục đích.
   function kindPicker(has: (n: string) => boolean, tag: string, floor: number): (k: Enc) => Challenge | null {
@@ -482,7 +488,7 @@ export function init(host: EHost): EngineModule {
     const sc = cardScore({ ok, tiles: it.tokens.length, question: /\?$/.test(right), negative: /\b(not|never)\b|n't\b/i.test(right), first: r.play === 0 }, r.streak, r.charms);
     const coins = reward(r.ch, ok, r.novel);
     r.n++; r.coins += coins; r.tableScore += sc.total; r.total += sc.total;
-    if (ok) { r.ok++; r.streak++; } else { r.streak = 0; r.wrong.push(r.node); }
+    if (ok) { r.ok++; r.streak++; wk('sentence', 1, 'cards'); } else { r.streak = 0; r.wrong.push(r.node); }
     const sv = qsave(); sv.ans++; if (ok) sv.ok++; sv.coins += coins; sv.day = host.today();
     const why = ok ? undefined : (it.why || host.micro?.(r.node)?.card.concept[0]);
     r.ans = { ok, right, given: given.join(' '), at: skip ? -1 : at, chips: sc.chips, mult: sc.mult, total: sc.total, coins, ...(why ? { why } : {}) };
@@ -509,7 +515,7 @@ export function init(host: EHost): EngineModule {
     if (!r) return;
     const e = E(), s = csave(), ixq = loaded()!;
     r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
-    const best = s.best; s.runs++; s.best = Math.max(s.best, r.total); s.wins += r.won; s.day = host.today();
+    const best = s.best; s.runs++; s.best = Math.max(s.best, r.total); s.wins += r.won; s.day = host.today(); wk('star', r.won, 'cards'); wk('play', 1, 'cards');
     (r as CardsRun & { prevBest?: number }).prevBest = best;
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `cards:${r.floor}`, dec: 'cards:end', rule: `${RULE_ID}/${QUEST_VER}`,
       info: { ok: r.ok, of: r.n, won: r.won, score: r.total, coins: r.coins, charms: r.charms.join(',') },
@@ -1057,7 +1063,7 @@ export function init(host: EHost): EngineModule {
     let coins = 0;
     const nowP = typeof performance !== 'undefined' ? performance.now() : 0;
     if (v === 'slot') {
-      const si = r.level.slots.findIndex(x => x.en === w), sl = r.level.slots[si]!; r.found.add(w); sv.words++;
+      const si = r.level.slots.findIndex(x => x.en === w), sl = r.level.slots[si]!; r.found.add(w); sv.words++; wk('word', 1, 'wheel');
       r.combo++;
       if (addBook(sv.book, sl.en, sl.vi, r.scene)) r.note = { text: `📖 Từ mới vào sổ: ${sl.en}`, t: nowP };
       const ev = r.mode === 'level' ? evidenceOf(sl, (r.shown[w] ?? []).length) : null;
@@ -1073,7 +1079,7 @@ export function init(host: EHost): EngineModule {
       if (mult > 1) r.note = { text: `🔥 Combo x${mult}!`, t: nowP };
       if (si === r.gold) { coins += GOLD; r.note = { text: `⭐ Ô vàng +${GOLD} xu`, t: nowP }; }
     } else if (v === 'bonus') {
-      r.bonusFound.add(w); sv.bonus++; coins = 2;
+      r.bonusFound.add(w); sv.bonus++; coins = 2; wk('word', 1, 'wheel');
       if (fillJar(sv)) r.note = { text: '🫙 Hũ đầy: +1 gợi ý miễn phí', t: nowP };
     } else if (v === 'no' || v === 'short') r.combo = 0;
     r.free = sv.free; r.jar = sv.jar;
@@ -1081,7 +1087,7 @@ export function init(host: EHost): EngineModule {
     if (r.level.slots.every(x => r.found.has(x.en))) {
       const st = wheelStars(r.hints);
       r.win = { stars: st, at: typeof performance !== 'undefined' ? performance.now() : 0 }; r.done = true;
-      sv.runs++; sv.stars += st; sv.day = today;
+      sv.runs++; sv.stars += st; sv.day = today; wk('star', st, 'wheel'); wk('play', 1, 'wheel');
       if (r.mode === 'level') sv.lv++; else sv.daily = { day: today, done: true, secs: Math.round((Date.now() - r.t0) / 1000), hints: r.hints, streak: nextStreak(sv.daily.done ? sv.daily.day : -9, sv.daily.streak, today) };
       addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: `wheel:${r.floor}`, dec: 'wheel:end', rule: `${RULE_ID}/${QUEST_VER}`, info: { ok: r.ok, of: r.n, hints: r.hints, bonus: r.bonusFound.size, mode: r.mode }, evs: e.ev.led.filter(x => x.ctx === 'wheel' && x.ts >= r.t0).map(x => x.id) }, false);
     }
@@ -1138,7 +1144,7 @@ export function init(host: EHost): EngineModule {
     else if (isLex(w)) v = 'word';
     else v = 'no';
     if (v === 'mission' || v === 'word') {
-      let coins = 0;
+      let coins = 0; wk('word', 1, 'hunt');
       const gold = path.some(i => r.grid[i]!.sp === 'gold'), a = applyWord(r.grid, path, (Date.now() >>> 2) ^ r.nextId, r.nextId);
       r.burst = a.broken.map(i => ({ i, ch: r.grid[i]!.ch })); r.burstAt = nowP;
       r.combo++;
@@ -1163,13 +1169,14 @@ export function init(host: EHost): EngineModule {
       if (r.goal === 'chest') { const c = collectChests(r.grid, (Date.now() >>> 4) ^ r.nextId, r.nextId); if (c.got) { r.grid = c.grid; r.nextId = c.nextId; r.fall = { ...r.fall, ...c.fall }; r.chestsGot += c.got; r.note = { text: `🧰 Thu được rương (${r.chestsGot}/${r.chests})`, t: nowP }; coins += 5 * c.got; } }
       const left = r.missions.filter(x => !r.done.has(x.en));
       keepSolvable(r.grid, left, (Date.now() >>> 3) ^ r.moves);
+      if (r.goal !== 'words') { const prot = new Set<number>(); for (const m of left) findPath(r.grid, m.en)?.forEach(i => prot.add(i)); keepGoalReachable(r.grid, r.ice, shortWords(), (Date.now() >>> 5) ^ r.moves, prot); }   // v98: mục tiêu luôn có nước đi
       if (r.hintWord) { const p = findPath(r.grid, r.hintWord); r.hint = p ? p[0]! : -1; }
       const q = qsave(); q.coins += coins; q.day = today; r.gained += coins;
       const goalOk = (r.goal !== 'ice' || !r.ice.some(Boolean)) && (r.goal !== 'chest' || r.chestsGot >= r.chests);
       if (!left.length && goalOk) {
         const st = huntStars(r.moves, r.movesMax);
         r.win = { stars: st, at: nowP }; r.over = true;
-        sv.runs++; sv.stars += st; sv.best = Math.max(sv.best, r.score); sv.day = today;
+        sv.runs++; sv.stars += st; sv.best = Math.max(sv.best, r.score); sv.day = today; wk('star', st, 'hunt'); wk('play', 1, 'hunt');
         if (r.mode === 'level') sv.lv++; else sv.daily = { day: today, done: true, streak: sv.daily.day === today - 1 && sv.daily.done ? sv.daily.streak + 1 : 1 };
       } else if (r.moves <= 0) { r.lose = { at: nowP }; r.over = true; sv.runs++; }
       if (r.over) addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: `hunt:${r.floor}`, dec: r.win ? 'hunt:win' : 'hunt:lose', rule: `${RULE_ID}/${QUEST_VER}`, info: { ok: r.ok, of: r.missions.length, moves: r.moves, score: r.score, mode: r.mode }, evs: e.ev.led.filter(x => x.ctx === 'hunt' && x.ts >= r.t0).map(x => x.id) }, false);
@@ -1478,7 +1485,7 @@ export function init(host: EHost): EngineModule {
     if (qrun?.done) return viewQuestEnd(c, qrun);
     if (qrun) { qrun.revive = qrun.mode === 'tower' && !qrun.revived && qrun.i + 1 < qrun.plan.length && wallet() >= REVIVE ? REVIVE : 0; return viewQuestRun(c, qrun); }
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null, c.e.goals.length ? viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today()) + viewCardsHero(c, csave()) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null) + viewPlayStats(c, playReport(pmsave()));
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null, c.e.goals.length ? viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null) + viewPlayStats(c, playReport(pmsave()));
   }
   const routes: Record<string, (c: ECtx) => string> = {
     measure: c => {

@@ -1234,3 +1234,64 @@ So với game tốt nhất cũ (Câu đố ngày 4,6) là +2,0. **Chưa tới 7*
 - M7: chưa có màn / bàn thiết kế sẵn;
 - M8: bùa chưa sưu tập qua các ván;
 - M10: chưa có thử thách ngày.
+
+### 10.10 Đã làm v98: cân độ khó bằng mô phỏng (M7) + sự kiện tuần (M10)
+
+**Mô phỏng** (`tools/sim/levels.ts`): người chơi giả "điển hình" chơi Mỏ Chữ bằng **đúng các hàm của game**, 60 seed mỗi màn. Mô hình người chơi:
+- nhận ra ngay 60 % từ nhiệm vụ, mỗi lượt sau nhận thêm 30 %;
+- khi chưa thấy từ nhiệm vụ: 60 % nhắm vào mục tiêu, còn lại vuốt từ bất kỳ.
+
+Vòng Chữ không có trạng thái thua nên không đo tỉ lệ thắng.
+
+**Mô phỏng tìm ra lỗi thiết kế mà e2e không thấy** (đường cong trước khi sửa):
+
+| Loại màn | Tỉ lệ thắng |
+|---|---|
+| Tìm từ | 95–100 % |
+| Băng | 35–70 % |
+| Rương | 3–35 % (màn 26: 3 %) |
+
+Đường cong là "răng lược" chứ không phải răng cưa. Gốc rễ, tìm bằng cách lần vết hàng của rương qua từng lượt:
+1. **Rương kẹt ở hàng sát đáy.** Muốn rơi, nó cần một từ đi qua đúng ô bên dưới, nhưng ô đó mang chữ ngẫu nhiên, nên không có từ nào đi qua được. Màn trở thành không giải được, lỗi mà game ghép 3 thật luôn chặn.
+2. **Gợi ý `goalWord()` lấy từ đầu tiên chạm mục tiêu**, không phải từ tốt nhất.
+
+**Sửa:**
+- `findPathVia()`: đường bắt buộc qua một ô.
+- `goalCells()`: ô then chốt, gồm ô ngay dưới rương và ô băng khi chỉ còn ≤ 3.
+- `keepGoalReachable()`: ô then chốt nào không có từ 3 chữ đi qua thì gieo một từ 3 chữ qua ô đó, tránh ô của nhiệm vụ. Chạy sau mỗi lượt.
+- `goalWord()` chọn từ phá được **nhiều** ô mục tiêu nhất, ưu tiên ô then chốt. Gợi ý trong game dùng hàm này nên cũng tốt lên.
+- `sawtooth()`: nhịp răng cưa mỗi chương 10 màn. Đầu chương +2 lượt, giữa +1, cuối 0, mốc −1, băng mốc −3; rương thêm 2 lượt.
+
+**Sau khi sửa** (60 seed, màn 1–60):
+
+| Loại màn | Tỉ lệ thắng |
+|---|---|
+| Màn 1–3 và màn tìm từ (màn thở) | 93–100 % |
+| Băng | 72–92 % |
+| Rương | 50–87 % |
+| Màn mốc | 55–85 % (mốc 10, 20 nhẹ để dạy luật; từ mốc 30 siết còn 55–75 %) |
+
+- `engine-balance.test.ts` khoá các dải này để lần sửa sau không làm vỡ nhịp.
+- **Giới hạn:** mô hình người chơi là giả định. Số liệu thật (`pm`: bỏ dở, chơi lại) của người chơi thật mới là thước đo cuối.
+
+**Sự kiện tuần** (`weekly.ts`):
+- Tuần bắt đầu thứ Hai. Bốn chủ đề xoay vòng:
+  - ⛏️ thợ mỏ chữ: tìm 60 từ ở Vòng Chữ + Mỏ Chữ;
+  - 🃏 câu chuẩn: 24 câu đúng ở Bài Câu;
+  - ⭐ ngôi sao: 30 sao / bàn thắng;
+  - 🎪 hội chợ: xong 9 màn / ván, mốc cuối cần đủ ba game.
+- 3 mốc thưởng 15 / 30 / 60 xu. Mốc cuối thêm huy hiệu tuần vào kệ huy hiệu trên thẻ sảnh (sưu tập, M8).
+- Không ghi bằng chứng, không đổi câu hỏi hay lộ trình (P13, P14, C69). Lưu ở `st.e.wk`, gộp hai máy giữ mọi huy hiệu.
+
+**Kiểm:**
+- Đơn vị: `engine-balance`, `engine-weekly`.
+- e2e: tuần "thợ mỏ chữ", tìm từ ở Mỏ Chữ → đủ mốc cuối → +60 xu, huy hiệu hiện ở sảnh.
+- Toàn bộ: 278 đơn vị, 206 e2e qua.
+
+**Chấm lại (tự chấm):**
+
+| Game | Thay đổi | Điểm |
+|---|---|---|
+| Mỏ Chữ | M7 7 → 8 (đường cong đo được, có nhịp, không còn màn không giải được), M10 6 → 7 | 7,1 → **7,3** |
+| Vòng Chữ | M10 7 → 8 | 7,1 → **7,2** |
+| Bài Câu | M10 2 → 4 | 5,8 → **6,0** |

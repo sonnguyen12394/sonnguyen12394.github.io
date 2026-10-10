@@ -2,6 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { test, expect } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 import { findPath } from '../../src/engine/wordhunt.ts';
+import { weekOf, themeOf } from '../../src/engine/weekly.ts';
 
 // v95 Mỏ Chữ (game chủ lực thứ hai, GAME-CRITERIA §10.7): lưới chữ toàn màn hình; vuốt qua ô kề nhau thành từ; từ nhiệm vụ của cụm engine
 // chọn → bằng chứng mức 2; từ khác chỉ ăn điểm; hết lượt → chơi lại; thắng → màn kết, Phố.
@@ -113,6 +114,27 @@ test('v96 Mỏ Chữ: màn rương có rương trên lưới (không chọn đư
   await page.locator('[data-e="hnexit"]').first().click();
   await page.locator('.whbookbox summary').first().click();
   await expect(page.locator('.whbookbox h3', { hasText: '⛏️ Mỏ Chữ' })).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test('v98 sự kiện tuần: thẻ ở sảnh; tuần "thợ mỏ chữ" tìm từ ở Mỏ Chữ cộng tiến độ, đủ mốc cuối → +xu và huy hiệu', async ({ page, errors }) => {
+  await lobby(page);
+  const real = await page.evaluate(() => (window as any).eval('today() - st.offset'));
+  let k = 0; while (themeOf(weekOf(real + k)).kind !== 'word') k++;
+  const w = weekOf(real + k), goal = themeOf(w).goal;
+  await page.evaluate(({ o, wk, g }) => { const st = (window as any).eval('st'); st.offset = o; st.e.wk = { week: wk, prog: g - 1, tiers: 2, games: ['wheel'], badges: [] }; (window as any).eval('save()'); (window as any).eval("go('games')"); }, { o: k, wk: w, g: goal });
+  await page.getByRole('button', { name: '▶ Chơi' }).click();
+  await expect(page.locator('.wkcard')).toContainText('Tuần thợ mỏ chữ');
+  await expect(page.locator('.wkcard')).toContainText(`${goal - 1}/${goal}`);
+  const c0 = await page.evaluate(() => (window as any).eval('st').e.q?.coins ?? 0);
+  await page.locator('[data-e="hnstart"]').first().click();
+  const pk = await peek(page);
+  await typeWord(page, pk.accept[0]);
+  const wk = await page.evaluate(() => (window as any).eval('st').e.wk);
+  expect(wk.tiers).toBe(3); expect(wk.badges).toEqual([`${w}:tho-mo`]);
+  expect(await page.evaluate(() => (window as any).eval('st').e.q.coins)).toBeGreaterThanOrEqual(c0 + 60);
+  await page.locator('[data-e="hnexit"]').first().click();
+  await expect(page.locator('.wkcard')).toContainText('Huy hiệu');
   expect(errors).toEqual([]);
 });
 

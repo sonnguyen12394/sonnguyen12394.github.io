@@ -36,6 +36,47 @@ export function findPath(g: Cell[], word: string): number[] | null {
   return null;
 }
 export const usable = (c: Cell) => c.sp !== 'chest';
+// v98: đường của từ bắt buộc đi qua ô `via` (rương kẹt ở hàng sát đáy cần đúng ô bên dưới bị phá).
+export function findPathVia(g: Cell[], word: string, via: number): number[] | null {
+  const w = word.toLowerCase();
+  const go = (path: number[]): number[] | null => {
+    if (path.length === w.length) return path.includes(via) ? path : null;
+    const last = path[path.length - 1]!;
+    for (let i = 0; i < N; i++) if (!path.includes(i) && adjacent(last, i) && g[i]!.ch === w[path.length]) { const r = go([...path, i]); if (r) return r; }
+    return null;
+  };
+  for (let i = 0; i < N; i++) if (g[i]!.ch === w[0] && Math.max(Math.abs(col(i) - col(via)), Math.abs(row(i) - row(via))) < w.length) { const r = go([i]); if (r) return r; }
+  return null;
+}
+// Ô then chốt của mục tiêu: ô ngay dưới mỗi rương; và các ô băng khi chỉ còn ≤ 3 (dễ kẹt vì chữ ngẫu nhiên).
+export function goalCells(g: Cell[], ice: boolean[]): number[] {
+  const out: number[] = [];
+  g.forEach((c, i) => { if (c.sp === 'chest' && row(i) < ROWS - 1) out.push(idx(col(i), row(i) + 1)); });
+  const left = ice.map((v, i) => (v ? i : -1)).filter(i => i >= 0);
+  if (left.length <= 3) out.push(...left);
+  return out;
+}
+// Bảo đảm luôn có nước đi cho mục tiêu (như keepSolvable cho nhiệm vụ): ô then chốt nào không có từ 3 chữ đi qua thì gieo một từ 3 chữ
+// bắt đầu tại ô đó, tránh ô của nhiệm vụ còn lại và rương. Trả về số lần gieo.
+export function keepGoalReachable(g: Cell[], ice: boolean[], words3: string[], seed: number, protect: Set<number>): number {
+  const r = rand(seed), ws = words3.filter(w => /^[a-z]{3}$/.test(w)); if (!ws.length) return 0;
+  let n = 0;
+  for (const c of goalCells(g, ice)) {
+    if (g[c]!.sp === 'chest' || ws.slice(0, 120).some(w => findPathVia(g, w, c))) continue;
+    for (let tries = 0; tries < 20; tries++) {
+      const w = ws[Math.floor(r() * ws.length)]!;
+      const n1s = Array.from({ length: N }, (_, i) => i).filter(i => adjacent(c, i) && g[i]!.sp !== 'chest' && !protect.has(i));
+      const n1 = n1s[Math.floor(r() * n1s.length)]; if (n1 === undefined) break;
+      const n2s = Array.from({ length: N }, (_, i) => i).filter(i => i !== c && adjacent(n1, i) && g[i]!.sp !== 'chest' && !protect.has(i));
+      const n2 = n2s[Math.floor(r() * n2s.length)]; if (n2 === undefined) continue;
+      if (protect.has(c)) break;
+      [c, n1, n2].forEach((i, k) => { g[i] = { ...g[i]!, ch: w[k]! }; });
+      n++; break;
+    }
+  }
+  return n;
+}
+
 // Gieo một từ thành đường kề ngẫu nhiên, tránh các ô "khoá" (ô của từ nhiệm vụ khác vừa gieo). Trả về đường hoặc null.
 function plantPath(len: number, r: () => number, locked: Set<number>): number[] | null {
   for (let tries = 0; tries < 60; tries++) {
@@ -179,19 +220,31 @@ export function goalLevel(seed: number, pool: Mission[], want: { missions: numbe
     lv.goal = 'chest'; lv.chests = k; lv.nextId = placeChests(lv.grid, k, seed, lv.nextId); lv.moves += k * 3;
     keepSolvable(lv.grid, lv.missions, seed + 5);
   }
+  if (level >= 4) lv.moves = Math.max(lv.missions.length + 2, lv.moves + sawtooth(level, goal));
   return lv;
 }
+// v98 Nhịp răng cưa mỗi chương 10 màn (cân bằng mô phỏng tools/sim/levels.ts, GAME-CRITERIA §10.10): đầu chương nới lượt, cuối chương siết,
+// màn mốc khó nhất; rương cần thêm lượt vì phải rơi cả cột. Mục tiêu tỉ lệ thắng của người chơi giả điển hình: đầu ≥ 85 %, giữa ~75 %,
+// cuối ~65 %, mốc ~55–65 %.
+export function sawtooth(level: number, goal: Goal): number {
+  const pos = ((level - 1) % 10) + 1, base = pos <= 3 ? 2 : pos <= 6 ? 1 : pos <= 9 ? 0 : -1;
+  return base + (goal === 'chest' ? 2 : 0) - (goal === 'ice' && pos === 10 ? 3 : 0);
+}
 
-// Từ phục vụ mục tiêu khi đã tìm hết nhiệm vụ (gợi ý cho người chơi / bot): từ có trên lưới, ưu tiên từ đi qua ô có băng, hoặc ô nằm dưới
-// rương (để rương rơi). Duyệt kho từ ngắn trước; giới hạn số từ thử để không chậm.
+// Từ phục vụ mục tiêu khi đã tìm hết nhiệm vụ (gợi ý cho người chơi / bot): từ có trên lưới phá được NHIỀU ô băng / ô dưới rương nhất
+// (v98: trước đây lấy từ đầu tiên chạm mục tiêu, nên gợi ý chỉ phá 1 ô: mô phỏng cho thấy màn rương gần như không qua được). Hoà điểm:
+// từ ngắn hơn (đỡ phá lung tung). Không có từ chạm mục tiêu thì lấy từ đầu tiên có trên lưới.
 export function goalWord(g: Cell[], ice: boolean[], words: string[]): { word: string; path: number[] } | null {
   const below = new Set<number>(); g.forEach((c, i) => { if (c.sp === 'chest') for (let r = row(i) + 1; r < ROWS; r++) below.add(idx(col(i), r)); });
-  let any: { word: string; path: number[] } | null = null;
+  const crit = goalCells(g, ice);
+  let best: { word: string; path: number[]; k: number } | null = null;
   for (const w of words) {
     if (w.length < 3 || w.length > 5) continue;
     const p = findPath(g, w); if (!p) continue;
-    if (p.some(i => ice[i] || below.has(i))) return { word: w, path: p };
-    any ||= { word: w, path: p };
+    for (const q of [p, ...crit.map(c => findPathVia(g, w, c)).filter((x): x is number[] => !!x)]) {
+      const k = q.filter(i => ice[i] || below.has(i)).length + (q.some(i => crit.includes(i)) ? 2 : 0);   // ô then chốt (kẹt) được ưu tiên
+      if (!best || k > best.k || (k === best.k && w.length < best.word.length)) best = { word: w, path: q, k };
+    }
   }
-  return any;
+  return best && { word: best.word, path: best.path };
 }
