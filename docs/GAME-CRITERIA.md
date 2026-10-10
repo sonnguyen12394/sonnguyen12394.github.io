@@ -1160,7 +1160,7 @@ So với game tốt nhất cũ (Câu đố ngày 4,6) là +2,0. **Chưa tới 7*
 | Ô (nút × mức) có a / (a + b) ≥ 0,8 và n ≥ 3 | 9 | 21 |
 | Lỗi trang / kẹt | 0 / 0 | 0 / 0 |
 
-- Thước đo ô ở bảng là thước đo thô, chỉ dùng để thấy hướng; một lần chạy 8 ngày chưa đủ để kết luận việc học tốt hơn.
+- **Đính chính (v97):** hàng "ô đạt" là nhiễu, không phải tiến bộ. App lấy seed màn chơi từ `Date.now()`, nên hai lần chạy cùng seed bot vẫn đi khác nhau. Lần chạy lại ở v97 cho 9 ô. Điều chắc chắn từ bảng chỉ là Mỏ Chữ đã được chọn.
 - Vườn từ không còn vào lộ trình vì lộ trình sau đó nghiêng sang ngữ pháp (Bài Câu). Đây là do NBA quyết định, không phải do bộ não game.
 
 **Đúng spec:**
@@ -1197,3 +1197,40 @@ So với game tốt nhất cũ (Câu đố ngày 4,6) là +2,0. **Chưa tới 7*
 - M4: nhạc và hình vẫn vẽ bằng mã, chưa có họa sĩ.
 - M10: chưa có sự kiện theo tuần.
 - Thước đo thật: số liệu chơi (`pm`) của người chơi thật, theo ngưỡng §9.
+
+### 10.9 Đã làm v97: game chủ lực thứ ba 🃏 Bài Câu bản toàn màn hình (ngữ pháp)
+
+**Gốc rễ:** hai game chủ lực chỉ phục vụ từ vựng. Khi lộ trình cần ngữ pháp (bước đầu của A1), bộ não buộc phải đưa người chơi vào Bài Câu kiểu cũ: vẽ lại HTML, chạm nút, bấm "Lượt tiếp" sau mỗi câu. Cách sửa đúng spec (C69, C345) là làm game ngữ pháp đạt chuẩn chủ lực, không phải ép bộ não chọn game từ vựng.
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Màn chơi | Lớp phủ toàn màn hình ngoài `#app`: bàn nỉ xanh, đèn rọi, hoa văn bài mờ; vùng câu viền vàng; khay "tay bài" | `cardsfx.ts` |
+| Lá bài | Nút DOM thật đặt trên canvas, di chuyển bằng transform mỗi khung hình (không vẽ lại `#app`). Lá rời tay để lại chỗ trống như bài thật. Kéo thả bằng chuột / ngón tay: chèn đúng chỗ con trỏ, các lá khác dạt ra chừa chỗ; kéo lá ra khỏi vùng câu thì bỏ ra. Chạm / Enter vẫn thêm / bỏ lá | `flow()`, `insertAt()` |
+| Nhịp (M3) | Câu đúng: lá sáng xanh và nhấc lên, hạt, chữ "+điểm" bay, **tự chuyển lượt sau 1,3 giây** (không bấm "Tiếp"). Câu sai: lá sai rung và sáng đỏ, hiện câu đúng + giải thích, dừng chờ người chơi đọc | `cPlay()` trong `main.ts` |
+| Hết bàn / hết ván | Hộp giữa bàn: thắng / chưa đủ điểm, chọn lá bùa (nút dạng lá), kết quả ván | `cardsfx.ts` |
+| Âm thanh | Nốt theo vị trí lá, hợp âm khi đúng, nhạc nền; dùng chung Vòng Chữ | `wheelview.ts` |
+| Sảnh | Thẻ lớn "🃏 Bài Câu" cạnh hai game chủ lực kia | `viewCardsHero()` |
+
+**Giữ nguyên:** luật và điểm (`cards.ts`), bộ chọn câu, bằng chứng mức 3 `qt:'order'` cho đúng nút ngữ pháp engine chọn, telemetry.
+
+**Lỗi thật tìm ra khi rà mã:** sau khi kéo bằng ngón tay, trình duyệt không phát click, nên một cờ chặn click kiểu "dính" sẽ nuốt mất lần chạm kế tiếp. Đã đổi sang cửa sổ thời gian 350 ms.
+
+**Kiểm:**
+- e2e `cards.spec.ts`:
+  - ván đủ 3 bàn × 3 lượt; lượt đúng tự chuyển, không có nút "Lượt tiếp"; bằng chứng 9 câu đúng nút `g:`;
+  - **kéo chuột thật**: chèn trước lá đã có, kéo ra để bỏ, kéo đủ câu → đúng thứ tự → ra bài, bằng chứng `order`, tự sang lượt 2;
+  - WCAG AA sáng / tối ở 390 px; lá ≥ 44 px, không tràn màn; bấm lá bằng bàn phím.
+- Toàn bộ: 271 đơn vị, 204 e2e qua.
+- Bot L01, 8 ngày: chơi trọn 4 ván Bài Câu bản mới (36 câu), không kẹt, 0 lỗi trang.
+- **Tỉ lệ lượt chơi ở game chủ lực** (Bài Câu + Vòng Chữ + Mỏ Chữ, trên các lượt trong game): 59 / 127 = **46 %**. Trước v97, nếu không tính Bài Câu cũ là chủ lực, tỉ lệ này là 18 %.
+
+**Chấm M1–M10 của Bài Câu** (tự chấm, so với game xếp bài tính điểm dẫn đầu):
+
+| M1 ×2 | M2 ×2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 6 | 7 | 7 | 5 | 8 | 6 | 4 | 3 | 8 | 2 | **5,8** (bản cũ 2,7) |
+
+**Còn thiếu:**
+- M7: chưa có màn / bàn thiết kế sẵn;
+- M8: bùa chưa sưu tập qua các ván;
+- M10: chưa có thử thách ngày.

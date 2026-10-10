@@ -24,6 +24,7 @@ import { roll, move, build, canBuild, freshBoardSave, TILES, ROLLS, price } from
 import { freshBlocks, deal, place, anyFits, fits, trayEmpty, anchor, freshBlocksSave, bumpStreak } from './blocks.ts';
 import { viewLobby, viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoardEnd } from './gameview.ts';
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
+import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
 import { GUESTS, stars as cafeStars, freshCafeSave, reactOf, tip as cafeTip } from './cafe.ts';
 import { viewBubbles, viewBubblesEnd, speakKey, type BubbleRun } from './bubbleview.ts';
@@ -42,7 +43,7 @@ import { viewGarden, viewGardenEnd, type GardenRun } from './gardenview.ts';
 import { pickToday, itemFor, grow as gardenGrow, freshGardenSave, PER_DAY } from './garden.ts';
 import { buildLevel, dailyLevel, curve, judge, nextHint, evidenceOf, stars as wheelStars, chapterOf, CHAPTERS, shareText as wheelShare, freshWheelSave, GUESS, HINT_COST, addBook, comboMult, goldSlot, GOLD, fillJar, JAR, nextStreak, type Lex, type Level as WLevel } from './wordwheel.ts';
 import { openWheel, type WheelState, type WheelHandle } from './wheelview.ts';
-import { viewWheelHero, viewWheelBehind, viewHuntHero, viewHuntBehind } from './wheelhome.ts';
+import { viewWheelHero, viewWheelBehind, viewHuntHero, viewHuntBehind, viewCardsHero } from './wheelhome.ts';
 import { goalLevel, goalWord, collectChests, breakIce, applyWord, keepSolvable, findPath, wordOf, points as huntPoints, huntStars, huntCurve, dailyHunt, freshHuntSave, type Mission } from './wordhunt.ts';
 import { openHunt, type HuntState, type HuntHandle, type HuntResult } from './huntview.ts';
 import { direct, planDay, nextGame, isGame, freshDirSave, GAMES, type DirIn, type DirPick, type GameId, type Need } from './director.ts';
@@ -433,7 +434,7 @@ export function init(host: EHost): EngineModule {
   // ---------- Bài Câu (v74, F3 ngữ pháp) ----------
   // Lượt nào cũng là một câu của điểm ngữ pháp do engine chọn (bộ chọn chung, chỉ nút g: có câu để xếp); người chơi tự dựng câu = bằng
   // chứng mức 3 (g = 0, không đoán mò được). Bàn / bùa / điểm chỉ là telemetry (e.gc).
-  let crun: CardsRun | null = null, cPick: ((k: Enc) => Challenge | null) | null = null;
+  let crun: CardsRun | null = null, cPick: ((k: Enc) => Challenge | null) | null = null, cview: CardsHandle | null = null;
   const CARD_KINDS: Enc[] = ['chest', 'monster', 'monster', 'monster', 'scout', 'monster', 'chest', 'monster', 'boss'];
   const csave = () => { const e = E(); return (e.gc ||= freshCardsSave()); };
   // Bộ chọn cho game chỉ dùng một loại nút (ngữ pháp / chức năng giao tiếp / âm): biên lộ trình có ít nút loại đó → thêm nút chưa Đạt của
@@ -449,7 +450,19 @@ export function init(host: EHost): EngineModule {
     cPick = kindPicker(n => n.startsWith('g:') && (host.order?.(n)?.length ?? 0) > 0, 'c', (e.gc?.runs ?? 0) + 1);
     crun = { floor: (e.gc?.runs ?? 0) + 1, seed: (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0, t0: Date.now(), n: 0, ok: 0, coins: 0, wrong: [], done: false,
       table: 0, play: 0, tableScore: 0, total: 0, streak: 0, charms: [], won: 0, ch: null, node: '', item: null, novel: false, hand: [], built: [], ans: null, offer: null, tableEnd: null };
-    cLoad(); host.render();
+    cLoad(); cOpen(); host.render();
+  }
+  // v97: Bài Câu chạy trong lớp phủ toàn màn hình (cardsfx.ts). Lớp phủ đọc crun mỗi khung hình; kéo thả đổi thứ tự qua cBuilt().
+  function cOpen(): void {
+    if (typeof document === 'undefined' || !crun) return;
+    hClose(); nClose(); cview?.close();
+    cview = openCards(() => (crun ? Object.assign(crun as CardsFxState, { nodeVi: loaded()?.node.get(crun.node)?.vi ?? '', best: csave().best }) : null), o => cBuilt(o), host.mascot ? (m, k) => host.mascot!(m, k) : undefined);
+  }
+  function cClose(): void { cview?.close(); cview = null; }
+  function cBuilt(order: number[]): void {
+    const r = crun; if (!r || r.ans || r.tableEnd || r.done) return;
+    if (new Set(order).size !== order.length || order.some(i => !Number.isInteger(i) || i < 0 || i >= r.hand.length)) return;
+    r.built = order;
   }
   function cLoad(): void {
     if (!crun || !cPick) return;
@@ -474,6 +487,7 @@ export function init(host: EHost): EngineModule {
     const why = ok ? undefined : (it.why || host.micro?.(r.node)?.card.concept[0]);
     r.ans = { ok, right, given: given.join(' '), at: skip ? -1 : at, chips: sc.chips, mult: sc.mult, total: sc.total, coins, ...(why ? { why } : {}) };
     sfx(ok ? 'clear' : 'bad'); host.save(); host.render();
+    if (ok && cview) { const n0 = r.n; setTimeout(() => { if (crun === r && r.ans?.ok && r.n === n0 && !r.tableEnd) cNext(); }, 1300); }
   }
   function cNext(): void {
     const r = crun;
@@ -1457,13 +1471,14 @@ export function init(host: EHost): EngineModule {
     if (krun) return krun.done ? viewKaraEnd(c, krun) : viewKara(c, krun);
     if (trun) return trun.done ? viewCaseEnd(c, trun, tsave(trun.mode).solved) : viewCase(c, trun, !!host.tts?.());
     if (zrun) return zrun.done ? viewPuzzleEnd(c, zrun, zsave().days) : viewPuzzle(c, zrun);
+    if (crun && cview) return `<section class="stack"><span class="eyebrow">🃏 Bài Câu</span><h1>🃏 Bàn ${Math.min(crun.table + 1, TABLES)}/${TABLES}</h1><p class="hint">Màn chơi đang mở toàn màn hình.</p></section>`;
     if (crun) return crun.done ? viewCardsEnd(c, crun, (crun as CardsRun & { prevBest?: number }).prevBest ?? 0) : viewCards(c, crun);
     if (qrun?.mode === 'blocks') return qrun.done ? viewBlocksEnd(c, qrun) : viewBlocks(c, qrun);
     if (qrun?.mode === 'board') return qrun.done ? viewBoardEnd(c, qrun, bsave()) : viewBoard(c, qrun, bsave(), wallet());
     if (qrun?.done) return viewQuestEnd(c, qrun);
     if (qrun) { qrun.revive = qrun.mode === 'tower' && !qrun.revived && qrun.i + 1 < qrun.plan.length && wallet() >= REVIVE ? REVIVE : 0; return viewQuestRun(c, qrun); }
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null, c.e.goals.length ? viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today()) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null) + viewPlayStats(c, playReport(pmsave()));
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null, c.e.goals.length ? viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today()) + viewCardsHero(c, csave()) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null) + viewPlayStats(c, playReport(pmsave()));
   }
   const routes: Record<string, (c: ECtx) => string> = {
     measure: c => {
@@ -1583,6 +1598,9 @@ export function init(host: EHost): EngineModule {
     cdplay() { cPlay(false); },
     cdskip() { cPlay(true); },
     cdnext() { cNext(); },
+    cdgo() { if (crun?.ans?.ok) cNext(); },
+    cdexit() { cClose(); if (crun && !crun.done) { const pm = pmsave(); if (pm.cur && !pm.cur.d) playQuit(pm); } crun = null; host.save(); host.render(); },
+    cdmusic() { try { const off = localStorage.getItem('el-music-off') === '1'; if (off) localStorage.removeItem('el-music-off'); else localStorage.setItem('el-music-off', '1'); } catch { /* bỏ qua */ } cview?.music(); },
     cfstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; fStart(); markStart(); },
     cfans(el) { fAnswer(Number(el.dataset.i)); },
     cfnext() { fNext(); },
@@ -1681,7 +1699,7 @@ export function init(host: EHost): EngineModule {
     bksel(el) { const bk = qrun?.bk, i = Number(el.dataset.p); if (!bk || bk.phase !== 'place' || !bk.tray[i] || !fits(bk.g, bk.tray[i]!)) return; bk.sel = i; host.render(); },
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
-    qhome() { nClose(); nrun = null; hClose(); hrun = null; qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; host.render(); },
+    qhome() { cClose(); nClose(); nrun = null; hClose(); hrun = null; qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
     qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
@@ -1790,6 +1808,7 @@ export function init(host: EHost): EngineModule {
     if (game) {
       if (game !== 'wheel') { hClose(); hrun = null; }   // mở game khác: đóng lớp phủ Vòng Chữ
       if (game !== 'hunt') { nClose(); nrun = null; }
+      if (game !== 'cards') cClose();
       const prev = activeGame(), via: Via = el?.dataset?.g ? 'dir' : prev?.done && prev.game === game ? 'again' : 'self';
       f(el);
       const a = activeGame();

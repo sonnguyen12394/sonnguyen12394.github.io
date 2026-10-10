@@ -317,16 +317,17 @@ export async function run(P: Profile): Promise<void> {
     await start.click(); await sleep(120);
     for (let steps = 0; steps < 60; steps++) {
       await sleep(40);
-      if (await visible('h1:has-text("Xong ván!")')) break;
-      if (await visible('[data-e="cdcharm"]')) { await page.locator('[data-e="cdcharm"]').first().click(); continue; }
+      if (await visible('#whfx h2:has-text("Xong ván!")')) break;
+      if (await visible('[data-e="cdcharm"]')) { await page.locator('[data-e="cdcharm"]').filter({ visible: true }).first().click(); continue; }
+      if (await visible('.cdfb .fb.good')) { await sleep(250); continue; }   // v97: lượt đúng tự chuyển
       const pk = await peek();
-      if (pk?.run === 'cards') { await answer(pk); await feedback(pk.node); if (await visible('[data-e="cdnext"]')) await page.locator('[data-e="cdnext"]').first().click(); continue; }
-      if (await visible('[data-e="cdnext"]')) { await page.locator('[data-e="cdnext"]').first().click(); continue; }
+      if (pk?.run === 'cards') { await answer(pk); await feedback(pk.node); continue; }
+      if (await visible('[data-e="cdnext"]')) { await page.locator('[data-e="cdnext"]').filter({ visible: true }).first().click(); continue; }
       note('stuck', { why: 'bài câu: không có câu / nút tiếp', text: (await text()).slice(0, 200) }); break;
     }
     const end = await shot('cards-end');
     note('cards-end', { head: end.split('\n').slice(0, 3).join(' | ') });
-    await click('Về sảnh');
+    if (await visible('#whfx [data-e="cdexit"]')) await page.locator('#whfx [data-e="cdexit"]').last().click();
   }
 
   // v75 Quán Cà Phê: 6 khách; nghe / chọn câu đáp như câu chọn thường.

@@ -60,3 +60,13 @@ export function viewHuntBehind(c: ECtx, r: HuntState & { over: boolean }, sv: Hu
     <p class="hint">Mỗi từ nhiệm vụ của cụm đang học bạn tự tìm ra được ghi vào bản đồ năng lực. Điểm, xu và màn chỉ để vui.</p></section>
     <div class="row">${r.win ? (r.daily ? '<button class="btn primary" data-e="hnshare">📤 Chia sẻ</button>' : '<button class="btn primary" data-e="hnstart">▶ Màn tiếp</button>') : '<button class="btn primary" data-e="hnstart">↺ Chơi lại</button>'}<button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
 }
+
+// v97 Bài Câu (game chủ lực ngữ pháp): thẻ ở sảnh.
+import type { CardsSave } from './cards.ts';
+export function viewCardsHero(_c: ECtx, sv: CardsSave): string {
+  return `<section class="whhero" style="background:linear-gradient(135deg,#13704a,#042417)">
+    <h2>🃏 Bài Câu</h2>
+    <p>Kéo lá từ thành câu đúng ngữ pháp · bùa nhân điểm · 3 bàn mỗi ván · kỷ lục ${sv.best} điểm · ${sv.wins} bàn thắng</p>
+    <div class="whrow" style="justify-content:flex-start"><button class="whbig" data-e="cdstart">▶ Chơi ván mới</button></div>
+  </section>`;
+}
