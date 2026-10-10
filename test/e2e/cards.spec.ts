@@ -65,23 +65,22 @@ test('v97 Bài Câu: kéo thả chuột thật vào vùng câu, chèn đúng ch�
   await open(page);
   const pk = await peek(page), order: number[] = pk.order;
   expect(order.length).toBeGreaterThanOrEqual(2);
-  const z = await zone(page), at = (k: number) => tiles(page).then(t => t[k]);
+  const z = await zone(page);
+  // Vị trí lá khi đã đứng yên (lá trượt bằng transition 0,22 s; máy chậm thì lâu hơn): đọc lại tới khi hai lần liền giống nhau.
+  const at = async (k: number) => { let a = (await tiles(page))[k]; for (let n = 0; n < 30; n++) { await page.waitForTimeout(80); const b = (await tiles(page))[k]; if (Math.abs(a.x - b.x) < 0.5 && Math.abs(a.y - b.y) < 0.5) return b; a = b; } return a; };
   // Kéo lá thứ hai của câu vào trước, rồi kéo lá đầu vào TRƯỚC nó (chèn theo vị trí con trỏ).
   await dragTo(page, await at(order[1]!), { x: z.x + z.w / 2, y: z.y + z.h / 2 });
-  await page.waitForTimeout(300);
   const second = await at(order[1]!);
   await dragTo(page, await at(order[0]!), { x: second.x - 40, y: second.y });
-  await page.waitForTimeout(300);
   // Thứ tự trong câu: order[0], order[1]
   const rowOrder = async () => (await tiles(page)).map((t: any, i: number) => ({ ...t, i })).filter((t: any) => t.on).sort((a: any, b: any) => a.y - b.y || a.x - b.x).map((t: any) => t.i);
   expect(await rowOrder()).toEqual([order[0], order[1]]);
   // Kéo lá ra khỏi vùng câu → bỏ ra.
   const one = await at(order[1]!);
   await dragTo(page, one, { x: one.x, y: z.y + z.h + 200 });
-  await page.waitForTimeout(300);
   expect(await rowOrder()).toEqual([order[0]]);
   // Kéo nốt các lá còn lại theo thứ tự vào cuối câu.
-  for (const k of order.slice(1)) { const zz = await zone(page); await dragTo(page, await at(k), { x: zz.x + zz.w - 20, y: zz.y + zz.h - 20 }); await page.waitForTimeout(260); }
+  for (const k of order.slice(1)) { const zz = await zone(page); await dragTo(page, await at(k), { x: zz.x + zz.w - 20, y: zz.y + zz.h - 20 }); await expect.poll(async () => (await tiles(page)).filter((t: any) => t.on).length).toBeGreaterThan(0); }
   expect(await rowOrder()).toEqual(order);
   await page.screenshot({ path: 'test-results/cards-drag.png' });
   await vis(page, '[data-e="cdplay"]').click();

@@ -219,6 +219,7 @@ export async function run(P: Profile): Promise<void> {
   const openAll = () => page.evaluate(() => document.querySelectorAll('details.gall').forEach(d => { (d as HTMLDetailsElement).open = true; })).catch(() => {});
   async function playFloor(): Promise<void> {
     const home = await shot('tower');
+    await openAll();
     if (!(await click(/Leo tầng/))) { note('stuck', { why: 'không thấy nút leo tầng', home: home.slice(0, 200) }); return; }
     for (let steps = 0; steps < 40; steps++) {
       await sleep(60);

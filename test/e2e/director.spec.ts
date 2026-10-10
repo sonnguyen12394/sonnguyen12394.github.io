@@ -27,7 +27,7 @@ test('Bộ não: người mới chưa xếp lớp → nút Chơi tiếp là Thá
   await expect(go).toContainText('Chơi tiếp: Thám hiểm sương mù');
   await expect(go).toContainText('Vì:');
   await expect(page.locator('.dplan li')).toHaveCount(3);
-  await expect(page.locator('details.gall')).not.toHaveAttribute('open', '');
+  await expect(page.locator('details.gall').first()).not.toHaveAttribute('open', '');   // v99: mục Luyện tập (đầu tiên); Leo tháp cũng thu gọn
   await page.screenshot({ path: 'test-results/director-new.png', fullPage: true });
   await go.click();
   await expect(page.getByRole('heading', { name: /Đi đường nào/ })).toBeVisible();

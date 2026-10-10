@@ -1295,3 +1295,20 @@ Vòng Chữ không có trạng thái thua nên không đo tỉ lệ thắng.
 | Mỏ Chữ | M7 7 → 8 (đường cong đo được, có nhịp, không còn màn không giải được), M10 6 → 7 | 7,1 → **7,3** |
 | Vòng Chữ | M10 7 → 8 | 7,1 → **7,2** |
 | Bài Câu | M10 2 → 4 | 5,8 → **6,0** |
+
+### 10.11 Đã làm v99: sảnh tập trung vào game chủ lực
+
+Làm đúng §10.4: game cũ không xoá, chỉ lùi vào mục thu gọn. Chúng vẫn là cơ chế bằng chứng cho nghe / nói / đọc / viết, và bộ não vẫn đưa người chơi vào đó khi lộ trình cần.
+
+Sảnh từ trên xuống:
+1. Lộ trình hôm nay (bộ não).
+2. **⭐ Game chủ lực:** Vòng Chữ, Mỏ Chữ, Bài Câu.
+3. Sự kiện tuần.
+4. **📚 Luyện tập theo kỹ năng** (thu gọn): 13 game cũ. Bài Câu kiểu cũ bỏ khỏi danh sách vì đã thành game chủ lực.
+5. Phố.
+6. **🏰 Leo tháp** (thu gọn).
+7. Số liệu chơi.
+
+**Kiểm:** test mở mục thu gọn trước khi tìm nút Leo tháp (`openAll`). Toàn bộ 278 đơn vị, 206 e2e qua.
+
+Khi rà, test kéo thả Bài Câu hỏng một lần lúc chạy song song nặng. Gốc rễ là test chờ cứng 300 ms trong khi lá đang trượt; đã đổi sang chờ tới khi vị trí lá đứng yên. Chạy song song 4 luồng: 8/8 qua.
