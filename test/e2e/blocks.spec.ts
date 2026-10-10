@@ -49,7 +49,12 @@ test('Xếp Khối: sảnh Chơi → ván mới → trả lời, đặt khối �
   expect(typeof s.snap?.info?.score).toBe('number');
   expect(s.q?.floor ?? 1).toBe(1);   // tầng tháp không đổi
   await expect(page.getByText(/không đổi đánh giá năng lực/)).toBeVisible();
-  await page.locator('[data-e="qhome"]').click();
+  // CI Safari iOS từng báo nút này "not stable" tới hết giờ (một lần): hụt thì in trạng thái trang để tìm gốc rễ.
+  try { await page.locator('[data-e="qhome"]').click({ timeout: 20000 }); }
+  catch (e) {
+    const d = await page.evaluate(() => { const w = window as any, b = document.querySelector('[data-e="qhome"]')?.getBoundingClientRect(); return { view: w.eval('ui.view'), detail: w.eval('detailAll()'), body: document.body.className, modal: (document.querySelector('.modal, .sheet, [role="dialog"]') as HTMLElement | null)?.innerText?.slice(0, 120) ?? '', box: b ? [b.x, b.y, b.width, b.height] : null }; });
+    throw new Error(`Về sảnh không bấm được: ${JSON.stringify(d)}\n${(e as Error).message}`);
+  }
   await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible();
   void typed;
   expect(errors).toEqual([]);

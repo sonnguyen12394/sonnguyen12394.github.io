@@ -71,3 +71,22 @@ test('Bộ não: bấm Chơi tiếp vào đúng game; xong game → màn kết c
   expect(last).toBe(g1);
   expect(errors).toEqual([]);
 });
+
+// Gốc rễ lỗi CI Safari iOS (PR #56): bài học A2–C2 tải chậm thì nút "▶ Chơi" bị giữ chờ tải ("Đang tải thêm bài học…") dù sảnh game
+// không dùng tới phần đó; vẽ lại trong lúc chờ là mất luôn cú bấm. Mạng chậm thật cũng vậy.
+test('▶ Chơi vào sảnh ngay cả khi bài học chi tiết chưa tải xong', async ({ page, errors }) => {
+  await page.route('**/data/lv-*.json', () => { /* treo: không trả lời */ });
+  await page.goto('/');
+  await page.waitForFunction(() => (window as any).ELREADY === true);
+  await page.evaluate(() => {
+    const w = window as any, st = w.eval('st');
+    st.onboarded = true;
+    st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
+    w.eval('save()'); w.eval("go('games')");
+  });
+  expect(await page.evaluate(() => (window as any).eval('detailAll()'))).toBe(false);
+  await page.getByRole('button', { name: '▶ Chơi' }).click();
+  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 8000 });
+  await expect(page.getByText('Đang tải thêm bài học')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});

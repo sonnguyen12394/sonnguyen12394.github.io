@@ -44,7 +44,7 @@ test('v104 Bắt Âm: lớp phủ toàn màn, bong bóng ≥ 44 px trong màn 39
   await page.goto('/');
   await page.waitForFunction(() => (window as any).ELREADY === true);
   await page.evaluate(() => { const w = window as any, st = w.eval('st'); st.onboarded = true; st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }]; w.eval('save()'); w.eval("go('games')"); });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
+  await toLobby(page);
   await play(page, 'bbstart');
   await expect(page.locator('#whfx.bbfx')).toBeVisible();
   await page.waitForTimeout(300);

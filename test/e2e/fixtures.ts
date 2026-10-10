@@ -74,7 +74,8 @@ export async function openAll(page: Page): Promise<void> {
   await page.evaluate(() => document.querySelectorAll('details.gall').forEach(d => { (d as HTMLDetailsElement).open = true; }));
 }
 
-// Sảnh game từ màn "games": nạp engine trước (không đo thời gian tải ở đây), bấm "▶ Chơi", chờ sảnh. Hụt thì báo màn đang hiện
+// Sảnh game từ màn "games": nạp engine trước (không đo thời gian tải ở đây), bấm "▶ Chơi", chờ sảnh, rồi chờ bài học chi tiết tải xong
+// (chạm trong game lúc đang tải bị giữ chờ — hành vi riêng, không phải điều test này kiểm). Hụt thì báo màn đang hiện
 // (view, chữ trong #app) để biết gốc rễ: CI Safari iOS thỉnh thoảng không thấy sảnh sau 15 s.
 export async function toLobby(page: Page): Promise<void> {
   await page.evaluate(() => (window as any).eval('emLoad()'));
@@ -85,4 +86,5 @@ export async function toLobby(page: Page): Promise<void> {
     const s = await page.evaluate(() => { const w = window as any; return { view: w.eval('ui.view'), er: w.eval('ui.er'), em: !!w.eval('EM'), app: (document.getElementById('app')?.innerText ?? '').slice(0, 300), stage: document.body.className }; });
     throw new Error(`sảnh không hiện: ${JSON.stringify(s)}\n${(e as Error).message}`);
   }
+  await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
 }

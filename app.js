@@ -8562,6 +8562,8 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
   if(t.dataset.xr){ e.preventDefault(); return go('thi',{xr:t.dataset.xr}); }
   _emErr=''; emLoad().catch(()=>{}); render(); });
 DETAIL_SAFE_VIEW.add('goal'); DETAIL_SAFE_VIEW.add('play'); DETAIL_SAFE_GO.add('play'); DETAIL_SAFE_GO.add('goal'); DETAIL_SAFE_ACT.add('emretry');
+// Nút "▶ Chơi" (data-act=quest) chỉ mở sảnh game của engine, không dùng bài học chi tiết: không giữ chờ tải (trước đây mạng chậm thì phải chờ, vẽ lại giữa chừng là mất cú bấm).
+DETAIL_SAFE_ACT.add('quest');
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,2500)))(()=>emLoad(true).catch(()=>{}));
 // Nạp sẵn khi rảnh để tab “Ôn thi” mở ngay và để gộp/lọc dữ liệu ôn thi khi đồng bộ.
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,1500)))(()=>xmLoad().catch(()=>{}));
