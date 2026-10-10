@@ -5,7 +5,7 @@
 > 2. **Game là trải nghiệm chính**: người học chơi để thắng, việc học tiếng Anh nằm ẩn trong luật chơi (stealth learning) — mỗi hành động trong game là một thử thách ngôn ngữ do engine chọn, nhằm lên cấp nhanh nhất. Không dùng dark pattern; tiến độ học và dữ liệu luôn xem được.
 > 3. Kiến trúc evidence theo v2.4 (Observation → Evidence → Ledger → Aggregate → Learner State → Decision Snapshot), đo bằng `docs/CONFORMANCE-200-v2.4.md` và `docs/SCORECARD-v2.4.md`.
 >
-> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v87 (xem phần "Lộ trình v2.4" cuối tệp).
+> Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v88 (xem phần "Lộ trình v2.4" cuối tệp).
 
 Cập nhật: 03/10/2026. Bản đọc và bình luận: Claude Docs "English Ladder — Master Spec v2". Tệp này là bản AI đọc khi xây; hai bản phải giống nhau.
 
@@ -286,4 +286,5 @@ Mỗi mốc một PR, chấm lại 200 + 400 tiêu chí sau mỗi mốc.
 | v85 | Tốc độ 60 giây / Ghép cặp | Nguồn từ: đến hạn ôn trước, rồi từ mới học (thay cho ngẫu nhiên); ghép nhầm giải thích nghĩa cả hai từ |
 | v86 | Thám hiểm sương mù (F1 xếp lớp) | Bài chẩn đoán dạng bản đồ 4 × 4: người chơi chọn đường Từ vựng / Ngữ pháp, engine chọn điểm dò; ô mở dù đúng hay sai (không thưởng câu đúng); một đường đủ nửa thì khoá; kết quả = màn chẩn đoán; 7 ngày một lần; telemetry `e.gf`. Từ v86 app chỉ tập trung CEFR: game luyện thi (F12) bỏ khỏi kế hoạch |
 | v87 | Vườn từ (F2 từ mới) | Từ mới của cụm do engine chọn: hạt (thẻ dạy trước: hình, IPA, âm, câu ví dụ) → mầm (nhận ra, mức 1) → cây (nhớ ngược, mức 2) → hoa (tự gõ, mức 3); một bậc / ngày; sai giữ bậc + xem lại thẻ; bậc cây trong `e.gv` |
+| v88 | Bộ não chọn game (director) | Sảnh không còn bắt người học tự chọn trong 15 game: `director.ts` đọc nhu cầu học lúc này (chưa xếp lớp, cây đến ngày tưới, phần sắp quên, loại nút đầu lộ trình NBA, điểm nghẽn, Can-Do kỹ năng còn thiếu, máy có giọng đọc / máy nghe) → một nút "▶ Chơi tiếp" kèm lý do + lộ trình 3 chặng / ngày (mỗi chặng một nhu cầu, tối đa một chặng kỹ năng); đổi dạng sau mỗi game; màn kết mọi game có "▶ Tiếp"; danh sách game thu gọn trong "Tất cả trò chơi"; snapshot `dir` cho Vì sao?; trạng thái `e.gp` |
 | — | Tiêu chí game theo chức năng | `docs/GAME-CRITERIA.md`: 13 chức năng học của app; 10 tiêu chí chung (G1–G10, thang 10, trọng số; bắt buộc G3 ≥ 8 và G9 ≥ 8) + tiêu chí riêng theo chức năng; chấm 5 game hiện có (Leo tháp 7,1 · Xếp Khối 7,6 · Bàn Cờ 7,1 · Tốc độ 60 giây 5,6 · Ghép cặp 5,9); thứ tự game nên làm tiếp |

@@ -6,7 +6,7 @@ import type { Level } from '../types.ts';
 import { betaStat, PASS_M, PASS_LB } from '../mastery.ts';
 import type { EvStore } from './types.ts';
 
-export type SnapKind = 'mastery' | 'testout' | 'readiness' | 'nba' | 'diag';
+export type SnapKind = 'mastery' | 'testout' | 'readiness' | 'nba' | 'diag' | 'dir';   // dir (v88): bộ não chọn game
 export interface Alt { node: string; score: number; dep: number; min: number }
 export interface Snapshot {
   id: string;
@@ -42,7 +42,7 @@ export function addSnap(st: EvStore, s: Omit<Snapshot, 'id'>, dedupe = true): Sn
   st.snap.push(snap);
   if (st.snap.length > SNAP_MAX) {
     // Bỏ snapshot NBA cũ trước (chúng nhiều, ít giá trị audit), rồi mới tới loại khác.
-    const nba = st.snap.findIndex(x => x.kind === 'nba');
+    const nba = st.snap.findIndex(x => x.kind === 'nba' || x.kind === 'dir');
     st.snap.splice(nba >= 0 && nba < st.snap.length - 20 ? nba : 0, 1);
   }
   return snap;
@@ -51,7 +51,7 @@ export function addSnap(st: EvStore, s: Omit<Snapshot, 'id'>, dedupe = true): Sn
 // Sự kiện bằng chứng cần giữ vì snapshot quan trọng gần đây tham chiếu.
 export function protectedEvents(st: EvStore): Set<string> {
   const out = new Set<string>();
-  const imp = st.snap.filter(s => s.kind !== 'nba').slice(-SNAP_PROTECT);
+  const imp = st.snap.filter(s => s.kind !== 'nba' && s.kind !== 'dir').slice(-SNAP_PROTECT);
   for (const s of imp) for (const id of s.evs) out.add(id);
   return out;
 }
@@ -79,6 +79,11 @@ export function replay(s: Snapshot): string {
       return top && top.node === s.subj ? 'CHOSEN' : 'MISMATCH';
     }
     case 'diag': return `u=${s.info?.u};g=${s.info?.g}`;
+    case 'dir': {   // game được chọn = chặng chưa chơi của lộ trình hôm nay (alt = các chặng còn lại), hết lộ trình thì ứng viên điểm cao nhất
+      if (s.info?.plan === 'yes') return (s.alt ?? []).some(a => a.node === s.subj) ? 'CHOSEN' : 'MISMATCH';
+      const top = [...(s.alt ?? [])].sort((x, y) => y.score - x.score || (x.node < y.node ? -1 : 1))[0];
+      return top && top.node === s.subj ? 'CHOSEN' : 'MISMATCH';
+    }
   }
 }
 

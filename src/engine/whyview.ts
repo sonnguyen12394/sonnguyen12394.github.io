@@ -48,7 +48,7 @@ function whyNode(c: ECtx, id: string): string {
     const s = stat(cell);
     return `<tr><td>${l}. ${esc(LEVEL_VI[l])}</td><td class="num">${n2(s.m)}</td><td class="num">${n2(s.lb)}</td><td class="num">${n2(cell!.n)}</td><td class="num">${cell!.c.length}</td><td class="num">${cell!.q.length}</td><td>${esc(STATE_VI[s.state])}</td></tr>`;
   }).join('');
-  const snaps = e.ev.snap.filter(s => s.subj === id && s.kind !== 'nba').slice(-8).reverse();
+  const snaps = e.ev.snap.filter(s => s.subj === id && s.kind !== 'nba' && s.kind !== 'dir').slice(-8).reverse();
   const nba = [...e.ev.snap].reverse().find(s => s.kind === 'nba' && s.subj === id);
   const nbaHtml = nba ? `<section class="panel stack"><h3>Vì sao app chọn phần này làm bước tiếp theo</h3>
     <p class="muted">App so các việc có thể làm (học phần mới, ôn, kiểm tra nhanh, xác minh) bằng một điểm lợi ích: giá trị học + giá trị thông tin + mức liên quan mục tiêu + tầm quan trọng tiền đề + nguy cơ quên + transfer, trừ nỗ lực và việc ngắt mạch (spec §57). Chỉ xét phần đã đủ tiền đề cứng.</p>

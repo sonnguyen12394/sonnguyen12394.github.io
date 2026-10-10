@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, play } from './fixtures.ts';
 
 // v72 Xếp Khối Chữ: trả lời câu do engine chọn → nhận khối → đặt khối. Câu trả lời thành bằng chứng (id lượt "quest-1:b…"),
 // điểm / kỷ lục chỉ là telemetry (e.bk), không vào mastery.
@@ -18,7 +18,7 @@ test('Xếp Khối: sảnh Chơi → ván mới → trả lời, đặt khối �
   await page.getByRole('button', { name: '▶ Chơi' }).click();
   await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible();   // tháp vẫn còn (Leo nhanh)
-  await page.locator('[data-e="bkstart"]').first().click();
+  await play(page, 'bkstart');
   const end = page.getByRole('heading', { name: /Xong ván|Hết chỗ đặt/ });
   let answered = 0, placed = 0, typed = false;
   for (let i = 0; i < 160 && !(await end.isVisible()); i++) {

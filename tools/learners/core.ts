@@ -214,6 +214,8 @@ export async function run(P: Profile): Promise<void> {
     if (await visible('[data-e="qnext"]')) await page.locator('[data-e="qnext"]').first().click();
   }
 
+  // v88: thẻ từng game nằm trong mục thu gọn "Tất cả trò chơi" của sảnh: mở ra trước khi tìm nút game.
+  const openAll = () => page.evaluate(() => document.querySelectorAll('details.gall').forEach(d => { (d as HTMLDetailsElement).open = true; })).catch(() => {});
   async function playFloor(): Promise<void> {
     const home = await shot('tower');
     if (!(await click(/Leo tầng/))) { note('stuck', { why: 'không thấy nút leo tầng', home: home.slice(0, 200) }); return; }
@@ -244,7 +246,7 @@ export async function run(P: Profile): Promise<void> {
   // v72 Xếp Khối: trả lời như ở tháp; đặt khối ở ô hợp lệ đầu tiên (bot không cần chơi giỏi — cứu bàn giữ đủ số câu của ván).
   async function playBlocks(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="bkstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="bkstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Xếp Khối'); return; }
     await start.click(); await sleep(120);
     for (let steps = 0; steps < 240; steps++) {
@@ -276,7 +278,7 @@ export async function run(P: Profile): Promise<void> {
   // v73 Bàn Cờ Phố: tung xúc xắc; dừng ở ô cảnh thì trả lời như ở tháp; lô đất: xây khi đủ xu (người chơi thích sưu tầm nhà).
   async function playBoard(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="bdstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="bdstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Bàn Cờ'); return; }
     await start.click(); await sleep(120);
     for (let steps = 0; steps < 120; steps++) {
@@ -309,7 +311,7 @@ export async function run(P: Profile): Promise<void> {
   // v74 Bài Câu: 3 bàn × 3 lượt; chọn bùa đầu tiên được mời.
   async function playCards(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="cdstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="cdstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Bài Câu'); return; }
     await start.click(); await sleep(120);
     for (let steps = 0; steps < 60; steps++) {
@@ -329,7 +331,7 @@ export async function run(P: Profile): Promise<void> {
   // v75 Quán Cà Phê: 6 khách; nghe / chọn câu đáp như câu chọn thường.
   async function playCafe(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="cfstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="cfstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Quán Cà Phê'); return; }
     await start.click(); await sleep(120);
     for (let steps = 0; steps < 30; steps++) {
@@ -348,7 +350,7 @@ export async function run(P: Profile): Promise<void> {
   // v76 Bắt Âm: 10 từ; nghe rồi chạm bong bóng như câu chọn thường.
   async function playBubbles(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="bbstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="bbstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Bắt Âm'); return; }
     await start.click(); await sleep(120);
     for (let steps = 0; steps < 40; steps++) {
@@ -367,7 +369,7 @@ export async function run(P: Profile): Promise<void> {
   // v77 Câu đố ngày: ghép nhóm theo hiểu biết về cụm (biết → chọn đúng 4 ô; chưa biết → 3 ô đúng + 1 ô nhóm khác), rồi câu nhớ lại như câu thường.
   async function playPuzzle(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="pzstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="pzstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Câu đố ngày'); return; }
     await start.click(); await sleep(120);
     for (let steps = 0; steps < 60; steps++) {
@@ -415,7 +417,7 @@ export async function run(P: Profile): Promise<void> {
   // v81 Karaoke: bot không có giọng → đặt kết quả máy nghe (tỉ lệ từ nghe ra theo năng lực nút chức năng của hội thoại), hoặc tự chấm.
   async function playKara(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="krstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="krstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Karaoke'); return; }
     await start.click(); await sleep(120);
     for (let steps = 0; steps < 40; steps++) {
@@ -438,7 +440,7 @@ export async function run(P: Profile): Promise<void> {
   // v82 Xưởng sửa câu: câu tự gõ như câu thường (ô nhập đã điền sẵn câu hỏng).
   async function playShop(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="wsstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="wsstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Xưởng sửa câu'); return; }
     await start.click(); await sleep(120);
     for (let steps = 0; steps < 30; steps++) {
@@ -457,7 +459,7 @@ export async function run(P: Profile): Promise<void> {
   // v83 Thư: bot không có mô hình viết → gửi một thư ngắn trước (để cư dân hỏi lại), rồi gửi bài mẫu của đề, tick đủ ý, tự chấm 3.
   async function playLetter(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="ltstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="ltstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Thư'); return; }
     await start.click(); await sleep(120);
     const pk = await peek();
@@ -481,7 +483,7 @@ export async function run(P: Profile): Promise<void> {
   // v84 Robot: đi tới từng đồ cần nhặt, gọi tên theo năng lực từ (chưa biết → gọi sai, robot gợi chữ cái đầu, gọi lại đúng), rồi về Nhà.
   async function playRobot(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="rbstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="rbstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Robot'); return; }
     await start.click(); await sleep(120);
     const cmd = async (t: string) => { await page.locator('form[data-eform="rbcmd"] input[name="a"]').first().fill(t); await page.locator('form[data-eform="rbcmd"] button').first().click(); await sleep(40); };
@@ -507,7 +509,7 @@ export async function run(P: Profile): Promise<void> {
   // v86 Thám hiểm sương mù: chọn đường xen kẽ (đường còn mở), câu dò trả lời như bài chẩn đoán.
   async function playFog(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="fgstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="fgstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Thám hiểm'); return; }
     await start.click(); await sleep(150);
     if (!(await visible('[data-e="fgpick"]'))) { note('fog-skip', { why: 'bản đồ chưa mở lại (7 ngày)' }); await playFloor(); return; }
@@ -529,7 +531,7 @@ export async function run(P: Profile): Promise<void> {
   // v87 Vườn từ: xem thẻ (bấm tưới), trả lời câu của bậc kế như câu thường.
   async function playGarden(): Promise<void> {
     await shot('lobby');
-    const start = page.locator('[data-e="gdstart"]').filter({ visible: true }).first();
+    await openAll(); const start = page.locator('[data-e="gdstart"]').filter({ visible: true }).first();
     if (!(await start.count())) { note('stuck', 'không thấy Vườn từ'); return; }
     await start.click(); await sleep(120);
     if (!(await visible('.gdpot')) && !(await visible('h1:has-text("Vườn của bạn")'))) { note('garden-skip', { why: 'vườn đã tưới đủ hôm nay' }); return; }
@@ -593,6 +595,15 @@ export async function run(P: Profile): Promise<void> {
     await followToday();
     const floors = P.floors ? P.floors(day, rnd) : day === 0 ? 2 : 2 + (rnd() < 0.3 ? 1 : 0);
     // v72–v73: sảnh có nhiều game; mặc định bot luân phiên tháp, Xếp Khối, Bàn Cờ (--games tower: chỉ tháp, như trước v72).
+    // v88 --games director: bot bấm game "Chơi tiếp" mà bộ não của app chọn (không tự chọn / xoay vòng).
+    const DIR_PLAY: Record<string, () => Promise<void>> = { tower: playFloor, blocks: playBlocks, board: playBoard, cards: playCards, cafe: playCafe, bubbles: playBubbles, puzzle: playPuzzle, case: () => playCase('read'), radio: () => playCase('listen'), kara: playKara, shop: playShop, letter: playLetter, robot: playRobot, fog: playFog, garden: playGarden };
+    if (GAMES === 'director') {
+      for (let f = 0; f < floors; f++) {
+        const d = page.locator('.dgo'), dg = (await d.count()) ? (await d.first().getAttribute('data-g')) ?? 'tower' : 'tower';
+        note('dir', { g: dg, f });
+        await (DIR_PLAY[dg] ?? playFloor)();
+      }
+    } else
     for (let f = 0; f < floors; f++) { const g = GAMES === 'mix' ? (day + f) % GAME_N : 0; if (g === 1) await playBlocks(); else if (g === 2) await playBoard(); else if (g === 3) await playCards(); else if (g === 4) await playCafe(); else if (g === 5) await playBubbles(); else if (g === 6) await playPuzzle(); else if (g === 7) await playCase('read'); else if (g === 8) await playCase('listen'); else if (g === 9) await playKara(); else if (g === 10) await playShop(); else if (g === 11) await playLetter(); else if (g === 12) await playRobot(); else if (g === 13) await playFog(); else if (g === 14) await playGarden(); else await playFloor(); }
     // Cuối phiên: mastery của app, giả thuyết hiểu sai của app, kỹ năng thật của bot trên mọi nút đã gặp.
     const e = await page.evaluate(() => { const st = (window as any).eval('st'); return { m: st.e.m, snaps: st.e.ev.snap.length, q: st.e.q, mis: st.e.ev.mis }; });   // eslint-disable-line @typescript-eslint/no-explicit-any

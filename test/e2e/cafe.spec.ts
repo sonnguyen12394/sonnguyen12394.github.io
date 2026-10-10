@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, play } from './fixtures.ts';
 
 // v75 Quán Cà Phê: khách là câu của nút chức năng giao tiếp (fn:) do engine chọn; nghe hiểu (mức 2) / chọn câu đáp (mức 3), 4 lựa chọn.
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -15,7 +15,7 @@ test('Quán Cà Phê: 6 khách, xen kẽ nghe hiểu / chọn câu đáp; bằng
   });
   await page.getByRole('button', { name: '▶ Chơi' }).click();
   await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
-  await page.locator('[data-e="cfstart"]').first().click();
+  await play(page, 'cfstart');
   const end = page.getByRole('heading', { name: /Đóng ca/ });
   let n = 0;
   for (let i = 0; i < 30 && !(await end.isVisible()); i++) {

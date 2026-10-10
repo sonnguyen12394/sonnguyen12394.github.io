@@ -642,6 +642,19 @@ body.lesson main{max-width:720px}
 .gcard:hover{border-color:var(--accent)}
 .gsec{margin-top:6px}
 .gcard b{font:700 17px/1.2 var(--display)}
+.dbox{padding:14px;border:2px solid var(--accent);border-radius:16px;background:var(--surface);gap:10px}
+.dgo.gcard{grid-template-columns:auto 1fr;background:linear-gradient(135deg,var(--accent-soft),var(--surface));border-color:var(--accent)}
+.dgo.gcard b{font-size:19px}
+.dplan{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.dplan li{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:10px;border:1px solid var(--line)}
+.dplan li.cur{border-color:var(--accent);font-weight:600}
+.dplan li.ok{opacity:.7}
+.dplan li small{font-weight:400;color:var(--muted)}
+.dnum{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--accent-soft);font-weight:700;flex:none}
+.dplan li.ok .dnum{background:var(--accent);color:var(--surface)}
+.dwhy summary,.gall>summary{cursor:pointer;color:var(--muted);padding:6px 0}
+.gall{margin-top:12px}
+.gall>summary{font-weight:600;padding:10px 0}
 .gico{display:grid;place-items:center;width:56px;height:56px;border-radius:12px;background:var(--surface)}
 .bkmini{display:grid;grid-template-columns:repeat(3,14px);gap:2px}
 .bkmini i,.bkp i{display:block;width:14px;height:14px;border-radius:3px;background:var(--kcell)}
@@ -804,4 +817,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.ea5c09144e.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.fcd67281e9.js" defer></script><script src="app.js?v=67" defer></script>

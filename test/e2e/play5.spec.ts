@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, play } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v86 Thám hiểm sương mù (bài chẩn đoán dạng bản đồ), v87 Vườn từ (từ mới: hạt → mầm → cây → hoa).
@@ -21,7 +21,7 @@ const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek
 
 test('Thám hiểm sương mù: chọn đường, mỗi điểm dò mở một ô (đúng hay sai đều mở), hết bản đồ → kết quả chẩn đoán', async ({ page, errors }) => {
   await open(page);
-  await page.locator('[data-e="fgstart"]').first().click();
+  await play(page, 'fgstart');
   await expect(page.getByRole('heading', { name: /Đi đường nào/ })).toBeVisible();
   await page.screenshot({ path: 'test-results/fog-pick.png' });
   let picks = 0, wrongNode = true, n = 0;
@@ -53,7 +53,7 @@ test('Thám hiểm sương mù: chọn đường, mỗi điểm dò mở một �
 
 test('Vườn từ: gieo hạt (thẻ dạy trước), tưới = câu nhận ra mức 1; hôm sau cây lên câu nhớ ngược mức 2; sai giữ bậc', async ({ page, errors }) => {
   await open(page);
-  await page.locator('[data-e="gdstart"]').first().click();
+  await play(page, 'gdstart');
   const end = page.getByRole('heading', { name: /Vườn của bạn/ });
   let asked = 0;
   for (let i = 0; i < 40 && !(await end.isVisible()); i++) {
@@ -74,7 +74,7 @@ test('Vườn từ: gieo hạt (thẻ dạy trước), tưới = câu nhận ra 
   // Hôm sau (lùi ngày lên bậc 1 ngày): cây đã là mầm → câu nhớ ngược mức 2, không dạy lại.
   await page.evaluate(() => { const st = (window as any).eval('st'); for (const p of Object.values(st.e.gv.plants) as any[]) p.d -= 1; (window as any).eval('save()'); });
   await page.locator('[data-e="qhome"]').click();
-  await page.locator('[data-e="gdstart"]').first().click();
+  await play(page, 'gdstart');
   // Cây "hạt" (trả lời Không biết hôm qua) hỏi lại nhận ra mức 1, không dạy lại thẻ; cây "mầm" lên câu nhớ ngược mức 2.
   let pk = await peek(page);
   expect(pk.run).toBe('garden'); expect(pk.level).toBe(1);
