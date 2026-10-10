@@ -88,8 +88,14 @@ test('v97 Bài Câu: kéo thả chuột thật vào vùng câu, chèn đúng ch�
   await dragTo(page, one, { x: one.x, y: z.y + z.h + 200 });
   expect(await rowOrder()).toEqual([order[0]]);
   // Kéo nốt các lá còn lại theo thứ tự vào cuối câu.
-  for (const k of order.slice(1)) { const zz = await zone(page); await dragTo(page, await at(k), { x: zz.x + zz.w - 20, y: zz.y + zz.h - 20 }); await expect.poll(async () => (await tiles(page)).filter((t: any) => t.on).length).toBeGreaterThan(0); }
-  expect(await rowOrder()).toEqual(order);
+  // Mỗi lần thả: chờ lá vừa kéo thật sự vào câu và đứng yên ở hàng (WebKit CI chậm) rồi mới kéo lá sau.
+  for (const [n, k] of order.slice(1).entries()) {
+    const zz = await zone(page);
+    await dragTo(page, await at(k), { x: zz.x + zz.w - 20, y: zz.y + zz.h - 20 });
+    await expect.poll(async () => (await tiles(page)).filter((t: any) => t.on).length, { message: `lá ${k}: ${await dlog()}` }).toBe(n + 2);
+    await atRow(k);
+  }
+  expect(await rowOrder(), `nhật ký kéo thả: ${await dlog()}`).toEqual(order);
   await page.screenshot({ path: 'test-results/cards-drag.png' });
   await vis(page, '[data-e="cdplay"]').click();
   await expect(page.locator('.cdfb .fb.good')).toBeVisible();

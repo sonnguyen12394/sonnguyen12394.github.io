@@ -20,7 +20,7 @@ test('Bắt Âm: 10 từ, 3 lựa chọn, sai thì nghe lại hai từ của c�
   const end = page.getByRole('heading', { name: /Xong màn/ });
   let n = 0;
   for (let i = 0; i < 40 && !(await end.isVisible()); i++) {
-    const next = page.locator('[data-e="bbnext"]').filter({ visible: true }), bub = page.locator('[data-e="bbans"][data-i="0"]').filter({ visible: true });
+    const next = page.locator('[data-e="bbnext"]').filter({ visible: true }), bub = page.locator('[data-e="bbans"][data-i="0"]:not([disabled])').filter({ visible: true });   // chờ bong bóng bấm được (đúng thì còn hiện 1,2 s trước khi tự sang từ kế)
     await expect(next.or(bub).or(end).first()).toBeVisible();
     if (await end.isVisible()) break;
     if (await next.count()) { await next.first().click(); continue; }
