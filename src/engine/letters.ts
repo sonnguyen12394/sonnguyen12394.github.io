@@ -56,7 +56,7 @@ export function viewLetter(c: ECtx, r: LetterRun, rub: { crit: Array<[string, st
     const phr = t.u.map(([e, v]) => `<span class="pill" title="${esc(v)}"><span lang="en">${esc(e)}</span> · ${esc(v)}</span>`).join(' ');
     return `${head}${letter}
       <form class="stack" data-eform="ltsend"><textarea class="field" name="t" rows="8" lang="en" spellcheck="false" aria-label="Thư của bạn" placeholder="Viết thư bằng tiếng Anh…">${esc(r.text)}</textarea>
-      <p class="hint">Cụm gợi ý: ${phr}</p>
+      <p class="hint ltphr">Cụm gợi ý: ${phr}</p>
       <fieldset class="stack" style="gap:4px;border:0;padding:0"><legend class="hint">Thư cần có (tick khi đã viết):</legend>${ideas}</fieldset>
       <div class="row"><button class="btn primary">✉️ Gửi thư</button></div></form>`;
   }

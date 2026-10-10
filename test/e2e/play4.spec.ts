@@ -91,3 +91,23 @@ test('Tốc độ 60 giây / Ghép cặp: từ đến hạn ôn đứng đầu n
   expect(r.first).toEqual(r.due); expect(r.n).toBe(12);
   expect(errors).toEqual([]);
 });
+
+// Gốc rễ lỗi CI Android "Gửi thư bị chặn": cụm gợi ý dài (đề thiệp mời, 409 px, không xuống dòng) làm trang tràn ngang trên điện thoại.
+test('Thư: cụm gợi ý dài xuống dòng trong khung, trang không tràn ngang ở 390px; nút Gửi thư không bị che', async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await open(page);
+  await play(page, 'ltstart');
+  await page.evaluate(() => {
+    const p = document.querySelector("#app .ltphr")!, s = document.createElement('span');
+    s.className = 'pill'; s.innerHTML = '<span lang="en">Please come to my birthday party</span> · Mời bạn đến tiệc sinh nhật của tôi';
+    p.appendChild(s);
+  });
+  const g = await page.evaluate(() => {
+    const b = [...document.querySelectorAll('#app button')].find(x => /Gửi thư/.test(x.textContent ?? ''))!.getBoundingClientRect();
+    const hit = document.elementFromPoint(b.x + b.width / 2, b.y + b.height / 2);
+    return { sw: document.documentElement.scrollWidth, iw: innerWidth, hit: hit?.closest('button')?.textContent ?? hit?.outerHTML.slice(0, 60) };
+  });
+  expect(g.sw, JSON.stringify(g)).toBeLessThanOrEqual(390);   // máy di động: trang rộng hơn màn thì cửa sổ bố cục nới theo (innerWidth cũng lớn lên)
+  expect(g.hit).toContain('Gửi thư');
+  expect(errors).toEqual([]);
+});
