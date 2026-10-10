@@ -30,7 +30,7 @@
   --bg:#EDF0F4; --surface:#FFFFFF; --surface-2:#F5F7FA; --ink:#162033; --muted:#5A6477; --line:#D6DCE6;
   --accent:#1F4FD8; --accent-ink:#FFFFFF; --accent-soft:#E3EAFD; --chart:#1F4FD8;
   --mark:#FFE36E; --mark-ink:#1A1A1A;
-  --good:#16805A; --good-soft:#DDF3E9; --bad:#B83426; --bad-soft:#FBE3DF; --warn:#9A5F0C; --warn-soft:#FBEFD9;
+  --good:#127050; --good-soft:#DDF3E9; --bad:#B83426; --bad-soft:#FBE3DF; --warn:#9A5F0C; --warn-soft:#FBEFD9;
   --display:'Literata',Georgia,'Times New Roman',serif;
   --body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
@@ -740,6 +740,8 @@ body.stage .opt,body.stage .choice,body.stage .gcard{min-height:48px}
 .bbbub.pop{opacity:0;filter:blur(2px)}.bbbub.wrong{filter:grayscale(.8) brightness(.8)}
 .bbbub.right .bbin{box-shadow:0 0 0 5px #86efac,0 0 30px #86efac}.bbbub.dim{opacity:.45}
 .bbbub:disabled{cursor:default}
+body.stage.scene #app{margin-top:calc(64px + var(--sceneh,200px))}
+body.scene .cfshop,body.scene .gdpot{display:none}
 .cdhud{position:absolute;top:62px;left:16px;right:16px;display:grid;gap:6px;z-index:1}
 .cdbar{height:8px;border-radius:8px;background:rgba(0,0,0,.35);overflow:hidden}.cdbar i{display:block;height:100%;background:linear-gradient(90deg,#fde68a,#f59e0b);transition:width .4s}
 .cdcharms{display:flex;gap:6px;flex-wrap:wrap}.cdcharm-on{font:600 12px system-ui,sans-serif;color:#1d1b3a;background:#fde68a;border-radius:999px;padding:3px 10px}
@@ -945,4 +947,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.d7c20b4136.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.ae1c5ea6c5.js" defer></script><script src="app.js?v=67" defer></script>

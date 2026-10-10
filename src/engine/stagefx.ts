@@ -27,7 +27,51 @@ export const STAGES: Record<string, StageTheme> = {
 };
 interface P { x: number; y: number; vx: number; vy: number; r: number; life: number; c: string; rot: number }
 
+// v105–v106 Cảnh sống ở 1/3 trên màn (bố cục game di động: cảnh trên, điều khiển dưới). Thẻ câu hỏi HTML giữ nguyên bên dưới.
+export type Scene =
+  | { kind: 'garden'; pots: number[]; cur: number; ok: boolean | null; key: string }
+  | { kind: 'cafe'; guest: string; prop?: string; mood: string | null; name: string; k: number; total: number; key: string };
+const POT = ['🌰', '🌱', '🌿', '🌸'];
 let cv: HTMLCanvasElement | null = null, raf = 0, game = '', parts: P[] = [], amb: P[] = [], lastFb = '';
+let scene: Scene | null = null, sceneKey = '', sceneAt = 0, guestKey = '', guestAt = 0;
+export const sceneH = () => Math.round(Math.min(innerHeight * 0.3, 240));
+
+function drawScene(g: CanvasRenderingContext2D, sc: Scene, W: number, now: number, still: boolean): void {
+  const top = 56, h = sceneH(), t = still ? 1 : Math.min(1, (now - sceneAt) / 1200);
+  if (sc.kind === 'garden') {
+    const sky = g.createLinearGradient(0, top, 0, top + h); sky.addColorStop(0, '#9fd8ff'); sky.addColorStop(1, '#d9f2c7'); g.fillStyle = sky;
+    g.beginPath(); g.roundRect(8, top, W - 16, h, 18); g.fill();
+    g.fillStyle = '#7a4a26'; g.beginPath(); g.roundRect(8, top + h * 0.72, W - 16, h * 0.28, [0, 0, 18, 18]); g.fill();
+    g.fillStyle = 'rgba(255,255,255,.85)'; g.font = '28px system-ui'; g.fillText('☀️', W - 52, top + 36);
+    const n = Math.max(1, sc.pots.length), step = (W - 40) / n;
+    sc.pots.forEach((st, i) => {
+      const cx = 20 + step * i + step / 2, by = top + h * 0.76, cur = i === sc.cur;
+      g.fillStyle = cur ? '#d9733f' : '#b95f33'; g.beginPath(); g.moveTo(cx - 16, by - 14); g.lineTo(cx + 16, by - 14); g.lineTo(cx + 11, by + 10); g.lineTo(cx - 11, by + 10); g.closePath(); g.fill();
+      let sz = 20 + st * 7; if (cur && sc.ok && t < 1) sz *= 1 + Math.sin(t * Math.PI) * 0.45;
+      const wob = cur && sc.ok === false && t < 1 ? Math.sin(t * 30) * 5 : 0;
+      g.font = `${sz}px system-ui`; g.textAlign = 'center'; g.fillText(POT[Math.min(3, st)]!, cx + wob, by - 16); g.textAlign = 'start';
+      if (cur) { g.globalAlpha = 0.8; g.fillStyle = '#fff'; g.font = '16px system-ui'; g.textAlign = 'center'; g.fillText('▼', cx, top + 22 + (still ? 0 : Math.sin(now / 300) * 4)); g.textAlign = 'start'; g.globalAlpha = 1; }
+      if (cur && sc.ok && t < 1) {   // bình tưới + giọt nước
+        g.font = '34px system-ui'; g.save(); g.translate(cx + 34, top + 40); g.rotate(-0.5); g.fillText('🚿', -17, 12); g.restore();
+        g.fillStyle = '#4fb3ff'; for (let k = 0; k < 6; k++) { const yy = top + 52 + ((now / 4 + k * 23) % (h * 0.4)); g.beginPath(); g.arc(cx + 10 - k * 3, yy, 2.5, 0, Math.PI * 2); g.fill(); }
+      }
+    });
+  } else {
+    const wall = g.createLinearGradient(0, top, 0, top + h); wall.addColorStop(0, '#f3d9b1'); wall.addColorStop(1, '#e2b07a'); g.fillStyle = wall;
+    g.beginPath(); g.roundRect(8, top, W - 16, h, 18); g.fill();
+    g.fillStyle = '#8a5a34'; g.fillRect(24, top + 30, W - 48, 6); g.font = '20px system-ui'; for (let x = 36; x < W - 40; x += 44) g.fillText(x % 88 ? '☕' : '🫖', x, top + 28);
+    g.fillStyle = '#6b3d1d'; g.beginPath(); g.roundRect(8, top + h * 0.68, W - 16, h * 0.32, [0, 0, 18, 18]); g.fill();
+    g.font = '30px system-ui'; g.fillText('☕', 30, top + h * 0.68 - 4);
+    if (!still) { g.globalAlpha = 0.5; g.fillStyle = '#fff'; for (let k = 0; k < 3; k++) { const yy = top + h * 0.68 - 40 - ((now / 30 + k * 12) % 30); g.beginPath(); g.arc(46 + Math.sin(now / 300 + k) * 4, yy, 3, 0, Math.PI * 2); g.fill(); } g.globalAlpha = 1; }
+    // khách bước vào từ phải
+    const tg = still ? 1 : Math.min(1, (now - guestAt) / 700), gx = W - 40 - (W * 0.4) * (1 - Math.pow(1 - tg, 3)), gy = top + h * 0.68 - 6;
+    g.font = '64px system-ui'; g.textAlign = 'center'; g.fillText(sc.guest, gx, gy); g.textAlign = 'start';
+    if (sc.prop) { g.font = '28px system-ui'; g.fillText(sc.prop, gx - 52, gy - 6); }
+    g.fillStyle = '#fff'; g.beginPath(); g.roundRect(gx + 22, gy - 96, 52, 40, 12); g.fill(); g.font = '24px system-ui'; g.fillText(sc.mood ?? '💬', gx + 34, gy - 66);
+    if (sc.name) { g.font = '700 14px system-ui'; const w = g.measureText(sc.name).width + 16; g.fillStyle = 'rgba(0,0,0,.6)'; g.beginPath(); g.roundRect(gx - w / 2, gy + 6, w, 22, 8); g.fill(); g.fillStyle = '#fff'; g.textAlign = 'center'; g.fillText(sc.name, gx, gy + 22); g.textAlign = 'start'; }
+    g.fillStyle = 'rgba(0,0,0,.55)'; g.font = '700 14px system-ui'; g.fillText(`Khách ${Math.min(sc.k + 1, sc.total)}/${sc.total}`, 24, top + h - 12);
+  }
+}
 
 function ambient(t: StageTheme, W: number, H: number): P[] {
   const n = t.fx === 'fog' ? 10 : 26, out: P[] = [];
@@ -61,6 +105,7 @@ function loop(now: number): void {
     if (!still) { p.x += p.vx; p.y += p.vy; if (p.y < -60) p.y = H + 40; if (p.y > H + 60) p.y = -40; if (p.x < -60) p.x = W + 40; if (p.x > W + 60) p.x = -40; }
     drawAmb(g, t, p, still ? 0 : now);
   }
+  if (scene) drawScene(g, scene, W, now, still);
   for (let k = parts.length - 1; k >= 0; k--) {
     const p = parts[k]!; p.x += p.vx; p.y += p.vy; p.vy += 0.18; p.life -= 0.022;
     if (p.life <= 0) { parts.splice(k, 1); continue; }
@@ -77,10 +122,13 @@ function burst(x: number, y: number, good: boolean): void {
 }
 
 // Gọi sau mỗi lần app vẽ lại #app. g: game cũ đang chạy (null = không có, hoặc game chủ lực / màn khác).
-export function stageSync(g: string | null): void {
+export function stageSync(g: string | null, sc: Scene | null = null): void {
   if (typeof document === 'undefined' || !document.body) return;
   const on = !!g && !!STAGES[g], b = document.body;
   b.classList.toggle('stage', on);
+  b.classList.toggle('scene', on && !!sc);
+  if (on && sc) { b.style.setProperty('--sceneh', `${sceneH()}px`); if (sc.key !== sceneKey) { sceneKey = sc.key; sceneAt = performance.now(); } if (sc.kind === 'cafe' && `${sc.k}` !== guestKey) { guestKey = `${sc.k}`; guestAt = performance.now(); } }
+  scene = on ? sc : null;
   if (!on) { if (game) { cancelAnimationFrame(raf); cv?.remove(); cv = null; game = ''; parts = []; lastFb = ''; delete b.dataset.game; } return; }
   const t = STAGES[g!]!;
   b.dataset.game = g!;

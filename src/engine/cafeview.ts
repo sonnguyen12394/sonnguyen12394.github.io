@@ -5,6 +5,7 @@ import { loaded } from './data.ts';
 import type { Challenge } from './quest.ts';
 import type { FnItem } from './host.ts';
 import { GUESTS, decorOf, face, MOOD, type React } from './cafe.ts';
+import { FACE } from './story.ts';
 
 export interface CafeRun {
   floor: number; seed: number; t0: number; k: number; n: number; ok: number; coins: number; stars: number; streak: number; wrong: string[]; passed?: string[]; done: boolean;
@@ -14,7 +15,7 @@ export interface CafeRun {
 }
 
 export function viewCafe(c: ECtx, r: CafeRun, total: number): string {
-  const esc = c.host.esc, ix = loaded()!, it = r.item, vip = r.k === 0 && r.vip ? r.vip : null, guest = vip ? vip[0] : face(r.seed, r.k), decor = decorOf(total + r.stars);
+  const esc = c.host.esc, ix = loaded()!, it = r.item, vip = r.k === 0 && r.vip ? r.vip : null, guest = vip ? (FACE[vip[1]] ?? vip[0]) : face(r.seed, r.k), decor = decorOf(total + r.stars);
   const head = `<section class="stack" style="gap:6px"><div class="spread"><span class="eyebrow">☕ Quán Cà Phê · khách ${Math.min(r.k + 1, GUESTS)}/${GUESTS}</span><span>⭐ <b>${r.stars}</b> · 🪙 ${r.coins}</span></div></section>
     <div class="cfshop" aria-hidden="true"><span class="cfdecor">${decor.map(d => d.ico).join(' ') || '🪑'}</span><span class="cfguest${r.ans ? (r.ans.ok ? ' happy' : ' meh') : ''}">${guest}</span><span class="cfbub">${r.ans ? (r.ans.react ? MOOD[r.ans.react].ico : r.ans.ok ? '😊' : '🤔') : it?.kind === 'hear' ? '💬🔊' : '💬'}</span></div>${vip ? `<p class="cfvip">📖 ${esc(vip[1])} ghé quán: phục vụ thật tốt nhé!</p>` : ''}`;
   if (!it) return `${head}<p class="muted">Chưa có tình huống giao tiếp nào cho mục tiêu này.</p><div class="row"><button class="btn primary" data-e="cfnext">Tiếp</button></div>`;

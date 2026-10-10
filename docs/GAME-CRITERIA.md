@@ -1469,3 +1469,33 @@ Bắt Âm là game kỹ năng được bộ não chọn nhiều nhất (bot: 30 
 - Toàn bộ: 282 đơn vị, 224 e2e. Bot chơi trọn 3 màn, 0 kẹt.
 
 **Chấm (tự chấm):** Bắt Âm 3,5 → **5,6** (M2 6, M3 7, M4 5, M5 8).
+
+### 10.17 Đã làm v105–v106: cảnh sống cho 🌱 Vườn từ và ☕ Quán
+
+**Phản biện:**
+- Vườn từ và Quán có luồng HTML phức tạp: thẻ dạy từ, câu chọn / câu tự gõ, nút nghe, phản ứng văn phong. Viết lại thành lớp phủ như Bắt Âm sẽ tốn và dễ vỡ bằng chứng.
+- Chọn bố cục quen thuộc của game di động: **cảnh sống ở 1/3 trên, điều khiển ở dưới**. Thẻ câu hỏi giữ nguyên, nên luật và bằng chứng không đổi.
+
+| Game | Cảnh (canvas sân khấu, đọc trạng thái mỗi khung hình) |
+|---|---|
+| 🌱 Vườn từ | Trời xanh, nắng, luống đất. Mỗi từ của buổi là một chậu, cây vẽ theo bậc nhớ (🌰 → 🌱 → 🌿 → 🌸). Chậu đang hỏi có mũi tên nhấp nhô. Trả lời đúng: **bình tưới nghiêng, giọt nước rơi, cây nảy lớn**. Sai: cây lắc nhẹ |
+| ☕ Quán | Tường ấm, kệ cốc, quầy gỗ, cốc bốc hơi. **Khách bước vào từ bên phải** khi tới lượt, có bong bóng 💬 rồi nét mặt theo câu trả lời (😊 / 😮 / 😕 / 🤔). Cư dân của truyện có khuôn mặt riêng (Bà Lan 👵, Chú Tư 👨‍🍳…), cầm biểu tượng của mình, kèm bảng tên. Có bộ đếm "Khách k / 6" |
+
+Hàng chậu / quầy cũ trong thẻ được ẩn, vì cảnh đã vẽ lại chúng.
+
+**Lỗi có sẵn tìm ra khi quét WCAG:** chữ "đúng" màu `--good` (#16805A) trên nền xanh nhạt chỉ đạt 4,2 : 1, dưới ngưỡng 4,5 : 1. Lỗi này có từ trước, chưa test nào quét khung phản hồi đúng của Vườn từ. Đã đổi `--good` (giao diện sáng) thành #127050: đạt 5,2 : 1 trên nền xanh nhạt, 6,1 : 1 trên nền trắng.
+
+**Kiểm:**
+- e2e cảnh sống (390 px):
+  - Quán có cảnh, thẻ lùi xuống dưới, hàng quầy cũ ẩn;
+  - Vườn trả lời đúng → phản hồi đúng;
+  - WCAG AA toàn trang.
+- Toàn bộ: 282 đơn vị, 226 e2e. Bot 8 ngày không hồi quy (0 kẹt, kiểm tra nhanh mỗi ngày).
+
+**Chưa tìm ra gốc rễ:** test Thư trên Android hỏng 1 lần trong 1 lượt chạy toàn bộ (nút "Gửi thư" bị đè bởi các phần tử thay đổi qua từng lần thử). Đây đúng là dấu hiệu từng thấy trên CI v96. Chạy lại 10 lần (cả song song 4 luồng) đều qua. Nếu gặp lại sẽ bật ghi trace để bắt.
+
+**Chấm (tự chấm):**
+- Vườn từ 3,0 → **4,4** (M4 +2, M5 +3, M8 +1);
+- Quán 3,1 → **4,6** (M4 +2, M5 +3, M8 +1 nhờ cư dân truyện).
+
+Vẫn thấp hơn game chủ lực, vì lõi chơi còn là chọn đáp án.

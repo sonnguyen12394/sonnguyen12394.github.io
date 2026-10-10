@@ -77,3 +77,29 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(errors).toEqual([]);
   });
 }
+
+test('v105–v106 cảnh sống: Vườn từ có luống chậu cây ở trên (cây lớn khi trả lời đúng), Quán có khách bước vào; thẻ câu hỏi bên dưới; bằng chứng như cũ', async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await lobby(page);
+  await play(page, 'cfstart');
+  await expect.poll(() => page.evaluate(() => document.body.classList.contains('scene'))).toBe(true);
+  const top = await page.locator('#app').boundingBox();
+  expect(top!.y).toBeGreaterThan(200);   // chừa 1/3 trên cho cảnh
+  await expect(page.locator('#app .cfshop')).toBeHidden();
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: 'test-results/scene-cafe.png' });
+  await page.locator('.stagebar [data-e="stexit"]').click();
+  await play(page, 'gdstart');
+  await expect.poll(() => page.evaluate(() => document.body.classList.contains('scene'))).toBe(true);
+  const ask = page.locator('[data-e="gdask"]');
+  if (await ask.isVisible()) await ask.click();
+  const pk = await page.evaluate(() => (window as any).eval('EM').peek());
+  if (pk?.opts) await page.locator(`[data-e="gdans"][data-i="${pk.ans}"]`).click();
+  else if (pk?.accept) { await page.locator('#app input[name="a"]').fill(pk.accept[0]); await page.locator('#app input[name="a"]').press('Enter'); }
+  await expect(page.locator('#app .fb.good')).toBeVisible();
+  await page.waitForTimeout(500);
+  await page.screenshot({ path: 'test-results/scene-garden.png' });
+  const r = await new (await import('@axe-core/playwright')).default({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
+  expect(errors).toEqual([]);
+});

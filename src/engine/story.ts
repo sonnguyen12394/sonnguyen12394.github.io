@@ -122,6 +122,8 @@ export function sanitizeStory(raw: unknown): StorySave | undefined {
 }
 // v103 Việc phụ ở game kỹ năng (không bắt buộc, không tính vào nhiệm vụ chương, không ghi bằng chứng): cư dân của chương xuất hiện
 // trong Thư (người nhờ viết) và Quán (khách đầu ca); làm xong mỗi việc một lần mỗi chương được +10 xu.
+// Khuôn mặt nhân vật khi họ xuất hiện như người (khách ở Quán); biểu tượng trong truyện (🌸, 🥖…) thành món đồ cầm theo.
+export const FACE: Record<string, string> = { 'Bà Lan': '👵', 'Chú Tư': '👨‍🍳', 'Bé Bin': '👦', 'Ông Ba': '👴', 'Cô Ngân': '👩', 'Ông Hải': '🧔', 'Thầy Minh': '👨‍🏫', 'Cô Chi': '👩‍🎤' };
 export const SIDE_COINS = 10;
 export type SideKind = 'letter' | 'cafe';
 // Cư dân của chương đang nhận tiến độ (Tí / "mọi người" thì không có).

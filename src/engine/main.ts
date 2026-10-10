@@ -26,11 +26,11 @@ import { viewLobby, viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoard
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
 import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, TIER_COINS, type WkKind } from './weekly.ts';
-import { resident, sideDone, SIDE_COINS, CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind } from './story.ts';
+import { FACE, resident, sideDone, SIDE_COINS, CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind } from './story.ts';
 import { openScene } from './storyfx.ts';
-import { stageSync } from './stagefx.ts';
+import { stageSync, type Scene } from './stagefx.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
-import { GUESTS, stars as cafeStars, freshCafeSave, reactOf, tip as cafeTip } from './cafe.ts';
+import { GUESTS, MOOD, face as cafeFace, stars as cafeStars, freshCafeSave, reactOf, tip as cafeTip } from './cafe.ts';
 import { viewBubbles, viewBubblesEnd, speakKey, type BubbleRun } from './bubbleview.ts';
 import { openBubbles, type BubbleHandle, type BubbleFxState } from './bubblefx.ts';
 import { WORDS, points as bubblePoints, freshBubblesSave } from './bubbles.ts';
@@ -1917,7 +1917,14 @@ export function init(host: EHost): EngineModule {
     sanitize: sanitizeE,
     merge: mergeE,
     // v102: game kỹ năng đang chạy → sân khấu (game chủ lực có lớp phủ riêng nên không tính).
-    stage(on) { const a = drun?.fog ? 'fog' : activeGame()?.game ?? null; stageSync(on && lastRoute === 'quest' && a && !['hunt', 'wheel', 'cards', 'bubbles'].includes(a) ? a : null); },
+    stage(on) {
+      const a = drun?.fog ? 'fog' : activeGame()?.game ?? null, g = on && lastRoute === 'quest' && a && !['hunt', 'wheel', 'cards', 'bubbles'].includes(a) ? a : null;
+      // v105–v106 cảnh sống: Vườn (chậu cây lớn lên, bình tưới) và Quán (khách bước vào, nét mặt) — chỉ trình bày, đọc từ run.
+      let sc: Scene | null = null;
+      if (g === 'garden' && grun && !grun.done) sc = { kind: 'garden', pots: grun.list.map(y => y.s), cur: grun.i, ok: grun.ans ? grun.ans.ok : null, key: `${grun.i}|${grun.n}|${!!grun.ans}` };
+      if (g === 'cafe' && frun && !frun.done) { const vip = frun.k === 0 && frun.vip ? frun.vip : null; sc = { kind: 'cafe', guest: vip ? FACE[vip[1]] ?? vip[0] : cafeFace(frun.seed, frun.k), ...(vip && FACE[vip[1]] ? { prop: vip[0] } : {}), mood: frun.ans ? (frun.ans.react ? MOOD[frun.ans.react].ico : frun.ans.ok ? '😊' : '🤔') : null, name: vip ? vip[1] : '', k: frun.k, total: GUESTS, key: `${frun.k}|${!!frun.ans}` }; }
+      stageSync(g, sc);
+    },
     peek() {
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;
