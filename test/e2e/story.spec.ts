@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { test, expect } from './fixtures.ts';
+import { test, expect, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v101 cốt truyện "Phố Chữ mất tiếng" (GAME-CRITERIA §10.13): thẻ truyện ở sảnh, cảnh truyện, nhiệm vụ nối ba game, chương cuối khu cần
@@ -18,8 +18,7 @@ async function lobby(page: Page, sy?: unknown): Promise<void> {
     if (y) st.e.sy = y;
     w.eval('save()'); w.eval("go('games')");
   }, sy);
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 async function watch(page: Page): Promise<void> {
   await expect(page.locator('#stfx')).toBeVisible();
@@ -79,5 +78,35 @@ test('v101 chương cuối khu: đủ nhiệm vụ game mà thiếu kỹ năng v
   await page.screenshot({ path: 'test-results/story-scene-390.png' });
   await page.locator('#stfx [data-st="skip"]').click();
   expect(await page.evaluate(() => (window as any).eval('st').e.sy.ch)).toBe(2);
+  expect(errors).toEqual([]);
+});
+
+test('v103 việc phụ: cư dân chương 1 (Bà Lan) là khách đầu ca ở Quán và người nhờ viết ở Thư; xong một ca → +10 xu một lần', async ({ page, errors }) => {
+  await lobby(page, { ch: 1, prog: { dig: 0, light: 0, voice: 0 } });
+  const card = page.locator('.stcard');
+  await expect(card).toContainText('Việc phụ');
+  await expect(card).toContainText('Viết thư cho Bà Lan');
+  await card.locator('[data-e="cfstart"]').click();
+  await expect(page.locator('.cfvip')).toContainText('Bà Lan ghé quán');
+  const c0 = await page.evaluate(() => (window as any).eval('st').e.q?.coins ?? 0);
+  const end = page.getByRole('heading', { name: /Đóng ca/ });
+  let gained = 0;
+  for (let i = 0; i < 30 && !(await end.isVisible()); i++) {
+    const next = page.locator('[data-e="cfnext"]').filter({ visible: true });
+    if (await next.count()) { await next.first().click(); continue; }
+    const pk = await page.evaluate(() => (window as any).eval('EM').peek());
+    if (!pk) continue;
+    const before = await page.evaluate(() => (window as any).eval('st').e.q?.coins ?? 0);
+    await page.locator(`[data-e="cfans"][data-i="${pk.ans}"]`).click();
+    gained += (await page.evaluate(() => (window as any).eval('st').e.q?.coins ?? 0)) - before;
+  }
+  await expect(end).toBeVisible();
+  const st = await page.evaluate(() => { const e = (window as any).eval('st').e; return { coins: e.q.coins, side: e.sy.side }; });
+  expect(st.side.cafe).toBe(1);
+  expect(st.coins - c0 - gained).toBe(10);   // +10 xu việc phụ, ngoài xu của ca
+  // Thư: người nhờ viết là Bà Lan.
+  await page.locator('.stagebar [data-e="stexit"], [data-e="qhome"]').first().click();
+  await card.locator('[data-e="ltstart"]').click();
+  await expect(page.locator('#app')).toContainText('Bà Lan');
   expect(errors).toEqual([]);
 });

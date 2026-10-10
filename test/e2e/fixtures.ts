@@ -1,4 +1,5 @@
 import { test as base, expect, type Page } from '@playwright/test';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 // Mỗi test: chặn font Google (không phụ thuộc mạng ngoài), gom lỗi JavaScript của trang để kiểm "không im lặng hỏng".
 // future (mặc định bật cho các test cũ): localStorage 'el-future' = '1' trước khi trang nạp, để tab Ôn thi và mục tiêu
@@ -71,4 +72,21 @@ export async function play(page: Page, start: string): Promise<void> {
 // v99: Leo tháp (game cũ) nằm trong mục thu gọn ở sảnh: mở mọi mục thu gọn trước khi tìm.
 export async function openAll(page: Page): Promise<void> {
   await page.evaluate(() => document.querySelectorAll('details.gall').forEach(d => { (d as HTMLDetailsElement).open = true; }));
+}
+
+// Sảnh game từ màn "games": nạp engine trước (không đo thời gian tải ở đây), chờ bài học chi tiết tải xong, bấm "▶ Chơi", chờ sảnh
+// (chạm trong game lúc đang tải bị giữ chờ — hành vi riêng, không phải điều test này kiểm). Hụt thì báo màn đang hiện
+// (view, chữ trong #app) để biết gốc rễ: CI Safari iOS thỉnh thoảng không thấy sảnh sau 15 s.
+export async function toLobby(page: Page): Promise<void> {
+  await page.evaluate(() => (window as any).eval('emLoad()'));
+  // Chờ bài học chi tiết tải xong TRƯỚC khi bấm: tải xong thì app vẽ lại màn, nút có thể xê dịch đúng lúc bấm (CI Safari iOS).
+  // Trường hợp bấm Chơi khi chưa tải xong có test riêng (director.spec).
+  await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
+  await page.getByRole('button', { name: '▶ Chơi' }).click();
+  const head = page.getByRole('heading', { name: /Hôm nay chơi gì/ });
+  try { await expect(head).toBeVisible({ timeout: 15000 }); }
+  catch (e) {
+    const s = await page.evaluate(() => { const w = window as any; return { view: w.eval('ui.view'), er: w.eval('ui.er'), em: !!w.eval('EM'), app: (document.getElementById('app')?.innerText ?? '').slice(0, 300), stage: document.body.className }; });
+    throw new Error(`sảnh không hiện: ${JSON.stringify(s)}\n${(e as Error).message}`);
+  }
 }

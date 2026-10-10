@@ -49,6 +49,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
   const still = STILL(), music = new Music(), parts: Particle[] = [], dlog: string[] = [];   // dlog: nhật ký kéo thả (chẩn đoán trình duyệt, đọc qua root._log)
   const L = (m: string) => { dlog.push(m); if (dlog.length > 40) dlog.shift(); };
   let W = 0, H = 0, dpr = 1, raf = 0, alive = true;
+  const tgt: Array<{ x: number; y: number }> = [];   // chỗ lá phải đứng (toạ độ trang), cho test đồng bộ: lá trượt bằng transition, WebKit CI vẽ khung chậm
   let tiles: HTMLButtonElement[] = [], handKey = '', boxKey = '', fbKey = '', ansSeen: unknown = null, zone = { x: 0, y: 0, w: 0, h: 0 };
   let drag: { i: number; id: number; sx: number; sy: number; ox: number; oy: number; x: number; y: number; moved: boolean } | null = null, suppressTo = 0;   // chặn click ngay sau khi thả (chạm cảm ứng có thể không phát click: dùng cửa sổ thời gian, không dùng cờ dính)
   let flyer: { text: string; t: number; x: number; y: number } | null = null, shake: { k: number; t: number } | null = null;
@@ -194,6 +195,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
       let x = isDrag ? drag!.x : p.x + dx, y = isDrag ? drag!.y : p.y + dy;
       if (s.ans?.ok && inRow && !still) y -= Math.min(10, (now - (flyer?.t ?? now)) / 20);
       if (shake && s.ans && !s.ans.ok && k === shake.k && !still && now - shake.t < 420) x += Math.sin((now - shake.t) / 28) * 6;
+      tgt[i] = { x: lb.left + x + p.w / 2, y: lb.top + y + TH / 2 };
       b.style.transform = `translate(${x}px,${y}px)${isDrag ? ' scale(1.08) rotate(-2deg)' : ''}`;
       b.style.width = `${p.w}px`;
       b.classList.toggle('drag', !!isDrag);
@@ -242,7 +244,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
   raf = requestAnimationFrame(frame);
   const s0 = st(); if (s0) sync(s0);
 
-  (root as HTMLElement & { _pos?: () => Array<{ t: string; x: number; y: number; on: boolean; k: number }> })._pos = () => tiles.map((b, i) => { const r = b.getBoundingClientRect(); return { t: st()?.hand[i] ?? '', x: r.left + r.width / 2, y: r.top + r.height / 2, on: !!st()?.built.includes(i), k: st()?.built.indexOf(i) ?? -1 }; });
+  (root as HTMLElement & { _pos?: () => Array<{ t: string; x: number; y: number; tx: number; ty: number; on: boolean; k: number }> })._pos = () => tiles.map((b, i) => { const r = b.getBoundingClientRect(); return { t: st()?.hand[i] ?? '', x: r.left + r.width / 2, y: r.top + r.height / 2, tx: tgt[i]?.x ?? NaN, ty: tgt[i]?.y ?? NaN, on: !!st()?.built.includes(i), k: st()?.built.indexOf(i) ?? -1 }; });
   (root as HTMLElement & { _log?: () => string[] })._log = () => [...dlog];
   (root as HTMLElement & { _zone?: () => { x: number; y: number; w: number; h: number } })._zone = () => { const b = cv.getBoundingClientRect(); return { x: b.left + zone.x, y: b.top + zone.y, w: zone.w, h: zone.h }; };
   return {

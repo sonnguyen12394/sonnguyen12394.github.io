@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { test, expect } from './fixtures.ts';
+import { test, expect, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 import { findPath } from '../../src/engine/wordhunt.ts';
 import { weekOf, themeOf } from '../../src/engine/weekly.ts';
@@ -20,8 +20,7 @@ async function lobby(page: Page, coins = 0): Promise<void> {
     if (c) st.e.q = { floor: 1, best: 0, coins: c, runs: 0, wins: 0, ans: 0, ok: 0, day: 0 };
     w.eval('save()'); w.eval("go('games')");
   }, coins);
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 const cells = (page: Page) => page.evaluate(() => { const r = document.getElementById('whfx') as any; return r?._pos ? r._pos() : []; });
@@ -123,7 +122,7 @@ test('v98 sự kiện tuần: thẻ ở sảnh; tuần "thợ mỏ chữ" tìm t
   let k = 0; while (themeOf(weekOf(real + k)).kind !== 'word') k++;
   const w = weekOf(real + k), goal = themeOf(w).goal;
   await page.evaluate(({ o, wk, g }) => { const st = (window as any).eval('st'); st.offset = o; st.e.wk = { week: wk, prog: g - 1, tiers: 2, games: ['wheel'], badges: [] }; (window as any).eval('save()'); (window as any).eval("go('games')"); }, { o: k, wk: w, g: goal });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
+  await toLobby(page);
   await expect(page.locator('.wkcard')).toContainText('Tuần thợ mỏ chữ');
   await expect(page.locator('.wkcard')).toContainText(`${goal - 1}/${goal}`);
   const c0 = await page.evaluate(() => (window as any).eval('st').e.q?.coins ?? 0);
@@ -144,7 +143,7 @@ test('v100 chơi thử (?playtest=1): thẻ Mỏ Chữ có nút nhảy tới mà
   await page.goto('/?playtest=1');
   await page.waitForFunction(() => (window as any).ELREADY === true);
   await page.evaluate(() => (window as any).eval("go('games')"));
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
+  await toLobby(page);
   await page.locator('[data-e="hnjump"][data-lv="10"]').click();
   await expect(page.locator('#whfx .whti')).toContainText('Màn 10 · màn mốc');
   await expect(page.locator('#whfx .whsu')).toContainText('Phá băng');

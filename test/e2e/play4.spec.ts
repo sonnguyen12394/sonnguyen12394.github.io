@@ -1,4 +1,4 @@
-import { test, expect, play } from './fixtures.ts';
+import { test, expect, play, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v83 Thư gửi cư dân phố, v84 Ra lệnh cho robot, v85 Tốc độ 60 giây / Ghép cặp ưu tiên từ đến hạn.
@@ -14,8 +14,7 @@ async function open(page: Page): Promise<void> {
     st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
     w.eval('save()'); w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 
 test('Thư: gửi thư thiếu → cư dân hỏi lại đúng chỗ thiếu; sửa, gửi đủ → hồi âm + quà; tự chấm; lưu như màn Viết theo đề', async ({ page, errors }) => {
@@ -90,5 +89,26 @@ test('Tốc độ 60 giây / Ghép cặp: từ đến hạn ôn đứng đầu n
     return { first: pool.slice(0, 3).sort(), due: all.slice(27).map((x: any) => x.id).sort(), n: pool.length };
   });
   expect(r.first).toEqual(r.due); expect(r.n).toBe(12);
+  expect(errors).toEqual([]);
+});
+
+// Gốc rễ lỗi CI Android "Gửi thư bị chặn": cụm gợi ý dài (đề thiệp mời, 409 px, không xuống dòng) làm trang tràn ngang trên điện thoại.
+test('Thư: cụm gợi ý dài xuống dòng trong khung, trang không tràn ngang ở 390px; nút Gửi thư không bị che', async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await open(page);
+  await play(page, 'ltstart');
+  await page.evaluate(() => {
+    const p = document.querySelector("#app .ltphr")!, s = document.createElement('span');
+    s.className = 'pill'; s.innerHTML = '<span lang="en">Please come to my birthday party</span> · Mời bạn đến tiệc sinh nhật của tôi';
+    p.appendChild(s);
+  });
+  await page.getByRole('button', { name: /Gửi thư/ }).scrollIntoViewIfNeeded();   // v107: cảnh sống đẩy thẻ xuống dưới màn
+  const g = await page.evaluate(() => {
+    const b = [...document.querySelectorAll('#app button')].find(x => /Gửi thư/.test(x.textContent ?? ''))!.getBoundingClientRect();
+    const hit = document.elementFromPoint(b.x + b.width / 2, b.y + b.height / 2);
+    return { sw: document.documentElement.scrollWidth, iw: innerWidth, hit: hit?.closest('button')?.textContent ?? hit?.outerHTML.slice(0, 60) };
+  });
+  expect(g.sw, JSON.stringify(g)).toBeLessThanOrEqual(390);   // máy di động: trang rộng hơn màn thì cửa sổ bố cục nới theo (innerWidth cũng lớn lên)
+  expect(g.hit).toContain('Gửi thư');
   expect(errors).toEqual([]);
 });

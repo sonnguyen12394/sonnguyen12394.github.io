@@ -4220,6 +4220,9 @@ function render(){
   if(ui.view==='exam') exArm();
   if(ui.view==='thi'&&XM) try{ XM.after(ui.xr||'hub'); }catch(e){}
   if((ui.view==='goal'||ui.view==='play')&&EM) try{ EM.after(ui.view==='play'?'quest':ui.er||'goals'); }catch(e){}
+  // v102 sân khấu game kỹ năng (tắt khi rời tab Chơi); v109 cả trò nhanh cũ (Tốc độ 60 giây, Ghép cặp, Thách đấu) khi đang chơi.
+  if(EM&&EM.stage) try{ const g=ui.view==='game'&&ui.game&&!ui.game.done&&ui.game.paused==null?ui.game:null;
+    if(g&&EM.stageApp) EM.stageApp(g.kind, g.kind==='match'?g.got.length:g.score||0); else EM.stage(ui.view==='play'||ui.view==='goal'); }catch(e){}
   if(ui.view==='sound'&&ui.snd&&!ui.snd.done){
     const s=ui.snd;
     if(!s.ans&&s.played!==s.i){ s.played=s.i; say(sndWord(SND[s.id],s.q[s.i]).w); }
@@ -8349,7 +8352,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.7f6ab2c351.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.23200775a9.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8561,6 +8564,8 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
   if(t.dataset.xr){ e.preventDefault(); return go('thi',{xr:t.dataset.xr}); }
   _emErr=''; emLoad().catch(()=>{}); render(); });
 DETAIL_SAFE_VIEW.add('goal'); DETAIL_SAFE_VIEW.add('play'); DETAIL_SAFE_GO.add('play'); DETAIL_SAFE_GO.add('goal'); DETAIL_SAFE_ACT.add('emretry');
+// Nút "▶ Chơi" (data-act=quest) chỉ mở sảnh game của engine, không dùng bài học chi tiết: không giữ chờ tải (trước đây mạng chậm thì phải chờ, vẽ lại giữa chừng là mất cú bấm).
+DETAIL_SAFE_ACT.add('quest');
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,2500)))(()=>emLoad(true).catch(()=>{}));
 // Nạp sẵn khi rảnh để tab “Ôn thi” mở ngay và để gộp/lọc dữ liệu ôn thi khi đồng bộ.
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,1500)))(()=>xmLoad().catch(()=>{}));

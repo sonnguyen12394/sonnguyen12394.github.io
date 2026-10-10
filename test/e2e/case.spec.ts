@@ -1,4 +1,4 @@
-import { test, expect, play } from './fixtures.ts';
+import { test, expect, play, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v78 Thám tử (đọc) / v79 Đài phát thanh (nghe): một bài đúng cấp người học, mỗi câu hỏi hiểu là một manh mối (≥ 3 lựa chọn);
@@ -15,8 +15,7 @@ async function open(page: Page): Promise<void> {
     st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
     w.eval('save()'); w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 const saved = (page: Page) => page.evaluate(() => { const st = (window as any).eval('st'); return { lread: JSON.parse(JSON.stringify(st.lread)), units: Object.fromEntries(Object.entries(st.units).map(([k, v]: any) => [k, { read: v.read ?? null, listen: v.listen ?? null }])), gt: st.e.gt, gr: st.e.gr, led: st.e.ev.led.length }; });
 

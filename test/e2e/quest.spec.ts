@@ -1,4 +1,4 @@
-import { test, expect, openAll } from './fixtures.ts';
+import { test, expect, openAll, toLobby } from './fixtures.ts';
 
 // v62 Ladder Quest: mỗi lượt là một câu do engine chọn; câu trả lời vào bản đồ năng lực, xu/tim/tầng chỉ là telemetry.
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -14,8 +14,7 @@ test('Ladder Quest: vào từ Thử thách, leo một tầng, câu trả lời t
     w.eval('save()');
     w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await page.getByRole('heading', { name: /Hôm nay chơi gì/ }).waitFor({ timeout: 15000 }); await openAll(page);
+  await toLobby(page); await openAll(page);
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible({ timeout: 15000 });
   await expect(page.getByText(/chỉ câu trả lời mới được tính/)).toBeVisible();
   await openAll(page);

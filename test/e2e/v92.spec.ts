@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { test, expect, play } from './fixtures.ts';
+import { test, expect, play, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v92 (GAME-CRITERIA §9.7): game tiếp nhận / trình diễn nâng bằng trình bày, không thêm thao tác (HG24).
@@ -16,8 +16,7 @@ async function open(page: Page): Promise<void> {
     st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
     w.eval('save()'); w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 const axe = async (page: Page) => {

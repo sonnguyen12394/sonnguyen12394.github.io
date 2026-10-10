@@ -1387,3 +1387,231 @@ Chế độ `?playtest=1` thêm nút nhảy tới màn rương 5, màn mốc 10,
 - Bài Câu 5,9 → 6,1
 
 Cảnh truyện vẫn là chữ + emoji, chưa có tranh (M4).
+
+### 10.14 Đã làm v102: "sân khấu" dùng chung cho 14 game kỹ năng
+
+**Yêu cầu:** "Làm tiếp những game còn lại" (13 game cũ + Leo tháp, chấm 2,2–4,6 / 10).
+
+**Phản biện:**
+- Làm lại cả 14 game bằng canvas riêng thì tốn khoảng 14 đợt, lại dàn trải đúng lỗi §10.3.
+- Gốc rễ chung là: nằm trong khung app (M5), không hình / tiếng (M4), phản hồi nhạt (M2). Cả ba sửa được **một lần cho mọi game**.
+- Riêng 3 game được chơi nhiều nhất (Bắt Âm, Vườn từ, Quán) sẽ làm lại ở v104–v106.
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Bật / tắt | Engine nhớ route vừa vẽ. Khi đang ở route game và có game kỹ năng chạy (`activeGame()`, cả Thám hiểm), `body.stage` bật. Rời tab Chơi hoặc về sảnh thì tắt. Ba game chủ lực có lớp phủ riêng nên không tính | `EM.stage()` trong `main.ts`, `app.js` `render()` |
+| Toàn màn | Ẩn thanh trên / thanh tab của app. Thanh sân khấu gồm ✕ (`stexit`, tách khỏi "Về sảnh" của từng game) và tên game trên nền tối riêng | `stagefx.ts`, `index.html` |
+| Cảnh động | Canvas phía sau, mỗi game một cảnh: bong bóng (Bắt Âm), hơi cà phê (Quán), lá (Vườn, Thư), bánh răng (Xưởng), sóng (Đài), nốt nhạc (Karaoke), sương (Thám tử, Thám hiểm), sao (Leo tháp, Bàn Cờ, Câu đố), tia sáng (Robot, Xếp Khối). Giảm chuyển động thì cảnh đứng yên | `STAGES`, `ambient()` |
+| Nội dung | Vẫn trên thẻ nền đặc ở giữa, nên tương phản chữ giữ nguyên (WCAG AA) | CSS `body.stage #app` |
+| Phản hồi | Phản hồi đúng / sai mới: hạt nổ (đúng thì nhiều màu, sai thì đỏ cam), âm (dùng chung của Vòng Chữ), khung phản hồi nảy / rung | `stageSync()` |
+
+Không đổi luật, câu hỏi hay bằng chứng của game nào. e2e kiểm sổ bằng chứng tăng đúng 1 cho một câu.
+
+**Lỗi tìm ra khi kiểm:**
+1. Màn game là `ui.view === 'goal'` (route `quest`), không phải `'play'`. Lần chạy e2e đầu "qua hết" chỉ vì sân khấu chưa hề bật. Đã sửa bằng cách cho engine tự nhớ route.
+2. Nút ✕ dùng chung `data-e="qhome"` làm 10 test bắt trúng 2 nút. Đã đổi sang `stexit`.
+3. Chữ tên game trắng đặt thẳng lên canvas: trình kiểm WCAG, và máy chậm khi canvas chưa vẽ, chỉ thấy nền sáng. Đã thêm khối nền tối riêng và nền `body` tối dự phòng.
+
+**Kiểm:**
+- e2e `stage.spec` (4):
+  - 11 game kỹ năng mở ra toàn màn, ✕ về sảnh có lại khung app;
+  - Quán đúng → khung nảy, Bắt Âm sai → rung, bằng chứng +1;
+  - WCAG AA sáng / tối ở 390 px (Quán, Xưởng), không cuộn ngang.
+- Toàn bộ: 281 đơn vị, 220 e2e.
+- Bot L01, 8 ngày: không hồi quy (72 % lượt chơi ở game chủ lực, kiểm tra nhanh mỗi ngày, 0 kẹt).
+
+**Chấm lại (tự chấm, ước lượng chung cho 14 game):**
+- M4 +1 (cảnh động, âm);
+- M5 +3 (toàn màn, không còn khung app);
+- M2 +1 (phản hồi có hạt / nảy).
+
+Điểm 14 game tăng khoảng **+0,6** (ví dụ Quán 2,5 → 3,1; Bắt Âm 2,9 → 3,5). Vẫn thấp vì lõi chơi còn là chọn đáp án trong HTML; v104–v106 sẽ làm lại 3 game chơi nhiều nhất.
+
+### 10.15 Đã làm v103: nối truyện vào game kỹ năng (nhân vật, việc phụ)
+
+**Gốc rễ:** cốt truyện v101 chỉ chạm ba game chủ lực, nên game kỹ năng vẫn là "thế giới khác". Cách nối rẻ nhất mà không làm lệch lộ trình: **cư dân của chương xuất hiện trong game kỹ năng**, kèm việc phụ không bắt buộc.
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Cư dân của chương | Chương đang nhận tiến độ (đang ở mở đầu thì là chương 1); chương của Tí / "mọi người" không có cư dân | `resident()` trong `story.ts` |
+| Thư | Người nhờ viết là cư dân của chương (ví dụ Bà Lan), thay cho người ngẫu nhiên | `lStart()` |
+| Quán | Khách đầu ca là cư dân của chương, có dòng "📖 Bà Lan ghé quán" | `CafeRun.vip`, `cafeview.ts` |
+| Việc phụ | Thẻ truyện có "✉️ Viết thư cho Bà Lan" và "☕ Mời Bà Lan ở Quán", bấm là vào game. Gửi thư đạt / xong một ca thì +10 xu, mỗi chương một lần. Không tính vào nhiệm vụ chương, không ghi bằng chứng | `sideTasks()`, `sideDone()` |
+
+**Đúng spec:** việc phụ chỉ gợi ý, không đổi lộ trình hay câu hỏi (C69). Bộ não vẫn chọn game theo nhu cầu học.
+
+**Kiểm:**
+- Đơn vị: cư dân đúng chương; thưởng một lần mỗi chương; sang chương mới làm lại được; chương của Tí không có việc phụ; lưu dữ liệu `side`.
+- e2e: thẻ truyện có việc phụ; Quán có Bà Lan; xong ca thì +10 xu đúng một lần, ngoài xu của ca; Thư có Bà Lan nhờ viết.
+- Toàn bộ: 282 đơn vị, 222 e2e. Bot không hồi quy.
+
+**Chấm (tự chấm):** Thư, Quán M8 +1, M10 +1 (khoảng +0,2).
+
+### 10.16 Đã làm v104: 🎯 Bắt Âm bản toàn màn hình
+
+Bắt Âm là game kỹ năng được bộ não chọn nhiều nhất (bot: 30 câu / 8 ngày). Làm lại theo mẫu Bài Câu: lớp phủ ngoài `#app`, `refresh()` ngay sau thao tác, nút DOM thật.
+
+| Phần | Làm gì |
+|---|---|
+| Cảnh | Dưới nước: tia sáng mặt nước, bong bóng nhỏ bay lên |
+| Bong bóng chữ | Nút thật (giữ `data-e="bbans"` nên bằng chứng / bot / test không đổi), màu theo làn, to dần theo chuỗi đúng. **Vùng chạm đứng yên, chỉ hình bên trong nhấp nhô bằng CSS**: chạm dễ trúng, và test / bot bấm được (nút chạy liên tục thì Playwright không bao giờ thấy "đứng yên") |
+| Nghe | Nút "🔊 Nghe lại" lớn và "🐢 Chậm" ở trên |
+| Đúng | Bong bóng nổ ra hạt, **tự sang từ kế sau 1,2 giây**. Máy có micro thì dừng cho phần "nói thử" |
+| Sai | Bong bóng xẹp, bong bóng đúng sáng xanh, nghe lại hai từ của cặp + mẹo, dừng chờ |
+| Hết màn | Hộp kết quả trong lớp phủ: màn mới / về sảnh |
+
+**Kiểm:**
+- e2e Bắt Âm:
+  - 10 từ, bằng chứng ở nút `ph:` với g = 1/3 như cũ;
+  - bản 390 px: bong bóng ≥ 44 px trong màn, **chạm chuột thật** → đúng → sang từ 2;
+  - WCAG AA; ✕ về sảnh.
+- Nói thử (micro) vẫn +5 điểm, không thêm bằng chứng.
+- Toàn bộ: 282 đơn vị, 224 e2e. Bot chơi trọn 3 màn, 0 kẹt.
+
+**Chấm (tự chấm):** Bắt Âm 3,5 → **5,6** (M2 6, M3 7, M4 5, M5 8).
+
+### 10.17 Đã làm v105–v106: cảnh sống cho 🌱 Vườn từ và ☕ Quán
+
+**Phản biện:**
+- Vườn từ và Quán có luồng HTML phức tạp: thẻ dạy từ, câu chọn / câu tự gõ, nút nghe, phản ứng văn phong. Viết lại thành lớp phủ như Bắt Âm sẽ tốn và dễ vỡ bằng chứng.
+- Chọn bố cục quen thuộc của game di động: **cảnh sống ở 1/3 trên, điều khiển ở dưới**. Thẻ câu hỏi giữ nguyên, nên luật và bằng chứng không đổi.
+
+| Game | Cảnh (canvas sân khấu, đọc trạng thái mỗi khung hình) |
+|---|---|
+| 🌱 Vườn từ | Trời xanh, nắng, luống đất. Mỗi từ của buổi là một chậu, cây vẽ theo bậc nhớ (🌰 → 🌱 → 🌿 → 🌸). Chậu đang hỏi có mũi tên nhấp nhô. Trả lời đúng: **bình tưới nghiêng, giọt nước rơi, cây nảy lớn**. Sai: cây lắc nhẹ |
+| ☕ Quán | Tường ấm, kệ cốc, quầy gỗ, cốc bốc hơi. **Khách bước vào từ bên phải** khi tới lượt, có bong bóng 💬 rồi nét mặt theo câu trả lời (😊 / 😮 / 😕 / 🤔). Cư dân của truyện có khuôn mặt riêng (Bà Lan 👵, Chú Tư 👨‍🍳…), cầm biểu tượng của mình, kèm bảng tên. Có bộ đếm "Khách k / 6" |
+
+Hàng chậu / quầy cũ trong thẻ được ẩn, vì cảnh đã vẽ lại chúng.
+
+**Lỗi có sẵn tìm ra khi quét WCAG:** chữ "đúng" màu `--good` (#16805A) trên nền xanh nhạt chỉ đạt 4,2 : 1, dưới ngưỡng 4,5 : 1. Lỗi này có từ trước, chưa test nào quét khung phản hồi đúng của Vườn từ. Đã đổi `--good` (giao diện sáng) thành #127050: đạt 5,2 : 1 trên nền xanh nhạt, 6,1 : 1 trên nền trắng.
+
+**Kiểm:**
+- e2e cảnh sống (390 px):
+  - Quán có cảnh, thẻ lùi xuống dưới, hàng quầy cũ ẩn;
+  - Vườn trả lời đúng → phản hồi đúng;
+  - WCAG AA toàn trang.
+- Toàn bộ: 282 đơn vị, 226 e2e. Bot 8 ngày không hồi quy (0 kẹt, kiểm tra nhanh mỗi ngày).
+
+**Chưa tìm ra gốc rễ:** test Thư trên Android hỏng 1 lần trong 1 lượt chạy toàn bộ (nút "Gửi thư" bị đè bởi các phần tử thay đổi qua từng lần thử). Đây đúng là dấu hiệu từng thấy trên CI v96. Chạy lại 10 lần (cả song song 4 luồng) đều qua. Nếu gặp lại sẽ bật ghi trace để bắt.
+
+**Chấm (tự chấm):**
+- Vườn từ 3,0 → **4,4** (M4 +2, M5 +3, M8 +1);
+- Quán 3,1 → **4,6** (M4 +2, M5 +3, M8 +1 nhờ cư dân truyện).
+
+Vẫn thấp hơn game chủ lực, vì lõi chơi còn là chọn đáp án.
+
+### 10.18 Đã làm v107: cảnh sống cho 7 game kỹ năng còn lại
+
+**Yêu cầu:** "Tiếp tục làm những game kế tiếp cho đến khi xong hết game".
+
+**Phản biện:**
+- Mẫu v105–v106 (cảnh 1/3 trên, thẻ HTML giữ nguyên bên dưới) đã chứng minh: thêm hình / chuyển động mà không đụng luật và bằng chứng. Viết lại từng game thành lớp phủ riêng như Bắt Âm thì tốn gấp nhiều lần và dễ vỡ bằng chứng.
+- Vì vậy dùng **một bộ vẽ cảnh chung** (`src/engine/scenefx.ts`). Mỗi game một cảnh, đọc trạng thái lượt chơi.
+- Bốn game đã có bàn chơi hình ảnh riêng (🗺️ bản đồ sương mù, 📅 lưới 16 ô, 🧱 bàn 8 × 8, 🎲 bàn cờ) **không thêm cảnh**. Thêm vào chỉ đẩy bàn xuống dưới màn hình. Bốn game này để đợt sau, làm phản hồi ngay trên bàn của chúng.
+
+| Game | Cảnh (đúng / sai) |
+|---|---|
+| 🛠️ Xưởng | Băng chuyền chạy, hộp chờ, hộp đang sửa nhấp nhô. Đúng: hộp đóng dấu ✅, trôi đi. Sai: rung, cờ lê 🔧 |
+| ✉️ Thư | Bàn viết bên cửa sổ, cư dân (khuôn mặt truyện) đứng chờ. Đang viết: bút chạy. Thiếu ý: ❓. Đủ: thư 💌 bay tới, 😊 |
+| 🔍 Thám tử | Bảng gỗ ghim thẻ manh mối, đèn pin quét. Đúng: thẻ lật 🔍, nảy. Sai: ❌ |
+| 📻 Đài | Máy thu có màn sóng: tiếng rè giảm dần theo số câu đúng, vạch sóng sáng lên. Đúng: 📶. Sai: ⚡ |
+| 🎤 Karaoke | Sân khấu, đèn rọi sáng khi tới câu của bạn, máy đọc vai kia; nốt nhạc theo combo; chấm tiến độ từng câu |
+| 🤖 Robot | Robot lớn, pin = số món đã lấy. Lệnh chạy được: ✨. Lệnh hỏng: ❓ |
+| 🏰 Leo tháp | Tháp có bậc; người leo bước lên theo câu đúng, trượt khi sai; tim ❤️ / 🤍 |
+
+- Hình trang trí trùng lặp trong thẻ (băng chuyền của Xưởng, hàng thẻ manh mối của Thám tử, đều `aria-hidden`) ẩn khi có cảnh.
+- Thông tin có nhãn cho trình đọc màn hình (sóng của Đài, bàn robot) giữ nguyên.
+
+**Lỗi có sẵn tìm ra khi quét WCAG:** dòng lời kế tiếp của Karaoke mờ 55 % nên chữ dưới 4,5 : 1. Đổi sang chữ nhỏ nghiêng, không làm mờ.
+
+**Kiểm:**
+- e2e 6 game ở 390 px, sáng và tối: có cảnh, thẻ lùi xuống dưới cảnh, WCAG AA, không tràn ngang.
+- Đài cần giọng đọc của máy nên không chạy được trong máy test; cảnh dùng chung đường vẽ với Thám tử.
+- Toàn bộ: 282 đơn vị, 233 e2e. Bot 8 ngày: 0 kẹt, có kiểm tra nhanh mỗi ngày.
+
+**Chấm (tự chấm, so với §10.2 + v102):** M4 +2 (có cảnh vẽ riêng), M8 +1 (Thư: cư dân truyện).
+
+| Game | Điểm mới |
+|---|---|
+| Xưởng | ≈ 3,6 |
+| Thư | ≈ 4,0 |
+| Thám tử | ≈ 3,4 |
+| Đài | ≈ 3,3 |
+| Karaoke | ≈ 3,7 |
+| Robot | ≈ 4,4 |
+| Leo tháp | ≈ 3,5 |
+
+Lõi chơi vẫn là chọn / gõ đáp án, nên chưa lên mức game chủ lực.
+
+### 10.19 Đã làm v108: hiệu ứng trên bàn chơi có sẵn + sửa lớp hạt nổ bị che
+
+**Phản biện:** Thám hiểm, Câu đố ngày, Xếp Khối, Bàn Cờ đã có bàn chơi bằng hình (bản đồ 4 × 4, lưới 16 ô, bàn 8 × 8, bàn cờ). Thêm cảnh 1/3 trên chỉ đẩy bàn xuống dưới màn hình. Thứ chúng thiếu là **khoảnh khắc lớn có hiệu ứng** (M2): nổ hàng, giải nhóm, mở ô, đổ xúc xắc.
+
+**Gốc rễ tìm ra khi làm:**
+- Từ v102, hạt nổ của "phản hồi đúng / sai" được vẽ trên canvas nền.
+- Canvas này nằm **sau** thẻ câu hỏi, mà thẻ có nền đặc (để giữ tương phản WCAG). Kết quả: hạt nổ gần như không ai thấy.
+- **Sửa:** thêm lớp canvas trong suốt `#stagepop` phía trên thẻ, không nhận chạm (`pointer-events: none`). Lớp này chỉ xoá khi khung trước có hạt.
+
+**Việc làm:** `stageBurst(selector)` nổ hạt + âm + lớp CSS ngay tại phần tử. Engine so số đếm của lượt chơi với lần vẽ trước; đổi lượt thì chỉ ghi nhận, không nổ.
+
+| Game | Khoảnh khắc | Hiệu ứng |
+|---|---|---|
+| 🧱 Xếp Khối | nổ hàng / cột | hạt ở từng ô vừa nổ, ô nảy |
+| 📅 Câu đố ngày | giải xong một nhóm | hạt lớn ở dải nhóm vừa giải, dải nảy |
+| 🗺️ Thám hiểm | mở thêm ô bản đồ | hạt lớn ở đúng ô vừa mở |
+| 🎲 Bàn Cờ | đổ xúc xắc; xây nhà | xúc xắc xoay vào (tới lô đất thì ô vừa tới nảy); xây nhà: hạt lớn ở lô |
+
+Bật giảm chuyển động thì không có hạt, không xoay / nảy.
+
+**Kiểm:**
+- e2e:
+  - `#stagepop` ở trên (z 40), `aria-hidden`, không chặn chạm (điểm giữa nút vẫn là nút);
+  - Bàn Cờ đổ xúc xắc thì có hiệu ứng, chạy 4 lần đều qua;
+  - rời game thì lớp này bị gỡ.
+- Toàn bộ: 282 đơn vị, 235 e2e. Bot 8 ngày: 0 kẹt.
+
+**Chấm (tự chấm):**
+- M2 +1 cho bốn game này;
+- M2 +1 cho mọi game sân khấu (hạt nổ giờ mới thật sự thấy được).
+
+Ước lượng: Câu đố ngày ≈ 5,4 · Xếp Khối ≈ 3,9 · Bàn Cờ ≈ 3,9 · Thám hiểm ≈ 3,1.
+
+### 10.20 Đã làm v109: trò nhanh cũ lên sân khấu + bảng chấm lại toàn bộ
+
+**Việc làm:**
+- Ba trò nhanh cũ của `app.js` cũng lên sân khấu chung: ⚡ Tốc độ 60 giây, 🧠 Ghép cặp, 🤝 Thách đấu (mục "Trò nhanh (cũ)").
+  - Ẩn khung app, có nền động; ✕ trên thanh sân khấu thay nút "← Thử thách". Đang giữa lượt thì vẫn hỏi xác nhận như cũ.
+  - Điểm tăng thì ô điểm nảy, có hạt nổ.
+  - Dùng `EM.stageApp(kind, n)`. Engine chưa nạp xong thì trò vẫn chạy như cũ, không có sân khấu.
+- Đến đây **mọi game trong app** đều đã qua ít nhất một đợt nâng: sân khấu, cảnh sống hoặc hiệu ứng trên bàn, và nối truyện ở những game hợp.
+
+**Bảng chấm lại (tự chấm, cùng thang §10.2 so với game dẫn đầu thể loại):**
+
+| Game | §10.2 | Hiện tại | Đã làm |
+|---|---|---|---|
+| ⛏️ Mỏ Chữ | — | **7,3** | game chủ lực canvas (v95–v96) |
+| 🎡 Vòng Chữ | — | **7,2** | game chủ lực canvas (v93–v94) |
+| 🃏 Bài Câu | 2,7 | **5,9** | canvas kéo thả (v97) |
+| 🎯 Bắt Âm | 2,9 | **5,6** | lớp phủ dưới nước (v104) |
+| 📅 Câu đố ngày | 4,6 | ≈ 5,4 | sân khấu + nhóm giải nổ (v102, v108) |
+| ☕ Quán | 2,5 | 4,6 | cảnh quán, cư dân truyện (v105–v106) |
+| 🌱 Vườn từ | 3,0 | 4,4 | cảnh vườn (v105) |
+| 🤖 Robot | 3,4 | ≈ 4,4 | cảnh robot (v107) |
+| ⚡ Tốc độ 60 giây / 🧠 Ghép cặp | 3,6 | ≈ 4,2 | sân khấu (v109) |
+| ✉️ Thư | 2,8 | ≈ 4,0 | cảnh bàn viết, cư dân truyện (v103, v107) |
+| 🧱 Xếp Khối / 🎲 Bàn Cờ | 3,1 | ≈ 3,9 | sân khấu + nổ hàng / xúc xắc (v102, v108) |
+| 🎤 Karaoke | 2,6 | ≈ 3,7 | cảnh sân khấu (v107) |
+| 🛠️ Xưởng | 2,5 | ≈ 3,6 | cảnh băng chuyền (v107) |
+| 🏰 Leo tháp | 2,4 | ≈ 3,5 | cảnh tháp (v107) |
+| 🔍 Thám tử | 2,3 | ≈ 3,4 | cảnh bảng manh mối (v107) |
+| 📻 Đài | 2,2 | ≈ 3,3 | cảnh máy thu (v107) |
+| 🗺️ Thám hiểm | 2,3 | ≈ 3,1 | sân khấu + mở ô nổ (v108) |
+
+**Phản biện, nói thẳng:**
+- Ba đợt v107–v109 nâng phần **trình bày** (M2, M4, M5): có hình, có chuyển động, toàn màn hình, phản hồi thấy được.
+- Phần **cơ chế** (M1 chiều sâu, M3 lặp lại, M6 tiến triển) của các game kỹ năng vẫn là "chọn / gõ đáp án". Vì vậy chúng dừng quanh 3–5, thấp hơn hẳn 3 game chủ lực (6–7).
+- Muốn lên 6+, một game phải có **chữ chính là cách chơi**, như Vòng Chữ / Mỏ Chữ, không phải câu hỏi được trang trí.
+- Không nên làm việc đó cho cả 17 game: §10.3 đã chỉ ra dàn trải là gốc rễ. Hướng đúng là chọn theo số liệu chơi thật (bảng số liệu v89 ở sảnh). Game kỹ năng nào được bộ não chọn nhiều mà người chơi bỏ giữa chừng nhiều thì làm lại cơ chế trước.
+- Cần người sáng lập chơi thật và xem bảng số liệu trước khi chọn.
+
+**Kiểm:** e2e Tốc độ 60 giây và Ghép cặp lên sân khấu, ✕ thoát (có xác nhận khi đang chơi), đúng → điểm nảy, WCAG AA 390px. Bộ đầy đủ (đơn vị, e2e, bot 8 ngày) ghi ở phần kết của đợt.

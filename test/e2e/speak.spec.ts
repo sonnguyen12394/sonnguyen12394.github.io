@@ -1,4 +1,4 @@
-import { test, expect, play } from './fixtures.ts';
+import { test, expect, play, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v80–v82: nói (Karaoke, nói thử ở Bắt Âm) và Xưởng sửa câu. Máy nghe giọng là của trình duyệt: test đặt sẵn kết quả máy nghe (ASR)
@@ -15,8 +15,7 @@ async function open(page: Page): Promise<void> {
     st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
     w.eval('save()'); w.eval("go('games')");
   });
-  await page.getByRole('button', { name: '▶ Chơi' }).click();
-  await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
+  await toLobby(page);
 }
 // Đặt kết quả máy nghe cho khoá `key` (như khi người học vừa nói), rồi vẽ lại.
 const fakeAsr = (page: Page, key: string, p: number) => page.evaluate(([k, v]) => { const w = window as any, A = w.eval('ASR'); A.key = k; A.on = false; A.err = ''; A.res = { words: ['x'], hit: v >= 1 ? [0] : [], heard: 'x', p: v }; w.eval('render()'); }, [key, p] as const);
@@ -83,7 +82,7 @@ test('Bắt Âm: nói thử đúng từ → +5 điểm (telemetry), không thêm
   await page.locator(`[data-e="bbans"][data-i="${pk.ans}"]`).click();
   await expect(page.getByRole('button', { name: /Nói thử từ này/ })).toBeVisible();
   const before = await page.evaluate(() => { const st = (window as any).eval('st'); return st.e.ev.led.length; });
-  const score = async () => Number(await page.locator('section .spread > span b').first().textContent());
+  const score = async () => Number(((await page.locator('#whfx .bbsc b').textContent()) ?? '').split(' ')[0]);   // v104: điểm ở thanh trên lớp phủ
   const s0 = await score();
   await fakeAsr(page, 'bb:1:1', 1);
   await page.screenshot({ path: 'test-results/bubbles-speak.png' });
