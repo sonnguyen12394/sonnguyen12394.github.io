@@ -8,6 +8,7 @@ import type { GameId } from './director.ts';
 export interface Spot { game: GameId; ico: string; vi: string; unit: string; th: [number, number, number, number]; of: (e: EState) => number }
 // Mốc lên cấp 1–4 theo đơn vị riêng của từng game (ván / sao / hoa…), chọn để cấp 1 đến sau ván đầu và cấp 4 cần chơi đều vài tuần.
 export const SPOTS: Spot[] = [
+  { game: 'wheel', ico: '🎡', vi: 'Vòng đu quay', unit: 'màn', th: [1, 10, 30, 80], of: e => Math.max(0, (e.gh?.lv ?? 1) - 1) },
   { game: 'fog', ico: '🗺️', vi: 'Cổng bản đồ', unit: 'lần thám hiểm', th: [1, 2, 4, 8], of: e => e.gf?.runs ?? 0 },
   { game: 'garden', ico: '🌷', vi: 'Vườn hoa', unit: 'hoa', th: [1, 10, 40, 120], of: e => e.gv?.blooms ?? 0 },
   { game: 'blocks', ico: '🏗️', vi: 'Công trường', unit: 'ván', th: [1, 5, 15, 40], of: e => e.bk?.runs ?? 0 },
@@ -48,6 +49,7 @@ export function townGain(before: string, now: Building[]): Building[] {
 // Người chơi chọn công trình nào trang trí trước bằng xu kiếm được; xu tỉ lệ giá trị học (reward() của quest), nên muốn phố đẹp thì phải
 // đi đúng đường học (C345). Quyết định nằm ngoài vòng câu hỏi, không đổi nội dung hay bằng chứng (C69, P13).
 export const DECO: Record<GameId, string[]> = {
+  wheel: ['🎈', '🎠', '🎆', '🌠'],
   fog: ['🚩', '🧭', '🏮', '⛩️'], garden: ['🌻', '🦋', '🪺', '⛲'], blocks: ['🚧', '🎈', '🏗️', '🏆'], puzzle: ['🔔', '🕊️', '🌙', '⭐'],
   cards: ['🎲', '♟️', '🎩', '🏅'], shop: ['🔧', '⚙️', '📦', '🧰'], letter: ['📮', '💌', '🎀', '🎁'], case: ['🔎', '🗝️', '🕯️', '🎻'],
   radio: ['🎙️', '📻', '🎧', '🛰️'], cafe: ['☂️', '🪴', '🧁', '🎶'], bubbles: ['🦆', '🐟', '🪷', '🌈'], kara: ['🎤', '🎸', '🥁', '✨'],

@@ -1007,3 +1007,48 @@ Gốc rễ 2 là chỗ thiết kế và spec gặp nhau. HG24 đòi "mọi hành
    - bộ chọn nội dung của engine (NBA, FSRS) giữ nguyên bên dưới.
 3. Các game còn lại chuyển vào mục "Luyện tập" (không xoá: chúng vẫn là cơ chế bằng chứng của từng chức năng).
 4. Thước đo nghiệm thu: playtest của người sáng lập + chỉ số §8.3. Mục tiêu M ≥ 7 cho game chủ lực trước khi làm game thứ hai.
+
+### 10.5 Đã làm v93: game chủ lực 🎡 Vòng Chữ
+
+**Thể loại:** vuốt chữ thành từ (đứng đầu nhóm game chữ). Chọn vì đây là thể loại mà **chữ tiếng Anh chính là cơ chế**: mọi thao tác là đánh vần một từ (M1, HG24).
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Lõi | Màn dựng từ cụm từ (u:) bộ chọn chung đưa ra (ôn → đang học → lộ trình). Từ gốc là từ của cụm; các ô là từ ghép được từ bộ chữ (kho 6.343 từ đơn của app, không quá cấp người học + 1). Mỗi ô có nghĩa tiếng Việt làm gợi ý. Có từ thưởng, gợi ý một chữ (10 xu), sao theo số gợi ý | `wordwheel.ts` |
+| Độ khó | Đường cong theo số màn: 5 → 6 → 7 chữ cái, 3 → 7 ô. Cứ 5 màn có một màn nghỉ. 6 chương, mỗi chương một bảng màu | `curve()`, `CHAPTERS` |
+| Màn chơi | Lớp phủ toàn màn hình ngoài `#app` (không bị vẽ lại), canvas 60 khung hình / giây. Gồm: vuốt (chuột / ngón tay); bàn phím; ô gõ cho trình đọc màn hình. Hiệu ứng: đường vuốt phát sáng, bong bóng chữ, rung khi sai, chữ bay vào ô, ô nảy lần lượt, hạt nổ, sao rơi khi thắng. Âm: nốt ngũ cung đi lên theo từng chữ, hợp âm khi tìm ra từ, nhạc nền nhẹ tắt được. Lần đầu có bàn tay hướng dẫn. Tôn trọng giảm chuyển động | `wheelview.ts` |
+| Bằng chứng | Chỉ ô thuộc cụm engine chọn, mức 2 (nhớ dạng từ từ nghĩa với bộ chữ cho sẵn, g = 0,1):<br>• không gợi ý → đúng tự lực;<br>• có gợi ý → đúng có trợ giúp;<br>• lộ ≥ nửa số chữ → sai.<br>Từ kho ngoài cụm và thử thách ngày không ghi bằng chứng (nội dung không do engine chọn) | `evidenceOf()` |
+| Thử thách ngày | Cùng một màn cho mọi người trong ngày; chia sẻ kết quả bằng ô màu, không lộ đáp án (M10) | `dailyLevel()`, `shareText()` |
+| Nối app | Bộ não chọn game: ôn từ → Vòng Chữ (88), từ cần học (72), chơi thêm (45). Thẻ lớn ở sảnh ngay dưới "Chơi tiếp". Phố: 🎡 Vòng đu quay. Số liệu chơi, bot người học (`playWheel`) | `director.ts`, `wheelhome.ts`, `town.ts`, `tools/learners/core.ts` |
+
+**Kiểm:**
+- Đơn vị `engine-wheel.test.ts`:
+  - dựng màn trên kho thật;
+  - 30 ngày liền đều có màn thử thách ngày;
+  - chấm từ, gợi ý, bằng chứng.
+- e2e `wheel.spec.ts`:
+  - **vuốt chuột thật** qua tâm chữ trên canvas → ô mở, bằng chứng mức 2;
+  - gõ cũng được;
+  - thắng màn → "Màn tiếp" ngay trong lớp phủ;
+  - gợi ý trừ xu, hết xu thì nút tắt;
+  - thử thách ngày không ghi bằng chứng;
+  - WCAG AA sáng / tối ở 390 px, nút ≥ 44 px.
+
+**Chấm M1–M10 (so với game vuốt chữ dẫn đầu):**
+
+| M1 ×2 | M2 ×2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 7 | 7 | 8 | 5 | 8 | 5 | 6 | 5 | 8 | 6 | **6,6** |
+
+So với game tốt nhất cũ (Câu đố ngày 4,6) là +2,0. **Chưa tới 7**, còn thiếu:
+- **M4 mỹ thuật:** nền là dải màu vẽ bằng mã, nghĩa vẫn kèm emoji; chưa có tranh minh hoạ cho từng chương, chưa có nhân vật đi cùng màn chơi;
+- **M6 chiều sâu:** chưa có ô đặc biệt (chữ vàng, ô thưởng), chưa có chuỗi combo;
+- **M8 sưu tập:** chưa có "sổ từ" gom các từ đã tìm theo chương;
+- **M7:** màn được dựng theo luật từ nội dung engine chọn, chưa có màn thiết kế tay.
+
+Điểm 6,6 vẫn do tôi chấm. **Thước đo nghiệm thu thật là người sáng lập chơi thử** và các chỉ số §8.3.
+
+**Bot người học L01, 8 ngày, `--games director`, v93:**
+- Bộ não chọn Vòng Chữ 3 lần; bot thắng cả 3 màn; không kẹt, 0 lỗi trang.
+- Ô mastery Đạt cuối kỳ: 709 (v90: 710), trong nhiễu.
+- Tỉ lệ đúng thấp hơn (49% so với 55%) vì cơ cấu game khác nhau giữa hai lần chạy. Câu Vòng Chữ là tự gõ nên khó đoán hơn câu chọn.

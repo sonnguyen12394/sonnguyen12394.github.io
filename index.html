@@ -667,6 +667,29 @@ button.wsw{cursor:pointer}
 .krline{display:grid;gap:4px}
 .krbar{display:block;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
 .krbar i{display:block;height:100%;background:var(--accent)}
+.whfx{position:fixed;inset:0;z-index:2147483000;background:#1d1b3a;touch-action:none;user-select:none;-webkit-user-select:none;overscroll-behavior:none}
+html.whopen,html.whopen body{overflow:hidden}
+.whcv{position:absolute;inset:0;display:block}
+.whtop,.whbot{position:absolute;left:0;right:0;display:flex;align-items:center;gap:8px;padding:10px 12px;z-index:1}
+.whtop{top:0;padding-top:max(10px,env(safe-area-inset-top))}
+.whbot{bottom:0;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+.whtt{flex:1;display:grid;line-height:1.2;color:#fff;background:rgba(16,14,40,.72);padding:6px 12px;border-radius:12px;min-width:0}
+.whti{font-size:15px;color:#fff}.whsu{font-size:12px;color:#e8e6ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.whco{color:#fff;background:rgba(16,14,40,.72);padding:8px 12px;border-radius:12px;font-size:14px}
+.whb{min-width:44px;height:44px;border:0;border-radius:14px;background:rgba(16,14,40,.72);color:#fff;font:600 18px system-ui,sans-serif;cursor:pointer;display:inline-grid;place-items:center;padding:0 10px}
+.whb small{font-size:11px;margin-left:2px}
+.whb:disabled{opacity:.5;cursor:default}
+.whb.wide{padding:0 18px;font-size:16px}
+.whb:focus-visible,.whbig:focus-visible,.whform input:focus-visible{outline:3px solid #ffd166;outline-offset:2px}
+.whform{flex:1;display:flex;gap:6px;min-width:0}
+.whform input{flex:1;min-width:0;height:44px;border-radius:14px;border:0;padding:0 12px;font:500 16px system-ui,sans-serif;background:rgba(255,255,255,.92);color:#1d1b3a}
+.whwin{position:absolute;left:50%;top:44%;transform:translate(-50%,-10%);display:grid;justify-items:center;gap:12px;color:#fff;text-align:center;z-index:2;width:min(92vw,420px)}
+.whwin p{margin:0;font:700 18px system-ui,sans-serif;background:rgba(16,14,40,.78);padding:8px 14px;border-radius:12px}
+.whrow{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.whbig{height:52px;padding:0 26px;border:0;border-radius:16px;background:#ffd166;color:#1d1b3a;font:800 18px system-ui,sans-serif;cursor:pointer;box-shadow:0 6px 0 #c99a2e}
+.whhero{position:relative;overflow:hidden;display:grid;gap:10px;padding:18px;border-radius:20px;color:#fff;margin:14px 0}
+.whhero h2{margin:0;font-size:24px;color:#fff}
+.whhero p{margin:0;color:#fff;background:rgba(16,14,40,.55);padding:6px 10px;border-radius:10px;justify-self:start}
 .twbox{margin:14px 0;gap:8px}
 .twg{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
 .twt{display:grid;justify-items:center;gap:2px;padding:8px 4px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,var(--surface),var(--accent-soft));cursor:pointer;text-align:center;font:inherit;color:var(--ink)}
@@ -845,4 +868,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.617007aa63.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.c932b810c9.js" defer></script><script src="app.js?v=67" defer></script>

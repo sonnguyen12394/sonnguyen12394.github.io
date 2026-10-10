@@ -40,6 +40,9 @@ import { viewRobot, viewRobotEnd, robotKey, type RobotRun } from './robotview.ts
 import { layout as robotLayout, parse as robotParse, run as robotRun, won as robotWon, freshRobotSave } from './robot.ts';
 import { viewGarden, viewGardenEnd, type GardenRun } from './gardenview.ts';
 import { pickToday, itemFor, grow as gardenGrow, freshGardenSave, PER_DAY } from './garden.ts';
+import { buildLevel, dailyLevel, curve, judge, nextHint, evidenceOf, stars as wheelStars, chapterOf, shareText as wheelShare, freshWheelSave, GUESS, HINT_COST, type Lex, type Level as WLevel } from './wordwheel.ts';
+import { openWheel, type WheelState, type WheelHandle } from './wheelview.ts';
+import { viewWheelHero, viewWheelBehind } from './wheelhome.ts';
 import { direct, planDay, nextGame, isGame, freshDirSave, GAMES, type DirIn, type DirPick, type GameId, type Need } from './director.ts';
 import { freshPlay, playStart, playAct, playDone, playQuit, playReport, type Via } from './play.ts';
 import { town, townKey, townGain, freshTown, buyDeco, spend } from './town.ts';
@@ -73,7 +76,7 @@ export interface EngineModule {
   merge(a: unknown, b: unknown): EState;
   peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
-export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> } }
+export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[] }
 
 let bound = false;
 
@@ -993,6 +996,75 @@ export function init(host: EHost): EngineModule {
   }
   const gardenWords = (): Record<string, string> => { const out: Record<string, string> = {}; for (const [id, p] of Object.entries(vsave().plants)) { const w = wordsOf(p.n)?.words.find(y => y.id === id); out[id] = w?.en ?? id; } return out; };
 
+  // ---------- Vòng Chữ (v93, game chủ lực — GAME-CRITERIA §10.4) ----------
+  // Màn chơi toàn màn hình (canvas, lớp phủ ngoài #app). Từ gốc lấy từ cụm (u:) do bộ chọn chung đưa ra; ô = từ ghép được từ bộ chữ.
+  // Bằng chứng chỉ ở ô thuộc cụm engine chọn (mức 2, nhớ dạng từ từ nghĩa với bộ chữ cho sẵn, g = GUESS); gợi ý → có trợ giúp hoặc sai.
+  type WRun = WheelState & { mode: 'level' | 'daily'; floor: number; t0: number; chs: Record<string, Challenge>; done: boolean; n: number; ok: number };
+  let hrun: WRun | null = null, hview: WheelHandle | null = null;
+  const hsave = () => { const e = E(); return (e.gh ||= freshWheelSave()); };
+  let lexMap: Map<string, Lex> | null = null;
+  const lexicon = (): Lex[] => host.lexicon?.() ?? [];
+  const lexOf = (id: string) => { if (!lexMap) lexMap = new Map(lexicon().map(x => [x.id, x])); return lexMap.get(id); };
+  function hBuild(mode: 'level' | 'daily', floor: number): { level: WLevel; chs: Record<string, Challenge> } | null {
+    const lex = lexicon(), seed = (Date.now() ^ (E().ev.led.length * 2654435761)) >>> 0;
+    if (mode === 'daily') { const lv = dailyLevel(host.today(), lex); return lv ? { level: { ...lv, slots: lv.slots.map(x => ({ ...x, target: false })) }, chs: {} } : null; }
+    wcache.clear();
+    const pick = kindPicker(n => n.startsWith('u:') && (wordsOf(n)?.words.length ?? 0) > 0, 'h', floor), chs: Record<string, Challenge> = {}, targets: Lex[] = [];
+    for (const k of ['chest', 'monster', 'monster', 'scout', 'monster', 'chest'] as Enc[]) {
+      const ch = pick(k); if (!ch || chs[ch.node]) continue; chs[ch.node] = ch;
+      for (const w of wordsOf(ch.node)!.words) { const lx = lexOf(w.id); targets.push({ en: w.en.toLowerCase(), vi: w.vi, lv: lx?.lv ?? 'A1', node: ch.node, id: w.id, ...(w.pic ? { pic: w.pic } : {}) }); }
+    }
+    const cap = curLv(), want = curve(hsave().lv);
+    const lv = buildLevel(seed, targets, lex, cap, want) ?? buildLevel(seed, targets, lex, cap, { len: want.len, slots: 3 });
+    if (lv) return { level: lv, chs };
+    // Cụm đang học không có từ đơn đủ dài: dựng từ kho cùng cấp (không ghi bằng chứng vì nội dung không do engine chọn).
+    const alt = buildLevel(seed, lex.filter(x => x.lv === cap && x.en.length === want.len).slice(0, 400), lex, cap, want);
+    return alt ? { level: { ...alt, slots: alt.slots.map(x => ({ ...x, target: false })) }, chs: {} } : null;
+  }
+  function hStart(mode: 'level' | 'daily'): boolean {
+    if (!loaded()) { ensure(); return false; }
+    const sv = hsave();
+    if (mode === 'daily' && sv.daily.day === host.today() && sv.daily.done) { host.toast('Hôm nay bạn đã xong thử thách ngày. Mai có màn mới!'); return false; }
+    const b = hBuild(mode, sv.runs + 1);
+    if (!b) { host.toast('Chưa dựng được màn: chọn mục tiêu CEFR trước.'); return false; }
+    const ch = chapterOf(sv.lv);
+    hrun = { mode, floor: sv.runs + 1, t0: Date.now(), chs: b.chs, done: false, n: 0, ok: 0, level: b.level, theme: mode === 'daily' ? { a: '#f093fb', b: '#5b247a', c: '#ffd166' } : ch,
+      title: mode === 'daily' ? '📅 Thử thách ngày' : `🎡 Màn ${sv.lv}`, sub: mode === 'daily' ? 'Cùng một màn cho mọi người hôm nay' : `Chương ${Math.floor((sv.lv - 1) / 10) + 1} · ${ch.vi}`,
+      daily: mode === 'daily', found: new Set(), bonusFound: new Set(), shown: {}, hints: 0, coins: wallet(), gained: 0, win: null };
+    if (typeof document !== 'undefined') { hview?.close(); hview = openWheel(() => hrun, w => hWord(w), host.mascot ? (m, n) => host.mascot!(m, n) : undefined); }
+    return true;
+  }
+  function hWord(raw: string): void {
+    const r = hrun;
+    if (!r || r.win || !raw) return;
+    const w = raw.trim().toLowerCase(), v = judge(r.level, r.found, w), e = E(), sv = hsave(), today = host.today();
+    let coins = 0;
+    if (v === 'slot') {
+      const sl = r.level.slots.find(x => x.en === w)!; r.found.add(w); sv.words++;
+      const ev = r.mode === 'level' ? evidenceOf(sl, (r.shown[w] ?? []).length) : null;
+      if (ev) {
+        const ch = r.chs[sl.node], item = `w:${sl.id}:wheel`, novel = !seenHas(e.ev, sl.node, item);
+        ingest(e.ev, e.m, { node: sl.node, level: 2, ok: ev.ok, g: GUESS, item, text: sl.vi, qt: 'typed', ctx: 'wheel', src: 'game', ch: ch?.id ?? `${QUEST_VER}:h${r.floor}:x:${sl.node}`, gp: ch?.gameplayDifficulty ?? 1, given: w, right: sl.en, ...(ev.hint ? { hint: true } : {}) },
+          { dev: dev(), ts: Date.now(), day: today, recent: e.r });
+        r.n++; if (ev.ok) r.ok++;
+        coins = ch ? reward(ch, ev.ok, novel) : ev.ok ? 3 : 1;
+      } else coins = 2;
+    } else if (v === 'bonus') { r.bonusFound.add(w); sv.bonus++; coins = 2; }
+    if (coins) { const q = qsave(); q.coins += coins; q.day = today; r.gained += coins; }
+    if (r.level.slots.every(x => r.found.has(x.en))) {
+      const st = wheelStars(r.hints);
+      r.win = { stars: st, at: typeof performance !== 'undefined' ? performance.now() : 0 }; r.done = true;
+      sv.runs++; sv.stars += st; sv.day = today;
+      if (r.mode === 'level') sv.lv++; else sv.daily = { day: today, done: true, secs: Math.round((Date.now() - r.t0) / 1000), hints: r.hints };
+      addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: `wheel:${r.floor}`, dec: 'wheel:end', rule: `${RULE_ID}/${QUEST_VER}`, info: { ok: r.ok, of: r.n, hints: r.hints, bonus: r.bonusFound.size, mode: r.mode }, evs: e.ev.led.filter(x => x.ctx === 'wheel' && x.ts >= r.t0).map(x => x.id) }, false);
+    }
+    r.coins = wallet();
+    host.save();
+    hview?.result(v, w);
+    if (r.done) host.render();   // màn kết phía sau lớp phủ: ghi "xong", Phố mới, chặng tiếp
+  }
+  function hClose(): void { hview?.close(); hview = null; }
+
   // ---------- Bàn Cờ Phố (v73) ----------
   const bsave = () => { const e = E(); return (e.bd ||= freshBoardSave()); };
   // Ví xu chung = xu kiếm được ở mọi game − xu tiêu ở Bàn Cờ − xu tiêu ở Phố / hồi tim (v91).
@@ -1195,6 +1267,7 @@ export function init(host: EHost): EngineModule {
   }
   // Game đang chạy (để ghi "vừa chơi" khi bắt đầu, "xong" khi tới màn kết).
   function activeGame(): { game: GameId; done: boolean } | null {
+    if (hrun) return { game: 'wheel', done: hrun.done };
     if (grun) return { game: 'garden', done: grun.done };
     if (rrun) return { game: 'robot', done: rrun.done };
     if (lrun) return { game: 'letter', done: lrun.phase === 'done' };
@@ -1211,7 +1284,7 @@ export function init(host: EHost): EngineModule {
   function markStart(): void { const a = activeGame(); if (!a) return; const sv = gpsave(); sv.last = a.game; sv.runs++; host.save(); }
   // v89 số liệu chơi + Phố chung: màn kết ghi ván xong (một lần), so Phố với lúc bắt đầu, ăn mừng khi có công trình lên cấp.
   const pmsave = () => { const e = E(); return (e.pm ||= freshPlay()); };
-  const LEDGER = new Set<GameId>(['tower', 'blocks', 'board', 'cards', 'cafe', 'bubbles', 'puzzle', 'shop', 'garden', 'fog']);
+  const LEDGER = new Set<GameId>(['wheel', 'tower', 'blocks', 'board', 'cards', 'cafe', 'bubbles', 'puzzle', 'shop', 'garden', 'fog']);
   function endExtras(c: ECtx, game: GameId): string {
     // Câu bằng chứng của ván (C360): chỉ game ghi vào sổ theo câu; game kỹ năng (đọc, nghe, viết, nói) lưu vào Can-Do nên không đếm.
     const pm = pmsave(), cur = pm.cur?.g === game ? pm.cur : null, before = cur ? cur.town : null;
@@ -1271,6 +1344,7 @@ export function init(host: EHost): EngineModule {
   function questBody(c: ECtx): string {
     if (brun) return brun.done ? viewBubblesEnd(c, brun, (brun as BubbleRun & { prevBest?: number }).prevBest ?? 0) : viewBubbles(c, brun, host.probe('ph:s-01').length > 0);
     if (frun) return frun.done ? viewCafeEnd(c, frun, fsave().stars) : viewCafe(c, frun, fsave().stars);
+    if (hrun) return viewWheelBehind(c, hrun, hsave(), !!hview);
     if (grun) return grun.done ? viewGardenEnd(c, grun, vsave().plants, gardenWords()) : viewGarden(c, grun);
     if (rrun) { if (!rrun.done) rrun.heard = host.asrHeard?.(robotKey(rrun))?.heard ?? rrun.heard; return rrun.done ? viewRobotEnd(c, rrun) : viewRobot(c, rrun, host.asrBusy?.(robotKey(rrun)) ?? false); }
     if (lrun) return lrun.phase === 'done' ? viewLetterEnd(c, lrun, lsave().gifts) : viewLetter(c, lrun, host.wrub?.() ?? null, lsave().gifts);
@@ -1284,7 +1358,7 @@ export function init(host: EHost): EngineModule {
     if (qrun?.done) return viewQuestEnd(c, qrun);
     if (qrun) { qrun.revive = qrun.mode === 'tower' && !qrun.revived && qrun.i + 1 < qrun.plan.length && wallet() >= REVIVE ? REVIVE : 0; return viewQuestRun(c, qrun); }
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null) + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null) + viewPlayStats(c, playReport(pmsave()));
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null, c.e.goals.length ? viewWheelHero(c, hsave(), host.today()) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null) + viewPlayStats(c, playReport(pmsave()));
   }
   const routes: Record<string, (c: ECtx) => string> = {
     measure: c => {
@@ -1439,6 +1513,19 @@ export function init(host: EHost): EngineModule {
     ltrub(el) { const r = lrun, i = Number(el.dataset.i), v = Number(el.dataset.v); if (!r || r.phase !== 'rate' || !(i >= 0 && i < 8) || !(v >= 1 && v <= 8)) return; r.self[i] = v; host.render(); },
     ltdone() { lDone(); },
     wsskip() { wAnswer(''); },
+    whstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; hrun = null; if (hStart('level')) { markStart(); host.render(); } },
+    whdaily() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; hrun = null; if (hStart('daily')) { markStart(); host.render(); } },
+    whnext() { if (!hrun?.done || hrun.mode !== 'level') return; if (hStart('level')) { playStart(pmsave(), 'wheel', 'again', Date.now(), townKey(town(E()))); markStart(); host.save(); host.render(); } },
+    whopen() { if (hrun && !hrun.done && !hview) { hview = openWheel(() => hrun, w => hWord(w), host.mascot ? (m, n) => host.mascot!(m, n) : undefined); } },
+    whexit() { hClose(); if (hrun && !hrun.done) { hrun = null; const pm = pmsave(); if (pm.cur && !pm.cur.d) playQuit(pm); host.save(); } host.render(); },
+    whhint() {
+      const r = hrun; if (!r || r.win) return;
+      const h = nextHint(r.level, r.found, r.shown); if (!h || !spend(twsave(), wallet(), HINT_COST)) return;
+      const sl = r.level.slots[h[0]]!; (r.shown[sl.en] ||= []).push(h[1]); r.hints++; r.coins = wallet(); host.save(); hview?.refresh();
+    },
+    whshuf() { hview?.shuffle(); },
+    whmusic() { try { const off = localStorage.getItem('el-music-off') === '1'; if (off) localStorage.removeItem('el-music-off'); else localStorage.setItem('el-music-off', '1'); } catch { /* bỏ qua */ } hview?.music(); hview?.refresh(); },
+    whshare() { const r = hrun, sv = hsave(); if (!r) return; host.share?.(wheelShare(host.today(), r.found.size, r.level.slots.length, sv.daily.hints, sv.daily.secs)); },
     // v91 Hồi tim bằng xu (một lần mỗi tầng): quyết định meta — tiêu xu để học tiếp hay giữ cho phố. Tim là độ khó game (P14), câu không đổi.
     qrevive() {
       const r = qrun;
@@ -1472,7 +1559,7 @@ export function init(host: EHost): EngineModule {
     bksel(el) { const bk = qrun?.bk, i = Number(el.dataset.p); if (!bk || bk.phase !== 'place' || !bk.tray[i] || !fits(bk.g, bk.tray[i]!)) return; bk.sel = i; host.render(); },
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
-    qhome() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; host.render(); },
+    qhome() { hClose(); hrun = null; qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
     qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
@@ -1484,6 +1571,7 @@ export function init(host: EHost): EngineModule {
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
+    whtyped(f) { const i = f.querySelector('input'); const v = i?.value ?? ''; if (i) i.value = ''; hWord(v); },
     gdtyped(f) {
       const it = grun?.item;
       if (!it || grun?.ans || grun?.phase !== 'ask') return;
@@ -1572,6 +1660,7 @@ export function init(host: EHost): EngineModule {
   for (const [k, f] of Object.entries(act)) act[k] = el => {
     const game = START.get(k);
     if (game) {
+      if (game !== 'wheel') { hClose(); hrun = null; }   // mở game khác: đóng lớp phủ Vòng Chữ
       const prev = activeGame(), via: Via = el?.dataset?.g ? 'dir' : prev?.done && prev.game === game ? 'again' : 'self';
       f(el);
       const a = activeGame();
@@ -1625,6 +1714,11 @@ export function init(host: EHost): EngineModule {
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;
       if (drun?.fog?.wait) { const half = Math.ceil((drun.d.max ?? 16) / 2); return { run: 'fogpick', node: '', level: 0, id: `fog:${drun.fog.open.length}`, prompt: '', opts: ['u', 'g'].filter(k => drun!.fog!.kinds[k as 'u' | 'g'] < half), game: 'fog' }; }
       if (drun) return of('diag', drun.node, drun.qs[drun.i]);
+      if (hrun) {   // Vòng Chữ: ô chưa tìm của cụm engine chọn trước (bot gõ từ ở ô gõ của lớp phủ)
+        if (hrun.done || hrun.win) return null;
+        const r = hrun, sl = r.level.slots.find(x => x.target && !r.found.has(x.en)) ?? r.level.slots.find(x => !r.found.has(x.en));
+        return sl ? { run: 'wheel', node: sl.node, level: 2, id: `w:${sl.id}:wheel`, prompt: sl.vi, accept: [sl.en], game: 'wheel', hinted: Object.keys(r.shown).filter(w => !r.found.has(w)) } : null;
+      }
       if (grun) {   // Vườn từ: thẻ dạy (bấm tiếp) hoặc câu của bậc kế
         if (grun.done || grun.ans || !grun.item) return null;
         const x = grun.list[grun.i]!, it = grun.item;

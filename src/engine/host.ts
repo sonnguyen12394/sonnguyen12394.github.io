@@ -47,7 +47,10 @@ export interface EHost {
   lapse(): number | null;
   future?(): boolean;
   mascot?(mood: 'happy' | 'cheer' | 'party' | 'sleep', size: number): string;   // v89: SVG Tí của app (nhân vật dẫn đường trong game)
-  cheer?(big: boolean): void;                        // v89: ăn mừng ở màn kết (big: pháo giấy + nhạc mừng của app; không: tiếng nhỏ)
+  cheer?(big: boolean): void; 
+  lexicon?(): Array<{ en: string; vi: string; lv: string; node: string; id: string; pic?: string }>;   // v93 Vòng Chữ: kho từ đơn 3–8 chữ cái của app (cấp, cụm)
+  share?(text: string): void;                      // v93: chia sẻ văn bản (thử thách ngày), dùng shareText của app
+                       // v89: ăn mừng ở màn kết (big: pháo giấy + nhạc mừng của app; không: tiếng nhỏ)
   recall?(node: string): number | null;              // khả năng nhớ trung bình (FSRS) của các thẻ đã học thuộc nút; null nếu chưa có thẻ (§58)                               // bật mục tiêu tương lai (IELTS, VSTEP, giao tiếp); mặc định tắt                           // ngày gần nhất quên một thẻ khi đến hạn ôn
 }
 

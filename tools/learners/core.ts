@@ -139,7 +139,7 @@ export async function run(P: Profile): Promise<void> {
     if (!ok && P.dunno(s, rnd)) dunno = true;
     const d = P.decide?.(C, q, x, p, ok) ?? null;
     if (d) { ok = d.ok; dunno = false; }
-    const act = { diag: 'dans', quest: 'qans', measure: 'xans', micro: 'mans', probe: 'pans', xfer: 'xans', tout: 'tans', cafe: 'cfans', bubbles: 'bbans', puzzle: 'pzans', case: 'dtans', radio: 'dtans', shop: 'wsskip', garden: 'gdans' }[q.run] ?? 'qans';
+    const act = { diag: 'dans', quest: 'qans', measure: 'xans', micro: 'mans', probe: 'pans', xfer: 'xans', tout: 'tans', cafe: 'cfans', bubbles: 'bbans', puzzle: 'pzans', case: 'dtans', radio: 'dtans', shop: 'wsskip', garden: 'gdans', wheel: 'whtyped' }[q.run] ?? 'qans';
     let given = '';
     if (q.tiles && q.order) {   // v74 Bài Câu: xếp lá theo thứ tự (biết) / đổi chỗ hai lá liền nhau hoặc lấy lá bẫy (chưa biết)
       if (dunno) await page.locator('[data-e="cdskip"]').first().click();
@@ -160,6 +160,7 @@ export async function run(P: Profile): Promise<void> {
       await page.locator(sel).filter({ visible: true }).first().click();
       ok = !dunno && i === q.ans; given = i >= 0 ? q.opts[i] ?? '' : '';
     } else {
+      if (dunno && q.run === 'wheel') { dunno = false; ok = false; }   // v93 Vòng Chữ: không có nút "Không biết" — bot gõ sai
       if (dunno) await page.locator(`[data-e="${act}"][data-i="-1"]`).filter({ visible: true }).first().click();
       else {
         const right = q.accept?.[0] ?? '', typed = d?.typed ?? (ok ? right : wrongType(right));
@@ -549,6 +550,29 @@ export async function run(P: Profile): Promise<void> {
     await click('Về sảnh');
   }
 
+  // v93 Vòng Chữ: lớp phủ toàn màn hình; bot gõ từ (ô gõ của lớp phủ). Sai hai lần một ô → mua gợi ý (như người thật), rồi thử lại.
+  async function playWheel(): Promise<void> {
+    await shot('lobby');
+    const start = page.locator('[data-e="whstart"]').filter({ visible: true }).first();
+    if (!(await start.count())) { note('stuck', 'không thấy Vòng Chữ'); return; }
+    await start.click(); await sleep(150);
+    const miss: Record<string, number> = {};
+    for (let steps = 0; steps < 60; steps++) {
+      await sleep(40);
+      if (await visible('.whwin:not([hidden])')) break;
+      const pk = await peek();
+      if (pk?.run !== 'wheel') break;
+      if ((miss[pk.id] ?? 0) >= 2 && await visible('[data-e="whhint"]:not([disabled])')) { await page.locator('[data-e="whhint"]').first().click(); miss[pk.id] = 0; continue; }
+      const before = await page.evaluate(() => (window as any).eval('st').e.gh?.words ?? 0);   // eslint-disable-line @typescript-eslint/no-explicit-any
+      await answer(pk);
+      const after = await page.evaluate(() => (window as any).eval('st').e.gh?.words ?? 0);   // eslint-disable-line @typescript-eslint/no-explicit-any
+      if (after === before) miss[pk.id] = (miss[pk.id] ?? 0) + 1;
+    }
+    note('wheel-end', { won: await visible('.whwin:not([hidden])') });
+    await page.locator('[data-e="whexit"]').first().click(); await sleep(120);
+    await click('Về sảnh');
+  }
+
   async function runQuiz(kind: string): Promise<void> {
     for (let i = 0; i < 30; i++) {
       await sleep(80);
@@ -596,7 +620,7 @@ export async function run(P: Profile): Promise<void> {
     const floors = P.floors ? P.floors(day, rnd) : day === 0 ? 2 : 2 + (rnd() < 0.3 ? 1 : 0);
     // v72–v73: sảnh có nhiều game; mặc định bot luân phiên tháp, Xếp Khối, Bàn Cờ (--games tower: chỉ tháp, như trước v72).
     // v88 --games director: bot bấm game "Chơi tiếp" mà bộ não của app chọn (không tự chọn / xoay vòng).
-    const DIR_PLAY: Record<string, () => Promise<void>> = { tower: playFloor, blocks: playBlocks, board: playBoard, cards: playCards, cafe: playCafe, bubbles: playBubbles, puzzle: playPuzzle, case: () => playCase('read'), radio: () => playCase('listen'), kara: playKara, shop: playShop, letter: playLetter, robot: playRobot, fog: playFog, garden: playGarden };
+    const DIR_PLAY: Record<string, () => Promise<void>> = { wheel: playWheel, tower: playFloor, blocks: playBlocks, board: playBoard, cards: playCards, cafe: playCafe, bubbles: playBubbles, puzzle: playPuzzle, case: () => playCase('read'), radio: () => playCase('listen'), kara: playKara, shop: playShop, letter: playLetter, robot: playRobot, fog: playFog, garden: playGarden };
     if (GAMES === 'director') {
       for (let f = 0; f < floors; f++) {
         const d = page.locator('.dgo'), dg = (await d.count()) ? (await d.first().getAttribute('data-g')) ?? 'tower' : 'tower';

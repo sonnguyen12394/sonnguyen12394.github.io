@@ -13,13 +13,13 @@ test('v88 bộ não: chưa xếp lớp → Thám hiểm đứng đầu; đã x�
   assert.equal(direct(base({ fogWait: 0, claims: 9, top: null, first: {} }))[0]!.game, 'fog', 'nhiều phần tạm Đạt + hết hạn chờ → xếp lớp lại');
 });
 
-test('v88 bộ não: cây đến ngày tưới → Vườn từ; nhiều phần sắp quên → Xếp Khối / Câu đố ngày', () => {
+test('v88 bộ não: cây đến ngày tưới → Vườn từ; nhiều phần sắp quên → Vòng Chữ (v93, game chủ lực) / Câu đố ngày', () => {
   const g = direct(base({ garden: 4 }))[0]!;
   assert.equal(g.game, 'garden'); assert.equal(g.need, 'water'); assert.match(g.why, /4 từ đến ngày tưới/);
   const r = direct(base({ review: 8, top: { kind: 'review', node: 'review', vi: 'ôn' } }));
-  assert.equal(r[0]!.game, 'blocks'); assert.equal(r[1]!.game, 'puzzle'); assert.match(r[0]!.why, /8 phần/);
+  assert.equal(r[0]!.game, 'wheel'); assert.equal(r[1]!.game, 'puzzle'); assert.match(r[0]!.why, /8 phần/);
   assert.ok(!direct(base({ review: 8, puzzleToday: true })).some(p => p.game === 'puzzle'), 'câu đố mỗi ngày một lần');
-  assert.notEqual(direct(base({ review: 6 }))[0]!.game, 'blocks', 'ít phần sắp quên → không ôn trước học mới (người học khá)');
+  assert.notEqual(direct(base({ review: 6 }))[0]!.game, 'wheel', 'ít phần sắp quên → không ôn trước học mới (người học khá)');
 });
 
 test('v88 bộ não: điểm nghẽn đứng trên bước học mới (người chơi ít game / ngày vẫn tới lượt)', () => {
@@ -32,8 +32,8 @@ test('v88 bộ não: mảng nền 7 ngày qua gần như không luyện được
   const x = base({ top: { kind: 'learn', node: 'g:be', vi: 'be' }, first: { u: 'Chào', g: 'be', ph: 'ship/sheep' }, review: 9, recent: { u: 40, g: 40, fn: 0, ph: 1 } });
   assert.ok(planDay(x).some(p => p.game === 'bubbles'), 'âm chưa luyện → có chặng Bắt Âm');
   assert.ok(!planDay({ ...x, recent: { u: 40, g: 40, ph: 30 } }).some(p => p.game === 'bubbles'));
-  assert.equal(direct(x)[0]!.game, 'blocks');
-  assert.notEqual(direct({ ...x, acc: 0.9 })[0]!.game, 'blocks');
+  assert.equal(direct(x)[0]!.game, 'wheel');
+  assert.notEqual(direct({ ...x, acc: 0.9 })[0]!.game, 'wheel');
 });
 
 test('v88 bộ não: loại nút đầu lộ trình quyết định dạng game (ngữ pháp / giao tiếp / âm)', () => {
@@ -65,11 +65,11 @@ test('v88 lộ trình hôm nay: 3 chặng, mỗi chặng một nhu cầu, ôn tr
   const plan = planDay(x);
   assert.equal(plan.length, 3);
   assert.equal(new Set(plan.map(p => p.need)).size, 3);
-  assert.deepEqual(plan.map(p => p.game), ['garden', 'blocks', 'cards']);
+  assert.deepEqual(plan.map(p => p.game), ['garden', 'wheel', 'cards']);
   assert.equal(nextGame(x, plan).pick.game, 'garden');
   const after = { ...x, played: ['garden'], last: 'garden', garden: 0 };
-  assert.equal(nextGame(after, plan).pick.game, 'blocks');
-  const all = { ...x, played: ['garden', 'blocks', 'cards'], last: 'cards', garden: 0 };
+  assert.equal(nextGame(after, plan).pick.game, 'wheel');
+  const all = { ...x, played: ['garden', 'wheel', 'cards'], last: 'cards', garden: 0 };
   const n = nextGame(all, plan);
   assert.equal(n.inPlan, false); assert.ok(!['cards'].includes(n.pick.game));
 });

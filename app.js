@@ -8345,7 +8345,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.4984f0c820.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.dc7063ca03.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8360,6 +8360,8 @@ const EHOST = {
   sayLines:(lines,slow)=>{ try{ sayLines(lines,slow); }catch(e){} },
   tts:()=>!!HAS_TTS,
   mascot:(m,sz)=>mascot(m,sz),
+  lexicon:()=>(EHOST._lex||=ALL_WORDS.filter(w=>/^[a-z]{3,8}$/.test(w.word)&&UNIT_OF[w.id]).map(w=>({en:w.word,vi:w.vi,lv:UNIT_OF[w.id].level,node:'u:'+UNIT_OF[w.id].id,id:w.id,pic:w.pic||''}))),
+  share:(text)=>{ try{ shareText(text,'wheel'); }catch(e){} },
   cheer:big=>{ try{ if(big&&!FOCUS()){ sfx('win'); if(!STILL()) confetti(); } }catch(e){} },
   gloss:paras=>eGloss(paras),
   // v80–v81: nói. Máy nghe giọng của trình duyệt (asrBox / ASR) — chỉ là phản hồi, không vào mức thuộc (như mọi chỗ khác của app).
