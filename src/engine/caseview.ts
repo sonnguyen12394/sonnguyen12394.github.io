@@ -19,7 +19,7 @@ const head = (c: ECtx, r: CaseRun): string => {
     : `<span class="eyebrow">📻 Đài phát thanh · ${(88 + (r.floor % 50) * 0.4).toFixed(1)} MHz · câu ${Math.min(r.i + 1, n)}/${n}</span>`;
   const noise = r.mode === 'listen' ? `<div class="rdwave" role="img" aria-label="Tiếng rè còn ${Math.round((1 - f / Math.max(1, n)) * 100)}%">${Array.from({ length: 16 }, (_, k) => { const q = 1 - f / Math.max(1, n), wave = 0.5 + 0.45 * Math.sin(k * 0.8), hiss = ((k * 37) % 11) / 11; return `<i style="height:${Math.round(15 + 80 * ((1 - q) * wave + q * hiss))}%;opacity:${(0.45 + 0.55 * (1 - q)).toFixed(2)}"></i>`; }).join('')}</div>` : '';
   return `<section class="stack" style="gap:6px"><div class="spread">${top}<span>🪙 ${r.coins}</span></div>
-    <p class="hint">${esc(t.kind)} · <b lang="en">${esc(t.title)}</b>${t.tvi ? ` · ${esc(t.tvi)}` : ''}</p><div class="row" style="gap:6px">${cards}</div>${noise}${board(c, r)}</section>`;
+    <p class="hint">${esc(t.kind)} · <b lang="en">${esc(t.title)}</b>${t.tvi ? ` · ${esc(t.tvi)}` : ''}</p><div class="row dtcards" style="gap:6px">${cards}</div>${noise}${board(c, r)}</section>`;
 };
 // v92 Bảng manh mối (GAME-CRITERIA §9.3, T5 / T7): mỗi câu hiểu đúng ghim một mảnh (chính đáp án tiếng Anh) lên bảng; câu ý chính cuối
 // cùng là "kết luận" ghép từ các mảnh. Chỉ trình bày lại câu trả lời đúng, không thêm câu hỏi hay thao tác (HG24), không đổi điểm bài.

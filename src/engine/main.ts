@@ -1923,6 +1923,16 @@ export function init(host: EHost): EngineModule {
       let sc: Scene | null = null;
       if (g === 'garden' && grun && !grun.done) sc = { kind: 'garden', pots: grun.list.map(y => y.s), cur: grun.i, ok: grun.ans ? grun.ans.ok : null, key: `${grun.i}|${grun.n}|${!!grun.ans}` };
       if (g === 'cafe' && frun && !frun.done) { const vip = frun.k === 0 && frun.vip ? frun.vip : null; sc = { kind: 'cafe', guest: vip ? FACE[vip[1]] ?? vip[0] : cafeFace(frun.seed, frun.k), ...(vip && FACE[vip[1]] ? { prop: vip[0] } : {}), mood: frun.ans ? (frun.ans.react ? MOOD[frun.ans.react].ico : frun.ans.ok ? '😊' : '🤔') : null, name: vip ? vip[1] : '', k: frun.k, total: GUESTS, key: `${frun.k}|${!!frun.ans}` }; }
+      // v107 cảnh sống cho các game kỹ năng còn lại (§10.18): chỉ đọc trạng thái lượt, không đổi luật / bằng chứng.
+      if (g === 'shop' && wrun && !wrun.done) sc = { kind: 'shop', k: wrun.k, total: ORDERS, packed: wrun.ok, ok: wrun.ans ? wrun.ans.ok : null, key: `${wrun.k}|${!!wrun.ans}` };
+      if (g === 'letter' && lrun && lrun.phase !== 'done') sc = { kind: 'letter', who: FACE[lrun.who[1]] ?? lrun.who[0], name: lrun.who[1], phase: lrun.phase, ok: lrun.res ? lrun.res.ok : null, key: `${lrun.phase}|${lrun.sends}` };
+      if ((g === 'case' || g === 'radio') && trun && !trun.done) sc = { kind: g, flipped: [...trun.flipped], cur: trun.i, ok: trun.ans ? trun.ans.ok : null, key: `${trun.i}|${!!trun.ans}` };
+      if (g === 'kara' && krun && !krun.done) {
+        let last: number | null = null; for (let k = krun.i - 1; k >= 0; k--) { const p = krun.ps[k]; if (p !== null && p !== undefined) { last = p; break; } }
+        sc = { kind: 'kara', n: krun.d.lines.length, i: krun.i, mine: krun.d.lines[krun.i]?.s === ROLE, combo: krun.combo, ok: last === null ? null : last >= 0.8, key: `${krun.i}` };
+      }
+      if (g === 'robot' && rrun && !rrun.done) { const ts = rrun.b.items.filter(x => x.target), l = rrun.log[rrun.log.length - 1]; sc = { kind: 'robot', got: ts.filter(x => x.got).length, total: ts.length, ok: l ? l.ok : null, key: `${rrun.log.length}` }; }
+      if (g === 'tower' && qrun && !qrun.done) sc = { kind: 'tower', floor: qrun.floor, hp: qrun.hp, max: qrun.max, i: qrun.i, n: qrun.plan.length, ok: qrun.ans ? qrun.ans.ok : null, key: `${qrun.i}|${!!qrun.ans}` };
       stageSync(g, sc);
     },
     peek() {

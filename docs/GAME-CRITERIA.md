@@ -1499,3 +1499,46 @@ Hàng chậu / quầy cũ trong thẻ được ẩn, vì cảnh đã vẽ lại 
 - Quán 3,1 → **4,6** (M4 +2, M5 +3, M8 +1 nhờ cư dân truyện).
 
 Vẫn thấp hơn game chủ lực, vì lõi chơi còn là chọn đáp án.
+
+### 10.18 Đã làm v107: cảnh sống cho 7 game kỹ năng còn lại
+
+**Yêu cầu:** "Tiếp tục làm những game kế tiếp cho đến khi xong hết game".
+
+**Phản biện:**
+- Mẫu v105–v106 (cảnh 1/3 trên, thẻ HTML giữ nguyên bên dưới) đã chứng minh: thêm hình / chuyển động mà không đụng luật và bằng chứng. Viết lại từng game thành lớp phủ riêng như Bắt Âm thì tốn gấp nhiều lần và dễ vỡ bằng chứng.
+- Vì vậy dùng **một bộ vẽ cảnh chung** (`src/engine/scenefx.ts`). Mỗi game một cảnh, đọc trạng thái lượt chơi.
+- Bốn game đã có bàn chơi hình ảnh riêng (🗺️ bản đồ sương mù, 📅 lưới 16 ô, 🧱 bàn 8 × 8, 🎲 bàn cờ) **không thêm cảnh**. Thêm vào chỉ đẩy bàn xuống dưới màn hình. Bốn game này để đợt sau, làm phản hồi ngay trên bàn của chúng.
+
+| Game | Cảnh (đúng / sai) |
+|---|---|
+| 🛠️ Xưởng | Băng chuyền chạy, hộp chờ, hộp đang sửa nhấp nhô. Đúng: hộp đóng dấu ✅, trôi đi. Sai: rung, cờ lê 🔧 |
+| ✉️ Thư | Bàn viết bên cửa sổ, cư dân (khuôn mặt truyện) đứng chờ. Đang viết: bút chạy. Thiếu ý: ❓. Đủ: thư 💌 bay tới, 😊 |
+| 🔍 Thám tử | Bảng gỗ ghim thẻ manh mối, đèn pin quét. Đúng: thẻ lật 🔍, nảy. Sai: ❌ |
+| 📻 Đài | Máy thu có màn sóng: tiếng rè giảm dần theo số câu đúng, vạch sóng sáng lên. Đúng: 📶. Sai: ⚡ |
+| 🎤 Karaoke | Sân khấu, đèn rọi sáng khi tới câu của bạn, máy đọc vai kia; nốt nhạc theo combo; chấm tiến độ từng câu |
+| 🤖 Robot | Robot lớn, pin = số món đã lấy. Lệnh chạy được: ✨. Lệnh hỏng: ❓ |
+| 🏰 Leo tháp | Tháp có bậc; người leo bước lên theo câu đúng, trượt khi sai; tim ❤️ / 🤍 |
+
+- Hình trang trí trùng lặp trong thẻ (băng chuyền của Xưởng, hàng thẻ manh mối của Thám tử, đều `aria-hidden`) ẩn khi có cảnh.
+- Thông tin có nhãn cho trình đọc màn hình (sóng của Đài, bàn robot) giữ nguyên.
+
+**Lỗi có sẵn tìm ra khi quét WCAG:** dòng lời kế tiếp của Karaoke mờ 55 % nên chữ dưới 4,5 : 1. Đổi sang chữ nhỏ nghiêng, không làm mờ.
+
+**Kiểm:**
+- e2e 6 game ở 390 px, sáng và tối: có cảnh, thẻ lùi xuống dưới cảnh, WCAG AA, không tràn ngang.
+- Đài cần giọng đọc của máy nên không chạy được trong máy test; cảnh dùng chung đường vẽ với Thám tử.
+- Toàn bộ: 282 đơn vị, 233 e2e. Bot 8 ngày: 0 kẹt, có kiểm tra nhanh mỗi ngày.
+
+**Chấm (tự chấm, so với §10.2 + v102):** M4 +2 (có cảnh vẽ riêng), M8 +1 (Thư: cư dân truyện).
+
+| Game | Điểm mới |
+|---|---|
+| Xưởng | ≈ 3,6 |
+| Thư | ≈ 4,0 |
+| Thám tử | ≈ 3,4 |
+| Đài | ≈ 3,3 |
+| Karaoke | ≈ 3,7 |
+| Robot | ≈ 4,4 |
+| Leo tháp | ≈ 3,5 |
+
+Lõi chơi vẫn là chọn / gõ đáp án, nên chưa lên mức game chủ lực.

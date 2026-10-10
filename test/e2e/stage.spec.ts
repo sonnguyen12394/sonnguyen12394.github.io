@@ -102,3 +102,25 @@ test('v105–v106 cảnh sống: Vườn từ có luống chậu cây ở trên 
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
   expect(errors).toEqual([]);
 });
+
+// v107 cảnh sống cho các game kỹ năng còn lại: mỗi game có cảnh 1/3 trên (canvas aria-hidden), thẻ HTML bên dưới, WCAG AA giữ nguyên.
+for (const scheme of ['light', 'dark'] as const) {
+  test(`v107 cảnh sống: Xưởng, Thư, Thám tử, Karaoke, Robot, Leo tháp có cảnh; thẻ bên dưới; WCAG AA (${scheme}) 390px`, async ({ page, errors }) => {
+    await page.emulateMedia({ colorScheme: scheme });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await lobby(page);
+    for (const start of ['wsstart', 'ltstart', 'dtstart', 'krstart', 'rbstart', 'qstart']) {
+      await play(page, start);
+      await expect.poll(() => page.evaluate(() => document.body.classList.contains('scene')), { message: start }).toBe(true);
+      expect(await page.evaluate(() => document.getElementById('app')!.getBoundingClientRect().top + scrollY), start).toBeGreaterThan(200);   // Thư tự cuộn tới ô viết
+      await page.evaluate(() => scrollTo(0, 0)); await page.waitForTimeout(300);
+      if (scheme === 'light') await page.screenshot({ path: `test-results/scene-${start}.png` });
+      const r = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+      expect(r.violations.map(v => `${start} ${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth), start).toBeLessThanOrEqual(390);
+      await page.locator('.stagebar [data-e="stexit"]').click();
+      await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible();
+    }
+    expect(errors).toEqual([]);
+  });
+}

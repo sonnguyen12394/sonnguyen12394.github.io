@@ -741,7 +741,7 @@ body.stage .opt,body.stage .choice,body.stage .gcard{min-height:48px}
 .bbbub.right .bbin{box-shadow:0 0 0 5px #86efac,0 0 30px #86efac}.bbbub.dim{opacity:.45}
 .bbbub:disabled{cursor:default}
 body.stage.scene #app{margin-top:calc(64px + var(--sceneh,200px))}
-body.scene .cfshop,body.scene .gdpot{display:none}
+body.scene .cfshop,body.scene .gdpot,body.scene .wsbelt,body.scene .dtcards{display:none}   /* hình trang trí trùng với cảnh sống (aria-hidden) */
 .cdhud{position:absolute;top:62px;left:16px;right:16px;display:grid;gap:6px;z-index:1}
 .cdbar{height:8px;border-radius:8px;background:rgba(0,0,0,.35);overflow:hidden}.cdbar i{display:block;height:100%;background:linear-gradient(90deg,#fde68a,#f59e0b);transition:width .4s}
 .cdcharms{display:flex;gap:6px;flex-wrap:wrap}.cdcharm-on{font:600 12px system-ui,sans-serif;color:#1d1b3a;background:#fde68a;border-radius:999px;padding:3px 10px}
@@ -889,7 +889,7 @@ span.bkslot:empty{border-style:dashed;opacity:.4;cursor:default}
 .krline{margin:0;line-height:1.4;color:var(--muted)}
 .krline small{font-size:11px;text-transform:uppercase;letter-spacing:.04em}
 .krline.cur{color:var(--ink);font-size:20px;font-weight:600}
-.krline.next{opacity:.55}
+.krline.next{font-size:14px;font-style:italic}   /* v107: trước là opacity .55 → chữ dưới 4,5:1 (WCAG AA) */
 .krline.me.cur{border-left:3px solid var(--accent);padding-left:8px}
 /* v78 Thám tử / v79 Đài phát thanh: thẻ manh mối, hồ sơ có tô sáng câu chứa đáp án, sóng rè giảm dần khi nghe đúng */
 .dtclue{display:inline-grid;place-items:center;width:34px;height:42px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);font-size:17px;transition:transform .25s}

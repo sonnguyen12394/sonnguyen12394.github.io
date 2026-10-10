@@ -7,6 +7,7 @@
 // Không đổi luật, câu hỏi hay bằng chứng của game nào.
 
 import { snd, STILL } from './wheelview.ts';
+import { drawMore, type MoreScene } from './scenefx.ts';
 
 export interface StageTheme { vi: string; ico: string; a: string; b: string; fx: 'bubble' | 'steam' | 'leaf' | 'gear' | 'wave' | 'note' | 'star' | 'fog' | 'spark' }
 export const STAGES: Record<string, StageTheme> = {
@@ -30,7 +31,8 @@ interface P { x: number; y: number; vx: number; vy: number; r: number; life: num
 // v105–v106 Cảnh sống ở 1/3 trên màn (bố cục game di động: cảnh trên, điều khiển dưới). Thẻ câu hỏi HTML giữ nguyên bên dưới.
 export type Scene =
   | { kind: 'garden'; pots: number[]; cur: number; ok: boolean | null; key: string }
-  | { kind: 'cafe'; guest: string; prop?: string; mood: string | null; name: string; k: number; total: number; key: string };
+  | { kind: 'cafe'; guest: string; prop?: string; mood: string | null; name: string; k: number; total: number; key: string }
+  | MoreScene;
 const POT = ['🌰', '🌱', '🌿', '🌸'];
 let cv: HTMLCanvasElement | null = null, raf = 0, game = '', parts: P[] = [], amb: P[] = [], lastFb = '';
 let scene: Scene | null = null, sceneKey = '', sceneAt = 0, guestKey = '', guestAt = 0;
@@ -56,6 +58,8 @@ function drawScene(g: CanvasRenderingContext2D, sc: Scene, W: number, now: numbe
         g.fillStyle = '#4fb3ff'; for (let k = 0; k < 6; k++) { const yy = top + 52 + ((now / 4 + k * 23) % (h * 0.4)); g.beginPath(); g.arc(cx + 10 - k * 3, yy, 2.5, 0, Math.PI * 2); g.fill(); }
       }
     });
+  } else if (sc.kind !== 'cafe') {
+    drawMore(g, sc, W, top, h, now, t, still);
   } else {
     const wall = g.createLinearGradient(0, top, 0, top + h); wall.addColorStop(0, '#f3d9b1'); wall.addColorStop(1, '#e2b07a'); g.fillStyle = wall;
     g.beginPath(); g.roundRect(8, top, W - 16, h, 18); g.fill();
