@@ -23,7 +23,8 @@ export interface EHost {
   sayLines?(lines: Array<{ s: string; t: string }>, slow?: boolean): void;   // đọc cả bài (hai giọng A / B)
   tts?(): boolean;
   gloss?(paras: string[]): Record<string, { vi: string; learned: boolean }>;
-  fixes?(node: string): FixItem[];                    // v82 Xưởng sửa câu: câu sai của một điểm ngữ pháp
+  fixes?(node: string): FixItem[];
+  wordsOf?(node: string): { node: string; topic: string; vi: string; words: GWord[]; pool: Array<{ en: string; vi: string }> } | null;   // v87 Vườn từ                    // v82 Xưởng sửa câu: câu sai của một điểm ngữ pháp
   wtasks?(lv: string): WTask[];                      // v83 Thư: đề viết ở một cấp
   wcheck?(id: string, text: string): { n: number; checks: Array<[boolean, string]>; hints: Array<{ m: string; why: string; snip: string }> } | null;
   wsave?(id: string, text: string, self?: number[]): void;   // lưu như màn Viết theo đề (Can-Do viết)
@@ -60,6 +61,7 @@ export interface GroupInfo { node: string; topic: string; vi: string; words: Arr
 export interface ReadQ { k: string; q: string; a: string; w: string[]; why: string }
 export interface ReadText { id: string; src: 'lr' | 'unit'; lv: string; title: string; tvi: string; kind: string; mine: boolean; best: number | null; paras: string[]; lines: Array<{ s: string; t: string }> | null; qs: ReadQ[] }
 export interface WTask { id: string; lv: string; genre: string; en: string; vi: string; p: string; pv: string; min: number; max: number; par: number; c: string[]; u: Array<[string, string]>; m: string[]; text: string; done: boolean }
+export interface GWord { id: string; en: string; vi: string; pos: string; pic: string; ipa: string; ex: string; exVi: string }
 export interface FixItem { id: string; level: 4; g: 0; prompt: string; bad: string; good: string; accept: string[]; why: string; vi: string }
 export interface Dialog { id: string; lv: string; title: string; vi: string; place: string; fn: string[]; names: { A: string; B: string }; lines: Array<{ s: string; t: string; vi: string }>; rp: string | null }
 export interface FnItem { id: string; level: 1 | 2 | 3; g: number; kind: 'hear' | 'reply'; prompt: string; say?: string; en: string; vi: string; opts: string[]; ans: number; why?: string }

@@ -507,6 +507,50 @@ Cột G: G1 · G2 · G3 · G4 · G5 · G6 · G7 · G8 · G9 · G10.
 - Nguồn từ (`gamePool`) đổi sang: từ đến hạn ôn trước, rồi từ mới học. Ghép nhầm có giải thích nghĩa cả hai từ.
 - Vẫn dưới ngưỡng phát hành, vì G1 / G5 thấp do luật chơi cũ. Giữ như trò phụ; chưa nên quảng bá.
 
+### 6.6 Đợt 5 (v86–v87): chỉ tập trung CEFR
+
+**Quyết định (10/2026):** app chỉ tập trung CEFR. F12 Luyện thi (IELTS / VSTEP, ⚔️ Đấu trường đề) **bỏ khỏi kế hoạch game**. Đợt này lấp hai chức năng CEFR cuối cùng chưa có game đạt chuẩn: F1 và F2.
+
+| Tiêu chí | 🗺️ Thám hiểm sương mù | 🌱 Vườn từ |
+|---|---|---|
+| G1 Học là luật chơi (×2) | 7 | 7 |
+| G2 Đúng mục đích (×2) | 9 | 9 |
+| G3 Bằng chứng sạch (×2) | 9 | 9 |
+| G4 Engine chọn nội dung | 9 | 8 |
+| G5 Độ khó tách đôi | 9 | 8 |
+| G6 Phản hồi học tập | 5 | 9 |
+| G7 Hấp dẫn thật (×2) | 6 | 7 |
+| G8 Mật độ học | 8 | 7 |
+| G9 Động lực trung thực | 9 | 9 |
+| G10 Phát hành được | 9 | 9 |
+| **Điểm có trọng số (÷ 14)** | **7,9** | **8,1** |
+
+| Game | Chức năng | Tiêu chí riêng | Điểm |
+|---|---|---|---|
+| 🗺️ Thám hiểm sương mù | F1 xếp lớp & chẩn đoán | F1a 8 · F1b 9 · F1c 7 | **8,0** ✓ |
+| 🌱 Vườn từ | F2 học từ mới | F2a 9 · F2b 9 · F2c 8 | **8,7** ✓ (trước 6,7) |
+
+**🗺️ Thám hiểm sương mù** (`diagview.ts` `viewFogPick` / `fogMap`, `main.ts` `fgstart` / `fgpick`)
+- Bọc **đúng bài chẩn đoán** (cầu thang theo cấp, trừ đoán mò, tiên nghiệm, tự đặt mục tiêu).
+- Người chơi chọn đường 🌲 Từ vựng / ⛰️ Ngữ pháp; engine chọn điểm dò có ích nhất của đường đó.
+- Một đường đủ nửa bản đồ thì khoá, để đo cân đối (F1c).
+- Ô sương **mở dù đúng hay sai**, cảnh theo seed: không có phần thưởng cho câu đúng nên không có lý do đoán bừa (F1b, G3).
+- Tối đa 7 ngày một lần, vì cấp không đổi nhanh hơn thế (tránh làm bài xếp lớp thay cho học).
+- **Xếp lớp lại chỉ dò phần chưa có bằng chứng thật.** Bot L01 cho thấy: dò cả phần vừa luyện thì người học trả lời đúng ở đó, cầu thang lên cấp, và tiên nghiệm coi cả phần chưa học cùng cấp là "đã biết". Lần thám hiểm thứ hai làm 17 nút bị tạm Đạt sai; sau khi sửa còn tối đa 2, ngang các bản trước.
+- G6 = 5 là cố ý: bài xếp lớp không dạy, không chữa giữa chừng.
+- F1c = 7: chỉ từ vựng + ngữ pháp; nghe / đọc lấy từ bài kiểm tra Nghe + Đọc.
+
+**🌱 Vườn từ** (`garden.ts`, `gardenview.ts`, host `wordsOf`)
+- Từ mới của cụm engine chọn trên lộ trình.
+- Mỗi từ là một cây: 🌰 thẻ dạy trước (hình, IPA, 🔊, câu ví dụ) → 🌱 nhận ra (mức 1) → 🌿 nhớ ngược (mức 2) → 🌸 tự gõ (mức 3, `g = 0`).
+- Đúng lên một bậc, sai giữ bậc + xem lại thẻ.
+- **Tối đa một bậc / ngày** (giãn cách). Cây đang lớn được tưới trước, còn chỗ mới gieo từ mới.
+- Bằng chứng cùng mã câu với câu dò của tháp (e2e `play5.spec.ts`).
+
+**Kết quả sau đợt 5:** mọi chức năng CEFR (F1–F11, F13) đều có ít nhất một game đạt ngưỡng phát hành. Còn yếu:
+- F13 thói quen: Bàn Cờ Phố 7,1. Hướng tiếp: sổ sưu tập / giải đấu tuần làm lớp phủ.
+- Hai game cũ Tốc độ 60 giây / Ghép cặp: giữ làm trò phụ.
+
 Nguồn xu hướng:
 - [PocketGamer.biz: H1 2026 genre analysis](https://www.pocketgamer.biz/h1-2026-genre-analysis-strategy-stumbles-rpgs-fall-and-puzzle-revenue-ramps-up/)
 - [Top mobile puzzle games 2026](https://respawn.outlookindia.com/gaming/gaming-news/top-mobile-puzzle-games-ruling-the-global-grossing-charts-in-2026)

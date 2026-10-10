@@ -11,7 +11,9 @@ import type { Cefr } from './types.ts';
 import { CEFRS } from './types.ts';
 
 export interface ProbeQ { id: string; level: 1 | 2 | 3; g: number; prompt: string; opts?: string[]; ans?: number; accept?: string[]; en?: string }
-export interface DiagRun { d: DiagState; node: string; qs: ProbeQ[]; i: number; got: number; total: number; gs?: number }   // gs: tổng xác suất đoán trúng của các câu trong phần
+// v86 Thám hiểm sương mù: bài chẩn đoán vẽ thành bản đồ 4 × 4. open: các ô đã mở (thứ tự mở); wait: đang chờ chọn đường; kinds: số điểm dò đã đi mỗi đường.
+export interface FogState { seed: number; open: number[]; wait: boolean; kinds: { u: number; g: number }; cur: 'u' | 'g' | null }
+export interface DiagRun { d: DiagState; node: string; qs: ProbeQ[]; i: number; got: number; total: number; gs?: number; fog?: FogState }   // gs: tổng xác suất đoán trúng của các câu trong phần
 
 // Band Nghe/Đọc gần nhất từ bài kiểm tra đầu vào của phần Ôn thi (st.x.attempts, kind 'place').
 export function lrBand(root: Record<string, unknown>): { L: number | null; R: number | null } {
@@ -41,8 +43,36 @@ export function viewDiagIntro(c: ECtx, lr: { L: number | null; R: number | null 
     <div class="row"><button class="btn primary" data-e="dstart">Bắt đầu dò</button><button class="btn ghost" data-e="go" data-r="goals">Để sau</button></div>`;
 }
 
+// Cảnh của ô theo seed (không theo đúng / sai: mở ô là phần thưởng duy nhất, ai trả lời cũng mở — không có lý do đoán bừa).
+const FOG_SCENE = ['🌲', '🌳', '🏔️', '⛰️', '🏕️', '🌾', '🪨', '🌻', '🦌', '🐿️', '🏞️', '🌉', '🗿', '🍄', '🦉', '⛲'];
+export const FOG_N = 4, FOG_EVERY = 7;   // bản đồ 4 × 4; xếp lớp lại tối đa mỗi 7 ngày
+export function fogMap(c: ECtx, f: FogState): string {
+  const cells: string[] = [];
+  for (let i = 0; i < FOG_N * FOG_N; i++) {
+    const k = f.open.indexOf(i), cur = !f.wait && i === f.open.length;
+    cells.push(`<span class="fgcell${k >= 0 ? ' open' : ''}${cur ? ' cur' : ''}">${k >= 0 ? FOG_SCENE[(f.seed + i * 7) % FOG_SCENE.length] : cur ? (f.cur === 'g' ? '⛰️' : '🌲') : '☁️'}</span>`);
+  }
+  return `<div class="fggrid" role="img" aria-label="Bản đồ: đã mở ${f.open.length} / ${FOG_N * FOG_N} ô">${cells.join('')}</div>`;
+}
+export function viewFogPick(c: ECtx, run: DiagRun): string {
+  const f = run.fog!, max = run.d.max ?? 16, half = Math.ceil(max / 2), lockU = f.kinds.u >= half, lockG = f.kinds.g >= half;
+  return `<section class="stack"><span class="eyebrow">🧭 Thám hiểm sương mù · ${f.open.length}/${max} ô</span><h1>Đi đường nào?</h1>
+    <p class="hint">Mỗi ô là một điểm dò (vài câu). Trả lời đúng hay sai thì ô đều mở: hãy trả lời thật, không chắc thì chọn “Không biết”. Hết bản đồ, app cho biết cấp của bạn.</p></section>
+    ${fogMap(c, f)}
+    <div class="row" style="justify-content:center"><button class="btn${lockU ? '' : ' primary'}" data-e="fgpick" data-k="u" ${lockU ? 'disabled' : ''}>🌲 Rừng Từ vựng (${f.kinds.u})</button><button class="btn${lockG ? '' : ' primary'}" data-e="fgpick" data-k="g" ${lockG ? 'disabled' : ''}>⛰️ Núi Ngữ pháp (${f.kinds.g})</button></div>
+    ${lockU || lockG ? '<p class="hint">Một đường đã đi đủ nửa bản đồ: đi đường còn lại để bản đồ cân đối (đo cả từ vựng lẫn ngữ pháp).</p>' : ''}
+    <div class="row"><button class="btn ghost small" data-e="dstop">Dừng và xem kết quả</button></div>`;
+}
+
 export function viewDiagRun(c: ECtx, run: DiagRun): string {
   const { host } = c, esc = host.esc, q = run.qs[run.i]!, n = run.d.probed.length + 1;
+  if (run.fog) {   // v86: câu của điểm dò hiện dưới bản đồ thu nhỏ
+    const body = q.opts
+      ? `<div class="stack" style="gap:8px">${q.opts.map((o, i) => `<button class="btn" style="justify-content:flex-start" data-e="dans" data-i="${i}" lang="${q.level === 1 ? 'vi' : 'en'}">${esc(o)}</button>`).join('')}<button class="btn ghost" data-e="dans" data-i="-1">Không biết</button></div>`
+      : `<form class="stack" data-eform="dtyped"><input class="field" name="a" autocomplete="off" autocapitalize="off" spellcheck="false" lang="en" aria-label="Câu trả lời"><div class="row"><button class="btn primary">Trả lời</button><button class="btn ghost" type="button" data-e="dans" data-i="-1">Không biết</button></div></form>`;
+    return `<section class="stack"><span class="eyebrow">🧭 Thám hiểm sương mù · ${run.fog.cur === 'g' ? '⛰️ Núi Ngữ pháp' : '🌲 Rừng Từ vựng'} · câu ${run.i + 1}/${run.total}</span></section>
+      <div class="fgmini">${fogMap(c, run.fog)}</div><h2 style="font-size:20px">${esc(q.prompt)}</h2>${body}`;
+  }
   const body = q.opts
     ? `<div class="stack" style="gap:8px">${q.opts.map((o, i) => `<button class="btn" style="justify-content:flex-start" data-e="dans" data-i="${i}" lang="${q.level === 1 ? 'vi' : 'en'}">${esc(o)}</button>`).join('')}
         <button class="btn ghost" data-e="dans" data-i="-1">Không biết</button></div>`

@@ -5,7 +5,7 @@ import type { EHost } from './host.ts';
 import { migrateE, sanitizeE, mergeE, E_V, GOAL_MAX, type EState } from './state.ts';
 import { GOALS, loadGraph, loaded, goalOn } from './data.ts';
 import { viewGoals, viewPick, viewGoal, dayOf, type ECtx } from './views.ts';
-import { viewDiagIntro, viewDiagRun, viewDiagResult, viewLoading, lrBand, type DiagRun } from './diagview.ts';
+import { viewDiagIntro, viewDiagRun, viewDiagResult, viewLoading, lrBand, viewFogPick, FOG_EVERY, type DiagRun } from './diagview.ts';
 import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, autoGoal, guessCorrected, recognitionLevel, QUICK_PROBES, type Cand } from './diag.ts';
 import { ingest, setPrior } from './ev/store.ts';
 import { dev } from './core.ts';
@@ -38,6 +38,8 @@ import { viewKara, viewKaraEnd, karaKey, type KaraRun } from './karaview.ts';
 import { viewLetter, viewLetterEnd, pickTask, verdict as letterVerdict, folk, gift as letterGift, freshLetterSave, type LetterRun } from './letters.ts';
 import { viewRobot, viewRobotEnd, robotKey, type RobotRun } from './robotview.ts';
 import { layout as robotLayout, parse as robotParse, run as robotRun, won as robotWon, freshRobotSave } from './robot.ts';
+import { viewGarden, viewGardenEnd, type GardenRun } from './gardenview.ts';
+import { pickToday, itemFor, grow as gardenGrow, freshGardenSave, PER_DAY } from './garden.ts';
 import { viewShop, viewShopEnd, accepted as shopOk, ORDERS, freshShopSave, type ShopRun } from './workshop.ts';
 import { pick as karaPick, linePoints, verdict as karaVerdict, ROLE, freshKaraSave } from './karaoke.ts';
 import { choose as caseChoose, order as caseOrder, options as caseOptions, solved as caseSolved, caseStars, freshCaseSave } from './detective.ts';
@@ -119,12 +121,15 @@ export function init(host: EHost): EngineModule {
   const CEFR_ORDER = ['cefr-pre-a1', 'cefr-a1', 'cefr-a2', 'cefr-b1', 'cefr-b2', 'cefr-c1', 'cefr-c2'];
   const cefrRank = (id: string): number => CEFR_ORDER.indexOf(id);
   function candidates(): Cand[] {
-    const ix = loaded()!, e = V();
+    const ix = loaded()!, e = V(), fresh = !!drun?.fog;
+    // v86 (bot L01): xếp lớp LẠI chỉ dò phần chưa có bằng chứng thật. Dò cả phần vừa luyện thì người học đúng ở đó, cầu thang lên cấp và
+    // tiên nghiệm coi cả phần chưa học cùng cấp là "đã biết" (L01: 17 nút tạm Đạt sai sau lần thám hiểm thứ hai). Phần đã luyện app đã rõ.
+    const seen = (id: string) => Object.values(e.m[id] ?? {}).some(c => (c?.n ?? 0) > 0);
     const goals = e.goals.map(s => ix.goal.get(s.id)).filter((g): g is NonNullable<typeof g> => !!g);
     const ids = goals.length ? new Set(closure(ix, mergeGoals(goals), defaultLevel).map(r => r.node)) : null;
     const out: Cand[] = [];
     for (const n of ix.node.values()) {
-      if ((n.kind !== 'vocab' && n.kind !== 'grammar') || (ids && !ids.has(n.id))) continue;
+      if ((n.kind !== 'vocab' && n.kind !== 'grammar') || (ids && !ids.has(n.id)) || (fresh && seen(n.id))) continue;
       out.push({ id: n.id, kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), weight: (ix.post.get(n.id) ?? []).filter(x => x.type === 'hard').length });
     }
     return out;
@@ -158,6 +163,7 @@ export function init(host: EHost): EngineModule {
     }
     e.diag = { day: host.today(), u: est.u, g: est.g, n: d.probed.length };
     // Goal-first (v64): chưa có mục tiêu nào đang mở thì tự đặt mục tiêu CEFR kế tiếp (đổi được ở Mục tiêu).
+    if (drun.fog) { const gf = (e.gf ||= { runs: 0, day: 0 }); gf.runs++; gf.day = host.today(); }
     if (!V().goals.length) { const b = lr(); addGoal(autoGoal(est.u, est.g, [b.L, b.R].map(x => (x === null ? null : bandToCefr(x)))), 'auto'); }
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: 'diag', dec: `u=${est.u};g=${est.g}`, rule: `${RULE_ID}/diag-stair-1`,
       info: { u: est.u, g: est.g, ...(rec.u !== null ? { ru: rec.u } : {}), ...(rec.g !== null ? { rg: rec.g } : {}), probes: d.probed.length, start: d.stair.u.seen[0] ?? 0, rev: d.stair.u.rev + d.stair.g.rev },
@@ -180,6 +186,13 @@ export function init(host: EHost): EngineModule {
       answer(drun.d, { id: n.id, kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), weight: 0 }, guessCorrected(drun.got, drun.total, drun.gs) * drun.total, drun.total, rc !== null && rc >= 2 / 3);
       if (rc !== null) drec.push({ kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), rc });
       dmcq = { got: 0, n: 0, gs: 0 };
+      if (drun.fog) {   // v86: ô mở ra (đúng hay sai đều mở), rồi chờ người chơi chọn đường kế tiếp
+        const f = drun.fog;
+        f.open.push(f.open.length); f.wait = true; f.cur = null;
+        if (finished(drun.d, Date.now(), candidates().length - drun.d.probed.length)) { finishDiag(); return; }
+        drun = { d: drun.d, node: '', qs: [], i: 0, got: 0, total: 0, gs: 0, fog: f };
+        sfx('place'); host.save(); host.render(); return;
+      }
       const next = loadNode(drun.d);
       if (!next) { finishDiag(); return; }
       drun = next;
@@ -912,6 +925,68 @@ export function init(host: EHost): EngineModule {
     sfx(win ? 'end' : 'place'); host.save(); host.render();
   }
 
+  // ---------- Vườn từ (v87, F2 học từ mới) ----------
+  // Cây đang lớn trước (giãn cách: một bậc / ngày), còn chỗ thì gieo từ mới của cụm engine chọn (lộ trình). Bằng chứng nút u: mức 1 / 2 / 3.
+  let grun: GardenRun | null = null;
+  const vsave = () => { const e = E(); return (e.gv ||= freshGardenSave()); };
+  const wcache = new Map<string, NonNullable<ReturnType<NonNullable<EHost['wordsOf']>>>>();
+  const wordsOf = (n: string) => { if (!wcache.has(n)) { const x = host.wordsOf?.(n); if (x) wcache.set(n, x); } return wcache.get(n) ?? null; };
+  function gStart(): void {
+    if (!loaded()) { ensure(); return; }
+    const e = E(), sv = vsave(), today = host.today(), seed = (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0;
+    wcache.clear();
+    const pick = kindPicker(n => n.startsWith('u:') && (wordsOf(n)?.words.length ?? 0) > 0, 'v', sv.runs + 1), chs: Record<string, Challenge | null> = {};
+    const fresh: Array<{ id: string; n: string }> = [];
+    for (const k of ['monster', 'monster', 'scout'] as Enc[]) {
+      const ch = pick(k); if (!ch || chs[ch.node] !== undefined) continue; chs[ch.node] = ch;
+      for (const w of wordsOf(ch.node)!.words) if (!sv.plants[w.id]) fresh.push({ id: w.id, n: ch.node });
+      if (fresh.length >= PER_DAY) break;
+    }
+    const today6 = pickToday(sv.plants, fresh, today);
+    const list = today6.map(x => { const w = wordsOf(x.n)?.words.find(y => y.id === x.id); return w ? { w, node: x.n, s: sv.plants[x.id]?.s ?? 0, isNew: !sv.plants[x.id] } : null; }).filter((x): x is NonNullable<typeof x> => !!x);
+    if (!list.length) { host.toast(Object.keys(sv.plants).length ? 'Hôm nay vườn đã được tưới đủ. Mai cây sẽ lớn tiếp nhé!' : 'Chưa có từ mới để gieo: chọn mục tiêu CEFR trước.'); return; }
+    const pools: Record<string, Array<{ en: string; vi: string }>> = {};
+    for (const x of list) pools[x.node] ||= wordsOf(x.node)?.pool ?? [];
+    grun = { floor: sv.runs + 1, seed, t0: Date.now(), i: 0, n: 0, ok: 0, grown: 0, done: false, list, pools, chs, phase: 'ask', item: null, ans: null, novel: false };
+    gEnter(); host.render();
+  }
+  function gEnter(): void {
+    const r = grun!, x = r.list[r.i]!;
+    r.ans = null;
+    r.phase = x.isNew ? 'teach' : 'ask';
+    r.item = itemFor(x.w, Math.min(3, x.s + 1) as 1 | 2 | 3, r.pools[x.node] ?? [], r.seed + r.i * 977);
+    r.novel = !seenHas(E().ev, x.node, r.item.id);
+  }
+  function gAnswer(ok: boolean, given: string): void {
+    const r = grun;
+    if (!r || r.phase !== 'ask' || !r.item || r.ans) return;
+    const e = E(), sv = vsave(), x = r.list[r.i]!, it = r.item, ch = r.chs[x.node] ?? null, today = host.today();
+    ingest(e.ev, e.m, { node: x.node, level: it.level, ok, g: it.g, item: it.id, text: it.prompt, qt: it.opts ? 'mcq' : 'typed', ctx: 'learn', src: 'game', ch: ch?.id ?? `${QUEST_VER}:v${r.floor}:x:${x.node}`, gp: ch?.gameplayDifficulty ?? 1, ...(given ? { given, right: it.accept?.[0] ?? it.opts?.[it.ans ?? 0] ?? '' } : {}) }, { dev: dev(), ts: Date.now(), day: today, recent: e.r });
+    const before = sv.plants[x.w.id]?.s ?? 0;
+    sv.plants[x.w.id] = gardenGrow(sv.plants[x.w.id], x.node, ok, today);
+    if (ok) { r.ok++; r.grown++; x.s = sv.plants[x.w.id]!.s; if (before < 3 && x.s >= 3) sv.blooms++; }
+    r.n++; r.ans = { ok, given };
+    const coins = ch ? reward(ch, ok, r.novel) : ok ? 3 : 1, q = qsave(); q.ans++; if (ok) q.ok++; q.coins += coins; q.day = today;
+    sfx(ok ? 'clear' : 'bad'); host.save(); host.render();
+  }
+  function gNext(): void {
+    const r = grun;
+    if (!r) return;
+    if (r.i + 1 >= r.list.length) { gEnd(); return; }
+    r.i++; gEnter(); host.render();
+  }
+  function gEnd(): void {
+    const r = grun;
+    if (!r) return;
+    const e = E(), sv = vsave(), ixq = loaded()!;
+    r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
+    sv.runs++; sv.day = host.today();
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `garden:${r.floor}`, dec: 'garden:end', rule: `${RULE_ID}/${QUEST_VER}`,
+      info: { ok: r.ok, of: r.n, plants: Object.keys(sv.plants).length, blooms: sv.blooms }, evs: e.ev.led.filter(x => x.ch?.includes(`:v${r.floor}:`)).slice(-r.n).map(x => x.id) }, false);
+    sfx('end'); host.save(); host.render();
+  }
+  const gardenWords = (): Record<string, string> => { const out: Record<string, string> = {}; for (const [id, p] of Object.entries(vsave().plants)) { const w = wordsOf(p.n)?.words.find(y => y.id === id); out[id] = w?.en ?? id; } return out; };
+
   // ---------- Bàn Cờ Phố (v73) ----------
   const bsave = () => { const e = E(); return (e.bd ||= freshBoardSave()); };
   const wallet = () => Math.max(0, qsave().coins - bsave().spent);
@@ -1122,6 +1197,7 @@ export function init(host: EHost): EngineModule {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
       if (brun) return brun.done ? viewBubblesEnd(c, brun, (brun as BubbleRun & { prevBest?: number }).prevBest ?? 0) : viewBubbles(c, brun, host.probe('ph:s-01').length > 0);
       if (frun) return frun.done ? viewCafeEnd(c, frun, fsave().stars) : viewCafe(c, frun, fsave().stars);
+      if (grun) return grun.done ? viewGardenEnd(c, grun, vsave().plants, gardenWords()) : viewGarden(c, grun);
       if (rrun) { if (!rrun.done) rrun.heard = host.asrHeard?.(robotKey(rrun))?.heard ?? rrun.heard; return rrun.done ? viewRobotEnd(c, rrun) : viewRobot(c, rrun, host.asrBusy?.(robotKey(rrun)) ?? false); }
       if (lrun) return lrun.phase === 'done' ? viewLetterEnd(c, lrun, lsave().gifts) : viewLetter(c, lrun, host.wrub?.() ?? null, lsave().gifts);
       if (wrun) return wrun.done ? viewShopEnd(c, wrun, (wrun as ShopRun & { prevBest?: number }).prevBest ?? 0) : viewShop(c, wrun, loaded()?.node.get(wrun.node)?.vi ?? '');
@@ -1134,7 +1210,7 @@ export function init(host: EHost): EngineModule {
       if (qrun?.done) return viewQuestEnd(c, qrun);
       if (qrun) return viewQuestRun(c, qrun);
       const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-      return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
+      return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
     },
     micro: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -1167,7 +1243,7 @@ export function init(host: EHost): EngineModule {
       if (!tout && (!toutRes || toutRes.node !== node)) toutStart(node);
       return viewTout(c, tout, toutRes && toutRes.node === node ? toutRes : null);
     },
-    diag: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return drun ? viewDiagRun(c, drun) : viewDiagIntro(c, lr(), c.route === 'diag/quick'); },
+    diag: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return drun ? (drun.fog?.wait ? viewFogPick(c, drun) : viewDiagRun(c, drun)) : viewDiagIntro(c, lr(), c.route === 'diag/quick'); },
     'diag-result': c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewDiagResult(c, lr()); },
     goals: viewGoals,
     why: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewWhy(c); },
@@ -1204,40 +1280,67 @@ export function init(host: EHost): EngineModule {
       diagAnswer(i >= 0 && i === q.ans, q);
     },
     dstop() { finishDiag(); },
+    // v86 Thám hiểm sương mù: bài chẩn đoán dạng bản đồ; người chơi chọn đường (loại điểm dò), engine chọn điểm dò có ích nhất của đường đó.
+    fgstart() {
+      if (!loaded()) { ensure(); return; }
+      const gf = E().gf, wait = gf?.day ? FOG_EVERY - (host.today() - gf.day) : 0;   // xếp lớp lại: mỗi FOG_EVERY ngày một lần (cấp không đổi nhanh hơn thế)
+      if (wait > 0) { host.toast(`Bản đồ mới mở sau ${wait} ngày nữa. Trong lúc chờ, chơi các game khác để lên cấp nhé.`); return; }
+      qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null;
+      drec = []; dmcq = { got: 0, n: 0, gs: 0 };
+      drun = { d: startDiag(startLevel(), Date.now()), node: '', qs: [], i: 0, got: 0, total: 0, gs: 0, fog: { seed: (Date.now() >>> 3) % 9973, open: [], wait: true, kinds: { u: 0, g: 0 }, cur: null } };
+      host.go('diag');
+    },
+    fgpick(el) {
+      const r = drun, k = el.dataset.k === 'g' ? 'g' : 'u';
+      if (!r?.fog?.wait) return;
+      const half = Math.ceil((r.d.max ?? 16) / 2);
+      if (r.fog.kinds[k] >= half) return;
+      r.d.turn = k;
+      const next = loadNode(r.d);
+      if (!next) { finishDiag(); return; }
+      const kind = loaded()!.node.get(next.node)?.kind === 'grammar' ? 'g' : 'u';
+      r.fog.kinds[kind]++; r.fog.wait = false; r.fog.cur = kind;
+      drun = { ...next, fog: r.fog };
+      host.render();
+    },
     pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
-    qstart() { crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; qStart(); },
-    bkstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; qStart('blocks'); },
-    bdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; qStart('board'); },
-    cdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; cStart(); },
+    qstart() { crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; qStart(); },
+    bkstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; qStart('blocks'); },
+    bdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; qStart('board'); },
+    cdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; cStart(); },
     cdtile(el) { const r = crun, i = Number(el.dataset.i); if (!r || r.ans || r.built.includes(i) || !(i >= 0 && i < r.hand.length)) return; r.built.push(i); sfx('place'); host.render(); },
     cdback(el) { const r = crun, k = Number(el.dataset.k); if (!r || r.ans) return; r.built.splice(k, 1); host.render(); },
     cdclear() { if (crun && !crun.ans) { crun.built = []; host.render(); } },
     cdplay() { cPlay(false); },
     cdskip() { cPlay(true); },
     cdnext() { cNext(); },
-    cfstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; fStart(); },
+    cfstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; fStart(); },
     cfans(el) { fAnswer(Number(el.dataset.i)); },
     cfnext() { fNext(); },
-    bbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; bStart(); },
+    bbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; bStart(); },
     bbans(el) { bAnswer(Number(el.dataset.i)); },
     bbnext() { bNext(); },
-    pzstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; zStart(); },
+    pzstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; zStart(); },
     pztile(el) { const r = zrun, i = Number(el.dataset.i); if (!r || r.recall || !(i >= 0 && i < r.tiles.length) || r.solved.includes(r.tiles[i]![0])) return; const k = r.sel.indexOf(i); if (k >= 0) r.sel.splice(k, 1); else if (r.sel.length < PER) r.sel.push(i); r.msg = null; sfx('place'); host.render(); },
     pzclear() { if (zrun && !zrun.recall) { zrun.sel = []; zrun.msg = null; host.render(); } },
     pzhint() { const r = zrun; if (!r || r.recall) return; const cand = [...r.sel, ...r.tiles.map((_, i) => i)].find(i => !r.shown.includes(i) && !r.solved.includes(r.tiles[i]![0])); if (cand !== undefined) { r.shown.push(cand); host.render(); } },
     pzsubmit() { zSubmit(); },
     pzans(el) { const it = zrun?.recall?.item, i = Number(el.dataset.i); if (!it) return; zAnswer(i >= 0 && !!it.opts && i === it.ans, i >= 0 ? it.opts?.[i] ?? '' : ''); },
     pznext() { zNext(); },
-    dtstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; tStart('read'); },
-    rdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; tStart('listen'); },
+    dtstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; tStart('read'); },
+    rdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; tStart('listen'); },
     dtans(el) { tAnswer(Number(el.dataset.i)); },
     dtretry() { const r = trun; if (!r || !r.ans || r.ans.ok || r.ans.retry) return; r.ans = null; r.retry = true; if (r.mode === 'listen' && r.text.lines) { host.sayLines?.(r.text.lines, false); r.plays++; } host.render(); },
     dtnext() { tNext(); },
     dtgloss(el) { const r = trun, w = el.dataset.w || ''; if (!r || !r.gloss[w]) return; r.look = w; r.looked++; host.render(); },
-    krstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; kStart(); },
-    wsstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; wStart(); },
-    ltstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; lStart(); },
-    rbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; rStart(); },
+    krstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; kStart(); },
+    wsstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; wStart(); },
+    ltstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; lStart(); },
+    gdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; gStart(); },
+    gdask() { if (grun?.phase === 'teach') { grun.phase = 'ask'; host.render(); } },
+    gdans(el) { const it = grun?.item, i = Number(el.dataset.i); if (!it) return; gAnswer(i >= 0 && !!it.opts && i === it.ans, i >= 0 ? it.opts?.[i] ?? '' : ''); },
+    gdnext() { gNext(); },
+    rbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; rStart(); },
     rbmic() { if (rrun && !rrun.done) { rrun.heard = null; host.asrHear?.(robotKey(rrun)); } },
     rbrun() { const h = rrun?.heard; if (h) rExec(h); },
     rbgive() { rEnd(); },
@@ -1258,7 +1361,7 @@ export function init(host: EHost): EngineModule {
     bksel(el) { const bk = qrun?.bk, i = Number(el.dataset.p); if (!bk || bk.phase !== 'place' || !bk.tray[i] || !fits(bk.g, bk.tray[i]!)) return; bk.sel = i; host.render(); },
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
-    qhome() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; host.render(); },
+    qhome() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
     qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
@@ -1270,6 +1373,13 @@ export function init(host: EHost): EngineModule {
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
+    gdtyped(f) {
+      const it = grun?.item;
+      if (!it || grun?.ans || grun?.phase !== 'ask') return;
+      const raw = String(new FormData(f).get('a') || ''), a = norm(raw);
+      if (!a) { host.toast('Gõ câu trả lời, hoặc chọn "Không biết".'); return; }
+      gAnswer((it.accept ?? []).some(x => norm(x) === a), raw.trim());
+    },
     rbcmd(f) {
       const raw = String(new FormData(f).get('a') || '').trim();
       if (!raw) { host.toast('Gõ một lệnh, ví dụ: go right two steps'); return; }
@@ -1383,7 +1493,14 @@ export function init(host: EHost): EngineModule {
     peek() {
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;
+      if (drun?.fog?.wait) { const half = Math.ceil((drun.d.max ?? 16) / 2); return { run: 'fogpick', node: '', level: 0, id: `fog:${drun.fog.open.length}`, prompt: '', opts: ['u', 'g'].filter(k => drun!.fog!.kinds[k as 'u' | 'g'] < half), game: 'fog' }; }
       if (drun) return of('diag', drun.node, drun.qs[drun.i]);
+      if (grun) {   // Vườn từ: thẻ dạy (bấm tiếp) hoặc câu của bậc kế
+        if (grun.done || grun.ans || !grun.item) return null;
+        const x = grun.list[grun.i]!, it = grun.item;
+        if (grun.phase === 'teach') return { run: 'gdteach', node: x.node, level: 0, id: it.id, prompt: '', game: 'garden' };
+        return { run: 'garden', node: x.node, level: it.level, id: it.id, prompt: it.prompt, ...(it.opts ? { opts: it.opts, ans: it.ans ?? 0 } : { accept: it.accept ?? [] }), game: 'garden' };
+      }
       if (rrun) return rrun.done ? null : { run: 'robot', node: rrun.node, level: 0, id: robotKey(rrun), prompt: '', game: 'robot', robot: { r: rrun.b.r, c: rrun.b.c, items: rrun.b.items.map(i => ({ r: i.r, c: i.c, en: i.en, target: i.target, got: i.got })) } };
       if (lrun) return lrun.phase === 'done' ? null : { run: 'letter', node: '', level: 0, id: `${lrun.t.id}:${lrun.phase}`, prompt: lrun.t.p, game: 'letter', accept: lrun.t.m.slice(0, 1) };
       if (wrun) return wrun.done || wrun.ans || !wrun.item ? null : { run: 'shop', node: wrun.node, level: 4, id: wrun.item.id, prompt: wrun.item.bad, accept: wrun.item.accept, game: 'shop' };

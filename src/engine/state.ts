@@ -21,6 +21,7 @@ import { sanitizeKara, mergeKara, type KaraSave } from './karaoke.ts';
 import { sanitizeShop, mergeShop, type ShopSave } from './workshop.ts';
 import { sanitizeLetter, mergeLetter, type LetterSave } from './letters.ts';
 import { sanitizeRobot, mergeRobot, type RobotSave } from './robot.ts';
+import { sanitizeGarden, mergeGarden, type GardenSave } from './garden.ts';
 
 export const E_V = 4;
 
@@ -54,6 +55,8 @@ export interface EState {
   gw?: ShopSave;                   // v82 Xưởng sửa câu: số hộp / kỷ lục (telemetry)
   gl?: LetterSave & { lastId?: string };   // v83 Thư gửi cư dân phố: số thư / quà (telemetry)
   gb?: RobotSave;                  // v84 Ra lệnh cho robot: nhiệm vụ / đồ nhặt (telemetry)
+  gf?: { runs: number; day: number };   // v86 Thám hiểm sương mù: số lần thám hiểm (telemetry)
+  gv?: GardenSave;                 // v87 Vườn từ: bậc từng cây (từ câu trả lời), số hoa (không vào mastery)
   gd?: PuzzleSave;                 // v77 Câu đố ngày: số ngày giải, sao (telemetry, không vào mastery)
 }
 
@@ -123,7 +126,10 @@ export function sanitizeE(raw: unknown): EState {
   const gd = sanitizePuzzle(x.gd);
   if (gd) out.gd = gd;
   const gw = sanitizeShop(x.gw);
+  { const g = x.gf as { runs?: unknown; day?: unknown } | undefined; if (g && typeof g === 'object') out.gf = { runs: Math.max(0, Math.min(1e7, Math.round(Number(g.runs) || 0))), day: Math.max(0, Math.min(1e6, Math.round(Number(g.day) || 0))) }; }
   const gb = sanitizeRobot(x.gb);
+  const gv = sanitizeGarden(x.gv);
+  if (gv) out.gv = gv;
   if (gb) out.gb = gb;
   { const raw = x.gl as { lastId?: unknown } | undefined, v = sanitizeLetter(raw); if (v) out.gl = { ...v, ...(typeof raw?.lastId === 'string' ? { lastId: raw.lastId.slice(0, 40) } : {}) }; }
   if (gw) out.gw = gw;
@@ -141,5 +147,5 @@ export function mergeE(a: unknown, b: unknown): EState {
     else by.set(g.id, { ...cur, since: Math.min(cur.since, g.since), date: cur.date ?? g.date });
   }
   const ev = mergeEv(A.ev, B.ev);
-  return sanitizeE({ v: E_V, goals: [...by.values()].sort((p, q) => p.since - q.since), m: recomputeAll(ev), ev, r: { ...B.r, ...A.r }, pri: A.pri || B.pri ? 1 : 0, diag: !A.diag ? B.diag : !B.diag ? A.diag : A.diag.day >= B.diag.day ? A.diag : B.diag, q: mergeQuest(A.q, B.q), ms: mergeMeasure(A.ms, B.ms), bk: mergeBlocks(A.bk, B.bk), bd: mergeBoard(A.bd, B.bd), gc: mergeCards(A.gc, B.gc), gq: mergeCafe(A.gq, B.gq), gs: mergeBubbles(A.gs, B.gs), gd: mergePuzzle(A.gd, B.gd), gt: mergeCase(A.gt, B.gt), gr: mergeCase(A.gr, B.gr), gk: mergeKara(A.gk, B.gk), gw: mergeShop(A.gw, B.gw), gl: mergeLetter(A.gl, B.gl), gb: mergeRobot(A.gb, B.gb) });
+  return sanitizeE({ v: E_V, goals: [...by.values()].sort((p, q) => p.since - q.since), m: recomputeAll(ev), ev, r: { ...B.r, ...A.r }, pri: A.pri || B.pri ? 1 : 0, diag: !A.diag ? B.diag : !B.diag ? A.diag : A.diag.day >= B.diag.day ? A.diag : B.diag, q: mergeQuest(A.q, B.q), ms: mergeMeasure(A.ms, B.ms), bk: mergeBlocks(A.bk, B.bk), bd: mergeBoard(A.bd, B.bd), gc: mergeCards(A.gc, B.gc), gq: mergeCafe(A.gq, B.gq), gs: mergeBubbles(A.gs, B.gs), gd: mergePuzzle(A.gd, B.gd), gt: mergeCase(A.gt, B.gt), gr: mergeCase(A.gr, B.gr), gk: mergeKara(A.gk, B.gk), gw: mergeShop(A.gw, B.gw), gl: mergeLetter(A.gl, B.gl), gb: mergeRobot(A.gb, B.gb), gv: mergeGarden(A.gv, B.gv), gf: A.gf || B.gf ? { runs: Math.max(A.gf?.runs ?? 0, B.gf?.runs ?? 0), day: Math.max(A.gf?.day ?? 0, B.gf?.day ?? 0) } : undefined });
 }

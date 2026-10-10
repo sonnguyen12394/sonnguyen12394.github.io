@@ -699,6 +699,22 @@ span.bkslot:empty{border-style:dashed;opacity:.4;cursor:default}
 .cfbub{font-size:26px;align-self:start;animation:pop .3s ease-out}
 
 /* v76 Bắt Âm: bong bóng trôi vào rồi đứng yên (không bắt người chơi chạm đích di động: tránh nhiễu kỹ năng tay, P13) */
+/* v87 Vườn từ: chậu cây theo bậc, thẻ dạy từ */
+.gdpot{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50% 50% 8px 8px;background:var(--warn-soft);border:1px solid var(--line);font-size:18px}
+.gdpot.cur{outline:2px solid var(--accent)}
+.gdcard{display:flex;gap:14px;align-items:flex-start;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.gdpic{font-size:44px;line-height:1}
+.gdbed{display:flex;flex-wrap:wrap;gap:8px;padding:10px;border-radius:12px;background:linear-gradient(180deg,var(--good-soft),var(--surface));border:1px solid var(--line)}
+.gdplant{display:flex;flex-direction:column;align-items:center;font-size:24px;min-width:56px}
+.gdplant small{font-size:11px;color:var(--muted)}
+/* v86 Thám hiểm sương mù: bản đồ 4 × 4, ô sương mở dần */
+.fggrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;max-width:300px;margin:8px auto}
+.fgcell{aspect-ratio:1;display:grid;place-items:center;border-radius:10px;font-size:26px;background:linear-gradient(160deg,var(--surface-2),var(--line));border:1px solid var(--line);opacity:.75}
+.fgcell.open{background:var(--good-soft);border-color:var(--good);opacity:1;animation:pzin .35s ease-out both}
+.fgcell.cur{outline:2px solid var(--accent);opacity:1;background:var(--accent-soft)}
+.fgmini .fggrid{max-width:180px;gap:3px}
+.fgmini .fgcell{font-size:16px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){.fgcell.open{animation:none}}
 /* v84 Robot: lưới 5 × 5 */
 .rbgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;max-width:340px;margin:6px auto}
 .rbcell{aspect-ratio:1;display:grid;place-items:center;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);font-size:26px;position:relative}
@@ -788,4 +804,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.0ae249774e.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.ea5c09144e.js" defer></script><script src="app.js?v=67" defer></script>

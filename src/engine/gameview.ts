@@ -16,16 +16,20 @@ import type { KaraSave } from './karaoke.ts';
 import type { ShopSave } from './workshop.ts';
 import type { LetterSave } from './letters.ts';
 import type { RobotSave } from './robot.ts';
+import type { GardenSave } from './garden.ts';
 import { ENC_VI } from './quest.ts';
 
 // Sảnh: thẻ các game ở trên, tháp (Leo nhanh) giữ nguyên ở dưới.
-export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave, gd?: PuzzleSave, gt?: CaseSave, gr?: CaseSave, tts = true, gk?: KaraSave, gw?: ShopSave, gl?: LetterSave, gb?: RobotSave): string {
+export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave, gd?: PuzzleSave, gt?: CaseSave, gr?: CaseSave, tts = true, gk?: KaraSave, gw?: ShopSave, gl?: LetterSave, gb?: RobotSave, gf?: { runs: number; day: number }, gv?: GardenSave): string {
   if (!c.e.goals.length) return '';
   const s = bk ?? { best: 0, runs: 0, day: 0, streak: 0 }, houses = (bd?.lots ?? []).reduce((a, b) => a + b, 0);
   return `<section class="stack"><span class="eyebrow">Chơi</span><h1>🎮 Hôm nay chơi gì?</h1>
     <p class="hint">Mọi game đều dùng cùng một bộ câu tiếng Anh app chọn cho bạn. Chỉ câu trả lời được tính vào năng lực; điểm game chỉ để vui.</p></section>
     <section class="gcards">
-      <span class="eyebrow gsec">🔁 Ôn tập mỗi ngày</span>
+      <span class="eyebrow gsec">🧭 Xếp lớp</span>
+      <button class="gcard" data-e="fgstart"><span class="gico" aria-hidden="true" style="font-size:30px">🗺️</span><span class="stack" style="gap:2px;text-align:left"><b>Thám hiểm sương mù</b><span class="hint">Kiểm tra lại cấp CEFR: chọn đường Từ vựng hay Ngữ pháp, mỗi điểm dò mở một ô bản đồ. Trả lời thật, đúng hay sai ô đều mở. 10–15 phút.</span><span class="hint">🧭 ${gf?.runs ?? 0} lần thám hiểm${gf?.day && c.host.today() - gf.day < 7 ? ` · bản đồ mới sau ${7 - (c.host.today() - gf.day)} ngày` : ''}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
+      <span class="eyebrow gsec">🔁 Từ mới & ôn tập mỗi ngày</span>
+      <button class="gcard" data-e="gdstart"><span class="gico" aria-hidden="true" style="font-size:30px">🌱</span><span class="stack" style="gap:2px;text-align:left"><b>Vườn từ</b><span class="hint">Từ mới: gieo hạt (làm quen từ có hình, âm, câu ví dụ), mỗi ngày tưới một lần: nhận ra → nhớ ngược → tự gõ thì cây nở hoa.</span><span class="hint">🌸 ${gv?.blooms ?? 0} hoa · ${Object.keys(gv?.plants ?? {}).length} cây</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <button class="gcard" data-e="bkstart"><span class="gico" aria-hidden="true">${miniBoard()}</span><span class="stack" style="gap:2px;text-align:left"><b>Xếp Khối Chữ</b><span class="hint">Trả lời đúng để nhận khối, xếp đầy hàng để nổ. Ván 3–5 phút.</span><span class="hint">🏆 ${s.best} · 🔥 ${s.streak} ngày</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <button class="gcard" data-e="pzstart"><span class="gico" aria-hidden="true" style="font-size:30px">📅</span><span class="stack" style="gap:2px;text-align:left"><b>Câu đố ngày</b><span class="hint">Ôn từ: tìm 4 nhóm từ cùng chủ đề trong 16 ô, rồi nhớ lại thêm một từ mỗi nhóm. Mỗi ngày một câu đố mới.</span><span class="hint">${gd && gd.last === c.host.today() ? '✅ Đã giải hôm nay' : '🆕 Câu đố hôm nay đang chờ'} · ${gd?.days ?? 0} ngày đã giải</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <span class="eyebrow gsec">✍️ Ngữ pháp & viết</span>
