@@ -25,6 +25,10 @@ export const STAGES: Record<string, StageTheme> = {
   board: { vi: 'Bàn Cờ Phố', ico: '🎲', a: '#1f5c4a', b: '#082019', fx: 'star' },
   tower: { vi: 'Leo tháp', ico: '🏰', a: '#2a2a5c', b: '#0a0a20', fx: 'star' },
   fog: { vi: 'Thám hiểm sương mù', ico: '🗺️', a: '#3a4a5a', b: '#11171d', fx: 'fog' },
+  // v109 trò nhanh cũ trong app.js (Thử thách): cùng sân khấu
+  speed: { vi: 'Tốc độ 60 giây', ico: '⚡', a: '#6b4a10', b: '#241805', fx: 'spark' },
+  match: { vi: 'Ghép cặp', ico: '🧠', a: '#1d5a6b', b: '#071f26', fx: 'star' },
+  ch: { vi: 'Thách đấu', ico: '🤝', a: '#5a1d3a', b: '#1f0714', fx: 'star' },
 };
 interface P { x: number; y: number; vx: number; vy: number; r: number; life: number; c: string; rot: number }
 
@@ -146,7 +150,7 @@ export function stageBurst(sel: string, opts: { big?: boolean; cls?: string; all
 }
 
 // Gọi sau mỗi lần app vẽ lại #app. g: game cũ đang chạy (null = không có, hoặc game chủ lực / màn khác).
-export function stageSync(g: string | null, sc: Scene | null = null): void {
+export function stageSync(g: string | null, sc: Scene | null = null, exit = 'data-e="stexit"'): void {
   if (typeof document === 'undefined' || !document.body) return;
   const on = !!g && !!STAGES[g], b = document.body;
   b.classList.toggle('stage', on);
@@ -161,7 +165,7 @@ export function stageSync(g: string | null, sc: Scene | null = null): void {
   if (game !== g) { game = g!; amb = ambient(t, innerWidth, innerHeight); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); }
   const app = document.getElementById('app'); if (!app) return;
   // Thanh sân khấu: ✕ về sảnh + tên game (app vẽ lại #app mỗi thao tác nên chèn lại mỗi lần).
-  if (!app.querySelector('.stagebar')) app.insertAdjacentHTML('afterbegin', `<div class="stagebar"><button class="stagex" data-e="stexit" aria-label="Đóng game">✕</button><b>${t.ico} ${t.vi}</b></div>`);
+  if (!app.querySelector('.stagebar')) app.insertAdjacentHTML('afterbegin', `<div class="stagebar"><button class="stagex" ${exit} aria-label="Đóng game">✕</button><b>${t.ico} ${t.vi}</b></div>`);
   // Phản hồi mới (khác lần trước) → hạt + âm + nảy / rung.
   const fb = app.querySelector<HTMLElement>('.fb.good, .fb.bad, .sheet.good, .sheet.bad');
   const sig = fb ? `${fb.className}|${fb.textContent?.slice(0, 80)}` : '';

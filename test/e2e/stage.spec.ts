@@ -141,3 +141,33 @@ test('v108 hiệu ứng: lớp hạt nổ ở trên thẻ, không chặn chạm;
   await expect(page.locator('#stagepop')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
+
+// v109 trò nhanh cũ của app.js (Tốc độ 60 giây, Ghép cặp) cũng lên sân khấu: ẩn khung app, ✕ = thoát trò; trả lời đúng → điểm nảy.
+test('v109 sân khấu: Tốc độ 60 giây và Ghép cặp chơi toàn màn, ✕ thoát; đúng → điểm nảy; WCAG AA', async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.waitForFunction(() => (window as any).ELREADY === true);
+  await page.evaluate(async () => {
+    const w = window as any; w.eval('ALL_WORDS').slice(0, 30).forEach((x: any) => { w.eval('W')(x.id).learned = true; });
+    w.eval('st').onboarded = true; w.eval('save()'); await w.eval('emLoad()'); w.eval("go('games')");
+  });
+  await page.evaluate(() => document.querySelectorAll('details').forEach(d => { (d as HTMLDetailsElement).open = true; }));
+  await page.locator('[data-act="speed"]').first().click();
+  await expect.poll(() => page.evaluate(() => document.body.dataset.game)).toBe('speed');
+  await expect(page.locator('#app > .back')).toBeHidden();
+  const ans = await page.evaluate(() => (window as any).eval('ui.game.q.ans'));
+  await page.locator(`[data-spk="${ans}"]`).click();
+  await expect(page.locator('#app .q .pill.accent.stpop')).toHaveCount(1);
+  const r = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
+  await page.screenshot({ path: 'test-results/stage-speed.png' });
+  await page.locator('.stagebar [data-act="gameexit"]').click();
+  await page.locator('[data-act="mquit"]').click();   // đang giữa lượt: hỏi xác nhận thoát (như nút ← cũ)
+  await expect.poll(() => page.evaluate(() => document.body.classList.contains('stage'))).toBe(false);
+  await page.evaluate(() => { (window as any).eval("go('games')"); document.querySelectorAll('details').forEach(d => { (d as HTMLDetailsElement).open = true; }); });
+  await page.locator('[data-act="match"]').first().click();
+  await expect.poll(() => page.evaluate(() => document.body.dataset.game)).toBe('match');
+  await page.locator('.stagebar [data-act="gameexit"]').click();
+  await expect.poll(() => page.evaluate(() => document.body.classList.contains('stage'))).toBe(false);
+  expect(errors).toEqual([]);
+});

@@ -717,6 +717,7 @@ body.stage #app{position:relative;z-index:1;background:var(--surface);border-rad
 @media (max-width:560px){body.stage #app{margin:58px 8px 12px;padding:14px 12px 18px;border-radius:18px}}
 .stagebar{position:fixed;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;gap:10px;padding:max(10px,env(safe-area-inset-top)) 12px 10px;color:#fff;font:800 17px system-ui,sans-serif;text-shadow:0 1px 3px rgba(0,0,0,.5)}
 body.stage{background:#14121f}
+body.stage[data-game=speed] #app>.back,body.stage[data-game=match] #app>.back,body.stage[data-game=ch] #app>.back{display:none}   /* v109: ✕ trên thanh sân khấu thay nút ← Thử thách */
 .stagebar b{background:rgba(0,0,0,.55);padding:6px 12px;border-radius:12px}
 .stagex{min-width:44px;height:44px;border:0;border-radius:14px;background:rgba(0,0,0,.45);color:#fff;font:700 18px system-ui,sans-serif;cursor:pointer}
 .stagex:focus-visible{outline:3px solid #ffd166;outline-offset:2px}

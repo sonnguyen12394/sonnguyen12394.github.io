@@ -1575,3 +1575,43 @@ Bật giảm chuyển động thì không có hạt, không xoay / nảy.
 - M2 +1 cho mọi game sân khấu (hạt nổ giờ mới thật sự thấy được).
 
 Ước lượng: Câu đố ngày ≈ 5,4 · Xếp Khối ≈ 3,9 · Bàn Cờ ≈ 3,9 · Thám hiểm ≈ 3,1.
+
+### 10.20 Đã làm v109: trò nhanh cũ lên sân khấu + bảng chấm lại toàn bộ
+
+**Việc làm:**
+- Ba trò nhanh cũ của `app.js` cũng lên sân khấu chung: ⚡ Tốc độ 60 giây, 🧠 Ghép cặp, 🤝 Thách đấu (mục "Trò nhanh (cũ)").
+  - Ẩn khung app, có nền động; ✕ trên thanh sân khấu thay nút "← Thử thách". Đang giữa lượt thì vẫn hỏi xác nhận như cũ.
+  - Điểm tăng thì ô điểm nảy, có hạt nổ.
+  - Dùng `EM.stageApp(kind, n)`. Engine chưa nạp xong thì trò vẫn chạy như cũ, không có sân khấu.
+- Đến đây **mọi game trong app** đều đã qua ít nhất một đợt nâng: sân khấu, cảnh sống hoặc hiệu ứng trên bàn, và nối truyện ở những game hợp.
+
+**Bảng chấm lại (tự chấm, cùng thang §10.2 so với game dẫn đầu thể loại):**
+
+| Game | §10.2 | Hiện tại | Đã làm |
+|---|---|---|---|
+| ⛏️ Mỏ Chữ | — | **7,3** | game chủ lực canvas (v95–v96) |
+| 🎡 Vòng Chữ | — | **7,2** | game chủ lực canvas (v93–v94) |
+| 🃏 Bài Câu | 2,7 | **5,9** | canvas kéo thả (v97) |
+| 🎯 Bắt Âm | 2,9 | **5,6** | lớp phủ dưới nước (v104) |
+| 📅 Câu đố ngày | 4,6 | ≈ 5,4 | sân khấu + nhóm giải nổ (v102, v108) |
+| ☕ Quán | 2,5 | 4,6 | cảnh quán, cư dân truyện (v105–v106) |
+| 🌱 Vườn từ | 3,0 | 4,4 | cảnh vườn (v105) |
+| 🤖 Robot | 3,4 | ≈ 4,4 | cảnh robot (v107) |
+| ⚡ Tốc độ 60 giây / 🧠 Ghép cặp | 3,6 | ≈ 4,2 | sân khấu (v109) |
+| ✉️ Thư | 2,8 | ≈ 4,0 | cảnh bàn viết, cư dân truyện (v103, v107) |
+| 🧱 Xếp Khối / 🎲 Bàn Cờ | 3,1 | ≈ 3,9 | sân khấu + nổ hàng / xúc xắc (v102, v108) |
+| 🎤 Karaoke | 2,6 | ≈ 3,7 | cảnh sân khấu (v107) |
+| 🛠️ Xưởng | 2,5 | ≈ 3,6 | cảnh băng chuyền (v107) |
+| 🏰 Leo tháp | 2,4 | ≈ 3,5 | cảnh tháp (v107) |
+| 🔍 Thám tử | 2,3 | ≈ 3,4 | cảnh bảng manh mối (v107) |
+| 📻 Đài | 2,2 | ≈ 3,3 | cảnh máy thu (v107) |
+| 🗺️ Thám hiểm | 2,3 | ≈ 3,1 | sân khấu + mở ô nổ (v108) |
+
+**Phản biện, nói thẳng:**
+- Ba đợt v107–v109 nâng phần **trình bày** (M2, M4, M5): có hình, có chuyển động, toàn màn hình, phản hồi thấy được.
+- Phần **cơ chế** (M1 chiều sâu, M3 lặp lại, M6 tiến triển) của các game kỹ năng vẫn là "chọn / gõ đáp án". Vì vậy chúng dừng quanh 3–5, thấp hơn hẳn 3 game chủ lực (6–7).
+- Muốn lên 6+, một game phải có **chữ chính là cách chơi**, như Vòng Chữ / Mỏ Chữ, không phải câu hỏi được trang trí.
+- Không nên làm việc đó cho cả 17 game: §10.3 đã chỉ ra dàn trải là gốc rễ. Hướng đúng là chọn theo số liệu chơi thật (bảng số liệu v89 ở sảnh). Game kỹ năng nào được bộ não chọn nhiều mà người chơi bỏ giữa chừng nhiều thì làm lại cơ chế trước.
+- Cần người sáng lập chơi thật và xem bảng số liệu trước khi chọn.
+
+**Kiểm:** e2e Tốc độ 60 giây và Ghép cặp lên sân khấu, ✕ thoát (có xác nhận khi đang chơi), đúng → điểm nảy, WCAG AA 390px. Bộ đầy đủ (đơn vị, e2e, bot 8 ngày) ghi ở phần kết của đợt.

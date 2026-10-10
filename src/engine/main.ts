@@ -79,6 +79,7 @@ export interface EngineModule {
   render(route: string): string;
   after(route: string): void;
   stage?(on: boolean): void;                               // v102 sân khấu dùng chung cho game kỹ năng (app gọi sau mỗi lần vẽ)
+  stageApp?(kind: string | null, n: number): void;         // v109 sân khấu cho trò nhanh cũ của app.js
   next(): { h: string; p: string; btn: string } | null;   // nút chính trang chủ theo lộ trình; null = dùng cách cũ
   autoGoal(id: string, why: string): boolean;              // goal-first (v64): đặt mục tiêu khi người học chưa có mục tiêu nào
   sanitize(e: unknown): EState;
@@ -1947,6 +1948,11 @@ export function init(host: EHost): EngineModule {
       }
       if (g === 'puzzle') bump(zrun, 'pz', zrun?.solved.length ?? 0, () => stageBurst('#app .pzband', { last: true, big: true, cls: 'stpop' }));
       if (g === 'fog' && drun?.fog) { const f = drun.fog, last = f.open[f.open.length - 1] ?? 0; bump(f, 'fog', f.open.length, () => stageBurst(`#app .fggrid .fgcell:nth-child(${last + 1})`, { big: true, cls: 'stpop' })); }
+    },
+    // v109 trò nhanh cũ của app.js (Tốc độ 60 giây, Ghép cặp, Thách đấu): cùng sân khấu; ✕ = thoát trò của app; điểm tăng → nảy + hạt.
+    stageApp(kind, n) {
+      stageSync(kind, null, 'data-act="gameexit"');
+      if (kind) { const k = `app:${kind}`, was = bfx.get(k); if (!was || n < was.n) bfx.set(k, { run: bfx, n }); else if (n > was.n) { was.n = n; stageBurst('#app .q .pill.accent', { cls: 'stpop' }); } }
     },
     peek() {
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>

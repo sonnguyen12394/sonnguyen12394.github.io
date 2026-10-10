@@ -102,6 +102,7 @@ test('Thư: cụm gợi ý dài xuống dòng trong khung, trang không tràn ng
     s.className = 'pill'; s.innerHTML = '<span lang="en">Please come to my birthday party</span> · Mời bạn đến tiệc sinh nhật của tôi';
     p.appendChild(s);
   });
+  await page.getByRole('button', { name: /Gửi thư/ }).scrollIntoViewIfNeeded();   // v107: cảnh sống đẩy thẻ xuống dưới màn
   const g = await page.evaluate(() => {
     const b = [...document.querySelectorAll('#app button')].find(x => /Gửi thư/.test(x.textContent ?? ''))!.getBoundingClientRect();
     const hit = document.elementFromPoint(b.x + b.width / 2, b.y + b.height / 2);
