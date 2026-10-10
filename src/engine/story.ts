@@ -84,7 +84,7 @@ export const CHAPTERS: Chapter[] = [
 ];
 export const COINS_CHAPTER = 20, COINS_ACT = 50;
 
-export interface StorySave { ch: number; prog: Record<StoryKind, number> }
+export interface StorySave { ch: number; prog: Record<StoryKind, number>; side?: { letter?: number; cafe?: number } }   // side: chương đã làm việc phụ
 export const freshStory = (): StorySave => ({ ch: 0, prog: N(0, 0, 0) });
 export const chapterAt = (s: StorySave): Chapter | null => CHAPTERS[s.ch] ?? null;
 export const finished = (s: StorySave): boolean => s.ch >= CHAPTERS.length;
@@ -115,12 +115,40 @@ export function sanitizeStory(raw: unknown): StorySave | undefined {
   if (!raw || typeof raw !== 'object') return undefined;
   const x = raw as Record<string, unknown>, n = (v: unknown, hi: number) => (typeof v === 'number' && Number.isFinite(v) ? Math.max(0, Math.min(hi, Math.round(v))) : 0);
   const p = (x.prog && typeof x.prog === 'object' ? x.prog : {}) as Record<string, unknown>;
-  return { ch: n(x.ch, CHAPTERS.length), prog: N(n(p.dig, 999), n(p.light, 999), n(p.voice, 999)) };
+  const sd = (x.side && typeof x.side === 'object' ? x.side : {}) as Record<string, unknown>, side: StorySave['side'] = {};
+  if (typeof sd.letter === 'number') side.letter = n(sd.letter, CHAPTERS.length);
+  if (typeof sd.cafe === 'number') side.cafe = n(sd.cafe, CHAPTERS.length);
+  return { ch: n(x.ch, CHAPTERS.length), prog: N(n(p.dig, 999), n(p.light, 999), n(p.voice, 999)), ...(Object.keys(side).length ? { side } : {}) };
+}
+// v103 Việc phụ ở game kỹ năng (không bắt buộc, không tính vào nhiệm vụ chương, không ghi bằng chứng): cư dân của chương xuất hiện
+// trong Thư (người nhờ viết) và Quán (khách đầu ca); làm xong mỗi việc một lần mỗi chương được +10 xu.
+export const SIDE_COINS = 10;
+export type SideKind = 'letter' | 'cafe';
+// Cư dân của chương đang nhận tiến độ (Tí / "mọi người" thì không có).
+export function resident(s: StorySave | undefined): [string, string] | null {
+  const c = target(s ?? freshStory()); if (!c || /^(🐯|👥)/.test(c.who)) return null;
+  const [ico, ...nm] = c.who.split(' '); return [ico!, nm.join(' ')];
+}
+const curCh = (s: StorySave) => (s.ch === 0 ? 1 : s.ch);
+export function sideTasks(s: StorySave | undefined): Array<{ k: SideKind; vi: string; start: string; done: boolean }> {
+  const st = s ?? freshStory(), who = resident(st); if (!who) return [];
+  return [
+    { k: 'letter', vi: `✉️ Viết thư cho ${who[1]} (Thư gửi cư dân)`, start: 'ltstart', done: st.side?.letter === curCh(st) },
+    { k: 'cafe', vi: `☕ Mời ${who[1]} ở Quán Cà Phê (xong một ca)`, start: 'cfstart', done: st.side?.cafe === curCh(st) },
+  ];
+}
+// Đánh dấu việc phụ xong cho chương hiện tại; trả về true nếu lần đầu (được thưởng).
+export function sideDone(s: StorySave, k: SideKind): boolean {
+  if (!resident(s)) return false;
+  const ch = curCh(s); s.side ||= {};
+  if (s.side[k] === ch) return false;
+  s.side[k] = ch; return true;
 }
 export function mergeStory(a?: StorySave, b?: StorySave): StorySave | undefined {
   if (!a) return b; if (!b) return a;
   if (a.ch !== b.ch) return a.ch > b.ch ? a : b;
-  return { ch: a.ch, prog: N(Math.max(a.prog.dig, b.prog.dig), Math.max(a.prog.light, b.prog.light), Math.max(a.prog.voice, b.prog.voice)) };
+  const side = { ...b.side, ...a.side };
+  return { ...(Object.keys(side).length ? { side } : {}), ch: a.ch, prog: N(Math.max(a.prog.dig, b.prog.dig), Math.max(a.prog.light, b.prog.light), Math.max(a.prog.voice, b.prog.voice)) };
 }
 
 const esc = (t: string) => t.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
@@ -148,6 +176,7 @@ export function viewStory(s: StorySave | undefined, solid: number): string {
     <p>${esc(c.intro)}</p>
     ${tasks ? `<ul class="stasks">${tasks}</ul>` : ''}
     ${gate}
+    ${(() => { const sd = sideTasks(st); return sd.length ? `<p class="stsmall" style="margin:8px 0 4px">Việc phụ (không bắt buộc, +${SIDE_COINS} xu mỗi việc):</p><ul class="stasks">${sd.map(t => `<li><button class="stask${t.done ? ' ok' : ''}" data-e="${t.start}"><span aria-hidden="true">${t.done ? '✅' : '•'}</span> ${esc(t.vi)}</button></li>`).join('')}</ul>` : ''; })()}
     <div class="whrow" style="justify-content:flex-start">${ok ? `<button class="whbig" data-e="stscene" data-ch="${num}">▶ ${num === 0 ? 'Bắt đầu câu chuyện' : 'Xem cảnh truyện'}</button>` : ''}</div>
     ${rv.length ? `<p class="stsmall">🏙️ Đã hồi sinh: ${rv.map(esc).join(', ')}</p>` : ''}
   </section>`;

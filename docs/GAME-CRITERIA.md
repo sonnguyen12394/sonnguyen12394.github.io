@@ -1426,3 +1426,23 @@ Không đổi luật, câu hỏi hay bằng chứng của game nào. e2e kiểm 
 - M2 +1 (phản hồi có hạt / nảy).
 
 Điểm 14 game tăng khoảng **+0,6** (ví dụ Quán 2,5 → 3,1; Bắt Âm 2,9 → 3,5). Vẫn thấp vì lõi chơi còn là chọn đáp án trong HTML; v104–v106 sẽ làm lại 3 game chơi nhiều nhất.
+
+### 10.15 Đã làm v103: nối truyện vào game kỹ năng (nhân vật, việc phụ)
+
+**Gốc rễ:** cốt truyện v101 chỉ chạm ba game chủ lực, nên game kỹ năng vẫn là "thế giới khác". Cách nối rẻ nhất mà không làm lệch lộ trình: **cư dân của chương xuất hiện trong game kỹ năng**, kèm việc phụ không bắt buộc.
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Cư dân của chương | Chương đang nhận tiến độ (đang ở mở đầu thì là chương 1); chương của Tí / "mọi người" không có cư dân | `resident()` trong `story.ts` |
+| Thư | Người nhờ viết là cư dân của chương (ví dụ Bà Lan), thay cho người ngẫu nhiên | `lStart()` |
+| Quán | Khách đầu ca là cư dân của chương, có dòng "📖 Bà Lan ghé quán" | `CafeRun.vip`, `cafeview.ts` |
+| Việc phụ | Thẻ truyện có "✉️ Viết thư cho Bà Lan" và "☕ Mời Bà Lan ở Quán", bấm là vào game. Gửi thư đạt / xong một ca thì +10 xu, mỗi chương một lần. Không tính vào nhiệm vụ chương, không ghi bằng chứng | `sideTasks()`, `sideDone()` |
+
+**Đúng spec:** việc phụ chỉ gợi ý, không đổi lộ trình hay câu hỏi (C69). Bộ não vẫn chọn game theo nhu cầu học.
+
+**Kiểm:**
+- Đơn vị: cư dân đúng chương; thưởng một lần mỗi chương; sang chương mới làm lại được; chương của Tí không có việc phụ; lưu dữ liệu `side`.
+- e2e: thẻ truyện có việc phụ; Quán có Bà Lan; xong ca thì +10 xu đúng một lần, ngoài xu của ca; Thư có Bà Lan nhờ viết.
+- Toàn bộ: 282 đơn vị, 222 e2e. Bot không hồi quy.
+
+**Chấm (tự chấm):** Thư, Quán M8 +1, M10 +1 (khoảng +0,2).

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CHAPTERS, ACTS, storyAdd, tasksDone, ready, advance, revived, freshStory, sanitizeStory, mergeStory, storyNote, viewStory, finished } from '../../src/engine/story.ts';
+import { resident, sideTasks, sideDone, CHAPTERS, ACTS, storyAdd, tasksDone, ready, advance, revived, freshStory, sanitizeStory, mergeStory, storyNote, viewStory, finished } from '../../src/engine/story.ts';
 
 // v101 cốt truyện Phố Chữ: chương nối ba game; chương cuối mỗi khu cần kỹ năng vững thật; truyện không ghi bằng chứng.
 test('v101 nội dung: mở đầu + 3 khu × 4 chương; mỗi chương có cả ba nhiệm vụ (trừ mở đầu); chương cuối khu cần kỹ năng vững tăng dần', () => {
@@ -50,4 +50,19 @@ test('v101 hết truyện → "còn tiếp"; ghi chú nhiệm vụ trong game; l
   assert.deepEqual(mergeStory({ ch: 2, prog: { dig: 1, light: 3, voice: 0 } }, { ch: 2, prog: { dig: 4, light: 0, voice: 2 } })!.prog, { dig: 4, light: 3, voice: 2 });
   const html = viewStory({ ch: 4, prog: { dig: 99, light: 99, voice: 99 } }, 0);
   assert.match(html, /🔒/); assert.doesNotMatch(html, /data-e="stscene"/, 'thiếu kỹ năng vững: chưa có nút xem cảnh');
+});
+
+test('v103 việc phụ: cư dân của chương (không phải Tí / mọi người); mỗi việc thưởng một lần mỗi chương; sang chương mới làm lại được', () => {
+  const s = freshStory();
+  assert.deepEqual(resident(s), ['🌸', 'Bà Lan'], 'mở đầu: cư dân của chương 1');
+  assert.equal(sideTasks(s).length, 2);
+  assert.equal(sideDone(s, 'letter'), true); assert.equal(sideDone(s, 'letter'), false, 'chỉ thưởng một lần');
+  assert.ok(sideTasks(s).find(t => t.k === 'letter')!.done);
+  advance(s, 0); assert.equal(s.ch, 1); assert.ok(sideTasks(s).find(t => t.k === 'letter')!.done, 'xem mở đầu xong vẫn giữ việc phụ chương 1');
+  for (const k of ['dig', 'light', 'voice'] as const) storyAdd(s, k, 99);
+  advance(s, 0); assert.equal(s.ch, 2);
+  assert.deepEqual(resident(s), ['🥖', 'Chú Tư']);
+  assert.equal(sideDone(s, 'letter'), true, 'chương mới: làm lại được');
+  const t = freshStory(); t.ch = 4; assert.equal(resident(t), null, 'chương của Tí: không có việc phụ'); assert.equal(sideDone(t, 'cafe'), false);
+  assert.deepEqual(sanitizeStory({ ch: 2, prog: {}, side: { letter: 2, cafe: 'x' } })!.side, { letter: 2 });
 });

@@ -26,7 +26,7 @@ import { viewLobby, viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoard
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
 import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, TIER_COINS, type WkKind } from './weekly.ts';
-import { CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind } from './story.ts';
+import { resident, sideDone, SIDE_COINS, CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind } from './story.ts';
 import { openScene } from './storyfx.ts';
 import { stageSync } from './stagefx.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
@@ -545,6 +545,7 @@ export function init(host: EHost): EngineModule {
     const e = E();
     fPick = kindPicker(n => n.startsWith('fn:') && (host.fn?.(n)?.length ?? 0) > 0, 'q', (e.gq?.runs ?? 0) + 1);
     frun = { floor: (e.gq?.runs ?? 0) + 1, seed: (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0, t0: Date.now(), k: 0, n: 0, ok: 0, coins: 0, stars: 0, streak: 0, wrong: [], done: false, ch: null, node: '', item: null, novel: false, ans: null };
+    frun.vip = resident(E().sy) ?? undefined;   // v103: khách đầu ca là cư dân của chương truyện
     fLoad(); host.render();
   }
   function fLoad(): void {
@@ -584,6 +585,7 @@ export function init(host: EHost): EngineModule {
     const e = E(), s = fsave(), ixq = loaded()!;
     r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
     s.runs++; s.stars += r.stars; s.best = Math.max(s.best, r.ok); s.day = host.today();
+    if (r.vip && sideDone(ysave(), 'cafe')) { qsave().coins += SIDE_COINS; host.toast(`📖 Việc phụ: ${r.vip[1]} ghé quán vui vẻ! +${SIDE_COINS} xu`); }   // v103
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `cafe:${r.floor}`, dec: 'cafe:end', rule: `${RULE_ID}/${QUEST_VER}`,
       info: { ok: r.ok, of: r.n, stars: r.stars, coins: r.coins },
       evs: e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:q${r.floor}:`)).slice(-r.n).map(x => x.id) }, false);
@@ -897,7 +899,7 @@ export function init(host: EHost): EngineModule {
     let t = null as ReturnType<typeof pickTask>;
     for (const L of tries) { t = pickTask(host.wtasks?.(L) ?? [], seed, sv.lastId ?? ''); if (t) break; }
     if (!t) { host.toast('Chưa có đề viết nào.'); return; }
-    lrun = { floor: sv.runs + 1, seed, t, who: folk(seed), text: t.text, ideas: t.c.map(() => false), sends: 0, phase: 'write', res: null, self: [], gift: null };
+    lrun = { floor: sv.runs + 1, seed, t, who: resident(E().sy) ?? folk(seed), text: t.text, ideas: t.c.map(() => false), sends: 0, phase: 'write', res: null, self: [], gift: null };
     host.render();
   }
   function lSend(text: string, ideas: boolean[]): void {
@@ -909,6 +911,7 @@ export function init(host: EHost): EngineModule {
     const v = letterVerdict(res.checks, ideas);
     r.res = { ...v, n: res.n, checks: res.checks, hints: res.hints };
     if (v.ok && !r.gift) r.gift = letterGift(lsave().gifts);
+    if (v.ok && resident(E().sy)?.[1] === r.who[1] && sideDone(ysave(), 'letter')) { qsave().coins += SIDE_COINS; host.toast(`📖 Việc phụ: ${r.who[1]} nhận được thư! +${SIDE_COINS} xu`); }   // v103
     r.phase = 'reply';
     host.wsave?.(r.t.id, text);   // lưu bản thư (như màn Viết theo đề); tự chấm ghi sau
     sfx(v.ok ? 'clear' : 'place'); host.save(); host.render();
