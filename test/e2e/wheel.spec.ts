@@ -125,3 +125,30 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(errors).toEqual([]);
   });
 }
+
+test('v94 Vòng Chữ: hũ từ thưởng đầy → gợi ý miễn phí (không trừ xu); combo; từ vào sổ từ ở sảnh', async ({ page, errors }) => {
+  await lobby(page);
+  await page.evaluate(() => { const st = (window as any).eval('st'); st.e.gh = { lv: 1, stars: 0, words: 0, bonus: 0, runs: 0, day: 0, daily: { day: 0, done: false, secs: 0, hints: 0, streak: 0 }, book: {}, jar: 5, free: 0 }; (window as any).eval('save()'); (window as any).eval('render()'); });
+  await page.locator('.whhero [data-e="whstart"]').click();
+  await expect(page.locator('#whfx')).toBeVisible();
+  let pk = await peek(page);
+  test.skip(!pk.bonus?.length, 'màn này không có từ thưởng');
+  await page.locator('#whfx input[name="a"]').fill(pk.bonus[0]); await page.locator('#whfx input[name="a"]').press('Enter');
+  const gh = await page.evaluate(() => (window as any).eval('st').e.gh);
+  expect(gh.free).toBe(1); expect(gh.jar).toBe(0);
+  await expect(page.locator('[data-e="whhint"]')).toContainText('×1');
+  await page.locator('[data-e="whhint"]').click();
+  expect(await page.evaluate(() => (window as any).eval('st').e.tw?.spent ?? 0)).toBe(0);
+  expect(await page.evaluate(() => (window as any).eval('st').e.gh.free)).toBe(0);
+  for (let i = 0; i < 12; i++) { pk = await peek(page); if (!pk) break; await page.locator('#whfx input[name="a"]').fill(pk.accept[0]); await page.locator('#whfx input[name="a"]').press('Enter'); }
+  await expect(page.locator('.whwin')).toBeVisible();
+  const book = await page.evaluate(() => Object.keys((window as any).eval('st').e.gh.book));
+  expect(book.length).toBeGreaterThan(0);
+  await page.locator('[data-e="whexit"]').first().click();
+  await page.locator('[data-e="qhome"]').first().click();
+  const box = page.locator('details.whbookbox');
+  await box.locator('summary').click();
+  await expect(box.locator('.whw')).toHaveCount(book.length);
+  await page.screenshot({ path: 'test-results/wheel-book.png', fullPage: true });
+  expect(errors).toEqual([]);
+});

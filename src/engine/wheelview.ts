@@ -9,6 +9,8 @@ export interface WheelState {
   level: Level; title: string; sub: string; theme: { a: string; b: string; c: string }; daily: boolean;
   found: Set<string>; bonusFound: Set<string>; shown: Record<string, number[]>; hints: number; coins: number; gained: number;
   win: { stars: number; at: number } | null;
+  gold: number; combo: number; free: number; jar: number; jarMax: number; scene: number;   // v94: ô vàng, combo, gợi ý miễn phí, hũ từ thưởng, phong cảnh
+  note?: { text: string; t: number } | null;   // dòng thông báo ngắn trên vòng (combo, ô vàng, hũ đầy)
 }
 type Pt = { x: number; y: number };
 interface Particle { x: number; y: number; vx: number; vy: number; life: number; c: string; r: number }
@@ -128,6 +130,7 @@ export function openWheel(st: () => WheelState | null, onWord: (w: string) => vo
     const bg = g.createLinearGradient(0, 0, W * 0.3, H); bg.addColorStop(0, s.theme.a); bg.addColorStop(1, s.theme.b); g.fillStyle = bg; g.fillRect(0, 0, W, H);
     for (const b of bokeh) { const y = ((b.y - (still ? 0 : now * b.s / 4000)) % 1 + 1) % 1; g.globalAlpha = 0.08; g.fillStyle = '#fff'; g.beginPath(); g.arc(b.x * W, y * H, b.r, 0, Math.PI * 2); g.fill(); }
     g.globalAlpha = 1;
+    scenery(g, s.scene, W, H, now, still);
     const gm = geo();
     // Ô từ: chữ đã tìm hiện đủ, chữ gợi ý hiện mờ; nghĩa tiếng Việt làm gợi ý bên phải.
     s.level.slots.forEach((sl, r) => {
@@ -136,8 +139,9 @@ export function openWheel(st: () => WheelState | null, onWord: (w: string) => vo
         const x = 16 + k * (gm.tile + 4), age = t0 ? (now - t0 - k * 55) / 260 : 1, sc = got && t0 && !still ? Math.max(0, Math.min(1, age)) : 1;
         const bump = got && t0 && age > 0 && age < 1 && !still ? 1 + Math.sin(age * Math.PI) * 0.18 : 1, sz = gm.tile * (got ? (sc === 0 ? 0.001 : bump) : 1);
         const ox = x + (gm.tile - sz) / 2, oy = y + (gm.tile - sz) / 2;
-        g.fillStyle = got ? '#ffffff' : 'rgba(255,255,255,0.18)'; rr(ox, oy, sz, sz, 7); g.fill();
-        if (!got) { g.strokeStyle = 'rgba(255,255,255,0.45)'; g.lineWidth = 1.5; g.stroke(); }
+        const gold = r === s.gold;
+        g.fillStyle = got ? (gold ? '#ffd166' : '#ffffff') : gold ? 'rgba(255,209,102,0.28)' : 'rgba(255,255,255,0.18)'; rr(ox, oy, sz, sz, 7); g.fill();
+        if (!got) { g.strokeStyle = gold ? 'rgba(255,209,102,0.95)' : 'rgba(255,255,255,0.45)'; g.lineWidth = gold ? 2.5 : 1.5; g.stroke(); }
         if (got || shown.includes(k)) {
           g.fillStyle = got ? '#1d1b3a' : 'rgba(255,255,255,0.9)'; g.font = `800 ${Math.round(gm.tile * 0.58)}px system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle';
           g.fillText(sl.en[k]!.toUpperCase(), x + gm.tile / 2, y + gm.tile / 2 + 1);
@@ -145,7 +149,7 @@ export function openWheel(st: () => WheelState | null, onWord: (w: string) => vo
       }
       const tx = 16 + sl.en.length * (gm.tile + 4) + 8, maxW = W - tx - 12;
       g.fillStyle = got ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.8)'; g.font = `${got ? 600 : 500} 13px system-ui, sans-serif`; g.textAlign = 'left'; g.textBaseline = 'middle';
-      let clue = `${sl.pic ? sl.pic + ' ' : ''}${sl.vi}`;
+      let clue = `${r === s.gold && !got ? '⭐ ' : ''}${sl.pic ? sl.pic + ' ' : ''}${sl.vi}`;
       while (clue.length > 3 && g.measureText(clue).width > maxW) clue = clue.slice(0, -2) + '…';
       g.fillText(clue, tx, y + gm.tile / 2);
     });
@@ -184,6 +188,16 @@ export function openWheel(st: () => WheelState | null, onWord: (w: string) => vo
       g.fillStyle = !sel.length && fresh && fresh.kind !== 'dup' ? '#fff' : '#1d1b3a'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(w.toUpperCase(), gm.cx + shake, by + 21);
       if (!sel.length && fresh) { g.font = '700 13px system-ui, sans-serif'; g.fillStyle = '#fff'; g.fillText(fresh.kind === 'bonus' ? '+ từ thưởng!' : fresh.kind === 'dup' ? 'đã tìm rồi' : fresh.kind === 'short' ? 'từ cần ≥ 3 chữ' : fresh.kind === 'no' ? 'chưa phải từ của màn' : '', gm.cx, by - 12); }
     }
+    // Dòng thông báo (combo / ô vàng / hũ đầy) và hũ từ thưởng.
+    if (s.note && now - s.note.t < 1400) {
+      const k = (now - s.note.t) / 1400, y = gm.cy - gm.R - 92 - (still ? 0 : k * 20);
+      g.globalAlpha = 1 - k * k; g.font = '800 20px system-ui, sans-serif'; g.textAlign = 'center'; g.fillStyle = '#ffd166';
+      g.shadowColor = 'rgba(0,0,0,0.4)'; g.shadowBlur = 6; g.fillText(s.note.text, gm.cx, y); g.shadowBlur = 0; g.globalAlpha = 1;
+    }
+    { const jx = W - 16 - 96, jy = gm.cy + gm.R - 18;
+      g.fillStyle = 'rgba(16,14,40,0.72)'; rr(jx, jy, 96, 24, 12); g.fill();
+      g.fillStyle = 'rgba(255,255,255,0.2)'; rr(jx + 26, jy + 8, 40, 8, 4); g.fill(); if (s.jar) { g.fillStyle = '#ffd166'; rr(jx + 26, jy + 8, 40 * (s.jar / s.jarMax), 8, 4); g.fill(); }
+      g.font = '14px system-ui'; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillStyle = '#fff'; g.fillText('🫙', jx + 6, jy + 13); g.font = '700 11px system-ui'; g.fillText(`${s.jar}/${s.jarMax}`, jx + 70, jy + 13); }
     // Chữ bay vào ô (khoảng 0,3 giây, chậm dần).
     for (let k = flyers.length - 1; k >= 0; k--) {
       const f = flyers[k]!, t = (now - f.t0) / 320;
@@ -214,7 +228,9 @@ export function openWheel(st: () => WheelState | null, onWord: (w: string) => vo
       root.querySelector('.whti')!.textContent = s.title; root.querySelector('.whsu')!.textContent = s.sub;
       root.querySelector('.whco b')!.textContent = String(s.coins);
       (root.querySelector('[data-e="whmusic"]') as HTMLElement).textContent = musicOff() || muted() ? '🔇' : '🎵';
-      const hb = root.querySelector<HTMLButtonElement>('.whhint')!; hb.disabled = s.coins < 10 || !!s.win; hb.setAttribute('aria-label', s.coins < 10 ? 'Gợi ý: cần 10 xu' : 'Gợi ý một chữ (10 xu)');
+      const hb = root.querySelector<HTMLButtonElement>('.whhint')!; hb.disabled = (s.free < 1 && s.coins < 10) || !!s.win;
+      hb.innerHTML = `💡<small>${s.free ? `×${s.free}` : '10'}</small>`;
+      hb.setAttribute('aria-label', s.free ? `Gợi ý một chữ (miễn phí, còn ${s.free})` : s.coins < 10 ? 'Gợi ý: cần 10 xu' : 'Gợi ý một chữ (10 xu)');
       if (s.win) {
         winBox.hidden = false;
         winBox.innerHTML = `${mascot ? `<span aria-hidden="true">${mascot('party', 64)}</span>` : ''}<p>${s.win.stars} sao · +${s.gained} xu${s.bonusFound.size ? ` · ${s.bonusFound.size} từ thưởng` : ''}</p>
@@ -255,3 +271,70 @@ export function letterCenters(): Array<{ ch: string; x: number; y: number }> {
   return root?._pos ? root._pos() : [];
 }
 export { Music, musicOff, MKEY };
+
+// v94 Phong cảnh theo chương (M4), vẽ bằng canvas ở nửa dưới màn, chuyển động chậm (tắt khi giảm chuyển động):
+// 0 bình minh: mặt trời có tia xoay + đồi · 1 biển: sóng trôi + thuyền · 2 rừng trúc: thân trúc đung đưa · 3 phố đêm: nhà cao, cửa sổ nhấp nháy
+// 4 sa mạc: đồi cát + xương rồng + mặt trời · 5 băng tuyết: núi tuyết + tuyết rơi.
+function scenery(g: CanvasRenderingContext2D, k: number, W: number, H: number, now: number, still: boolean): void {
+  const t = still ? 0 : now / 1000, base = H * 0.62;
+  g.save();
+  const hill = (y0: number, amp: number, len: number, ph: number, col: string) => {
+    g.fillStyle = col; g.beginPath(); g.moveTo(0, H);
+    for (let x = 0; x <= W; x += 8) g.lineTo(x, y0 + Math.sin(x / len + ph) * amp);
+    g.lineTo(W, H); g.closePath(); g.fill();
+  };
+  switch (k % 6) {
+    case 0: {   // bình minh
+      const cx = W * 0.78, cy = base - H * 0.08, r = Math.min(W, H) * 0.09;
+      g.globalAlpha = 0.35; g.strokeStyle = '#fff3c4'; g.lineWidth = 3;
+      for (let i = 0; i < 12; i++) { const a = t * 0.15 + (i / 12) * Math.PI * 2; g.beginPath(); g.moveTo(cx + Math.cos(a) * r * 1.3, cy + Math.sin(a) * r * 1.3); g.lineTo(cx + Math.cos(a) * r * 2, cy + Math.sin(a) * r * 2); g.stroke(); }
+      g.globalAlpha = 0.55; g.fillStyle = '#ffe08a'; g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.fill();
+      g.globalAlpha = 0.28; hill(base + 30, 18, 90, 0.5, '#5b2a86'); g.globalAlpha = 0.35; hill(base + 70, 14, 60, 2, '#3b1d63');
+      break;
+    }
+    case 1: {   // biển
+      for (let i = 0; i < 3; i++) { g.globalAlpha = 0.18 + i * 0.08; hill(base + i * 34, 8, 40 + i * 10, t * (0.8 + i * 0.3) + i, '#0b2a6b'); }
+      const bx = ((t * 18) % (W + 80)) - 40, by = base - 6 + Math.sin(t * 1.6) * 3;
+      g.globalAlpha = 0.6; g.fillStyle = '#ffffff'; g.beginPath(); g.moveTo(bx, by); g.lineTo(bx + 28, by); g.lineTo(bx + 22, by + 8); g.lineTo(bx + 6, by + 8); g.closePath(); g.fill();
+      g.beginPath(); g.moveTo(bx + 14, by - 22); g.lineTo(bx + 14, by - 2); g.lineTo(bx + 26, by - 4); g.closePath(); g.fill();
+      break;
+    }
+    case 2: {   // rừng trúc
+      g.globalAlpha = 0.3;
+      for (let i = 0; i < 9; i++) {
+        const x = (i + 0.5) * (W / 9), sway = Math.sin(t * 0.7 + i) * 6, top = base - 60 - (i % 3) * 40;
+        g.strokeStyle = '#0f3d1f'; g.lineWidth = 7; g.beginPath(); g.moveTo(x, H); g.quadraticCurveTo(x, (H + top) / 2, x + sway, top); g.stroke();
+        for (let j = 1; j < 5; j++) { const y = top + j * ((H - top) / 5); g.fillStyle = '#0f3d1f'; g.fillRect(x - 6 + sway * (1 - j / 5), y, 12, 3); }
+        g.fillStyle = '#2f7d32'; g.beginPath(); g.ellipse(x + sway + 10, top + 6, 14, 4, -0.5, 0, Math.PI * 2); g.fill();
+      }
+      break;
+    }
+    case 3: {   // phố đêm
+      g.globalAlpha = 0.45;
+      for (let i = 0; i < 10; i++) {
+        const bw = W / 10, x = i * bw, bh = 70 + ((i * 53) % 90), y = H - bh - 40;
+        g.fillStyle = '#0d0726'; g.fillRect(x + 2, y, bw - 4, bh + 40);
+        for (let r = 0; r < bh / 16; r++) for (let c = 0; c < 2; c++) {
+          const on = Math.sin(t * 0.8 + i * 3.1 + r * 1.7 + c) > 0.2;
+          g.fillStyle = on ? '#f9d423' : '#2a1f5c'; g.fillRect(x + 8 + c * (bw / 2 - 4), y + 8 + r * 16, 6, 8);
+        }
+      }
+      g.globalAlpha = 0.6; g.fillStyle = '#fff'; for (let i = 0; i < 18; i++) { const sx = (i * 97) % W, sy = (i * 41) % (H * 0.4); g.globalAlpha = 0.3 + 0.3 * Math.sin(t * 2 + i); g.fillRect(sx, sy, 2, 2); }
+      break;
+    }
+    case 4: {   // sa mạc
+      g.globalAlpha = 0.3; g.fillStyle = '#fff1c1'; g.beginPath(); g.arc(W * 0.2, base - 40, Math.min(W, H) * 0.07, 0, Math.PI * 2); g.fill();
+      g.globalAlpha = 0.3; hill(base + 20, 26, 120, 1, '#8a3a1f'); g.globalAlpha = 0.4; hill(base + 60, 20, 80, 3, '#6b2a16');
+      const cx = W * 0.82, cy = base + 30; g.globalAlpha = 0.45; g.fillStyle = '#1f4d2b';
+      g.fillRect(cx - 5, cy - 50, 10, 60); g.fillRect(cx - 20, cy - 32, 8, 18); g.fillRect(cx - 20, cy - 20, 18, 6); g.fillRect(cx + 12, cy - 40, 8, 20); g.fillRect(cx + 5, cy - 26, 15, 6);
+      break;
+    }
+    default: {  // băng tuyết
+      g.globalAlpha = 0.35; g.fillStyle = '#e8f1ff';
+      for (let i = 0; i < 4; i++) { const x = i * W / 3 - 40, w = W / 2.2, h = 90 + (i % 2) * 50; g.beginPath(); g.moveTo(x, H - 40); g.lineTo(x + w / 2, H - 40 - h); g.lineTo(x + w, H - 40); g.closePath(); g.fill(); }
+      g.globalAlpha = 0.7; g.fillStyle = '#fff';
+      for (let i = 0; i < 40; i++) { const x = (i * 73 + Math.sin(t + i) * 12) % W, y = ((i * 131) + t * 30 * (1 + (i % 3))) % H; g.beginPath(); g.arc(x, y, 1.5 + (i % 3), 0, Math.PI * 2); g.fill(); }
+    }
+  }
+  g.restore();
+}

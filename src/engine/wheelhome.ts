@@ -1,7 +1,7 @@
 // Vòng Chữ (v93): thẻ lớn ở sảnh (game chủ lực, chương hiện tại, thử thách ngày) và màn phía sau lớp phủ (khi đóng lớp phủ: tổng kết).
 
 import type { ECtx } from './views.ts';
-import { chapterOf, curve, type WheelSave } from './wordwheel.ts';
+import { chapterOf, curve, CHAPTERS, type WheelSave } from './wordwheel.ts';
 import type { WheelState } from './wheelview.ts';
 
 export function viewWheelHero(c: ECtx, sv: WheelSave, today: number): string {
@@ -10,7 +10,8 @@ export function viewWheelHero(c: ECtx, sv: WheelSave, today: number): string {
     <h2>🎡 Vòng Chữ</h2>
     <p>Màn ${sv.lv} · chương ${Math.floor((sv.lv - 1) / 10) + 1} “${c.host.esc(ch.vi)}” · ${w.len} chữ cái, ${w.slots} từ · ⭐ ${sv.stars}</p>
     <div class="whrow" style="justify-content:flex-start"><button class="whbig" data-e="whstart">▶ Chơi màn ${sv.lv}</button>
-      <button class="whb wide" data-e="whdaily"${dailyDone ? ' aria-disabled="true"' : ''}>📅 ${dailyDone ? 'Đã xong thử thách ngày' : 'Thử thách ngày'}</button></div>
+      <button class="whb wide" data-e="whdaily"${dailyDone ? ' aria-disabled="true"' : ''}>📅 ${dailyDone ? 'Đã xong thử thách ngày' : 'Thử thách ngày'}${sv.daily.streak > 1 && sv.daily.day >= today - 1 ? ` · 🔥 ${sv.daily.streak} ngày` : ''}</button></div>
+    ${viewBook(c, sv)}
   </section>`;
 }
 
@@ -23,4 +24,15 @@ export function viewWheelBehind(c: ECtx, r: WheelState & { done: boolean; mode: 
     <details><summary>Các từ của màn</summary><ul>${words}</ul></details>
     <p class="hint">Mỗi từ của cụm đang học bạn tự tìm ra được ghi vào bản đồ năng lực (nhớ ra từ theo nghĩa). Sao, xu và màn chỉ để vui.</p></section>
     <div class="row">${r.daily ? '<button class="btn primary" data-e="whshare">📤 Chia sẻ</button>' : '<button class="btn primary" data-e="whstart">▶ Màn tiếp</button>'}<button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+}
+
+// v94 Sổ từ (M8): mọi từ đã tìm ra, xếp theo chương; chạm để nghe. Từ gặp nhiều lần có dấu ⭐.
+function viewBook(c: ECtx, sv: WheelSave): string {
+  const esc = c.host.esc, xs = Object.entries(sv.book);
+  if (!xs.length) return '<p>📖 Sổ từ trống: mỗi từ bạn tìm ra sẽ vào đây.</p>';
+  const by = new Map<number, Array<[string, [string, number, number]]>>();
+  for (const x of xs) { const k = x[1][1]; if (!by.has(k)) by.set(k, []); by.get(k)!.push(x); }
+  const body = [...by.entries()].sort((a, b) => a[0] - b[0]).map(([k, ws]) => `<h3 style="margin:8px 0 4px;font-size:15px">${esc(CHAPTERS[k % CHAPTERS.length]!.vi)} · ${ws.length} từ</h3>
+    <div class="whbook">${ws.sort((a, b) => (a[0] < b[0] ? -1 : 1)).map(([w, v]) => `<button class="whw" data-say="${esc(w)}" lang="en" aria-label="${esc(w)}: ${esc(v[0])}. Nghe"><b>${esc(w)}</b>${v[2] >= 3 ? ' ⭐' : ''}<small lang="vi">${esc(v[0])}</small></button>`).join('')}</div>`).join('');
+  return `<details class="whbookbox"><summary>📖 Sổ từ · ${xs.length} từ</summary>${body}</details>`;
 }

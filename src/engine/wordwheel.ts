@@ -100,19 +100,22 @@ export function evidenceOf(slot: Slot, shownCount: number): { ok: boolean; hint:
 export const stars = (hints: number): number => (hints === 0 ? 3 : hints <= 2 ? 2 : 1);
 export const HINT_COST = 10;
 
-export interface WheelSave { lv: number; stars: number; words: number; bonus: number; runs: number; day: number; daily: { day: number; done: boolean; secs: number; hints: number } }
-export const freshWheelSave = (): WheelSave => ({ lv: 1, stars: 0, words: 0, bonus: 0, runs: 0, day: 0, daily: { day: 0, done: false, secs: 0, hints: 0 } });
+// book: sổ từ (từ → [nghĩa, chương, số lần tìm]); jar: từ thưởng dồn vào hũ (đủ JAR → 1 gợi ý miễn phí); free: gợi ý miễn phí đang có.
+export interface WheelSave { lv: number; stars: number; words: number; bonus: number; runs: number; day: number; daily: { day: number; done: boolean; secs: number; hints: number; streak: number }; book: Record<string, [string, number, number]>; jar: number; free: number }
+export const freshWheelSave = (): WheelSave => ({ lv: 1, stars: 0, words: 0, bonus: 0, runs: 0, day: 0, daily: { day: 0, done: false, secs: 0, hints: 0, streak: 0 }, book: {}, jar: 0, free: 0 });
 export function sanitizeWheel(raw: unknown): WheelSave | undefined {
   if (!raw || typeof raw !== 'object') return undefined;
   const x = raw as Record<string, unknown>, n = (v: unknown, hi: number, d = 0) => (typeof v === 'number' && Number.isFinite(v) ? Math.max(0, Math.min(hi, Math.round(v))) : d);
   const d = (x.daily && typeof x.daily === 'object' ? x.daily : {}) as Record<string, unknown>;
   return { lv: Math.max(1, n(x.lv, 1e6, 1)), stars: n(x.stars, 1e8), words: n(x.words, 1e8), bonus: n(x.bonus, 1e8), runs: n(x.runs, 1e7), day: n(x.day, 1e6),
-    daily: { day: n(d.day, 1e6), done: !!d.done, secs: n(d.secs, 1e6), hints: n(d.hints, 1e3) } };
+    daily: { day: n(d.day, 1e6), done: !!d.done, secs: n(d.secs, 1e6), hints: n(d.hints, 1e3), streak: n(d.streak, 1e5) }, book: sanitizeBook(x.book), jar: n(x.jar, JAR), free: n(x.free, 99) };
 }
 export function mergeWheel(a?: WheelSave, b?: WheelSave): WheelSave | undefined {
   if (!a) return b; if (!b) return a;
   const daily = a.daily.day !== b.daily.day ? (a.daily.day > b.daily.day ? a.daily : b.daily) : a.daily.done ? a.daily : b.daily;
-  return { lv: Math.max(a.lv, b.lv), stars: Math.max(a.stars, b.stars), words: Math.max(a.words, b.words), bonus: Math.max(a.bonus, b.bonus), runs: Math.max(a.runs, b.runs), day: Math.max(a.day, b.day), daily };
+  const book = { ...a.book };
+  for (const [w, v] of Object.entries(b.book)) { const c = book[w]; book[w] = c ? [c[0], Math.min(c[1], v[1]), Math.max(c[2], v[2])] : v; }
+  return { lv: Math.max(a.lv, b.lv), stars: Math.max(a.stars, b.stars), words: Math.max(a.words, b.words), bonus: Math.max(a.bonus, b.bonus), runs: Math.max(a.runs, b.runs), day: Math.max(a.day, b.day), daily, book: sanitizeBook(book), jar: Math.max(a.jar, b.jar), free: Math.max(a.free, b.free) };
 }
 // Chủ đề hình theo chương (10 màn một chương): màu nền + tên, vẽ bằng canvas (M4).
 export const CHAPTERS = [
@@ -129,3 +132,36 @@ export function shareText(day: number, found: number, total: number, hints: numb
   const mm = Math.floor(secs / 60), ss = String(secs % 60).padStart(2, '0');
   return `Vòng Chữ · ngày ${day % 10000}\n${'🟩'.repeat(found)}${'⬜'.repeat(Math.max(0, total - found))}\n${'⭐'.repeat(stars(hints))} · ${hints} gợi ý · ⏱ ${mm}:${ss}`;
 }
+
+// ---- v94: chiều sâu (M6), sưu tập (M8), chuỗi ngày (M10) ----
+// Sổ từ: mỗi từ ô tìm được (nghĩa, chương lần đầu gặp, số lần). Giới hạn BOOK_MAX từ (bỏ từ ít gặp nhất khi đầy).
+export const BOOK_MAX = 3000;
+export function sanitizeBook(raw: unknown): Record<string, [string, number, number]> {
+  const out: Record<string, [string, number, number]> = {};
+  if (!raw || typeof raw !== 'object') return out;
+  const xs = Object.entries(raw as Record<string, unknown>).filter(([w, v]) => isWord(w) && Array.isArray(v) && typeof v[0] === 'string' && Number.isFinite(v[1]) && Number.isFinite(v[2]))
+    .map(([w, v]) => [w, [String((v as unknown[])[0]).slice(0, 80), Math.max(0, Math.min(99, Math.round(Number((v as unknown[])[1])))), Math.max(1, Math.min(1e6, Math.round(Number((v as unknown[])[2]))))]] as const);
+  xs.sort((p, q) => q[1][2] - p[1][2]);
+  for (const [w, v] of xs.slice(0, BOOK_MAX)) out[w] = v as [string, number, number];
+  return out;
+}
+export function addBook(book: Record<string, [string, number, number]>, en: string, vi: string, chapter: number): boolean {
+  const c = book[en];
+  if (c) { c[2]++; return false; }
+  book[en] = [vi.slice(0, 80), chapter, 1];
+  if (Object.keys(book).length > BOOK_MAX) { const rare = Object.entries(book).sort((p, q) => p[1][2] - q[1][2])[0]; if (rare && rare[0] !== en) delete book[rare[0]]; }
+  return true;
+}
+// Combo: tìm ra từ liên tiếp không gửi sai → nhân xu (x2 từ 3 từ liền, x3 từ 5 từ liền). Gửi sai thì về 0. Chỉ đổi xu (P13).
+export const comboMult = (streak: number): number => (streak >= 5 ? 3 : streak >= 3 ? 2 : 1);
+// Ô vàng: một ô mỗi màn (ưu tiên ô của cụm engine chọn, để chiến thuật kiếm xu trùng đường học — C345); tìm ra được thêm GOLD xu.
+export const GOLD = 5;
+export function goldSlot(lv: Level, seed: number): number {
+  const t = lv.slots.map((s, i) => ({ s, i })).filter(x => x.s.target), pool = t.length ? t : lv.slots.map((s, i) => ({ s, i }));
+  return pool.length ? pool[Math.floor(rand(seed + 77)() * pool.length)]!.i : -1;
+}
+// Hũ từ thưởng: mỗi từ thưởng +1, đủ JAR thì đổi 1 gợi ý miễn phí (từ thưởng có ích, không chỉ để khoe).
+export const JAR = 6;
+export function fillJar(sv: { jar: number; free: number }): boolean { sv.jar++; if (sv.jar >= JAR) { sv.jar = 0; sv.free = Math.min(99, sv.free + 1); return true; } return false; }
+// Chuỗi ngày thử thách: xong hôm nay khi hôm qua cũng xong → +1, bỏ một ngày → về 1.
+export const nextStreak = (lastDay: number, prevStreak: number, today: number): number => (lastDay === today - 1 ? prevStreak + 1 : lastDay === today ? prevStreak : 1);

@@ -62,6 +62,24 @@ test('v93 Vòng Chữ: chấm từ, gợi ý, bằng chứng, sao', () => {
 test('v93 Vòng Chữ: lưu / gộp an toàn', () => {
   assert.equal(sanitizeWheel(null), undefined);
   assert.equal(sanitizeWheel({ lv: -4 })!.lv, 1);
-  const a = { ...freshWheelSave(), lv: 5, daily: { day: 3, done: true, secs: 90, hints: 0 } }, b = { ...freshWheelSave(), lv: 9, daily: { day: 3, done: false, secs: 0, hints: 0 } };
+  const a = { ...freshWheelSave(), lv: 5, daily: { day: 3, done: true, secs: 90, hints: 0, streak: 0 } }, b = { ...freshWheelSave(), lv: 9, daily: { day: 3, done: false, secs: 0, hints: 0, streak: 0 } };
   assert.equal(mergeWheel(a, b)!.lv, 9); assert.equal(mergeWheel(a, b)!.daily.done, true);
+});
+
+test('v94 Vòng Chữ: combo nhân xu, ô vàng ưu tiên ô của cụm, hũ từ thưởng đổi gợi ý, chuỗi ngày', async () => {
+  const { comboMult, goldSlot, fillJar, JAR, nextStreak, addBook, sanitizeBook, BOOK_MAX } = await import('../../src/engine/wordwheel.ts');
+  assert.deepEqual([comboMult(1), comboMult(3), comboMult(5), comboMult(9)], [1, 2, 3, 3]);
+  const lv = { letters: [], base: 'x', bonus: [], slots: [{ en: 'aaa', vi: '', node: '', id: '', target: false }, { en: 'bbb', vi: '', node: 'u:1', id: '', target: true }] };
+  for (let s = 0; s < 20; s++) assert.equal(goldSlot(lv, s), 1, 'ô vàng luôn ở ô của cụm engine chọn khi có');
+  const sv = { jar: 0, free: 0 }; let got = 0;
+  for (let i = 0; i < JAR * 2; i++) if (fillJar(sv)) got++;
+  assert.deepEqual([got, sv.free, sv.jar], [2, 2, 0]);
+  assert.equal(nextStreak(9, 4, 10), 5); assert.equal(nextStreak(7, 4, 10), 1); assert.equal(nextStreak(10, 4, 10), 4);
+  const book: Record<string, [string, number, number]> = {};
+  assert.equal(addBook(book, 'tea', 'trà', 0), true); assert.equal(addBook(book, 'tea', 'trà', 2), false);
+  assert.deepEqual(book.tea, ['trà', 0, 2]);
+  const big: Record<string, [string, number, number]> = {};
+  for (let i = 0; i < BOOK_MAX + 50; i++) big['w' + 'abcdefgh'[i % 8]!.repeat(3) + String.fromCharCode(97 + (i % 26)) + String.fromCharCode(97 + Math.floor(i / 26) % 26)] = ['x', 0, 1];
+  assert.ok(Object.keys(sanitizeBook(big)).length <= BOOK_MAX);
+  assert.deepEqual(sanitizeBook({ '123': ['x', 0, 1], ok: ['x', 0, 1], good: ['ổn', 1, 3] }), { good: ['ổn', 1, 3] }, 'chỉ giữ từ 3–8 chữ cái');
 });

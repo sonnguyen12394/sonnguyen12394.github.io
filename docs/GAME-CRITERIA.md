@@ -1052,3 +1052,32 @@ So với game tốt nhất cũ (Câu đố ngày 4,6) là +2,0. **Chưa tới 7*
 - Bộ não chọn Vòng Chữ 3 lần; bot thắng cả 3 màn; không kẹt, 0 lỗi trang.
 - Ô mastery Đạt cuối kỳ: 709 (v90: 710), trong nhiễu.
 - Tỉ lệ đúng thấp hơn (49% so với 55%) vì cơ cấu game khác nhau giữa hai lần chạy. Câu Vòng Chữ là tự gõ nên khó đoán hơn câu chọn.
+
+### 10.6 Đã làm v94: chiều sâu, sưu tập, phong cảnh, chuỗi ngày cho Vòng Chữ
+
+| Tiêu chí | Việc | Vì sao vẫn đúng spec |
+|---|---|---|
+| M6 chiều sâu | **Combo:** tìm từ liền không gửi sai thì xu nhân hai từ từ thứ 3, nhân ba từ từ thứ 5. **Ô vàng:** mỗi màn một ô, ưu tiên ô thuộc cụm engine chọn, tìm ra +5 xu. **Hũ từ thưởng:** mỗi từ thưởng +1, đủ 6 thì đổi 1 gợi ý miễn phí (dùng trước gợi ý trả xu) | Chỉ đổi xu và gợi ý, không đổi câu hay cách tính năng lực (P13, P14). Ô vàng nằm ở từ cần học nên chiến thuật kiếm xu trùng đường học (C345). Gợi ý miễn phí vẫn tính là có gợi ý trong bằng chứng |
+| M8 sưu tập | **Sổ từ** ở thẻ sảnh: mọi từ đã tìm ra, xếp theo chương, chạm để nghe; từ gặp từ 3 lần có ⭐. Từ mới vào sổ có thông báo ngay trong màn | Sổ là telemetry (`st.e.gh.book`), giới hạn 3.000 từ, không vào năng lực |
+| M4 mỹ thuật | **Phong cảnh động cho 6 chương**, vẽ bằng canvas:<br>• mặt trời có tia xoay;<br>• sóng biển và thuyền;<br>• rừng trúc đung đưa;<br>• phố đêm cửa sổ nhấp nháy;<br>• đồi cát và xương rồng;<br>• núi tuyết và tuyết rơi.<br>Giảm chuyển động thì đứng yên | — |
+| M10 quay lại | **Chuỗi ngày** của thử thách ngày (🔥 N ngày ở thẻ sảnh) | Không phạt khi đứt chuỗi, chỉ bắt đầu lại từ 1 (HG20) |
+
+**Kiểm:**
+- Đơn vị `engine-wheel.test.ts`:
+  - combo; ô vàng luôn ở ô của cụm khi có;
+  - hũ đầy đổi gợi ý; chuỗi ngày;
+  - sổ từ: giới hạn, chỉ từ 3–8 chữ.
+- e2e `wheel.spec.ts`:
+  - hũ đầy → gợi ý miễn phí không trừ xu;
+  - từ vào sổ, sổ hiện đúng số từ ở sảnh.
+
+**Chấm lại M1–M10 (vẫn là tự chấm, chờ người sáng lập chơi thử):**
+
+| M1 ×2 | M2 ×2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 7 | 7 | 8 | 6 | 8 | 7 | 6 | 7 | 8 | 7 | **7,1** |
+
+**Còn thiếu để lên 8:**
+- **M4:** tranh minh hoạ thật thay cho emoji ở gợi ý nghĩa (cần họa sĩ hoặc bộ hình tự vẽ);
+- **M7:** màn thiết kế tay cho các mốc chương;
+- **M2:** rung tay trên iOS (Safari không hỗ trợ rung); tinh chỉnh độ nhạy khi vuốt nhanh qua chữ.

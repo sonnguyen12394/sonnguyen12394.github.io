@@ -40,7 +40,7 @@ import { viewRobot, viewRobotEnd, robotKey, type RobotRun } from './robotview.ts
 import { layout as robotLayout, parse as robotParse, run as robotRun, won as robotWon, freshRobotSave } from './robot.ts';
 import { viewGarden, viewGardenEnd, type GardenRun } from './gardenview.ts';
 import { pickToday, itemFor, grow as gardenGrow, freshGardenSave, PER_DAY } from './garden.ts';
-import { buildLevel, dailyLevel, curve, judge, nextHint, evidenceOf, stars as wheelStars, chapterOf, shareText as wheelShare, freshWheelSave, GUESS, HINT_COST, type Lex, type Level as WLevel } from './wordwheel.ts';
+import { buildLevel, dailyLevel, curve, judge, nextHint, evidenceOf, stars as wheelStars, chapterOf, CHAPTERS, shareText as wheelShare, freshWheelSave, GUESS, HINT_COST, addBook, comboMult, goldSlot, GOLD, fillJar, JAR, nextStreak, type Lex, type Level as WLevel } from './wordwheel.ts';
 import { openWheel, type WheelState, type WheelHandle } from './wheelview.ts';
 import { viewWheelHero, viewWheelBehind } from './wheelhome.ts';
 import { direct, planDay, nextGame, isGame, freshDirSave, GAMES, type DirIn, type DirPick, type GameId, type Need } from './director.ts';
@@ -76,7 +76,7 @@ export interface EngineModule {
   merge(a: unknown, b: unknown): EState;
   peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
-export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[] }
+export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[]; bonus?: string[] }
 
 let bound = false;
 
@@ -1027,8 +1027,8 @@ export function init(host: EHost): EngineModule {
     if (mode === 'daily' && sv.daily.day === host.today() && sv.daily.done) { host.toast('Hôm nay bạn đã xong thử thách ngày. Mai có màn mới!'); return false; }
     const b = hBuild(mode, sv.runs + 1);
     if (!b) { host.toast('Chưa dựng được màn: chọn mục tiêu CEFR trước.'); return false; }
-    const ch = chapterOf(sv.lv);
-    hrun = { mode, floor: sv.runs + 1, t0: Date.now(), chs: b.chs, done: false, n: 0, ok: 0, level: b.level, theme: mode === 'daily' ? { a: '#f093fb', b: '#5b247a', c: '#ffd166' } : ch,
+    const ch = chapterOf(sv.lv), scene = Math.floor((sv.lv - 1) / 10) % CHAPTERS.length;
+    hrun = { gold: goldSlot(b.level, Date.now() >>> 3), combo: 0, free: sv.free, jar: sv.jar, jarMax: JAR, scene: mode === 'daily' ? 3 : scene, note: null, mode, floor: sv.runs + 1, t0: Date.now(), chs: b.chs, done: false, n: 0, ok: 0, level: b.level, theme: mode === 'daily' ? { a: '#f093fb', b: '#5b247a', c: '#ffd166' } : ch,
       title: mode === 'daily' ? '📅 Thử thách ngày' : `🎡 Màn ${sv.lv}`, sub: mode === 'daily' ? 'Cùng một màn cho mọi người hôm nay' : `Chương ${Math.floor((sv.lv - 1) / 10) + 1} · ${ch.vi}`,
       daily: mode === 'daily', found: new Set(), bonusFound: new Set(), shown: {}, hints: 0, coins: wallet(), gained: 0, win: null };
     if (typeof document !== 'undefined') { hview?.close(); hview = openWheel(() => hrun, w => hWord(w), host.mascot ? (m, n) => host.mascot!(m, n) : undefined); }
@@ -1039,8 +1039,11 @@ export function init(host: EHost): EngineModule {
     if (!r || r.win || !raw) return;
     const w = raw.trim().toLowerCase(), v = judge(r.level, r.found, w), e = E(), sv = hsave(), today = host.today();
     let coins = 0;
+    const nowP = typeof performance !== 'undefined' ? performance.now() : 0;
     if (v === 'slot') {
-      const sl = r.level.slots.find(x => x.en === w)!; r.found.add(w); sv.words++;
+      const si = r.level.slots.findIndex(x => x.en === w), sl = r.level.slots[si]!; r.found.add(w); sv.words++;
+      r.combo++;
+      if (addBook(sv.book, sl.en, sl.vi, r.scene)) r.note = { text: `📖 Từ mới vào sổ: ${sl.en}`, t: nowP };
       const ev = r.mode === 'level' ? evidenceOf(sl, (r.shown[w] ?? []).length) : null;
       if (ev) {
         const ch = r.chs[sl.node], item = `w:${sl.id}:wheel`, novel = !seenHas(e.ev, sl.node, item);
@@ -1049,13 +1052,21 @@ export function init(host: EHost): EngineModule {
         r.n++; if (ev.ok) r.ok++;
         coins = ch ? reward(ch, ev.ok, novel) : ev.ok ? 3 : 1;
       } else coins = 2;
-    } else if (v === 'bonus') { r.bonusFound.add(w); sv.bonus++; coins = 2; }
+      const mult = comboMult(r.combo);
+      coins *= mult;
+      if (mult > 1) r.note = { text: `🔥 Combo x${mult}!`, t: nowP };
+      if (si === r.gold) { coins += GOLD; r.note = { text: `⭐ Ô vàng +${GOLD} xu`, t: nowP }; }
+    } else if (v === 'bonus') {
+      r.bonusFound.add(w); sv.bonus++; coins = 2;
+      if (fillJar(sv)) r.note = { text: '🫙 Hũ đầy: +1 gợi ý miễn phí', t: nowP };
+    } else if (v === 'no' || v === 'short') r.combo = 0;
+    r.free = sv.free; r.jar = sv.jar;
     if (coins) { const q = qsave(); q.coins += coins; q.day = today; r.gained += coins; }
     if (r.level.slots.every(x => r.found.has(x.en))) {
       const st = wheelStars(r.hints);
       r.win = { stars: st, at: typeof performance !== 'undefined' ? performance.now() : 0 }; r.done = true;
       sv.runs++; sv.stars += st; sv.day = today;
-      if (r.mode === 'level') sv.lv++; else sv.daily = { day: today, done: true, secs: Math.round((Date.now() - r.t0) / 1000), hints: r.hints };
+      if (r.mode === 'level') sv.lv++; else sv.daily = { day: today, done: true, secs: Math.round((Date.now() - r.t0) / 1000), hints: r.hints, streak: nextStreak(sv.daily.done ? sv.daily.day : -9, sv.daily.streak, today) };
       addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: `wheel:${r.floor}`, dec: 'wheel:end', rule: `${RULE_ID}/${QUEST_VER}`, info: { ok: r.ok, of: r.n, hints: r.hints, bonus: r.bonusFound.size, mode: r.mode }, evs: e.ev.led.filter(x => x.ctx === 'wheel' && x.ts >= r.t0).map(x => x.id) }, false);
     }
     r.coins = wallet();
@@ -1520,8 +1531,9 @@ export function init(host: EHost): EngineModule {
     whexit() { hClose(); if (hrun && !hrun.done) { hrun = null; const pm = pmsave(); if (pm.cur && !pm.cur.d) playQuit(pm); host.save(); } host.render(); },
     whhint() {
       const r = hrun; if (!r || r.win) return;
-      const h = nextHint(r.level, r.found, r.shown); if (!h || !spend(twsave(), wallet(), HINT_COST)) return;
-      const sl = r.level.slots[h[0]]!; (r.shown[sl.en] ||= []).push(h[1]); r.hints++; r.coins = wallet(); host.save(); hview?.refresh();
+      const h = nextHint(r.level, r.found, r.shown), sv = hsave(); if (!h) return;
+      if (sv.free > 0) sv.free--; else if (!spend(twsave(), wallet(), HINT_COST)) return;   // v94: gợi ý miễn phí (từ hũ) dùng trước
+      const sl = r.level.slots[h[0]]!; (r.shown[sl.en] ||= []).push(h[1]); r.hints++; r.coins = wallet(); r.free = sv.free; host.save(); hview?.refresh();
     },
     whshuf() { hview?.shuffle(); },
     whmusic() { try { const off = localStorage.getItem('el-music-off') === '1'; if (off) localStorage.removeItem('el-music-off'); else localStorage.setItem('el-music-off', '1'); } catch { /* bỏ qua */ } hview?.music(); hview?.refresh(); },
@@ -1717,7 +1729,7 @@ export function init(host: EHost): EngineModule {
       if (hrun) {   // Vòng Chữ: ô chưa tìm của cụm engine chọn trước (bot gõ từ ở ô gõ của lớp phủ)
         if (hrun.done || hrun.win) return null;
         const r = hrun, sl = r.level.slots.find(x => x.target && !r.found.has(x.en)) ?? r.level.slots.find(x => !r.found.has(x.en));
-        return sl ? { run: 'wheel', node: sl.node, level: 2, id: `w:${sl.id}:wheel`, prompt: sl.vi, accept: [sl.en], game: 'wheel', hinted: Object.keys(r.shown).filter(w => !r.found.has(w)) } : null;
+        return sl ? { run: 'wheel', node: sl.node, level: 2, id: `w:${sl.id}:wheel`, prompt: sl.vi, accept: [sl.en], game: 'wheel', hinted: Object.keys(r.shown).filter(w => !r.found.has(w)), bonus: r.level.bonus.filter(w => !r.bonusFound.has(w)).slice(0, 5) } : null;
       }
       if (grun) {   // Vườn từ: thẻ dạy (bấm tiếp) hoặc câu của bậc kế
         if (grun.done || grun.ans || !grun.item) return null;
