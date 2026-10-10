@@ -536,6 +536,7 @@ Cột G: G1 · G2 · G3 · G4 · G5 · G6 · G7 · G8 · G9 · G10.
 - Một đường đủ nửa bản đồ thì khoá, để đo cân đối (F1c).
 - Ô sương **mở dù đúng hay sai**, cảnh theo seed: không có phần thưởng cho câu đúng nên không có lý do đoán bừa (F1b, G3).
 - Tối đa 7 ngày một lần, vì cấp không đổi nhanh hơn thế (tránh làm bài xếp lớp thay cho học).
+- **Xếp lớp lại chỉ dò phần chưa có bằng chứng thật.** Bot L01 cho thấy: dò cả phần vừa luyện thì người học trả lời đúng ở đó, cầu thang lên cấp, và tiên nghiệm coi cả phần chưa học cùng cấp là "đã biết". Lần thám hiểm thứ hai làm 17 nút bị tạm Đạt sai; sau khi sửa còn tối đa 2, ngang các bản trước.
 - G6 = 5 là cố ý: bài xếp lớp không dạy, không chữa giữa chừng.
 - F1c = 7: chỉ từ vựng + ngữ pháp; nghe / đọc lấy từ bài kiểm tra Nghe + Đọc.
 
