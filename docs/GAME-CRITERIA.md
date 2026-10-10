@@ -1340,3 +1340,50 @@ Chế độ `?playtest=1` thêm nút nhảy tới màn rương 5, màn mốc 10,
 **Bài học quy trình:**
 - Kiểm cả CI, không chỉ máy soạn. Thông báo CI đỏ đã không về, và ba lần đẩy đỏ mà tôi không biết.
 - Chạy bot sau **mỗi** thay đổi giao diện sảnh: hồi quy v99 chỉ bot mới thấy, e2e không thấy.
+
+### 10.13 Đã làm v101: cốt truyện "Phố Chữ mất tiếng" nối ba game chủ lực
+
+**Yêu cầu của người sáng lập:** các game phải liên kết với nhau bằng cốt truyện.
+
+**Gốc rễ của cảm giác rời rạc:** ba game chia chung xu và Phố, nhưng người chơi không có lý do để đi từ game này sang game kia: không mục tiêu chung, không nhân vật, không "chuyện gì xảy ra tiếp". Game ghép 3 có cốt truyện (làm vườn, sửa nhà) giải quyết đúng chỗ này: mỗi màn chơi đẩy câu chuyện; câu chuyện cho lý do quay lại và lý do đổi game.
+
+**Tiền đề (người sáng lập chọn):** Sương Câm phủ Phố Chữ, chữ biến khỏi biển hiệu và lời nói của cư dân. Bạn cùng Tí trả lại lời cho từng khu.
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Nội dung | Mở đầu + 3 khu (Chợ Sáng, Bến Cảng, Rừng Trúc) × 4 chương + "còn tiếp" (Phố Đêm). 9 nhân vật: Tí, Bà Lan, Chú Tư, Bé Bin, Ông Ba, Cô Ngân, Ông Hải, Thầy Minh, Cô Chi. Mọi câu thoại là tiếng Anh A1 ngắn (≤ 14 từ, có test), kèm dịch | `story.ts` |
+| Nhiệm vụ nối 3 game | Mỗi chương: ⛏️ đào chữ (từ tìm ở Mỏ Chữ), 🎡 thắp đèn (thắng màn Vòng Chữ), 🃏 trả câu nói (câu đúng ở Bài Câu). Nhiệm vụ hiện ở thẻ truyện (bấm là vào đúng game) **và ngay trong phụ đề game**, ví dụ "📖 Đào chữ cho Bà Lan: 3/5", cập nhật theo từng từ | `storyAdd()`, `storyNote()` |
+| Gắn học thật (người sáng lập chọn) | Chương cuối mỗi khu cần thêm **2 / 5 / 9 kỹ năng vững** trên bản đồ năng lực (`skillsOf().solid`). Thiếu thì thẻ truyện khoá và chỉ đường sang "Lộ trình hôm nay": truyện thưởng cho việc học thật (North Star), không chặn chơi | `solid`, `ready()` |
+| Cảnh truyện | Lớp phủ toàn màn hình theo màu khu; từng khung: nhân vật (Tí dùng linh vật), câu tiếng Anh gõ dần (giảm chuyển động thì hiện ngay), dịch, 🔊 nghe giọng máy, Tiếp / Bỏ qua. Xong chương +20 xu, xong khu +50 xu và "khu đã hồi sinh" | `storyfx.ts` |
+| Lưu | `st.e.sy`; gộp hai máy giữ chương xa hơn | `state.ts` |
+
+**Đúng spec:**
+- Truyện không ghi bằng chứng (e2e kiểm sổ bằng chứng không tăng thêm).
+- Không đổi câu hỏi hay lộ trình. Bộ não chọn game vẫn theo nhu cầu học (C69, C345).
+- Nhiệm vụ truyện trải đều ba game nên không kéo người học lệch khỏi lộ trình.
+
+**Sửa thêm trong đợt này:** kéo thả Bài Câu nghe `pointermove` / `pointerup` trên `window` trong lúc kéo, thay vì dựa vào pointer capture của từng lá. CI Safari iOS cho thấy lần kéo thứ hai mất sự kiện.
+
+**Kiểm:**
+- Đơn vị `engine-story` (3):
+  - nội dung đủ khu / chương, mỗi chương dùng cả ba game;
+  - mốc kỹ năng tăng dần;
+  - tiến độ chặn ở mức cần;
+  - chương cuối khoá khi thiếu kỹ năng vững;
+  - xu, khu hồi sinh, lưu / gộp.
+- e2e `story.spec` (2):
+  - mở đầu → chương 1;
+  - tìm từ ở Mỏ Chữ → phụ đề game và thẻ truyện cùng tăng;
+  - đủ nhiệm vụ → cảnh → chương 2, +20 xu;
+  - chương cuối khoá khi thiếu kỹ năng vững;
+  - WCAG AA thẻ truyện và cảnh truyện ở 390 px.
+- Toàn bộ: 281 đơn vị, 212 e2e qua.
+
+**Nhịp:** bot L01 xong chương 1 sau 6 ngày, trong khi game có cốt truyện cho xong chương đầu ngay buổi đầu (móc quay lại). Đã hạ nhiệm vụ đào của chương 1 từ 5 xuống 3; vẫn phải qua cả ba game. Chơi trước khi xem cảnh mở đầu vẫn được tính cho chương 1.
+
+**Ảnh hưởng điểm (tự chấm):** M8 (meta, phần thưởng) và M10 (lý do quay lại) của cả ba game +1.
+- Vòng Chữ 7,2 → 7,3
+- Mỏ Chữ 7,3 → 7,4
+- Bài Câu 5,9 → 6,1
+
+Cảnh truyện vẫn là chữ + emoji, chưa có tranh (M4).

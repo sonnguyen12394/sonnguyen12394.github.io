@@ -26,6 +26,8 @@ import { viewLobby, viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoard
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
 import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, TIER_COINS, type WkKind } from './weekly.ts';
+import { CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind } from './story.ts';
+import { openScene } from './storyfx.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
 import { GUESTS, stars as cafeStars, freshCafeSave, reactOf, tip as cafeTip } from './cafe.ts';
 import { viewBubbles, viewBubblesEnd, speakKey, type BubbleRun } from './bubbleview.ts';
@@ -442,7 +444,13 @@ export function init(host: EHost): EngineModule {
   function wk(kind: WkKind, n: number, game: string): void {
     const e = E(), today = host.today(), s = (e.wk ||= freshWeek(weekOf(today)));
     for (const k of wkAdd(s, today, kind, n, game)) { qsave().coins += TIER_COINS[k]!; host.toast(`🏅 ${themeOf(s.week).vi}: mốc ${k + 1}/3 · +${TIER_COINS[k]} xu${k === 2 ? ' · huy hiệu tuần!' : ''}`); }
+    // v101 Cốt truyện: từ tìm ở Mỏ Chữ = đào chữ, thắng màn Vòng Chữ = thắp đèn, câu đúng ở Bài Câu = trả câu nói.
+    const sk: StoryKind | null = kind === 'word' && game === 'hunt' ? 'dig' : kind === 'play' && game === 'wheel' ? 'light' : kind === 'sentence' ? 'voice' : null;
+    if (sk && storyAdd(ysave(), sk, n)) { const c = chapterAt(ysave())!; host.toast(`📖 Xong nhiệm vụ truyện: ${KIND_VI[sk].vi} cho ${c.who.replace(/^\S+\s/, '')}`); }
   }
+  const ysave = () => { const e = E(); return (e.sy ||= freshStory()); };
+  // Số kỹ năng vững thật của mục tiêu chính (mốc cuối mỗi khu truyện cần con số này).
+  function solidNow(): number { const g = E().goals.map(sg => loaded()?.goal.get(sg.id)).find(Boolean); return g && loaded() ? skillsOf(E(), g).solid : 0; }
   // Bộ chọn cho game chỉ dùng một loại nút (ngữ pháp / chức năng giao tiếp / âm): biên lộ trình có ít nút loại đó → thêm nút chưa Đạt của
   // mục tiêu (sau phần mở, ưu tiên thấp hơn) để game vẫn có nội dung đúng mục đích.
   function kindPicker(has: (n: string) => boolean, tag: string, floor: number): (k: Enc) => Challenge | null {
@@ -462,7 +470,7 @@ export function init(host: EHost): EngineModule {
   function cOpen(): void {
     if (typeof document === 'undefined' || !crun) return;
     hClose(); nClose(); cview?.close();
-    cview = openCards(() => (crun ? Object.assign(crun as CardsFxState, { nodeVi: loaded()?.node.get(crun.node)?.vi ?? '', best: csave().best }) : null), o => cBuilt(o), host.mascot ? (m, k) => host.mascot!(m, k) : undefined);
+    cview = openCards(() => (crun ? Object.assign(crun as CardsFxState, { nodeVi: loaded()?.node.get(crun.node)?.vi ?? '', best: csave().best, story: storyNote(E().sy, 'voice') }) : null), o => cBuilt(o), host.mascot ? (m, k) => host.mascot!(m, k) : undefined);
   }
   function cClose(): void { cview?.close(); cview = null; }
   function cBuilt(order: number[]): void {
@@ -1052,7 +1060,7 @@ export function init(host: EHost): EngineModule {
     if (!b) { host.toast('Chưa dựng được màn: chọn mục tiêu CEFR trước.'); return false; }
     const ch = chapterOf(sv.lv), scene = Math.floor((sv.lv - 1) / 10) % CHAPTERS.length;
     hrun = { gold: goldSlot(b.level, Date.now() >>> 3), combo: 0, free: sv.free, jar: sv.jar, jarMax: JAR, scene: mode === 'daily' ? 3 : scene, note: null, mode, floor: sv.runs + 1, t0: Date.now(), chs: b.chs, done: false, n: 0, ok: 0, level: b.level, theme: mode === 'daily' ? { a: '#f093fb', b: '#5b247a', c: '#ffd166' } : ch,
-      title: mode === 'daily' ? '📅 Thử thách ngày' : `🎡 Màn ${sv.lv}`, sub: mode === 'daily' ? 'Cùng một màn cho mọi người hôm nay' : `Chương ${Math.floor((sv.lv - 1) / 10) + 1} · ${ch.vi}`,
+      title: mode === 'daily' ? '📅 Thử thách ngày' : `🎡 Màn ${sv.lv}`, sub: mode === 'daily' ? 'Cùng một màn cho mọi người hôm nay' : storyNote(E().sy, 'light') || `Chương ${Math.floor((sv.lv - 1) / 10) + 1} · ${ch.vi}`,
       daily: mode === 'daily', found: new Set(), bonusFound: new Set(), shown: {}, hints: 0, coins: wallet(), gained: 0, win: null };
     if (typeof document !== 'undefined') { nClose(); hview?.close(); hview = openWheel(() => hrun, w => hWord(w), host.mascot ? (m, n) => host.mascot!(m, n) : undefined); }
     return true;
@@ -1133,7 +1141,7 @@ export function init(host: EHost): EngineModule {
     if (!lv) { host.toast('Chưa dựng được mỏ: chọn mục tiêu CEFR trước.'); return false; }
     nrun = { mode, floor: sv.runs + 1, t0: Date.now(), chs, over: false, n: 0, ok: 0, nextId: lv.nextId, used: new Set(), hintWord: '',
       goal: lv.goal, ice: lv.ice, chests: lv.chests, chestsGot: 0, grid: lv.grid, missions: lv.missions, done: new Set(), moves: lv.moves, movesMax: lv.moves, score: 0,
-      title: mode === 'daily' ? '📅 Mỏ hôm nay' : `⛏️ Màn ${sv.lv}${sv.lv % 10 === 0 ? ' · màn mốc' : ''}`, sub: mode === 'daily' ? 'Cùng một mỏ cho mọi người hôm nay' : 'Vuốt qua các ô kề nhau (cả chéo) để tạo từ',
+      title: mode === 'daily' ? '📅 Mỏ hôm nay' : `⛏️ Màn ${sv.lv}${sv.lv % 10 === 0 ? ' · màn mốc' : ''}`, sub: mode === 'daily' ? 'Cùng một mỏ cho mọi người hôm nay' : storyNote(E().sy, 'dig') || 'Vuốt qua các ô kề nhau (cả chéo) để tạo từ',
       daily: mode === 'daily', coins: wallet(), gained: 0, scene: Math.floor((sv.lv - 1) / 10), win: null, lose: null, hint: -1, combo: 0, note: null, fall: {}, fallAt: 0, burst: [], burstAt: 0 };
     if (typeof document !== 'undefined') { hClose(); nview?.close(); nview = openHunt(() => nrun, p => nWord(p), host.mascot ? (m, k) => host.mascot!(m, k) : undefined); }
     return true;
@@ -1150,7 +1158,7 @@ export function init(host: EHost): EngineModule {
     else if (isLex(w)) v = 'word';
     else v = 'no';
     if (v === 'mission' || v === 'word') {
-      let coins = 0; wk('word', 1, 'hunt');
+      let coins = 0; wk('word', 1, 'hunt'); if (!r.daily) r.sub = storyNote(E().sy, 'dig') || 'Vuốt qua các ô kề nhau (cả chéo) để tạo từ';
       const gold = path.some(i => r.grid[i]!.sp === 'gold'), a = applyWord(r.grid, path, (Date.now() >>> 2) ^ r.nextId, r.nextId);
       r.burst = a.broken.map(i => ({ i, ch: r.grid[i]!.ch })); r.burstAt = nowP;
       r.combo++;
@@ -1491,7 +1499,7 @@ export function init(host: EHost): EngineModule {
     if (qrun?.done) return viewQuestEnd(c, qrun);
     if (qrun) { qrun.revive = qrun.mode === 'tower' && !qrun.revived && qrun.i + 1 < qrun.plan.length && wallet() >= REVIVE ? REVIVE : 0; return viewQuestRun(c, qrun); }
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null, c.e.goals.length ? viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave()));
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave()));
   }
   const routes: Record<string, (c: ECtx) => string> = {
     measure: c => {
@@ -1663,6 +1671,18 @@ export function init(host: EHost): EngineModule {
     whshuf() { hview?.shuffle(); },
     // Chế độ chơi thử (docs/PLAYTEST.md): nhảy tới màn đáng thử của Mỏ Chữ. Chỉ đổi màn chơi (telemetry), không ghi bằng chứng.
     hnjump(el) { const lv = Number(el.dataset.lv); if (!playtest() || !(lv >= 1 && lv <= 200)) return; nsave().lv = lv; qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; hrun = null; nrun = null; if (nStart('level')) { markStart(); host.render(); } },
+    // v101 Cảnh truyện: chương hiện tại (đủ nhiệm vụ) → xem xong thì sang chương sau, +xu; chương đã qua → xem lại.
+    stscene(el) {
+      const k = Number(el.dataset.ch), sv = ysave(), ch = STORY[k]; if (!ch || typeof document === 'undefined' || !(k <= sv.ch)) return;
+      const solid = solidNow();
+      openScene(ch, k, () => {
+        if (k !== sv.ch) return;
+        const a = advance(sv, solid); if (!a) return;
+        if (a.coins) qsave().coins += a.coins;
+        host.toast(a.act ? `🏙️ ${a.act} đã hồi sinh! +${a.coins} xu` : a.coins ? `📖 Xong chương! +${a.coins} xu` : '📖 Câu chuyện bắt đầu!');
+        host.save(); host.render();
+      }, host.say ? t => host.say!(t) : undefined, host.mascot ? (m, n) => host.mascot!(m, n) : undefined);
+    },
     hnstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; hrun = null; nrun = null; if (nStart('level')) { markStart(); host.render(); } },
     hndaily() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; hrun = null; nrun = null; if (nStart('daily')) { markStart(); host.render(); } },
     hnnext() { if (!nrun?.win || nrun.mode !== 'level') return; if (nStart('level')) { playStart(pmsave(), 'hunt', 'again', Date.now(), townKey(town(E()))); markStart(); host.save(); host.render(); } },

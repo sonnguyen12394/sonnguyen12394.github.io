@@ -216,6 +216,8 @@ export async function run(P: Profile): Promise<void> {
   }
 
   // v88: thẻ từng game nằm trong mục thu gọn "Tất cả trò chơi" của sảnh: mở ra trước khi tìm nút game.
+  // v101: có nút xem cảnh truyện ở sảnh thì xem (như người dùng thật), bấm Tiếp tới hết.
+  const story = async () => { try { const b = page.locator('[data-e="stscene"]').filter({ visible: true }).first(); if (!(await b.count())) return; await b.click(); for (let i = 0; i < 12 && await page.locator('#stfx').count(); i++) await page.locator('#stfx [data-st="next"]').click(); note('story', { ch: await page.evaluate(() => (window as any).eval('st').e.sy?.ch ?? 0) }); } catch { /* bỏ qua */ } };   // eslint-disable-line @typescript-eslint/no-explicit-any
   const openAll = () => page.evaluate(() => document.querySelectorAll('details.gall').forEach(d => { (d as HTMLDetailsElement).open = true; })).catch(() => {});
   async function playFloor(): Promise<void> {
     const home = await shot('tower');
@@ -649,6 +651,7 @@ export async function run(P: Profile): Promise<void> {
     const DIR_PLAY: Record<string, () => Promise<void>> = { hunt: playHunt, wheel: playWheel, tower: playFloor, blocks: playBlocks, board: playBoard, cards: playCards, cafe: playCafe, bubbles: playBubbles, puzzle: playPuzzle, case: () => playCase('read'), radio: () => playCase('listen'), kara: playKara, shop: playShop, letter: playLetter, robot: playRobot, fog: playFog, garden: playGarden };
     if (GAMES === 'director') {
       for (let f = 0; f < floors; f++) {
+        await story();
         const d = page.locator('.dgo'), dg = (await d.count()) ? (await d.first().getAttribute('data-g')) ?? 'tower' : 'tower';
         note('dir', { g: dg, f });
         await (DIR_PLAY[dg] ?? playFloor)();

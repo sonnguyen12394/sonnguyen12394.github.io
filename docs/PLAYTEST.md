@@ -15,6 +15,7 @@ Mục đích: kiểm tra xem điểm tôi tự chấm (Vòng Chữ 7,2 · Mỏ C
 
 | # | Làm gì | Để ý điều gì |
 |---|---|---|
+| 0 | 📖 Bấm **Bắt đầu câu chuyện** ở thẻ truyện, xem cảnh mở đầu; làm 1–2 nhiệm vụ của chương 1 (Bà Lan) qua các game | Có muốn biết chuyện gì xảy ra tiếp không? Nhiệm vụ truyện có làm bạn muốn chuyển sang game khác không? |
 | 1 | Nhìn sảnh: lộ trình, ba thẻ ⭐ game chủ lực, sự kiện tuần, mục 📚 Luyện tập (đang đóng) | Có muốn bấm vào game không? Có biết nên chơi gì trước không? |
 | 2 | 🎡 **Vòng Chữ**: chơi màn 1 và màn 2. Vuốt qua các chữ trên vòng để ghép từ | Vuốt có mượt và "đã tay" không? Âm, hiệu ứng khi tìm ra từ có đã không? Gợi ý nghĩa tiếng Việt có giúp không? |
 | 3 | ⛏️ **Mỏ Chữ**: chơi màn 1, sau đó bấm 🧪 **Màn 5 rương** và **Màn 10 mốc** | Luật "kề nhau cả chéo" có hiểu ngay không? Màn rương có quá khó không? Màn mốc hình trái tim có thấy "đặc biệt" không? |

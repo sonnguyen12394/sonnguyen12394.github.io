@@ -7,7 +7,7 @@ import { TABLES, PLAYS, target, CHARMS } from './cards.ts';
 import { snd, Music, musicOff, STILL } from './wheelview.ts';
 import { muted } from './sfx.ts';
 
-export type CardsFxState = CardsRun & { nodeVi: string; best: number; prevBest?: number };
+export type CardsFxState = CardsRun & { nodeVi: string; best: number; prevBest?: number; story?: string };
 export interface CardsHandle { close(): void; music(): void; refresh(): void }
 interface Particle { x: number; y: number; vx: number; vy: number; life: number; c: string; r: number }
 interface Pos { x: number; y: number; w: number }
@@ -73,33 +73,37 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
     layer.innerHTML = ''; tiles = s.hand.map((t, i) => {
       const b = document.createElement('button');
       b.className = 'cdtile'; b.lang = 'en'; b.textContent = t; b.dataset.i = String(i);
+      // Kéo thả: nghe pointermove / pointerup trên window trong lúc kéo (không dựa vào pointer capture của từng lá: WebKit có lúc
+      // không nhả capture của lá trước, lần kéo sau mất sự kiện). Thả xong gỡ trình nghe.
       b.addEventListener('pointerdown', e => {
-        const r = st(); if (!r || r.ans || r.tableEnd || r.done) return;
+        const r = st(); if (!r || r.ans || r.tableEnd || r.done || drag) return;
         const box = b.getBoundingClientRect(), lb = layer.getBoundingClientRect();
         drag = { i, id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: e.clientX - box.left, oy: e.clientY - box.top, x: box.left - lb.left, y: box.top - lb.top, moved: false };
-        b.setPointerCapture(e.pointerId); music.start();
+        music.start();
+        const move = (ev: PointerEvent) => {
+          if (!drag || drag.id !== ev.pointerId) return;
+          if (!drag.moved && Math.hypot(ev.clientX - drag.sx, ev.clientY - drag.sy) < 6) return;
+          const l2 = layer.getBoundingClientRect(); drag.moved = true; drag.x = ev.clientX - l2.left - drag.ox; drag.y = ev.clientY - l2.top - drag.oy;
+        };
+        const end = (ev: PointerEvent) => {
+          if (!drag || drag.id !== ev.pointerId) return;
+          removeEventListener('pointermove', move); removeEventListener('pointerup', end); removeEventListener('pointercancel', end);
+          try { if (b.hasPointerCapture?.(ev.pointerId)) b.releasePointerCapture(ev.pointerId); } catch { /* bỏ qua */ }
+          const d = drag; drag = null;
+          // Vị trí thả lấy từ chính pointerup: máy chậm / vuốt nhanh thì trình duyệt gộp pointermove, điểm cuối của move có thể còn ở giữa đường.
+          if (!d.moved && Math.hypot(ev.clientX - d.sx, ev.clientY - d.sy) >= 6) d.moved = true;
+          if (!d.moved || ev.type === 'pointercancel') return;   // chạm: để sự kiện click đi tiếp (cdtile / cdback)
+          const l2 = layer.getBoundingClientRect(); d.x = ev.clientX - l2.left - d.ox; d.y = ev.clientY - l2.top - d.oy;
+          suppressTo = performance.now() + 350;
+          const r2 = st(); if (!r2 || r2.ans) return;
+          const cx = d.x + b.offsetWidth / 2, cy = d.y + TH / 2, rest = r2.built.filter(k => k !== d.i);
+          if (inZone(cx, cy)) {
+            const gm = geo({ ...r2, built: rest }), at = insertAt(gm.built, cx, cy), next = [...rest]; next.splice(at, 0, d.i);
+            onBuilt(next); snd.letter(Math.min(7, at)); try { navigator.vibrate?.(8); } catch { /* bỏ qua */ }
+          } else if (r2.built.includes(d.i)) onBuilt(rest);
+        };
+        addEventListener('pointermove', move); addEventListener('pointerup', end); addEventListener('pointercancel', end);
       });
-      b.addEventListener('pointermove', e => {
-        if (!drag || drag.id !== e.pointerId) return;
-        if (!drag.moved && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) < 6) return;
-        const lb = layer.getBoundingClientRect(); drag.moved = true; drag.x = e.clientX - lb.left - drag.ox; drag.y = e.clientY - lb.top - drag.oy;
-      });
-      const end = (e: PointerEvent) => {
-        if (!drag || drag.id !== e.pointerId) return;
-        const d = drag; drag = null;
-        // Vị trí thả lấy từ chính pointerup: máy chậm / vuốt nhanh thì trình duyệt gộp pointermove, điểm cuối của move có thể còn ở giữa đường.
-        if (!d.moved && Math.hypot(e.clientX - d.sx, e.clientY - d.sy) >= 6) d.moved = true;
-        if (d.moved) { const lb = layer.getBoundingClientRect(); d.x = e.clientX - lb.left - d.ox; d.y = e.clientY - lb.top - d.oy; }
-        if (!d.moved) return;   // chạm: để sự kiện click đi tiếp (cdtile / cdback)
-        suppressTo = performance.now() + 350;
-        const r = st(); if (!r || r.ans) return;
-        const cx = d.x + b.offsetWidth / 2, cy = d.y + TH / 2, rest = r.built.filter(k => k !== d.i);
-        if (inZone(cx, cy)) {
-          const gm = geo({ ...r, built: rest }), at = insertAt(gm.built, cx, cy), next = [...rest]; next.splice(at, 0, d.i);
-          onBuilt(next); snd.letter(Math.min(7, at)); try { navigator.vibrate?.(8); } catch { /* bỏ qua */ }
-        } else if (r.built.includes(d.i)) onBuilt(rest);
-      };
-      b.addEventListener('pointerup', end); b.addEventListener('pointercancel', end);
       layer.appendChild(b); return b;
     });
   }
@@ -108,7 +112,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
   function sync(s: CardsFxState): void {
     // Thanh trên + vùng điểm
     root.querySelector('.whti')!.textContent = s.done ? '🃏 Bài Câu' : `🃏 Bàn ${s.table + 1}/${TABLES} · lượt ${Math.min(s.play + 1, PLAYS)}/${PLAYS}`;
-    root.querySelector('.whsu')!.textContent = s.nodeVi ? `Ngữ pháp: ${s.nodeVi}` : 'Xếp lá từ thành câu đúng';
+    root.querySelector('.whsu')!.textContent = `${s.story ? `${s.story} · ` : ''}${s.nodeVi ? `Ngữ pháp: ${s.nodeVi}` : 'Xếp lá từ thành câu đúng'}`;
     root.querySelector('.cdsc b')!.textContent = `${s.tableScore}/${target(s.table)}`;
     const bar = root.querySelector<HTMLElement>('.cdbar')!; bar.setAttribute('aria-valuemax', String(target(s.table))); bar.setAttribute('aria-valuenow', String(s.tableScore));
     (bar.firstElementChild as HTMLElement).style.width = `${Math.min(100, Math.round((s.tableScore / target(s.table)) * 100))}%`;
