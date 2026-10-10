@@ -40,7 +40,11 @@ test('Bài Câu: xếp đúng thì ra bài có điểm (tự chuyển lượt), 
     await expect(playB.or(next).or(charm).or(end).first()).toBeVisible();
     if (await end.isVisible()) break;
     if (await charm.count()) { await charm.first().click(); continue; }
-    if (await next.count()) { await next.first().click(); continue; }
+    if (await next.count()) {
+      const h = await next.first().elementHandle(); await h!.click();
+      expect(await h!.isVisible(), 'nút vừa bấm phải ẩn ngay (không đợi khung hình: WebKit vẽ khung chậm, CI Safari iOS)').toBe(false);
+      continue;
+    }
     const pk = await peek(page);
     expect(pk.run).toBe('cards');
     if (plays % 2 === 0) for (const k of pk.order) await page.locator(`#whfx [data-e="cdtile"][data-i="${k}"]`).click();   // đúng (chạm)
@@ -73,7 +77,7 @@ test('v97 Bài Câu: kéo thả chuột thật vào vùng câu, chèn đúng ch�
   const second = await at(order[1]!);
   await dragTo(page, await at(order[0]!), { x: second.x - 40, y: second.y });
   // Thứ tự trong câu: order[0], order[1]
-  const rowOrder = async () => (await tiles(page)).map((t: any, i: number) => ({ ...t, i })).filter((t: any) => t.on).sort((a: any, b: any) => a.y - b.y || a.x - b.x).map((t: any) => t.i);
+  const rowOrder = async () => (await tiles(page)).map((t: any, i: number) => ({ ...t, i })).filter((t: any) => t.on).sort((a: any, b: any) => a.k - b.k).map((t: any) => t.i);   // thứ tự logic trong câu (lá vừa thả có thể còn đang trượt)
   expect(await rowOrder()).toEqual([order[0], order[1]]);
   // Kéo lá ra khỏi vùng câu → bỏ ra.
   const one = await at(order[1]!);

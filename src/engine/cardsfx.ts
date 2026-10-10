@@ -8,7 +8,7 @@ import { snd, Music, musicOff, STILL } from './wheelview.ts';
 import { muted } from './sfx.ts';
 
 export type CardsFxState = CardsRun & { nodeVi: string; best: number; prevBest?: number };
-export interface CardsHandle { close(): void; music(): void }
+export interface CardsHandle { close(): void; music(): void; refresh(): void }
 interface Particle { x: number; y: number; vx: number; vy: number; life: number; c: string; r: number }
 interface Pos { x: number; y: number; w: number }
 
@@ -120,6 +120,15 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
     const hk = `${s.n}|${s.table}|${s.play}|${s.hand.join('\u0001')}`;
     if (hk !== handKey) { handKey = hk; build(s); }
     layer.hidden = !playing;
+    tiles.forEach((b, i) => {   // thuộc tính lá (bấm thêm / bỏ, trạng thái): cập nhật ngay, không đợi khung hình
+      b.classList.toggle('on', s.built.includes(i));
+      b.classList.toggle('bad', !!s.ans && !s.ans.ok && s.built.indexOf(i) === s.ans.at);
+      b.classList.toggle('good', !!s.ans?.ok && s.built.includes(i));
+      b.disabled = !!s.ans;
+      const k = s.built.indexOf(i);
+      if (k >= 0) { if (b.dataset.e !== 'cdback' || b.dataset.k !== String(k)) { b.dataset.e = 'cdback'; b.dataset.k = String(k); b.setAttribute('aria-label', `${s.hand[i]}: vị trí ${k + 1} trong câu. Bấm để bỏ ra`); } }
+      else if (b.dataset.e !== 'cdtile') { b.dataset.e = 'cdtile'; delete b.dataset.k; b.setAttribute('aria-label', `${s.hand[i]}: thêm vào câu`); }
+    });
     // Hộp phản hồi sau khi ra bài
     const showFb = !!s.ans && !s.tableEnd && !s.done, fk = showFb ? `${s.n}|${s.ans!.ok}` : '';
     if (fk !== fbKey) {
@@ -207,13 +216,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
           if (shake && s.ans && !s.ans.ok && k === shake.k && !still && now - shake.t < 420) x += Math.sin((now - shake.t) / 28) * 6;
           b.style.transform = `translate(${x}px,${y}px)${isDrag ? ' scale(1.08) rotate(-2deg)' : ''}`;
           b.style.width = `${p.w}px`;
-          b.classList.toggle('drag', !!isDrag); b.classList.toggle('on', s.built.includes(i));
-          b.classList.toggle('bad', !!s.ans && !s.ans.ok && s.built.indexOf(i) === s.ans.at);
-          b.classList.toggle('good', !!s.ans?.ok && s.built.includes(i));
-          b.disabled = !!s.ans;
-          const bk2 = s.built.indexOf(i);
-          if (bk2 >= 0) { if (b.dataset.e !== 'cdback' || b.dataset.k !== String(bk2)) { b.dataset.e = 'cdback'; b.dataset.k = String(bk2); b.setAttribute('aria-label', `${s.hand[i]}: vị trí ${bk2 + 1} trong câu. Bấm để bỏ ra`); } }
-          else if (b.dataset.e !== 'cdtile') { b.dataset.e = 'cdtile'; delete b.dataset.k; b.setAttribute('aria-label', `${s.hand[i]}: thêm vào câu`); }
+          b.classList.toggle('drag', !!isDrag);
         });
       }
     }
@@ -226,9 +229,12 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
   raf = requestAnimationFrame(frame);
   const s0 = st(); if (s0) sync(s0);
 
-  (root as HTMLElement & { _pos?: () => Array<{ t: string; x: number; y: number; on: boolean }> })._pos = () => tiles.map((b, i) => { const r = b.getBoundingClientRect(); return { t: st()?.hand[i] ?? '', x: r.left + r.width / 2, y: r.top + r.height / 2, on: !!st()?.built.includes(i) }; });
+  (root as HTMLElement & { _pos?: () => Array<{ t: string; x: number; y: number; on: boolean; k: number }> })._pos = () => tiles.map((b, i) => { const r = b.getBoundingClientRect(); return { t: st()?.hand[i] ?? '', x: r.left + r.width / 2, y: r.top + r.height / 2, on: !!st()?.built.includes(i), k: st()?.built.indexOf(i) ?? -1 }; });
   (root as HTMLElement & { _zone?: () => { x: number; y: number; w: number; h: number } })._zone = () => { const b = cv.getBoundingClientRect(); return { x: b.left + zone.x, y: b.top + zone.y, w: zone.w, h: zone.h }; };
   return {
+    // Đồng bộ DOM ngay sau mỗi thao tác (main.ts gọi). Không đợi khung hình: WebKit chạy khung hình chậm, nút cũ (vd "Lượt tiếp") còn hiện
+    // một nhịp sau khi trạng thái đã đổi thì người chơi / test bấm trúng nút "ma" (CI Safari iOS v96–v98).
+    refresh() { const s = st(); if (s && alive) sync(s); },
     music() { if (musicOff() || muted()) music.stop(); else music.start(); },
     close() { alive = false; cancelAnimationFrame(raf); music.stop(); removeEventListener('resize', resize); root.remove(); document.documentElement.classList.remove('whopen'); },
   };

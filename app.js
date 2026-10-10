@@ -4193,6 +4193,7 @@ function lessonChrome(){ const v=ui.view, app=document.getElementById('app'); if
   if(kind!=='neutral'&&!FOCUS()) sh.insertAdjacentHTML('afterbegin',`<div class="sheet-ti">${mascot(kind==='good'?'party':'cheer',60)}</div>`);
   if(fb) sh.appendChild(fb); const xp=box.querySelector('.xpf'); if(xp) sh.appendChild(xp); sh.appendChild(row);
   nb.classList.add('big'); app.appendChild(sh); document.body.classList.add('has-sheet'); }
+const GALL_OPEN=new Set(), gallKey=d=>d.dataset.gv+'|'+((d.querySelector('summary')||{}).textContent||'').trim().slice(0,8);
 function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); renderChrome();
@@ -4200,7 +4201,10 @@ function render(){
   const v={thi:viewThi,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
+  // v99: mục thu gọn (details.gall: Luyện tập, Leo tháp…) giữ trạng thái mở qua các lần vẽ lại #app (trước đây vẽ lại là đóng sập).
+  document.querySelectorAll('#app details.gall[data-gv]').forEach(d=>{ const k=gallKey(d); if(d.open) GALL_OPEN.add(k); else GALL_OPEN.delete(k); });
   document.getElementById('app').innerHTML=html;
+  document.querySelectorAll('#app details.gall').forEach(d=>{ d.dataset.gv=ui.view; if(GALL_OPEN.has(gallKey(d))) d.open=true; });
   countUp();
   try{ lessonChrome(); }catch(e){}
   if(ui.view==='session'){
@@ -8345,7 +8349,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.ac805ac857.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.88a8a1f758.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),

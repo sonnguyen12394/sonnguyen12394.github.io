@@ -468,7 +468,7 @@ export function init(host: EHost): EngineModule {
   function cBuilt(order: number[]): void {
     const r = crun; if (!r || r.ans || r.tableEnd || r.done) return;
     if (new Set(order).size !== order.length || order.some(i => !Number.isInteger(i) || i < 0 || i >= r.hand.length)) return;
-    r.built = order;
+    r.built = order; cview?.refresh();
   }
   function cLoad(): void {
     if (!crun || !cPick) return;
@@ -493,6 +493,7 @@ export function init(host: EHost): EngineModule {
     const why = ok ? undefined : (it.why || host.micro?.(r.node)?.card.concept[0]);
     r.ans = { ok, right, given: given.join(' '), at: skip ? -1 : at, chips: sc.chips, mult: sc.mult, total: sc.total, coins, ...(why ? { why } : {}) };
     sfx(ok ? 'clear' : 'bad'); host.save(); host.render();
+    cview?.refresh();
     if (ok && cview) { const n0 = r.n; setTimeout(() => { if (crun === r && r.ans?.ok && r.n === n0 && !r.tableEnd) cNext(); }, 1300); }
   }
   function cNext(): void {
@@ -501,14 +502,14 @@ export function init(host: EHost): EngineModule {
     if (r.tableEnd) {   // sang bàn kế / kết thúc
       r.tableEnd = null; r.offer = null;
       if (r.table + 1 >= TABLES) { cEnd(); return; }
-      r.table++; r.play = 0; r.tableScore = 0; cLoad(); host.save(); host.render(); return;
+      r.table++; r.play = 0; r.tableScore = 0; cLoad(); host.save(); host.render(); cview?.refresh(); return;
     }
     if (r.play + 1 >= PLAYS || !r.item) {
       const won = r.tableScore >= cardTarget(r.table); if (won) r.won++;
       r.tableEnd = { won, score: r.tableScore }; r.offer = r.table + 1 < TABLES ? cardOffer(r.seed, r.table, r.charms) : null;
-      sfx(won ? 'end' : 'place'); host.save(); host.render(); return;
+      sfx(won ? 'end' : 'place'); host.save(); host.render(); cview?.refresh(); return;
     }
-    r.play++; cLoad(); host.save(); host.render();
+    r.play++; cLoad(); host.save(); host.render(); cview?.refresh();
   }
   function cEnd(): void {
     const r = crun;
@@ -520,7 +521,7 @@ export function init(host: EHost): EngineModule {
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `cards:${r.floor}`, dec: 'cards:end', rule: `${RULE_ID}/${QUEST_VER}`,
       info: { ok: r.ok, of: r.n, won: r.won, score: r.total, coins: r.coins, charms: r.charms.join(',') },
       evs: e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:c${r.floor}:`)).slice(-r.n).map(x => x.id) }, false);
-    sfx('end'); host.save(); host.render();
+    sfx('end'); host.save(); host.render(); cview?.refresh();
   }
 
   // ---------- Quán Cà Phê (v75, F5 nghe + F7 giao tiếp) ----------
@@ -1599,9 +1600,9 @@ export function init(host: EHost): EngineModule {
     bkstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; qStart('blocks'); markStart(); },
     bdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; qStart('board'); markStart(); },
     cdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; cStart(); markStart(); },
-    cdtile(el) { const r = crun, i = Number(el.dataset.i); if (!r || r.ans || r.built.includes(i) || !(i >= 0 && i < r.hand.length)) return; r.built.push(i); sfx('place'); host.render(); },
-    cdback(el) { const r = crun, k = Number(el.dataset.k); if (!r || r.ans) return; r.built.splice(k, 1); host.render(); },
-    cdclear() { if (crun && !crun.ans) { crun.built = []; host.render(); } },
+    cdtile(el) { const r = crun, i = Number(el.dataset.i); if (!r || r.ans || r.built.includes(i) || !(i >= 0 && i < r.hand.length)) return; r.built.push(i); sfx('place'); host.render(); cview?.refresh(); },
+    cdback(el) { const r = crun, k = Number(el.dataset.k); if (!r || r.ans) return; r.built.splice(k, 1); host.render(); cview?.refresh(); },
+    cdclear() { if (crun && !crun.ans) { crun.built = []; host.render(); cview?.refresh(); } },
     cdplay() { cPlay(false); },
     cdskip() { cPlay(true); },
     cdnext() { cNext(); },
