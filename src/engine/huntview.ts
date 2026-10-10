@@ -6,6 +6,7 @@ import { snd, Music, musicOff, STILL } from './wheelview.ts';
 import { muted } from './sfx.ts';
 
 export interface HuntState {
+  goal: 'words' | 'ice' | 'chest'; ice: boolean[]; chests: number; chestsGot: number;   // v96 mục tiêu kiểu ghép 3
   grid: Cell[]; missions: Mission[]; done: Set<string>; moves: number; movesMax: number; score: number;
   title: string; sub: string; daily: boolean; coins: number; gained: number; scene: number;
   win: { stars: number; at: number } | null; lose: { at: number } | null;
@@ -43,7 +44,7 @@ export function openHunt(st: () => HuntState | null, onWord: (path: number[]) =>
   resize(); addEventListener('resize', resize);
 
   const geo = () => {
-    const s = st()!, top = 70, rowH = 26, mh = s.missions.length * rowH + 10, bot = 76;
+    const s = st()!, top = 70, rowH = 26, mh = (s.missions.length + (s.goal === 'words' ? 0 : 1)) * rowH + 10, bot = 76;
     const cell = Math.max(30, Math.min((W - 32) / COLS, (H - top - mh - bot - 20) / ROWS, 64));
     const gx = (W - cell * COLS) / 2, gy = top + mh + 6 + Math.max(0, (H - top - mh - bot - 20 - cell * ROWS) / 2);
     return { top, rowH, cell, gx, gy, center: (i: number) => ({ x: gx + (i % COLS) * cell + cell / 2, y: gy + Math.floor(i / COLS) * cell + cell / 2 }) };
@@ -52,7 +53,7 @@ export function openHunt(st: () => HuntState | null, onWord: (path: number[]) =>
   const add = (i: number) => {
     if (i < 0) return;
     if (path.length >= 2 && path[path.length - 2] === i) { path.pop(); return; }
-    if (path.includes(i) || (path.length && !adjacent(path[path.length - 1]!, i))) return;
+    if (path.includes(i) || st()?.grid[i]?.sp === 'chest' || (path.length && !adjacent(path[path.length - 1]!, i))) return;
     path.push(i); snd.letter(path.length - 1); try { navigator.vibrate?.(8); } catch { /* bỏ qua */ }
   };
   const local = (e: PointerEvent) => { const b = cv.getBoundingClientRect(); return { x: e.clientX - b.left, y: e.clientY - b.top }; };
@@ -90,18 +91,29 @@ export function openHunt(st: () => HuntState | null, onWord: (path: number[]) =>
       g.fillStyle = got ? th.c : 'rgba(255,255,255,0.88)'; g.font = `${got ? 700 : 500} 13px system-ui, sans-serif`; g.textAlign = 'left'; g.textBaseline = 'middle';
       g.fillText(`${got ? '✓ ' : ''}${m.pic ? m.pic + ' ' : ''}${m.vi}`.slice(0, 48), 16 + m.en.length * (b + 3) + 8, y + b / 2);
     });
+    // Mục tiêu thêm (băng / rương) dưới danh sách nhiệm vụ.
+    if (s.goal !== 'words') {
+      const y = gm.top + s.missions.length * gm.rowH, left = s.ice.filter(Boolean).length, ok = s.goal === 'ice' ? !left : s.chestsGot >= s.chests;
+      g.fillStyle = ok ? th.c : '#fff'; g.font = '700 13px system-ui, sans-serif'; g.textAlign = 'left'; g.textBaseline = 'middle';
+      g.fillText(s.goal === 'ice' ? `🧊 ${ok ? '✓ Phá hết băng' : `Phá băng: còn ${left} ô (dùng ô có băng trong từ)`}` : `🧰 ${ok ? '✓ Đã đưa hết rương' : `Đưa rương xuống đáy: ${s.chestsGot}/${s.chests}`}`, 16, y + 9);
+    }
     // Lưới: ô đá, chữ; ô rơi xuống theo `fall` (chậm dần); ô vàng / đá quý phát sáng; ô gợi ý nhấp nháy.
     const ft = s.fallAt ? Math.min(1, (now - s.fallAt) / 320) : 1, ease = still ? 1 : 1 - Math.pow(1 - ft, 3);
     s.grid.forEach((c, i) => {
       const q = gm.center(i), drop = (s.fall[c.id] ?? 0) * gm.cell * (1 - ease), x = q.x - gm.cell / 2 + 3, y = q.y - gm.cell / 2 + 3 - drop, w = gm.cell - 6;
       const on = path.includes(i), hint = s.hint === i && !still ? 0.5 + 0.5 * Math.sin(now / 160) : s.hint === i ? 1 : 0;
-      g.fillStyle = on ? th.c : c.sp === 'gem' ? th.gem : c.sp === 'gold' ? '#fcd34d' : '#f5f3ff';
+      g.fillStyle = on ? th.c : c.sp === 'gem' ? th.gem : c.sp === 'gold' ? '#fcd34d' : c.sp === 'chest' ? '#7c4a1e' : '#f5f3ff';
       g.shadowColor = c.sp ? th.gem : 'rgba(0,0,0,0.35)'; g.shadowBlur = c.sp && !still ? 14 + 6 * Math.sin(now / 300 + i) : 6; g.shadowOffsetY = c.sp ? 0 : 3;
       rr(x, y, w, w, w * 0.22); g.fill(); g.shadowBlur = 0; g.shadowOffsetY = 0;
       if (hint) { g.strokeStyle = `rgba(255,255,255,${hint})`; g.lineWidth = 4; g.stroke(); }
-      g.fillStyle = '#140a28'; g.font = `800 ${Math.round(w * 0.5)}px system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle';
-      g.fillText(c.ch.toUpperCase(), x + w / 2, y + w / 2 + 1);
-      if (c.sp) { g.font = `${Math.round(w * 0.26)}px system-ui`; g.fillText(c.sp === 'gem' ? '💎' : '✦', x + w - w * 0.18, y + w * 0.18); }
+      if (c.sp === 'chest') { g.font = `${Math.round(w * 0.62)}px system-ui`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('🧰', x + w / 2, y + w / 2 + 2); }
+      else { g.fillStyle = '#140a28'; g.font = `800 ${Math.round(w * 0.5)}px system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(c.ch.toUpperCase(), x + w / 2, y + w / 2 + 1); }
+      if (s.ice[i]) {   // băng: lớp xanh mờ + vết nứt, gắn với vị trí ô (không rơi)
+        const ix = q.x - gm.cell / 2 + 3, iy = q.y - gm.cell / 2 + 3;
+        g.fillStyle = 'rgba(165,243,252,0.42)'; rr(ix, iy, w, w, w * 0.22); g.fill();
+        g.strokeStyle = 'rgba(255,255,255,0.85)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(ix + w * 0.2, iy + w * 0.25); g.lineTo(ix + w * 0.45, iy + w * 0.45); g.lineTo(ix + w * 0.35, iy + w * 0.7); g.moveTo(ix + w * 0.45, iy + w * 0.45); g.lineTo(ix + w * 0.75, iy + w * 0.35); g.stroke();
+      }
+      if (c.sp === 'gem' || c.sp === 'gold') { g.font = `${Math.round(w * 0.26)}px system-ui`; g.fillText(c.sp === 'gem' ? '💎' : '✦', x + w - w * 0.18, y + w * 0.18); }
     });
     // Đường vuốt.
     if (path.length) {
@@ -146,7 +158,8 @@ export function openHunt(st: () => HuntState | null, onWord: (path: number[]) =>
   const h: HuntHandle = {
     refresh() {
       const s = st(); if (!s) return;
-      root.querySelector('.whti')!.textContent = s.title; root.querySelector('.whsu')!.textContent = s.sub;
+      root.querySelector('.whti')!.textContent = s.title; const gl = s.goal === 'ice' ? (s.ice.some(Boolean) ? `🧊 Phá băng: còn ${s.ice.filter(Boolean).length} ô` : '🧊 ✓ Đã phá hết băng') : s.goal === 'chest' ? `🧰 Đưa rương xuống đáy: ${s.chestsGot}/${s.chests}` : '';
+      root.querySelector('.whsu')!.textContent = gl ? `${gl} · ${s.sub}` : s.sub;   // v96: mục tiêu cũng ở DOM cho trình đọc màn hình (canvas không đọc được)
       root.querySelector('.hnmv')!.textContent = String(s.moves);
       (root.querySelector('[data-e="hnmusic"]') as HTMLElement).textContent = musicOff() || muted() ? '🔇' : '🎵';
       const hb = root.querySelector<HTMLButtonElement>('.whhint')!; hb.disabled = s.coins < 10 || !!s.win || !!s.lose; hb.setAttribute('aria-label', s.coins < 10 ? 'Gợi ý: cần 10 xu' : 'Gợi ý chữ đầu của một từ nhiệm vụ (10 xu)');
@@ -176,7 +189,7 @@ export function openHunt(st: () => HuntState | null, onWord: (path: number[]) =>
     music() { if (musicOff() || muted()) music.stop(); else music.start(); },
     close() { alive = false; cancelAnimationFrame(raf); music.stop(); removeEventListener('resize', resize); root.remove(); document.documentElement.classList.remove('whopen'); },
   };
-  (root as HTMLElement & { _pos?: () => Array<{ ch: string; x: number; y: number }> })._pos = () => { const s = st(), gm = geo(), b = cv.getBoundingClientRect(); return s ? s.grid.map((c, i) => { const q = gm.center(i); return { ch: c.ch, x: b.left + q.x, y: b.top + q.y }; }) : []; };
+  (root as HTMLElement & { _pos?: () => Array<{ ch: string; sp: string; ice: boolean; x: number; y: number }> })._pos = () => { const s = st(), gm = geo(), b = cv.getBoundingClientRect(); return s ? s.grid.map((c, i) => { const q = gm.center(i); return { ch: c.ch, sp: c.sp, ice: !!s.ice[i], x: b.left + q.x, y: b.top + q.y }; }) : []; };
   h.refresh();
   return h;
 }

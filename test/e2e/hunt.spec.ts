@@ -78,6 +78,44 @@ test('Mỏ Chữ: gợi ý chữ đầu tốn 10 xu, từ nhiệm vụ tìm sau 
   expect(errors).toEqual([]);
 });
 
+// v96 mục tiêu kiểu ghép 3: màn mốc (10, 20…) có hình băng vẽ tay; màn rương đưa rương xuống đáy. Mục tiêu cũng ở DOM (trình đọc màn hình).
+const setLv = (page: Page, lv: number) => page.evaluate((l) => { const st = (window as any).eval('st'); st.e.gn = { lv: l, stars: 0, words: 0, runs: l - 1, best: 0, day: 0, daily: { day: 0, done: false, streak: 0 } }; }, lv);
+const iceLeft = async (page: Page) => (await cells(page)).filter((c: any) => c.ice).length;
+
+test('v96 Mỏ Chữ: màn mốc 10 có băng hình vẽ tay; mục tiêu ở phụ đề; dùng ô băng trong từ thì băng giảm; chưa phá hết băng thì chưa thắng', async ({ page, errors }) => {
+  await lobby(page);
+  await setLv(page, 10);
+  await page.locator('[data-e="hnstart"]').first().click();
+  await expect(page.locator('#whfx .whti')).toContainText('màn mốc');
+  const ice0 = await iceLeft(page);
+  expect(ice0).toBeGreaterThan(4);
+  await expect(page.locator('#whfx .whsu')).toContainText(`Phá băng: còn ${ice0} ô`);
+  await page.screenshot({ path: 'test-results/hunt-ice.png' });
+  const pk = await peek(page);
+  await swipe(page, pk.accept[0]);
+  const ice1 = await iceLeft(page);
+  expect(ice1).toBeLessThanOrEqual(ice0);
+  await expect(page.locator('#whfx .whsu')).toContainText(ice1 ? `còn ${ice1} ô` : 'Đã phá hết băng');
+  expect(errors).toEqual([]);
+});
+
+test('v96 Mỏ Chữ: màn rương có rương trên lưới (không chọn được), mục tiêu 0/k; từ nhiệm vụ vào sổ từ chung ở chương ⛏️ Mỏ Chữ', async ({ page, errors }) => {
+  await lobby(page);
+  await setLv(page, 5);
+  await page.locator('[data-e="hnstart"]').first().click();
+  await expect(page.locator('#whfx .whsu')).toContainText(/Đưa rương xuống đáy: 0\/\d/);
+  expect((await cells(page)).some((c: any) => c.sp === 'chest')).toBe(true);
+  await page.screenshot({ path: 'test-results/hunt-chest.png' });
+  const pk = await peek(page);
+  await typeWord(page, pk.accept[0]);
+  const book = await page.evaluate(() => (window as any).eval('st').e.gh?.book ?? {});
+  expect(book[pk.accept[0]]?.[1]).toBe(90);
+  await page.locator('[data-e="hnexit"]').first().click();
+  await page.locator('.whbookbox summary').first().click();
+  await expect(page.locator('.whbookbox h3', { hasText: '⛏️ Mỏ Chữ' })).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
 for (const scheme of ['light', 'dark'] as const) {
   test(`Mỏ Chữ: WCAG AA (${scheme}), 390px, ô lưới đủ lớn để chạm`, async ({ page, errors }) => {
     await page.emulateMedia({ colorScheme: scheme });

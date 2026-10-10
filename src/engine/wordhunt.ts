@@ -7,10 +7,12 @@
 import { rand, isWord, type Lex } from './wordwheel.ts';
 
 export const COLS = 6, ROWS = 7, N = COLS * ROWS;
-export type Special = '' | 'gem' | 'gold';
+export type Special = '' | 'gem' | 'gold' | 'chest';   // chest: rương (không có chữ, rơi theo trọng lực, tới hàng đáy thì thu được)
 export interface Cell { ch: string; sp: Special; id: number }   // id: định danh ô (để vẽ hiệu ứng rơi)
 export interface Mission { en: string; vi: string; node: string; id: string; pic?: string; target: boolean }
-export interface HuntLevel { grid: Cell[]; missions: Mission[]; moves: number; nextId: number }
+export type Goal = 'words' | 'ice' | 'chest';
+// ice: lớp băng gắn với VỊ TRÍ ô (không rơi theo chữ), vỡ khi ô ở đó được dùng trong từ (hoặc đá quý phá hàng). chests: số rương cần đưa xuống đáy.
+export interface HuntLevel { grid: Cell[]; missions: Mission[]; moves: number; nextId: number; goal: Goal; ice: boolean[]; chests: number }
 
 // Chữ lấp chỗ theo tần suất tiếng Anh (bỏ bớt chữ hiếm để lưới dễ ghép từ).
 const FREQ = 'eeeeeeeeeeeettttttttaaaaaaaaooooooooiiiiiiinnnnnnnsssssshhhhhhrrrrrrddddllllcccuuummmwwffggyyppbbvk';
@@ -33,6 +35,7 @@ export function findPath(g: Cell[], word: string): number[] | null {
   for (let i = 0; i < N; i++) if (g[i]!.ch === w[0]) { const r = go([i]); if (r) return r; }
   return null;
 }
+export const usable = (c: Cell) => c.sp !== 'chest';
 // Gieo một từ thành đường kề ngẫu nhiên, tránh các ô "khoá" (ô của từ nhiệm vụ khác vừa gieo). Trả về đường hoặc null.
 function plantPath(len: number, r: () => number, locked: Set<number>): number[] | null {
   for (let tries = 0; tries < 60; tries++) {
@@ -49,6 +52,7 @@ function plantPath(len: number, r: () => number, locked: Set<number>): number[] 
   return null;
 }
 export function plant(g: Cell[], word: string, r: () => number, locked = new Set<number>()): boolean {
+  for (let i = 0; i < N; i++) if (g[i]!.sp === 'chest') locked.add(i);   // không gieo đè lên rương
   const p = plantPath(word.length, r, locked); if (!p) return false;
   p.forEach((i, k) => { g[i] = { ...g[i]!, ch: word[k]! }; locked.add(i); });
   return true;
@@ -69,14 +73,14 @@ export function newLevel(seed: number, pool: Mission[], want: { missions: number
   const grid: Cell[] = Array.from({ length: N }, () => ({ ch: letter(r), sp: '' as Special, id: id++ }));
   const locked = new Set<number>();
   for (const m of ms) if (!plant(grid, m.en, r, locked)) return null;
-  return { grid, missions: ms, moves: ms.length * 2 + want.spare, nextId: id };
+  return { grid, missions: ms, moves: ms.length * 2 + want.spare, nextId: id, goal: 'words', ice: new Array<boolean>(N).fill(false), chests: 0 };
 }
 
 // Áp một từ: vỡ các ô của đường (ô đá quý → vỡ thêm cả hàng của nó), chữ trên rơi xuống, chữ mới lấp từ trên. Từ ≥ 5 chữ để lại một ô
 // đá quý ở chỗ chữ cuối (sau khi rơi, ở cột đó). Trả về lưới mới, các ô đã vỡ (để vẽ) và độ rơi của từng ô (theo id).
-export function applyWord(g0: Cell[], path: number[], seed: number, nextId: number): { grid: Cell[]; broken: number[]; fall: Record<number, number>; nextId: number; gemRow: number[] } {
+export function applyWord(g0: Cell[], path: number[], seed: number, nextId: number, quiet = false): { grid: Cell[]; broken: number[]; fall: Record<number, number>; nextId: number; gemRow: number[] } {
   const r = rand(seed), broken = new Set(path), gemRow: number[] = [];
-  for (const i of path) if (g0[i]!.sp === 'gem') for (let c = 0; c < COLS; c++) { const j = idx(c, row(i)); if (!broken.has(j)) { broken.add(j); gemRow.push(j); } }
+  for (const i of path) if (g0[i]!.sp === 'gem') for (let c = 0; c < COLS; c++) { const j = idx(c, row(i)); if (!broken.has(j) && g0[j]!.sp !== 'chest') { broken.add(j); gemRow.push(j); } }
   const g: Cell[] = new Array(N), fall: Record<number, number> = {};
   for (let c = 0; c < COLS; c++) {
     const keep: Cell[] = [];
@@ -88,7 +92,7 @@ export function applyWord(g0: Cell[], path: number[], seed: number, nextId: numb
     // độ rơi của ô cũ: số ô vỡ bên dưới nó trong cột
     for (let k = 0; k < ROWS; k++) { const cell = g[idx(c, k)]!; if (fall[cell.id] === undefined) { const old = g0.findIndex(x => x.id === cell.id); fall[cell.id] = k - row(old); } }
   }
-  if (path.length >= 5) { const lastCol = col(path[path.length - 1]!); const top = g.findIndex((x, i) => col(i) === lastCol && fall[x.id]! > 0); const at = top >= 0 ? top : idx(lastCol, 0); g[at] = { ...g[at]!, sp: 'gem' }; }
+  if (path.length >= 5 && !quiet) { const lastCol = col(path[path.length - 1]!); const top = g.findIndex((x, i) => col(i) === lastCol && fall[x.id]! > 0); const at = top >= 0 ? top : idx(lastCol, 0); g[at] = { ...g[at]!, sp: 'gem' }; }
   return { grid: g, broken: [...broken], fall, nextId, gemRow };
 }
 // Giữ cho mọi nhiệm vụ còn lại luôn tìm được: từ nào mất đường thì gieo lại.
@@ -126,4 +130,68 @@ export function mergeHunt(a?: HuntSave, b?: HuntSave): HuntSave | undefined {
   if (!a) return b; if (!b) return a;
   const daily = a.daily.day !== b.daily.day ? (a.daily.day > b.daily.day ? a.daily : b.daily) : a.daily.done ? a.daily : b.daily;
   return { lv: Math.max(a.lv, b.lv), stars: Math.max(a.stars, b.stars), words: Math.max(a.words, b.words), runs: Math.max(a.runs, b.runs), best: Math.max(a.best, b.best), day: Math.max(a.day, b.day), daily };
+}
+
+// ---- v96: mục tiêu kiểu ghép 3 (M7) ----
+// Loại màn xoay vòng theo số màn (từ màn 4): chỉ từ → băng → rương. Mỗi 10 màn là MÀN MỐC: hình băng thiết kế tay (tim, vòng, chữ X, kim cương…).
+export function goalOf(level: number): Goal { if (level < 4) return 'words'; if (level % 10 === 0) return 'ice'; return (['words', 'ice', 'chest'] as Goal[])[level % 3]!; }
+// Hình băng thiết kế tay (6 cột × 7 hàng, '#' = băng) cho màn mốc; màn băng thường dùng hình ngẫu nhiên đối xứng.
+export const ICE_SHAPES: Record<string, string[]> = {
+  tim: ['......', '.#..#.', '######', '######', '.####.', '..##..', '......'],
+  vong: ['......', '.####.', '.#..#.', '.#..#.', '.#..#.', '.####.', '......'],
+  cheo: ['#....#', '.#..#.', '..##..', '..##..', '.#..#.', '#....#', '......'],
+  kimcuong: ['..##..', '.####.', '######', '.####.', '..##..', '......', '......'],
+  cau: ['......', '......', '######', '#....#', '#....#', '......', '......'],
+};
+export const MILESTONES = Object.keys(ICE_SHAPES);
+export function iceMask(level: number, seed: number): boolean[] {
+  if (level % 10 === 0) { const shape = ICE_SHAPES[MILESTONES[(level / 10 - 1) % MILESTONES.length]!]!; return Array.from({ length: N }, (_, i) => shape[row(i)]![col(i)] === '#'); }
+  const r = rand(seed + 991), m = new Array<boolean>(N).fill(false), k = Math.min(10, 4 + Math.floor(level / 8));
+  for (let t = 0; t < k; t++) { const c = Math.floor(r() * 3), rr = 1 + Math.floor(r() * (ROWS - 2)); m[idx(c, rr)] = true; m[idx(COLS - 1 - c, rr)] = true; }   // đối xứng trái – phải
+  return m;
+}
+// Đặt rương ở hàng trên cùng (cột khác nhau), thay chữ ở đó.
+export function placeChests(g: Cell[], k: number, seed: number, nextId: number): number {
+  const r = rand(seed + 313), cols = [0, 1, 2, 3, 4, 5].sort(() => r() - 0.5).slice(0, k);
+  for (const c of cols) g[idx(c, 0)] = { ch: '', sp: 'chest', id: nextId++ };
+  return nextId;
+}
+// Rương tới hàng đáy thì thu: lấy ra, các ô trên rơi xuống, lấp chữ mới. Lặp tới khi không còn rương ở đáy.
+export function collectChests(g0: Cell[], seed: number, nextId: number): { grid: Cell[]; got: number; nextId: number; fall: Record<number, number> } {
+  let g = g0, got = 0, id = nextId, fall: Record<number, number> = {};
+  for (let k = 0; k < COLS; k++) {
+    const bottom = Array.from({ length: COLS }, (_, c) => idx(c, ROWS - 1)).filter(i => g[i]!.sp === 'chest');
+    if (!bottom.length) break;
+    got += bottom.length;
+    const a = applyWord(g, bottom, seed + k, id, true); g = a.grid; id = a.nextId; fall = { ...fall, ...a.fall };
+  }
+  return { grid: g, got, nextId: id, fall };
+}
+export function breakIce(ice: boolean[], cells: number[]): number { let n = 0; for (const i of cells) if (ice[i]) { ice[i] = false; n++; } return n; }
+// Dựng màn có mục tiêu: màn từ + băng / rương; lượt cộng thêm theo khối lượng mục tiêu.
+export function goalLevel(seed: number, pool: Mission[], want: { missions: number; maxLen: number; spare: number }, level: number): HuntLevel | null {
+  const lv = newLevel(seed, pool, want); if (!lv) return null;
+  const goal = goalOf(level);
+  if (goal === 'ice') { lv.goal = 'ice'; lv.ice = iceMask(level, seed); lv.moves += Math.ceil(lv.ice.filter(Boolean).length / 3); }
+  if (goal === 'chest') {
+    const k = Math.min(3, 1 + Math.floor(level / 12)), locked = new Set<number>();
+    for (const m of lv.missions) { const p = findPath(lv.grid, m.en); if (p) p.forEach(i => locked.add(i)); }
+    lv.goal = 'chest'; lv.chests = k; lv.nextId = placeChests(lv.grid, k, seed, lv.nextId); lv.moves += k * 3;
+    keepSolvable(lv.grid, lv.missions, seed + 5);
+  }
+  return lv;
+}
+
+// Từ phục vụ mục tiêu khi đã tìm hết nhiệm vụ (gợi ý cho người chơi / bot): từ có trên lưới, ưu tiên từ đi qua ô có băng, hoặc ô nằm dưới
+// rương (để rương rơi). Duyệt kho từ ngắn trước; giới hạn số từ thử để không chậm.
+export function goalWord(g: Cell[], ice: boolean[], words: string[]): { word: string; path: number[] } | null {
+  const below = new Set<number>(); g.forEach((c, i) => { if (c.sp === 'chest') for (let r = row(i) + 1; r < ROWS; r++) below.add(idx(col(i), r)); });
+  let any: { word: string; path: number[] } | null = null;
+  for (const w of words) {
+    if (w.length < 3 || w.length > 5) continue;
+    const p = findPath(g, w); if (!p) continue;
+    if (p.some(i => ice[i] || below.has(i))) return { word: w, path: p };
+    any ||= { word: w, path: p };
+  }
+  return any;
 }

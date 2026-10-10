@@ -32,7 +32,7 @@ function viewBook(c: ECtx, sv: WheelSave): string {
   if (!xs.length) return '<p>📖 Sổ từ trống: mỗi từ bạn tìm ra sẽ vào đây.</p>';
   const by = new Map<number, Array<[string, [string, number, number]]>>();
   for (const x of xs) { const k = x[1][1]; if (!by.has(k)) by.set(k, []); by.get(k)!.push(x); }
-  const body = [...by.entries()].sort((a, b) => a[0] - b[0]).map(([k, ws]) => `<h3 style="margin:8px 0 4px;font-size:15px">${esc(CHAPTERS[k % CHAPTERS.length]!.vi)} · ${ws.length} từ</h3>
+  const body = [...by.entries()].sort((a, b) => a[0] - b[0]).map(([k, ws]) => `<h3 style="margin:8px 0 4px;font-size:15px">${esc(k >= 90 ? '⛏️ Mỏ Chữ' : CHAPTERS[k % CHAPTERS.length]!.vi)} · ${ws.length} từ</h3>
     <div class="whbook">${ws.sort((a, b) => (a[0] < b[0] ? -1 : 1)).map(([w, v]) => `<button class="whw" data-say="${esc(w)}" lang="en" aria-label="${esc(w)}: ${esc(v[0])}. Nghe"><b>${esc(w)}</b>${v[2] >= 3 ? ' ⭐' : ''}<small lang="vi">${esc(v[0])}</small></button>`).join('')}</div>`).join('');
   return `<details class="whbookbox"><summary>📖 Sổ từ · ${xs.length} từ</summary>${body}</details>`;
 }

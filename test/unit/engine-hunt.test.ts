@@ -64,3 +64,48 @@ test('v95 Mỏ Chữ: điểm, sao, đường cong, thử thách ngày, lưu', (
   assert.equal(sanitizeHunt({ lv: 0 })!.lv, 1);
   assert.equal(mergeHunt({ ...freshHuntSave(), lv: 4 }, { ...freshHuntSave(), lv: 7 })!.lv, 7);
 });
+
+test('v96 Mỏ Chữ: loại màn xoay vòng, màn mốc mỗi 10 màn có hình băng thiết kế tay', async () => {
+  const { goalOf, iceMask, ICE_SHAPES } = await import('../../src/engine/wordhunt.ts');
+  assert.deepEqual([1, 2, 3].map(goalOf), ['words', 'words', 'words'], '3 màn đầu chỉ tìm từ (làm quen)');
+  assert.deepEqual(new Set([4, 5, 6, 7, 8, 9].map(goalOf)), new Set(['words', 'ice', 'chest']));
+  assert.equal(goalOf(10), 'ice'); assert.equal(goalOf(20), 'ice');
+  const tim = iceMask(10, 1), want = ICE_SHAPES.tim!.join('').split('').map(c => c === '#');
+  assert.deepEqual(tim, want, 'màn 10 = hình trái tim');
+  const m = iceMask(7, 3); for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) assert.equal(m[r * COLS + c], m[r * COLS + COLS - 1 - c], 'băng thường đối xứng trái – phải');
+});
+
+test('v96 Mỏ Chữ: rương không có chữ, không bị gieo đè, không bị đá quý phá; tới đáy thì thu và lưới lấp lại', async () => {
+  const { goalLevel, collectChests, breakIce, usable } = await import('../../src/engine/wordhunt.ts');
+  const pool = ['cat', 'milk', 'bread', 'rice', 'tea'].map(w => M(w));
+  let lv = null; let L = 4; while (!lv || lv.goal !== 'chest') { lv = goalLevel(L, pool, { missions: 3, maxLen: 5, spare: 6 }, L); L++; }
+  const chestIdx = lv.grid.map((c, i) => (c.sp === 'chest' ? i : -1)).filter(i => i >= 0);
+  assert.equal(chestIdx.length, lv.chests); assert.ok(chestIdx.every(i => i < COLS), 'rương ở hàng trên cùng');
+  assert.ok(lv.grid.filter(c => c.sp === 'chest').every(c => !usable(c) && c.ch === ''));
+  for (const m of lv.missions) assert.ok(findPath(lv.grid, m.en), 'nhiệm vụ vẫn có đường khi có rương');
+  // Đẩy rương xuống: phá cả cột bên dưới rương đầu.
+  const c0 = chestIdx[0]! % COLS, below = Array.from({ length: ROWS - 1 }, (_, r) => (r + 1) * COLS + c0);
+  const a = applyWord(lv.grid, below, 7, lv.nextId, true);
+  assert.equal(a.grid[(ROWS - 1) * COLS + c0]!.sp, 'chest', 'rương rơi xuống đáy');
+  const col2 = collectChests(a.grid, 9, a.nextId);
+  assert.ok(col2.got >= 1); assert.equal(col2.grid.length, N); assert.ok(col2.grid.every(Boolean));
+  const ice = [true, false, true]; assert.equal(breakIce(ice, [0, 1]), 1); assert.deepEqual(ice, [false, false, true]);
+});
+
+test('v96 Mỏ Chữ: đá quý phá hàng chừa rương; goalWord ưu tiên từ có trên lưới chạm băng / dưới rương', async () => {
+  const { goalLevel, goalWord } = await import('../../src/engine/wordhunt.ts');
+  const pool = ['cat', 'milk', 'bread', 'rice', 'tea'].map(w => M(w));
+  let lv = null; let L = 4; while (!lv || lv.goal !== 'chest') { lv = goalLevel(L, pool, { missions: 3, maxLen: 5, spare: 6 }, L); L++; }
+  const ci = lv.grid.findIndex(c => c.sp === 'chest'), gi = ci % COLS === 0 ? 1 : ci - 1;   // ô đá quý cùng hàng với rương
+  const g = lv.grid.map((c, i) => (i === gi ? { ...c, sp: 'gem' as const } : c));
+  const a = applyWord(g, [gi], 5, lv.nextId, true);
+  assert.equal(a.grid.filter(c => c.sp === 'chest').length, lv.chests, 'đá quý không phá rương');
+  assert.ok(!a.gemRow.includes(ci));
+  // goalWord: chỉ trả từ có đường thật trên lưới; có băng thì chọn từ đi qua ô băng.
+  const words = lv.missions.map(m => m.en), ice = new Array<boolean>(N).fill(false), p0 = findPath(lv.grid, words[0]!)!;
+  ice[p0[0]!] = true;
+  const w = goalWord(lv.grid, ice, words)!;
+  assert.ok(w && findPath(lv.grid, w.word));
+  assert.ok(w.path.some(i => ice[i] || i % COLS === ci % COLS), 'ưu tiên từ phá băng hoặc kéo rương');
+  assert.equal(goalWord(lv.grid, ice, ['zzzzz']), null, 'không có từ trên lưới → null');
+});

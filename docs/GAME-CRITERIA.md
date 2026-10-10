@@ -1127,3 +1127,73 @@ So với game tốt nhất cũ (Câu đố ngày 4,6) là +2,0. **Chưa tới 7*
 - Bộ não chọn Vòng Chữ 3 lần (thắng cả 3). **Chưa lần nào chọn Mỏ Chữ**: bước học đầu lộ trình của bot là ngữ pháp, còn Mỏ Chữ chỉ được chọn cho từ cần học (73) và chơi thêm (44). Vì vậy Mỏ Chữ mới được kiểm bằng e2e, chưa bằng bot.
 - Ô mastery Đạt: 709 (v93: 709). 0 lỗi trang, không kẹt.
 - Thêm hướng dẫn bàn tay ở màn 1 (M9: 7 → 8). Điểm M của Mỏ Chữ thành 6,8.
+
+### 10.8 Đã làm v96: mục tiêu kiểu ghép 3, màn mốc, sổ từ chung, xen kẽ hai game chủ lực
+
+**Gốc rễ của lần sửa này** (từ §10.7):
+- M7 thấp vì màn nào cũng chỉ có một mục tiêu là tìm từ. Game ghép 3 dẫn đầu giữ người chơi hàng nghìn màn nhờ **thay đổi mục tiêu**, không nhờ đổi luật.
+- M8 thấp vì từ tìm ở Mỏ Chữ không đi đâu cả.
+- Bot không bao giờ gặp Mỏ Chữ vì bộ não chỉ chọn nó cho "từ cần học".
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Mục tiêu theo màn | Màn 1–3: chỉ tìm từ (làm quen). Từ màn 4 xoay vòng: tìm từ → **phá băng** → **đưa rương xuống đáy** | `goalOf()` |
+| 🧊 Phá băng | Ô có băng vỡ khi được dùng trong từ, hoặc khi nằm trên hàng bị đá quý phá. Màn thường: băng đối xứng trái – phải, nhiều dần theo màn. Thêm lượt bằng 1/3 số ô băng | `iceMask()`, `breakIce()` |
+| 🧰 Đưa rương | Rương nằm ở hàng trên, không chọn được. Phá ô bên dưới thì rương rơi xuống; tới đáy thì thu (+5 xu). Rương không đè lên đường của từ nhiệm vụ. Đá quý phá hàng chừa rương | `placeChests()`, `collectChests()` |
+| Màn mốc (10, 20, …) | Băng theo **hình vẽ tay**: tim, vòng, chéo, kim cương, cầu. Tiêu đề "màn mốc" | `ICE_SHAPES` |
+| Thắng | Đủ từ nhiệm vụ **và** xong mục tiêu. Tìm đủ từ mà chưa xong mục tiêu thì gợi ý chuyển sang một từ ngắn có sẵn trên lưới, nên không bị kẹt | `goalWord()` |
+| Sổ từ chung (M8) | Từ nhiệm vụ tìm ở Mỏ Chữ vào sổ từ của Vòng Chữ, chương "⛏️ Mỏ Chữ" | `addBook(…, 90)` |
+| Trợ năng | Mục tiêu (còn bao nhiêu băng, rương mấy / mấy) hiện cả ở phụ đề DOM, không chỉ trên canvas, để trình đọc màn hình đọc được | `huntview.ts` |
+| Bộ não xen kẽ | Hai game chủ lực cùng phục vụ ôn tập, ôn nhẹ, chơi thêm (Mỏ Chữ cũng phục vụ từ cần học). Game **chưa** chơi gần nhất (`flag`, tính qua nhiều ngày) đứng trên game kia: 88 / 86, 55 / 54, 45 / 44 | `director.ts`, `dirIn()` |
+
+**Gốc rễ việc bot chưa bao giờ gặp Mỏ Chữ** (tìm ra khi chạy bot sau bước đầu của v96):
+- Bước đầu chỉ nâng điểm ôn tập của Mỏ Chữ lên 86, nhưng bot vẫn chọn Mỏ Chữ 0 lần.
+- Lý do: `planDay()` xếp lộ trình với `played` / `last` rỗng, nên phạt xen kẽ (−45 / −25) không chạm tới lộ trình. Mỗi nhu cầu chỉ lấy một game, nên Vòng Chữ (88) luôn giữ chặng ôn.
+- Sửa bằng `flag`: game chủ lực chơi gần nhất, lấy từ game bắt đầu gần nhất, nếu không có thì từ sổ bằng chứng.
+
+**Bot người học L01, 8 ngày, cùng seed:**
+
+| | Trước khi sửa `flag` | Sau |
+|---|---|---|
+| Chặng ôn ngày 3–8 | Vòng Chữ 4 lần, Mỏ Chữ 0 | Vòng Chữ 3, Mỏ Chữ 3, thay nhau từng ngày |
+| Số câu trả lời | 199 | 219 |
+| Ô (nút × mức) có a / (a + b) ≥ 0,8 và n ≥ 3 | 9 | 21 |
+| Lỗi trang / kẹt | 0 / 0 | 0 / 0 |
+
+- Thước đo ô ở bảng là thước đo thô, chỉ dùng để thấy hướng; một lần chạy 8 ngày chưa đủ để kết luận việc học tốt hơn.
+- Vườn từ không còn vào lộ trình vì lộ trình sau đó nghiêng sang ngữ pháp (Bài Câu). Đây là do NBA quyết định, không phải do bộ não game.
+
+**Đúng spec:**
+- Băng / rương chỉ là cách chơi (P13, P14). Không ghi bằng chứng cho băng, rương hay từ của `goalWord()`; bằng chứng vẫn chỉ ở từ nhiệm vụ của cụm engine chọn.
+- Không thêm đồng hồ (P15).
+- Chưa xong mục tiêu thì chỉ phải "chơi lại màn", không phạt (HG20).
+
+**Kiểm:**
+- Đơn vị:
+  - mục tiêu theo màn;
+  - hình băng màn mốc đúng mẫu;
+  - băng vỡ khi dùng;
+  - rương không đè đường nhiệm vụ, rơi và được thu ở đáy;
+  - đá quý không phá rương;
+  - `goalWord()` luôn trả từ có trên lưới;
+  - bộ não xen kẽ hai game ở ôn tập, cả trong lộ trình ngày (`flag`) và ôn nhẹ.
+- e2e:
+  - màn 10 hiện băng hình tim, phụ đề "Phá băng: còn N ô" khớp lưới, số băng không tăng sau khi vuốt;
+  - màn 5 có rương, phụ đề "0/1";
+  - từ nhiệm vụ vào sổ từ chung và hiện chương "⛏️ Mỏ Chữ" ở sảnh.
+- Toàn bộ: 271 đơn vị, 198 e2e (Android + máy tính) qua.
+
+**Chấm lại M1–M10 của Mỏ Chữ** (tự chấm, chưa có người chơi thử):
+
+| M1 ×2 | M2 ×2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 7 | 7 | 8 | 6 | 8 | 8 | 7 | 6 | 8 | 6 | **7,1** |
+
+- M6 lên 8: phải tính đường vuốt để kéo rương xuống và dùng ô băng, không chỉ tìm từ.
+- M7 lên 7, chưa cao hơn: mục tiêu và hình băng có thật, nhưng màn vẫn dựng theo luật, chưa có hàng trăm màn được cân chỉnh tay như game dẫn đầu.
+- M8 lên 6: có sổ chung, nhưng chưa có bộ sưu tập riêng của mỏ (đá quý, rương hiếm).
+
+**Còn thiếu để lên 8+:**
+- M4: nhạc và hình vẫn vẽ bằng mã, chưa có họa sĩ.
+- M10: chưa có sự kiện theo tuần.
+- Thước đo thật: số liệu chơi (`pm`) của người chơi thật, theo ngưỡng §9.

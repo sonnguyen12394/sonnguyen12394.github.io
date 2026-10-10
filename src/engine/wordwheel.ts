@@ -140,7 +140,8 @@ export function sanitizeBook(raw: unknown): Record<string, [string, number, numb
   const out: Record<string, [string, number, number]> = {};
   if (!raw || typeof raw !== 'object') return out;
   const xs = Object.entries(raw as Record<string, unknown>).filter(([w, v]) => isWord(w) && Array.isArray(v) && typeof v[0] === 'string' && Number.isFinite(v[1]) && Number.isFinite(v[2]))
-    .map(([w, v]) => [w, [String((v as unknown[])[0]).slice(0, 80), Math.max(0, Math.min(99, Math.round(Number((v as unknown[])[1])))), Math.max(1, Math.min(1e6, Math.round(Number((v as unknown[])[2]))))]] as const);
+    .map(([w, v]) => [w, [String((v as unknown[])[0]).slice(0, 80), Math.max(0, Math.min(99, Math.round(Number((v as unknown[])[1])))),   // chương 0–5 Vòng Chữ, 90 = Mỏ Chữ
+      Math.max(1, Math.min(1e6, Math.round(Number((v as unknown[])[2]))))]] as const);
   xs.sort((p, q) => q[1][2] - p[1][2]);
   for (const [w, v] of xs.slice(0, BOOK_MAX)) out[w] = v as [string, number, number];
   return out;

@@ -13,11 +13,13 @@ test('v88 bộ não: chưa xếp lớp → Thám hiểm đứng đầu; đã x�
   assert.equal(direct(base({ fogWait: 0, claims: 9, top: null, first: {} }))[0]!.game, 'fog', 'nhiều phần tạm Đạt + hết hạn chờ → xếp lớp lại');
 });
 
-test('v88 bộ não: cây đến ngày tưới → Vườn từ; nhiều phần sắp quên → Vòng Chữ (v93, game chủ lực) / Câu đố ngày', () => {
+test('v88 bộ não: cây đến ngày tưới → Vườn từ; nhiều phần sắp quên → Vòng Chữ / Mỏ Chữ (game chủ lực) / Câu đố ngày', () => {
   const g = direct(base({ garden: 4 }))[0]!;
   assert.equal(g.game, 'garden'); assert.equal(g.need, 'water'); assert.match(g.why, /4 từ đến ngày tưới/);
   const r = direct(base({ review: 8, top: { kind: 'review', node: 'review', vi: 'ôn' } }));
-  assert.equal(r[0]!.game, 'wheel'); assert.equal(r[1]!.game, 'puzzle'); assert.match(r[0]!.why, /8 phần/);
+  assert.equal(r[0]!.game, 'wheel'); assert.equal(r[1]!.game, 'hunt'); assert.equal(r[2]!.game, 'puzzle'); assert.match(r[0]!.why, /8 phần/);
+  // v96: vừa chơi Vòng Chữ → game chủ lực kia (Mỏ Chữ) lên đầu (xen kẽ dạng game, cùng nhu cầu ôn).
+  assert.equal(direct(base({ review: 8, top: { kind: 'review', node: 'review', vi: 'ôn' }, last: 'wheel', played: ['wheel'] }))[0]!.game, 'hunt');
   assert.ok(!direct(base({ review: 8, puzzleToday: true })).some(p => p.game === 'puzzle'), 'câu đố mỗi ngày một lần');
   assert.notEqual(direct(base({ review: 6 }))[0]!.game, 'wheel', 'ít phần sắp quên → không ôn trước học mới (người học khá)');
 });
@@ -87,4 +89,13 @@ test('v88 lưu bộ não: làm sạch (game lạ bị bỏ) và gộp hai máy',
   const m = mergeDir({ day: 10, plan: [], done: ['garden'], last: 'garden', runs: 2 }, { day: 10, plan: [], done: ['blocks'], last: '', runs: 5 })!;
   assert.deepEqual(m.done.sort(), ['blocks', 'garden']); assert.equal(m.runs, 5);
   assert.equal(mergeDir({ day: 9, plan: [], done: ['a'], last: '', runs: 1 }, { day: 10, plan: [], done: [], last: 'cards', runs: 1 })!.day, 10);
+});
+
+test('v96 bộ não: lộ trình ngày (xếp không có lịch sử trong ngày) vẫn xen kẽ hai game chủ lực theo game chơi gần nhất', () => {
+  const rv = { review: 8, top: { kind: 'review', node: 'review', vi: 'ôn' } } as const;
+  const slot = (flag: DirIn['flag']) => planDay(base({ ...rv, flag })).find(p => p.need === 'review')!.game;
+  assert.equal(slot(''), 'wheel', 'chưa chơi game chủ lực nào: Vòng Chữ (dễ vào nhất) trước');
+  assert.equal(slot('wheel'), 'hunt'); assert.equal(slot('hunt'), 'wheel');
+  const light = (flag: DirIn['flag']) => direct(base({ review: 2, flag, top: { kind: 'learn', node: 'g:a1-01', vi: 'be' } })).filter(p => p.need === 'review').map(p => p.game);
+  assert.deepEqual(light('wheel').slice(0, 2), ['hunt', 'wheel'], 'ôn nhẹ cũng có cả hai game');
 });

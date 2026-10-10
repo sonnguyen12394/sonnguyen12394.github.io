@@ -8345,7 +8345,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.62da824c7e.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.6c3ef3aaf3.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
