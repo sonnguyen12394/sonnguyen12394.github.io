@@ -40,7 +40,10 @@ import { viewRobot, viewRobotEnd, robotKey, type RobotRun } from './robotview.ts
 import { layout as robotLayout, parse as robotParse, run as robotRun, won as robotWon, freshRobotSave } from './robot.ts';
 import { viewGarden, viewGardenEnd, type GardenRun } from './gardenview.ts';
 import { pickToday, itemFor, grow as gardenGrow, freshGardenSave, PER_DAY } from './garden.ts';
-import { direct, planDay, nextGame, isGame, freshDirSave, type DirIn, type DirPick, type GameId, type Need } from './director.ts';
+import { direct, planDay, nextGame, isGame, freshDirSave, GAMES, type DirIn, type DirPick, type GameId, type Need } from './director.ts';
+import { freshPlay, playStart, playAct, playDone, playQuit, playReport, type Via } from './play.ts';
+import { town, townKey, townGain } from './town.ts';
+import { viewTown, viewTownGain, viewPlayStats } from './townview.ts';
 import { viewShop, viewShopEnd, accepted as shopOk, ORDERS, freshShopSave, type ShopRun } from './workshop.ts';
 import { pick as karaPick, linePoints, verdict as karaVerdict, ROLE, freshKaraSave } from './karaoke.ts';
 import { choose as caseChoose, order as caseOrder, options as caseOptions, solved as caseSolved, caseStars, freshCaseSave } from './detective.ts';
@@ -1043,7 +1046,7 @@ export function init(host: EHost): EngineModule {
     qrun.ans = { ok, right, given, coins, novel, ...(why ? { why } : {}) }; qrun.coins += coins; qrun.n++;
     if (ok) qrun.ok++; else if (!camp) { qrun.hp--; qrun.wrong.push(node); }
     const sv = qsave(); sv.ans++; if (ok) sv.ok++; sv.coins += coins; sv.day = host.today();
-    if (qrun.mode === 'blocks') sfx(ok ? 'ok' : 'bad');
+    sfx(ok ? 'ok' : 'bad');   // v89: mọi chế độ (tháp trước đây im lặng, T3)
     host.save(); host.render();
   }
   function qNext(): void {
@@ -1201,6 +1204,15 @@ export function init(host: EHost): EngineModule {
     return null;
   }
   function markStart(): void { const a = activeGame(); if (!a) return; const sv = gpsave(); sv.last = a.game; sv.runs++; host.save(); }
+  // v89 số liệu chơi + Phố chung: màn kết ghi ván xong (một lần), so Phố với lúc bắt đầu, ăn mừng khi có công trình lên cấp.
+  const pmsave = () => { const e = E(); return (e.pm ||= freshPlay()); };
+  function endExtras(c: ECtx, game: GameId): string {
+    const pm = pmsave(), before = pm.cur?.g === game ? pm.cur.town : null, first = playDone(pm, game, Date.now());
+    if (first) host.save();
+    const b = town(E()), gain = before === null ? [] : townGain(before, b);
+    if (first) host.cheer?.(gain.length > 0);
+    return viewTownGain(c, gain, b.find(x => x.game === game));
+  }
   function markDone(game: GameId): void { const sv = gpsave(), today = host.today(); if (sv.day === today && sv.done.includes(game)) return; if (sv.day !== today) { sv.day = today; sv.done = []; sv.plan = []; } sv.done.push(game); host.save(); }
 
   // ---------- Đo hiệu quả học (v63) ----------
@@ -1264,7 +1276,7 @@ export function init(host: EHost): EngineModule {
     if (qrun?.done) return viewQuestEnd(c, qrun);
     if (qrun) return viewQuestRun(c, qrun);
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null) + (c.e.goals.length ? viewTown(c, town(E())) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null) + viewPlayStats(c, playReport(pmsave()));
   }
   const routes: Record<string, (c: ECtx) => string> = {
     measure: c => {
@@ -1279,7 +1291,7 @@ export function init(host: EHost): EngineModule {
       const a = activeGame(), html = questBody(c);
       if (!a?.done || !E().goals.length) return html;
       markDone(a.game);
-      return html + viewNextBar(c, director());
+      return html + endExtras(c, a.game) + viewNextBar(c, director());
     },
     micro: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -1313,7 +1325,7 @@ export function init(host: EHost): EngineModule {
       return viewTout(c, tout, toutRes && toutRes.node === node ? toutRes : null);
     },
     diag: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return drun ? (drun.fog?.wait ? viewFogPick(c, drun) : viewDiagRun(c, drun)) : viewDiagIntro(c, lr(), c.route === 'diag/quick'); },
-    'diag-result': c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewDiagResult(c, lr()) + (E().gf?.day === host.today() && E().goals.length ? viewNextBar(c, director()) : ''); },
+    'diag-result': c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } const fog = E().gf?.day === host.today() && E().goals.length; return viewDiagResult(c, lr()) + (fog ? endExtras(c, 'fog') + viewNextBar(c, director()) : ''); },
     goals: viewGoals,
     why: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewWhy(c); },
     pick: viewPick,
@@ -1523,6 +1535,25 @@ export function init(host: EHost): EngineModule {
       g.date = v ? dayOf(v) : null; host.save(); host.toast('Đã lưu.'); host.render();
     },
   };
+  // v89 số liệu chơi: bọc mọi hành động. Nút bắt đầu game → ván mới (đi từ "▶ Chơi tiếp" / chơi lại ngay ở màn kết / tự chọn);
+  // hành động khác trong ván → thao tác đầu tiên; về sảnh khi chưa xong → bỏ giữa. Không đổi hành vi của hành động.
+  const START = new Map(Object.entries(GAMES).map(([g, x]) => [x.start, g as GameId]));
+  const QUIET = new Set(['qhome', 'retry']);
+  const act1 = () => { const pm = pmsave(), a = activeGame(); if (pm.cur && (a?.game === pm.cur.g || (pm.cur.g === 'fog' && !!drun?.fog))) playAct(pm, Date.now()); };
+  for (const [k, f] of Object.entries(act)) act[k] = el => {
+    const game = START.get(k);
+    if (game) {
+      const prev = activeGame(), via: Via = el?.dataset?.g ? 'dir' : prev?.done && prev.game === game ? 'again' : 'self';
+      f(el);
+      const a = activeGame();
+      if (a?.game === game || (game === 'fog' && drun?.fog)) { playStart(pmsave(), game, via, Date.now(), townKey(town(E()))); host.save(); }
+      return;
+    }
+    if (k === 'qhome') { const pm = pmsave(); if (pm.cur && !pm.cur.d) { playQuit(pm); host.save(); } }
+    else if (!QUIET.has(k)) act1();
+    f(el);
+  };
+  for (const [k, f] of Object.entries(forms)) forms[k] = el => { act1(); f(el); };
   if (!bound && typeof document !== 'undefined') {
     bound = true;
     document.addEventListener('click', ev => {

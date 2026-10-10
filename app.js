@@ -3191,10 +3191,11 @@ function viewGames(){
   ${(()=>{ const ex=(st.exam||[])[0]; return `<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>${ico('exam')} Thi thử VSTEP rút gọn</h3><p class="muted">Nghe + Đọc có tính giờ, B1 → C1, ước tính bậc.${ex?` Lần gần nhất: ${exLevel((ex.l+ex.r)/2)} (Nghe ${ex.l}, Đọc ${ex.r}).`:''}</p></div><div class="row"><button class="btn primary" data-act="exgo">Vào thi</button></div></section>`; })()}
   <section class="panel stack"><h3>🏰 Ladder Quest</h3><p class="muted">Leo tháp: mỗi đòn đánh là một câu tiếng Anh app chọn từ đúng những gì bạn còn thiếu để lên cấp. Câu càng giúp bạn tiến bộ, càng nhiều xu.</p>
     <div class="row"><button class="btn primary" data-act="quest">▶ Chơi</button>${st.e&&st.e.q?`<span class="hint">Tầng ${st.e.q.floor} · 🪙 ${st.e.q.coins}</span>`:''}</div></section>
-  <div class="goals">
+  <details class="panel"><summary><b>Trò nhanh (cũ)</b> <span class="hint">Tốc độ 60 giây, Ghép cặp: chỉ ôn từ đã học, không theo lộ trình. Game mới ở tab Chơi.</span></summary>
+  <div class="goals" style="margin-top:10px">
     <div class="panel stack"><h3>⚡ Tốc độ 60 giây</h3><p class="muted">Chọn nghĩa đúng càng nhiều càng tốt trong 60 giây.</p><p class="num">Kỷ lục: ${G.speed||0} từ</p><button class="btn primary" data-act="speed">Chơi</button></div>
     <div class="panel stack"><h3>🧠 Ghép cặp</h3><p class="muted">Ghép 6 từ với nghĩa tiếng Việt, càng nhanh càng tốt.</p><p class="num">Kỷ lục: ${G.match?G.match+' giây':'—'}</p><button class="btn primary" data-act="match">Chơi</button></div>
-  </div>
+  </div></details>
   <section class="panel stack"><h3>🤝 Thách đấu bạn bè</h3>
     <p class="muted">Bạn làm ${CH_N} câu, app tạo một mã. Gửi mã cho bạn bè (Zalo, email…); bạn ấy dán mã vào đây để làm đúng ${CH_N} câu đó rồi so điểm. Không cần tài khoản hay mạng.</p>
     <div class="setrow"><label for="chname">Tên hiện trong mã</label><input id="chname" class="field" style="font-size:16px;padding:7px 10px" maxlength="24" value="${esc(st.set.name||'')}" placeholder="Tên của bạn"></div>
@@ -8344,7 +8345,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.8a2a56fe77.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.4fc027817b.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8358,6 +8359,8 @@ const EHOST = {
   readSave:(id,src,mode,score)=>eReadSave(id,src,mode,score),
   sayLines:(lines,slow)=>{ try{ sayLines(lines,slow); }catch(e){} },
   tts:()=>!!HAS_TTS,
+  mascot:(m,sz)=>mascot(m,sz),
+  cheer:big=>{ try{ if(big&&!FOCUS()){ sfx('win'); if(!STILL()) confetti(); } }catch(e){} },
   gloss:paras=>eGloss(paras),
   // v80–v81: nói. Máy nghe giọng của trình duyệt (asrBox / ASR) — chỉ là phản hồi, không vào mức thuộc (như mọi chỗ khác của app).
   fixes:node=>eFixes(node),

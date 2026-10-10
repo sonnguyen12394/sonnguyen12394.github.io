@@ -716,3 +716,87 @@ Căn cứ chính:
 | 7 | **Ẩn Tốc độ 60 giây và Ghép cặp** khỏi sảnh (ô "cả hai thấp") hoặc gộp thành chế độ phụ của Câu đố ngày | — | Bớt dàn trải | Nhỏ |
 
 Sau mỗi đợt sửa: chấm lại T, rồi đối chiếu với số liệu §8.3 sau ít nhất 2 tuần.
+
+## 9. Kế hoạch nâng trục T (v89–)
+
+### 9.1 Phản biện mục tiêu "điểm tối đa"
+
+10/10 ở mọi tiêu chí T **không phải mục tiêu đúng**, vì ba lý do:
+- **T10 không làm ra được bằng mã.** Nó là kết quả do người chơi tạo ra. Việc làm được chỉ là đo đúng (§8.3) rồi sửa theo số liệu.
+- **Một số tiêu chí kéo ngược nhau.**
+  - T2 (thêm quyết định) làm giảm G8 (số câu / phút).
+  - Căng thẳng ở T4 nếu dùng đồng hồ sẽ phạm P15. Vì vậy căng thẳng phải đến từ giới hạn lượt, rủi ro combo, khách đang chờ, **không đến từ đếm giờ**.
+- **Thêm quyết định không được làm bẩn bằng chứng (G3).** Mọi lựa chọn mới chỉ đổi *thứ tự / phần thưởng game*, không đổi câu hỏi hay cách tính năng lực.
+
+**Mục tiêu đặt lại:**
+- mọi game đang hiện T ≥ 7,5 và không tiêu chí T nào dưới 6;
+- G không tụt (G3, G9 ≥ 8 giữ bằng test hiện có);
+- T10 có số liệu thật sau 2 tuần.
+
+### 9.2 Gốc rễ → đòn bẩy (sửa một chỗ, nâng nhiều game)
+
+| Gốc rễ (§8.6) | Đòn bẩy | Game hưởng | Tiêu chí |
+|---|---|---|---|
+| Không đo | `play.ts`: đếm ván, tự chọn / chơi lại, xong / bỏ giữa, thời gian tới thao tác đầu, thời lượng; bảng xem ở sảnh | 15 game engine | T10, kiểm T1 / T8 |
+| Tiến trình rời rạc | `town.ts`: **Phố chung** suy ra từ bản lưu sẵn có của mọi game (không thêm dữ liệu, đồng bộ an toàn). Mỗi game là một công trình lên cấp; màn kết báo "Phố mới" | 15 | T5, T7 |
+| Juice mỏng | Màn kết chung: pháo giấy + nhạc mừng (dùng lại `confetti()` / `sfx('win')` của app qua host), âm cho Leo tháp | 15 | T3 |
+| Thiếu bản sắc | Tí (mascot có sẵn ở `app.js`) dẫn đường trong hộp "Chơi tiếp" và màn kết | 15 | T7 |
+| Dàn trải | Thu Tốc độ 60 giây / Ghép cặp vào mục "Trò nhanh (cũ)" thu gọn | 2 | bớt game yếu |
+| Câu hỏi khoác áo game | Lớp quyết định riêng từng game (đợt 2, bảng §9.3) | 10 | T2 |
+| Ván sau giống ván trước | Sự kiện ngày, khách / hồ sơ đặc biệt, sưu tập bùa (đợt 3) | 8 | T4, T6 |
+
+### 9.3 Đợt 2: lớp quyết định từng game (giữ G3)
+
+| Game | Quyết định thêm | Vì sao không làm bẩn bằng chứng |
+|---|---|---|
+| ☕ Quán | Hàng chờ 3 khách, chọn phục vụ ai trước; mỗi khách có món và tiền boa khác nhau | Câu của từng khách vẫn do engine chọn; chỉ đổi thứ tự |
+| 🔍 Thám tử / 📻 Đài | Chọn manh mối mở trước; cuối hồ sơ tự chọn kết luận từ các manh mối đã mở | Câu hỏi giữ nguyên; kết luận chỉ là điểm game |
+| 🛠️ Xưởng | Mỗi ca chọn 6 trong 8 đơn, đơn khó trả nhiều xu hơn | Đơn đều là câu engine chọn cho điểm đang học |
+| 🎯 Bắt Âm | Trước mỗi màn chọn một bùa (nghe chậm miễn phí / nhân điểm chuỗi / thêm một lượt nói thử) | Bùa chỉ đổi điểm và trợ giúp, câu có trợ giúp được đánh dấu `hint` như hiện nay |
+| 🌱 Vườn | Chọn ô gieo và loại cây (từ của cụm nào); vườn có bố cục do người chơi xếp | Thứ tự bậc nhận ra → nhớ ngược → tự gõ giữ nguyên |
+| 🏰 Leo tháp | Mỗi tầng chọn một trong hai lối (nhiều rương hay nhiều quái) | Cả hai lối đều lấy từ danh sách NBA; chỉ đổi loại cảnh, như Bàn Cờ |
+| 🎤 Karaoke | Chọn vai A / B và "phong cách" (vui / lịch sự), đổi điểm biểu diễn | Câu nói vẫn là câu thoại gốc |
+| 🗺️ Thám hiểm | Đã có chọn đường; thêm "đặt cờ" ở ô muốn mở trước | Điểm dò vẫn do engine chọn |
+
+### 9.4 Thứ tự làm và cách kiểm
+
+1. **Đợt 1 (v89):** đo + Phố chung + màn kết chung + Tí + âm Leo tháp + thu gọn trò cũ. Kiểm bằng test đơn vị (`play.ts`, `town.ts` thuần hàm) và e2e (sảnh hiện Phố, màn kết hiện "Phố mới"). Chấm lại T.
+2. **Đợt 2 (v90–v92):** lớp quyết định theo §9.3, mỗi bản 2–3 game, kèm test "lựa chọn không đổi câu hỏi / bằng chứng".
+3. **Đợt 3 (v93):** đa dạng (sự kiện ngày, sưu tập bùa Bài Câu, khách đặc biệt).
+4. **Sau 2 tuần số liệu:** chấm T10 thật; game nào bỏ giữa ≥ 20% hoặc chơi lại < 25% thì sửa theo số liệu, không theo cảm tính.
+
+### 9.5 Đã làm đợt 1 (v89): chấm lại theo bản thật
+
+| Việc | Tệp | Kiểm |
+|---|---|---|
+| Đo số liệu chơi: ván, tự chọn / chơi lại / từ "Chơi tiếp", xong / bỏ giữa, giây tới thao tác đầu, thời lượng (20 lần gần nhất); bảng "📊 Số liệu chơi trên máy này" ở sảnh, ✓ / ✗ theo ngưỡng §8.3 khi đủ 5 ván | `play.ts`, `main.ts` (bọc mọi hành động, không đổi hành vi), `st.e.pm` | `engine-play-town.test.ts`, e2e `town.spec.ts` |
+| Phố chung: 15 công trình suy ra từ bản lưu từng game (không thêm dữ liệu, đồng bộ hai máy tự đúng), mỗi công trình 4 cấp; chạm công trình để chơi | `town.ts`, `townview.ts` | như trên + WCAG AA sáng / tối, 390 px |
+| Màn kết chung: "🏗️ Phố mới!" khi công trình lên cấp (pháo giấy + nhạc mừng của app, một lần mỗi ván); luôn có mốc gần nhất ("Còn 1 hoa nữa để Vườn hoa lên cấp 1") | `endExtras()` trong `main.ts`, host `cheer` | e2e `town.spec.ts` |
+| Tí dẫn đường ở hộp "Chơi tiếp" và thanh "▶ Tiếp" (câu theo tiến độ lộ trình, không nói điểm game) | `gameview.ts` `tiSay`, host `mascot` | e2e |
+| Leo tháp có âm đúng / sai như các game khác | `main.ts` | — |
+| Tốc độ 60 giây / Ghép cặp thu vào mục "Trò nhanh (cũ)" | `app.js` `viewGames` | e2e `play4.spec.ts` vẫn qua |
+
+Ước lượng T sau đợt 1 (vẫn là chấm theo mã, T10 vẫn 5 vì chưa có số liệu): T3 +1 (Leo tháp +2), T5 +2 (game đã có tiến trình dài +1), T7 +1.
+
+| Game | T trước | T sau đợt 1 | T2 hiện tại |
+|---|---|---|---|
+| 📅 Câu đố ngày | 6,6 | 7,0 | 7 |
+| 🧱 Xếp Khối Chữ | 6,4 | 6,9 | 8 |
+| 🤖 Robot | 6,4 | 6,8 | 9 |
+| 🌱 Vườn từ | 6,4 | 6,6 | 3 |
+| ☕ Quán Cà Phê | 6,2 | 6,5 | 4 |
+| 🎲 Bàn Cờ Phố | 6,1 | 6,4 | 5 |
+| 🃏 Bài Câu | 6,0 | 6,4 | 8 |
+| 🗺️ Thám hiểm | 5,9 | 6,4 | 6 |
+| ✉️ Thư | 5,9 | 6,3 | 6 |
+| 🎯 Bắt Âm | 5,7 | 6,1 | 3 |
+| 🔍 Thám tử | 5,6 | 6,1 | 4 |
+| 🛠️ Xưởng | 5,6 | 6,1 | 3 |
+| 🏰 Leo tháp | 5,5 | 6,0 | 3 |
+| 📻 Đài phát thanh | 5,2 | 5,6 | 3 |
+| 🎤 Karaoke | 5,1 | 5,6 | 3 |
+| (Tốc độ 60 giây, Ghép cặp: đã thu gọn, không chấm tiếp) | | | |
+
+**Đọc kết quả:** đợt 1 nâng mọi game khoảng +0,4 nhưng **chưa game nào qua cổng §8.4**, vì hai chỗ đợt 1 không chạm tới:
+- **T2 ≤ 4 ở 9 game:** đúng điểm nghẽn mà đợt 2 (§9.3) nhắm tới;
+- **T10 = 5 cho mọi game:** chỉ lên được khi có số liệu thật, ít nhất 2 tuần sau khi phát hành v89.

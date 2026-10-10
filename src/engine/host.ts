@@ -46,6 +46,8 @@ export interface EHost {
   exam(): { resp: import('../exam/state.ts').Resp[]; real: import('../exam/state.ts').RealScore[] };   // câu Nghe/Đọc đã làm + điểm thi thật (phần ôn thi)
   lapse(): number | null;
   future?(): boolean;
+  mascot?(mood: 'happy' | 'cheer' | 'party' | 'sleep', size: number): string;   // v89: SVG Tí của app (nhân vật dẫn đường trong game)
+  cheer?(big: boolean): void;                        // v89: ăn mừng ở màn kết (big: pháo giấy + nhạc mừng của app; không: tiếng nhỏ)
   recall?(node: string): number | null;              // khả năng nhớ trung bình (FSRS) của các thẻ đã học thuộc nút; null nếu chưa có thẻ (§58)                               // bật mục tiêu tương lai (IELTS, VSTEP, giao tiếp); mặc định tắt                           // ngày gần nhất quên một thẻ khi đến hạn ôn
 }
 

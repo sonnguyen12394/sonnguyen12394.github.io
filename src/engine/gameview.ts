@@ -67,16 +67,27 @@ const why = (c: ECtx, d: Dir): string => {
   return `<details class="dwhy"><summary>Vì sao là game này?</summary><p class="hint">${esc(top.why)}</p>
     <p class="hint">App đọc những gì bạn cần lúc này (phần sắp quên, từ đến ngày tưới, phần đầu lộ trình, điểm nghẽn, kỹ năng còn thiếu) rồi chọn dạng game hợp nhất, và đổi dạng sau mỗi game để não không chán. Nội dung câu hỏi trong game vẫn do lộ trình của bạn quyết định.</p></details>`;
 };
+// v89 Tí dẫn đường (T7): nhân vật của app nói một câu theo tiến độ lộ trình hôm nay. Không nói điểm game (P13).
+const TI_GO = ['Mình bắt đầu chặng đầu nhé!', 'Tí chọn sẵn game hợp nhất cho bạn rồi nè.', 'Ba chặng nhỏ thôi, xong là phố thêm đẹp!'];
+const TI_MID = ['Đang vào guồng rồi, chặng tiếp nào!', 'Giỏi lắm! Còn chút nữa là xong hôm nay.', 'Đổi game cho khỏi chán, mà vẫn học đúng phần cần.'];
+const TI_END = ['Xong hết rồi! Chơi thêm thì cứ thoải mái.', 'Tí tự hào về bạn hôm nay!', 'Mai mình gặp lại ở phố nhé!'];
+function tiSay(c: ECtx, d: Dir, big = false): string {
+  const done = d.plan.filter(p => d.x.played.includes(p.game)).length, all = done >= d.plan.length, k = c.host.today();
+  const svg = c.host.mascot?.(all ? 'party' : 'happy', big ? 56 : 44);
+  if (!svg) return '';
+  const L = all ? TI_END : done ? TI_MID : TI_GO;
+  return `<div class="tisay"><span aria-hidden="true">${svg}</span><span class="tisay-b">${c.host.esc(L[k % L.length]!)}</span></div>`;
+}
 export function viewDirector(c: ECtx, d: Dir): string {
   const g = GAMES[d.next.game], esc = c.host.esc;
-  return `<section class="dbox stack"><span class="eyebrow">${d.inPlan ? 'Chặng tiếp theo' : 'Chơi thêm'}</span>
+  return `<section class="dbox stack"><span class="eyebrow">${d.inPlan ? 'Chặng tiếp theo' : 'Chơi thêm'}</span>${tiSay(c, d)}
     <button class="gcard dgo" data-e="${g.start}" data-g="${d.next.game}"><span class="gico" aria-hidden="true" style="font-size:34px">${g.ico}</span><span class="stack" style="gap:2px;text-align:left"><b>▶ Chơi tiếp: ${esc(g.vi)}</b><span class="hint">Vì: ${esc(d.next.why)}</span></span></button>
     ${planRow(c, d)}${why(c, d)}</section>`;
 }
 // Thanh cuối màn kết của mọi game: đi thẳng tới game kế (không quay về danh sách để chọn).
 export function viewNextBar(c: ECtx, d: Dir): string {
   const g = GAMES[d.next.game], esc = c.host.esc;
-  return `<section class="dbox stack" style="margin-top:14px"><span class="eyebrow">${d.inPlan ? 'Tiếp theo trong lộ trình hôm nay' : 'Chơi thêm'}</span>
+  return `<section class="dbox stack" style="margin-top:14px"><span class="eyebrow">${d.inPlan ? 'Tiếp theo trong lộ trình hôm nay' : 'Chơi thêm'}</span>${tiSay(c, d, true)}
     <button class="btn primary big dgo" data-e="${g.start}" data-g="${d.next.game}">▶ Tiếp: ${g.ico} ${esc(g.vi)}</button><p class="hint">Vì: ${esc(d.next.why)}</p>${planRow(c, d)}</section>`;
 }
 const miniBoard = () => `<span class="bkmini">${[1, 0, 2, 3, 3, 0, 0, 4, 5].map(v => `<i class="c${v}"></i>`).join('')}</span>`;

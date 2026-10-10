@@ -656,6 +656,20 @@ body.lesson main{max-width:720px}
 .gall{margin-top:12px}
 .gall>summary{font-weight:600;padding:10px 0}
 .gico{display:grid;place-items:center;width:56px;height:56px;border-radius:12px;background:var(--surface)}
+.twbox{margin:14px 0;gap:8px}
+.twg{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.twt{display:grid;justify-items:center;gap:2px;padding:8px 4px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,var(--surface),var(--accent-soft));cursor:pointer;text-align:center;font:inherit;color:var(--ink)}
+.twt.off{background:var(--surface);border-style:dashed}
+.twt.off .twi{filter:grayscale(1);opacity:.45}
+.twt b{font-size:12px;line-height:1.2}
+.twi{font-size:28px;line-height:1.1}
+.tws{font-size:11px;letter-spacing:1px;color:var(--ink)}
+.twn{font-size:11px;line-height:1.2;color:var(--muted)}
+.twgain{display:flex;gap:10px;align-items:center;margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.twgain.up{border:2px solid var(--accent);background:linear-gradient(135deg,var(--accent-soft),var(--surface));animation:pop .35s ease-out}
+.twup{margin:0;padding-left:18px}
+.tisay{display:flex;align-items:center;gap:8px}
+.tisay-b{position:relative;padding:8px 12px;border-radius:12px;background:var(--accent-soft);color:var(--ink);font-size:14px}
 .bkmini{display:grid;grid-template-columns:repeat(3,14px);gap:2px}
 .bkmini i,.bkp i{display:block;width:14px;height:14px;border-radius:3px;background:var(--kcell)}
 .c1{--kc:var(--k1)}.c2{--kc:var(--k2)}.c3{--kc:var(--k3)}.c4{--kc:var(--k4)}.c5{--kc:var(--k5)}.c6{--kc:var(--k6)}
@@ -817,4 +831,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.fcd67281e9.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.9a3825788f.js" defer></script><script src="app.js?v=67" defer></script>
