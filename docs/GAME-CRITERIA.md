@@ -888,3 +888,32 @@ Mỗi dòng phải qua 4 câu hỏi:
   - 🎤 màn tổng kết "biểu diễn" (điểm khớp từng câu, câu hay nhất);
   - 🎯 chuỗi nghe đúng mở bong bóng màu mới.
 - T10 vẫn khoá ở 5 cho tới khi có số liệu thật. Vì vậy không game nào vượt khoảng 7,5 chỉ bằng sửa mã: phần còn lại phải đo.
+
+### 9.7 Đã làm v92: game tiếp nhận / trình diễn nâng bằng trình bày (§9.0 mục 5)
+
+| Game | Việc | Vì sao không thêm thao tác |
+|---|---|---|
+| 🔍 Thám tử / 📻 Đài | **Bảng manh mối:** mỗi câu hiểu đúng ghim một mảnh (chính đáp án tiếng Anh) lên bảng. Câu kết luận cuối là "ghép các manh mối đã ghim". Màn kết có **biên bản vụ án / ghi chép bản tin**: từng câu hỏi, đáp án, ✓ / ✗ lần đầu | Chỉ trình bày lại câu trả lời đúng (đọc lại đáp án = gặp lại ngôn ngữ). Không thêm câu, không đổi điểm bài (HG24, G3) |
+| 🎤 Karaoke | **Màn biểu diễn:** từng câu của bạn với mức máy nghe ra (thanh %), 🌟 câu hay nhất, 🔁 câu nên luyện lại, nút nghe mẫu / nghe chậm | Chỉ trình bày kết quả đã có (`r.ps`), không chấm thêm, không vào mức thuộc |
+| (chung) | Lộ trình hôm nay: chặng đã xong bỏ `opacity:.7` (chữ nhỏ dưới 4,5:1), thay bằng nền khác màu | Test trợ năng mới quét màn kết (v92) phát hiện lỗi có sẵn từ v88 |
+
+**Kiểm:** e2e `v92.spec.ts` gồm:
+- manh mối ghim đúng chữ đáp án; câu "Không biết" không ghim;
+- biên bản đủ câu; màn biểu diễn đủ câu của vai;
+- số bằng chứng trong sổ không đổi;
+- WCAG AA.
+
+**Ước lượng T:**
+
+| Game | Sau v91 | Sau v92 |
+|---|---|---|
+| 🔍 Thám tử | 6,2 | 6,4 (T5 +1, T7 +1) |
+| 📻 Đài phát thanh | 5,8 | 6,0 (T5 +1, T7 +1) |
+| 🎤 Karaoke | 5,7 | 5,9 (T7 +1, T8 +1) |
+
+**Đánh giá thẳng sau đợt 2:**
+- Trong khuôn spec (HG24, C69, P13–P15), sửa bằng mã đã đưa 3 game lên khoảng 7 (Câu đố ngày 7,1 · Xếp Khối 7,0 · Quán 7,0). 12 game còn lại ở khoảng 5,9–6,9.
+- Phần chênh còn lại tới 7,5 nằm ở hai chỗ:
+  1. **T10 = 5 (chưa đo)**, chiếm 2/14 trọng số. Chỉ số liệu thật mới mở được.
+  2. **T2 của game tiếp nhận**, bị spec chặn có chủ đích.
+- Theo §9.4 bước 4, bước đúng tiếp theo là **phát hành v89–v92 và thu 2 tuần số liệu** (bảng 📊 ở sảnh). Sau đó sửa game theo số liệu, không tiếp tục thêm tính năng theo cảm tính.

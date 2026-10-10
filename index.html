@@ -648,7 +648,7 @@ body.lesson main{max-width:720px}
 .dplan{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .dplan li{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:10px;border:1px solid var(--line)}
 .dplan li.cur{border-color:var(--accent);font-weight:600}
-.dplan li.ok{opacity:.7}
+.dplan li.ok{background:var(--surface-2)}
 .dplan li small{font-weight:400;color:var(--muted)}
 .dnum{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--accent-soft);font-weight:700;flex:none}
 .dplan li.ok .dnum{background:var(--accent);color:var(--surface)}
@@ -661,6 +661,12 @@ body.lesson main{max-width:720px}
 button.wsw{cursor:pointer}
 .wsw.ok{border:2px solid var(--good);background:color-mix(in srgb,var(--good) 14%,var(--surface))}
 .wsw.no{border:2px solid var(--bad);text-decoration:line-through}
+.dtboard{list-style:none;margin:6px 0 0;padding:8px 10px;display:grid;gap:4px;border:1px dashed var(--line);border-radius:10px;background:var(--surface-2)}
+.dtrec li{line-height:1.4}
+.krstage{margin-top:8px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.krline{display:grid;gap:4px}
+.krbar{display:block;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.krbar i{display:block;height:100%;background:var(--accent)}
 .twbox{margin:14px 0;gap:8px}
 .twg{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
 .twt{display:grid;justify-items:center;gap:2px;padding:8px 4px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,var(--surface),var(--accent-soft));cursor:pointer;text-align:center;font:inherit;color:var(--ink)}

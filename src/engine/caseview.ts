@@ -19,8 +19,16 @@ const head = (c: ECtx, r: CaseRun): string => {
     : `<span class="eyebrow">📻 Đài phát thanh · ${(88 + (r.floor % 50) * 0.4).toFixed(1)} MHz · câu ${Math.min(r.i + 1, n)}/${n}</span>`;
   const noise = r.mode === 'listen' ? `<div class="rdwave" role="img" aria-label="Tiếng rè còn ${Math.round((1 - f / Math.max(1, n)) * 100)}%">${Array.from({ length: 16 }, (_, k) => { const q = 1 - f / Math.max(1, n), wave = 0.5 + 0.45 * Math.sin(k * 0.8), hiss = ((k * 37) % 11) / 11; return `<i style="height:${Math.round(15 + 80 * ((1 - q) * wave + q * hiss))}%;opacity:${(0.45 + 0.55 * (1 - q)).toFixed(2)}"></i>`; }).join('')}</div>` : '';
   return `<section class="stack" style="gap:6px"><div class="spread">${top}<span>🪙 ${r.coins}</span></div>
-    <p class="hint">${esc(t.kind)} · <b lang="en">${esc(t.title)}</b>${t.tvi ? ` · ${esc(t.tvi)}` : ''}</p><div class="row" style="gap:6px">${cards}</div>${noise}</section>`;
+    <p class="hint">${esc(t.kind)} · <b lang="en">${esc(t.title)}</b>${t.tvi ? ` · ${esc(t.tvi)}` : ''}</p><div class="row" style="gap:6px">${cards}</div>${noise}${board(c, r)}</section>`;
 };
+// v92 Bảng manh mối (GAME-CRITERIA §9.3, T5 / T7): mỗi câu hiểu đúng ghim một mảnh (chính đáp án tiếng Anh) lên bảng; câu ý chính cuối
+// cùng là "kết luận" ghép từ các mảnh. Chỉ trình bày lại câu trả lời đúng, không thêm câu hỏi hay thao tác (HG24), không đổi điểm bài.
+function board(c: ECtx, r: CaseRun): string {
+  const esc = c.host.esc, last = r.qs.length - 1, concl = (k: number) => k === last && r.qs[k]?.k === 'main';   // câu kết luận không ghim (nó là phần ghép)
+  const pins = r.qs.map((q, k) => (r.flipped[k] && !concl(k) ? q.a : null)).filter((x): x is string => !!x);
+  if (!pins.length) return '';
+  return `<ol class="dtboard" aria-label="${r.mode === 'read' ? 'Manh mối đã ghim' : 'Ghi chép từ bản tin'}">${pins.map(a => `<li><span aria-hidden="true">📌</span> <span lang="en">${esc(a)}</span></li>`).join('')}</ol>`;
+}
 
 // Văn bản (đọc): luôn hiện để đọc lại; khi sai, tô sáng câu chứa đáp án.
 function doc(c: ECtx, r: CaseRun, mark: number): string {
@@ -37,7 +45,7 @@ export function viewCase(c: ECtx, r: CaseRun, tts: boolean): string {
   const esc = c.host.esc, q = r.qs[r.i]!, o = r.opts[r.i]!, a = r.ans, read = r.mode === 'read';
   const mark = a && !a.ok && read ? evidence(r.text.paras, q) : -1;
   const body = read ? doc(c, r, mark) : player(c, r, tts);
-  const label = q.k === 'main' && r.i === r.qs.length - 1 ? (read ? '⭐ Kết luận vụ án' : '⭐ Ý chính của bản tin') : read ? `🔒 Manh mối ${r.i + 1}` : `📶 Câu ${r.i + 1}`;
+  const label = q.k === 'main' && r.i === r.qs.length - 1 ? (read ? '⭐ Kết luận vụ án: ghép các manh mối đã ghim' : '⭐ Ý chính của bản tin: ghép từ ghi chép') : read ? `🔒 Manh mối ${r.i + 1}` : `📶 Câu ${r.i + 1}`;
   const opts = `<div class="stack" style="gap:8px">${o.opts.map((t, k) => {
     const cls = a ? (k === o.ans && a.ok ? ' right' : k === a.i && !a.ok ? ' wrong' : '') : '';
     return `<button class="btn${cls}" style="justify-content:flex-start" data-e="dtans" data-i="${k}" ${a ? 'disabled' : ''} lang="en">${esc(t)}</button>`;
@@ -58,7 +66,8 @@ export function viewCaseEnd(c: ECtx, r: CaseRun, total: number): string {
   const script = !read && r.text.lines ? `<details><summary>Lời bản tin</summary><div class="stack" lang="en" style="gap:4px">${r.text.lines.map(l => `<p>${esc(l.t)}</p>`).join('')}</div></details>` : '';
   return `<section class="stack"><span class="eyebrow">${read ? '🔍 Thám tử' : '📻 Đài phát thanh'}</span><h1>${title}</h1>
     <p style="font-size:22px">${'⭐'.repeat(s)} · đúng ${r.ok}/${n} ${read ? 'manh mối' : 'câu'} ngay lần đầu · +${r.coins} xu</p>
-    <p>${read ? `Sổ thám tử: ${total} hồ sơ đã phá.` : `Kệ băng: ${total} bản tin đã bắt sóng.`}</p>${script}
+    <p>${read ? `Sổ thám tử: ${total} hồ sơ đã phá.` : `Kệ băng: ${total} bản tin đã bắt sóng.`}</p>
+    <details class="dtrec"><summary>${read ? '🗂️ Biên bản vụ án' : '🗒️ Ghi chép bản tin'}</summary><ol class="stack" style="gap:6px">${r.qs.map((q, k) => `<li><span lang="en">${esc(q.q)}</span><br><b lang="en">${esc(q.a)}</b> ${r.first[k] ? '<span aria-label="đúng ngay lần đầu">✓</span>' : '<span aria-label="chưa đúng lần đầu">✗</span>'}</li>`).join('')}</ol></details>${script}
     <p class="hint">Điểm ${read ? 'đọc' : 'nghe'} của bài được lưu như ở tab ${read ? 'Đọc' : 'Nghe'} (tính vào Can-Do ${read ? 'đọc' : 'nghe'}). Sao, xu và ${read ? 'sổ thám tử' : 'kệ băng'} chỉ để vui, không đổi đánh giá năng lực.</p></section>
     <div class="row"><button class="btn primary" data-e="${read ? 'dtstart' : 'rdstart'}">${read ? '🔍 Hồ sơ mới' : '📻 Bản tin mới'}</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
 }
