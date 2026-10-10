@@ -22,7 +22,7 @@ async function lobby(page: Page): Promise<void> {
 }
 const onStage = (page: Page) => page.evaluate(() => ({ stage: document.body.classList.contains('stage'), game: document.body.dataset.game ?? '', fx: !!document.getElementById('stagefx'), top: !!(document.querySelector('.top') as HTMLElement | null)?.offsetParent }));
 
-const GAMES: Array<[string, string]> = [['cfstart', 'cafe'], ['bbstart', 'bubbles'], ['gdstart', 'garden'], ['wsstart', 'shop'], ['dtstart', 'case'], ['ltstart', 'letter'], ['rbstart', 'robot'], ['pzstart', 'puzzle'], ['bkstart', 'blocks'], ['bdstart', 'board'], ['krstart', 'kara']];
+const GAMES: Array<[string, string]> = [['cfstart', 'cafe'], ['gdstart', 'garden'], ['wsstart', 'shop'], ['dtstart', 'case'], ['ltstart', 'letter'], ['rbstart', 'robot'], ['pzstart', 'puzzle'], ['bkstart', 'blocks'], ['bdstart', 'board'], ['krstart', 'kara']];
 test('v102 sân khấu: mỗi game kỹ năng mở ra toàn màn (ẩn khung app, cảnh động, ✕); ✕ về sảnh thì khung app trở lại', async ({ page, errors }) => {
   await lobby(page);
   expect((await onStage(page)).stage).toBe(false);
@@ -39,7 +39,7 @@ test('v102 sân khấu: mỗi game kỹ năng mở ra toàn màn (ẩn khung app
   expect(errors).toEqual([]);
 });
 
-test('v102 sân khấu: trả lời đúng ở Quán → khung phản hồi nảy (hiệu ứng), sai ở Bắt Âm → rung; bằng chứng như cũ', async ({ page, errors }) => {
+test('v102 sân khấu: trả lời đúng ở Quán → khung phản hồi nảy (hiệu ứng), sai ở Quán → rung; bằng chứng như cũ', async ({ page, errors }) => {
   await lobby(page);
   await play(page, 'cfstart');
   let pk = await page.evaluate(() => (window as any).eval('EM').peek());
@@ -50,10 +50,10 @@ test('v102 sân khấu: trả lời đúng ở Quán → khung phản hồi nả
   expect(await page.evaluate(() => (window as any).eval('st').e.ev.led.length)).toBe(led0 + 1);
   await page.screenshot({ path: 'test-results/stage-cafe.png' });
   await page.locator('.stagebar [data-e="stexit"]').click();
-  await play(page, 'bbstart');
+  await play(page, 'cfstart');
   pk = await page.evaluate(() => (window as any).eval('EM').peek());
   const wrong = (pk.ans + 1) % pk.opts.length;
-  await page.locator(`[data-e="bbans"][data-i="${wrong}"]`).click();
+  await page.locator(`[data-e="cfans"][data-i="${wrong}"]`).click();
   await expect(page.locator('#app .fb.bad.stshake')).toBeVisible();
   await page.screenshot({ path: 'test-results/stage-bubbles.png' });
   expect(errors).toEqual([]);

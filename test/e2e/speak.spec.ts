@@ -83,7 +83,7 @@ test('Bắt Âm: nói thử đúng từ → +5 điểm (telemetry), không thêm
   await page.locator(`[data-e="bbans"][data-i="${pk.ans}"]`).click();
   await expect(page.getByRole('button', { name: /Nói thử từ này/ })).toBeVisible();
   const before = await page.evaluate(() => { const st = (window as any).eval('st'); return st.e.ev.led.length; });
-  const score = async () => Number(await page.locator('section .spread > span b').first().textContent());
+  const score = async () => Number(((await page.locator('#whfx .bbsc b').textContent()) ?? '').split(' ')[0]);   // v104: điểm ở thanh trên lớp phủ
   const s0 = await score();
   await fakeAsr(page, 'bb:1:1', 1);
   await page.screenshot({ path: 'test-results/bubbles-speak.png' });

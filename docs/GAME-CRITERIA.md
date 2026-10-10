@@ -1446,3 +1446,26 @@ Không đổi luật, câu hỏi hay bằng chứng của game nào. e2e kiểm 
 - Toàn bộ: 282 đơn vị, 222 e2e. Bot không hồi quy.
 
 **Chấm (tự chấm):** Thư, Quán M8 +1, M10 +1 (khoảng +0,2).
+
+### 10.16 Đã làm v104: 🎯 Bắt Âm bản toàn màn hình
+
+Bắt Âm là game kỹ năng được bộ não chọn nhiều nhất (bot: 30 câu / 8 ngày). Làm lại theo mẫu Bài Câu: lớp phủ ngoài `#app`, `refresh()` ngay sau thao tác, nút DOM thật.
+
+| Phần | Làm gì |
+|---|---|
+| Cảnh | Dưới nước: tia sáng mặt nước, bong bóng nhỏ bay lên |
+| Bong bóng chữ | Nút thật (giữ `data-e="bbans"` nên bằng chứng / bot / test không đổi), màu theo làn, to dần theo chuỗi đúng. **Vùng chạm đứng yên, chỉ hình bên trong nhấp nhô bằng CSS**: chạm dễ trúng, và test / bot bấm được (nút chạy liên tục thì Playwright không bao giờ thấy "đứng yên") |
+| Nghe | Nút "🔊 Nghe lại" lớn và "🐢 Chậm" ở trên |
+| Đúng | Bong bóng nổ ra hạt, **tự sang từ kế sau 1,2 giây**. Máy có micro thì dừng cho phần "nói thử" |
+| Sai | Bong bóng xẹp, bong bóng đúng sáng xanh, nghe lại hai từ của cặp + mẹo, dừng chờ |
+| Hết màn | Hộp kết quả trong lớp phủ: màn mới / về sảnh |
+
+**Kiểm:**
+- e2e Bắt Âm:
+  - 10 từ, bằng chứng ở nút `ph:` với g = 1/3 như cũ;
+  - bản 390 px: bong bóng ≥ 44 px trong màn, **chạm chuột thật** → đúng → sang từ 2;
+  - WCAG AA; ✕ về sảnh.
+- Nói thử (micro) vẫn +5 điểm, không thêm bằng chứng.
+- Toàn bộ: 282 đơn vị, 224 e2e. Bot chơi trọn 3 màn, 0 kẹt.
+
+**Chấm (tự chấm):** Bắt Âm 3,5 → **5,6** (M2 6, M3 7, M4 5, M5 8).

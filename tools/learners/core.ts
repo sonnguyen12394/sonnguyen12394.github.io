@@ -360,15 +360,16 @@ export async function run(P: Profile): Promise<void> {
     await start.click(); await sleep(120);
     for (let steps = 0; steps < 40; steps++) {
       await sleep(40);
-      if (await visible('h1:has-text("Xong màn")')) break;
+      if (await visible('#whfx h2:has-text("Xong màn")')) break;
+      if (await visible('.bbfb .fb.good') && !(await visible('[data-e="bbnext"]'))) { await sleep(250); continue; }   // v104: đúng tự sang từ kế
       const pk = await peek();
-      if (pk?.run === 'bubbles') { await answer(pk); await feedback(pk.node); if (await visible('[data-e="bbnext"]')) await page.locator('[data-e="bbnext"]').first().click(); continue; }
-      if (await visible('[data-e="bbnext"]')) { await page.locator('[data-e="bbnext"]').first().click(); continue; }
+      if (pk?.run === 'bubbles') { await answer(pk); await feedback(pk.node); continue; }
+      if (await visible('[data-e="bbnext"]')) { await page.locator('[data-e="bbnext"]').filter({ visible: true }).first().click(); continue; }
       note('stuck', { why: 'bắt âm: không có từ / nút tiếp', text: (await text()).slice(0, 200) }); break;
     }
     const end = await shot('bubbles-end');
     note('bubbles-end', { head: end.split('\n').slice(0, 3).join(' | ') });
-    await click('Về sảnh');
+    if (await visible('#whfx [data-e="bbexit"]')) await page.locator('#whfx [data-e="bbexit"]').last().click(); else await click('Về sảnh');
   }
 
   // v77 Câu đố ngày: ghép nhóm theo hiểu biết về cụm (biết → chọn đúng 4 ô; chưa biết → 3 ô đúng + 1 ô nhóm khác), rồi câu nhớ lại như câu thường.

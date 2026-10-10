@@ -32,6 +32,7 @@ import { stageSync } from './stagefx.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
 import { GUESTS, stars as cafeStars, freshCafeSave, reactOf, tip as cafeTip } from './cafe.ts';
 import { viewBubbles, viewBubblesEnd, speakKey, type BubbleRun } from './bubbleview.ts';
+import { openBubbles, type BubbleHandle, type BubbleFxState } from './bubblefx.ts';
 import { WORDS, points as bubblePoints, freshBubblesSave } from './bubbles.ts';
 import { TABLES, PLAYS, score as cardScore, offer as cardOffer, deal as cardDeal, check as cardCheck, target as cardTarget, freshCardsSave } from './cards.ts';
 import { sfx } from './sfx.ts';
@@ -602,8 +603,16 @@ export function init(host: EHost): EngineModule {
     const e = E(), sv = gsave();
     bPick = kindPicker(n => n.startsWith('ph:') && host.probe(n).length > 0, 's', sv.runs + 1);
     brun = { floor: sv.runs + 1, stage: sv.stage, seed: (Date.now() ^ (e.ev.led.length * 2654435761)) >>> 0, t0: Date.now(), k: 0, n: 0, ok: 0, coins: 0, score: 0, streak: 0, wrong: [], done: false, ch: null, node: '', item: null, novel: false, ans: null };
-    bLoad(); host.render();
+    bLoad(); bOpen(); host.render();
   }
+  // v104: Bắt Âm chạy trong lớp phủ toàn màn hình (bubblefx.ts); lớp phủ đọc brun mỗi khung hình, refresh() ngay sau mỗi thao tác.
+  let bview: BubbleHandle | null = null;
+  function bOpen(): void {
+    if (typeof document === 'undefined' || !brun) return;
+    hClose(); nClose(); cClose(); bview?.close();
+    bview = openBubbles(() => (brun ? Object.assign(brun as BubbleFxState, { nodeVi: loaded()?.node.get(brun.node)?.vi ?? '', best: gsave().best, tts: host.probe('ph:s-01').length > 0 }) : null), host.mascot ? (m, k) => host.mascot!(m, k) : undefined);
+  }
+  function bClose(): void { bview?.close(); bview = null; }
   function bLoad(): void {
     if (!brun || !bPick) return;
     const e = E(), ch = bPick(BUBBLE_KINDS[brun.k] ?? 'monster') ?? bPick('monster');
@@ -623,7 +632,10 @@ export function init(host: EHost): EngineModule {
     r.n++; r.coins += coins; r.score += pts; if (ok) r.ok++; else r.wrong.push(r.node);
     const sv = qsave(); sv.ans++; if (ok) sv.ok++; sv.coins += coins; sv.day = host.today();
     r.ans = { ok, i, pts, coins };
-    sfx(ok ? 'clear' : 'bad'); host.save(); host.render();
+    const right = it.opts?.[it.ans ?? 0] ?? '';
+    (r as BubbleFxState).asrHtml = it.pair && host.asr && host.hasAsr?.() ? `<span class="stack" style="gap:4px"><span>🗣️ Nói thử: máy có nghe ra “<span lang="en">${host.esc(right)}</span>” không? (+5 điểm, không tính vào năng lực)</span>${host.asr(speakKey(r), right, it.pair.find(w => w !== right) ?? '', 'Nói thử từ này')}</span>` : undefined;
+    sfx(ok ? 'clear' : 'bad'); host.save(); host.render(); bview?.refresh();
+    if (ok && bview && !(r as BubbleFxState).asrHtml) { const n0 = r.n; setTimeout(() => { if (brun === r && r.ans?.ok && r.n === n0 && !r.done) bNext(); }, 1200); }   // v104: lượt đúng tự sang từ kế
   }
   function bNext(): void {
     const r = brun;
@@ -631,7 +643,7 @@ export function init(host: EHost): EngineModule {
     if (host.asrRes?.(speakKey(r))?.p === 1) { r.score += 5; r.spoke = (r.spoke ?? 0) + 1; }   // v80: nói thử đúng → điểm thưởng (telemetry)
     host.asrOff?.();
     if (r.k + 1 >= WORDS || !r.item) { bEnd(); return; }
-    r.k++; bLoad(); host.save(); host.render();
+    r.k++; bLoad(); host.save(); host.render(); bview?.refresh();
   }
   function bEnd(): void {
     const r = brun;
@@ -643,7 +655,7 @@ export function init(host: EHost): EngineModule {
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `bubbles:${r.floor}`, dec: 'bubbles:end', rule: `${RULE_ID}/${QUEST_VER}`,
       info: { ok: r.ok, of: r.n, score: r.score, coins: r.coins, stage: r.stage, spoke: r.spoke ?? 0 },
       evs: e.ev.led.filter(x => x.ch?.startsWith(`${QUEST_VER}:s${r.floor}:`)).slice(-r.n).map(x => x.id) }, false);
-    sfx('end'); host.save(); host.render();
+    sfx('end'); host.save(); host.render(); bview?.refresh();
   }
 
   // ---------- Câu đố ngày (v77, F10 ôn tập + F2 từ vựng) ----------
@@ -1486,6 +1498,7 @@ export function init(host: EHost): EngineModule {
   }
 
   function questBody(c: ECtx): string {
+    if (brun && bview) return `<section class="stack"><span class="eyebrow">🎯 Bắt Âm</span><h1>🎯 Màn ${brun.stage}</h1><p class="hint">Màn chơi đang mở toàn màn hình.</p></section>`;
     if (brun) return brun.done ? viewBubblesEnd(c, brun, (brun as BubbleRun & { prevBest?: number }).prevBest ?? 0) : viewBubbles(c, brun, host.probe('ph:s-01').length > 0);
     if (frun) return frun.done ? viewCafeEnd(c, frun, fsave().stars) : viewCafe(c, frun, fsave().stars);
     if (nrun) return viewHuntBehind(c, nrun, nsave(), !!nview);
@@ -1634,6 +1647,9 @@ export function init(host: EHost): EngineModule {
     bbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; bStart(); markStart(); },
     bbans(el) { bAnswer(Number(el.dataset.i)); },
     bbnext() { bNext(); },
+    bbgo() { if (brun?.ans?.ok) bNext(); },
+    bbexit() { bClose(); if (brun && !brun.done) { const pm = pmsave(); if (pm.cur && !pm.cur.d) playQuit(pm); } brun = null; host.save(); host.render(); },
+    bbmusic() { try { const off = localStorage.getItem('el-music-off') === '1'; if (off) localStorage.removeItem('el-music-off'); else localStorage.setItem('el-music-off', '1'); } catch { /* bỏ qua */ } bview?.music(); },
     pzstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; zStart(); markStart(); },
     pztile(el) { const r = zrun, i = Number(el.dataset.i); if (!r || r.recall || !(i >= 0 && i < r.tiles.length) || r.solved.includes(r.tiles[i]![0])) return; const k = r.sel.indexOf(i); if (k >= 0) r.sel.splice(k, 1); else if (r.sel.length < PER) r.sel.push(i); r.msg = null; sfx('place'); host.render(); },
     pzclear() { if (zrun && !zrun.recall) { zrun.sel = []; zrun.msg = null; host.render(); } },
@@ -1741,7 +1757,7 @@ export function init(host: EHost): EngineModule {
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
     stexit(el) { act.qhome!(el); },   // v102 nút ✕ của sân khấu (tách khỏi qhome để không trùng nút "Về sảnh" của từng game)
-    qhome() { cClose(); nClose(); nrun = null; hClose(); hrun = null; qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; host.render(); },
+    qhome() { bClose(); cClose(); nClose(); nrun = null; hClose(); hrun = null; qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
     qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
@@ -1851,6 +1867,7 @@ export function init(host: EHost): EngineModule {
       if (game !== 'wheel') { hClose(); hrun = null; }   // mở game khác: đóng lớp phủ Vòng Chữ
       if (game !== 'hunt') { nClose(); nrun = null; }
       if (game !== 'cards') cClose();
+      if (game !== 'bubbles') bClose();
       const prev = activeGame(), via: Via = el?.dataset?.g ? 'dir' : prev?.done && prev.game === game ? 'again' : 'self';
       f(el);
       const a = activeGame();
@@ -1900,7 +1917,7 @@ export function init(host: EHost): EngineModule {
     sanitize: sanitizeE,
     merge: mergeE,
     // v102: game kỹ năng đang chạy → sân khấu (game chủ lực có lớp phủ riêng nên không tính).
-    stage(on) { const a = drun?.fog ? 'fog' : activeGame()?.game ?? null; stageSync(on && lastRoute === 'quest' && a && !['hunt', 'wheel', 'cards'].includes(a) ? a : null); },
+    stage(on) { const a = drun?.fog ? 'fog' : activeGame()?.game ?? null; stageSync(on && lastRoute === 'quest' && a && !['hunt', 'wheel', 'cards', 'bubbles'].includes(a) ? a : null); },
     peek() {
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;
