@@ -587,3 +587,803 @@ Nguồn xu hướng:
 - **Lý do luôn nói nhu cầu** (ví dụ "4 từ đến ngày tưới…", "Ngữ pháp đang học: …"), không nói điểm game (P13).
 - **Mỗi lựa chọn có snapshot `dir`** (Vì sao? / replay).
 - **Người học vẫn tự chọn được** trong "Tất cả trò chơi (tự chọn)".
+
+## 8. Trục T: tiêu chí trải nghiệm người chơi (v89)
+
+### 8.0 Vì sao thêm một trục riêng
+
+Bộ G1–G10 đo **học có thật không**. Nó chưa đo **game có đủ hấp dẫn để người ta muốn chơi không**:
+- độ hấp dẫn chỉ có một dòng (G7 ×2), tức 2/14 ≈ 14% tổng điểm. Một game nhàm vẫn đạt 7,5 để phát hành;
+- G7 quá thô: gần như mọi game đều 6–7, nên không biết game nhàm vì lý do gì và không lập được việc sửa;
+- cổng bắt buộc chỉ có G3 và G9, không có cổng nào về trải nghiệm;
+- mọi điểm đều tự chấm. Bot L01–L03 đo việc học, không đo được "vui";
+- gộp học và chơi thành một trung bình thì điểm học cao che được điểm chơi thấp.
+
+Vì vậy tách thành **hai trục độc lập**: G (học) và T (trải nghiệm). **Không lấy trung bình hai trục.** G7 giữ lại làm điểm tóm tắt; chi tiết nằm ở T.
+
+**Vị trí của trục T trong spec v2.4** (xem §9.0):
+- T là phần "Motivation / Game Progression" (thành phần 24) và tiêu chí C341 *Fun ≠ Learning*. T **phục vụ** North Star ("tiến bộ đã xác minh trên mỗi đơn vị công sức"), không phải mục tiêu riêng.
+- Spec cấm tối ưu thời gian trong app, số ván, XP, streak (§I, §XXIII). Vì vậy trục T không có chỉ tiêu "chơi lâu hơn". Nó chỉ đo: người học có bỏ dở không, có đi tiếp không, và mỗi phút chơi đem lại bao nhiêu câu học.
+- Sửa T không bao giờ được làm giảm G (nhất là G3, G8) hay tăng công sức trên mỗi phần đã xác minh.
+
+### 8.1 Mười tiêu chí chung T1–T10 (mốc 0 / 5 / 10)
+
+| # | Tiêu chí | 0 điểm | 5 điểm | 10 điểm |
+|---|---|---|---|---|
+| T1 (×2) | **Vòng lặp lõi rõ** | Không hiểu phải làm gì | Hiểu sau khi đọc hướng dẫn | Hiểu trong ≤ 10 giây, không cần đọc; mỗi lượt đi đủ mục tiêu → hành động → phản hồi → phần thưởng |
+| T2 (×2) | **Quyết định có ý nghĩa, trùng đường học** | Chỉ chọn đáp án đúng / sai, không có hậu quả | Có lựa chọn nhưng luôn có một cách tối ưu hiển nhiên | Quyết định **là hành động tiếng Anh** (dựng câu, ra lệnh, chọn câu đáp hợp văn phong, tìm chỗ sai) có hậu quả thấy được trong game; hoặc quyết định meta ngoài vòng chơi (tiêu xu kiếm được theo giá trị học). Không bao giờ là chọn nội dung / độ khó (C69: engine quyết), không là thao tác rỗng giữa các câu (HG24), không thưởng chiến thuật trái đường học (C345) |
+| T3 | **Cảm giác tay (juice)** | Tĩnh, chỉ đổi màu nút | Có âm và hiệu ứng đơn | Phản hồi ≤ 100 ms; hình, tiếng, chuyển động phân tầng: nhỏ cho mỗi lượt, lớn cho combo / hoàn thành |
+| T4 | **Đường cong thử thách** | Phẳng hoặc gãy | Màn sau khó hơn màn trước | Độ khó *game* tăng trong ván, có nhịp căng – nghỉ; tỉ lệ đúng phần ngôn ngữ giữ 70–85% (P14) |
+| T5 (×2) | **Tiến trình nhiều tầng** | Không có gì giữ lại | Có điểm / kỷ lục | Ngắn (trong ván) + trung (tuần: sưu tập, nâng cấp) + dài (một thế giới lớn dần, thấy được) |
+| T6 | **Đa dạng & bất ngờ** | Ván thứ 5 giống ván 1 | Có biến thể ngẫu nhiên | Có sự kiện, trùm, luật xoay vòng; vẫn thấy mới sau 10 ván |
+| T7 | **Bản sắc & cảm xúc** | Chỉ emoji / biểu mẫu | Có chủ đề | Nhân vật, thế giới, giọng văn nhất quán; người chơi quan tâm điều gì xảy ra tiếp |
+| T8 | **Nhịp phiên & điểm dừng** | Ván lê thê hoặc dừng đột ngột | Ván có kết thúc | Ván ≤ 8 phút, kết thúc có tổng kết và điểm dừng tự nhiên, móc quay lại không dựa vào sợ mất (G9, HG20) |
+| T9 | **Rào cản vào thấp** | Cần hướng dẫn dài, dễ kẹt | Có hướng dẫn | Làm quen ≤ 1 màn, thua nhẹ nhàng, chơi được một tay, khi tắt tiếng, với trình đọc màn hình |
+| T10 (×2) | **Giữ được người học (đo thật)** | Số liệu cho thấy hay bỏ dở / xong là thôi | Chưa đo (mặc định 5) | Đạt ngưỡng ở §8.3 (Persistence C336, không phải thời gian trong app) |
+
+Điểm T = trung bình có trọng số (÷ 14).
+
+### 8.2 Tiêu chí riêng theo thể loại
+
+| Thể loại | Game trong app | Tiêu chí riêng |
+|---|---|---|
+| Arcade / phản xạ | ⏱️ Tốc độ 60 giây, 🎯 Bắt Âm | Nhịp tăng dần; combo / chuỗi; tốc độ chỉ là lớp vui, không vào năng lực (P15) |
+| Xếp hình / đố | 🧱 Xếp Khối Chữ, 📅 Câu đố ngày, 🔗 Ghép cặp | Có khoảnh khắc "à ra thế"; không có lời giải mơ hồ; câu đố ngày giống nhau cho mọi người để so / chia sẻ |
+| Xây bộ bài | 🃏 Bài Câu | Tổ hợp bùa đa dạng; rủi ro – phần thưởng mỗi bàn; bộ sưu tập giữ lại giữa các ván |
+| Quản lý / phục vụ | ☕ Quán Cà Phê, 🛠️ Xưởng sửa câu | Phải ưu tiên giữa nhiều việc; nâng cấp cửa hàng thấy được; khách có cá tính |
+| Truyện / điều tra | 🔍 Thám tử, 📻 Đài phát thanh | Bí ẩn có cú lật; manh mối nối với nhau; lựa chọn của người chơi đổi kết cục |
+| Nuôi trồng nhẹ nhàng | 🌱 Vườn từ, ✉️ Thư gửi cư dân phố | Chăm sóc không bị phạt; thế giới đẹp dần; quan hệ với nhân vật |
+| Bàn cờ / leo tháp | 🎲 Bàn Cờ Phố, 🏰 Leo tháp | Rủi ro có kiểm soát; mốc rõ; lượt không có câu không kéo dài (G8) |
+| Ra lệnh / lập trình | 🤖 Ra lệnh cho robot | Có nhiều lời giải; lời giải gọn được thưởng; màn sau dùng lại khái niệm màn trước |
+| Trình diễn | 🎤 Karaoke hội thoại | Theo nhịp; có khoảnh khắc "biểu diễn" (tổng kết, nghe lại giọng mình) |
+| Khám phá | 🗺️ Thám hiểm sương mù | Tò mò về ô chưa mở; thưởng khám phá không gắn với đúng / sai (F1b) |
+
+### 8.3 Đo bằng số liệu thay vì tự chấm
+
+Mỗi game đếm trên máy (`src/engine/play.ts`, `st.e.pm`). Đây là tier 0 telemetry: tách khỏi sổ bằng chứng (P28), có giới hạn (20 lần gần nhất mỗi game, tránh lưu vô nghĩa, Ultimate Test câu 16), không gửi đi đâu (§XX local-first).
+
+| Chỉ số | Cách tính | Ngưỡng đạt | Kiểm cho | Thước đo của spec |
+|---|---|---|---|---|
+| Bỏ giữa ván | Ván bắt đầu mà không tới màn kết (mở game khác / về sảnh / đóng app) | < 20% | T8, T9, T10 | Persistence (C336) |
+| Chơi tiếp sau ván | Xong ván rồi mở ván mới (game nào cũng được) trong 10 phút | ≥ 50% số ván xong | T8, T10 | Persistence (C336) |
+| Câu bằng chứng / phút | Số câu vào sổ bằng chứng trong ván ÷ phút (game kỹ năng lưu vào Can-Do thì không đếm) | ≥ 2 | G8, so với T | Evidence / Learner Effort (§72, C341, C360) |
+| Thời gian tới thao tác đầu | Từ lúc mở game tới thao tác đầu | ≤ 10 giây | T1, T9 | Learner Effort |
+| Thời lượng ván | Trung vị | ≤ 8 phút (không có cận dưới: ngắn mà đủ là tốt) | T8 | Effort là ràng buộc hạng nhất |
+
+**Không dùng làm ngưỡng:** số ván tự chọn / chơi lại (chỉ để xem). Bộ não chọn game là lối chính; đặt chỉ tiêu "tự chọn nhiều" là trái C190 (UX không bắt tự chọn curriculum).
+
+Bot không đo được cảm xúc. Bổ sung **playtest 5 người mỗi game**: quan sát chỗ kẹt, cuối ván hỏi "Bạn có muốn chơi thêm một ván không?".
+
+### 8.4 Luật phát hành mới
+
+- Giữ nguyên, là cổng cứng: G ≥ 7,5, G3 ≥ 8, G9 ≥ 8.
+- T là cổng để **quảng bá / đưa lên bộ não chọn game**: T ≥ 7 và không tiêu chí T nào dưới 5.
+- Game là lối duy nhất cho một chức năng học (vd. 🗺️ Thám hiểm cho xếp lớp, 🎤 Karaoke cho nói) thì T thấp nghĩa là **sửa trải nghiệm**, không ẩn: ẩn đi thì mất cơ chế bằng chứng của chức năng đó (HG18 phủ nội dung, HG24).
+- Một bản sửa T chỉ được giữ khi số câu bằng chứng / phút của game đó không giảm (đo bằng bot `tools/learners` hoặc §8.3).
+- Xếp mỗi game vào ma trận hai trục:
+
+| | T ≥ 7 (vui) | T < 7 (nhàm) |
+|---|---|---|
+| **G ≥ 7,5 (học tốt)** | Quảng bá, đưa lên đầu | Sửa trải nghiệm |
+| **G < 7,5 (học kém)** | Sửa luật chơi | Ẩn khỏi sảnh hoặc làm lại |
+
+### 8.5 Chấm T cho 17 game hiện có (v88)
+
+**Giới hạn của lần chấm này:**
+- Chấm theo mã nguồn và mô tả, **chưa có số liệu và chưa playtest**.
+- T10 để mặc định 5 cho mọi game ("chưa đo").
+- Các điểm này là giả thuyết để kiểm lại bằng §8.3, không phải kết luận.
+
+| Game | T1 ×2 | T2 ×2 | T3 | T4 | T5 ×2 | T6 | T7 | T8 | T9 | T10 ×2 | **T** | G (§4–§6) | Ô ma trận |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 📅 Câu đố ngày | 8 | 7 | 6 | 6 | 6 | 7 | 4 | 9 | 8 | 5 | **6,6** | 7,9 | Học tốt + nhàm |
+| 🧱 Xếp Khối Chữ | 8 | 8 | 7 | 6 | 5 | 5 | 4 | 8 | 8 | 5 | **6,4** | 7,6 | Học tốt + nhàm |
+| 🤖 Ra lệnh cho robot | 7 | 9 | 6 | 6 | 5 | 6 | 6 | 7 | 6 | 5 | **6,4** | 7,9 | Học tốt + nhàm |
+| 🌱 Vườn từ | 8 | 3 | 6 | 6 | 8 | 4 | 7 | 9 | 9 | 5 | **6,4** | 8,1 | Học tốt + nhàm |
+| ☕ Quán Cà Phê | 8 | 4 | 6 | 5 | 7 | 5 | 7 | 8 | 8 | 5 | **6,2** | 8,0 | Học tốt + nhàm |
+| 🎲 Bàn Cờ Phố | 7 | 5 | 6 | 4 | 8 | 6 | 6 | 6 | 7 | 5 | **6,1** | 7,1 | Cả hai thấp |
+| 🃏 Bài Câu | 6 | 8 | 6 | 7 | 5 | 6 | 4 | 7 | 6 | 5 | **6,0** | 8,3 | Học tốt + nhàm |
+| ✉️ Thư gửi cư dân phố | 7 | 6 | 4 | 6 | 6 | 6 | 7 | 5 | 6 | 5 | **5,9** | 7,8 | Học tốt + nhàm |
+| 🗺️ Thám hiểm sương mù | 8 | 6 | 6 | 5 | 5 | 5 | 6 | 5 | 8 | 5 | **5,9** | 7,9 | Học tốt + nhàm |
+| 🎯 Bắt Âm | 9 | 3 | 7 | 6 | 5 | 4 | 4 | 8 | 7 | 5 | **5,7** | 8,2 | Học tốt + nhàm |
+| 🔍 Thám tử | 7 | 4 | 5 | 5 | 5 | 6 | 6 | 7 | 8 | 5 | **5,6** | 7,8 | Học tốt + nhàm |
+| 🛠️ Xưởng sửa câu | 8 | 3 | 6 | 5 | 5 | 5 | 5 | 8 | 8 | 5 | **5,6** | 8,1 | Học tốt + nhàm |
+| 🏰 Leo tháp | 7 | 3 | 4 | 6 | 5 | 6 | 5 | 8 | 8 | 5 | **5,5** | 7,1 | Cả hai thấp |
+| 🔗 Ghép cặp | 9 | 4 | 5 | 3 | 4 | 3 | 3 | 8 | 9 | 5 | **5,4** | 6,5 | Cả hai thấp |
+| ⏱️ Tốc độ 60 giây | 9 | 2 | 5 | 4 | 4 | 3 | 3 | 9 | 9 | 5 | **5,2** | 6,1 | Cả hai thấp |
+| 📻 Đài phát thanh | 7 | 3 | 4 | 5 | 5 | 6 | 5 | 7 | 6 | 5 | **5,2** | 7,6 | Học tốt + nhàm |
+| 🎤 Karaoke hội thoại | 7 | 3 | 5 | 5 | 4 | 6 | 5 | 7 | 6 | 5 | **5,1** | 7,6 | Học tốt + nhàm |
+
+Căn cứ chính:
+- **T2:** 10/17 game có hành động chính chỉ là chọn một đáp án. Riêng Xếp Khối (đặt khối), Bài Câu (6 bùa trong `cards.ts`), Robot (tự lên đường đi), Câu đố ngày (suy luận nhóm) có quyết định ngoài đáp án.
+- **T3:** chỉ có 6 âm tổng hợp (`sfx.ts`: ok / bad / place / clear / boom / end). Leo tháp không phát âm nào, trừ khi chạy ở chế độ Xếp Khối (`main.ts` dòng `if (qrun.mode === 'blocks') sfx(...)`). Hiệu ứng lớn khi hoàn thành chỉ có ở Xếp Khối (`bkboom`).
+- **T5:** mỗi game giữ kỷ lục riêng. Ví (`qsave().coins`) dùng chung nhưng chỉ tiêu được ở Bàn Cờ Phố. Quà của Thư (`GIFTS`, 8 món) chỉ hiện ở đầu màn Thư; đồ trang trí Quán (`DECOR`, 7 món) chỉ hiện trong Quán. Vườn từ có tiến trình nhiều ngày thật (cây lớn theo bậc).
+- **T7:** hầu hết dùng emoji. Chưa có nhân vật đi xuyên các game (mascot Tí có ở phần học trong `app.js`, chưa xuất hiện trong màn game nào của `src/engine/`).
+
+**Đối chiếu với G7 cũ:** nhóm thấp nhất (Karaoke, Đài, Tốc độ, Leo tháp) khớp với các game có G7 4–6. T không mâu thuẫn với G7, chỉ chỉ rõ thấp vì đâu.
+
+### 8.6 Nhận xét gốc rễ
+
+**Kết luận thẳng:** theo luật §8.4, **chưa game nào đạt trục T** (cao nhất 6,6). Có 13/17 game nằm ở ô "Học tốt + nhàm". Phần học đã vững sau v73–v88; **điểm nghẽn bây giờ là độ hấp dẫn**. Bốn nguyên nhân chung cho cả app:
+
+1. **Câu hỏi khoác áo game (T2).** Ở 10 game, người chơi chỉ chọn đáp án; phần "game" là hình minh hoạ. Đây là gốc rễ của G1 thấp đã nêu ở §4, chỉ được sửa ở một số game.
+2. **Tiến trình rời rạc (T5).** 17 kho điểm riêng, không có một thế giới chung lớn dần. App đã có sẵn chủ đề "Phố" (Bàn Cờ Phố, Thư gửi cư dân phố) nhưng quà và trang trí không về chung một chỗ.
+3. **Thiếu bản sắc (T7).** Không có nhân vật hay câu chuyện nối các game, nên người chơi không có lý do cảm xúc để quay lại.
+4. **Không đo (T10).** Không biết game nào thật sự được chơi lại. Mọi điểm T hiện tại đều là ước đoán.
+
+**Không nên làm game thứ 18.** 17 game với chiều sâu mỏng là dàn trải. Nên làm sâu các game đã có và gộp / ẩn game yếu.
+
+### 8.7 Việc sửa ưu tiên (lợi ích ÷ công sức)
+
+| Thứ tự | Việc | Game hưởng lợi | Tiêu chí nâng | Công sức |
+|---|---|---|---|---|
+| 1 | **Đo §8.3** (4 bộ đếm cục bộ + bảng xem trong Cài đặt → Nâng cao) | Tất cả | T10, kiểm lại T1 / T8 | Nhỏ |
+| 2 | **Phố chung làm lớp meta:** quà Thư, đồ trang trí Quán, hoa Vườn, nhà Bàn Cờ cùng hiện trên một bản đồ phố; ván nào cũng góp một thứ thấy được | ~10 game | T5 +2, T7 +1 | Vừa |
+| 3 | ~~Thêm lớp quyết định không chạm bằng chứng (chọn khách, chọn thứ tự manh mối, chọn đơn)~~ → thay bằng §9.3 sau khi đối chiếu spec: thao tác không phải tiếng Anh trong vòng chơi trái HG24 | Quán, Thám tử, Đài, Xưởng | T2 | Vừa |
+| 4 | **Juice chung:** âm cho Leo tháp; một màn kết "tổng kết lớn" dùng chung (hiệu ứng + đồ mới cho phố); thêm 3–4 âm (combo, lên cấp, mở khoá) | Tất cả | T3 +1–2 | Nhỏ |
+| 5 | **Một nhân vật dẫn đường** (Tí) xuất hiện ở sảnh, màn kết và lời nhờ của cư dân | Tất cả | T7 +1–2 | Nhỏ – vừa |
+| 6 | **Bài Câu: sưu tập bùa giữ qua các ván**, mở bùa mới theo tiến độ | Bài Câu | T5, T6 | Nhỏ |
+| 7 | **Ẩn Tốc độ 60 giây và Ghép cặp** khỏi sảnh (ô "cả hai thấp") hoặc gộp thành chế độ phụ của Câu đố ngày | — | Bớt dàn trải | Nhỏ |
+
+Sau mỗi đợt sửa: chấm lại T, rồi đối chiếu với số liệu §8.3 sau ít nhất 2 tuần.
+
+## 9. Kế hoạch nâng trục T (v89–)
+
+### 9.0 Đối chiếu với spec v2.4 (sau đợt 1)
+
+Đọc lại `docs/SPEC-v2.4.md`, `docs/SPEC.md`, bộ chấm C1–C400. Có 5 chỗ kế hoạch ban đầu lệch spec; đã sửa:
+
+| # | Chỗ lệch | Spec nói | Đã sửa |
+|---|---|---|---|
+| 1 | Chỉ tiêu "chơi lại tự nguyện ≥ 25%", "ván 3–8 phút" | North Star = tiến bộ đã xác minh / công sức; **không** tối ưu thời gian trong app, số ván (§I, §XXIII); UX không bắt tự chọn (C190) | Bỏ chỉ tiêu tự chọn; thời lượng chỉ chặn trên; thêm **chơi tiếp sau ván** (Persistence C336) và **câu bằng chứng / phút** (C341, C360, §72) |
+| 2 | T2 = "quyết định ngoài đáp án" (chọn khách, chọn lối tháp, chọn đơn) | Quyết định của người sáng lập + HG24: mọi hành động trong game là thử thách ngôn ngữ do engine chọn; §IX Game Skill Bias (chiến thuật); C69 game không quyết curriculum; C345 chiến thuật game phải trùng đường học | T2 định nghĩa lại (§8.1): quyết định **là hành động tiếng Anh** có hậu quả, hoặc quyết định meta ngoài vòng chơi. Bỏ "chọn lối tháp" (chọn nội dung = chọn curriculum) và "bùa nghe chậm" (trợ giúp làm đổi bằng chứng) |
+| 3 | Phố dùng chữ "lên cấp" | P13, C342: điểm game không được giống năng lực; app dùng "⬆ Lên cấp" cho phần đã vững | Phố dùng ★ ("★ thứ 2"), ghi rõ "★ của phố không phải cấp tiếng Anh" |
+| 4 | Cổng T có thể ẩn game | HG18 (phủ nội dung), HG24: chức năng nào cũng cần cơ chế bằng chứng | Game duy nhất của một chức năng chỉ được sửa, không ẩn (§8.4) |
+| 5 | Mục tiêu "T2 ≥ 6 mọi game" | Ở game tiếp nhận (đọc, nghe, phân biệt âm), hành động tiếng Anh chính là hiểu → chọn; thêm thao tác khác là trái HG24 | Sàn T2 cho các game này là 5; bù bằng hậu quả, câu chuyện (T7) và meta (T5) |
+
+Những phần đợt 1 đã khớp spec, giữ nguyên:
+- Phố là progression / milestones / collectibles (§IX), suy ra từ telemetry, không vào bằng chứng (C187–C189).
+- Số liệu chơi là tier 0, tách sổ bằng chứng (P28), giới hạn kích thước, chỉ ở máy (§XX).
+- Ăn mừng chỉ khi có công trình mới, tôn trọng chế độ tập trung và giảm chuyển động.
+- Tí không nói điểm game (P13).
+- Thu gọn Tốc độ 60 giây / Ghép cặp đúng kết luận §6.5 ("giữ như trò phụ; chưa nên quảng bá"). Không xoá: người sáng lập quyết có bỏ hẳn hay không (SPEC.md: AI không đổi hướng sản phẩm khi chưa hỏi).
+
+### 9.1 Phản biện mục tiêu "điểm tối đa"
+
+10/10 ở mọi tiêu chí T **không phải mục tiêu đúng**, vì ba lý do:
+- **T10 không làm ra được bằng mã.** Nó là kết quả do người chơi tạo ra. Việc làm được chỉ là đo đúng (§8.3) rồi sửa theo số liệu.
+- **Một số tiêu chí kéo ngược nhau.**
+  - T2 (thêm quyết định) làm giảm G8 (số câu / phút).
+  - Căng thẳng ở T4 nếu dùng đồng hồ sẽ phạm P15. Vì vậy căng thẳng phải đến từ giới hạn lượt, rủi ro combo, khách đang chờ, **không đến từ đếm giờ**.
+- **Thêm quyết định không được làm bẩn bằng chứng (G3).** Mọi lựa chọn mới chỉ đổi *thứ tự / phần thưởng game*, không đổi câu hỏi hay cách tính năng lực.
+
+**Mục tiêu đặt lại:**
+- mọi game đang hiện T ≥ 7,5; không tiêu chí T nào dưới 6, trừ T2 của game tiếp nhận (sàn 5, §9.0 mục 5);
+- G không tụt (G3, G9 ≥ 8 giữ bằng test hiện có), câu bằng chứng / phút không giảm;
+- T10 có số liệu thật sau 2 tuần.
+
+### 9.2 Gốc rễ → đòn bẩy (sửa một chỗ, nâng nhiều game)
+
+| Gốc rễ (§8.6) | Đòn bẩy | Game hưởng | Tiêu chí |
+|---|---|---|---|
+| Không đo | `play.ts`: bỏ giữa, chơi tiếp sau ván, câu bằng chứng / phút, thời gian tới thao tác đầu, thời lượng; bảng xem ở sảnh | 15 game engine | T10, kiểm T1 / T8, G8 |
+| Tiến trình rời rạc | `town.ts`: **Phố chung** suy ra từ bản lưu sẵn có của mọi game (không thêm dữ liệu, đồng bộ an toàn). Mỗi game là một công trình có 4 ★; màn kết báo "Phố mới" | 15 | T5, T7 |
+| Juice mỏng | Màn kết chung: pháo giấy + nhạc mừng (dùng lại `confetti()` / `sfx('win')` của app qua host), âm cho Leo tháp | 15 | T3 |
+| Thiếu bản sắc | Tí (mascot có sẵn ở `app.js`) dẫn đường trong hộp "Chơi tiếp" và màn kết | 15 | T7 |
+| Dàn trải | Thu Tốc độ 60 giây / Ghép cặp vào mục "Trò nhanh (cũ)" thu gọn | 2 | bớt game yếu |
+| Câu hỏi khoác áo game | Lớp quyết định riêng từng game (đợt 2, bảng §9.3) | 10 | T2 |
+| Ván sau giống ván trước | Sự kiện ngày, khách / hồ sơ đặc biệt, sưu tập bùa (đợt 3) | 8 | T4, T6 |
+
+### 9.3 Đợt 2: quyết định là hành động tiếng Anh (theo §9.0)
+
+Mỗi dòng phải qua 4 câu hỏi:
+- quyết định có phải tiếng Anh không (HG24)?
+- có đổi nội dung / độ khó do engine chọn không (C69, P14)?
+- chiến thuật tốt nhất có trùng đường học không (C345)?
+- có làm giảm câu / phút không (G8, §72)?
+
+| Game | Quyết định | Tiếng Anh? | Bằng chứng / nội dung |
+|---|---|---|---|
+| ☕ Quán | 4 câu đáp đều hiểu được nhưng khác **độ hợp văn phong** (lịch sự / suồng sã / cộc); khách phản ứng khác nhau (vui, ngạc nhiên, phật ý) và tiền boa theo độ hợp | Có: ngữ dụng (Universal Core 7, F7c) | Câu và đáp án do engine chọn như cũ; phản ứng chỉ là trình bày |
+| 🛠️ Xưởng | Trước khi gõ, **chạm từ sai** trong câu hỏng; chạm đúng thì ô nhập chọn sẵn từ đó, chạm sai được gợi ý | Có: nhận ra lỗi (F3b) | Bằng chứng vẫn là câu gõ lại (mức 4); lượt chạm là quan sát, không vào mastery |
+| 🏰 Leo tháp | Ở trại: **tiêu xu** hồi tim hay giữ xu cho phố | Meta, ngoài vòng câu | Xu tỉ lệ giá trị học (C345/C346), tim là độ khó game (P14); câu không đổi |
+| 🏙️ Phố (mọi game) | **Tiêu xu chung** để thêm đồ trang trí cho công trình mình chọn | Meta, ngoài vòng câu | Xu kiếm theo giá trị học nên muốn phố đẹp thì phải học đúng đường |
+| 🔍 Thám tử / 📻 Đài | Hồ sơ có **bảng manh mối**: mỗi câu đúng ghim một mảnh; câu ý chính là kết luận, ghép từ các mảnh đã ghim | Có: hiểu là hành động | Câu như cũ; sàn T2 = 5 (§9.0 mục 5), nâng T7 bằng câu chuyện |
+| 🌱 Vườn | Chọn **ô gieo** cho hạt mới (bố cục vườn) | Meta, một chạm, không chặn vòng câu | Thứ tự bậc giữ nguyên |
+| ~~🎯 Bắt Âm bùa nghe chậm~~ | Bỏ: trợ giúp làm đổi bằng chứng | | |
+| ~~🏰 chọn lối nhiều rương / nhiều quái~~ | Bỏ: người chơi chọn nội dung = chọn curriculum (C69) | | |
+| ~~☕ chọn khách phục vụ trước~~ | Bỏ: thao tác không phải tiếng Anh giữa các câu (HG24) | | |
+
+### 9.4 Thứ tự làm và cách kiểm
+
+1. **Đợt 1 (v89):** đo + Phố chung + màn kết chung + Tí + âm Leo tháp + thu gọn trò cũ. Kiểm bằng test đơn vị (`play.ts`, `town.ts` thuần hàm) và e2e (sảnh hiện Phố, màn kết hiện "Phố mới"). Chấm lại T.
+2. **Đợt 2 (v90–v92):** quyết định theo §9.3, mỗi bản 2–3 game. Mỗi bản kèm:
+   - test "quyết định không đổi câu hỏi / bằng chứng";
+   - bot `tools/learners` chạy lại để chứng minh câu bằng chứng / phút và tiến độ Đạt không giảm.
+3. **Đợt 3 (v93):** đa dạng (sự kiện ngày, sưu tập bùa Bài Câu, khách đặc biệt).
+4. **Sau 2 tuần số liệu:** chấm T10 thật. Game nào bỏ giữa ≥ 20% hoặc chơi tiếp sau ván < 50% thì sửa theo số liệu, không theo cảm tính. Game có câu / phút < 2 thì sửa phần học trước phần vui.
+
+### 9.5 Đã làm đợt 1 (v89): chấm lại theo bản thật
+
+| Việc | Tệp | Kiểm |
+|---|---|---|
+| Đo số liệu chơi: bỏ giữa, chơi tiếp sau ván, câu bằng chứng / phút, giây tới thao tác đầu, thời lượng (20 lần gần nhất; tự chọn / chơi lại chỉ để xem); bảng "📊 Số liệu chơi trên máy này" ở sảnh, ✓ / ✗ theo ngưỡng §8.3 khi đủ 5 ván | `play.ts`, `main.ts` (bọc mọi hành động, không đổi hành vi), `st.e.pm` | `engine-play-town.test.ts`, e2e `town.spec.ts` |
+| Phố chung: 15 công trình suy ra từ bản lưu từng game (không thêm dữ liệu, đồng bộ hai máy tự đúng), mỗi công trình 4 ★ (không dùng chữ "cấp" để khỏi lẫn với cấp tiếng Anh); chạm công trình để chơi | `town.ts`, `townview.ts` | như trên + WCAG AA sáng / tối, 390 px |
+| Màn kết chung: "🏗️ Phố mới!" khi công trình lên cấp (pháo giấy + nhạc mừng của app, một lần mỗi ván); luôn có mốc gần nhất ("Còn 1 hoa nữa để Vườn hoa có ★ thứ 1") | `endExtras()` trong `main.ts`, host `cheer` | e2e `town.spec.ts` |
+| Tí dẫn đường ở hộp "Chơi tiếp" và thanh "▶ Tiếp" (câu theo tiến độ lộ trình, không nói điểm game) | `gameview.ts` `tiSay`, host `mascot` | e2e |
+| Leo tháp có âm đúng / sai như các game khác | `main.ts` | — |
+| Tốc độ 60 giây / Ghép cặp thu vào mục "Trò nhanh (cũ)" | `app.js` `viewGames` | e2e `play4.spec.ts` vẫn qua |
+
+Ước lượng T sau đợt 1 (vẫn là chấm theo mã, T10 vẫn 5 vì chưa có số liệu): T3 +1 (Leo tháp +2), T5 +2 (game đã có tiến trình dài +1), T7 +1.
+
+| Game | T trước | T sau đợt 1 | T2 hiện tại |
+|---|---|---|---|
+| 📅 Câu đố ngày | 6,6 | 7,0 | 7 |
+| 🧱 Xếp Khối Chữ | 6,4 | 6,9 | 8 |
+| 🤖 Robot | 6,4 | 6,8 | 9 |
+| 🌱 Vườn từ | 6,4 | 6,6 | 3 |
+| ☕ Quán Cà Phê | 6,2 | 6,5 | 4 |
+| 🎲 Bàn Cờ Phố | 6,1 | 6,4 | 5 |
+| 🃏 Bài Câu | 6,0 | 6,4 | 8 |
+| 🗺️ Thám hiểm | 5,9 | 6,4 | 6 |
+| ✉️ Thư | 5,9 | 6,3 | 6 |
+| 🎯 Bắt Âm | 5,7 | 6,1 | 3 |
+| 🔍 Thám tử | 5,6 | 6,1 | 4 |
+| 🛠️ Xưởng | 5,6 | 6,1 | 3 |
+| 🏰 Leo tháp | 5,5 | 6,0 | 3 |
+| 📻 Đài phát thanh | 5,2 | 5,6 | 3 |
+| 🎤 Karaoke | 5,1 | 5,6 | 3 |
+| (Tốc độ 60 giây, Ghép cặp: đã thu gọn, không chấm tiếp) | | | |
+
+**Đọc kết quả:** đợt 1 nâng mọi game khoảng +0,4 nhưng **chưa game nào qua cổng §8.4**, vì hai chỗ đợt 1 không chạm tới:
+- **T2 ≤ 4 ở 9 game:** đúng điểm nghẽn mà đợt 2 (§9.3) nhắm tới;
+- **T10 = 5 cho mọi game:** chỉ lên được khi có số liệu thật, ít nhất 2 tuần sau khi phát hành v89.
+
+### 9.6 Đã làm v90–v91 (đợt 2, phần 1): chấm lại theo bản thật
+
+| Bản | Việc | Hành động tiếng Anh / meta | Bằng chứng | Kiểm |
+|---|---|---|---|---|
+| v90 | ☕ **Quán: khách phản ứng theo loại câu đáp.** 😊 đúng việc + đúng văn phong (tiền boa +2); 😮 đúng việc cần nói nhưng lệch văn phong (+1); 😕 sai việc; 🙂 "Không biết" | Ngữ dụng: chọn câu hợp văn phong (Universal Core 7, F7c) | Đúng / sai vẫn chỉ theo đáp án (`app.js eFn` thêm `react`, `regs` để trình bày) | `engine-v90.test.ts`, e2e `v90.spec.ts` (+ WCAG AA) |
+| v90 | 🛠️ **Xưởng: tìm chỗ hỏng.** Trước khi gõ, chạm từ sai (tuỳ chọn). Đúng chỗ +1 xu. Sai chỗ thì app tô chỗ hỏng và câu gõ sau đó là **câu có gợi ý** | Nhận ra lỗi (F3b) | Chạm đúng: bằng chứng như cũ; chạm sai: `hint` → trọng số thấp hơn (G3). Chỗ hỏng tính bằng dãy con chung dài nhất; 463/463 câu sai của app đều có chỗ chạm | như trên |
+| v91 | 🏙️ **Trang trí phố bằng xu chung.** Mỗi công trình 4 món, ★ thứ k mở món thứ k, giá 30 / 60 / 90 / 120 xu | Meta ngoài vòng câu: chọn công trình nào đẹp trước | Xu tỉ lệ giá trị học (C345); ví = xu kiếm − xu Bàn Cờ − xu Phố | `engine-v91.test.ts`, e2e `v91.spec.ts` |
+| v91 | 🏰 **Leo tháp: hết tim thì hồi 1 tim bằng 25 xu** (một lần mỗi tầng) để leo tiếp | Meta: tiêu xu để học tiếp hay giữ cho phố | Tim là độ khó game (P14); câu vẫn do engine chọn | như trên |
+| v91 | Màu chữ báo sai `--bad` #C0392B → #B83426 | — | — | Test trợ năng mới phát hiện lỗi có sẵn: chữ đậm báo sai trên nền hồng chỉ đạt 4,44:1 (< 4,5). Nay 4,82:1 |
+
+**Bot người học L01, 8 ngày, seed 1, `--games director`, v89 so với v90:**
+
+| | v89 | v90 |
+|---|---|---|
+| Câu trả lời | 218 | 234 |
+| Đúng | 122 (56%) | 129 (55%) |
+| Ô mastery Đạt cuối kỳ | 712 / 2.039 | 710 / 2.040 |
+
+- Hai lần chạy chọn game hơi khác nhau, vì hạt ngẫu nhiên của ván game lấy theo thời gian. Mức chênh vì vậy nằm trong nhiễu.
+- Không thấy giảm số câu bằng chứng hay tiến độ Đạt.
+- Bot không chạm chỗ hỏng và không chọn câu lệch văn phong một cách có chủ đích, nên đây chỉ là kiểm "không hỏng". Nó không chứng minh hiệu quả.
+
+**Ước lượng T sau v90–v91** (vẫn chấm theo mã, T10 = 5): Phố có chỗ tiêu xu nên T5 +1 cho mọi game (tối đa 9).
+
+| Game | Sau đợt 1 | Sau v91 | T2 | Ghi chú |
+|---|---|---|---|---|
+| 📅 Câu đố ngày | 7,0 | 7,1 | 7 | |
+| 🧱 Xếp Khối Chữ | 6,9 | 7,0 | 8 | |
+| ☕ Quán Cà Phê | 6,5 | **7,0** | 4 → 6 | phản ứng + tiền boa (T6 +1) |
+| 🤖 Robot | 6,8 | 6,9 | 9 | |
+| 🛠️ Xưởng | 6,1 | **6,6** | 3 → 6 | tìm chỗ hỏng: rủi ro (lộ gợi ý) đổi lấy thưởng |
+| 🌱 Vườn từ | 6,6 | 6,6 | 3 | |
+| 🃏 Bài Câu | 6,4 | 6,6 | 8 | |
+| 🗺️ Thám hiểm | 6,4 | 6,5 | 6 | |
+| 🏰 Leo tháp | 6,0 | **6,5** | 3 → 5 | hồi tim (T4 +1) |
+| ✉️ Thư | 6,3 | 6,4 | 6 | |
+| 🎲 Bàn Cờ Phố | 6,4 | 6,4 | 5 | |
+| 🎯 Bắt Âm | 6,1 | 6,3 | 3 | |
+| 🔍 Thám tử | 6,1 | 6,2 | 4 | |
+| 📻 Đài phát thanh | 5,6 | 5,8 | 3 | |
+| 🎤 Karaoke | 5,6 | 5,7 | 3 | |
+
+**Gốc rễ còn lại:**
+- Bốn game thấp nhất (Karaoke, Đài, Thám tử, Bắt Âm) đều là game **tiếp nhận / trình diễn**, T2 = 3–4. Theo §9.0 mục 5, các game này nâng bằng **câu chuyện, khoảnh khắc trình diễn, nhịp chuỗi**, không thêm thao tác.
+- Việc kế tiếp:
+  - 🔍 / 📻 bảng manh mối (mỗi câu đúng ghim một mảnh, kết luận ghép từ các mảnh);
+  - 🎤 màn tổng kết "biểu diễn" (điểm khớp từng câu, câu hay nhất);
+  - 🎯 chuỗi nghe đúng mở bong bóng màu mới.
+- T10 vẫn khoá ở 5 cho tới khi có số liệu thật. Vì vậy không game nào vượt khoảng 7,5 chỉ bằng sửa mã: phần còn lại phải đo.
+
+### 9.7 Đã làm v92: game tiếp nhận / trình diễn nâng bằng trình bày (§9.0 mục 5)
+
+| Game | Việc | Vì sao không thêm thao tác |
+|---|---|---|
+| 🔍 Thám tử / 📻 Đài | **Bảng manh mối:** mỗi câu hiểu đúng ghim một mảnh (chính đáp án tiếng Anh) lên bảng. Câu kết luận cuối là "ghép các manh mối đã ghim". Màn kết có **biên bản vụ án / ghi chép bản tin**: từng câu hỏi, đáp án, ✓ / ✗ lần đầu | Chỉ trình bày lại câu trả lời đúng (đọc lại đáp án = gặp lại ngôn ngữ). Không thêm câu, không đổi điểm bài (HG24, G3) |
+| 🎤 Karaoke | **Màn biểu diễn:** từng câu của bạn với mức máy nghe ra (thanh %), 🌟 câu hay nhất, 🔁 câu nên luyện lại, nút nghe mẫu / nghe chậm | Chỉ trình bày kết quả đã có (`r.ps`), không chấm thêm, không vào mức thuộc |
+| (chung) | Lộ trình hôm nay: chặng đã xong bỏ `opacity:.7` (chữ nhỏ dưới 4,5:1), thay bằng nền khác màu | Test trợ năng mới quét màn kết (v92) phát hiện lỗi có sẵn từ v88 |
+
+**Kiểm:** e2e `v92.spec.ts` gồm:
+- manh mối ghim đúng chữ đáp án; câu "Không biết" không ghim;
+- biên bản đủ câu; màn biểu diễn đủ câu của vai;
+- số bằng chứng trong sổ không đổi;
+- WCAG AA.
+
+**Ước lượng T:**
+
+| Game | Sau v91 | Sau v92 |
+|---|---|---|
+| 🔍 Thám tử | 6,2 | 6,4 (T5 +1, T7 +1) |
+| 📻 Đài phát thanh | 5,8 | 6,0 (T5 +1, T7 +1) |
+| 🎤 Karaoke | 5,7 | 5,9 (T7 +1, T8 +1) |
+
+**Đánh giá thẳng sau đợt 2:**
+- Trong khuôn spec (HG24, C69, P13–P15), sửa bằng mã đã đưa 3 game lên khoảng 7 (Câu đố ngày 7,1 · Xếp Khối 7,0 · Quán 7,0). 12 game còn lại ở khoảng 5,9–6,9.
+- Phần chênh còn lại tới 7,5 nằm ở hai chỗ:
+  1. **T10 = 5 (chưa đo)**, chiếm 2/14 trọng số. Chỉ số liệu thật mới mở được.
+  2. **T2 của game tiếp nhận**, bị spec chặn có chủ đích.
+- Theo §9.4 bước 4, bước đúng tiếp theo là **phát hành v89–v92 và thu 2 tuần số liệu** (bảng 📊 ở sảnh). Sau đó sửa game theo số liệu, không tiếp tục thêm tính năng theo cảm tính.
+
+## 10. Đối sánh thị trường (M1–M10): chấm lại sau playtest của người sáng lập
+
+### 10.0 Vì sao có mục này
+
+Người sáng lập chơi thử và kết luận: **các game hiện tại quá tệ, không hấp dẫn để chơi.** Đây là bằng chứng playtest thật đầu tiên, và nó bác bỏ điểm trục T ở §8–§9 (5,7–7,1).
+
+Gốc rễ của việc chấm sai: thang T neo vào **có hay không có** tính năng trong chính app (có âm, có phố, có lựa chọn), không neo vào **chất lượng so với game người chơi đang dùng hằng ngày**. Vì vậy cứ thêm tính năng là điểm tăng, dù cảm giác chơi vẫn như làm bài tập.
+
+Từ nay trục T chỉ dùng để kiểm "đủ thành phần". **Độ hấp dẫn chấm bằng M1–M10 dưới đây, neo vào game dẫn đầu cùng thể loại.**
+
+Tài liệu chỉ nêu thể loại (quy ước đầu tệp và test `ip-names`).
+
+Bối cảnh thị trường 2026:
+- giải đố chiếm 44% doanh thu game casual;
+- game xếp khối 8×8 dẫn lượt tải trên cả hai kho;
+- ghép 3 dẫn doanh thu;
+- merge tăng nhanh nhất.
+
+Theo các bài phân tích thiết kế: lõi phải tự vui và đọc hiểu được trong vài giây, phản hồi phải tức thì, người chơi quyết định có quay lại hay không ngay trong vài phút đầu.
+
+### 10.1 Mười tiêu chí (10 = ngang game dẫn đầu cùng thể loại)
+
+| # | Tiêu chí | 0–2 | 5 | 10 |
+|---|---|---|---|---|
+| M1 ×2 | **Lõi tự hấp dẫn** | Trắc nghiệm có trang trí | Lõi game có thật nhưng bị câu hỏi chen ngang | Bỏ phần tiếng Anh đi người ta vẫn muốn chơi, hoặc tiếng Anh **chính là** cơ chế (chữ là quân cờ) |
+| M2 ×2 | **Cảm giác điều khiển** | Bấm nút dạng biểu mẫu, cả màn vẽ lại | Chạm vật thể, có hiệu ứng | Kéo / vuốt trực tiếp, phản hồi < 100 ms, chuyển động 60 fps liên tục, hạt, rung |
+| M3 | **Nhịp liền mạch** | Mỗi lượt phải bấm "Tiếp ▸" | Ít lần ngắt | ≥ 80% thời gian đang chơi, không màn chờ giữa lượt |
+| M4 | **Mỹ thuật và âm thanh** | Emoji thay hình, tiếng bíp | Có chủ đề màu | Phong cách hình riêng, nhân vật, nhạc nền, âm theo hành động |
+| M5 | **Màn chơi nhập vai** | Thấy thanh tab, chữ hướng dẫn dài | Khung gọn | Toàn màn hình, luật hiểu qua hình |
+| M6 | **Chiều sâu, giỏi lên được** | Chỉ đúng / sai | Có combo | Kỹ năng chơi tiến bộ rõ: chiến thuật, tính trước |
+| M7 | **Thiết kế màn và độ khó** | Ngẫu nhiên, phẳng | Tăng theo số màn | Màn thiết kế sẵn, nhịp căng – nghỉ, bất ngờ |
+| M8 | **Meta và phần thưởng** | Điểm / kỷ lục | Có sưu tập | Mở khoá, sự kiện, sưu tập có giá trị thấy được |
+| M9 | **Vào chơi ngay** | Phải đọc luật | Hiểu sau 1 lượt | Chơi được trong ≤ 10 giây, không cần chữ |
+| M10 | **Lý do quay lại** | Không có | Có chuỗi ngày | Thử thách ngày giống nhau cho mọi người, chia sẻ kết quả |
+
+Điểm = trung bình có trọng số (÷ 12).
+
+### 10.2 Chấm 17 game
+
+Căn cứ: ảnh e2e của từng game và mã nguồn. Người chấm vẫn là tôi, nhưng mỗi điểm so với một game cụ thể đang dẫn thể loại, không so với chính app.
+
+| Game | Đối chiếu (thể loại dẫn đầu) | M1 | M2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 📅 Câu đố ngày | đố nhóm 16 từ hằng ngày | 6 | 4 | 6 | 3 | 3 | 5 | 4 | 2 | 7 | 5 | **4,6** |
+| ⏱️ Tốc độ 60 giây | đố nhanh tính giờ | 4 | 3 | 8 | 2 | 3 | 3 | 2 | 1 | 8 | 2 | **3,6** |
+| 🔗 Ghép cặp | ghép thẻ | 4 | 4 | 8 | 2 | 3 | 2 | 2 | 1 | 8 | 1 | **3,6** |
+| 🤖 Robot | lập trình ra lệnh theo màn | 5 | 3 | 6 | 2 | 3 | 5 | 2 | 2 | 4 | 1 | **3,4** |
+| 🧱 Xếp Khối | xếp khối 8×8 | 5 | 2 | 2 | 2 | 2 | 4 | 2 | 3 | 5 | 3 | **3,1** |
+| 🎲 Bàn Cờ Phố | bàn cờ xúc xắc + xây phố | 3 | 3 | 3 | 3 | 3 | 2 | 2 | 4 | 6 | 2 | **3,1** |
+| 🌱 Vườn từ | nông trại chăm cây | 2 | 2 | 4 | 3 | 3 | 1 | 2 | 4 | 6 | 5 | **3,0** |
+| 🎯 Bắt Âm | bắn bong bóng | 3 | 2 | 5 | 3 | 3 | 2 | 2 | 2 | 7 | 1 | **2,9** |
+| ✉️ Thư | thư từ trong game nhẹ nhàng | 3 | 2 | 5 | 2 | 3 | 3 | 2 | 3 | 4 | 2 | **2,8** |
+| 🃏 Bài Câu | xây bộ bài roguelike | 3 | 3 | 4 | 2 | 3 | 2 | 2 | 2 | 4 | 1 | **2,7** |
+| 🎤 Karaoke | hát karaoke có nhạc | 3 | 2 | 4 | 2 | 3 | 2 | 2 | 2 | 5 | 1 | **2,6** |
+| ☕ Quán | phục vụ / nấu ăn quản lý thời gian | 2 | 1 | 4 | 3 | 3 | 1 | 2 | 3 | 7 | 1 | **2,5** |
+| 🛠️ Xưởng | sửa hàng / dây chuyền | 2 | 2 | 4 | 2 | 3 | 2 | 2 | 2 | 6 | 1 | **2,5** |
+| 🏰 Leo tháp | leo tháp roguelike | 2 | 1 | 3 | 2 | 3 | 2 | 3 | 3 | 6 | 1 | **2,4** |
+| 🔍 Thám tử | điều tra / phá án | 2 | 1 | 4 | 2 | 2 | 2 | 2 | 2 | 6 | 1 | **2,3** |
+| 🗺️ Thám hiểm | khám phá bản đồ sương mù | 2 | 2 | 3 | 3 | 3 | 1 | 2 | 1 | 5 | 1 | **2,3** |
+| 📻 Đài | phiêu lưu bằng âm thanh | 2 | 1 | 4 | 2 | 2 | 2 | 2 | 2 | 5 | 1 | **2,2** |
+
+**Kết luận:** cả 17 game ở mức **2,2–4,6 / 10** so với thị trường, khớp với nhận xét của người chơi.
+- Cao nhất là các game mà **chữ / nghĩa chính là cơ chế** (Câu đố ngày) hoặc nhịp liền (Tốc độ 60 giây, Ghép cặp). Hai game sau trước đây bị đánh giá thấp vì phần học yếu, không phải vì chơi chán.
+- Thấp nhất là các game "trắc nghiệm có trang trí" (Đài, Thám tử, Leo tháp, Quán).
+
+### 10.3 Gốc rễ
+
+| # | Gốc rễ | Bằng chứng | Kéo thấp |
+|---|---|---|---|
+| 1 | **Kiến trúc hiển thị:** mỗi thao tác thay toàn bộ HTML của màn | `app.js` `render()` gán `innerHTML`; game engine không dùng `canvas` / `requestAnimationFrame`. Không thể có chuyển động liên tục, kéo thả, hạt nổ | M2, M4: trần khoảng 3 dù thêm bao nhiêu tính năng |
+| 2 | **Câu hỏi gác cổng:** tiếng Anh là trạm kiểm soát chặn giữa các lượt chơi | Xếp Khối: trả lời → "Nhận khối ▸" → chạm ô đặt khối. Bàn Cờ: tung xúc xắc → câu hỏi. Quán, Thám tử: trắc nghiệm | M1, M3 |
+| 3 | **Khung app và giọng biểu mẫu** | Thanh tab, chuỗi ngày, năng lượng luôn hiện; chữ hướng dẫn dài; nút "Không biết" kiểu bài kiểm tra | M5, M9 |
+| 4 | **Không có mỹ thuật / âm nhạc** | Hình là emoji; 6 tiếng tổng hợp; không nhạc nền | M4 |
+| 5 | **Dàn trải** | 17 game, mỗi game vài trăm dòng; không game nào có màn thiết kế sẵn | M6, M7 |
+
+Gốc rễ 2 là chỗ thiết kế và spec gặp nhau. HG24 đòi "mọi hành động là thử thách ngôn ngữ". Các game chữ thành công trên thị trường làm được điều đó bằng cách để **chữ là quân cờ** (vuốt chữ thành từ, xếp chữ vào ô, ghép từ thành nhóm), không phải chèn câu hỏi trắc nghiệm vào giữa một game khác.
+
+### 10.4 Hướng đi đề xuất (chưa làm, chờ người sáng lập chọn)
+
+1. **Dừng** thêm tính năng cho 17 game hiện có. Mỗi tính năng thêm vào chỉ nâng "đủ thành phần" (trục T), không nâng M1–M5.
+2. **Chọn 2–3 game chủ lực**, làm lại theo chuẩn thị trường:
+   - toàn màn hình;
+   - vẽ bằng canvas, chuyển động 60 fps, kéo / vuốt;
+   - chữ tiếng Anh là cơ chế;
+   - một phong cách mỹ thuật và âm thanh thống nhất;
+   - màn thiết kế sẵn có độ khó tăng dần;
+   - bộ chọn nội dung của engine (NBA, FSRS) giữ nguyên bên dưới.
+3. Các game còn lại chuyển vào mục "Luyện tập" (không xoá: chúng vẫn là cơ chế bằng chứng của từng chức năng).
+4. Thước đo nghiệm thu: playtest của người sáng lập + chỉ số §8.3. Mục tiêu M ≥ 7 cho game chủ lực trước khi làm game thứ hai.
+
+### 10.5 Đã làm v93: game chủ lực 🎡 Vòng Chữ
+
+**Thể loại:** vuốt chữ thành từ (đứng đầu nhóm game chữ). Chọn vì đây là thể loại mà **chữ tiếng Anh chính là cơ chế**: mọi thao tác là đánh vần một từ (M1, HG24).
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Lõi | Màn dựng từ cụm từ (u:) bộ chọn chung đưa ra (ôn → đang học → lộ trình). Từ gốc là từ của cụm; các ô là từ ghép được từ bộ chữ (kho 6.343 từ đơn của app, không quá cấp người học + 1). Mỗi ô có nghĩa tiếng Việt làm gợi ý. Có từ thưởng, gợi ý một chữ (10 xu), sao theo số gợi ý | `wordwheel.ts` |
+| Độ khó | Đường cong theo số màn: 5 → 6 → 7 chữ cái, 3 → 7 ô. Cứ 5 màn có một màn nghỉ. 6 chương, mỗi chương một bảng màu | `curve()`, `CHAPTERS` |
+| Màn chơi | Lớp phủ toàn màn hình ngoài `#app` (không bị vẽ lại), canvas 60 khung hình / giây. Gồm: vuốt (chuột / ngón tay); bàn phím; ô gõ cho trình đọc màn hình. Hiệu ứng: đường vuốt phát sáng, bong bóng chữ, rung khi sai, chữ bay vào ô, ô nảy lần lượt, hạt nổ, sao rơi khi thắng. Âm: nốt ngũ cung đi lên theo từng chữ, hợp âm khi tìm ra từ, nhạc nền nhẹ tắt được. Lần đầu có bàn tay hướng dẫn. Tôn trọng giảm chuyển động | `wheelview.ts` |
+| Bằng chứng | Chỉ ô thuộc cụm engine chọn, mức 2 (nhớ dạng từ từ nghĩa với bộ chữ cho sẵn, g = 0,1):<br>• không gợi ý → đúng tự lực;<br>• có gợi ý → đúng có trợ giúp;<br>• lộ ≥ nửa số chữ → sai.<br>Từ kho ngoài cụm và thử thách ngày không ghi bằng chứng (nội dung không do engine chọn) | `evidenceOf()` |
+| Thử thách ngày | Cùng một màn cho mọi người trong ngày; chia sẻ kết quả bằng ô màu, không lộ đáp án (M10) | `dailyLevel()`, `shareText()` |
+| Nối app | Bộ não chọn game: ôn từ → Vòng Chữ (88), từ cần học (72), chơi thêm (45). Thẻ lớn ở sảnh ngay dưới "Chơi tiếp". Phố: 🎡 Vòng đu quay. Số liệu chơi, bot người học (`playWheel`) | `director.ts`, `wheelhome.ts`, `town.ts`, `tools/learners/core.ts` |
+
+**Kiểm:**
+- Đơn vị `engine-wheel.test.ts`:
+  - dựng màn trên kho thật;
+  - 30 ngày liền đều có màn thử thách ngày;
+  - chấm từ, gợi ý, bằng chứng.
+- e2e `wheel.spec.ts`:
+  - **vuốt chuột thật** qua tâm chữ trên canvas → ô mở, bằng chứng mức 2;
+  - gõ cũng được;
+  - thắng màn → "Màn tiếp" ngay trong lớp phủ;
+  - gợi ý trừ xu, hết xu thì nút tắt;
+  - thử thách ngày không ghi bằng chứng;
+  - WCAG AA sáng / tối ở 390 px, nút ≥ 44 px.
+
+**Chấm M1–M10 (so với game vuốt chữ dẫn đầu):**
+
+| M1 ×2 | M2 ×2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 7 | 7 | 8 | 5 | 8 | 5 | 6 | 5 | 8 | 6 | **6,6** |
+
+So với game tốt nhất cũ (Câu đố ngày 4,6) là +2,0. **Chưa tới 7**, còn thiếu:
+- **M4 mỹ thuật:** nền là dải màu vẽ bằng mã, nghĩa vẫn kèm emoji; chưa có tranh minh hoạ cho từng chương, chưa có nhân vật đi cùng màn chơi;
+- **M6 chiều sâu:** chưa có ô đặc biệt (chữ vàng, ô thưởng), chưa có chuỗi combo;
+- **M8 sưu tập:** chưa có "sổ từ" gom các từ đã tìm theo chương;
+- **M7:** màn được dựng theo luật từ nội dung engine chọn, chưa có màn thiết kế tay.
+
+Điểm 6,6 vẫn do tôi chấm. **Thước đo nghiệm thu thật là người sáng lập chơi thử** và các chỉ số §8.3.
+
+**Bot người học L01, 8 ngày, `--games director`, v93:**
+- Bộ não chọn Vòng Chữ 3 lần; bot thắng cả 3 màn; không kẹt, 0 lỗi trang.
+- Ô mastery Đạt cuối kỳ: 709 (v90: 710), trong nhiễu.
+- Tỉ lệ đúng thấp hơn (49% so với 55%) vì cơ cấu game khác nhau giữa hai lần chạy. Câu Vòng Chữ là tự gõ nên khó đoán hơn câu chọn.
+
+### 10.6 Đã làm v94: chiều sâu, sưu tập, phong cảnh, chuỗi ngày cho Vòng Chữ
+
+| Tiêu chí | Việc | Vì sao vẫn đúng spec |
+|---|---|---|
+| M6 chiều sâu | **Combo:** tìm từ liền không gửi sai thì xu nhân hai từ từ thứ 3, nhân ba từ từ thứ 5. **Ô vàng:** mỗi màn một ô, ưu tiên ô thuộc cụm engine chọn, tìm ra +5 xu. **Hũ từ thưởng:** mỗi từ thưởng +1, đủ 6 thì đổi 1 gợi ý miễn phí (dùng trước gợi ý trả xu) | Chỉ đổi xu và gợi ý, không đổi câu hay cách tính năng lực (P13, P14). Ô vàng nằm ở từ cần học nên chiến thuật kiếm xu trùng đường học (C345). Gợi ý miễn phí vẫn tính là có gợi ý trong bằng chứng |
+| M8 sưu tập | **Sổ từ** ở thẻ sảnh: mọi từ đã tìm ra, xếp theo chương, chạm để nghe; từ gặp từ 3 lần có ⭐. Từ mới vào sổ có thông báo ngay trong màn | Sổ là telemetry (`st.e.gh.book`), giới hạn 3.000 từ, không vào năng lực |
+| M4 mỹ thuật | **Phong cảnh động cho 6 chương**, vẽ bằng canvas:<br>• mặt trời có tia xoay;<br>• sóng biển và thuyền;<br>• rừng trúc đung đưa;<br>• phố đêm cửa sổ nhấp nháy;<br>• đồi cát và xương rồng;<br>• núi tuyết và tuyết rơi.<br>Giảm chuyển động thì đứng yên | — |
+| M10 quay lại | **Chuỗi ngày** của thử thách ngày (🔥 N ngày ở thẻ sảnh) | Không phạt khi đứt chuỗi, chỉ bắt đầu lại từ 1 (HG20) |
+
+**Kiểm:**
+- Đơn vị `engine-wheel.test.ts`:
+  - combo; ô vàng luôn ở ô của cụm khi có;
+  - hũ đầy đổi gợi ý; chuỗi ngày;
+  - sổ từ: giới hạn, chỉ từ 3–8 chữ.
+- e2e `wheel.spec.ts`:
+  - hũ đầy → gợi ý miễn phí không trừ xu;
+  - từ vào sổ, sổ hiện đúng số từ ở sảnh.
+
+**Chấm lại M1–M10 (vẫn là tự chấm, chờ người sáng lập chơi thử):**
+
+| M1 ×2 | M2 ×2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 7 | 7 | 8 | 6 | 8 | 7 | 6 | 7 | 8 | 7 | **7,1** |
+
+**Còn thiếu để lên 8:**
+- **M4:** tranh minh hoạ thật thay cho emoji ở gợi ý nghĩa (cần họa sĩ hoặc bộ hình tự vẽ);
+- **M7:** màn thiết kế tay cho các mốc chương;
+- **M2:** rung tay trên iOS (Safari không hỗ trợ rung); tinh chỉnh độ nhạy khi vuốt nhanh qua chữ.
+
+### 10.7 Đã làm v95: game chủ lực thứ hai ⛏️ Mỏ Chữ
+
+**Vì sao chọn thể loại này** (thay cho ý ban đầu "xếp khối có chữ"):
+- Trong game xếp khối, việc đặt khối là bài toán hình học, chữ khó thành cơ chế thật.
+- Mỏ Chữ thuộc nhóm **ghép 3 + săn chữ** (nhóm giải đố dẫn doanh thu). Ở đây mỗi lượt là tạo một từ (M1, HG24); ô vỡ, chữ rơi, chữ mới lấp vào như game ghép 3.
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Lõi | Lưới 6 × 7, chữ lấp theo tần suất tiếng Anh. Vuốt qua ô kề nhau (cả chéo), không lặp ô. **Nhiệm vụ** = từ của cụm u: bộ chọn chung đưa ra (3–5 từ, 3–6 chữ), được gieo thành đường kề và **luôn có đường**: bị phá thì gieo lại. Từ hợp lệ khác (kho 6.343 từ) ăn điểm. Từ sai / ngắn / trùng **không tốn lượt** | `wordhunt.ts` |
+| Căng thẳng không đồng hồ | Giới hạn lượt vuốt (2 lượt / nhiệm vụ + dư 8 → 4 theo màn). Hết lượt thì "Chơi lại màn"; không phạt ngoài việc chơi lại (P15, HG20) | `huntCurve()` |
+| Chiều sâu | Từ ≥ 5 chữ để lại **ô đá quý 💎**, dùng thì vỡ cả hàng. **Ô vàng** nhân đôi điểm, +3 xu. Chuỗi từ liền nhân đôi điểm. Từ dài nhân điểm. Gợi ý = ô chữ đầu của một nhiệm vụ nhấp nháy (10 xu) | `applyWord()`, `points()` |
+| Màn chơi | Canvas toàn màn hình. Hang có tinh thể phát sáng và bụi bay (3 chủ đề: pha lê, mỏ vàng, hang băng). Ô chữ dạng đá có bóng; đường vuốt phát sáng; ô vỡ có hạt; chữ rơi chậm dần; ô đặc biệt phát sáng. Âm thanh và nhạc dùng chung Vòng Chữ. Có ô gõ cho trình đọc màn hình | `huntview.ts` |
+| Bằng chứng | Từ nhiệm vụ của cụm engine chọn tìm ra → mức 2, g = 0,05; có gợi ý → có trợ giúp. Từ kho và mỏ hôm nay: không ghi | `nWord()` trong `main.ts` |
+| Quay lại | **Mỏ hôm nay** giống nhau cho mọi người, có chuỗi ngày, chia sẻ bằng ô màu không lộ đáp án | `dailyHunt()` |
+| Nối app | Bộ não chọn game: từ cần học (73), chơi thêm (44). Thẻ lớn ở sảnh. Phố: ⛏️ Mỏ chữ. Số liệu chơi. Bot `playHunt` | |
+
+**Kiểm:**
+- Đơn vị `engine-hunt.test.ts`:
+  - ô kề nhau (không nối mép trái – phải);
+  - mọi nhiệm vụ có đường trên 40 seed;
+  - vỡ – rơi – lấp đủ lưới, id không trùng;
+  - đá quý vỡ cả hàng;
+  - nhiệm vụ còn đường sau 15 lần phá;
+  - mỏ hôm nay giống nhau.
+- e2e `hunt.spec.ts`:
+  - **vuốt chuột thật** trên lưới canvas → bằng chứng mức 2, tốn 1 lượt; từ sai không tốn lượt;
+  - thắng → "Màn tiếp";
+  - gợi ý trừ xu và đánh dấu có trợ giúp;
+  - WCAG AA ở 390 px, ô lưới ≥ 44 px.
+
+**Chấm M1–M10** (so với game săn chữ / ghép 3 dẫn đầu, tự chấm):
+
+| M1 ×2 | M2 ×2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 7 | 7 | 8 | 6 | 8 | 7 | 5 | 5 | 7 | 6 | **6,7** |
+
+**Thấp hơn Vòng Chữ ở:**
+- **M7:** màn dựng theo luật; chưa có mục tiêu khác ngoài tìm từ (ví dụ phá băng, đưa vật xuống đáy như game ghép 3);
+- **M8:** chưa có sổ riêng; từ đã tìm chưa vào sổ từ chung;
+- **M9:** luật "kề nhau cả chéo" cần một lượt chơi mới hiểu, chưa có bàn tay hướng dẫn.
+
+**Bot người học L01, 8 ngày, v95:**
+- Bộ não chọn Vòng Chữ 3 lần (thắng cả 3). **Chưa lần nào chọn Mỏ Chữ**: bước học đầu lộ trình của bot là ngữ pháp, còn Mỏ Chữ chỉ được chọn cho từ cần học (73) và chơi thêm (44). Vì vậy Mỏ Chữ mới được kiểm bằng e2e, chưa bằng bot.
+- Ô mastery Đạt: 709 (v93: 709). 0 lỗi trang, không kẹt.
+- Thêm hướng dẫn bàn tay ở màn 1 (M9: 7 → 8). Điểm M của Mỏ Chữ thành 6,8.
+
+### 10.8 Đã làm v96: mục tiêu kiểu ghép 3, màn mốc, sổ từ chung, xen kẽ hai game chủ lực
+
+**Gốc rễ của lần sửa này** (từ §10.7):
+- M7 thấp vì màn nào cũng chỉ có một mục tiêu là tìm từ. Game ghép 3 dẫn đầu giữ người chơi hàng nghìn màn nhờ **thay đổi mục tiêu**, không nhờ đổi luật.
+- M8 thấp vì từ tìm ở Mỏ Chữ không đi đâu cả.
+- Bot không bao giờ gặp Mỏ Chữ vì bộ não chỉ chọn nó cho "từ cần học".
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Mục tiêu theo màn | Màn 1–3: chỉ tìm từ (làm quen). Từ màn 4 xoay vòng: tìm từ → **phá băng** → **đưa rương xuống đáy** | `goalOf()` |
+| 🧊 Phá băng | Ô có băng vỡ khi được dùng trong từ, hoặc khi nằm trên hàng bị đá quý phá. Màn thường: băng đối xứng trái – phải, nhiều dần theo màn. Thêm lượt bằng 1/3 số ô băng | `iceMask()`, `breakIce()` |
+| 🧰 Đưa rương | Rương nằm ở hàng trên, không chọn được. Phá ô bên dưới thì rương rơi xuống; tới đáy thì thu (+5 xu). Rương không đè lên đường của từ nhiệm vụ. Đá quý phá hàng chừa rương | `placeChests()`, `collectChests()` |
+| Màn mốc (10, 20, …) | Băng theo **hình vẽ tay**: tim, vòng, chéo, kim cương, cầu. Tiêu đề "màn mốc" | `ICE_SHAPES` |
+| Thắng | Đủ từ nhiệm vụ **và** xong mục tiêu. Tìm đủ từ mà chưa xong mục tiêu thì gợi ý chuyển sang một từ ngắn có sẵn trên lưới, nên không bị kẹt | `goalWord()` |
+| Sổ từ chung (M8) | Từ nhiệm vụ tìm ở Mỏ Chữ vào sổ từ của Vòng Chữ, chương "⛏️ Mỏ Chữ" | `addBook(…, 90)` |
+| Trợ năng | Mục tiêu (còn bao nhiêu băng, rương mấy / mấy) hiện cả ở phụ đề DOM, không chỉ trên canvas, để trình đọc màn hình đọc được | `huntview.ts` |
+| Bộ não xen kẽ | Hai game chủ lực cùng phục vụ ôn tập, ôn nhẹ, chơi thêm (Mỏ Chữ cũng phục vụ từ cần học). Game **chưa** chơi gần nhất (`flag`, tính qua nhiều ngày) đứng trên game kia: 88 / 86, 55 / 54, 45 / 44 | `director.ts`, `dirIn()` |
+
+**Gốc rễ việc bot chưa bao giờ gặp Mỏ Chữ** (tìm ra khi chạy bot sau bước đầu của v96):
+- Bước đầu chỉ nâng điểm ôn tập của Mỏ Chữ lên 86, nhưng bot vẫn chọn Mỏ Chữ 0 lần.
+- Lý do: `planDay()` xếp lộ trình với `played` / `last` rỗng, nên phạt xen kẽ (−45 / −25) không chạm tới lộ trình. Mỗi nhu cầu chỉ lấy một game, nên Vòng Chữ (88) luôn giữ chặng ôn.
+- Sửa bằng `flag`: game chủ lực chơi gần nhất, lấy từ game bắt đầu gần nhất, nếu không có thì từ sổ bằng chứng.
+
+**Bot người học L01, 8 ngày, cùng seed:**
+
+| | Trước khi sửa `flag` | Sau |
+|---|---|---|
+| Chặng ôn ngày 3–8 | Vòng Chữ 4 lần, Mỏ Chữ 0 | Vòng Chữ 3, Mỏ Chữ 3, thay nhau từng ngày |
+| Số câu trả lời | 199 | 219 |
+| Ô (nút × mức) có a / (a + b) ≥ 0,8 và n ≥ 3 | 9 | 21 |
+| Lỗi trang / kẹt | 0 / 0 | 0 / 0 |
+
+- **Đính chính (v97):** hàng "ô đạt" là nhiễu, không phải tiến bộ. App lấy seed màn chơi từ `Date.now()`, nên hai lần chạy cùng seed bot vẫn đi khác nhau. Lần chạy lại ở v97 cho 9 ô. Điều chắc chắn từ bảng chỉ là Mỏ Chữ đã được chọn.
+- Vườn từ không còn vào lộ trình vì lộ trình sau đó nghiêng sang ngữ pháp (Bài Câu). Đây là do NBA quyết định, không phải do bộ não game.
+
+**Đúng spec:**
+- Băng / rương chỉ là cách chơi (P13, P14). Không ghi bằng chứng cho băng, rương hay từ của `goalWord()`; bằng chứng vẫn chỉ ở từ nhiệm vụ của cụm engine chọn.
+- Không thêm đồng hồ (P15).
+- Chưa xong mục tiêu thì chỉ phải "chơi lại màn", không phạt (HG20).
+
+**Kiểm:**
+- Đơn vị:
+  - mục tiêu theo màn;
+  - hình băng màn mốc đúng mẫu;
+  - băng vỡ khi dùng;
+  - rương không đè đường nhiệm vụ, rơi và được thu ở đáy;
+  - đá quý không phá rương;
+  - `goalWord()` luôn trả từ có trên lưới;
+  - bộ não xen kẽ hai game ở ôn tập, cả trong lộ trình ngày (`flag`) và ôn nhẹ.
+- e2e:
+  - màn 10 hiện băng hình tim, phụ đề "Phá băng: còn N ô" khớp lưới, số băng không tăng sau khi vuốt;
+  - màn 5 có rương, phụ đề "0/1";
+  - từ nhiệm vụ vào sổ từ chung và hiện chương "⛏️ Mỏ Chữ" ở sảnh.
+- Toàn bộ: 271 đơn vị, 198 e2e (Android + máy tính) qua.
+
+**Chấm lại M1–M10 của Mỏ Chữ** (tự chấm, chưa có người chơi thử):
+
+| M1 ×2 | M2 ×2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 7 | 7 | 8 | 6 | 8 | 8 | 7 | 6 | 8 | 6 | **7,1** |
+
+- M6 lên 8: phải tính đường vuốt để kéo rương xuống và dùng ô băng, không chỉ tìm từ.
+- M7 lên 7, chưa cao hơn: mục tiêu và hình băng có thật, nhưng màn vẫn dựng theo luật, chưa có hàng trăm màn được cân chỉnh tay như game dẫn đầu.
+- M8 lên 6: có sổ chung, nhưng chưa có bộ sưu tập riêng của mỏ (đá quý, rương hiếm).
+
+**Còn thiếu để lên 8+:**
+- M4: nhạc và hình vẫn vẽ bằng mã, chưa có họa sĩ.
+- M10: chưa có sự kiện theo tuần.
+- Thước đo thật: số liệu chơi (`pm`) của người chơi thật, theo ngưỡng §9.
+
+### 10.9 Đã làm v97: game chủ lực thứ ba 🃏 Bài Câu bản toàn màn hình (ngữ pháp)
+
+**Gốc rễ:** hai game chủ lực chỉ phục vụ từ vựng. Khi lộ trình cần ngữ pháp (bước đầu của A1), bộ não buộc phải đưa người chơi vào Bài Câu kiểu cũ: vẽ lại HTML, chạm nút, bấm "Lượt tiếp" sau mỗi câu. Cách sửa đúng spec (C69, C345) là làm game ngữ pháp đạt chuẩn chủ lực, không phải ép bộ não chọn game từ vựng.
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Màn chơi | Lớp phủ toàn màn hình ngoài `#app`: bàn nỉ xanh, đèn rọi, hoa văn bài mờ; vùng câu viền vàng; khay "tay bài" | `cardsfx.ts` |
+| Lá bài | Nút DOM thật đặt trên canvas, di chuyển bằng transform mỗi khung hình (không vẽ lại `#app`). Lá rời tay để lại chỗ trống như bài thật. Kéo thả bằng chuột / ngón tay: chèn đúng chỗ con trỏ, các lá khác dạt ra chừa chỗ; kéo lá ra khỏi vùng câu thì bỏ ra. Chạm / Enter vẫn thêm / bỏ lá | `flow()`, `insertAt()` |
+| Nhịp (M3) | Câu đúng: lá sáng xanh và nhấc lên, hạt, chữ "+điểm" bay, **tự chuyển lượt sau 1,3 giây** (không bấm "Tiếp"). Câu sai: lá sai rung và sáng đỏ, hiện câu đúng + giải thích, dừng chờ người chơi đọc | `cPlay()` trong `main.ts` |
+| Hết bàn / hết ván | Hộp giữa bàn: thắng / chưa đủ điểm, chọn lá bùa (nút dạng lá), kết quả ván | `cardsfx.ts` |
+| Âm thanh | Nốt theo vị trí lá, hợp âm khi đúng, nhạc nền; dùng chung Vòng Chữ | `wheelview.ts` |
+| Sảnh | Thẻ lớn "🃏 Bài Câu" cạnh hai game chủ lực kia | `viewCardsHero()` |
+
+**Giữ nguyên:** luật và điểm (`cards.ts`), bộ chọn câu, bằng chứng mức 3 `qt:'order'` cho đúng nút ngữ pháp engine chọn, telemetry.
+
+**Lỗi thật tìm ra khi rà mã:** sau khi kéo bằng ngón tay, trình duyệt không phát click, nên một cờ chặn click kiểu "dính" sẽ nuốt mất lần chạm kế tiếp. Đã đổi sang cửa sổ thời gian 350 ms.
+
+**Kiểm:**
+- e2e `cards.spec.ts`:
+  - ván đủ 3 bàn × 3 lượt; lượt đúng tự chuyển, không có nút "Lượt tiếp"; bằng chứng 9 câu đúng nút `g:`;
+  - **kéo chuột thật**: chèn trước lá đã có, kéo ra để bỏ, kéo đủ câu → đúng thứ tự → ra bài, bằng chứng `order`, tự sang lượt 2;
+  - WCAG AA sáng / tối ở 390 px; lá ≥ 44 px, không tràn màn; bấm lá bằng bàn phím.
+- Toàn bộ: 271 đơn vị, 204 e2e qua.
+- Bot L01, 8 ngày: chơi trọn 4 ván Bài Câu bản mới (36 câu), không kẹt, 0 lỗi trang.
+- **Tỉ lệ lượt chơi ở game chủ lực** (Bài Câu + Vòng Chữ + Mỏ Chữ, trên các lượt trong game): 59 / 127 = **46 %**. Trước v97, nếu không tính Bài Câu cũ là chủ lực, tỉ lệ này là 18 %.
+
+**Chấm M1–M10 của Bài Câu** (tự chấm, so với game xếp bài tính điểm dẫn đầu):
+
+| M1 ×2 | M2 ×2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 6 | 7 | 7 | 5 | 8 | 6 | 4 | 3 | 8 | 2 | **5,8** (bản cũ 2,7) |
+
+**Còn thiếu:**
+- M7: chưa có màn / bàn thiết kế sẵn;
+- M8: bùa chưa sưu tập qua các ván;
+- M10: chưa có thử thách ngày.
+
+### 10.10 Đã làm v98: cân độ khó bằng mô phỏng (M7) + sự kiện tuần (M10)
+
+**Mô phỏng** (`tools/sim/levels.ts`): người chơi giả "điển hình" chơi Mỏ Chữ bằng **đúng các hàm của game**, 60 seed mỗi màn. Mô hình người chơi:
+- nhận ra ngay 60 % từ nhiệm vụ, mỗi lượt sau nhận thêm 30 %;
+- khi chưa thấy từ nhiệm vụ: 60 % nhắm vào mục tiêu, còn lại vuốt từ bất kỳ.
+
+Vòng Chữ không có trạng thái thua nên không đo tỉ lệ thắng.
+
+**Mô phỏng tìm ra lỗi thiết kế mà e2e không thấy** (đường cong trước khi sửa):
+
+| Loại màn | Tỉ lệ thắng |
+|---|---|
+| Tìm từ | 95–100 % |
+| Băng | 35–70 % |
+| Rương | 3–35 % (màn 26: 3 %) |
+
+Đường cong là "răng lược" chứ không phải răng cưa. Gốc rễ, tìm bằng cách lần vết hàng của rương qua từng lượt:
+1. **Rương kẹt ở hàng sát đáy.** Muốn rơi, nó cần một từ đi qua đúng ô bên dưới, nhưng ô đó mang chữ ngẫu nhiên, nên không có từ nào đi qua được. Màn trở thành không giải được, lỗi mà game ghép 3 thật luôn chặn.
+2. **Gợi ý `goalWord()` lấy từ đầu tiên chạm mục tiêu**, không phải từ tốt nhất.
+
+**Sửa:**
+- `findPathVia()`: đường bắt buộc qua một ô.
+- `goalCells()`: ô then chốt, gồm ô ngay dưới rương và ô băng khi chỉ còn ≤ 3.
+- `keepGoalReachable()`: ô then chốt nào không có từ 3 chữ đi qua thì gieo một từ 3 chữ qua ô đó, tránh ô của nhiệm vụ. Chạy sau mỗi lượt.
+- `goalWord()` chọn từ phá được **nhiều** ô mục tiêu nhất, ưu tiên ô then chốt. Gợi ý trong game dùng hàm này nên cũng tốt lên.
+- `sawtooth()`: nhịp răng cưa mỗi chương 10 màn. Đầu chương +2 lượt, giữa +1, cuối 0, mốc −1, băng mốc −3; rương thêm 2 lượt.
+
+**Sau khi sửa** (60 seed, màn 1–60):
+
+| Loại màn | Tỉ lệ thắng |
+|---|---|
+| Màn 1–3 và màn tìm từ (màn thở) | 93–100 % |
+| Băng | 72–92 % |
+| Rương | 50–87 % |
+| Màn mốc | 55–85 % (mốc 10, 20 nhẹ để dạy luật; từ mốc 30 siết còn 55–75 %) |
+
+- `engine-balance.test.ts` khoá các dải này để lần sửa sau không làm vỡ nhịp.
+- **Giới hạn:** mô hình người chơi là giả định. Số liệu thật (`pm`: bỏ dở, chơi lại) của người chơi thật mới là thước đo cuối.
+
+**Sự kiện tuần** (`weekly.ts`):
+- Tuần bắt đầu thứ Hai. Bốn chủ đề xoay vòng:
+  - ⛏️ thợ mỏ chữ: tìm 60 từ ở Vòng Chữ + Mỏ Chữ;
+  - 🃏 câu chuẩn: 24 câu đúng ở Bài Câu;
+  - ⭐ ngôi sao: 30 sao / bàn thắng;
+  - 🎪 hội chợ: xong 9 màn / ván, mốc cuối cần đủ ba game.
+- 3 mốc thưởng 15 / 30 / 60 xu. Mốc cuối thêm huy hiệu tuần vào kệ huy hiệu trên thẻ sảnh (sưu tập, M8).
+- Không ghi bằng chứng, không đổi câu hỏi hay lộ trình (P13, P14, C69). Lưu ở `st.e.wk`, gộp hai máy giữ mọi huy hiệu.
+
+**Kiểm:**
+- Đơn vị: `engine-balance`, `engine-weekly`.
+- e2e: tuần "thợ mỏ chữ", tìm từ ở Mỏ Chữ → đủ mốc cuối → +60 xu, huy hiệu hiện ở sảnh.
+- Toàn bộ: 278 đơn vị, 206 e2e qua.
+
+**Chấm lại (tự chấm):**
+
+| Game | Thay đổi | Điểm |
+|---|---|---|
+| Mỏ Chữ | M7 7 → 8 (đường cong đo được, có nhịp, không còn màn không giải được), M10 6 → 7 | 7,1 → **7,3** |
+| Vòng Chữ | M10 7 → 8 | 7,1 → **7,2** |
+| Bài Câu | M10 2 → 4 | 5,8 → **5,9** |
+
+### 10.11 Đã làm v99: sảnh tập trung vào game chủ lực
+
+Làm đúng §10.4: game cũ không xoá, chỉ lùi vào mục thu gọn. Chúng vẫn là cơ chế bằng chứng cho nghe / nói / đọc / viết, và bộ não vẫn đưa người chơi vào đó khi lộ trình cần.
+
+Sảnh từ trên xuống:
+1. Lộ trình hôm nay (bộ não).
+2. **⭐ Game chủ lực:** Vòng Chữ, Mỏ Chữ, Bài Câu.
+3. Sự kiện tuần.
+4. **📚 Luyện tập theo kỹ năng** (thu gọn): 13 game cũ. Bài Câu kiểu cũ bỏ khỏi danh sách vì đã thành game chủ lực.
+5. Phố.
+6. **🏰 Leo tháp** (thu gọn).
+7. Số liệu chơi.
+
+**Kiểm:** test mở mục thu gọn trước khi tìm nút Leo tháp (`openAll`). Toàn bộ 278 đơn vị, 206 e2e qua.
+
+Khi rà, test kéo thả Bài Câu hỏng một lần lúc chạy song song nặng. Gốc rễ là test chờ cứng 300 ms trong khi lá đang trượt; đã đổi sang chờ tới khi vị trí lá đứng yên. Chạy song song 4 luồng: 8/8 qua.
+
+### 10.12 Đã làm v100: gói chơi thử nghiệm thu + sửa lỗi CI / hồi quy
+
+**Gói chơi thử** (`docs/PLAYTEST.md`):
+- kịch bản 15 phút;
+- phiếu chấm M1–M10 đặt điểm tôi tự chấm cạnh ô trống cho người sáng lập;
+- cách đọc số liệu chơi.
+
+Chế độ `?playtest=1` thêm nút nhảy tới màn rương 5, màn mốc 10, màn băng 13, màn khó 29 ở thẻ Mỏ Chữ. Chế độ này chỉ đổi màn chơi, không ghi bằng chứng.
+
+**Lỗi thật tìm ra khi đưa CI về xanh** (CI đỏ từ v96 đến v99; máy soạn không chạy được Safari):
+
+| Lỗi | Gốc rễ | Sửa |
+|---|---|---|
+| Bài Câu trên Safari: bấm "Lượt tiếp" xong vẫn còn nút cũ | Lớp phủ chỉ cập nhật DOM ở khung hình sau. WebKit vẽ khung chậm nên có nút "ma" | `refresh()` đồng bộ DOM ngay sau mỗi thao tác. Test kiểm nút vừa bấm phải ẩn ngay |
+| Kéo lá nhanh thì lá rơi sai chỗ (đầu câu, hoặc ngoài câu) | Vị trí thả lấy từ `pointermove` cuối. Máy chậm / vuốt nhanh thì trình duyệt gộp các sự kiện di chuyển | Lấy vị trí từ chính `pointerup` |
+| Mục thu gọn đóng sập khi app vẽ lại | `render()` thay `innerHTML` | Giữ trạng thái mở theo màn + tiêu đề |
+| **Hồi quy v99**: mất lối vào "Lộ trình hôm nay / Bước tiếp theo" ở sảnh | Thu gọn cả `viewQuestHome`, trong khi khối này chứa cả lối vào việc học. Bot báo `today-missing`, ngày nào cũng rơi vào Xưởng, tỉ lệ game chủ lực tụt còn 14 % | Chỉ thu gọn phần tháp |
+| Tháp biến mất hẳn sau lần sửa trên | Phép thay chuỗi để lại `+ + viewQuestHome(…)`: dấu `+` thứ hai biến HTML thành `NaN`, TypeScript không bắt | Sửa; e2e Leo tháp bắt được lỗi |
+
+**Bot L01, 8 ngày, bản cuối:**
+- **72 %** lượt chơi trong game là game chủ lực (110 / 152). Trước v97 là 18 %.
+- Mỗi ngày có Kiểm tra nhanh. Vòng Chữ và Mỏ Chữ thay nhau ở chặng ôn; Bài Câu ở chặng ngữ pháp mỗi ngày.
+- 0 lỗi trang, 0 lần kẹt.
+
+**Bài học quy trình:**
+- Kiểm cả CI, không chỉ máy soạn. Thông báo CI đỏ đã không về, và ba lần đẩy đỏ mà tôi không biết.
+- Chạy bot sau **mỗi** thay đổi giao diện sảnh: hồi quy v99 chỉ bot mới thấy, e2e không thấy.
+
+### 10.13 Đã làm v101: cốt truyện "Phố Chữ mất tiếng" nối ba game chủ lực
+
+**Yêu cầu của người sáng lập:** các game phải liên kết với nhau bằng cốt truyện.
+
+**Gốc rễ của cảm giác rời rạc:** ba game chia chung xu và Phố, nhưng người chơi không có lý do để đi từ game này sang game kia: không mục tiêu chung, không nhân vật, không "chuyện gì xảy ra tiếp". Game ghép 3 có cốt truyện (làm vườn, sửa nhà) giải quyết đúng chỗ này: mỗi màn chơi đẩy câu chuyện; câu chuyện cho lý do quay lại và lý do đổi game.
+
+**Tiền đề (người sáng lập chọn):** Sương Câm phủ Phố Chữ, chữ biến khỏi biển hiệu và lời nói của cư dân. Bạn cùng Tí trả lại lời cho từng khu.
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Nội dung | Mở đầu + 3 khu (Chợ Sáng, Bến Cảng, Rừng Trúc) × 4 chương + "còn tiếp" (Phố Đêm). 9 nhân vật: Tí, Bà Lan, Chú Tư, Bé Bin, Ông Ba, Cô Ngân, Ông Hải, Thầy Minh, Cô Chi. Mọi câu thoại là tiếng Anh A1 ngắn (≤ 14 từ, có test), kèm dịch | `story.ts` |
+| Nhiệm vụ nối 3 game | Mỗi chương: ⛏️ đào chữ (từ tìm ở Mỏ Chữ), 🎡 thắp đèn (thắng màn Vòng Chữ), 🃏 trả câu nói (câu đúng ở Bài Câu). Nhiệm vụ hiện ở thẻ truyện (bấm là vào đúng game) **và ngay trong phụ đề game**, ví dụ "📖 Đào chữ cho Bà Lan: 3/5", cập nhật theo từng từ | `storyAdd()`, `storyNote()` |
+| Gắn học thật (người sáng lập chọn) | Chương cuối mỗi khu cần thêm **2 / 5 / 9 kỹ năng vững** trên bản đồ năng lực (`skillsOf().solid`). Thiếu thì thẻ truyện khoá và chỉ đường sang "Lộ trình hôm nay": truyện thưởng cho việc học thật (North Star), không chặn chơi | `solid`, `ready()` |
+| Cảnh truyện | Lớp phủ toàn màn hình theo màu khu; từng khung: nhân vật (Tí dùng linh vật), câu tiếng Anh gõ dần (giảm chuyển động thì hiện ngay), dịch, 🔊 nghe giọng máy, Tiếp / Bỏ qua. Xong chương +20 xu, xong khu +50 xu và "khu đã hồi sinh" | `storyfx.ts` |
+| Lưu | `st.e.sy`; gộp hai máy giữ chương xa hơn | `state.ts` |
+
+**Đúng spec:**
+- Truyện không ghi bằng chứng (e2e kiểm sổ bằng chứng không tăng thêm).
+- Không đổi câu hỏi hay lộ trình. Bộ não chọn game vẫn theo nhu cầu học (C69, C345).
+- Nhiệm vụ truyện trải đều ba game nên không kéo người học lệch khỏi lộ trình.
+
+**Sửa thêm trong đợt này:** kéo thả Bài Câu nghe `pointermove` / `pointerup` trên `window` trong lúc kéo, thay vì dựa vào pointer capture của từng lá. CI Safari iOS cho thấy lần kéo thứ hai mất sự kiện.
+
+**Kiểm:**
+- Đơn vị `engine-story` (3):
+  - nội dung đủ khu / chương, mỗi chương dùng cả ba game;
+  - mốc kỹ năng tăng dần;
+  - tiến độ chặn ở mức cần;
+  - chương cuối khoá khi thiếu kỹ năng vững;
+  - xu, khu hồi sinh, lưu / gộp.
+- e2e `story.spec` (2):
+  - mở đầu → chương 1;
+  - tìm từ ở Mỏ Chữ → phụ đề game và thẻ truyện cùng tăng;
+  - đủ nhiệm vụ → cảnh → chương 2, +20 xu;
+  - chương cuối khoá khi thiếu kỹ năng vững;
+  - WCAG AA thẻ truyện và cảnh truyện ở 390 px.
+- Toàn bộ: 281 đơn vị, 212 e2e qua.
+
+**Nhịp:** bot L01 xong chương 1 sau 6 ngày, trong khi game có cốt truyện cho xong chương đầu ngay buổi đầu (móc quay lại). Đã hạ nhiệm vụ đào của chương 1 từ 5 xuống 3; vẫn phải qua cả ba game. Chơi trước khi xem cảnh mở đầu vẫn được tính cho chương 1.
+
+**Ảnh hưởng điểm (tự chấm):** M8 (meta, phần thưởng) và M10 (lý do quay lại) của cả ba game +1.
+- Vòng Chữ 7,2 → 7,3
+- Mỏ Chữ 7,3 → 7,4
+- Bài Câu 5,9 → 6,1
+
+Cảnh truyện vẫn là chữ + emoji, chưa có tranh (M4).

@@ -3191,10 +3191,11 @@ function viewGames(){
   ${(()=>{ const ex=(st.exam||[])[0]; return `<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>${ico('exam')} Thi thử VSTEP rút gọn</h3><p class="muted">Nghe + Đọc có tính giờ, B1 → C1, ước tính bậc.${ex?` Lần gần nhất: ${exLevel((ex.l+ex.r)/2)} (Nghe ${ex.l}, Đọc ${ex.r}).`:''}</p></div><div class="row"><button class="btn primary" data-act="exgo">Vào thi</button></div></section>`; })()}
   <section class="panel stack"><h3>🏰 Ladder Quest</h3><p class="muted">Leo tháp: mỗi đòn đánh là một câu tiếng Anh app chọn từ đúng những gì bạn còn thiếu để lên cấp. Câu càng giúp bạn tiến bộ, càng nhiều xu.</p>
     <div class="row"><button class="btn primary" data-act="quest">▶ Chơi</button>${st.e&&st.e.q?`<span class="hint">Tầng ${st.e.q.floor} · 🪙 ${st.e.q.coins}</span>`:''}</div></section>
-  <div class="goals">
+  <details class="panel"><summary><b>Trò nhanh (cũ)</b> <span class="hint">Tốc độ 60 giây, Ghép cặp: chỉ ôn từ đã học, không theo lộ trình. Game mới ở tab Chơi.</span></summary>
+  <div class="goals" style="margin-top:10px">
     <div class="panel stack"><h3>⚡ Tốc độ 60 giây</h3><p class="muted">Chọn nghĩa đúng càng nhiều càng tốt trong 60 giây.</p><p class="num">Kỷ lục: ${G.speed||0} từ</p><button class="btn primary" data-act="speed">Chơi</button></div>
     <div class="panel stack"><h3>🧠 Ghép cặp</h3><p class="muted">Ghép 6 từ với nghĩa tiếng Việt, càng nhanh càng tốt.</p><p class="num">Kỷ lục: ${G.match?G.match+' giây':'—'}</p><button class="btn primary" data-act="match">Chơi</button></div>
-  </div>
+  </div></details>
   <section class="panel stack"><h3>🤝 Thách đấu bạn bè</h3>
     <p class="muted">Bạn làm ${CH_N} câu, app tạo một mã. Gửi mã cho bạn bè (Zalo, email…); bạn ấy dán mã vào đây để làm đúng ${CH_N} câu đó rồi so điểm. Không cần tài khoản hay mạng.</p>
     <div class="setrow"><label for="chname">Tên hiện trong mã</label><input id="chname" class="field" style="font-size:16px;padding:7px 10px" maxlength="24" value="${esc(st.set.name||'')}" placeholder="Tên của bạn"></div>
@@ -4192,6 +4193,7 @@ function lessonChrome(){ const v=ui.view, app=document.getElementById('app'); if
   if(kind!=='neutral'&&!FOCUS()) sh.insertAdjacentHTML('afterbegin',`<div class="sheet-ti">${mascot(kind==='good'?'party':'cheer',60)}</div>`);
   if(fb) sh.appendChild(fb); const xp=box.querySelector('.xpf'); if(xp) sh.appendChild(xp); sh.appendChild(row);
   nb.classList.add('big'); app.appendChild(sh); document.body.classList.add('has-sheet'); }
+const GALL_OPEN=new Set(), gallKey=d=>d.dataset.gv+'|'+((d.querySelector('summary')||{}).textContent||'').trim().slice(0,8);
 function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); renderChrome();
@@ -4199,7 +4201,10 @@ function render(){
   const v={thi:viewThi,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
+  // v99: mục thu gọn (details.gall: Luyện tập, Leo tháp…) giữ trạng thái mở qua các lần vẽ lại #app (trước đây vẽ lại là đóng sập).
+  document.querySelectorAll('#app details.gall[data-gv]').forEach(d=>{ const k=gallKey(d); if(d.open) GALL_OPEN.add(k); else GALL_OPEN.delete(k); });
   document.getElementById('app').innerHTML=html;
+  document.querySelectorAll('#app details.gall').forEach(d=>{ d.dataset.gv=ui.view; if(GALL_OPEN.has(gallKey(d))) d.open=true; });
   countUp();
   try{ lessonChrome(); }catch(e){}
   if(ui.view==='session'){
@@ -8344,7 +8349,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.8a2a56fe77.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.7f6ab2c351.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8358,6 +8363,10 @@ const EHOST = {
   readSave:(id,src,mode,score)=>eReadSave(id,src,mode,score),
   sayLines:(lines,slow)=>{ try{ sayLines(lines,slow); }catch(e){} },
   tts:()=>!!HAS_TTS,
+  mascot:(m,sz)=>mascot(m,sz),
+  lexicon:()=>(EHOST._lex||=ALL_WORDS.filter(w=>/^[a-z]{3,8}$/.test(w.word)&&UNIT_OF[w.id]).map(w=>({en:w.word,vi:w.vi,lv:UNIT_OF[w.id].level,node:'u:'+UNIT_OF[w.id].id,id:w.id,pic:w.pic||''}))),
+  share:(text)=>{ try{ shareText(text,'wheel'); }catch(e){} },
+  cheer:big=>{ try{ if(big&&!FOCUS()){ sfx('win'); if(!STILL()) confetti(); } }catch(e){} },
   gloss:paras=>eGloss(paras),
   // v80–v81: nói. Máy nghe giọng của trình duyệt (asrBox / ASR) — chỉ là phản hồi, không vào mức thuộc (như mọi chỗ khác của app).
   fixes:node=>eFixes(node),
@@ -8458,11 +8467,11 @@ function eFn(node){ if(!node.startsWith('fn:')) return []; const f=FN[node.slice
   const out=[];
   f.exps.forEach((e,i)=>{
     const vis=shuffle([...new Set(others.map(x=>x.vi))].filter(v=>v.toLowerCase()!==e.vi.toLowerCase())).slice(0,3), o1=shuffle([e.vi,...vis]);
-    out.push({id:`fn:${f.id}:h:${i}`,level:2,g:1/o1.length,kind:'hear',prompt:HAS_TTS?'🎧 Khách vừa nói gì?':'📖 Khách nói gì? (máy không có giọng đọc: đọc câu)',say:HAS_TTS?e.t:undefined,en:e.t,vi:e.vi,opts:o1,ans:o1.indexOf(e.vi),why:f.tip||''});
+    out.push({id:`fn:${f.id}:h:${i}`,level:2,g:1/o1.length,kind:'hear',prompt:HAS_TTS?'🎧 Khách vừa nói gì?':'📖 Khách nói gì? (máy không có giọng đọc: đọc câu)',say:HAS_TTS?e.t:undefined,en:e.t,vi:e.vi,opts:o1,ans:o1.indexOf(e.vi),why:f.tip||'',react:o1.map(o=>o===e.vi?'ok':'off')});
     if(e.reg==='n'&&f.exps.length<3) return;
     const sameWrongReg=f.exps.filter(x=>x.reg!==e.reg&&x.reg!=='n'&&e.reg!=='n').map(x=>x.t).slice(0,1);
     const ws=[...sameWrongReg,...shuffle(others.map(x=>x.t).filter(t=>nt(t)!==nt(e.t)))].slice(0,3), o2=shuffle([e.t,...ws]);
-    out.push({id:`fn:${f.id}:r:${i}`,level:3,g:1/o2.length,kind:'reply',prompt:`Bạn muốn ${f.vi.toLowerCase()} (văn phong ${REG_VI[e.reg].toLowerCase()}). Nói câu nào?`,en:e.t,vi:e.vi,opts:o2,ans:o2.indexOf(e.t),why:(sameWrongReg.length?`Câu “${sameWrongReg[0]}” cùng ý nhưng ${e.reg==='f'?'thân mật':'trang trọng'} quá. `:'')+(f.tip||'')}); });
+    out.push({id:`fn:${f.id}:r:${i}`,level:3,g:1/o2.length,kind:'reply',prompt:`Bạn muốn ${f.vi.toLowerCase()} (văn phong ${REG_VI[e.reg].toLowerCase()}). Nói câu nào?`,en:e.t,vi:e.vi,opts:o2,ans:o2.indexOf(e.t),react:o2.map(o=>o===e.t?'ok':sameWrongReg.includes(o)?'reg':'off'),regs:o2.map(o=>{ const x=f.exps.find(y=>y.t===o); return x&&x.reg!=='n'?REG_VI[x.reg]:''; }),why:(sameWrongReg.length?`Câu “${sameWrongReg[0]}” cùng ý nhưng ${e.reg==='f'?'thân mật':'trang trọng'} quá. `:'')+(f.tip||'')}); });
   return out; }
 // v82 Xưởng sửa câu: mọi câu sai của một điểm ngữ pháp (fx) → tự gõ lại câu đúng (mức 4, g = 0), kèm "vì sao".
 function eFixes(node){ if(!node.startsWith('g:')) return []; const p=GPT[node.slice(2)]; if(!p||!p.fx) return [];

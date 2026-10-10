@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, openAll } from './fixtures.ts';
 
 // v64 goal-first + Quest là màn chính: người mới → bài dò ngắn → app tự đặt mục tiêu CEFR → màn chính là tháp → leo một tầng.
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -25,12 +25,14 @@ test('người mới: Bắt đầu → dò ngắn (≤ 8 phần) → mục tiêu
   expect(e.diag.n).toBeLessThanOrEqual(8);
   expect(e.ev.snap.some((s: any) => s.dec === 'goal:AUTO')).toBe(true);
   await page.getByRole('button', { name: /Bắt đầu leo tháp/ }).click();
+  await page.getByRole('heading', { name: /Hôm nay chơi gì/ }).waitFor({ timeout: 15000 }); await openAll(page);
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible();
   await expect(page.getByText(/kỹ năng đã vững/)).toBeVisible();   // v69: tiến độ kỹ năng con, không chỉ số năng lực Can-do
   await expect(page.locator('#bnav button[aria-current="page"], #nav button[aria-current="page"]').first()).toContainText('Chơi');
   // Mở lại app: màn chính là tháp (chờ dữ liệu nền tải xong trước, như trên).
   await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
   await page.reload();
+  await page.getByRole('heading', { name: /Hôm nay chơi gì/ }).waitFor({ timeout: 15000 }); await openAll(page);
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible({ timeout: 15000 });
   expect(errors).toEqual([]);
 });

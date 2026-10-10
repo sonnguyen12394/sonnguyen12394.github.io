@@ -38,6 +38,22 @@ export function viewKaraEnd(c: ECtx, r: KaraRun): string {
   return `<section class="stack"><span class="eyebrow">🎤 Karaoke</span><h1>🎤 Hết bài!</h1>
     <p style="font-size:22px">${'⭐'.repeat(s)} · ${vi} · 🎵 ${r.score} điểm</p>
     <p>${esc(r.d.title)} · ${mine.length} câu của bạn · trung bình ${Math.round((mine.reduce((a, b) => a + b, 0) / Math.max(1, mine.length)) * 100)}% ${r.asr ? 'từ máy nghe ra' : '(tự chấm)'}.</p>
+    ${stage(c, r)}
     <p class="hint">Kết quả lưu như màn Đóng vai (tính vào Can-Do nói). ${r.asr ? 'Máy nghe ra chưa chắc là phát âm chuẩn: đây là phép thử “người nghe có hiểu bạn không”.' : ''} Điểm và combo chỉ để vui, không đổi mức thuộc của từ / ngữ pháp.</p></section>
     <div class="row"><button class="btn primary" data-e="krstart">🎤 Bài khác</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+}
+
+// v92 Màn biểu diễn (GAME-CRITERIA §8.2 "trình diễn", T7 / T8): từng câu của bạn với mức máy nghe ra; câu hay nhất và câu nên luyện lại
+// có nút nghe câu mẫu. Chỉ trình bày lại kết quả đã có (r.ps), không chấm thêm, không vào mức thuộc.
+function stage(c: ECtx, r: KaraRun): string {
+  const esc = c.host.esc, rows = r.d.lines.map((l, i) => ({ l, i, p: r.ps[i] })).filter((x): x is { l: typeof x.l; i: number; p: number } => x.p !== null && x.p !== undefined);
+  if (!rows.length) return '';
+  const best = rows.reduce((a, b) => (b.p > a.p ? b : a)), worst = rows.reduce((a, b) => (b.p < a.p ? b : a));
+  const li = rows.map(x => {
+    const pc = Math.round(x.p * 100), tag = x === best ? ' 🌟' : x === worst && worst.p < best.p ? ' 🔁' : '';
+    return `<li class="krline"><span><span lang="en">${esc(x.l.t)}</span>${tag}</span><span class="krbar" role="img" aria-label="${pc}%"><i style="width:${pc}%"></i></span></li>`;
+  }).join('');
+  const again = worst.p < best.p ? `<button class="btn ghost small" data-say="${esc(worst.l.t)}" data-slow="1">🔁 Nghe chậm câu nên luyện lại</button>` : '';
+  return `<section class="stack krstage"><b>🎭 Màn biểu diễn của bạn</b><ol class="stack" style="gap:6px">${li}</ol>
+    <div class="row"><button class="btn ghost small" data-say="${esc(best.l.t)}">🌟 Nghe mẫu câu hay nhất</button>${again}</div></section>`;
 }

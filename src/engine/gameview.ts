@@ -21,13 +21,15 @@ import { ENC_VI } from './quest.ts';
 import { GAMES, needVi, type DirIn, type DirPick } from './director.ts';
 
 // Sảnh: thẻ các game ở trên, tháp (Leo nhanh) giữ nguyên ở dưới.
-export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave, gd?: PuzzleSave, gt?: CaseSave, gr?: CaseSave, tts = true, gk?: KaraSave, gw?: ShopSave, gl?: LetterSave, gb?: RobotSave, gf?: { runs: number; day: number }, gv?: GardenSave, dir?: Dir | null): string {
+export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave, gd?: PuzzleSave, gt?: CaseSave, gr?: CaseSave, tts = true, gk?: KaraSave, gw?: ShopSave, gl?: LetterSave, gb?: RobotSave, gf?: { runs: number; day: number }, gv?: GardenSave, dir?: Dir | null, hero = ''): string {
   if (!c.e.goals.length) return '';
   const s = bk ?? { best: 0, runs: 0, day: 0, streak: 0 }, houses = (bd?.lots ?? []).reduce((a, b) => a + b, 0);
   return `<section class="stack"><span class="eyebrow">Chơi</span><h1>🎮 Hôm nay chơi gì?</h1>
     ${dir ? '' : '<p class="hint">Mọi game đều dùng cùng một bộ câu tiếng Anh app chọn cho bạn. Chỉ câu trả lời được tính vào năng lực; điểm game chỉ để vui.</p>'}</section>
     ${dir ? viewDirector(c, dir) : ''}
-    <details class="gall"${dir ? '' : ' open'}><summary>🎮 Tất cả trò chơi (tự chọn)</summary>
+    ${hero ? `<span class="eyebrow gsec" style="display:block;margin-top:8px">⭐ Game chủ lực: chơi nhiều nhất, chữ chính là cách chơi</span>${hero}` : ''}
+    <details class="gall"${dir ? '' : ' open'}><summary>📚 Luyện tập theo kỹ năng (nghe, nói, đọc, viết, xếp lớp…)</summary>
+    <p class="hint" style="margin:8px 0">Các bài luyện riêng từng kỹ năng. Bộ não chọn game vẫn đưa bạn vào đây khi lộ trình cần kỹ năng đó.</p>
     <section class="gcards">
       <span class="eyebrow gsec">🧭 Xếp lớp</span>
       <button class="gcard" data-e="fgstart"><span class="gico" aria-hidden="true" style="font-size:30px">🗺️</span><span class="stack" style="gap:2px;text-align:left"><b>Thám hiểm sương mù</b><span class="hint">Kiểm tra lại cấp CEFR: chọn đường Từ vựng hay Ngữ pháp, mỗi điểm dò mở một ô bản đồ. Trả lời thật, đúng hay sai ô đều mở. 10–15 phút.</span><span class="hint">🧭 ${gf?.runs ?? 0} lần thám hiểm${gf?.day && c.host.today() - gf.day < 7 ? ` · bản đồ mới sau ${7 - (c.host.today() - gf.day)} ngày` : ''}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
@@ -36,7 +38,6 @@ export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, g
       <button class="gcard" data-e="bkstart"><span class="gico" aria-hidden="true">${miniBoard()}</span><span class="stack" style="gap:2px;text-align:left"><b>Xếp Khối Chữ</b><span class="hint">Trả lời đúng để nhận khối, xếp đầy hàng để nổ. Ván 3–5 phút.</span><span class="hint">🏆 ${s.best} · 🔥 ${s.streak} ngày</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <button class="gcard" data-e="pzstart"><span class="gico" aria-hidden="true" style="font-size:30px">📅</span><span class="stack" style="gap:2px;text-align:left"><b>Câu đố ngày</b><span class="hint">Ôn từ: tìm 4 nhóm từ cùng chủ đề trong 16 ô, rồi nhớ lại thêm một từ mỗi nhóm. Mỗi ngày một câu đố mới.</span><span class="hint">${gd && gd.last === c.host.today() ? '✅ Đã giải hôm nay' : '🆕 Câu đố hôm nay đang chờ'} · ${gd?.days ?? 0} ngày đã giải</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <span class="eyebrow gsec">✍️ Ngữ pháp & viết</span>
-      <button class="gcard" data-e="cdstart"><span class="gico" aria-hidden="true" style="font-size:30px">🃏</span><span class="stack" style="gap:2px;text-align:left"><b>Bài Câu</b><span class="hint">Ngữ pháp: xếp lá từ thành câu đúng để ra bài, chọn bùa nhân điểm. 3 bàn × 3 lượt.</span><span class="hint">🏆 ${gc?.best ?? 0} điểm · ${gc?.wins ?? 0} bàn thắng</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <button class="gcard" data-e="wsstart"><span class="gico" aria-hidden="true" style="font-size:30px">🛠️</span><span class="stack" style="gap:2px;text-align:left"><b>Xưởng sửa câu</b><span class="hint">Ngữ pháp & viết: câu hỏng chạy trên băng chuyền, tự gõ lại cho đúng để đóng gói. 6 đơn mỗi ca.</span><span class="hint">📦 ${gw?.packed ?? 0} câu đã sửa · kỷ lục ${gw?.best ?? 0}/6</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <button class="gcard" data-e="ltstart"><span class="gico" aria-hidden="true" style="font-size:30px">✉️</span><span class="stack" style="gap:2px;text-align:left"><b>Thư gửi cư dân phố</b><span class="hint">Viết: cư dân nhờ bạn viết thư (tin nhắn, thiệp mời, thư…), gửi đi và nhận hồi âm. Đủ ý thì được quà trang trí phố.</span><span class="hint">💌 ${gl?.runs ?? 0} thư · ${gl?.gifts ?? 0} món quà</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <span class="eyebrow gsec">📖 Đọc hiểu</span>
@@ -67,16 +68,27 @@ const why = (c: ECtx, d: Dir): string => {
   return `<details class="dwhy"><summary>Vì sao là game này?</summary><p class="hint">${esc(top.why)}</p>
     <p class="hint">App đọc những gì bạn cần lúc này (phần sắp quên, từ đến ngày tưới, phần đầu lộ trình, điểm nghẽn, kỹ năng còn thiếu) rồi chọn dạng game hợp nhất, và đổi dạng sau mỗi game để não không chán. Nội dung câu hỏi trong game vẫn do lộ trình của bạn quyết định.</p></details>`;
 };
+// v89 Tí dẫn đường (T7): nhân vật của app nói một câu theo tiến độ lộ trình hôm nay. Không nói điểm game (P13).
+const TI_GO = ['Mình bắt đầu chặng đầu nhé!', 'Tí chọn sẵn game hợp nhất cho bạn rồi nè.', 'Ba chặng nhỏ thôi, xong là phố thêm đẹp!'];
+const TI_MID = ['Đang vào guồng rồi, chặng tiếp nào!', 'Giỏi lắm! Còn chút nữa là xong hôm nay.', 'Đổi game cho khỏi chán, mà vẫn học đúng phần cần.'];
+const TI_END = ['Xong hết rồi! Chơi thêm thì cứ thoải mái.', 'Tí tự hào về bạn hôm nay!', 'Mai mình gặp lại ở phố nhé!'];
+function tiSay(c: ECtx, d: Dir, big = false): string {
+  const done = d.plan.filter(p => d.x.played.includes(p.game)).length, all = done >= d.plan.length, k = c.host.today();
+  const svg = c.host.mascot?.(all ? 'party' : 'happy', big ? 56 : 44);
+  if (!svg) return '';
+  const L = all ? TI_END : done ? TI_MID : TI_GO;
+  return `<div class="tisay"><span aria-hidden="true">${svg}</span><span class="tisay-b">${c.host.esc(L[k % L.length]!)}</span></div>`;
+}
 export function viewDirector(c: ECtx, d: Dir): string {
   const g = GAMES[d.next.game], esc = c.host.esc;
-  return `<section class="dbox stack"><span class="eyebrow">${d.inPlan ? 'Chặng tiếp theo' : 'Chơi thêm'}</span>
+  return `<section class="dbox stack"><span class="eyebrow">${d.inPlan ? 'Chặng tiếp theo' : 'Chơi thêm'}</span>${tiSay(c, d)}
     <button class="gcard dgo" data-e="${g.start}" data-g="${d.next.game}"><span class="gico" aria-hidden="true" style="font-size:34px">${g.ico}</span><span class="stack" style="gap:2px;text-align:left"><b>▶ Chơi tiếp: ${esc(g.vi)}</b><span class="hint">Vì: ${esc(d.next.why)}</span></span></button>
     ${planRow(c, d)}${why(c, d)}</section>`;
 }
 // Thanh cuối màn kết của mọi game: đi thẳng tới game kế (không quay về danh sách để chọn).
 export function viewNextBar(c: ECtx, d: Dir): string {
   const g = GAMES[d.next.game], esc = c.host.esc;
-  return `<section class="dbox stack" style="margin-top:14px"><span class="eyebrow">${d.inPlan ? 'Tiếp theo trong lộ trình hôm nay' : 'Chơi thêm'}</span>
+  return `<section class="dbox stack" style="margin-top:14px"><span class="eyebrow">${d.inPlan ? 'Tiếp theo trong lộ trình hôm nay' : 'Chơi thêm'}</span>${tiSay(c, d, true)}
     <button class="btn primary big dgo" data-e="${g.start}" data-g="${d.next.game}">▶ Tiếp: ${g.ico} ${esc(g.vi)}</button><p class="hint">Vì: ${esc(d.next.why)}</p>${planRow(c, d)}</section>`;
 }
 const miniBoard = () => `<span class="bkmini">${[1, 0, 2, 3, 3, 0, 0, 4, 5].map(v => `<i class="c${v}"></i>`).join('')}</span>`;

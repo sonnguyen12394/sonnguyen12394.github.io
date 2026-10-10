@@ -46,6 +46,11 @@ export interface EHost {
   exam(): { resp: import('../exam/state.ts').Resp[]; real: import('../exam/state.ts').RealScore[] };   // câu Nghe/Đọc đã làm + điểm thi thật (phần ôn thi)
   lapse(): number | null;
   future?(): boolean;
+  mascot?(mood: 'happy' | 'cheer' | 'party' | 'sleep', size: number): string;   // v89: SVG Tí của app (nhân vật dẫn đường trong game)
+  cheer?(big: boolean): void; 
+  lexicon?(): Array<{ en: string; vi: string; lv: string; node: string; id: string; pic?: string }>;   // v93 Vòng Chữ: kho từ đơn 3–8 chữ cái của app (cấp, cụm)
+  share?(text: string): void;                      // v93: chia sẻ văn bản (thử thách ngày), dùng shareText của app
+                       // v89: ăn mừng ở màn kết (big: pháo giấy + nhạc mừng của app; không: tiếng nhỏ)
   recall?(node: string): number | null;              // khả năng nhớ trung bình (FSRS) của các thẻ đã học thuộc nút; null nếu chưa có thẻ (§58)                               // bật mục tiêu tương lai (IELTS, VSTEP, giao tiếp); mặc định tắt                           // ngày gần nhất quên một thẻ khi đến hạn ôn
 }
 
@@ -64,4 +69,6 @@ export interface WTask { id: string; lv: string; genre: string; en: string; vi: 
 export interface GWord { id: string; en: string; vi: string; pos: string; pic: string; ipa: string; ex: string; exVi: string }
 export interface FixItem { id: string; level: 4; g: 0; prompt: string; bad: string; good: string; accept: string[]; why: string; vi: string }
 export interface Dialog { id: string; lv: string; title: string; vi: string; place: string; fn: string[]; names: { A: string; B: string }; lines: Array<{ s: string; t: string; vi: string }>; rp: string | null }
-export interface FnItem { id: string; level: 1 | 2 | 3; g: number; kind: 'hear' | 'reply'; prompt: string; say?: string; en: string; vi: string; opts: string[]; ans: number; why?: string }
+// v90: react = khách phản ứng thế nào với từng phương án (ok: đúng ý, đúng văn phong · reg: đúng ý nhưng lệch văn phong · off: không đúng ý);
+// regs = văn phong của phương án (nếu biết). Chỉ để trình bày hậu quả (F7c, ngữ dụng); đúng / sai vẫn chỉ theo ans.
+export interface FnItem { id: string; level: 1 | 2 | 3; g: number; kind: 'hear' | 'reply'; prompt: string; say?: string; en: string; vi: string; opts: string[]; ans: number; why?: string; react?: Array<'ok' | 'reg' | 'off'>; regs?: string[] }

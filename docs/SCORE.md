@@ -1,7 +1,7 @@
 # Bảng chấm v67: 200 tiêu chí Conformance + 400 tiêu chí v2.4
 
 Sinh tự động bởi `npm run score` từ `tools/score/conformance.json` và `tools/score/scorecard.json` (2026-10-08). Không sửa tay tệp này.
-Quy tắc: Conformance 4 điểm và C201–C400 từ 9 điểm bắt buộc có test tự động chứng minh; công cụ kiểm từng tham chiếu test (229 tham chiếu) có tồn tại thật. So sánh với bản chấm v51 (`docs/CONFORMANCE-200-v2.4.md`, `docs/SCORECARD-v2.4.md`).
+Quy tắc: Conformance 4 điểm và C201–C400 từ 9 điểm bắt buộc có test tự động chứng minh; công cụ kiểm từng tham chiếu test (230 tham chiếu) có tồn tại thật. So sánh với bản chấm v51 (`docs/CONFORMANCE-200-v2.4.md`, `docs/SCORECARD-v2.4.md`).
 
 ## Kết luận
 
@@ -52,8 +52,8 @@ Không còn tiêu chí Critical nào Fail → Architecture không FAIL.
 | D. Statistical & Mastery Validation | 4,0 | **6,6** |
 | E. Diagnostic Science | 3,7 | **6,2** |
 | F. Next Best Action Validation | 5,6 | **8,2** |
-| G. Learning Effectiveness | 1,7 | **3,0** |
-| H. Game / Learning Validity | 5,0 | **7,1** |
+| G. Learning Effectiveness | 1,7 | **3,1** |
+| H. Game / Learning Validity | 5,0 | **7,2** |
 | I. Bias, Fairness & Robustness | 3,6 | **4,4** |
 | J. Data Engineering, Performance & Reliability | 6,4 | **8,1** |
 
@@ -551,7 +551,7 @@ Không còn tiêu chí Critical nào Fail → Architecture không FAIL.
 | C319 | NBA Responsiveness | 8 | **9** | Tính lại sau mỗi câu; chênh lớn thì đổi lựa chọn · test: `engine-nba.test.ts` |
 | C320 | NBA Explainability | 6 | **9** | Snapshot NBA lưu top ứng viên, phân rã lợi ích; Vì sao? giải thích; replay được · test: `engine-snapshot.test.ts`, `why.spec.ts` |
 
-### G. Learning Effectiveness: 3,0/10
+### G. Learning Effectiveness: 3,1/10
 
 | # | Tiêu chí | v51 | Điểm | Bằng chứng |
 |---|---|---|---|---|
@@ -570,17 +570,17 @@ Không còn tiêu chí Critical nào Fail → Architecture không FAIL.
 | C333 | Path Efficiency | 2 | **4** | Trên mô phỏng: lộ trình thích ứng hiệu quả hơn cố định (sim-report §5); chưa đo người thật · test: `scenarios.test.ts` |
 | C334 | Relearning Efficiency | 5 | **5** | Kiểm tra bỏ qua, tiên nghiệm, Claim cộng dồn; mô phỏng cho thấy bỏ qua được phần đã biết |
 | C335 | Bottleneck Resolution | 4 | **5** | Truy gốc đưa tiền đề lên trước; kiểm chứng trên mô phỏng, chưa có dữ liệu thật · test: `engine-probe.test.ts` |
-| C336 | Learning Persistence | 2 | **2** | Streak có, chưa đo |
+| C336 | Learning Persistence | 2 | **3** | Đo theo game: bỏ giữa ván, chơi tiếp sau ván (v89 play.ts, bảng Số liệu chơi); chưa có dữ liệu người thật · test: `engine-play-town.test.ts` |
 | C337 | Independent Performance | 4 | **5** | Tách đúng có trợ giúp khỏi đúng độc lập (novOk chỉ tính không trợ giúp); chưa có dữ liệu người thật |
 | C338 | Spontaneous Use | 1 | **1** | Chưa có dữ liệu / cơ chế |
 | C339 | Context Generalization | 1 | **3** | Có công cụ: câu ngữ cảnh mới (transfer), bộ đo giữ riêng; chưa có dữ liệu |
 | C340 | Outcome Validity | 3 | **3** | Bộ đo giữ riêng khỏi transfer/game, el_pair ước tính–điểm thật; chưa có dữ liệu · test: `measure.spec.ts` |
 
-### H. Game / Learning Validity: 7,1/10
+### H. Game / Learning Validity: 7,2/10
 
 | # | Tiêu chí | v51 | Điểm | Bằng chứng |
 |---|---|---|---|---|
-| C341 | Fun ≠ Learning | 1 | **4** | Quest là màn chính, câu trong Quest chọn theo lỗ hổng → cách sửa nên lượt chơi là lượt học; chưa có dữ liệu tách vui và học |
+| C341 | Fun ≠ Learning | 1 | **5** | Tách tín hiệu vui (bỏ giữa, chơi tiếp sau ván) khỏi tín hiệu học (câu bằng chứng / phút) theo từng game (v89); Quest là màn chính, câu chọn theo lỗ hổng; chưa có dữ liệu · test: `engine-play-town.test.ts` |
 | C342 | Learning ≠ Game Score | 8 | **9** | Xu, tầng, thắng thua là telemetry, không vào mastery; XP tách Readiness · test: `engine-quest.test.ts`, `quest.spec.ts` |
 | C343 | Reaction Speed Confound | 6 | **9** | Tốc độ không vào trọng số; Quest không tính giờ; trên mô phỏng tốc độ khác nhau chênh mastery 0,00 · test: `scenarios.test.ts`, `engine-quest.test.ts` |
 | C344 | Motor Skill Confound | 4 | **6** | Hết giờ khi bị ép chỉ ×0,3; trên mô phỏng chênh 0,05 so với 0,12; chưa test thao tác chạm thật · test: `scenarios.test.ts` |
@@ -599,7 +599,7 @@ Không còn tiêu chí Critical nào Fail → Architecture không FAIL.
 | C357 | Objective Visibility | 7 | **8** | Goal-first: dò ngắn → app tự đặt mục tiêu (snapshot goal:AUTO) → tháp là màn chính; bước tiếp và mục tiêu tầng hiển thị · test: `play.spec.ts` |
 | C358 | Completion Integrity | 8 | **8** | cdProg tính từ điểm, không từ số bài |
 | C359 | Reward Integrity | 6 | **8** | Xu ∝ giá trị học, câu sai không âm, không phạt khi nghỉ · test: `engine-quest.test.ts` |
-| C360 | Game Learning Attribution | 1 | **3** | Câu trả lời trong game có src game và id thử thách, snapshot mỗi lượt; chưa có dữ liệu quy kết |
+| C360 | Game Learning Attribution | 1 | **4** | Câu trả lời trong game có src game và id thử thách, snapshot mỗi lượt; v89: câu bằng chứng / phút theo từng game; chưa có dữ liệu quy kết · test: `engine-play-town.test.ts` |
 
 ### I. Bias, Fairness & Robustness: 4,4/10
 

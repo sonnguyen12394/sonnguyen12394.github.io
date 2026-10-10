@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, openAll } from './fixtures.ts';
 
 // v62 Ladder Quest: mỗi lượt là một câu do engine chọn; câu trả lời vào bản đồ năng lực, xu/tim/tầng chỉ là telemetry.
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -15,8 +15,10 @@ test('Ladder Quest: vào từ Thử thách, leo một tầng, câu trả lời t
     w.eval("go('games')");
   });
   await page.getByRole('button', { name: '▶ Chơi' }).click();
+  await page.getByRole('heading', { name: /Hôm nay chơi gì/ }).waitFor({ timeout: 15000 }); await openAll(page);
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible({ timeout: 15000 });
   await expect(page.getByText(/chỉ câu trả lời mới được tính/)).toBeVisible();
+  await openAll(page);
   await page.getByRole('button', { name: /Leo tầng 1/ }).click();
   const end = page.getByRole('heading', { name: /Qua tầng|Hết tim/ });
   // Câu đầu chọn phương án đầu tiên, các câu sau "Không biết"; trại thì đọc bí kíp rồi đi tiếp.
@@ -40,6 +42,7 @@ test('Ladder Quest: vào từ Thử thách, leo một tầng, câu trả lời t
   // Giới hạn trung thực: một tầng là lượt hữu hạn, có điểm dừng.
   await expect(page.getByText(/Nghỉ ở đây cũng tốt/)).toBeVisible();
   await page.getByRole('button', { name: 'Về tháp' }).click();
+  await page.getByRole('heading', { name: /Hôm nay chơi gì/ }).waitFor({ timeout: 15000 }); await openAll(page);
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible();
   expect(errors).toEqual([]);
 });
@@ -53,6 +56,8 @@ test('v69–v70: phần chưa có bằng chứng được hỏi thử trước (
     st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
     w.eval('save()'); w.eval("go('play')");
   });
+  await page.getByRole('heading', { name: /Hôm nay chơi gì/ }).waitFor({ timeout: 15000 });
+  await openAll(page);
   await page.getByRole('button', { name: /Leo tầng 1/ }).click();
   const end = page.getByRole('heading', { name: /Qua tầng|Hết tim/ });
   let taught = 0, checked = 0, why = 0;

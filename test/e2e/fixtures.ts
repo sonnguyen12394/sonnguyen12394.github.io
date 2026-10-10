@@ -67,3 +67,8 @@ export async function play(page: Page, start: string): Promise<void> {
   await page.evaluate(() => document.querySelectorAll('details.gall').forEach(d => { (d as HTMLDetailsElement).open = true; }));
   await page.locator(`[data-e="${start}"]`).filter({ visible: true }).first().click();
 }
+
+// v99: Leo tháp (game cũ) nằm trong mục thu gọn ở sảnh: mở mọi mục thu gọn trước khi tìm.
+export async function openAll(page: Page): Promise<void> {
+  await page.evaluate(() => document.querySelectorAll('details.gall').forEach(d => { (d as HTMLDetailsElement).open = true; }));
+}
