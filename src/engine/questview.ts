@@ -27,18 +27,20 @@ export interface QuestRun {
 
 const hearts = (hp: number, max: number): string => `<span aria-label="${hp}/${max} tim">${'❤️'.repeat(hp)}${'🤍'.repeat(Math.max(0, max - hp))}</span>`;
 
-export function viewQuestHome(c: ECtx, q: QuestSave, ready: { done: number; total: number; vi: string } | null, next: { h: string; p: string; btn: string } | null = null, sk: { solid: number; total: number; week: number; claimed: number } | null = null, neck: { vi: string; dep: number; gap: string; pct: number } | null = null): string {
+export function viewQuestHome(c: ECtx, q: QuestSave, ready: { done: number; total: number; vi: string } | null, next: { h: string; p: string; btn: string } | null = null, sk: { solid: number; total: number; week: number; claimed: number } | null = null, neck: { vi: string; dep: number; gap: string; pct: number } | null = null, fold = false): string {
   const esc = c.host.esc;
   if (!c.e.goals.length) return `<section class="stack"><span class="eyebrow">Ladder Quest</span><h1>Chọn cấp muốn leo</h1><p class="muted">Tháp được dựng từ mục tiêu CEFR của bạn: mỗi tầng là những gì bạn còn thiếu để lên cấp.</p></section><div class="row"><button class="btn primary" data-e="go" data-r="goals">Chọn mục tiêu</button></div>`;
-  return `<section class="stack"><span class="eyebrow">Leo nhanh · tầng ${q.floor}</span><h2>🏰 Leo tháp tiếng Anh</h2>
+  const tower = `<section class="stack"><span class="eyebrow">Leo nhanh · tầng ${q.floor}</span><h2>🏰 Leo tháp tiếng Anh</h2>
     <p class="muted">Mỗi đòn đánh, mỗi lần mở rương là một câu tiếng Anh app chọn để bạn lên cấp nhanh nhất. Câu càng giúp bạn tiến bộ (câu mới, phần sắp quên, trùm ở câu chưa gặp) thì càng nhiều xu.</p>
     <div class="row" style="gap:12px"><span class="pill">🪙 ${q.coins} xu</span><span class="pill">🏆 Tầng cao nhất ${q.best}</span><span class="pill">✓ ${q.ok}/${q.ans} câu đúng</span></div>
     ${sk ? `<div class="stack" style="gap:4px"><b>📈 ${sk.solid}/${sk.total} kỹ năng đã vững${sk.week ? ` · +${sk.week} trong 7 ngày qua` : ''}</b><div class="bar" role="progressbar" aria-label="Kỹ năng đã vững" aria-valuemin="0" aria-valuemax="${sk.total}" aria-valuenow="${sk.solid}"><i style="width:${sk.total ? Math.round((sk.solid / sk.total) * 100) : 0}%"></i></div>${sk.claimed ? `<span class="hint">${sk.claimed} kỹ năng app đoán là bạn đã biết, đang kiểm tra dần (🔭).</span>` : ''}</div>` : ''}
     ${neck ? `<p class="warnt">🚧 <b>Điểm nghẽn: ${esc(neck.vi)}</b> (${neck.pct}%${neck.gap ? ` · ${esc(neck.gap.toLowerCase())}` : ''}): đang chặn ${neck.dep} năng lực của mục tiêu. Tháp sẽ ưu tiên phần này.</p>` : ''}
     ${ready ? `<p class="hint">Tiến độ thật của bạn: ${ready.done}/${ready.total} năng lực ${esc(ready.vi)} đã Đạt. Thắng hay thua trong game không đổi đánh giá năng lực; chỉ câu trả lời mới được tính.</p>` : ''}</section>
-    <div class="row"><button class="btn primary big" data-e="qstart">▶ Leo tầng ${q.floor} (≈ 8 câu, 4–6 phút)</button></div>
-    ${next ? `<section class="panel stack"><span class="eyebrow">Ngoài tháp</span><b>${next.h}</b><p class="hint">${next.p}</p>${next.btn.replace(/btn primary big/g, 'btn small').replace(/<div class="row" style="justify-content:center;gap:6px">/g, '<div class="row" style="gap:6px">').replace(/<button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay<\/button>/g, '')}</section>` : ''}
+    <div class="row"><button class="btn primary big" data-e="qstart">▶ Leo tầng ${q.floor} (≈ 8 câu, 4–6 phút)</button></div>`;
+  const rest = `    ${next ? `<section class="panel stack"><span class="eyebrow">Ngoài tháp</span><b>${next.h}</b><p class="hint">${next.p}</p>${next.btn.replace(/btn primary big/g, 'btn small').replace(/<div class="row" style="justify-content:center;gap:6px">/g, '<div class="row" style="gap:6px">').replace(/<button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay<\/button>/g, '')}</section>` : ''}
     <div class="row"><button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay</button><button class="btn ghost small" data-go="path">📚 Học bài</button><button class="btn ghost small" data-go="review">🔁 Ôn tập</button></div>`;
+  // v99: ở sảnh, tháp (game cũ) thu gọn vào mục riêng; "Ngoài tháp · bước tiếp theo" và lối vào Lộ trình / Học / Ôn luôn hiện.
+  return fold ? `<details class="gall gtower"><summary>🏰 Leo tháp tiếng Anh · tầng ${q.floor} (luyện tổng hợp kiểu cũ)</summary>${tower}</details>${rest}` : tower + rest;
 }
 
 export function viewQuestRun(c: ECtx, r: QuestRun): string {

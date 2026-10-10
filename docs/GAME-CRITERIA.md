@@ -1294,7 +1294,7 @@ Vòng Chữ không có trạng thái thua nên không đo tỉ lệ thắng.
 |---|---|---|
 | Mỏ Chữ | M7 7 → 8 (đường cong đo được, có nhịp, không còn màn không giải được), M10 6 → 7 | 7,1 → **7,3** |
 | Vòng Chữ | M10 7 → 8 | 7,1 → **7,2** |
-| Bài Câu | M10 2 → 4 | 5,8 → **6,0** |
+| Bài Câu | M10 2 → 4 | 5,8 → **5,9** |
 
 ### 10.11 Đã làm v99: sảnh tập trung vào game chủ lực
 
@@ -1312,3 +1312,31 @@ Sảnh từ trên xuống:
 **Kiểm:** test mở mục thu gọn trước khi tìm nút Leo tháp (`openAll`). Toàn bộ 278 đơn vị, 206 e2e qua.
 
 Khi rà, test kéo thả Bài Câu hỏng một lần lúc chạy song song nặng. Gốc rễ là test chờ cứng 300 ms trong khi lá đang trượt; đã đổi sang chờ tới khi vị trí lá đứng yên. Chạy song song 4 luồng: 8/8 qua.
+
+### 10.12 Đã làm v100: gói chơi thử nghiệm thu + sửa lỗi CI / hồi quy
+
+**Gói chơi thử** (`docs/PLAYTEST.md`):
+- kịch bản 15 phút;
+- phiếu chấm M1–M10 đặt điểm tôi tự chấm cạnh ô trống cho người sáng lập;
+- cách đọc số liệu chơi.
+
+Chế độ `?playtest=1` thêm nút nhảy tới màn rương 5, màn mốc 10, màn băng 13, màn khó 29 ở thẻ Mỏ Chữ. Chế độ này chỉ đổi màn chơi, không ghi bằng chứng.
+
+**Lỗi thật tìm ra khi đưa CI về xanh** (CI đỏ từ v96 đến v99; máy soạn không chạy được Safari):
+
+| Lỗi | Gốc rễ | Sửa |
+|---|---|---|
+| Bài Câu trên Safari: bấm "Lượt tiếp" xong vẫn còn nút cũ | Lớp phủ chỉ cập nhật DOM ở khung hình sau. WebKit vẽ khung chậm nên có nút "ma" | `refresh()` đồng bộ DOM ngay sau mỗi thao tác. Test kiểm nút vừa bấm phải ẩn ngay |
+| Kéo lá nhanh thì lá rơi sai chỗ (đầu câu, hoặc ngoài câu) | Vị trí thả lấy từ `pointermove` cuối. Máy chậm / vuốt nhanh thì trình duyệt gộp các sự kiện di chuyển | Lấy vị trí từ chính `pointerup` |
+| Mục thu gọn đóng sập khi app vẽ lại | `render()` thay `innerHTML` | Giữ trạng thái mở theo màn + tiêu đề |
+| **Hồi quy v99**: mất lối vào "Lộ trình hôm nay / Bước tiếp theo" ở sảnh | Thu gọn cả `viewQuestHome`, trong khi khối này chứa cả lối vào việc học. Bot báo `today-missing`, ngày nào cũng rơi vào Xưởng, tỉ lệ game chủ lực tụt còn 14 % | Chỉ thu gọn phần tháp |
+| Tháp biến mất hẳn sau lần sửa trên | Phép thay chuỗi để lại `+ + viewQuestHome(…)`: dấu `+` thứ hai biến HTML thành `NaN`, TypeScript không bắt | Sửa; e2e Leo tháp bắt được lỗi |
+
+**Bot L01, 8 ngày, bản cuối:**
+- **72 %** lượt chơi trong game là game chủ lực (110 / 152). Trước v97 là 18 %.
+- Mỗi ngày có Kiểm tra nhanh. Vòng Chữ và Mỏ Chữ thay nhau ở chặng ôn; Bài Câu ở chặng ngữ pháp mỗi ngày.
+- 0 lỗi trang, 0 lần kẹt.
+
+**Bài học quy trình:**
+- Kiểm cả CI, không chỉ máy soạn. Thông báo CI đỏ đã không về, và ba lần đẩy đỏ mà tôi không biết.
+- Chạy bot sau **mỗi** thay đổi giao diện sảnh: hồi quy v99 chỉ bot mới thấy, e2e không thấy.

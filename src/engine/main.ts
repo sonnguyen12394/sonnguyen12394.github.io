@@ -1107,6 +1107,11 @@ export function init(host: EHost): EngineModule {
   const nsave = () => { const e = E(); return (e.gn ||= freshHuntSave()); };
   const isLex = (w: string) => { if (!lexSet) lexSet = new Set(lexicon().map(x => x.en)); return lexSet.has(w); };
   let shortW: string[] | null = null;
+  // ?playtest=1 bật chế độ chơi thử (nhớ trên máy); ?playtest=0 tắt.
+  const playtest = (): boolean => {
+    if (typeof location === 'undefined') return false;
+    try { const m = /[?&]playtest=([01])/.exec(location.search); if (m) localStorage.setItem('el-playtest', m[1]!); return localStorage.getItem('el-playtest') === '1'; } catch { return false; }
+  };
   const shortWords = () => (shortW ||= lexicon().map(x => x.en).filter(w => w.length >= 3 && w.length <= 5).sort((a, b) => a.length - b.length || (a < b ? -1 : 1)));
   function nStart(mode: 'level' | 'daily'): boolean {
     if (!loaded()) { ensure(); return false; }
@@ -1486,7 +1491,7 @@ export function init(host: EHost): EngineModule {
     if (qrun?.done) return viewQuestEnd(c, qrun);
     if (qrun) { qrun.revive = qrun.mode === 'tower' && !qrun.revived && qrun.i + 1 < qrun.plan.length && wallet() >= REVIVE ? REVIVE : 0; return viewQuestRun(c, qrun); }
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null, c.e.goals.length ? viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + (c.e.goals.length ? '<details class="gall gtower"><summary>🏰 Leo tháp tiếng Anh (luyện tổng hợp kiểu cũ)</summary>' : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null) + (c.e.goals.length ? '</details>' : '') + viewPlayStats(c, playReport(pmsave()));
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null, c.e.goals.length ? viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave()));
   }
   const routes: Record<string, (c: ECtx) => string> = {
     measure: c => {
@@ -1656,6 +1661,8 @@ export function init(host: EHost): EngineModule {
       const sl = r.level.slots[h[0]]!; (r.shown[sl.en] ||= []).push(h[1]); r.hints++; r.coins = wallet(); r.free = sv.free; host.save(); hview?.refresh();
     },
     whshuf() { hview?.shuffle(); },
+    // Chế độ chơi thử (docs/PLAYTEST.md): nhảy tới màn đáng thử của Mỏ Chữ. Chỉ đổi màn chơi (telemetry), không ghi bằng chứng.
+    hnjump(el) { const lv = Number(el.dataset.lv); if (!playtest() || !(lv >= 1 && lv <= 200)) return; nsave().lv = lv; qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; hrun = null; nrun = null; if (nStart('level')) { markStart(); host.render(); } },
     hnstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; hrun = null; nrun = null; if (nStart('level')) { markStart(); host.render(); } },
     hndaily() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; hrun = null; nrun = null; if (nStart('daily')) { markStart(); host.render(); } },
     hnnext() { if (!nrun?.win || nrun.mode !== 'level') return; if (nStart('level')) { playStart(pmsave(), 'hunt', 'again', Date.now(), townKey(town(E()))); markStart(); host.save(); host.render(); } },

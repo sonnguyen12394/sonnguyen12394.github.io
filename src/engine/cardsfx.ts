@@ -87,6 +87,9 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
       const end = (e: PointerEvent) => {
         if (!drag || drag.id !== e.pointerId) return;
         const d = drag; drag = null;
+        // Vị trí thả lấy từ chính pointerup: máy chậm / vuốt nhanh thì trình duyệt gộp pointermove, điểm cuối của move có thể còn ở giữa đường.
+        if (!d.moved && Math.hypot(e.clientX - d.sx, e.clientY - d.sy) >= 6) d.moved = true;
+        if (d.moved) { const lb = layer.getBoundingClientRect(); d.x = e.clientX - lb.left - d.ox; d.y = e.clientY - lb.top - d.oy; }
         if (!d.moved) return;   // chạm: để sự kiện click đi tiếp (cdtile / cdback)
         suppressTo = performance.now() + 350;
         const r = st(); if (!r || r.ans) return;

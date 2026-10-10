@@ -41,13 +41,14 @@ function viewBook(c: ECtx, sv: WheelSave): string {
 import type { HuntSave } from './wordhunt.ts';
 import type { HuntState } from './huntview.ts';
 const HTH = [['#2a1052', '#0b0620', 'Hang pha lê'], ['#4a2a06', '#140a02', 'Mỏ vàng'], ['#073b4c', '#03141c', 'Hang băng']] as const;
-export function viewHuntHero(c: ECtx, sv: HuntSave, today: number): string {
+export function viewHuntHero(c: ECtx, sv: HuntSave, today: number, pt = false): string {   // pt: chế độ chơi thử (?playtest=1), nhảy tới màn đáng thử
   const t = HTH[Math.floor((sv.lv - 1) / 10) % HTH.length]!, dailyDone = sv.daily.day === today && sv.daily.done;
   return `<section class="whhero" style="background:linear-gradient(135deg,${t[0]},${t[1]})">
     <h2>⛏️ Mỏ Chữ</h2>
     <p>Màn ${sv.lv} · “${c.host.esc(t[2])}” · vuốt ô kề nhau thành từ · ⭐ ${sv.stars} · kỷ lục ${sv.best} điểm</p>
     <div class="whrow" style="justify-content:flex-start"><button class="whbig" data-e="hnstart">▶ Khai thác màn ${sv.lv}</button>
       <button class="whb wide" data-e="hndaily"${dailyDone ? ' aria-disabled="true"' : ''}>📅 ${dailyDone ? 'Đã xong mỏ hôm nay' : 'Mỏ hôm nay'}${sv.daily.streak > 1 && sv.daily.day >= today - 1 ? ` · 🔥 ${sv.daily.streak} ngày` : ''}</button></div>
+    ${pt ? `<div class="whrow" style="justify-content:flex-start;margin-top:8px"><span class="whsmall">🧪 Chơi thử:</span>${[[5, '🧰 rương'], [10, '🧊 mốc'], [13, '🧊 băng'], [29, '🧰 khó']].map(([l, t]) => `<button class="whb wide" data-e="hnjump" data-lv="${l}">Màn ${l} ${t}</button>`).join('')}</div>` : ''}
   </section>`;
 }
 export function viewHuntBehind(c: ECtx, r: HuntState & { over: boolean }, sv: HuntSave, open: boolean): string {

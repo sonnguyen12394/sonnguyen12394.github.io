@@ -138,6 +138,19 @@ test('v98 sự kiện tuần: thẻ ở sảnh; tuần "thợ mỏ chữ" tìm t
   expect(errors).toEqual([]);
 });
 
+test('v100 chơi thử (?playtest=1): thẻ Mỏ Chữ có nút nhảy tới màn rương / mốc; không có thì không hiện', async ({ page, errors }) => {
+  await lobby(page);
+  await expect(page.locator('[data-e="hnjump"]')).toHaveCount(0);
+  await page.goto('/?playtest=1');
+  await page.waitForFunction(() => (window as any).ELREADY === true);
+  await page.evaluate(() => (window as any).eval("go('games')"));
+  await page.getByRole('button', { name: '▶ Chơi' }).click();
+  await page.locator('[data-e="hnjump"][data-lv="10"]').click();
+  await expect(page.locator('#whfx .whti')).toContainText('Màn 10 · màn mốc');
+  await expect(page.locator('#whfx .whsu')).toContainText('Phá băng');
+  expect(errors).toEqual([]);
+});
+
 for (const scheme of ['light', 'dark'] as const) {
   test(`Mỏ Chữ: WCAG AA (${scheme}), 390px, ô lưới đủ lớn để chạm`, async ({ page, errors }) => {
     await page.emulateMedia({ colorScheme: scheme });
