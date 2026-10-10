@@ -623,6 +623,8 @@ Vì vậy tách thành **hai trục độc lập**: G (học) và T (trải nghi
 
 Điểm T = trung bình có trọng số (÷ 14).
 
+**Bổ sung v110 (bắt buộc cho mọi game, không chấm điểm riêng):** màn kết phải có dòng 🎯 nối ván với mục tiêu học, dùng chung `endExtras` (SPEC.md, mục "Hợp đồng hiển thị tiến độ"). Game có lớp phủ toàn màn hình hiện dòng này trong hộp kết. Thiếu dòng này thì T5 (meta) và T7 (bản sắc) không được quá 6, vì phần thưởng game không có ý nghĩa nếu người học không thấy mình tiến tới đâu.
+
 ### 8.2 Tiêu chí riêng theo thể loại
 
 | Thể loại | Game trong app | Tiêu chí riêng |

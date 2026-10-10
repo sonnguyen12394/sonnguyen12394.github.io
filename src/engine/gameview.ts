@@ -21,11 +21,12 @@ import { ENC_VI } from './quest.ts';
 import { GAMES, needVi, type DirIn, type DirPick } from './director.ts';
 
 // Sảnh: thẻ các game ở trên, tháp (Leo nhanh) giữ nguyên ở dưới.
-export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave, gd?: PuzzleSave, gt?: CaseSave, gr?: CaseSave, tts = true, gk?: KaraSave, gw?: ShopSave, gl?: LetterSave, gb?: RobotSave, gf?: { runs: number; day: number }, gv?: GardenSave, dir?: Dir | null, hero = ''): string {
+export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave, gd?: PuzzleSave, gt?: CaseSave, gr?: CaseSave, tts = true, gk?: KaraSave, gw?: ShopSave, gl?: LetterSave, gb?: RobotSave, gf?: { runs: number; day: number }, gv?: GardenSave, dir?: Dir | null, hero = '', goal = ''): string {
   if (!c.e.goals.length) return '';
   const s = bk ?? { best: 0, runs: 0, day: 0, streak: 0 }, houses = (bd?.lots ?? []).reduce((a, b) => a + b, 0);
   return `<section class="stack"><span class="eyebrow">Chơi</span><h1>🎮 Hôm nay chơi gì?</h1>
     ${dir ? '' : '<p class="hint">Mọi game đều dùng cùng một bộ câu tiếng Anh app chọn cho bạn. Chỉ câu trả lời được tính vào năng lực; điểm game chỉ để vui.</p>'}</section>
+    ${goal}
     ${dir ? viewDirector(c, dir) : ''}
     ${hero ? `<span class="eyebrow gsec" style="display:block;margin-top:8px">⭐ Game chủ lực: chơi nhiều nhất, chữ chính là cách chơi</span>${hero}` : ''}
     <details class="gall"${dir ? '' : ' open'}><summary>📚 Luyện tập theo kỹ năng (nghe, nói, đọc, viết, xếp lớp…)</summary>

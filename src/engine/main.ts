@@ -65,7 +65,8 @@ import { seenHas, misconceptions } from './ev/store.ts';
 import { remedyFor, pickFor, REMEDY_VI } from './remedy.ts';
 import { gaps, weakContext, GAP_VI } from './gap.ts';
 import type { Level } from './types.ts';
-import { readinessOf } from './readyview.ts';
+import { readinessOf, missingOf } from './readyview.ts';
+import { goalSummary, viewGoalBar, goalLine, goalText, type GoalSum } from './goalbar.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
 import { viewMeasure } from './measureview.ts';
 import type { MicroCard } from './host.ts';
@@ -474,7 +475,7 @@ export function init(host: EHost): EngineModule {
   function cOpen(): void {
     if (typeof document === 'undefined' || !crun) return;
     hClose(); nClose(); cview?.close();
-    cview = openCards(() => (crun ? Object.assign(crun as CardsFxState, { nodeVi: loaded()?.node.get(crun.node)?.vi ?? '', best: csave().best, story: storyNote(E().sy, 'voice') }) : null), o => cBuilt(o), host.mascot ? (m, k) => host.mascot!(m, k) : undefined);
+    cview = openCards(() => (crun ? Object.assign(crun as CardsFxState, { nodeVi: loaded()?.node.get(crun.node)?.vi ?? '', best: csave().best, story: storyNote(E().sy, 'voice'), goalNote: crun.done ? (crun.goalNote ??= goalNote(crun.t0)) : undefined }) : null), o => cBuilt(o), host.mascot ? (m, k) => host.mascot!(m, k) : undefined);
   }
   function cClose(): void { cview?.close(); cview = null; }
   function cBuilt(order: number[]): void {
@@ -1113,7 +1114,7 @@ export function init(host: EHost): EngineModule {
     if (coins) { const q = qsave(); q.coins += coins; q.day = today; r.gained += coins; }
     if (r.level.slots.every(x => r.found.has(x.en))) {
       const st = wheelStars(r.hints);
-      r.win = { stars: st, at: typeof performance !== 'undefined' ? performance.now() : 0 }; r.done = true;
+      r.win = { stars: st, at: typeof performance !== 'undefined' ? performance.now() : 0 }; r.done = true; r.goalNote = goalNote(r.t0);
       sv.runs++; sv.stars += st; sv.day = today; wk('star', st, 'wheel'); wk('play', 1, 'wheel');
       if (r.mode === 'level') sv.lv++; else sv.daily = { day: today, done: true, secs: Math.round((Date.now() - r.t0) / 1000), hints: r.hints, streak: nextStreak(sv.daily.done ? sv.daily.day : -9, sv.daily.streak, today) };
       addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: `wheel:${r.floor}`, dec: 'wheel:end', rule: `${RULE_ID}/${QUEST_VER}`, info: { ok: r.ok, of: r.n, hints: r.hints, bonus: r.bonusFound.size, mode: r.mode }, evs: e.ev.led.filter(x => x.ctx === 'wheel' && x.ts >= r.t0).map(x => x.id) }, false);
@@ -1211,6 +1212,7 @@ export function init(host: EHost): EngineModule {
         sv.runs++; sv.stars += st; sv.best = Math.max(sv.best, r.score); sv.day = today; wk('star', st, 'hunt'); wk('play', 1, 'hunt');
         if (r.mode === 'level') sv.lv++; else sv.daily = { day: today, done: true, streak: sv.daily.day === today - 1 && sv.daily.done ? sv.daily.streak + 1 : 1 };
       } else if (r.moves <= 0) { r.lose = { at: nowP }; r.over = true; sv.runs++; }
+      if (r.over) r.goalNote = goalNote(r.t0);
       if (r.over) addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: `hunt:${r.floor}`, dec: r.win ? 'hunt:win' : 'hunt:lose', rule: `${RULE_ID}/${QUEST_VER}`, info: { ok: r.ok, of: r.missions.length, moves: r.moves, score: r.score, mode: r.mode }, evs: e.ev.led.filter(x => x.ctx === 'hunt' && x.ts >= r.t0).map(x => x.id) }, false);
     } else if (v === 'no') r.combo = 0;
     r.coins = wallet();
@@ -1353,14 +1355,33 @@ export function init(host: EHost): EngineModule {
   // Tiến độ kỹ năng của mục tiêu (v69, bot L01): năng lực Can-do chỉ Đạt khi đủ mọi kỹ năng con, nên nhiều tuần liền con số đó có thể
   // đứng yên dù người học tiến bộ thật. Đếm thêm kỹ năng con (từ vựng, ngữ pháp, âm, chức năng) đã vững bằng bằng chứng thật — không tính
   // phần chỉ suy ra từ chẩn đoán — và số kỹ năng mới vững trong 7 ngày.
-  function skillsOf(v: EState, g: NonNullable<ReturnType<NonNullable<ReturnType<typeof loaded>>['goal']['get']>>): { solid: number; total: number; week: number; claimed: number } {
+  function skillsOf(v: EState, g: NonNullable<ReturnType<NonNullable<ReturnType<typeof loaded>>['goal']['get']>>): { solid: number; total: number; week: number; claimed: number; ids: Set<string>; solidIds: Set<string> } {
     const ix = loaded()!, today = host.today(), all = closure(ix, g.req.filter(r => r.type !== 'performance'), defaultLevel).filter(r => /^(u|g|ph|fn):/.test(r.node));
     let solid = 0, claimed = 0;
     const ids = new Set<string>();
     for (const r of all) { const s = nodeStat(host, v, r.node, r.level); if (s.pass && s.state === 'mastered') { solid++; ids.add(`${r.node}|${r.level}`); } else if (s.pass && s.state === 'inferred') claimed++; }
     const week = new Set(v.ev.snap.filter(s => s.kind === 'mastery' && s.dec === 'PASS' && s.day > today - 7 && ids.has(`${s.subj}|${s.lv}`)).map(s => s.subj)).size;
-    return { solid, total: all.length, week, claimed };
+    return { solid, total: all.length, week, claimed, ids: new Set(all.map(r => r.node)), solidIds: ids };
   }
+
+  // v110 Mục tiêu + tiến độ (goalbar.ts): gom số đã có cho thẻ đầu sảnh và dòng ở màn kết.
+  // Vừa vững (full) = Đạt ĐÚNG mức mục tiêu cần và đang vững thật, nên khớp với số "x/y kỹ năng đã vững". Đạt ở mức thấp hơn (part, ví dụ
+  // Vườn từ: nhận ra mặt chữ, mục tiêu cần tự nhớ ra) là tiến một bậc, báo riêng để không mâu thuẫn với con số trên.
+  function goalOf(v: EState) { const ix = loaded(); return ix ? v.goals.map(sg => ix.goal.get(sg.id)).find(Boolean) ?? null : null; }
+  function goalSum(v: EState, review = 0): { s: GoalSum; ids: Set<string>; solidIds: Set<string> } | null {
+    const g = goalOf(v);
+    if (!g) return null;
+    const r = readinessOf(host, v, g), sk = skillsOf(v, g);
+    return { s: goalSummary({ id: g.id, vi: g.vi, sk, ready: r.kind === 'mastery' ? { done: r.done, total: r.total, achieved: r.achieved } : null, missing: missingOf(host, v, g), review }), ids: sk.ids, solidIds: sk.solidIds };
+  }
+  function goalGained(v: EState, gs: { ids: Set<string>; solidIds: Set<string> }, t0: number): { full: string[]; part: string[] } {
+    const ix = loaded()!, full = new Set<string>(), part = new Set<string>();
+    for (const x of v.ev.snap) if (x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= t0 && gs.ids.has(x.subj)) (gs.solidIds.has(`${x.subj}|${x.lv}`) ? full : part).add(x.subj);
+    const vi = (n: string) => ix.node.get(n)?.vi ?? n;
+    return { full: [...full].map(vi), part: [...part].filter(n => !full.has(n)).map(vi) };
+  }
+  // Chữ cho lớp phủ toàn màn hình (Vòng Chữ, Mỏ Chữ, Bài Câu), tính một lần lúc ván xong.
+  function goalNote(t0: number): string { const v = V(), gs = goalSum(v); return gs ? goalText(gs.s, goalGained(v, gs, t0).full) : ''; }
 
   // Điểm nghẽn (v70, bot L02): "bạn đang yếu ở X, và X đang chặn bạn" — trong các phần đã có bằng chứng mà chưa Đạt ở biên lộ trình, phần
   // mở đường cho nhiều năng lực nhất của mục tiêu; kèm loại lỗ hổng (đọc từ bằng chứng) để người học biết vì sao app cho luyện phần đó.
@@ -1450,7 +1471,8 @@ export function init(host: EHost): EngineModule {
     if (first) host.save();
     const b = town(E()), gain = before === null ? [] : townGain(before, b);
     if (first) host.cheer?.(gain.length > 0);
-    return viewTownGain(c, gain, b.find(x => x.game === game));
+    const gs = goalSum(c.e), gl = gs ? goalLine(host.esc, gs.s, cur ? goalGained(c.e, gs, cur.t0) : { full: [], part: [] }, LEDGER.has(game) ? ev ?? 0 : null) : '';
+    return gl + viewTownGain(c, gain, b.find(x => x.game === game));
   }
   function markDone(game: GameId): void { const sv = gpsave(), today = host.today(); if (sv.day === today && sv.done.includes(game)) return; if (sv.day !== today) { sv.day = today; sv.done = []; sv.plan = []; } sv.done.push(game); host.save(); }
 
@@ -1518,8 +1540,8 @@ export function init(host: EHost): EngineModule {
     if (qrun?.mode === 'board') return qrun.done ? viewBoardEnd(c, qrun, bsave()) : viewBoard(c, qrun, bsave(), wallet());
     if (qrun?.done) return viewQuestEnd(c, qrun);
     if (qrun) { qrun.revive = qrun.mode === 'tower' && !qrun.revived && qrun.i + 1 < qrun.plan.length && wallet() >= REVIVE ? REVIVE : 0; return viewQuestRun(c, qrun); }
-    const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave()));
+    const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null, dir = c.e.goals.length ? director() : null, gs = dir ? goalSum(c.e, dir.x.review) : null;
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, dir, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '', gs ? viewGoalBar(c, gs.s) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave()));
   }
   const routes: Record<string, (c: ECtx) => string> = {
     measure: c => {

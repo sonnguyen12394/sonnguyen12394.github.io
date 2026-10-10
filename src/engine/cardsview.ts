@@ -7,7 +7,7 @@ import type { OrderItem } from './host.ts';
 import { TABLES, PLAYS, target, CHARMS, type Charm } from './cards.ts';
 
 export interface CardsRun {
-  floor: number; seed: number; t0: number; n: number; ok: number; coins: number; wrong: string[]; passed?: string[]; done: boolean;
+  floor: number; seed: number; t0: number; n: number; ok: number; coins: number; wrong: string[]; passed?: string[]; done: boolean; goalNote?: string;
   table: number; play: number; tableScore: number; total: number; streak: number; charms: string[]; won: number;
   ch: Challenge | null; node: string; item: OrderItem | null; novel: boolean;
   hand: string[]; built: number[];                       // lá trong tay (đã trộn) · chỉ số các lá đã xếp theo thứ tự

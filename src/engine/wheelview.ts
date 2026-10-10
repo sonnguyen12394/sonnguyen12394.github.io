@@ -11,6 +11,7 @@ export interface WheelState {
   win: { stars: number; at: number } | null;
   gold: number; combo: number; free: number; jar: number; jarMax: number; scene: number;   // v94: ô vàng, combo, gợi ý miễn phí, hũ từ thưởng, phong cảnh
   note?: { text: string; t: number } | null;   // dòng thông báo ngắn trên vòng (combo, ô vàng, hũ đầy)
+  goalNote?: string;                           // v110: dòng tiến độ mục tiêu ở hộp thắng (chữ thuần)
 }
 type Pt = { x: number; y: number };
 interface Particle { x: number; y: number; vx: number; vy: number; life: number; c: string; r: number }
@@ -235,6 +236,7 @@ export function openWheel(st: () => WheelState | null, onWord: (w: string) => vo
         winBox.hidden = false;
         winBox.innerHTML = `${mascot ? `<span aria-hidden="true">${mascot('party', 64)}</span>` : ''}<p>${s.win.stars} sao · +${s.gained} xu${s.bonusFound.size ? ` · ${s.bonusFound.size} từ thưởng` : ''}</p>
           <div class="whrow">${s.daily ? '<button class="whbig" data-e="whshare">📤 Chia sẻ kết quả</button>' : '<button class="whbig" data-e="whnext">▶ Màn tiếp</button>'}<button class="whb wide" data-e="whexit">Về sảnh</button></div>`;
+        if (s.goalNote) { const g = document.createElement('p'); g.className = 'whgoal'; g.textContent = s.goalNote; winBox.querySelector('.whrow')!.before(g); }
         live.textContent = `Hoàn thành màn, ${s.win.stars} sao.`;
         setTimeout(() => (winBox.querySelector('.whbig') as HTMLElement | null)?.focus(), 50);
       } else { winBox.hidden = true; winBox.innerHTML = ''; }

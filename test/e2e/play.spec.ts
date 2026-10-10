@@ -27,7 +27,7 @@ test('người mới: Bắt đầu → dò ngắn (≤ 8 phần) → mục tiêu
   await page.getByRole('button', { name: /Bắt đầu leo tháp/ }).click();
   await page.getByRole('heading', { name: /Hôm nay chơi gì/ }).waitFor({ timeout: 15000 }); await openAll(page);
   await expect(page.getByRole('heading', { name: /Leo tháp tiếng Anh/ })).toBeVisible();
-  await expect(page.getByText(/kỹ năng đã vững/)).toBeVisible();   // v69: tiến độ kỹ năng con, không chỉ số năng lực Can-do
+  await expect(page.getByText(/📈 \d+\/\d+ kỹ năng đã vững/)).toBeVisible();   // v69: tiến độ kỹ năng con, không chỉ số năng lực Can-do
   await expect(page.locator('#bnav button[aria-current="page"], #nav button[aria-current="page"]').first()).toContainText('Chơi');
   // Mở lại app: màn chính là tháp (chờ dữ liệu nền tải xong trước, như trên).
   await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });

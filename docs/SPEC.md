@@ -63,6 +63,24 @@ Mục tiêu → Target Model → Chẩn đoán → Trạng thái người học 
        có   → Đạt mục tiêu (kỳ thi: bằng điểm thi thật)
 ```
 
+### Hợp đồng hiển thị tiến độ (v110)
+
+Spec định nghĩa kỹ cách *tính* Readiness nhưng trước v110 không nói người học phải *thấy* gì ở đâu. Hệ quả: các đợt nâng game (v89–v109) làm thưởng game (xu, ★ Phố, sự kiện tuần) nổi lên đầu sảnh, còn tiến độ học thật bị đẩy vào mục tháp đang đóng. Người học chơi mà không biết mình đang tiến tới đâu. Luật từ v110 (theo v2.4 §XIX "Play → Goal → Progress → Next Challenge", §XVII, P20):
+
+1. **Sảnh Chơi mở đầu bằng thẻ Mục tiêu**, trên mọi phần thưởng game và trên "▶ Chơi tiếp". Thẻ có:
+   - tên mục tiêu;
+   - số kỹ năng đã vững bằng bằng chứng thật (tách riêng phần chỉ suy ra từ xếp lớp);
+   - số vững thêm trong 7 ngày;
+   - **mốc gần**: 3 năng lực gần đạt nhất;
+   - số phần sắp quên.
+   
+   Chạm thẻ mở trang "Chưa đạt … vì còn thiếu".
+2. **Mọi màn kết game có một dòng nối ván với mục tiêu**, kể cả khi ván không làm vững thêm gì. Dòng này nói thật:
+   - "vững thêm X" chỉ khi đạt **đúng mức mục tiêu cần**;
+   - đạt ở mức thấp hơn thì báo "tiến một bậc";
+   - không có gì thì báo số câu bằng chứng.
+3. **Readiness CEFR không hiện bằng phần trăm.** Hiện số năng lực đã Đạt / cần và danh sách còn thiếu.
+
 ## Các mục được sửa
 
 Bốn mục của spec gốc được sửa cho khớp quyết định của người sáng lập; phần còn lại giữ nguyên.
@@ -309,4 +327,5 @@ Mỗi mốc một PR, chấm lại 200 + 400 tiêu chí sau mỗi mốc.
 | v107 | Cảnh sống cho 7 game kỹ năng còn lại (GAME-CRITERIA §10.18) | `scenefx.ts`: Xưởng (băng chuyền), Thư (bàn viết + cư dân), Thám tử (bảng manh mối), Đài (máy thu, sóng rõ dần), Karaoke (sân khấu, đèn rọi), Robot (pin món đã lấy), Leo tháp (người leo bậc, tim); chỉ trình bày, đọc trạng thái lượt; Karaoke dòng kế bỏ mờ (WCAG AA) |
 | v108 | Hiệu ứng trên bàn chơi có sẵn (GAME-CRITERIA §10.19) | `#stagepop`: hạt nổ vẽ trên thẻ (trước đây sau thẻ đặc nên không thấy), không chặn chạm; `stageBurst`: Xếp Khối nổ hàng, Câu đố giải nhóm, Thám hiểm mở ô, Bàn Cờ xúc xắc xoay / xây nhà |
 | v109 | Trò nhanh cũ lên sân khấu + bảng chấm lại (GAME-CRITERIA §10.20) | `EM.stageApp`: Tốc độ 60 giây, Ghép cặp, Thách đấu toàn màn, ✕ = thoát trò (xác nhận khi đang chơi), điểm tăng → nảy + hạt; mọi game đã qua ít nhất một đợt nâng; bảng chấm 17 game + phản biện: bước tiếp theo là làm lại cơ chế theo số liệu chơi thật, không dàn trải |
+| v110 | Mục tiêu + tiến độ lên sảnh và màn kết (mục "Hợp đồng hiển thị tiến độ") | `goalbar.ts`: thẻ 🎯 Mục tiêu đầu sảnh (kỹ năng vững thật / suy ra, +7 ngày, 3 năng lực gần đạt nhất, phần sắp quên; chạm → trang mục tiêu); dòng 🎯 ở màn kết mọi game qua `endExtras`, và ở lớp phủ Vòng Chữ / Mỏ Chữ / Bài Câu; "vững thêm" chỉ tính khi Đạt đúng mức mục tiêu cần, mức thấp hơn báo "tiến một bậc" (trước đây Vườn báo "Lên cấp" ở mức 2 trong khi mục tiêu cần mức 3); chip Sẵn sàng CEFR bỏ phần trăm (§XVII); không đổi luật chơi, bằng chứng, bộ não chọn game |
 | — | Tiêu chí game theo chức năng | `docs/GAME-CRITERIA.md`: 13 chức năng học của app; 10 tiêu chí chung (G1–G10, thang 10, trọng số; bắt buộc G3 ≥ 8 và G9 ≥ 8) + tiêu chí riêng theo chức năng; chấm 5 game hiện có (Leo tháp 7,1 · Xếp Khối 7,6 · Bàn Cờ 7,1 · Tốc độ 60 giây 5,6 · Ghép cặp 5,9); thứ tự game nên làm tiếp |

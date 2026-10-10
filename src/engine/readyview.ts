@@ -72,7 +72,7 @@ export function readyChip(r: Ready): string {
     return r.p === null ? `<span class="pill">Sẵn sàng: thiếu ${r.missing.map(k => SK_VI[k]).join(', ')}</span>` : `<span class="pill">Sẵn sàng: ${pct(r.p)}</span>`;
   }
   if (r.achieved) return '<span class="pill" style="color:var(--good)">✓ Đạt mục tiêu</span>';
-  return `<span class="pill">Sẵn sàng: ${pct(r.p)}</span>`;
+  return `<span class="pill">Sẵn sàng: ${r.done}/${r.total} năng lực</span>`;   // v110 §XVII: CEFR không báo bằng phần trăm
 }
 
 function missingActs(r: ExamReady): string {

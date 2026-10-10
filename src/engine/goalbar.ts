@@ -1,0 +1,70 @@
+// v110 Mục tiêu + tiến độ ở sảnh Chơi và màn kết (spec v2.4 §XIX "Play → Goal → Progress → Next Challenge", §XVII, P20).
+// Trước đây engine đã tính đủ (readiness, phần còn thiếu, kỹ năng vững, +7 ngày) nhưng chỉ hiện trong mục tháp đang đóng hoặc cách
+// 2 lần chạm; phần đầu sảnh toàn thưởng game. Ở đây chỉ gom số đã có và trình bày; không thêm dữ liệu lưu, không đổi bằng chứng.
+// Thuần hàm: main.ts gom dữ liệu vào.
+
+import type { ECtx } from './views.ts';
+
+export interface GoalIn {
+  id: string; vi: string;
+  sk: { solid: number; total: number; week: number; claimed: number };           // skillsOf (main.ts): kỹ năng con đã vững bằng bằng chứng thật
+  ready: { done: number; total: number; achieved: boolean } | null;              // readiness CEFR (năng lực Can-Do của mục tiêu)
+  missing: Array<{ vi: string; pct: number }>;                                   // missingOf: đã sắp gần đạt nhất trước
+  review: number;                                                                // phần sắp quên (cùng số bộ não chọn game dùng)
+}
+export interface GoalSum {
+  id: string; vi: string; solid: number; total: number; claimed: number; week: number;
+  done: number; need: number; achieved: boolean; near: string[]; more: number; review: number;
+}
+
+export const NEAR_N = 3;
+
+export function goalSummary(g: GoalIn): GoalSum {
+  const near = g.missing.slice(0, NEAR_N).map(m => m.vi);
+  return {
+    id: g.id, vi: g.vi, solid: g.sk.solid, total: g.sk.total, claimed: Math.min(g.sk.claimed, Math.max(0, g.sk.total - g.sk.solid)), week: g.sk.week,
+    done: g.ready?.done ?? 0, need: g.ready?.total ?? 0, achieved: !!g.ready?.achieved, near, more: Math.max(0, g.missing.length - near.length), review: g.review,
+  };
+}
+
+const pc = (n: number, d: number) => (d ? Math.round((n / d) * 100) : 0);
+
+// Thẻ đầu sảnh. Thanh hai lớp: vững thật (đậm) và chỉ suy ra từ xếp lớp (nhạt, đang kiểm dần) để không thổi phồng tiến độ.
+export function viewGoalBar(c: ECtx, s: GoalSum): string {
+  const esc = c.host.esc;
+  if (s.achieved) return `<section class="gbar stack done" aria-label="Mục tiêu của bạn"><span class="eyebrow">🎯 Mục tiêu</span>
+    <b>✓ Đã đạt ${esc(s.vi)}</b><p class="hint">Đủ năng lực, đủ bài làm thật và không quên trong 14 ngày. Chọn mục tiêu cấp kế để tiếp tục leo.</p>
+    <div class="row"><button class="btn primary small" data-e="go" data-r="goals">Chọn mục tiêu tiếp</button></div></section>`;
+  const week = s.week ? `<span class="gbup">+${s.week} tuần này</span>` : '<span class="hint">tuần này chưa vững thêm phần nào</span>';
+  const near = s.near.length ? `<span class="gbnear"><b>Gần đạt nhất:</b> ${s.near.map(esc).join('; ')}${s.more ? ` <span class="hint">và ${s.more} năng lực khác</span>` : ''}</span>` : '';
+  const lines = [
+    s.need ? `${s.done}/${s.need} năng lực của mục tiêu đã Đạt` : '',
+    s.review ? `${s.review} phần đã học đang sắp quên` : '',
+  ].filter(Boolean).join(' · ');
+  return `<button class="gbar stack" data-e="go" data-r="goal/${esc(s.id)}">
+    <span class="spread"><span class="eyebrow">🎯 Mục tiêu: ${esc(s.vi)}</span><span class="hint">Xem chi tiết ›</span></span>
+    <span class="spread"><b>${s.solid}/${s.total} kỹ năng đã vững</b>${week}</span>
+    <span class="bar gbbar" role="progressbar" aria-label="Kỹ năng đã vững" aria-valuemin="0" aria-valuemax="${s.total}" aria-valuenow="${s.solid}"><i style="width:${pc(s.solid, s.total)}%"></i><i class="gbclaim" style="width:${pc(s.claimed, s.total)}%"></i></span>
+    ${s.claimed ? `<span class="hint">Phần nhạt: ${s.claimed} kỹ năng app đoán bạn đã biết từ lúc xếp lớp, sẽ kiểm dần.</span>` : ''}
+    ${near}${lines ? `<span class="hint">${lines}</span>` : ''}</button>`;
+}
+
+// Dòng nối ván vừa chơi với mục tiêu, cho MỌI màn kết. Nói thật: không có gì mới vững thì nói vậy (P13: điểm game không phải năng lực).
+// ev: số câu bằng chứng ván này (null = game kỹ năng, lưu vào Can-Do); g.full: vừa vững đủ mức mục tiêu cần; g.part: Đạt ở mức thấp hơn.
+export function goalLine(esc: (s: unknown) => string, s: GoalSum, g: { full: string[]; part: string[] }, ev: number | null): string {
+  const head = `🎯 ${esc(s.vi)}: ${s.solid}/${s.total} kỹ năng đã vững`, gained = g.full;
+  const step = g.part.length ? `<span>↗ Tiến một bậc: ${g.part.slice(0, 3).map(esc).join(', ')}${g.part.length > 3 ? '…' : ''}. Mục tiêu cần mức cao hơn (tự nhớ ra, tự dùng), chơi tiếp để vững hẳn.</span>` : '';
+  const body = gained.length
+    ? `<b>⬆ Vững thêm ${gained.length}: ${gained.slice(0, 4).map(esc).join(', ')}${gained.length > 4 ? '…' : ''}</b>`
+    : step ? ''
+    : ev === null ? 'Bài làm đã lưu vào phần kỹ năng (Can-Do) của mục tiêu.'
+    : ev > 0 ? `Ván này thêm ${ev} câu bằng chứng, chưa đủ để vững thêm kỹ năng nào. Vững cần đúng nhiều lần, ở nhiều dạng câu.`
+    : 'Ván này chưa có câu tính vào năng lực.';
+  const near = !gained.length && s.near[0] ? `<span class="hint">Gần đạt nhất: ${esc(s.near[0])}</span>` : '';
+  return `<section class="gline${gained.length ? ' up' : ''}" role="status"><div class="stack" style="gap:4px"><span class="eyebrow">${head}</span>${body ? `<span>${body}</span>` : ''}${step}${near}</div></section>`;
+}
+
+// Bản chữ thuần cho lớp phủ toàn màn hình (Vòng Chữ, Mỏ Chữ, Bài Câu dùng textContent / chuỗi đã thoát).
+export function goalText(s: GoalSum, gained: string[]): string {
+  return gained.length ? `🎯 ${s.vi}: vững thêm ${gained.slice(0, 3).join(', ')}${gained.length > 3 ? '…' : ''} (${s.solid}/${s.total})` : `🎯 ${s.vi}: ${s.solid}/${s.total} kỹ năng đã vững`;
+}
