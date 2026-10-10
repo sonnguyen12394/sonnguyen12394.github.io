@@ -69,18 +69,18 @@ test('v97 Bài Câu: kéo thả chuột thật vào vùng câu, chèn đúng ch�
   const pk = await peek(page), order: number[] = pk.order;
   expect(order.length).toBeGreaterThanOrEqual(2);
   const z = await zone(page);
-  // Vị trí lá khi đã đứng yên (lá trượt bằng transition 0,22 s; máy chậm thì lâu hơn): đọc lại tới khi hai lần liền giống nhau.
-  // Lá đã vào câu: chờ tới khi nó thật sự nằm trong vùng câu (WebKit ở CI vẽ khung chậm: lá có thể chưa kịp bắt đầu trượt, hai lần đọc
-  // giống nhau vẫn là vị trí cũ trong tay), rồi mới đọc vị trí đứng yên.
+  // atRow: lá đã vào câu và nằm trong vùng câu, rồi đọc vị trí đứng yên (at).
+  const dlog = () => page.evaluate(() => ((document.getElementById('whfx') as any)?._log?.() ?? []).join(' | '));
   const atRow = async (k: number) => { await expect.poll(async () => { const t = (await tiles(page))[k], zz = await zone(page); return t.on && t.y >= zz.y && t.y <= zz.y + zz.h; }, { timeout: 5000 }).toBe(true); return at(k); };
-  const at = async (k: number) => { let a = (await tiles(page))[k]; for (let n = 0; n < 30; n++) { await page.waitForTimeout(80); const b = (await tiles(page))[k]; if (Math.abs(a.x - b.x) < 0.5 && Math.abs(a.y - b.y) < 0.5) return b; a = b; } return a; };
+  // Lá đứng yên = tâm lá trùng chỗ engine đặt cho nó (tx, ty). Không đoán bằng "hai lần đọc giống nhau": WebKit CI có thể chưa kịp bắt
+  // đầu trượt, hai lần đọc vẫn ra vị trí cũ (chỗ lá khác sắp trượt vào) → kéo nhầm lá.
+  const at = async (k: number) => { await expect.poll(async () => { const t = (await tiles(page))[k]; return Math.abs(t.x - t.tx) < 1 && Math.abs(t.y - t.ty) < 1; }, { timeout: 5000, message: `lá ${k} chưa tới chỗ: ${await dlog()}` }).toBe(true); return (await tiles(page))[k]; };
   // Kéo lá thứ hai của câu vào trước, rồi kéo lá đầu vào TRƯỚC nó (chèn theo vị trí con trỏ).
   await dragTo(page, await at(order[1]!), { x: z.x + z.w / 2, y: z.y + z.h / 2 });
   const second = await atRow(order[1]!);
   await dragTo(page, await at(order[0]!), { x: second.x - 40, y: second.y });
   // Thứ tự trong câu: order[0], order[1]
   const rowOrder = async () => (await tiles(page)).map((t: any, i: number) => ({ ...t, i })).filter((t: any) => t.on).sort((a: any, b: any) => a.k - b.k).map((t: any) => t.i);   // thứ tự logic trong câu (lá vừa thả có thể còn đang trượt)
-  const dlog = () => page.evaluate(() => ((document.getElementById('whfx') as any)?._log?.() ?? []).join(' | '));
   expect(await rowOrder(), `nhật ký kéo thả: ${await dlog()}`).toEqual([order[0], order[1]]);
   // Kéo lá ra khỏi vùng câu → bỏ ra.
   const one = await atRow(order[1]!);
