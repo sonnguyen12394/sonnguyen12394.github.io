@@ -587,3 +587,132 @@ Nguồn xu hướng:
 - **Lý do luôn nói nhu cầu** (ví dụ "4 từ đến ngày tưới…", "Ngữ pháp đang học: …"), không nói điểm game (P13).
 - **Mỗi lựa chọn có snapshot `dir`** (Vì sao? / replay).
 - **Người học vẫn tự chọn được** trong "Tất cả trò chơi (tự chọn)".
+
+## 8. Trục T: tiêu chí trải nghiệm người chơi (v89)
+
+### 8.0 Vì sao thêm một trục riêng
+
+Bộ G1–G10 đo **học có thật không**. Nó chưa đo **game có đủ hấp dẫn để người ta muốn chơi không**:
+- độ hấp dẫn chỉ có một dòng (G7 ×2), tức 2/14 ≈ 14% tổng điểm. Một game nhàm vẫn đạt 7,5 để phát hành;
+- G7 quá thô: gần như mọi game đều 6–7, nên không biết game nhàm vì lý do gì và không lập được việc sửa;
+- cổng bắt buộc chỉ có G3 và G9, không có cổng nào về trải nghiệm;
+- mọi điểm đều tự chấm. Bot L01–L03 đo việc học, không đo được "vui";
+- gộp học và chơi thành một trung bình thì điểm học cao che được điểm chơi thấp.
+
+Vì vậy tách thành **hai trục độc lập**: G (học) và T (trải nghiệm). **Không lấy trung bình hai trục.** G7 giữ lại làm điểm tóm tắt; chi tiết nằm ở T.
+
+### 8.1 Mười tiêu chí chung T1–T10 (mốc 0 / 5 / 10)
+
+| # | Tiêu chí | 0 điểm | 5 điểm | 10 điểm |
+|---|---|---|---|---|
+| T1 (×2) | **Vòng lặp lõi rõ** | Không hiểu phải làm gì | Hiểu sau khi đọc hướng dẫn | Hiểu trong ≤ 10 giây, không cần đọc; mỗi lượt đi đủ mục tiêu → hành động → phản hồi → phần thưởng |
+| T2 (×2) | **Quyết định có ý nghĩa** | Chỉ chọn đáp án | Có lựa chọn, nhưng luôn có một cách tối ưu hiển nhiên | Mỗi lượt có đánh đổi chiến thuật ngoài đáp án (đặt ở đâu, dùng bùa nào, phục vụ ai trước) và **không làm đổi bằng chứng** (G3) |
+| T3 | **Cảm giác tay (juice)** | Tĩnh, chỉ đổi màu nút | Có âm và hiệu ứng đơn | Phản hồi ≤ 100 ms; hình, tiếng, chuyển động phân tầng: nhỏ cho mỗi lượt, lớn cho combo / hoàn thành |
+| T4 | **Đường cong thử thách** | Phẳng hoặc gãy | Màn sau khó hơn màn trước | Độ khó *game* tăng trong ván, có nhịp căng – nghỉ; tỉ lệ đúng phần ngôn ngữ giữ 70–85% (P14) |
+| T5 (×2) | **Tiến trình nhiều tầng** | Không có gì giữ lại | Có điểm / kỷ lục | Ngắn (trong ván) + trung (tuần: sưu tập, nâng cấp) + dài (một thế giới lớn dần, thấy được) |
+| T6 | **Đa dạng & bất ngờ** | Ván thứ 5 giống ván 1 | Có biến thể ngẫu nhiên | Có sự kiện, trùm, luật xoay vòng; vẫn thấy mới sau 10 ván |
+| T7 | **Bản sắc & cảm xúc** | Chỉ emoji / biểu mẫu | Có chủ đề | Nhân vật, thế giới, giọng văn nhất quán; người chơi quan tâm điều gì xảy ra tiếp |
+| T8 | **Nhịp phiên & điểm dừng** | Ván lê thê hoặc dừng đột ngột | Ván có kết thúc | Ván 3–8 phút, kết thúc có tổng kết, móc quay lại không dựa vào sợ mất (G9) |
+| T9 | **Rào cản vào thấp** | Cần hướng dẫn dài, dễ kẹt | Có hướng dẫn | Làm quen ≤ 1 màn, thua nhẹ nhàng, chơi được một tay, khi tắt tiếng, với trình đọc màn hình |
+| T10 (×2) | **Muốn chơi lại (đo thật)** | Số liệu cho thấy ít ai chơi lại | Chưa đo (mặc định 5) | Đạt ngưỡng ở §8.3 |
+
+Điểm T = trung bình có trọng số (÷ 14).
+
+### 8.2 Tiêu chí riêng theo thể loại
+
+| Thể loại | Game trong app | Tiêu chí riêng |
+|---|---|---|
+| Arcade / phản xạ | ⏱️ Tốc độ 60 giây, 🎯 Bắt Âm | Nhịp tăng dần; combo / chuỗi; tốc độ chỉ là lớp vui, không vào năng lực (P15) |
+| Xếp hình / đố | 🧱 Xếp Khối Chữ, 📅 Câu đố ngày, 🔗 Ghép cặp | Có khoảnh khắc "à ra thế"; không có lời giải mơ hồ; câu đố ngày giống nhau cho mọi người để so / chia sẻ |
+| Xây bộ bài | 🃏 Bài Câu | Tổ hợp bùa đa dạng; rủi ro – phần thưởng mỗi bàn; bộ sưu tập giữ lại giữa các ván |
+| Quản lý / phục vụ | ☕ Quán Cà Phê, 🛠️ Xưởng sửa câu | Phải ưu tiên giữa nhiều việc; nâng cấp cửa hàng thấy được; khách có cá tính |
+| Truyện / điều tra | 🔍 Thám tử, 📻 Đài phát thanh | Bí ẩn có cú lật; manh mối nối với nhau; lựa chọn của người chơi đổi kết cục |
+| Nuôi trồng nhẹ nhàng | 🌱 Vườn từ, ✉️ Thư gửi cư dân phố | Chăm sóc không bị phạt; thế giới đẹp dần; quan hệ với nhân vật |
+| Bàn cờ / leo tháp | 🎲 Bàn Cờ Phố, 🏰 Leo tháp | Rủi ro có kiểm soát; mốc rõ; lượt không có câu không kéo dài (G8) |
+| Ra lệnh / lập trình | 🤖 Ra lệnh cho robot | Có nhiều lời giải; lời giải gọn được thưởng; màn sau dùng lại khái niệm màn trước |
+| Trình diễn | 🎤 Karaoke hội thoại | Theo nhịp; có khoảnh khắc "biểu diễn" (tổng kết, nghe lại giọng mình) |
+| Khám phá | 🗺️ Thám hiểm sương mù | Tò mò về ô chưa mở; thưởng khám phá không gắn với đúng / sai (F1b) |
+
+### 8.3 Đo bằng số liệu thay vì tự chấm
+
+Mỗi game đếm trên máy (tier 0 telemetry, `src/engine/ev/types.ts`), chỉ gửi đi khi người học đã bật chia sẻ thống kê:
+
+| Chỉ số | Cách tính | Ngưỡng đạt | Kiểm cho |
+|---|---|---|---|
+| Chơi lại tự nguyện | Ván mở từ "Tất cả trò chơi" / "Chơi lại", **không** qua "▶ Chơi tiếp" (director có snapshot `dir` nên tách được) | ≥ 25% số ván | T10 |
+| Bỏ giữa ván | Ván bắt đầu mà không tới màn kết | < 20% | T8, T9 |
+| Thời gian tới hành động đầu tiên | Từ lúc mở game tới lượt trả lời / thao tác đầu | ≤ 10 giây | T1, T9 |
+| Thời lượng ván | Trung vị | 3–8 phút | T8 |
+
+Bot không đo được cảm xúc. Bổ sung **playtest 5 người mỗi game**: quan sát chỗ kẹt, cuối ván hỏi "Bạn có muốn chơi thêm một ván không?".
+
+### 8.4 Luật phát hành mới
+
+- Giữ nguyên: G ≥ 7,5, G3 ≥ 8, G9 ≥ 8.
+- Thêm: **T ≥ 7 và không tiêu chí T nào dưới 5**.
+- Xếp mỗi game vào ma trận hai trục:
+
+| | T ≥ 7 (vui) | T < 7 (nhàm) |
+|---|---|---|
+| **G ≥ 7,5 (học tốt)** | Quảng bá, đưa lên đầu | Sửa trải nghiệm |
+| **G < 7,5 (học kém)** | Sửa luật chơi | Ẩn khỏi sảnh hoặc làm lại |
+
+### 8.5 Chấm T cho 17 game hiện có (v88)
+
+**Giới hạn của lần chấm này:**
+- Chấm theo mã nguồn và mô tả, **chưa có số liệu và chưa playtest**.
+- T10 để mặc định 5 cho mọi game ("chưa đo").
+- Các điểm này là giả thuyết để kiểm lại bằng §8.3, không phải kết luận.
+
+| Game | T1 ×2 | T2 ×2 | T3 | T4 | T5 ×2 | T6 | T7 | T8 | T9 | T10 ×2 | **T** | G (§4–§6) | Ô ma trận |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 📅 Câu đố ngày | 8 | 7 | 6 | 6 | 6 | 7 | 4 | 9 | 8 | 5 | **6,6** | 7,9 | Học tốt + nhàm |
+| 🧱 Xếp Khối Chữ | 8 | 8 | 7 | 6 | 5 | 5 | 4 | 8 | 8 | 5 | **6,4** | 7,6 | Học tốt + nhàm |
+| 🤖 Ra lệnh cho robot | 7 | 9 | 6 | 6 | 5 | 6 | 6 | 7 | 6 | 5 | **6,4** | 7,9 | Học tốt + nhàm |
+| 🌱 Vườn từ | 8 | 3 | 6 | 6 | 8 | 4 | 7 | 9 | 9 | 5 | **6,4** | 8,1 | Học tốt + nhàm |
+| ☕ Quán Cà Phê | 8 | 4 | 6 | 5 | 7 | 5 | 7 | 8 | 8 | 5 | **6,2** | 8,0 | Học tốt + nhàm |
+| 🎲 Bàn Cờ Phố | 7 | 5 | 6 | 4 | 8 | 6 | 6 | 6 | 7 | 5 | **6,1** | 7,1 | Cả hai thấp |
+| 🃏 Bài Câu | 6 | 8 | 6 | 7 | 5 | 6 | 4 | 7 | 6 | 5 | **6,0** | 8,3 | Học tốt + nhàm |
+| ✉️ Thư gửi cư dân phố | 7 | 6 | 4 | 6 | 6 | 6 | 7 | 5 | 6 | 5 | **5,9** | 7,8 | Học tốt + nhàm |
+| 🗺️ Thám hiểm sương mù | 8 | 6 | 6 | 5 | 5 | 5 | 6 | 5 | 8 | 5 | **5,9** | 7,9 | Học tốt + nhàm |
+| 🎯 Bắt Âm | 9 | 3 | 7 | 6 | 5 | 4 | 4 | 8 | 7 | 5 | **5,7** | 8,2 | Học tốt + nhàm |
+| 🔍 Thám tử | 7 | 4 | 5 | 5 | 5 | 6 | 6 | 7 | 8 | 5 | **5,6** | 7,8 | Học tốt + nhàm |
+| 🛠️ Xưởng sửa câu | 8 | 3 | 6 | 5 | 5 | 5 | 5 | 8 | 8 | 5 | **5,6** | 8,1 | Học tốt + nhàm |
+| 🏰 Leo tháp | 7 | 3 | 4 | 6 | 5 | 6 | 5 | 8 | 8 | 5 | **5,5** | 7,1 | Cả hai thấp |
+| 🔗 Ghép cặp | 9 | 4 | 5 | 3 | 4 | 3 | 3 | 8 | 9 | 5 | **5,4** | 6,5 | Cả hai thấp |
+| ⏱️ Tốc độ 60 giây | 9 | 2 | 5 | 4 | 4 | 3 | 3 | 9 | 9 | 5 | **5,2** | 6,1 | Cả hai thấp |
+| 📻 Đài phát thanh | 7 | 3 | 4 | 5 | 5 | 6 | 5 | 7 | 6 | 5 | **5,2** | 7,6 | Học tốt + nhàm |
+| 🎤 Karaoke hội thoại | 7 | 3 | 5 | 5 | 4 | 6 | 5 | 7 | 6 | 5 | **5,1** | 7,6 | Học tốt + nhàm |
+
+Căn cứ chính:
+- **T2:** 10/17 game có hành động chính chỉ là chọn một đáp án. Riêng Xếp Khối (đặt khối), Bài Câu (6 bùa trong `cards.ts`), Robot (tự lên đường đi), Câu đố ngày (suy luận nhóm) có quyết định ngoài đáp án.
+- **T3:** chỉ có 6 âm tổng hợp (`sfx.ts`: ok / bad / place / clear / boom / end). Leo tháp không phát âm nào, trừ khi chạy ở chế độ Xếp Khối (`main.ts` dòng `if (qrun.mode === 'blocks') sfx(...)`). Hiệu ứng lớn khi hoàn thành chỉ có ở Xếp Khối (`bkboom`).
+- **T5:** mỗi game giữ kỷ lục riêng. Ví (`qsave().coins`) dùng chung nhưng chỉ tiêu được ở Bàn Cờ Phố. Quà của Thư (`GIFTS`, 8 món) chỉ hiện ở đầu màn Thư; đồ trang trí Quán (`DECOR`, 7 món) chỉ hiện trong Quán. Vườn từ có tiến trình nhiều ngày thật (cây lớn theo bậc).
+- **T7:** hầu hết dùng emoji. Chưa có nhân vật đi xuyên các game (mascot Tí có ở phần học trong `app.js`, chưa xuất hiện trong màn game nào của `src/engine/`).
+
+**Đối chiếu với G7 cũ:** nhóm thấp nhất (Karaoke, Đài, Tốc độ, Leo tháp) khớp với các game có G7 4–6. T không mâu thuẫn với G7, chỉ chỉ rõ thấp vì đâu.
+
+### 8.6 Nhận xét gốc rễ
+
+**Kết luận thẳng:** theo luật §8.4, **chưa game nào đạt trục T** (cao nhất 6,6). Có 13/17 game nằm ở ô "Học tốt + nhàm". Phần học đã vững sau v73–v88; **điểm nghẽn bây giờ là độ hấp dẫn**. Bốn nguyên nhân chung cho cả app:
+
+1. **Câu hỏi khoác áo game (T2).** Ở 10 game, người chơi chỉ chọn đáp án; phần "game" là hình minh hoạ. Đây là gốc rễ của G1 thấp đã nêu ở §4, chỉ được sửa ở một số game.
+2. **Tiến trình rời rạc (T5).** 17 kho điểm riêng, không có một thế giới chung lớn dần. App đã có sẵn chủ đề "Phố" (Bàn Cờ Phố, Thư gửi cư dân phố) nhưng quà và trang trí không về chung một chỗ.
+3. **Thiếu bản sắc (T7).** Không có nhân vật hay câu chuyện nối các game, nên người chơi không có lý do cảm xúc để quay lại.
+4. **Không đo (T10).** Không biết game nào thật sự được chơi lại. Mọi điểm T hiện tại đều là ước đoán.
+
+**Không nên làm game thứ 18.** 17 game với chiều sâu mỏng là dàn trải. Nên làm sâu các game đã có và gộp / ẩn game yếu.
+
+### 8.7 Việc sửa ưu tiên (lợi ích ÷ công sức)
+
+| Thứ tự | Việc | Game hưởng lợi | Tiêu chí nâng | Công sức |
+|---|---|---|---|---|
+| 1 | **Đo §8.3** (4 bộ đếm cục bộ + bảng xem trong Cài đặt → Nâng cao) | Tất cả | T10, kiểm lại T1 / T8 | Nhỏ |
+| 2 | **Phố chung làm lớp meta:** quà Thư, đồ trang trí Quán, hoa Vườn, nhà Bàn Cờ cùng hiện trên một bản đồ phố; ván nào cũng góp một thứ thấy được | ~10 game | T5 +2, T7 +1 | Vừa |
+| 3 | **Thêm lớp quyết định không chạm bằng chứng:** Quán chọn khách phục vụ trước (khách có món / cá tính khác nhau); Thám tử chọn manh mối mở trước rồi tự kết luận thủ phạm; Xưởng chọn đơn có phần thưởng khác nhau. Câu hỏi và cách tính năng lực giữ nguyên (G3) | Quán, Thám tử, Đài, Xưởng | T2 3–4 → 6–7 | Vừa |
+| 4 | **Juice chung:** âm cho Leo tháp; một màn kết "tổng kết lớn" dùng chung (hiệu ứng + đồ mới cho phố); thêm 3–4 âm (combo, lên cấp, mở khoá) | Tất cả | T3 +1–2 | Nhỏ |
+| 5 | **Một nhân vật dẫn đường** (Tí) xuất hiện ở sảnh, màn kết và lời nhờ của cư dân | Tất cả | T7 +1–2 | Nhỏ – vừa |
+| 6 | **Bài Câu: sưu tập bùa giữ qua các ván**, mở bùa mới theo tiến độ | Bài Câu | T5, T6 | Nhỏ |
+| 7 | **Ẩn Tốc độ 60 giây và Ghép cặp** khỏi sảnh (ô "cả hai thấp") hoặc gộp thành chế độ phụ của Câu đố ngày | — | Bớt dàn trải | Nhỏ |
+
+Sau mỗi đợt sửa: chấm lại T, rồi đối chiếu với số liệu §8.3 sau ít nhất 2 tuần.
