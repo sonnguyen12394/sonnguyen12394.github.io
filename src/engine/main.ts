@@ -121,12 +121,15 @@ export function init(host: EHost): EngineModule {
   const CEFR_ORDER = ['cefr-pre-a1', 'cefr-a1', 'cefr-a2', 'cefr-b1', 'cefr-b2', 'cefr-c1', 'cefr-c2'];
   const cefrRank = (id: string): number => CEFR_ORDER.indexOf(id);
   function candidates(): Cand[] {
-    const ix = loaded()!, e = V();
+    const ix = loaded()!, e = V(), fresh = !!drun?.fog;
+    // v86 (bot L01): xếp lớp LẠI chỉ dò phần chưa có bằng chứng thật. Dò cả phần vừa luyện thì người học đúng ở đó, cầu thang lên cấp và
+    // tiên nghiệm coi cả phần chưa học cùng cấp là "đã biết" (L01: 17 nút tạm Đạt sai sau lần thám hiểm thứ hai). Phần đã luyện app đã rõ.
+    const seen = (id: string) => Object.values(e.m[id] ?? {}).some(c => (c?.n ?? 0) > 0);
     const goals = e.goals.map(s => ix.goal.get(s.id)).filter((g): g is NonNullable<typeof g> => !!g);
     const ids = goals.length ? new Set(closure(ix, mergeGoals(goals), defaultLevel).map(r => r.node)) : null;
     const out: Cand[] = [];
     for (const n of ix.node.values()) {
-      if ((n.kind !== 'vocab' && n.kind !== 'grammar') || (ids && !ids.has(n.id))) continue;
+      if ((n.kind !== 'vocab' && n.kind !== 'grammar') || (ids && !ids.has(n.id)) || (fresh && seen(n.id))) continue;
       out.push({ id: n.id, kind: n.kind === 'vocab' ? 'u' : 'g', lv: cefrIdx(n.cefr), weight: (ix.post.get(n.id) ?? []).filter(x => x.type === 'hard').length });
     }
     return out;
