@@ -46,7 +46,8 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
   const cv = root.querySelector('canvas')!, g = cv.getContext('2d')!, live = root.querySelector('.whlive')!;
   const layer = root.querySelector<HTMLElement>('.cdlayer')!, fb = root.querySelector<HTMLElement>('.cdfb')!, win = root.querySelector<HTMLElement>('.cdwin')!;
   const bot = root.querySelector<HTMLElement>('.cdbot')!, prompt = root.querySelector<HTMLElement>('.cdprompt')!;
-  const still = STILL(), music = new Music(), parts: Particle[] = [];
+  const still = STILL(), music = new Music(), parts: Particle[] = [], dlog: string[] = [];   // dlog: nhật ký kéo thả (chẩn đoán trình duyệt, đọc qua root._log)
+  const L = (m: string) => { dlog.push(m); if (dlog.length > 40) dlog.shift(); };
   let W = 0, H = 0, dpr = 1, raf = 0, alive = true;
   let tiles: HTMLButtonElement[] = [], handKey = '', boxKey = '', fbKey = '', ansSeen: unknown = null, zone = { x: 0, y: 0, w: 0, h: 0 };
   let drag: { i: number; id: number; sx: number; sy: number; ox: number; oy: number; x: number; y: number; moved: boolean } | null = null, suppressTo = 0;   // chặn click ngay sau khi thả (chạm cảm ứng có thể không phát click: dùng cửa sổ thời gian, không dùng cờ dính)
@@ -76,20 +77,20 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
       // Kéo thả: nghe pointermove / pointerup trên window trong lúc kéo (không dựa vào pointer capture của từng lá: WebKit có lúc
       // không nhả capture của lá trước, lần kéo sau mất sự kiện). Thả xong gỡ trình nghe.
       b.addEventListener('pointerdown', e => {
-        const r = st(); if (!r || r.ans || r.tableEnd || r.done || drag) return;
+        const r = st(); L(`down i=${i} t=${e.pointerType} x=${Math.round(e.clientX)},${Math.round(e.clientY)} busy=${!!drag}`); if (!r || r.ans || r.tableEnd || r.done || drag) return;
         const box = b.getBoundingClientRect(), lb = layer.getBoundingClientRect();
         drag = { i, id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: e.clientX - box.left, oy: e.clientY - box.top, x: box.left - lb.left, y: box.top - lb.top, moved: false };
         music.start();
         const move = (ev: PointerEvent) => {
           if (!drag || drag.id !== ev.pointerId) return;
           if (!drag.moved && Math.hypot(ev.clientX - drag.sx, ev.clientY - drag.sy) < 6) return;
-          const l2 = layer.getBoundingClientRect(); drag.moved = true; drag.x = ev.clientX - l2.left - drag.ox; drag.y = ev.clientY - l2.top - drag.oy;
+          const l2 = layer.getBoundingClientRect(); if (!drag.moved) L(`move1 i=${drag.i}`); drag.moved = true; drag.x = ev.clientX - l2.left - drag.ox; drag.y = ev.clientY - l2.top - drag.oy;
         };
         const end = (ev: PointerEvent) => {
           if (!drag || drag.id !== ev.pointerId) return;
           removeEventListener('pointermove', move); removeEventListener('pointerup', end); removeEventListener('pointercancel', end);
           try { if (b.hasPointerCapture?.(ev.pointerId)) b.releasePointerCapture(ev.pointerId); } catch { /* bỏ qua */ }
-          const d = drag; drag = null;
+          const d = drag; drag = null; L(`${ev.type} i=${d.i} x=${Math.round(ev.clientX)},${Math.round(ev.clientY)} moved=${d.moved}`);
           // Vị trí thả lấy từ chính pointerup: máy chậm / vuốt nhanh thì trình duyệt gộp pointermove, điểm cuối của move có thể còn ở giữa đường.
           if (!d.moved && Math.hypot(ev.clientX - d.sx, ev.clientY - d.sy) >= 6) d.moved = true;
           if (!d.moved || ev.type === 'pointercancel') return;   // chạm: để sự kiện click đi tiếp (cdtile / cdback)
@@ -97,8 +98,9 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
           suppressTo = performance.now() + 350;
           const r2 = st(); if (!r2 || r2.ans) return;
           const cx = d.x + b.offsetWidth / 2, cy = d.y + TH / 2, rest = r2.built.filter(k => k !== d.i);
+          L(`drop c=${Math.round(cx)},${Math.round(cy)} zone=${Math.round(zone.x)},${Math.round(zone.y)},${Math.round(zone.w)}x${Math.round(zone.h)} in=${inZone(cx, cy)}`);
           if (inZone(cx, cy)) {
-            const gm = geo({ ...r2, built: rest }), at = insertAt(gm.built, cx, cy), next = [...rest]; next.splice(at, 0, d.i);
+            const gm = geo({ ...r2, built: rest }), at = insertAt(gm.built, cx, cy), next = [...rest]; next.splice(at, 0, d.i); L(`insert at=${at} -> ${next.join(',')}`);
             onBuilt(next); snd.letter(Math.min(7, at)); try { navigator.vibrate?.(8); } catch { /* bỏ qua */ }
           } else if (r2.built.includes(d.i)) onBuilt(rest);
         };
@@ -237,6 +239,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
   const s0 = st(); if (s0) sync(s0);
 
   (root as HTMLElement & { _pos?: () => Array<{ t: string; x: number; y: number; on: boolean; k: number }> })._pos = () => tiles.map((b, i) => { const r = b.getBoundingClientRect(); return { t: st()?.hand[i] ?? '', x: r.left + r.width / 2, y: r.top + r.height / 2, on: !!st()?.built.includes(i), k: st()?.built.indexOf(i) ?? -1 }; });
+  (root as HTMLElement & { _log?: () => string[] })._log = () => [...dlog];
   (root as HTMLElement & { _zone?: () => { x: number; y: number; w: number; h: number } })._zone = () => { const b = cv.getBoundingClientRect(); return { x: b.left + zone.x, y: b.top + zone.y, w: zone.w, h: zone.h }; };
   return {
     // Đồng bộ DOM ngay sau mỗi thao tác (main.ts gọi). Không đợi khung hình: WebKit chạy khung hình chậm, nút cũ (vd "Lượt tiếp") còn hiện

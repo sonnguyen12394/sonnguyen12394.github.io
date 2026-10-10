@@ -78,7 +78,8 @@ test('v97 Bài Câu: kéo thả chuột thật vào vùng câu, chèn đúng ch�
   await dragTo(page, await at(order[0]!), { x: second.x - 40, y: second.y });
   // Thứ tự trong câu: order[0], order[1]
   const rowOrder = async () => (await tiles(page)).map((t: any, i: number) => ({ ...t, i })).filter((t: any) => t.on).sort((a: any, b: any) => a.k - b.k).map((t: any) => t.i);   // thứ tự logic trong câu (lá vừa thả có thể còn đang trượt)
-  expect(await rowOrder()).toEqual([order[0], order[1]]);
+  const dlog = () => page.evaluate(() => ((document.getElementById('whfx') as any)?._log?.() ?? []).join(' | '));
+  expect(await rowOrder(), `nhật ký kéo thả: ${await dlog()}`).toEqual([order[0], order[1]]);
   // Kéo lá ra khỏi vùng câu → bỏ ra.
   const one = await at(order[1]!);
   await dragTo(page, one, { x: one.x, y: z.y + z.h + 200 });
