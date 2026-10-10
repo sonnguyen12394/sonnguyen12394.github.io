@@ -34,7 +34,7 @@ async function swipe(page: Page, word: string): Promise<void> {
 
 test('Vòng Chữ: toàn màn hình, vuốt ra từ → ô mở + bằng chứng ở cụm engine chọn; gõ cũng được; thắng màn → màn kết + Phố', async ({ page, errors }) => {
   await lobby(page);
-  await expect(page.locator('.whhero')).toBeVisible();
+  await expect(page.locator('.whhero').first()).toBeVisible();
   await page.screenshot({ path: 'test-results/wheel-lobby.png' });
   await page.locator('.whhero [data-e="whstart"]').click();
   const fx = page.locator('#whfx');

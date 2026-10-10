@@ -270,7 +270,7 @@ export function letterCenters(): Array<{ ch: string; x: number; y: number }> {
   const root = document.getElementById('whfx') as (HTMLElement & { _pos?: () => Array<{ ch: string; x: number; y: number }> }) | null;
   return root?._pos ? root._pos() : [];
 }
-export { Music, musicOff, MKEY };
+export { Music, musicOff, MKEY, snd, STILL };
 
 // v94 Phong cảnh theo chương (M4), vẽ bằng canvas ở nửa dưới màn, chuyển động chậm (tắt khi giảm chuyển động):
 // 0 bình minh: mặt trời có tia xoay + đồi · 1 biển: sóng trôi + thuyền · 2 rừng trúc: thân trúc đung đưa · 3 phố đêm: nhà cao, cửa sổ nhấp nháy

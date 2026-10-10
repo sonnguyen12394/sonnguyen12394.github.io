@@ -4,9 +4,10 @@
 // Đổi dạng (interleaving): game vừa chơi bị trừ mạnh, game đã chơi hôm nay bị trừ. planDay() chốt 3 chặng mỗi ngày, mỗi chặng một nhu cầu.
 // Thuần hàm: dữ liệu vào do main.ts gom.
 
-export type GameId = 'wheel' | 'tower' | 'blocks' | 'board' | 'cards' | 'cafe' | 'bubbles' | 'puzzle' | 'case' | 'radio' | 'kara' | 'shop' | 'letter' | 'robot' | 'fog' | 'garden';
+export type GameId = 'wheel' | 'hunt' | 'tower' | 'blocks' | 'board' | 'cards' | 'cafe' | 'bubbles' | 'puzzle' | 'case' | 'radio' | 'kara' | 'shop' | 'letter' | 'robot' | 'fog' | 'garden';
 export const GAMES: Record<GameId, { start: string; ico: string; vi: string }> = {
   wheel: { start: 'whstart', ico: '🎡', vi: 'Vòng Chữ' },
+  hunt: { start: 'hnstart', ico: '⛏️', vi: 'Mỏ Chữ' },
   fog: { start: 'fgstart', ico: '🗺️', vi: 'Thám hiểm sương mù' },
   garden: { start: 'gdstart', ico: '🌱', vi: 'Vườn từ' },
   blocks: { start: 'bkstart', ico: '🧱', vi: 'Xếp Khối Chữ' },
@@ -67,7 +68,7 @@ function needs(x: DirIn): DirPick[] {
     if (!x.puzzleToday) add('puzzle', 'review', 84, `${n} phần sắp quên: câu đố hôm nay nhắc lại từ theo nhóm chủ đề.`);
   } else if (x.review > 0) add('wheel', 'review', 55, `${x.review} phần sắp quên: ôn nhẹ.`);
   if (top && top.kind === 'learn') {
-    if (k === 'u') { add('garden', 'vocab', 78, `Từ mới cần cho mục tiêu: ${top.vi}.`); add('wheel', 'vocab', 72, `Từ cần cho mục tiêu: ${top.vi}. Vuốt chữ để nhớ mặt chữ.`); }
+    if (k === 'u') { add('garden', 'vocab', 78, `Từ mới cần cho mục tiêu: ${top.vi}.`); add('wheel', 'vocab', 72, `Từ cần cho mục tiêu: ${top.vi}. Vuốt chữ để nhớ mặt chữ.`); add('hunt', 'vocab', 73, `Từ cần cho mục tiêu: ${top.vi}. Đào từ trong mỏ chữ.`); }
     if (k === 'g') add(x.gWrong ? 'shop' : 'cards', 'grammar', 80, `Ngữ pháp đang học: ${top.vi}${x.gWrong ? ' (bạn còn sai phần này: sửa câu sai để hiểu chỗ sai)' : ''}.`);
     if (k === 'fn') add(x.asr && x.fnSeen ? 'kara' : 'cafe', 'func', 80, `Giao tiếp đang học: ${top.vi}.`);
     if (k === 'ph') add('bubbles', 'sound', 80, `Âm đang học: ${top.vi}.`);
@@ -97,6 +98,7 @@ function needs(x: DirIn): DirPick[] {
   if (x.placed && x.fogWait <= 0 && x.claims >= 5) add('fog', 'replace', 62, `${x.claims} phần mới chỉ “tạm Đạt” theo suy đoán: xếp lớp lại để app biết đúng cấp của bạn.`);
   // Luôn có lựa chọn: tháp dùng mọi loại câu; Bàn Cờ / Robot để chơi thêm.
   add('tower', 'check', 40, 'Luyện tổng hợp những gì lộ trình đang cần.');
+  add('hunt', 'fun', 44, 'Chơi thêm: khai thác Mỏ Chữ, nhiệm vụ là từ trong lộ trình của bạn.');
   add('wheel', 'fun', 45, 'Chơi thêm: màn Vòng Chữ tiếp theo, từ trong lộ trình của bạn.');
   add('board', 'fun', 22, 'Chơi thêm cho vui: mỗi ô vẫn là câu tiếng Anh app chọn cho bạn.');
   add('robot', 'fun', 20, 'Chơi thêm: gọi đúng tên đồ vật để robot nhặt.');

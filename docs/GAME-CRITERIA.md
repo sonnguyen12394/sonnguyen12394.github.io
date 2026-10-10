@@ -1081,3 +1081,49 @@ So với game tốt nhất cũ (Câu đố ngày 4,6) là +2,0. **Chưa tới 7*
 - **M4:** tranh minh hoạ thật thay cho emoji ở gợi ý nghĩa (cần họa sĩ hoặc bộ hình tự vẽ);
 - **M7:** màn thiết kế tay cho các mốc chương;
 - **M2:** rung tay trên iOS (Safari không hỗ trợ rung); tinh chỉnh độ nhạy khi vuốt nhanh qua chữ.
+
+### 10.7 Đã làm v95: game chủ lực thứ hai ⛏️ Mỏ Chữ
+
+**Vì sao chọn thể loại này** (thay cho ý ban đầu "xếp khối có chữ"):
+- Trong game xếp khối, việc đặt khối là bài toán hình học, chữ khó thành cơ chế thật.
+- Mỏ Chữ thuộc nhóm **ghép 3 + săn chữ** (nhóm giải đố dẫn doanh thu). Ở đây mỗi lượt là tạo một từ (M1, HG24); ô vỡ, chữ rơi, chữ mới lấp vào như game ghép 3.
+
+| Phần | Làm gì | Tệp |
+|---|---|---|
+| Lõi | Lưới 6 × 7, chữ lấp theo tần suất tiếng Anh. Vuốt qua ô kề nhau (cả chéo), không lặp ô. **Nhiệm vụ** = từ của cụm u: bộ chọn chung đưa ra (3–5 từ, 3–6 chữ), được gieo thành đường kề và **luôn có đường**: bị phá thì gieo lại. Từ hợp lệ khác (kho 6.343 từ) ăn điểm. Từ sai / ngắn / trùng **không tốn lượt** | `wordhunt.ts` |
+| Căng thẳng không đồng hồ | Giới hạn lượt vuốt (2 lượt / nhiệm vụ + dư 8 → 4 theo màn). Hết lượt thì "Chơi lại màn"; không phạt ngoài việc chơi lại (P15, HG20) | `huntCurve()` |
+| Chiều sâu | Từ ≥ 5 chữ để lại **ô đá quý 💎**, dùng thì vỡ cả hàng. **Ô vàng** nhân đôi điểm, +3 xu. Chuỗi từ liền nhân đôi điểm. Từ dài nhân điểm. Gợi ý = ô chữ đầu của một nhiệm vụ nhấp nháy (10 xu) | `applyWord()`, `points()` |
+| Màn chơi | Canvas toàn màn hình. Hang có tinh thể phát sáng và bụi bay (3 chủ đề: pha lê, mỏ vàng, hang băng). Ô chữ dạng đá có bóng; đường vuốt phát sáng; ô vỡ có hạt; chữ rơi chậm dần; ô đặc biệt phát sáng. Âm thanh và nhạc dùng chung Vòng Chữ. Có ô gõ cho trình đọc màn hình | `huntview.ts` |
+| Bằng chứng | Từ nhiệm vụ của cụm engine chọn tìm ra → mức 2, g = 0,05; có gợi ý → có trợ giúp. Từ kho và mỏ hôm nay: không ghi | `nWord()` trong `main.ts` |
+| Quay lại | **Mỏ hôm nay** giống nhau cho mọi người, có chuỗi ngày, chia sẻ bằng ô màu không lộ đáp án | `dailyHunt()` |
+| Nối app | Bộ não chọn game: từ cần học (73), chơi thêm (44). Thẻ lớn ở sảnh. Phố: ⛏️ Mỏ chữ. Số liệu chơi. Bot `playHunt` | |
+
+**Kiểm:**
+- Đơn vị `engine-hunt.test.ts`:
+  - ô kề nhau (không nối mép trái – phải);
+  - mọi nhiệm vụ có đường trên 40 seed;
+  - vỡ – rơi – lấp đủ lưới, id không trùng;
+  - đá quý vỡ cả hàng;
+  - nhiệm vụ còn đường sau 15 lần phá;
+  - mỏ hôm nay giống nhau.
+- e2e `hunt.spec.ts`:
+  - **vuốt chuột thật** trên lưới canvas → bằng chứng mức 2, tốn 1 lượt; từ sai không tốn lượt;
+  - thắng → "Màn tiếp";
+  - gợi ý trừ xu và đánh dấu có trợ giúp;
+  - WCAG AA ở 390 px, ô lưới ≥ 44 px.
+
+**Chấm M1–M10** (so với game săn chữ / ghép 3 dẫn đầu, tự chấm):
+
+| M1 ×2 | M2 ×2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 7 | 7 | 8 | 6 | 8 | 7 | 5 | 5 | 7 | 6 | **6,7** |
+
+**Thấp hơn Vòng Chữ ở:**
+- **M7:** màn dựng theo luật; chưa có mục tiêu khác ngoài tìm từ (ví dụ phá băng, đưa vật xuống đáy như game ghép 3);
+- **M8:** chưa có sổ riêng; từ đã tìm chưa vào sổ từ chung;
+- **M9:** luật "kề nhau cả chéo" cần một lượt chơi mới hiểu, chưa có bàn tay hướng dẫn.
+
+**Bot người học L01, 8 ngày, v95:**
+- Bộ não chọn Vòng Chữ 3 lần (thắng cả 3). **Chưa lần nào chọn Mỏ Chữ**: bước học đầu lộ trình của bot là ngữ pháp, còn Mỏ Chữ chỉ được chọn cho từ cần học (73) và chơi thêm (44). Vì vậy Mỏ Chữ mới được kiểm bằng e2e, chưa bằng bot.
+- Ô mastery Đạt: 709 (v93: 709). 0 lỗi trang, không kẹt.
+- Thêm hướng dẫn bàn tay ở màn 1 (M9: 7 → 8). Điểm M của Mỏ Chữ thành 6,8.
