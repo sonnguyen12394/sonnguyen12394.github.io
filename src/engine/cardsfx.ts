@@ -177,6 +177,28 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
     }
   }
 
+  // Đặt vị trí từng lá (transform). Gọi mỗi khung hình và ngay sau mỗi thao tác (refresh), để lá phản hồi tức thì cả khi khung hình chậm.
+  function place(s: CardsFxState, now: number, gm = geo(s)): void {
+    // Khi đang kéo vào vùng câu: chừa chỗ cho lá
+    let built = gm.built, order = s.built;
+    if (drag?.moved) {
+      const rest = s.built.filter(k => k !== drag!.i), cx = drag.x + (tiles[drag.i]?.offsetWidth ?? TH) / 2, cy = drag.y + TH / 2;
+      order = rest;
+      if (inZone(cx, cy)) { const at = insertAt(geo({ ...s, built: rest }).built, cx, cy); order = [...rest]; order.splice(at, 0, drag.i); }
+      built = geo({ ...s, built: order }).built;
+    }
+    const lb = layer.getBoundingClientRect(), cb = cv.getBoundingClientRect(), dx = cb.left - lb.left, dy = cb.top - lb.top;
+    tiles.forEach((b, i) => {
+      const k = order.indexOf(i), inRow = k >= 0, p = inRow ? built[k]! : gm.hand[i]!;
+      const isDrag = drag?.moved && drag.i === i;
+      let x = isDrag ? drag!.x : p.x + dx, y = isDrag ? drag!.y : p.y + dy;
+      if (s.ans?.ok && inRow && !still) y -= Math.min(10, (now - (flyer?.t ?? now)) / 20);
+      if (shake && s.ans && !s.ans.ok && k === shake.k && !still && now - shake.t < 420) x += Math.sin((now - shake.t) / 28) * 6;
+      b.style.transform = `translate(${x}px,${y}px)${isDrag ? ' scale(1.08) rotate(-2deg)' : ''}`;
+      b.style.width = `${p.w}px`;
+      b.classList.toggle('drag', !!isDrag);
+    });
+  }
   function frame(now: number): void {
     if (!alive) return;
     const s = st();
@@ -208,25 +230,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
           g.fillStyle = 'rgba(255,255,255,.07)'; g.beginPath(); g.roundRect(zone.x, hy, zone.w, hb - hy, 18); g.fill();
           g.fillStyle = 'rgba(255,255,255,.6)'; g.font = '600 12px system-ui'; g.fillText('TAY BÀI', zone.x + 12, hy - 6);
         }
-        // Khi đang kéo vào vùng câu: chừa chỗ cho lá
-        let built = gm.built, order = s.built;
-        if (drag?.moved) {
-          const rest = s.built.filter(k => k !== drag!.i), cx = drag.x + (tiles[drag.i]?.offsetWidth ?? TH) / 2, cy = drag.y + TH / 2;
-          order = rest;
-          if (inZone(cx, cy)) { const at = insertAt(geo({ ...s, built: rest }).built, cx, cy); order = [...rest]; order.splice(at, 0, drag.i); }
-          built = geo({ ...s, built: order }).built;
-        }
-        const lb = layer.getBoundingClientRect(), cb = cv.getBoundingClientRect(), dx = cb.left - lb.left, dy = cb.top - lb.top;
-        tiles.forEach((b, i) => {
-          const k = order.indexOf(i), inRow = k >= 0, p = inRow ? built[k]! : gm.hand[i]!;
-          const isDrag = drag?.moved && drag.i === i;
-          let x = isDrag ? drag!.x : p.x + dx, y = isDrag ? drag!.y : p.y + dy;
-          if (s.ans?.ok && inRow && !still) y -= Math.min(10, (now - (flyer?.t ?? now)) / 20);
-          if (shake && s.ans && !s.ans.ok && k === shake.k && !still && now - shake.t < 420) x += Math.sin((now - shake.t) / 28) * 6;
-          b.style.transform = `translate(${x}px,${y}px)${isDrag ? ' scale(1.08) rotate(-2deg)' : ''}`;
-          b.style.width = `${p.w}px`;
-          b.classList.toggle('drag', !!isDrag);
-        });
+        place(s, now, gm);
       }
     }
     // Hạt + chữ điểm bay
@@ -244,7 +248,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
   return {
     // Đồng bộ DOM ngay sau mỗi thao tác (main.ts gọi). Không đợi khung hình: WebKit chạy khung hình chậm, nút cũ (vd "Lượt tiếp") còn hiện
     // một nhịp sau khi trạng thái đã đổi thì người chơi / test bấm trúng nút "ma" (CI Safari iOS v96–v98).
-    refresh() { const s = st(); if (s && alive) sync(s); },
+    refresh() { const s = st(); if (s && alive) { sync(s); if (!layer.hidden) place(s, performance.now()); } },
     music() { if (musicOff() || muted()) music.stop(); else music.start(); },
     close() { alive = false; cancelAnimationFrame(raf); music.stop(); removeEventListener('resize', resize); root.remove(); document.documentElement.classList.remove('whopen'); },
   };
