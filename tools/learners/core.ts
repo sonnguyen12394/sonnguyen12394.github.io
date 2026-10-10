@@ -11,7 +11,7 @@ import { readFileSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 export const arg = (k: string, d: string): string => { const i = process.argv.indexOf(`--${k}`); return i > 0 ? process.argv[i + 1]! : d; };
-const GAMES = arg('games', 'mix'), GAME_N = 13;   // tháp, Xếp Khối, Bàn Cờ, Bài Câu, Quán Cà Phê, Bắt Âm, Câu đố ngày, Thám tử, Đài phát thanh, Karaoke, Xưởng sửa câu, Thư, Robot (thêm game thì tăng)
+const GAMES = arg('games', 'mix'), GAME_N = 15;   // tháp, Xếp Khối, Bàn Cờ, Bài Câu, Quán Cà Phê, Bắt Âm, Câu đố ngày, Thám tử, Đài phát thanh, Karaoke, Xưởng sửa câu, Thư, Robot, Thám hiểm, Vườn từ (thêm game thì tăng)
 export const SCHEDULE_DAYS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 21, 24, 28, 35, 44];
 
 const gf = readdirSync('data/engine').find(f => /^graph\..*\.json$/.test(f))!;
@@ -139,7 +139,7 @@ export async function run(P: Profile): Promise<void> {
     if (!ok && P.dunno(s, rnd)) dunno = true;
     const d = P.decide?.(C, q, x, p, ok) ?? null;
     if (d) { ok = d.ok; dunno = false; }
-    const act = { diag: 'dans', quest: 'qans', measure: 'xans', micro: 'mans', probe: 'pans', xfer: 'xans', tout: 'tans', cafe: 'cfans', bubbles: 'bbans', puzzle: 'pzans', case: 'dtans', radio: 'dtans', shop: 'wsskip' }[q.run] ?? 'qans';
+    const act = { diag: 'dans', quest: 'qans', measure: 'xans', micro: 'mans', probe: 'pans', xfer: 'xans', tout: 'tans', cafe: 'cfans', bubbles: 'bbans', puzzle: 'pzans', case: 'dtans', radio: 'dtans', shop: 'wsskip', garden: 'gdans' }[q.run] ?? 'qans';
     let given = '';
     if (q.tiles && q.order) {   // v74 Bài Câu: xếp lá theo thứ tự (biết) / đổi chỗ hai lá liền nhau hoặc lấy lá bẫy (chưa biết)
       if (dunno) await page.locator('[data-e="cdskip"]').first().click();
@@ -504,6 +504,49 @@ export async function run(P: Profile): Promise<void> {
     await click('Về sảnh');
   }
 
+  // v86 Thám hiểm sương mù: chọn đường xen kẽ (đường còn mở), câu dò trả lời như bài chẩn đoán.
+  async function playFog(): Promise<void> {
+    await shot('lobby');
+    const start = page.locator('[data-e="fgstart"]').filter({ visible: true }).first();
+    if (!(await start.count())) { note('stuck', 'không thấy Thám hiểm'); return; }
+    await start.click(); await sleep(150);
+    if (!(await visible('[data-e="fgpick"]'))) { note('fog-skip', { why: 'bản đồ chưa mở lại (7 ngày)' }); await playFloor(); return; }
+    let picks = 0;
+    for (let steps = 0; steps < 120; steps++) {
+      await sleep(30);
+      if (await visible('h1:has-text("Bạn đang ở đâu")')) break;
+      const pk = await peek();
+      if (pk?.run === 'fogpick') { const k = pk.opts?.includes(picks % 2 ? 'g' : 'u') ? (picks % 2 ? 'g' : 'u') : pk.opts?.[0] ?? 'u'; await page.locator(`[data-e="fgpick"][data-k="${k}"]`).first().click(); picks++; continue; }
+      if (pk?.run === 'diag') { await answer({ ...pk, run: 'diag' }); continue; }
+      note('stuck', { why: 'thám hiểm: không có đường / câu', text: (await text()).slice(0, 200) }); break;
+    }
+    const end = await shot('fog-end');
+    note('fog-end', { head: end.split('\n').slice(0, 3).join(' | '), picks });
+    const tab = page.locator('#bnav button, #nav button').filter({ hasText: 'Chơi' }).filter({ visible: true }).first();   // kết quả chẩn đoán nằm ngoài sảnh: về tab Chơi
+    if (await tab.count()) await tab.click(); else note('stuck', 'không thấy tab Chơi');
+    await sleep(300);
+  }
+  // v87 Vườn từ: xem thẻ (bấm tưới), trả lời câu của bậc kế như câu thường.
+  async function playGarden(): Promise<void> {
+    await shot('lobby');
+    const start = page.locator('[data-e="gdstart"]').filter({ visible: true }).first();
+    if (!(await start.count())) { note('stuck', 'không thấy Vườn từ'); return; }
+    await start.click(); await sleep(120);
+    if (!(await visible('.gdpot')) && !(await visible('h1:has-text("Vườn của bạn")'))) { note('garden-skip', { why: 'vườn đã tưới đủ hôm nay' }); return; }
+    for (let steps = 0; steps < 30; steps++) {
+      await sleep(40);
+      if (await visible('h1:has-text("Vườn của bạn")')) break;
+      const pk = await peek();
+      if (pk?.run === 'gdteach') { await page.locator('[data-e="gdask"]').first().click(); continue; }
+      if (pk?.run === 'garden') { await answer(pk); await feedback(pk.node); if (await visible('[data-e="gdnext"]')) await page.locator('[data-e="gdnext"]').first().click(); continue; }
+      if (await visible('[data-e="gdnext"]')) { await page.locator('[data-e="gdnext"]').first().click(); continue; }
+      note('stuck', { why: 'vườn: không có cây / nút tiếp', text: (await text()).slice(0, 200) }); break;
+    }
+    const end = await shot('garden-end');
+    note('garden-end', { head: end.split('\n').slice(0, 3).join(' | ') });
+    await click('Về sảnh');
+  }
+
   async function runQuiz(kind: string): Promise<void> {
     for (let i = 0; i < 30; i++) {
       await sleep(80);
@@ -550,7 +593,7 @@ export async function run(P: Profile): Promise<void> {
     await followToday();
     const floors = P.floors ? P.floors(day, rnd) : day === 0 ? 2 : 2 + (rnd() < 0.3 ? 1 : 0);
     // v72–v73: sảnh có nhiều game; mặc định bot luân phiên tháp, Xếp Khối, Bàn Cờ (--games tower: chỉ tháp, như trước v72).
-    for (let f = 0; f < floors; f++) { const g = GAMES === 'mix' ? (day + f) % GAME_N : 0; if (g === 1) await playBlocks(); else if (g === 2) await playBoard(); else if (g === 3) await playCards(); else if (g === 4) await playCafe(); else if (g === 5) await playBubbles(); else if (g === 6) await playPuzzle(); else if (g === 7) await playCase('read'); else if (g === 8) await playCase('listen'); else if (g === 9) await playKara(); else if (g === 10) await playShop(); else if (g === 11) await playLetter(); else if (g === 12) await playRobot(); else await playFloor(); }
+    for (let f = 0; f < floors; f++) { const g = GAMES === 'mix' ? (day + f) % GAME_N : 0; if (g === 1) await playBlocks(); else if (g === 2) await playBoard(); else if (g === 3) await playCards(); else if (g === 4) await playCafe(); else if (g === 5) await playBubbles(); else if (g === 6) await playPuzzle(); else if (g === 7) await playCase('read'); else if (g === 8) await playCase('listen'); else if (g === 9) await playKara(); else if (g === 10) await playShop(); else if (g === 11) await playLetter(); else if (g === 12) await playRobot(); else if (g === 13) await playFog(); else if (g === 14) await playGarden(); else await playFloor(); }
     // Cuối phiên: mastery của app, giả thuyết hiểu sai của app, kỹ năng thật của bot trên mọi nút đã gặp.
     const e = await page.evaluate(() => { const st = (window as any).eval('st'); return { m: st.e.m, snaps: st.e.ev.snap.length, q: st.e.q, mis: st.e.ev.mis }; });   // eslint-disable-line @typescript-eslint/no-explicit-any
     const truth: Record<string, number> = {}, stab: Record<string, number> = {};

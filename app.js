@@ -8344,7 +8344,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.884039325f.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.9b5afbbd4c.js';   // tools/build.mjs ghi
 const EHOST = {
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
@@ -8361,6 +8361,10 @@ const EHOST = {
   gloss:paras=>eGloss(paras),
   // v80–v81: nói. Máy nghe giọng của trình duyệt (asrBox / ASR) — chỉ là phản hồi, không vào mức thuộc (như mọi chỗ khác của app).
   fixes:node=>eFixes(node),
+  // v87 Vườn từ: từ của một cụm (đủ để dạy trước: hình, phiên âm, câu ví dụ) + kho từ cùng cấp làm phương án nhiễu.
+  wordsOf:node=>{ if(!node.startsWith('u:')) return null; const u=UNIT_BY_ID[node.slice(2)]; if(!u||!u.words) return null;
+    const pool=shuffle(ALL_WORDS.filter(w=>UNIT_OF[w.id].level===u.level&&UNIT_OF[w.id]!==u)).slice(0,40).map(w=>({en:w.word,vi:w.vi}));
+    return {node,topic:u.title,vi:u.vi||u.title,words:u.words.map(w=>({id:w.id,en:w.word,vi:w.vi,pos:w.pos||'',pic:w.pic||'',ipa:w.ipa||'',ex:w.ex||'',exVi:w.exVi||''})),pool}; },
   // v83 Thư gửi cư dân phố: đề viết (WTASKS), máy kiểm bài viết (writeChecks + lỗi hay gặp), lưu như màn Viết theo đề (Can-Do viết).
   wtasks:lv=>WTASKS.filter(t=>t.lv===lv).map(t=>({id:t.id,lv:t.lv,genre:t.genre,en:t.en,vi:t.vi,p:t.p,pv:t.pv,min:t.min,max:t.max,par:t.par,c:t.c.slice(),u:t.u.map(x=>[x[0],x[1]]),m:(t.m||[]).slice(),text:(st.wtask[t.id]||{}).text||'',done:wtDone(t.id)})),
   wcheck:(id,text)=>{ const t=WT[id]; if(!t) return null; return {n:wc(text),checks:writeChecks(t,text).map(([ok,l])=>[!!ok,l]),hints:grammarHints(text).slice(0,4).map(h=>({m:h.m,why:h.why,snip:h.snip}))}; },
