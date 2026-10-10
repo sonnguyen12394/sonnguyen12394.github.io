@@ -917,3 +917,93 @@ Mỗi dòng phải qua 4 câu hỏi:
   1. **T10 = 5 (chưa đo)**, chiếm 2/14 trọng số. Chỉ số liệu thật mới mở được.
   2. **T2 của game tiếp nhận**, bị spec chặn có chủ đích.
 - Theo §9.4 bước 4, bước đúng tiếp theo là **phát hành v89–v92 và thu 2 tuần số liệu** (bảng 📊 ở sảnh). Sau đó sửa game theo số liệu, không tiếp tục thêm tính năng theo cảm tính.
+
+## 10. Đối sánh thị trường (M1–M10): chấm lại sau playtest của người sáng lập
+
+### 10.0 Vì sao có mục này
+
+Người sáng lập chơi thử và kết luận: **các game hiện tại quá tệ, không hấp dẫn để chơi.** Đây là bằng chứng playtest thật đầu tiên, và nó bác bỏ điểm trục T ở §8–§9 (5,7–7,1).
+
+Gốc rễ của việc chấm sai: thang T neo vào **có hay không có** tính năng trong chính app (có âm, có phố, có lựa chọn), không neo vào **chất lượng so với game người chơi đang dùng hằng ngày**. Vì vậy cứ thêm tính năng là điểm tăng, dù cảm giác chơi vẫn như làm bài tập.
+
+Từ nay trục T chỉ dùng để kiểm "đủ thành phần". **Độ hấp dẫn chấm bằng M1–M10 dưới đây, neo vào game dẫn đầu cùng thể loại.**
+
+Tài liệu chỉ nêu thể loại (quy ước đầu tệp và test `ip-names`).
+
+Bối cảnh thị trường 2026:
+- giải đố chiếm 44% doanh thu game casual;
+- game xếp khối 8×8 dẫn lượt tải trên cả hai kho;
+- ghép 3 dẫn doanh thu;
+- merge tăng nhanh nhất.
+
+Theo các bài phân tích thiết kế: lõi phải tự vui và đọc hiểu được trong vài giây, phản hồi phải tức thì, người chơi quyết định có quay lại hay không ngay trong vài phút đầu.
+
+### 10.1 Mười tiêu chí (10 = ngang game dẫn đầu cùng thể loại)
+
+| # | Tiêu chí | 0–2 | 5 | 10 |
+|---|---|---|---|---|
+| M1 ×2 | **Lõi tự hấp dẫn** | Trắc nghiệm có trang trí | Lõi game có thật nhưng bị câu hỏi chen ngang | Bỏ phần tiếng Anh đi người ta vẫn muốn chơi, hoặc tiếng Anh **chính là** cơ chế (chữ là quân cờ) |
+| M2 ×2 | **Cảm giác điều khiển** | Bấm nút dạng biểu mẫu, cả màn vẽ lại | Chạm vật thể, có hiệu ứng | Kéo / vuốt trực tiếp, phản hồi < 100 ms, chuyển động 60 fps liên tục, hạt, rung |
+| M3 | **Nhịp liền mạch** | Mỗi lượt phải bấm "Tiếp ▸" | Ít lần ngắt | ≥ 80% thời gian đang chơi, không màn chờ giữa lượt |
+| M4 | **Mỹ thuật và âm thanh** | Emoji thay hình, tiếng bíp | Có chủ đề màu | Phong cách hình riêng, nhân vật, nhạc nền, âm theo hành động |
+| M5 | **Màn chơi nhập vai** | Thấy thanh tab, chữ hướng dẫn dài | Khung gọn | Toàn màn hình, luật hiểu qua hình |
+| M6 | **Chiều sâu, giỏi lên được** | Chỉ đúng / sai | Có combo | Kỹ năng chơi tiến bộ rõ: chiến thuật, tính trước |
+| M7 | **Thiết kế màn và độ khó** | Ngẫu nhiên, phẳng | Tăng theo số màn | Màn thiết kế sẵn, nhịp căng – nghỉ, bất ngờ |
+| M8 | **Meta và phần thưởng** | Điểm / kỷ lục | Có sưu tập | Mở khoá, sự kiện, sưu tập có giá trị thấy được |
+| M9 | **Vào chơi ngay** | Phải đọc luật | Hiểu sau 1 lượt | Chơi được trong ≤ 10 giây, không cần chữ |
+| M10 | **Lý do quay lại** | Không có | Có chuỗi ngày | Thử thách ngày giống nhau cho mọi người, chia sẻ kết quả |
+
+Điểm = trung bình có trọng số (÷ 12).
+
+### 10.2 Chấm 17 game
+
+Căn cứ: ảnh e2e của từng game và mã nguồn. Người chấm vẫn là tôi, nhưng mỗi điểm so với một game cụ thể đang dẫn thể loại, không so với chính app.
+
+| Game | Đối chiếu (thể loại dẫn đầu) | M1 | M2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | **Điểm** |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 📅 Câu đố ngày | đố nhóm 16 từ hằng ngày | 6 | 4 | 6 | 3 | 3 | 5 | 4 | 2 | 7 | 5 | **4,6** |
+| ⏱️ Tốc độ 60 giây | đố nhanh tính giờ | 4 | 3 | 8 | 2 | 3 | 3 | 2 | 1 | 8 | 2 | **3,6** |
+| 🔗 Ghép cặp | ghép thẻ | 4 | 4 | 8 | 2 | 3 | 2 | 2 | 1 | 8 | 1 | **3,6** |
+| 🤖 Robot | lập trình ra lệnh theo màn | 5 | 3 | 6 | 2 | 3 | 5 | 2 | 2 | 4 | 1 | **3,4** |
+| 🧱 Xếp Khối | xếp khối 8×8 | 5 | 2 | 2 | 2 | 2 | 4 | 2 | 3 | 5 | 3 | **3,1** |
+| 🎲 Bàn Cờ Phố | bàn cờ xúc xắc + xây phố | 3 | 3 | 3 | 3 | 3 | 2 | 2 | 4 | 6 | 2 | **3,1** |
+| 🌱 Vườn từ | nông trại chăm cây | 2 | 2 | 4 | 3 | 3 | 1 | 2 | 4 | 6 | 5 | **3,0** |
+| 🎯 Bắt Âm | bắn bong bóng | 3 | 2 | 5 | 3 | 3 | 2 | 2 | 2 | 7 | 1 | **2,9** |
+| ✉️ Thư | thư từ trong game nhẹ nhàng | 3 | 2 | 5 | 2 | 3 | 3 | 2 | 3 | 4 | 2 | **2,8** |
+| 🃏 Bài Câu | xây bộ bài roguelike | 3 | 3 | 4 | 2 | 3 | 2 | 2 | 2 | 4 | 1 | **2,7** |
+| 🎤 Karaoke | hát karaoke có nhạc | 3 | 2 | 4 | 2 | 3 | 2 | 2 | 2 | 5 | 1 | **2,6** |
+| ☕ Quán | phục vụ / nấu ăn quản lý thời gian | 2 | 1 | 4 | 3 | 3 | 1 | 2 | 3 | 7 | 1 | **2,5** |
+| 🛠️ Xưởng | sửa hàng / dây chuyền | 2 | 2 | 4 | 2 | 3 | 2 | 2 | 2 | 6 | 1 | **2,5** |
+| 🏰 Leo tháp | leo tháp roguelike | 2 | 1 | 3 | 2 | 3 | 2 | 3 | 3 | 6 | 1 | **2,4** |
+| 🔍 Thám tử | điều tra / phá án | 2 | 1 | 4 | 2 | 2 | 2 | 2 | 2 | 6 | 1 | **2,3** |
+| 🗺️ Thám hiểm | khám phá bản đồ sương mù | 2 | 2 | 3 | 3 | 3 | 1 | 2 | 1 | 5 | 1 | **2,3** |
+| 📻 Đài | phiêu lưu bằng âm thanh | 2 | 1 | 4 | 2 | 2 | 2 | 2 | 2 | 5 | 1 | **2,2** |
+
+**Kết luận:** cả 17 game ở mức **2,2–4,6 / 10** so với thị trường, khớp với nhận xét của người chơi.
+- Cao nhất là các game mà **chữ / nghĩa chính là cơ chế** (Câu đố ngày) hoặc nhịp liền (Tốc độ 60 giây, Ghép cặp). Hai game sau trước đây bị đánh giá thấp vì phần học yếu, không phải vì chơi chán.
+- Thấp nhất là các game "trắc nghiệm có trang trí" (Đài, Thám tử, Leo tháp, Quán).
+
+### 10.3 Gốc rễ
+
+| # | Gốc rễ | Bằng chứng | Kéo thấp |
+|---|---|---|---|
+| 1 | **Kiến trúc hiển thị:** mỗi thao tác thay toàn bộ HTML của màn | `app.js` `render()` gán `innerHTML`; game engine không dùng `canvas` / `requestAnimationFrame`. Không thể có chuyển động liên tục, kéo thả, hạt nổ | M2, M4: trần khoảng 3 dù thêm bao nhiêu tính năng |
+| 2 | **Câu hỏi gác cổng:** tiếng Anh là trạm kiểm soát chặn giữa các lượt chơi | Xếp Khối: trả lời → "Nhận khối ▸" → chạm ô đặt khối. Bàn Cờ: tung xúc xắc → câu hỏi. Quán, Thám tử: trắc nghiệm | M1, M3 |
+| 3 | **Khung app và giọng biểu mẫu** | Thanh tab, chuỗi ngày, năng lượng luôn hiện; chữ hướng dẫn dài; nút "Không biết" kiểu bài kiểm tra | M5, M9 |
+| 4 | **Không có mỹ thuật / âm nhạc** | Hình là emoji; 6 tiếng tổng hợp; không nhạc nền | M4 |
+| 5 | **Dàn trải** | 17 game, mỗi game vài trăm dòng; không game nào có màn thiết kế sẵn | M6, M7 |
+
+Gốc rễ 2 là chỗ thiết kế và spec gặp nhau. HG24 đòi "mọi hành động là thử thách ngôn ngữ". Các game chữ thành công trên thị trường làm được điều đó bằng cách để **chữ là quân cờ** (vuốt chữ thành từ, xếp chữ vào ô, ghép từ thành nhóm), không phải chèn câu hỏi trắc nghiệm vào giữa một game khác.
+
+### 10.4 Hướng đi đề xuất (chưa làm, chờ người sáng lập chọn)
+
+1. **Dừng** thêm tính năng cho 17 game hiện có. Mỗi tính năng thêm vào chỉ nâng "đủ thành phần" (trục T), không nâng M1–M5.
+2. **Chọn 2–3 game chủ lực**, làm lại theo chuẩn thị trường:
+   - toàn màn hình;
+   - vẽ bằng canvas, chuyển động 60 fps, kéo / vuốt;
+   - chữ tiếng Anh là cơ chế;
+   - một phong cách mỹ thuật và âm thanh thống nhất;
+   - màn thiết kế sẵn có độ khó tăng dần;
+   - bộ chọn nội dung của engine (NBA, FSRS) giữ nguyên bên dưới.
+3. Các game còn lại chuyển vào mục "Luyện tập" (không xoá: chúng vẫn là cơ chế bằng chứng của từng chức năng).
+4. Thước đo nghiệm thu: playtest của người sáng lập + chỉ số §8.3. Mục tiêu M ≥ 7 cho game chủ lực trước khi làm game thứ hai.
