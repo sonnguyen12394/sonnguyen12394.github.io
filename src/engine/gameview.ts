@@ -18,13 +18,16 @@ import type { LetterSave } from './letters.ts';
 import type { RobotSave } from './robot.ts';
 import type { GardenSave } from './garden.ts';
 import { ENC_VI } from './quest.ts';
+import { GAMES, needVi, type DirIn, type DirPick } from './director.ts';
 
 // Sảnh: thẻ các game ở trên, tháp (Leo nhanh) giữ nguyên ở dưới.
-export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave, gd?: PuzzleSave, gt?: CaseSave, gr?: CaseSave, tts = true, gk?: KaraSave, gw?: ShopSave, gl?: LetterSave, gb?: RobotSave, gf?: { runs: number; day: number }, gv?: GardenSave): string {
+export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave, gd?: PuzzleSave, gt?: CaseSave, gr?: CaseSave, tts = true, gk?: KaraSave, gw?: ShopSave, gl?: LetterSave, gb?: RobotSave, gf?: { runs: number; day: number }, gv?: GardenSave, dir?: Dir | null): string {
   if (!c.e.goals.length) return '';
   const s = bk ?? { best: 0, runs: 0, day: 0, streak: 0 }, houses = (bd?.lots ?? []).reduce((a, b) => a + b, 0);
   return `<section class="stack"><span class="eyebrow">Chơi</span><h1>🎮 Hôm nay chơi gì?</h1>
-    <p class="hint">Mọi game đều dùng cùng một bộ câu tiếng Anh app chọn cho bạn. Chỉ câu trả lời được tính vào năng lực; điểm game chỉ để vui.</p></section>
+    ${dir ? '' : '<p class="hint">Mọi game đều dùng cùng một bộ câu tiếng Anh app chọn cho bạn. Chỉ câu trả lời được tính vào năng lực; điểm game chỉ để vui.</p>'}</section>
+    ${dir ? viewDirector(c, dir) : ''}
+    <details class="gall"${dir ? '' : ' open'}><summary>🎮 Tất cả trò chơi (tự chọn)</summary>
     <section class="gcards">
       <span class="eyebrow gsec">🧭 Xếp lớp</span>
       <button class="gcard" data-e="fgstart"><span class="gico" aria-hidden="true" style="font-size:30px">🗺️</span><span class="stack" style="gap:2px;text-align:left"><b>Thám hiểm sương mù</b><span class="hint">Kiểm tra lại cấp CEFR: chọn đường Từ vựng hay Ngữ pháp, mỗi điểm dò mở một ô bản đồ. Trả lời thật, đúng hay sai ô đều mở. 10–15 phút.</span><span class="hint">🧭 ${gf?.runs ?? 0} lần thám hiểm${gf?.day && c.host.today() - gf.day < 7 ? ` · bản đồ mới sau ${7 - (c.host.today() - gf.day)} ngày` : ''}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
@@ -47,7 +50,34 @@ export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, g
       <button class="gcard" data-e="rbstart"><span class="gico" aria-hidden="true" style="font-size:30px">🤖</span><span class="stack" style="gap:2px;text-align:left"><b>Ra lệnh cho robot</b><span class="hint">Nói (hoặc gõ) lệnh tiếng Anh để robot đi lấy đồ: phải gọi đúng tên đồ vật thì robot mới nhặt.</span><span class="hint">🏁 ${gb?.wins ?? 0} nhiệm vụ · ${gb?.picked ?? 0} đồ đã nhặt</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <span class="eyebrow gsec">🏙️ Thói quen & sưu tập</span>
       <button class="gcard" data-e="bdstart"><span class="gico" aria-hidden="true" style="font-size:30px">🎲</span><span class="stack" style="gap:2px;text-align:left"><b>Bàn Cờ Phố</b><span class="hint">Tung xúc xắc đi quanh phố, gặp thử thách tiếng Anh, xây nhà bằng xu. ${ROLLS} lượt tung.</span><span class="hint">🏠 ${houses} tầng nhà · vòng phố ${bd?.laps ?? 0}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
-    </section>`;
+    </section></details>`;
+}
+
+// v88 Bộ não chọn game: một nút "Chơi tiếp" kèm lý do (nhu cầu học lúc này) + lộ trình 3 chặng hôm nay. Người học không phải chọn.
+export interface Dir { x: DirIn; plan: DirPick[]; next: DirPick; inPlan: boolean }
+const planRow = (c: ECtx, d: Dir): string => {
+  const esc = c.host.esc, done = d.plan.filter(p => d.x.played.includes(p.game)).length;
+  return `<ol class="dplan" aria-label="Lộ trình chơi hôm nay">${d.plan.map((p, i) => {
+    const ok = d.x.played.includes(p.game), cur = !ok && d.inPlan && p.game === d.next.game, g = GAMES[p.game];
+    return `<li class="${ok ? 'ok' : cur ? 'cur' : ''}"><span class="dnum" aria-hidden="true">${ok ? '✓' : i + 1}</span><span>${g.ico} ${esc(g.vi)}<small> · ${esc(needVi(p.need))}</small></span>${ok ? '<span class="sr-only">(xong)</span>' : ''}</li>`;
+  }).join('')}</ol><p class="hint">${done >= d.plan.length ? '🎉 Xong lộ trình hôm nay. Chơi thêm nếu muốn: app vẫn chọn phần bạn cần nhất.' : `Hôm nay: ${done}/${d.plan.length} chặng`}</p>`;
+};
+const why = (c: ECtx, d: Dir): string => {
+  const esc = c.host.esc, top = d.next;
+  return `<details class="dwhy"><summary>Vì sao là game này?</summary><p class="hint">${esc(top.why)}</p>
+    <p class="hint">App đọc những gì bạn cần lúc này (phần sắp quên, từ đến ngày tưới, phần đầu lộ trình, điểm nghẽn, kỹ năng còn thiếu) rồi chọn dạng game hợp nhất, và đổi dạng sau mỗi game để não không chán. Nội dung câu hỏi trong game vẫn do lộ trình của bạn quyết định.</p></details>`;
+};
+export function viewDirector(c: ECtx, d: Dir): string {
+  const g = GAMES[d.next.game], esc = c.host.esc;
+  return `<section class="dbox stack"><span class="eyebrow">${d.inPlan ? 'Chặng tiếp theo' : 'Chơi thêm'}</span>
+    <button class="gcard dgo" data-e="${g.start}" data-g="${d.next.game}"><span class="gico" aria-hidden="true" style="font-size:34px">${g.ico}</span><span class="stack" style="gap:2px;text-align:left"><b>▶ Chơi tiếp: ${esc(g.vi)}</b><span class="hint">Vì: ${esc(d.next.why)}</span></span></button>
+    ${planRow(c, d)}${why(c, d)}</section>`;
+}
+// Thanh cuối màn kết của mọi game: đi thẳng tới game kế (không quay về danh sách để chọn).
+export function viewNextBar(c: ECtx, d: Dir): string {
+  const g = GAMES[d.next.game], esc = c.host.esc;
+  return `<section class="dbox stack" style="margin-top:14px"><span class="eyebrow">${d.inPlan ? 'Tiếp theo trong lộ trình hôm nay' : 'Chơi thêm'}</span>
+    <button class="btn primary big dgo" data-e="${g.start}" data-g="${d.next.game}">▶ Tiếp: ${g.ico} ${esc(g.vi)}</button><p class="hint">Vì: ${esc(d.next.why)}</p>${planRow(c, d)}</section>`;
 }
 const miniBoard = () => `<span class="bkmini">${[1, 0, 2, 3, 3, 0, 0, 4, 5].map(v => `<i class="c${v}"></i>`).join('')}</span>`;
 

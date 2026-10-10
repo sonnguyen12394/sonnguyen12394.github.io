@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, play } from './fixtures.ts';
 
 // v73 Bàn Cờ Phố: tung xúc xắc → dừng ở ô cảnh → câu do engine chọn (id lượt "quest-1:d…") → tung tiếp; xây nhà bằng xu.
 // Xu / nhà / vị trí chỉ là telemetry (e.bd), không vào mastery.
@@ -18,7 +18,7 @@ test('Bàn Cờ: sảnh → tung 8 lượt → trả lời ở ô cảnh, xây n
   });
   await page.getByRole('button', { name: '▶ Chơi' }).click();
   await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
-  await page.locator('[data-e="bdstart"]').first().click();
+  await play(page, 'bdstart');
   const end = page.getByRole('heading', { name: /Hết lượt tung/ });
   let rolls = 0, answered = 0, built = 0, shot = false;
   for (let i = 0; i < 80 && !(await end.isVisible()); i++) {

@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, play } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v83 Thư gửi cư dân phố, v84 Ra lệnh cho robot, v85 Tốc độ 60 giây / Ghép cặp ưu tiên từ đến hạn.
@@ -20,7 +20,7 @@ async function open(page: Page): Promise<void> {
 
 test('Thư: gửi thư thiếu → cư dân hỏi lại đúng chỗ thiếu; sửa, gửi đủ → hồi âm + quà; tự chấm; lưu như màn Viết theo đề', async ({ page, errors }) => {
   await open(page);
-  await page.locator('[data-e="ltstart"]').first().click();
+  await play(page, 'ltstart');
   const pk = await page.evaluate(() => (window as any).eval('EM').peek());
   expect(pk.run).toBe('letter');
   const id = pk.id.split(':')[0];
@@ -47,7 +47,7 @@ test('Thư: gửi thư thiếu → cư dân hỏi lại đúng chỗ thiếu; s�
 test('Robot: gõ lệnh (và lệnh máy nghe), gọi sai tên không nhặt được, nhặt đủ + về Nhà → xong; không ghi bằng chứng', async ({ page, errors }) => {
   await open(page);
   const led0 = await page.evaluate(() => (window as any).eval('st').e.ev.led.length);
-  await page.locator('[data-e="rbstart"]').first().click();
+  await play(page, 'rbstart');
   await expect(page.locator('.rbgrid')).toBeVisible();
   const cmd = async (t: string) => { await page.locator('input[name="a"]').fill(t); await page.locator('input[name="a"]').press('Enter'); };
   let pk = await page.evaluate(() => (window as any).eval('EM').peek());

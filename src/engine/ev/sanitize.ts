@@ -82,7 +82,7 @@ export function sanitizeEv(raw: unknown): EvStore {
   for (const [n, s] of Object.entries(obj(x.seen))) if (NODE.test(n) && typeof s === 'string' && /^[0-9a-z]*$/.test(s) && s.length % 6 === 0) out.seen[n] = s.slice(-SEEN_MAX * 6);
   for (const [k, s] of Object.entries(obj(x.vok))) if (/^(cd|u|g|pa|x|xw|xs|ph|fn):[a-z0-9][a-z0-9._-]{0,60}\|[1-5]$/.test(k) && typeof s === 'string' && /^[0-9a-z]*$/.test(s) && s.length % 6 === 0 && s) (out.vok ||= {})[k] = s.slice(-40 * 6);
   out.seq = Math.round(num(x.seq, 0, 1e9, 0));
-  const KINDS: SnapKind[] = ['mastery', 'testout', 'readiness', 'nba', 'diag'];
+  const KINDS: SnapKind[] = ['mastery', 'testout', 'readiness', 'nba', 'diag', 'dir'];
   out.snap = (Array.isArray(x.snap) ? x.snap : []).map(v => {
     const y = obj(v), id = str(y.id, 40), subj = str(y.subj), dec = str(y.dec, 40);
     if (!id || !subj || !dec || !KINDS.includes(y.kind as SnapKind)) return null;

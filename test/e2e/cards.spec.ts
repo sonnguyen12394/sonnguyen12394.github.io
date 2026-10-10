@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, play } from './fixtures.ts';
 
 // v74 Bài Câu: lá từ của câu ngữ pháp do engine chọn; tự xếp câu = bằng chứng mức 3 (id lượt "quest-1:c…"); điểm / bùa là telemetry.
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -15,7 +15,7 @@ test('Bài Câu: xếp đúng thì ra bài có điểm, sai thì hiện câu đ�
   });
   await page.getByRole('button', { name: '▶ Chơi' }).click();
   await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
-  await page.locator('[data-e="cdstart"]').first().click();
+  await play(page, 'cdstart');
   const end = page.getByRole('heading', { name: /Xong ván/ });
   let plays = 0, good = 0, shot = 0;
   for (let i = 0; i < 60 && !(await end.isVisible()); i++) {

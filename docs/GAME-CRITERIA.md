@@ -556,3 +556,31 @@ Nguồn xu hướng:
 - [Top mobile puzzle games 2026](https://respawn.outlookindia.com/gaming/gaming-news/top-mobile-puzzle-games-ruling-the-global-grossing-charts-in-2026)
 - [Biggest mobile games of August 2026](https://www.globalgamesforum.com/news-media/the-biggest-mobile-games-of-august-2026)
 - [Voice Filter: Speak Challenge](https://apps.apple.com/us/app/-/id6739994048) (ví dụ thể loại điều khiển bằng giọng)
+
+## 7. Bộ não chọn game (v88)
+
+**Vấn đề.** Đã có 15 game, nhưng sảnh chỉ liệt kê, người học phải tự chọn và hay phân vân. Gốc rễ: *nội dung* câu hỏi trong mọi game đã do engine chọn (`floorBase` / NBA). Phần còn bỏ trống là chọn *dạng game* hợp với nhu cầu học lúc này. Chọn sai dạng (ví dụ chơi Bài Câu, vốn chỉ hỏi ngữ pháp, trong khi nhu cầu là ôn từ sắp quên) thì câu trả lời không trúng chỗ cần học.
+
+**Cách làm** (`src/engine/director.ts`, thuần hàm, test `engine-director.test.ts`):
+
+| Nhu cầu (điểm gốc) | Game |
+|---|---|
+| Chưa xếp lớp (100) | 🗺️ Thám hiểm |
+| Cây đến ngày tưới (92) | 🌱 Vườn từ |
+| ≥ 5 phần sắp quên / NBA = ôn (88 / 84) | 🧱 Xếp Khối / 📅 Câu đố ngày |
+| NBA học nút `u:` (78) | 🌱 Vườn từ |
+| NBA học nút `g:` (80) | 🃏 Bài Câu, hoặc 🛠️ Xưởng sửa câu khi đang sai / có hiểu sai |
+| NBA học nút `fn:` (80) | ☕ Quán, hoặc 🎤 Karaoke khi đã luyện và có máy nghe |
+| Nút `ph:` / điểm nghẽn âm (80 / 76) | 🎯 Bắt Âm |
+| Kiểm tra / xác minh / transfer (74) | 🏰 Leo tháp |
+| Can-Do đọc / nghe / viết / nói còn thiếu (50–65) | 🔍 Thám tử / 📻 Đài / ✉️ Thư / 🎤 Karaoke (🤖 Robot khi không có máy nghe) |
+| Nhiều phần "tạm Đạt" + hết hạn chờ 7 ngày (62) | 🗺️ Thám hiểm lại |
+| Chơi thêm (20–40) | 🏰 Tháp / 🎲 Bàn Cờ / 🤖 Robot |
+
+- **Đổi dạng (interleaving):** game vừa chơi bị trừ 45 điểm, game đã chơi xong hôm nay bị trừ 25.
+- **Lộ trình hôm nay:** 3 chặng chốt một lần mỗi ngày. Mỗi chặng phục vụ một nhu cầu khác nhau, tối đa một chặng kỹ năng, thứ tự ôn / tưới trước rồi học mới. Lý do: người mới thiếu mọi Can-Do, nên nếu không giới hạn thì kỹ năng chiếm hết lộ trình trong khi từ và ngữ pháp nền mới là thứ mở đường.
+- **"▶ Chơi tiếp"** là chặng đầu tiên chưa xong. Hết lộ trình thì app vẫn chọn game đầu bảng.
+- **Màn kết của mọi game** có nút "▶ Tiếp" đi thẳng sang game kế, không quay về danh sách.
+- **Lý do luôn nói nhu cầu** (ví dụ "4 từ đến ngày tưới…", "Ngữ pháp đang học: …"), không nói điểm game (P13).
+- **Mỗi lựa chọn có snapshot `dir`** (Vì sao? / replay).
+- **Người học vẫn tự chọn được** trong "Tất cả trò chơi (tự chọn)".

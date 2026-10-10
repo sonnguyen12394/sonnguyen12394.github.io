@@ -22,7 +22,7 @@ import { microVerdict, MICRO, MICRO_VER } from './micro.ts';
 import { planFloor, picker, reward, hearts, freshQuest, QUEST_VER, QUEST, type Enc, type FloorIn, type Challenge } from './quest.ts';
 import { roll, move, build, canBuild, freshBoardSave, TILES, ROLLS, price } from './board.ts';
 import { freshBlocks, deal, place, anyFits, fits, trayEmpty, anchor, freshBlocksSave, bumpStreak } from './blocks.ts';
-import { viewLobby, viewBlocks, viewBlocksEnd, viewBoard, viewBoardEnd } from './gameview.ts';
+import { viewLobby, viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoardEnd } from './gameview.ts';
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
 import { GUESTS, stars as cafeStars, freshCafeSave } from './cafe.ts';
@@ -40,6 +40,7 @@ import { viewRobot, viewRobotEnd, robotKey, type RobotRun } from './robotview.ts
 import { layout as robotLayout, parse as robotParse, run as robotRun, won as robotWon, freshRobotSave } from './robot.ts';
 import { viewGarden, viewGardenEnd, type GardenRun } from './gardenview.ts';
 import { pickToday, itemFor, grow as gardenGrow, freshGardenSave, PER_DAY } from './garden.ts';
+import { direct, planDay, nextGame, isGame, freshDirSave, type DirIn, type DirPick, type GameId, type Need } from './director.ts';
 import { viewShop, viewShopEnd, accepted as shopOk, ORDERS, freshShopSave, type ShopRun } from './workshop.ts';
 import { pick as karaPick, linePoints, verdict as karaVerdict, ROLE, freshKaraSave } from './karaoke.ts';
 import { choose as caseChoose, order as caseOrder, options as caseOptions, solved as caseSolved, caseStars, freshCaseSave } from './detective.ts';
@@ -1141,6 +1142,66 @@ export function init(host: EHost): EngineModule {
     return { node: n.id, vi: n.vi, dep: Math.round(top.o.dep), gap: k[0] ? GAP_VI[k[0]] : '', pct: Math.round(top.c.m * 100) };
   }
 
+  // ---------- Bộ não chọn game (v88) ----------
+  // Gom nhu cầu học lúc này cho director.ts (thuần hàm). Lộ trình 3 chặng chốt một lần mỗi ngày (e.gp.plan); game "xong" khi tới màn kết.
+  const gpsave = () => { const e = E(); return (e.gp ||= freshDirSave()); };
+  function dirIn(): DirIn {
+    const e = E(), v = V(), ix = loaded()!, today = host.today(), { fi, p } = floorBase(), top = fi.acts[0];
+    const vi = (id: string) => ix.node.get(id)?.vi ?? id;
+    const first: DirIn['first'] = {};
+    for (const o of p.open) { const k = o.node.split(':')[0] as 'u' | 'g' | 'fn' | 'ph'; if (['u', 'g', 'fn', 'ph'].includes(k) && !first[k]) first[k] = vi(o.node); }
+    const gNode = top?.node.startsWith('g:') ? top.node : p.open.find(o => o.node.startsWith('g:'))?.node, fnNode = top?.node.startsWith('fn:') ? top.node : p.open.find(o => o.node.startsWith('fn:'))?.node;
+    const gWrong = !!gNode && (misconceptions(e.ev, gNode).length > 0 || (() => { const c = statusOf(v.m, gNode, 3); return c.n >= 3 && c.m < 0.5; })());
+    const fnSeen = !!fnNode && Object.values(e.m[fnNode] ?? {}).some(c => (c?.n ?? 0) > 0);
+    const cd: DirIn['cd'] = {};
+    for (const o of p.open) {
+      const n = ix.node.get(o.node);
+      if (n?.kind !== 'cando' || !n.skill || cd[n.skill]) continue;
+      cd[n.skill] = { vi: n.vi, gap: 1 - Math.min(1, host.cando(n.id.slice(3))?.p ?? 0) };
+    }
+    const gf = e.gf, gv = e.gv, sv = gpsave(), played = sv.day === today ? [...sv.done] : [];
+    if (gf?.day === today && !played.includes('fog')) played.push('fog');
+    if (e.gd?.last === today && !played.includes('puzzle')) played.push('puzzle');
+    return {
+      placed: !!e.diag || (gf?.runs ?? 0) > 0, fogWait: gf?.day ? FOG_EVERY - (today - gf.day) : 0, claims: fi.claims?.length ?? 0,
+      top: top ? { kind: top.kind, node: top.node, vi: top.node === 'review' ? 'ôn' : vi(top.node) } : null,
+      review: fi.review.length, first, neck: (() => { const n = neckOf(v); return n ? { node: n.node, vi: n.vi } : null; })(), gWrong, fnSeen, cd, lv: curLv(),
+      garden: Object.values(gv?.plants ?? {}).filter(x => x.s < 3 && x.d < today).length, puzzleToday: e.gd?.last === today,
+      played, last: sv.last, tts: !!host.tts?.(), asr: !!host.hasAsr?.(),
+    };
+  }
+  // Lộ trình hôm nay + game chơi tiếp. Ghi snapshot (Vì sao?) khi game được chọn đổi.
+  function director(): { x: DirIn; plan: DirPick[]; next: DirPick; inPlan: boolean } {
+    const x = dirIn(), sv = gpsave(), today = host.today();
+    if (sv.day !== today) { sv.day = today; sv.done = []; sv.plan = []; }
+    if (!sv.plan.length) { sv.plan = planDay(x).map(p => ({ game: p.game, need: p.need, why: p.why })); host.save(); }
+    const plan = sv.plan.filter(p => isGame(p.game)).map(p => ({ game: p.game as GameId, need: p.need as Need, why: p.why, score: 0 }));
+    const { pick, inPlan } = nextGame(x, plan);
+    const last = [...E().ev.snap].reverse().find(s => s.kind === 'dir');
+    if (!last || last.subj !== pick.game || last.day !== today) {
+      const alts = inPlan ? plan.filter(p => !x.played.includes(p.game)) : direct(x).slice(0, 3);
+      addSnap(E().ev, { ts: Date.now(), day: today, kind: 'dir', subj: pick.game, dec: 'CHOSEN', rule: `${RULE_ID}/dir1`, alt: alts.map(a => ({ node: a.game, score: a.score, dep: 0, min: 0 })), info: { need: pick.need, why: pick.why, plan: inPlan ? 'yes' : 'no', played: x.played.join(',') }, evs: [] }, false);
+    }
+    return { x, plan, next: pick, inPlan };
+  }
+  // Game đang chạy (để ghi "vừa chơi" khi bắt đầu, "xong" khi tới màn kết).
+  function activeGame(): { game: GameId; done: boolean } | null {
+    if (grun) return { game: 'garden', done: grun.done };
+    if (rrun) return { game: 'robot', done: rrun.done };
+    if (lrun) return { game: 'letter', done: lrun.phase === 'done' };
+    if (wrun) return { game: 'shop', done: wrun.done };
+    if (krun) return { game: 'kara', done: krun.done };
+    if (trun) return { game: trun.mode === 'read' ? 'case' : 'radio', done: trun.done };
+    if (zrun) return { game: 'puzzle', done: zrun.done };
+    if (crun) return { game: 'cards', done: crun.done };
+    if (frun) return { game: 'cafe', done: frun.done };
+    if (brun) return { game: 'bubbles', done: brun.done };
+    if (qrun) return { game: qrun.mode === 'blocks' ? 'blocks' : qrun.mode === 'board' ? 'board' : 'tower', done: !!qrun.done };
+    return null;
+  }
+  function markStart(): void { const a = activeGame(); if (!a) return; const sv = gpsave(); sv.last = a.game; sv.runs++; host.save(); }
+  function markDone(game: GameId): void { const sv = gpsave(), today = host.today(); if (sv.day === today && sv.done.includes(game)) return; if (sv.day !== today) { sv.day = today; sv.done = []; sv.plan = []; } sv.done.push(game); host.save(); }
+
   // ---------- Đo hiệu quả học (v63) ----------
   // Bộ 12 câu giữ riêng cho mục tiêu đầu tiên đang mở; đo trước / sau / trễ 7 và 30 ngày; không hiện đáp án khi đo.
   // v69 (bot L01): lần đo sau dùng DẠNG SONG SONG — cùng nút, câu ngữ cảnh khác chưa gặp (nếu còn); hết câu mới mới dùng lại câu gốc.
@@ -1186,6 +1247,24 @@ export function init(host: EHost): EngineModule {
     host.save(); host.render();
   }
 
+  function questBody(c: ECtx): string {
+    if (brun) return brun.done ? viewBubblesEnd(c, brun, (brun as BubbleRun & { prevBest?: number }).prevBest ?? 0) : viewBubbles(c, brun, host.probe('ph:s-01').length > 0);
+    if (frun) return frun.done ? viewCafeEnd(c, frun, fsave().stars) : viewCafe(c, frun, fsave().stars);
+    if (grun) return grun.done ? viewGardenEnd(c, grun, vsave().plants, gardenWords()) : viewGarden(c, grun);
+    if (rrun) { if (!rrun.done) rrun.heard = host.asrHeard?.(robotKey(rrun))?.heard ?? rrun.heard; return rrun.done ? viewRobotEnd(c, rrun) : viewRobot(c, rrun, host.asrBusy?.(robotKey(rrun)) ?? false); }
+    if (lrun) return lrun.phase === 'done' ? viewLetterEnd(c, lrun, lsave().gifts) : viewLetter(c, lrun, host.wrub?.() ?? null, lsave().gifts);
+    if (wrun) return wrun.done ? viewShopEnd(c, wrun, (wrun as ShopRun & { prevBest?: number }).prevBest ?? 0) : viewShop(c, wrun, loaded()?.node.get(wrun.node)?.vi ?? '');
+    if (krun) return krun.done ? viewKaraEnd(c, krun) : viewKara(c, krun);
+    if (trun) return trun.done ? viewCaseEnd(c, trun, tsave(trun.mode).solved) : viewCase(c, trun, !!host.tts?.());
+    if (zrun) return zrun.done ? viewPuzzleEnd(c, zrun, zsave().days) : viewPuzzle(c, zrun);
+    if (crun) return crun.done ? viewCardsEnd(c, crun, (crun as CardsRun & { prevBest?: number }).prevBest ?? 0) : viewCards(c, crun);
+    if (qrun?.mode === 'blocks') return qrun.done ? viewBlocksEnd(c, qrun) : viewBlocks(c, qrun);
+    if (qrun?.mode === 'board') return qrun.done ? viewBoardEnd(c, qrun, bsave()) : viewBoard(c, qrun, bsave(), wallet());
+    if (qrun?.done) return viewQuestEnd(c, qrun);
+    if (qrun) return viewQuestRun(c, qrun);
+    const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
+  }
   const routes: Record<string, (c: ECtx) => string> = {
     measure: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -1193,24 +1272,13 @@ export function init(host: EHost): EngineModule {
       const ms = E().ms;
       return viewMeasure(c, ms, nextPhase(ms, host.today()), report(ms));
     },
+    // v88: màn kết của mọi game → ghi "đã chơi xong" + thanh "▶ Tiếp" do bộ não chọn; sảnh mở đầu bằng game chơi tiếp + lộ trình hôm nay.
     quest: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
-      if (brun) return brun.done ? viewBubblesEnd(c, brun, (brun as BubbleRun & { prevBest?: number }).prevBest ?? 0) : viewBubbles(c, brun, host.probe('ph:s-01').length > 0);
-      if (frun) return frun.done ? viewCafeEnd(c, frun, fsave().stars) : viewCafe(c, frun, fsave().stars);
-      if (grun) return grun.done ? viewGardenEnd(c, grun, vsave().plants, gardenWords()) : viewGarden(c, grun);
-      if (rrun) { if (!rrun.done) rrun.heard = host.asrHeard?.(robotKey(rrun))?.heard ?? rrun.heard; return rrun.done ? viewRobotEnd(c, rrun) : viewRobot(c, rrun, host.asrBusy?.(robotKey(rrun)) ?? false); }
-      if (lrun) return lrun.phase === 'done' ? viewLetterEnd(c, lrun, lsave().gifts) : viewLetter(c, lrun, host.wrub?.() ?? null, lsave().gifts);
-      if (wrun) return wrun.done ? viewShopEnd(c, wrun, (wrun as ShopRun & { prevBest?: number }).prevBest ?? 0) : viewShop(c, wrun, loaded()?.node.get(wrun.node)?.vi ?? '');
-      if (krun) return krun.done ? viewKaraEnd(c, krun) : viewKara(c, krun);
-      if (trun) return trun.done ? viewCaseEnd(c, trun, tsave(trun.mode).solved) : viewCase(c, trun, !!host.tts?.());
-      if (zrun) return zrun.done ? viewPuzzleEnd(c, zrun, zsave().days) : viewPuzzle(c, zrun);
-      if (crun) return crun.done ? viewCardsEnd(c, crun, (crun as CardsRun & { prevBest?: number }).prevBest ?? 0) : viewCards(c, crun);
-      if (qrun?.mode === 'blocks') return qrun.done ? viewBlocksEnd(c, qrun) : viewBlocks(c, qrun);
-      if (qrun?.mode === 'board') return qrun.done ? viewBoardEnd(c, qrun, bsave()) : viewBoard(c, qrun, bsave(), wallet());
-      if (qrun?.done) return viewQuestEnd(c, qrun);
-      if (qrun) return viewQuestRun(c, qrun);
-      const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-      return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv) + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null);
+      const a = activeGame(), html = questBody(c);
+      if (!a?.done || !E().goals.length) return html;
+      markDone(a.game);
+      return html + viewNextBar(c, director());
     },
     micro: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -1244,7 +1312,7 @@ export function init(host: EHost): EngineModule {
       return viewTout(c, tout, toutRes && toutRes.node === node ? toutRes : null);
     },
     diag: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return drun ? (drun.fog?.wait ? viewFogPick(c, drun) : viewDiagRun(c, drun)) : viewDiagIntro(c, lr(), c.route === 'diag/quick'); },
-    'diag-result': c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewDiagResult(c, lr()); },
+    'diag-result': c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewDiagResult(c, lr()) + (E().gf?.day === host.today() && E().goals.length ? viewNextBar(c, director()) : ''); },
     goals: viewGoals,
     why: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewWhy(c); },
     pick: viewPick,
@@ -1288,6 +1356,7 @@ export function init(host: EHost): EngineModule {
       qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null;
       drec = []; dmcq = { got: 0, n: 0, gs: 0 };
       drun = { d: startDiag(startLevel(), Date.now()), node: '', qs: [], i: 0, got: 0, total: 0, gs: 0, fog: { seed: (Date.now() >>> 3) % 9973, open: [], wait: true, kinds: { u: 0, g: 0 }, cur: null } };
+      const gp = gpsave(); gp.last = 'fog'; gp.runs++;
       host.go('diag');
     },
     fgpick(el) {
@@ -1304,43 +1373,43 @@ export function init(host: EHost): EngineModule {
       host.render();
     },
     pans(el) { if (!prun) return; const q = prun.qs[prun.i]!, i = Number(el.dataset.i); probeAnswer(i >= 0 && i === q.ans); },
-    qstart() { crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; qStart(); },
-    bkstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; qStart('blocks'); },
-    bdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; qStart('board'); },
-    cdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; cStart(); },
+    qstart() { crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; qStart(); markStart(); },
+    bkstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; qStart('blocks'); markStart(); },
+    bdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; qStart('board'); markStart(); },
+    cdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; cStart(); markStart(); },
     cdtile(el) { const r = crun, i = Number(el.dataset.i); if (!r || r.ans || r.built.includes(i) || !(i >= 0 && i < r.hand.length)) return; r.built.push(i); sfx('place'); host.render(); },
     cdback(el) { const r = crun, k = Number(el.dataset.k); if (!r || r.ans) return; r.built.splice(k, 1); host.render(); },
     cdclear() { if (crun && !crun.ans) { crun.built = []; host.render(); } },
     cdplay() { cPlay(false); },
     cdskip() { cPlay(true); },
     cdnext() { cNext(); },
-    cfstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; fStart(); },
+    cfstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; fStart(); markStart(); },
     cfans(el) { fAnswer(Number(el.dataset.i)); },
     cfnext() { fNext(); },
-    bbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; bStart(); },
+    bbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; bStart(); markStart(); },
     bbans(el) { bAnswer(Number(el.dataset.i)); },
     bbnext() { bNext(); },
-    pzstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; zStart(); },
+    pzstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; zStart(); markStart(); },
     pztile(el) { const r = zrun, i = Number(el.dataset.i); if (!r || r.recall || !(i >= 0 && i < r.tiles.length) || r.solved.includes(r.tiles[i]![0])) return; const k = r.sel.indexOf(i); if (k >= 0) r.sel.splice(k, 1); else if (r.sel.length < PER) r.sel.push(i); r.msg = null; sfx('place'); host.render(); },
     pzclear() { if (zrun && !zrun.recall) { zrun.sel = []; zrun.msg = null; host.render(); } },
     pzhint() { const r = zrun; if (!r || r.recall) return; const cand = [...r.sel, ...r.tiles.map((_, i) => i)].find(i => !r.shown.includes(i) && !r.solved.includes(r.tiles[i]![0])); if (cand !== undefined) { r.shown.push(cand); host.render(); } },
     pzsubmit() { zSubmit(); },
     pzans(el) { const it = zrun?.recall?.item, i = Number(el.dataset.i); if (!it) return; zAnswer(i >= 0 && !!it.opts && i === it.ans, i >= 0 ? it.opts?.[i] ?? '' : ''); },
     pznext() { zNext(); },
-    dtstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; tStart('read'); },
-    rdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; tStart('listen'); },
+    dtstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; tStart('read'); markStart(); },
+    rdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; tStart('listen'); markStart(); },
     dtans(el) { tAnswer(Number(el.dataset.i)); },
     dtretry() { const r = trun; if (!r || !r.ans || r.ans.ok || r.ans.retry) return; r.ans = null; r.retry = true; if (r.mode === 'listen' && r.text.lines) { host.sayLines?.(r.text.lines, false); r.plays++; } host.render(); },
     dtnext() { tNext(); },
     dtgloss(el) { const r = trun, w = el.dataset.w || ''; if (!r || !r.gloss[w]) return; r.look = w; r.looked++; host.render(); },
-    krstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; kStart(); },
-    wsstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; wStart(); },
-    ltstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; lStart(); },
-    gdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; gStart(); },
+    krstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; kStart(); markStart(); },
+    wsstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; wStart(); markStart(); },
+    ltstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; lStart(); markStart(); },
+    gdstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; gStart(); markStart(); },
     gdask() { if (grun?.phase === 'teach') { grun.phase = 'ask'; host.render(); } },
     gdans(el) { const it = grun?.item, i = Number(el.dataset.i); if (!it) return; gAnswer(i >= 0 && !!it.opts && i === it.ans, i >= 0 ? it.opts?.[i] ?? '' : ''); },
     gdnext() { gNext(); },
-    rbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; rStart(); },
+    rbstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; rStart(); markStart(); },
     rbmic() { if (rrun && !rrun.done) { rrun.heard = null; host.asrHear?.(robotKey(rrun)); } },
     rbrun() { const h = rrun?.heard; if (h) rExec(h); },
     rbgive() { rEnd(); },

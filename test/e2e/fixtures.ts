@@ -61,3 +61,9 @@ export async function noHorizontalScroll(page: Page): Promise<void> {
 
 export const navTo = (page: Page, label: string) =>
   page.locator('#bnav:visible button, #nav:visible button').filter({ hasText: label }).first().click();
+
+// v88: sảnh mở đầu bằng nút "Chơi tiếp" do bộ não chọn; thẻ từng game nằm trong mục thu gọn "Tất cả trò chơi". Test mở mục đó rồi bấm game.
+export async function play(page: Page, start: string): Promise<void> {
+  await page.evaluate(() => document.querySelectorAll('details.gall').forEach(d => { (d as HTMLDetailsElement).open = true; }));
+  await page.locator(`[data-e="${start}"]`).filter({ visible: true }).first().click();
+}

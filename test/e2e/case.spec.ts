@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, play } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v78 Thám tử (đọc) / v79 Đài phát thanh (nghe): một bài đúng cấp người học, mỗi câu hỏi hiểu là một manh mối (≥ 3 lựa chọn);
@@ -23,7 +23,7 @@ const saved = (page: Page) => page.evaluate(() => { const st = (window as any).e
 test('Thám tử: đọc hồ sơ, manh mối 3 lựa chọn; sai thì tô sáng câu + thử lại (không tính điểm); điểm đọc lưu như tab Đọc', async ({ page, errors }) => {
   await open(page);
   const before = await saved(page);
-  await page.locator('[data-e="dtstart"]').first().click();
+  await play(page, 'dtstart');
   await expect(page.locator('.dtdoc')).toBeVisible();
   if (await page.locator('.dtw').count()) { await page.locator('.dtw').first().click(); await expect(page.locator('.dtlook')).toBeVisible(); }   // chạm từ → nghĩa
   const end = page.getByRole('heading', { name: /Phá án|Hồ sơ còn bỏ ngỏ/ });
@@ -61,7 +61,7 @@ test('Đài phát thanh: nghe cả bài (lời ẩn tới cuối), trả lời �
   await open(page);
   const has = await page.locator('[data-e="rdstart"]').count();
   test.skip(!has, 'máy không có giọng đọc');
-  await page.locator('[data-e="rdstart"]').first().click();
+  await play(page, 'rdstart');
   await expect(page.locator('[data-e="rdplay"]').first()).toBeVisible();
   await expect(page.locator('.dtdoc')).toHaveCount(0);   // lời bản tin chưa hiện
   const end = page.getByRole('heading', { name: /Bắt được sóng|Sóng còn rè/ });

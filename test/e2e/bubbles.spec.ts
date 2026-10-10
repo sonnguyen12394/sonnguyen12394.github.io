@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, play } from './fixtures.ts';
 
 // v76 Bắt Âm: từ nghe của nút âm (ph:) do engine chọn, 3 bong bóng (đoán mò 1/3), không hết giờ; điểm / màn là telemetry.
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -15,7 +15,7 @@ test('Bắt Âm: 10 từ, 3 lựa chọn, sai thì nghe lại hai từ của c�
   });
   await page.getByRole('button', { name: '▶ Chơi' }).click();
   await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible({ timeout: 15000 });
-  await page.locator('[data-e="bbstart"]').first().click();
+  await play(page, 'bbstart');
   const end = page.getByRole('heading', { name: /Xong màn/ });
   let n = 0;
   for (let i = 0; i < 40 && !(await end.isVisible()); i++) {

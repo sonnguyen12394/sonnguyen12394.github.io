@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.ts';
+import { test, expect, play } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
 // v80–v82: nói (Karaoke, nói thử ở Bắt Âm) và Xưởng sửa câu. Máy nghe giọng là của trình duyệt: test đặt sẵn kết quả máy nghe (ASR)
@@ -24,7 +24,7 @@ const fakeAsr = (page: Page, key: string, p: number) => page.evaluate(([k, v]) =
 test('Karaoke: đóng vai B, máy đọc vai A, nói theo từng câu; kết quả lưu như Đóng vai, không ghi bằng chứng vào nút', async ({ page, errors }) => {
   await open(page);
   const led0 = await page.evaluate(() => (window as any).eval('st').e.ev.led.length);
-  await page.locator('[data-e="krstart"]').first().click();
+  await play(page, 'krstart');
   await expect(page.locator('.krlyric')).toBeVisible();
   const asr = await page.evaluate(() => (window as any).eval('HAS_ASR'));
   const end = page.getByRole('heading', { name: /Hết bài/ });
@@ -52,7 +52,7 @@ test('Karaoke: đóng vai B, máy đọc vai A, nói theo từng câu; kết qu�
 
 test('Xưởng sửa câu: 6 đơn, tự gõ lại câu đúng = bằng chứng ngữ pháp mức 4 (g = 0); sai thì tô chỗ sửa + vì sao', async ({ page, errors }) => {
   await open(page);
-  await page.locator('[data-e="wsstart"]').first().click();
+  await play(page, 'wsstart');
   const end = page.getByRole('heading', { name: /Hết ca/ });
   let n = 0;
   for (let i = 0; i < 30 && !(await end.isVisible()); i++) {
@@ -77,7 +77,7 @@ test('Bắt Âm: nói thử đúng từ → +5 điểm (telemetry), không thêm
   await open(page);
   const asr = await page.evaluate(() => (window as any).eval('HAS_ASR'));
   test.skip(!asr, 'trình duyệt không có nhận diện giọng');
-  await page.locator('[data-e="bbstart"]').first().click();
+  await play(page, 'bbstart');
   const pk = await page.evaluate(() => (window as any).eval('EM').peek());
   test.skip(!pk || pk.run !== 'bubbles', 'máy không có giọng đọc');
   await page.locator(`[data-e="bbans"][data-i="${pk.ans}"]`).click();
