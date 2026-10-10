@@ -1206,8 +1206,11 @@ export function init(host: EHost): EngineModule {
   function markStart(): void { const a = activeGame(); if (!a) return; const sv = gpsave(); sv.last = a.game; sv.runs++; host.save(); }
   // v89 số liệu chơi + Phố chung: màn kết ghi ván xong (một lần), so Phố với lúc bắt đầu, ăn mừng khi có công trình lên cấp.
   const pmsave = () => { const e = E(); return (e.pm ||= freshPlay()); };
+  const LEDGER = new Set<GameId>(['tower', 'blocks', 'board', 'cards', 'cafe', 'bubbles', 'puzzle', 'shop', 'garden', 'fog']);
   function endExtras(c: ECtx, game: GameId): string {
-    const pm = pmsave(), before = pm.cur?.g === game ? pm.cur.town : null, first = playDone(pm, game, Date.now());
+    // Câu bằng chứng của ván (C360): chỉ game ghi vào sổ theo câu; game kỹ năng (đọc, nghe, viết, nói) lưu vào Can-Do nên không đếm.
+    const pm = pmsave(), cur = pm.cur?.g === game ? pm.cur : null, before = cur ? cur.town : null;
+    const ev = cur && LEDGER.has(game) ? E().ev.led.filter(x => x.ts >= cur.t0).length : null, first = playDone(pm, game, Date.now(), ev);
     if (first) host.save();
     const b = town(E()), gain = before === null ? [] : townGain(before, b);
     if (first) host.cheer?.(gain.length > 0);

@@ -1442,9 +1442,11 @@
    "name": "Learning Persistence",
    "group": "G",
    "v51": 2,
-   "score": 2,
-   "evidence": "Streak có, chưa đo",
-   "tests": []
+   "score": 3,
+   "evidence": "Đo theo game: bỏ giữa ván, chơi tiếp sau ván (v89 play.ts, bảng Số liệu chơi); chưa có dữ liệu người thật",
+   "tests": [
+    "test/unit/engine-play-town.test.ts::thước đo theo spec"
+   ]
   },
   {
    "id": "C337",
@@ -1489,9 +1491,11 @@
    "name": "Fun ≠ Learning",
    "group": "H",
    "v51": 1,
-   "score": 4,
-   "evidence": "Quest là màn chính, câu trong Quest chọn theo lỗ hổng → cách sửa nên lượt chơi là lượt học; chưa có dữ liệu tách vui và học",
-   "tests": []
+   "score": 5,
+   "evidence": "Tách tín hiệu vui (bỏ giữa, chơi tiếp sau ván) khỏi tín hiệu học (câu bằng chứng / phút) theo từng game (v89); Quest là màn chính, câu chọn theo lỗ hổng; chưa có dữ liệu",
+   "tests": [
+    "test/unit/engine-play-town.test.ts::thước đo theo spec"
+   ]
   },
   {
    "id": "C342",
@@ -1689,9 +1693,11 @@
    "name": "Game Learning Attribution",
    "group": "H",
    "v51": 1,
-   "score": 3,
-   "evidence": "Câu trả lời trong game có src game và id thử thách, snapshot mỗi lượt; chưa có dữ liệu quy kết",
-   "tests": []
+   "score": 4,
+   "evidence": "Câu trả lời trong game có src game và id thử thách, snapshot mỗi lượt; v89: câu bằng chứng / phút theo từng game; chưa có dữ liệu quy kết",
+   "tests": [
+    "test/unit/engine-play-town.test.ts::thước đo theo spec"
+   ]
   },
   {
    "id": "C361",

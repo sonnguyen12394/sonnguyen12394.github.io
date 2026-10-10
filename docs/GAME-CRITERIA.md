@@ -601,20 +601,25 @@ Bộ G1–G10 đo **học có thật không**. Nó chưa đo **game có đủ h�
 
 Vì vậy tách thành **hai trục độc lập**: G (học) và T (trải nghiệm). **Không lấy trung bình hai trục.** G7 giữ lại làm điểm tóm tắt; chi tiết nằm ở T.
 
+**Vị trí của trục T trong spec v2.4** (xem §9.0):
+- T là phần "Motivation / Game Progression" (thành phần 24) và tiêu chí C341 *Fun ≠ Learning*. T **phục vụ** North Star ("tiến bộ đã xác minh trên mỗi đơn vị công sức"), không phải mục tiêu riêng.
+- Spec cấm tối ưu thời gian trong app, số ván, XP, streak (§I, §XXIII). Vì vậy trục T không có chỉ tiêu "chơi lâu hơn". Nó chỉ đo: người học có bỏ dở không, có đi tiếp không, và mỗi phút chơi đem lại bao nhiêu câu học.
+- Sửa T không bao giờ được làm giảm G (nhất là G3, G8) hay tăng công sức trên mỗi phần đã xác minh.
+
 ### 8.1 Mười tiêu chí chung T1–T10 (mốc 0 / 5 / 10)
 
 | # | Tiêu chí | 0 điểm | 5 điểm | 10 điểm |
 |---|---|---|---|---|
 | T1 (×2) | **Vòng lặp lõi rõ** | Không hiểu phải làm gì | Hiểu sau khi đọc hướng dẫn | Hiểu trong ≤ 10 giây, không cần đọc; mỗi lượt đi đủ mục tiêu → hành động → phản hồi → phần thưởng |
-| T2 (×2) | **Quyết định có ý nghĩa** | Chỉ chọn đáp án | Có lựa chọn, nhưng luôn có một cách tối ưu hiển nhiên | Mỗi lượt có đánh đổi chiến thuật ngoài đáp án (đặt ở đâu, dùng bùa nào, phục vụ ai trước) và **không làm đổi bằng chứng** (G3) |
+| T2 (×2) | **Quyết định có ý nghĩa, trùng đường học** | Chỉ chọn đáp án đúng / sai, không có hậu quả | Có lựa chọn nhưng luôn có một cách tối ưu hiển nhiên | Quyết định **là hành động tiếng Anh** (dựng câu, ra lệnh, chọn câu đáp hợp văn phong, tìm chỗ sai) có hậu quả thấy được trong game; hoặc quyết định meta ngoài vòng chơi (tiêu xu kiếm được theo giá trị học). Không bao giờ là chọn nội dung / độ khó (C69: engine quyết), không là thao tác rỗng giữa các câu (HG24), không thưởng chiến thuật trái đường học (C345) |
 | T3 | **Cảm giác tay (juice)** | Tĩnh, chỉ đổi màu nút | Có âm và hiệu ứng đơn | Phản hồi ≤ 100 ms; hình, tiếng, chuyển động phân tầng: nhỏ cho mỗi lượt, lớn cho combo / hoàn thành |
 | T4 | **Đường cong thử thách** | Phẳng hoặc gãy | Màn sau khó hơn màn trước | Độ khó *game* tăng trong ván, có nhịp căng – nghỉ; tỉ lệ đúng phần ngôn ngữ giữ 70–85% (P14) |
 | T5 (×2) | **Tiến trình nhiều tầng** | Không có gì giữ lại | Có điểm / kỷ lục | Ngắn (trong ván) + trung (tuần: sưu tập, nâng cấp) + dài (một thế giới lớn dần, thấy được) |
 | T6 | **Đa dạng & bất ngờ** | Ván thứ 5 giống ván 1 | Có biến thể ngẫu nhiên | Có sự kiện, trùm, luật xoay vòng; vẫn thấy mới sau 10 ván |
 | T7 | **Bản sắc & cảm xúc** | Chỉ emoji / biểu mẫu | Có chủ đề | Nhân vật, thế giới, giọng văn nhất quán; người chơi quan tâm điều gì xảy ra tiếp |
-| T8 | **Nhịp phiên & điểm dừng** | Ván lê thê hoặc dừng đột ngột | Ván có kết thúc | Ván 3–8 phút, kết thúc có tổng kết, móc quay lại không dựa vào sợ mất (G9) |
+| T8 | **Nhịp phiên & điểm dừng** | Ván lê thê hoặc dừng đột ngột | Ván có kết thúc | Ván ≤ 8 phút, kết thúc có tổng kết và điểm dừng tự nhiên, móc quay lại không dựa vào sợ mất (G9, HG20) |
 | T9 | **Rào cản vào thấp** | Cần hướng dẫn dài, dễ kẹt | Có hướng dẫn | Làm quen ≤ 1 màn, thua nhẹ nhàng, chơi được một tay, khi tắt tiếng, với trình đọc màn hình |
-| T10 (×2) | **Muốn chơi lại (đo thật)** | Số liệu cho thấy ít ai chơi lại | Chưa đo (mặc định 5) | Đạt ngưỡng ở §8.3 |
+| T10 (×2) | **Giữ được người học (đo thật)** | Số liệu cho thấy hay bỏ dở / xong là thôi | Chưa đo (mặc định 5) | Đạt ngưỡng ở §8.3 (Persistence C336, không phải thời gian trong app) |
 
 Điểm T = trung bình có trọng số (÷ 14).
 
@@ -635,21 +640,26 @@ Vì vậy tách thành **hai trục độc lập**: G (học) và T (trải nghi
 
 ### 8.3 Đo bằng số liệu thay vì tự chấm
 
-Mỗi game đếm trên máy (tier 0 telemetry, `src/engine/ev/types.ts`), chỉ gửi đi khi người học đã bật chia sẻ thống kê:
+Mỗi game đếm trên máy (`src/engine/play.ts`, `st.e.pm`). Đây là tier 0 telemetry: tách khỏi sổ bằng chứng (P28), có giới hạn (20 lần gần nhất mỗi game, tránh lưu vô nghĩa, Ultimate Test câu 16), không gửi đi đâu (§XX local-first).
 
-| Chỉ số | Cách tính | Ngưỡng đạt | Kiểm cho |
-|---|---|---|---|
-| Chơi lại tự nguyện | Ván mở từ "Tất cả trò chơi" / "Chơi lại", **không** qua "▶ Chơi tiếp" (director có snapshot `dir` nên tách được) | ≥ 25% số ván | T10 |
-| Bỏ giữa ván | Ván bắt đầu mà không tới màn kết | < 20% | T8, T9 |
-| Thời gian tới hành động đầu tiên | Từ lúc mở game tới lượt trả lời / thao tác đầu | ≤ 10 giây | T1, T9 |
-| Thời lượng ván | Trung vị | 3–8 phút | T8 |
+| Chỉ số | Cách tính | Ngưỡng đạt | Kiểm cho | Thước đo của spec |
+|---|---|---|---|---|
+| Bỏ giữa ván | Ván bắt đầu mà không tới màn kết (mở game khác / về sảnh / đóng app) | < 20% | T8, T9, T10 | Persistence (C336) |
+| Chơi tiếp sau ván | Xong ván rồi mở ván mới (game nào cũng được) trong 10 phút | ≥ 50% số ván xong | T8, T10 | Persistence (C336) |
+| Câu bằng chứng / phút | Số câu vào sổ bằng chứng trong ván ÷ phút (game kỹ năng lưu vào Can-Do thì không đếm) | ≥ 2 | G8, so với T | Evidence / Learner Effort (§72, C341, C360) |
+| Thời gian tới thao tác đầu | Từ lúc mở game tới thao tác đầu | ≤ 10 giây | T1, T9 | Learner Effort |
+| Thời lượng ván | Trung vị | ≤ 8 phút (không có cận dưới: ngắn mà đủ là tốt) | T8 | Effort là ràng buộc hạng nhất |
+
+**Không dùng làm ngưỡng:** số ván tự chọn / chơi lại (chỉ để xem). Bộ não chọn game là lối chính; đặt chỉ tiêu "tự chọn nhiều" là trái C190 (UX không bắt tự chọn curriculum).
 
 Bot không đo được cảm xúc. Bổ sung **playtest 5 người mỗi game**: quan sát chỗ kẹt, cuối ván hỏi "Bạn có muốn chơi thêm một ván không?".
 
 ### 8.4 Luật phát hành mới
 
-- Giữ nguyên: G ≥ 7,5, G3 ≥ 8, G9 ≥ 8.
-- Thêm: **T ≥ 7 và không tiêu chí T nào dưới 5**.
+- Giữ nguyên, là cổng cứng: G ≥ 7,5, G3 ≥ 8, G9 ≥ 8.
+- T là cổng để **quảng bá / đưa lên bộ não chọn game**: T ≥ 7 và không tiêu chí T nào dưới 5.
+- Game là lối duy nhất cho một chức năng học (vd. 🗺️ Thám hiểm cho xếp lớp, 🎤 Karaoke cho nói) thì T thấp nghĩa là **sửa trải nghiệm**, không ẩn: ẩn đi thì mất cơ chế bằng chứng của chức năng đó (HG18 phủ nội dung, HG24).
+- Một bản sửa T chỉ được giữ khi số câu bằng chứng / phút của game đó không giảm (đo bằng bot `tools/learners` hoặc §8.3).
 - Xếp mỗi game vào ma trận hai trục:
 
 | | T ≥ 7 (vui) | T < 7 (nhàm) |
@@ -709,7 +719,7 @@ Căn cứ chính:
 |---|---|---|---|---|
 | 1 | **Đo §8.3** (4 bộ đếm cục bộ + bảng xem trong Cài đặt → Nâng cao) | Tất cả | T10, kiểm lại T1 / T8 | Nhỏ |
 | 2 | **Phố chung làm lớp meta:** quà Thư, đồ trang trí Quán, hoa Vườn, nhà Bàn Cờ cùng hiện trên một bản đồ phố; ván nào cũng góp một thứ thấy được | ~10 game | T5 +2, T7 +1 | Vừa |
-| 3 | **Thêm lớp quyết định không chạm bằng chứng:** Quán chọn khách phục vụ trước (khách có món / cá tính khác nhau); Thám tử chọn manh mối mở trước rồi tự kết luận thủ phạm; Xưởng chọn đơn có phần thưởng khác nhau. Câu hỏi và cách tính năng lực giữ nguyên (G3) | Quán, Thám tử, Đài, Xưởng | T2 3–4 → 6–7 | Vừa |
+| 3 | ~~Thêm lớp quyết định không chạm bằng chứng (chọn khách, chọn thứ tự manh mối, chọn đơn)~~ → thay bằng §9.3 sau khi đối chiếu spec: thao tác không phải tiếng Anh trong vòng chơi trái HG24 | Quán, Thám tử, Đài, Xưởng | T2 | Vừa |
 | 4 | **Juice chung:** âm cho Leo tháp; một màn kết "tổng kết lớn" dùng chung (hiệu ứng + đồ mới cho phố); thêm 3–4 âm (combo, lên cấp, mở khoá) | Tất cả | T3 +1–2 | Nhỏ |
 | 5 | **Một nhân vật dẫn đường** (Tí) xuất hiện ở sảnh, màn kết và lời nhờ của cư dân | Tất cả | T7 +1–2 | Nhỏ – vừa |
 | 6 | **Bài Câu: sưu tập bùa giữ qua các ván**, mở bùa mới theo tiến độ | Bài Câu | T5, T6 | Nhỏ |
@@ -718,6 +728,25 @@ Căn cứ chính:
 Sau mỗi đợt sửa: chấm lại T, rồi đối chiếu với số liệu §8.3 sau ít nhất 2 tuần.
 
 ## 9. Kế hoạch nâng trục T (v89–)
+
+### 9.0 Đối chiếu với spec v2.4 (sau đợt 1)
+
+Đọc lại `docs/SPEC-v2.4.md`, `docs/SPEC.md`, bộ chấm C1–C400. Có 5 chỗ kế hoạch ban đầu lệch spec; đã sửa:
+
+| # | Chỗ lệch | Spec nói | Đã sửa |
+|---|---|---|---|
+| 1 | Chỉ tiêu "chơi lại tự nguyện ≥ 25%", "ván 3–8 phút" | North Star = tiến bộ đã xác minh / công sức; **không** tối ưu thời gian trong app, số ván (§I, §XXIII); UX không bắt tự chọn (C190) | Bỏ chỉ tiêu tự chọn; thời lượng chỉ chặn trên; thêm **chơi tiếp sau ván** (Persistence C336) và **câu bằng chứng / phút** (C341, C360, §72) |
+| 2 | T2 = "quyết định ngoài đáp án" (chọn khách, chọn lối tháp, chọn đơn) | Quyết định của người sáng lập + HG24: mọi hành động trong game là thử thách ngôn ngữ do engine chọn; §IX Game Skill Bias (chiến thuật); C69 game không quyết curriculum; C345 chiến thuật game phải trùng đường học | T2 định nghĩa lại (§8.1): quyết định **là hành động tiếng Anh** có hậu quả, hoặc quyết định meta ngoài vòng chơi. Bỏ "chọn lối tháp" (chọn nội dung = chọn curriculum) và "bùa nghe chậm" (trợ giúp làm đổi bằng chứng) |
+| 3 | Phố dùng chữ "lên cấp" | P13, C342: điểm game không được giống năng lực; app dùng "⬆ Lên cấp" cho phần đã vững | Phố dùng ★ ("★ thứ 2"), ghi rõ "★ của phố không phải cấp tiếng Anh" |
+| 4 | Cổng T có thể ẩn game | HG18 (phủ nội dung), HG24: chức năng nào cũng cần cơ chế bằng chứng | Game duy nhất của một chức năng chỉ được sửa, không ẩn (§8.4) |
+| 5 | Mục tiêu "T2 ≥ 6 mọi game" | Ở game tiếp nhận (đọc, nghe, phân biệt âm), hành động tiếng Anh chính là hiểu → chọn; thêm thao tác khác là trái HG24 | Sàn T2 cho các game này là 5; bù bằng hậu quả, câu chuyện (T7) và meta (T5) |
+
+Những phần đợt 1 đã khớp spec, giữ nguyên:
+- Phố là progression / milestones / collectibles (§IX), suy ra từ telemetry, không vào bằng chứng (C187–C189).
+- Số liệu chơi là tier 0, tách sổ bằng chứng (P28), giới hạn kích thước, chỉ ở máy (§XX).
+- Ăn mừng chỉ khi có công trình mới, tôn trọng chế độ tập trung và giảm chuyển động.
+- Tí không nói điểm game (P13).
+- Thu gọn Tốc độ 60 giây / Ghép cặp đúng kết luận §6.5 ("giữ như trò phụ; chưa nên quảng bá"). Không xoá: người sáng lập quyết có bỏ hẳn hay không (SPEC.md: AI không đổi hướng sản phẩm khi chưa hỏi).
 
 ### 9.1 Phản biện mục tiêu "điểm tối đa"
 
@@ -729,49 +758,58 @@ Sau mỗi đợt sửa: chấm lại T, rồi đối chiếu với số liệu �
 - **Thêm quyết định không được làm bẩn bằng chứng (G3).** Mọi lựa chọn mới chỉ đổi *thứ tự / phần thưởng game*, không đổi câu hỏi hay cách tính năng lực.
 
 **Mục tiêu đặt lại:**
-- mọi game đang hiện T ≥ 7,5 và không tiêu chí T nào dưới 6;
-- G không tụt (G3, G9 ≥ 8 giữ bằng test hiện có);
+- mọi game đang hiện T ≥ 7,5; không tiêu chí T nào dưới 6, trừ T2 của game tiếp nhận (sàn 5, §9.0 mục 5);
+- G không tụt (G3, G9 ≥ 8 giữ bằng test hiện có), câu bằng chứng / phút không giảm;
 - T10 có số liệu thật sau 2 tuần.
 
 ### 9.2 Gốc rễ → đòn bẩy (sửa một chỗ, nâng nhiều game)
 
 | Gốc rễ (§8.6) | Đòn bẩy | Game hưởng | Tiêu chí |
 |---|---|---|---|
-| Không đo | `play.ts`: đếm ván, tự chọn / chơi lại, xong / bỏ giữa, thời gian tới thao tác đầu, thời lượng; bảng xem ở sảnh | 15 game engine | T10, kiểm T1 / T8 |
-| Tiến trình rời rạc | `town.ts`: **Phố chung** suy ra từ bản lưu sẵn có của mọi game (không thêm dữ liệu, đồng bộ an toàn). Mỗi game là một công trình lên cấp; màn kết báo "Phố mới" | 15 | T5, T7 |
+| Không đo | `play.ts`: bỏ giữa, chơi tiếp sau ván, câu bằng chứng / phút, thời gian tới thao tác đầu, thời lượng; bảng xem ở sảnh | 15 game engine | T10, kiểm T1 / T8, G8 |
+| Tiến trình rời rạc | `town.ts`: **Phố chung** suy ra từ bản lưu sẵn có của mọi game (không thêm dữ liệu, đồng bộ an toàn). Mỗi game là một công trình có 4 ★; màn kết báo "Phố mới" | 15 | T5, T7 |
 | Juice mỏng | Màn kết chung: pháo giấy + nhạc mừng (dùng lại `confetti()` / `sfx('win')` của app qua host), âm cho Leo tháp | 15 | T3 |
 | Thiếu bản sắc | Tí (mascot có sẵn ở `app.js`) dẫn đường trong hộp "Chơi tiếp" và màn kết | 15 | T7 |
 | Dàn trải | Thu Tốc độ 60 giây / Ghép cặp vào mục "Trò nhanh (cũ)" thu gọn | 2 | bớt game yếu |
 | Câu hỏi khoác áo game | Lớp quyết định riêng từng game (đợt 2, bảng §9.3) | 10 | T2 |
 | Ván sau giống ván trước | Sự kiện ngày, khách / hồ sơ đặc biệt, sưu tập bùa (đợt 3) | 8 | T4, T6 |
 
-### 9.3 Đợt 2: lớp quyết định từng game (giữ G3)
+### 9.3 Đợt 2: quyết định là hành động tiếng Anh (theo §9.0)
 
-| Game | Quyết định thêm | Vì sao không làm bẩn bằng chứng |
-|---|---|---|
-| ☕ Quán | Hàng chờ 3 khách, chọn phục vụ ai trước; mỗi khách có món và tiền boa khác nhau | Câu của từng khách vẫn do engine chọn; chỉ đổi thứ tự |
-| 🔍 Thám tử / 📻 Đài | Chọn manh mối mở trước; cuối hồ sơ tự chọn kết luận từ các manh mối đã mở | Câu hỏi giữ nguyên; kết luận chỉ là điểm game |
-| 🛠️ Xưởng | Mỗi ca chọn 6 trong 8 đơn, đơn khó trả nhiều xu hơn | Đơn đều là câu engine chọn cho điểm đang học |
-| 🎯 Bắt Âm | Trước mỗi màn chọn một bùa (nghe chậm miễn phí / nhân điểm chuỗi / thêm một lượt nói thử) | Bùa chỉ đổi điểm và trợ giúp, câu có trợ giúp được đánh dấu `hint` như hiện nay |
-| 🌱 Vườn | Chọn ô gieo và loại cây (từ của cụm nào); vườn có bố cục do người chơi xếp | Thứ tự bậc nhận ra → nhớ ngược → tự gõ giữ nguyên |
-| 🏰 Leo tháp | Mỗi tầng chọn một trong hai lối (nhiều rương hay nhiều quái) | Cả hai lối đều lấy từ danh sách NBA; chỉ đổi loại cảnh, như Bàn Cờ |
-| 🎤 Karaoke | Chọn vai A / B và "phong cách" (vui / lịch sự), đổi điểm biểu diễn | Câu nói vẫn là câu thoại gốc |
-| 🗺️ Thám hiểm | Đã có chọn đường; thêm "đặt cờ" ở ô muốn mở trước | Điểm dò vẫn do engine chọn |
+Mỗi dòng phải qua 4 câu hỏi:
+- quyết định có phải tiếng Anh không (HG24)?
+- có đổi nội dung / độ khó do engine chọn không (C69, P14)?
+- chiến thuật tốt nhất có trùng đường học không (C345)?
+- có làm giảm câu / phút không (G8, §72)?
+
+| Game | Quyết định | Tiếng Anh? | Bằng chứng / nội dung |
+|---|---|---|---|
+| ☕ Quán | 4 câu đáp đều hiểu được nhưng khác **độ hợp văn phong** (lịch sự / suồng sã / cộc); khách phản ứng khác nhau (vui, ngạc nhiên, phật ý) và tiền boa theo độ hợp | Có: ngữ dụng (Universal Core 7, F7c) | Câu và đáp án do engine chọn như cũ; phản ứng chỉ là trình bày |
+| 🛠️ Xưởng | Trước khi gõ, **chạm từ sai** trong câu hỏng; chạm đúng thì ô nhập chọn sẵn từ đó, chạm sai được gợi ý | Có: nhận ra lỗi (F3b) | Bằng chứng vẫn là câu gõ lại (mức 4); lượt chạm là quan sát, không vào mastery |
+| 🏰 Leo tháp | Ở trại: **tiêu xu** hồi tim hay giữ xu cho phố | Meta, ngoài vòng câu | Xu tỉ lệ giá trị học (C345/C346), tim là độ khó game (P14); câu không đổi |
+| 🏙️ Phố (mọi game) | **Tiêu xu chung** để thêm đồ trang trí cho công trình mình chọn | Meta, ngoài vòng câu | Xu kiếm theo giá trị học nên muốn phố đẹp thì phải học đúng đường |
+| 🔍 Thám tử / 📻 Đài | Hồ sơ có **bảng manh mối**: mỗi câu đúng ghim một mảnh; câu ý chính là kết luận, ghép từ các mảnh đã ghim | Có: hiểu là hành động | Câu như cũ; sàn T2 = 5 (§9.0 mục 5), nâng T7 bằng câu chuyện |
+| 🌱 Vườn | Chọn **ô gieo** cho hạt mới (bố cục vườn) | Meta, một chạm, không chặn vòng câu | Thứ tự bậc giữ nguyên |
+| ~~🎯 Bắt Âm bùa nghe chậm~~ | Bỏ: trợ giúp làm đổi bằng chứng | | |
+| ~~🏰 chọn lối nhiều rương / nhiều quái~~ | Bỏ: người chơi chọn nội dung = chọn curriculum (C69) | | |
+| ~~☕ chọn khách phục vụ trước~~ | Bỏ: thao tác không phải tiếng Anh giữa các câu (HG24) | | |
 
 ### 9.4 Thứ tự làm và cách kiểm
 
 1. **Đợt 1 (v89):** đo + Phố chung + màn kết chung + Tí + âm Leo tháp + thu gọn trò cũ. Kiểm bằng test đơn vị (`play.ts`, `town.ts` thuần hàm) và e2e (sảnh hiện Phố, màn kết hiện "Phố mới"). Chấm lại T.
-2. **Đợt 2 (v90–v92):** lớp quyết định theo §9.3, mỗi bản 2–3 game, kèm test "lựa chọn không đổi câu hỏi / bằng chứng".
+2. **Đợt 2 (v90–v92):** quyết định theo §9.3, mỗi bản 2–3 game. Mỗi bản kèm:
+   - test "quyết định không đổi câu hỏi / bằng chứng";
+   - bot `tools/learners` chạy lại để chứng minh câu bằng chứng / phút và tiến độ Đạt không giảm.
 3. **Đợt 3 (v93):** đa dạng (sự kiện ngày, sưu tập bùa Bài Câu, khách đặc biệt).
-4. **Sau 2 tuần số liệu:** chấm T10 thật; game nào bỏ giữa ≥ 20% hoặc chơi lại < 25% thì sửa theo số liệu, không theo cảm tính.
+4. **Sau 2 tuần số liệu:** chấm T10 thật. Game nào bỏ giữa ≥ 20% hoặc chơi tiếp sau ván < 50% thì sửa theo số liệu, không theo cảm tính. Game có câu / phút < 2 thì sửa phần học trước phần vui.
 
 ### 9.5 Đã làm đợt 1 (v89): chấm lại theo bản thật
 
 | Việc | Tệp | Kiểm |
 |---|---|---|
-| Đo số liệu chơi: ván, tự chọn / chơi lại / từ "Chơi tiếp", xong / bỏ giữa, giây tới thao tác đầu, thời lượng (20 lần gần nhất); bảng "📊 Số liệu chơi trên máy này" ở sảnh, ✓ / ✗ theo ngưỡng §8.3 khi đủ 5 ván | `play.ts`, `main.ts` (bọc mọi hành động, không đổi hành vi), `st.e.pm` | `engine-play-town.test.ts`, e2e `town.spec.ts` |
-| Phố chung: 15 công trình suy ra từ bản lưu từng game (không thêm dữ liệu, đồng bộ hai máy tự đúng), mỗi công trình 4 cấp; chạm công trình để chơi | `town.ts`, `townview.ts` | như trên + WCAG AA sáng / tối, 390 px |
-| Màn kết chung: "🏗️ Phố mới!" khi công trình lên cấp (pháo giấy + nhạc mừng của app, một lần mỗi ván); luôn có mốc gần nhất ("Còn 1 hoa nữa để Vườn hoa lên cấp 1") | `endExtras()` trong `main.ts`, host `cheer` | e2e `town.spec.ts` |
+| Đo số liệu chơi: bỏ giữa, chơi tiếp sau ván, câu bằng chứng / phút, giây tới thao tác đầu, thời lượng (20 lần gần nhất; tự chọn / chơi lại chỉ để xem); bảng "📊 Số liệu chơi trên máy này" ở sảnh, ✓ / ✗ theo ngưỡng §8.3 khi đủ 5 ván | `play.ts`, `main.ts` (bọc mọi hành động, không đổi hành vi), `st.e.pm` | `engine-play-town.test.ts`, e2e `town.spec.ts` |
+| Phố chung: 15 công trình suy ra từ bản lưu từng game (không thêm dữ liệu, đồng bộ hai máy tự đúng), mỗi công trình 4 ★ (không dùng chữ "cấp" để khỏi lẫn với cấp tiếng Anh); chạm công trình để chơi | `town.ts`, `townview.ts` | như trên + WCAG AA sáng / tối, 390 px |
+| Màn kết chung: "🏗️ Phố mới!" khi công trình lên cấp (pháo giấy + nhạc mừng của app, một lần mỗi ván); luôn có mốc gần nhất ("Còn 1 hoa nữa để Vườn hoa có ★ thứ 1") | `endExtras()` trong `main.ts`, host `cheer` | e2e `town.spec.ts` |
 | Tí dẫn đường ở hộp "Chơi tiếp" và thanh "▶ Tiếp" (câu theo tiến độ lộ trình, không nói điểm game) | `gameview.ts` `tiSay`, host `mascot` | e2e |
 | Leo tháp có âm đúng / sai như các game khác | `main.ts` | — |
 | Tốc độ 60 giây / Ghép cặp thu vào mục "Trò nhanh (cũ)" | `app.js` `viewGames` | e2e `play4.spec.ts` vẫn qua |

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { freshPlay, playStart, playAct, playDone, playQuit, playReport, sanitizePlay, mergePlay, MIN_N } from '../../src/engine/play.ts';
+import { freshPlay, playStart, playAct, playDone, playQuit, playReport, sanitizePlay, mergePlay, MIN_N, CONT_MS } from '../../src/engine/play.ts';
 import { town, townLevel, townKey, townGain, SPOTS, MAX_LV } from '../../src/engine/town.ts';
 import { freshE, sanitizeE, mergeE } from '../../src/engine/state.ts';
 import { GAMES } from '../../src/engine/director.ts';
@@ -21,14 +21,27 @@ test('v89 số liệu chơi: ván, tự chọn / chơi lại, thao tác đầu, 
   assert.equal(s.cur, null);
 });
 
-test('v89 số liệu chơi: báo cáo theo ngưỡng §8.3, chỉ kết luận khi đủ ván', () => {
+test('v89 số liệu chơi: thước đo theo spec (Persistence, Effort, câu bằng chứng / phút), chỉ kết luận khi đủ ván', () => {
   const s = freshPlay();
-  for (let i = 0; i < MIN_N; i++) { playStart(s, 'garden', i % 2 ? 'self' : 'dir', i * 1e6); playAct(s, i * 1e6 + 3000); playDone(s, 'garden', i * 1e6 + 300000); }
-  playStart(s, 'robot', 'self', 9e7);
+  // 5 ván Vườn, mỗi ván 5 phút, 15 câu bằng chứng (3 câu / phút); 4 ván đầu xong là chơi tiếp ngay (trong 10 phút).
+  for (let i = 0; i < MIN_N; i++) { const t = i * 360000; playStart(s, 'garden', 'dir', t); playAct(s, t + 3000); playDone(s, 'garden', t + 300000, 15); }
+  playStart(s, 'robot', 'self', 5 * 360000);         // ván Vườn thứ 5 cũng được "chơi tiếp"
+  playDone(s, 'robot', 5 * 360000 + 60000);           // game kỹ năng: không đếm câu
+  playStart(s, 'cafe', 'self', 5 * 360000 + 60000 + CONT_MS + 1);   // quá 10 phút sau ván robot: không tính chơi tiếp
   const r = playReport(s), g = r.find(x => x.game === 'garden')!, b = r.find(x => x.game === 'robot')!;
-  assert.equal(g.n, MIN_N); assert.equal(g.quit, 0); assert.equal(g.first, 3); assert.equal(g.dur, 300);
-  assert.deepEqual(g.ok, { quit: true, first: true, self: true, dur: true });
+  assert.equal(g.n, MIN_N); assert.equal(g.quit, 0); assert.equal(g.first, 3); assert.equal(g.dur, 300); assert.equal(g.er, 3); assert.equal(g.cont, 1);
+  assert.deepEqual(g.ok, { quit: true, first: true, cont: true, dur: true, er: true });
+  assert.equal(b.er, null); assert.equal(b.cont, 0);
   assert.equal(b.ok, null, 'chưa đủ ván thì không đánh ✓ / ✗');
+});
+
+test('v89 số liệu chơi: không thưởng ván dài (thời lượng chỉ có chặn trên) và không coi tự chọn là mục tiêu', () => {
+  const s = freshPlay();
+  for (let i = 0; i < MIN_N; i++) { playStart(s, 'cards', 'self', i * 1e7); playDone(s, 'cards', i * 1e7 + 900000, 20); }
+  const c = playReport(s)[0]!;
+  assert.equal(c.ok!.dur, false, 'ván 15 phút là quá dài');
+  assert.equal(c.ok!.er, false, '20 câu / 15 phút < 2 câu / phút');
+  assert.ok(!('self' in c.ok!), 'tự chọn chỉ để xem, không có ngưỡng');
 });
 
 test('v89 số liệu chơi: lưu / gộp an toàn, nằm trong st.e', () => {

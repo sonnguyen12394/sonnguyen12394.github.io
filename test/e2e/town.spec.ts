@@ -53,11 +53,11 @@ test('Màn kết: ván được đếm (từ Chơi tiếp, xong, thời lượng
   const gain = page.locator('.twgain');
   await expect(gain).toContainText('Phố mới');
   await expect(gain).toContainText('Quán cà phê');
-  await expect(gain).toContainText('Vườn hoa lên cấp 1');
+  await expect(gain).toContainText('Vườn hoa có ★ thứ 1');
   await page.screenshot({ path: 'test-results/town-end.png', fullPage: true });
   const pm = await page.evaluate(() => (window as any).eval('st').e.pm);
   expect(pm.g.garden).toMatchObject({ n: 1, done: 1, quit: 0, self: 0 });
-  expect(pm.g.garden.fa.length).toBe(1); expect(pm.g.garden.du.length).toBe(1);
+  expect(pm.g.garden.fa.length).toBe(1); expect(pm.g.garden.du.length).toBe(1); expect(pm.g.garden.er.length).toBe(1);
   // Vẽ lại màn kết không đếm thêm.
   await page.evaluate(() => (window as any).eval('render()'));
   expect(await page.evaluate(() => (window as any).eval('st').e.pm.g.garden.done)).toBe(1);
@@ -74,7 +74,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     await page.setViewportSize({ width: 390, height: 844 });
     await lobby(page);
-    await page.evaluate(() => { const st = (window as any).eval('st'); st.e.gq = { stars: 30, runs: 5, best: 6, day: 1 }; st.e.pm = { g: { cafe: { n: 6, self: 2, again: 1, done: 5, quit: 1, fa: [3, 4, 5], du: [200, 260] } }, cur: null }; (window as any).eval('render()'); });
+    await page.evaluate(() => { const st = (window as any).eval('st'); st.e.gq = { stars: 30, runs: 5, best: 6, day: 1 }; st.e.pm = { g: { cafe: { n: 6, self: 2, again: 1, done: 5, quit: 1, cont: 3, fa: [3, 4, 5], du: [200, 260], er: [31, 28] }, robot: { n: 2, self: 2, again: 0, done: 2, quit: 0, cont: 1, fa: [6], du: [120], er: [] } }, cur: null }; (window as any).eval('render()'); });
     await page.locator('details', { hasText: 'Số liệu chơi' }).locator('summary').click();
     const r = await new AxeBuilder({ page }).include('#app').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
     expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
