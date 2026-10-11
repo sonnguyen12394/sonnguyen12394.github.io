@@ -14,40 +14,40 @@
     "title": "Signs in town",
     "instr": "Read the signs and answer the questions.",
     "paras": [
-      "CAFE: We open at 7 am and close at 3 pm. Tea and coffee only, no food.",
-      "PARK: Children can play here. Bikes are OK on the path. Dogs must stay outside.",
+      "CAFE: Sandwiches and cakes all day. No hot drinks after 2 pm.",
+      "PARK: Dogs are welcome on the grass. Bikes must stay outside. Children under 6 need an adult.",
       "SCHOOL BUS: The bus leaves at 8 o'clock today, not 7.30. Please be here at 7.50.",
       "LIBRARY: Please be quiet. You can take three books home for two weeks.",
-      "SHOE SHOP: All shoes are half price this Saturday and Sunday. Bags are not cheaper."
+      "SHOE SHOP: All bags are half price this Saturday and Sunday. Shoes are not cheaper."
     ],
     "items": [
       {
         "id": "gt-a1-1-r1-a",
-        "q": "What can you get at the cafe?",
+        "q": "What can't you buy at the cafe at 4 pm?",
         "opts": [
           {
             "k": "A",
-            "t": "something to drink"
+            "t": "a sandwich"
           },
           {
             "k": "B",
-            "t": "something to eat"
+            "t": "a hot drink"
           },
           {
             "k": "C",
-            "t": "breakfast at 6 am"
+            "t": "a cake"
           }
         ],
-        "ans": "A",
-        "b": 1.5,
+        "ans": "B",
+        "b": 2,
         "ev": {
           "p": 0,
-          "s": "Tea and coffee only, no food."
+          "s": "No hot drinks after 2 pm."
         },
-        "why": "Quán chỉ bán trà và cà phê, tức là đồ uống.",
+        "why": "Sau 2 giờ chiều quán không bán đồ uống nóng.",
         "wrong": {
-          "B": "Biển ghi rõ không có đồ ăn (\"no food\").",
-          "C": "Quán mở lúc 7 giờ sáng, không phải 6 giờ."
+          "A": "Bánh mì kẹp bán cả ngày (\"all day\").",
+          "C": "Bánh ngọt bán cả ngày."
         }
       },
       {
@@ -56,27 +56,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "a bike"
-          },
-          {
-            "k": "B",
             "t": "a dog"
           },
           {
-            "k": "C",
+            "k": "B",
             "t": "a child"
+          },
+          {
+            "k": "C",
+            "t": "a bike"
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 1.5,
         "ev": {
           "p": 1,
-          "s": "Dogs must stay outside."
+          "s": "Bikes must stay outside."
         },
-        "why": "Biển ghi chó phải ở ngoài.",
+        "why": "Biển ghi xe đạp phải để ngoài.",
         "wrong": {
-          "A": "Xe đạp được đi trên lối đi (\"Bikes are OK on the path\").",
-          "C": "Trẻ em được chơi trong công viên."
+          "A": "Chó được vào bãi cỏ (\"Dogs are welcome\").",
+          "B": "Trẻ dưới 6 tuổi chỉ cần người lớn đi cùng, không phải ở ngoài."
         }
       },
       {
@@ -85,18 +85,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "at 7.30"
+            "t": "at 8.00"
           },
           {
             "k": "B",
-            "t": "at 7.50"
+            "t": "at 7.30"
           },
           {
             "k": "C",
-            "t": "at 8.00"
+            "t": "at 7.50"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 2,
         "ev": {
           "p": 2,
@@ -104,8 +104,8 @@
         },
         "why": "Hôm nay xe chạy lúc 8 giờ.",
         "wrong": {
-          "A": "Hôm nay xe không đi lúc 7 giờ 30 (\"not 7.30\").",
-          "B": "7 giờ 50 là giờ nên có mặt, không phải giờ xe chạy."
+          "B": "Hôm nay xe không đi lúc 7 giờ 30 (\"not 7.30\").",
+          "C": "7 giờ 50 là giờ nên có mặt, không phải giờ xe chạy."
         }
       },
       {
@@ -114,18 +114,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "three"
+            "t": "two"
           },
           {
             "k": "B",
-            "t": "two"
+            "t": "three"
           },
           {
             "k": "C",
             "t": "four"
           }
         ],
-        "ans": "A",
+        "ans": "B",
         "b": 1.5,
         "ev": {
           "p": 3,
@@ -133,37 +133,37 @@
         },
         "why": "Được mang ba cuốn sách về nhà.",
         "wrong": {
-          "B": "Hai là số tuần được mượn, không phải số sách.",
+          "A": "Hai là số tuần được mượn, không phải số sách.",
           "C": "Biển không nhắc số bốn."
         }
       },
       {
         "id": "gt-a1-1-r1-e",
-        "q": "What is cheaper this weekend?",
+        "q": "What is cheaper at the shoe shop this weekend?",
         "opts": [
           {
             "k": "A",
-            "t": "bags"
-          },
-          {
-            "k": "B",
             "t": "shoes"
           },
           {
-            "k": "C",
+            "k": "B",
             "t": "shoes and bags"
+          },
+          {
+            "k": "C",
+            "t": "bags"
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 2,
         "ev": {
           "p": 4,
-          "s": "All shoes are half price this Saturday and Sunday."
+          "s": "All bags are half price this Saturday and Sunday."
         },
-        "why": "Giày giảm nửa giá vào cuối tuần.",
+        "why": "Cuối tuần túi giảm nửa giá (dù là cửa hàng giày).",
         "wrong": {
-          "A": "Biển ghi túi không giảm giá (\"Bags are not cheaper\").",
-          "C": "Chỉ giày giảm giá, túi thì không."
+          "A": "Biển ghi giày không giảm giá (\"Shoes are not cheaper\").",
+          "B": "Chỉ túi giảm giá, giày thì không."
         }
       }
     ]
@@ -183,9 +183,9 @@
     "title": "Lan's email",
     "instr": "Read the email and answer the questions.",
     "paras": [
-      "Hi Mai, I am at my grandmother's house this week. She lives near the sea in a small town.",
-      "Every morning we walk on the beach, but we don't swim because the water is very cold. In the afternoon my grandmother cooks fish and I help her.",
-      "My brother is not here. He is at home with our dad. See you on Sunday! Lan"
+      "Hi Mai, I am at my aunt's flat in Hanoi this week. My grandmother is here too.",
+      "Every morning we go to the market by bike, but we don't buy fish because my aunt doesn't like it. In the afternoon we play cards and I help my aunt cook.",
+      "My brother is here too, but he sleeps until ten every day! See you on Sunday! Lan"
     ],
     "items": [
       {
@@ -194,27 +194,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "at home"
+            "t": "at her aunt's flat"
           },
           {
             "k": "B",
-            "t": "at school"
+            "t": "at her grandmother's house"
           },
           {
             "k": "C",
-            "t": "at her grandmother's house"
+            "t": "at a hotel"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 1.5,
         "ev": {
           "p": 0,
-          "s": "I am at my grandmother's house this week."
+          "s": "I am at my aunt's flat in Hanoi this week."
         },
-        "why": "Tuần này Lan ở nhà bà.",
+        "why": "Tuần này Lan ở căn hộ của dì ở Hà Nội.",
         "wrong": {
-          "A": "Người ở nhà là anh/em trai của Lan.",
-          "B": "Thư không nhắc trường học."
+          "B": "Bà cũng đang ở căn hộ của dì, không phải Lan ở nhà bà.",
+          "C": "Thư không nhắc khách sạn."
         }
       },
       {
@@ -223,85 +223,85 @@
         "opts": [
           {
             "k": "A",
-            "t": "They walk on the beach."
+            "t": "They go to the market."
           },
           {
             "k": "B",
-            "t": "They swim in the sea."
+            "t": "They play cards."
           },
           {
             "k": "C",
-            "t": "They cook fish."
+            "t": "They go to the park."
           }
         ],
         "ans": "A",
         "b": 2,
         "ev": {
           "p": 1,
-          "s": "Every morning we walk on the beach"
+          "s": "Every morning we go to the market by bike"
         },
-        "why": "Sáng nào họ cũng đi dạo trên bãi biển.",
+        "why": "Sáng nào họ cũng đạp xe đi chợ.",
         "wrong": {
-          "B": "Họ không bơi vì nước lạnh.",
-          "C": "Nấu cá là việc buổi chiều."
+          "B": "Chơi bài là việc buổi chiều.",
+          "C": "Thư không nhắc công viên."
         }
       },
       {
         "id": "gt-a1-1-r2-c",
-        "q": "Why don't they swim?",
+        "q": "Why don't they buy fish?",
         "opts": [
           {
             "k": "A",
-            "t": "The beach is far."
+            "t": "Fish is expensive."
           },
           {
             "k": "B",
-            "t": "The water is cold."
+            "t": "The market has no fish."
           },
           {
             "k": "C",
-            "t": "Grandmother is busy."
+            "t": "Lan's aunt doesn't like it."
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 2.5,
         "ev": {
           "p": 1,
-          "s": "we don't swim because the water is very cold"
+          "s": "we don't buy fish because my aunt doesn't like it"
         },
-        "why": "Họ không bơi vì nước rất lạnh.",
+        "why": "Họ không mua cá vì dì không thích cá.",
         "wrong": {
-          "A": "Bà sống gần biển, không xa.",
-          "C": "Thư không nói bà bận."
+          "A": "Thư không nói cá đắt.",
+          "B": "Thư không nói chợ hết cá."
         }
       },
       {
         "id": "gt-a1-1-r2-d",
-        "q": "Where is Lan's brother?",
+        "q": "What do we know about Lan's brother?",
         "opts": [
           {
             "k": "A",
-            "t": "with Lan"
+            "t": "He is at home."
           },
           {
             "k": "B",
-            "t": "at the beach"
+            "t": "He is with Lan."
           },
           {
             "k": "C",
-            "t": "at home"
+            "t": "He is at school."
           }
         ],
-        "ans": "C",
+        "ans": "B",
         "b": 2,
         "ev": {
           "p": 2,
-          "s": "He is at home with our dad."
+          "s": "My brother is here too"
         },
-        "why": "Anh/em trai Lan ở nhà với bố.",
+        "why": "Anh/em trai Lan cũng ở căn hộ của dì.",
         "wrong": {
-          "A": "Thư ghi anh/em trai không ở đây (\"is not here\").",
-          "B": "Người ra biển là Lan và bà."
+          "A": "Thư ghi anh/em trai cũng ở đây (\"is here too\").",
+          "C": "Thư không nhắc trường học."
         }
       }
     ]
@@ -491,15 +491,15 @@
       },
       {
         "sp": "Girl",
-        "t": "I play tennis in the morning, and I watch TV in the evening."
+        "t": "I watch TV in the morning. I play tennis in the afternoon, and my brother plays football."
       },
       {
         "sp": "Woman",
-        "t": "Is your birthday in May, Sam?"
+        "t": "Is your birthday in June, Sam?"
       },
       {
         "sp": "Sam",
-        "t": "No, it's in June. My sister's birthday is in May."
+        "t": "No, my sister's birthday is in June. Mine is in May, and Dad's is in July."
       }
     ],
     "items": [
@@ -509,18 +509,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "8 dollars"
-          },
-          {
-            "k": "B",
             "t": "10 dollars"
           },
           {
-            "k": "C",
+            "k": "B",
             "t": "18 dollars"
+          },
+          {
+            "k": "C",
+            "t": "8 dollars"
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 2,
         "ev": {
           "p": 1,
@@ -528,8 +528,8 @@
         },
         "why": "Anh lấy áo xanh, giá tám đô.",
         "wrong": {
-          "B": "Mười đô là giá áo màu đỏ; người đàn ông lấy áo xanh.",
-          "C": "Anh chỉ mua một áo, không mua cả hai."
+          "A": "Mười đô là giá áo màu đỏ; người đàn ông lấy áo xanh.",
+          "B": "Anh chỉ mua một áo, không mua cả hai."
         }
       },
       {
@@ -538,18 +538,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "in the bedroom"
+            "t": "in the kitchen"
           },
           {
             "k": "B",
-            "t": "in the kitchen"
+            "t": "in the bedroom"
           },
           {
             "k": "C",
             "t": "in the garden"
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 1.5,
         "ev": {
           "p": 4,
@@ -557,7 +557,7 @@
         },
         "why": "Mẹ bảo tìm dưới bàn trong bếp.",
         "wrong": {
-          "A": "Cô bé nói giày không ở phòng ngủ.",
+          "B": "Cô bé nói giày không ở phòng ngủ.",
           "C": "Không ai nhắc vườn."
         }
       },
@@ -567,27 +567,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "watch TV"
+            "t": "play tennis"
           },
           {
             "k": "B",
-            "t": "play football"
+            "t": "watch TV"
           },
           {
             "k": "C",
-            "t": "play tennis"
+            "t": "play football"
           }
         ],
-        "ans": "C",
+        "ans": "B",
         "b": 1.5,
         "ev": {
           "p": 6,
-          "s": "I play tennis in the morning"
+          "s": "I watch TV in the morning."
         },
-        "why": "Buổi sáng cô bé chơi quần vợt.",
+        "why": "Buổi sáng cô bé xem TV.",
         "wrong": {
-          "A": "Xem TV là buổi tối.",
-          "B": "Cô bé không nhắc bóng đá."
+          "A": "Cô bé chơi quần vợt vào buổi chiều.",
+          "C": "Người chơi bóng đá là anh/em trai cô bé."
         }
       },
       {
@@ -596,11 +596,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "in June"
+            "t": "in May"
           },
           {
             "k": "B",
-            "t": "in May"
+            "t": "in June"
           },
           {
             "k": "C",
@@ -611,18 +611,18 @@
         "b": 2,
         "ev": {
           "p": 8,
-          "s": "No, it's in June."
+          "s": "Mine is in May"
         },
-        "why": "Sinh nhật Sam vào tháng Sáu.",
+        "why": "Sinh nhật Sam vào tháng Năm.",
         "wrong": {
-          "B": "Tháng Năm là sinh nhật của chị/em gái Sam.",
-          "C": "Không ai nhắc tháng Bảy."
+          "B": "Tháng Sáu là sinh nhật chị/em gái Sam.",
+          "C": "Tháng Bảy là sinh nhật bố Sam."
         }
       }
     ],
     "audio": {
       "file": "a/gt-a1-1-l1.mp3",
-      "dur": 27.7,
+      "dur": 30.7,
       "voices": [
         "am_adam",
         "bf_emma",
@@ -653,11 +653,19 @@
     "script": [
       {
         "sp": "Anna",
-        "t": "Hi Ben, it's Anna. Do you want to go to the cinema tomorrow?"
+        "t": "Hi Ben, it's Anna. Do you want to go to the cinema today or tomorrow?"
       },
       {
         "sp": "Ben",
-        "t": "Yes, good idea. What time?"
+        "t": "I'm busy today and tomorrow. Is Sunday OK?"
+      },
+      {
+        "sp": "Anna",
+        "t": "Yes, Sunday is fine."
+      },
+      {
+        "sp": "Ben",
+        "t": "Good. What time?"
       },
       {
         "sp": "Anna",
@@ -669,7 +677,7 @@
       },
       {
         "sp": "Anna",
-        "t": "Outside the bookshop, next to the cinema. My friend Linh is coming too."
+        "t": "Inside the cinema, near the ticket desk. I'm going to the bookshop first, so don't wait outside."
       },
       {
         "sp": "Ben",
@@ -687,23 +695,23 @@
           },
           {
             "k": "B",
-            "t": "tomorrow"
+            "t": "on Sunday"
           },
           {
             "k": "C",
-            "t": "on Sunday"
+            "t": "tomorrow"
           }
         ],
         "ans": "B",
         "b": 2,
         "ev": {
-          "p": 0,
-          "s": "Do you want to go to the cinema tomorrow?"
+          "p": 1,
+          "s": "Is Sunday OK?"
         },
-        "why": "Họ đi xem phim vào ngày mai.",
+        "why": "Họ đi xem phim vào Chủ nhật.",
         "wrong": {
-          "A": "Anna rủ đi vào ngày mai (\"tomorrow\").",
-          "C": "Không ai nhắc Chủ nhật."
+          "A": "Hôm nay Ben bận.",
+          "C": "Ngày mai Ben cũng bận."
         }
       },
       {
@@ -726,7 +734,7 @@
         "ans": "C",
         "b": 2.5,
         "ev": {
-          "p": 2,
+          "p": 4,
           "s": "Let's meet at half past five."
         },
         "why": "Họ hẹn gặp lúc năm rưỡi.",
@@ -741,11 +749,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "outside the bookshop"
+            "t": "inside the cinema"
           },
           {
             "k": "B",
-            "t": "inside the cinema"
+            "t": "outside the bookshop"
           },
           {
             "k": "C",
@@ -755,12 +763,12 @@
         "ans": "A",
         "b": 2.5,
         "ev": {
-          "p": 4,
-          "s": "Outside the bookshop, next to the cinema."
+          "p": 6,
+          "s": "Inside the cinema, near the ticket desk."
         },
-        "why": "Chỗ hẹn là bên ngoài hiệu sách.",
+        "why": "Họ gặp trong rạp, gần quầy vé.",
         "wrong": {
-          "B": "Họ gặp bên ngoài hiệu sách, cạnh rạp.",
+          "B": "Anna chỉ ghé hiệu sách trước, dặn đừng chờ bên ngoài.",
           "C": "Không ai nhắc nhà Anna."
         }
       },
@@ -778,25 +786,30 @@
           },
           {
             "k": "C",
-            "t": "a friend"
+            "t": "a book"
           }
         ],
         "ans": "B",
         "b": 2,
         "ev": {
-          "p": 5,
+          "p": 7,
           "s": "I can bring some apples for the film."
         },
         "why": "Ben mang táo.",
         "wrong": {
           "A": "Ben không nhắc kẹo.",
-          "C": "Người dẫn bạn đi cùng là Anna (Linh)."
+          "C": "Hiệu sách là nơi Anna ghé, Ben không mang sách."
         }
       }
     ],
+    "allow": [
+      "inside",
+      "near",
+      "bookshop"
+    ],
     "audio": {
       "file": "a/gt-a1-1-l2.mp3",
-      "dur": 22.8,
+      "dur": 30.7,
       "voices": [
         "bf_isabella",
         "bm_george"

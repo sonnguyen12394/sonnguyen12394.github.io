@@ -14,7 +14,7 @@
     "title": "Notes and signs",
     "instr": "Read the signs and answer the questions.",
     "paras": [
-      "MUSEUM: Open Tuesday to Sunday. Closed on Monday. Free for children.",
+      "MUSEUM: Open every day from Thursday to Tuesday. Closed on Wednesday. Free for children on Monday.",
       "CLASS 3B: No English lesson today. Your teacher is ill. Please go to the library at 10 o'clock.",
       "MARKET: Fruit 20,000 dong a kilo. Vegetables 15,000 dong a kilo.",
       "SWIMMING POOL: Please take a shower first. No food near the water.",
@@ -27,11 +27,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "on Tuesday"
+            "t": "on Monday"
           },
           {
             "k": "B",
-            "t": "on Monday"
+            "t": "on Wednesday"
           },
           {
             "k": "C",
@@ -39,15 +39,15 @@
           }
         ],
         "ans": "B",
-        "b": 1.5,
+        "b": 2,
         "ev": {
           "p": 0,
-          "s": "Closed on Monday."
+          "s": "Closed on Wednesday."
         },
-        "why": "Bảo tàng đóng cửa thứ Hai.",
+        "why": "Bảo tàng đóng cửa thứ Tư.",
         "wrong": {
-          "A": "Bảo tàng mở từ thứ Ba.",
-          "C": "Bảo tàng mở đến Chủ nhật."
+          "A": "Thứ Hai bảo tàng mở, trẻ em được vào miễn phí.",
+          "C": "Bảo tàng mở từ thứ Năm đến thứ Ba, có Chủ nhật."
         }
       },
       {
@@ -85,18 +85,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "15,000 dong"
-          },
-          {
-            "k": "B",
             "t": "20,000 dong"
           },
           {
-            "k": "C",
+            "k": "B",
             "t": "35,000 dong"
+          },
+          {
+            "k": "C",
+            "t": "15,000 dong"
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 1.5,
         "ev": {
           "p": 2,
@@ -104,8 +104,8 @@
         },
         "why": "Rau giá 15.000 đồng một ký.",
         "wrong": {
-          "B": "20.000 đồng là giá trái cây.",
-          "C": "Đó là giá cộng cả hai, không phải một ký rau."
+          "A": "20.000 đồng là giá trái cây.",
+          "B": "Đó là giá cộng cả hai, không phải một ký rau."
         }
       },
       {
@@ -143,18 +143,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "a cake"
+            "t": "a hat"
           },
           {
             "k": "B",
-            "t": "a present"
+            "t": "a cake"
           },
           {
             "k": "C",
-            "t": "a hat"
+            "t": "a present"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 2,
         "ev": {
           "p": 4,
@@ -162,8 +162,8 @@
         },
         "why": "Hoa dặn mang mũ.",
         "wrong": {
-          "A": "Hoa không nhắc bánh.",
-          "B": "Hoa không nhắc quà."
+          "B": "Hoa không nhắc bánh.",
+          "C": "Hoa không nhắc quà."
         }
       }
     ],
@@ -191,7 +191,7 @@
     "paras": [
       "Hello! My name is Duc. I am eleven. I live in a flat in Da Nang with my parents and my little sister, Ha.",
       "My father is a doctor and my mother is a teacher. Ha is five. She likes drawing, but she doesn't like reading.",
-      "At the weekend we go to the beach. I like swimming, and my dad likes fishing."
+      "At the weekend we go to the beach. My dad likes swimming, and I like fishing with my grandfather."
     ],
     "items": [
       {
@@ -278,35 +278,35 @@
         "why": "Hà thích vẽ.",
         "wrong": {
           "A": "Hà không thích đọc sách.",
-          "B": "Người thích bơi là Đức."
+          "B": "Người thích bơi là bố."
         }
       },
       {
         "id": "gt-a1-2-r2-d",
-        "q": "What does Duc's father do at the beach?",
+        "q": "What does Duc's father like doing at the beach?",
         "opts": [
           {
             "k": "A",
-            "t": "fish"
+            "t": "fishing"
           },
           {
             "k": "B",
-            "t": "swim"
+            "t": "swimming"
           },
           {
             "k": "C",
-            "t": "read"
+            "t": "reading"
           }
         ],
-        "ans": "A",
+        "ans": "B",
         "b": 2.5,
         "ev": {
           "p": 2,
-          "s": "my dad likes fishing"
+          "s": "My dad likes swimming"
         },
-        "why": "Bố Đức thích câu cá.",
+        "why": "Bố Đức thích bơi.",
         "wrong": {
-          "B": "Người thích bơi là Đức.",
+          "A": "Người thích câu cá là Đức (với ông).",
           "C": "Không ai đọc sách ở biển."
         }
       }
@@ -341,14 +341,14 @@
           },
           {
             "k": "B",
-            "t": "is"
+            "t": "am"
           },
           {
             "k": "C",
-            "t": "am"
+            "t": "is"
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 1.5,
         "ev": {
           "p": 0,
@@ -357,7 +357,7 @@
         "why": "\"This is\": chủ ngữ số ít.",
         "wrong": {
           "A": "\"This\" đi với \"is\".",
-          "C": "\"am\" chỉ đi với \"I\"."
+          "B": "\"am\" chỉ đi với \"I\"."
         }
       },
       {
@@ -366,18 +366,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "so"
+            "t": "but"
           },
           {
             "k": "B",
-            "t": "or"
+            "t": "so"
           },
           {
             "k": "C",
-            "t": "but"
+            "t": "or"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 2.5,
         "ev": {
           "p": 0,
@@ -385,8 +385,8 @@
         },
         "why": "\"small but nice\": nhỏ nhưng đẹp, hai ý trái nhau.",
         "wrong": {
-          "A": "\"so\" là \"vì vậy\", không nối hai ý trái nhau.",
-          "B": "\"or\" là \"hoặc\", không hợp nghĩa."
+          "B": "\"so\" là \"vì vậy\", không nối hai ý trái nhau.",
+          "C": "\"or\" là \"hoặc\", không hợp nghĩa."
         }
       },
       {
@@ -395,18 +395,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "on"
+            "t": "at"
           },
           {
             "k": "B",
-            "t": "at"
+            "t": "on"
           },
           {
             "k": "C",
             "t": "to"
           }
         ],
-        "ans": "A",
+        "ans": "B",
         "b": 2,
         "ev": {
           "p": 1,
@@ -414,7 +414,7 @@
         },
         "why": "\"on the desk\": trên bàn.",
         "wrong": {
-          "B": "Đồ đặt trên mặt bàn dùng \"on\".",
+          "A": "Đồ đặt trên mặt bàn dùng \"on\".",
           "C": "\"to\" chỉ hướng đi, không chỉ vị trí."
         }
       },
@@ -424,18 +424,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "loves"
+            "t": "love"
           },
           {
             "k": "B",
-            "t": "love"
+            "t": "loves"
           },
           {
             "k": "C",
             "t": "loving"
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 2,
         "ev": {
           "p": 1,
@@ -443,7 +443,7 @@
         },
         "why": "\"I love\": chủ ngữ \"I\".",
         "wrong": {
-          "A": "\"loves\" dùng cho he/she/it.",
+          "B": "\"loves\" dùng cho he/she/it.",
           "C": "Sau \"I\" cần động từ chia."
         }
       }
@@ -481,27 +481,27 @@
       },
       {
         "sp": "Woman",
-        "t": "What would you like to drink?"
+        "t": "Would you like orange juice or milk?"
       },
       {
         "sp": "Boy",
-        "t": "Orange juice, please. No milk, thanks."
+        "t": "No milk, thanks. I don't like orange juice. Can I have some water, please?"
       },
       {
         "sp": "Man",
-        "t": "What time is it?"
+        "t": "What time is it? Does the film start at half past four?"
       },
       {
         "sp": "Woman",
-        "t": "It's ten past four. The film starts at half past four."
+        "t": "No, it starts at five. It's ten past four now."
       },
       {
         "sp": "Girl",
-        "t": "Where's Dad?"
+        "t": "Where's Dad? He isn't in the garden."
       },
       {
         "sp": "Boy",
-        "t": "He's in the garden. Mum's in the kitchen."
+        "t": "He's in the kitchen. Mum's in the car."
       }
     ],
     "items": [
@@ -540,27 +540,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "orange juice"
+            "t": "milk"
           },
           {
             "k": "B",
-            "t": "milk"
+            "t": "orange juice"
           },
           {
             "k": "C",
             "t": "water"
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 1.5,
         "ev": {
           "p": 3,
-          "s": "Orange juice, please."
+          "s": "Can I have some water, please?"
         },
-        "why": "Cậu bé muốn nước cam.",
+        "why": "Cậu bé xin nước lọc.",
         "wrong": {
-          "B": "Cậu bé nói không lấy sữa.",
-          "C": "Không ai nhắc nước lọc."
+          "A": "Cậu bé nói không lấy sữa.",
+          "B": "Cậu bé không thích nước cam."
         }
       },
       {
@@ -569,27 +569,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "4.10"
+            "t": "5.00"
           },
           {
             "k": "B",
-            "t": "4.30"
+            "t": "4.10"
           },
           {
             "k": "C",
-            "t": "5.00"
+            "t": "4.30"
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 2,
         "ev": {
           "p": 5,
-          "s": "The film starts at half past four."
+          "s": "No, it starts at five."
         },
-        "why": "Phim bắt đầu lúc bốn rưỡi.",
+        "why": "Phim bắt đầu lúc năm giờ.",
         "wrong": {
-          "A": "Bốn giờ mười là giờ hiện tại.",
-          "C": "Không ai nhắc năm giờ."
+          "B": "Bốn giờ mười là giờ hiện tại.",
+          "C": "Người đàn ông hỏi bốn rưỡi, người phụ nữ nói không."
         }
       },
       {
@@ -598,33 +598,33 @@
         "opts": [
           {
             "k": "A",
-            "t": "in the kitchen"
+            "t": "in the garden"
           },
           {
             "k": "B",
-            "t": "in the car"
+            "t": "in the kitchen"
           },
           {
             "k": "C",
-            "t": "in the garden"
+            "t": "in the car"
           }
         ],
-        "ans": "C",
+        "ans": "B",
         "b": 1.5,
         "ev": {
           "p": 7,
-          "s": "He's in the garden."
+          "s": "He's in the kitchen."
         },
-        "why": "Bố ở ngoài vườn.",
+        "why": "Bố ở trong bếp.",
         "wrong": {
-          "A": "Người ở bếp là mẹ.",
-          "B": "Không ai nhắc xe hơi."
+          "A": "Cô bé nói bố không ở vườn.",
+          "C": "Người ở trong xe là mẹ."
         }
       }
     ],
     "audio": {
       "file": "a/gt-a1-2-l1.mp3",
-      "dur": 21.5,
+      "dur": 27,
       "voices": [
         "am_adam",
         "bf_emma",
@@ -654,19 +654,19 @@
     "script": [
       {
         "sp": "Teacher",
-        "t": "Listen, everyone. Tomorrow we're going to the zoo."
+        "t": "Listen, everyone. Tomorrow we're going to the zoo. We're going to the farm next month, and the park is closed."
       },
       {
         "sp": "Teacher",
-        "t": "The bus leaves at nine o'clock, so please come to school at half past eight."
+        "t": "The bus leaves at a quarter to nine, so please come to school at half past eight, not at a quarter past eight."
       },
       {
         "sp": "Teacher",
-        "t": "Bring a hat and some water. You don't need to bring lunch. We're having lunch at the zoo cafe."
+        "t": "Bring your lunch and some water. You don't need a hat, because it's going to be cloudy."
       },
       {
         "sp": "Teacher",
-        "t": "We're coming back to school at three o'clock."
+        "t": "We're coming back to school at four o'clock, not three."
       }
     ],
     "items": [
@@ -676,18 +676,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "to the zoo"
+            "t": "to the farm"
           },
           {
             "k": "B",
-            "t": "to the cafe"
+            "t": "to the park"
           },
           {
             "k": "C",
-            "t": "to the park"
+            "t": "to the zoo"
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 1.5,
         "ev": {
           "p": 0,
@@ -695,8 +695,8 @@
         },
         "why": "Ngày mai cả lớp đi sở thú.",
         "wrong": {
-          "B": "Quán ăn chỉ là nơi ăn trưa trong sở thú.",
-          "C": "Cô giáo không nhắc công viên."
+          "A": "Đi trang trại là tháng sau.",
+          "B": "Công viên đóng cửa."
         }
       },
       {
@@ -705,7 +705,7 @@
         "opts": [
           {
             "k": "A",
-            "t": "at 9.00"
+            "t": "at 8.15"
           },
           {
             "k": "B",
@@ -713,7 +713,7 @@
           },
           {
             "k": "C",
-            "t": "at 3.00"
+            "t": "at 8.45"
           }
         ],
         "ans": "B",
@@ -722,10 +722,10 @@
           "p": 1,
           "s": "please come to school at half past eight"
         },
-        "why": "Học sinh phải có mặt lúc tám rưỡi.",
+        "why": "Học sinh có mặt lúc tám rưỡi.",
         "wrong": {
-          "A": "Chín giờ là giờ xe chạy.",
-          "C": "Ba giờ là giờ về trường."
+          "A": "Cô nói không phải tám giờ mười lăm.",
+          "C": "Chín giờ kém mười lăm là giờ xe chạy."
         }
       },
       {
@@ -745,16 +745,16 @@
             "t": "lunch"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 2.5,
         "ev": {
           "p": 2,
-          "s": "You don't need to bring lunch."
+          "s": "You don't need a hat"
         },
-        "why": "Không cần mang bữa trưa vì ăn ở quán trong sở thú.",
+        "why": "Không cần mang mũ vì trời nhiều mây.",
         "wrong": {
-          "A": "Cô dặn mang mũ.",
-          "B": "Cô dặn mang nước."
+          "B": "Cô dặn mang nước.",
+          "C": "Cô dặn mang bữa trưa."
         }
       },
       {
@@ -767,29 +767,29 @@
           },
           {
             "k": "B",
-            "t": "at nine"
+            "t": "at four"
           },
           {
             "k": "C",
-            "t": "at half past eight"
+            "t": "at five"
           }
         ],
-        "ans": "A",
+        "ans": "B",
         "b": 2,
         "ev": {
           "p": 3,
-          "s": "We're coming back to school at three o'clock."
+          "s": "We're coming back to school at four o'clock, not three."
         },
-        "why": "Cả lớp về lúc ba giờ.",
+        "why": "Cả lớp về lúc bốn giờ.",
         "wrong": {
-          "B": "Chín giờ là giờ xe chạy.",
-          "C": "Tám rưỡi là giờ có mặt."
+          "A": "Cô nói không phải ba giờ (\"not three\").",
+          "C": "Cô không nhắc năm giờ."
         }
       }
     ],
     "audio": {
       "file": "a/gt-a1-2-l2.mp3",
-      "dur": 16.2,
+      "dur": 20.5,
       "voices": [
         "bf_emma"
       ]

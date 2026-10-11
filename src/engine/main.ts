@@ -26,7 +26,7 @@ import { viewLobby, viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoard
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
 import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, TIER_COINS, type WkKind } from './weekly.ts';
-import { FACE, resident, sideDone, SIDE_COINS, CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind } from './story.ts';
+import { FACE, resident, sideDone, SIDE_COINS, CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind, type StoryGateOf } from './story.ts';
 import { openScene } from './storyfx.ts';
 import { stageSync, stageBurst, type Scene } from './stagefx.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
@@ -71,7 +71,7 @@ import { roteNodes } from './rote.ts';
 import { viewLrRun } from './lrview.ts';
 import { viewTreasureCard, viewTreasureIntro, viewTreasureDone, CHEST_COINS } from './treasureview.ts';
 import { viewGateHome, viewGateRun, viewGateEnd, type GateRun } from './gateview.ts';
-import { gateScore, gateState, lastP, CES_MIN, type GateAns } from './gate.ts';
+import { gateScore, gateState, lastP, CES_MIN, GATE_FORMS, type GateAns } from './gate.ts';
 import type { LrApi } from '../exam/main.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
 import { viewMeasure } from './measureview.ts';
@@ -1402,6 +1402,12 @@ export function init(host: EHost): EngineModule {
   // Vừa vững (full) = Đạt ĐÚNG mức mục tiêu cần và đang vững thật, nên khớp với số "x/y kỹ năng đã vững". Đạt ở mức thấp hơn (part, ví dụ
   // Vườn từ: nhận ra mặt chữ, mục tiêu cần tự nhớ ra) là tiến một bậc, báo riêng để không mâu thuẫn với con số trên.
   function goalOf(v: EState) { const ix = loaded(); return ix ? v.goals.map(sg => ix.goal.get(sg.id)).find(Boolean) ?? null : null; }
+  // v115 khu truyện = cấp: chương cuối khu cuối (Rừng Trúc) là trận cổng của đích, nếu đích có cổng. Hai khu đầu giữ điều kiện kỹ năng vững
+  // (khu 1–2 tới sớm, gắn cổng ở đó sẽ chặn truyện hàng tuần; nút "Tới trận cổng" cũng chỉ mở cổng của đích hiện tại).
+  function storyGate(v: EState): StoryGateOf {
+    const g = goalOf(v), last = Math.max(...STORY.map(c => c.act));
+    return act => !g || act !== last || !GATE_FORMS[g.id] ? null : { lv: g.id.replace('cefr-', '').toUpperCase(), passed: Object.values(E().gg?.done ?? {}).some(x => x.goal === g.id && x.passed) };
+  }
   function goalSum(v: EState, review = 0): { s: GoalSum; ids: Set<string>; solidIds: Set<string> } | null {
     const g = goalOf(v);
     if (!g) return null;
@@ -1594,7 +1600,7 @@ export function init(host: EHost): EngineModule {
     if (qrun?.done) return viewQuestEnd(c, qrun);
     if (qrun) { qrun.revive = qrun.mode === 'tower' && !qrun.revived && qrun.i + 1 < qrun.plan.length && wallet() >= REVIVE ? REVIVE : 0; return viewQuestRun(c, qrun); }
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null, dir = c.e.goals.length ? director() : null, gs = dir ? goalSum(c.e, dir.x.review) : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, dir, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '', gs ? viewGoalBar(c, gs.s) + (nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '') : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave()));
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, dir, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '', gs ? viewGoalBar(c, gs.s) + (nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '') : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave()));
   }
   const routes: Record<string, (c: ECtx) => string> = {
     // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).
@@ -1833,7 +1839,7 @@ export function init(host: EHost): EngineModule {
       const solid = solidNow();
       openScene(ch, k, () => {
         if (k !== sv.ch) return;
-        const a = advance(sv, solid); if (!a) return;
+        const a = advance(sv, solid, storyGate(E())); if (!a) return;
         if (a.coins) qsave().coins += a.coins;
         host.toast(a.act ? `🏙️ ${a.act} đã hồi sinh! +${a.coins} xu` : a.coins ? `📖 Xong chương! +${a.coins} xu` : '📖 Câu chuyện bắt đầu!');
         host.save(); host.render();

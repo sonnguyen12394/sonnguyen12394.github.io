@@ -15,7 +15,7 @@
     "instr": "Read the messages and notices and answer the questions.",
     "paras": [
       "Hi Tuan, I can't come to the gym tonight because I have to finish my homework. Can we go on Thursday instead? Phong",
-      "BOOKSHOP: Buy two books and get the third one free. This offer ends on 30 June.",
+      "BOOKSHOP: Buy one book and get a second book for half price. This offer ends on 30 June.",
       "TRAIN NOTICE: Because of work on the line, trains to Hue will leave from Platform 2, not Platform 5, until Sunday.",
       "SPORTS CENTRE: The tennis courts are closed for repairs this week. The swimming pool and gym are open as usual.",
       "Dear customer, your order has been sent. It should arrive in 3 to 5 days. If it doesn't arrive in 7 days, please contact us."
@@ -27,18 +27,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "to ask for help"
+            "t": "to change the day"
           },
           {
             "k": "B",
-            "t": "to change the day"
+            "t": "to ask for help"
           },
           {
             "k": "C",
             "t": "to invite Tuan home"
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 3,
         "ev": {
           "p": 0,
@@ -46,7 +46,7 @@
         },
         "why": "Phong muốn đổi buổi tập sang thứ Năm.",
         "wrong": {
-          "A": "Phong phải tự làm bài tập, không nhờ Tuấn giúp.",
+          "B": "Phong phải tự làm bài tập, không nhờ Tuấn giúp.",
           "C": "Phong không mời Tuấn đến nhà."
         }
       },
@@ -56,27 +56,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "Every book is free."
+            "t": "Every book is half price."
           },
           {
             "k": "B",
-            "t": "It starts on 30 June."
+            "t": "The second book is half price."
           },
           {
             "k": "C",
             "t": "The third book is free."
           }
         ],
-        "ans": "C",
+        "ans": "B",
         "b": 3.5,
         "ev": {
           "p": 1,
-          "s": "Buy two books and get the third one free."
+          "s": "Buy one book and get a second book for half price."
         },
-        "why": "Mua hai cuốn thì cuốn thứ ba miễn phí.",
+        "why": "Mua một cuốn thì cuốn thứ hai giảm nửa giá.",
         "wrong": {
-          "A": "Chỉ cuốn thứ ba được miễn phí.",
-          "B": "30 tháng Sáu là ngày kết thúc."
+          "A": "Chỉ cuốn thứ hai được giảm nửa giá.",
+          "C": "Ưu đãi chỉ nói cuốn thứ hai, không có cuốn miễn phí."
         }
       },
       {
@@ -85,18 +85,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "Platform 2"
-          },
-          {
-            "k": "B",
             "t": "Platform 5"
           },
           {
-            "k": "C",
+            "k": "B",
             "t": "home until Sunday"
+          },
+          {
+            "k": "C",
+            "t": "Platform 2"
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 3,
         "ev": {
           "p": 2,
@@ -104,8 +104,8 @@
         },
         "why": "Tàu đi Huế chạy từ sân ga 2.",
         "wrong": {
-          "B": "Không đi từ sân ga 5 (\"not Platform 5\").",
-          "C": "Tàu vẫn chạy, chỉ đổi sân ga."
+          "A": "Không đi từ sân ga 5 (\"not Platform 5\").",
+          "B": "Tàu vẫn chạy, chỉ đổi sân ga."
         }
       },
       {
@@ -143,18 +143,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "if nothing comes in 3 days"
+            "t": "if nothing comes in 7 days"
           },
           {
             "k": "B",
-            "t": "if nothing comes in 5 days"
+            "t": "if nothing comes in 3 days"
           },
           {
             "k": "C",
-            "t": "if nothing comes in 7 days"
+            "t": "if nothing comes in 5 days"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 3.5,
         "ev": {
           "p": 4,
@@ -162,8 +162,8 @@
         },
         "why": "Sau bảy ngày chưa nhận được hàng thì liên hệ.",
         "wrong": {
-          "A": "Ba đến năm ngày là thời gian giao bình thường.",
-          "B": "Năm ngày vẫn trong thời gian giao bình thường."
+          "B": "Ba đến năm ngày là thời gian giao bình thường.",
+          "C": "Năm ngày vẫn trong thời gian giao bình thường."
         }
       }
     ]
@@ -183,9 +183,9 @@
     "title": "A day without phones",
     "instr": "Read the text and answer the questions.",
     "paras": [
-      "Last month our class tried a day without mobile phones. Our teacher thought it would be difficult for us, and she was right. At the start of the day, many students kept looking for their phones.",
-      "But by lunchtime something changed. Instead of looking at screens, people talked to each other, and a group of us played a card game we hadn't played for years.",
-      "The hardest part for me was not checking the time. I wear a watch now! Our teacher wants to do it again next term, and most students agreed. Mai"
+      "Last month our class tried a day without mobile phones. Our teacher thought it would be difficult for us, but at the start of the day everyone was calm. Nobody looked for their phone.",
+      "By lunchtime, though, many students were bored. Some of them slept on their desks, and a few read old magazines from the library.",
+      "The hardest part for me was not listening to music on the bus home. Our teacher wants to do it again next term, but most students said no. Mai"
     ],
     "items": [
       {
@@ -198,23 +198,23 @@
           },
           {
             "k": "B",
-            "t": "They felt very relaxed."
+            "t": "They were angry with the teacher."
           },
           {
             "k": "C",
-            "t": "They were angry with the teacher."
+            "t": "They were calm."
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 3,
         "ev": {
           "p": 0,
-          "s": "many students kept looking for their phones"
+          "s": "at the start of the day everyone was calm"
         },
-        "why": "Lúc đầu nhiều bạn cứ tìm điện thoại.",
+        "why": "Lúc đầu ai cũng bình thản.",
         "wrong": {
-          "B": "Lúc đầu nhiều bạn cứ tìm điện thoại, không thoải mái.",
-          "C": "Bài không nói ai giận cô giáo."
+          "A": "Lúc đầu không ai tìm điện thoại (\"Nobody looked for their phone\").",
+          "B": "Bài không nói ai giận cô giáo."
         }
       },
       {
@@ -223,11 +223,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "Students used computers."
+            "t": "Students talked more."
           },
           {
             "k": "B",
-            "t": "Students talked more."
+            "t": "Many students were bored."
           },
           {
             "k": "C",
@@ -238,11 +238,11 @@
         "b": 3.5,
         "ev": {
           "p": 1,
-          "s": "people talked to each other"
+          "s": "many students were bored"
         },
-        "why": "Đến trưa mọi người nói chuyện với nhau.",
+        "why": "Đến trưa nhiều bạn thấy chán.",
         "wrong": {
-          "A": "Mọi người không nhìn màn hình nữa.",
+          "A": "Bài không nói học sinh nói chuyện nhiều hơn; nhiều bạn thấy chán, ngủ hoặc đọc tạp chí.",
           "C": "Bài không nói ai về sớm."
         }
       },
@@ -252,40 +252,40 @@
         "opts": [
           {
             "k": "A",
-            "t": "not playing games"
+            "t": "not listening to music"
           },
           {
             "k": "B",
-            "t": "not talking to friends"
+            "t": "not knowing the time"
           },
           {
             "k": "C",
-            "t": "not knowing the time"
+            "t": "not talking to friends"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 3.5,
         "ev": {
           "p": 2,
-          "s": "The hardest part for me was not checking the time."
+          "s": "The hardest part for me was not listening to music on the bus home."
         },
-        "why": "Điều khó nhất với Mai là không xem được giờ.",
+        "why": "Điều khó nhất với Mai là không nghe nhạc trên xe buýt về nhà.",
         "wrong": {
-          "A": "Mai còn chơi bài với bạn.",
-          "B": "Mọi người nói chuyện nhiều hơn."
+          "B": "Bài không nhắc chuyện xem giờ.",
+          "C": "Bài không nhắc chuyện nói chuyện với bạn."
         }
       },
       {
         "id": "gt-a2-2-r2-d",
-        "q": "What do most students think now?",
+        "q": "What do most students think about doing it again?",
         "opts": [
           {
             "k": "A",
-            "t": "They want to do it again."
+            "t": "They do not want to."
           },
           {
             "k": "B",
-            "t": "It was too hard to repeat."
+            "t": "They want to do it again."
           },
           {
             "k": "C",
@@ -296,14 +296,17 @@
         "b": 3.5,
         "ev": {
           "p": 2,
-          "s": "most students agreed"
+          "s": "most students said no"
         },
-        "why": "Phần lớn học sinh đồng ý làm lại.",
+        "why": "Phần lớn học sinh không muốn làm lại.",
         "wrong": {
-          "B": "Phần lớn học sinh đồng ý làm lại.",
-          "C": "Cô giáo chỉ đề nghị làm lại vào học kỳ sau."
+          "B": "Cô giáo muốn làm lại, nhưng phần lớn học sinh nói không.",
+          "C": "Không ai muốn làm mỗi ngày."
         }
       }
+    ],
+    "allow": [
+      "magazines"
     ]
   },
   {
@@ -336,14 +339,14 @@
           },
           {
             "k": "B",
-            "t": "off"
+            "t": "out"
           },
           {
             "k": "C",
-            "t": "out"
+            "t": "off"
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 3.5,
         "ev": {
           "p": 0,
@@ -352,7 +355,7 @@
         "why": "\"turn off\": tắt đèn điện.",
         "wrong": {
           "A": "Phố cổ thay đèn điện bằng đèn lồng, nên đèn điện phải tắt.",
-          "C": "\"turn out\" không dùng với \"its lights\" theo nghĩa tắt đèn ở đây."
+          "B": "\"turn out\" không dùng với \"its lights\" theo nghĩa tắt đèn ở đây."
         }
       },
       {
@@ -365,14 +368,14 @@
           },
           {
             "k": "B",
-            "t": "Without"
+            "t": "Instead"
           },
           {
             "k": "C",
-            "t": "Instead"
+            "t": "Without"
           }
         ],
-        "ans": "C",
+        "ans": "B",
         "b": 3.5,
         "ev": {
           "p": 0,
@@ -381,7 +384,7 @@
         "why": "\"Instead of\": thay vì.",
         "wrong": {
           "A": "\"Because of them\" không hợp nghĩa: người ta treo đèn lồng thay cho đèn điện.",
-          "B": "\"Without of\" sai ngữ pháp."
+          "C": "\"Without of\" sai ngữ pháp."
         }
       },
       {
@@ -502,11 +505,11 @@
     "script": [
       {
         "sp": "Man",
-        "t": "Are you going to the concert on Friday?"
+        "t": "Are you going to watch the concert online on Friday?"
       },
       {
         "sp": "Woman",
-        "t": "I wanted to, but the tickets were sold out. I'm going to watch it online instead."
+        "t": "No, I was lucky! I bought the last ticket, so I'm going to the concert hall."
       },
       {
         "sp": "Woman",
@@ -514,7 +517,7 @@
       },
       {
         "sp": "Man",
-        "t": "Cold! It snowed for two days, so we stayed in the hotel and played cards. The last day was sunny, though."
+        "t": "Cold! It snowed for two days. Some people walked in the snow, but we stayed in the hotel. We wanted to go to the market, but the roads were closed."
       },
       {
         "sp": "Boy",
@@ -530,7 +533,7 @@
       },
       {
         "sp": "Man",
-        "t": "Go straight on, then turn left at the bank. It's opposite the supermarket."
+        "t": "Yes. Go past the bank and turn left. People think it's opposite the supermarket, but it's behind it."
       }
     ],
     "items": [
@@ -544,28 +547,28 @@
           },
           {
             "k": "B",
-            "t": "at the concert hall"
+            "t": "on TV"
           },
           {
             "k": "C",
-            "t": "on TV"
+            "t": "at the concert hall"
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 3,
         "ev": {
           "p": 1,
-          "s": "I'm going to watch it online instead."
+          "s": "I bought the last ticket, so I'm going to the concert hall."
         },
-        "why": "Cô xem buổi hoà nhạc trên mạng.",
+        "why": "Cô mua được vé cuối nên đến hội trường.",
         "wrong": {
-          "B": "Vé đã bán hết nên cô không đến hội trường.",
-          "C": "Cô không nhắc TV."
+          "A": "Người hỏi chuyện xem trên mạng là người đàn ông; cô mua được vé cuối.",
+          "B": "Cô không nhắc TV."
         }
       },
       {
         "id": "gt-a2-2-l1-b",
-        "q": "What did the man do for two days?",
+        "q": "What did the man do when it snowed?",
         "opts": [
           {
             "k": "A",
@@ -573,7 +576,7 @@
           },
           {
             "k": "B",
-            "t": "stayed inside"
+            "t": "stayed in the hotel"
           },
           {
             "k": "C",
@@ -584,12 +587,12 @@
         "b": 3.5,
         "ev": {
           "p": 3,
-          "s": "we stayed in the hotel and played cards"
+          "s": "we stayed in the hotel"
         },
-        "why": "Hai ngày tuyết rơi, họ ở trong khách sạn.",
+        "why": "Anh ở lại khách sạn.",
         "wrong": {
-          "A": "Tuyết rơi nên họ ở trong khách sạn.",
-          "C": "Anh không nhắc chợ."
+          "A": "Người đi bộ trong tuyết là người khác (\"some people\").",
+          "C": "Họ muốn đi chợ nhưng đường bị chặn."
         }
       },
       {
@@ -598,18 +601,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "50,000 dong"
+            "t": "40,000 dong"
           },
           {
             "k": "B",
-            "t": "90,000 dong"
+            "t": "50,000 dong"
           },
           {
             "k": "C",
-            "t": "40,000 dong"
+            "t": "90,000 dong"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 3,
         "ev": {
           "p": 5,
@@ -617,8 +620,8 @@
         },
         "why": "Mẹ đưa 40.000 đồng.",
         "wrong": {
-          "A": "Cậu xin 50.000 nhưng mẹ chỉ đưa 40.000.",
-          "B": "Mẹ không đưa thêm tiền."
+          "B": "Cậu xin 50.000 nhưng mẹ chỉ đưa 40.000.",
+          "C": "Mẹ không đưa thêm tiền."
         }
       },
       {
@@ -627,33 +630,33 @@
         "opts": [
           {
             "k": "A",
-            "t": "opposite the supermarket"
+            "t": "next to the bank"
           },
           {
             "k": "B",
-            "t": "next to the bank"
+            "t": "opposite the supermarket"
           },
           {
             "k": "C",
             "t": "behind the supermarket"
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 3.5,
         "ev": {
           "p": 7,
-          "s": "It's opposite the supermarket."
+          "s": "but it's behind it"
         },
-        "why": "Bưu điện ở đối diện siêu thị.",
+        "why": "Bưu điện ở phía sau siêu thị.",
         "wrong": {
-          "B": "Ngân hàng là chỗ rẽ trái.",
-          "C": "Bưu điện đối diện siêu thị, không ở phía sau."
+          "A": "Ngân hàng là chỗ đi qua rồi rẽ trái.",
+          "B": "Người ta hay nghĩ vậy, nhưng không phải."
         }
       }
     ],
     "audio": {
       "file": "a/gt-a2-2-l1.mp3",
-      "dur": 32.7,
+      "dur": 36.6,
       "voices": [
         "am_adam",
         "bf_emma",
@@ -687,7 +690,7 @@
       },
       {
         "sp": "Nam",
-        "t": "Good, thanks. I work there on Saturdays and Sundays, from nine till three."
+        "t": "Good, thanks. I work there after school on Mondays and Tuesdays, not at the weekend."
       },
       {
         "sp": "Lan",
@@ -695,7 +698,7 @@
       },
       {
         "sp": "Nam",
-        "t": "Mornings are quiet, but after lunch it gets really busy. Lots of students come in."
+        "t": "Afternoons are quiet, but after six it gets really busy. Lots of office workers come in."
       },
       {
         "sp": "Lan",
@@ -703,15 +706,15 @@
       },
       {
         "sp": "Nam",
-        "t": "I put new books on the shelves. I wanted to work at the cash desk, but the manager says I need more experience first."
+        "t": "I work at the cash desk. The manager puts the new books on the shelves himself. He says I need more experience first."
       },
       {
         "sp": "Lan",
-        "t": "And do you get free books?"
+        "t": "And do you get cheaper books?"
       },
       {
         "sp": "Nam",
-        "t": "No, but I get twenty percent off."
+        "t": "No, but I can borrow any book for a week, for free."
       }
     ],
     "items": [
@@ -721,11 +724,11 @@
         "opts": [
           {
             "k": "A",
-            "t": "after school"
+            "t": "at the weekend"
           },
           {
             "k": "B",
-            "t": "at the weekend"
+            "t": "after school"
           },
           {
             "k": "C",
@@ -736,12 +739,12 @@
         "b": 3,
         "ev": {
           "p": 1,
-          "s": "I work there on Saturdays and Sundays"
+          "s": "I work there after school on Mondays and Tuesdays"
         },
-        "why": "Nam làm vào cuối tuần.",
+        "why": "Nam làm sau giờ học thứ Hai và thứ Ba.",
         "wrong": {
-          "A": "Nam làm thứ Bảy và Chủ nhật.",
-          "C": "Nam chỉ làm cuối tuần."
+          "A": "Nam nói không làm cuối tuần.",
+          "C": "Nam làm sau giờ học, không phải buổi sáng."
         }
       },
       {
@@ -750,27 +753,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "in the morning"
+            "t": "in the evening"
           },
           {
             "k": "B",
-            "t": "only at lunchtime"
+            "t": "in the afternoon"
           },
           {
             "k": "C",
-            "t": "in the afternoon"
+            "t": "at lunchtime"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 3.5,
         "ev": {
           "p": 3,
-          "s": "after lunch it gets really busy"
+          "s": "after six it gets really busy"
         },
-        "why": "Sau bữa trưa cửa hàng rất đông.",
+        "why": "Sau sáu giờ tối cửa hàng rất đông.",
         "wrong": {
-          "A": "Buổi sáng vắng.",
-          "B": "Đông là sau bữa trưa, không chỉ lúc trưa."
+          "B": "Buổi chiều vắng.",
+          "C": "Nam không nhắc giờ trưa."
         }
       },
       {
@@ -783,23 +786,23 @@
           },
           {
             "k": "B",
-            "t": "He works at the cash desk."
+            "t": "He helps the manager."
           },
           {
             "k": "C",
-            "t": "He helps the manager."
+            "t": "He works at the cash desk."
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 3.5,
         "ev": {
           "p": 5,
-          "s": "I put new books on the shelves."
+          "s": "I work at the cash desk."
         },
-        "why": "Nam xếp sách mới lên kệ.",
+        "why": "Nam làm ở quầy thu ngân.",
         "wrong": {
-          "B": "Nam muốn làm ở quầy thu ngân nhưng chưa được.",
-          "C": "Nam không nói giúp quản lý."
+          "A": "Người xếp sách lên kệ là quản lý.",
+          "B": "Quản lý tự xếp sách; Nam làm ở quầy thu ngân."
         }
       },
       {
@@ -808,38 +811,38 @@
         "opts": [
           {
             "k": "A",
-            "t": "free books"
-          },
-          {
-            "k": "B",
             "t": "cheaper books"
           },
           {
+            "k": "B",
+            "t": "books to borrow"
+          },
+          {
             "k": "C",
-            "t": "more money on Sundays"
+            "t": "books to keep"
           }
         ],
         "ans": "B",
         "b": 3.5,
         "ev": {
           "p": 7,
-          "s": "I get twenty percent off"
+          "s": "I can borrow any book for a week, for free"
         },
-        "why": "Nam được giảm 20% khi mua sách.",
+        "why": "Nam được mượn sách miễn phí một tuần.",
         "wrong": {
-          "A": "Nam không được sách miễn phí.",
-          "C": "Nam không nhắc tiền Chủ nhật."
+          "A": "Nam nói không được mua rẻ hơn.",
+          "C": "Nam chỉ được mượn một tuần, không được giữ."
         }
       }
     ],
     "allow": [
       "experience",
-      "percent",
-      "manager"
+      "manager",
+      "borrow"
     ],
     "audio": {
       "file": "a/gt-a2-2-l2.mp3",
-      "dur": 30.8,
+      "dur": 33.3,
       "voices": [
         "bf_isabella",
         "bm_george"

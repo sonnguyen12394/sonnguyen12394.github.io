@@ -66,3 +66,18 @@ test('v103 việc phụ: cư dân của chương (không phải Tí / mọi ngư
   const t = freshStory(); t.ch = 4; assert.equal(resident(t), null, 'chương của Tí: không có việc phụ'); assert.equal(sideDone(t, 'cafe'), false);
   assert.deepEqual(sanitizeStory({ ch: 2, prog: {}, side: { letter: 2, cafe: 'x' } })!.side, { letter: 2 });
 });
+
+test('v115 khu truyện = cấp: chương cuối khu có cổng chỉ xem được khi đã qua trận cổng; khu không cổng giữ điều kiện kỹ năng vững', () => {
+  const s = freshStory(), last = Math.max(...CHAPTERS.map(c => c.act));
+  const gate = (passed: boolean) => (act: number) => (act === last ? { lv: 'A2', passed } : null);
+  advance(s, 0, gate(false));
+  while (CHAPTERS[s.ch]!.act < last || !CHAPTERS[s.ch]!.solid) { for (const k of ['dig', 'light', 'voice'] as const) storyAdd(s, k, 99); assert.ok(advance(s, 99, gate(false)), `chương ${s.ch} không có cổng`); }
+  for (const k of ['dig', 'light', 'voice'] as const) storyAdd(s, k, 99);
+  assert.equal(ready(s, 99, gate(false)), false, 'chưa qua cổng: đủ nhiệm vụ, đủ kỹ năng vẫn chưa xem được');
+  assert.equal(advance(s, 99, gate(false)), null);
+  const html = viewStory(s, 99, gate(false));
+  assert.match(html, /trận cổng khu A2/); assert.match(html, /data-r="gate"/); assert.doesNotMatch(html, /data-e="stscene"/);
+  assert.equal(ready(s, 0, gate(true)), false, 'qua cổng vẫn cần đủ kỹ năng vững của chương');
+  assert.deepEqual(advance(s, 99, gate(true)), { coins: 50, act: ACTS[last] });
+  assert.equal(finished(s), true);
+});

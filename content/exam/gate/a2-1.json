@@ -16,9 +16,9 @@
     "paras": [
       "Hi Joe, the football match isn't on Saturday now. It's on Sunday, same time and same place. Bring your own water this time. Kim",
       "LIBRARY: From 1 March, students can borrow books for three weeks, not two. DVDs: one week only.",
-      "SWIMMING LESSONS for beginners: Tuesdays, 5 to 6 pm. Please arrive ten minutes early. Children under 8 must come with an adult.",
+      "SWIMMING LESSONS for beginners: Tuesdays, 5 to 6 pm. Please arrive ten minutes early. Children under 6 must come with an adult.",
       "FOR SALE: Student desk, almost new, 40 dollars. The chair is free if you buy the desk. Call Minh after 6 pm.",
-      "Note from Mum: I'm at Aunt Hoa's. Your dinner is in the fridge, so just heat it for two minutes. Don't forget to feed the cat!"
+      "Note from Mum: I'm at Aunt Hoa's. Your dinner is in the fridge, so just heat it for two minutes. The cat has already eaten. Please water the plants on the balcony!"
     ],
     "items": [
       {
@@ -56,18 +56,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "three weeks"
+            "t": "one week"
           },
           {
             "k": "B",
-            "t": "one week"
+            "t": "three weeks"
           },
           {
             "k": "C",
             "t": "two weeks"
           }
         ],
-        "ans": "A",
+        "ans": "B",
         "b": 3,
         "ev": {
           "p": 1,
@@ -75,37 +75,37 @@
         },
         "why": "Từ tháng Ba được mượn sách ba tuần.",
         "wrong": {
-          "B": "Một tuần là thời hạn mượn đĩa DVD.",
+          "A": "Một tuần là thời hạn mượn đĩa DVD.",
           "C": "Hai tuần là thời hạn cũ (\"not two\")."
         }
       },
       {
         "id": "gt-a2-1-r1-c",
-        "q": "A seven-year-old girl wants a lesson. What must happen?",
+        "q": "A seven-year-old girl wants a lesson. What must she do?",
         "opts": [
           {
             "k": "A",
-            "t": "She must come at 5 pm."
+            "t": "come with an adult"
           },
           {
             "k": "B",
-            "t": "An adult must come too."
+            "t": "already swim well"
           },
           {
             "k": "C",
-            "t": "She must already swim well."
+            "t": "arrive before 5 pm"
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 3.5,
         "ev": {
           "p": 2,
-          "s": "Children under 8 must come with an adult."
+          "s": "Please arrive ten minutes early."
         },
-        "why": "Trẻ dưới 8 tuổi phải có người lớn đi cùng; bé 7 tuổi thuộc nhóm này.",
+        "why": "Phải đến sớm mười phút, tức là trước 5 giờ; bé 7 tuổi không cần người lớn đi cùng.",
         "wrong": {
-          "A": "Phải đến sớm mười phút, không phải đúng 5 giờ.",
-          "C": "Lớp dành cho người mới học (\"beginners\")."
+          "A": "Chỉ trẻ dưới 6 tuổi cần người lớn đi cùng; bé 7 tuổi thì không.",
+          "B": "Lớp dành cho người mới học (\"beginners\")."
         }
       },
       {
@@ -114,18 +114,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "It costs 40 dollars."
+            "t": "You get it with the desk."
           },
           {
             "k": "B",
-            "t": "It is almost new."
+            "t": "It costs 40 dollars."
           },
           {
             "k": "C",
-            "t": "You get it with the desk."
+            "t": "It is almost new."
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 3.5,
         "ev": {
           "p": 3,
@@ -133,8 +133,8 @@
         },
         "why": "Mua bàn thì được tặng ghế.",
         "wrong": {
-          "A": "40 đô là giá cái bàn.",
-          "B": "\"Almost new\" là nói về cái bàn."
+          "B": "40 đô là giá cái bàn.",
+          "C": "\"Almost new\" là nói về cái bàn."
         }
       },
       {
@@ -143,29 +143,32 @@
         "opts": [
           {
             "k": "A",
-            "t": "give the cat its food"
+            "t": "cook dinner"
           },
           {
             "k": "B",
-            "t": "go to Aunt Hoa's"
+            "t": "water the plants"
           },
           {
             "k": "C",
-            "t": "cook dinner"
+            "t": "give the cat its food"
           }
         ],
-        "ans": "A",
+        "ans": "B",
         "b": 3,
         "ev": {
           "p": 4,
-          "s": "Don't forget to feed the cat!"
+          "s": "Please water the plants on the balcony!"
         },
-        "why": "Mẹ dặn cho mèo ăn.",
+        "why": "Mẹ dặn tưới cây ngoài ban công.",
         "wrong": {
-          "B": "Người đang ở nhà dì Hoa là mẹ.",
-          "C": "Bữa tối đã nấu sẵn, chỉ cần hâm nóng."
+          "A": "Bữa tối đã nấu sẵn, chỉ cần hâm nóng.",
+          "C": "Mèo đã ăn rồi (\"has already eaten\")."
         }
       }
+    ],
+    "allow": [
+      "balcony"
     ]
   },
   {
@@ -183,9 +186,9 @@
     "title": "My first job",
     "instr": "Read the text and answer the questions.",
     "paras": [
-      "Last summer I got my first job in a small hotel by the sea. I wanted to work in the kitchen, but the manager needed someone at the front desk, so I answered the phone and helped guests.",
-      "At first I was nervous because I had to speak English to tourists every day. After two weeks it was much easier, and some guests even asked me for advice about restaurants.",
-      "The hours were long and the pay wasn't very good, but I made two good friends there. Next year I'm going to study tourism at college. Linh"
+      "Last summer I got my first job in a small hotel by the sea. I wanted to work at the front desk because my English is good, but the manager needed someone in the kitchen, so I washed vegetables and made salads.",
+      "At first I was nervous because the chef shouted a lot. After two weeks I understood that he shouted at everyone, and it was much easier.",
+      "The hours were long, but the pay was good and I didn't need to spend money on food. My best friend is going to study tourism at college next year, but I'm going to work at the hotel again. Linh"
     ],
     "items": [
       {
@@ -194,56 +197,56 @@
         "opts": [
           {
             "k": "A",
-            "t": "in the hotel kitchen"
-          },
-          {
-            "k": "B",
             "t": "at the front desk"
           },
           {
-            "k": "C",
+            "k": "B",
             "t": "in a restaurant"
+          },
+          {
+            "k": "C",
+            "t": "in the hotel kitchen"
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 3,
         "ev": {
           "p": 0,
-          "s": "the manager needed someone at the front desk"
+          "s": "the manager needed someone in the kitchen"
         },
-        "why": "Linh làm ở quầy lễ tân.",
+        "why": "Linh làm trong bếp khách sạn.",
         "wrong": {
-          "A": "Linh muốn làm trong bếp nhưng quản lý cần người ở quầy lễ tân.",
-          "C": "Nhà hàng chỉ được nhắc khi khách hỏi Linh tư vấn."
+          "A": "Linh muốn làm ở quầy lễ tân nhưng quản lý cần người trong bếp.",
+          "B": "Linh làm trong bếp của khách sạn, không phải nhà hàng."
         }
       },
       {
         "id": "gt-a2-1-r2-b",
-        "q": "How did Linh feel at the beginning?",
+        "q": "Why was Linh nervous at first?",
         "opts": [
           {
             "k": "A",
-            "t": "bored with the work"
+            "t": "The chef shouted a lot."
           },
           {
             "k": "B",
-            "t": "tired from the long hours"
+            "t": "She had to speak English."
           },
           {
             "k": "C",
-            "t": "worried about speaking English"
+            "t": "The hours were long."
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 3.5,
         "ev": {
           "p": 1,
-          "s": "At first I was nervous because I had to speak English to tourists every day."
+          "s": "At first I was nervous because the chef shouted a lot."
         },
-        "why": "Lúc đầu Linh lo vì phải nói tiếng Anh với khách.",
+        "why": "Lúc đầu Linh lo vì bếp trưởng hay quát.",
         "wrong": {
-          "A": "Bài không nói Linh thấy chán.",
-          "B": "Giờ làm dài là điều Linh kể sau, không phải cảm giác lúc đầu."
+          "B": "Linh nói tiếng Anh của mình tốt; cô làm trong bếp.",
+          "C": "Giờ làm dài là điều Linh kể sau, không phải lý do lo lúc đầu."
         }
       },
       {
@@ -252,27 +255,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "She made friends there."
+            "t": "The hours were short."
           },
           {
             "k": "B",
-            "t": "The pay was good."
+            "t": "Food was expensive."
           },
           {
             "k": "C",
-            "t": "The hours were short."
+            "t": "The pay was good."
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 3.5,
         "ev": {
           "p": 2,
-          "s": "I made two good friends there"
+          "s": "the pay was good"
         },
-        "why": "Linh có hai người bạn tốt ở đó.",
+        "why": "Linh nói lương tốt.",
         "wrong": {
-          "B": "Linh nói lương không cao lắm.",
-          "C": "Linh nói giờ làm dài."
+          "A": "Linh nói giờ làm dài.",
+          "B": "Linh không phải tiêu tiền cho đồ ăn."
         }
       },
       {
@@ -289,26 +292,27 @@
           },
           {
             "k": "C",
-            "t": "travel by the sea"
+            "t": "look for a new job"
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 3,
         "ev": {
           "p": 2,
-          "s": "Next year I'm going to study tourism at college."
+          "s": "I'm going to work at the hotel again"
         },
-        "why": "Năm sau Linh học du lịch ở trường cao đẳng.",
+        "why": "Năm sau Linh làm lại ở khách sạn.",
         "wrong": {
-          "A": "Linh không nói sẽ quay lại khách sạn.",
-          "C": "Biển chỉ là nơi khách sạn ở."
+          "B": "Người học ở trường cao đẳng là bạn thân của Linh.",
+          "C": "Linh nói sẽ làm lại ở khách sạn."
         }
       }
     ],
     "allow": [
       "tourism",
-      "tourists",
-      "manager"
+      "manager",
+      "chef",
+      "salads"
     ]
   },
   {
@@ -341,14 +345,14 @@
           },
           {
             "k": "B",
-            "t": "opening"
+            "t": "opens"
           },
           {
             "k": "C",
-            "t": "opens"
+            "t": "opening"
           }
         ],
-        "ans": "C",
+        "ans": "B",
         "b": 3,
         "ev": {
           "p": 0,
@@ -357,7 +361,7 @@
         "why": "\"opens\": hiện tại đơn cho việc lặp lại mỗi tuần.",
         "wrong": {
           "A": "\"Every Friday\" nói việc lặp lại ở hiện tại, không dùng quá khứ.",
-          "B": "Câu cần động từ chia, không dùng \"-ing\" một mình."
+          "C": "Câu cần động từ chia, không dùng \"-ing\" một mình."
         }
       },
       {
@@ -453,18 +457,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "spend"
-          },
-          {
-            "k": "B",
             "t": "make"
           },
           {
-            "k": "C",
+            "k": "B",
             "t": "do"
+          },
+          {
+            "k": "C",
+            "t": "spend"
           }
         ],
-        "ans": "A",
+        "ans": "C",
         "b": 3.5,
         "ev": {
           "p": 2,
@@ -472,8 +476,8 @@
         },
         "why": "\"spend time with friends\": dành thời gian với bạn.",
         "wrong": {
-          "B": "\"make time with friends\" không phải cách nói tự nhiên ở đây.",
-          "C": "\"do time\" không hợp nghĩa."
+          "A": "\"make time with friends\" không phải cách nói tự nhiên ở đây.",
+          "B": "\"do time\" không hợp nghĩa."
         }
       }
     ]
@@ -530,7 +534,7 @@
       },
       {
         "sp": "Sara",
-        "t": "I used to drive, but parking is so expensive. Now I cycle when it's sunny and take the train when it rains."
+        "t": "I usually cycle, but when it rains I drive. The train is quicker, but it's too expensive."
       },
       {
         "sp": "Woman",
@@ -548,18 +552,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "Friday morning"
+            "t": "Friday afternoon"
           },
           {
             "k": "B",
-            "t": "Friday afternoon"
+            "t": "Friday morning"
           },
           {
             "k": "C",
             "t": "Saturday morning"
           }
         ],
-        "ans": "B",
+        "ans": "A",
         "b": 3,
         "ev": {
           "p": 3,
@@ -567,7 +571,7 @@
         },
         "why": "Anh chọn chuyến chiều thứ Sáu.",
         "wrong": {
-          "A": "Chuyến buổi sáng đã hết chỗ.",
+          "B": "Chuyến buổi sáng đã hết chỗ.",
           "C": "Không ai nhắc thứ Bảy."
         }
       },
@@ -606,27 +610,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "by train"
-          },
-          {
-            "k": "B",
             "t": "by car"
           },
           {
-            "k": "C",
+            "k": "B",
             "t": "by bike"
+          },
+          {
+            "k": "C",
+            "t": "by train"
           }
         ],
         "ans": "A",
         "b": 3.5,
         "ev": {
           "p": 7,
-          "s": "take the train when it rains"
+          "s": "when it rains I drive"
         },
-        "why": "Trời mưa Sara đi tàu.",
+        "why": "Trời mưa Sara lái xe hơi.",
         "wrong": {
-          "B": "Sara từng lái xe nhưng giờ không nữa.",
-          "C": "Sara đạp xe khi trời nắng."
+          "B": "Sara thường đạp xe, nhưng không phải khi trời mưa.",
+          "C": "Tàu nhanh hơn nhưng quá đắt."
         }
       },
       {
@@ -639,14 +643,14 @@
           },
           {
             "k": "B",
-            "t": "rainy"
+            "t": "cloudy"
           },
           {
             "k": "C",
-            "t": "cloudy"
+            "t": "rainy"
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 3,
         "ev": {
           "p": 9,
@@ -655,13 +659,13 @@
         "why": "Cuối tuần trời sẽ mưa.",
         "wrong": {
           "A": "Trời nóng là thứ Hai.",
-          "C": "Nhiều mây là bây giờ."
+          "B": "Nhiều mây là bây giờ."
         }
       }
     ],
     "audio": {
       "file": "a/gt-a2-1-l1.mp3",
-      "dur": 37.8,
+      "dur": 36.5,
       "voices": [
         "am_adam",
         "bf_emma",
@@ -696,7 +700,7 @@
       },
       {
         "sp": "Man",
-        "t": "Sure. We have classes on Monday and Wednesday evenings, but the beginners' class is on Wednesday, from seven to nine."
+        "t": "Sure. We have classes on Wednesday mornings and Wednesday evenings, but the beginners' class is on Monday evening, from seven to nine."
       },
       {
         "sp": "Woman",
@@ -704,7 +708,7 @@
       },
       {
         "sp": "Man",
-        "t": "Yes, for six weeks. It starts on the fifth of May."
+        "t": "Yes, for five weeks. It starts on the sixth of May."
       },
       {
         "sp": "Woman",
@@ -712,7 +716,7 @@
       },
       {
         "sp": "Man",
-        "t": "It's 600,000 dong for the whole course. That includes all the food, but please bring your own apron."
+        "t": "It's 600,000 dong for the whole course. That includes all the food and we give you an apron, but please bring a box to take your food home."
       },
       {
         "sp": "Woman",
@@ -730,27 +734,27 @@
         "opts": [
           {
             "k": "A",
-            "t": "Monday evening"
+            "t": "Wednesday evening"
           },
           {
             "k": "B",
-            "t": "Wednesday morning"
+            "t": "Monday evening"
           },
           {
             "k": "C",
-            "t": "Wednesday evening"
+            "t": "Wednesday morning"
           }
         ],
-        "ans": "C",
+        "ans": "B",
         "b": 3,
         "ev": {
           "p": 1,
-          "s": "the beginners' class is on Wednesday"
+          "s": "the beginners' class is on Monday evening"
         },
-        "why": "Lớp cho người mới học vào tối thứ Tư.",
+        "why": "Lớp cho người mới học vào tối thứ Hai.",
         "wrong": {
-          "A": "Thứ Hai có lớp, nhưng không phải lớp cho người mới.",
-          "B": "Lớp học từ bảy đến chín giờ tối."
+          "A": "Thứ Tư có lớp, nhưng không phải lớp cho người mới.",
+          "C": "Thứ Tư có lớp, nhưng không phải lớp cho người mới."
         }
       },
       {
@@ -770,15 +774,15 @@
             "t": "nine weeks"
           }
         ],
-        "ans": "A",
+        "ans": "B",
         "b": 3,
         "ev": {
           "p": 3,
-          "s": "Yes, for six weeks."
+          "s": "Yes, for five weeks."
         },
-        "why": "Khoá học kéo dài sáu tuần.",
+        "why": "Khoá học kéo dài năm tuần.",
         "wrong": {
-          "B": "\"fifth\" là ngày bắt đầu (mùng 5), không phải số tuần.",
+          "A": "\"sixth\" là ngày bắt đầu (mùng 6), không phải số tuần.",
           "C": "Chín là giờ kết thúc buổi học."
         }
       },
@@ -796,19 +800,19 @@
           },
           {
             "k": "C",
-            "t": "money for food"
+            "t": "a box"
           }
         ],
-        "ans": "B",
+        "ans": "C",
         "b": 3.5,
         "ev": {
           "p": 5,
-          "s": "please bring your own apron"
+          "s": "please bring a box to take your food home"
         },
-        "why": "Học viên mang tạp dề riêng.",
+        "why": "Học viên mang hộp để đựng đồ ăn về.",
         "wrong": {
           "A": "Học phí đã gồm đồ ăn.",
-          "C": "Học phí đã gồm tiền đồ ăn."
+          "B": "Lớp phát tạp dề (\"we give you an apron\")."
         }
       },
       {
@@ -817,18 +821,18 @@
         "opts": [
           {
             "k": "A",
-            "t": "in the old kitchen"
+            "t": "on the second floor"
           },
           {
             "k": "B",
-            "t": "downstairs"
+            "t": "in the old kitchen"
           },
           {
             "k": "C",
-            "t": "on the second floor"
+            "t": "downstairs"
           }
         ],
-        "ans": "C",
+        "ans": "A",
         "b": 3.5,
         "ev": {
           "p": 7,
@@ -836,8 +840,8 @@
         },
         "why": "Lớp ở phòng mới tầng hai.",
         "wrong": {
-          "A": "Lớp không ở bếp cũ.",
-          "B": "Bếp cũ ở tầng dưới; lớp ở tầng hai."
+          "B": "Lớp không ở bếp cũ.",
+          "C": "Bếp cũ ở tầng dưới; lớp ở tầng hai."
         }
       }
     ],
@@ -846,7 +850,7 @@
     ],
     "audio": {
       "file": "a/gt-a2-1-l2.mp3",
-      "dur": 34.4,
+      "dur": 37.1,
       "voices": [
         "bf_isabella",
         "bm_george"
