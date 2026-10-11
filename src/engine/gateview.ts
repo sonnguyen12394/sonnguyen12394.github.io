@@ -69,7 +69,7 @@ export function viewGateEnd(c: ECtx, r: GateRun): string {
   const esc = c.host.esc, res = r.res!;
   const review = r.groups.map(g => g.items.map(it => {
     const given = r.given[it.id], ok = given === it.ans, o = (it.opts ?? g.options ?? []).find(x => x.k === it.ans);
-    return `<li><span class="pill${ok ? ' good' : ''}">${ok ? '✓' : given ? '✕' : '–'}</span> <b lang="en">${esc(it.q)}</b> → <span lang="en">${esc(o?.t ?? String(it.ans))}</span><br><span class="hint">${esc(it.why)}</span></li>`;
+    return `<li><span class="pill${ok ? ' good' : ''}">${ok ? '✓' : given ? '✕' : '–'}</span> <b lang="en">${esc(it.q)}</b> → <span lang="en">${esc(o?.t ?? String(it.ans))}</span><br><span class="hint">${esc(it.why)} · mã câu ${esc(it.id)}</span></li>`;
   }).join('')).join('');
   return `<section class="stack"><span class="eyebrow">🚪 Trận cổng khu ${esc(LV(r.goal))}</span><h1>${res.passed ? '🎉 Cổng đã mở!' : 'Trận cổng xong'}</h1></section>
     ${resultBox(c, res)}

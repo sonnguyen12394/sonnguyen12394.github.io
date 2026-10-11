@@ -4,7 +4,7 @@
 
 - **Lần 1:** 11/10/2026, sau v111.
 - **Lần 2:** sau v111b–v114, trên nhánh `claude/v110-goal-progress`.
-- **Lần 3:** sau v115 (phép thử không có bài cho đề cổng, đo bot theo bộ não, khu truyện cuối = trận cổng), cùng nhánh.
+- **Lần 3:** sau v115–v116 (phép thử không có bài cho đề cổng, đo bot theo bộ não, khu truyện cuối = trận cổng, cổng B1).
 
 Căn cứ: code, test, báo cáo bot người học, `docs/GAME-CRITERIA.md`. Chưa có số liệu người học thật, nên mọi điểm về hiệu quả và độ vui là **ước tính**.
 
@@ -26,7 +26,7 @@ Căn cứ: code, test, báo cáo bot người học, `docs/GAME-CRITERIA.md`. Ch
 | B · Đầu vào và mục tiêu | Mô hình học §1, §2 | 10 | 7 | 4,3 | 7,3 | **7,4** |
 | C · Bản đồ và lộ trình | Mô hình học §3; Quyết định kỹ thuật §6 | 10 | 6 | 6,3 | 7,0 | **7,0** |
 | D · Kết luận đạt và chống học tủ | Mô hình học §3 (chống học tủ), §4; mục "Đề sát hạch" | 15 | 7 | 1,6 | 7,0 | **7,1** |
-| E · Độ phủ đề tham chiếu (A2 Key) | Mục "Đề sát hạch" (đặc tả bài tham chiếu) | 10 | 6 | 4,0 | 4,7 | **4,7** |
+| E · Độ phủ đề tham chiếu (A2 Key) | Mục "Đề sát hạch" (đặc tả bài tham chiếu) | 10 | 6 | 4,0 | 4,7 | **4,8** |
 | F · Hiển thị tiến độ | Mục "Hợp đồng hiển thị tiến độ" | 6 | 5 | 6,8 | 8,2 | **8,2** |
 | G · Bằng chứng và dữ liệu | Mô hình học §6 | 8 | 7 | 7,6 | 8,0 | **8,0** |
 | H · Trải nghiệm game | GAME-CRITERIA §10 | 9 | 6 | 5,2 | 5,2 | **5,2** |
@@ -39,9 +39,10 @@ Căn cứ: code, test, báo cáo bot người học, `docs/GAME-CRITERIA.md`. Ch
 
 1. **Đề cổng qua phép thử không có bài.** Agent độc lập chỉ thấy câu hỏi + phương án: vòng 1 đoán đúng 69%, sau hai lần sửa còn Đọc 49%, Nghe 14% (ngưỡng 55%). Câu vẫn do AI soạn, **chưa qua vòng soát của người** (D2 = 6).
 2. **Truyện kết thúc bằng trận cổng của đích (A12, B7).** Chương cuối Rừng Trúc chỉ mở khi đã qua trận cổng.
-3. **C4 có số đo thật từ bot đi theo bộ não.** Game chủ lực còn 41–65% lượt chơi (trước 72%).
-4. **Tab học kiểu cũ hết chữ "bài kiểm tra / thi vượt".**
-5. **Phần trần không đổi:** H, K cần người thật; E cần soạn thêm dạng bài; J cần tách code lớn.
+3. **v116: thêm trận cổng B1** (2 đề, 48 câu), qua phép thử không có bài sau 2 vòng (Đọc 82% → 28%, Nghe 78% → 31%); vẫn cần người soát.
+4. **C4 có số đo thật từ bot đi theo bộ não.** Game chủ lực còn 41–65% lượt chơi (trước 72%).
+5. **Tab học kiểu cũ hết chữ "bài kiểm tra / thi vượt".**
+6. **Phần trần không đổi:** H, K cần người thật; E cần soạn thêm dạng bài; J cần tách code lớn.
 
 ### Đọc nhanh lần 2
 
@@ -106,14 +107,14 @@ Kiểm: Mô hình học §3 (chống học tủ), §4; mục "Đề sát hạch"
 | # | Tiêu chí | Mốc 10 | Lần 1 | Lần 2 | Lần 3 | Căn cứ | Để lên điểm | Trần |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D1 | Đạt = đậu câu lạ | Kết luận đạt chỉ từ trận cổng câu lạ | 1 | 7 | **7** | v113: với khu có cổng, Đạt trong app = qua trận cổng (`readinessOf`); bản đồ ghi rõ "chưa phải kết luận" | v113 |  |
-| D2 | Kho câu lạ đủ lớn, cách ly | Mỗi cấp ≥ 2 đề song song, không lọt vào luyện tập | 2 | 5 | **6** | v113: mỗi cấp A1, A2 có 2 đề song song (21–22 câu, Đọc + Nghe), câu do AI soạn, qua `npm run content` nhưng **chưa qua vòng soát của người**. v115 phép thử không có bài 3 vòng (`content/exam/gate/README.md`): Đọc 69% → 49%, Nghe 69% → 55% → 14% (ngưỡng 55%) | Soạn đề A2 trước | cần người soát câu |
+| D2 | Kho câu lạ đủ lớn, cách ly | Mỗi cấp ≥ 2 đề song song, không lọt vào luyện tập | 2 | 5 | **6** | v113: mỗi cấp A1, A2 có 2 đề song song (21–22 câu, Đọc + Nghe), câu do AI soạn, qua `npm run content` nhưng **chưa qua vòng soát của người**. v115 phép thử không có bài 3 vòng (`content/exam/gate/README.md`): Đọc 69% → 49%, Nghe 69% → 55% → 14% (ngưỡng 55%). v116 cổng B1 (48 câu) qua 2 vòng: Đọc 82% → 28%, Nghe 78% → 31% | Soạn đề A2 trước | cần người soát câu |
 | D3 | Đèn báo học tủ | So đúng câu đã gặp với câu lạ, báo khi chênh | 2 | 8 | **8** | v111: `rote.ts` so câu đã gặp / câu lạ trên bộ đếm sẵn có, chỉ bật khi chênh ≥ 25 điểm và ≥ 2 lần sai số; mô phỏng 200 lần: bắt 98,5% bot vẹt, báo nhầm 2% bot học thật | Một phép tính trên số đã có |  |
 | D4 | Xác suất đậu kèm sai số | P(đậu) theo IRT ± sai số, ngưỡng 80% | 1 | 7 | **7** | v113: P(qua) = Φ((θ − ngưỡng) / SE) từ IRT 3PL, có khoảng 80%; độ khó câu là ước tính của người soạn (chưa hiệu chỉnh) | Dùng lại cho trận cổng |  |
 | D5 | Chốt dự đoán và đối chiếu | Ghi dự đoán trước, so với điểm thật | 3 | 7 | **7** | v113: ghi điểm đề mẫu / thi thật ở trang mục tiêu kèm P(qua) app có trước đó; hiện "app đoán đúng / sai" | Ở tuỳ chọn hồ sơ |  |
 | D6 | Xác nhận ngoài là tuỳ chọn ở hồ sơ | Ai cần chứng chỉ mới thấy | 1 | 8 | **8** | v113: phần "🎓 Chứng chỉ" chỉ hiện khi người học bật | v113 |  |
 | D7 | Trận cổng mở đúng lúc | Chỉ mở khi bản đồ báo gần đủ; không phí đề lạ | 1 | 7 | **7** | v113: cổng mở khi ≥ 70% kỹ năng của khu đã vững thật; đề đã mở tính là đã dùng | Luật mở cổng theo tham số cấu hình (v113) |  |
 
-## E · Độ phủ đề tham chiếu (A2 Key): 4,0 → 4,7 → 4,7 / 10 (trọng số 10)
+## E · Độ phủ đề tham chiếu (A2 Key): 4,0 → 4,7 → 4,8 / 10 (trọng số 10)
 
 Kiểm: Mục "Đề sát hạch" (đặc tả bài tham chiếu).
 
@@ -124,7 +125,7 @@ Kiểm: Mục "Đề sát hạch" (đặc tả bài tham chiếu).
 | E3 | Nghe | Đủ dạng bài nghe A2 Key | 5 | 5 | **5** | 525 câu thoại, nghe đoạn hai giọng, nhiều giọng, tiếng ồn; chưa đối chiếu dạng bài | Bảng phủ theo dạng bài | cần soạn thêm nội dung |
 | E4 | Nói | Hỏi đáp và thảo luận cặp như phần thi Nói | 3 | 3 | **3** | Đóng vai, Karaoke, nói đáp từ ý tiếng Việt; không có dạng thảo luận cặp | Dạng bài hỏi đáp theo đặc tả | cần soạn thêm nội dung |
 | E5 | Từ vựng và ngữ pháp | Đủ danh sách từ và ngữ pháp của cấp | 7 | 7 | **7** | 9.345 từ gắn cấp CEFR; ngữ pháp A1–C2; 28.114 câu gắn nút, 0 mồ côi (v67) | Đối chiếu với danh sách từ chính thức của bài tham chiếu |  |
-| E6 | Số đề song song mỗi cấp | ≥ 2 đề lạ mỗi cấp | 0 | 4 | **4** | v113: A1 và A2 mỗi cấp 2 đề rút gọn (chưa đủ 5 phần Đọc, 5 phần Nghe như bài gốc; chưa có Viết, Nói trong cổng) | v113 | cần soạn thêm nội dung |
+| E6 | Số đề song song mỗi cấp | ≥ 2 đề lạ mỗi cấp | 0 | 4 | **5** | v113: A1 và A2 mỗi cấp 2 đề rút gọn (chưa đủ 5 phần Đọc, 5 phần Nghe như bài gốc; chưa có Viết, Nói trong cổng). v116: thêm cổng B1 (2 đề × 24 câu, rút gọn theo B1 Preliminary); B2+ chưa có cổng | v113 | cần soạn thêm nội dung |
 
 ## F · Hiển thị tiến độ: 6,8 → 8,2 → 8,2 / 10 (trọng số 6)
 
@@ -205,7 +206,7 @@ Kiểm: Giới hạn thực tế; v2.4 §XXIII.
 | Buổi chơi thử thật theo `docs/PLAYTEST.md` (thêm chương mở đầu, trận cổng, kho báu) | H1, H3, H6 | Người sáng lập |
 | Học hằng ngày 2 tuần rồi mở kho báu lần 2 | K2 | Người sáng lập |
 | Đo phút chơi theo phần đề còn hụt (không chỉ tỉ lệ game) | C4 | AI |
-| Trận cổng B1 + phần Viết trong cổng | E6, A12 | AI soạn, người soát |
+| Phần Viết trong cổng; cổng B2 | E6, A12 | AI soạn, người soát |
 | Tách `app.js` / `main.ts` | J2, J5 | AI, khi cần |
 
 ## Giới hạn của bảng chấm

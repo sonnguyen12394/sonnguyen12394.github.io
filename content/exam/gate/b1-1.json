@@ -1,0 +1,923 @@
+[
+  {
+    "id": "gt-b1-1-r1",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-r",
+    "level": "B1",
+    "band": 4,
+    "mode": "gate",
+    "title": "Notices and messages",
+    "instr": "Read the notices and messages and answer the questions.",
+    "paras": [
+      "SPORTS CENTRE: The pool will close for cleaning from 3 to 5 pm on Thursday. Swimming classes that normally take place then will move to Friday at the same time. The gym stays open as usual.",
+      "Hi Sam, I couldn't find you, so I've left the car keys with Mrs Lee next door. You can drive to the station this time, because the car park there is empty on Sundays. Don't take the bus, as it's very slow at weekends, and it's too far to walk. Dad",
+      "COURSE CHANGE: The Thursday photography course is now full. There are still places on the Saturday course. Both courses are for beginners and last six weeks, but the Saturday one costs a little more because it includes a trip to the old town.",
+      "Maria, the concert tickets you asked about have sold out online, but the box office still has a few for the late show. I can't go with you on Friday, so ask Tom. He loves that band! Jenny",
+      "LOST: A small black bag was left on the number 12 bus on Monday morning. It has a library card and some keys inside, but no money. If you find it, please take it to the bus station, not the library."
+    ],
+    "items": [
+      {
+        "id": "gt-b1-1-r1-a",
+        "q": "What will happen to the Thursday swimming classes?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "They will start at 5 pm."
+          },
+          {
+            "k": "B",
+            "t": "They will take place on Friday."
+          },
+          {
+            "k": "C",
+            "t": "They will move to the gym."
+          }
+        ],
+        "ans": "B",
+        "b": 4,
+        "ev": {
+          "p": 0,
+          "s": "will move to Friday at the same time"
+        },
+        "why": "Lớp bơi thứ Năm chuyển sang thứ Sáu, cùng giờ.",
+        "wrong": {
+          "A": "Năm giờ là lúc hồ mở lại; lớp chuyển sang thứ Sáu, cùng giờ.",
+          "C": "Phòng gym vẫn mở như thường; lớp bơi không chuyển vào đó."
+        }
+      },
+      {
+        "id": "gt-b1-1-r1-b",
+        "q": "How should Sam get to the station?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "by car"
+          },
+          {
+            "k": "B",
+            "t": "by bus"
+          },
+          {
+            "k": "C",
+            "t": "on foot"
+          }
+        ],
+        "ans": "A",
+        "b": 4,
+        "ev": {
+          "p": 1,
+          "s": "You can drive to the station this time"
+        },
+        "why": "Bố bảo lần này Sam lái xe ra ga.",
+        "wrong": {
+          "B": "Bố dặn đừng đi xe buýt vì cuối tuần rất chậm.",
+          "C": "Bố nói đi bộ thì quá xa."
+        }
+      },
+      {
+        "id": "gt-b1-1-r1-c",
+        "q": "Why does the Saturday course cost more?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "It is for more experienced students."
+          },
+          {
+            "k": "B",
+            "t": "It lasts longer."
+          },
+          {
+            "k": "C",
+            "t": "It includes a trip."
+          }
+        ],
+        "ans": "C",
+        "b": 4,
+        "ev": {
+          "p": 2,
+          "s": "because it includes a trip to the old town"
+        },
+        "why": "Lớp thứ Bảy đắt hơn vì có chuyến đi phố cổ.",
+        "wrong": {
+          "A": "Cả hai lớp đều dành cho người mới (\"Both courses are for beginners\").",
+          "B": "Cả hai lớp đều kéo dài sáu tuần."
+        }
+      },
+      {
+        "id": "gt-b1-1-r1-d",
+        "q": "What does Jenny suggest?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "going to the concert with Tom"
+          },
+          {
+            "k": "B",
+            "t": "buying tickets online"
+          },
+          {
+            "k": "C",
+            "t": "going together on Friday"
+          }
+        ],
+        "ans": "A",
+        "b": 4,
+        "ev": {
+          "p": 3,
+          "s": "so ask Tom"
+        },
+        "why": "Jenny gợi ý Maria rủ Tom đi cùng.",
+        "wrong": {
+          "B": "Vé trên mạng đã hết (\"sold out online\").",
+          "C": "Jenny nói cô không đi được hôm thứ Sáu."
+        }
+      },
+      {
+        "id": "gt-b1-1-r1-e",
+        "q": "Where should someone take the bag?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to the library"
+          },
+          {
+            "k": "B",
+            "t": "to the bus station"
+          },
+          {
+            "k": "C",
+            "t": "onto the number 12 bus"
+          }
+        ],
+        "ans": "B",
+        "b": 4,
+        "ev": {
+          "p": 4,
+          "s": "please take it to the bus station, not the library"
+        },
+        "why": "Mang túi tới bến xe buýt.",
+        "wrong": {
+          "A": "Thông báo dặn không mang tới thư viện; thẻ thư viện chỉ là đồ ở trong túi.",
+          "C": "Xe số 12 là nơi túi bị bỏ quên."
+        }
+      }
+    ],
+    "allow": [
+      "photography"
+    ]
+  },
+  {
+    "id": "gt-b1-1-r2",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-r",
+    "level": "B1",
+    "band": 4.5,
+    "mode": "gate",
+    "title": "A year without a car",
+    "instr": "Read the article and answer the questions.",
+    "paras": [
+      "When my car broke down last January, I decided not to replace it. I wanted to see if I could live without one for a whole year. My sister was sure I would give up after a month, but most of my friends simply told me to buy an electric car.",
+      "The first weeks were difficult. My office is twelve kilometres away, and the bus takes almost an hour. So in March I bought a second-hand bike. The journey took a little longer than by bus, but I arrived at work feeling awake and cheerful, and I started to look forward to it.",
+      "Shopping was the biggest change. Instead of driving to the supermarket once a week, I now buy food from small shops near my flat. I thought I would waste less food, but I still throw away as much as before. What I really like is chatting to the shop owners.",
+      "Visiting my parents, who live in the country, now takes a whole day by train. I still go every month, and I don't mind the long journey because I can read on the train. What I don't like is the price of the tickets.",
+      "The year is over, and last week I bought a small car again, mainly for visiting my parents. But I use it much less than I used to. If you are thinking of living without a car, try it for one month first. Dan"
+    ],
+    "items": [
+      {
+        "id": "gt-b1-1-r2-a",
+        "q": "What did most of Dan's friends think?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "He would give up after a month."
+          },
+          {
+            "k": "B",
+            "t": "He should start cycling."
+          },
+          {
+            "k": "C",
+            "t": "He should buy an electric car."
+          }
+        ],
+        "ans": "C",
+        "b": 4.5,
+        "ev": {
+          "p": 0,
+          "s": "most of my friends simply told me to buy an electric car"
+        },
+        "why": "Phần lớn bạn bè bảo Dan mua xe điện.",
+        "wrong": {
+          "A": "Đó là ý của chị gái Dan.",
+          "B": "Xe đạp là ý của chính Dan, vào tháng Ba."
+        }
+      },
+      {
+        "id": "gt-b1-1-r2-b",
+        "q": "How did Dan feel about cycling to work?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "He liked it, although it was slower."
+          },
+          {
+            "k": "B",
+            "t": "He was surprised that it was quicker."
+          },
+          {
+            "k": "C",
+            "t": "He worried that he would be late."
+          }
+        ],
+        "ans": "A",
+        "b": 4.5,
+        "ev": {
+          "p": 1,
+          "s": "The journey took a little longer than by bus, but I arrived at work feeling awake and cheerful"
+        },
+        "why": "Dan thích đạp xe dù chậm hơn xe buýt.",
+        "wrong": {
+          "B": "Đi xe đạp lâu hơn xe buýt một chút.",
+          "C": "Dan không nói lo đến muộn khi đi xe đạp."
+        }
+      },
+      {
+        "id": "gt-b1-1-r2-c",
+        "q": "What does Dan say about shopping now?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "He wastes less food than before."
+          },
+          {
+            "k": "B",
+            "t": "He still goes to the supermarket every week."
+          },
+          {
+            "k": "C",
+            "t": "He enjoys talking to the people in the shops."
+          }
+        ],
+        "ans": "C",
+        "b": 4.5,
+        "ev": {
+          "p": 2,
+          "s": "What I really like is chatting to the shop owners."
+        },
+        "why": "Dan thích trò chuyện với chủ cửa hàng.",
+        "wrong": {
+          "A": "Dan nói vẫn bỏ phí đồ ăn như trước.",
+          "B": "Mỗi tuần một lần siêu thị là thói quen cũ."
+        }
+      },
+      {
+        "id": "gt-b1-1-r2-d",
+        "q": "What is Dan unhappy about?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "the long journey to his parents"
+          },
+          {
+            "k": "B",
+            "t": "the cost of the train tickets"
+          },
+          {
+            "k": "C",
+            "t": "seeing his parents less often"
+          }
+        ],
+        "ans": "B",
+        "b": 4.5,
+        "ev": {
+          "p": 3,
+          "s": "What I don't like is the price of the tickets."
+        },
+        "why": "Dan không thích giá vé tàu.",
+        "wrong": {
+          "A": "Dan không ngại đi lâu vì đọc sách trên tàu.",
+          "C": "Dan vẫn về thăm mỗi tháng."
+        }
+      },
+      {
+        "id": "gt-b1-1-r2-e",
+        "q": "What does Dan say in the last paragraph?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "He has bought another car."
+          },
+          {
+            "k": "B",
+            "t": "He will never own a car again."
+          },
+          {
+            "k": "C",
+            "t": "Everyone should sell their car."
+          }
+        ],
+        "ans": "A",
+        "b": 5,
+        "ev": {
+          "p": 4,
+          "s": "last week I bought a small car again"
+        },
+        "why": "Dan đã mua lại một chiếc xe nhỏ.",
+        "wrong": {
+          "B": "Dan vừa mua lại một chiếc xe nhỏ.",
+          "C": "Dan chỉ khuyên thử một tháng trước."
+        }
+      }
+    ]
+  },
+  {
+    "id": "gt-b1-1-r3",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-r",
+    "level": "B1",
+    "band": 4.5,
+    "mode": "gate",
+    "title": "Learning to cook",
+    "instr": "Choose the right word for each gap.",
+    "paras": [
+      "Last year I (1) ___ a decision to learn to cook properly. Before that, I ate takeaway food most evenings.",
+      "I started with an online course. The teacher was strict: she always (2) ___ us taste the food, even when we didn't want to.",
+      "My first meals were not very good, but I didn't (3) ___ up. Little by little I got better, and now I (4) ___ my friends for dinner every month.",
+      "Cooking has even become a small business for me: I now (5) ___ money by selling cakes at the weekend market."
+    ],
+    "items": [
+      {
+        "id": "gt-b1-1-r3-a",
+        "q": "Gap 1",
+        "opts": [
+          {
+            "k": "A",
+            "t": "did"
+          },
+          {
+            "k": "B",
+            "t": "made"
+          },
+          {
+            "k": "C",
+            "t": "had"
+          }
+        ],
+        "ans": "B",
+        "b": 4,
+        "ev": {
+          "p": 0,
+          "s": "Last year I (1) ___ a decision"
+        },
+        "why": "\"made a decision\": đưa ra quyết định.",
+        "wrong": {
+          "A": "Nói \"make a decision\", không nói \"do a decision\".",
+          "C": "Nói \"make a decision\", không nói \"have a decision\"."
+        }
+      },
+      {
+        "id": "gt-b1-1-r3-b",
+        "q": "Gap 2",
+        "opts": [
+          {
+            "k": "A",
+            "t": "let"
+          },
+          {
+            "k": "B",
+            "t": "allowed"
+          },
+          {
+            "k": "C",
+            "t": "made"
+          }
+        ],
+        "ans": "C",
+        "b": 4.5,
+        "ev": {
+          "p": 1,
+          "s": "she always (2) ___ us taste the food, even when we didn't want to"
+        },
+        "why": "\"made us taste\": bắt chúng tôi nếm.",
+        "wrong": {
+          "A": "\"let\" là cho phép; câu nói \"kể cả khi chúng tôi không muốn\" nên là bắt buộc: \"made\".",
+          "B": "\"allowed\" phải đi với \"to\": allowed us to taste."
+        }
+      },
+      {
+        "id": "gt-b1-1-r3-c",
+        "q": "Gap 3",
+        "opts": [
+          {
+            "k": "A",
+            "t": "give"
+          },
+          {
+            "k": "B",
+            "t": "get"
+          },
+          {
+            "k": "C",
+            "t": "take"
+          }
+        ],
+        "ans": "A",
+        "b": 4.5,
+        "ev": {
+          "p": 2,
+          "s": "I didn't (3) ___ up"
+        },
+        "why": "\"give up\": bỏ cuộc.",
+        "wrong": {
+          "B": "\"get up\" là thức dậy.",
+          "C": "\"take up\" là bắt đầu một sở thích mới."
+        }
+      },
+      {
+        "id": "gt-b1-1-r3-d",
+        "q": "Gap 4",
+        "opts": [
+          {
+            "k": "A",
+            "t": "bring"
+          },
+          {
+            "k": "B",
+            "t": "keep"
+          },
+          {
+            "k": "C",
+            "t": "invite"
+          }
+        ],
+        "ans": "C",
+        "b": 4.5,
+        "ev": {
+          "p": 2,
+          "s": "now I (4) ___ my friends for dinner every month"
+        },
+        "why": "\"invite my friends for dinner\": mời bạn tới ăn tối.",
+        "wrong": {
+          "A": "\"bring\" là mang theo; mời người tới ăn là \"invite\".",
+          "B": "\"keep my friends for dinner\" không có nghĩa là mời."
+        }
+      },
+      {
+        "id": "gt-b1-1-r3-e",
+        "q": "Gap 5",
+        "opts": [
+          {
+            "k": "A",
+            "t": "save"
+          },
+          {
+            "k": "B",
+            "t": "earn"
+          },
+          {
+            "k": "C",
+            "t": "spend"
+          }
+        ],
+        "ans": "B",
+        "b": 4.5,
+        "ev": {
+          "p": 3,
+          "s": "I now (5) ___ money by selling cakes"
+        },
+        "why": "\"earn money\": kiếm tiền.",
+        "wrong": {
+          "A": "Bán bánh là kiếm thêm tiền, không phải tiết kiệm.",
+          "C": "Bán bánh thì có tiền vào, không phải tiêu tiền."
+        }
+      }
+    ],
+    "allow": [
+      "takeaway"
+    ]
+  },
+  {
+    "id": "gt-b1-1-l1",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B1",
+    "band": 4,
+    "mode": "gate",
+    "title": "Four short conversations",
+    "instr": "Listen and answer the questions. You will hear each conversation once.",
+    "voices": {
+      "Man": "am_adam",
+      "Woman": "bf_emma",
+      "Girl": "af_sky",
+      "Boy": "am_michael"
+    },
+    "script": [
+      {
+        "sp": "Woman",
+        "t": "Are you coming to the meeting at ten?"
+      },
+      {
+        "sp": "Man",
+        "t": "Didn't you hear? It was moved to eleven, and it's in room 4 now, not room 2. It should finish by twelve."
+      },
+      {
+        "sp": "Woman",
+        "t": "Oh no, I've already told the visitors ten o'clock in room 2."
+      },
+      {
+        "sp": "Man",
+        "t": "How was the film?"
+      },
+      {
+        "sp": "Woman",
+        "t": "The story was exciting and the actors were fine, but the music was so loud that I got a headache."
+      },
+      {
+        "sp": "Girl",
+        "t": "Shall we get the train to the beach?"
+      },
+      {
+        "sp": "Boy",
+        "t": "It's quicker by car, but Dad needs it today. The bus is cheaper than the train, so let's take that."
+      },
+      {
+        "sp": "Woman",
+        "t": "Did you buy a new jacket in the end?"
+      },
+      {
+        "sp": "Man",
+        "t": "The blue one was too small, and they only had a bigger size in black, which I don't like. So I got the grey one instead."
+      }
+    ],
+    "items": [
+      {
+        "id": "gt-b1-1-l1-a",
+        "q": "When does the meeting start?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at eleven"
+          },
+          {
+            "k": "B",
+            "t": "at ten"
+          },
+          {
+            "k": "C",
+            "t": "at twelve"
+          }
+        ],
+        "ans": "A",
+        "b": 4,
+        "ev": {
+          "p": 1,
+          "s": "It was moved to eleven"
+        },
+        "why": "Cuộc họp dời sang mười một giờ.",
+        "wrong": {
+          "B": "Mười giờ là giờ cũ.",
+          "C": "Mười hai giờ là lúc cuộc họp kết thúc."
+        }
+      },
+      {
+        "id": "gt-b1-1-l1-b",
+        "q": "What didn't the woman like about the film?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "the actors"
+          },
+          {
+            "k": "B",
+            "t": "the music"
+          },
+          {
+            "k": "C",
+            "t": "the story"
+          }
+        ],
+        "ans": "B",
+        "b": 4,
+        "ev": {
+          "p": 4,
+          "s": "the music was so loud that I got a headache"
+        },
+        "why": "Cô chê nhạc quá to.",
+        "wrong": {
+          "A": "Cô nói diễn viên ổn (\"fine\").",
+          "C": "Cô khen cốt truyện hấp dẫn."
+        }
+      },
+      {
+        "id": "gt-b1-1-l1-c",
+        "q": "How will they travel to the beach?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "by car"
+          },
+          {
+            "k": "B",
+            "t": "by train"
+          },
+          {
+            "k": "C",
+            "t": "by bus"
+          }
+        ],
+        "ans": "C",
+        "b": 4,
+        "ev": {
+          "p": 6,
+          "s": "let's take that"
+        },
+        "why": "Họ đi xe buýt vì rẻ hơn tàu.",
+        "wrong": {
+          "A": "Bố cần xe hôm nay.",
+          "B": "Họ chọn xe buýt vì rẻ hơn tàu."
+        }
+      },
+      {
+        "id": "gt-b1-1-l1-d",
+        "q": "What colour is the man's new jacket?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "blue"
+          },
+          {
+            "k": "B",
+            "t": "grey"
+          },
+          {
+            "k": "C",
+            "t": "black"
+          }
+        ],
+        "ans": "B",
+        "b": 4,
+        "ev": {
+          "p": 8,
+          "s": "So I got the grey one instead."
+        },
+        "why": "Anh mua áo màu xám.",
+        "wrong": {
+          "A": "Áo xanh quá chật.",
+          "C": "Anh không thích màu đen."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/gt-b1-1-l1.mp3",
+      "dur": 37.7,
+      "voices": [
+        "am_adam",
+        "bf_emma",
+        "af_sky",
+        "am_michael"
+      ]
+    }
+  },
+  {
+    "id": "gt-b1-1-l2",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "B1",
+    "band": 4.5,
+    "mode": "gate",
+    "title": "The repair café",
+    "instr": "Listen to a radio interview and answer the questions.",
+    "voices": {
+      "Presenter": "bf_isabella",
+      "Tom": "bm_george"
+    },
+    "script": [
+      {
+        "sp": "Presenter",
+        "t": "Today I'm talking to Tom, who started a repair café in our town. Tom, what is a repair café?"
+      },
+      {
+        "sp": "Tom",
+        "t": "It's a place where people bring broken things, like lamps, bikes or clothes, and volunteers help them fix them. Each repair costs two pounds, which pays for tools. The coffee is free."
+      },
+      {
+        "sp": "Presenter",
+        "t": "Why did you start it?"
+      },
+      {
+        "sp": "Tom",
+        "t": "Some people think I was bored after I stopped working, but I'm busier than ever. And it wasn't about money. I just hated seeing good things end up in the rubbish."
+      },
+      {
+        "sp": "Presenter",
+        "t": "Who comes to the café?"
+      },
+      {
+        "sp": "Tom",
+        "t": "I expected mostly older people, but in fact most visitors are students. Older people usually come to help, not to fix their own things."
+      },
+      {
+        "sp": "Presenter",
+        "t": "What's the hardest part?"
+      },
+      {
+        "sp": "Tom",
+        "t": "Not the repairs. Finding a room is the problem. At the moment we meet in the library, but only once a month."
+      },
+      {
+        "sp": "Presenter",
+        "t": "And what are your plans?"
+      },
+      {
+        "sp": "Tom",
+        "t": "In the summer we're moving to a bigger room above the library, so we can open every week. Classes for children will have to wait until next year."
+      }
+    ],
+    "items": [
+      {
+        "id": "gt-b1-1-l2-a",
+        "q": "What do visitors pay at the repair café?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "nothing at all"
+          },
+          {
+            "k": "B",
+            "t": "only for their coffee"
+          },
+          {
+            "k": "C",
+            "t": "a small amount for each repair"
+          }
+        ],
+        "ans": "C",
+        "b": 4.5,
+        "ev": {
+          "p": 1,
+          "s": "Each repair costs two pounds"
+        },
+        "why": "Mỗi lần sửa mất hai bảng Anh.",
+        "wrong": {
+          "A": "Mỗi lần sửa mất hai bảng; chỉ cà phê là miễn phí.",
+          "B": "Cà phê miễn phí (\"The coffee is free\")."
+        }
+      },
+      {
+        "id": "gt-b1-1-l2-b",
+        "q": "Why did Tom start the café?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "He didn't like good things being thrown away."
+          },
+          {
+            "k": "B",
+            "t": "He was bored after he stopped working."
+          },
+          {
+            "k": "C",
+            "t": "He wanted to make some money."
+          }
+        ],
+        "ans": "A",
+        "b": 4.5,
+        "ev": {
+          "p": 3,
+          "s": "I just hated seeing good things end up in the rubbish"
+        },
+        "why": "Tom ghét thấy đồ còn tốt bị vứt đi.",
+        "wrong": {
+          "B": "Tom nói có người nghĩ vậy, nhưng anh bận hơn bao giờ hết.",
+          "C": "Tom nói không phải vì tiền (\"it wasn't about money\")."
+        }
+      },
+      {
+        "id": "gt-b1-1-l2-c",
+        "q": "Who are most of the visitors?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "older people"
+          },
+          {
+            "k": "B",
+            "t": "children"
+          },
+          {
+            "k": "C",
+            "t": "students"
+          }
+        ],
+        "ans": "C",
+        "b": 4.5,
+        "ev": {
+          "p": 5,
+          "s": "most visitors are students"
+        },
+        "why": "Phần lớn khách là sinh viên.",
+        "wrong": {
+          "A": "Người lớn tuổi chủ yếu đến để giúp sửa.",
+          "B": "Lớp cho trẻ em phải chờ tới năm sau."
+        }
+      },
+      {
+        "id": "gt-b1-1-l2-d",
+        "q": "What is the café's biggest problem?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "finding a place to meet"
+          },
+          {
+            "k": "B",
+            "t": "doing the repairs"
+          },
+          {
+            "k": "C",
+            "t": "finding enough helpers"
+          }
+        ],
+        "ans": "A",
+        "b": 4.5,
+        "ev": {
+          "p": 7,
+          "s": "Finding a room is the problem."
+        },
+        "why": "Khó nhất là tìm phòng để họp.",
+        "wrong": {
+          "B": "Tom nói sửa đồ không phải phần khó.",
+          "C": "Người lớn tuổi thường đến giúp; Tom không nói thiếu người."
+        }
+      },
+      {
+        "id": "gt-b1-1-l2-e",
+        "q": "What will happen in the summer?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Classes for children will start."
+          },
+          {
+            "k": "B",
+            "t": "The café will move to a bigger room."
+          },
+          {
+            "k": "C",
+            "t": "The café will close for a while."
+          }
+        ],
+        "ans": "B",
+        "b": 5,
+        "ev": {
+          "p": 9,
+          "s": "In the summer we're moving to a bigger room above the library"
+        },
+        "why": "Mùa hè quán chuyển sang phòng lớn hơn.",
+        "wrong": {
+          "A": "Lớp cho trẻ em phải chờ tới năm sau.",
+          "C": "Tom nói chuyển phòng để mở mỗi tuần, không đóng cửa."
+        }
+      }
+    ],
+    "allow": [
+      "volunteers",
+      "repair",
+      "repairs",
+      "pounds"
+    ],
+    "audio": {
+      "file": "a/gt-b1-1-l2.mp3",
+      "dur": 61,
+      "voices": [
+        "bf_isabella",
+        "bm_george"
+      ]
+    }
+  }
+]
