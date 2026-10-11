@@ -8325,7 +8325,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.617a30a46d.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.2f7ff713c6.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8353,7 +8353,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.6b44a28c29.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.050b893992.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

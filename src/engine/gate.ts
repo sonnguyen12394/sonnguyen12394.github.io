@@ -7,12 +7,14 @@
 import { estimate, type Response } from '../exam/irt.ts';
 
 export const GATE = { open: 0.7, ready: 0.8, sd: 1.5 } as const;
-// Ngưỡng trên thang band của bộ chấm (src/exam/scales.ts CEFR_TABLE: A1 từ band 1, A2 từ band 3; làm tròn 0,5 nên ngưỡng thật là −0,25).
-export const GATE_THR: Record<string, number> = { 'cefr-a1': 0.75, 'cefr-a2': 2.75 };
-export const GATE_FORMS: Record<string, string[]> = { 'cefr-a1': ['a1-1', 'a1-2'], 'cefr-a2': ['a2-1', 'a2-2'] };
+// Ngưỡng trên thang band của bộ chấm (src/exam/scales.ts CEFR_TABLE: A1 từ band 1, A2 từ band 3, B1 từ band 4; làm tròn 0,5 nên ngưỡng thật là −0,25).
+export const GATE_THR: Record<string, number> = { 'cefr-a1': 0.75, 'cefr-a2': 2.75, 'cefr-b1': 3.75 };
+export const GATE_FORMS: Record<string, string[]> = { 'cefr-a1': ['a1-1', 'a1-2'], 'cefr-a2': ['a2-1', 'a2-2'], 'cefr-b1': ['b1-1', 'b1-2'] };
 // Đặc tả tham chiếu (soát 11/10/2026, nguồn công khai về định dạng A2 Key từ 2020: Đọc 30 câu / 5 phần, Viết 2 phần, Nghe 25 câu / 5 phần,
 // thang Cambridge 120–139 = A2). Đề cổng là bản rút gọn cùng kiểu bài (biển báo / tin nhắn, bài đọc ngắn, điền từ, hội thoại ngắn, hội thoại dài).
-export const GATE_SPEC: Record<string, string> = { 'cefr-a1': 'soạn theo mô tả CEFR A1 (không có bài Cambridge cho người lớn ở cấp này, chưa có đề ngoài để đối chiếu)', 'cefr-a2': 'soạn theo đặc tả công khai của A2 Key (rút gọn)' };
+// B1 (v116): rút gọn từ định dạng công khai của B1 Preliminary (Đọc phần 1 thông báo, phần 3 bài dài có ý / thái độ, phần 5 điền từ; Nghe đoạn ngắn + phỏng vấn;
+// thang Cambridge 140–159 = B1); mỗi câu 3 phương án như đề A1 / A2 để cùng cách chấm.
+export const GATE_SPEC: Record<string, string> = { 'cefr-a1': 'soạn theo mô tả CEFR A1 (không có bài Cambridge cho người lớn ở cấp này, chưa có đề ngoài để đối chiếu)', 'cefr-a2': 'soạn theo đặc tả công khai của A2 Key (rút gọn)', 'cefr-b1': 'soạn theo đặc tả công khai của B1 Preliminary (rút gọn)' };
 
 export interface GateAns { skill: 'R' | 'L'; b: number; g: number; ok: boolean }
 export interface GateSkill { n: number; ok: number; theta: number; se: number }
