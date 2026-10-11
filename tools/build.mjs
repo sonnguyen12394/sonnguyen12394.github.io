@@ -33,7 +33,8 @@ const groups = walk(P('content/exam')).filter(f => !f.includes('/types/') && f !
   .flatMap(g => isMockPart(g) ? expandPart(g) : [g])
   .filter(g => g && g.id && Array.isArray(g.items)).sort((a, b) => (a.id < b.id ? -1 : 1));
 const mockTests = existsSync(MOCK_INDEX) ? JSON.parse(readFileSync(MOCK_INDEX, 'utf8')) : [];
-const packOf = g => g.mode === 'place' ? 'place' : g.mode === 'mock' ? 'm-' + (/^m-([a-z0-9]+)-/.exec(g.id) || [, 'x'])[1] : 'p-' + g.qtype;
+// v111: trận cổng (mode gate) đóng gói riêng: không bao giờ lẫn vào gói luyện / xếp lớp (câu lạ phải luôn lạ).
+const packOf = g => g.mode === 'gate' ? 'gate' : g.mode === 'place' ? 'place' : g.mode === 'mock' ? 'm-' + (/^m-([a-z0-9]+)-/.exec(g.id) || [, 'x'])[1] : 'p-' + g.qtype;
 const packs = {};
 for (const g of groups) (packs[packOf(g)] ||= []).push(g);
 mkdirSync(P('data/exam'), { recursive: true });

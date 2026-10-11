@@ -14,9 +14,9 @@ test('Kiểm tra nhanh: hiện trong Lộ trình hôm nay, làm 3 câu, ghi bằ
     w.eval('save()');
     w.eval("go('goal',{er:'today'})");
   });
-  await expect(page.getByText('Kiểm tra nhanh · 3 câu')).toBeVisible({ timeout: 15000 });
+  await expect(page.getByText('Thử sức · 3 câu')).toBeVisible({ timeout: 15000 });
   // Bấm lại tới khi màn câu dò hiện ra: trên WebKit, cú bấm có thể rơi đúng lúc màn Lộ trình đang vẽ lại (tải nền xong) và bị mất.
-  const q1 = page.getByText(/Kiểm tra nhanh · .* · câu 1\//);
+  const q1 = page.getByText(/Thử sức · .* · câu 1\//);
   await expect(async () => {
     if (await q1.isVisible()) return;
     await page.getByRole('button', { name: 'Làm ngay' }).click({ timeout: 2000 });

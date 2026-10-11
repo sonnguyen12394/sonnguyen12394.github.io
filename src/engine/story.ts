@@ -101,10 +101,15 @@ export function storyAdd(s: StorySave, kind: StoryKind, n: number): boolean {
 // Đủ nhiệm vụ game? Đủ kỹ năng vững (chương cuối khu)?
 export const tasksDone = (s: StorySave): boolean => { const c = chapterAt(s); return !!c && (Object.keys(c.need) as StoryKind[]).every(k => s.prog[k] >= c.need[k]); };
 export const solidOk = (s: StorySave, solid: number): boolean => { const c = chapterAt(s); return !!c && solid >= (c.solid ?? 0); };
-export const ready = (s: StorySave, solid: number): boolean => tasksDone(s) && solidOk(s, solid);
+// v115 khu truyện = cấp (SPEC "Mô hình học v111" §4): chương cuối khu có thể là trận cổng của một cấp. main.ts quyết định khu nào ứng
+// với cấp nào (hiện tại: khu cuối = trận cổng của đích, nếu đích có cổng); null = khu không có cổng, giữ điều kiện kỹ năng vững.
+export interface StoryGate { lv: string; passed: boolean }
+export type StoryGateOf = (act: number) => StoryGate | null;
+export const gateOf = (s: StorySave, gate?: StoryGateOf): StoryGate | null => { const c = chapterAt(s); return c?.solid && gate ? gate(c.act) : null; };
+export const ready = (s: StorySave, solid: number, gate?: StoryGateOf): boolean => tasksDone(s) && solidOk(s, solid) && (gateOf(s, gate)?.passed ?? true);
 // Xem xong cảnh truyện → sang chương sau; trả về xu thưởng và khu vừa hồi sinh (nếu là chương cuối khu).
-export function advance(s: StorySave, solid: number): { coins: number; act: string | null } | null {
-  if (!ready(s, solid)) return null;
+export function advance(s: StorySave, solid: number, gate?: StoryGateOf): { coins: number; act: string | null } | null {
+  if (!ready(s, solid, gate)) return null;
   const c = chapterAt(s)!, nx = CHAPTERS[s.ch + 1], actDone = c.act > 0 && (!nx || nx.act !== c.act);
   s.ch++; if (c.act > 0) s.prog = N(0, 0, 0);   // mở đầu: giữ tiến độ đã tính sẵn cho chương 1
   return { coins: c.act === 0 ? 0 : actDone ? COINS_ACT : COINS_CHAPTER, act: actDone ? ACTS[c.act]! : null };
@@ -162,15 +167,16 @@ export function storyNote(s: StorySave | undefined, kind: StoryKind): string {
 }
 
 // Thẻ truyện ở sảnh: chương, lời dẫn, ba nhiệm vụ (bấm để vào game), nút xem cảnh, khu đã hồi sinh.
-export function viewStory(s: StorySave | undefined, solid: number): string {
+export function viewStory(s: StorySave | undefined, solid: number, gateFn?: StoryGateOf): string {
   const st = s ?? freshStory();
   if (finished(st)) return `<section class="stcard" style="background:linear-gradient(135deg,#8e2de2,#160b3d)"><h2>📖 Phố Chữ · Còn tiếp…</h2><p>Bạn đã hồi sinh ${ACTS.slice(1).join(', ')}. Sương Câm đã trốn về Phố Đêm: chương mới sắp ra.</p><div class="whrow" style="justify-content:flex-start"><button class="whb wide" data-e="stscene" data-ch="${CHAPTERS.length - 1}">🔁 Xem lại cảnh cuối</button></div></section>`;
-  const c = chapterAt(st)!, [a, b] = ACT_BG[c.act]!, ok = ready(st, solid), num = st.ch;
+  const c = chapterAt(st)!, [a, b] = ACT_BG[c.act]!, ok = ready(st, solid, gateFn), num = st.ch, sg = gateOf(st, gateFn);
   const tasks = (Object.keys(KIND_VI) as StoryKind[]).filter(k => c.need[k] > 0).map(k => {
     const v = KIND_VI[k], d = st.prog[k] >= c.need[k];
     return `<li><button class="stask${d ? ' ok' : ''}" data-e="${v.start}"><span aria-hidden="true">${d ? '✅' : v.ico}</span> ${esc(v.vi)} <b>${st.prog[k]}/${c.need[k]}</b></button></li>`;
   }).join('');
-  const gate = c.solid && tasksDone(st) && solid < c.solid ? `<p class="stgate">🔒 Chương cuối khu cần <b>${c.solid} kỹ năng vững</b> trên bản đồ năng lực (bạn có ${solid}). Học ở <button class="stlink" data-e="go" data-r="today">Lộ trình hôm nay</button>, mỗi kỹ năng vững là một tiếng nói được trả lại.</p>` : c.solid ? `<p class="stsmall">⭐ Chương cuối khu: cần thêm ${c.solid} kỹ năng vững thật (bạn có ${solid}).</p>` : '';
+  const gate = sg && !sg.passed ? `<p class="${tasksDone(st) && solid >= (c.solid ?? 0) ? 'stgate' : 'stsmall'}">🚪 Chương cuối khu là <b>trận cổng khu ${esc(sg.lv)}</b>: qua cổng thì ${esc(ACTS[c.act]!)} hồi sinh${solid < (c.solid ?? 0) ? ` (cần thêm ${c.solid} kỹ năng vững, bạn có ${solid})` : ''}. <button class="stlink" data-e="go" data-r="gate">Tới trận cổng</button></p>`
+    : c.solid && tasksDone(st) && solid < c.solid ? `<p class="stgate">🔒 Chương cuối khu cần <b>${c.solid} kỹ năng vững</b> trên bản đồ năng lực (bạn có ${solid}). Học ở <button class="stlink" data-e="go" data-r="today">Lộ trình hôm nay</button>, mỗi kỹ năng vững là một tiếng nói được trả lại.</p>` : c.solid ? `<p class="stsmall">⭐ Chương cuối khu: cần thêm ${c.solid} kỹ năng vững thật (bạn có ${solid}).</p>` : '';
   const rv = revived(st);
   return `<section class="stcard" style="background:linear-gradient(135deg,${a},${b})" aria-label="Cốt truyện Phố Chữ">
     <span class="steyebrow">📖 Phố Chữ mất tiếng · ${esc(ACTS[c.act]!)}${num ? ` · chương ${num}` : ''}</span>

@@ -151,8 +151,12 @@ test('v109 sân khấu: Tốc độ 60 giây và Ghép cặp chơi toàn màn, �
     const w = window as any; w.eval('ALL_WORDS').slice(0, 30).forEach((x: any) => { w.eval('W')(x.id).learned = true; });
     w.eval('st').onboarded = true; w.eval('save()'); await w.eval('emLoad()'); w.eval("go('games')");
   });
-  await page.evaluate(() => document.querySelectorAll('details').forEach(d => { (d as HTMLDetailsElement).open = true; }));
-  await page.locator('[data-act="speed"]').first().click();
+  // WebKit còn render lại sảnh sau go('games') (thẻ nạp bất đồng bộ) nên <details> vừa mở bị đóng lại: mở lại rồi bấm tới khi được.
+  const openAndClick = (act: string) => expect(async () => {
+    await page.evaluate(() => document.querySelectorAll('details').forEach(d => { (d as HTMLDetailsElement).open = true; }));
+    await page.locator(`[data-act="${act}"]`).first().click({ timeout: 2000 });
+  }).toPass({ timeout: 20_000 });
+  await openAndClick('speed');
   await expect.poll(() => page.evaluate(() => document.body.dataset.game)).toBe('speed');
   await expect(page.locator('#app > .back')).toBeHidden();
   const ans = await page.evaluate(() => (window as any).eval('ui.game.q.ans'));
@@ -164,8 +168,8 @@ test('v109 sân khấu: Tốc độ 60 giây và Ghép cặp chơi toàn màn, �
   await page.locator('.stagebar [data-act="gameexit"]').click();
   await page.locator('[data-act="mquit"]').click();   // đang giữa lượt: hỏi xác nhận thoát (như nút ← cũ)
   await expect.poll(() => page.evaluate(() => document.body.classList.contains('stage'))).toBe(false);
-  await page.evaluate(() => { (window as any).eval("go('games')"); document.querySelectorAll('details').forEach(d => { (d as HTMLDetailsElement).open = true; }); });
-  await page.locator('[data-act="match"]').first().click();
+  await page.evaluate(() => (window as any).eval("go('games')"));
+  await openAndClick('match');
   await expect.poll(() => page.evaluate(() => document.body.dataset.game)).toBe('match');
   await page.locator('.stagebar [data-act="gameexit"]').click();
   await expect.poll(() => page.evaluate(() => document.body.classList.contains('stage'))).toBe(false);

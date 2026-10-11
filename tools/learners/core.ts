@@ -190,11 +190,11 @@ export async function run(P: Profile): Promise<void> {
     await sleep(500);
     const intro = await shot('diag-intro');
     note('diag-intro', { words: intro.split(/\s+/).length });
-    if (!(await click(/Bắt đầu dò/))) { note('stuck', 'không thấy nút Bắt đầu dò'); return; }
+    if (!(await click(/Bắt đầu thử sức/))) { note('stuck', 'không thấy nút Bắt đầu thử sức'); return; }
     let n = 0;
     for (; n < 80; n++) {
       await sleep(80);
-      if (await visible('h1:has-text("App đã đặt mục tiêu"), h2:has-text("App đã đặt mục tiêu")')) break;
+      if (await visible('h3:has-text("Bạn muốn đi xa tới đâu")')) break;
       const pk = await peek();
       if (!pk) { if (await click(/Xem kết quả|Tiếp|Đi tiếp/)) continue; break; }
       await answer(pk);
@@ -202,7 +202,7 @@ export async function run(P: Profile): Promise<void> {
     const res = await shot('diag-result');
     note('diag-result', { probes: n, head: res.split('\n').slice(0, 6).join(' | ') });
     if (P.afterDiag) await P.afterDiag(C);
-    else await click(/Bắt đầu leo tháp/);
+    else await click(/^▶ Giữ đích/);
     await sleep(400);
   }
 

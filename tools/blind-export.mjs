@@ -3,6 +3,7 @@
 // Dán nguyên văn vào lời nhắc của một phiên AI mới, CẤM dùng công cụ (phiên đọc được kho sẽ thấy đáp án),
 // rồi chấm bằng tools/blind-score.mjs. Câu tốt chỉ trả lời được khi đọc/nghe bài, nên tỉ lệ đúng phải gần mức ngẫu nhiên.
 // Dùng: node tools/blind-export.mjs [--type pl-r,v-r] [--mock a1] [--sample N] [--seed S] > out.txt
+// --gate: chỉ câu trận cổng (content/exam/gate, mode gate).
 // --mock: chỉ câu của một đề thi thử, kể cả câu dùng phương án chung (TRUE/FALSE/NOT GIVEN, tiêu đề, nối).
 // Câu chọn nhiều đáp án ("Choose TWO") cũng được xuất; người làm trả lời dạng "B,D".
 import { loadGroups, optsOf } from './groups.mjs';
@@ -10,13 +11,14 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../content/exam');
 const arg = k => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : undefined; };
-const types = arg('--type')?.split(','), mock = arg('--mock'), sample = Number(arg('--sample') ?? 0);
+const types = arg('--type')?.split(','), mock = arg('--mock'), sample = Number(arg('--sample') ?? 0), gate = process.argv.includes('--gate');
 let seed = Number(arg('--seed') ?? 1);
 const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
 const by = new Map();
 for (const g of loadGroups(ROOT)) {
   if (types && !types.includes(g.qtype)) continue;
   if (mock && !g.id.startsWith(`m-${mock}-`)) continue;
+  if (gate ? g.mode !== 'gate' : g.mode === 'gate') continue;   // v111: --gate chỉ xuất câu trận cổng; mặc định bỏ chúng
   for (const it of g.items) if ((typeof it.ans === 'string' || Array.isArray(it.ans)) && (it.opts || (mock && g.options))) by.set(g.qtype, [...(by.get(g.qtype) ?? []), { ...it, opts: optsOf(it, g) }]);
 }
 const out = [];

@@ -106,7 +106,7 @@ export interface Group {
   qtype: string;          // dạng câu hỏi chính của nhóm
   level: Cefr;
   band: number;           // độ khó văn bản dự kiến
-  mode: 'place' | 'practice' | 'mock';   // dùng cho kiểm tra đầu vào / luyện theo dạng / đề thi thử
+  mode: 'place' | 'practice' | 'mock' | 'gate';   // dùng cho kiểm tra đầu vào / luyện theo dạng / đề thi thử / trận cổng của engine (v111, cách ly)
   title: string;
   instr: string;          // lời dẫn như trong đề (tiếng Anh)
   paras?: string[];       // bài đọc: các đoạn (có thể bắt đầu bằng nhãn "A ")

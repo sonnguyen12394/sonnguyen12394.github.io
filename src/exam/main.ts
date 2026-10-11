@@ -15,7 +15,7 @@ import { refresh, sendPairs, hiddenItems } from './net.ts';
 import { vstepToBand } from './scales.ts';
 import { itemParams, cleanCache, loadPack } from './packs.ts';
 import { viewPlaceIntro, viewPlaceRun, viewPlaceResult, FLAG_REASONS, type PRun } from './views/place.ts';
-import { newPlacement, advance, answerGroup, results, remainingMs, type PSkill } from './placement.ts';
+import { newPlacement, advance, answerGroup, results, remainingMs, MAX_ITEMS, type PSkill } from './placement.ts';
 import { sendAttempt } from './net.ts';
 import type { Group } from './content.ts';
 import { viewPlan } from './views/plan.ts';
@@ -39,6 +39,19 @@ export interface ExamModule {
   after(route: string): void;
   sanitize(x: unknown): XState;
   merge(a: unknown, b: unknown): XState;
+  lr: LrApi;
+  gate(form: string): Promise<Group[]>;   // v111 trận cổng: các nhóm của một đề (gói "gate" riêng, không lẫn gói luyện)
+}
+
+// v111 (docs/SPEC.md "Mô hình học v111" §2): xếp lớp Nghe / Đọc cho chương mở đầu của engine. Cùng thuật toán thích ứng và kho câu
+// place, nhưng engine vẽ màn bằng lời của truyện (không đồng hồ trên màn); kết quả ghi như lần xếp lớp thường (attempts kind 'place').
+export interface LrCur { skill: PSkill; n: number; max: number; g: Group }
+export interface LrApi {
+  start(): Promise<boolean>;
+  cur(): LrCur | null;
+  answer(given: Record<string, string | undefined>): boolean;   // true = còn bài, false = xong (đã ghi kết quả)
+  skipL(): boolean;
+  result(): Array<{ skill: PSkill; band: number; se: number; n: number }>;
 }
 
 export interface Ctx {
@@ -71,6 +84,11 @@ export function init(host: Host): ExamModule {
   function placeFinish(): void {
     if (!run) return;
     stopTimer();
+    recordPlace(run);
+    host.go('place-result');
+  }
+  // Ghi một lần xếp lớp (dùng chung cho màn Ôn thi và chương mở đầu của engine).
+  function recordPlace(run: PRun): void {
     run.res = results(run.st);
     const x = X(), day = host.today(), secs = Math.round((Date.now() - run.t0) / 1000), exam = x.exam || 'ielts-ac';
     const items: Record<string, 0 | 1> = {};
@@ -85,8 +103,37 @@ export function init(host: Host): ExamModule {
     host.addMinutes(secs / 60); host.markActive();
     host.save();
     void sendAttempt(host, x, exam, 'place', items);
-    host.go('place-result');
   }
+
+  let lrRun: PRun | null = null;
+  const lr: LrApi = {
+    async start() {
+      const gs = await loadPack('place'), exam = X().exam || 'ielts-ac', mine = gs.filter(g => g.exams.includes(exam));
+      poolCache = { R: mine.filter(g => g.kind === 'reading'), L: mine.filter(g => g.kind === 'listening') };
+      lrRun = { st: newPlacement(['R', 'L'], Date.now()), groups: Object.fromEntries(mine.map(g => [g.id, g])), given: {}, plays: 0, audioErr: '', t0: Date.now(), res: null };
+      return !!advance(lrRun.st, poolCache, hiddenItems(), Date.now());
+    },
+    cur() {
+      const r = lrRun, g = r?.st.cur ? r.groups[r.st.cur] : undefined, sec = r?.st.sections[r.st.i];
+      return r && g && sec && !r.st.finished ? { skill: sec.skill, n: sec.answers.length, max: MAX_ITEMS, g } : null;
+    },
+    answer(given) {
+      const r = lrRun, g = r?.st.cur ? r.groups[r.st.cur] : undefined;
+      if (!r || !poolCache) return false;
+      if (g) answerGroup(r.st, g, given, hiddenItems());
+      if (advance(r.st, poolCache, hiddenItems(), Date.now())) return true;
+      recordPlace(r); return false;
+    },
+    skipL() {
+      const r = lrRun;
+      if (!r || !poolCache) return false;
+      const sec = r.st.sections[r.st.i];
+      if (sec?.skill === 'L') { sec.done = true; r.st.cur = null; }
+      if (advance(r.st, poolCache, hiddenItems(), Date.now())) return true;
+      recordPlace(r); return false;
+    },
+    result() { return (lrRun?.res ?? []).map(q => ({ skill: q.skill, band: q.band, se: q.se, n: q.n })); },
+  };
 
   function placeNext(given: Record<string, string | undefined>): void {
     if (!run) return;
@@ -376,5 +423,7 @@ export function init(host: Host): ExamModule {
     },
     sanitize: sanitizeX,
     merge: mergeX,
+    lr,
+    async gate(form) { const gs = await loadPack('gate'); return gs.filter(g => g.id.startsWith(`gt-${form}-`)).sort((a, b) => (a.id < b.id ? -1 : 1)); },
   };
 }

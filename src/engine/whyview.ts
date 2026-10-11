@@ -17,13 +17,13 @@ import { xferStatus, XFER } from './transfer.ts';
 import type { NodeState } from './mastery.ts';
 import { recallOf } from './today.ts';
 
-const STATE_VI: Record<NodeState, string> = { unknown: 'chưa có gì', inferred: 'suy ra từ chẩn đoán (đang xác nhận)', learning: 'đang học', mastered: '✓ Đạt', verify: 'cần xác minh ở câu mới', reopened: 'mở lại: bằng chứng mới mâu thuẫn' };
+const STATE_VI: Record<NodeState, string> = { unknown: 'chưa có gì', inferred: 'suy ra từ xếp lớp (đang xác nhận)', learning: 'đang học', mastered: '✓ Đạt', verify: 'cần xác minh ở câu mới', reopened: 'mở lại: bằng chứng mới mâu thuẫn' };
 
 const SRC_VI: Record<string, string> = {
-  vocab: 'luyện từ vựng', gram: 'luyện ngữ pháp', exam: 'câu đọc/nghe', pa: 'bài Pre-A1', diag: 'bài chẩn đoán', testout: 'kiểm tra bỏ qua',
+  vocab: 'luyện từ vựng', gram: 'luyện ngữ pháp', exam: 'câu đọc/nghe', pa: 'bài Pre-A1', diag: 'lượt xếp lớp', testout: 'thử để bỏ qua',
   perf: 'bài làm thật', game: 'thử thách game', micro: 'bí kíp (micro)', transfer: 'thử thách transfer', pron: 'luyện cặp âm', talk: 'hội thoại / chức năng giao tiếp', legacy: 'tiến độ trước v53',
 };
-const DEC_VI: Record<string, string> = { 'micro:fixed': 'Bí kíp: đúng hết câu kiểm tra', 'micro:partial': 'Bí kíp: đúng một phần', 'micro:not-yet': 'Bí kíp: chưa nắm', 'transfer:ok': 'Đúng hết ở câu mới', 'transfer:partial': 'Đúng một phần ở câu mới', 'transfer:fail': 'Trượt ở câu mới', PASS: 'Đạt', FAIL: 'Chưa đạt / mất Đạt', READY: 'Sẵn sàng', NOT_READY: 'Chưa sẵn sàng', ACHIEVED: 'Đạt mục tiêu', CHOSEN: 'Chọn làm bước tiếp theo' };
+const DEC_VI: Record<string, string> = { 'micro:fixed': 'Bí kíp: đúng hết câu thử', 'micro:partial': 'Bí kíp: đúng một phần', 'micro:not-yet': 'Bí kíp: chưa nắm', 'transfer:ok': 'Đúng hết ở câu mới', 'transfer:partial': 'Đúng một phần ở câu mới', 'transfer:fail': 'Trượt ở câu mới', PASS: 'Đạt', FAIL: 'Chưa đạt / mất Đạt', READY: 'Sẵn sàng', NOT_READY: 'Chưa sẵn sàng', ACHIEVED: 'Đạt mục tiêu', CHOSEN: 'Chọn làm bước tiếp theo' };
 const n2 = (x: number): string => String(Math.round(x * 100) / 100).replace('.', ',');
 const iso = (d: number): string => new Date(d * 86400000).toISOString().slice(0, 10);
 
@@ -51,7 +51,7 @@ function whyNode(c: ECtx, id: string): string {
   const snaps = e.ev.snap.filter(s => s.subj === id && s.kind !== 'nba' && s.kind !== 'dir').slice(-8).reverse();
   const nba = [...e.ev.snap].reverse().find(s => s.kind === 'nba' && s.subj === id);
   const nbaHtml = nba ? `<section class="panel stack"><h3>Vì sao app chọn phần này làm bước tiếp theo</h3>
-    <p class="muted">App so các việc có thể làm (học phần mới, ôn, kiểm tra nhanh, xác minh) bằng một điểm lợi ích: giá trị học + giá trị thông tin + mức liên quan mục tiêu + tầm quan trọng tiền đề + nguy cơ quên + transfer, trừ nỗ lực và việc ngắt mạch (spec §57). Chỉ xét phần đã đủ tiền đề cứng.</p>
+    <p class="muted">App so các việc có thể làm (học phần mới, ôn, thử sức, xác minh) bằng một điểm lợi ích: giá trị học + giá trị thông tin + mức liên quan mục tiêu + tầm quan trọng tiền đề + nguy cơ quên + transfer, trừ nỗ lực và việc ngắt mạch (spec §57). Chỉ xét phần đã đủ tiền đề cứng.</p>
     <p><b>Phần này:</b> ${esc(String(nba.info?.why ?? ''))}${nba.info?.parts ? `<br><span class="hint">${esc(String(nba.info.parts))}</span>` : ''}</p>
     <ol>${(nba.alt ?? []).map(a => `<li>${esc(a.node === 'review' ? 'Ôn phần sắp quên' : ix.node.get(a.node)?.vi ?? a.node)} · lợi ích ${n2(a.score)}${a.node === id ? ' ← đã chọn' : ''}</li>`).join('')}</ol>
     <p class="hint">Luật <code>${esc(nba.rule)}</code></p></section>` : '';

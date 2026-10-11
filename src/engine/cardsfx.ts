@@ -159,7 +159,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
         const rec = s.total > (s.prevBest ?? 0);
         win.innerHTML = `${mascot ? `<span aria-hidden="true">${mascot('party', 72)}</span>` : ''}<h2 class="cdh">🃏 Xong ván!</h2>
           <p>🏆 Thắng ${s.won}/${TABLES} bàn · ⭐ ${s.total} điểm${rec ? ' · Kỷ lục mới!' : ''}</p><p>${s.ok}/${s.n} câu đúng · +${s.coins} xu</p>
-          ${s.passed?.length ? `<p>⬆ Đã vững: ${s.passed.slice(0, 4).map(esc).join(', ')}</p>` : ''}
+          ${s.passed?.length ? `<p>⬆ Đã vững: ${s.passed.slice(0, 4).map(esc).join(', ')}</p>` : ''}${s.goalNote ? `<p class="whgoal">${esc(s.goalNote)}</p>` : ''}
           <p class="cdsmall">Điểm, bàn thắng và bùa chỉ để vui, không đổi đánh giá năng lực. Mọi câu bạn tự xếp đã được ghi vào bản đồ năng lực.</p>
           <div class="whrow"><button class="whbig" data-e="cdstart">🃏 Ván mới</button><button class="whb wide" data-e="cdexit">Về sảnh</button></div>`;
         live.textContent = `Xong ván, thắng ${s.won} trên ${TABLES} bàn.`;

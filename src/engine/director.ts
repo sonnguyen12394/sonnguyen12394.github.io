@@ -47,10 +47,11 @@ export interface DirIn {
   recent?: Partial<Record<'u' | 'g' | 'fn' | 'ph', number>>;   // số câu trả lời 7 ngày qua theo loại nút (cân đối các mảng nền)
   acc?: number | null;             // tỉ lệ đúng gần đây (24 câu tự lực)
   flag?: 'wheel' | 'hunt' | '';    // v96: game chủ lực chơi gần nhất (qua nhiều ngày): game kia được ưu tiên để hai game thay nhau
+  rote?: number;                   // v111: số phần đúng ở câu cũ mà sai ở câu lạ (đèn báo học tủ, rote.ts)
 }
 export interface DirPick { game: GameId; need: Need; why: string; score: number }
 
-const NEED_VI: Record<Need, string> = { place: 'xếp lớp', water: 'tưới từ', review: 'ôn', vocab: 'từ mới', grammar: 'ngữ pháp', func: 'giao tiếp', sound: 'âm', read: 'đọc', listen: 'nghe', write: 'viết', speak: 'nói', check: 'kiểm tra', replace: 'xếp lớp lại', fun: 'chơi thêm' };
+const NEED_VI: Record<Need, string> = { place: 'xếp lớp', water: 'tưới từ', review: 'ôn', vocab: 'từ mới', grammar: 'ngữ pháp', func: 'giao tiếp', sound: 'âm', read: 'đọc', listen: 'nghe', write: 'viết', speak: 'nói', check: 'thử sức', replace: 'xếp lớp lại', fun: 'chơi thêm' };
 export const needVi = (n: Need): string => NEED_VI[n];
 
 // Mọi ứng viên (game, nhu cầu, điểm gốc, lý do). Một game có thể phục vụ nhiều nhu cầu: giữ nhu cầu điểm cao nhất.
@@ -78,7 +79,8 @@ function needs(x: DirIn): DirPick[] {
     if (k === 'ph') add('bubbles', 'sound', 80, `Âm đang học: ${top.vi}.`);
     if (k === 'cd') add('tower', 'check', 60, `Phần đang học: ${top.vi}.`);
   }
-  if (top && (top.kind === 'probe' || top.kind === 'verify' || top.kind === 'transfer')) add('tower', 'check', 74, `Kiểm tra xem bạn biết thật “${top.vi}” chưa (câu mới, chưa gặp).`);
+  if (top && (top.kind === 'probe' || top.kind === 'verify' || top.kind === 'transfer')) add('tower', 'check', 74, `Thử sức xem bạn dùng được “${top.vi}” ở câu mới chưa.`);
+  if ((x.rote ?? 0) > 0) add('tower', 'check', 79, `${x.rote} phần bạn đúng ở câu đã gặp nhưng còn sai ở câu lạ: trùm tháp sẽ hỏi câu mới để bạn dùng được thật.`);
   // Điểm nghẽn = phần yếu đang chặn nhiều năng lực: ưu tiên ngay sau ôn / tưới, trên bước học mới. Bot L02: để dưới bước học thì người chơi
   // 2–3 game / ngày không bao giờ tới lượt điểm nghẽn (phần nghe tụt từ 56% xuống 22% số câu).
   if (x.neck?.node.startsWith('ph:')) add('bubbles', 'sound', 86, `Điểm nghẽn của bạn: ${x.neck.vi}. Nghe phân biệt âm để gỡ.`);
@@ -94,7 +96,8 @@ function needs(x: DirIn): DirPick[] {
   if (x.first.fn) add('cafe', 'func', 57 + under('fn'), `Giao tiếp cần cho mục tiêu: ${x.first.fn}.${lag('fn')}`);
   if (x.first.ph) add('bubbles', 'sound', 56 + under('ph'), `Âm cần cho mục tiêu: ${x.first.ph}.${lag('ph')}`);
   // Kỹ năng (Can-Do) còn thiếu ở cấp đang học.
-  const cd = (s: 'R' | 'L' | 'W' | 'S') => x.cd[s], g = (s: 'R' | 'L' | 'W' | 'S') => 50 + Math.round(15 * (cd(s)?.gap ?? 0));
+  // v111: kỹ năng là phần đề thi chấm (Đọc, Nghe, Viết, Nói), nên phần còn hụt được nâng lên ngang bước học nền (SPEC "Mô hình học v111" §3).
+  const cd = (s: 'R' | 'L' | 'W' | 'S') => x.cd[s], g = (s: 'R' | 'L' | 'W' | 'S') => 56 + Math.round(20 * (cd(s)?.gap ?? 0));
   if (cd('R')) add('case', 'read', g('R'), `Đọc ở cấp ${x.lv}: ${cd('R')!.vi}.`);
   if (cd('L') && x.tts) add('radio', 'listen', g('L'), `Nghe ở cấp ${x.lv}: ${cd('L')!.vi}.`);
   if (cd('W')) add('letter', 'write', g('W'), `Viết ở cấp ${x.lv}: ${cd('W')!.vi}.`);
@@ -139,7 +142,10 @@ export function planDay(x: DirIn): DirPick[] {
   const seen = new Set<Need>(), out: DirPick[] = [];
   for (const p of direct({ ...x, played: [], last: '' })) {
     if (out.length >= PLAN_N) break;
-    if (p.need === 'fun' || seen.has(p.need) || (SKILL.has(p.need) && out.some(q => SKILL.has(q.need)))) continue;
+    // v111: từ A2 trở lên được HAI chặng kỹ năng (phần đề thi chấm), nhưng chặng kỹ năng thứ hai chỉ vào khi lộ trình đã có một chặng nền.
+    // Pre-A1 / A1 giữ MỘT chặng (v88): người mới cần nền từ / ngữ pháp trước.
+    const sk = out.filter(q => SKILL.has(q.need)).length, cap = /^(Pre-?A1|A1)$/i.test(x.lv || 'A1') ? 1 : 2;
+    if (p.need === 'fun' || seen.has(p.need) || (SKILL.has(p.need) && (sk >= cap || (sk >= 1 && !out.some(q => !SKILL.has(q.need)))))) continue;
     seen.add(p.need); out.push(p);
   }
   return out.sort((a, b) => ORDER.indexOf(a.need) - ORDER.indexOf(b.need));

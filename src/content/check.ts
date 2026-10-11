@@ -16,8 +16,8 @@ const squash = (s: string): string => s.replace(/[‘’]/g, "'").replace(/[“�
 
 // Độ dài văn bản (số từ) theo chế độ dùng và kỹ năng. Bài đọc đề thi thử: một bài đọc IELTS 700–1000 từ, VSTEP 300–700 từ.
 export const LENGTH: Record<string, Record<string, [number, number]>> = {
-  reading: { place: [50, 320], practice: [150, 1000], mock: [280, 1050] },
-  listening: { place: [20, 320], practice: [120, 1100], mock: [150, 1300] },
+  reading: { place: [50, 320], practice: [150, 1000], mock: [280, 1050], gate: [50, 320] },
+  listening: { place: [20, 320], practice: [120, 1100], mock: [150, 1300], gate: [20, 320] },
 };
 // Ngoại lệ theo dạng câu (bộ luyện): Phần 1 Nghe VSTEP là các thông báo ngắn ~30–40 từ, mỗi bộ gồm 3 đoạn.
 export const QLENGTH: Record<string, [number, number]> = { 'v-l1': [60, 400] };

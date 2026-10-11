@@ -26,7 +26,7 @@ import { viewLobby, viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoard
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
 import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, TIER_COINS, type WkKind } from './weekly.ts';
-import { FACE, resident, sideDone, SIDE_COINS, CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind } from './story.ts';
+import { FACE, resident, sideDone, SIDE_COINS, CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind, type StoryGateOf } from './story.ts';
 import { openScene } from './storyfx.ts';
 import { stageSync, stageBurst, type Scene } from './stagefx.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
@@ -65,7 +65,14 @@ import { seenHas, misconceptions } from './ev/store.ts';
 import { remedyFor, pickFor, REMEDY_VI } from './remedy.ts';
 import { gaps, weakContext, GAP_VI } from './gap.ts';
 import type { Level } from './types.ts';
-import { readinessOf } from './readyview.ts';
+import { readinessOf, missingOf } from './readyview.ts';
+import { goalSummary, viewGoalBar, goalLine, goalText, type GoalSum } from './goalbar.ts';
+import { roteNodes } from './rote.ts';
+import { viewLrRun } from './lrview.ts';
+import { viewTreasureCard, viewTreasureIntro, viewTreasureDone, CHEST_COINS } from './treasureview.ts';
+import { viewGateHome, viewGateRun, viewGateEnd, type GateRun } from './gateview.ts';
+import { gateScore, gateState, lastP, CES_MIN, GATE_FORMS, type GateAns } from './gate.ts';
+import type { LrApi } from '../exam/main.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
 import { viewMeasure } from './measureview.ts';
 import type { MicroCard } from './host.ts';
@@ -113,12 +120,37 @@ export function init(host: EHost): EngineModule {
     if (loaded() || loading || loadErr) return;
     loading = true;
     loadGraph(host.fetchJson).then(() => { loading = false; loadErr = ''; host.render(); })
-      .catch(() => { loading = false; loadErr = 'Chưa tải được bản đồ năng lực. Kiểm tra mạng rồi thử lại.'; host.render(); });
+      .catch(() => { loading = false; loadErr = 'Chưa tải được bản đồ năng lực. Xem lại mạng rồi thử lại.'; host.render(); });
   };
 
   // ---------- Chẩn đoán (M3) ----------
   let drun: DiagRun | null = null, drec: Array<{ kind: 'u' | 'g'; lv: number; rc: number }> = [], dmcq = { got: 0, n: 0, gs: 0 };
   const lr = () => lrBand(host.state());
+  // v111 chương mở đầu: đèn Nghe + Đọc (lrview.ts). lrApi = bộ xếp lớp thích ứng của phần ôn thi (nạp lười qua host.lr).
+  let lrApi: LrApi | null = null, lrPlays = 0, lrErr = '';
+  // v111 trận cổng cuối khu (gate.ts, gateview.ts): câu lạ, chơi một lần, không đáp án trong trận; kết quả là bằng chứng quyết định.
+  let gtRun: GateRun | null = null;
+  function gtFinish(): void {
+    const r = gtRun;
+    if (!r) return;
+    const ans: GateAns[] = [];
+    for (const g of r.groups) {
+      if (g.kind === 'listening' && r.skipL) continue;
+      for (const it of g.items) ans.push({ skill: g.kind === 'reading' ? 'R' : 'L', b: it.b, g: 1 / Math.max(2, (it.opts ?? g.options ?? []).length), ok: r.given[it.id] === it.ans });
+    }
+    const e = E(), res = gateScore(r.goal, r.form, ans, host.today(), Math.round((Date.now() - r.t0) / 1000));
+    r.res = res;
+    (e.gg ||= { done: {} }).done[r.form] = res;
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'readiness', subj: r.goal, dec: res.passed ? 'GATE:PASS' : 'GATE:FAIL', rule: `${RULE_ID}/gate-1`,
+      info: { form: r.form, p: res.p, theta: res.theta, se: res.se, ok: res.ok, n: res.n, ...(r.skipL ? { skipL: 'yes' } : {}) }, evs: [] }, false);
+    host.save(); host.cheer?.(res.passed); host.render(); window.scrollTo?.(0, 0);
+  }
+  function lrDone(): void {
+    const res = lrApi?.result() ?? [], e = E();
+    addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: 'lr', dec: res.map(r => `${r.skill}=${r.band}`).join(';') || 'skip', rule: `${RULE_ID}/lr-prologue-1`,
+      info: Object.fromEntries(res.flatMap(r => [[`${r.skill}`, r.band], [`${r.skill}se`, Math.round(r.se * 100) / 100], [`${r.skill}n`, r.n]])), evs: [] }, false);
+    lrApi = null; lrPlays = 0; host.save(); host.go('diag-result');
+  }
   const norm = (s: string) => s.trim().toLowerCase().replace(/[‘’]/g, "'").replace(/[.!?]+$/, '').replace(/\s+/g, ' ');
   // Thêm một mục tiêu (dùng chung cho chọn tay và tự đặt). Trả về false nếu không thêm được.
   function addGoal(id: string, why: 'pick' | 'auto'): boolean {
@@ -421,7 +453,10 @@ export function init(host: EHost): EngineModule {
     const acc = recentAcc(), explore = acc === null || acc >= 0.6, strong = acc !== null && acc >= 0.85;
     // v71 (bot L03): người học đang đúng nhiều → nới giới hạn lượt / nút / ngày (5 thay vì 3) để tiến nhanh hơn; tầng ưu tiên điểm nghẽn.
     const cap = strong ? 5 : QUEST.capDay, neck = neckOf(v)?.node;
-    const fi: FloorIn = { acts, open: p.open, review: [...review, ...learning.filter(n => !review.includes(n))], can: n => /^(u|g|ph):/.test(n), started: n => Object.values(e.m[n] ?? {}).some(c => (c?.n ?? 0) > 0), floor: sv.floor, fresh: n => (cnt.get(n) ?? 0) < cap, claims, claimLv: n => claimLv.get(n) ?? 3, explore, ...(neck ? { neck } : {}) };
+    // v111 đèn báo học tủ: phần đúng ở câu cũ mà sai ở câu lạ → trùm tháp hỏi câu mới (transfer) ở phần đó trước.
+    const rot = roteNodes(e.ev, (p.all ?? []).map(r => r.node)).filter(x => /^(u|g|ph):/.test(x.node)).slice(0, 2)
+      .map(x => ({ kind: 'transfer' as const, node: x.node, level: x.lv, u: 1 + x.gap, parts: { learn: 0, info: 0.4, goal: 0.5, prereq: 0, retain: 0, transfer: 1, effort: 0.075, interrupt: 0 }, why: 'đúng ở câu cũ, sai ở câu lạ' }));
+    const fi: FloorIn = { acts: [...rot, ...acts.filter(a => !rot.some(r => r.node === a.node))], open: p.open, review: [...review, ...learning.filter(n => !review.includes(n))], can: n => /^(u|g|ph):/.test(n), started: n => Object.values(e.m[n] ?? {}).some(c => (c?.n ?? 0) > 0), floor: sv.floor, fresh: n => (cnt.get(n) ?? 0) < cap, claims, claimLv: n => claimLv.get(n) ?? 3, explore, ...(neck ? { neck } : {}) };
     return { fi, p };
   }
   function qStart(mode: 'tower' | 'blocks' | 'board' = 'tower'): void {
@@ -474,7 +509,7 @@ export function init(host: EHost): EngineModule {
   function cOpen(): void {
     if (typeof document === 'undefined' || !crun) return;
     hClose(); nClose(); cview?.close();
-    cview = openCards(() => (crun ? Object.assign(crun as CardsFxState, { nodeVi: loaded()?.node.get(crun.node)?.vi ?? '', best: csave().best, story: storyNote(E().sy, 'voice') }) : null), o => cBuilt(o), host.mascot ? (m, k) => host.mascot!(m, k) : undefined);
+    cview = openCards(() => (crun ? Object.assign(crun as CardsFxState, { nodeVi: loaded()?.node.get(crun.node)?.vi ?? '', best: csave().best, story: storyNote(E().sy, 'voice'), goalNote: crun.done ? (crun.goalNote ??= goalNote(crun.t0)) : undefined }) : null), o => cBuilt(o), host.mascot ? (m, k) => host.mascot!(m, k) : undefined);
   }
   function cClose(): void { cview?.close(); cview = null; }
   function cBuilt(order: number[]): void {
@@ -527,7 +562,7 @@ export function init(host: EHost): EngineModule {
     const r = crun;
     if (!r) return;
     const e = E(), s = csave(), ixq = loaded()!;
-    r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
+    r.done = true; r.passed = passedSince(r.t0);
     const best = s.best; s.runs++; s.best = Math.max(s.best, r.total); s.wins += r.won; s.day = host.today(); wk('star', r.won, 'cards'); wk('play', 1, 'cards');
     (r as CardsRun & { prevBest?: number }).prevBest = best;
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `cards:${r.floor}`, dec: 'cards:end', rule: `${RULE_ID}/${QUEST_VER}`,
@@ -585,7 +620,7 @@ export function init(host: EHost): EngineModule {
     const r = frun;
     if (!r) return;
     const e = E(), s = fsave(), ixq = loaded()!;
-    r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
+    r.done = true; r.passed = passedSince(r.t0);
     s.runs++; s.stars += r.stars; s.best = Math.max(s.best, r.ok); s.day = host.today();
     if (r.vip && sideDone(ysave(), 'cafe')) { qsave().coins += SIDE_COINS; host.toast(`📖 Việc phụ: ${r.vip[1]} ghé quán vui vẻ! +${SIDE_COINS} xu`); }   // v103
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `cafe:${r.floor}`, dec: 'cafe:end', rule: `${RULE_ID}/${QUEST_VER}`,
@@ -650,7 +685,7 @@ export function init(host: EHost): EngineModule {
     const r = brun;
     if (!r) return;
     const e = E(), s = gsave(), ixq = loaded()!;
-    r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
+    r.done = true; r.passed = passedSince(r.t0);
     (r as BubbleRun & { prevBest?: number }).prevBest = s.best;
     s.runs++; s.best = Math.max(s.best, r.score); if (r.n && r.ok / r.n >= 0.7) s.stage++; s.day = host.today();
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `bubbles:${r.floor}`, dec: 'bubbles:end', rule: `${RULE_ID}/${QUEST_VER}`,
@@ -744,7 +779,7 @@ export function init(host: EHost): EngineModule {
     const r = zrun;
     if (!r) return;
     const e = E(), s = zsave(), ixq = loaded()!, today = host.today();
-    r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
+    r.done = true; r.passed = passedSince(r.t0);
     s.runs++; s.best = Math.max(s.best, pzStars(r.mistakes)); s.stars += pzStars(r.mistakes);
     if (r.daily && s.last !== today) { s.days++; s.last = today; }
     addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: `puzzle:${r.floor}`, dec: 'puzzle:end', rule: `${RULE_ID}/${QUEST_VER}`,
@@ -893,7 +928,7 @@ export function init(host: EHost): EngineModule {
     const r = wrun;
     if (!r) return;
     const e = E(), s = wsave(), ixq = loaded()!;
-    r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
+    r.done = true; r.passed = passedSince(r.t0);
     (r as ShopRun & { prevBest?: number }).prevBest = s.best;
     s.runs++; s.packed += r.ok; s.best = Math.max(s.best, r.ok); s.day = host.today();
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `shop:${r.floor}`, dec: 'shop:end', rule: `${RULE_ID}/${QUEST_VER}`,
@@ -1037,7 +1072,7 @@ export function init(host: EHost): EngineModule {
     const r = grun;
     if (!r) return;
     const e = E(), sv = vsave(), ixq = loaded()!;
-    r.done = true; r.passed = [...new Set(e.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= r.t0).map(x => x.subj))].map(n => ixq.node.get(n)?.vi ?? n);
+    r.done = true; r.passed = passedSince(r.t0);
     sv.runs++; sv.day = host.today();
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `garden:${r.floor}`, dec: 'garden:end', rule: `${RULE_ID}/${QUEST_VER}`,
       info: { ok: r.ok, of: r.n, plants: Object.keys(sv.plants).length, blooms: sv.blooms }, evs: e.ev.led.filter(x => x.ch?.includes(`:v${r.floor}:`)).slice(-r.n).map(x => x.id) }, false);
@@ -1113,7 +1148,7 @@ export function init(host: EHost): EngineModule {
     if (coins) { const q = qsave(); q.coins += coins; q.day = today; r.gained += coins; }
     if (r.level.slots.every(x => r.found.has(x.en))) {
       const st = wheelStars(r.hints);
-      r.win = { stars: st, at: typeof performance !== 'undefined' ? performance.now() : 0 }; r.done = true;
+      r.win = { stars: st, at: typeof performance !== 'undefined' ? performance.now() : 0 }; r.done = true; r.goalNote = goalNote(r.t0);
       sv.runs++; sv.stars += st; sv.day = today; wk('star', st, 'wheel'); wk('play', 1, 'wheel');
       if (r.mode === 'level') sv.lv++; else sv.daily = { day: today, done: true, secs: Math.round((Date.now() - r.t0) / 1000), hints: r.hints, streak: nextStreak(sv.daily.done ? sv.daily.day : -9, sv.daily.streak, today) };
       addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: `wheel:${r.floor}`, dec: 'wheel:end', rule: `${RULE_ID}/${QUEST_VER}`, info: { ok: r.ok, of: r.n, hints: r.hints, bonus: r.bonusFound.size, mode: r.mode }, evs: e.ev.led.filter(x => x.ctx === 'wheel' && x.ts >= r.t0).map(x => x.id) }, false);
@@ -1211,6 +1246,7 @@ export function init(host: EHost): EngineModule {
         sv.runs++; sv.stars += st; sv.best = Math.max(sv.best, r.score); sv.day = today; wk('star', st, 'hunt'); wk('play', 1, 'hunt');
         if (r.mode === 'level') sv.lv++; else sv.daily = { day: today, done: true, streak: sv.daily.day === today - 1 && sv.daily.done ? sv.daily.streak + 1 : 1 };
       } else if (r.moves <= 0) { r.lose = { at: nowP }; r.over = true; sv.runs++; }
+      if (r.over) r.goalNote = goalNote(r.t0);
       if (r.over) addSnap(e.ev, { ts: Date.now(), day: today, kind: 'diag', subj: `hunt:${r.floor}`, dec: r.win ? 'hunt:win' : 'hunt:lose', rule: `${RULE_ID}/${QUEST_VER}`, info: { ok: r.ok, of: r.missions.length, moves: r.moves, score: r.score, mode: r.mode }, evs: e.ev.led.filter(x => x.ctx === 'hunt' && x.ts >= r.t0).map(x => x.id) }, false);
     } else if (v === 'no') r.combo = 0;
     r.coins = wallet();
@@ -1353,14 +1389,52 @@ export function init(host: EHost): EngineModule {
   // Tiến độ kỹ năng của mục tiêu (v69, bot L01): năng lực Can-do chỉ Đạt khi đủ mọi kỹ năng con, nên nhiều tuần liền con số đó có thể
   // đứng yên dù người học tiến bộ thật. Đếm thêm kỹ năng con (từ vựng, ngữ pháp, âm, chức năng) đã vững bằng bằng chứng thật — không tính
   // phần chỉ suy ra từ chẩn đoán — và số kỹ năng mới vững trong 7 ngày.
-  function skillsOf(v: EState, g: NonNullable<ReturnType<NonNullable<ReturnType<typeof loaded>>['goal']['get']>>): { solid: number; total: number; week: number; claimed: number } {
+  function skillsOf(v: EState, g: NonNullable<ReturnType<NonNullable<ReturnType<typeof loaded>>['goal']['get']>>): { solid: number; total: number; week: number; claimed: number; ids: Set<string>; solidIds: Set<string> } {
     const ix = loaded()!, today = host.today(), all = closure(ix, g.req.filter(r => r.type !== 'performance'), defaultLevel).filter(r => /^(u|g|ph|fn):/.test(r.node));
     let solid = 0, claimed = 0;
     const ids = new Set<string>();
     for (const r of all) { const s = nodeStat(host, v, r.node, r.level); if (s.pass && s.state === 'mastered') { solid++; ids.add(`${r.node}|${r.level}`); } else if (s.pass && s.state === 'inferred') claimed++; }
     const week = new Set(v.ev.snap.filter(s => s.kind === 'mastery' && s.dec === 'PASS' && s.day > today - 7 && ids.has(`${s.subj}|${s.lv}`)).map(s => s.subj)).size;
-    return { solid, total: all.length, week, claimed };
+    return { solid, total: all.length, week, claimed, ids: new Set(all.map(r => r.node)), solidIds: ids };
   }
+
+  // v110 Mục tiêu + tiến độ (goalbar.ts): gom số đã có cho thẻ đầu sảnh và dòng ở màn kết.
+  // Vừa vững (full) = Đạt ĐÚNG mức mục tiêu cần và đang vững thật, nên khớp với số "x/y kỹ năng đã vững". Đạt ở mức thấp hơn (part, ví dụ
+  // Vườn từ: nhận ra mặt chữ, mục tiêu cần tự nhớ ra) là tiến một bậc, báo riêng để không mâu thuẫn với con số trên.
+  function goalOf(v: EState) { const ix = loaded(); return ix ? v.goals.map(sg => ix.goal.get(sg.id)).find(Boolean) ?? null : null; }
+  // v115 khu truyện = cấp: chương cuối khu cuối (Rừng Trúc) là trận cổng của đích, nếu đích có cổng. Hai khu đầu giữ điều kiện kỹ năng vững
+  // (khu 1–2 tới sớm, gắn cổng ở đó sẽ chặn truyện hàng tuần; nút "Tới trận cổng" cũng chỉ mở cổng của đích hiện tại).
+  function storyGate(v: EState): StoryGateOf {
+    const g = goalOf(v), last = Math.max(...STORY.map(c => c.act));
+    return act => !g || act !== last || !GATE_FORMS[g.id] ? null : { lv: g.id.replace('cefr-', '').toUpperCase(), passed: Object.values(E().gg?.done ?? {}).some(x => x.goal === g.id && x.passed) };
+  }
+  function goalSum(v: EState, review = 0): { s: GoalSum; ids: Set<string>; solidIds: Set<string> } | null {
+    const g = goalOf(v);
+    if (!g) return null;
+    const r = readinessOf(host, v, g), sk = skillsOf(v, g);
+    const ix = loaded()!, rote = roteNodes(v.ev, sk.ids).map(x => ix.node.get(x.node)?.vi ?? x.node), date = v.goals.find(x => x.id === g.id)?.date ?? null;
+    const due = date === null ? null : { days: date - host.today(), mins: computePath(host, v, ix).minutes };
+    const st = gateState(g.id, sk.solid, sk.total, E().gg), lv = (id: string) => id.replace('cefr-', '').toUpperCase().replace('PRE-A1', 'Pre-A1');
+    const gate = { lv: lv(g.id), has: st.has, open: st.open || (playtest() && st.left.length > 0 && !st.passed), passed: !!st.passed, ratio: st.ratio, left: st.left.length };
+    const CE = ['cefr-pre-a1', 'cefr-a1', 'cefr-a2', 'cefr-b1', 'cefr-b2', 'cefr-c1', 'cefr-c2'], k = CE.indexOf(g.id);
+    const zones = k < 0 ? [] : CE.slice(0, Math.min(CE.length, k + 2)).map(id => ({ lv: lv(id), cur: id === g.id, passed: Object.values(E().gg?.done ?? {}).some(x => x.goal === id && x.passed) }));
+    return { s: goalSummary({ id: g.id, vi: g.vi, sk, ready: r.kind === 'mastery' ? { done: r.done, total: r.total, achieved: r.achieved } : null, missing: missingOf(host, v, g), review, rote, due, gate, zones }), ids: sk.ids, solidIds: sk.solidIds };
+  }
+  function goalGained(v: EState, gs: { ids: Set<string>; solidIds: Set<string> }, t0: number): { full: string[]; part: string[] } {
+    const ix = loaded()!, full = new Set<string>(), part = new Set<string>();
+    for (const x of v.ev.snap) if (x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= t0 && gs.ids.has(x.subj)) (gs.solidIds.has(`${x.subj}|${x.lv}`) ? full : part).add(x.subj);
+    const vi = (n: string) => ix.node.get(n)?.vi ?? n;
+    return { full: [...full].map(vi), part: [...part].filter(n => !full.has(n)).map(vi) };
+  }
+  // "⬆ Lên cấp" ở màn kết (v111): chỉ phần Đạt ĐÚNG mức mục tiêu cần, để khớp với dòng 🎯 và số "kỹ năng đã vững". Đạt ở mức thấp hơn
+  // (ví dụ Vườn từ: nhận ra mặt chữ) do dòng 🎯 báo là "tiến một bậc". Chưa có mục tiêu thì giữ cách cũ (mọi phần vừa Đạt).
+  function passedSince(t0: number): string[] {
+    const v = V(), ix = loaded()!, gs = goalSum(v);
+    if (gs) return goalGained(v, gs, t0).full;
+    return [...new Set(v.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS' && x.ts >= t0).map(x => x.subj))].map(n => ix.node.get(n)?.vi ?? n);
+  }
+  // Chữ cho lớp phủ toàn màn hình (Vòng Chữ, Mỏ Chữ, Bài Câu), tính một lần lúc ván xong.
+  function goalNote(t0: number): string { const v = V(), gs = goalSum(v); return gs ? goalText(gs.s, goalGained(v, gs, t0).full) : ''; }
 
   // Điểm nghẽn (v70, bot L02): "bạn đang yếu ở X, và X đang chặn bạn" — trong các phần đã có bằng chứng mà chưa Đạt ở biên lộ trình, phần
   // mở đường cho nhiều năng lực nhất của mục tiêu; kèm loại lỗ hổng (đọc từ bằng chứng) để người học biết vì sao app cho luyện phần đó.
@@ -1402,7 +1476,7 @@ export function init(host: EHost): EngineModule {
       top: top ? { kind: top.kind, node: top.node, vi: top.node === 'review' ? 'ôn' : vi(top.node) } : null,
       review: fi.review.length, first, neck: (() => { const n = neckOf(v); return n ? { node: n.node, vi: n.vi } : null; })(), gWrong, fnSeen, cd, lv: curLv(),
       garden: Object.values(gv?.plants ?? {}).filter(x => x.s < 3 && x.d < today).length, puzzleToday: e.gd?.last === today,
-      played, last: sv.last, tts: !!host.tts?.(), asr: !!host.hasAsr?.(), acc: recentAcc(),
+      played, last: sv.last, tts: !!host.tts?.(), asr: !!host.hasAsr?.(), acc: recentAcc(), rote: roteNodes(e.ev, (p.all ?? []).map(r => r.node)).length,
       flag: sv.last === 'wheel' || sv.last === 'hunt' ? sv.last : (() => { for (let i = e.ev.led.length - 1; i >= 0; i--) { const c = e.ev.led[i]!.ctx; if (c === 'wheel' || c === 'hunt') return c; } return ''; })(),
       recent: (() => { const r: Record<string, number> = { u: 0, g: 0, fn: 0, ph: 0 }; for (const l of e.ev.led) if (l.day > today - 7) { const k = l.node.split(':')[0]!; if (k in r) r[k]!++; } return r; })(),
     };
@@ -1450,7 +1524,10 @@ export function init(host: EHost): EngineModule {
     if (first) host.save();
     const b = town(E()), gain = before === null ? [] : townGain(before, b);
     if (first) host.cheer?.(gain.length > 0);
-    return viewTownGain(c, gain, b.find(x => x.game === game));
+    const gs = goalSum(c.e), gl = gs ? goalLine(host.esc, gs.s, cur ? goalGained(c.e, gs, cur.t0) : { full: [], part: [] }, LEDGER.has(game) ? ev ?? 0 : null) : '';
+    // v111 (SPEC "Mô hình học v111" §6): mất dữ liệu là rủi ro lớn nhất → nhắc sao lưu ngay sau ván đầu tiên, sau đó theo nhịp của app.
+    const firstEver = Object.values(pm.g).reduce((a, x) => a + (x?.done ?? 0), 0) <= 1, nag = host.backupNag?.(firstEver) ?? '';
+    return gl + viewTownGain(c, gain, b.find(x => x.game === game)) + nag;
   }
   function markDone(game: GameId): void { const sv = gpsave(), today = host.today(); if (sv.day === today && sv.done.includes(game)) return; if (sv.day !== today) { sv.day = today; sv.done = []; sv.plan = []; } sv.done.push(game); host.save(); }
 
@@ -1458,11 +1535,12 @@ export function init(host: EHost): EngineModule {
   // Bộ 12 câu giữ riêng cho mục tiêu đầu tiên đang mở; đo trước / sau / trễ 7 và 30 ngày; không hiện đáp án khi đo.
   // v69 (bot L01): lần đo sau dùng DẠNG SONG SONG — cùng nút, câu ngữ cảnh khác chưa gặp (nếu còn); hết câu mới mới dùng lại câu gốc.
   // Trước đây cùng 12 câu cho cả 4 lần đo: điểm lần sau bị thổi lên vì quen câu (hiệu ứng làm lại bài test).
-  let mrunM: { phase: Phase; run: ToutRun; node: Map<string, string> } | null = null;
+  let mrunM: { phase: Phase; run: ToutRun; node: Map<string, string> } | null = null, chestDone = 0;
   const studyMins = (): number => Math.round((E().ev.seq * 12) / 60);   // ước tính: ≈ 12 giây mỗi câu đã trả lời
   function measureStart(): void {
     const e = E(), v = V(), ix = loaded()!, sg = v.goals[0], g = sg ? ix.goal.get(sg.id) : undefined;
     if (!g) { host.toast('Chọn một mục tiêu CEFR trước.'); return; }
+    chestDone = 0;
     if (!e.ms || e.ms.goal !== g.id) {
       const need = closure(ix, g.req.filter(r => r.type !== 'performance'), defaultLevel);
       const nodes = pickNodes(need, n => n.startsWith('u:') && (host.transfer?.(n) ?? []).length > 0);
@@ -1477,6 +1555,7 @@ export function init(host: EHost): EngineModule {
       if (q) node.set(q.id, x.node);
       return q ? [q] : [];
     });
+    if (!qs.length) { host.toast('Chưa có kho báu cho khu này.'); return; }
     mrunM = { phase: nx.phase, run: { node: e.ms.set[0]?.node ?? '', qs, i: 0, got: 0, x: true }, node };
     host.save(); host.render();
   }
@@ -1494,6 +1573,8 @@ export function init(host: EHost): EngineModule {
       addSnap(e.ev, { ts: Date.now(), day, kind: 'diag', subj: `measure:${e.ms!.goal}`, dec: `measure:${mrunM.phase}`, rule: `${RULE_ID}/${MEASURE_VER}`,
         info: { got: r.got, of: r.qs.length, mins: studyMins(), ...Object.fromEntries(Object.entries(report(e.ms)).map(([k, x]) => [k, x === null ? '-' : x])) },
         evs: e.ev.led.filter(x => x.ctx === 'measure').slice(-r.qs.length).map(x => x.id) }, false);
+      chestDone = r.qs.length;
+      if (lastRoute === 'treasure') { const q = qsave(); q.coins += CHEST_COINS * r.qs.length; q.day = day; }   // xu theo số rương đã mở, không theo đúng / sai
       mrunM = null;
     }
     host.save(); host.render();
@@ -1518,10 +1599,17 @@ export function init(host: EHost): EngineModule {
     if (qrun?.mode === 'board') return qrun.done ? viewBoardEnd(c, qrun, bsave()) : viewBoard(c, qrun, bsave(), wallet());
     if (qrun?.done) return viewQuestEnd(c, qrun);
     if (qrun) { qrun.revive = qrun.mode === 'tower' && !qrun.revived && qrun.i + 1 < qrun.plan.length && wallet() >= REVIVE ? REVIVE : 0; return viewQuestRun(c, qrun); }
-    const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, c.e.goals.length ? director() : null, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave()));
+    const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null, dir = c.e.goals.length ? director() : null, gs = dir ? goalSum(c.e, dir.x.review) : null;
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, dir, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '', gs ? viewGoalBar(c, gs.s) + (nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '') : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave()));
   }
   const routes: Record<string, (c: ECtx) => string> = {
+    // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).
+    treasure: c => {
+      if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
+      if (mrunM) return viewTout(c, mrunM.run, null).replace('Thử ở câu mới', `🎁 Kho báu ẩn · rương ${mrunM.run.i + 1}/${mrunM.run.qs.length} · mở xong mới biết bên trong`);
+      if (chestDone) return viewTreasureDone(c, chestDone);
+      return viewTreasureIntro(c, !!nextPhase(E().ms, host.today())?.due && !!goalOf(c.e));
+    },
     measure: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
       if (mrunM) return viewTout(c, mrunM.run, null).replace('Thử ở câu mới', `${PHASE_VI[mrunM.phase]} · không hiện đáp án`);
@@ -1570,6 +1658,15 @@ export function init(host: EHost): EngineModule {
     diag: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return drun ? (drun.fog?.wait ? viewFogPick(c, drun) : viewDiagRun(c, drun)) : viewDiagIntro(c, lr(), c.route === 'diag/quick'); },
     'diag-result': c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } const fog = E().gf?.day === host.today() && E().goals.length; return viewDiagResult(c, lr()) + (fog ? endExtras(c, 'fog') + viewNextBar(c, director()) : ''); },
     goals: viewGoals,
+    lr: c => viewLrRun(c, lrApi?.cur() ?? null, lrPlays, lrErr),
+    gate: c => {
+      if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
+      if (gtRun) return gtRun.res ? viewGateEnd(c, gtRun) : viewGateRun({ ...c }, { ...gtRun, plays: lrPlays });
+      const g = goalOf(c.e);
+      if (!g) return viewGoals(c);
+      const sk = skillsOf(c.e, g);
+      return viewGateHome(c, g.id, g.vi, sk.solid, sk.total, E().gg, playtest());
+    },
     why: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewWhy(c); },
     pick: viewPick,
     goal: c => { if (!loaded() && !loadErr) ensure(); return viewGoal(c, loadErr); },
@@ -1592,6 +1689,47 @@ export function init(host: EHost): EngineModule {
       e.goals = e.goals.filter(g => g.id !== id); host.save(); host.render();
     },
     retry() { loadErr = ''; ensure(); host.render(); },
+    // v111 (SPEC "Mô hình học v111" §1): người học chọn đích trong truyện (cấp cao hơn gợi ý); ghi snapshot nguồn "chọn trong truyện".
+    gpick(el) {
+      const id = el.dataset.g || '', e = E();
+      if (!GOALS.get(id)) return;
+      if (!e.goals.some(g => g.id === id) && !addGoal(id, 'pick')) return;
+      addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `goal:${id}`, dec: 'goal:STORY', rule: `${RULE_ID}/goal-story-1`, info: { goal: id }, evs: [] }, false);
+      host.save(); host.toast(`Đích mới: ${GOALS.get(id)!.vi}.`); host.render();
+    },
+    lrstart() {
+      if (!host.lr) { host.toast('Máy này chưa mở được phần Nghe + Đọc.'); return; }
+      lrErr = ''; lrPlays = 0; host.go('lr');
+      host.lr().then(api => api.start().then(ok => { lrApi = api; if (!ok) { lrApi = null; lrErr = 'Chưa có mẩu tin nào cho phần này.'; } host.render(); }))
+        .catch(() => { lrApi = null; lrErr = 'Chưa tải được mẩu tin (cần mạng ở lần đầu). Xem lại mạng rồi thử lại.'; host.render(); });
+    },
+    lrplay() {
+      const a = document.getElementById('elaudio') as HTMLAudioElement | null;
+      if (!a || lrPlays >= 1) return;
+      a.onplaying = () => { lrPlays = 1; const b = document.querySelector('[data-e="lrplay"]') as HTMLButtonElement | null; if (b) { b.disabled = true; b.textContent = 'Đang phát…'; b.classList.remove('primary'); } };
+      a.onended = () => { const b = document.querySelector('[data-e="lrplay"]') as HTMLButtonElement | null; if (b) b.textContent = 'Đã nghe'; };
+      a.play().catch(() => host.toast('Máy chưa phát được âm thanh: xem lại âm lượng, hoặc bỏ qua đèn Nghe.'));
+    },
+    lrskip() { if (!lrApi) return; lrPlays = 0; if (lrApi.skipL()) host.render(); else lrDone(); },
+    gtstart() {
+      const v = V(), g = goalOf(v);
+      if (!g || !host.gate) return;
+      const sk = skillsOf(v, g), st = gateState(g.id, sk.solid, sk.total, E().gg), form = st.left[0];
+      if (!form || (!st.open && !playtest())) return;
+      host.gate(form).then(groups => {
+        if (!groups.length) { host.toast('Chưa tải được trận cổng.'); return; }
+        const gg = (E().gg ||= { done: {} }); gg.seen = [...new Set([...(gg.seen ?? []), form])]; host.save();   // đã mở là đã lộ câu: không dùng lại đề này
+        gtRun = { goal: g.id, form, groups, gi: 0, given: {}, plays: 0, t0: Date.now(), skipL: false, res: null }; lrPlays = 0; host.render(); window.scrollTo?.(0, 0);
+      }).catch(() => host.toast('Chưa tải được trận cổng (cần mạng ở lần đầu).'));
+    },
+    certon() { const e = E(); (e.gg ||= { done: {} }).cert = 1; host.save(); host.render(); },
+    gtskip() {
+      const r = gtRun;
+      if (!r) return;
+      r.skipL = true; lrPlays = 0;
+      while (r.gi < r.groups.length && r.groups[r.gi]!.kind === 'listening') r.gi++;
+      if (r.gi >= r.groups.length) gtFinish(); else host.render();
+    },
     dstart(el) {
       if (!loaded()) { ensure(); return; }
       drec = []; dmcq = { got: 0, n: 0, gs: 0 };
@@ -1701,7 +1839,7 @@ export function init(host: EHost): EngineModule {
       const solid = solidNow();
       openScene(ch, k, () => {
         if (k !== sv.ch) return;
-        const a = advance(sv, solid); if (!a) return;
+        const a = advance(sv, solid, storyGate(E())); if (!a) return;
         if (a.coins) qsave().coins += a.coins;
         host.toast(a.act ? `🏙️ ${a.act} đã hồi sinh! +${a.coins} xu` : a.coins ? `📖 Xong chương! +${a.coins} xu` : '📖 Câu chuyện bắt đầu!');
         host.save(); host.render();
@@ -1771,6 +1909,30 @@ export function init(host: EHost): EngineModule {
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
+    certscore(f) {
+      const e = E(), goal = f.dataset.g || '', d = new FormData(f), score = Math.round(Number(d.get('score'))), min = CES_MIN[goal];
+      if (!min || !Number.isFinite(score) || score < 80 || score > 230) { host.toast('Điểm theo thang Cambridge từ 80 đến 230.'); return; }
+      const gg = (e.gg ||= { done: {} }), pred = lastP(gg, goal), src = d.get('src') === 'real' ? 'real' as const : 'sample' as const, pass = score >= min;
+      // Chốt dự đoán (SPEC "Đề sát hạch", chốt dự đoán): ghi khả năng qua app đang có TRƯỚC khi biết điểm, kèm điểm ngoài.
+      addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'readiness', subj: goal, dec: pass ? 'EXT:PASS' : 'EXT:FAIL', rule: `${RULE_ID}/ext-1`, info: { score, src, pred: pred ?? -1 }, evs: [] }, false);
+      gg.ext = [...(gg.ext ?? []), { goal, day: host.today(), score, pass, pred, src }].slice(-20);
+      host.save(); host.toast(pass ? 'Đã ghi điểm: đạt!' : 'Đã ghi điểm.'); host.render();
+    },
+    gtnext(f) {
+      const r = gtRun;
+      if (!r || r.res) return;
+      for (const [k, v] of new FormData(f).entries()) r.given[k] = String(v);
+      lrPlays = 0; r.gi++;
+      while (r.skipL && r.gi < r.groups.length && r.groups[r.gi]!.kind === 'listening') r.gi++;
+      if (r.gi >= r.groups.length) gtFinish(); else { host.render(); window.scrollTo?.(0, 0); }
+    },
+    lrnext(f) {
+      if (!lrApi) return;
+      const given: Record<string, string | undefined> = {};
+      for (const [k, v] of new FormData(f).entries()) given[k] = String(v);
+      lrPlays = 0;
+      if (lrApi.answer(given)) { host.render(); window.scrollTo?.(0, 0); } else lrDone();
+    },
     hntyped(f) {
       const i = f.querySelector('input'), v = (i?.value ?? '').trim().toLowerCase(); if (i) i.value = '';
       const r = nrun; if (!r || !v) return;
@@ -1902,7 +2064,7 @@ export function init(host: EHost): EngineModule {
   return {
     version: MODULE_VERSION,
     render,
-    after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } if (!route.startsWith('micro')) mrun = null; },
+    after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('gate') && gtRun?.res) gtRun = null; if (!route.startsWith('treasure')) chestDone = 0; if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } if (!route.startsWith('micro')) mrun = null; },
     autoGoal(id, why) {
       if (V().goals.length) return false;
       const ok = addGoal(id, why === 'pick' ? 'pick' : 'auto');

@@ -15,9 +15,9 @@ import type { Level, Req } from './types.ts';
 
 export type Mode = 'explore' | 'confirm' | 'boundary' | 'verify' | 'root';
 export const MODE_VI: Record<Mode, string> = {
-  explore: 'Khám phá: bạn biết phần này chưa?', confirm: 'Xác nhận: chẩn đoán đoán là bạn biết, kiểm lại nhanh',
+  explore: 'Khám phá: bạn biết phần này chưa?', confirm: 'Xác nhận: lúc xếp lớp app đoán là bạn biết, thử lại nhanh',
   boundary: 'Ranh giới: vài câu nữa sẽ quyết định Đạt hay chưa', verify: 'Xác minh: cần đúng ở câu mới',
-  root: 'Truy gốc: bạn sai phần sau nhiều lần, kiểm tra phần nền của nó',
+  root: 'Truy gốc: bạn sai phần sau nhiều lần, thử phần nền của nó',
 };
 export interface ProbeCand { node: string; level: Level; mode: Mode; eig: number; effort: number; score: number; for?: string }
 export const PROBE = { minScore: 0.15, budget: 6, effort: 1.5, rootFails: 3 } as const;   // effort: phút cho một lượt dò 3 câu

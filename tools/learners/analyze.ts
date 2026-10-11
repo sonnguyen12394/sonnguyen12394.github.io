@@ -12,7 +12,7 @@ const J = (f: string) => JSON.parse(readFileSync(join(DIR, f), 'utf8'));
 const rows = J('rows.json') as { day: number; sess: string; run: string; game?: string; gap?: string; node: string; level: number; item: string; novel: boolean; opts: number; pTrue: number; trueKnow: boolean; ok: boolean; dunno: boolean; appState?: string }[];
 const ends = J('ends.json') as { day: number; sess: string; m: MasteryStore; truth: Record<string, number>; snaps: number; q: { floor: number; coins: number; runs: number; wins: number } }[];
 const events = J('events.json') as { day: number; what: string; info?: Record<string, unknown> }[];
-const state = J('state.json') as { e: { ev: { snap: { dec: string; kind: string; day: number; subj: string }[]; hyp: Record<string, unknown>; led: { src: string; ctx?: string; ok: boolean; rel?: number; w?: number }[] }; ms?: { checks: { phase: string; got: number; of: number; day: number }[] } }; errors: string[] };
+const state = J('state.json') as { e: { ev: { snap: { dec: string; kind: string; day: number; subj: string }[]; hyp: Record<string, unknown>; led: { src: string; ctx?: string; ok: boolean; rel?: number; w?: number }[] }; ms?: { checks: { phase: string; got: number; of: number; day: number }[] }; pm?: { g: Record<string, { n?: number }> } }; errors: string[] };
 const gf = readdirSync('data/engine').find(f => /^graph\..*\.json$/.test(f))!;
 const G = JSON.parse(readFileSync(join('data/engine', gf), 'utf8')) as { nodes: Node[] };
 const NODE = new Map(G.nodes.map(n => [n.id, n]));
@@ -70,6 +70,11 @@ const out = {
   mastery: perSess, reopened, stuckNodes,
   truthMean: { first: mean(ends[0]!), last: mean(ends.at(-1)!), nodes: goalNodes.length },
   measure: state.e.ms?.checks ?? [],
+  // v111 (SCORECARD C4): tỉ lệ lượt chơi theo loại game, đo từ số liệu chơi thật của app (st.e.pm) thay vì ghi tay.
+  playShare: (() => {
+    const g = (state.e.pm?.g ?? {}) as Record<string, { n?: number }>, n = (k: string[]) => k.reduce((a, x) => a + (g[x]?.n ?? 0), 0), all = n(Object.keys(g));
+    return { plays: all, flagship: pct(n(['wheel', 'hunt', 'cards']), all), skills: pct(n(['case', 'radio', 'letter', 'kara', 'robot']), all), byGame: Object.fromEntries(Object.entries(g).map(([k, v]) => [k, v?.n ?? 0])) };
+  })(),
   todayActions: events.filter(e => e.what === 'today-action').map(e => `${e.day}:${(e.info as { route: string }).route}`),
   camps: events.filter(e => e.what === 'camp').length,
   hyp: Object.keys(state.e.ev.hyp ?? {}).length,

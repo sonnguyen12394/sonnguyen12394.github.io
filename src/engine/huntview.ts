@@ -12,6 +12,7 @@ export interface HuntState {
   win: { stars: number; at: number } | null; lose: { at: number } | null;
   hint: number; combo: number; note: { text: string; t: number } | null;
   fall: Record<number, number>; fallAt: number; burst: Array<{ i: number; ch: string }>; burstAt: number;
+  goalNote?: string;   // v110: dòng tiến độ mục tiêu ở hộp kết (chữ thuần)
 }
 export type HuntResult = 'mission' | 'word' | 'dup' | 'short' | 'no';
 export interface HuntHandle { refresh(): void; result(v: HuntResult, word: string): void; close(): void; music(): void }
@@ -168,6 +169,7 @@ export function openHunt(st: () => HuntState | null, onWord: (path: number[]) =>
         const left = s.missions.filter(m => !s.done.has(m.en));
         winBox.innerHTML = `${mascot && s.win ? `<span aria-hidden="true">${mascot('party', 64)}</span>` : ''}<p>${s.win ? `${s.win.stars} sao · ${s.score} điểm · +${s.gained} xu` : `Còn ${left.length} từ: ${left.map(m => m.vi).join(', ')}`}</p>
           <div class="whrow">${s.win ? (s.daily ? '<button class="whbig" data-e="hnshare">📤 Chia sẻ</button>' : '<button class="whbig" data-e="hnnext">▶ Màn tiếp</button>') : '<button class="whbig" data-e="hnretry">↺ Chơi lại màn</button>'}<button class="whb wide" data-e="hnexit">Về sảnh</button></div>`;
+        if (s.goalNote) { const g = document.createElement('p'); g.className = 'whgoal'; g.textContent = s.goalNote; winBox.querySelector('.whrow')!.before(g); }
         live.textContent = s.win ? `Xong màn, ${s.win.stars} sao.` : 'Hết lượt vuốt.';
         setTimeout(() => (winBox.querySelector('.whbig') as HTMLElement | null)?.focus(), 50);
       } else { winBox.hidden = true; winBox.innerHTML = ''; }

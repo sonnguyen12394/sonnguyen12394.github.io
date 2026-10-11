@@ -1636,9 +1636,10 @@ const pct = x => Math.round(x*100)+'%';
 const goalPicker = () => `<div class="goals">${[{id:'',vi:'Học toàn bộ',desc:`Tất cả ${UNITS.length} unit từ A1 đến C2, theo thứ tự`},...GOALS.list].map(g=>{const n=g.id?GOAL_UNITS[g.id].length:UNITS.length, on=(st.set.path||'')===g.id;
   return `<button class="goal ${on?'on':''}" data-act="setgoal" data-goal="${g.id}" aria-pressed="${on}"><b>${esc(g.vi)}</b><span class="muted">${esc(g.desc)} · ${n} unit</span></button>`;}).join('')}</div>`;
 // Nhắc sao lưu trên trang chủ: đã học ≥ 3 ngày mà chưa sao lưu, hoặc lần sao lưu gần nhất ≥ 7 ngày; “Để sau” hoãn 3 ngày.
-function backupNag(){
+// v111: bỏ qua khi đã bật đồng bộ (tiến độ đã có bản ở máy chủ); force = nhắc ngay cả khi mới học < 3 ngày (màn kết ván đầu tiên, qua cổng).
+function backupNag(force){
   const lb=st.set.lastBackup, snooze=st.set.backupSnooze||0, t=today();
-  if(st.days.length<3 || t<snooze || (lb!=null&&t-lb<7)) return '';
+  if(syncGet() || t<snooze || (lb!=null&&t-lb<7) || (!force&&st.days.length<3)) return '';
   return `<div class="spread slim nag"><span>💾 <b>${lb==null?'Chưa sao lưu tiến độ lần nào.':`Đã ${t-lb} ngày chưa sao lưu.`}</b> <span class="muted">Tiến độ chỉ nằm trong trình duyệt này.</span></span>
     <span class="row" style="gap:4px"><button class="btn small" data-act="export">Sao lưu ngay</button><button class="btn small ghost" data-act="snooze">Để sau</button></span></div>`;
 }
@@ -2448,22 +2449,22 @@ const GLOSSARY={
   mastered:['Đã thuộc','Một từ được tính là đã thuộc khi mức thuộc ≥ 80% và bạn đã nhớ được nó qua ít nhất 2 lần ôn cách ngày. Người học trả lời đúng và ôn đúng hạn thường thuộc sau khoảng 3–4 tuần.'],
   skills:['5 kỹ năng','<b>Nhận ra nghĩa</b>: thấy hoặc nghe từ, chọn nghĩa. <b>Nhớ ra từ</b>: thấy nghĩa, nhớ ra từ. <b>Chính tả</b>: viết đúng từng chữ. <b>Dùng trong câu</b>: điền từ vào câu. <b>Kết hợp từ</b>: từ này đi với từ nào cho tự nhiên (make a decision, không phải do a decision).'],
   typed:['Dạng tự gõ','Khi một kỹ năng đạt 50%, bài chuyển từ chọn đáp án sang tự gõ, để bạn phải tự nhớ ra chứ không chỉ nhận ra. Gõ lệch 1 chữ ở từ dài vẫn được tính đúng (trừ bài chính tả và nghe chép).'],
-  xp:['XP và bậc','XP là điểm cố gắng: trả lời đúng +10, tự gõ đúng +15, sai vẫn +2. Qua unit +50, thi vượt cấp +100. Đủ XP thì lên bậc (bậc 1, 2, 3…; khác với cấp năng lực A1–C2); mỗi 5 bậc đổi danh hiệu, mở phụ kiện trong Tủ đồ. XP đo sự cố gắng, không đo năng lực.'],
+  xp:['XP và bậc','XP là điểm cố gắng: trả lời đúng +10, tự gõ đúng +15, sai vẫn +2. Qua unit +50, vượt cấp +100. Đủ XP thì lên bậc (bậc 1, 2, 3…; khác với cấp năng lực A1–C2); mỗi 5 bậc đổi danh hiệu, mở phụ kiện trong Tủ đồ. XP đo sự cố gắng, không đo năng lực.'],
   focus:['Chế độ tập trung','Dành cho người thấy XP, combo, chuỗi ngày gây xao nhãng hoặc áp lực. Bật lên thì các phần đó ẩn đi; app vẫn cho biết đúng/sai, giải thích, và tiến độ học (unit, bậc thuộc của từ, câu “Tôi có thể…”). XP vẫn được tính ngầm, tắt chế độ này là thấy lại.'],
   recalled:['Từ nhớ lại được','Số từ bạn đã nhớ ra đúng ở một lần ôn cách lần trước ít nhất 1 ngày. Đây là dấu hiệu sớm nhất cho thấy từ đang vào trí nhớ dài hạn, tăng ngay từ tuần đầu (trong khi câu “Tôi có thể…” cần nhiều unit vững mới đạt).'],
-  stages:['Trạng thái của unit','Mỗi unit đi qua 5 trạng thái: <b>Mới</b> → <b>Đang học</b> (đã xem thẻ) → <b>Đã qua</b> (đạt bài kiểm tra; unit sau mở) → <b>Vững</b> (nhớ đúng ≥ 80% số từ ở lần ôn sau ít nhất 1 ngày; được tính cho câu “Tôi có thể…”) → <b>Đã thuộc</b> (≥ 80% số từ đã thuộc lâu dài qua các lần ôn giãn cách). Vì vậy qua bài kiểm tra 100% mà mức thuộc mới khoảng 40% là bình thường: phần còn lại đến từ các lần ôn sau.'],
+  stages:['Trạng thái của unit','Mỗi unit đi qua 5 trạng thái: <b>Mới</b> → <b>Đang học</b> (đã xem thẻ) → <b>Đã qua</b> (vượt thử thách cuối unit; unit sau mở) → <b>Vững</b> (nhớ đúng ≥ 80% số từ ở lần ôn sau ít nhất 1 ngày; được tính cho câu “Tôi có thể…”) → <b>Đã thuộc</b> (≥ 80% số từ đã thuộc lâu dài qua các lần ôn giãn cách). Vì vậy qua bài kiểm tra 100% mà mức thuộc mới khoảng 40% là bình thường: phần còn lại đến từ các lần ôn sau.'],
   streak:['Chuỗi ngày','Số ngày liên tiếp bạn có học (ít nhất 1 câu). Lỡ một ngày thì app dùng ngày nghỉ phép để giữ chuỗi.'],
   freeze:['Ngày nghỉ phép','Cứ học đủ 7 ngày liên tiếp được 1 ngày nghỉ phép (giữ tối đa 2). Hôm nào không học, app tự dùng 1 ngày để chuỗi không về 0.'],
   quest:['Nhiệm vụ và rương','Mỗi ngày có 3 nhiệm vụ nhỏ. Xong cả 3 thì mở được rương: XP ngẫu nhiên, đôi khi thêm ngày nghỉ phép.'],
-  test:['Kiểm tra unit','20 câu, có câu tự gõ. Đạt khi đúng ≥ 80% tổng và mỗi kỹ năng ≥ 50%. Đạt thì unit “đã qua” và unit sau mở; unit “vững” khi bạn nhớ đúng ở lần ôn sau.'],
-  place:['Thi vượt cấp / xếp lớp','30 câu lấy từ khắp các unit của một cấp độ. Đạt thì cả cấp được tính là xong, không phải học lại từ đầu.'],
-  review:['Tổng kết cấp độ','Sau khi qua mọi unit của một cấp: bài kiểm tra lại cả cấp, ưu tiên từ bạn yếu. Kết quả dùng để ước lượng vốn từ.'],
-  est:['Vốn từ ước tính','Từ kết quả thi xếp lớp hay tổng kết, app ước lượng bạn biết khoảng bao nhiêu từ của cấp độ đó. Vì bài chỉ hỏi một phần số từ nên kết quả là một khoảng (độ tin cậy 95%).'],
+  test:['Thử thách cuối unit','20 câu, có câu tự gõ. Đạt khi đúng ≥ 80% tổng và mỗi kỹ năng ≥ 50%. Đạt thì unit “đã qua” và unit sau mở; unit “vững” khi bạn nhớ đúng ở lần ôn sau.'],
+  place:['Vượt cấp / xếp lớp','30 câu lấy từ khắp các unit của một cấp độ. Đạt thì cả cấp được tính là xong, không phải học lại từ đầu.'],
+  review:['Tổng kết cấp độ','Sau khi qua mọi unit của một cấp: một lượt ôn lại cả cấp, ưu tiên từ bạn yếu. Kết quả dùng để ước lượng vốn từ.'],
+  est:['Vốn từ ước tính','Từ kết quả xếp lớp hay tổng kết, app ước lượng bạn biết khoảng bao nhiêu từ của cấp độ đó. Vì bài chỉ hỏi một phần số từ nên kết quả là một khoảng (độ tin cậy 95%).'],
   hard:['Hay quên','Từ bạn hay trả lời sai khi ôn (độ khó cao trong lịch ôn), hoặc đã qua lần ôn giãn cách mà điểm kỹ năng vẫn dưới 50%. Sổ từ lọc riêng được để luyện lại.'],
-  ahead:['Học trước','Unit hay bài ngữ pháp chưa tới lượt trong lộ trình vẫn mở được. Qua bài kiểm tra của nó thì nó được tính là đã qua.'],
+  ahead:['Học trước','Unit hay bài ngữ pháp chưa tới lượt trong lộ trình vẫn mở được. Vượt thử thách của nó thì nó được tính là đã qua.'],
   resume:['Làm tiếp','Lượt đang làm được lưu sau mỗi câu. Thoát giữa chừng hay tải lại trang, lần sau bấm “Làm tiếp” ở trang chủ để học tiếp đúng chỗ.'],
   guess:['Mình đang đoán','Bấm trước khi trả lời nếu bạn không chắc. Đúng thì chỉ được cộng một nửa (vì có thể do may), sai thì như bình thường. Cuối lượt app cho biết khi chắc bạn đúng bao nhiêu, khi đoán đúng bao nhiêu: biết mình thật sự nhớ hay chỉ đoán giúp ôn đúng chỗ.'],
-  solid:['Unit vững','Qua bài kiểm tra ngay trong ngày học mới cho thấy bạn nhớ lúc đó. Unit “vững” khi bạn còn nhớ đúng ≥ 80% số từ ở lần ôn sau ít nhất một ngày. Câu “Tôi có thể…” về từ vựng chỉ tính unit vững (hoặc cả cấp đã thi vượt).'],
+  solid:['Unit vững','Vượt thử thách ngay trong ngày học mới cho thấy bạn nhớ lúc đó. Unit “vững” khi bạn còn nhớ đúng ≥ 80% số từ ở lần ôn sau ít nhất một ngày. Câu “Tôi có thể…” về từ vựng chỉ tính unit vững (hoặc cả cấp đã thi vượt).'],
   newmax:['Giới hạn từ mới mỗi ngày','Mỗi từ mới sẽ cần ôn lại vài lần trong những tuần sau. Học quá nhiều từ mới một ngày thì mấy hôm sau bài ôn dồn lại. Khi chạm giới hạn, app gợi ý luyện cho chắc; bạn vẫn có thể học tiếp nếu muốn.'],
   evidence:['Thế nào là “làm được”','Một câu “Tôi có thể…” chỉ tính khi có bằng chứng bạn làm được, không chỉ đã mở bài. Bài có điểm: đạt ≥ 80%. Đề viết: qua phần máy kiểm tra (độ dài, số đoạn; các mục còn lại thiếu tối đa 1) và tự chấm cả 4 tiêu chí từ 3 (đạt) trở lên. Đề nói: tự chấm cả 5 tiêu chí từ 3 trở lên. Đóng vai: tự đánh giá “tạm được” hoặc “trôi chảy”. App không chấm nội dung (không dùng AI), nên hãy tự chấm trung thực và so với bài mẫu.'],
   north:['Chỉ số tiến bộ','<b>Câu “Tôi có thể…”</b>: mỗi cấp CEFR có các câu mô tả việc bạn làm được (đọc thực đơn, kể chuyện đã qua, viết email xin việc…), mỗi câu nối với bài cụ thể trong app. Câu được tính là đạt khi tiến độ các bài của nó ≥ 80%. Đây là con số chính cho biết bạn tiến bộ, gom cả từ vựng, ngữ pháp, phát âm, giao tiếp và kỹ năng. <b>Nhớ lâu</b>: số lần bạn vẫn nhớ đúng một từ khi ôn sau ít nhất 21 ngày, cho biết bạn nhớ thật chứ không chỉ học lướt.'],
@@ -2500,7 +2501,7 @@ function viewHelp(){
     ${q('Không biết đáp án thì làm gì?','Bấm “Tôi chưa biết” (phím 0): app hiện đáp án và giải thích, từ đó sẽ được hỏi lại cuối lượt.')}
     ${q('Lỡ bấm Thoát hay tải lại trang giữa lượt?','Lượt được lưu sau mỗi câu. Về trang chủ bấm “Làm tiếp”.')}
     ${q('Giọng đọc nghe lạ hoặc không có tiếng?','App dùng giọng đọc có sẵn trên máy. Vào Cài đặt chọn giọng khác và chỉnh tốc độ. Máy không có giọng tiếng Anh thì các bài nghe được ẩn đi.')}
-    ${q('Đã biết tiếng Anh, có phải học từ A1?','Không. Ở mỗi cấp độ có nút “Thi vượt cấp”; đạt thì cả cấp được tính là xong.')}
+    ${q('Đã biết tiếng Anh, có phải học từ A1?','Không. Ở mỗi cấp độ có nút “Vượt cấp”; đạt thì cả cấp được tính là xong.')}
     ${q('App này dành cho ai?','Người Việt từ 10 tuổi trở lên muốn có vốn từ tiếng Anh vững: học sinh ôn thi tốt nghiệp THPT (mục tiêu B1), sinh viên cần chuẩn đầu ra hay VSTEP/IELTS, người đi làm, người học để giao tiếp và du lịch. Bắt đầu từ A1 hoặc kiểm tra nhanh để vào đúng cấp. Chưa hợp với trẻ nhỏ chưa tự đọc và gõ được.')}
     ${q('Bao lâu thì học xong?','Dải “Bạn đang ở đâu” trên trang chủ và trang Tiến độ có dự báo: còn bao nhiêu unit tới cấp bạn muốn (chưa đặt thì tới hết cấp đang học), xong vào khoảng tháng nào với nhịp học hiện tại, và cần bao nhiêu câu mỗi ngày để kịp hạn bạn đặt. Đặt cấp mục tiêu và hạn chót trong Cài đặt → Về bạn.')}
     ${q('App có gửi dữ liệu của tôi đi không?','Không. Mọi thứ nằm trong trình duyệt của bạn. Nếu muốn giúp cải thiện app, vào ☰ Thêm → Góp ý để tải hoặc sao chép <b>dữ liệu học ẩn danh</b> (xem trước được nội dung) rồi tự gửi.')}
@@ -2533,7 +2534,7 @@ function mainAction(){
   // v48 (engine M4): có mục tiêu thì bước tiếp theo do lộ trình của engine chọn (đường đi tối thiểu), không theo thứ tự unit.
   try{ const en=EM&&EM.next(); if(en) return {...en,eng:true}; }catch(e){}
   const cd=unitCando(cur), why=cd?` Unit này giúp bạn đạt: “${esc(cdSay(cd))}”.`:'';
-  return {h:`${s.learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,p:(s.learned?'Chưa có từ nào đến hạn ôn. Học tiếp unit này: luyện rồi làm bài kiểm tra để mở unit sau.':'Học 10 từ mới, luyện, rồi làm bài kiểm tra để mở unit sau.')+why,btn:`<button class="btn primary big" data-unit="${cur.id}">${s.learned?'Tiếp tục':'Bắt đầu học'}</button>`};
+  return {h:`${s.learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,p:(s.learned?'Chưa có từ nào đến hạn ôn. Học tiếp unit này: luyện rồi vượt thử thách cuối unit để mở unit sau.':'Học 10 từ mới, luyện, rồi làm bài kiểm tra để mở unit sau.')+why,btn:`<button class="btn primary big" data-unit="${cur.id}">${s.learned?'Tiếp tục':'Bắt đầu học'}</button>`};
 }
 // Trang chủ theo 5 câu hỏi của người học: dải “Bạn đang ở đâu” (hereStrip) → một việc chính → còn thiếu gì (nextLine) → kế hoạch hôm nay.
 // Kế hoạch: tối đa 4 việc có số phút; nhiệm vụ ngày trùng với một việc thì gộp vào dòng đó (không hiện hai lần).
@@ -2602,15 +2603,15 @@ function viewPath(){
     const shown=ui.allUnits[L.id]||firstLocked<0?LU:LU.slice(0,firstLocked+5);
     h += `<details class="level" data-level="${L.id}" style="--lv:var(--lv-${L.id.toLowerCase()})" ${isOpen?'open':''}><summary class="level-head"><span class="code">${L.id}</span><h2>${L.name}</h2><span class="muted">${L.vi} · ${LU.length} unit${onlyGoal?' trong lộ trình':''} · ${words.length} từ · đã thuộc ${known}/${words.length}</span>
       ${lv.passed?`<span class="pill good" title="Đã đạt bài tổng kết cấp độ">Đã nắm ${L.id}${lv.best!=null?' · '+pct(lv.best):''}</span>`:''}
-      ${(()=>{const x=levelEst(L);return x?`<span class="pill accent" title="Ước lượng từ bài ${x.kind==='place'?'thi xếp lớp':'tổng kết'} ngày ${dayLabel(x.day)}">Vốn từ ước tính ${x.lo}–${x.hi}/${x.T}</span>`:''})()}</summary>
+      ${(()=>{const x=levelEst(L);return x?`<span class="pill accent" title="Ước lượng từ lượt ${x.kind==='place'?'xếp lớp':'tổng kết'} ngày ${dayLabel(x.day)}">Vốn từ ước tính ${x.lo}–${x.hi}/${x.T}</span>`:''})()}</summary>
       <div class="row"><span class="hint">Đã thuộc ${known}/${words.length} từ ${info('mastered')}${levelEst(L)?` · vốn từ ước tính ${info('est')}`:''}</span>${allPassed?`<button class="btn small" data-act="lreview" data-l="${L.id}" style="margin-left:auto" title="Kiểm tra lại toàn bộ từ của level, ưu tiên từ yếu">${lv.passed?'Tổng kết lại':'Tổng kết'} ${L.id}</button>${info('review')}`
-        :`<button class="btn small" data-act="place" data-l="${L.id}" style="margin-left:auto" title="Làm bài kiểm tra cả level; đạt thì các unit của level được tính là đã qua">Thi vượt cấp ${L.id}</button>${info('place')}`}</div>
+        :`<button class="btn small" data-act="place" data-l="${L.id}" style="margin-left:auto" title="Thử thách cả cấp; đạt thì các unit của cấp được tính là đã qua">Vượt cấp ${L.id}</button>${info('place')}`}</div>
       ${(()=>{ const ns=LU.reduce((a,u)=>a+uStars(u),0), left=LU.filter(u=>!U(u.id).passed).length;
         return `<div class="row" style="gap:4px 14px"><span class="num">⭐ ${ns}/${LU.length*3} sao</span><span class="hint">${left?`Còn <b>${left}</b> unit nữa là qua ${L.id}`:`Đã qua mọi unit của ${L.id}`}</span></div>`; })()}
       ${meter(words.length?known/words.length:0,'good')}<div class="${mapMode?'umap':'units'}">`;
     shown.forEach(u=>{ if(mapMode){ h+=rung(u,u===cur); return; }
       const s=U(u.id), open=unlocked(u), m=unitMastery(u);
-      const pill = !open ? `<span class="pill" title="Chưa tới lượt trong lộ trình, nhưng bạn vẫn học trước được">Học trước</span>` : s.passed ? `<span class="pill good">${s.skipped&&!s.learned?'Đã thi vượt':STAGES[uStage(u)]}</span>` : s.learned ? `<span class="pill accent">Đang học</span>` : `<span class="pill warn">Mới</span>`;
+      const pill = !open ? `<span class="pill" title="Chưa tới lượt trong lộ trình, nhưng bạn vẫn học trước được">Học trước</span>` : s.passed ? `<span class="pill good">${s.skipped&&!s.learned?'Đã vượt cấp':STAGES[uStage(u)]}</span>` : s.learned ? `<span class="pill accent">Đang học</span>` : `<span class="pill warn">Mới</span>`;
       h += `<button class="unit ${open?'':'locked'}" data-unit="${u.id}" aria-label="Unit ${u.no} ${esc(u.title)}${open?'':' (chưa tới lượt, học trước được)'}">
         <span class="no">Unit<b>${String(u.no).padStart(2,'0')}</b></span>
         <span class="t"><strong lang="en">${esc(u.title)}</strong><span class="muted">${esc(u.vi)} · ${u.words.length} từ</span></span>
@@ -2618,7 +2619,7 @@ function viewPath(){
         ${pill}
       </button>`;
     });
-    if(mapMode&&shown.length===LU.length) h += `<button class="rung flag" data-act="${allPassed?'lreview':'place'}" data-l="${L.id}"><span class="node">🏁</span><span class="t"><strong>${allPassed?`Tổng kết ${L.id}`:`Đích ${L.id}`}</strong><span class="muted">${allPassed?'Trận cuối cấp độ: kiểm tra lại cả cấp':`Qua hết ${LU.length} unit, hoặc thi vượt cấp ngay`}</span></span></button>`;
+    if(mapMode&&shown.length===LU.length) h += `<button class="rung flag" data-act="${allPassed?'lreview':'place'}" data-l="${L.id}"><span class="node">🏁</span><span class="t"><strong>${allPassed?`Tổng kết ${L.id}`:`Đích ${L.id}`}</strong><span class="muted">${allPassed?'Trận cuối cấp độ: ôn lại cả cấp':`Qua hết ${LU.length} unit, hoặc vượt cấp ngay`}</span></span></button>`;
     h += `</div>${shown.length<LU.length?`<button class="btn ghost" data-act="allunits" data-l="${L.id}">Hiện tất cả ${LU.length} unit của ${L.id} (còn ${LU.length-shown.length} unit đang khoá)</button>`:''}</details>`;
   });
   const empty = CONTENT.levels.filter(L=>!L.units.length);
@@ -2632,7 +2633,7 @@ function viewUnit(){
   const step=(n,state,title,desc,btn)=>`<div class="step ${state}"><span class="n">${state==='done'?'✓':n}</span><div class="stack" style="gap:2px"><h3>${title}</h3><p class="muted">${desc}</p></div>${btn}</div>`;
   const weak = u.words.filter(w=>mastery(w.id)<.7);
   return `<button class="btn ghost back" data-go="path">← Lộ trình</button>
-  ${unlocked(u)?'':`<section class="panel nag"><p><b>Unit này chưa tới lượt trong lộ trình.</b> ${info('ahead')} Bạn vẫn học, luyện và làm bài kiểm tra được. Qua bài kiểm tra thì unit được tính là đã qua và unit ngay sau nó cũng mở.</p></section>`}
+  ${unlocked(u)?'':`<section class="panel nag"><p><b>Unit này chưa tới lượt trong lộ trình.</b> ${info('ahead')} Bạn vẫn học, luyện và vượt thử thách được. Vượt thử thách thì unit được tính là đã qua và unit ngay sau nó cũng mở.</p></section>`}
   <section class="stack">
     <span class="eyebrow">${uname(u)} ${s.passed?starStr(uStars(u)):''}</span>
     <h1><span lang="en">${esc(u.title)}</span> <span class="muted" style="font-weight:400">· ${esc(u.vi)}</span></h1>
@@ -2771,7 +2772,7 @@ function viewSession(){
   </section>
   <p class="hint kbd-hint">Phím tắt: 1–4 để chọn, 0 = chưa biết, Enter để tiếp tục.</p>`;
 }
-const KIND_LABEL={quick:'Học nhanh',practice:'Luyện tập',review:'Ôn tập',test:'Thử thách cuối unit',remedy:'Luyện điểm yếu',place:'Thi vượt cấp',lrev:'Tổng kết cấp độ',qplace:'Kiểm tra nhanh trình độ'};
+const KIND_LABEL={quick:'Học nhanh',practice:'Luyện tập',review:'Ôn tập',test:'Thử thách cuối unit',remedy:'Luyện điểm yếu',place:'Vượt cấp',lrev:'Tổng kết cấp độ',qplace:'Xếp lớp nhanh'};
 const TYPE_NAME={cfs:'Phân biệt từ dễ nhầm',sns:'Nghĩa của từ trong câu',pcl:'Điền từ vào đoạn văn',fam:'Họ từ',fmt:'Họ từ · tự gõ',sen:'Câu → nghĩa',rec:'Từ → nghĩa',lis:'Nghe chọn từ',rcl:'Nghĩa → từ',rct:'Nghĩa → tự gõ từ',spl:'Chính tả',dic:'Nghe chép',ctx:'Điền chỗ trống',ctt:'Tự gõ từ vào câu',ord:'Sắp xếp câu',col:'Kết hợp từ'};
 const rightAnswer = ex => ex.opts ? ex.opts[ex.ans] : ex.ans;
 // Giải thích riêng cho phương án sai người học đã chọn/gõ:
@@ -2845,7 +2846,7 @@ function viewSummary(){
       : `<span class="pill bad">Chưa đạt</span><h1>${pct(score)} — ${why}</h1><p class="muted">${L?`Hãy học ${L.id} theo từng unit; các từ bạn vừa làm sai sẽ được ưu tiên khi luyện.`:'Luyện lại các từ và kỹ năng bạn làm sai, rồi thi lại.'}</p>`;
   } else if(r.kind==='lrev'){
     head = V.pass
-      ? `<span class="pill good">Đã nắm ${L.id}</span><h1>${pct(score)} — bạn vẫn nhớ từ vựng ${L.id}</h1><p class="muted">Bài tổng kết kiểm tra lại ${total} từ, ưu tiên những từ bạn yếu nhất. Nên làm lại sau vài tuần để chắc là nhớ lâu.</p>`
+      ? `<span class="pill good">Đã nắm ${L.id}</span><h1>${pct(score)} — bạn vẫn nhớ từ vựng ${L.id}</h1><p class="muted">Lượt tổng kết hỏi lại ${total} từ, ưu tiên những từ bạn yếu nhất. Nên làm lại sau vài tuần để chắc là nhớ lâu.</p>`
       : `<span class="pill bad">Chưa nắm chắc ${L.id}</span><h1>${pct(score)} — ${why}</h1><p class="muted">Luyện lại các từ sai bên dưới; chúng cũng được đưa lại vào lịch ôn từ ngày mai.</p>`;
   } else head=`<span class="eyebrow">${KIND_LABEL[r.kind]}</span><h1>${ok}/${total} câu đúng lần đầu</h1>`;
   const words=[...new Set(r.res.map(x=>x.wid))];
@@ -2856,13 +2857,13 @@ function viewSummary(){
   return `<section class="stack">${head}</section>
   ${rewardHero(r,{stars:u&&r.kind==='test'?uStars(u):null,good:(r.kind==='test'||r.kind==='place'||r.kind==='lrev')?V.pass:score>=.7})}
   <div class="row" aria-label="Việc tiếp theo">
-    ${r.kind==='test'&&!V.pass?`<button class="btn primary" data-act="remedy-ids" data-ids="${missed.join(',')}" data-u="${u.id}">Luyện ${missed.length} từ sai</button><button class="btn" data-act="test" data-u="${u.id}">Thi lại</button>`:''}
+    ${r.kind==='test'&&!V.pass?`<button class="btn primary" data-act="remedy-ids" data-ids="${missed.join(',')}" data-u="${u.id}">Luyện ${missed.length} từ sai</button><button class="btn" data-act="test" data-u="${u.id}">Thử lại</button>`:''}
     ${(r.kind==='test'||r.kind==='place')&&V.pass&&nextU?`<button class="btn primary" data-unit="${nextU.id}">Sang ${uname(nextU)}</button>`:''}
     ${(r.kind==='lrev'||r.kind==='review')&&missed.length?`<button class="btn primary" data-act="remedy-ids" data-ids="${missed.join(',')}">Luyện ${missed.length} từ sai</button>`:''}
     ${r.kind==='review'&&dueWords().length?`<button class="btn ${missed.length?'':'primary'}" data-act="review">Ôn tiếp ${dueWords().length} từ</button>`:''}
     ${r.kind==='place'&&!V.pass?`<button class="btn primary" data-unit="${L.units[0].id}">Học ${uname(L.units[0])}</button>`:''}
-    ${r.kind==='place'&&V.pass&&nextLevel(L)?`<button class="btn ${nextU?'':'primary'}" data-act="place" data-l="${nextLevel(L).id}">Thi vượt cấp tiếp ${nextLevel(L).id}</button>`:''}
-    ${r.kind!=='test'&&u&&!U(u.id).passed?`<button class="btn primary" data-act="test" data-u="${u.id}">Làm bài kiểm tra</button>`:''}
+    ${r.kind==='place'&&V.pass&&nextLevel(L)?`<button class="btn ${nextU?'':'primary'}" data-act="place" data-l="${nextLevel(L).id}">Vượt cấp tiếp ${nextLevel(L).id}</button>`:''}
+    ${r.kind!=='test'&&u&&!U(u.id).passed?`<button class="btn primary" data-act="test" data-u="${u.id}">Vào thử thách cuối unit</button>`:''}
     ${u?`<button class="btn" data-unit="${u.id}">Về unit</button>`:''}
     <button class="btn" data-go="path">Tiếp tục</button>${msBtn(r,V.pass)}
   </div>
@@ -2990,7 +2991,7 @@ function reportHtml(){
   const learned=ALL_WORDS.filter(w=>W(w.id).learned);
   const lvRows=CONTENT.levels.filter(L=>L.units.length).map(L=>{ const ws=L.units.flatMap(u=>u.words), x=levelEst(L), lv=LV(L.id);
     const tests=L.units.map(u=>U(u.id).best).filter(v=>v!=null), reads=L.units.map(u=>U(u.id).read).filter(v=>v!=null), lis=L.units.map(u=>U(u.id).listen).filter(v=>v!=null);
-    return `<tr><td><b>${L.id}</b></td><td>${L.units.filter(u=>U(u.id).passed&&!U(u.id).skipped).length}${L.units.some(u=>U(u.id).skipped)?` (+${L.units.filter(u=>U(u.id).skipped).length} thi vượt)`:''}/${L.units.length}</td>
+    return `<tr><td><b>${L.id}</b></td><td>${L.units.filter(u=>U(u.id).passed&&!U(u.id).skipped).length}${L.units.some(u=>U(u.id).skipped)?` (+${L.units.filter(u=>U(u.id).skipped).length} vượt cấp)`:''}/${L.units.length}</td>
       <td>${ws.filter(w=>W(w.id).learned).length}/${ws.length}</td><td>${ws.filter(w=>isMastered(w.id)).length}</td><td>${ws.filter(w=>W(w.id).learned&&wstat(w)==='hard').length}</td>
       <td>${P(avg(tests))}${tests.length?` (${tests.length} bài)`:''}</td><td>${P(lv.best)}</td><td>${x?`${x.lo}–${x.hi}/${x.T}`:'—'}</td><td>${P(avg(reads))} / ${P(avg(lis))}</td></tr>`; }).join('');
   const dims=DIMS.map(k=>`<tr><td>${k.en} · ${k.vi}</td><td>${P(avg(learned.map(w=>W(w.id).d[k.k]).filter(v=>v!=null)))}</td></tr>`).join('');
@@ -3008,8 +3009,8 @@ function reportHtml(){
 <h1>Báo cáo tiến độ học tiếng Anh · English Ladder</h1>
 <p class="m">Tạo ngày ${d.toLocaleDateString('vi-VN')} từ dữ liệu trên máy người học. ${st.days.length} ngày có học · chuỗi hiện tại ${streak()} ngày · ${st.stats.a} câu đã làm, đúng ${st.stats.a?pct(st.stats.c/st.stats.a):'—'}.</p>
 <h2>Từ vựng theo cấp độ</h2>
-<table><tr><th>Cấp</th><th>Unit đã qua</th><th>Từ đã học</th><th>Đã thuộc lâu dài</th><th>Hay quên</th><th>Kiểm tra unit (TB điểm cao nhất)</th><th>Tổng kết cấp</th><th>Vốn từ ước tính (95%)</th><th>Đọc / Nghe hiểu (TB)</th></tr>${lvRows}</table>
-<p class="m">“Đã thuộc lâu dài”: điểm 5 kỹ năng ≥ 80% và đã nhớ qua ≥ 2 lần ôn giãn cách. “Vốn từ ước tính” lấy từ bài thi xếp lớp hoặc tổng kết gần nhất (câu tự gõ, không đoán được).</p>
+<table><tr><th>Cấp</th><th>Unit đã qua</th><th>Từ đã học</th><th>Đã thuộc lâu dài</th><th>Hay quên</th><th>Thử thách cuối unit (TB điểm cao nhất)</th><th>Tổng kết cấp</th><th>Vốn từ ước tính (95%)</th><th>Đọc / Nghe hiểu (TB)</th></tr>${lvRows}</table>
+<p class="m">“Đã thuộc lâu dài”: điểm 5 kỹ năng ≥ 80% và đã nhớ qua ≥ 2 lần ôn giãn cách. “Vốn từ ước tính” lấy từ lượt xếp lớp hoặc tổng kết gần nhất (câu tự gõ, không đoán được).</p>
 <h2>Kỹ năng từ vựng (trung bình các từ đã học)</h2><table>${dims}</table>
 ${memLine(true)?`<p><b>Trí nhớ khi ôn đến hạn (câu tự gõ):</b> ${esc(memLine(true))}.${ALL_WORDS.some(w=>(st.words[w.id]||{}).lp>=2)?` Hay quên nhất: ${ALL_WORDS.filter(w=>(st.words[w.id]||{}).lp>=2).sort((a,b)=>st.words[b.id].lp-st.words[a.id].lp).slice(0,10).map(w=>`${esc(w.word)} (${st.words[w.id].lp} lần)`).join(', ')}.`:''}</p>`:''}
 <h2>30 từ yếu nhất</h2>${weak?`<table><tr><th>Từ</th><th>Nghĩa</th><th>Unit</th><th>Mức thuộc</th><th>Kỹ năng yếu nhất</th><th>Độ khó</th></tr>${weak}</table>`:'<p class="m">Chưa học từ nào.</p>'}
@@ -3496,7 +3497,7 @@ function viewProgress(){
   <section class="panel stack" aria-label="Ba tầng tiến độ"><h3>Ba tầng tiến độ</h3>
     <div class="stack" style="gap:4px"><span class="eyebrow">1 · Hôm nay</span><p><b class="num">${Math.min(goalCount(),goal())}/${goal()}</b> câu đúng · 🔥 <b class="num">${streak()}</b> ngày liên tiếp · 🧠 nhớ lại được <b class="num">${recalledN()}</b> từ ${info('recalled')}</p></div>
     <div class="stack" style="gap:4px"><span class="eyebrow">2 · Unit đang học · ${esc(uname(cur))} · <span lang="en">${esc(cur.title)}</span></span>${stageBar(cur)}</div>
-    <div class="stack" style="gap:4px"><span class="eyebrow">3 · Cấp ${lx.L}</span><p>Đã qua <b class="num">${lx.passed}/${lx.n}</b> unit · vững <b class="num">${lx.solid}</b> · kỹ năng đạt <b class="num">${cl.ok}/4</b> ${info('cefr')} <button class="btn small ghost" data-go="cefr">Bản đồ CEFR</button></p>${northLine()}${cdDone()||Object.values(st.hist||{}).some(h=>h[2])?northTrend():'<p class="hint">Biểu đồ 8 tuần hiện khi bạn đạt câu “Tôi có thể…” đầu tiên (các unit liên quan vững, hoặc thi vượt cấp).</p>'}${nextLine(false)}</div>
+    <div class="stack" style="gap:4px"><span class="eyebrow">3 · Cấp ${lx.L}</span><p>Đã qua <b class="num">${lx.passed}/${lx.n}</b> unit · vững <b class="num">${lx.solid}</b> · kỹ năng đạt <b class="num">${cl.ok}/4</b> ${info('cefr')} <button class="btn small ghost" data-go="cefr">Bản đồ CEFR</button></p>${northLine()}${cdDone()||Object.values(st.hist||{}).some(h=>h[2])?northTrend():'<p class="hint">Biểu đồ 8 tuần hiện khi bạn đạt câu “Tôi có thể…” đầu tiên (các unit liên quan vững, hoặc vượt cấp).</p>'}${nextLine(false)}</div>
     <p>${etaLine()}</p>${oral.length?`<p class="muted">🗣️ Nói ra được ngay ít nhất một lần: <b>${oralOk}</b>/${oral.length} từ đã luyện nói ${info('oral')}</p>`:''}
   </section>
   <section class="panel stack" aria-label="Phần thưởng"><div class="spread"><h3>Phần thưởng</h3><span class="hint">Đo sự cố gắng, không đo năng lực ${info('xp')}</span></div>
@@ -4022,7 +4023,7 @@ function viewGPath(){
         :`<button class="btn small" data-act="gplace" data-l="${L.id}" style="margin-left:auto" title="Đạt thì mọi bài ngữ pháp của level được tính là hoàn thành">Thi vượt cấp ngữ pháp ${L.id}</button>`}</div>
       ${meter(known/L.points.length,'good')}<div class="units">`;
     shown.forEach(p=>{ const g=G(p.id), open=gUnlocked(p), m=gmastery(p.id);
-      const pill=!open?`<span class="pill" title="Chưa tới lượt, nhưng bạn vẫn học trước được">Học trước</span>`:g.passed?`<span class="pill good">${g.skipped&&!g.learned?'Đã thi vượt':'Hoàn thành'}</span>`:g.learned?`<span class="pill accent">Đang học</span>`:`<span class="pill warn">Mới</span>`;
+      const pill=!open?`<span class="pill" title="Chưa tới lượt, nhưng bạn vẫn học trước được">Học trước</span>`:g.passed?`<span class="pill good">${g.skipped&&!g.learned?'Đã vượt cấp':'Hoàn thành'}</span>`:g.learned?`<span class="pill accent">Đang học</span>`:`<span class="pill warn">Mới</span>`;
       h+=`<button class="unit ${open?'':'locked'}" data-gp="${p.id}" aria-label="Bài ${p.no} ${esc(p.title)}${open?'':' (chưa tới lượt, học trước được)'}">
         <span class="no">Bài<b>${String(p.no).padStart(2,'0')}</b></span>
         <span class="t"><strong>${esc(p.vi)}</strong><span class="muted" lang="en">${esc(p.title)}</span></span>
@@ -8324,7 +8325,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.d67aa83691.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.617a30a46d.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8352,8 +8353,11 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.23200775a9.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.6b44a28c29.js';   // tools/build.mjs ghi
 const EHOST = {
+  backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
+  lr:()=>xmLoad().then(m=>m.lr),
+  gate:f=>xmLoad().then(m=>m.gate(f)),   // v111: đề trận cổng   // v111: đèn Nghe + Đọc của chương mở đầu dùng bộ xếp lớp của phần ôn thi
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),

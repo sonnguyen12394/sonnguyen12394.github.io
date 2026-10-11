@@ -48,7 +48,7 @@ export function rank(x: NbaIn): Action[] {
     const p = zero();
     p.info = Math.min(1.5, x.probe.eig + (x.probe.mode === 'root' ? 0.6 : 0)); p.prereq = x.probe.mode === 'root' ? 1 : 0; p.effort = x.probe.effort / 20;
     p.goal = 1;   // câu dò luôn phục vụ một nút trong bao đóng mục tiêu
-    out.push({ kind: 'probe', node: x.probe.node, level: x.probe.level, u: total(p), parts: p, why: `kiểm tra nhanh (${x.probe.mode})`, probe: x.probe });
+    out.push({ kind: 'probe', node: x.probe.node, level: x.probe.level, u: total(p), parts: p, why: `thử sức nhanh (${x.probe.mode})`, probe: x.probe });
   }
   for (const v of x.verify.slice(0, 3)) {
     const p = zero();

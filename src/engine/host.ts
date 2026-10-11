@@ -9,6 +9,9 @@ export interface EHost {
   today(): number;                                  // số ngày từ 1/1/1970 (theo giờ của app)
   toast(msg: string): void;
   esc(s: unknown): string;
+  backupNag?(force?: boolean): string;
+  lr?(): Promise<import('../exam/main.ts').LrApi>;
+  gate?(form: string): Promise<import('../exam/content.ts').Group[]>;   // v111: đề trận cổng (gói riêng, câu lạ)          // v111: xếp lớp Nghe / Đọc của phần ôn thi, vẽ trong chương mở đầu                      // v111: HTML nhắc sao lưu (rỗng khi đã đồng bộ / mới sao lưu / đang hoãn)
   ico(name: string): string;
   fetchJson(url: string): Promise<unknown>;
   cando(id: string): { p: number; m: number; lb: number; k: number; need: number } | null;   // tiến độ Can-Do tính từ bằng chứng (app.js cdProg)
