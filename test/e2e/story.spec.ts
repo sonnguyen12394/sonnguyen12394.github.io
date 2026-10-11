@@ -30,7 +30,7 @@ test('v101 truyện: mở đầu → chương 1; tìm từ ở Mỏ Chữ = đà
   await lobby(page);
   const card = page.locator('.stcard');
   await expect(card).toContainText('Phố Chữ mất tiếng');
-  await page.locator('[data-e="stscene"]').click();
+  await page.locator('.sclink[data-e="stscene"]').click();   // v117: lối vào truyện ở cảnh đầu sảnh
   await expect(page.locator('#stfx .sten')).toHaveAttribute('lang', 'en');
   await page.screenshot({ path: 'test-results/story-scene.png' });
   await watch(page);
@@ -49,7 +49,7 @@ test('v101 truyện: mở đầu → chương 1; tìm từ ở Mỏ Chữ = đà
   expect(await page.evaluate(() => (window as any).eval('st').e.ev.led.length) - ledN).toBeLessThanOrEqual(1);
   // Đủ nhiệm vụ → nút xem cảnh → chương 2, +20 xu.
   const c0 = await page.evaluate(() => { const st = (window as any).eval('st'); st.e.sy.prog = { dig: 3, light: 1, voice: 2 }; (window as any).eval('render()'); return st.e.q?.coins ?? 0; });
-  await page.locator('[data-e="stscene"]').click();
+  await page.locator('.stcard [data-e="stscene"]').click();
   await watch(page);
   await expect(card).toContainText('Bánh mì im lặng');
   expect(await page.evaluate(() => (window as any).eval('st').e.q.coins)).toBe(c0 + 20);

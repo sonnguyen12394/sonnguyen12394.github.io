@@ -655,6 +655,34 @@ body.lesson main{max-width:720px}
 .gbar.slim{flex-direction:row;align-items:center;flex-wrap:wrap;gap:4px 10px;padding:10px 14px;margin:12px 0}.gbar.slim .gbbar{flex:1 1 100%}
 .tline{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:10px 14px;margin:0 0 12px;border:1px dashed var(--warn);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
 details.gall>summary{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface);color:var(--ink)}
+/* v117 Màn Hôm nay = cảnh Phố Chữ của khu đang ở (story.ts sceneOf / sceneArt). Dải hình trên giữ màu khu; phần chữ phủ tối để chữ trắng đủ tương phản. */
+.lscene{position:relative;overflow:hidden;padding:0 16px 14px;border:0;border-radius:22px;color:#fff;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.2);background:linear-gradient(180deg,transparent 0 92px,rgba(12,8,32,.5) 132px,rgba(12,8,32,.55)),linear-gradient(160deg,var(--s1),var(--s2))}
+.scart{position:relative;height:92px;margin:0 -16px -6px;overflow:hidden}.scart svg{display:block}
+.scfog{position:absolute;inset:-20% -40%;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.15) 70%,transparent),radial-gradient(closest-side,rgba(255,255,255,.95),transparent) 0 30%/38% 70% repeat-x,radial-gradient(closest-side,rgba(235,230,255,.9),transparent) 20% 80%/30% 60% repeat-x;animation:drift 24s linear infinite alternate;pointer-events:none}
+@keyframes drift{from{transform:translateX(-6%)}to{transform:translateX(6%)}}
+.sceyebrow{font:700 13px/1.3 system-ui,sans-serif;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.lscene h1{margin:0;color:#fff;font:800 26px/1.15 system-ui,sans-serif;text-shadow:0 2px 6px rgba(0,0,0,.45)}
+.lscene .tisay-b{background:rgba(255,255,255,.94);color:#1d1b3a}
+.lscene .dgo.gcard{background:#ffd166;color:#1d1b3a;border:0;border-radius:18px;box-shadow:0 6px 0 #c99a2e,0 10px 24px rgba(0,0,0,.25)}
+.lscene .dgo.gcard .hint{color:#3b3355}.lscene .dgo.gcard:active{transform:translateY(3px);box-shadow:0 3px 0 #c99a2e}
+.lscene .dgo.gcard:focus-visible,.sclink:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.sclink{align-self:flex-start;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 14px;font:600 14px system-ui,sans-serif;cursor:pointer}
+.lanterns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;position:relative;padding-top:12px;margin-top:4px}
+.lanterns::before{content:"";position:absolute;left:12%;right:12%;top:12px;border-top:2px dashed var(--line)}.lscene .lanterns::before{border-top-color:rgba(255,255,255,.55)}
+.dplan.lanterns li{flex-direction:column;align-items:center;gap:2px;padding:0;border:0;background:none;color:var(--ink);font-weight:600;font-size:13px;text-align:center;line-height:1.25}
+.dplan.lanterns li.ok,.dplan.lanterns li.cur{background:none;border:0}.lscene .dplan.lanterns li{color:#fff}
+.lscene .lanterns li small{color:#fff;opacity:.92;font-weight:500}
+.lamp{position:relative;width:28px;height:36px;margin-bottom:4px;border-radius:46%/40%;background:linear-gradient(90deg,#4a3b5c,#6b5780,#4a3b5c);box-shadow:inset 0 -4px 0 rgba(0,0,0,.25)}
+.lamp::before,.lamp::after{content:"";position:absolute;left:50%;width:14px;height:5px;margin-left:-7px;border-radius:2px;background:#2a2238}.lamp::before{top:-4px}.lamp::after{bottom:-4px}
+.lanterns li.ok .lamp{background:radial-gradient(circle at 50% 45%,#fff3b0,#ffb347 45%,#e8553b 80%);box-shadow:0 0 18px 6px rgba(255,180,80,.65)}
+.lanterns li.cur .lamp{background:linear-gradient(90deg,#8a3b4a,#c2566a,#8a3b4a);animation:lampglow 1.6s ease-in-out infinite alternate}
+@keyframes lampglow{from{box-shadow:0 0 0 0 rgba(255,200,120,0)}to{box-shadow:0 0 14px 4px rgba(255,200,120,.55)}}
+.lg{font-size:18px}.lanthint{text-align:center;margin:2px 0 0}.lscene .lanthint{color:#fff}
+.lscene .dwhy summary{color:rgba(255,255,255,.9)}.lscene .dwhy .hint{color:#fff}
+.tline{border:2px dashed #c99a2e;background:color-mix(in srgb,#ffd166 16%,var(--surface))}
+details.gpick>summary{border-color:color-mix(in srgb,#8b5e34 45%,var(--line));background:color-mix(in srgb,#8b5e34 10%,var(--surface))}
+.gbar.slim .gbbar{height:10px;border-radius:99px}.gbar.slim .gbbar i:first-child{background:linear-gradient(90deg,#ffd166,var(--good))}
+@media (prefers-reduced-motion:reduce){.scfog,.lanterns li.cur .lamp{animation:none}}
 .dplan{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .dplan li{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:10px;border:1px solid var(--line)}
 .dplan li.cur{border-color:var(--accent);font-weight:600}
@@ -961,4 +989,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.926025429d.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.9a5a311b05.js" defer></script><script src="app.js?v=67" defer></script>

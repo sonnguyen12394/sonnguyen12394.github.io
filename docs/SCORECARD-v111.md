@@ -203,6 +203,8 @@ Kiểm: Giới hạn thực tế; v2.4 §XXIII.
 
 Kiểm: SPEC §7 "Luật màn đầu"; mục "Hợp đồng hiển thị tiến độ" (sửa v116). Vì sao có nhóm này: 71 tiêu chí cũ chỉ đo phần bên trong (game hoá, chống học tủ, minh bạch). Mỗi bản thêm một thẻ lên sảnh, điểm chung vẫn tăng, trong khi người mở app không biết bấm gì. Nhóm "Minh bạch" còn khuyến khích viết thêm câu giải thích lên màn đầu.
 
+**v117:** màn đầu thành cảnh Phố Chữ (nền khu, sương tan theo kỹ năng vững, 3 đèn lồng); điểm nhóm L giữ nguyên vì luật một việc không đổi (test `clarity.spec` vẫn xanh). Độ hấp dẫn thuộc H1, H3; chưa nâng H khi chưa có người chơi thật chấm.
+
 Cách đo: tài khoản mới đã có mục tiêu A1, khổ 390 × 844 (iPhone 12–15), không cuộn. L1, L3, L6 có phần **chỉ người thật đo được** (thử 5 giây), nên mốc 10 cần buổi thử với người lạ; code chỉ đưa tới mức trần ghi ở cột Trần.
 
 | # | Tiêu chí | Mốc 10 | Lần 3 (v115) | Lần 4 (v116) | Căn cứ | Để lên điểm | Trần |

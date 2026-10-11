@@ -189,3 +189,26 @@ export function viewStory(s: StorySave | undefined, solid: number, gateFn?: Stor
     ${rv.length ? `<p class="stsmall">🏙️ Đã hồi sinh: ${rv.map(esc).join(', ')}</p>` : ''}
   </section>`;
 }
+
+// v117 Màn Hôm nay là một cảnh của Phố Chữ (SPEC §7 "Luật màn đầu"): khu đang ở, chương, cư dân cần giúp. Thuần hàm, không lưu gì.
+export interface Scene { act: number; zone: string; no: number; title: string; intro: string; who: [string, string] | null; ready: boolean; done: boolean }
+export function sceneOf(s: StorySave | undefined, solid: number, gate?: StoryGateOf): Scene {
+  const st = s ?? freshStory();
+  if (finished(st)) return { act: 3, zone: ACTS[3], no: CHAPTERS.length, title: 'Còn tiếp…', intro: 'Sương Câm đã trốn về Phố Đêm.', who: null, ready: false, done: true };
+  const c = st.ch === 0 ? CHAPTERS[0]! : chapterAt(st)!;
+  return { act: c.act, zone: ACTS[c.act]!, no: st.ch, title: c.title, intro: c.intro, who: resident(st), ready: ready(st, solid, gate), done: false };
+}
+// Hình phố theo khu (SVG nội tuyến, không tải tệp): 0 Mở đầu + 1 Chợ Sáng = mái nhà + sạp có mái sọc; 2 Bến Cảng = sóng, thuyền,
+// hải đăng; 3 Rừng Trúc = rặng trúc. Chỉ để trang trí (aria-hidden ở nơi gọi).
+export function sceneArt(act: number): string {
+  const sky = '<circle cx="300" cy="26" r="14" fill="#fff6c9" opacity=".85"/>';
+  const town = `<path d="M0 92 L0 62 L22 46 L44 62 L44 92 Z M48 92 L48 54 L74 36 L100 54 L100 92 Z M250 92 L250 58 L274 42 L298 58 L298 92 Z M304 92 L304 66 L330 50 L360 66 L360 92 Z" fill="rgba(0,0,0,.28)"/>
+    <g><rect x="118" y="66" width="56" height="26" fill="rgba(0,0,0,.25)"/><path d="M112 66 h68 l-6 -12 h-56 z" fill="#ffd166"/><path d="M124 54 v12 M136 54 v12 M148 54 v12 M160 54 v12" stroke="#e76f51" stroke-width="5"/>
+    <rect x="184" y="70" width="52" height="22" fill="rgba(0,0,0,.25)"/><path d="M178 70 h64 l-6 -11 h-52 z" fill="#8ecae6"/><path d="M190 59 v11 M202 59 v11 M214 59 v11 M226 59 v11" stroke="#fff" stroke-width="5"/></g>`;
+  const harbour = `<path d="M0 80 Q20 74 40 80 T80 80 T120 80 T160 80 T200 80 T240 80 T280 80 T320 80 T360 80 V110 H0 Z" fill="rgba(255,255,255,.25)"/>
+    <path d="M60 78 h70 l-12 14 h-46 z" fill="rgba(0,0,0,.35)"/><path d="M95 78 V40 L120 72 Z" fill="#fff" opacity=".85"/>
+    <path d="M286 92 L292 30 H308 L314 92 Z" fill="#fff" opacity=".9"/><path d="M290 52 h20 M289 70 h22" stroke="#e63946" stroke-width="6"/><rect x="292" y="20" width="16" height="10" fill="#ffd166"/>`;
+  const bamboo = Array.from({ length: 11 }, (_, i) => { const x = 14 + i * 33, h = 40 + ((i * 37) % 30); return `<path d="M${x} 110 V${110 - h}" stroke="rgba(0,0,0,.28)" stroke-width="7"/><path d="M${x - 4} ${118 - h} h8 M${x - 4} ${132 - h} h8" stroke="rgba(255,255,255,.35)" stroke-width="2"/><path d="M${x} ${112 - h} q12 -8 20 -4" stroke="rgba(0,0,0,.22)" stroke-width="3" fill="none"/>`; }).join('');
+  const body = act === 2 ? harbour : act === 3 ? bamboo : town;
+  return `<svg viewBox="0 0 360 110" preserveAspectRatio="xMidYMax slice" width="100%" height="100%" focusable="false">${sky}${body}</svg>`;
+}

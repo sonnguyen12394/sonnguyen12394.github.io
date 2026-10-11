@@ -96,3 +96,33 @@ test('L4 L8: thanh đầu trang một dòng ở 360 px, số có chữ đi kèm,
   await noHorizontalScroll(page);
   expect(errors).toEqual([]);
 });
+
+// v117: màn Hôm nay là cảnh truyện của khu đang ở (nền khu, Tí kể việc của cư dân, 3 đèn lồng), vẫn đúng một nút chính; WCAG AA cả tối.
+for (const dark of [false, true]) test(`v117 cảnh Phố Chữ (${dark ? 'tối' : 'sáng'}): khu + chương, Tí kể việc cư dân, đèn lồng; vẫn một nút chính; WCAG AA`, async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  if (dark) await page.emulateMedia({ colorScheme: 'dark' });
+  await page.goto('/');
+  await page.waitForFunction(() => (window as any).ELREADY === true);
+  await page.evaluate(() => {
+    const w = window as any, st = w.eval('st');
+    st.onboarded = true;
+    st.e.goals = [{ id: 'cefr-a1', version: '1.0', since: w.eval('today()'), date: null }];
+    st.e.gf = { runs: 1, day: w.eval('today()') - 1 };
+    st.e.sy = { ch: 1, prog: { dig: 0, light: 0, voice: 0 } };
+    w.eval('save()'); w.eval("go('games')");
+  });
+  await toLobby(page, false);
+  const scene = page.locator('.lscene');
+  await expect(scene).toContainText('📍 Khu Chợ Sáng · Chương 1: Hoa không tên');
+  await expect(scene.locator('.tisay-b')).toContainText('Bà Lan');
+  await expect(scene.locator('.lanterns li')).toHaveCount(3);
+  await expect(scene).toContainText(/Thắp 0\/3 đèn hôm nay/);
+  const fog = await scene.locator('.scfog').evaluate(el => Number(getComputedStyle(el).opacity));
+  expect(fog, 'chưa vững kỹ năng nào → sương dày').toBeGreaterThan(0.6);
+  const prim = await page.locator('#app .btn.primary:visible, #app .dgo:visible').count();
+  expect(prim).toBe(1);
+  const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
+  expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
+  await page.screenshot({ path: `test-results/clarity-scene-${dark ? 'dark' : 'light'}.png` });
+  expect(errors).toEqual([]);
+});
