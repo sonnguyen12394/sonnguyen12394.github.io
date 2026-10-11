@@ -11,7 +11,8 @@ self.addEventListener('fetch', e => {
   const r = e.request; if (r.method !== 'GET') return;
   const path = new URL(r.url).pathname;
   // Nội dung ôn thi và âm thanh bài nghe (tên có băm hoặc cố định theo id): lưu lâu ở ngăn riêng "el-x", phần ôn thi tự dọn bản cũ.
-  if (/\/data\/(exam|engine)\/[^/]+\.json$|\/a\/[^/]+\.mp3$/.test(path)) {
+  // v120: cả âm thanh thu sẵn A1–B1 (a/c/<khoá>.mp3) và danh mục khoá (a/c/index.<băm>.json).
+  if (/\/data\/(exam|engine)\/[^/]+\.json$|\/a\/[^/]+\.mp3$|\/a\/c\/[^/]+\.(mp3|json)$/.test(path)) {
     e.respondWith(caches.open(X).then(c => c.match(r).then(x => x || fetch(r).then(res => { if (res.ok && res.status === 200) c.put(r, res.clone()); return res; }))));
     return;
   }

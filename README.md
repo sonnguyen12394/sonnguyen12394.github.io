@@ -24,6 +24,7 @@ Học tiếng Anh miễn phí theo khung CEFR, từ Pre-A1 (người mới tinh)
 - Đóng vai bằng câu của chính mình: máy so các ý chính với câu mẫu (không dùng AI).
 - Bài viết có hồ sơ từ vựng CEFR (tỉ lệ từ mỗi cấp A1–C2, độ đa dạng từ).
 - Thi thử VSTEP: Nghe + Đọc có tính giờ, và Viết (thư + bài luận) + Nói (3 phần) với đề tự soạn; máy chép lời, đếm tốc độ nói, dò lỗi; ước tính đủ 4 kỹ năng.
+- Âm thanh thu sẵn cho cấp Pre-A1–B1 (5.753 câu: từ, câu ví dụ, hội thoại hai giọng, cặp âm; Kokoro, `tools/clips-*.{mjs,cjs}`): giọng tự nhiên giống nhau trên mọi máy, nghe được cả khi trình duyệt không có giọng đọc (v120).
 - Nói đáp lời từ ý tiếng Việt, kiểm tra phát âm 26 cặp âm (hồ sơ âm đang lẫn), luyện nghe nhiều giọng và có tiếng ồn nền.
 - Giải đấu tuần ẩn danh: nhóm 30 người, 5 hạng từ Đồng tới Kim cương.
 - Đồng bộ nhiều máy bằng mã, không cần tài khoản (tự chọn bật).

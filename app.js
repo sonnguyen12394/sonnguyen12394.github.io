@@ -1247,11 +1247,32 @@ function pickVoice(){
   const rank=v=>(v.name===st.set.voice?100:0)+(/en[-_](GB|US)/i.test(v.lang)?10:0)+(v.localService?3:0)+(/natural|neural|premium|enhanced|google/i.test(v.name)?5:0);
   return vs.slice().sort((a,b)=>rank(b)-rank(a))[0];
 }
-function say(text,slow,k=0){ if(!HAS_TTS) return; try{ speechSynthesis.cancel(); speechSynthesis.speak(utter(text,slow,k)); }catch(e){} }
+/* v120 Âm thanh thu sẵn (Kokoro, cấp Pre-A1–B1: tools/clips-list.mjs → content/clips.json → tools/clips-audio.cjs → a/c/<khoá>.mp3).
+   Khoá = giọng (a = người A / giọng chính, b = người B) + băm FNV-1a của câu đã chuẩn hoá; công cụ thu tính cùng một cách.
+   Có tệp thì phát tệp (giọng tự nhiên, giống nhau trên mọi máy, nghe được cả khi trình duyệt không có giọng đọc, ví dụ trình duyệt
+   trong Zalo / Messenger); không có tệp hoặc tệp lỗi thì dùng giọng máy như trước. canSay(câu) thay HAS_TTS ở chỗ gắn với một câu. */
+const clipNorm = t => String(t).replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/\s+/g,' ').trim().replace(/[.,;:]+$/,'').toLowerCase();
+function clipKey(t,v=0){ let h=0x811c9dc5; const x=clipNorm(t); for(let i=0;i<x.length;i++){ h^=x.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0; } return (v?'b':'a')+h.toString(16).padStart(8,'0'); }
+const CLIPS_IDX = '';   // tools/build.mjs ghi (danh mục khoá có tệp, tên có băm nội dung)
+let CLIPS=null, CLIP_A=null;
+function clipsLoad(){ if(CLIPS||!CLIPS_IDX||typeof fetch!=='function') return; fetch(CLIPS_IDX).then(r=>r.ok?r.json():[]).then(a=>{ CLIPS=new Set(a); if(!HAS_TTS&&typeof render==='function') render(); }).catch(()=>{}); }
+const hasClip = (t,v=0) => !!CLIPS && !!t && CLIPS.has(clipKey(t,v));
+const canSay = (t,v=0) => HAS_TTS || hasClip(t,v) || hasClip(t,0);
+const canSayLines = ls => HAS_TTS || (!!ls && ls.length>0 && ls.every(l=>hasClip(l.t,l.s==='B'?1:0)||hasClip(l.t,0)));
+function sayStop(){ try{ if(CLIP_A){ CLIP_A.onended=CLIP_A.onerror=null; CLIP_A.pause(); CLIP_A=null; } }catch(e){} try{ if(HAS_TTS) speechSynthesis.cancel(); }catch(e){} }
+// Phát lần lượt các câu; câu nào không có tệp (hoặc tệp lỗi) thì đọc bằng giọng máy rồi đi tiếp.
+function clipPlay(items,rate){ sayStop(); let i=0; const next=()=>{ if(i>=items.length){ CLIP_A=null; return; } const it=items[i++], k=hasClip(it.t,it.v)?clipKey(it.t,it.v):hasClip(it.t,0)&&!HAS_TTS?clipKey(it.t,0):null;
+    if(!k){ if(HAS_TTS) try{ const u=utter(it.t,false,it.v,rate/(st.set.rate||1)); u.onend=next; speechSynthesis.speak(u); }catch(e){ next(); } else next(); return; }
+    const a=new Audio('a/c/'+k+'.mp3'); CLIP_A=a; a.playbackRate=rate; a.onended=()=>{ if(CLIP_A===a) setTimeout(next,it.v===items[i]?.v?250:450); };
+    a.onerror=()=>{ if(CLIP_A!==a) return; if(HAS_TTS) try{ const u=utter(it.t,false,it.v,rate/(st.set.rate||1)); u.onend=next; speechSynthesis.speak(u); return; }catch(e){} next(); };
+    a.play().catch(()=>a.onerror&&a.onerror()); };
+  next(); }
+const clipRate = (slow,mul=1) => (slow?.75:Math.max(.6,Math.min(1.5,st.set.rate||1)))*mul;
+function say(text,slow,k=0){ const v=k?1:0; if(hasClip(text,v)||(!HAS_TTS&&hasClip(text,0))) return clipPlay([{t:text,v}],clipRate(slow)); if(!HAS_TTS) return; try{ sayStop(); speechSynthesis.speak(utter(text,slow,k)); }catch(e){} }
 // Hội thoại hai giọng: người B dùng một giọng tiếng Anh khác trên máy; máy chỉ có một giọng thì hạ cao độ.
 function voiceFor(k){ const v=pickVoice(); if(!k) return {v,p:1}; const alt=voices().filter(x=>x!==v).sort((a,b)=>(/en[-_](GB|US)/i.test(b.lang)?1:0)-(/en[-_](GB|US)/i.test(a.lang)?1:0))[0]; return alt?{v:alt,p:1}:{v,p:.8}; }
 function utter(text,slow,k,mul=1){ const u=new SpeechSynthesisUtterance(text), o=voiceFor(k); if(o.v){u.voice=o.v;u.lang=o.v.lang;} else u.lang='en-GB'; u.pitch=o.p; u.rate=(slow?Math.min(.6,st.set.rate):st.set.rate)*mul; return u; }
-function sayLines(lines,slow,mul=1){ if(!HAS_TTS) return; try{ speechSynthesis.cancel(); lines.forEach(l=>speechSynthesis.speak(utter(l.t,slow,l.s==='B'?1:0,mul))); }catch(e){} }
+function sayLines(lines,slow,mul=1){ if(lines&&lines.some(l=>hasClip(l.t,l.s==='B'?1:0))) return clipPlay(lines.map(l=>({t:l.t,v:l.s==='B'?1:0})),clipRate(slow,mul)); if(!HAS_TTS) return; try{ sayStop(); lines.forEach(l=>speechSynthesis.speak(utter(l.t,slow,l.s==='B'?1:0,mul))); }catch(e){} }
 if(HAS_TTS) try{ speechSynthesis.onvoiceschanged=()=>{ if(ui.view==='settings') render(); }; }catch(e){}
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; }
 // Từ gần nghĩa (khai báo ở trường `near`, tính hai chiều) không bao giờ được dùng làm phương án nhiễu,
@@ -1317,14 +1338,14 @@ function build(w,dim,opt={}){
       if(Math.random()<.25){   // hiểu câu: chọn bản dịch đúng của câu ví dụ; nhiễu là bản dịch câu của từ khác (chắc chắn sai)
         const [se,sv]=exPick(w); return mcq('sen','rec',w,se,sv,others(w,3).map(x=>x.exVi));
       }
-      if(HAS_TTS && !opt.noAudio && Math.random()<.35)
+      if(canSay(w.word) && !opt.noAudio && Math.random()<.35)
         return mcq('lis','rec',w,'Nghe và chọn từ bạn nghe được',w.word,others(w,3).map(x=>x.word),{audio:w.word});
       return mcq('rec','rec',w,w.word,w.en,others(w,3).map(x=>x.en));
     case 'rcl':
       if(hard) return {type:'rct',dim:'rcl',wid:w.id,ans:w.word};
       return mcq('rcl','rcl',w,w.en,w.word,others(w,3).map(x=>x.word));
     case 'spl':
-      if(hard && HAS_TTS && !opt.noAudio && (opt.test || Math.random()<.5)) return {type:'dic',dim:'spl',wid:w.id,ans:w.word,audio:w.word};
+      if(hard && canSay(w.word) && !opt.noAudio && (opt.test || Math.random()<.5)) return {type:'dic',dim:'spl',wid:w.id,ans:w.word,audio:w.word};
       return {type:'spl',dim:'spl',wid:w.id,masked:mask(w.word,hard?.7:.4),ans:w.word};
     case 'ctx': {
       // Cặp dễ nhầm (cf, soạn tay qua import-senses.py): câu chỉ một trong hai từ đúng, kèm lời giải thích vì sao từ kia sai.
@@ -1559,7 +1580,7 @@ function gExplain(ex,given){
 /* ================== UI STATE ================== */
 const ui = { view:'play', unitId:null, sess:null, summary:null, learn:null, speak:null, filter:'learned', wb:{q:'',lv:'',st:'',ty:'',n:60}, openLv:{}, allUnits:{} };
 function go(view,extra={}){ if(!('allGames' in extra)){ ui.allGames=0; if(view==='play'&&typeof document!=='undefined') document.querySelectorAll('#app details[data-lobby]').forEach(d=>{ d.open=false; }); }   // v117: bấm tab Hôm nay = về màn một việc (thu mục Tự chọn)
-  if(view!=='game') stopTimer(); if(view!=='exam') exStop(); if(!['summary','gsum','quiz','session','gsess'].includes(view)) ui.streakUp=null; const nh=extra._nohist; delete extra._nohist; Object.assign(ui,{view},extra); if(HAS_TTS) try{speechSynthesis.cancel();}catch(e){} recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
+  if(view!=='game') stopTimer(); if(view!=='exam') exStop(); if(!['summary','gsum','quiz','session','gsess'].includes(view)) ui.streakUp=null; const nh=extra._nohist; delete extra._nohist; Object.assign(ui,{view},extra); sayStop(); recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
 /* ---------- Điều hướng: nút Quay lại của điện thoại/trình duyệt, hộp thoại, lượt dở ----------
    Mỗi lần go() ghi một mục lịch sử (history.pushState) nên nút Back về đúng màn trước, không thoát app.
    Màn “tạm” (đang làm lượt, kết quả, học thẻ…) không dựng lại được khi quay lại thì về màn cha gần nhất. */
@@ -1692,8 +1713,8 @@ const appealBox = a => { const s=ui.view==='gsess'?ui.gs:ui.sess; if(a.dunno||(s
   : a.picked!=null ? `<button class="btn ghost small" data-act="appeal" title="Nếu bạn chắc phương án mình chọn cũng đúng: ghi lại để người soạn sửa câu hỏi">Phương án tôi chọn cũng đúng?</button>` : ''; };
 const meter = (x,cls='') => `<div class="meter ${cls}"><i style="width:${Math.round(x*100)}%"></i></div>`;
 const SPK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>`;
-const audioBtn = (text,label='Nghe phát âm') => HAS_TTS ? `<button class="audio" data-say="${esc(text)}" aria-label="${label}" title="${label}">${SPK}</button>` : '';
-const slowBtn = (text,label='Nghe chậm') => HAS_TTS ? `<button class="audio slow" data-say="${esc(text)}" data-slow="1" aria-label="${label}" title="${label}">🐢</button>` : '';
+const audioBtn = (text,label='Nghe phát âm') => canSay(text) ? `<button class="audio" data-say="${esc(text)}" aria-label="${label}" title="${label}">${SPK}</button>` : '';
+const slowBtn = (text,label='Nghe chậm') => canSay(text) ? `<button class="audio slow" data-say="${esc(text)}" data-slow="1" aria-label="${label}" title="${label}">🐢</button>` : '';
 // Phiên âm có tô trọng âm: âm tiết có dấu ˈ in đậm, ˌ (trọng âm phụ) gạch chân; kèm số âm tiết.
 // Tách âm tiết IPA không có dấu chấm (4.326 từ): theo nhân nguyên âm (nguyên âm đôi, phụ âm âm tiết /n l m/ như trong stressOf),
 // dấu ˈ/ˌ là ranh giới, phụ âm giữa hai nguyên âm theo luật onset tối đa đơn giản. Chỉ để hiển thị và đếm âm tiết; dữ liệu giữ nguyên.
@@ -1879,7 +1900,7 @@ const LVS = ['A1','A2','B1','B2','C1','C2'];
 const REG_VI = {f:'Trang trọng', n:'Trung tính', i:'Thân mật'};
 const talkLv = () => ui.talkLv || currentUnit().level;
 const spk = (d,s) => d.names&&d.names[s] || (s==='A'?'Người A':'Người B');
-const audioBtnV = (t,k) => HAS_TTS ? `<button class="audio" data-say="${esc(t)}" data-v="${k}" aria-label="Nghe câu này">${SPK}</button>` : '';
+const audioBtnV = (t,k) => canSay(t,k) ? `<button class="audio" data-say="${esc(t)}" data-v="${k}" aria-label="Nghe câu này">${SPK}</button>` : '';
 const nt = s => String(s).toLowerCase().replace(/[’']/g,"'").replace(/[^a-z0-9' ]+/g,' ').replace(/\s+/g,' ').trim();
 
 /* ---------- Trình làm bài chung ----------
@@ -1941,9 +1962,9 @@ function viewQuiz(){
     <div class="bar ${(s.combo||0)>=3?'hot':''}"><i style="width:${(s.i/s.q.length)*100}%"></i></div></div>
   ${goldTag(s)}<section class="q">${it.tag?`<div class="row"><span class="pill accent">${esc(it.tag)}</span></div>`:''}
     ${it.q}
-    ${it.sayAll&&HAS_TTS?`<div class="row"><button class="btn" data-act="qzsayall">🎧 Nghe cả hội thoại</button><button class="btn" data-act="qzsayall" data-rx=".8">🐢 Chậm</button>${it.fast?'<button class="btn" data-act="qzsayall" data-rx="1.15">⚡ Nhanh như người bản xứ</button>':''}</div>`:''}
-    ${it.sayAll&&(a||!HAS_TTS)&&(it.lines||m.lines)?`<details class="panel" ${HAS_TTS?'':'open'}><summary>Lời thoại</summary>${(it.lines||m.lines).map(l=>`<p lang="en"><b>${esc(l.who)}:</b> ${esc(l.t)}</p>`).join('')}</details>`:''}
-    ${it.say&&HAS_TTS?`<div class="row"><button class="btn" data-say="${esc(it.say)}" data-v="${it.v||0}">${SPK} Nghe</button><button class="btn" data-say="${esc(it.say)}" data-slow="1" data-v="${it.v||0}">🐢 Nghe chậm</button></div>`:''}
+    ${it.sayAll&&canSayLines(it.lines||m.lines)?`<div class="row"><button class="btn" data-act="qzsayall">🎧 Nghe cả hội thoại</button><button class="btn" data-act="qzsayall" data-rx=".8">🐢 Chậm</button>${it.fast?'<button class="btn" data-act="qzsayall" data-rx="1.15">⚡ Nhanh như người bản xứ</button>':''}</div>`:''}
+    ${it.sayAll&&(a||!canSayLines(it.lines||m.lines))&&(it.lines||m.lines)?`<details class="panel" ${canSayLines(it.lines||m.lines)?'':'open'}><summary>Lời thoại</summary>${(it.lines||m.lines).map(l=>`<p lang="en"><b>${esc(l.who)}:</b> ${esc(l.t)}</p>`).join('')}</details>`:''}
+    ${it.say&&canSay(it.say,it.v||0)?`<div class="row"><button class="btn" data-say="${esc(it.say)}" data-v="${it.v||0}">${SPK} Nghe</button><button class="btn" data-say="${esc(it.say)}" data-slow="1" data-v="${it.v||0}">🐢 Nghe chậm</button></div>`:''}
     ${body}${fb}</section><p class="hint kbd-hint">Phím tắt: 1–4 để chọn, Enter để tiếp tục.</p>`;
 }
 
@@ -1980,7 +2001,7 @@ function viewDlg(){
   <section class="stack"><span class="eyebrow">${d.lv} · Hội thoại · ${esc(d.place)}</span><h1><span lang="en">${esc(d.title)}</span> <span class="muted" style="font-weight:400">· ${esc(d.vi)}</span></h1>
     <div class="row" style="gap:6px">${d.fn.filter(id=>FN[id]).map(id=>`<button class="btn small" data-fn="${id}">🗣 ${esc(FN[id].vi)}</button>`).join('')}<span class="pill">${REG_VI[d.reg]}</span>${r.best!=null?`<span class="pill ${r.best>=.8?'good':'accent'}">Cao nhất ${pct(r.best)}</span>`:''}${r.rp?'<span class="pill good">Đã đóng vai</span>':''}</div></section>
   <section class="panel stack">
-    <div class="row">${HAS_TTS?`<button class="btn" data-act="dlgplay">🎧 Nghe cả hội thoại</button><button class="btn" data-act="dlgplay" data-slow="1">🐢 Nghe chậm</button>`:''}<button class="btn ghost small" data-act="dlgvi">${vi?'Ẩn':'Hiện'} bản dịch</button></div>
+    <div class="row">${canSayLines(d.lines)?`<button class="btn" data-act="dlgplay">🎧 Nghe cả hội thoại</button><button class="btn" data-act="dlgplay" data-slow="1">🐢 Nghe chậm</button>`:''}<button class="btn ghost small" data-act="dlgvi">${vi?'Ẩn':'Hiện'} bản dịch</button></div>
     <div class="dlg">${d.lines.map(l=>`<div class="dl ${l.s}"><span class="who">${esc(spk(d,l.s))}</span><div><span lang="en">${esc(l.t)}</span> ${audioBtnV(l.t,l.s==='B'?1:0)}${vi?`<br><span class="hint">${esc(l.vi)}</span>`:''}</div></div>`).join('')}</div>
     <p class="hint">Nghe trước khi đọc. Sau đó bấm từng câu để nghe lại và nhại theo.</p>
   </section>
@@ -3287,9 +3308,9 @@ function viewSounds(){
   const done=SOUNDS.filter(x=>st.sounds[x.id]).length;
   return `${tabs}<section class="stack"><span class="eyebrow">Phát âm · ${SOUNDS.length} cặp âm người Việt hay nhầm</span><h1>Phân biệt cặp âm</h1>
     <p class="muted note">App đọc một từ, bạn chọn từ vừa nghe. Nghe ra được sự khác biệt là bước đầu để nói đúng. Mỗi bộ ${SND_N} câu, có mẹo đặt lưỡi và môi. App không chấm độ chuẩn giọng bạn; hãy nhại lại từng từ và so với giọng mẫu${HAS_ASR?', rồi bấm 🎙 để máy của trình duyệt cho biết nó nghe ra từ nào':''}. Đã luyện ${done}/${SOUNDS.length} bộ.</p></section>
-  ${HAS_TTS?'':'<section class="panel nag"><p>Trình duyệt này không có giọng đọc nên chưa luyện được phần này. Hãy dùng Chrome, Safari hoặc Edge bản mới, hoặc tải giọng English trong cài đặt điện thoại.</p></section>'}
+  ${HAS_TTS||CLIPS?'':'<section class="panel nag"><p>Trình duyệt này không có giọng đọc nên chưa luyện được phần này. Hãy dùng Chrome, Safari hoặc Edge bản mới, hoặc tải giọng English trong cài đặt điện thoại.</p></section>'}
   <div class="units">${SOUNDS.map(x=>{ const r=st.sounds[x.id], b=r?r.best:0;
-    return `<button class="unit" data-snd="${x.id}" ${HAS_TTS?'':'disabled'} aria-label="Bộ ${x.no}: ${esc(x.a)} và ${esc(x.b)}">
+    return `<button class="unit" data-snd="${x.id}" ${HAS_TTS||CLIPS?'':'disabled'} aria-label="Bộ ${x.no}: ${esc(x.a)} và ${esc(x.b)}">
       <span class="no">Bộ<b>${String(x.no).padStart(2,'0')}</b></span>
       <span class="t"><strong>${esc(x.a)} – ${esc(x.b)}</strong><span class="muted"><span lang="en">${esc(x.title)}</span> · ${esc(x.vi)} · ${x.pairs.length} cặp từ</span></span>
       <span class="m"><span>${r?`Cao nhất ${pct(b)}`:'Chưa luyện'}</span>${meter(b,b>=.9?'good':'')}</span>
@@ -3564,7 +3585,7 @@ async function recStart(){
   }catch(e){ REC.on=false; toast('Không mở được micro. Bạn vẫn có thể nói to rồi tự đánh giá.'); render(); }
 }
 function recStop(){ try{ if(REC.mr&&REC.mr.state!=='inactive') REC.mr.stop(); }catch(e){} }
-function recPlay(){ if(!REC.url) return; try{ if(HAS_TTS) speechSynthesis.cancel(); new Audio(REC.url).play(); }catch(e){} }
+function recPlay(){ if(!REC.url) return; try{ sayStop(); new Audio(REC.url).play(); }catch(e){} }
 function recReset(){ REC.keep=false; recStop(); if(REC.url){ try{URL.revokeObjectURL(REC.url);}catch(e){} } REC.url=null; REC.on=false; }
 
 /* ---------- Máy nghe giọng (docs/DANH-GIA-SO-VOI-THI-TRUONG.md, tiêu chí 6) ----------
@@ -3656,10 +3677,10 @@ function viewSpeak(){
     <p class="transcript ${show?'':'hide'}" aria-hidden="${show?'false':'true'}" lang="en">${show?highlight(w.ex,w):'&nbsp;'}</p>
     <p class="muted">${instr}</p>
     ${S.step>=4?asrBox('sp'+S.i,w.ex):''}
-    ${S.step===5?`<div class="row">${HAS_TTS?`<button class="btn" data-say="${esc(w.ex)}">${SPK} Nghe mẫu</button>`:''}${recBtns}</div>
+    ${S.step===5?`<div class="row">${canSay(w.ex)?`<button class="btn" data-say="${esc(w.ex)}">${SPK} Nghe mẫu</button>`:''}${recBtns}</div>
       ${REC.url?'<p class="hint">Nghe mẫu rồi nghe giọng bạn: so trọng âm, âm cuối và chỗ ngắt hơi.</p>':''}
       <div class="rate"><button class="btn" data-rate="hard">Khó</button><button class="btn" data-rate="ok">Được</button><button class="btn" data-rate="easy">Dễ</button></div>`
-      :`<div class="row">${HAS_TTS?`<button class="btn" data-say="${esc(w.ex)}">${SPK} Nghe</button><button class="btn" data-say="${esc(w.ex)}" data-slow="1">🐢 Nghe chậm</button>`:'<span class="hint">Trình duyệt này không có giọng đọc; hãy đọc câu mẫu thay cho bước nghe.</span>'}${recBtns}<button class="btn primary" data-act="spnext" ${REC.on?'disabled':''}>Bước tiếp →</button></div>`}
+      :`<div class="row">${canSay(w.ex)?`<button class="btn" data-say="${esc(w.ex)}">${SPK} Nghe</button><button class="btn" data-say="${esc(w.ex)}" data-slow="1">🐢 Nghe chậm</button>`:'<span class="hint">Trình duyệt này không có giọng đọc; hãy đọc câu mẫu thay cho bước nghe.</span>'}${recBtns}<button class="btn primary" data-act="spnext" ${REC.on?'disabled':''}>Bước tiếp →</button></div>`}
   </section>`;
 }
 
@@ -6066,10 +6087,10 @@ function viewSpk(){ const S=ui.spk; if(!S) return viewTalk();
       <section class="panel stack"><h3>Các câu mẫu</h3>${S.res.map(r=>`<p><span lang="en">${esc(r.t)}</span> <span class="muted num">${pct(r.p)}${r.asr?' · máy nghe':''}</span> ${HAS_TTS?`<button class="audio" data-say="${esc(r.t)}" aria-label="Nghe">${SPK}</button>`:''}</p>`).join('')}</section>`; }
   const x=S.q[S.i], key='sp'+S.i;
   return `${top}<section class="q"><p class="eyebrow">${esc(x.place)} · ${esc(REG_VI[x.reg])}</p>
-    <div class="dlg-ctx"><p class="dl A"><b>${esc(x.ctx.who)}:</b> <span lang="en">${esc(x.ctx.t)}</span> ${HAS_TTS?`<button class="audio" data-say="${esc(x.ctx.t)}" data-v="${x.ctx.v}" aria-label="Nghe">${SPK}</button>`:''}</p></div>
+    <div class="dlg-ctx"><p class="dl A"><b>${esc(x.ctx.who)}:</b> <span lang="en">${esc(x.ctx.t)}</span> ${canSay(x.ctx.t,x.ctx.v)?`<button class="audio" data-say="${esc(x.ctx.t)}" data-v="${x.ctx.v}" aria-label="Nghe">${SPK}</button>`:''}</p></div>
     <p class="hint">Bạn là <b>${esc(x.me)}</b>. Hãy nói bằng tiếng Anh ý này:</p><p class="prompt" style="font-size:20px">“${esc(x.vi)}”</p>
     ${HAS_ASR?asrBox(key,x.t,null,'Nói câu của bạn'):`<p class="hint">Nói to câu của bạn${HAS_REC?' (hoặc ghi âm)':''}, rồi xem câu mẫu để tự so.</p>`}
-    ${S.show?`<div class="panel stack"><span class="eyebrow">Câu mẫu</span><p class="prompt" lang="en" style="font-weight:600">${esc(x.t)}</p>${HAS_TTS?`<div class="row"><button class="btn" data-say="${esc(x.t)}" data-v="${x.v}">${SPK} Nghe câu mẫu</button><button class="btn" data-say="${esc(x.t)}" data-v="${x.v}" data-slow="1">🐢 Nghe chậm</button></div>`:''}
+    ${S.show?`<div class="panel stack"><span class="eyebrow">Câu mẫu</span><p class="prompt" lang="en" style="font-weight:600">${esc(x.t)}</p>${canSay(x.t,x.v)?`<div class="row"><button class="btn" data-say="${esc(x.t)}" data-v="${x.v}">${SPK} Nghe câu mẫu</button><button class="btn" data-say="${esc(x.t)}" data-v="${x.v}" data-slow="1">🐢 Nghe chậm</button></div>`:''}
       <p class="hint">Câu khác mẫu mà đúng ý vẫn tốt. Bạn nói được đến đâu?</p>
       <div class="row"><button class="btn primary" data-act="sprate" data-k="ok">Nói được</button><button class="btn" data-act="sprate" data-k="slow">Gần đúng / chậm</button><button class="btn" data-act="sprate" data-k="no">Chưa nói được</button></div></div>`
       :`<div class="row"><button class="btn primary" data-act="spshow">Xem câu mẫu</button></div>`}</section>`; }
@@ -6093,7 +6114,7 @@ function viewPdx(){ const P=ui.pdx; if(!P) return viewTalk(); const top=`<div cl
   const x=P.q[P.i], key='pdx'+P.i, r=ASR.key===key&&ASR.res;
   return `${top}<section class="q"><p class="eyebrow">${esc(x.a)} – ${esc(x.b)} · cặp “${esc(x.title)}”</p><p class="prompt" lang="en" style="font-size:40px">${esc(x.w)} <span class="muted" style="font-size:20px">${esc(x.ipa)}</span></p>
     <p class="hint">Nói to từ này. Dễ nhầm với “<span lang="en">${esc(x.o)}</span>” ${esc(x.oipa)}.</p>
-    ${HAS_TTS?`<div class="row"><button class="btn" data-say="${esc(x.w)}">${SPK} Nghe mẫu</button></div>`:''}
+    ${canSay(x.w)?`<div class="row"><button class="btn" data-say="${esc(x.w)}">${SPK} Nghe mẫu</button></div>`:''}
     ${asrBox(key,x.w,x.o,'Nói từ này')}
     <div class="row"><button class="btn ${r?'primary':''}" data-act="pdxnext" ${r?'':'data-skip="1"'}>${r?'Tiếp':'Bỏ qua'}</button></div></section>`; }
 
@@ -6209,7 +6230,7 @@ function viewVx(){ const V=ui.vx; if(!V) return viewGames?viewGames():viewTalk()
     <p class="hint">Mỗi phần: ghi âm để nghe lại, hoặc nói để máy chép lời (đếm tốc độ, vốn từ, từ nối, lỗi hay gặp). Rồi tự chấm 5 tiêu chí. Kết quả là ước tính.</p></section>
     <div class="row"><button class="btn primary" data-act="vxstep" data-s="s1">Bắt đầu Phần 1</button></div>`;
   if(/^s[123]$/.test(V.step)){ const k=V.step, nx={s1:'s2',s2:'s3',s3:'sres'}[k];
-    const body=k==='s1'?S.p1.map(([t,qs])=>`<div class="stack" style="gap:4px"><b lang="en">${esc(t)}</b>${qs.map(q=>`<p lang="en">• ${esc(q)} ${HAS_TTS?`<button class="audio" data-say="${esc(q)}" aria-label="Nghe">${SPK}</button>`:''}</p>`).join('')}</div>`).join('')
+    const body=k==='s1'?S.p1.map(([t,qs])=>`<div class="stack" style="gap:4px"><b lang="en">${esc(t)}</b>${qs.map(q=>`<p lang="en">• ${esc(q)} ${canSay(q)?`<button class="audio" data-say="${esc(q)}" aria-label="Nghe">${SPK}</button>`:''}</p>`).join('')}</div>`).join('')
       :k==='s2'?`<p lang="en" style="font-size:17px">${esc(S.p2.sit)}</p><div class="row" style="gap:6px">${S.p2.opts.map(o=>`<span class="pill" lang="en">${esc(o)}</span>`).join('')}</div>`
       :`<p lang="en" style="font-size:19px;font-weight:700">${esc(S.p3.topic)}</p><div class="row" style="gap:6px">${S.p3.ideas.map(o=>`<span class="pill" lang="en">${esc(o)}</span>`).join('')}<span class="pill">+ ý của bạn</span></div><p class="hint">Câu hỏi thêm:</p>${S.p3.fu.map(q=>`<p lang="en">• ${esc(q)}</p>`).join('')}`;
     return `${top}<section class="stack"><span class="eyebrow">Phần ${k[1]} · ${k==='s1'?'Giao tiếp xã hội':k==='s2'?'Thảo luận giải pháp':'Phát triển chủ đề'}</span>${body}</section>
@@ -6289,7 +6310,7 @@ function viewIx(V){ if(!WS){ wsLoad().then(()=>{ if(ui.view==='vx') render(); })
     <p class="muted note"><b>Part 1</b> hỏi đáp chủ đề quen thuộc (4–5 phút) · <b>Part 2</b> nói 1–2 phút theo thẻ đề (1 phút chuẩn bị) · <b>Part 3</b> thảo luận (4–5 phút).</p>
     <p class="hint">Mỗi phần: ghi âm để nghe lại, hoặc nói để máy chép lời (đếm tốc độ, vốn từ, từ nối, lỗi hay gặp). Cuối bài đọc bài mẫu Part 2 band 5,0 / 6,5 / 7,5 có chú thích rồi tự chấm 4 tiêu chí. Kết quả là ước tính.</p></section>
     <div class="row"><button class="btn primary" data-act="vxstep" data-s="s1">Bắt đầu Part 1</button></div>`;
-  if(/^s[123]$/.test(V.step)){ const k=V.step, nx={s1:'s2',s2:'s3',s3:'sres'}[k], q=x=>`<p lang="en">• ${esc(x)} ${HAS_TTS?`<button class="audio" data-say="${esc(x)}" aria-label="Nghe">${SPK}</button>`:''}</p>`;
+  if(/^s[123]$/.test(V.step)){ const k=V.step, nx={s1:'s2',s2:'s3',s3:'sres'}[k], q=x=>`<p lang="en">• ${esc(x)} ${canSay(x)?`<button class="audio" data-say="${esc(x)}" aria-label="Nghe">${SPK}</button>`:''}</p>`;
     const body=k==='s1'?S.p1.map(([t,qs])=>`<div class="stack" style="gap:4px"><b lang="en">${esc(t)}</b>${qs.map(q).join('')}</div>`).join('')
       :k==='s2'?`<section class="panel stack" lang="en"><b style="font-size:17px">${esc(S.p2.card)}</b><p style="margin:0">You should say:</p>${S.p2.bul.map(b=>`<p style="margin:0">• ${esc(b)}</p>`).join('')}</section><p class="hint">${esc(S.p2.vi)}</p>`
       :S.p3.map(q).join('');
@@ -6499,7 +6520,7 @@ const paClock = (h,m) => `${h}:${String(m).padStart(2,'0')}`;
 const paYear = y => y<2000?`${numWord(Math.floor(y/100))} ${numWord(y%100)}`:y<2010?`two thousand and ${numWord(y%10)}`:`twenty ${numWord(y%100)}`;
 const paSpellOut = w => { const u=w.toUpperCase().split(''), out=[]; for(let i=0;i<u.length;i++){ if(u[i]===u[i+1]){ out.push('double '+u[i]); i++; } else out.push(u[i]); } return out.join(', '); };
 function paQ(say,hint,plain,extra={}){ // câu nghe: có giọng đọc thì phát tự động, không có thì hiện chữ
-  return {say:HAS_TTS?say:null,auto:HAS_TTS,plain,q:`<p class="eyebrow">${HAS_TTS?'Nghe':'Đọc'}</p>${HAS_TTS?'':`<p class="prompt" lang="en">${esc(say)}</p>`}<p class="hint">${hint}</p>`,...extra}; }
+  const ok=canSay(say); return {say:ok?say:null,auto:ok,plain,q:`<p class="eyebrow">${ok?'Nghe':'Đọc'}</p>${ok?'':`<p class="prompt" lang="en">${esc(say)}</p>`}<p class="hint">${hint}</p>`,...extra}; }
 function paItems(id){
   const it=[], mc=(say,hint,right,opts,note,plain)=>it.push({...paQ(say,hint,plain||say),t:'mc',opts,ans:opts.indexOf(right),note:note||''});
   const ty=(say,hint,accept,note)=>it.push({...paQ(say,hint,say),t:'typed',accept,hint:note||''});
@@ -6545,7 +6566,7 @@ function paItems(id){
 QZ.pa={bag:'pa',bump:'sound',gen:id=>paItems(id)};
 const startPa = id => startQuiz('pa',id,paItems(id),{title:PA[id].vi,label:'Khởi động Pre-A1',eyebrow:'Pre-A1 · '+PA[id].en,back:'prea1',backExtra:{paId:id},backLabel:'Về bài này'});
 function paCards(id){ // bảng thẻ nghe của từng bài
-  const chip=(t,sub,say)=>`<button class="wbtn" ${HAS_TTS?`data-say="${esc(say||t)}"`:''} lang="en" style="display:inline-grid;gap:2px;text-align:center;min-width:64px"><b>${esc(t)}</b>${sub?`<span class="hint" style="font-size:12px">${esc(sub)}</span>`:''}</button>`;
+  const chip=(t,sub,say)=>`<button class="wbtn" ${canSay(say||t)?`data-say="${esc(say||t)}"`:''} lang="en" style="display:inline-grid;gap:2px;text-align:center;min-width:64px"><b>${esc(t)}</b>${sub?`<span class="hint" style="font-size:12px">${esc(sub)}</span>`:''}</button>`;
   const wrap=h=>`<div class="row" style="gap:6px">${h}</div>`;
   if(id==='pa-abc') return wrap(PA_LET.map(L=>chip(L+' '+L.toLowerCase(),'/'+PA_LIPA[L]+'/','Letter '+L+'.')).join(''));
   if(id==='pa-phon') return wrap(PA_VOW.map(([l,ipa,ex])=>chip(l+' '+ipa,ex,ex.split(', ').join('. ')+'.')).join(''))+wrap(PA_PHON.slice(0,4).map(g=>chip(g.slice(0,3).join(' – '),'đổi nguyên âm, đổi từ',g.slice(0,3).join('. ')+'.')).join(''));
@@ -6562,7 +6583,7 @@ function viewPreA1(){
     return `<button class="btn ghost back" data-act="palist">← Khởi động Pre-A1</button>
     <section class="stack"><span class="eyebrow">Pre-A1 · <span lang="en">${esc(x.en)}</span></span><h1>${x.ic} ${esc(x.vi)}</h1>${r?`<div class="row"><span class="pill ${r.best>=.8?'good':'accent'}">Cao nhất ${pct(r.best)}</span></div>`:''}</section>
     ${x.tip.map(t=>`<p class="tip">${esc(t)}</p>`).join('')}
-    <section class="panel stack"><h3>${HAS_TTS?'Bấm để nghe':'Bảng tham khảo'}</h3>${paCards(id)}</section>
+    <section class="panel stack"><h3>${HAS_TTS||CLIPS?'Bấm để nghe':'Bảng tham khảo'}</h3>${paCards(id)}</section>
     <div class="row"><button class="btn primary" data-act="pago" data-id="${id}">Luyện bài này · 10 câu</button></div>`; }
   const done=PREA1.filter(x=>((st.pa||{})[x.id]||{}).best>=.8).length;
   return `<button class="btn ghost back" data-go="path">← Lộ trình</button>
@@ -7527,7 +7548,7 @@ document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closes
   switch(d.act){
     case 'cvgo': return startConv(d.id);
     case 'cvagain': return startConv(d.id);
-    case 'cvquit': try{ speechSynthesis.cancel(); }catch(x){} return go('talk');
+    case 'cvquit': sayStop(); return go('talk');
     case 'cvplay': { const C=ui.cv, c=CVI[C.id]; return say((C.pre?C.pre+' ':'')+c.n[C.node].a,d.slow==='1',c.k); }
     case 'cvshow': ui.cv.show=true; return render();
     case 'cvvi': ui.cv.vi=!ui.cv.vi; return render();
@@ -7683,7 +7704,7 @@ document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closes
     case 'eiplay': return eiPlay();
     case 'eiself': ui.ei.self=+d.v; return render();
     case 'einext': return eiNext();
-    case 'eiquit': clearTimeout(ui.ei&&ui.ei._t); try{ speechSynthesis.cancel(); }catch(x){} return go('talk');
+    case 'eiquit': clearTimeout(ui.ei&&ui.ei._t); sayStop(); return go('talk');
   } });
 // Tự phát câu khi sang câu mới; bài học toàn màn hình.
 const _render32a = render; render = function(){ _render32a(); try{ if(ui.view!=='ei'||!ui.ei) return; document.body.classList.add('lesson'); const E=ui.ei;
@@ -8463,7 +8484,7 @@ function eProbe(node){ const out=[], pick=(xs,n)=>shuffle(xs.slice()).slice(0,n)
     return out; }
   // v70 (bot L02): nghe phân biệt cặp âm trong tháp — 3 câu, phát bằng giọng đọc của máy; máy không đọc được thì không có câu nghe
   // (không hỏi thứ người học không thể nghe). Mức 2 = phân biệt được khi nghe (mức mặc định của nút âm).
-  if(node.startsWith('ph:')){ const s=SOUNDS.find(x=>x.id===node.slice(3)); if(!s||!HAS_TTS) return out;
+  if(node.startsWith('ph:')){ const s=SOUNDS.find(x=>x.id===node.slice(3)); if(!s||!(HAS_TTS||s.pairs.every(p=>hasClip(p[0])&&hasClip(p[2])))) return out;
     // v76: thêm phương án thứ 3 (từ của cặp âm khác) — 2 phương án thì đoán mò trúng 50%, đủ để "Đạt" nhờ may (báo cáo bot L03).
     const other=SOUNDS.filter(x=>x.id!==s.id).flatMap(x=>x.pairs.flatMap(q=>[q[0],q[2]]));
     for(const i of pick(s.pairs.map((_,j)=>j),3)){ const p=s.pairs[i], k=Math.random()<.5?0:1, w=p[k*2], x=pick(other.filter(o=>o!==p[0]&&o!==p[2]),1)[0], opts=shuffle([p[0],p[2],...(x?[x]:[])]);
@@ -8496,7 +8517,7 @@ function eFn(node){ if(!node.startsWith('fn:')) return []; const f=FN[node.slice
   const out=[];
   f.exps.forEach((e,i)=>{
     const vis=shuffle([...new Set(others.map(x=>x.vi))].filter(v=>v.toLowerCase()!==e.vi.toLowerCase())).slice(0,3), o1=shuffle([e.vi,...vis]);
-    out.push({id:`fn:${f.id}:h:${i}`,level:2,g:1/o1.length,kind:'hear',prompt:HAS_TTS?'🎧 Khách vừa nói gì?':'📖 Khách nói gì? (máy không có giọng đọc: đọc câu)',say:HAS_TTS?e.t:undefined,en:e.t,vi:e.vi,opts:o1,ans:o1.indexOf(e.vi),why:f.tip||'',react:o1.map(o=>o===e.vi?'ok':'off')});
+    out.push({id:`fn:${f.id}:h:${i}`,level:2,g:1/o1.length,kind:'hear',prompt:canSay(e.t)?'🎧 Khách vừa nói gì?':'📖 Khách nói gì? (máy không có giọng đọc: đọc câu)',say:canSay(e.t)?e.t:undefined,en:e.t,vi:e.vi,opts:o1,ans:o1.indexOf(e.vi),why:f.tip||'',react:o1.map(o=>o===e.vi?'ok':'off')});
     if(e.reg==='n'&&f.exps.length<3) return;
     const sameWrongReg=f.exps.filter(x=>x.reg!==e.reg&&x.reg!=='n'&&e.reg!=='n').map(x=>x.t).slice(0,1);
     const ws=[...sameWrongReg,...shuffle(others.map(x=>x.t).filter(t=>nt(t)!==nt(e.t)))].slice(0,3), o2=shuffle([e.t,...ws]);
@@ -8607,7 +8628,7 @@ const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
 render();
-window.ELREADY=true;
+window.ELREADY=true; clipsLoad();
 if(window.ELPEND){ const p=window.ELPEND; window.ELPEND=null; setTimeout(()=>{ const b=document.querySelector(p.act?`#app [data-act="${p.act}"]`:`#app [data-go="${p.go}"]`); if(b) b.click(); },0); }
 detailStart();
 // Đồng bộ (nếu người học đã bật): khi mở app, khi quay lại app sau ≥ 1 phút, và mời dùng link #sync=… mở từ máy khác.

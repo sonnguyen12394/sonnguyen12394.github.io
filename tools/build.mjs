@@ -148,6 +148,10 @@ if (!existsSync(P(coreName)) || !readFileSync(P(coreName)).equals(Buffer.from(cc
 setLine('app.js', /^const EXAM_JS = .*$/m, `const EXAM_JS = '${examName}';   // tools/build.mjs ghi`);
 setLine('app.js', /^const ENGINE_JS = .*$/m, `const ENGINE_JS = '${engName}';   // tools/build.mjs ghi`);
 if (wsFile) setLine('app.js', /^const WS_JSON = .*$/m, `const WS_JSON = '${wsFile}';   // tools/build.mjs ghi`);
+// v120 Âm thanh thu sẵn: danh mục khoá có tệp (a/c/index.<băm>.json, tools/clips-audio.cjs tạo). Chưa thu thì để trống (app dùng giọng máy).
+const clipsIdx = existsSync(P('a/c')) ? readdirSync(P('a/c')).filter(f => /^index\.[0-9a-f]{10}\.json$/.test(f)) : [];
+if (clipsIdx.length > 1) throw new Error(`a/c: có ${clipsIdx.length} danh mục index.*.json, chỉ được một`);
+setLine('app.js', /^const CLIPS_IDX = .*$/m, `const CLIPS_IDX = '${clipsIdx.length ? 'a/c/' + clipsIdx[0] : ''}';   // tools/build.mjs ghi (danh mục khoá có tệp, tên có băm nội dung)`);
 
 // 3. Số bản phát hành
 const app = readFileSync(P('app.js'), 'utf8');
