@@ -1,5 +1,7 @@
 # Bảng chấm app theo spec v111 (thang 10)
 
+Đây là **bộ tiêu chí chính thức** của chương "Mô hình học v111" trong `docs/SPEC.md` (mục 7). Mỗi nhóm ghi rõ nó kiểm mục nào của spec. Chấm lại sau mỗi bản phát hành; không đổi mốc 10 khi chưa hỏi người sáng lập.
+
 Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + spec v111). Căn cứ: code, test, báo cáo bot người học (`reports/learners/`), `docs/GAME-CRITERIA.md`. Chưa có số liệu người học thật, nên mọi điểm về hiệu quả và độ vui là **ước tính**.
 
 ## Cách chấm
@@ -14,26 +16,26 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 
 ## Tổng quan
 
-| Nhóm | Trọng số | Số tiêu chí | Điểm |
-| --- | --- | --- | --- |
-| A · Game hoá mọi chức năng | 20 | 16 | **5,3** |
-| B · Đầu vào và mục tiêu | 10 | 6 | **4,7** |
-| C · Bản đồ và lộ trình | 10 | 6 | **6,3** |
-| D · Kết luận đạt và chống học tủ | 15 | 6 | **1,7** |
-| E · Độ phủ đề tham chiếu (A2 Key) | 10 | 6 | **4,0** |
-| F · Hiển thị tiến độ | 6 | 5 | **6,8** |
-| G · Bằng chứng và dữ liệu | 8 | 7 | **7,6** |
-| H · Trải nghiệm game | 9 | 6 | **5,2** |
-| I · Minh bạch và đạo đức | 3 | 3 | **8,0** |
-| J · Kỹ thuật | 4 | 5 | **6,6** |
-| K · Kiểm chứng hiệu quả | 5 | 3 | **3,3** |
-| **Chung** | 100 | 69 | **4,9** (4,95) |
+| Nhóm | Kiểm mục spec | Trọng số | Số tiêu chí | Điểm |
+| --- | --- | --- | --- | --- |
+| A · Game hoá mọi chức năng | Mô hình học §5; mục "Game hoá mọi chức năng" | 20 | 16 | **5,3** |
+| B · Đầu vào và mục tiêu | Mô hình học §1, §2 | 10 | 7 | **4,3** |
+| C · Bản đồ và lộ trình | Mô hình học §3; Quyết định kỹ thuật §6 | 10 | 6 | **6,3** |
+| D · Kết luận đạt và chống học tủ | Mô hình học §3 (chống học tủ), §4; mục "Đề sát hạch" | 15 | 7 | **1,6** |
+| E · Độ phủ đề tham chiếu (A2 Key) | Mục "Đề sát hạch" (đặc tả bài tham chiếu) | 10 | 6 | **4,0** |
+| F · Hiển thị tiến độ | Mục "Hợp đồng hiển thị tiến độ" | 6 | 5 | **6,8** |
+| G · Bằng chứng và dữ liệu | Mô hình học §6 | 8 | 7 | **7,6** |
+| H · Trải nghiệm game | GAME-CRITERIA §10 | 9 | 6 | **5,2** |
+| I · Minh bạch và đạo đức | Tầm nhìn; luật 3 của "Game hoá" | 3 | 3 | **8,0** |
+| J · Kỹ thuật | Rủi ro đã ghi nhận | 4 | 5 | **6,6** |
+| K · Kiểm chứng hiệu quả | Giới hạn thực tế; v2.4 §XXIII | 5 | 3 | **3,3** |
+| **Chung** | | 100 | 71 | **4,9** |
 
 ### Đọc nhanh: gốc rễ của điểm
 
 1. **Nền móng mạnh, phần nổi chưa theo spec mới.**
    - Phần nền đang tốt: kiến trúc bằng chứng (G 7,6), lộ trình (C 6,3), minh bạch (I 8,0).
-   - Phần quyết định "đậu được chưa" gần như chưa có (D 1,7), vì spec v111 vừa chốt hôm nay.
+   - Phần quyết định "đậu được chưa" gần như chưa có (D 1,6), vì spec v111 vừa chốt hôm nay.
 2. **Game hoá mới làm được nửa đường (A 5,3).**
    - Đã có vỏ game: học từ, ôn, ngữ pháp, chẩn đoán.
    - Ba chỗ người học còn bị hỏi thẳng như đi thi:
@@ -48,6 +50,8 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 5. **Chưa kiểm bằng người thật (H6 = 2, K2 = 2).** Mọi điểm về độ vui và hiệu quả là tự chấm.
 
 ## A · Game hoá mọi chức năng: 5,3 / 10 (trọng số 20)
+
+Kiểm: Mô hình học §5; mục "Game hoá mọi chức năng".
 
 | # | Tiêu chí | Mốc 10 | Điểm | Căn cứ hiện tại | Để lên điểm |
 | --- | --- | --- | --- | --- | --- |
@@ -68,7 +72,9 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 | A15 | Màn chơi không dùng chữ thi / đề / kiểm tra | Không còn chữ nào như vậy trên đường chính | **4** | Còn "Bắt đầu dò", "Kiểm tra để bỏ qua" (`today.ts`), "Bài kiểm tra cấp" (tab Học); tab "Ôn thi" đã ẩn | Đổi lời theo truyện; ghi lại quy ước vào AUTHORING |
 | A16 | Luật game không làm bẩn phép đo | Độ khó game tách khỏi câu hỏi; lượt đo không ép giờ | **8** | Tim, xúc xắc, hình khối độc lập với câu (P14), trừ đoán mò; trò cũ "Tốc độ 60 giây" vẫn ép giờ | Trò ép giờ không ghi bằng chứng mức cao |
 
-## B · Đầu vào và mục tiêu: 4,7 / 10 (trọng số 10)
+## B · Đầu vào và mục tiêu: 4,3 / 10 (trọng số 10)
+
+Kiểm: Mô hình học §1, §2.
 
 | # | Tiêu chí | Mốc 10 | Điểm | Căn cứ hiện tại | Để lên điểm |
 | --- | --- | --- | --- | --- | --- |
@@ -78,8 +84,11 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 | B4 | Kịp hạn hay không | Có hạn thì báo số giờ cần và có kịp không | **3** | `plan.ts` (giờ cần theo cấp, cảnh báo không kịp) chỉ dùng cho mục tiêu thi đang ẩn | Dùng cho CEFR khi người học đặt hạn ở hồ sơ |
 | B5 | Phần đoán từ xếp lớp không thành Đạt giả | Phần suy ra tách khỏi Đạt thật, kiểm dần | **7** | Claim tách khỏi Đạt; bot L01: Claim sai giảm 66 → 14 sau 44 ngày | Xác nhận Claim nhanh hơn |
 | B6 | Câu xếp lớp không làm hỏng câu đo sau | Câu dùng ở đầu vào không trùng câu trận cổng | **2** | Chưa có cơ chế chia kho; chỉ 12 câu của bộ đo được giữ riêng | Chia kho khi soạn trận cổng |
+| B7 | Đích chia thành chặng theo khu | Mỗi cấp là một khu có cổng; người học thấy mình đang ở khu nào, còn mấy khu | **2** | Truyện có 3 khu nhưng không gắn với cấp CEFR (`story.ts`: cổng đếm 2 / 5 / 9 kỹ năng vững) | Khu = cấp (v113) |
 
 ## C · Bản đồ và lộ trình: 6,3 / 10 (trọng số 10)
+
+Kiểm: Mô hình học §3; Quyết định kỹ thuật §6.
 
 | # | Tiêu chí | Mốc 10 | Điểm | Căn cứ hiện tại | Để lên điểm |
 | --- | --- | --- | --- | --- | --- |
@@ -90,7 +99,9 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 | C5 | Dùng được ở câu mới (transfer) | Đúng ở câu lạ ngang câu đã gặp | **5** | Đạt CEFR đòi transfer (v65), nhưng bot L01: "ngoài game vẫn thấp hơn trong game" (L01-59 = 5) | Đèn báo học tủ; thêm câu transfer |
 | C6 | Bộ não chọn game | Một nút Chơi tiếp, lý do đúng nhu cầu | **7** | `director.ts`: 3 chặng / ngày, lý do theo nhu cầu, đổi dạng | Thêm nhu cầu "hụt theo đề" |
 
-## D · Kết luận đạt và chống học tủ: 1,7 / 10 (trọng số 15)
+## D · Kết luận đạt và chống học tủ: 1,6 / 10 (trọng số 15)
+
+Kiểm: Mô hình học §3 (chống học tủ), §4; mục "Đề sát hạch".
 
 | # | Tiêu chí | Mốc 10 | Điểm | Căn cứ hiện tại | Để lên điểm |
 | --- | --- | --- | --- | --- | --- |
@@ -100,8 +111,11 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 | D4 | Xác suất đậu kèm sai số | P(đậu) theo IRT ± sai số, ngưỡng 80% | **1** | Chỉ có cho IELTS / VSTEP đang ẩn (`readiness.ts`) | Dùng lại cho trận cổng |
 | D5 | Chốt dự đoán và đối chiếu | Ghi dự đoán trước, so với điểm thật | **3** | Có chỗ ghi điểm thi thật và cặp điểm (`el_pair`) cho mục tiêu thi; chưa cho CEFR | Ở tuỳ chọn hồ sơ |
 | D6 | Xác nhận ngoài là tuỳ chọn ở hồ sơ | Ai cần chứng chỉ mới thấy | **1** | Chưa có | v113 |
+| D7 | Trận cổng mở đúng lúc | Chỉ mở khi bản đồ báo gần đủ; không phí đề lạ | **1** | Chưa có trận cổng | Luật mở cổng theo tham số cấu hình (v113) |
 
 ## E · Độ phủ đề tham chiếu (A2 Key): 4,0 / 10 (trọng số 10)
+
+Kiểm: Mục "Đề sát hạch" (đặc tả bài tham chiếu).
 
 | # | Tiêu chí | Mốc 10 | Điểm | Căn cứ hiện tại | Để lên điểm |
 | --- | --- | --- | --- | --- | --- |
@@ -114,6 +128,8 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 
 ## F · Hiển thị tiến độ: 6,8 / 10 (trọng số 6)
 
+Kiểm: Mục "Hợp đồng hiển thị tiến độ".
+
 | # | Tiêu chí | Mốc 10 | Điểm | Căn cứ hiện tại | Để lên điểm |
 | --- | --- | --- | --- | --- | --- |
 | F1 | Mục tiêu đầu sảnh | Sảnh mở đầu bằng mục tiêu + tiến độ thật | **8** | Thẻ 🎯 Mục tiêu (v110). **Đang ở nhánh, chưa gộp vào bản chạy thật**; bản chạy thật = 2 | Gộp PR v110 |
@@ -123,6 +139,8 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 | F5 | Thưởng game không lấn tiến độ thật | Xu, ★ không nổi hơn tiến bộ thật | **6** | v110 đưa tiến độ lên trên; bot L01: "xu vẫn lớn hơn nhiều so với tiến bộ thật" (L01-63) | Gắn mở khu với trận cổng |
 
 ## G · Bằng chứng và dữ liệu: 7,6 / 10 (trọng số 8)
+
+Kiểm: Mô hình học §6.
 
 | # | Tiêu chí | Mốc 10 | Điểm | Căn cứ hiện tại | Để lên điểm |
 | --- | --- | --- | --- | --- | --- |
@@ -136,6 +154,8 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 
 ## H · Trải nghiệm game: 5,2 / 10 (trọng số 9)
 
+Kiểm: GAME-CRITERIA §10.
+
 | # | Tiêu chí | Mốc 10 | Điểm | Căn cứ hiện tại | Để lên điểm |
 | --- | --- | --- | --- | --- | --- |
 | H1 | Lõi game tự hấp dẫn | Bỏ tiếng Anh đi vẫn muốn chơi | **6** | Tự chấm M1: Vòng Chữ 7, Mỏ Chữ 7, Bài Câu 6 (GAME-CRITERIA §10); **chưa có người chơi thật chấm** | Buổi chơi thử theo PLAYTEST.md |
@@ -147,6 +167,8 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 
 ## I · Minh bạch và đạo đức: 8,0 / 10 (trọng số 3)
 
+Kiểm: Tầm nhìn; luật 3 của "Game hoá".
+
 | # | Tiêu chí | Mốc 10 | Điểm | Căn cứ hiện tại | Để lên điểm |
 | --- | --- | --- | --- | --- | --- |
 | I1 | Không dark pattern | Không trừ khi sai, không ép bằng nỗi sợ mất | **8** | Năng lượng trừ theo lượt chứ không theo lỗi; lượt đo không tốn năng lượng | — |
@@ -154,6 +176,8 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 | I3 | Nói thật giới hạn | Không hứa quá khả năng | **9** | Giới hạn thực tế ghi thẳng trong spec và trên màn hình (Viết / Nói chỉ tin cậy Vừa) | — |
 
 ## J · Kỹ thuật: 6,6 / 10 (trọng số 4)
+
+Kiểm: Rủi ro đã ghi nhận.
 
 | # | Tiêu chí | Mốc 10 | Điểm | Căn cứ hiện tại | Để lên điểm |
 | --- | --- | --- | --- | --- | --- |
@@ -164,6 +188,8 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 | J5 | Dễ sửa | Mô-đun nhỏ, rõ ranh giới | **4** | `main.ts` 166 KB, `app.js` một khối lớn | Tách main.ts theo game |
 
 ## K · Kiểm chứng hiệu quả: 3,3 / 10 (trọng số 5)
+
+Kiểm: Giới hạn thực tế; v2.4 §XXIII.
 
 | # | Tiêu chí | Mốc 10 | Điểm | Căn cứ hiện tại | Để lên điểm |
 | --- | --- | --- | --- | --- | --- |
@@ -180,12 +206,12 @@ Chấm ngày 11/10/2026, trên nhánh `claude/v110-goal-progress` (gồm v110 + 
 | Bỏ chữ thi / đề / kiểm tra khỏi đường chính | A15 (4 → 8) | nhỏ | Đổi lời, thêm quy ước vào AUTHORING |
 | v112 Chương mở đầu + chọn mục tiêu trong truyện | A1, A2, A3, B1, B3 | vừa | Dùng lại bài dò + IRT Nghe / Đọc sẵn có |
 | Bộ não chọn game cân theo hụt của đề | C4 (3 → 7) | vừa | Thêm nhu cầu "hụt theo đề" vào `director.ts` |
-| v113 Trận cổng A2 (2 đề lạ) | A12, D1, D2, D4, D6, E6, F3 | lớn (nội dung) | Nút cổ chai là soạn câu mới qua phép thử đoán mò |
+| v113 Trận cổng A2 (2 đề lạ) | A12, B7, D1, D2, D4, D6, D7, E6, F3 | lớn (nội dung) | Nút cổ chai là soạn câu mới qua phép thử đoán mò |
 | Buổi chơi thử thật | H1, H6, K2 | nhỏ với app, cần thời gian người sáng lập | Theo `docs/PLAYTEST.md` |
 | v114 Kho báu ẩn | A13 | vừa | Dời bộ đo 12 câu vào game |
 | Tách `app.js` / `main.ts` | J2, J5 | lớn | Không gấp với 1 người dùng |
 
-Ước tính (tính lại từ bảng, giả định mỗi việc đạt mức điểm ghi trong cột "Để lên điểm"): làm xong đèn báo học tủ, bỏ chữ thi, v112 và bộ não cân theo đề thì điểm chung lên khoảng 5,5; thêm trận cổng A2 thì khoảng 6,5. Gộp PR v110 không đổi điểm của bảng này (bảng đã chấm trên nhánh), nhưng nâng bản chạy thật. Phần còn lại phụ thuộc nội dung và số liệu người thật.
+Ước tính (tính lại từ bảng, giả định mỗi việc đạt mức điểm ghi trong cột "Để lên điểm"): làm xong đèn báo học tủ, bỏ chữ thi, v112 và bộ não cân theo đề thì điểm chung lên khoảng 5,4; thêm trận cổng A2 thì khoảng 6,5. Gộp PR v110 không đổi điểm của bảng này (bảng đã chấm trên nhánh), nhưng nâng bản chạy thật. Phần còn lại phụ thuộc nội dung và số liệu người thật.
 
 ## Giới hạn của bảng chấm
 
