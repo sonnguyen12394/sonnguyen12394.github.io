@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { goalSummary, viewGoalBar, goalLine, goalText, NEAR_N } from '../../src/engine/goalbar.ts';
+import { goalSummary, viewGoalBar, viewGoalSlim, goalLine, goalText, NEAR_N } from '../../src/engine/goalbar.ts';
 import type { ECtx } from '../../src/engine/views.ts';
 
 const esc = (s: unknown) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -25,7 +25,6 @@ test('v110 thẻ Mục tiêu: tên mục tiêu, số vững thật, +tuần, g�
   assert.match(h, /\+3 tuần này/);
   assert.match(h, /Gần đạt nhất:<\/b> Năng lực 1; Năng lực 2; Năng lực 3/);
   assert.match(h, /và 2 năng lực khác/);
-  assert.match(h, /data-r="goal\/cefr-a2"/);
   assert.match(h, /2\/9 năng lực của mục tiêu đã Đạt · 4 phần đã học đang sắp quên/);
   assert.match(h, /5 kỹ năng app đoán bạn đã biết/);
   assert.doesNotMatch(h, /<p[ >]/, 'trong nút không có thẻ p');
@@ -62,4 +61,17 @@ test('v111 thẻ Mục tiêu: báo phần học tủ và nhịp theo hạn chót
   assert.match(viewGoalBar(ctx, goalSummary({ ...base, due: { days: 5, mins: 900 } })), /180 phút mỗi ngày \(nhiều: cân nhắc lùi hạn\)/);
   assert.match(viewGoalBar(ctx, goalSummary({ ...base, due: { days: 0, mins: 900 } })), /Đã tới hạn/);
   assert.doesNotMatch(viewGoalBar(ctx, goalSummary(base)), /⏰|⚠/);
+});
+
+test('v116 thẻ Mục tiêu gọn ở sảnh: một con số chính, chạm mở trang mục tiêu; chỉ thêm dòng khi phải làm gì đó', () => {
+  const ca = { ...base, id: 'cefr-a1', vi: 'Tiếng Anh tổng quát A1' };
+  const h = viewGoalSlim(ctx, goalSummary(ca));
+  assert.match(h, /🎯 <b>A1<\/b> · 12\/40 kỹ năng đã vững/);
+  assert.match(h, /data-r="goal\/cefr-a1"/);
+  assert.doesNotMatch(h, /Gần đạt nhất|năng lực|Cổng khu|kết luận|tuần này|Pre-A1/, 'chi tiết nằm ở trang mục tiêu');
+  assert.equal((h.replace(/<[^>]+>/g, ' ').match(/\d+/g) ?? []).length, 3, 'chỉ "A1" và "x/y"');
+  assert.match(viewGoalSlim(ctx, goalSummary({ ...ca, rote: ['Đồ ăn'] })), /⚠ 1 phần đang nhớ câu cũ/);
+  assert.match(viewGoalSlim(ctx, goalSummary({ ...ca, due: { days: 0, mins: 900 } })), /Đã tới hạn/);
+  assert.match(viewGoalSlim(ctx, goalSummary({ ...ca, gate: { lv: 'A1', has: true, open: true, passed: false, ratio: 0.8, left: 3 } })), /Vào trận cổng khu A1/);
+  assert.match(viewGoalSlim(ctx, goalSummary({ ...ca, ready: { done: 9, total: 9, achieved: true } })), /Đã đạt Tiếng Anh tổng quát A1/);
 });

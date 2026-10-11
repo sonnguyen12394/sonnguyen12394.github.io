@@ -21,17 +21,21 @@ import { ENC_VI } from './quest.ts';
 import { GAMES, needVi, type DirIn, type DirPick } from './director.ts';
 
 // Sảnh: thẻ các game ở trên, tháp (Leo nhanh) giữ nguyên ở dưới.
-export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave, gd?: PuzzleSave, gt?: CaseSave, gr?: CaseSave, tts = true, gk?: KaraSave, gw?: ShopSave, gl?: LetterSave, gb?: RobotSave, gf?: { runs: number; day: number }, gv?: GardenSave, dir?: Dir | null, hero = '', goal = ''): string {
+export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, gc?: CardsSave, gq?: CafeSave, gs?: BubblesSave, gd?: PuzzleSave, gt?: CaseSave, gr?: CaseSave, tts = true, gk?: KaraSave, gw?: ShopSave, gl?: LetterSave, gb?: RobotSave, gf?: { runs: number; day: number }, gv?: GardenSave, dir?: Dir | null, hero = '', goal = '', more = ''): string {
   if (!c.e.goals.length) return '';
-  const s = bk ?? { best: 0, runs: 0, day: 0, streak: 0 }, houses = (bd?.lots ?? []).reduce((a, b) => a + b, 0);
-  return `<section class="stack"><span class="eyebrow">Chơi</span><h1>🎮 Hôm nay chơi gì?</h1>
-    ${dir ? '' : '<p class="hint">Mọi game đều dùng cùng một bộ câu tiếng Anh app chọn cho bạn. Chỉ câu trả lời được tính vào năng lực; điểm game chỉ để vui.</p>'}</section>
-    ${goal}
+  // route 'quest/all' (tab Thư viện → Tất cả trò chơi): mở sẵn mục "Tự chọn".
+  const openAll = c.route === 'quest/all', s = bk ?? { best: 0, runs: 0, day: 0, streak: 0 }, houses = (bd?.lots ?? []).reduce((a, b) => a + b, 0);
+  // v116 Rõ ràng (SCORECARD nhóm L): màn đầu chỉ một việc chính. Thứ tự: nút "Chơi tiếp" của bộ não → mục tiêu một dòng →
+  // mọi thứ còn lại (truyện, game chủ lực, game kỹ năng, phố, tháp, số liệu) gom vào MỘT mục thu gọn "Tự chọn". Không khoá gì:
+  // mục thu gọn mở được bất cứ lúc nào và tab Thư viện dẫn thẳng vào đây.
+  return `<section class="stack"><h1>🎮 Hôm nay chơi gì?</h1></section>
     ${dir ? viewDirector(c, dir) : ''}
-    ${hero ? `<span class="eyebrow gsec" style="display:block;margin-top:8px">⭐ Game chủ lực: chơi nhiều nhất, chữ chính là cách chơi</span>${hero}` : ''}
-    <details class="gall"${dir ? '' : ' open'}><summary>📚 Luyện tập theo kỹ năng (nghe, nói, đọc, viết, xếp lớp…)</summary>
-    <p class="hint" style="margin:8px 0">Các bài luyện riêng từng kỹ năng. Bộ não chọn game vẫn đưa bạn vào đây khi lộ trình cần kỹ năng đó.</p>
+    ${goal}
+    <details class="gall" data-lobby${dir && !openAll ? '' : ' open'}><summary>🧩 Tự chọn trò chơi khác</summary>
+    <p class="hint" style="margin:8px 0">Không cần chọn: nút "Chơi tiếp" ở trên đã là phần bạn cần nhất. Mọi game dùng cùng bộ câu app chọn cho bạn; chỉ câu trả lời tính vào năng lực.</p>
+    ${hero ? `<span class="eyebrow gsec" style="display:block;margin-top:8px">⭐ Game chủ lực</span>${hero}` : ''}
     <section class="gcards">
+      <span class="eyebrow gsec">📚 Luyện riêng từng kỹ năng</span>
       <span class="eyebrow gsec">🧭 Xếp lớp</span>
       <button class="gcard" data-e="fgstart"><span class="gico" aria-hidden="true" style="font-size:30px">🗺️</span><span class="stack" style="gap:2px;text-align:left"><b>Thám hiểm sương mù</b><span class="hint">Xếp lại cấp CEFR: chọn đường Từ vựng hay Ngữ pháp, mỗi điểm dò mở một ô bản đồ. Trả lời thật, đúng hay sai ô đều mở. 10–15 phút.</span><span class="hint">🧭 ${gf?.runs ?? 0} lần thám hiểm${gf?.day && c.host.today() - gf.day < 7 ? ` · bản đồ mới sau ${7 - (c.host.today() - gf.day)} ngày` : ''}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <span class="eyebrow gsec">🔁 Từ mới & ôn tập mỗi ngày</span>
@@ -52,7 +56,7 @@ export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, g
       <button class="gcard" data-e="rbstart"><span class="gico" aria-hidden="true" style="font-size:30px">🤖</span><span class="stack" style="gap:2px;text-align:left"><b>Ra lệnh cho robot</b><span class="hint">Nói (hoặc gõ) lệnh tiếng Anh để robot đi lấy đồ: phải gọi đúng tên đồ vật thì robot mới nhặt.</span><span class="hint">🏁 ${gb?.wins ?? 0} nhiệm vụ · ${gb?.picked ?? 0} đồ đã nhặt</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
       <span class="eyebrow gsec">🏙️ Thói quen & sưu tập</span>
       <button class="gcard" data-e="bdstart"><span class="gico" aria-hidden="true" style="font-size:30px">🎲</span><span class="stack" style="gap:2px;text-align:left"><b>Bàn Cờ Phố</b><span class="hint">Tung xúc xắc đi quanh phố, gặp thử thách tiếng Anh, xây nhà bằng xu. ${ROLLS} lượt tung.</span><span class="hint">🏠 ${houses} tầng nhà · vòng phố ${bd?.laps ?? 0}</span></span><span class="btn primary small" aria-hidden="true">▶ Chơi</span></button>
-    </section></details>`;
+    </section>${more}</details>`;
 }
 
 // v88 Bộ não chọn game: một nút "Chơi tiếp" kèm lý do (nhu cầu học lúc này) + lộ trình 3 chặng hôm nay. Người học không phải chọn.

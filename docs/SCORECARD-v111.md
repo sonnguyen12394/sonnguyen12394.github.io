@@ -5,6 +5,7 @@
 - **Lần 1:** 11/10/2026, sau v111.
 - **Lần 2:** sau v111b–v114, trên nhánh `claude/v110-goal-progress`.
 - **Lần 3:** sau v115 (phép thử không có bài cho đề cổng, đo bot theo bộ não, khu truyện cuối = trận cổng), cùng nhánh.
+- **Lần 4 (chỉ nhóm L):** v116, thêm nhóm L "Rõ ràng và dễ dùng" theo phản hồi của người sáng lập: "giao diện quá nhiều chức năng, nhìn không biết nên làm gì học gì". Cột Lần 3 của nhóm L là điểm chấm lùi cho bản v115.
 
 Căn cứ: code, test, báo cáo bot người học, `docs/GAME-CRITERIA.md`. Chưa có số liệu người học thật, nên mọi điểm về hiệu quả và độ vui là **ước tính**.
 
@@ -33,7 +34,8 @@ Căn cứ: code, test, báo cáo bot người học, `docs/GAME-CRITERIA.md`. Ch
 | I · Minh bạch và đạo đức | Tầm nhìn; luật 3 của "Game hoá" | 3 | 3 | 8,0 | 8,3 | **8,3** |
 | J · Kỹ thuật | Rủi ro đã ghi nhận | 4 | 5 | 6,6 | 6,6 | **6,6** |
 | K · Kiểm chứng hiệu quả | Giới hạn thực tế; v2.4 §XXIII | 5 | 3 | 3,3 | 3,7 | **3,7** |
-| **Chung** | | 100 | 71 | 4,9 | 6,6 | **6,7** |
+| L · Rõ ràng và dễ dùng (v116) | SPEC §7 "Luật màn đầu"; Hợp đồng hiển thị tiến độ (sửa v116) | 15 | 8 | — | — | 3,6 → **8,4** |
+| **Chung** | | 115 | 79 | 4,9 | 6,6 | **6,7** (gồm L: 6,3 trước v116 → **6,9**) |
 
 ### Đọc nhanh lần 3
 
@@ -197,6 +199,23 @@ Kiểm: Giới hạn thực tế; v2.4 §XXIII.
 | K2 | Đo hiệu quả trên người thật | Có số đo trước / sau / trễ của người thật | 2 | 2 | **2** | Bộ đo có sẵn nhưng chưa có kết quả người thật trong repo | Người sáng lập học hằng ngày + kho báu ẩn | cần người học thật |
 | K3 | Hiệu chỉnh bằng dữ liệu | Ngưỡng, độ khó câu chỉnh theo dữ liệu thật | 1 | 1 | **1** | Mọi tham số là giả định của người soạn (spec ghi rõ) | Cần nhiều người dùng | cần nhiều người dùng |
 
+## L · Rõ ràng và dễ dùng: 3,6 → 8,4 / 10 (trọng số 15, thêm ở v116)
+
+Kiểm: SPEC §7 "Luật màn đầu"; mục "Hợp đồng hiển thị tiến độ" (sửa v116). Vì sao có nhóm này: 71 tiêu chí cũ chỉ đo phần bên trong (game hoá, chống học tủ, minh bạch). Mỗi bản thêm một thẻ lên sảnh, điểm chung vẫn tăng, trong khi người mở app không biết bấm gì. Nhóm "Minh bạch" còn khuyến khích viết thêm câu giải thích lên màn đầu.
+
+Cách đo: tài khoản mới đã có mục tiêu A1, khổ 390 × 844 (iPhone 12–15), không cuộn. L1, L3, L6 có phần **chỉ người thật đo được** (thử 5 giây), nên mốc 10 cần buổi thử với người lạ; code chỉ đưa tới mức trần ghi ở cột Trần.
+
+| # | Tiêu chí | Mốc 10 | Lần 3 (v115) | Lần 4 (v116) | Căn cứ | Để lên điểm | Trần |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| L1 | Biết làm gì trong 5 giây | Màn đầu có đúng 1 nút chính, nổi nhất, không cần cuộn; ≥ 4/5 người lạ nhìn 5 giây nói đúng "bấm Chơi tiếp" | 2 | **8** | v115: nút nổi nhất trong khung đầu là "Mở kho báu", "Chơi tiếp" nằm dưới nếp gấp. v116: "▶ Chơi tiếp" là thẻ đặc màu nhấn, ngay dưới tiêu đề; test `clarity.spec` kiểm đúng 1 nút chính trong khung đầu | Thử 5 giây với 5 người lạ (`docs/PLAYTEST.md`) | 8 khi chưa có người thật |
+| L2 | Một màn một mục đích | ≤ 3 khối hiện ra ở màn đầu, 1 khối là hành động chính; phần khác thu gọn | 3 | **9** | v115: 8 khối (mục tiêu, kho báu, chơi tiếp, truyện, 3 game chủ lực, sự kiện tuần, phố, tháp, số liệu), trang ~4.300 px. v116: Chơi tiếp → dòng mục tiêu → dòng kho báu → một mục thu gọn; trang ~1.000 px | Gộp Kho báu ẩn vào lộ trình 3 chặng của bộ não (một danh sách việc duy nhất) |  |
+| L3 | Ngôn ngữ của người học | Màn đầu không có thuật ngữ nội bộ; người 12 tuổi hiểu hết | 3 | **8** | v115: "năng lực", "cổng khu", "Pre-A1", "bản đồ chưa phải kết luận", "Gần đạt nhất" ở màn đầu. v116: màn đầu chỉ còn "kỹ năng đã vững", "chặng"; test chặn danh sách từ cấm | Hỏi người thật từ nào khó hiểu; soát chữ trang mục tiêu (vẫn có "năng lực", "Target Model") | cần người thật |
+| L4 | Tiến độ một con số chính | Màn đầu chỉ một thanh tiến độ mục tiêu; số khác giấu sau "Chi tiết" | 3 | **7** | v115: 8 con số (0 ngày, 0/20, 5/5, 0/130, 0/36, 3 phần, 70%, 0%). v116: còn chuỗi ngày, "0/20 câu", "0/3 chặng", "0/130"; năng lượng chỉ hiện khi thiếu | Gộp hai mục tiêu ngày ("20 câu" của app cũ và "3 chặng" của bộ não) thành một | cần quyết định của người sáng lập (đổi mục tiêu ngày) |
+| L5 | Mở dần theo người dùng | Người mới thấy 1 việc; phần nâng cao hiện dần, không khoá nội dung (yêu cầu 3.1) | 3 | **8** | v116: mặc định chỉ một việc; "Tự chọn" thu gọn; bấm tab Hôm nay luôn thu lại; không khoá gì | Mở thêm gợi ý theo tiến độ (ví dụ chỉ nhắc truyện sau chặng đầu) |  |
+| L6 | Điều hướng không trùng nghĩa | ≤ 4 tab, mỗi tab trả lời một câu hỏi khác; người dùng nói đúng tab nào để làm gì | 4 | **9** | v115: 5 tab, Chơi / Học / Kỹ năng đều là "học". v116: Hôm nay (app chọn) · Ôn tập (sắp quên) · Thư viện (tự chọn) · Tôi (tiến độ, cài đặt) | Hỏi người thật | 9 khi chưa có người thật |
+| L7 | Số chạm tới câu đầu tiên | ≤ 1 chạm từ lúc mở app (đã có mục tiêu) | 5 | **9** | v115: phải cuộn tìm "Chơi tiếp". v116: 1 chạm vào "Chơi tiếp" là vào game; `clarity.spec` đo | Bỏ màn giới thiệu của game ở lần chơi thứ 2 trở đi |  |
+| L8 | Dễ đọc trên điện thoại | Không dòng nào xuống hàng lộn xộn ở 360 px, chữ ≥ 13 px, WCAG AA | 6 | **9** | v116: thanh đầu "🔥 0 ngày · hôm nay 0/20 câu" một dòng ở 360 px; axe AA ở màn đầu và Thư viện | Thử trên máy thật cỡ chữ lớn |  |
+
 ## Việc tiếp theo (theo lợi ích ÷ công sức)
 
 | Việc | Nâng tiêu chí | Ai làm |
@@ -207,6 +226,9 @@ Kiểm: Giới hạn thực tế; v2.4 §XXIII.
 | Đo phút chơi theo phần đề còn hụt (không chỉ tỉ lệ game) | C4 | AI |
 | Trận cổng B1 + phần Viết trong cổng | E6, A12 | AI soạn, người soát |
 | Tách `app.js` / `main.ts` | J2, J5 | AI, khi cần |
+| Thử 5 giây màn đầu với 5 người lạ (hỏi: "bạn sẽ bấm gì?", "Thư viện để làm gì?") | L1, L3, L6 | Người sáng lập |
+| Gộp mục tiêu ngày "20 câu" và lộ trình "3 chặng" thành một | L4 | Người sáng lập quyết, AI làm |
+| Đưa Kho báu ẩn vào lộ trình 3 chặng | L2 | AI |
 
 ## Giới hạn của bảng chấm
 

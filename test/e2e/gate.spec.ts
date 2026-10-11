@@ -26,6 +26,8 @@ async function setup(page: Page, q = ''): Promise<void> {
 test('Cổng khoá khi bản đồ chưa gần đủ: thẻ 🎯 nói rõ "chưa phải kết luận", có thang khu', async ({ page, errors }) => {
   await page.evaluate(() => { try { localStorage.setItem('el-playtest', '0'); } catch { /* */ } }).catch(() => {});
   await setup(page, '?playtest=0');
+  await expect(page.getByRole('button', { name: /Vào trận cổng/ })).toHaveCount(0);
+  await page.locator('.gbar.slim').click();   // v116: chi tiết cổng nằm ở bản đầy đủ, đầu trang mục tiêu
   const bar = page.locator('.gbar');
   await expect(bar).toContainText('Cổng khu A2 còn khoá');
   await expect(bar).toContainText(/📍A2/);
