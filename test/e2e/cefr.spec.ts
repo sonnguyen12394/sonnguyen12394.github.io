@@ -45,6 +45,26 @@ test('bài Pre-A1 ghi bằng chứng cho nút pa:', async ({ page, errors }) => 
   expect(errors).toEqual([]);
 });
 
+// v119 bài phonics (chữ cái và âm): 10 câu (6 nghe chọn từ trong nhóm chỉ khác một âm, 4 nghe gõ từ ba chữ), ghi bằng chứng cho pa:phon,
+// là tiền đề cứng của Can-Do A1 "đánh vần, số…" như các bài Pre-A1 khác.
+test('bài Pre-A1 Chữ cái và âm: 10 câu, ghi bằng chứng pa:phon; trang bài có bảng âm', async ({ page, errors }) => {
+  await page.goto('/');
+  await startCefr(page);
+  const r = await page.evaluate(() => {
+    const w = window as any, items = w.eval("paItems('pa-phon')");
+    w.eval("startPa('pa-phon')"); w.eval('qzAnswer(true)');
+    const m = w.eval('st').e.m['pa:phon'];
+    return { n: items.length, mc: items.filter((x: any) => x.t === 'mc').length, ok: items.every((x: any) => x.t !== 'mc' || x.opts[x.ans] !== undefined), ev: m ? Object.keys(m).length : 0 };
+  });
+  expect(r).toEqual({ n: 10, mc: 6, ok: true, ev: r.ev });
+  expect(r.ev).toBeGreaterThan(0);
+  await page.evaluate(() => { const w = window as any; w.eval("ui.paId='pa-phon'"); w.eval("go('prea1')"); });
+  await expect(page.getByRole('heading', { name: /Chữ cái và âm/ })).toBeVisible();
+  await expect(page.getByText(/Mỗi chữ cái có TÊN và có ÂM/)).toBeVisible();
+  await page.screenshot({ path: 'test-results/pa-phon.png', fullPage: true });
+  expect(errors).toEqual([]);
+});
+
 test('bật mục tiêu tương lai trong Cài đặt thì tab Ôn thi trở lại', async ({ page, errors }) => {
   await page.goto('/');
   await startCefr(page);

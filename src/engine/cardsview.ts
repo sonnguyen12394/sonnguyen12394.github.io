@@ -3,7 +3,7 @@
 import type { ECtx } from './views.ts';
 import { loaded } from './data.ts';
 import type { Challenge } from './quest.ts';
-import type { OrderItem } from './host.ts';
+import type { OrderItem, MicroCard } from './host.ts';
 import { TABLES, PLAYS, target, CHARMS, type Charm } from './cards.ts';
 
 export interface CardsRun {
@@ -13,9 +13,14 @@ export interface CardsRun {
   hand: string[]; built: number[];                       // lá trong tay (đã trộn) · chỉ số các lá đã xếp theo thứ tự
   ans: { ok: boolean; right: string; given: string; at: number; why?: string; chips: number; mult: number; total: number; coins: number } | null;
   offer: Charm[] | null; tableEnd: { won: boolean; score: number } | null;
+  teach?: MicroCard | null; taught?: string[]; hinted?: boolean;   // v119 thẻ dạy trước câu đầu của phần xếp lớp coi là chưa biết
 }
 
 const charmName = (id: string) => CHARMS.find(c => c.id === id)?.name ?? id;
+// v119 Thẻ dạy trước (chung cho màn DOM và lớp phủ): khái niệm + 2 ví dụ, đọc xong mới xếp câu.
+export function teachPanel(esc: (s: string) => string, t: MicroCard): string {
+  return `<section class="panel stack" data-teach><b>📜 Thẻ mới: ${esc(t.title)}</b>${t.concept.slice(0, 2).map(x => `<p>${esc(x)}</p>`).join('')}<ul>${t.examples.slice(0, 2).map(([en, vi]) => `<li><span lang="en">${esc(en)}</span>${vi ? ` <span class="hint">${esc(vi)}</span>` : ''}</li>`).join('')}</ul></section>`;
+}
 
 export function viewCards(c: ECtx, r: CardsRun): string {
   const esc = c.host.esc, ix = loaded()!;
@@ -39,6 +44,7 @@ export function viewCards(c: ECtx, r: CardsRun): string {
       <div class="fb ${a.ok ? 'good' : 'bad'}" role="status"><strong>${a.ok ? `Ra bài! ${a.chips} chip × ${a.mult} = ${a.total}` : 'Câu chưa đúng: lượt này 0 điểm'}</strong>${a.ok ? '' : `<span>Câu đúng: <b lang="en">${esc(a.right)}</b></span>${a.why ? `<span class="hint">💡 ${esc(a.why)}</span>` : ''}`}<span class="hint">+${a.coins} xu${r.novel ? ' · câu mới' : ''}</span></div>
       <div class="row"><button class="btn primary" data-e="cdnext" id="qnextbtn">${r.play + 1 >= PLAYS ? 'Kết thúc bàn' : 'Lượt tiếp ▸'}</button></div>`;
   }
+  if (r.teach) return `${head}${teachPanel(esc, r.teach)}<div class="row"><button class="btn primary" data-e="cdteach">Đã hiểu, xếp câu ▸</button></div>`;
   const hand = r.hand.map((t, i) => used.has(i) ? '<span class="cdcard ghost" aria-hidden="true"></span>' : `<button class="cdcard" data-e="cdtile" data-i="${i}" lang="en">${esc(t)}</button>`).join('');
   return `${head}<p class="hint">${esc(it.prompt)}</p>${row}<div class="cdhand" aria-label="Lá trong tay">${hand}</div>
     <div class="row"><button class="btn primary" data-e="cdplay" ${r.built.length ? '' : 'disabled'}>🂠 Ra bài</button><button class="btn ghost" data-e="cdclear" ${r.built.length ? '' : 'disabled'}>↺ Xếp lại</button><button class="btn ghost" data-e="cdskip">Không biết</button></div>

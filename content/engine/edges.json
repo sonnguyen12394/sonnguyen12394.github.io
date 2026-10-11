@@ -41,6 +41,14 @@
  },
  {
   "from": "cd:a1-com-pa",
+  "to": "pa:phon",
+  "type": "hard",
+  "w": 1,
+  "why": "pa-act",
+  "ver": "1.0"
+ },
+ {
+  "from": "cd:a1-com-pa",
   "to": "pa:spell",
   "type": "hard",
   "w": 1,

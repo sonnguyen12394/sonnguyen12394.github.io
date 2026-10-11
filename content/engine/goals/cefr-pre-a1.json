@@ -13,6 +13,11 @@
    "type": "foundation"
   },
   {
+   "node": "pa:phon",
+   "level": 3,
+   "type": "foundation"
+  },
+  {
    "node": "pa:spell",
    "level": 3,
    "type": "foundation"
