@@ -14,6 +14,7 @@ import { READY_P } from './readiness.ts';
 import { loaded } from './data.ts';
 import { xferSummary } from './transfer.ts';
 import { xferItems } from './today.ts';
+import { GATE_FORMS } from './gate.ts';
 
 export type Ready = ExamReady | MasteryReady;
 
@@ -23,8 +24,10 @@ export function readinessOf(host: EHost, e: EState, g: Goal): Ready {
     xfer: () => { const ix = loaded(), x = ix && e.ev ? xferSummary(ix, e.m, e.ev, g.req, n => xferItems(host, e, n).length < 2) : null; return x ? { important: x.important, ok: x.ok, exempt: x.exempt } : undefined; },
     exam: () => { const { resp, real } = host.exam(); return { dists: skillDists(resp, host.grades() as RawGrade[], real, host.today()), real }; },
   });
-  snapReady(host, e, g, r);
-  return r;
+  // v111 (SPEC "Mô hình học v111" §4): với khu đã có trận cổng, "Đạt trong app" = qua trận cổng (câu lạ); bản đồ chỉ để chẩn đoán.
+  const gated = r.kind === 'mastery' && !!GATE_FORMS[g.id], out: Ready = gated ? { ...r, achieved: Object.values(e.gg?.done ?? {}).some(x => x.goal === g.id && x.passed) } as Ready : r;
+  snapReady(host, e, g, out);
+  return out;
 }
 
 // L4: Readiness đổi mức → snapshot (spec v2.4 §28, HG11, HF6). Bỏ trùng khi kết quả không đổi.
@@ -96,7 +99,7 @@ export function viewReady(host: EHost, g: Goal, r: Ready, e?: EState): string {
     return `<section class="panel stack"><h3>Sẵn sàng · ${r.done + r.perfDone}/${r.total + r.perfTotal} năng lực</h3>
       <p class="muted">${r.done}/${r.total} năng lực đã Đạt với độ tin cậy từ Vừa trở lên · ${r.perfDone}/${r.perfTotal} bài làm thật đã qua.</p>
       ${gap}${xferLine(host, e, g, r)}<div class="row"><button class="btn ghost small" data-e="go" data-r="why/goal/${esc(g.id)}">Vì sao?</button></div>
-      <p class="hint">${r.achieved ? '✓ Đạt mục tiêu: mọi năng lực và bài làm thật đã qua, không quên khi ôn trong 14 ngày.' : r.ready && r.lapse ? 'Đã đủ năng lực; còn chờ 14 ngày không quên khi ôn để xác nhận đạt.' : 'Mục tiêu này không có kỳ thi ngoài: đạt khi mọi năng lực Đạt, năng lực quan trọng đúng ở câu mới, mọi bài làm thật qua và 14 ngày không quên khi ôn.'}</p></section>`;
+      <p class="hint">${r.achieved ? (GATE_FORMS[g.id] ? '✓ Đạt mục tiêu: đã qua trận cổng của khu bằng câu chưa gặp bao giờ.' : '✓ Đạt mục tiêu: mọi năng lực và bài làm thật đã qua, không quên khi ôn trong 14 ngày.') : r.ready && r.lapse ? 'Đã đủ năng lực; còn chờ 14 ngày không quên khi ôn để xác nhận đạt.' : GATE_FORMS[g.id] ? 'Đây là bản đồ để biết học gì tiếp, chưa phải kết luận. Kết luận đủ trình độ đến từ trận cổng của khu (câu lạ, chơi một lần).' : 'Đây là bản đồ, chưa phải kết luận: đạt khi mọi năng lực Đạt, năng lực quan trọng đúng ở câu mới, mọi bài làm thật qua và 14 ngày không quên khi ôn.'}</p>${GATE_FORMS[g.id] ? '<div class="row"><button class="btn small" data-e="go" data-r="gate">🚪 Xem cổng khu</button></div>' : ''}</section>`;
   }
   const unit = r.exam === 'vstep' ? 'điểm VSTEP (trung bình 4 kỹ năng)' : 'band tổng';
   const rows = r.skills.map(s => {

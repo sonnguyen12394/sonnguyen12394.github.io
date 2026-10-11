@@ -53,3 +53,13 @@ test('v110 dòng màn kết: vững thêm khi có, nói thật khi chưa, Can-Do
   assert.equal(goalText(s, []), '🎯 CEFR A2: 12/40 kỹ năng đã vững');
   assert.equal(goalText(s, ['a', 'b', 'c', 'd']), '🎯 CEFR A2: vững thêm a, b, c… (12/40)');
 });
+
+test('v111 thẻ Mục tiêu: báo phần học tủ và nhịp theo hạn chót (khi người học đặt hạn)', () => {
+  const s = goalSummary({ ...base, rote: ['Đồ ăn', 'Màu sắc', 'Số đếm'], due: { days: 30, mins: 900 } });
+  const h = viewGoalBar(ctx, s);
+  assert.match(h, /⚠ 3 phần đang nhớ câu cũ, chưa dùng được ở câu lạ: Đồ ăn; Màu sắc…/);
+  assert.match(h, /Còn 30 ngày tới hạn: cần khoảng 30 phút mỗi ngày\./);
+  assert.match(viewGoalBar(ctx, goalSummary({ ...base, due: { days: 5, mins: 900 } })), /180 phút mỗi ngày \(nhiều: cân nhắc lùi hạn\)/);
+  assert.match(viewGoalBar(ctx, goalSummary({ ...base, due: { days: 0, mins: 900 } })), /Đã tới hạn/);
+  assert.doesNotMatch(viewGoalBar(ctx, goalSummary(base)), /⏰|⚠/);
+});

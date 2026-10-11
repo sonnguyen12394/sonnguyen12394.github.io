@@ -13,7 +13,7 @@ test('chọn mục tiêu VSTEP B1, xem cần đạt gì, đặt hạn; tải l�
   await expect(page.getByRole('heading', { name: 'VSTEP Bậc 3 (B1)', level: 1 })).toBeVisible();
   await expect(page.getByText('kể cả tiền đề')).toBeVisible();
   for (const h of ['Nghe', 'Đọc', 'Viết', 'Nói', 'Dạng bài thi']) await expect(page.getByRole('heading', { name: new RegExp(`^${h}`), level: 2 })).toBeVisible();
-  await page.getByLabel('Ngày thi hoặc hạn muốn đạt').fill('2027-03-15');
+  await page.getByLabel('Hạn muốn đạt (tuỳ chọn)').fill('2027-03-15');
   await page.getByRole('button', { name: 'Lưu' }).click();
   await noHorizontalScroll(page);
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('vocab-ladder-v1') || '{}').e);
@@ -60,9 +60,9 @@ test('chẩn đoán: làm tới hết, có kết quả, tiên nghiệm được 
   await openApp(page);
   await navTo(page, 'Tôi');
   await page.getByRole('button', { name: /Mục tiêu của bạn/ }).click();
-  await page.getByRole('button', { name: 'Làm bài chẩn đoán' }).click();
+  await page.getByRole('button', { name: 'Thử sức để xếp lớp' }).click();
   await expect(page.getByRole('heading', { name: 'Bạn đang ở đâu?', level: 1 })).toBeVisible();
-  await page.getByRole('button', { name: 'Bắt đầu dò' }).click();
+  await page.getByRole('button', { name: 'Bắt đầu thử sức' }).click();
   // câu đầu là trắc nghiệm nhận ra nghĩa: chọn sai một lần bằng "Không biết", rồi tiếp tục tới khi xong
   for (let k = 0; k < 80; k++) {
     if (await page.getByRole('heading', { name: 'Bạn đang ở đâu', level: 1, exact: true }).isVisible()) break;

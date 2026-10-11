@@ -62,3 +62,16 @@ Luật tĩnh chỉ bắt được tín hiệu đếm được. Thước đo nghi
 2. `node tools/blind-score.mjs phien1.json [phien2.json]` → tỉ lệ đúng theo dạng. Ngưỡng: ≤ 45% với 4 phương án, ≤ 55% với 3 phương án.
 3. Viết lại trước hết những câu bị đoán đúng với độ tự tin H.
 4. Sau đó soát độc lập **có bài** (`tools/review-export.mjs` → `tools/review-compare.mjs`): mọi đáp án phải khớp, câu nào có hai đáp án thì sửa.
+
+## 5. Lời trên màn chơi (v111)
+
+Theo SPEC.md, mục "Game hoá mọi chức năng": người học chỉ thấy mình đang chơi.
+
+- **Không dùng:** "thi", "đề thi", "kiểm tra", "bài kiểm tra", "bài dò", "chẩn đoán", "làm bài".
+- **Dùng lời của truyện / game thay thế:**
+  - lượt dò → "thử sức";
+  - xếp lớp → "xếp lớp" / "Sương Câm";
+  - lượt đo hiệu quả → "kho báu ẩn";
+  - đề sát hạch → "trận cổng".
+- **Ngoại lệ:** chỉ phần mục tiêu kỳ thi tương lai (đang ẩn) và phần chứng chỉ tuỳ chọn ở hồ sơ.
+- **Test `test/unit/engine-wording.test.ts`** quét `src/engine` và chặn các từ trên. Muốn thêm ngoại lệ phải ghi lý do trong test.

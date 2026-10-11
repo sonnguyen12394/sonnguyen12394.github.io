@@ -1636,9 +1636,10 @@ const pct = x => Math.round(x*100)+'%';
 const goalPicker = () => `<div class="goals">${[{id:'',vi:'Học toàn bộ',desc:`Tất cả ${UNITS.length} unit từ A1 đến C2, theo thứ tự`},...GOALS.list].map(g=>{const n=g.id?GOAL_UNITS[g.id].length:UNITS.length, on=(st.set.path||'')===g.id;
   return `<button class="goal ${on?'on':''}" data-act="setgoal" data-goal="${g.id}" aria-pressed="${on}"><b>${esc(g.vi)}</b><span class="muted">${esc(g.desc)} · ${n} unit</span></button>`;}).join('')}</div>`;
 // Nhắc sao lưu trên trang chủ: đã học ≥ 3 ngày mà chưa sao lưu, hoặc lần sao lưu gần nhất ≥ 7 ngày; “Để sau” hoãn 3 ngày.
-function backupNag(){
+// v111: bỏ qua khi đã bật đồng bộ (tiến độ đã có bản ở máy chủ); force = nhắc ngay cả khi mới học < 3 ngày (màn kết ván đầu tiên, qua cổng).
+function backupNag(force){
   const lb=st.set.lastBackup, snooze=st.set.backupSnooze||0, t=today();
-  if(st.days.length<3 || t<snooze || (lb!=null&&t-lb<7)) return '';
+  if(syncGet() || t<snooze || (lb!=null&&t-lb<7) || (!force&&st.days.length<3)) return '';
   return `<div class="spread slim nag"><span>💾 <b>${lb==null?'Chưa sao lưu tiến độ lần nào.':`Đã ${t-lb} ngày chưa sao lưu.`}</b> <span class="muted">Tiến độ chỉ nằm trong trình duyệt này.</span></span>
     <span class="row" style="gap:4px"><button class="btn small" data-act="export">Sao lưu ngay</button><button class="btn small ghost" data-act="snooze">Để sau</button></span></div>`;
 }
@@ -8324,7 +8325,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.d67aa83691.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.2c6c64c819.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8352,8 +8353,11 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.6ea5d75287.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.2ba7cce9f3.js';   // tools/build.mjs ghi
 const EHOST = {
+  backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
+  lr:()=>xmLoad().then(m=>m.lr),
+  gate:f=>xmLoad().then(m=>m.gate(f)),   // v111: đề trận cổng   // v111: đèn Nghe + Đọc của chương mở đầu dùng bộ xếp lớp của phần ôn thi
   state:()=>st, save, render, today, toast, esc, ico,
   go:r=>r==='quest'?go('play'):go('goal',{er:r}),
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),

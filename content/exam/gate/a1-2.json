@@ -1,0 +1,798 @@
+[
+  {
+    "id": "gt-a1-2-r1",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-r",
+    "level": "A1",
+    "band": 1.5,
+    "mode": "gate",
+    "title": "Notes and signs",
+    "instr": "Read the signs and answer the questions.",
+    "paras": [
+      "MUSEUM: Open Tuesday to Sunday. Closed on Monday. Free for children.",
+      "CLASS 3B: No English lesson today. Your teacher is ill. Please go to the library at 10 o'clock.",
+      "MARKET: Fruit 20,000 dong a kilo. Vegetables 15,000 dong a kilo.",
+      "SWIMMING POOL: Please take a shower first. No food near the water.",
+      "HAPPY BIRTHDAY, NAM! Party at my house on Saturday at 4 pm. Please bring a hat! Hoa"
+    ],
+    "items": [
+      {
+        "id": "gt-a1-2-r1-a",
+        "q": "When is the museum closed?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "on Tuesday"
+          },
+          {
+            "k": "B",
+            "t": "on Monday"
+          },
+          {
+            "k": "C",
+            "t": "on Sunday"
+          }
+        ],
+        "ans": "B",
+        "b": 1.5,
+        "ev": {
+          "p": 0,
+          "s": "Closed on Monday."
+        },
+        "why": "Bảo tàng đóng cửa thứ Hai.",
+        "wrong": {
+          "A": "Bảo tàng mở từ thứ Ba.",
+          "C": "Bảo tàng mở đến Chủ nhật."
+        }
+      },
+      {
+        "id": "gt-a1-2-r1-b",
+        "q": "Where do the students go at 10?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to the English lesson"
+          },
+          {
+            "k": "B",
+            "t": "to the teacher's house"
+          },
+          {
+            "k": "C",
+            "t": "to the library"
+          }
+        ],
+        "ans": "C",
+        "b": 2,
+        "ev": {
+          "p": 1,
+          "s": "Please go to the library at 10 o'clock."
+        },
+        "why": "Học sinh đến thư viện lúc 10 giờ.",
+        "wrong": {
+          "A": "Hôm nay không có giờ tiếng Anh.",
+          "B": "Thầy/cô bị ốm, không ai bảo đến nhà."
+        }
+      },
+      {
+        "id": "gt-a1-2-r1-c",
+        "q": "How much is a kilo of vegetables?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "15,000 dong"
+          },
+          {
+            "k": "B",
+            "t": "20,000 dong"
+          },
+          {
+            "k": "C",
+            "t": "35,000 dong"
+          }
+        ],
+        "ans": "A",
+        "b": 1.5,
+        "ev": {
+          "p": 2,
+          "s": "Vegetables 15,000 dong a kilo."
+        },
+        "why": "Rau giá 15.000 đồng một ký.",
+        "wrong": {
+          "B": "20.000 đồng là giá trái cây.",
+          "C": "Đó là giá cộng cả hai, không phải một ký rau."
+        }
+      },
+      {
+        "id": "gt-a1-2-r1-d",
+        "q": "What can't you do near the water?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "swim"
+          },
+          {
+            "k": "B",
+            "t": "eat"
+          },
+          {
+            "k": "C",
+            "t": "take a shower"
+          }
+        ],
+        "ans": "B",
+        "b": 2,
+        "ev": {
+          "p": 3,
+          "s": "No food near the water."
+        },
+        "why": "Không được ăn gần nước.",
+        "wrong": {
+          "A": "Hồ bơi là để bơi.",
+          "C": "Biển yêu cầu tắm trước."
+        }
+      },
+      {
+        "id": "gt-a1-2-r1-e",
+        "q": "What must people bring to the party?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "a cake"
+          },
+          {
+            "k": "B",
+            "t": "a present"
+          },
+          {
+            "k": "C",
+            "t": "a hat"
+          }
+        ],
+        "ans": "C",
+        "b": 2,
+        "ev": {
+          "p": 4,
+          "s": "Please bring a hat!"
+        },
+        "why": "Hoa dặn mang mũ.",
+        "wrong": {
+          "A": "Hoa không nhắc bánh.",
+          "B": "Hoa không nhắc quà."
+        }
+      }
+    ],
+    "allow": [
+      "dong",
+      "kilo",
+      "party",
+      "near"
+    ]
+  },
+  {
+    "id": "gt-a1-2-r2",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-r",
+    "level": "A1",
+    "band": 2,
+    "mode": "gate",
+    "title": "My family",
+    "instr": "Read the text and answer the questions.",
+    "paras": [
+      "Hello! My name is Duc. I am eleven. I live in a flat in Da Nang with my parents and my little sister, Ha.",
+      "My father is a doctor and my mother is a teacher. Ha is five. She likes drawing, but she doesn't like reading.",
+      "At the weekend we go to the beach. I like swimming, and my dad likes fishing."
+    ],
+    "items": [
+      {
+        "id": "gt-a1-2-r2-a",
+        "q": "Where does Duc live?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "in a flat"
+          },
+          {
+            "k": "B",
+            "t": "in a house"
+          },
+          {
+            "k": "C",
+            "t": "at the beach"
+          }
+        ],
+        "ans": "A",
+        "b": 1.5,
+        "ev": {
+          "p": 0,
+          "s": "I live in a flat in Da Nang"
+        },
+        "why": "Đức sống trong một căn hộ.",
+        "wrong": {
+          "B": "Đức sống trong căn hộ, không phải nhà riêng.",
+          "C": "Cả nhà chỉ ra biển vào cuối tuần."
+        }
+      },
+      {
+        "id": "gt-a1-2-r2-b",
+        "q": "What is Duc's mother's job?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "doctor"
+          },
+          {
+            "k": "B",
+            "t": "teacher"
+          },
+          {
+            "k": "C",
+            "t": "driver"
+          }
+        ],
+        "ans": "B",
+        "b": 2,
+        "ev": {
+          "p": 1,
+          "s": "my mother is a teacher"
+        },
+        "why": "Mẹ Đức là giáo viên.",
+        "wrong": {
+          "A": "Bác sĩ là nghề của bố.",
+          "C": "Không ai làm tài xế."
+        }
+      },
+      {
+        "id": "gt-a1-2-r2-c",
+        "q": "What does Ha like?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "reading"
+          },
+          {
+            "k": "B",
+            "t": "swimming"
+          },
+          {
+            "k": "C",
+            "t": "drawing"
+          }
+        ],
+        "ans": "C",
+        "b": 2,
+        "ev": {
+          "p": 1,
+          "s": "She likes drawing"
+        },
+        "why": "Hà thích vẽ.",
+        "wrong": {
+          "A": "Hà không thích đọc sách.",
+          "B": "Người thích bơi là Đức."
+        }
+      },
+      {
+        "id": "gt-a1-2-r2-d",
+        "q": "What does Duc's father do at the beach?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "fish"
+          },
+          {
+            "k": "B",
+            "t": "swim"
+          },
+          {
+            "k": "C",
+            "t": "read"
+          }
+        ],
+        "ans": "A",
+        "b": 2.5,
+        "ev": {
+          "p": 2,
+          "s": "my dad likes fishing"
+        },
+        "why": "Bố Đức thích câu cá.",
+        "wrong": {
+          "B": "Người thích bơi là Đức.",
+          "C": "Không ai đọc sách ở biển."
+        }
+      }
+    ]
+  },
+  {
+    "id": "gt-a1-2-r3",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-r",
+    "level": "A1",
+    "band": 2,
+    "mode": "gate",
+    "title": "My new room",
+    "instr": "Choose the right word for each gap.",
+    "paras": [
+      "Hi Anna, This (1) ___ my new bedroom. It is small (2) ___ nice. There is a bed and a desk.",
+      "My books are (3) ___ the desk. My mum and dad also gave me a new lamp. It is yellow and very pretty. I (4) ___ my room! Love, Mia"
+    ],
+    "items": [
+      {
+        "id": "gt-a1-2-r3-a",
+        "q": "Gap 1",
+        "opts": [
+          {
+            "k": "A",
+            "t": "are"
+          },
+          {
+            "k": "B",
+            "t": "is"
+          },
+          {
+            "k": "C",
+            "t": "am"
+          }
+        ],
+        "ans": "B",
+        "b": 1.5,
+        "ev": {
+          "p": 0,
+          "s": "This (1) ___ my new bedroom."
+        },
+        "why": "\"This is\": chủ ngữ số ít.",
+        "wrong": {
+          "A": "\"This\" đi với \"is\".",
+          "C": "\"am\" chỉ đi với \"I\"."
+        }
+      },
+      {
+        "id": "gt-a1-2-r3-b",
+        "q": "Gap 2",
+        "opts": [
+          {
+            "k": "A",
+            "t": "so"
+          },
+          {
+            "k": "B",
+            "t": "or"
+          },
+          {
+            "k": "C",
+            "t": "but"
+          }
+        ],
+        "ans": "C",
+        "b": 2.5,
+        "ev": {
+          "p": 0,
+          "s": "It is small (2) ___ nice."
+        },
+        "why": "\"small but nice\": nhỏ nhưng đẹp, hai ý trái nhau.",
+        "wrong": {
+          "A": "\"so\" là \"vì vậy\", không nối hai ý trái nhau.",
+          "B": "\"or\" là \"hoặc\", không hợp nghĩa."
+        }
+      },
+      {
+        "id": "gt-a1-2-r3-c",
+        "q": "Gap 3",
+        "opts": [
+          {
+            "k": "A",
+            "t": "on"
+          },
+          {
+            "k": "B",
+            "t": "at"
+          },
+          {
+            "k": "C",
+            "t": "to"
+          }
+        ],
+        "ans": "A",
+        "b": 2,
+        "ev": {
+          "p": 1,
+          "s": "My books are (3) ___ the desk."
+        },
+        "why": "\"on the desk\": trên bàn.",
+        "wrong": {
+          "B": "Đồ đặt trên mặt bàn dùng \"on\".",
+          "C": "\"to\" chỉ hướng đi, không chỉ vị trí."
+        }
+      },
+      {
+        "id": "gt-a1-2-r3-d",
+        "q": "Gap 4",
+        "opts": [
+          {
+            "k": "A",
+            "t": "loves"
+          },
+          {
+            "k": "B",
+            "t": "love"
+          },
+          {
+            "k": "C",
+            "t": "loving"
+          }
+        ],
+        "ans": "B",
+        "b": 2,
+        "ev": {
+          "p": 1,
+          "s": "I (4) ___ my room!"
+        },
+        "why": "\"I love\": chủ ngữ \"I\".",
+        "wrong": {
+          "A": "\"loves\" dùng cho he/she/it.",
+          "C": "Sau \"I\" cần động từ chia."
+        }
+      }
+    ]
+  },
+  {
+    "id": "gt-a1-2-l1",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "A1",
+    "band": 1.5,
+    "mode": "gate",
+    "title": "Four short conversations",
+    "instr": "Listen and answer the questions. You will hear each conversation once.",
+    "voices": {
+      "Man": "am_adam",
+      "Woman": "bf_emma",
+      "Lily": "af_sky",
+      "Boy": "am_michael",
+      "Girl": "af_nicole"
+    },
+    "script": [
+      {
+        "sp": "Man",
+        "t": "What colour is your new bike, Lily?"
+      },
+      {
+        "sp": "Lily",
+        "t": "It's green. My old bike was red."
+      },
+      {
+        "sp": "Woman",
+        "t": "What would you like to drink?"
+      },
+      {
+        "sp": "Boy",
+        "t": "Orange juice, please. No milk, thanks."
+      },
+      {
+        "sp": "Man",
+        "t": "What time is it?"
+      },
+      {
+        "sp": "Woman",
+        "t": "It's ten past four. The film starts at half past four."
+      },
+      {
+        "sp": "Girl",
+        "t": "Where's Dad?"
+      },
+      {
+        "sp": "Boy",
+        "t": "He's in the garden. Mum's in the kitchen."
+      }
+    ],
+    "items": [
+      {
+        "id": "gt-a1-2-l1-a",
+        "q": "What colour is Lily's new bike?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "red"
+          },
+          {
+            "k": "B",
+            "t": "blue"
+          },
+          {
+            "k": "C",
+            "t": "green"
+          }
+        ],
+        "ans": "C",
+        "b": 1.5,
+        "ev": {
+          "p": 1,
+          "s": "It's green."
+        },
+        "why": "Xe mới của Lily màu xanh lá.",
+        "wrong": {
+          "A": "Màu đỏ là xe cũ.",
+          "B": "Không ai nhắc màu xanh dương."
+        }
+      },
+      {
+        "id": "gt-a1-2-l1-b",
+        "q": "What does the boy want?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "orange juice"
+          },
+          {
+            "k": "B",
+            "t": "milk"
+          },
+          {
+            "k": "C",
+            "t": "water"
+          }
+        ],
+        "ans": "A",
+        "b": 1.5,
+        "ev": {
+          "p": 3,
+          "s": "Orange juice, please."
+        },
+        "why": "Cậu bé muốn nước cam.",
+        "wrong": {
+          "B": "Cậu bé nói không lấy sữa.",
+          "C": "Không ai nhắc nước lọc."
+        }
+      },
+      {
+        "id": "gt-a1-2-l1-c",
+        "q": "What time does the film start?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "4.10"
+          },
+          {
+            "k": "B",
+            "t": "4.30"
+          },
+          {
+            "k": "C",
+            "t": "5.00"
+          }
+        ],
+        "ans": "B",
+        "b": 2,
+        "ev": {
+          "p": 5,
+          "s": "The film starts at half past four."
+        },
+        "why": "Phim bắt đầu lúc bốn rưỡi.",
+        "wrong": {
+          "A": "Bốn giờ mười là giờ hiện tại.",
+          "C": "Không ai nhắc năm giờ."
+        }
+      },
+      {
+        "id": "gt-a1-2-l1-d",
+        "q": "Where is Dad?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "in the kitchen"
+          },
+          {
+            "k": "B",
+            "t": "in the car"
+          },
+          {
+            "k": "C",
+            "t": "in the garden"
+          }
+        ],
+        "ans": "C",
+        "b": 1.5,
+        "ev": {
+          "p": 7,
+          "s": "He's in the garden."
+        },
+        "why": "Bố ở ngoài vườn.",
+        "wrong": {
+          "A": "Người ở bếp là mẹ.",
+          "B": "Không ai nhắc xe hơi."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/gt-a1-2-l1.mp3",
+      "dur": 21.5,
+      "voices": [
+        "am_adam",
+        "bf_emma",
+        "af_sky",
+        "am_michael",
+        "af_nicole"
+      ]
+    }
+  },
+  {
+    "id": "gt-a1-2-l2",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "A1",
+    "band": 2,
+    "mode": "gate",
+    "title": "A school trip",
+    "instr": "Listen to the teacher and answer the questions.",
+    "voices": {
+      "Teacher": "bf_emma"
+    },
+    "script": [
+      {
+        "sp": "Teacher",
+        "t": "Listen, everyone. Tomorrow we're going to the zoo."
+      },
+      {
+        "sp": "Teacher",
+        "t": "The bus leaves at nine o'clock, so please come to school at half past eight."
+      },
+      {
+        "sp": "Teacher",
+        "t": "Bring a hat and some water. You don't need to bring lunch. We're having lunch at the zoo cafe."
+      },
+      {
+        "sp": "Teacher",
+        "t": "We're coming back to school at three o'clock."
+      }
+    ],
+    "items": [
+      {
+        "id": "gt-a1-2-l2-a",
+        "q": "Where are they going tomorrow?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to the zoo"
+          },
+          {
+            "k": "B",
+            "t": "to the cafe"
+          },
+          {
+            "k": "C",
+            "t": "to the park"
+          }
+        ],
+        "ans": "A",
+        "b": 1.5,
+        "ev": {
+          "p": 0,
+          "s": "Tomorrow we're going to the zoo."
+        },
+        "why": "Ngày mai cả lớp đi sở thú.",
+        "wrong": {
+          "B": "Quán ăn chỉ là nơi ăn trưa trong sở thú.",
+          "C": "Cô giáo không nhắc công viên."
+        }
+      },
+      {
+        "id": "gt-a1-2-l2-b",
+        "q": "What time must the students be at school?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at 9.00"
+          },
+          {
+            "k": "B",
+            "t": "at 8.30"
+          },
+          {
+            "k": "C",
+            "t": "at 3.00"
+          }
+        ],
+        "ans": "B",
+        "b": 2.5,
+        "ev": {
+          "p": 1,
+          "s": "please come to school at half past eight"
+        },
+        "why": "Học sinh phải có mặt lúc tám rưỡi.",
+        "wrong": {
+          "A": "Chín giờ là giờ xe chạy.",
+          "C": "Ba giờ là giờ về trường."
+        }
+      },
+      {
+        "id": "gt-a1-2-l2-c",
+        "q": "What don't the students need to bring?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "a hat"
+          },
+          {
+            "k": "B",
+            "t": "water"
+          },
+          {
+            "k": "C",
+            "t": "lunch"
+          }
+        ],
+        "ans": "C",
+        "b": 2.5,
+        "ev": {
+          "p": 2,
+          "s": "You don't need to bring lunch."
+        },
+        "why": "Không cần mang bữa trưa vì ăn ở quán trong sở thú.",
+        "wrong": {
+          "A": "Cô dặn mang mũ.",
+          "B": "Cô dặn mang nước."
+        }
+      },
+      {
+        "id": "gt-a1-2-l2-d",
+        "q": "What time do they come back?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at three"
+          },
+          {
+            "k": "B",
+            "t": "at nine"
+          },
+          {
+            "k": "C",
+            "t": "at half past eight"
+          }
+        ],
+        "ans": "A",
+        "b": 2,
+        "ev": {
+          "p": 3,
+          "s": "We're coming back to school at three o'clock."
+        },
+        "why": "Cả lớp về lúc ba giờ.",
+        "wrong": {
+          "B": "Chín giờ là giờ xe chạy.",
+          "C": "Tám rưỡi là giờ có mặt."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/gt-a1-2-l2.mp3",
+      "dur": 16.2,
+      "voices": [
+        "bf_emma"
+      ]
+    }
+  }
+]

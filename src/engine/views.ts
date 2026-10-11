@@ -7,6 +7,7 @@ import { META, GOALS, loaded, goalOn, type GoalMeta } from './data.ts';
 import { closure, defaultLevel } from './graph.ts';
 import { statusOf, type NodeState } from './mastery.ts';
 import { readinessOf, readyChip, viewReady } from './readyview.ts';
+import { viewCert } from './gateview.ts';
 import { LEVEL_VI, type Area, type GoalKind, type Node, type Req } from './types.ts';
 
 export interface ECtx { host: EHost; e: EState; route: string; future?: boolean; hidden?: number }   // e.goals chỉ gồm mục tiêu đang mở; hidden = số mục tiêu tạm ẩn
@@ -35,7 +36,7 @@ export function nodeStat(host: EHost, e: EState, node: string, level: Req['level
 }
 const CONF_VI = { low: 'tin cậy thấp', mid: 'tin cậy vừa', high: 'tin cậy cao' } as const;
 const STATE_CHIP: Partial<Record<NodeState, string>> = {
-  inferred: 'suy ra từ chẩn đoán, đang xác nhận', verify: 'cần xác minh ở câu mới', reopened: 'mở lại: bằng chứng mới mâu thuẫn',
+  inferred: 'suy ra từ xếp lớp, đang xác nhận', verify: 'cần xác minh ở câu mới', reopened: 'mở lại: bằng chứng mới mâu thuẫn',
 };
 export const statChip = (st: NStat): string => st.none ? '<span class="pill">chưa có bằng chứng</span>'
   : st.state && STATE_CHIP[st.state] && !(st.state === 'inferred' && st.pass) ? `<span class="pill warn">${STATE_CHIP[st.state]} · ${Math.round(st.pct * 100)}%</span>`
@@ -50,8 +51,8 @@ export function viewGoals(c: ECtx): string {
   const head = `<section class="stack"><span class="eyebrow">Mục tiêu</span><h1>Mục tiêu của bạn</h1>
     <p class="muted">App chỉ cho bạn học những gì mục tiêu thật sự cần và bạn chưa thành thạo. Mỗi mục tiêu là một danh sách năng lực cần đạt (Target Model), có phiên bản.</p></section>`;
   const kinds = `<div class="units">${KINDS.filter(k => META.goals.some(g => g.kind === k && goalOn(g.id, !!c.future))).map(k => `<button class="unit morei" data-e="go" data-r="pick/${k}"><span class="no">${host.ico(k === 'comm' ? 'mic' : k === 'cefr' ? 'map' : 'exam')}</span><span class="t"><strong>${esc(KIND_VI[k][0])}</strong><span class="muted">${esc(KIND_VI[k][1])}</span></span></button>`).join('')}</div>`;
-  const diag = e.diag ? `<section class="panel spread"><span>Chẩn đoán gần nhất: từ vựng ≈ ${esc(cefrName(e.diag.u))}, ngữ pháp ≈ ${esc(cefrName(e.diag.g))}</span><button class="btn small" data-e="go" data-r="diag-result">Xem</button></section>`
-    : `<section class="panel stack"><h3>Bạn đang ở đâu?</h3><p class="muted">Bài dò 10–20 phút để app bỏ qua những gì bạn đã biết.</p><div class="row"><button class="btn primary small" data-e="go" data-r="diag">Làm bài chẩn đoán</button></div></section>`;
+  const diag = e.diag ? `<section class="panel spread"><span>Xếp lớp gần nhất: từ vựng ≈ ${esc(cefrName(e.diag.u))}, ngữ pháp ≈ ${esc(cefrName(e.diag.g))}</span><button class="btn small" data-e="go" data-r="diag-result">Xem</button></section>`
+    : `<section class="panel stack"><h3>Bạn đang ở đâu?</h3><p class="muted">Lượt thử sức 10–20 phút để app bỏ qua những gì bạn đã biết.</p><div class="row"><button class="btn primary small" data-e="go" data-r="diag">Thử sức để xếp lớp</button></div></section>`;
   const hid = c.hidden ? `<p class="hint">${c.hidden} mục tiêu kỳ thi/giao tiếp đã chọn trước đây đang tạm ẩn: bản này tập trung vào CEFR (Pre-A1 → C2). Bằng chứng đã có vẫn được giữ.</p>` : '';
   if (!mine.length) return `${head}${diag}${hid}<section class="stack"><h2>Bạn muốn đạt gì?</h2></section>${kinds}`;
   const cards = mine.map(({ s, m }) => `<section class="panel stack" aria-label="${esc(m.vi)}">
@@ -97,9 +98,10 @@ export function viewGoal(c: ECtx, loadErr: string): string {
       <div class="stat"><b>${passed}/${g.req.length}</b><span class="muted">tiến độ học: năng lực đã đạt</span></div>
       <div class="stat"><b>${all.length}</b><span class="muted">kể cả tiền đề</span></div>
       <div class="stat"><b>${esc(hours(minutes))}</b><span class="muted">học từ đầu (ước tính thô)</span></div></div>
-      <p class="hint">Tiền đề gồm ${count(n => n.kind === 'vocab')} cụm từ vựng, ${count(n => n.kind === 'grammar')} điểm ngữ pháp và ${count(n => n.kind === 'cando')} năng lực cấp dưới. Thứ bạn đã thành thạo sẽ được bỏ khỏi lộ trình sau bài chẩn đoán, nên con số thật thường nhỏ hơn.</p></section>
+      <p class="hint">Tiền đề gồm ${count(n => n.kind === 'vocab')} cụm từ vựng, ${count(n => n.kind === 'grammar')} điểm ngữ pháp và ${count(n => n.kind === 'cando')} năng lực cấp dưới. Thứ bạn đã thành thạo sẽ được bỏ khỏi lộ trình sau lượt thử sức xếp lớp, nên con số thật thường nhỏ hơn.</p></section>
     ${viewReady(host, g, readinessOf(host, e, g), e)}
-    ${sel ? `<form class="panel stack" data-eform="date" data-g="${esc(id)}"><label class="stack" style="gap:4px"><b>Ngày thi hoặc hạn muốn đạt</b><input class="field" type="date" name="date" value="${sel.date !== null ? isoOf(sel.date) : ''}" min="${isoOf(host.today())}"></label><div class="row"><button class="btn small">Lưu</button></div></form>`
+    ${sel && id.startsWith('cefr-') ? viewCert(c, id, e.gg) : ''}
+    ${sel ? `<form class="panel stack" data-eform="date" data-g="${esc(id)}"><label class="stack" style="gap:4px"><b>Hạn muốn đạt (tuỳ chọn)</b><input class="field" type="date" name="date" value="${sel.date !== null ? isoOf(sel.date) : ''}" min="${isoOf(host.today())}"></label><div class="row"><button class="btn small">Lưu</button></div></form>`
       : `<div class="row"><button class="btn primary" data-e="add" data-g="${esc(id)}">Chọn mục tiêu này</button></div>`}
     ${groups.map(([a, rs]) => `<section class="stack"><h2>${esc(AREA_VI[a])} <span class="hint">(${rs.length})</span></h2><ul class="stack" style="list-style:none;padding:0;margin:0;gap:6px">${rs.map(row).join('')}</ul></section>`).join('')}
     ${back()}`;

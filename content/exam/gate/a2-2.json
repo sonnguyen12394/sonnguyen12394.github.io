@@ -1,0 +1,849 @@
+[
+  {
+    "id": "gt-a2-2-r1",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-r",
+    "level": "A2",
+    "band": 3,
+    "mode": "gate",
+    "title": "Messages and notices",
+    "instr": "Read the messages and notices and answer the questions.",
+    "paras": [
+      "Hi Tuan, I can't come to the gym tonight because I have to finish my homework. Can we go on Thursday instead? Phong",
+      "BOOKSHOP: Buy two books and get the third one free. This offer ends on 30 June.",
+      "TRAIN NOTICE: Because of work on the line, trains to Hue will leave from Platform 2, not Platform 5, until Sunday.",
+      "SPORTS CENTRE: The tennis courts are closed for repairs this week. The swimming pool and gym are open as usual.",
+      "Dear customer, your order has been sent. It should arrive in 3 to 5 days. If it doesn't arrive in 7 days, please contact us."
+    ],
+    "items": [
+      {
+        "id": "gt-a2-2-r1-a",
+        "q": "Why is Phong writing?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to ask for help"
+          },
+          {
+            "k": "B",
+            "t": "to change the day"
+          },
+          {
+            "k": "C",
+            "t": "to invite Tuan home"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "Can we go on Thursday instead?"
+        },
+        "why": "Phong muốn đổi buổi tập sang thứ Năm.",
+        "wrong": {
+          "A": "Phong phải tự làm bài tập, không nhờ Tuấn giúp.",
+          "C": "Phong không mời Tuấn đến nhà."
+        }
+      },
+      {
+        "id": "gt-a2-2-r1-b",
+        "q": "What is true about the offer?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Every book is free."
+          },
+          {
+            "k": "B",
+            "t": "It starts on 30 June."
+          },
+          {
+            "k": "C",
+            "t": "The third book is free."
+          }
+        ],
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "Buy two books and get the third one free."
+        },
+        "why": "Mua hai cuốn thì cuốn thứ ba miễn phí.",
+        "wrong": {
+          "A": "Chỉ cuốn thứ ba được miễn phí.",
+          "B": "30 tháng Sáu là ngày kết thúc."
+        }
+      },
+      {
+        "id": "gt-a2-2-r1-c",
+        "q": "Where should passengers to Hue go?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Platform 2"
+          },
+          {
+            "k": "B",
+            "t": "Platform 5"
+          },
+          {
+            "k": "C",
+            "t": "home until Sunday"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "trains to Hue will leave from Platform 2, not Platform 5"
+        },
+        "why": "Tàu đi Huế chạy từ sân ga 2.",
+        "wrong": {
+          "B": "Không đi từ sân ga 5 (\"not Platform 5\").",
+          "C": "Tàu vẫn chạy, chỉ đổi sân ga."
+        }
+      },
+      {
+        "id": "gt-a2-2-r1-d",
+        "q": "What can't you use this week?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "the gym"
+          },
+          {
+            "k": "B",
+            "t": "the tennis courts"
+          },
+          {
+            "k": "C",
+            "t": "the pool"
+          }
+        ],
+        "ans": "B",
+        "b": 2.5,
+        "ev": {
+          "p": 3,
+          "s": "The tennis courts are closed for repairs this week."
+        },
+        "why": "Sân quần vợt đóng để sửa.",
+        "wrong": {
+          "A": "Phòng tập vẫn mở.",
+          "C": "Hồ bơi vẫn mở."
+        }
+      },
+      {
+        "id": "gt-a2-2-r1-e",
+        "q": "When should the customer contact the shop?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "if nothing comes in 3 days"
+          },
+          {
+            "k": "B",
+            "t": "if nothing comes in 5 days"
+          },
+          {
+            "k": "C",
+            "t": "if nothing comes in 7 days"
+          }
+        ],
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 4,
+          "s": "If it doesn't arrive in 7 days, please contact us."
+        },
+        "why": "Sau bảy ngày chưa nhận được hàng thì liên hệ.",
+        "wrong": {
+          "A": "Ba đến năm ngày là thời gian giao bình thường.",
+          "B": "Năm ngày vẫn trong thời gian giao bình thường."
+        }
+      }
+    ]
+  },
+  {
+    "id": "gt-a2-2-r2",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-r",
+    "level": "A2",
+    "band": 3.5,
+    "mode": "gate",
+    "title": "A day without phones",
+    "instr": "Read the text and answer the questions.",
+    "paras": [
+      "Last month our class tried a day without mobile phones. Our teacher thought it would be difficult for us, and she was right. At the start of the day, many students kept looking for their phones.",
+      "But by lunchtime something changed. Instead of looking at screens, people talked to each other, and a group of us played a card game we hadn't played for years.",
+      "The hardest part for me was not checking the time. I wear a watch now! Our teacher wants to do it again next term, and most students agreed. Mai"
+    ],
+    "items": [
+      {
+        "id": "gt-a2-2-r2-a",
+        "q": "How did students feel at the start of the day?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "They missed their phones."
+          },
+          {
+            "k": "B",
+            "t": "They felt very relaxed."
+          },
+          {
+            "k": "C",
+            "t": "They were angry with the teacher."
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "many students kept looking for their phones"
+        },
+        "why": "Lúc đầu nhiều bạn cứ tìm điện thoại.",
+        "wrong": {
+          "B": "Lúc đầu nhiều bạn cứ tìm điện thoại, không thoải mái.",
+          "C": "Bài không nói ai giận cô giáo."
+        }
+      },
+      {
+        "id": "gt-a2-2-r2-b",
+        "q": "What happened at lunchtime?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Students used computers."
+          },
+          {
+            "k": "B",
+            "t": "Students talked more."
+          },
+          {
+            "k": "C",
+            "t": "Students went home early."
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "people talked to each other"
+        },
+        "why": "Đến trưa mọi người nói chuyện với nhau.",
+        "wrong": {
+          "A": "Mọi người không nhìn màn hình nữa.",
+          "C": "Bài không nói ai về sớm."
+        }
+      },
+      {
+        "id": "gt-a2-2-r2-c",
+        "q": "What was hardest for Mai?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "not playing games"
+          },
+          {
+            "k": "B",
+            "t": "not talking to friends"
+          },
+          {
+            "k": "C",
+            "t": "not knowing the time"
+          }
+        ],
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "The hardest part for me was not checking the time."
+        },
+        "why": "Điều khó nhất với Mai là không xem được giờ.",
+        "wrong": {
+          "A": "Mai còn chơi bài với bạn.",
+          "B": "Mọi người nói chuyện nhiều hơn."
+        }
+      },
+      {
+        "id": "gt-a2-2-r2-d",
+        "q": "What do most students think now?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "They want to do it again."
+          },
+          {
+            "k": "B",
+            "t": "It was too hard to repeat."
+          },
+          {
+            "k": "C",
+            "t": "They want to try it every day."
+          }
+        ],
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "most students agreed"
+        },
+        "why": "Phần lớn học sinh đồng ý làm lại.",
+        "wrong": {
+          "B": "Phần lớn học sinh đồng ý làm lại.",
+          "C": "Cô giáo chỉ đề nghị làm lại vào học kỳ sau."
+        }
+      }
+    ]
+  },
+  {
+    "id": "gt-a2-2-r3",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-r",
+    "level": "A2",
+    "band": 3.5,
+    "mode": "gate",
+    "title": "The lantern festival",
+    "instr": "Choose the right word for each gap.",
+    "paras": [
+      "Once a month, on the night of the full moon, the old town of Hoi An turns (1) ___ its electric lights. (2) ___ of them, people hang colourful lanterns.",
+      "Visitors can (3) ___ a paper lantern and put it on the river. Many people believe it brings good luck.",
+      "The festival is (4) ___ crowded, so try to arrive before seven o'clock. Remember that you (5) ___ to buy a ticket to enter the old town."
+    ],
+    "items": [
+      {
+        "id": "gt-a2-2-r3-a",
+        "q": "Gap 1",
+        "opts": [
+          {
+            "k": "A",
+            "t": "on"
+          },
+          {
+            "k": "B",
+            "t": "off"
+          },
+          {
+            "k": "C",
+            "t": "out"
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "the old town of Hoi An turns (1) ___ its electric lights"
+        },
+        "why": "\"turn off\": tắt đèn điện.",
+        "wrong": {
+          "A": "Phố cổ thay đèn điện bằng đèn lồng, nên đèn điện phải tắt.",
+          "C": "\"turn out\" không dùng với \"its lights\" theo nghĩa tắt đèn ở đây."
+        }
+      },
+      {
+        "id": "gt-a2-2-r3-b",
+        "q": "Which word starts the sentence in gap 2?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Because"
+          },
+          {
+            "k": "B",
+            "t": "Without"
+          },
+          {
+            "k": "C",
+            "t": "Instead"
+          }
+        ],
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "(2) ___ of them, people hang colourful lanterns."
+        },
+        "why": "\"Instead of\": thay vì.",
+        "wrong": {
+          "A": "\"Because of them\" không hợp nghĩa: người ta treo đèn lồng thay cho đèn điện.",
+          "B": "\"Without of\" sai ngữ pháp."
+        }
+      },
+      {
+        "id": "gt-a2-2-r3-c",
+        "q": "Gap 3",
+        "opts": [
+          {
+            "k": "A",
+            "t": "buy"
+          },
+          {
+            "k": "B",
+            "t": "cost"
+          },
+          {
+            "k": "C",
+            "t": "spend"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "Visitors can (3) ___ a paper lantern"
+        },
+        "why": "\"buy a lantern\": mua một chiếc đèn lồng.",
+        "wrong": {
+          "B": "\"cost\" là giá tiền, không dùng cho người mua.",
+          "C": "\"spend a lantern\" không có nghĩa."
+        }
+      },
+      {
+        "id": "gt-a2-2-r3-d",
+        "q": "Gap 4",
+        "opts": [
+          {
+            "k": "A",
+            "t": "never"
+          },
+          {
+            "k": "B",
+            "t": "usually"
+          },
+          {
+            "k": "C",
+            "t": "hardly"
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "The festival is (4) ___ crowded, so try to arrive"
+        },
+        "why": "\"usually crowded\": thường đông, nên đến sớm.",
+        "wrong": {
+          "A": "Nếu không bao giờ đông thì không cần đến sớm.",
+          "C": "Nếu hầu như không đông thì không cần đến sớm."
+        }
+      },
+      {
+        "id": "gt-a2-2-r3-e",
+        "q": "Gap 5",
+        "opts": [
+          {
+            "k": "A",
+            "t": "must"
+          },
+          {
+            "k": "B",
+            "t": "should"
+          },
+          {
+            "k": "C",
+            "t": "need"
+          }
+        ],
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "you (5) ___ to buy a ticket"
+        },
+        "why": "\"need to buy\": cần mua (sau \"need\" có \"to\").",
+        "wrong": {
+          "A": "Sau \"must\" không có \"to\".",
+          "B": "Sau \"should\" không có \"to\"."
+        }
+      }
+    ],
+    "allow": [
+      "lantern",
+      "lanterns",
+      "festival",
+      "electric"
+    ]
+  },
+  {
+    "id": "gt-a2-2-l1",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "A2",
+    "band": 3,
+    "mode": "gate",
+    "title": "Four short conversations",
+    "instr": "Listen and answer the questions. You will hear each conversation once.",
+    "voices": {
+      "Man": "am_adam",
+      "Woman": "bf_emma",
+      "Boy": "am_michael",
+      "Mum": "af_sarah"
+    },
+    "script": [
+      {
+        "sp": "Man",
+        "t": "Are you going to the concert on Friday?"
+      },
+      {
+        "sp": "Woman",
+        "t": "I wanted to, but the tickets were sold out. I'm going to watch it online instead."
+      },
+      {
+        "sp": "Woman",
+        "t": "How was your holiday in Sapa?"
+      },
+      {
+        "sp": "Man",
+        "t": "Cold! It snowed for two days, so we stayed in the hotel and played cards. The last day was sunny, though."
+      },
+      {
+        "sp": "Boy",
+        "t": "Mum, can I have 50,000 dong for the cinema?"
+      },
+      {
+        "sp": "Mum",
+        "t": "The ticket is only 40,000. Here's 40,000, and take your own water."
+      },
+      {
+        "sp": "Woman",
+        "t": "Is the post office near here?"
+      },
+      {
+        "sp": "Man",
+        "t": "Go straight on, then turn left at the bank. It's opposite the supermarket."
+      }
+    ],
+    "items": [
+      {
+        "id": "gt-a2-2-l1-a",
+        "q": "How will the woman see the concert?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "on the internet"
+          },
+          {
+            "k": "B",
+            "t": "at the concert hall"
+          },
+          {
+            "k": "C",
+            "t": "on TV"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "I'm going to watch it online instead."
+        },
+        "why": "Cô xem buổi hoà nhạc trên mạng.",
+        "wrong": {
+          "B": "Vé đã bán hết nên cô không đến hội trường.",
+          "C": "Cô không nhắc TV."
+        }
+      },
+      {
+        "id": "gt-a2-2-l1-b",
+        "q": "What did the man do for two days?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "walked in the snow"
+          },
+          {
+            "k": "B",
+            "t": "stayed inside"
+          },
+          {
+            "k": "C",
+            "t": "went to the market"
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 3,
+          "s": "we stayed in the hotel and played cards"
+        },
+        "why": "Hai ngày tuyết rơi, họ ở trong khách sạn.",
+        "wrong": {
+          "A": "Tuyết rơi nên họ ở trong khách sạn.",
+          "C": "Anh không nhắc chợ."
+        }
+      },
+      {
+        "id": "gt-a2-2-l1-c",
+        "q": "How much money does the boy get?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "50,000 dong"
+          },
+          {
+            "k": "B",
+            "t": "90,000 dong"
+          },
+          {
+            "k": "C",
+            "t": "40,000 dong"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 5,
+          "s": "Here's 40,000"
+        },
+        "why": "Mẹ đưa 40.000 đồng.",
+        "wrong": {
+          "A": "Cậu xin 50.000 nhưng mẹ chỉ đưa 40.000.",
+          "B": "Mẹ không đưa thêm tiền."
+        }
+      },
+      {
+        "id": "gt-a2-2-l1-d",
+        "q": "Where is the post office?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "opposite the supermarket"
+          },
+          {
+            "k": "B",
+            "t": "next to the bank"
+          },
+          {
+            "k": "C",
+            "t": "behind the supermarket"
+          }
+        ],
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 7,
+          "s": "It's opposite the supermarket."
+        },
+        "why": "Bưu điện ở đối diện siêu thị.",
+        "wrong": {
+          "B": "Ngân hàng là chỗ rẽ trái.",
+          "C": "Bưu điện đối diện siêu thị, không ở phía sau."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/gt-a2-2-l1.mp3",
+      "dur": 32.7,
+      "voices": [
+        "am_adam",
+        "bf_emma",
+        "am_michael",
+        "af_sarah"
+      ]
+    }
+  },
+  {
+    "id": "gt-a2-2-l2",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "A2",
+    "band": 3.5,
+    "mode": "gate",
+    "title": "A new job",
+    "instr": "Listen to Lan and Nam and answer the questions.",
+    "voices": {
+      "Lan": "bf_isabella",
+      "Nam": "bm_george"
+    },
+    "script": [
+      {
+        "sp": "Lan",
+        "t": "Hi Nam, how's your new job at the bookshop?"
+      },
+      {
+        "sp": "Nam",
+        "t": "Good, thanks. I work there on Saturdays and Sundays, from nine till three."
+      },
+      {
+        "sp": "Lan",
+        "t": "Is it busy?"
+      },
+      {
+        "sp": "Nam",
+        "t": "Mornings are quiet, but after lunch it gets really busy. Lots of students come in."
+      },
+      {
+        "sp": "Lan",
+        "t": "What do you do there?"
+      },
+      {
+        "sp": "Nam",
+        "t": "I put new books on the shelves. I wanted to work at the cash desk, but the manager says I need more experience first."
+      },
+      {
+        "sp": "Lan",
+        "t": "And do you get free books?"
+      },
+      {
+        "sp": "Nam",
+        "t": "No, but I get twenty percent off."
+      }
+    ],
+    "items": [
+      {
+        "id": "gt-a2-2-l2-a",
+        "q": "When does Nam work?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "after school"
+          },
+          {
+            "k": "B",
+            "t": "at the weekend"
+          },
+          {
+            "k": "C",
+            "t": "every morning"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "I work there on Saturdays and Sundays"
+        },
+        "why": "Nam làm vào cuối tuần.",
+        "wrong": {
+          "A": "Nam làm thứ Bảy và Chủ nhật.",
+          "C": "Nam chỉ làm cuối tuần."
+        }
+      },
+      {
+        "id": "gt-a2-2-l2-b",
+        "q": "When is the shop busy?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "in the morning"
+          },
+          {
+            "k": "B",
+            "t": "only at lunchtime"
+          },
+          {
+            "k": "C",
+            "t": "in the afternoon"
+          }
+        ],
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 3,
+          "s": "after lunch it gets really busy"
+        },
+        "why": "Sau bữa trưa cửa hàng rất đông.",
+        "wrong": {
+          "A": "Buổi sáng vắng.",
+          "B": "Đông là sau bữa trưa, không chỉ lúc trưa."
+        }
+      },
+      {
+        "id": "gt-a2-2-l2-c",
+        "q": "What is Nam's job at the shop?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "He puts books on shelves."
+          },
+          {
+            "k": "B",
+            "t": "He works at the cash desk."
+          },
+          {
+            "k": "C",
+            "t": "He helps the manager."
+          }
+        ],
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 5,
+          "s": "I put new books on the shelves."
+        },
+        "why": "Nam xếp sách mới lên kệ.",
+        "wrong": {
+          "B": "Nam muốn làm ở quầy thu ngân nhưng chưa được.",
+          "C": "Nam không nói giúp quản lý."
+        }
+      },
+      {
+        "id": "gt-a2-2-l2-d",
+        "q": "What does Nam get?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "free books"
+          },
+          {
+            "k": "B",
+            "t": "cheaper books"
+          },
+          {
+            "k": "C",
+            "t": "more money on Sundays"
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 7,
+          "s": "I get twenty percent off"
+        },
+        "why": "Nam được giảm 20% khi mua sách.",
+        "wrong": {
+          "A": "Nam không được sách miễn phí.",
+          "C": "Nam không nhắc tiền Chủ nhật."
+        }
+      }
+    ],
+    "allow": [
+      "experience",
+      "percent",
+      "manager"
+    ],
+    "audio": {
+      "file": "a/gt-a2-2-l2.mp3",
+      "dur": 30.8,
+      "voices": [
+        "bf_isabella",
+        "bm_george"
+      ]
+    }
+  }
+]
