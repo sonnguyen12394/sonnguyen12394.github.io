@@ -4,8 +4,8 @@
 
 - **Lần 1:** 11/10/2026, sau v111.
 - **Lần 2:** sau v111b–v114, trên nhánh `claude/v110-goal-progress`.
-- **Lần 3:** sau v115 (phép thử không có bài cho đề cổng, đo bot theo bộ não, khu truyện cuối = trận cổng), cùng nhánh.
-- **Lần 4 (chỉ nhóm L):** v116, thêm nhóm L "Rõ ràng và dễ dùng" theo phản hồi của người sáng lập: "giao diện quá nhiều chức năng, nhìn không biết nên làm gì học gì". Cột Lần 3 của nhóm L là điểm chấm lùi cho bản v115.
+- **Lần 3:** sau v115–v116 (phép thử không có bài cho đề cổng, đo bot theo bộ não, khu truyện cuối = trận cổng, cổng B1).
+- **Lần 4 (chỉ nhóm L):** v117, thêm nhóm L "Rõ ràng và dễ dùng" theo phản hồi của người sáng lập: "giao diện quá nhiều chức năng, nhìn không biết nên làm gì học gì". Cột Lần 3 của nhóm L là điểm chấm lùi cho bản v115.
 
 Căn cứ: code, test, báo cáo bot người học, `docs/GAME-CRITERIA.md`. Chưa có số liệu người học thật, nên mọi điểm về hiệu quả và độ vui là **ước tính**.
 
@@ -27,23 +27,24 @@ Căn cứ: code, test, báo cáo bot người học, `docs/GAME-CRITERIA.md`. Ch
 | B · Đầu vào và mục tiêu | Mô hình học §1, §2 | 10 | 7 | 4,3 | 7,3 | **7,4** |
 | C · Bản đồ và lộ trình | Mô hình học §3; Quyết định kỹ thuật §6 | 10 | 6 | 6,3 | 7,0 | **7,0** |
 | D · Kết luận đạt và chống học tủ | Mô hình học §3 (chống học tủ), §4; mục "Đề sát hạch" | 15 | 7 | 1,6 | 7,0 | **7,1** |
-| E · Độ phủ đề tham chiếu (A2 Key) | Mục "Đề sát hạch" (đặc tả bài tham chiếu) | 10 | 6 | 4,0 | 4,7 | **4,7** |
+| E · Độ phủ đề tham chiếu (A2 Key) | Mục "Đề sát hạch" (đặc tả bài tham chiếu) | 10 | 6 | 4,0 | 4,7 | **4,8** |
 | F · Hiển thị tiến độ | Mục "Hợp đồng hiển thị tiến độ" | 6 | 5 | 6,8 | 8,2 | **8,2** |
 | G · Bằng chứng và dữ liệu | Mô hình học §6 | 8 | 7 | 7,6 | 8,0 | **8,0** |
 | H · Trải nghiệm game | GAME-CRITERIA §10 | 9 | 6 | 5,2 | 5,2 | **5,2** |
 | I · Minh bạch và đạo đức | Tầm nhìn; luật 3 của "Game hoá" | 3 | 3 | 8,0 | 8,3 | **8,3** |
 | J · Kỹ thuật | Rủi ro đã ghi nhận | 4 | 5 | 6,6 | 6,6 | **6,6** |
 | K · Kiểm chứng hiệu quả | Giới hạn thực tế; v2.4 §XXIII | 5 | 3 | 3,3 | 3,7 | **3,7** |
-| L · Rõ ràng và dễ dùng (v116) | SPEC §7 "Luật màn đầu"; Hợp đồng hiển thị tiến độ (sửa v116) | 15 | 8 | — | — | 3,6 → **8,4** |
-| **Chung** | | 115 | 79 | 4,9 | 6,6 | **6,7** (gồm L: 6,3 trước v116 → **6,9**) |
+| L · Rõ ràng và dễ dùng (v117) | SPEC §7 "Luật màn đầu"; Hợp đồng hiển thị tiến độ (sửa v117) | 15 | 8 | — | — | 3,6 → **8,4** |
+| **Chung** | | 115 | 79 | 4,9 | 6,6 | **6,7** (gồm L: 6,3 trước v117 → **6,9**) |
 
 ### Đọc nhanh lần 3
 
 1. **Đề cổng qua phép thử không có bài.** Agent độc lập chỉ thấy câu hỏi + phương án: vòng 1 đoán đúng 69%, sau hai lần sửa còn Đọc 49%, Nghe 14% (ngưỡng 55%). Câu vẫn do AI soạn, **chưa qua vòng soát của người** (D2 = 6).
 2. **Truyện kết thúc bằng trận cổng của đích (A12, B7).** Chương cuối Rừng Trúc chỉ mở khi đã qua trận cổng.
-3. **C4 có số đo thật từ bot đi theo bộ não.** Game chủ lực còn 41–65% lượt chơi (trước 72%).
-4. **Tab học kiểu cũ hết chữ "bài kiểm tra / thi vượt".**
-5. **Phần trần không đổi:** H, K cần người thật; E cần soạn thêm dạng bài; J cần tách code lớn.
+3. **v116: thêm trận cổng B1** (2 đề, 48 câu), qua phép thử không có bài sau 2 vòng (Đọc 82% → 28%, Nghe 78% → 31%); vẫn cần người soát.
+4. **C4 có số đo thật từ bot đi theo bộ não.** Game chủ lực còn 41–65% lượt chơi (trước 72%).
+5. **Tab học kiểu cũ hết chữ "bài kiểm tra / thi vượt".**
+6. **Phần trần không đổi:** H, K cần người thật; E cần soạn thêm dạng bài; J cần tách code lớn.
 
 ### Đọc nhanh lần 2
 
@@ -108,14 +109,14 @@ Kiểm: Mô hình học §3 (chống học tủ), §4; mục "Đề sát hạch"
 | # | Tiêu chí | Mốc 10 | Lần 1 | Lần 2 | Lần 3 | Căn cứ | Để lên điểm | Trần |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D1 | Đạt = đậu câu lạ | Kết luận đạt chỉ từ trận cổng câu lạ | 1 | 7 | **7** | v113: với khu có cổng, Đạt trong app = qua trận cổng (`readinessOf`); bản đồ ghi rõ "chưa phải kết luận" | v113 |  |
-| D2 | Kho câu lạ đủ lớn, cách ly | Mỗi cấp ≥ 2 đề song song, không lọt vào luyện tập | 2 | 5 | **6** | v113: mỗi cấp A1, A2 có 2 đề song song (21–22 câu, Đọc + Nghe), câu do AI soạn, qua `npm run content` nhưng **chưa qua vòng soát của người**. v115 phép thử không có bài 3 vòng (`content/exam/gate/README.md`): Đọc 69% → 49%, Nghe 69% → 55% → 14% (ngưỡng 55%) | Soạn đề A2 trước | cần người soát câu |
+| D2 | Kho câu lạ đủ lớn, cách ly | Mỗi cấp ≥ 2 đề song song, không lọt vào luyện tập | 2 | 5 | **6** | v113: mỗi cấp A1, A2 có 2 đề song song (21–22 câu, Đọc + Nghe), câu do AI soạn, qua `npm run content` nhưng **chưa qua vòng soát của người**. v115 phép thử không có bài 3 vòng (`content/exam/gate/README.md`): Đọc 69% → 49%, Nghe 69% → 55% → 14% (ngưỡng 55%). v116 cổng B1 (48 câu) qua 2 vòng: Đọc 82% → 28%, Nghe 78% → 31% | Soạn đề A2 trước | cần người soát câu |
 | D3 | Đèn báo học tủ | So đúng câu đã gặp với câu lạ, báo khi chênh | 2 | 8 | **8** | v111: `rote.ts` so câu đã gặp / câu lạ trên bộ đếm sẵn có, chỉ bật khi chênh ≥ 25 điểm và ≥ 2 lần sai số; mô phỏng 200 lần: bắt 98,5% bot vẹt, báo nhầm 2% bot học thật | Một phép tính trên số đã có |  |
 | D4 | Xác suất đậu kèm sai số | P(đậu) theo IRT ± sai số, ngưỡng 80% | 1 | 7 | **7** | v113: P(qua) = Φ((θ − ngưỡng) / SE) từ IRT 3PL, có khoảng 80%; độ khó câu là ước tính của người soạn (chưa hiệu chỉnh) | Dùng lại cho trận cổng |  |
 | D5 | Chốt dự đoán và đối chiếu | Ghi dự đoán trước, so với điểm thật | 3 | 7 | **7** | v113: ghi điểm đề mẫu / thi thật ở trang mục tiêu kèm P(qua) app có trước đó; hiện "app đoán đúng / sai" | Ở tuỳ chọn hồ sơ |  |
 | D6 | Xác nhận ngoài là tuỳ chọn ở hồ sơ | Ai cần chứng chỉ mới thấy | 1 | 8 | **8** | v113: phần "🎓 Chứng chỉ" chỉ hiện khi người học bật | v113 |  |
 | D7 | Trận cổng mở đúng lúc | Chỉ mở khi bản đồ báo gần đủ; không phí đề lạ | 1 | 7 | **7** | v113: cổng mở khi ≥ 70% kỹ năng của khu đã vững thật; đề đã mở tính là đã dùng | Luật mở cổng theo tham số cấu hình (v113) |  |
 
-## E · Độ phủ đề tham chiếu (A2 Key): 4,0 → 4,7 → 4,7 / 10 (trọng số 10)
+## E · Độ phủ đề tham chiếu (A2 Key): 4,0 → 4,7 → 4,8 / 10 (trọng số 10)
 
 Kiểm: Mục "Đề sát hạch" (đặc tả bài tham chiếu).
 
@@ -126,7 +127,7 @@ Kiểm: Mục "Đề sát hạch" (đặc tả bài tham chiếu).
 | E3 | Nghe | Đủ dạng bài nghe A2 Key | 5 | 5 | **5** | 525 câu thoại, nghe đoạn hai giọng, nhiều giọng, tiếng ồn; chưa đối chiếu dạng bài | Bảng phủ theo dạng bài | cần soạn thêm nội dung |
 | E4 | Nói | Hỏi đáp và thảo luận cặp như phần thi Nói | 3 | 3 | **3** | Đóng vai, Karaoke, nói đáp từ ý tiếng Việt; không có dạng thảo luận cặp | Dạng bài hỏi đáp theo đặc tả | cần soạn thêm nội dung |
 | E5 | Từ vựng và ngữ pháp | Đủ danh sách từ và ngữ pháp của cấp | 7 | 7 | **7** | 9.345 từ gắn cấp CEFR; ngữ pháp A1–C2; 28.114 câu gắn nút, 0 mồ côi (v67) | Đối chiếu với danh sách từ chính thức của bài tham chiếu |  |
-| E6 | Số đề song song mỗi cấp | ≥ 2 đề lạ mỗi cấp | 0 | 4 | **4** | v113: A1 và A2 mỗi cấp 2 đề rút gọn (chưa đủ 5 phần Đọc, 5 phần Nghe như bài gốc; chưa có Viết, Nói trong cổng) | v113 | cần soạn thêm nội dung |
+| E6 | Số đề song song mỗi cấp | ≥ 2 đề lạ mỗi cấp | 0 | 4 | **5** | v113: A1 và A2 mỗi cấp 2 đề rút gọn (chưa đủ 5 phần Đọc, 5 phần Nghe như bài gốc; chưa có Viết, Nói trong cổng). v116: thêm cổng B1 (2 đề × 24 câu, rút gọn theo B1 Preliminary); B2+ chưa có cổng | v113 | cần soạn thêm nội dung |
 
 ## F · Hiển thị tiến độ: 6,8 → 8,2 → 8,2 / 10 (trọng số 6)
 
@@ -199,24 +200,24 @@ Kiểm: Giới hạn thực tế; v2.4 §XXIII.
 | K2 | Đo hiệu quả trên người thật | Có số đo trước / sau / trễ của người thật | 2 | 2 | **2** | Bộ đo có sẵn nhưng chưa có kết quả người thật trong repo | Người sáng lập học hằng ngày + kho báu ẩn | cần người học thật |
 | K3 | Hiệu chỉnh bằng dữ liệu | Ngưỡng, độ khó câu chỉnh theo dữ liệu thật | 1 | 1 | **1** | Mọi tham số là giả định của người soạn (spec ghi rõ) | Cần nhiều người dùng | cần nhiều người dùng |
 
-## L · Rõ ràng và dễ dùng: 3,6 → 8,4 / 10 (trọng số 15, thêm ở v116)
+## L · Rõ ràng và dễ dùng: 3,6 → 8,4 / 10 (trọng số 15, thêm ở v117)
 
-Kiểm: SPEC §7 "Luật màn đầu"; mục "Hợp đồng hiển thị tiến độ" (sửa v116). Vì sao có nhóm này: 71 tiêu chí cũ chỉ đo phần bên trong (game hoá, chống học tủ, minh bạch). Mỗi bản thêm một thẻ lên sảnh, điểm chung vẫn tăng, trong khi người mở app không biết bấm gì. Nhóm "Minh bạch" còn khuyến khích viết thêm câu giải thích lên màn đầu.
+Kiểm: SPEC §7 "Luật màn đầu"; mục "Hợp đồng hiển thị tiến độ" (sửa v117). Vì sao có nhóm này: 71 tiêu chí cũ chỉ đo phần bên trong (game hoá, chống học tủ, minh bạch). Mỗi bản thêm một thẻ lên sảnh, điểm chung vẫn tăng, trong khi người mở app không biết bấm gì. Nhóm "Minh bạch" còn khuyến khích viết thêm câu giải thích lên màn đầu.
 
-**v117:** màn đầu thành cảnh Phố Chữ (nền khu, sương tan theo kỹ năng vững, 3 đèn lồng); điểm nhóm L giữ nguyên vì luật một việc không đổi (test `clarity.spec` vẫn xanh). Độ hấp dẫn thuộc H1, H3; chưa nâng H khi chưa có người chơi thật chấm.
+**v118:** màn đầu thành cảnh Phố Chữ (nền khu, sương tan theo kỹ năng vững, 3 đèn lồng); điểm nhóm L giữ nguyên vì luật một việc không đổi (test `clarity.spec` vẫn xanh). Độ hấp dẫn thuộc H1, H3; chưa nâng H khi chưa có người chơi thật chấm.
 
 Cách đo: tài khoản mới đã có mục tiêu A1, khổ 390 × 844 (iPhone 12–15), không cuộn. L1, L3, L6 có phần **chỉ người thật đo được** (thử 5 giây), nên mốc 10 cần buổi thử với người lạ; code chỉ đưa tới mức trần ghi ở cột Trần.
 
-| # | Tiêu chí | Mốc 10 | Lần 3 (v115) | Lần 4 (v116) | Căn cứ | Để lên điểm | Trần |
+| # | Tiêu chí | Mốc 10 | Lần 3 (v115) | Lần 4 (v117) | Căn cứ | Để lên điểm | Trần |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| L1 | Biết làm gì trong 5 giây | Màn đầu có đúng 1 nút chính, nổi nhất, không cần cuộn; ≥ 4/5 người lạ nhìn 5 giây nói đúng "bấm Chơi tiếp" | 2 | **8** | v115: nút nổi nhất trong khung đầu là "Mở kho báu", "Chơi tiếp" nằm dưới nếp gấp. v116: "▶ Chơi tiếp" là thẻ đặc màu nhấn, ngay dưới tiêu đề; test `clarity.spec` kiểm đúng 1 nút chính trong khung đầu | Thử 5 giây với 5 người lạ (`docs/PLAYTEST.md`) | 8 khi chưa có người thật |
-| L2 | Một màn một mục đích | ≤ 3 khối hiện ra ở màn đầu, 1 khối là hành động chính; phần khác thu gọn | 3 | **9** | v115: 8 khối (mục tiêu, kho báu, chơi tiếp, truyện, 3 game chủ lực, sự kiện tuần, phố, tháp, số liệu), trang ~4.300 px. v116: Chơi tiếp → dòng mục tiêu → dòng kho báu → một mục thu gọn; trang ~1.000 px | Gộp Kho báu ẩn vào lộ trình 3 chặng của bộ não (một danh sách việc duy nhất) |  |
-| L3 | Ngôn ngữ của người học | Màn đầu không có thuật ngữ nội bộ; người 12 tuổi hiểu hết | 3 | **8** | v115: "năng lực", "cổng khu", "Pre-A1", "bản đồ chưa phải kết luận", "Gần đạt nhất" ở màn đầu. v116: màn đầu chỉ còn "kỹ năng đã vững", "chặng"; test chặn danh sách từ cấm | Hỏi người thật từ nào khó hiểu; soát chữ trang mục tiêu (vẫn có "năng lực", "Target Model") | cần người thật |
-| L4 | Tiến độ một con số chính | Màn đầu chỉ một thanh tiến độ mục tiêu; số khác giấu sau "Chi tiết" | 3 | **7** | v115: 8 con số (0 ngày, 0/20, 5/5, 0/130, 0/36, 3 phần, 70%, 0%). v116: còn chuỗi ngày, "0/20 câu", "0/3 chặng", "0/130"; năng lượng chỉ hiện khi thiếu | Gộp hai mục tiêu ngày ("20 câu" của app cũ và "3 chặng" của bộ não) thành một | cần quyết định của người sáng lập (đổi mục tiêu ngày) |
-| L5 | Mở dần theo người dùng | Người mới thấy 1 việc; phần nâng cao hiện dần, không khoá nội dung (yêu cầu 3.1) | 3 | **8** | v116: mặc định chỉ một việc; "Tự chọn" thu gọn; bấm tab Hôm nay luôn thu lại; không khoá gì | Mở thêm gợi ý theo tiến độ (ví dụ chỉ nhắc truyện sau chặng đầu) |  |
-| L6 | Điều hướng không trùng nghĩa | ≤ 4 tab, mỗi tab trả lời một câu hỏi khác; người dùng nói đúng tab nào để làm gì | 4 | **9** | v115: 5 tab, Chơi / Học / Kỹ năng đều là "học". v116: Hôm nay (app chọn) · Ôn tập (sắp quên) · Thư viện (tự chọn) · Tôi (tiến độ, cài đặt) | Hỏi người thật | 9 khi chưa có người thật |
-| L7 | Số chạm tới câu đầu tiên | ≤ 1 chạm từ lúc mở app (đã có mục tiêu) | 5 | **9** | v115: phải cuộn tìm "Chơi tiếp". v116: 1 chạm vào "Chơi tiếp" là vào game; `clarity.spec` đo | Bỏ màn giới thiệu của game ở lần chơi thứ 2 trở đi |  |
-| L8 | Dễ đọc trên điện thoại | Không dòng nào xuống hàng lộn xộn ở 360 px, chữ ≥ 13 px, WCAG AA | 6 | **9** | v116: thanh đầu "🔥 0 ngày · hôm nay 0/20 câu" một dòng ở 360 px; axe AA ở màn đầu và Thư viện | Thử trên máy thật cỡ chữ lớn |  |
+| L1 | Biết làm gì trong 5 giây | Màn đầu có đúng 1 nút chính, nổi nhất, không cần cuộn; ≥ 4/5 người lạ nhìn 5 giây nói đúng "bấm Chơi tiếp" | 2 | **8** | v115: nút nổi nhất trong khung đầu là "Mở kho báu", "Chơi tiếp" nằm dưới nếp gấp. v117: "▶ Chơi tiếp" là thẻ đặc màu nhấn, ngay dưới tiêu đề; test `clarity.spec` kiểm đúng 1 nút chính trong khung đầu | Thử 5 giây với 5 người lạ (`docs/PLAYTEST.md`) | 8 khi chưa có người thật |
+| L2 | Một màn một mục đích | ≤ 3 khối hiện ra ở màn đầu, 1 khối là hành động chính; phần khác thu gọn | 3 | **9** | v115: 8 khối (mục tiêu, kho báu, chơi tiếp, truyện, 3 game chủ lực, sự kiện tuần, phố, tháp, số liệu), trang ~4.300 px. v117: Chơi tiếp → dòng mục tiêu → dòng kho báu → một mục thu gọn; trang ~1.000 px | Gộp Kho báu ẩn vào lộ trình 3 chặng của bộ não (một danh sách việc duy nhất) |  |
+| L3 | Ngôn ngữ của người học | Màn đầu không có thuật ngữ nội bộ; người 12 tuổi hiểu hết | 3 | **8** | v115: "năng lực", "cổng khu", "Pre-A1", "bản đồ chưa phải kết luận", "Gần đạt nhất" ở màn đầu. v117: màn đầu chỉ còn "kỹ năng đã vững", "chặng"; test chặn danh sách từ cấm | Hỏi người thật từ nào khó hiểu; soát chữ trang mục tiêu (vẫn có "năng lực", "Target Model") | cần người thật |
+| L4 | Tiến độ một con số chính | Màn đầu chỉ một thanh tiến độ mục tiêu; số khác giấu sau "Chi tiết" | 3 | **7** | v115: 8 con số (0 ngày, 0/20, 5/5, 0/130, 0/36, 3 phần, 70%, 0%). v117: còn chuỗi ngày, "0/20 câu", "0/3 chặng", "0/130"; năng lượng chỉ hiện khi thiếu | Gộp hai mục tiêu ngày ("20 câu" của app cũ và "3 chặng" của bộ não) thành một | cần quyết định của người sáng lập (đổi mục tiêu ngày) |
+| L5 | Mở dần theo người dùng | Người mới thấy 1 việc; phần nâng cao hiện dần, không khoá nội dung (yêu cầu 3.1) | 3 | **8** | v117: mặc định chỉ một việc; "Tự chọn" thu gọn; bấm tab Hôm nay luôn thu lại; không khoá gì | Mở thêm gợi ý theo tiến độ (ví dụ chỉ nhắc truyện sau chặng đầu) |  |
+| L6 | Điều hướng không trùng nghĩa | ≤ 4 tab, mỗi tab trả lời một câu hỏi khác; người dùng nói đúng tab nào để làm gì | 4 | **9** | v115: 5 tab, Chơi / Học / Kỹ năng đều là "học". v117: Hôm nay (app chọn) · Ôn tập (sắp quên) · Thư viện (tự chọn) · Tôi (tiến độ, cài đặt) | Hỏi người thật | 9 khi chưa có người thật |
+| L7 | Số chạm tới câu đầu tiên | ≤ 1 chạm từ lúc mở app (đã có mục tiêu) | 5 | **9** | v115: phải cuộn tìm "Chơi tiếp". v117: 1 chạm vào "Chơi tiếp" là vào game; `clarity.spec` đo | Bỏ màn giới thiệu của game ở lần chơi thứ 2 trở đi |  |
+| L8 | Dễ đọc trên điện thoại | Không dòng nào xuống hàng lộn xộn ở 360 px, chữ ≥ 13 px, WCAG AA | 6 | **9** | v117: thanh đầu "🔥 0 ngày · hôm nay 0/20 câu" một dòng ở 360 px; axe AA ở màn đầu và Thư viện | Thử trên máy thật cỡ chữ lớn |  |
 
 ## Việc tiếp theo (theo lợi ích ÷ công sức)
 
@@ -226,7 +227,7 @@ Cách đo: tài khoản mới đã có mục tiêu A1, khổ 390 × 844 (iPhone 
 | Buổi chơi thử thật theo `docs/PLAYTEST.md` (thêm chương mở đầu, trận cổng, kho báu) | H1, H3, H6 | Người sáng lập |
 | Học hằng ngày 2 tuần rồi mở kho báu lần 2 | K2 | Người sáng lập |
 | Đo phút chơi theo phần đề còn hụt (không chỉ tỉ lệ game) | C4 | AI |
-| Trận cổng B1 + phần Viết trong cổng | E6, A12 | AI soạn, người soát |
+| Phần Viết trong cổng; cổng B2 | E6, A12 | AI soạn, người soát |
 | Tách `app.js` / `main.ts` | J2, J5 | AI, khi cần |
 | Thử 5 giây màn đầu với 5 người lạ (hỏi: "bạn sẽ bấm gì?", "Thư viện để làm gì?") | L1, L3, L6 | Người sáng lập |
 | Gộp mục tiêu ngày "20 câu" và lộ trình "3 chặng" thành một | L4 | Người sáng lập quyết, AI làm |

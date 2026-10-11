@@ -20,7 +20,7 @@ async function open(page: Page, placed: boolean, pick = true): Promise<void> {
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 
 test('Bộ não: người mới chưa xếp lớp → nút Chơi tiếp là Thám hiểm, có lý do; danh sách game thu gọn', async ({ page, errors }) => {
-  await open(page, false, false);   // v116: sảnh thật (mục Tự chọn đóng)
+  await open(page, false, false);   // v117: sảnh thật (mục Tự chọn đóng)
   const go = page.locator('.dgo');
   await expect(go).toHaveCount(1);
   await expect(go).toContainText('Chơi tiếp: Thám hiểm sương mù');

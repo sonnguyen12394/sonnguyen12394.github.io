@@ -82,7 +82,7 @@ test('v115 khu truyện = cấp: chương cuối khu có cổng chỉ xem đư�
   assert.equal(finished(s), true);
 });
 
-test('v117 sceneOf: khu, chương, cư dân của màn Hôm nay; mở đầu sẵn sàng xem cảnh; hết truyện thì "Còn tiếp"', () => {
+test('v118 sceneOf: khu, chương, cư dân của màn Hôm nay; mở đầu sẵn sàng xem cảnh; hết truyện thì "Còn tiếp"', () => {
   const s0 = sceneOf(freshStory(), 0);
   assert.equal(s0.act, 0); assert.equal(s0.no, 0); assert.equal(s0.title, 'Sương Câm'); assert.equal(s0.ready, true);
   const s1 = sceneOf({ ch: 1, prog: { dig: 0, light: 0, voice: 0 } }, 0);
@@ -94,7 +94,7 @@ test('v117 sceneOf: khu, chương, cư dân của màn Hôm nay; mở đầu s�
   assert.equal(sceneOf(undefined, 0).act, 0);
 });
 
-test('v117 sceneArt: mỗi khu một hình SVG tĩnh (không script, không liên kết ngoài)', () => {
+test('v118 sceneArt: mỗi khu một hình SVG tĩnh (không script, không liên kết ngoài)', () => {
   const arts = [0, 1, 2, 3].map(sceneArt);
   for (const a of arts) { assert.match(a, /^<svg /); assert.doesNotMatch(a, /<script|href=|\son\w+=/); }
   assert.notEqual(arts[1], arts[2]); assert.notEqual(arts[2], arts[3]);

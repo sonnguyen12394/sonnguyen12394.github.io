@@ -37,7 +37,7 @@ export function goalSummary(g: GoalIn): GoalSum {
 
 const pc = (n: number, d: number) => (d ? Math.round((n / d) * 100) : 0);
 
-// v116 Bản gọn ở sảnh (SCORECARD nhóm L "một con số chính"): một dòng "🎯 A1 · x/y kỹ năng đã vững ›" + thanh tiến độ. Chỉ thêm dòng khi
+// v117 Bản gọn ở sảnh (SCORECARD nhóm L "một con số chính"): một dòng "🎯 A1 · x/y kỹ năng đã vững ›" + thanh tiến độ. Chỉ thêm dòng khi
 // người học PHẢI làm gì đó: cổng đã mở, đã tới hạn / hạn gấp, đang học tủ. Mọi chi tiết khác (mốc gần, năng lực, thang khu, cổng khoá)
 // nằm ở bản đầy đủ đầu trang mục tiêu, cách một lần chạm.
 export function viewGoalSlim(c: ECtx, s: GoalSum): string {
@@ -50,7 +50,7 @@ export function viewGoalSlim(c: ECtx, s: GoalSum): string {
     ${warn ? `<span class="gbrote">${warn}</span>` : ''}</button>${gt?.open && !gt.passed ? `<div class="row" style="margin:-4px 0 12px"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào trận cổng khu ${esc(gt.lv)}</button></div>` : ''}`;
 }
 
-// Bản đầy đủ (đầu trang mục tiêu; trước v116 nằm ở đầu sảnh). Thanh hai lớp: vững thật (đậm) và chỉ suy ra từ xếp lớp (nhạt, đang kiểm
+// Bản đầy đủ (đầu trang mục tiêu; trước v117 nằm ở đầu sảnh). Thanh hai lớp: vững thật (đậm) và chỉ suy ra từ xếp lớp (nhạt, đang kiểm
 // dần) để không thổi phồng tiến độ. Ở trang mục tiêu nên không phải nút (đã đứng ở trang đó).
 export function viewGoalBar(c: ECtx, s: GoalSum): string {
   const esc = c.host.esc;

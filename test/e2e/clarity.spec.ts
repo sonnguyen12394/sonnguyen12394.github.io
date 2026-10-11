@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { test, expect, noHorizontalScroll, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
-// v116 Nhóm L "Rõ ràng và dễ dùng" (docs/SCORECARD-v111.md, SPEC §7 "Luật màn đầu"): người mới mở app phải thấy ngay MỘT việc.
+// v117 Nhóm L "Rõ ràng và dễ dùng" (docs/SCORECARD-v111.md, SPEC §7 "Luật màn đầu"): người mới mở app phải thấy ngay MỘT việc.
 // Các test này giữ luật đó: tính năng mới không được thêm thẻ / nút chính lên màn đầu.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 test.use({ future: false });
@@ -46,7 +46,7 @@ test('L1 L2 L3: màn đầu có đúng một nút chính trong khung đầu (Ch�
   // Thẻ mục tiêu gọn: một con số chính, chạm mở bản đầy đủ ở trang mục tiêu.
   await expect(page.locator('.gbar.slim')).toContainText(/🎯 A1 · \d+\/\d+ kỹ năng đã vững/);
   const h = await page.evaluate(() => document.documentElement.scrollHeight);
-  expect(h, 'màn đầu gần vừa một màn hình (trước v116 ~4.300 px)').toBeLessThanOrEqual(1300);
+  expect(h, 'màn đầu gần vừa một màn hình (trước v117 ~4.300 px)').toBeLessThanOrEqual(1300);
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
   await page.screenshot({ path: 'test-results/clarity-lobby.png' });
@@ -97,8 +97,8 @@ test('L4 L8: thanh đầu trang một dòng ở 360 px, số có chữ đi kèm,
   expect(errors).toEqual([]);
 });
 
-// v117: màn Hôm nay là cảnh truyện của khu đang ở (nền khu, Tí kể việc của cư dân, 3 đèn lồng), vẫn đúng một nút chính; WCAG AA cả tối.
-for (const dark of [false, true]) test(`v117 cảnh Phố Chữ (${dark ? 'tối' : 'sáng'}): khu + chương, Tí kể việc cư dân, đèn lồng; vẫn một nút chính; WCAG AA`, async ({ page, errors }) => {
+// v118: màn Hôm nay là cảnh truyện của khu đang ở (nền khu, Tí kể việc của cư dân, 3 đèn lồng), vẫn đúng một nút chính; WCAG AA cả tối.
+for (const dark of [false, true]) test(`v118 cảnh Phố Chữ (${dark ? 'tối' : 'sáng'}): khu + chương, Tí kể việc cư dân, đèn lồng; vẫn một nút chính; WCAG AA`, async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   if (dark) await page.emulateMedia({ colorScheme: 'dark' });
   await page.goto('/');

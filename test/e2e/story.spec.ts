@@ -30,7 +30,7 @@ test('v101 truyện: mở đầu → chương 1; tìm từ ở Mỏ Chữ = đà
   await lobby(page);
   const card = page.locator('.stcard');
   await expect(card).toContainText('Phố Chữ mất tiếng');
-  await page.locator('.sclink[data-e="stscene"]').click();   // v117: lối vào truyện ở cảnh đầu sảnh
+  await page.locator('.sclink[data-e="stscene"]').click();   // v118: lối vào truyện ở cảnh đầu sảnh
   await expect(page.locator('#stfx .sten')).toHaveAttribute('lang', 'en');
   await page.screenshot({ path: 'test-results/story-scene.png' });
   await watch(page);

@@ -190,7 +190,7 @@ export function viewStory(s: StorySave | undefined, solid: number, gateFn?: Stor
   </section>`;
 }
 
-// v117 Màn Hôm nay là một cảnh của Phố Chữ (SPEC §7 "Luật màn đầu"): khu đang ở, chương, cư dân cần giúp. Thuần hàm, không lưu gì.
+// v118 Màn Hôm nay là một cảnh của Phố Chữ (SPEC §7 "Luật màn đầu"): khu đang ở, chương, cư dân cần giúp. Thuần hàm, không lưu gì.
 export interface Scene { act: number; zone: string; no: number; title: string; intro: string; who: [string, string] | null; ready: boolean; done: boolean }
 export function sceneOf(s: StorySave | undefined, solid: number, gate?: StoryGateOf): Scene {
   const st = s ?? freshStory();

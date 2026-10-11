@@ -9,7 +9,7 @@ const answers = (f: string, rate: number): GateAns[] => FORM(f).flatMap(g => g.i
   .map((a, i) => ({ ...a, ok: Math.floor((i + 1) * rate) > Math.floor(i * rate) }));
 
 test('v111 chấm cổng: đúng hết → qua; đoán bừa (1/3) → không qua; khoảng 70% là ranh giới; P đơn điệu theo số câu đúng', () => {
-  for (const [goal, f] of [['cefr-a1', 'a1-1'], ['cefr-a2', 'a2-1']] as const) {
+  for (const [goal, f] of [['cefr-a1', 'a1-1'], ['cefr-a2', 'a2-1'], ['cefr-b1', 'b1-1']] as const) {
     assert.equal(gateScore(goal, f, answers(f, 1), 1, 60).passed, true);
     assert.equal(gateScore(goal, f, answers(f, 1 / 3), 1, 60).passed, false, 'đoán bừa không qua cổng');
     let prev = -1;
@@ -29,7 +29,8 @@ test('v111 luật mở cổng: khoá khi bản đồ chưa gần đủ; mở khi
   assert.equal(gateState('cefr-a2', 80, 100, { done: { 'a2-1': fail } }).open, true, 'rớt thì còn đề lạ thứ hai');
   const both = gateState('cefr-a2', 80, 100, { done: { 'a2-1': fail, 'a2-2': pass } });
   assert.equal(both.open, false); assert.equal(both.passed?.form, 'a2-2');
-  assert.equal(gateState('cefr-b1', 80, 100, undefined).has, false);
+  assert.equal(gateState('cefr-b1', 80, 100, undefined).has, true, 'v116 có cổng B1');
+  assert.equal(gateState('cefr-b2', 80, 100, undefined).has, false);
   assert.ok(GATE.open > 0 && GATE.ready === 0.8);
 });
 
@@ -45,7 +46,8 @@ test('v111 lưu cổng: làm sạch, gộp hai máy giữ lần làm SỚM hơn 
 test('v111 cách ly: đề cổng nằm riêng (mode gate, gói gate), đủ 2 đề mỗi cấp, id câu không trùng câu của kho luyện / xếp lớp', () => {
   const ids = new Set<string>(), other = new Set<string>();
   for (const f of Object.values(GATE_FORMS).flat()) for (const g of FORM(f)) { assert.equal(g.mode, 'gate'); for (const it of g.items) ids.add(it.id); }
-  assert.ok(ids.size >= 80);
+  assert.ok(ids.size >= 130);
+  assert.deepEqual(GATE_FORMS['cefr-b1'], ['b1-1', 'b1-2'], 'v116 cổng B1');
   for (const lv of Object.keys(GATE_FORMS)) assert.ok(GATE_FORMS[lv]!.length >= 2);
   const walk = (d: string): string[] => readdirSync(d, { withFileTypes: true }).flatMap(e => (e.isDirectory() ? walk(`${d}/${e.name}`) : e.name.endsWith('.json') ? [`${d}/${e.name}`] : []));
   for (const f of walk('content/exam').filter(f => !f.includes('/gate/') && !f.includes('/types/'))) {

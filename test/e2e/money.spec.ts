@@ -3,7 +3,7 @@ import { test, expect, openApp, navTo, noHorizontalScroll } from './fixtures.ts'
 // M7 (spec §11): năng lượng theo lượt, Super và quảng cáo giả lập, số liệu trên máy. Bản thử không thu tiền.
 test('năng lượng: mỗi bài luyện tốn 1 lượt; hết thì chặn bài mới, mở được ôn đến hạn; Super bỏ giới hạn và ô quảng cáo', async ({ page, errors }) => {
   await openApp(page);
-  await expect(page.locator('#clock')).not.toContainText('⚡');   // v116: năng lượng đầy thì không hiện (bớt số ở thanh đầu)
+  await expect(page.locator('#clock')).not.toContainText('⚡');   // v117: năng lượng đầy thì không hiện (bớt số ở thanh đầu)
   // luyện unit đầu (bài tốn năng lượng): còn 4
   // @ts-expect-error hàm toàn cục của app.js
   await page.evaluate(() => { const u = UNITS[0]; U(u.id).learned = true; save(); startSession('practice', practiceItems(u.words), u.id); });

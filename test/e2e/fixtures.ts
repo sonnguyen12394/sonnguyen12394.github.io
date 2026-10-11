@@ -77,7 +77,7 @@ export async function openAll(page: Page): Promise<void> {
 // Sảnh game từ màn "games": nạp engine trước (không đo thời gian tải ở đây), chờ bài học chi tiết tải xong, bấm "▶ Chơi", chờ sảnh
 // (chạm trong game lúc đang tải bị giữ chờ — hành vi riêng, không phải điều test này kiểm). Hụt thì báo màn đang hiện
 // (view, chữ trong #app) để biết gốc rễ: CI Safari iOS thỉnh thoảng không thấy sảnh sau 15 s.
-// v116: sảnh chỉ hiện "Chơi tiếp" + mục tiêu; truyện, game chủ lực, phố, tháp nằm trong mục thu gọn "Tự chọn" (details[data-lobby]).
+// v117: sảnh chỉ hiện "Chơi tiếp" + mục tiêu; truyện, game chủ lực, phố, tháp nằm trong mục thu gọn "Tự chọn" (details[data-lobby]).
 // Mặc định test mở sẵn mục đó (trạng thái mở được giữ qua các lần vẽ lại) để test các phần bên trong như trước; clarity.spec dùng open=false.
 export async function toLobby(page: Page, open = true): Promise<void> {
   await page.evaluate(() => (window as any).eval('emLoad()'));

@@ -1558,7 +1558,7 @@ function gExplain(ex,given){
 
 /* ================== UI STATE ================== */
 const ui = { view:'play', unitId:null, sess:null, summary:null, learn:null, speak:null, filter:'learned', wb:{q:'',lv:'',st:'',ty:'',n:60}, openLv:{}, allUnits:{} };
-function go(view,extra={}){ if(!('allGames' in extra)){ ui.allGames=0; if(view==='play'&&typeof document!=='undefined') document.querySelectorAll('#app details[data-lobby]').forEach(d=>{ d.open=false; }); }   // v116: bấm tab Hôm nay = về màn một việc (thu mục Tự chọn)
+function go(view,extra={}){ if(!('allGames' in extra)){ ui.allGames=0; if(view==='play'&&typeof document!=='undefined') document.querySelectorAll('#app details[data-lobby]').forEach(d=>{ d.open=false; }); }   // v117: bấm tab Hôm nay = về màn một việc (thu mục Tự chọn)
   if(view!=='game') stopTimer(); if(view!=='exam') exStop(); if(!['summary','gsum','quiz','session','gsess'].includes(view)) ui.streakUp=null; const nh=extra._nohist; delete extra._nohist; Object.assign(ui,{view},extra); if(HAS_TTS) try{speechSynthesis.cancel();}catch(e){} recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
 /* ---------- Điều hướng: nút Quay lại của điện thoại/trình duyệt, hộp thoại, lượt dở ----------
    Mỗi lần go() ghi một mục lịch sử (history.pushState) nên nút Back về đúng màn trước, không thoát app.
@@ -2394,7 +2394,7 @@ const CD_REF={u:'unit',ul:'unit của cấp',g:'bài ngữ pháp',gl:'bài ngữ
 
 /* ================== VIEWS ================== */
 // Thanh điều hướng: trên máy tính là hàng tab ở đầu trang; trên điện thoại (≤ 640px) là thanh dưới đáy. Cả hai dùng chung một cách tính mục đang mở.
-// v116 (SCORECARD nhóm L): 4 tab, mỗi tab trả lời một câu hỏi khác nhau: Hôm nay (app chọn việc cho bạn) · Ôn tập (phần sắp quên) ·
+// v117 (SCORECARD nhóm L): 4 tab, mỗi tab trả lời một câu hỏi khác nhau: Hôm nay (app chọn việc cho bạn) · Ôn tập (phần sắp quên) ·
 // Thư viện (bạn tự chọn: bài học, kỹ năng, mọi trò chơi) · Tôi (tiến độ, mục tiêu, cài đặt). Trước đây Chơi / Học / Kỹ năng đều là "học".
 const BNAV=[['thi','Ôn thi','exam'],['play','Hôm nay','home'],['review','Ôn tập','repeat'],['lib','Thư viện','book'],['more','Tôi','user']];
 const ico = n => `<svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${n}"/></svg>`;
@@ -2415,11 +2415,11 @@ function renderChrome(){
   document.getElementById('nav').innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${badge(k)}</button>`).join('');
   const bn=document.getElementById('bnav');
   if(bn){ bn.style.gridTemplateColumns=`repeat(${NAV.length},1fr)`; } if(bn) bn.innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}><span class="bi">${ico(ic)}</span><span>${l}</span>${badge(k)}</button>`).join('');
-  // v116: hai con số, có chữ đi kèm (chuỗi ngày, câu đúng hôm nay / mục tiêu ngày). Năng lượng chỉ hiện khi đang thiếu (lúc đó mới cần biết).
+  // v117: hai con số, có chữ đi kèm (chuỗi ngày, câu đúng hôm nay / mục tiêu ngày). Năng lượng chỉ hiện khi đang thiếu (lúc đó mới cần biết).
   const enLow=!FOCUS()&&(money().s||enNow()<EN.cap);   // Super vẫn hiện (người học đã bật, cần thấy trạng thái)
   document.getElementById('clock').innerHTML = `${FOCUS()?'':`<span title="Chuỗi ngày học liên tiếp">${ico('flame')} <b>${streak()}</b> ngày</span> · `}<span title="Câu đúng hôm nay / mục tiêu ngày">hôm nay <b>${Math.min(goalCount(),goal())}/${goal()}</b> câu</span>${enLow?enPill():''}${st.set.demo?` · ngày ${dayNo(today())} <button class="btn small" data-act="nextday" title="Chế độ demo: tua nhanh thời gian để thử lịch ôn">+1 ngày</button>`:''}`;
 }
-// v116 Thư viện: nơi TỰ CHỌN. Tab Hôm nay đã chọn sẵn việc cần nhất; ở đây người học muốn chọn bài / game cụ thể.
+// v117 Thư viện: nơi TỰ CHỌN. Tab Hôm nay đã chọn sẵn việc cần nhất; ở đây người học muốn chọn bài / game cụ thể.
 function viewLib(){
   const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
   return `<section class="stack"><span class="eyebrow">Thư viện</span><h1>Tự chọn bài</h1><p class="muted">Không biết học gì? Tab <b>Hôm nay</b> đã chọn sẵn phần bạn cần nhất.</p></section>
@@ -8337,7 +8337,7 @@ CHANGELOG.unshift({v:38,d:'2026-10-01',t:'Kế hoạch học tới ngày thi và
 /* ================== v35: MÔ-ĐUN ÔN THI IELTS/VSTEP (src/exam, TypeScript) ==================
    Mã mới viết thành mô-đun riêng có kiểm kiểu và test (npm test), build ra x/exam.<băm>.js (tools/build.mjs), nạp động khi mở tab “Ôn thi”.
    Mô-đun chỉ nói chuyện với app qua XHOST; tiến độ nằm ở st.x nên sao lưu, đồng bộ, gộp hai máy đều tự có. */
-const EXAM_JS = 'x/exam.617a30a46d.js';   // tools/build.mjs ghi
+const EXAM_JS = 'x/exam.2f7ff713c6.js';   // tools/build.mjs ghi
 const XHOST = {
   state:()=>st, save, render, today, toast, esc, ico, say:(t,slow)=>say(t,slow),
   go:r=>go('thi',{xr:r}),
@@ -8365,7 +8365,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.fa099c08dc.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.697b2c0175.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

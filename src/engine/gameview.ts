@@ -20,7 +20,7 @@ import type { GardenSave } from './garden.ts';
 import { ENC_VI } from './quest.ts';
 import { GAMES, needVi, type DirIn, type DirPick } from './director.ts';
 import { ACT_BG, sceneArt, type Scene } from './story.ts';
-// v117 cảnh ở màn Hôm nay: khu truyện + độ dày Sương Câm (0 = tan hết, 1 = dày nhất = chưa vững kỹ năng nào của mục tiêu).
+// v118 cảnh ở màn Hôm nay: khu truyện + độ dày Sương Câm (0 = tan hết, 1 = dày nhất = chưa vững kỹ năng nào của mục tiêu).
 export interface SceneIn { scene: Scene; fog: number }
 
 // Sảnh: thẻ các game ở trên, tháp (Leo nhanh) giữ nguyên ở dưới.
@@ -28,7 +28,7 @@ export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, g
   if (!c.e.goals.length) return '';
   // route 'quest/all' (tab Thư viện → Tất cả trò chơi): mở sẵn mục "Tự chọn".
   const openAll = c.route === 'quest/all', s = bk ?? { best: 0, runs: 0, day: 0, streak: 0 }, houses = (bd?.lots ?? []).reduce((a, b) => a + b, 0);
-  // v116 Rõ ràng (SCORECARD nhóm L): màn đầu chỉ một việc chính. Thứ tự: nút "Chơi tiếp" của bộ não → mục tiêu một dòng →
+  // v117 Rõ ràng (SCORECARD nhóm L): màn đầu chỉ một việc chính. Thứ tự: nút "Chơi tiếp" của bộ não → mục tiêu một dòng →
   // mọi thứ còn lại (truyện, game chủ lực, game kỹ năng, phố, tháp, số liệu) gom vào MỘT mục thu gọn "Tự chọn". Không khoá gì:
   // mục thu gọn mở được bất cứ lúc nào và tab Thư viện dẫn thẳng vào đây.
   return `${dir ? viewDirector(c, dir, sc) : '<section class="stack"><h1>🎮 Hôm nay chơi gì?</h1></section>'}
@@ -63,7 +63,7 @@ export function viewLobby(c: ECtx, bk: BlocksSave | undefined, bd?: BoardSave, g
 
 // v88 Bộ não chọn game: một nút "Chơi tiếp" kèm lý do (nhu cầu học lúc này) + lộ trình 3 chặng hôm nay. Người học không phải chọn.
 export interface Dir { x: DirIn; plan: DirPick[]; next: DirPick; inPlan: boolean }
-// v117: lộ trình 3 chặng = 3 ngọn đèn lồng trên phố (xong chặng nào, đèn đó sáng). Giữ ol.dplan / li.ok / li.cur.
+// v118: lộ trình 3 chặng = 3 ngọn đèn lồng trên phố (xong chặng nào, đèn đó sáng). Giữ ol.dplan / li.ok / li.cur.
 const planRow = (c: ECtx, d: Dir): string => {
   const esc = c.host.esc, done = d.plan.filter(p => d.x.played.includes(p.game)).length;
   return `<ol class="dplan lanterns" aria-label="Lộ trình chơi hôm nay: thắp ${done}/${d.plan.length} đèn">${d.plan.map(p => {
@@ -85,7 +85,7 @@ function tiSay(c: ECtx, d: Dir, big = false, sc: Scene | null = null): string {
   const svg = c.host.mascot?.(all ? 'party' : 'happy', big ? 56 : 44);
   if (!svg) return '';
   const L = all ? TI_END : done ? TI_MID : TI_GO;
-  // v117: chưa chơi chặng nào thì Tí kể việc của chương (cư dân đang cần giúp), cho người học biết vì sao chơi.
+  // v118: chưa chơi chặng nào thì Tí kể việc của chương (cư dân đang cần giúp), cho người học biết vì sao chơi.
   const say = !done && sc && !sc.done && sc.no > 0 ? `${sc.intro} Mình giúp nhé!` : L[k % L.length]!;
   return `<div class="tisay"><span aria-hidden="true">${svg}</span><span class="tisay-b">${c.host.esc(say)}</span></div>`;
 }

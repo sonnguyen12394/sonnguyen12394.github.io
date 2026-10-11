@@ -63,7 +63,7 @@ test('v111 thẻ Mục tiêu: báo phần học tủ và nhịp theo hạn chót
   assert.doesNotMatch(viewGoalBar(ctx, goalSummary(base)), /⏰|⚠/);
 });
 
-test('v116 thẻ Mục tiêu gọn ở sảnh: một con số chính, chạm mở trang mục tiêu; chỉ thêm dòng khi phải làm gì đó', () => {
+test('v117 thẻ Mục tiêu gọn ở sảnh: một con số chính, chạm mở trang mục tiêu; chỉ thêm dòng khi phải làm gì đó', () => {
   const ca = { ...base, id: 'cefr-a1', vi: 'Tiếng Anh tổng quát A1' };
   const h = viewGoalSlim(ctx, goalSummary(ca));
   assert.match(h, /🎯 <b>A1<\/b> · 12\/40 kỹ năng đã vững/);

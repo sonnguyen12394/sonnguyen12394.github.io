@@ -1600,7 +1600,7 @@ export function init(host: EHost): EngineModule {
     if (qrun?.done) return viewQuestEnd(c, qrun);
     if (qrun) { qrun.revive = qrun.mode === 'tower' && !qrun.revived && qrun.i + 1 < qrun.plan.length && wallet() >= REVIVE ? REVIVE : 0; return viewQuestRun(c, qrun); }
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null, dir = c.e.goals.length ? director() : null, gs = dir ? goalSum(c.e, dir.x.review) : null;
-    // v117 cảnh Phố Chữ ở đầu sảnh: khu / chương truyện + Sương Câm dày theo phần kỹ năng mục tiêu chưa vững (học thật thì sương tan).
+    // v118 cảnh Phố Chữ ở đầu sảnh: khu / chương truyện + Sương Câm dày theo phần kỹ năng mục tiêu chưa vững (học thật thì sương tan).
     const sc = dir ? { scene: sceneOf(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)), fog: gs && gs.s.total ? 1 - gs.s.solid / gs.s.total : 0.6 } : null;
     return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, dir, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '', gs ? viewGoalSlim(c, gs.s) + (nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '') : '', (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave())), sc);
   }
@@ -1673,7 +1673,7 @@ export function init(host: EHost): EngineModule {
     pick: viewPick,
     goal: c => {
       if (!loaded() && !loadErr) ensure();
-      // v116: bản đầy đủ của thẻ mục tiêu (trước nằm đầu sảnh) đứng đầu trang của mục tiêu đang theo.
+      // v117: bản đầy đủ của thẻ mục tiêu (trước nằm đầu sảnh) đứng đầu trang của mục tiêu đang theo.
       const id = c.route.split('/')[1] ?? '', gs = loaded() && goalOf(c.e)?.id === id ? goalSum(c.e, dirIn().review) : null, h = viewGoal(c, loadErr);
       return gs ? h.replace('</h1></section>', `</h1></section>${viewGoalBar(c, gs.s)}`) : h;
     },

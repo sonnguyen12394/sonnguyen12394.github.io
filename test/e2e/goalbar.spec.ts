@@ -21,7 +21,7 @@ async function lobby(page: Page): Promise<void> {
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 
-// v116 (nhóm L): "Chơi tiếp" lên đầu; thẻ 🎯 bản gọn (một dòng) ngay dưới, vẫn trong khung đầu; bản đầy đủ ở đầu trang mục tiêu.
+// v117 (nhóm L): "Chơi tiếp" lên đầu; thẻ 🎯 bản gọn (một dòng) ngay dưới, vẫn trong khung đầu; bản đầy đủ ở đầu trang mục tiêu.
 test('Sảnh: thẻ 🎯 gọn ngay dưới Chơi tiếp, trong khung đầu; chạm mở trang mục tiêu có bản đầy đủ (mốc gần); WCAG AA ở 390 px', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
