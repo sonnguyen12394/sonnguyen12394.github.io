@@ -33,6 +33,7 @@ App là một engine học dùng chung cho mọi mục tiêu, kiếm tiền ki�
 | Cổng lên store | Người sáng lập đạt điểm thi thật ở kỳ thi chọn ngay sau bài chẩn đoán đầu vào trên engine (M3); khi đó mới làm tài khoản, thanh toán, store |
 | AI | Làm sau. Trước hết mọi chức năng phải tốt nhất có thể mà không lệ thuộc AI |
 | Điểm kỹ thuật còn mở | Giao cho Claude quyết, miễn đúng triết lý spec |
+| Thước đo đạt mục tiêu (11/10/2026, v111) | Đạt = **đậu một đề chưa từng thấy ở đúng cấp, không học tủ**. Chuẩn "đậu" theo thang Cambridge English Scale cho từng cấp. Đề trong app do app tự soạn theo đặc tả công khai của các bài Cambridge (không chép đề, không dùng tên thương hiệu như đề chính thức). Đề mẫu chính thức làm ngoài app là neo đối chiếu. Thi thật là trọng tài cuối. Chi tiết: mục "Đề sát hạch và chống học tủ" |
 | Bản v45 (nhánh `claude/v45-ai-copy-honest-free`) | Để nguyên, quyết sau. Không gộp nguyên trạng vì chữ "không quảng cáo" trái với mô hình đã chọn |
 
 Bài học từ lịch sử app: bản v35 chuyển sang "miễn phí 100%" do AI khuyên, không phải ý người sáng lập. Từ nay AI không đổi hướng sản phẩm khi chưa hỏi.
@@ -80,6 +81,40 @@ Spec định nghĩa kỹ cách *tính* Readiness nhưng trước v110 không nó
    - đạt ở mức thấp hơn thì báo "tiến một bậc";
    - không có gì thì báo số câu bằng chứng.
 3. **Readiness CEFR không hiện bằng phần trăm.** Hiện số năng lực đã Đạt / cần và danh sách còn thiếu.
+4. **Bản đồ khác phán quyết (v111).** Thẻ 🎯 và tiến độ kỹ năng là *bản đồ chẩn đoán*: còn thiếu gì, học gì tiếp. Từ v112, thẻ ghi rõ "chưa phải kết luận đậu"; khi đã có đề sát hạch của cấp đó, thẻ thêm dòng **Sẵn sàng thi: P(đậu) kèm khoảng sai số**. Chỉ dòng này mới được gọi là "sẵn sàng".
+
+### Đề sát hạch và chống học tủ (v111)
+
+Quyết định của người sáng lập: thước đo chuẩn xác nhất là người học đậu bài thi ở cấp đó mà không học tủ. Bản đồ năng lực trong app tự ra đề, tự chấm, và phần lớn câu đo lấy từ chính kho câu dùng để luyện. Vì vậy nó chỉ dùng để chẩn đoán, không dùng để kết luận đạt.
+
+**Chuẩn đậu theo cấp** (thang Cambridge English Scale, mức tối thiểu để được công nhận cấp đó):
+
+| Cấp | Bài tham chiếu (đặc tả công khai) | Ngưỡng | Neo ngoài app |
+| --- | --- | --- | --- |
+| Pre-A1, A1 | Không có bài cho người lớn | Đề app, chuẩn do app đặt | **Không có.** Màn hình phải ghi rõ |
+| A2 | A2 Key | ≥ 120 | Đề mẫu chính thức |
+| B1 | B1 Preliminary | ≥ 140 | Đề mẫu chính thức |
+| B2 | B2 First | ≥ 160 | Đề mẫu chính thức |
+| C1 | C1 Advanced | ≥ 180 | Đề mẫu chính thức |
+| C2 | C2 Proficiency | ≥ 200 | Đề mẫu chính thức |
+
+Ngưỡng và đặc tả phải soát lại với tài liệu công khai mới nhất của Cambridge trước khi soạn đề mỗi cấp. Ghi nguồn và ngày soát vào tệp đề.
+
+**Đề sát hạch của app:**
+- **Cách soạn:** soạn mới theo dạng bài, số câu, thời lượng, cách chấm của bài tham chiếu. Không chép câu nào của đề Cambridge. Tên hiển thị "Đề sát hạch A2…", kèm ghi chú "soạn theo đặc tả công khai của A2 Key"; không dùng logo hay tên bài như đề chính thức.
+- **Cách ly:** mọi câu của đề bị loại khỏi luyện tập, game, ôn, transfer, chẩn đoán (mở rộng cơ chế câu giữ riêng của bộ đo v63, `today.ts`). Mỗi đề chỉ làm **một lần**. Mỗi cấp có nhiều đề song song. Hết đề lạ thì app nói thẳng là hết, không dùng lại đề cũ để kết luận.
+- **Điều kiện thi:** có tính giờ, không gợi ý, không hiện đáp án trong lúc làm; chữa bài chỉ sau khi nộp.
+- **Readiness:**
+  - Nghe / Đọc: từ điểm đề lạ, ước năng lực theo IRT kèm sai số, rồi tính xác suất vượt ngưỡng đậu; cùng cách làm của IELTS / VSTEP (`readiness.ts`).
+  - Viết / Nói: máy chấm luật + tự chấm, giới hạn ở Confidence Vừa (mục 10).
+  - Sẵn sàng khi P(đậu toàn bài) ≥ 80%.
+- **Đèn báo học tủ:** so tỉ lệ đúng ở câu đã gặp khi luyện với tỉ lệ đúng ở đề lạ cùng năng lực. Chênh lệch lớn thì báo "đang nhớ câu, chưa dùng được thật" và đưa lộ trình sang câu transfer. Ngưỡng chênh là tham số cấu hình.
+- **Neo ngoài:** khi app báo sẵn sàng, gợi ý người học làm một đề mẫu chính thức ở ngoài app, trong điều kiện thi, rồi nhập điểm. Đề mẫu chính thức không bao giờ được đưa vào kho của app, để nó luôn là đề lạ.
+- **Chốt dự đoán:** trước mỗi lần làm đề neo hoặc thi thật, app ghi lại P(đậu) đang có (snapshot `readiness`). Sau khi có điểm, đối chiếu dự đoán với kết quả và hiện cho người học xem app đoán đúng hay sai.
+
+**Achieved (Đạt mục tiêu CEFR):**
+- Đậu kỳ thi thật ở cấp đó, hoặc đậu đề mẫu chính thức làm trong điều kiện thi.
+- Riêng Pre-A1 / A1: đậu đề sát hạch lạ của app, kèm ghi chú "chưa có đề ngoài để đối chiếu".
 
 ## Các mục được sửa
 
@@ -157,7 +192,8 @@ Target Model ghi mức cần cho từng nút. Mặc định: nút phục vụ Đ
 | Loại mục tiêu | Readiness | Achieved |
 | --- | --- | --- |
 | IELTS, VSTEP | Nghe/Đọc: xác suất band ≥ mục tiêu từ IRT ± sai số. Viết/Nói: từ máy chấm luật + tự chấm (mục 10). Tổng: mô phỏng 4 kỹ năng theo cách tính điểm của kỳ thi (`scales.ts`). Sẵn sàng khi xác suất ≥ 80% | Điểm thi thật đạt mục tiêu |
-| CEFR, giao tiếp | Tỉ lệ nút cần đã Đạt với Confidence ≥ Vừa, cộng bài Can-Do đã qua | Mọi nút Đạt + mọi bài Can-Do qua + không trượt ôn trong 14 ngày (không có kỳ thi ngoài để đối chiếu) |
+| CEFR (từ v111) | P(đậu) trên **đề sát hạch lạ** của cấp đó ≥ 80%, kèm khoảng sai số (mục "Đề sát hạch và chống học tủ"). Tỉ lệ nút Đạt và bài Can-Do chỉ là bản đồ chẩn đoán, không dùng để kết luận sẵn sàng | Đậu thi thật, hoặc đậu đề mẫu chính thức trong điều kiện thi. Pre-A1 / A1: đậu đề sát hạch lạ của app (chưa có neo ngoài) |
+| Giao tiếp (tương lai) | Tỉ lệ nút cần đã Đạt với Confidence ≥ Vừa, cộng bài Can-Do đã qua | Mọi nút Đạt + mọi bài Can-Do qua + không trượt ôn trong 14 ngày |
 
 ### 9. CEFR ↔ IELTS ↔ VSTEP (mục 50.14)
 
@@ -240,12 +276,15 @@ Từ M4, người sáng lập học hằng ngày bằng engine; những chỗ v�
 
 ## Giới hạn thực tế
 
-Bốn điều engine không làm được trong giai đoạn demo, ghi thẳng để không ai hiểu sai.
+Bảy điều engine không làm được trong giai đoạn demo, ghi thẳng để không ai hiểu sai.
 
 1. **Demo kiểm chứng trải nghiệm, chưa kiểm chứng độ chính xác.** Với một người dùng, mọi tham số (độ mạnh tiền đề, ngưỡng mastery, độ khó câu) là giả định của người soạn; chỉ hiệu chỉnh được khi có nhiều người dùng.
 2. **Điểm thi của người sáng lập chứng minh người sáng lập học được, không chứng minh engine đúng.** Cỡ mẫu là 1, và việc duyệt nội dung hằng ngày cũng là học. Dùng được làm câu chuyện, không dùng làm bằng chứng độ chính xác.
 3. **Trước khi có AI, engine không tự tuyên bố sẵn sàng cho Viết/Nói mức cao.** Luật biết người học *có dùng* một từ hay cấu trúc, không biết dùng *đúng và tự nhiên*; mức 5 (dùng tự do) chỉ đạt Confidence Vừa.
 4. **Nội dung quyết định thời gian, không phải code.** Ước tính thô 10.000–20.000 câu cho 4 nhóm mục tiêu (hiện ~1.350 câu ôn thi); câu AI viết cần 2–3 vòng soát chống đoán mò (`content/AUTHORING.md`). M6 là mốc dài nhất.
+5. **Ở sát ngưỡng, một lần thi là phép đo nhiễu (v111).** Đậu hay rớt khi năng lực ngay ngưỡng gần như ngẫu nhiên. Vì vậy "sẵn sàng" là xác suất đậu cao (≥ 80%), không phải "đã đậu một lần", và một lần rớt sát ngưỡng không có nghĩa app sai.
+6. **Thi đậu vẫn có thể là học tủ theo dạng đề (v111).** Đề sát hạch chỉ chặn được học tủ *câu*; học tủ *dạng đề* thì giảm bằng cách xoay nhiều dạng câu và ngữ cảnh. Đề mẫu chính thức và thi thật vẫn là trọng tài cuối.
+7. **Pre-A1 / A1 không có neo ngoài (v111), và đề sát hạch tốn nội dung.** Cambridge không có bài cho người lớn ở cấp này nên kết luận A1 chỉ dựa vào đề của app. Mỗi cấp cần vài đề song song, câu mới, qua phép thử đoán mò; đây là phần việc lớn của M6.
 
 ## Rủi ro đã ghi nhận
 
@@ -328,4 +367,6 @@ Mỗi mốc một PR, chấm lại 200 + 400 tiêu chí sau mỗi mốc.
 | v108 | Hiệu ứng trên bàn chơi có sẵn (GAME-CRITERIA §10.19) | `#stagepop`: hạt nổ vẽ trên thẻ (trước đây sau thẻ đặc nên không thấy), không chặn chạm; `stageBurst`: Xếp Khối nổ hàng, Câu đố giải nhóm, Thám hiểm mở ô, Bàn Cờ xúc xắc xoay / xây nhà |
 | v109 | Trò nhanh cũ lên sân khấu + bảng chấm lại (GAME-CRITERIA §10.20) | `EM.stageApp`: Tốc độ 60 giây, Ghép cặp, Thách đấu toàn màn, ✕ = thoát trò (xác nhận khi đang chơi), điểm tăng → nảy + hạt; mọi game đã qua ít nhất một đợt nâng; bảng chấm 17 game + phản biện: bước tiếp theo là làm lại cơ chế theo số liệu chơi thật, không dàn trải |
 | v110 | Mục tiêu + tiến độ lên sảnh và màn kết (mục "Hợp đồng hiển thị tiến độ") | `goalbar.ts`: thẻ 🎯 Mục tiêu đầu sảnh (kỹ năng vững thật / suy ra, +7 ngày, 3 năng lực gần đạt nhất, phần sắp quên; chạm → trang mục tiêu); dòng 🎯 ở màn kết mọi game qua `endExtras`, và ở lớp phủ Vòng Chữ / Mỏ Chữ / Bài Câu; "vững thêm" chỉ tính khi Đạt đúng mức mục tiêu cần, mức thấp hơn báo "tiến một bậc" (trước đây Vườn báo "Lên cấp" ở mức 2 trong khi mục tiêu cần mức 3); chip Sẵn sàng CEFR bỏ phần trăm (§XVII); không đổi luật chơi, bằng chứng, bộ não chọn game |
+| v111 | Chốt thước đo đạt mục tiêu (chỉ sửa spec) | Quyết định người sáng lập "đậu đề lạ, không học tủ"; mục "Đề sát hạch và chống học tủ"; §8 dòng CEFR viết lại; hợp đồng hiển thị điểm 4 (bản đồ ≠ phán quyết); Giới hạn thực tế 5–7 |
+| v112 (kế tiếp) | Đề sát hạch đầu tiên | Cấp người sáng lập đang học (A2, đặc tả A2 Key), 2 đề song song, cách ly câu, tính giờ; P(đậu) Nghe / Đọc; dòng "Sẵn sàng thi" trên thẻ 🎯; đèn báo học tủ; nhập điểm đề mẫu chính thức + chốt dự đoán |
 | — | Tiêu chí game theo chức năng | `docs/GAME-CRITERIA.md`: 13 chức năng học của app; 10 tiêu chí chung (G1–G10, thang 10, trọng số; bắt buộc G3 ≥ 8 và G9 ≥ 8) + tiêu chí riêng theo chức năng; chấm 5 game hiện có (Leo tháp 7,1 · Xếp Khối 7,6 · Bàn Cờ 7,1 · Tốc độ 60 giây 5,6 · Ghép cặp 5,9); thứ tự game nên làm tiếp |
