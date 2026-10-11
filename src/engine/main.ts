@@ -61,7 +61,7 @@ import { choose as caseChoose, order as caseOrder, options as caseOptions, solve
 import { viewQuestHome, viewQuestRun, viewQuestEnd, type QuestRun, type QItem } from './questview.ts';
 import { computePath, computeNba, recallOf } from './today.ts';
 import { evRecall } from './retain.ts';
-import { seenHas, misconceptions } from './ev/store.ts';
+import { seenHas, misconceptions, priorUnknown } from './ev/store.ts';
 import { remedyFor, pickFor, REMEDY_VI } from './remedy.ts';
 import { gaps, weakContext, GAP_VI } from './gap.ts';
 import type { Level } from './types.ts';
@@ -426,7 +426,10 @@ export function init(host: EHost): EngineModule {
     const today = host.today(), led = E().ev.led.filter(x => x.node === qcur.node);
     // Hoặc sai lặp lại gần đây (≥ 2 trong 3 lượt cuối) ở nút đang học: giải thích rõ lại thay vì để người học đoán tiếp (W02-03).
     const last3 = led.slice(-3), repeated = last3.length >= 2 && last3.filter(x => !x.ok).length >= 2;
-    const notKnown = (qcur.gap === 'knowledge' && led.some(x => !x.ok) && !led.some(x => x.ok && !x.asst && x.lv <= 2)) || repeated;
+    // v119 (người mới tinh): xếp lớp đã coi nút là chưa biết và người học chưa gặp nó lần nào → dạy trước câu đầu tiên. Hỏi thử thứ
+    // chắc chắn chưa biết chỉ là bắt đoán mò; v70 vẫn giữ cho phần chưa có bằng chứng (có thể đã biết).
+    const unseen = !led.length && priorUnknown(E().ev, qcur.node);
+    const notKnown = (qcur.gap === 'knowledge' && led.some(x => !x.ok) && !led.some(x => x.ok && !x.asst && x.lv <= 2)) || repeated || unseen;
     if (it.q && (notKnown || qcur.gap === 'misconception') && !qrun.taught.includes(qcur.node) && !led.some(x => x.day === today && x.asst)) {
       const mc = host.micro?.(qcur.node);
       if (mc) { qrun.card = mc.card; qrun.teach = true; qrun.taught.push(qcur.node); }
@@ -526,12 +529,16 @@ export function init(host: EHost): EngineModule {
     const it = fresh[0] ?? items[crun.n % Math.max(1, items.length)] ?? null;
     crun.node = ch.node; crun.item = it; crun.novel = !!it && !seenHas(e.ev, ch.node, it.id);
     crun.hand = it ? cardDeal(crun.seed, crun.n, it.tokens, it.distract) : [];
+    // v119: như tháp — phần xếp lớp coi là chưa biết và chưa gặp lần nào thì dạy trước (một lần mỗi ván); câu ngay sau là có trợ giúp.
+    const taught = (crun.taught ||= []);
+    const mc = it && !taught.includes(ch.node) && !e.ev.led.some(x => x.node === ch.node) && priorUnknown(e.ev, ch.node) ? host.micro?.(ch.node) ?? null : null;
+    crun.teach = mc?.card ?? null; crun.hinted = !!mc; if (mc) taught.push(ch.node);
   }
   function cPlay(skip: boolean): void {
     const r = crun;
-    if (!r || !r.item || !r.ch || r.ans) return;
+    if (!r || !r.item || !r.ch || r.ans || r.teach) return;
     const e = E(), it = r.item, given = r.built.map(i => r.hand[i]!), at = skip ? 0 : cardCheck(given, it.tokens), ok = !skip && at < 0, right = it.tokens.join(' ');
-    ingest(e.ev, e.m, { node: r.node, level: it.level, ok, g: 0, item: it.id, text: it.prompt, qt: 'order', ctx: 'cards', src: 'game', ch: r.ch.id, gp: r.ch.gameplayDifficulty, ...(given.length ? { given: given.join(' '), right } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
+    ingest(e.ev, e.m, { node: r.node, level: it.level, ok, g: 0, item: it.id, text: it.prompt, qt: 'order', ctx: 'cards', src: 'game', ch: r.ch.id, gp: r.ch.gameplayDifficulty, ...(r.hinted ? { hint: true } : {}), ...(given.length ? { given: given.join(' '), right } : {}) }, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r });
     const sc = cardScore({ ok, tiles: it.tokens.length, question: /\?$/.test(right), negative: /\b(not|never)\b|n't\b/i.test(right), first: r.play === 0 }, r.streak, r.charms);
     const coins = reward(r.ch, ok, r.novel);
     r.n++; r.coins += coins; r.tableScore += sc.total; r.total += sc.total;
@@ -1750,6 +1757,17 @@ export function init(host: EHost): EngineModule {
       diagAnswer(i >= 0 && i === q.ans, q);
     },
     dstop() { finishDiag(); },
+    // v119 Người mới tinh: bỏ lượt dò (hỏi người chưa biết gì chỉ là bắt đoán mò), coi mọi cụm từ / điểm ngữ pháp là chưa biết → phần nào
+    // cũng được dạy trước khi hỏi lần đầu (priorUnknown). Mục tiêu A1; vẫn xếp lớp lại được bằng Thám hiểm sương mù.
+    dzero() {
+      if (!loaded()) { ensure(); return; }
+      const ix = loaded()!, e = E();
+      for (const n of ix.node.values()) if (n.kind === 'vocab' || n.kind === 'grammar') setPrior(e.ev, e.m, n.id, defaultLevel(n), 1, 3, 'diag', host.today());
+      e.diag = { day: host.today(), u: 0, g: 0, n: 0 };
+      if (!V().goals.length) addGoal('cefr-a1', 'auto');   // A1 gồm cả Pre-A1 (tiền đề cứng của cd:a1-com-pa)
+      addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: 'diag', dec: 'zero', rule: `${RULE_ID}/diag-zero-1`, info: { u: 0, g: 0, probes: 0 }, evs: [] }, false);
+      drun = null; host.save(); host.go('diag-result');
+    },
     // v86 Thám hiểm sương mù: bài chẩn đoán dạng bản đồ; người chơi chọn đường (loại điểm dò), engine chọn điểm dò có ích nhất của đường đó.
     fgstart() {
       if (!loaded()) { ensure(); return; }
@@ -1784,6 +1802,7 @@ export function init(host: EHost): EngineModule {
     cdclear() { if (crun && !crun.ans) { crun.built = []; host.render(); cview?.refresh(); } },
     cdplay() { cPlay(false); },
     cdskip() { cPlay(true); },
+    cdteach() { if (crun?.teach) { crun.teach = null; host.render(); cview?.refresh(); } },
     cdnext() { cNext(); },
     cdgo() { if (crun?.ans?.ok) cNext(); },
     cdexit() { cClose(); if (crun && !crun.done) { const pm = pmsave(); if (pm.cur && !pm.cur.d) playQuit(pm); } crun = null; host.save(); host.render(); },

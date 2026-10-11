@@ -895,7 +895,7 @@ const STORY = [
 {"id":"c2-com4","lv":"C2","grp":"com","vi":"Kết nối ở hội nghị và rời đi lịch sự","en":"Network at a conference and leave politely","ref":[{"t":"rp","v":["c2-d06","c2-d12"],"n":1},{"t":"d","v":["c2-d12"]}]},
 {"id":"c2-com5","lv":"C2","grp":"com","vi":"Theo dõi phần cuối truyện với ngôn ngữ giàu hàm ý","en":"Follow the final episodes, rich in implied meaning","ref":[{"t":"sto","v":["st-18","st-19","st-20"]}]}
 ,
-{"id":"a1-com-pa","lv":"A1","grp":"com","vi":"Đánh vần tên, đọc số điện thoại, giá tiền, giờ và ngày tháng; hỏi lại khi chưa hiểu","en":"Spell names, say numbers, prices, times and dates; ask for repetition","ref":[{"t":"pa","v":["pa-abc","pa-spell","pa-num","pa-num2","pa-time","pa-date","pa-class"],"n":5}]},
+{"id":"a1-com-pa","lv":"A1","grp":"com","vi":"Đánh vần tên, đọc số điện thoại, giá tiền, giờ và ngày tháng; hỏi lại khi chưa hiểu","en":"Spell names, say numbers, prices, times and dates; ask for repetition","ref":[{"t":"pa","v":["pa-abc","pa-phon","pa-spell","pa-num","pa-num2","pa-time","pa-date","pa-class"],"n":5}]},
 {"id":"a1-pro7","lv":"A1","grp":"pro","vi":"Phân biệt và nói rõ số -teen và -ty (13/30…)","en":"Distinguish -teen and -ty numbers","ref":[{"t":"p","v":["p-a1-numbers"]}]},
 {"id":"b1-ski7","lv":"B1","grp":"ski","vi":"Đọc bài dài vừa phải (blog, tin, hướng dẫn, trải nghiệm) và nắm ý chính, chi tiết","en":"Read medium-length texts for gist and detail","ref":[{"t":"lr","v":["b1-lr01","b1-lr02","b1-lr03","b1-lr04","b1-lr05","b1-lr06"],"n":4}]},
 {"id":"b1-ski9","lv":"B1","grp":"ski","vi":"Đọc lướt văn bản thực dụng (hướng dẫn, thông tin dịch vụ, quy định) để tìm đúng thông tin cần: điều kiện, thời hạn, con số","en":"Scan practical texts to find specific information such as conditions, deadlines and figures","ref":[{"t":"lr","v":["b1-lr04","b1-lr05"],"n":2}]},
@@ -6465,6 +6465,11 @@ const PA_LIPA={A:'eɪ',B:'biː',C:'siː',D:'diː',E:'iː',F:'ef',G:'dʒiː',H:'e
 // Nhóm chữ người Việt hay nghe nhầm: dùng làm phương án nhiễu
 const PA_CONF=[['A','E','I','R','H'],['E','I','Y','A'],['G','J','Z','E'],['B','P','V','D'],['M','N','L'],['K','Q','C','A'],['U','W','Q','Y'],['S','X','F','C'],['T','D','E','P'],['O','U','A','R']];
 const PA_SPELL=['cat','book','name','phone','water','house','hotel','street','Lan','Nam','Hoa','Minh','Tuan','Quang','Nguyen','Tran','Pham','Hanoi','Vietnam','email','queen','juice','yellow','zoo','garden','village','quiet','jacket'];
+// v119 Phonics: nhóm từ chỉ khác một âm (nguyên âm ngắn; sh / ch / th / s / t) và từ ba chữ đọc đúng theo âm.
+const PA_PHON=[['cat','cut','cot','kit'],['bed','bad','bid','bud'],['sit','set','sat','sun'],['hot','hat','hit','hut'],['cup','cap','cop','keep'],['pen','pin','pan','pun'],
+ ['ship','chip','sip','tip'],['shop','chop','top','stop'],['thin','tin','sin','shin'],['three','tree','free','see'],['fish','fit','fin','fix'],['bag','bug','big','beg'],['map','mop','mug','mat'],['six','sax','sick','sits']];
+const PA_CVC=['cat','dog','sun','pen','bus','map','red','six','hot','bed','cup','fish','ship','chip','bag','leg','box','jam'];
+const PA_VOW=[['a','/æ/','cat, bag, map'],['e','/e/','bed, pen, red'],['i','/ɪ/','sit, six, pin'],['o','/ɒ/','hot, dog, box'],['u','/ʌ/','cup, bus, sun'],['sh','/ʃ/','ship, fish, shop'],['ch','/tʃ/','chip, lunch, chop'],['th','/θ/','thin, three, bath']];
 const PA_CLASS=[
  ['Can you repeat that, please?','Bạn nhắc lại được không?'],['Can you speak more slowly, please?','Bạn nói chậm hơn được không?'],
  ['How do you spell it?','Từ đó đánh vần thế nào?'],['What does this word mean?','Từ này nghĩa là gì?'],
@@ -6478,6 +6483,7 @@ const PA_CLASS=[
  ['Nice to meet you.','Rất vui được gặp bạn.'],['Thank you. Goodbye!','Cảm ơn. Tạm biệt!']];
 const PREA1=[
  {id:'pa-abc',vi:'Bảng chữ cái',en:'The alphabet',ic:'🔤',tip:['Tên chữ cái tiếng Anh khác tiếng Việt: A đọc /eɪ/ (như “ây”), E đọc /iː/ (như “i”), I đọc /aɪ/ (như “ai”). Người Việt hay nhầm A–E–I.','G /dʒiː/ và J /dʒeɪ/ dễ nhầm; R /ɑː/ nghe gần giống “a” dài; Y /waɪ/ khác W /ˈdʌbljuː/ (“đấp-bồ-liu”). Z: Anh đọc /zed/, Mỹ đọc /ziː/.']},
+ {id:'pa-phon',vi:'Chữ cái và âm: đọc từ ngắn',en:'Letter sounds (phonics)',ic:'🗣️',tip:['Mỗi chữ cái có TÊN và có ÂM. Tên của A là /eɪ/, nhưng trong từ “cat” A đọc là âm /æ/ (a bẹt). Đọc từ mới là ghép ÂM, không ghép tên chữ: c-a-t → /k/ /æ/ /t/ → cat.','Năm nguyên âm ngắn trong từ ba chữ: a /æ/ (cat, bag), e /e/ (bed, pen), i /ɪ/ (sit, six), o /ɒ/ (hot, dog), u /ʌ/ (cup, bus). Đổi một nguyên âm là đổi cả từ: hat – hit – hot – hut.','Hai chữ, một âm: sh /ʃ/ (ship, fish), ch /tʃ/ (chip, lunch), th /θ/ (thin, three: đặt đầu lưỡi giữa hai răng). Người Việt hay đọc th thành t hoặc s, và hay nuốt âm cuối: “cat” phải nghe rõ /t/ ở cuối.']},
  {id:'pa-spell',vi:'Đánh vần tên, số điện thoại, email',en:'Spelling',ic:'📇',tip:['Đánh vần là đọc từng chữ cái: “Lan” → L-A-N. Hai chữ giống nhau liền nhau thường nói “double”: “book” → B, double O, K.','Số điện thoại đọc từng số; số 0 thường đọc là “oh”. Email: @ đọc là “at”, dấu chấm đọc là “dot”.']},
  {id:'pa-num',vi:'Số 0 đến 20',en:'Numbers 0–20',ic:'🔢',tip:['Từ 13 đến 19 có đuôi -teen và nhấn ở cuối: thir-TEEN, four-TEEN.','Số 0 đọc là “zero”; khi đọc số điện thoại thường nói “oh”.']},
  {id:'pa-num2',vi:'Số đến 100 và giá tiền',en:'Numbers to 100 and prices',ic:'💵',tip:['13 và 30 dễ nhầm: thir-TEEN nhấn cuối, âm “n” rõ; THIR-ty nhấn đầu, kết thúc bằng /ti/. Tương tự 14/40, 15/50… 19/90.','Giá tiền: $12.50 đọc “twelve dollars fifty” (hoặc “twelve fifty”); 50.000đ đọc “fifty thousand dong”.']},
@@ -6500,6 +6506,9 @@ function paItems(id){
   if(id==='pa-abc'){
     paPick(PA_CONF,6).forEach(g=>{ const L=paPick(g,1)[0], opts=paOpts(L,g); mc('Letter '+L+'.','Bạn nghe thấy chữ cái nào?',L,opts,`${L} đọc là /${PA_LIPA[L]}/.`,'Chữ cái '+L); });
     paPick(PA_LET,4).forEach(L=>ty('Letter '+L+'.','Gõ chữ cái bạn nghe thấy.',[L,L.toLowerCase()],`${L} /${PA_LIPA[L]}/`)); }
+  if(id==='pa-phon'){
+    paPick(PA_PHON,6).forEach(g=>{ const w=g[0], opts=paOpts(w,g); mc(w+'.','Bạn nghe thấy từ nào?',w,opts,`“${w}”: nghe kỹ nguyên âm ở giữa và âm cuối.`,'Từ '+w); });
+    paPick(PA_CVC,4).forEach(w=>ty(w+'.','Nghe rồi gõ từ (ghép âm thành chữ).',[w],`${w}: ghép âm ${w.match(/sh|ch|th|./g).join('-')}`)); }
   if(id==='pa-spell'){
     paPick(PA_SPELL,6).forEach(w=>ty(paSpellOut(w),'Nghe đánh vần rồi gõ cả từ.',[w],'Đánh vần: '+paSpellOut(w)));
     for(let k=0;k<2;k++){ const ph='09'+Array.from({length:8},()=>Math.random()*10|0).join(''), sp=ph.split('').map(d=>d==='0'?'oh':numWord(+d)).join(' ');
@@ -6539,6 +6548,7 @@ function paCards(id){ // bảng thẻ nghe của từng bài
   const chip=(t,sub,say)=>`<button class="wbtn" ${HAS_TTS?`data-say="${esc(say||t)}"`:''} lang="en" style="display:inline-grid;gap:2px;text-align:center;min-width:64px"><b>${esc(t)}</b>${sub?`<span class="hint" style="font-size:12px">${esc(sub)}</span>`:''}</button>`;
   const wrap=h=>`<div class="row" style="gap:6px">${h}</div>`;
   if(id==='pa-abc') return wrap(PA_LET.map(L=>chip(L+' '+L.toLowerCase(),'/'+PA_LIPA[L]+'/','Letter '+L+'.')).join(''));
+  if(id==='pa-phon') return wrap(PA_VOW.map(([l,ipa,ex])=>chip(l+' '+ipa,ex,ex.split(', ').join('. ')+'.')).join(''))+wrap(PA_PHON.slice(0,4).map(g=>chip(g.slice(0,3).join(' – '),'đổi nguyên âm, đổi từ',g.slice(0,3).join('. ')+'.')).join(''));
   if(id==='pa-spell') return wrap(['Lan','Nguyen','book','Hanoi','coffee'].map(w=>chip(w,paSpellOut(w),paSpellOut(w))).join(''))+`<p class="hint">Ví dụ số điện thoại: 0912 345 678 → <span lang="en">oh nine one two, three four five, six seven eight</span>.</p>`+wrap(chip('lan25@gmail.com','at · dot','lan 2 5 at gmail dot com'));
   if(id==='pa-num') return wrap(Array.from({length:21},(_,i)=>chip(String(i),numWord(i),numWord(i))).join(''));
   if(id==='pa-num2') return wrap([3,4,5,6,7,8,9].map(d=>chip(`${10+d} / ${d*10}`,`${numWord(10+d)} / ${numWord(d*10)}`,`${numWord(10+d)}. ${numWord(d*10)}.`)).join(''))+wrap([21,35,48,62,77,99,100].map(n=>chip(String(n),numWord(n),numWord(n))).join(''))+wrap([['$4.50','four dollars fifty'],['$12.99','twelve dollars ninety-nine'],['50.000đ','fifty thousand dong']].map(([a,b])=>chip(a,b,b)).join(''));
@@ -8365,7 +8375,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.697b2c0175.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.206109c691.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

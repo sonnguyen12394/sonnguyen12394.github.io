@@ -281,6 +281,13 @@ export function setPrior(st: EvStore, m: MasteryStore, node: string, upTo: Level
   }
 }
 
+// v119 Xếp lớp coi nút này là CHƯA BIẾT (tiên nghiệm diag nghiêng về sai: cấp của nút ≥ cấp ước tính + 1, hoặc người học chọn
+// "Tôi chưa biết gì"). Dùng để dạy trước khi hỏi lần đầu: hỏi thử thứ chắc chắn chưa biết chỉ là bắt đoán mò.
+export function priorUnknown(st: EvStore, node: string): boolean {
+  const pr = st.pri[cellKey(node, 1)];
+  return !!pr && pr.src === 'diag' && pr.a < pr.b;
+}
+
 // ---------- Nâng cấp từ ô Beta cũ (st.e v3) ----------
 // Mỗi ô có bằng chứng thật thành một thống kê "legacy" cho ra đúng α, β cũ; ô chỉ có tiên nghiệm thành Prior.
 export function fromCells(m: MasteryStore, day: number, rule: Rule = RULE): EvStore {

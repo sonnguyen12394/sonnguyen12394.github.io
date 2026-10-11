@@ -2,7 +2,7 @@
 // thật đặt trên canvas, di chuyển bằng transform mỗi khung hình (không vẽ lại #app). Nhờ vậy kéo thả mượt mà vẫn bấm được bằng bàn phím /
 // trình đọc màn hình, và giữ nguyên data-e="cdtile" / "cdback" của luồng bằng chứng. Luật, điểm, bằng chứng: cards.ts / main.ts.
 
-import type { CardsRun } from './cardsview.ts';
+import { teachPanel, type CardsRun } from './cardsview.ts';
 import { TABLES, PLAYS, target, CHARMS } from './cards.ts';
 import { snd, Music, musicOff, STILL } from './wheelview.ts';
 import { muted } from './sfx.ts';
@@ -122,7 +122,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
     const ck = s.charms.join(','); const cs = root.querySelector<HTMLElement>('.cdcharms')!;
     if (cs.dataset.k !== ck) { cs.dataset.k = ck; cs.innerHTML = s.charms.map(id => `<span class="cdcharm-on">✨ ${esc(charmName(id))}</span>`).join(''); }
     (root.querySelector('[data-e="cdmusic"]') as HTMLElement).textContent = musicOff() || muted() ? '🔇' : '🎵';
-    const playing = !s.done && !s.tableEnd && !!s.item;
+    const playing = !s.done && !s.tableEnd && !!s.item && !s.teach;
     prompt.hidden = !playing; if (playing && prompt.textContent !== s.item!.prompt) prompt.textContent = s.item!.prompt;
     bot.hidden = !playing || !!s.ans;
     for (const b of bot.querySelectorAll<HTMLButtonElement>('button')) b.disabled = !!s.ans || (b.dataset.e !== 'cdskip' && !s.built.length);
@@ -152,7 +152,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
       } else fb.innerHTML = '';
     }
     // Hộp giữa: hết bàn (chọn bùa) / hết ván / không có câu
-    const bk = s.done ? `done|${s.total}` : s.tableEnd ? `te|${s.table}|${s.offer?.map(o => o.id).join(',')}` : !s.item ? `none|${s.n}` : '';
+    const bk = s.done ? `done|${s.total}` : s.tableEnd ? `te|${s.table}|${s.offer?.map(o => o.id).join(',')}` : !s.item ? `none|${s.n}` : s.teach ? `teach|${s.n}|${s.node}` : '';
     if (bk !== boxKey) {
       boxKey = bk; win.hidden = !bk;
       if (s.done) {
@@ -171,6 +171,10 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
           <div class="whrow"><button class="${s.offer?.length ? 'whb wide' : 'whbig'}" data-e="cdnext">${s.table + 1 >= TABLES ? 'Xem kết quả' : s.offer?.length ? 'Bỏ qua bùa' : 'Bàn tiếp ▸'}</button></div>`;
         live.textContent = t.won ? 'Thắng bàn.' : 'Chưa đủ điểm bàn này.';
         if (t.won) { snd.win(); burst(W / 2, H * 0.3, '#fde68a', 40); }
+      } else if (s.teach) {
+        win.innerHTML = `${teachPanel(esc, s.teach)}<div class="whrow"><button class="whbig" data-e="cdteach">Đã hiểu, xếp câu ▸</button></div>`;
+        live.textContent = `Thẻ mới: ${s.teach.title}.`;
+        setTimeout(() => (win.querySelector('.whbig') as HTMLElement | null)?.focus(), 30);
       } else if (!s.item && bk) {
         win.innerHTML = '<p>Chưa có câu ngữ pháp nào để xếp cho mục tiêu này.</p><div class="whrow"><button class="whbig" data-e="cdnext">Tiếp</button></div>';
       } else win.innerHTML = '';

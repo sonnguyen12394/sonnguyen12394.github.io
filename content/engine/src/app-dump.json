@@ -12101,6 +12101,10 @@
        "t": "Pre-A1: Bảng chữ cái"
       },
       {
+       "at": "data-pa=\"pa-phon\"",
+       "t": "Pre-A1: Chữ cái và âm: đọc từ ngắn"
+      },
+      {
        "at": "data-pa=\"pa-spell\"",
        "t": "Pre-A1: Đánh vần tên, số điện thoại, email"
       },
@@ -59102,6 +59106,10 @@
   "pa": [
    {
     "id": "pa-abc",
+    "n": 10
+   },
+   {
+    "id": "pa-phon",
     "n": 10
    },
    {

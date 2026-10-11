@@ -15,7 +15,7 @@ Học tiếng Anh miễn phí theo khung CEFR, từ Pre-A1 (người mới tinh)
 - Ngữ pháp, chức năng giao tiếp, hội thoại, đọc, viết, phát âm theo khung CEFR, kèm các câu "can-do": biết mình làm được gì ở từng cấp.
 - Đạt cấp CEFR theo 6 nhóm năng lực (từ vựng, ngữ pháp, phát âm, chức năng, kỹ năng, dùng thực tế): ≥ 5/6 nhóm đạt 80% và không nhóm nào dưới 50%.
 - Lộ trình cân bằng: nút chính xen kẽ từ vựng với ngữ pháp và kỹ năng; tự tạm dừng từ mới khi lượng ôn vượt 60% thời gian mỗi ngày (tránh “nợ ôn”); tim chỉ tính trong bài kiểm tra.
-- Khởi động Pre-A1 cho người mới tinh: chữ cái, đánh vần, số, giá tiền, giờ, ngày tháng, câu dùng trong lớp.
+- Khởi động Pre-A1 cho người mới tinh: chữ cái, chữ cái và âm (phonics), đánh vần, số, giá tiền, giờ, ngày tháng, câu dùng trong lớp.
 - Chuyển ý Việt → Anh (mediation, CEFR 2020): 36 đề viết lại tin nhắn, thông báo, tin tức; giải thích phong tục, khái niệm; tổng hợp nhiều nguồn cho người nước ngoài; máy dò đủ ý chính.
 - Phản xạ hội thoại có đếm giờ; nối âm, dạng yếu, ngữ điệu, trọng âm câu; sổ cụm động từ và thành ngữ theo cấp (hơn 400 cụm).
 - Đọc và nghe dài từ B1 đến C2: bài báo, truyện ngắn, tiểu luận; phỏng vấn, bài giảng, podcast, tranh luận hai giọng.
@@ -37,6 +37,7 @@ Học tiếng Anh miễn phí theo khung CEFR, từ Pre-A1 (người mới tinh)
 - Hội thoại mở (24 tình huống A1–C2): người kia rẽ nhánh theo câu trả lời nói hoặc gõ của bạn, hỏi lại khi chưa hiểu; đo phản xạ nói (thời gian bắt đầu nói sau câu hỏi).
 - Nhắc lại câu (elicited imitation): nghe rồi nói lại, máy so từng từ — bằng chứng nói khách quan cho cấp CEFR.
 - Viết câu có kiểm soát: nối câu và viết lại câu với từ khoá, chấm đúng/sai bằng máy, không cần AI hay người chấm.
+- Người mới tinh chọn "Tôi chưa biết gì tiếng Anh": bỏ lượt dò, mỗi cụm từ / điểm ngữ pháp mới có thẻ dạy trước câu hỏi đầu tiên (v119).
 - Bắt đầu học bằng một chạm; hướng dẫn cài app cho iPhone, Android, máy tính; thẻ chia sẻ tiến độ; trang “Về English Ladder” (cam kết, nội dung, mã nguồn).
 
 ## Cài như ứng dụng

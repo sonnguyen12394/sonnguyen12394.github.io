@@ -35,7 +35,8 @@ export function viewDiagIntro(c: ECtx, lr: { L: number | null; R: number | null 
     ${host.mascot ? `<div class="tisay"><span aria-hidden="true">${host.mascot('happy', 52)}</span><span class="tisay-b">Phố Chữ chìm trong sương, ai cũng mất tiếng. Giúp Tí thắp vài ngọn đèn nhé: mỗi đèn là vài chữ tiếng Anh.</span></div>` : ''}
     <p class="muted">Khoảng 3–5 phút, tối đa 8 ngọn đèn (mỗi đèn 2–4 câu từ vựng hoặc ngữ pháp). Đúng thì đèn sau khó hơn, sai thì dễ hơn: nhờ vậy Tí biết bạn đang ở đâu để không bắt bạn học lại thứ đã biết.</p></section>
     <p class="hint">Không chắc thì chọn "Không biết": đèn vẫn sáng, và Tí đoán đúng hơn.</p>
-    <div class="row"><button class="btn primary" data-e="dstart" data-q="1">Bắt đầu thử sức</button></div>`;
+    <div class="row"><button class="btn primary" data-e="dstart" data-q="1">Bắt đầu thử sức</button><button class="btn ghost" data-e="dzero">Tôi chưa biết gì tiếng Anh</button></div>
+    <p class="hint">Chưa học tiếng Anh bao giờ? Chọn "Tôi chưa biết gì": Tí dạy từ chữ cái, mỗi phần mới đều có thẻ giải thích trước khi hỏi.</p>`;
   return `<section class="stack"><span class="eyebrow">Mục tiêu · Thử sức</span><h1>Bạn đang ở đâu?</h1>
     <p class="muted">Lượt thử sức khoảng 10–20 phút: app hỏi vài câu ở từng cụm từ vựng và điểm ngữ pháp, bắt đầu ở cấp dễ rồi lên dần. Đúng thì lên cấp, sai thì dò xuống phần nền. Xong là những gì bạn đã biết được bỏ khỏi lộ trình.</p></section>
     <section class="panel stack"><h3>Nghe và Đọc</h3>
@@ -89,6 +90,12 @@ const CEFR_IDS = ['cefr-pre-a1', 'cefr-a1', 'cefr-a2', 'cefr-b1', 'cefr-b2', 'ce
 export function viewDiagResult(c: ECtx, lr: { L: number | null; R: number | null }): string {
   const { host, e } = c, esc = host.esc, r = e.diag;
   if (!r) return `<section class="stack"><h1>Chưa có kết quả thử sức</h1></section><div class="row"><button class="btn primary" data-e="go" data-r="diag">Thử sức</button></div>`;
+  // v119 "Tôi chưa biết gì": không có cấp ước tính nào để báo; nói rõ app sẽ dạy từ đầu, mỗi phần mới có thẻ dạy trước.
+  if (!r.n && e.ev.snap.some(x => x.subj === 'diag' && x.dec === 'zero' && x.day === r.day)) return `<section class="stack"><span class="eyebrow">📖 Mở đầu · Sương Câm</span><h1>Bắt đầu từ chữ cái</h1></section>
+    ${host.mascot ? `<div class="tisay"><span aria-hidden="true">${host.mascot('happy', 52)}</span><span class="tisay-b">Không sao cả, ai cũng bắt đầu từ đây! Tí sẽ dạy từng phần: đọc thẻ giải thích trước, rồi mới thử.</span></div>` : ''}
+    <section class="panel stack"><p class="muted">Đích đầu tiên: <b>A1 (Sơ cấp)</b>, bắt đầu bằng chữ cái, số, giờ, ngày tháng và câu chào. Mỗi cụm từ, điểm ngữ pháp mới đều có thẻ dạy trước câu hỏi đầu tiên.</p>
+      <p class="hint">Học được một thời gian thì vào 🧭 Thám hiểm sương mù để Tí xếp lớp lại: phần đã biết sẽ được bỏ qua.</p></section>
+    <div class="row"><button class="btn primary" data-act="palist">🔤 Học chữ cái và số trước</button><button class="btn ghost" data-e="go" data-r="quest">Vào Phố Chữ</button></div>`;
   const ix = loaded();
   const cefrs: Cefr[] = [cefrOf(Math.floor(r.u)), cefrOf(Math.floor(r.g))];
   if (lr.L !== null) cefrs.push(bandToCefr(lr.L));
