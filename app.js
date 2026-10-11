@@ -1253,7 +1253,7 @@ function pickVoice(){
    trong Zalo / Messenger); không có tệp hoặc tệp lỗi thì dùng giọng máy như trước. canSay(câu) thay HAS_TTS ở chỗ gắn với một câu. */
 const clipNorm = t => String(t).replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/\s+/g,' ').trim().replace(/[.,;:]+$/,'').toLowerCase();
 function clipKey(t,v=0){ let h=0x811c9dc5; const x=clipNorm(t); for(let i=0;i<x.length;i++){ h^=x.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0; } return (v?'b':'a')+h.toString(16).padStart(8,'0'); }
-const CLIPS_IDX = '';   // tools/build.mjs ghi (danh mục khoá có tệp, tên có băm nội dung)
+const CLIPS_IDX = 'a/c/index.3f58b49d88.json';   // tools/build.mjs ghi (danh mục khoá có tệp, tên có băm nội dung)
 let CLIPS=null, CLIP_A=null;
 function clipsLoad(){ if(CLIPS||!CLIPS_IDX||typeof fetch!=='function') return; fetch(CLIPS_IDX).then(r=>r.ok?r.json():[]).then(a=>{ CLIPS=new Set(a); if(!HAS_TTS&&typeof render==='function') render(); }).catch(()=>{}); }
 const hasClip = (t,v=0) => !!CLIPS && !!t && CLIPS.has(clipKey(t,v));

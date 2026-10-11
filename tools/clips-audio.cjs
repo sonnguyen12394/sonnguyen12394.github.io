@@ -19,7 +19,9 @@ const LIMIT = Number((args.find(a => a.startsWith('--limit=')) || '').slice(8)) 
 const DIR = path.join(ROOT, 'a/c'), manPath = path.join(DIR, 'manifest.json');
 fs.mkdirSync(DIR, { recursive: true });
 const list = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/clips.json'), 'utf8'));
-const hashOf = c => crypto.createHash('sha256').update(JSON.stringify([c.t, VOICE[c.k[0]], SPEED, MODEL, KBPS])).digest('hex').slice(0, 12);
+// Lời đọc: ký hiệu bộ phiên âm của Kokoro bỏ qua thì viết thành chữ (chữ số, %, $ đọc đúng sẵn). Băm theo lời đọc.
+const speakable = t => t.replace(/(\d)\s?°C\b/g, '$1 degrees Celsius').replace(/(\d)\s?°F\b/g, '$1 degrees Fahrenheit');
+const hashOf = c => crypto.createHash('sha256').update(JSON.stringify([speakable(c.t), VOICE[c.k[0]], SPEED, MODEL, KBPS])).digest('hex').slice(0, 12);
 const man = fs.existsSync(manPath) ? JSON.parse(fs.readFileSync(manPath, 'utf8')) : {};
 const fileOf = k => path.join(DIR, k + '.mp3');
 
@@ -33,7 +35,7 @@ function engine() {
 // Lời đọc: chữ cái đơn đọc như tên chữ ("Letter A."), giữ nguyên câu; khoảng lặng ngắn đầu / cuối để trình duyệt không cắt mất âm đầu.
 function make(c) {
   const { sherpa, t } = engine(), sid = VOICES.indexOf(VOICE[c.k[0]]);
-  const a = t.generate({ text: c.t, sid, speed: SPEED }), sr = a.sampleRate || 24000;
+  const a = t.generate({ text: speakable(c.t), sid, speed: SPEED }), sr = a.sampleRate || 24000;
   const pad = n => new Float32Array(Math.round(n * sr)), parts = [pad(0.08), a.samples, pad(0.15)];
   const all = new Float32Array(parts.reduce((s, x) => s + x.length, 0)); let o = 0; for (const x of parts) { all.set(x, o); o += x.length; }
   const wav = path.join(os.tmpdir(), `el-clip-${process.pid}.wav`);

@@ -55,6 +55,15 @@ test('Hội thoại A1 hai giọng: phát lần lượt tệp giọng A và gi�
     return { n: keys.length, miss: r.filter(Boolean) };
   });
   expect(miss.n).toBeGreaterThan(5000);
+  // Tệp giải mã được thật (không chỉ tồn tại): MP3 24 kHz mono, dài hợp lý.
+  const dec = await page.evaluate(async () => {
+    const w = window as any, buf = await (await fetch(`a/c/${w.eval('clipKey')('cat')}.mp3`)).arrayBuffer();
+    const a = await new OfflineAudioContext(1, 1, 24000).decodeAudioData(buf);
+    return { sec: a.duration, ch: a.numberOfChannels };
+  });
+  expect(dec.ch).toBe(1);
+  expect(dec.sec).toBeGreaterThan(0.3);
+  expect(dec.sec).toBeLessThan(3);
   expect(miss.miss).toEqual([]);
   expect(errors).toEqual([]);
 });
