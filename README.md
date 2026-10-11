@@ -1,6 +1,8 @@
 # English Ladder
 
-Học tiếng Anh miễn phí theo khung CEFR, từ Pre-A1 (người mới tinh) tới C2, cho người Việt tự học. Từ v52 app theo **Master Spec v2.4** (`docs/SPEC-v2.4.md`): mục tiêu duy nhất của bản MVP là CEFR; app thu bằng chứng từ từng câu trả lời, tìm chỗ còn thiếu, chỉ cho học đúng phần đó và chỉ xác nhận đạt cấp khi có đủ bằng chứng. Phần ôn IELTS/VSTEP vẫn còn nguyên nhưng tạm ẩn (Cài đặt → Nâng cao → Mục tiêu tương lai). Không cần tài khoản, không quảng cáo của bên thứ ba. Bản thử có năng lượng theo lượt và gói Super giả lập, chưa thu tiền.
+Game chữ tiếng Anh cho người Việt: vuốt chữ thành từ, đào chữ trong mỏ, xếp lá từ thành câu. Chữ tiếng Anh chính là quân cờ, nên chơi giỏi lên thì tiếng Anh cũng giỏi lên. Bên dưới là một engine chọn từ và câu hợp với trình độ của bạn theo khung CEFR (Pre-A1 tới C2) và nhắc ôn đúng lúc để nhớ lâu. Ai cần biết mình đã đạt cấp nào thì xem trong hồ sơ (tuỳ chọn). Không cần tài khoản, không quảng cáo của bên thứ ba, chạy được khi mất mạng.
+
+Từ v121 app định vị **game trước** (`docs/SPEC.md`, dòng "Định vị game-first"). Engine theo **Master Spec v2.4** (`docs/SPEC-v2.4.md`): thu bằng chứng từ từng lượt chơi, tìm chỗ còn thiếu, chọn nội dung cho màn tiếp theo, chỉ xác nhận đạt cấp khi có đủ bằng chứng. Phần ôn IELTS/VSTEP vẫn còn nguyên nhưng tạm ẩn (Cài đặt → Nâng cao → Mục tiêu tương lai). Bản thử có năng lượng theo lượt và gói Super giả lập, chưa thu tiền.
 
 👉 **https://sonnguyen12394.github.io/**
 

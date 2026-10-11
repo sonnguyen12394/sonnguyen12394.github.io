@@ -1617,3 +1617,31 @@ Bật giảm chuyển động thì không có hạt, không xoay / nảy.
 - Cần người sáng lập chơi thật và xem bảng số liệu trước khi chọn.
 
 **Kiểm:** e2e Tốc độ 60 giây và Ghép cặp lên sân khấu, ✕ thoát (có xác nhận khi đang chơi), đúng → điểm nảy, WCAG AA 390px. Bộ đầy đủ (đơn vị, e2e, bot 8 ngày) ghi ở phần kết của đợt.
+
+## 11. Hướng v121+: định vị game-first
+
+Quyết định của người sáng lập (11/10/2026, `docs/SPEC.md` dòng "Định vị game-first"): không làm thêm "một app học tiếng Anh" để rồi bị so với các app học lớn. Thay vào đó làm **game chữ tiếng Anh cho người Việt**.
+
+### 11.1 Phản biện trước khi làm
+
+- **Game không tự xoá điểm yếu về nguồn lực, chỉ đổi đối thủ.** Mỹ thuật, âm nhạc, thiết kế màn và cân độ khó còn tốn hơn soạn bài. §10.2 cho thấy cả 17 game chỉ được 2,2–4,6 khi so với game dẫn đầu cùng thể loại. Đổi đối thủ thì sẽ gặp thị trường casual, nơi cạnh tranh còn gắt hơn.
+- **Điểm yếu thật sự đổi thành lợi thế ở chỗ hạ trần lời hứa.** Lời hứa "bạn đạt B2" cần chuyên môn và dữ liệu kiểm chứng. Lời hứa "chơi vui và nhớ được từ thật" thì đo được ngay bằng FSRS.
+- **Lợi thế mà app lớn khó làm:** giao diện thuần Việt, không tài khoản, không quảng cáo, chạy khi mất mạng, thử thách ngày giống nhau cho mọi người để chia sẻ.
+- **Gốc rễ là dàn trải** (§10.3 gốc rễ 5), không phải "app hay game". Game chỉ đúng hướng khi đi kèm thu hẹp số game.
+
+### 11.2 Luật làm việc từ v121
+
+1. **Hai game chủ lực:** 🎡 Vòng Chữ và ⛏️ Mỏ Chữ, vì chữ chính là cơ chế. 🃏 Bài Câu là ứng viên thứ ba, chỉ được làm tiếp khi hai game đầu đạt ngưỡng.
+2. **Ngưng mở rộng** các game kỹ năng còn lại. Chúng vẫn ở "Luyện tập" làm cơ chế bằng chứng; chỉ sửa lỗi.
+3. **Làm theo thứ tự cấp:** game chủ lực phải chạy tốt ở Pre-A1–B1 trước. Muốn mở C1–C2 thì dùng chính cơ chế đó với nội dung khó hơn, không làm game riêng cho cấp cao.
+4. **HG24 hiểu là "chữ là quân cờ":** không chèn câu hỏi gác cổng giữa các lượt của một game khác (§10.3 gốc rễ 2).
+5. **Nghiệm thu bằng người chơi, không tự chấm:**
+   - Người sáng lập playtest theo `docs/PLAYTEST.md` Phần 2.
+   - Điểm M thật < 6 thì sửa lõi hai game chủ lực trước mọi việc khác.
+   - Sau đó theo dõi người chơi quay lại D1/D7 và số từ còn nhớ sau 7/30 ngày.
+6. **Thước đo hai tầng, game trước:** mặt tiền đo bằng quay lại chơi và từ còn nhớ. Xác nhận đạt cấp CEFR là tuỳ chọn ở hồ sơ.
+
+### 11.3 Còn mở (chờ người sáng lập)
+
+- Kiếm tiền "kiểu app học" và cổng lên store "bằng điểm thi thật" (`docs/SPEC.md`) chưa đổi. Hai điểm này cần xem lại cho hợp định vị game.
+- Tên sản phẩm "English Ladder" vẫn mang nghĩa app học.

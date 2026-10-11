@@ -7,7 +7,7 @@
 >
 > Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v88 (xem phần "Lộ trình v2.4" cuối tệp).
 
-Cập nhật: 11/10/2026 (đồng bộ tới v120). Bản đọc và bình luận: Claude Docs "English Ladder — Spec (v115)" (https://claude.ai/code/artifact/4391badc-cdcb-4248-8f65-4bbfec7ea9f7). Tệp này là bản AI đọc khi xây; hai bản phải giống nhau. Doc cũ "English Ladder — Master Spec v2" không còn được cập nhật.
+Cập nhật: 11/10/2026 (đồng bộ tới v121: định vị game-first). Bản đọc và bình luận: Claude Docs "English Ladder — Spec (v115)" (https://claude.ai/code/artifact/4391badc-cdcb-4248-8f65-4bbfec7ea9f7). Tệp này là bản AI đọc khi xây; hai bản phải giống nhau. Doc cũ "English Ladder — Master Spec v2" không còn được cập nhật.
 
 ## Cách đọc
 
@@ -35,6 +35,7 @@ App là một engine học dùng chung cho mọi mục tiêu, kiếm tiền ki�
 | Điểm kỹ thuật còn mở | Giao cho Claude quyết, miễn đúng triết lý spec |
 | Thước đo đạt mục tiêu (11/10/2026, v111) | Đạt = **đậu một đề chưa từng thấy ở đúng cấp, không học tủ**. Chuẩn "đậu" theo thang Cambridge English Scale cho từng cấp. Đề trong app do app tự soạn theo đặc tả công khai của các bài Cambridge (không chép đề, không dùng tên thương hiệu như đề chính thức). Đề mẫu chính thức làm ngoài app là neo đối chiếu. Thi thật là trọng tài cuối. Chi tiết: mục "Đề sát hạch và chống học tủ" |
 | Game hoá mọi chức năng (11/10/2026, v111) | Mọi chức năng học và đo đã có (xếp lớp, chọn mục tiêu, học mới, ôn, 4 kỹ năng, chẩn đoán, đo hiệu quả, kết luận đạt cấp) đều phải có **vỏ game**. Người học chỉ thấy mình đang chơi; app vẫn thu được kết quả nó cần. Màn chơi không bắt người học "làm bài", "đi thi", không dùng chữ thi / đề / kiểm tra. Đề mẫu chính thức và thi thật là **tuỳ chọn ở hồ sơ**, chỉ cho ai cần chứng chỉ. Chi tiết: mục "Game hoá mọi chức năng" |
+| Định vị game-first (11/10/2026, v121) | Sản phẩm là **game chữ tiếng Anh cho người Việt**, không định vị là "một app học tiếng Anh" để khỏi bị so với các app học lớn. Chữ tiếng Anh là cơ chế chơi (chữ là quân cờ); engine (NBA, FSRS, evidence) giữ nguyên bên dưới để chọn từ/câu cho màn chơi. **Phạm vi:** giữ CEFR Pre-A1 → C2, nhưng làm game theo thứ tự cấp: mỗi game chủ lực chạy tốt ở Pre-A1–B1 trước, rồi mở C1–C2 bằng chính cơ chế đó, không thêm game riêng cho cấp cao. IELTS/VSTEP vẫn ẩn. **Thước đo hai tầng, game trước:** mặt tiền đo bằng người chơi quay lại D1/D7 và số từ còn nhớ sau 7/30 ngày (FSRS); xác nhận đạt cấp CEFR bằng bằng chứng vẫn có trong engine nhưng là **tuỳ chọn ở hồ sơ**, không phải lời hứa ở mặt tiền. **Lõi:** 1–2 game chủ lực (🎡 Vòng Chữ, ⛏️ Mỏ Chữ); các game khác ngưng mở rộng, nằm ở "Luyện tập". Bước đầu là playtest của người sáng lập (`docs/PLAYTEST.md` Phần 2); điểm thật < 6 thì sửa lõi hai game này trước mọi việc khác. **Còn mở, chờ người sáng lập xem lại:** dòng "Kiếm tiền" (kiểu Duolingo) và "Cổng lên store" (điểm thi thật) chưa đổi. Chi tiết: GAME-CRITERIA §11 |
 | Bản v45 (nhánh `claude/v45-ai-copy-honest-free`) | Để nguyên, quyết sau. Không gộp nguyên trạng vì chữ "không quảng cáo" trái với mô hình đã chọn |
 
 Bài học từ lịch sử app: bản v35 chuyển sang "miễn phí 100%" do AI khuyên, không phải ý người sáng lập. Từ nay AI không đổi hướng sản phẩm khi chưa hỏi.
