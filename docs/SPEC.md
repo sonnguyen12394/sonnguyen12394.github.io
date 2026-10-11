@@ -7,7 +7,7 @@
 >
 > Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v88 (xem phần "Lộ trình v2.4" cuối tệp).
 
-Cập nhật: 11/10/2026 (đồng bộ tới v116). Bản đọc và bình luận: Claude Docs "English Ladder — Spec (v115)" (https://claude.ai/code/artifact/4391badc-cdcb-4248-8f65-4bbfec7ea9f7). Tệp này là bản AI đọc khi xây; hai bản phải giống nhau. Doc cũ "English Ladder — Master Spec v2" không còn được cập nhật.
+Cập nhật: 11/10/2026 (đồng bộ tới v118). Bản đọc và bình luận: Claude Docs "English Ladder — Spec (v115)" (https://claude.ai/code/artifact/4391badc-cdcb-4248-8f65-4bbfec7ea9f7). Tệp này là bản AI đọc khi xây; hai bản phải giống nhau. Doc cũ "English Ladder — Master Spec v2" không còn được cập nhật.
 
 ## Cách đọc
 
@@ -135,7 +135,8 @@ Bổ sung từ v111:
 - **Mất dữ liệu là rủi ro lớn hơn dung lượng.** App nhắc bật mã đồng bộ hoặc sao lưu, ít nhất sau ván đầu tiên và mỗi lần qua cổng. Ước tính tổng dữ liệu < 1 MB; phải đo thật trên máy người dùng.
 
 ### 7. Bộ tiêu chí đánh giá
-- **Bộ tiêu chí chính thức** của chương này là `docs/SCORECARD-v111.md`: 71 tiêu chí, 11 nhóm, mỗi tiêu chí có mốc 10 và gắn với một mục của chương này.
+- **Bộ tiêu chí chính thức** của chương này là `docs/SCORECARD-v111.md`: 79 tiêu chí, 12 nhóm, mỗi tiêu chí có mốc 10 và gắn với một mục của chương này. Nhóm L "Rõ ràng và dễ dùng" (8 tiêu chí) thêm ở v116: trước đó bảng chỉ đo phần bên trong, nên mỗi bản thêm thẻ lên sảnh mà điểm vẫn tăng.
+- **Luật màn đầu (v117, nhóm L).** Màn đầu (tab Hôm nay) có đúng một nút chính trong khung nhìn đầu tiên ở 390 × 844; tối đa 3 khối hiện ra, phần còn lại thu gọn; không thuật ngữ nội bộ (năng lực, cổng khu, bằng chứng, Can-Do, Pre-A1, kết luận). Tính năng mới không được thêm thẻ lên màn đầu: vào mục "Tự chọn" hoặc tab Thư viện. Từ v118, màn đầu là **cảnh truyện của khu đang ở**: mọi trang trí phải gắn với Phố Chữ và nói thật về tiến độ (sương tan theo kỹ năng vững thật). Kiểm tự động: `test/e2e/clarity.spec.ts`.
 - **Chấm lại sau mỗi bản phát hành**, ghi điểm mới cạnh điểm cũ.
 - **Không đổi mốc 10 để điểm đẹp hơn.** Muốn đổi mốc phải hỏi người sáng lập.
 - **Trọng số nhóm** do người sáng lập duyệt.
@@ -152,6 +153,12 @@ Spec định nghĩa kỹ cách *tính* Readiness nhưng trước v110 không nó
    - số phần sắp quên.
    
    Chạm thẻ mở trang "Chưa đạt … vì còn thiếu".
+
+   **Sửa ở v117 (nhóm L của bảng chấm, quyết định của người sáng lập ngày 11/10/2026: "giao diện quá nhiều chức năng, nhìn không biết nên làm gì").** Thẻ đầy đủ ở trên đặt đầu sảnh làm màn đầu có 5–8 con số và đẩy "▶ Chơi tiếp" xuống dưới nếp gấp. Từ v117:
+   - **"▶ Chơi tiếp" là việc đầu tiên và là nút chính duy nhất** của màn đầu.
+   - Ngay dưới là **thẻ Mục tiêu bản gọn**: một dòng "🎯 A1 · x/y kỹ năng đã vững" + thanh tiến độ, vẫn nằm trong màn đầu nên tiến độ học thật không bị che (mục đích của v110 giữ nguyên). Chỉ thêm dòng khi người học phải làm gì: cổng đã mở, tới hạn, đang học tủ.
+   - **Bản đầy đủ** (mốc gần, năng lực, thang khu, cổng khoá, "chưa phải kết luận") chuyển lên đầu trang mục tiêu, cách một lần chạm.
+   - Mọi thứ khác của sảnh (truyện, game chủ lực, game kỹ năng, phố, tháp, số liệu) nằm trong **một** mục thu gọn "Tự chọn trò chơi khác". Không khoá gì: tab Thư viện → "Tất cả trò chơi" mở thẳng mục này.
 2. **Mọi màn kết game có một dòng nối ván với mục tiêu**, kể cả khi ván không làm vững thêm gì. Dòng này nói thật:
    - "vững thêm X" chỉ khi đạt **đúng mức mục tiêu cần**;
    - đạt ở mức thấp hơn thì báo "tiến một bậc";
@@ -474,4 +481,6 @@ Mỗi mốc một PR, chấm lại 200 + 400 tiêu chí sau mỗi mốc.
 | v114 | Kho báu ẩn | Bộ đo hiệu quả 12 câu (v63) thành "🎁 Kho báu ẩn" ở sảnh khi tới hạn; không hiện đúng / sai; xu theo số rương mở |
 | v115 | Soát đề cổng + khu truyện cuối = trận cổng | Phép thử không có bài 3 vòng cho 86 câu cổng (`content/exam/gate/README.md`: Đọc 69% → 49%, Nghe 69% → 14%; ngưỡng 55%), xếp vị trí đáp án ngẫu nhiên cân bằng, câu nghe nhắc cả 3 phương án; chương cuối truyện (Rừng Trúc) cần qua trận cổng của đích; tab học kiểu cũ bỏ chữ "bài kiểm tra / thi vượt"; đo bot theo bộ não (game chủ lực 41–65%, trước 72%). Câu cổng vẫn cần người sáng lập soát |
 | v116 | Trận cổng B1 | `content/exam/gate/b1-1.json`, `b1-2.json`: 2 đề × 24 câu (Đọc: thông báo, bài dài có ý / thái độ, điền từ; Nghe: đoạn ngắn + phỏng vấn), soạn theo đặc tả công khai B1 Preliminary (rút gọn), âm thanh Kokoro; ngưỡng band 3,75 (B1 từ band 4); phép thử không có bài 2 vòng: Đọc 82% → 28%, Nghe 78% → 31%. Đích B1 giờ đạt bằng trận cổng; chương cuối truyện với đích B1 cũng là trận cổng. Câu cổng do AI soạn, **cần người sáng lập soát** |
+| v117 | Rõ ràng: màn đầu một việc, 4 tab | Bảng chấm thêm nhóm L (8 tiêu chí). Sảnh: "▶ Chơi tiếp" lên đầu, thành nút đặc màu nhấn (nút chính duy nhất); thẻ Mục tiêu bản gọn một dòng (`viewGoalSlim`), bản đầy đủ lên đầu trang mục tiêu; Kho báu ẩn thành dòng phụ; truyện, game chủ lực, game kỹ năng, phố, tháp, số liệu vào một mục thu gọn "Tự chọn trò chơi khác" (trang dài ~4.300 px → ~1.000 px ở 390 px). Điều hướng 5 → 4 tab: Hôm nay · Ôn tập · Thư viện · Tôi (Học + Kỹ năng + Sổ từ + Thử thách + tất cả trò chơi vào Thư viện, route `quest/all`). Thanh đầu trang: số có chữ đi kèm, năng lượng chỉ hiện khi thiếu. Không đổi luật chơi, bằng chứng, bộ não chọn game |
+| v118 | Màn Hôm nay là cảnh Phố Chữ | Người sáng lập: v117 "đơn giản quá, phải đẹp, hấp dẫn, đồng bộ cốt truyện". Hộp Chơi tiếp thành cảnh của khu đang ở (`story.ts` `sceneOf`, `sceneArt`: nền màu khu, hình phố / bến cảng / rừng trúc vẽ SVG nội tuyến); **Sương Câm dày theo phần kỹ năng mục tiêu chưa vững** (học thật thì sương tan, không thổi phồng); dòng "📍 Khu · Chương"; Tí kể việc của cư dân chương; nút Chơi tiếp màu vàng kiểu truyện; lộ trình 3 chặng = 3 đèn lồng (xong chặng thì đèn sáng); cảnh truyện sẵn sàng có lối phụ "📖 Xem cảnh". Vẫn đúng luật màn đầu (một nút chính, ≤ 3 khối); chữ trắng nằm trên lớp phủ tối; tắt chuyển động khi máy bật giảm chuyển động. Không đổi luật chơi, bằng chứng, bộ não |
 | — | Tiêu chí game theo chức năng | `docs/GAME-CRITERIA.md`: 13 chức năng học của app; 10 tiêu chí chung (G1–G10, thang 10, trọng số; bắt buộc G3 ≥ 8 và G9 ≥ 8) + tiêu chí riêng theo chức năng; chấm 5 game hiện có (Leo tháp 7,1 · Xếp Khối 7,6 · Bàn Cờ 7,1 · Tốc độ 60 giây 5,6 · Ghép cặp 5,9); thứ tự game nên làm tiếp |

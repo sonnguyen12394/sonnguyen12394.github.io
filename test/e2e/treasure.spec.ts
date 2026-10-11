@@ -27,7 +27,7 @@ test('Kho báu ẩn: thẻ ở sảnh → mở 12 rương không hiện đúng /
   await lobby(page);
   await expect(page.locator('.tcard')).toContainText('Kho báu ẩn');
   const coins0 = await page.evaluate(() => (window as any).eval('st').e.q?.coins ?? 0);
-  await page.getByRole('button', { name: /Mở kho báu/ }).click();
+  await page.locator('.tcard').click();   // v117: dòng phụ dưới Chơi tiếp
   await page.getByRole('button', { name: /Mở rương đầu tiên/ }).click();
   const done = page.getByRole('heading', { name: /Đã mở hết \d+ rương/ });
   for (let i = 0; i < 20 && !(await done.isVisible()); i++) {

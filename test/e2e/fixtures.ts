@@ -77,7 +77,9 @@ export async function openAll(page: Page): Promise<void> {
 // Sảnh game từ màn "games": nạp engine trước (không đo thời gian tải ở đây), chờ bài học chi tiết tải xong, bấm "▶ Chơi", chờ sảnh
 // (chạm trong game lúc đang tải bị giữ chờ — hành vi riêng, không phải điều test này kiểm). Hụt thì báo màn đang hiện
 // (view, chữ trong #app) để biết gốc rễ: CI Safari iOS thỉnh thoảng không thấy sảnh sau 15 s.
-export async function toLobby(page: Page): Promise<void> {
+// v117: sảnh chỉ hiện "Chơi tiếp" + mục tiêu; truyện, game chủ lực, phố, tháp nằm trong mục thu gọn "Tự chọn" (details[data-lobby]).
+// Mặc định test mở sẵn mục đó (trạng thái mở được giữ qua các lần vẽ lại) để test các phần bên trong như trước; clarity.spec dùng open=false.
+export async function toLobby(page: Page, open = true): Promise<void> {
   await page.evaluate(() => (window as any).eval('emLoad()'));
   // Chờ bài học chi tiết tải xong TRƯỚC khi bấm: tải xong thì app vẽ lại màn, nút có thể xê dịch đúng lúc bấm (CI Safari iOS).
   // Trường hợp bấm Chơi khi chưa tải xong có test riêng (director.spec).
@@ -89,4 +91,8 @@ export async function toLobby(page: Page): Promise<void> {
     const s = await page.evaluate(() => { const w = window as any; return { view: w.eval('ui.view'), er: w.eval('ui.er'), em: !!w.eval('EM'), app: (document.getElementById('app')?.innerText ?? '').slice(0, 300), stage: document.body.className }; });
     throw new Error(`sảnh không hiện: ${JSON.stringify(s)}\n${(e as Error).message}`);
   }
+  if (open) await openPick(page);
+}
+export async function openPick(page: Page): Promise<void> {
+  await page.evaluate(() => document.querySelectorAll('#app details[data-lobby]').forEach(d => { (d as HTMLDetailsElement).open = true; }));
 }

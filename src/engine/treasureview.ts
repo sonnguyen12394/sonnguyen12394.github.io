@@ -6,10 +6,9 @@ import type { ECtx } from './views.ts';
 
 export const CHEST_COINS = 3;
 
+// v117: một dòng phụ dưới nút "Chơi tiếp" (không phải nút chính thứ hai). Màn giới thiệu (treasure) giải thích đủ.
 export function viewTreasureCard(c: ECtx, first: boolean): string {
-  return `<section class="tcard stack"><span class="eyebrow">🎁 Kho báu ẩn</span>
-    <p>${first ? 'Tí tìm thấy một kho báu ẩn ở cổng phố: 12 chiếc rương, mỗi rương là một câu bạn chưa gặp bao giờ.' : 'Kho báu ẩn lại xuất hiện! Mở để Tí biết bạn tiến được bao xa so với lần trước.'}</p>
-    <div class="row"><button class="btn primary" data-e="go" data-r="treasure">🎁 Mở kho báu (khoảng 4 phút)</button></div></section>`;
+  return `<button class="tline tcard" data-e="go" data-r="treasure"><span>🎁 <b>Kho báu ẩn</b> ${first ? 'vừa xuất hiện' : 'lại xuất hiện'}: 12 rương, khoảng 4 phút</span><span class="hint" aria-hidden="true">Mở ›</span></button>`;
 }
 
 export function viewTreasureIntro(c: ECtx, has: boolean): string {

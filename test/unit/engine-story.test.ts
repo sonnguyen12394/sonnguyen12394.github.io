@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { resident, sideTasks, sideDone, CHAPTERS, ACTS, storyAdd, tasksDone, ready, advance, revived, freshStory, sanitizeStory, mergeStory, storyNote, viewStory, finished } from '../../src/engine/story.ts';
+import { resident, sideTasks, sideDone, CHAPTERS, ACTS, storyAdd, tasksDone, ready, advance, revived, freshStory, sanitizeStory, mergeStory, storyNote, viewStory, finished, sceneOf, sceneArt } from '../../src/engine/story.ts';
 
 // v101 cốt truyện Phố Chữ: chương nối ba game; chương cuối mỗi khu cần kỹ năng vững thật; truyện không ghi bằng chứng.
 test('v101 nội dung: mở đầu + 3 khu × 4 chương; mỗi chương có cả ba nhiệm vụ (trừ mở đầu); chương cuối khu cần kỹ năng vững tăng dần', () => {
@@ -80,4 +80,22 @@ test('v115 khu truyện = cấp: chương cuối khu có cổng chỉ xem đư�
   assert.equal(ready(s, 0, gate(true)), false, 'qua cổng vẫn cần đủ kỹ năng vững của chương');
   assert.deepEqual(advance(s, 99, gate(true)), { coins: 50, act: ACTS[last] });
   assert.equal(finished(s), true);
+});
+
+test('v118 sceneOf: khu, chương, cư dân của màn Hôm nay; mở đầu sẵn sàng xem cảnh; hết truyện thì "Còn tiếp"', () => {
+  const s0 = sceneOf(freshStory(), 0);
+  assert.equal(s0.act, 0); assert.equal(s0.no, 0); assert.equal(s0.title, 'Sương Câm'); assert.equal(s0.ready, true);
+  const s1 = sceneOf({ ch: 1, prog: { dig: 0, light: 0, voice: 0 } }, 0);
+  assert.deepEqual([s1.act, s1.zone, s1.no, s1.title, s1.who?.[1], s1.ready], [1, ACTS[1], 1, 'Hoa không tên', 'Bà Lan', false]);
+  const s5 = sceneOf({ ch: 5, prog: { dig: 0, light: 0, voice: 0 } }, 0);
+  assert.equal(s5.zone, 'Bến Cảng');
+  const end = sceneOf({ ch: CHAPTERS.length, prog: { dig: 0, light: 0, voice: 0 } }, 0);
+  assert.equal(end.done, true); assert.equal(end.who, null);
+  assert.equal(sceneOf(undefined, 0).act, 0);
+});
+
+test('v118 sceneArt: mỗi khu một hình SVG tĩnh (không script, không liên kết ngoài)', () => {
+  const arts = [0, 1, 2, 3].map(sceneArt);
+  for (const a of arts) { assert.match(a, /^<svg /); assert.doesNotMatch(a, /<script|href=|\son\w+=/); }
+  assert.notEqual(arts[1], arts[2]); assert.notEqual(arts[2], arts[3]);
 });

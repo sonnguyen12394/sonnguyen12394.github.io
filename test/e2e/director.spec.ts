@@ -5,7 +5,7 @@ import type { Page } from '@playwright/test';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 test.use({ future: false });
 
-async function open(page: Page, placed: boolean): Promise<void> {
+async function open(page: Page, placed: boolean, pick = true): Promise<void> {
   await page.goto('/');
   await page.waitForFunction(() => (window as any).ELREADY === true);
   await page.evaluate((pl) => {
@@ -15,12 +15,12 @@ async function open(page: Page, placed: boolean): Promise<void> {
     if (pl) st.e.gf = { runs: 1, day: w.eval('today()') - 1 };
     w.eval('save()'); w.eval("go('games')");
   }, placed);
-  await toLobby(page);
+  await toLobby(page, pick);
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 
 test('Bộ não: người mới chưa xếp lớp → nút Chơi tiếp là Thám hiểm, có lý do; danh sách game thu gọn', async ({ page, errors }) => {
-  await open(page, false);
+  await open(page, false, false);   // v117: sảnh thật (mục Tự chọn đóng)
   const go = page.locator('.dgo');
   await expect(go).toHaveCount(1);
   await expect(go).toContainText('Chơi tiếp: Thám hiểm sương mù');

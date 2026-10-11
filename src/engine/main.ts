@@ -26,7 +26,7 @@ import { viewLobby, viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoard
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
 import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, TIER_COINS, type WkKind } from './weekly.ts';
-import { FACE, resident, sideDone, SIDE_COINS, CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, storyNote, type StoryKind, type StoryGateOf } from './story.ts';
+import { FACE, resident, sideDone, SIDE_COINS, CHAPTERS as STORY, KIND_VI, storyAdd, advance, chapterAt, freshStory, viewStory, sceneOf, storyNote, type StoryKind, type StoryGateOf } from './story.ts';
 import { openScene } from './storyfx.ts';
 import { stageSync, stageBurst, type Scene } from './stagefx.ts';
 import { viewCafe, viewCafeEnd, type CafeRun } from './cafeview.ts';
@@ -66,7 +66,7 @@ import { remedyFor, pickFor, REMEDY_VI } from './remedy.ts';
 import { gaps, weakContext, GAP_VI } from './gap.ts';
 import type { Level } from './types.ts';
 import { readinessOf, missingOf } from './readyview.ts';
-import { goalSummary, viewGoalBar, goalLine, goalText, type GoalSum } from './goalbar.ts';
+import { goalSummary, viewGoalBar, viewGoalSlim, goalLine, goalText, type GoalSum } from './goalbar.ts';
 import { roteNodes } from './rote.ts';
 import { viewLrRun } from './lrview.ts';
 import { viewTreasureCard, viewTreasureIntro, viewTreasureDone, CHEST_COINS } from './treasureview.ts';
@@ -1600,7 +1600,9 @@ export function init(host: EHost): EngineModule {
     if (qrun?.done) return viewQuestEnd(c, qrun);
     if (qrun) { qrun.revive = qrun.mode === 'tower' && !qrun.revived && qrun.i + 1 < qrun.plan.length && wallet() >= REVIVE ? REVIVE : 0; return viewQuestRun(c, qrun); }
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null, dir = c.e.goals.length ? director() : null, gs = dir ? goalSum(c.e, dir.x.review) : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, dir, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '', gs ? viewGoalBar(c, gs.s) + (nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '') : '') + (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave()));
+    // v118 cảnh Phố Chữ ở đầu sảnh: khu / chương truyện + Sương Câm dày theo phần kỹ năng mục tiêu chưa vững (học thật thì sương tan).
+    const sc = dir ? { scene: sceneOf(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)), fog: gs && gs.s.total ? 1 - gs.s.solid / gs.s.total : 0.6 } : null;
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, dir, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '', gs ? viewGoalSlim(c, gs.s) + (nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '') : '', (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave())), sc);
   }
   const routes: Record<string, (c: ECtx) => string> = {
     // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).
@@ -1669,7 +1671,12 @@ export function init(host: EHost): EngineModule {
     },
     why: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewWhy(c); },
     pick: viewPick,
-    goal: c => { if (!loaded() && !loadErr) ensure(); return viewGoal(c, loadErr); },
+    goal: c => {
+      if (!loaded() && !loadErr) ensure();
+      // v117: bản đầy đủ của thẻ mục tiêu (trước nằm đầu sảnh) đứng đầu trang của mục tiêu đang theo.
+      const id = c.route.split('/')[1] ?? '', gs = loaded() && goalOf(c.e)?.id === id ? goalSum(c.e, dirIn().review) : null, h = viewGoal(c, loadErr);
+      return gs ? h.replace('</h1></section>', `</h1></section>${viewGoalBar(c, gs.s)}`) : h;
+    },
   };
   let lastRoute = '';   // v102: route vừa vẽ (sân khấu chỉ bật ở route game 'quest')
   function render(route: string): string {

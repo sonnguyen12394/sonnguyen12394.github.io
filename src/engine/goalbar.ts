@@ -37,7 +37,21 @@ export function goalSummary(g: GoalIn): GoalSum {
 
 const pc = (n: number, d: number) => (d ? Math.round((n / d) * 100) : 0);
 
-// Thẻ đầu sảnh. Thanh hai lớp: vững thật (đậm) và chỉ suy ra từ xếp lớp (nhạt, đang kiểm dần) để không thổi phồng tiến độ.
+// v117 Bản gọn ở sảnh (SCORECARD nhóm L "một con số chính"): một dòng "🎯 A1 · x/y kỹ năng đã vững ›" + thanh tiến độ. Chỉ thêm dòng khi
+// người học PHẢI làm gì đó: cổng đã mở, đã tới hạn / hạn gấp, đang học tủ. Mọi chi tiết khác (mốc gần, năng lực, thang khu, cổng khoá)
+// nằm ở bản đầy đủ đầu trang mục tiêu, cách một lần chạm.
+export function viewGoalSlim(c: ECtx, s: GoalSum): string {
+  const esc = c.host.esc, lv = /^cefr-/.test(s.id) ? s.id.replace('cefr-', '').toUpperCase().replace('PRE-A1', 'Pre-A1') : esc(s.vi);
+  if (s.achieved) return `<button class="gbar slim done" data-e="go" data-r="goals"><span>🎯 <b>Đã đạt ${esc(s.vi)}</b></span><span class="hint">Chọn mục tiêu tiếp ›</span></button>`;
+  const gt = s.gate, warn = s.rote.length ? `⚠ ${s.rote.length} phần đang nhớ câu cũ: app sẽ cho thử câu mới.` : s.due && s.due.days <= 0 ? '⏰ Đã tới hạn bạn đặt.' : s.due && s.due.perDay > 60 ? `⏰ Cần khoảng ${s.due.perDay} phút mỗi ngày để kịp hạn.` : '';
+  return `<button class="gbar slim" data-e="go" data-r="goal/${esc(s.id)}" aria-label="Mục tiêu ${esc(s.vi)}: ${s.solid}/${s.total} kỹ năng đã vững. Xem chi tiết">
+    <span>🎯 <b>${lv}</b> · ${s.solid}/${s.total} kỹ năng đã vững</span><span class="hint">Chi tiết ›</span>
+    <span class="bar gbbar" role="progressbar" aria-label="Kỹ năng đã vững" aria-valuemin="0" aria-valuemax="${s.total}" aria-valuenow="${s.solid}"><i style="width:${pc(s.solid, s.total)}%"></i><i class="gbclaim" style="width:${pc(s.claimed, s.total)}%"></i></span>
+    ${warn ? `<span class="gbrote">${warn}</span>` : ''}</button>${gt?.open && !gt.passed ? `<div class="row" style="margin:-4px 0 12px"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào trận cổng khu ${esc(gt.lv)}</button></div>` : ''}`;
+}
+
+// Bản đầy đủ (đầu trang mục tiêu; trước v117 nằm ở đầu sảnh). Thanh hai lớp: vững thật (đậm) và chỉ suy ra từ xếp lớp (nhạt, đang kiểm
+// dần) để không thổi phồng tiến độ. Ở trang mục tiêu nên không phải nút (đã đứng ở trang đó).
 export function viewGoalBar(c: ECtx, s: GoalSum): string {
   const esc = c.host.esc;
   if (s.achieved) return `<section class="gbar stack done" aria-label="Mục tiêu của bạn"><span class="eyebrow">🎯 Mục tiêu</span>
@@ -60,12 +74,12 @@ export function viewGoalBar(c: ECtx, s: GoalSum): string {
     : gt.open ? `<span class="gbup">🚪 Cổng khu ${esc(gt.lv)} đã mở: vào trận cổng để Tí xác nhận bạn đủ trình độ.</span>`
     : `<span class="hint">🚪 Cổng khu ${esc(gt.lv)} còn khoá: mở khi ${Math.round(GATE.open * 100)}% kỹ năng đã vững (đang ${Math.round(gt.ratio * 100)}%). Bản đồ này chưa phải kết luận.</span>`;
   const cta = gt?.open && !gt.passed ? `<div class="row" style="margin:-4px 0 12px"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào trận cổng khu ${esc(gt.lv)}</button></div>` : '';
-  return `<button class="gbar stack" data-e="go" data-r="goal/${esc(s.id)}">
-    <span class="spread"><span class="eyebrow">🎯 Mục tiêu: ${esc(s.vi)}</span><span class="hint">Xem chi tiết ›</span></span>
+  return `<section class="gbar stack" aria-label="Tiến độ mục tiêu" style="cursor:default">
+    <span class="spread"><span class="eyebrow">🎯 Mục tiêu: ${esc(s.vi)}</span></span>
     <span class="spread"><b>${s.solid}/${s.total} kỹ năng đã vững</b>${week}</span>
     <span class="bar gbbar" role="progressbar" aria-label="Kỹ năng đã vững" aria-valuemin="0" aria-valuemax="${s.total}" aria-valuenow="${s.solid}"><i style="width:${pc(s.solid, s.total)}%"></i><i class="gbclaim" style="width:${pc(s.claimed, s.total)}%"></i></span>
     ${s.claimed ? `<span class="hint">Phần nhạt: ${s.claimed} kỹ năng app đoán bạn đã biết từ lúc xếp lớp, sẽ kiểm dần.</span>` : ''}
-    ${zones}${near}${lines ? `<span class="hint">${lines}</span>` : ''}${due}${gline}${s.rote.length ? `<span class="gbrote">⚠ ${s.rote.length} phần đang nhớ câu cũ, chưa dùng được ở câu lạ: ${s.rote.slice(0, 2).map(esc).join('; ')}${s.rote.length > 2 ? '…' : ''}. App sẽ cho thử câu mới.</span>` : ''}</button>${cta}`;
+    ${zones}${near}${lines ? `<span class="hint">${lines}</span>` : ''}${due}${gline}${s.rote.length ? `<span class="gbrote">⚠ ${s.rote.length} phần đang nhớ câu cũ, chưa dùng được ở câu lạ: ${s.rote.slice(0, 2).map(esc).join('; ')}${s.rote.length > 2 ? '…' : ''}. App sẽ cho thử câu mới.</span>` : ''}</section>${cta}`;
 }
 
 // Dòng nối ván vừa chơi với mục tiêu, cho MỌI màn kết. Nói thật: không có gì mới vững thì nói vậy (P13: điểm game không phải năng lực).

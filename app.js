@@ -1558,7 +1558,8 @@ function gExplain(ex,given){
 
 /* ================== UI STATE ================== */
 const ui = { view:'play', unitId:null, sess:null, summary:null, learn:null, speak:null, filter:'learned', wb:{q:'',lv:'',st:'',ty:'',n:60}, openLv:{}, allUnits:{} };
-function go(view,extra={}){ if(view!=='game') stopTimer(); if(view!=='exam') exStop(); if(!['summary','gsum','quiz','session','gsess'].includes(view)) ui.streakUp=null; const nh=extra._nohist; delete extra._nohist; Object.assign(ui,{view},extra); if(HAS_TTS) try{speechSynthesis.cancel();}catch(e){} recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
+function go(view,extra={}){ if(!('allGames' in extra)){ ui.allGames=0; if(view==='play'&&typeof document!=='undefined') document.querySelectorAll('#app details[data-lobby]').forEach(d=>{ d.open=false; }); }   // v117: bấm tab Hôm nay = về màn một việc (thu mục Tự chọn)
+  if(view!=='game') stopTimer(); if(view!=='exam') exStop(); if(!['summary','gsum','quiz','session','gsess'].includes(view)) ui.streakUp=null; const nh=extra._nohist; delete extra._nohist; Object.assign(ui,{view},extra); if(HAS_TTS) try{speechSynthesis.cancel();}catch(e){} recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
 /* ---------- Điều hướng: nút Quay lại của điện thoại/trình duyệt, hộp thoại, lượt dở ----------
    Mỗi lần go() ghi một mục lịch sử (history.pushState) nên nút Back về đúng màn trước, không thoát app.
    Màn “tạm” (đang làm lượt, kết quả, học thẻ…) không dựng lại được khi quay lại thì về màn cha gần nhất. */
@@ -2392,19 +2393,19 @@ function viewCefr0(){
 const CD_REF={u:'unit',ul:'unit của cấp',g:'bài ngữ pháp',gl:'bài ngữ pháp của cấp',d:'hội thoại',rp:'đóng vai',f:'chức năng',p:'bài phát âm',ws:'lượt trọng âm',snd:'bộ cặp âm',w:'đề viết',s:'đề nói',lr:'bài đọc dài',rd:'bài đọc',ls:'bài nghe',sto:'tập truyện'};
 
 /* ================== VIEWS ================== */
-// Thanh điều hướng: trên máy tính là hàng tab ở đầu trang; trên điện thoại (≤ 640px) là thanh 5 mục dưới đáy,
-// các phần còn lại nằm trong “Thêm”. Cả hai dùng chung một cách tính mục đang mở.
-const BNAV=[['thi','Ôn thi','exam'],['play','Chơi','trophy'],['path','Học','book'],['review','Ôn tập','repeat'],['talk','Kỹ năng','mic'],['more','Tôi','user']];
+// Thanh điều hướng: trên máy tính là hàng tab ở đầu trang; trên điện thoại (≤ 640px) là thanh dưới đáy. Cả hai dùng chung một cách tính mục đang mở.
+// v117 (SCORECARD nhóm L): 4 tab, mỗi tab trả lời một câu hỏi khác nhau: Hôm nay (app chọn việc cho bạn) · Ôn tập (phần sắp quên) ·
+// Thư viện (bạn tự chọn: bài học, kỹ năng, mọi trò chơi) · Tôi (tiến độ, mục tiêu, cài đặt). Trước đây Chơi / Học / Kỹ năng đều là "học".
+const BNAV=[['thi','Ôn thi','exam'],['play','Hôm nay','home'],['review','Ôn tập','repeat'],['lib','Thư viện','book'],['more','Tôi','user']];
 const ico = n => `<svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${n}"/></svg>`;
 function navActive(){
   if(ui.view==='play'||(ui.view==='goal'&&/^quest/.test(ui.er||''))) return 'play';   // v64: Ladder Quest là màn chính
   const v=ui.view, kind = v==='session' ? ui.sess?.kind : v==='summary' ? ui.summary?.kind : null;
-  if(['talk','dlg','fn','rp','wtask','stask','lread','shadow','sounds','sound'].includes(v)||(v==='quiz'&&ui.qz)) return (ui.qz&&ui.qz.meta&&ui.qz.meta.nav)||'talk';
+  if(['talk','dlg','fn','rp','wtask','stask','lread','shadow','sounds','sound'].includes(v)||(v==='quiz'&&ui.qz)){ const n=(ui.qz&&ui.qz.meta&&ui.qz.meta.nav)||'lib'; return n==='talk'||n==='path'?'lib':n; }
   if(['thi','exam','vx'].includes(v)) return 'thi';
-  if(['games','game','stories','story1','league'].includes(v)) return 'more';
-  if(kind==='review'||['review','oral','words','word'].includes(v)) return 'review';
+  if(kind==='review'||['review','oral'].includes(v)) return 'review';
   if(['more','goal','progress','cefr','settings','help','closet','class','feedback','arch'].includes(v)) return 'more';
-  return 'path';   // Học: từ vựng và ngữ pháp (unit, thẻ từ, lượt luyện, bài ngữ pháp…)
+  return 'lib';   // Thư viện: bài học (unit, thẻ từ, bài ngữ pháp…), kỹ năng, sổ từ, thử thách
 }
 function renderChrome(){
   const due=dueWords().length, gdue=dueG().length, active=navActive();
@@ -2414,7 +2415,21 @@ function renderChrome(){
   document.getElementById('nav').innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${badge(k)}</button>`).join('');
   const bn=document.getElementById('bnav');
   if(bn){ bn.style.gridTemplateColumns=`repeat(${NAV.length},1fr)`; } if(bn) bn.innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}><span class="bi">${ico(ic)}</span><span>${l}</span>${badge(k)}</button>`).join('');
-  document.getElementById('clock').innerHTML = `${FOCUS()?'':`${ico('flame')} <b>${streak()}</b> ngày · `}hôm nay <b>${Math.min(goalCount(),goal())}/${goal()}</b>${FOCUS()?'':enPill()}${st.set.demo?` · ngày ${dayNo(today())} <button class="btn small" data-act="nextday" title="Chế độ demo: tua nhanh thời gian để thử lịch ôn">+1 ngày</button>`:''}`;
+  // v117: hai con số, có chữ đi kèm (chuỗi ngày, câu đúng hôm nay / mục tiêu ngày). Năng lượng chỉ hiện khi đang thiếu (lúc đó mới cần biết).
+  const enLow=!FOCUS()&&(money().s||enNow()<EN.cap);   // Super vẫn hiện (người học đã bật, cần thấy trạng thái)
+  document.getElementById('clock').innerHTML = `${FOCUS()?'':`<span title="Chuỗi ngày học liên tiếp">${ico('flame')} <b>${streak()}</b> ngày</span> · `}<span title="Câu đúng hôm nay / mục tiêu ngày">hôm nay <b>${Math.min(goalCount(),goal())}/${goal()}</b> câu</span>${enLow?enPill():''}${st.set.demo?` · ngày ${dayNo(today())} <button class="btn small" data-act="nextday" title="Chế độ demo: tua nhanh thời gian để thử lịch ôn">+1 ngày</button>`:''}`;
+}
+// v117 Thư viện: nơi TỰ CHỌN. Tab Hôm nay đã chọn sẵn việc cần nhất; ở đây người học muốn chọn bài / game cụ thể.
+function viewLib(){
+  const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
+  return `<section class="stack"><span class="eyebrow">Thư viện</span><h1>Tự chọn bài</h1><p class="muted">Không biết học gì? Tab <b>Hôm nay</b> đã chọn sẵn phần bạn cần nhất.</p></section>
+  <div class="units">
+    <button class="unit morei" data-act="allgames"><span class="no">${ico('trophy')}</span><span class="t"><strong>Tất cả trò chơi</strong><span class="muted">Vườn từ, Thám tử, Quán Cà Phê, Karaoke… và truyện Phố Chữ</span></span></button>
+    ${it('path','book','Bài học theo chủ đề','Từ vựng và ngữ pháp theo unit, từ Pre-A1 tới C2')}
+    ${it('talk','mic','Kỹ năng','Nghe, nói, đọc, viết và hội thoại theo cấp của bạn')}
+    ${it('words','read','Sổ từ','Tra mọi từ đã học và chưa học: tìm không dấu, lọc theo cấp, từ hay quên')}
+    ${it('games','users','Thử thách','Giải đấu tuần, thách đấu bạn bè, Leo tháp')}
+  </div>`;
 }
 function viewMore(){
   const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
@@ -2428,8 +2443,6 @@ function viewMore(){
     <div class="row"><button class="btn primary" data-go="progress">${ico('chart')} Tiến độ chi tiết</button><button class="btn" data-go="cefr">${ico('map')} Bản đồ CEFR</button></div></section>
   <div class="units">
     ${it('goal','map','Mục tiêu của bạn','Chọn mục tiêu (CEFR, IELTS, VSTEP, giao tiếp) và xem chính xác những gì cần đạt')}
-    ${it('games','trophy','Thử thách','Trò chơi nhanh, thách đấu bạn bè, giải đấu tuần')}
-    ${it('words','book','Sổ từ','Tra mọi từ đã học và chưa học: tìm không dấu, lọc theo cấp, từ hay quên, từ đến hạn')}
     ${featOn('closet')?it('closet','shirt','Tủ đồ của Tí','Phụ kiện cho linh vật, màu giao diện, album từ đã thuộc'):''}
     ${it('settings','gear','Cài đặt','Mục tiêu, nhắc học, giọng đọc, sao lưu, đồng bộ nhiều máy')}
     ${it('help','help','Hướng dẫn','Cách học mỗi ngày, giải thích thuật ngữ, câu hỏi thường gặp')}
@@ -2480,17 +2493,15 @@ function viewHelp(){
   return `<section class="stack"><span class="eyebrow">Hướng dẫn</span><h1>Cách dùng English Ladder</h1>
     <p class="muted note">Mỗi ngày 10–15 phút là đủ. Trang chủ luôn có <b>một nút chính</b>: bấm vào đó là làm đúng việc nên làm hôm nay.</p></section>
   <section class="panel stack"><h3>Mỗi ngày</h3><div class="steps">
-    <div class="step"><span class="n">1</span><div class="stack" style="gap:2px"><h3>Ôn trước</h3><p class="muted">Có từ đến hạn ôn thì ôn trước (tab Ôn tập). Ôn đúng lúc sắp quên thì nhớ lâu nhất.</p></div></div>
-    <div class="step"><span class="n">2</span><div class="stack" style="gap:2px"><h3>Học tiếp unit</h3><p class="muted">Học 10 từ → Luyện → Đọc &amp; nghe → Nói &amp; viết → Kiểm tra. Qua kiểm tra thì unit sau mở.</p></div></div>
-    <div class="step"><span class="n">3</span><div class="stack" style="gap:2px"><h3>Thêm một bài ngữ pháp</h3><p class="muted">Học xen kẽ: một lượt từ vựng, một bài ngữ pháp.</p></div></div>
-    <div class="step"><span class="n">4</span><div class="stack" style="gap:2px"><h3>Ít thời gian?</h3><p class="muted">Bấm ⚡ Học nhanh 5 phút: 10 câu từ những từ bạn yếu nhất.</p></div></div>
+    <div class="step"><span class="n">1</span><div class="stack" style="gap:2px"><h3>Bấm "▶ Chơi tiếp"</h3><p class="muted">Ở tab Hôm nay. App chọn game theo đúng phần bạn cần (từ sắp quên, bài đang học, kỹ năng còn thiếu). Mỗi ngày 3 chặng, khoảng 10–15 phút.</p></div></div>
+    <div class="step"><span class="n">2</span><div class="stack" style="gap:2px"><h3>Có số đỏ ở Ôn tập thì ôn</h3><p class="muted">Ôn đúng lúc sắp quên thì nhớ lâu nhất.</p></div></div>
+    <div class="step"><span class="n">3</span><div class="stack" style="gap:2px"><h3>Muốn học thêm?</h3><p class="muted">Vào Thư viện để tự chọn trò chơi, bài học theo unit hoặc luyện riêng nghe, nói, đọc, viết.</p></div></div>
   </div></section>
   <section class="panel stack"><h3>Các phần của app</h3><div class="stack" style="gap:6px">
-    <p><b>🏠 Học</b> <span class="muted">· lộ trình các unit từ A1 đến C2, việc chính hôm nay.</span></p>
+    <p><b>🏠 Hôm nay</b> <span class="muted">· app chọn sẵn việc bạn cần nhất: bấm "▶ Chơi tiếp", mỗi ngày 3 chặng.</span></p>
     <p><b>🔁 Ôn tập</b> <span class="muted">· từ và bài ngữ pháp đến hạn ôn.</span></p>
-    <p><b>🗣️ Giao tiếp</b> <span class="muted">· hội thoại hai giọng, mẫu câu theo chức năng, đóng vai.</span></p>
-    <p><b>📈 Tiến độ</b> <span class="muted">· ba tầng tiến độ (hôm nay → unit → cấp), còn thiếu gì, dự báo, phần thưởng, báo cáo cho giáo viên.</span></p>
-    <p><b>☰ Thêm</b> <span class="muted">· Sổ từ, Bản đồ CEFR, Ngữ pháp, Phát âm, Thử thách, Cài đặt, Hướng dẫn.</span></p>
+    <p><b>📚 Thư viện</b> <span class="muted">· tự chọn: tất cả trò chơi, bài học theo unit (từ vựng, ngữ pháp), kỹ năng nghe nói đọc viết, Sổ từ, Thử thách.</span></p>
+    <p><b>👤 Tôi</b> <span class="muted">· mục tiêu, tiến độ chi tiết, Bản đồ CEFR, cài đặt, hướng dẫn.</span></p>
   </div></section>
   <section class="panel stack"><h3>Giải thích thuật ngữ</h3><dl class="gloss">${Object.values(GLOSSARY).map(([t,d])=>`<dt>${t}</dt><dd class="muted">${d}</dd>`).join('')}</dl></section>
   <section class="panel stack"><h3>Câu hỏi thường gặp</h3>
@@ -3192,7 +3203,7 @@ function viewGames(){
   ${(()=>{ const ex=(st.exam||[])[0]; return `<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>${ico('exam')} Thi thử VSTEP rút gọn</h3><p class="muted">Nghe + Đọc có tính giờ, B1 → C1, ước tính bậc.${ex?` Lần gần nhất: ${exLevel((ex.l+ex.r)/2)} (Nghe ${ex.l}, Đọc ${ex.r}).`:''}</p></div><div class="row"><button class="btn primary" data-act="exgo">Vào thi</button></div></section>`; })()}
   <section class="panel stack"><h3>🏰 Ladder Quest</h3><p class="muted">Leo tháp: mỗi đòn đánh là một câu tiếng Anh app chọn từ đúng những gì bạn còn thiếu để lên cấp. Câu càng giúp bạn tiến bộ, càng nhiều xu.</p>
     <div class="row"><button class="btn primary" data-act="quest">▶ Chơi</button>${st.e&&st.e.q?`<span class="hint">Tầng ${st.e.q.floor} · 🪙 ${st.e.q.coins}</span>`:''}</div></section>
-  <details class="panel"><summary><b>Trò nhanh (cũ)</b> <span class="hint">Tốc độ 60 giây, Ghép cặp: chỉ ôn từ đã học, không theo lộ trình. Game mới ở tab Chơi.</span></summary>
+  <details class="panel"><summary><b>Trò nhanh (cũ)</b> <span class="hint">Tốc độ 60 giây, Ghép cặp: chỉ ôn từ đã học, không theo lộ trình. Game mới ở tab Hôm nay.</span></summary>
   <div class="goals" style="margin-top:10px">
     <div class="panel stack"><h3>⚡ Tốc độ 60 giây</h3><p class="muted">Chọn nghĩa đúng càng nhiều càng tốt trong 60 giây.</p><p class="num">Kỷ lục: ${G.speed||0} từ</p><button class="btn primary" data-act="speed">Chơi</button></div>
     <div class="panel stack"><h3>🧠 Ghép cặp</h3><p class="muted">Ghép 6 từ với nghĩa tiếng Việt, càng nhanh càng tốt.</p><p class="num">Kỷ lục: ${G.match?G.match+' giây':'—'}</p><button class="btn primary" data-act="match">Chơi</button></div>
@@ -4199,7 +4210,7 @@ function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); renderChrome();
   if((ui.view==='path'||ui.view==='play')&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={thi:viewThi,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  const v={thi:viewThi,lib:viewLib,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   // v99: mục thu gọn (details.gall: Luyện tập, Leo tháp…) giữ trạng thái mở qua các lần vẽ lại #app (trước đây vẽ lại là đóng sập).
@@ -5168,6 +5179,7 @@ document.addEventListener('click',e=>{
     case 'start-place': { st.onboarded=true; save(); const sel=document.getElementById('placelvl'), L=CONTENT.levels.find(x=>x.id===(sel&&sel.value))||CONTENT.levels[0]; return startSession('place',placementItems(L),null,L.id); }
     case 'setgoal': st.set.path=d.goal||''; ui.goalAll=false; save(); toast(goalOf()?`Lộ trình: ${goalOf().vi} (${goalUnits().length} unit).`:'Đã chọn học toàn bộ các unit.'); return render();
     case 'goalall': ui.goalAll=!ui.goalAll; return render();
+    case 'allgames': return go('play',{allGames:1});
     case 'allunits': ui.allUnits[d.l]=true; return render();
     case 'focus': st.set.focus=!st.set.focus; save(); toast(st.set.focus?'Đã bật chế độ tập trung.':'Đã tắt chế độ tập trung.'); return render();
     case 'future': st.set.future=!st.set.future; if(!st.set.future) try{ localStorage.removeItem('el-future'); }catch(e){} save(); toast(FUTURE()?'Đã hiện tab Ôn thi và mục tiêu tương lai.':'Đã ẩn tab Ôn thi: tập trung CEFR.'); return render();
@@ -5612,8 +5624,8 @@ function detailWaitUi(){ const w=DETAIL.waiting; if(!w) return; const n=DETAIL.r
   modal({ic:DETAIL.err?'⚠️':'⏳',title:DETAIL.err?'Chưa tải xong bài học':'Đang tải thêm bài học…',sub:DETAIL.err||`Đã có ${n}/${all} cấp. Xong là tự tiếp tục, bạn không cần bấm lại.`,
     buttons:DETAIL.err?[{label:'Thử lại',act:'detailretry',primary:true},{label:'Đóng',act:'mclose'}]:[{label:'Huỷ',act:'mclose'}]}); }
 // Nút và trang dùng được ngay khi mới có khung (không đụng tới câu ví dụ, bài đọc, bài tập của A2–C2).
-const DETAIL_SAFE_VIEW = new Set(['welcome','path','review','talk','games','more','settings','help','grammar','closet','class','feedback','league','words','dlg','fn','lread','wtask','stask','sounds','sound','stories','story1','shadow','exam','quiz','rp','game','gpoint','gsess','gsum','oral']);
-const DETAIL_SAFE_GO = new Set(['path','review','talk','games','more','settings','help','grammar','closet','class','feedback','league','words']);
+const DETAIL_SAFE_VIEW = new Set(['welcome','lib','path','review','talk','games','more','settings','help','grammar','closet','class','feedback','league','words','dlg','fn','lread','wtask','stask','sounds','sound','stories','story1','shadow','exam','quiz','rp','game','gpoint','gsess','gsum','oral']);
+const DETAIL_SAFE_GO = new Set(['lib','path','review','talk','games','more','settings','help','grammar','closet','class','feedback','league','words']);
 const DETAIL_SAFE_ACT = new Set(['showmap','allfeat','wz','who','mclose','celok','install','installhide','share','listview','goalall','tomap','notifon','notifoff','asrok','syncjoinok','detailretry','lgrefresh','lgleave','lgleaveok','flagssend','flagsexport','whatsnew','dlgvi','dlgplay','qzsayall']);
 function detailNeeds(t){ if(detailAll()) return false; const d=t.dataset||{};
   // Tab Ôn thi (mô-đun x/exam) không dùng CONTENT: giữ lại cú bấm ở đây thì trên máy chậm cú bấm có thể mất hẳn (v42, WebKit CI).
@@ -8353,7 +8365,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.3996e767b6.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.697b2c0175.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
@@ -8557,7 +8569,7 @@ function emLoad(bg){ if(EM) return Promise.resolve(EM);
   return _emP ||= import('./'+ENGINE_JS+(_emN++?'?r='+_emN:'')).then(m=>{ EM=m.init(EHOST); _emErr=''; if(ui.view==='goal'||ui.view==='play') render(); return EM; })
     .catch(e=>{ _emP=null; if(!bg||ui.view==='goal'||ui.view==='play'){ _emErr='Chưa tải được phần mục tiêu. Kiểm tra mạng rồi thử lại.'; if(ui.view==='goal'||ui.view==='play') render(); } throw e; }); }
 // v64: tab Chơi = route quest của engine; không ghi đè ui.er (route của màn Mục tiêu).
-function viewPlay(){ return viewGoalE('quest'); }
+function viewPlay(){ return viewGoalE(ui.allGames?'quest/all':'quest'); }
 function viewGoalE(route){
   if(EM) return EM.render(route||ui.er||'goals');
   if(!_emP&&!_emErr) emLoad().catch(()=>{});

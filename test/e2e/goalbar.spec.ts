@@ -21,16 +21,17 @@ async function lobby(page: Page): Promise<void> {
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 
-test('Sảnh: thẻ 🎯 Mục tiêu ở trên Chơi tiếp, có số kỹ năng vững và mốc gần; chạm mở trang mục tiêu; WCAG AA ở 390 px', async ({ page, errors }) => {
+// v117 (nhóm L): "Chơi tiếp" lên đầu; thẻ 🎯 bản gọn (một dòng) ngay dưới, vẫn trong khung đầu; bản đầy đủ ở đầu trang mục tiêu.
+test('Sảnh: thẻ 🎯 gọn ngay dưới Chơi tiếp, trong khung đầu; chạm mở trang mục tiêu có bản đầy đủ (mốc gần); WCAG AA ở 390 px', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
   const bar = page.locator('.gbar');
   await expect(bar).toHaveCount(1);
-  await expect(bar).toContainText('🎯 Mục tiêu:');
-  await expect(bar).toContainText(/\d+\/\d+ kỹ năng đã vững/);
-  await expect(bar).toContainText('Gần đạt nhất:');
+  await expect(bar).toContainText(/🎯 A1 · \d+\/\d+ kỹ năng đã vững/);
+  await expect(bar).not.toContainText('Gần đạt nhất');
   const [b, d] = await Promise.all([bar.boundingBox(), page.locator('.dbox').first().boundingBox()]);
-  expect(b!.y).toBeLessThan(d!.y);
+  expect(d!.y).toBeLessThan(b!.y);
+  expect(b!.y + b!.height).toBeLessThan(844);
   await expect(page.locator('#app')).not.toContainText(/Sẵn sàng: \d+%/);
   const r = await new AxeBuilder({ page }).include('#app').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
@@ -38,6 +39,10 @@ test('Sảnh: thẻ 🎯 Mục tiêu ở trên Chơi tiếp, có số kỹ năng
   await page.screenshot({ path: 'test-results/goalbar-lobby.png', fullPage: true });
   await bar.click();
   await expect(page.locator('#app')).toContainText(/Chưa đạt .+ vì còn thiếu/);
+  const full = page.locator('.gbar');
+  await expect(full).toContainText('🎯 Mục tiêu:');
+  await expect(full).toContainText(/\d+\/\d+ kỹ năng đã vững/);
+  await expect(full).toContainText('Gần đạt nhất:');
   expect(errors).toEqual([]);
 });
 
