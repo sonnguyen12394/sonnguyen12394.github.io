@@ -7,7 +7,7 @@ import {
   type BagSave, type Earned, type StatRow, type Album, type Gem, type MorphTask, type ColTask, type SentTask,
 } from './bag.ts';
 
-export type BagTab = 'forge' | 'map' | 'bag' | 'alb' | 'clue' | 'craft' | 'stat';
+export type BagTab = 'me' | 'forge' | 'map' | 'bag' | 'alb' | 'clue' | 'craft' | 'stat';
 export interface CraftRun {
   kind: 'morph' | 'col' | 'sent'; seed: number;
   morph?: MorphTask; col?: ColTask; sent?: SentTask;
@@ -21,7 +21,12 @@ export interface BagIn {
   forge: string;   // v129 HTML của tab Lò rèn / Bản đồ phủ (forgectl)
 }
 
-const TABS: Array<[BagTab, string]> = [['forge', '🔥 Lò rèn'], ['map', '🗺️ Bản đồ phủ'], ['bag', '🎒 Túi'], ['craft', '🔨 Luyện tay'], ['stat', '📊 Chỉ số'], ['alb', '📖 Album'], ['clue', '📜 Kỷ vật']];
+// v131 (P5): 8 tab gom thành 3 nhóm như màn nhân vật của game: Nhân vật · Lò rèn · Kho.
+const GROUPS: Array<[string, Array<[BagTab, string]>]> = [
+  ['🧑 Nhân vật', [['me', '🐯 Tổng quan'], ['stat', '📊 Chỉ số'], ['clue', '📜 Kỷ vật']]],
+  ['⚒️ Rèn', [['forge', '🔥 Lò rèn'], ['map', '🗺️ Bản đồ phủ'], ['craft', '🔨 Luyện tay']]],
+  ['🎒 Kho', [['bag', '🎒 Túi'], ['alb', '📖 Album']]],
+];
 const bar = (v: number, max: number, label: string) => `<span class="bgbar" role="img" aria-label="${label}"><i style="width:${Math.round((100 * Math.min(max, v)) / Math.max(1, max))}%"></i></span>`;
 
 // Thẻ ở sảnh: nguyên liệu, cấp Thợ Chữ, hai lối vào.
@@ -30,16 +35,15 @@ export function viewBagHub(c: ECtx, s: BagSave, e: Earned, rows: StatRow[], read
   const items = ITEMS.filter(i => s.it[i]).map(i => `<span class="pill" title="${ITEM[i].vi}">${ITEM[i].ico} ${s.it[i]}</span>`).join(' ');
   return `<section class="panel stack bghub" aria-label="Túi chữ và Xưởng của Tí">
     <div class="spread"><h2>🎒 Túi chữ · Xưởng của Tí</h2><span class="pill">🧑‍🔧 Thợ Chữ cấp ${charLv(rows)}</span></div>
-    <p class="hint">Đồ là tiếng Anh: từ bạn tìm được thành ngọc, chế tạo bằng cách ghép từ, ghép cụm, đúc câu rồi nói. Chỉ số là năng lực thật của bạn.</p>
     <div class="row">${mats} ${items}</div>
-    <div class="row"><button class="btn primary small" data-e="bgopen" data-t="forge">🔥 Lò rèn năng lực</button>${cov?.total ? `<button class="btn small" data-e="bgopen" data-t="map">🗺️ Đã phủ ${cov.done}/${cov.total}</button>` : ''}<button class="btn small" data-e="bgopen" data-t="craft">🔨 Luyện tay${ready ? ` · ${ready}` : ''}</button><button class="btn ghost small" data-e="bgopen" data-t="bag">🎒 Túi</button><button class="btn ghost small" data-e="bgopen" data-t="stat">📊 Chỉ số</button></div>
+    <div class="row"><button class="btn primary small" data-e="bgopen" data-t="me">🐯 Nhân vật</button><button class="btn small" data-e="bgopen" data-t="forge">🔥 Lò rèn năng lực</button>${cov?.total ? `<button class="btn small" data-e="bgopen" data-t="map">🗺️ Đã phủ ${cov.done}/${cov.total}</button>` : ''}<button class="btn small" data-e="bgopen" data-t="craft">🔨 Luyện tay${ready ? ` · ${ready}` : ''}</button><button class="btn ghost small" data-e="bgopen" data-t="bag">🎒 Túi</button><button class="btn ghost small" data-e="bgopen" data-t="stat">📊 Chỉ số</button></div>
   </section>`;
 }
 
 export function viewBag(c: ECtx, x: BagIn): string {
-  const tabs = `<div class="bgtabs" role="tablist" aria-label="Túi chữ">${TABS.map(([t, vi]) => `<button role="tab" class="btn small${t === x.tab ? ' primary' : ' ghost'}" aria-selected="${t === x.tab}" data-e="bgtab" data-t="${t}">${vi}</button>`).join('')}</div>`;
-  const body = x.tab === 'forge' || x.tab === 'map' ? x.forge : x.tab === 'craft' ? (x.cr ? craftRun(c, x) : craftMenu(c, x)) : x.tab === 'stat' ? stats(c, x) : x.tab === 'alb' ? albums(c, x) : x.tab === 'clue' ? clues(c, x) : bag(c, x);
-  return `<section class="stack bgroot"><span class="eyebrow">🎒 Túi chữ · Thợ Chữ cấp ${charLv(x.rows)}</span>${tabs}${body}</section>
+  const tabs = `<div class="bgtabs" role="tablist" aria-label="Túi chữ">${GROUPS.map(([g, ts]) => `<div class="bggrp${ts.some(([t]) => t === x.tab) ? ' cur' : ''}"><span class="bggn" aria-hidden="true">${g}</span>${ts.map(([t, vi]) => `<button role="tab" class="btn small${t === x.tab ? ' primary' : ' ghost'}" aria-selected="${t === x.tab}" data-e="bgtab" data-t="${t}">${vi}</button>`).join('')}</div>`).join('')}</div>`;
+  const body = x.tab === 'forge' || x.tab === 'map' ? x.forge : x.tab === 'craft' ? (x.cr ? craftRun(c, x) : craftMenu(c, x)) : x.tab === 'stat' ? stats(c, x) : x.tab === 'alb' ? albums(c, x) : x.tab === 'clue' ? clues(c, x) : x.tab === 'me' ? me(c, x) : bag(c, x);
+  return `<section class="stack bgroot gx"><span class="eyebrow">🎒 Túi chữ · Thợ Chữ cấp ${charLv(x.rows)}</span>${tabs}${body}</section>
     <div class="row"><button class="btn ghost" data-e="qhome">← Về bản đồ</button></div>`;
 }
 
@@ -52,7 +56,7 @@ function bag(c: ECtx, x: BagIn): string {
   const gems = x.gems.slice(0, 48).map(g => `<li class="bggem t${g.tier}${g.fading ? ' fade' : ''}" title="${esc(`${g.vi} · ${TIER[g.tier][1]}${g.fading ? ' · đang mờ: sắp quên' : ''}`)}"><span aria-hidden="true">${TIER[g.tier][0]}</span><b lang="en">${esc(g.en)}</b><span class="sr-only">${esc(g.vi)}, ${TIER[g.tier][1]}${g.fading ? ', đang mờ' : ''}</span></li>`).join('');
   const fading = x.gems.filter(g => g.fading).length;
   const gift = x.who ? `<section class="panel stack"><b>🎁 Tặng ${esc(x.who[1])} một Lời</b>${x.giftDone ? `<p class="hint">✅ ${esc(x.who[1])} đã nhận Lời của bạn ở chương này.</p>` : x.s.it.loi + x.s.it.loiv > 0 ? `<p class="hint">${esc(x.who[1])} đang cần giúp trong truyện. Tặng một 💬 Lời (hoặc 🌟 Lời vàng) bạn đã đúc: +10 xu, việc phụ của chương.</p><div class="row"><button class="btn primary small" data-e="bggift">🎁 Tặng ${esc(x.who[1])}</button></div>` : `<p class="hint">Đúc một câu ở Xưởng để có 💬 Lời tặng ${esc(x.who[1])}.</p><div class="row"><button class="btn small" data-e="bgmk" data-k="sent">🔨 Đúc câu</button></div>`}</section>` : '';
-  return `<h2>Nguyên liệu</h2><p class="hint">Suy ra từ việc học bạn đã làm, không mua được. Nguyên liệu quý (🗣️, 🧠) chỉ có khi tự nói hoặc nhớ lâu.</p><ul class="bggrid">${mats}</ul>
+  return `<h2>Nguyên liệu</h2><details class="dwhy"><summary>❓ Lấy ở đâu</summary><p class="hint">Suy ra từ việc học bạn đã làm, không mua được. Nguyên liệu quý (🗣️, 🧠) chỉ có khi tự nói hoặc nhớ lâu.</p></details><ul class="bggrid">${mats}</ul>
     <h2>Đồ đã làm</h2><ul class="bggrid">${items}</ul>
     ${gift}
     ${gear ? `<h2>Trang bị</h2><ul class="bggrid">${gear}</ul>` : ''}
@@ -120,7 +124,7 @@ function stats(c: ECtx, x: BagIn): string {
   const li = x.rows.map(r => { const s = STAT[r.id];
     return `<li class="vhrow"><div class="stack" style="gap:2px"><b>${s.ico} ${esc(s.vi)} · Lv ${r.lv}</b>${bar(r.lv, 10, `${s.vi} cấp ${r.lv} trên 10`)}<span class="hint">${esc(s.src)} · ${esc(r.next)}</span></div>
       <button class="btn small" data-e="${s.start}">Nâng ở ${esc(s.up)}</button></li>`; }).join('');
-  return `<h2>📊 Chỉ số thật</h2><p class="hint">Không mua được, không đeo đồ mà tăng: chỉ lên khi bạn giỏi lên thật (kỹ năng vững trên bản đồ năng lực, số đo đã đủ trên Bảng đo H). Quên thì có thể tụt: ôn là lên lại.</p>
+  return `<h2>📊 Chỉ số thật</h2><details class="dwhy"><summary>❓ Vì sao không mua được</summary><p class="hint">Không mua được, không đeo đồ mà tăng: chỉ lên khi bạn giỏi lên thật (kỹ năng vững trên bản đồ năng lực, số đo đã đủ trên Bảng đo H). Quên thì có thể tụt: ôn là lên lại.</p></details>
     <p style="font-size:20px">🧑‍🔧 Thợ Chữ cấp <b>${charLv(x.rows)}</b> <span class="hint">(tổng chỉ số ÷ 3 + 1)</span></p>
     <ul class="vhlist" aria-label="Chỉ số">${li}</ul>
     <div class="row"><button class="btn ghost small" data-e="hmeter">📏 Xem Bảng đo H</button></div>`;
@@ -139,4 +143,19 @@ function clues(c: ECtx, x: BagIn): string {
   const esc = c.host.esc, left = Math.max(0, x.clueTotal - x.clues.length);
   return `<h2>📜 Kỷ vật Phố Chữ (${x.clues.length}/${x.clueTotal})</h2><p class="hint">Mỗi chương truyện để lại một kỷ vật: các mảnh của bí ẩn Sương Câm.</p>
     <ul class="bggrid">${x.clues.map(k => `<li class="bgcell"><span class="bgico" aria-hidden="true">${k.ico}</span><b>${esc(k.name)}</b><span>${esc(k.vi)}</span></li>`).join('')}${Array.from({ length: left }, () => '<li class="bgcell off"><span class="bgico" aria-hidden="true">❔</span><b>Chưa tìm thấy</b><span class="hint">Đi tiếp câu chuyện để mở.</span></li>').join('')}</ul>`;
+}
+
+// v131 màn Nhân vật (P5): Tí ở giữa, 5 ô trang bị quanh, 7 chỉ số thật dạng thanh, kho đếm nhanh. Chạm ô / thanh để đi tới chỗ nâng.
+function me(c: ECtx, x: BagIn): string {
+  const esc = c.host.esc, ti = c.host.mascot?.('happy', 120) ?? '🐯';
+  const slots = GEAR.map(g => { const own = x.s.gear.includes(g.id), on = own && reqOk(g, x.rows);
+    return `<li class="mslot${own ? (on ? ' on' : ' off') : ' none'}" title="${esc(`${g.vi}: ${g.eff}`)}"><span aria-hidden="true">${own ? g.ico : '🔒'}</span><span class="sr-only">${esc(g.vi)}: ${own ? (on ? 'đang phát huy' : 'đã rèn, chưa phát huy') : 'chưa rèn'}</span></li>`; }).join('');
+  const stat = x.rows.map(r => { const s = STAT[r.id];
+    return `<li><button class="mstat" data-e="bgtab" data-t="stat" aria-label="${esc(`${s.vi} cấp ${r.lv} trên 10`)}"><span aria-hidden="true">${s.ico}</span><b aria-hidden="true">${esc(s.vi)} · Lv ${r.lv}</b>${bar(r.lv, 10, `${s.vi} cấp ${r.lv} trên 10`)}</button></li>`; }).join('');
+  const own = GEAR.filter(g => x.s.gear.includes(g.id)).length;
+  return `<div class="mhero"><div class="mti" aria-hidden="true">${ti}</div><div class="stack" style="gap:4px"><h2>🧑‍🔧 Thợ Chữ cấp ${charLv(x.rows)}</h2>
+      <p class="hint">${own}/${GEAR.length} trang bị · ${x.gems.length} ngọc từ · ${x.clues.length}/${x.clueTotal} kỷ vật</p>
+      <div class="row"><button class="btn small primary" data-e="bgtab" data-t="craft">🔨 Rèn đồ</button><button class="btn small" data-go="closet">👕 Tủ đồ</button></div></div></div>
+    <h3>Trang bị</h3><ul class="mslots" aria-label="Ô trang bị">${slots}</ul>
+    <h3>Chỉ số thật</h3><ul class="mstats" aria-label="Chỉ số thật">${stat}</ul>`;
 }

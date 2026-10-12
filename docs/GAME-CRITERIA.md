@@ -2178,3 +2178,47 @@ App được thiết kế "một người + máy" để không cần tài khoả
    - Hình đại diện chibi đi trên bản đồ v130, mặc đồ từ trang bị đã rèn.
    - Không bán bằng tiền thật.
 5. **Không làm:** nạp tiền để mạnh hơn, quay thưởng, cường hoá thất bại mất đồ, ngắm bắn bằng góc / lực không qua tiếng Anh.
+
+### 18.4 Phần ngoài trận: 12 tiêu chí theo phòng chờ / sảnh Gunny (v131)
+
+**Yêu cầu:** chấm riêng giao diện ngoài trận ("phòng chờ", trừ lúc đang chơi game), rồi "bất chấp làm cho điểm cao lên".
+
+**Phản biện, gốc rễ:**
+- Trước v131 chỉ màn Hôm nay và bản đồ trông như game. Tôi, Đấu trường, Túi chữ, Tủ đồ vẫn là trang tài liệu nhiều chữ.
+- Người chơi không có nhân vật, nên sảnh, túi đồ và tủ đồ không có gì để xoay quanh.
+- App đã có sẵn nhân vật: Tí (`mascot()` + phụ kiện `ACC` khớp toạ độ). Cách rẻ và nhất quán nhất là cho Tí làm nhân vật của người chơi.
+
+**"Bất chấp" vẫn giữ 5 giới hạn**, vì vượt qua thì điểm cao lên mà app tệ đi:
+- Không nạp tiền, không quay thưởng, không chat.
+- Chấm đỏ tối đa 3, chỉ khi có việc làm được ngay.
+- Không đổi logic học.
+- Không nới test cũ.
+- Không game hoá màn bài học.
+
+| # | Tiêu chí ngoài trận | Trước | Đã làm v131 | Sau |
+|---|---|---|---|---|
+| P1 | Sảnh có nhân vật đứng giữa | 5 | Ghim "Bạn ở đây" là Tí mặc phụ kiện đang đeo, thở và vẫy đuôi; bảng "Bạn & Tí" có lối vào Tủ đồ; màn Tôi có Tí | 8 |
+| P2 | Thanh tài nguyên | 4 | Đầu bản đồ có 🪙 xu, 🏮 đèn x/3, ⭐ Lv Thợ Chữ, 🌅 khu, ★ sao phố; chạm thì mở nơi tiêu / kiếm; thanh đầu trang có 🪙 trên màn rộng | 7,5 |
+| P3 | Chấm đỏ báo việc | 4 | `dots.ts`: từ sắp quên > cảnh truyện > rèn được đồ > câu đố ngày > mua được trang trí; tối đa 3; có unit test | 8 |
+| P4 | Ngôn ngữ hình ảnh đồng nhất | 3,5 | Khung game `.gx` cho Tôi, Đấu trường, Giải đấu, Tủ đồ, Tiến độ, CEFR, Túi chữ; bài học giữ kiểu yên tĩnh | 6,5 |
+| P5 | Màn nhân vật và trang bị | 3 | Túi chữ có tab "Nhân vật": Tí, 5 ô trang bị, 7 chỉ số thật có tên; 8 tab gom thành 3 nhóm | 7 |
+| P6 | Ít chữ | 3 | Luật của Lò rèn, Tủ đồ, Đấu trường, Nguyên liệu, Chỉ số gom vào "❓"; mỗi màn còn một câu mở đầu | 5,5 |
+| P7 | Phòng chờ trước ván | 5 | Bảng công trình xem trước ván (⏱ thời lượng, 🎯 mốc ★, 🏮 chặng, 🪙) và một nút chơi lớn; "Chơi tiếp" vẫn một chạm | 6,5 |
+| P8 | Trung tâm nhiệm vụ | 6 | Sổ nhiệm vụ (chạm 🏮): 3 chặng, việc cư dân, mốc ★ gần nhất, sự kiện tuần; chế độ danh sách mở đầu bằng Sổ | 8 |
+| P9 | Xã hội ở sảnh | 1 | Chưa làm (cần máy chủ và quyết định về riêng tư) | 1 |
+| P10 | Tủ đồ / cửa hàng | 3 | Thử đồ: mỗi phụ kiện hiện Tí đang đeo món đó, kể cả món chưa mở | 6 |
+| P11 | Điều hướng | 7 | Ô tài nguyên là lối tắt; Túi chữ mở vào màn Nhân vật | 7,5 |
+| P12 | Sảnh sống | 5 | Tí thở / vẫy đuôi, chấm đỏ nhấp nháy; tôn trọng giảm chuyển động | 6,5 |
+
+**Trung bình 4,1 → 6,5** (tự chấm, chưa đo trên người dùng).
+
+### 18.5 Phản biện, nói thẳng
+
+- **Mức trần ~8,2 chưa tới vì:**
+  - P9 (xã hội) chưa làm.
+  - P6: còn nhiều màn nhiều chữ (Giải đấu, Thư viện, các trang bài học).
+  - P7 chưa có chọn nhịp / độ khó.
+  - P10 chưa xem trước trang trí ngay trên bản đồ.
+  - Tí chưa đi giữa các khu và chưa "mặc" trang bị đã rèn.
+- **Thanh tài nguyên và chấm đỏ là chỗ dễ trượt sang ép người chơi nhất.** Phải đo §8.3 sau 2 tuần: nếu số lần mở app tăng mà câu bằng chứng / phút không tăng, thì giảm chấm (ví dụ bỏ chấm câu đố ngày và trang trí).
+- **Khung `.gx` mới là lớp vỏ CSS**, chưa phải mỹ thuật vẽ tay. Lên trên 8 ở P4 cần hoạ sĩ.

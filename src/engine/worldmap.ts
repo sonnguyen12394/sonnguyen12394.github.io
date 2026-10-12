@@ -26,8 +26,8 @@ export type PlaceId = GameId | Landmark;
 export const LANDMARKS: Record<Landmark, { ico: string; vi: string; hint: string }> = {
   arena: { ico: '🏟️', vi: 'Đấu trường', hint: 'Giải đấu tuần, luyện đề VSTEP, thách đấu bạn bè, trò nhanh cũ' },
   bag: { ico: '🎒', vi: 'Xưởng của Tí', hint: 'Túi chữ, Lò rèn năng lực, Bản đồ phủ cấp' },
-  notice: { ico: '📋', vi: 'Bảng tin phố', hint: 'Sự kiện tuần, trang trí phố, số liệu chơi' },
-  story: { ico: '📖', vi: 'Truyện Phố Chữ', hint: 'Chương đang mở và việc cư dân nhờ' },
+  notice: { ico: '📋', vi: 'Bảng tin phố', hint: 'Trang trí phố bằng xu, số liệu chơi' },
+  story: { ico: '📖', vi: 'Bạn & Tí', hint: 'Tí của bạn (tủ đồ), chương truyện đang mở và việc cư dân nhờ' },
 };
 // Thứ tự trong khu = thứ tự Tab (bàn phím, trình đọc màn hình) và thứ tự ở chế độ danh sách.
 export const ZONE_OF: Array<PlaceId[]> = [
@@ -59,8 +59,9 @@ export interface WPlace {
   played: boolean;   // đã chơi xong hôm nay
   fog: boolean;      // khu còn sương (chỉ trang trí)
   deco: string;      // đồ trang trí đã mua (Bảng tin → Trang trí phố)
+  dot: boolean;      // v131 chấm đỏ: có việc làm được ngay (dots.ts)
 }
-export interface WorldIn { b: Building[]; act: number; done: boolean; plan: GameId[]; played: GameId[]; next: GameId | null; deco?: Partial<Record<GameId, number>> }
+export interface WorldIn { b: Building[]; act: number; done: boolean; plan: GameId[]; played: GameId[]; next: GameId | null; deco?: Partial<Record<GameId, number>>; dots?: PlaceId[] }
 export interface World { zones: WZone[]; places: WPlace[]; stars: number; max: number; revived: number; route: Array<[number, number]>; here: [number, number] }
 
 export function world(x: WorldIn): World {
@@ -77,7 +78,7 @@ export function world(x: WorldIn): World {
       places.push({
         id, zone: zi, x: px, y: py, ico: b?.ico ?? (gm ? GAMES[gm].ico : lm!.ico), vi: b?.vi ?? (gm ? GAMES[gm].vi : lm!.vi), hint: gm ? GAMES[gm].vi : lm!.hint,
         game: gm, start: gm ? GAMES[gm].start : null, lv: b?.lv ?? 0, v: b?.v ?? 0, next: b ? b.next : null, unit: b?.unit ?? '',
-        plan: gm ? x.plan.indexOf(gm) : -1, isNext: !!gm && gm === x.next, played: !!gm && x.played.includes(gm), fog: zones[zi]!.fog, deco: gm ? DECO[gm].slice(0, x.deco?.[gm] ?? 0).join('') : '',
+        plan: gm ? x.plan.indexOf(gm) : -1, isNext: !!gm && gm === x.next, played: !!gm && x.played.includes(gm), fog: zones[zi]!.fog, deco: gm ? DECO[gm].slice(0, x.deco?.[gm] ?? 0).join('') : '', dot: !!x.dots?.includes(id),
       });
     });
   });
