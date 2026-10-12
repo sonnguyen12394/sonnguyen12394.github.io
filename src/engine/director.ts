@@ -4,7 +4,7 @@
 // Đổi dạng (interleaving): game vừa chơi bị trừ mạnh, game đã chơi hôm nay bị trừ. planDay() chốt 3 chặng mỗi ngày, mỗi chặng một nhu cầu.
 // Thuần hàm: dữ liệu vào do main.ts gom.
 
-export type GameId = 'wheel' | 'hunt' | 'tower' | 'blocks' | 'board' | 'cards' | 'cafe' | 'bubbles' | 'puzzle' | 'case' | 'radio' | 'kara' | 'shop' | 'letter' | 'robot' | 'fog' | 'garden';
+export type GameId = 'wheel' | 'hunt' | 'tower' | 'blocks' | 'board' | 'cards' | 'cafe' | 'bubbles' | 'puzzle' | 'case' | 'radio' | 'kara' | 'shop' | 'letter' | 'robot' | 'fog' | 'garden' | 'talk' | 'ask' | 'port' | 'signs';
 export const GAMES: Record<GameId, { start: string; ico: string; vi: string }> = {
   wheel: { start: 'whstart', ico: '🎡', vi: 'Vòng Chữ' },
   hunt: { start: 'hnstart', ico: '⛏️', vi: 'Mỏ Chữ' },
@@ -16,13 +16,18 @@ export const GAMES: Record<GameId, { start: string; ico: string; vi: string }> =
   shop: { start: 'wsstart', ico: '🛠️', vi: 'Xưởng sửa câu' },
   letter: { start: 'ltstart', ico: '✉️', vi: 'Thư gửi cư dân phố' },
   case: { start: 'dtstart', ico: '🔍', vi: 'Thám tử' },
-  radio: { start: 'rdstart', ico: '📻', vi: 'Đài phát thanh' },
+  radio: { start: 'rdstart', ico: '📻', vi: 'Đài Phố Chữ' },
   cafe: { start: 'cfstart', ico: '☕', vi: 'Quán Cà Phê' },
   bubbles: { start: 'bbstart', ico: '🎯', vi: 'Bắt Âm' },
   kara: { start: 'krstart', ico: '🎤', vi: 'Karaoke hội thoại' },
   robot: { start: 'rbstart', ico: '🤖', vi: 'Ra lệnh cho robot' },
   board: { start: 'bdstart', ico: '🎲', vi: 'Bàn Cờ Phố' },
   tower: { start: 'qstart', ico: '🏰', vi: 'Leo tháp' },
+  // v123–v126 Phố Chữ nói (GAME-CRITERIA §13): động từ chơi là hành động ngôn ngữ (nói / gõ câu, tự đặt câu hỏi, nói cặp âm, nhớ lại từ).
+  talk: { start: 'tkstart', ico: '🗣️', vi: 'Quán Phố Chữ' },
+  ask: { start: 'akstart', ico: '🔎', vi: 'Hỏi chuyện nhân chứng' },
+  port: { start: 'ptstart', ico: '⚓', vi: 'Bến Cảng lệnh giọng' },
+  signs: { start: 'sgstart', ico: '🌫️', vi: 'Sương quay lại' },
 };
 export const isGame = (x: string): x is GameId => Object.prototype.hasOwnProperty.call(GAMES, x);
 
@@ -48,6 +53,8 @@ export interface DirIn {
   acc?: number | null;             // tỉ lệ đúng gần đây (24 câu tự lực)
   flag?: 'wheel' | 'hunt' | '';    // v96: game chủ lực chơi gần nhất (qua nhiều ngày): game kia được ưu tiên để hai game thay nhau
   rote?: number;                   // v111: số phần đúng ở câu cũ mà sai ở câu lạ (đèn báo học tủ, rote.ts)
+  fading?: number;                 // v124: số biển hiệu đang mờ (từ đã học sắp quên, FSRS) cho Sương quay lại
+  talk?: boolean;                  // v123: app có hội thoại cho Quán bằng giọng
 }
 export interface DirPick { game: GameId; need: Need; why: string; score: number }
 
@@ -70,13 +77,16 @@ function needs(x: DirIn): DirPick[] {
     const rv = { wheel: `${n} phần bạn đã học đang sắp quên: vuốt chữ tìm lại từ trước khi học mới.`, hunt: `${n} phần bạn đã học đang sắp quên: đào lại từ trong mỏ chữ.` };
     add(fa, 'review', 88, rv[fa]); add(fb, 'review', 86, rv[fb]);
     add('blocks', 'review', 70, `${n} phần bạn đã học đang sắp quên: ôn ngay trước khi học mới.`);
+    if ((x.fading ?? 0) >= 3) add('signs', 'review', 87, `${x.fading} biển hiệu trên phố đang mờ: nhớ lại từ trước khi sương phủ kín.`);
     if (!x.puzzleToday) add('puzzle', 'review', 84, `${n} phần sắp quên: câu đố hôm nay nhắc lại từ theo nhóm chủ đề.`);
   } else if (x.review > 0) { add(fa, 'review', 55, `${x.review} phần sắp quên: ôn nhẹ.`); add(fb, 'review', 54, `${x.review} phần sắp quên: ôn nhẹ.`); }
   if (top && top.kind === 'learn') {
     if (k === 'u') { add('garden', 'vocab', 78, `Từ mới cần cho mục tiêu: ${top.vi}.`); add('wheel', 'vocab', 72, `Từ cần cho mục tiêu: ${top.vi}. Vuốt chữ để nhớ mặt chữ.`); add('hunt', 'vocab', 73, `Từ cần cho mục tiêu: ${top.vi}. Đào từ trong mỏ chữ.`); }
     if (k === 'g') add(x.gWrong ? 'shop' : 'cards', 'grammar', 80, `Ngữ pháp đang học: ${top.vi}${x.gWrong ? ' (bạn còn sai phần này: sửa câu sai để hiểu chỗ sai)' : ''}.`);
-    if (k === 'fn') add(x.asr && x.fnSeen ? 'kara' : 'cafe', 'func', 80, `Giao tiếp đang học: ${top.vi}.`);
+    // v123: đã luyện hiểu → tự nói / gõ câu đáp ở Quán bằng giọng (gõ được khi máy không nghe giọng); chưa có hội thoại thì Karaoke / Quán cũ.
+    if (k === 'fn') add(x.fnSeen ? (x.talk ? 'talk' : x.asr ? 'kara' : 'cafe') : 'cafe', 'func', 80, `Giao tiếp đang học: ${top.vi}.${x.fnSeen && x.talk ? ' Lần này bạn tự nói câu đáp.' : ''}`);
     if (k === 'ph') add('bubbles', 'sound', 80, `Âm đang học: ${top.vi}.`);
+    if (k === 'ph' && x.asr && (x.recent?.ph ?? 0) >= 10) add('port', 'sound', 82, `Âm đang học: ${top.vi}. Đã nghe phân biệt được, giờ nói cho cẩu nghe.`);
     if (k === 'cd') add('tower', 'check', 60, `Phần đang học: ${top.vi}.`);
   }
   if (top && (top.kind === 'probe' || top.kind === 'verify' || top.kind === 'transfer')) add('tower', 'check', 74, `Thử sức xem bạn dùng được “${top.vi}” ở câu mới chưa.`);
@@ -101,7 +111,8 @@ function needs(x: DirIn): DirPick[] {
   if (cd('R')) add('case', 'read', g('R'), `Đọc ở cấp ${x.lv}: ${cd('R')!.vi}.`);
   if (cd('L') && x.tts) add('radio', 'listen', g('L'), `Nghe ở cấp ${x.lv}: ${cd('L')!.vi}.`);
   if (cd('W')) add('letter', 'write', g('W'), `Viết ở cấp ${x.lv}: ${cd('W')!.vi}.`);
-  if (cd('S')) add(x.asr ? 'kara' : 'robot', 'speak', g('S') - 2, `Nói ở cấp ${x.lv}: ${cd('S')!.vi}.`);
+  if (cd('S')) add(x.talk ? 'talk' : x.asr ? 'kara' : 'robot', 'speak', g('S') - 2, `Nói ở cấp ${x.lv}: ${cd('S')!.vi}.`);
+  if (cd('S') && x.talk) add('ask', 'speak', g('S') - 4, `Nói ở cấp ${x.lv}: tự đặt câu hỏi để phá án.`);
   if (x.placed && x.fogWait <= 0 && x.claims >= 5) add('fog', 'replace', 62, `${x.claims} phần mới chỉ “tạm Đạt” theo suy đoán: xếp lớp lại để app biết đúng cấp của bạn.`);
   // Luôn có lựa chọn: tháp dùng mọi loại câu; Bàn Cờ / Robot để chơi thêm.
   add('tower', 'check', 40, 'Luyện tổng hợp những gì lộ trình đang cần.');
@@ -110,6 +121,9 @@ function needs(x: DirIn): DirPick[] {
   add('board', 'fun', 22, 'Chơi thêm cho vui: mỗi ô vẫn là câu tiếng Anh app chọn cho bạn.');
   add('robot', 'fun', 20, 'Chơi thêm: gọi đúng tên đồ vật để robot nhặt.');
   if (x.tts) add('kara', 'speak', 30, 'Nói theo hội thoại cho quen miệng.');
+  if (x.talk) { add('talk', 'fun', 34, 'Chơi thêm: mở quán, nói chuyện với khách bằng tiếng Anh.'); add('ask', 'fun', 32, 'Chơi thêm: tự đặt câu hỏi để phá một vụ ở Phố Chữ.'); }
+  if (x.asr) add('port', 'fun', 28, 'Chơi thêm: ra lệnh cho cần cẩu bằng giọng.');
+  if ((x.fading ?? 0) > 0) add('signs', 'fun', 30, `Chơi thêm: ${x.fading} biển hiệu đang mờ chờ bạn thắp lại.`);
   return out;
 }
 

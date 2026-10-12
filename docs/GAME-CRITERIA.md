@@ -1617,3 +1617,202 @@ Bật giảm chuyển động thì không có hạt, không xoay / nảy.
 - Cần người sáng lập chơi thật và xem bảng số liệu trước khi chọn.
 
 **Kiểm:** e2e Tốc độ 60 giây và Ghép cặp lên sân khấu, ✕ thoát (có xác nhận khi đang chơi), đúng → điểm nảy, WCAG AA 390px. Bộ đầy đủ (đơn vị, e2e, bot 8 ngày) ghi ở phần kết của đợt.
+
+## 11. Hướng v121+: định vị game-first
+
+Quyết định của người sáng lập (11/10/2026, `docs/SPEC.md` dòng "Định vị game-first"): không làm thêm "một app học tiếng Anh" để rồi bị so với các app học lớn. Thay vào đó làm **game chữ tiếng Anh cho người Việt**.
+
+### 11.1 Phản biện trước khi làm
+
+- **Game không tự xoá điểm yếu về nguồn lực, chỉ đổi đối thủ.** Mỹ thuật, âm nhạc, thiết kế màn và cân độ khó còn tốn hơn soạn bài. §10.2 cho thấy cả 17 game chỉ được 2,2–4,6 khi so với game dẫn đầu cùng thể loại. Đổi đối thủ thì sẽ gặp thị trường casual, nơi cạnh tranh còn gắt hơn.
+- **Điểm yếu thật sự đổi thành lợi thế ở chỗ hạ trần lời hứa.** Lời hứa "bạn đạt B2" cần chuyên môn và dữ liệu kiểm chứng. Lời hứa "chơi vui và nhớ được từ thật" thì đo được ngay bằng FSRS.
+- **Lợi thế mà app lớn khó làm:** giao diện thuần Việt, không tài khoản, không quảng cáo, chạy khi mất mạng, thử thách ngày giống nhau cho mọi người để chia sẻ.
+- **Gốc rễ là dàn trải** (§10.3 gốc rễ 5), không phải "app hay game". Game chỉ đúng hướng khi đi kèm thu hẹp số game.
+
+### 11.2 Luật làm việc từ v121
+
+1. **Lõi gồm hai game chữ và một game nói** (sửa ở §13): 🎡 Vòng Chữ, ⛏️ Mỏ Chữ, và Quán Phố Chữ bằng giọng (v123). 🃏 Bài Câu chỉ được làm tiếp khi lõi đạt ngưỡng.
+2. **Ngưng mở rộng riêng lẻ** các game kỹ năng còn lại; chúng vẫn ở "Luyện tập" làm cơ chế bằng chứng, chỉ sửa lỗi. Ngoại lệ: cơ chế của ☕ Quán, 🎤 Karaoke, 🤖 Robot, 🔍 Thám tử được **gộp vào** các game lõi theo §13, không làm thêm game mới cùng loại.
+3. **Làm theo thứ tự cấp:** game chủ lực phải chạy tốt ở Pre-A1–B1 trước. Muốn mở C1–C2 thì dùng chính cơ chế đó với nội dung khó hơn, không làm game riêng cho cấp cao.
+4. **HG24 hiểu là "chữ là quân cờ":** không chèn câu hỏi gác cổng giữa các lượt của một game khác (§10.3 gốc rễ 2).
+5. **Nghiệm thu bằng người chơi, không tự chấm:**
+   - Người sáng lập playtest theo `docs/PLAYTEST.md` Phần 2.
+   - Điểm M thật < 6 thì sửa lõi hai game chủ lực trước mọi việc khác.
+   - Sau đó theo dõi người chơi quay lại D1/D7 và số từ còn nhớ sau 7/30 ngày.
+6. **Thước đo hai tầng, game trước:** mặt tiền đo bằng quay lại chơi và từ còn nhớ. Xác nhận đạt cấp CEFR là tuỳ chọn ở hồ sơ.
+7. **Thành công = vừa quay lại, vừa dùng được (§12):** game chủ lực đạt M ≥ 7, **và** cả app đạt H ≥ 7. Chỉ đạt M thì sẽ lặp lại lỗi của các app học game hoá: người học quay lại đều mà vẫn không dùng được tiếng Anh.
+
+### 11.3 Còn mở (chờ người sáng lập)
+
+- Kiếm tiền "kiểu app học" và cổng lên store "bằng điểm thi thật" (`docs/SPEC.md`) chưa đổi. Hai điểm này cần xem lại cho hợp định vị game.
+- Tên sản phẩm "English Ladder" vẫn mang nghĩa app học.
+
+## 12. Trục H: hiệu quả học thật ("học xong có dùng được không")
+
+### 12.0 Vì sao có trục này
+
+Người sáng lập học hết một app học game hoá phổ biến mà vẫn thấy chưa giỏi. Gốc rễ: các app đó đo **hoàn thành** (chuỗi ngày, XP, số bài), không đo **dùng được**. Người học ít tự nói và tự viết, lượng nghe đọc thật quá ít, và không được kiểm tra ở tình huống mới.
+
+Ba trục hiện có không đo điều này:
+- G (§2) đo bằng chứng sạch và luật chơi;
+- T (§8) đo đủ thành phần;
+- M (§10) đo độ hấp dẫn.
+
+Trục H đi cặp với M theo "thước đo hai tầng" (§11.2 luật 7).
+
+**Nguyên tắc chấm, rút từ sai lầm của trục T (§10.0):**
+- **Neo vào kết quả đo trên người học, không neo vào "có tính năng".** Mốc 10 của mỗi tiêu chí là một con số đo được.
+- **Chấm ở cấp cả app (danh mục game), không ép từng game.** Game chữ không luyện nói được; ép nó làm thế sẽ sinh ra câu hỏi gác cổng (§10.3 gốc rễ 2). Mỗi game chỉ khai mình phục vụ tiêu chí H nào.
+- **Chưa có số liệu thì điểm tối đa là 6** và ghi "ước tính". Muốn vượt 6 phải có số đo.
+
+### 12.1 Mười tiêu chí H1–H10
+
+Điểm = trung bình có trọng số (÷ 12).
+
+| # | Tiêu chí | 0–2 | 5 | 10 (phải đo được) |
+|---|---|---|---|---|
+| H1 ×2 | **Tự tạo ra tiếng Anh** (nói, viết) | Chỉ chạm, chọn, ghép thẻ | Gõ từ, điền chỗ trống, nhại lại | ≥ 30% lượt là tự nói/viết cả câu có nghĩa, có phản hồi về nội dung |
+| H2 ×2 | **Dùng được ở tình huống mới** (transfer) | Không kiểm, hoặc kiểm lại đúng câu đã học | Câu mới nhưng cùng dạng bài | ≥ 70% đúng trên nhiệm vụ chưa gặp, ngữ cảnh khác, dạng khác |
+| H3 | **Lượng nghe/đọc hiểu được** | Câu rời, < 10 phút/tuần | Đoạn ngắn có ngữ cảnh | ≥ 60 phút/tuần nội dung liền mạch, người học biết ~95% từ |
+| H4 | **Nghe tiếng thật** | Một giọng máy, đọc chậm | Giọng tự nhiên, một tốc độ | Tốc độ tự nhiên, ≥ 2 giọng, có nối âm và tiếng ồn; đúng ≥ 70% |
+| H5 | **Phản xạ** (tự động hoá) | Không giới hạn thời gian | Có đếm giờ | Độ trễ đáp giảm dần, đo được, tới mức hội thoại (≤ 3 giây) |
+| H6 | **Nhớ lâu** | Không ôn lại | Có ôn cách quãng | Đo bằng kiểm tra trễ: nhớ ≥ 80% sau 30 ngày |
+| H7 | **Sửa lỗi riêng người Việt** | Bài chung cho mọi người | Có bài âm cuối, trọng âm | Hồ sơ lỗi riêng từng người, lỗi giảm đo được |
+| H8 | **Hội thoại có tương tác** | Không có | Chọn câu theo kịch bản | Nhiều lượt, tự tạo câu, phải hiểu để đáp, hoàn thành nhiệm vụ giao tiếp |
+| H9 | **Đo tiến bộ trung thực** | XP, chuỗi ngày, % hoàn thành | Bài kiểm tra trong app | Đề chưa từng thấy, đối chiếu thi thật |
+| H10 | **Dẫn ra đời thật** | Giữ người học trong app | Gợi ý nội dung ngoài | Nhiệm vụ ngoài đời mỗi tuần, có ghi âm hoặc tự báo cáo |
+
+**Luật:**
+- App được coi là "giúp giỏi thật" khi **H ≥ 7**, và không tiêu chí ×2 nào dưới 5.
+- Game chủ lực cần **M ≥ 7**, và phải khai mình phục vụ ít nhất 2 tiêu chí H.
+- Sản phẩm thành công khi **cả hai** đạt.
+
+### 12.2 Đo bằng gì (dữ liệu app đã có hoặc cần thêm)
+
+| Tiêu chí | Cách đo |
+|---|---|
+| H1 | Tỉ lệ lượt có câu tự nói (máy nghe giọng) hoặc tự gõ ≥ 4 từ trên tổng lượt, ghi theo tuần |
+| H2 | Tỉ lệ đúng ở lượt transfer (F11) và trận cổng dùng đề chưa thấy |
+| H3 | Số phút nghe/đọc bài liền mạch mỗi tuần; tỉ lệ từ đã vững trong bài |
+| H4 | Tỉ lệ đúng ở bài nghe tốc độ thật, nhiều giọng, có tiếng ồn |
+| H5 | Trung vị độ trễ trả lời ở phản xạ hội thoại, theo tuần |
+| H6 | Kiểm tra trễ 7/30 ngày trên mẫu từ đã vững (FSRS ghi được kết quả) |
+| H7 | Hồ sơ âm hay nhầm (26 cặp) và lỗi ngữ pháp lặp, so trước/sau |
+| H8 | Số hội thoại nhiều lượt hoàn thành, có câu tự đặt khớp ý chính |
+| H9 | Khoảng cách giữa cấp app ước tính và kết quả đề chưa thấy / thi thật |
+| H10 | Số nhiệm vụ ngoài đời người học báo cáo đã làm (cần làm mới) |
+
+### 12.3 Chấm thử ban đầu (ước tính, tối đa 6 vì chưa có số liệu)
+
+| | H1 | H2 | H3 | H4 | H5 | H6 | H7 | H8 | H9 | H10 | **H** |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| App học game hoá phổ biến (thể loại) | 3 | 3 | 3 | 4 | 2 | 5 | 1 | 4 | 3 | 1 | **≈ 2,9** |
+| English Ladder, cả app (gồm tab học cũ) | 6 | 6 | 5 | 6 | 4 | 5 | 6 | 4 | 6 | 1 | **≈ 5,1** |
+| Riêng 🎡 Vòng Chữ + ⛏️ Mỏ Chữ | 2 | 2 | 1 | 1 | 3 | 5 | 1 | 0 | 3 | 0 | **≈ 1,8** |
+
+Căn cứ dòng English Ladder (theo README):
+- luyện nói với máy nghe giọng, nói nhại, đóng vai tự đặt câu, chuyển ý Việt → Anh;
+- bài nghe dài B1–C2, nghe nhiều giọng có tiếng ồn;
+- 26 cặp âm, phản xạ hội thoại có đếm giờ;
+- trận cổng dùng đề chưa thấy.
+
+### 12.4 Phản biện, nói thẳng
+
+- Phần giúp "giỏi thật" của app đang nằm ở **tab học kiểu cũ**, không nằm ở game chủ lực.
+- Nếu đi game-first mà chỉ còn Vòng Chữ / Mỏ Chữ, H rơi xuống ≈ 1,8. Mức này còn thấp hơn app học game hoá phổ biến, tức là lặp lại đúng điều đã làm người sáng lập thất vọng.
+- Hướng đúng:
+  - Game chủ lực lo việc kéo người chơi quay lại (M).
+  - Ngay sau hai game chủ lực, phải có ít nhất một game mà **cơ chế chính là nói hoặc hội thoại**. Game này nâng H1, H5, H8, dùng lại engine và 5.753 tệp âm thu sẵn.
+  - Các chức năng luyện nói, nghe, viết ở tab cũ không được bỏ khi đổi sang game-first.
+- H10 gần 0 ở mọi dòng. Không app nào thay được việc dùng tiếng Anh với người thật; app tốt chỉ dẫn người học tới đó.
+
+## 13. Chiến lược game hoá để nâng trục H (v122–v127)
+
+### 13.0 Sửa nhận định ở §12.4
+
+Người sáng lập phản biện: kết luận "phần giúp giỏi thật nằm ở tab học cũ" sai ở gốc. Nó đánh đồng "game" với "game chữ". Mọi tiêu chí H đều làm được thành **cơ chế chơi**, miễn là động từ chính của game là một hành động ngôn ngữ thật: muốn thắng phải nói, phải hỏi, phải nghe ra.
+
+Gốc rễ thật không phải thiếu công nghệ. App đã có:
+- máy nghe giọng `asrStart` / `asrMatch` / `asrWord`, nghe tự do `asrHear`;
+- bộ dò ý `ideaCheck` / `medCheck`;
+- 24 hội thoại nhánh `CONV` có đo độ trễ nói (`CV_RT`, `cvMed`);
+- 5.753 tệp âm, tiếng ồn `noiseOn`, `ACCENTS`;
+- transfer `novel`, trận cổng, FSRS, hồ sơ 26 cặp âm.
+
+Các phần này nằm rải ở tab học và ở game nhỏ, chưa phần nào là **lõi game** của Phố Chữ. Mà tiền đề của Phố Chữ lại đúng là "**cư dân mất tiếng nói**": nói để trả lại tiếng là cơ chế hợp với truyện nhất.
+
+### 13.1 Nguyên tắc
+
+1. **Động từ chơi là hành động ngôn ngữ.** Thắng nhờ nói đúng, hỏi đúng, nghe ra; không thắng nhờ chọn A/B/C.
+2. **Một lớp nhập "Lời nói" dùng chung,** có bậc lùi mic → gõ → chọn (khi không có mic hoặc đang ở nơi công cộng). Bằng chứng ghi theo bậc: lượt chọn không tính vào H1.
+3. **Hệ quả trong game là phản hồi.** Nói sai âm cuối thì nhân vật hiểu sai và làm sai việc, không hiện bảng "sai rồi".
+4. **Đo trước rồi mới làm:** bảng đo H (v122) đi trước mọi game mới.
+
+### 13.2 Bản đồ tiêu chí → cơ chế
+
+| Tiêu chí | Cơ chế | Dùng lại |
+|---|---|---|
+| H1, H5, H8 | **Quán Phố Chữ bằng giọng** (phục vụ theo thời gian): khách kèm nhu cầu, người chơi nói để hỏi và đáp; thanh kiên nhẫn theo độ trễ, nới theo cấp; đúng ý thì khách nói lại được, sương tan | `CONV`, `cvMatch`, `ideaCheck`, `CV_RT`, `asrHear`, cảnh Quán |
+| H2, H8 | **Thám tử hỏi chuyện** (khoảng trống thông tin): manh mối chỉ có khi tự đặt câu hỏi đúng; từ và cấu trúc cũ trong vụ án, nhân vật, bối cảnh mới | `CONV` nút `@any`, `transfer.ts`, `grammarHints` |
+| H2 | **Từ đào được phải đem dùng:** từ tìm ở Mỏ Chữ / Vòng Chữ thành món cần giao, phải dùng trong câu với cư dân | `director.ts`, `story.ts` |
+| H3 | **Đài Phố Chữ:** truyện kỳ nghe/đọc 3–8 phút làm phần thưởng chương; lựa chọn trong truyện chỉ đúng khi đã hiểu | `DIALOGUES`, bài dài, `tools/clips-*` |
+| H4 | **Âm cảnh từng khu:** chợ ồn, bến có gió và còi; mỗi cư dân một giọng; tốc độ tăng theo khu | `noiseOn`, `clipPlay`, `ACCENTS` |
+| H6 | **Sương quay lại:** biển hiệu của từ sắp quên mờ dần (FSRS); thắp lại là nhớ trễ 7/30 ngày | `retain.ts`, `town.ts` |
+| H7 | **Bến Cảng lệnh giọng:** cặp âm tối thiểu (back/bag, ten/tent); thiếu âm cuối thì tàu làm sai; màn sinh từ hồ sơ âm hay nhầm | `asrWord`, `SOUNDS`, `startPdx`, `robot.ts` |
+| H9 | **Trùm cuối khu = trận cổng** đề chưa thấy, thêm phần nói / hội thoại chưa gặp | `gate.ts`, `vxEvidence` |
+| H10 | **Phố thật hằng tuần:** một nhiệm vụ ngoài đời, ghi âm hoặc tự báo cáo, đổi lấy trang trí phố | `HAS_REC`, `weekly.ts` |
+
+### 13.3 Thứ tự và điểm mục tiêu
+
+Thứ tự làm (mỗi bản có playtest M và đo H):
+1. v122 bảng đo H;
+2. v123 Quán bằng giọng;
+3. v124 Sương quay lại + âm cảnh;
+4. v125 Thám tử hỏi chuyện + từ đào phải đem dùng;
+5. v126 Bến Cảng lệnh giọng;
+6. v127 Đài Phố Chữ + Phố thật.
+
+Điểm H tự chấm; con số trên 6 chỉ hợp lệ khi bảng đo cho số thật:
+
+| | H1 | H2 | H3 | H4 | H5 | H6 | H7 | H8 | H9 | H10 | H |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Hiện tại (cả app) | 6 | 6 | 5 | 6 | 4 | 5 | 6 | 4 | 6 | 1 | 5,1 |
+| Mục tiêu sau v127 | 8 | 7 | 7 | 8 | 8 | 8 | 8 | 8 | 8 | 5 | **7,5** |
+
+### 13.4 Giới hạn
+
+- **Không có AI lúc chạy:** nói tự do chỉ chấm bằng dò ý theo từ khoá. Hội thoại phải có "ý cần nói" rõ ràng.
+- **Máy nghe giọng của trình duyệt** không có ở mọi máy, và có máy cần mạng. Bậc lùi gõ phím giữ cho game chạy được nhưng H1 thấp hơn. Phải đo tỉ lệ người chơi có mic.
+- **Nói dưới áp lực giờ dễ làm người mới sợ.** Ở A1 gần như không ép giờ.
+- **H10 khó vượt 5–6** vì app không kiểm chứng được việc ngoài đời.
+- **H3 tốn nhiều nội dung nhất;** âm thu sẵn mới tới B1.
+
+### 13.5 Đã làm v122–v127 (chấm lại theo bản thật)
+
+**Việc làm** (chi tiết từng bản ở `docs/SPEC.md`, lộ trình v122–v127):
+- **v122 Bảng đo H** (`src/engine/hmeter.ts`): nhật ký số đo theo ngày, chấm 10 tiêu chí theo mốc §12.1. Màn "📏 Bảng đo H" ở sảnh và ở màn kết của game nói.
+- **v123 🗣️ Quán Phố Chữ bằng giọng:** khách là hội thoại nhánh của app. Bạn nói (hoặc gõ) để hỏi và đáp; chọn câu chỉ là bậc lùi sau khi khách hỏi lại. Có thanh kiên nhẫn, tip khi đáp kịp, món đặc biệt dùng từ vừa đào được.
+- **v124 🌫️ Sương quay lại + âm cảnh:** biển hiệu của từ sắp quên; nhớ lại là một lần ôn FSRS thật. Âm nền theo khu (từ A2).
+- **v125 🔎 Hỏi chuyện nhân chứng:** 9 vụ A1–B1, manh mối chỉ có khi tự đặt câu hỏi.
+- **v126 ⚓ Bến Cảng lệnh giọng:** cặp âm yếu nhất trước; nói thiếu âm cuối thì cẩu nhấc nhầm thùng.
+- **v127 📻 Đài Phố Chữ + 🌍 Phố thật:** ghi phút nghe / đọc và nghe có âm phố; mỗi tuần một nhiệm vụ ngoài đời.
+
+**Chấm H** (tự chấm theo khả năng của bản; điểm trên 6 chỉ hợp lệ khi Bảng đo H của người học thật cho số):
+
+| | H1 | H2 | H3 | H4 | H5 | H6 | H7 | H8 | H9 | H10 | H |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Trước v122 (cả app) | 6 | 6 | 5 | 6 | 4 | 5 | 6 | 4 | 6 | 1 | 5,1 |
+| Sau v127, khả năng của bản (chưa đo) | 8 | 7 | 6 | 7 | 8 | 8 | 7 | 8 | 8 | 5 | **7,3** |
+| Hiển thị trong app khi chưa có số liệu | 6 | 6 | 5 | 6 | 5 | 6 | 6 | 5 | 6 | 4 | 5,6 |
+
+**Phản biện, nói thẳng:**
+- Những con số trên vẫn là **tôi tự chấm**. Bài học §10.0 vẫn đúng: chỉ người học thật và Bảng đo H mới xác nhận được.
+- Ba chỗ yếu còn lại:
+  - **H3:** nội dung nghe dài vẫn là bài sẵn có, chưa có truyện kỳ mới viết riêng cho Phố Chữ.
+  - **H4:** âm nền là tổng hợp, chưa có giọng người thật khác nhau. Âm thu sẵn mới có hai giọng.
+  - **H10:** nhiệm vụ ngoài đời chỉ tự báo cáo, không kiểm chứng được.
+- Việc tiếp theo: người sáng lập chơi thử 4 game nói theo phiếu M (§10.1), rồi xem Bảng đo H sau 2–4 tuần dùng thật.
+
+**Kiểm:**
+- Unit test `engine-voice.test.ts` (mốc chấm, lưu / gộp, nhận câu hỏi, bộ não, Phố).
+- e2e `voice.spec.ts` (4 game tới màn kết bằng gõ và bằng kết quả máy nghe giả lập, số đo H được ghi, ôn FSRS thật, WCAG AA).

@@ -705,6 +705,21 @@ button.wsw{cursor:pointer}
 .krline{display:grid;gap:4px}
 .krbar{display:block;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
 .krbar i{display:block;height:100%;background:var(--accent)}
+/* v122–v127 Phố Chữ nói */
+.vguest{display:flex;gap:12px;align-items:center}.vface{font-size:40px;line-height:1}
+.vpat{height:8px;border-radius:4px;background:var(--line);overflow:hidden}.vpat i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#e4572e,#ffd166 35%,#2bb673);transform-origin:left;animation:vpat linear forwards}
+@keyframes vpat{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.vsheet{list-style:none;margin:0;padding:0;display:grid;gap:6px}.vsheet li{display:flex;justify-content:space-between;gap:8px;padding:6px 10px;border:1px dashed var(--line);border-radius:10px}.vsheet li.got{border-style:solid;background:var(--accent-soft)}
+.vport{position:relative}.vcrane{font-size:44px;text-align:center}.vcrates{justify-content:center;gap:16px}
+.vcrate{display:grid;justify-items:center;gap:4px;padding:10px 16px;border:2px solid var(--line);border-radius:12px;font-size:18px;transition:transform .5s ease}.vcrate span{font-size:34px}
+.vcrate.lift{transform:translateY(-22px);border-color:#2bb673}.vcrate.wrong{border-color:#e4572e}
+.vstreet{display:flex;gap:8px;overflow-x:auto;padding:8px 2px}
+.vsign{flex:0 0 auto;min-width:86px;display:grid;justify-items:center;gap:4px;padding:10px 8px;border-radius:12px;background:#454c5a;color:#f0f2f6}
+.vsign.lit{background:#ffd166;color:#1d1b3a;filter:none;opacity:1;box-shadow:0 0 18px #ffd16699}.vsign.cur{outline:3px solid var(--accent)}.vsign span{font-size:26px}
+.vclue{display:grid;justify-items:center;gap:6px;text-align:center}.vpic{font-size:44px}
+.vhlist{list-style:none;margin:0;padding:0;display:grid;gap:8px}.vhrow{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}.vhsc{display:grid;justify-items:center;min-width:64px}.vhsc b{font-size:22px}
+.vhub{margin-top:12px}.vreal{background:var(--accent-soft)}
+@media (prefers-reduced-motion:reduce){.vpat i{animation:none}.vcrate{transition:none}}
 .whfx{position:fixed;inset:0;z-index:2147483000;background:#1d1b3a;touch-action:none;user-select:none;-webkit-user-select:none;overscroll-behavior:none}
 html.whopen,html.whopen body{overflow:hidden}
 .whcv{position:absolute;inset:0;display:block}
@@ -993,4 +1008,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.e036475d66.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.c35e369aca.js" defer></script><script src="app.js?v=67" defer></script>

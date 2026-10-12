@@ -16,6 +16,8 @@ Tệp này ghi lại nội dung spec người sáng lập đưa ra, giữ nguyê
 
 **North Star.** Verified progress toward the learner's stated goal per unit of learner effort. Không tối ưu số bài, số câu, XP, streak, thời gian trong app.
 
+> **Định vị game-first (11/10/2026, v121, xem `docs/SPEC.md`):** North Star chia hai tầng, tầng game đứng trước. Ở mặt tiền, đo người chơi quay lại D1/D7 và số từ còn nhớ sau 7/30 ngày (FSRS). Ở tầng engine, North Star ở trên vẫn giữ để chọn nội dung, và xác nhận đạt cấp CEFR là tuỳ chọn ở hồ sơ. Retention D1/D7 là chỉ số mặt tiền, không phải mục tiêu tối ưu của engine (engine vẫn không tối ưu XP, streak, thời gian trong app).
+
 ## II. Triết lý lõi
 
 Vòng chơi: PLAY → OBSERVE → INFER → ADAPT → PLAY AGAIN. **Game là trải nghiệm, không phải bộ não**: Adaptive Learning Engine quyết định học/luyện gì; Game Engine quyết định trải nghiệm thế nào.
@@ -279,7 +281,7 @@ Retention = Value + Recency + Novelty + Decision Relevance + Criticality, cấu 
 | HG21 | Engine/Target Separation |
 | HG22 | Target Extensibility |
 | HG23 | Target Integrity (target mới) |
-| HG24 | Play-Driven Learning |
+| HG24 | Play-Driven Learning (v121: ngôn ngữ là cơ chế chơi, chữ là quân cờ; không chèn câu hỏi gác cổng giữa các lượt của một game khác) |
 | HG25 | Micro-Intervention |
 | HG26 | Evidence Preservation |
 | HG27 | Evidence Lifecycle |
@@ -308,6 +310,8 @@ Retention = Value + Recency + Novelty + Decision Relevance + Criticality, cấu 
 - Model Recoverability
 
 Không đánh giá chủ yếu bằng DAU, session length, XP, streak, completion.
+
+Từ v121 (định vị game-first) có thêm hai chỉ số mặt tiền, đứng trước khi báo cáo cho người chơi: **quay lại chơi D1/D7** và **từ còn nhớ sau 7/30 ngày**. Retention D1/D7 khác "Persistence" ở trên ở chỗ nó đo sức hút của game. Nó không thay các chỉ số học và không được dùng để biện minh cho dark pattern.
 
 **Ultimate Product Test (16 câu):**
 1. Target?

@@ -18,13 +18,17 @@ export const SPOTS: Spot[] = [
   { game: 'shop', ico: '🏭', vi: 'Xưởng', unit: 'câu đã sửa', th: [6, 30, 90, 240], of: e => e.gw?.packed ?? 0 },
   { game: 'letter', ico: '🏤', vi: 'Bưu điện', unit: 'món quà', th: [1, 4, 10, 25], of: e => e.gl?.gifts ?? 0 },
   { game: 'case', ico: '🕵️', vi: 'Văn phòng thám tử', unit: 'hồ sơ đã phá', th: [1, 5, 15, 40], of: e => e.gt?.solved ?? 0 },
-  { game: 'radio', ico: '📡', vi: 'Đài phát thanh', unit: 'bản tin', th: [1, 5, 15, 40], of: e => e.gr?.solved ?? 0 },
+  { game: 'radio', ico: '📡', vi: 'Đài Phố Chữ', unit: 'tập đã nghe', th: [1, 5, 15, 40], of: e => e.gr?.solved ?? 0 },
   { game: 'cafe', ico: '☕', vi: 'Quán cà phê', unit: 'sao', th: [5, 22, 50, 95], of: e => e.gq?.stars ?? 0 },
   { game: 'bubbles', ico: '🫧', vi: 'Hồ bong bóng', unit: 'màn đã qua', th: [1, 3, 6, 10], of: e => Math.max(0, (e.gs?.stage ?? 1) - 1) },
   { game: 'kara', ico: '🎪', vi: 'Sân khấu', unit: 'bài', th: [1, 5, 15, 40], of: e => e.gk?.runs ?? 0 },
   { game: 'robot', ico: '🤖', vi: 'Trạm robot', unit: 'nhiệm vụ', th: [1, 5, 15, 40], of: e => e.gb?.wins ?? 0 },
   { game: 'board', ico: '🏘️', vi: 'Khu nhà', unit: 'tầng nhà', th: [1, 3, 6, 12], of: e => (e.bd?.lots ?? []).reduce((a, b) => a + b, 0) },
   { game: 'tower', ico: '🏰', vi: 'Tháp canh', unit: 'tầng đã qua', th: [1, 3, 8, 20], of: e => e.q?.wins ?? 0 },
+  { game: 'talk', ico: '🍜', vi: 'Quán Phố Chữ', unit: 'khách nói lại được', th: [1, 8, 30, 80], of: e => e.vo?.tk.served ?? 0 },
+  { game: 'ask', ico: '🔎', vi: 'Đồn hỏi chuyện', unit: 'vụ đã phá', th: [1, 4, 10, 25], of: e => e.vo?.ak.solved ?? 0 },
+  { game: 'port', ico: '⚓', vi: 'Cần cẩu bến cảng', unit: 'ca bốc hàng', th: [1, 5, 15, 40], of: e => e.vo?.pt.runs ?? 0 },
+  { game: 'signs', ico: '🏮', vi: 'Dãy biển hiệu', unit: 'biển thắp lại', th: [3, 20, 60, 150], of: e => e.vo?.sg.lit ?? 0 },
 ];
 export const MAX_LV = 4;
 export const LV_VI = ['Đất trống', 'Lán', 'Nhà', 'Toà', 'Biểu tượng'];
@@ -56,6 +60,7 @@ export const DECO: Record<GameId, string[]> = {
   cards: ['🎲', '♟️', '🎩', '🏅'], shop: ['🔧', '⚙️', '📦', '🧰'], letter: ['📮', '💌', '🎀', '🎁'], case: ['🔎', '🗝️', '🕯️', '🎻'],
   radio: ['🎙️', '📻', '🎧', '🛰️'], cafe: ['☂️', '🪴', '🧁', '🎶'], bubbles: ['🦆', '🐟', '🪷', '🌈'], kara: ['🎤', '🎸', '🥁', '✨'],
   robot: ['🔋', '🔩', '💡', '🛸'], board: ['🌳', '🚲', '🏡', '🚗'], tower: ['🚩', '🛡️', '🐉', '👑'],
+  talk: ['🏮', '🍵', '🎐', '🎑'], ask: ['🗝️', '📋', '🔦', '🏅'], port: ['🛟', '⛵', '🚢', '🗼'], signs: ['🏮', '🪧', '✨', '🌟'],
 };
 export const decoPrice = (k: number): number => 30 * (k + 1);   // món thứ k (0–3): 30, 60, 90, 120 xu
 export interface TownSave { spent: number; deco: Partial<Record<GameId, number>> }   // deco: số món đã mua của từng công trình

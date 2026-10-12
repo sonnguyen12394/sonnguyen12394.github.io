@@ -15,7 +15,7 @@ export const STAGES: Record<string, StageTheme> = {
   cafe: { vi: 'Quán Cà Phê', ico: '☕', a: '#5a3215', b: '#1f0f05', fx: 'steam' },
   garden: { vi: 'Vườn từ', ico: '🌱', a: '#245c2a', b: '#0b2410', fx: 'leaf' },
   shop: { vi: 'Xưởng sửa câu', ico: '🛠️', a: '#3d4451', b: '#151a22', fx: 'gear' },
-  radio: { vi: 'Đài phát thanh', ico: '📻', a: '#43206b', b: '#140828', fx: 'wave' },
+  radio: { vi: 'Đài Phố Chữ', ico: '📻', a: '#43206b', b: '#140828', fx: 'wave' },
   kara: { vi: 'Karaoke', ico: '🎤', a: '#6b1d5c', b: '#22071d', fx: 'note' },
   case: { vi: 'Thám tử', ico: '🔍', a: '#2b2f3a', b: '#0c0d12', fx: 'fog' },
   letter: { vi: 'Thư gửi cư dân', ico: '✉️', a: '#6b3d1d', b: '#24130a', fx: 'leaf' },
@@ -25,6 +25,11 @@ export const STAGES: Record<string, StageTheme> = {
   board: { vi: 'Bàn Cờ Phố', ico: '🎲', a: '#1f5c4a', b: '#082019', fx: 'star' },
   tower: { vi: 'Leo tháp', ico: '🏰', a: '#2a2a5c', b: '#0a0a20', fx: 'star' },
   fog: { vi: 'Thám hiểm sương mù', ico: '🗺️', a: '#3a4a5a', b: '#11171d', fx: 'fog' },
+  // v123–v126 Phố Chữ nói
+  talk: { vi: 'Quán Phố Chữ', ico: '🗣️', a: '#6b3a1d', b: '#24120a', fx: 'steam' },
+  ask: { vi: 'Hỏi chuyện nhân chứng', ico: '🔎', a: '#2b3a4a', b: '#0c1218', fx: 'fog' },
+  port: { vi: 'Bến Cảng lệnh giọng', ico: '⚓', a: '#1b3b8f', b: '#081538', fx: 'wave' },
+  signs: { vi: 'Sương quay lại', ico: '🌫️', a: '#3a4a5a', b: '#11171d', fx: 'fog' },
   // v109 trò nhanh cũ trong app.js (Thử thách): cùng sân khấu
   speed: { vi: 'Tốc độ 60 giây', ico: '⚡', a: '#6b4a10', b: '#241805', fx: 'spark' },
   match: { vi: 'Ghép cặp', ico: '🧠', a: '#1d5a6b', b: '#071f26', fx: 'star' },

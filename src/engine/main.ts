@@ -78,6 +78,9 @@ import { viewMeasure } from './measureview.ts';
 import type { MicroCard } from './host.ts';
 import { stat, statusOf } from './mastery.ts';
 import { nodeStat } from './views.ts';
+import { makeVoice } from './voicectl.ts';
+import { ambStart, ambStop, ambOn } from './ambience.ts';
+import type { HKind } from './hmeter.ts';
 
 export const MODULE_VERSION = 1;
 
@@ -91,6 +94,7 @@ export interface EngineModule {
   autoGoal(id: string, why: string): boolean;              // goal-first (v64): đặt mục tiêu khi người học chưa có mục tiêu nào
   sanitize(e: unknown): EState;
   merge(a: unknown, b: unknown): EState;
+  hlog?(k: string, v?: number | boolean): void;            // v122: app ghi số đo H (nói / gõ câu, thời gian nghĩ, nhớ trễ…) vào nhật ký H
   peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
 export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[]; bonus?: string[] }
@@ -491,6 +495,15 @@ export function init(host: EHost): EngineModule {
     if (sk && storyAdd(ysave(), sk, n)) { const c = chapterAt(ysave())!; host.toast(`📖 Xong nhiệm vụ truyện: ${KIND_VI[sk].vi} cho ${c.who.replace(/^\S+\s/, '')}`); }
   }
   const ysave = () => { const e = E(); return (e.sy ||= freshStory()); };
+  // ---------- v122–v127 Phố Chữ nói + Bảng đo H (voicectl.ts) ----------
+  const vc = makeVoice({
+    host, E, lv: () => (loaded() ? curLv() : 'A1'),
+    act: () => { const c = chapterAt(ysave()); return c?.act ?? 1; },
+    ev: o => { const e = E(); ingest(e.ev, e.m, o, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r }); },
+    coins: n => { const q = qsave(); q.coins += n; q.day = host.today(); },
+    wk: (kind, n, game) => wk(kind as WkKind, n, game),
+    snap: (subj, dec, info) => { addSnap(E().ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj, dec, rule: `${RULE_ID}/voice-1`, info, evs: [] }, false); },
+  });
   // Số kỹ năng vững thật của mục tiêu chính (mốc cuối mỗi khu truyện cần con số này).
   function solidNow(): number { const g = E().goals.map(sg => loaded()?.goal.get(sg.id)).find(Boolean); return g && loaded() ? skillsOf(E(), g).solid : 0; }
   // Bộ chọn cho game chỉ dùng một loại nút (ngữ pháp / chức năng giao tiếp / âm): biên lộ trình có ít nút loại đó → thêm nút chưa Đạt của
@@ -822,6 +835,8 @@ export function init(host: EHost): EngineModule {
     const qs = caseOrder(text.qs), node = [...ix.node.values()].find(n => n.kind === 'cando' && n.skill === (mode === 'read' ? 'R' : 'L') && n.cefr === lv)?.id ?? '';
     trun = { mode, floor: sv.runs + 1, seed, t0: Date.now(), node, text, qs, opts: qs.map((q, k) => caseOptions(q, seed + k * 131)), i: 0, first: qs.map(() => null), flipped: qs.map(() => false), retry: false, ans: null, ok: 0, coins: 0, done: false, plays: 0, gloss: mode === 'read' ? host.gloss?.(text.paras) ?? {} : {}, look: null, looked: 0 };
     if (mode === 'listen' && text.lines) { host.sayLines?.(text.lines, false); trun.plays = 1; }
+    // v127 Đài Phố Chữ: âm phố của khu đang ở (tiếng nghe thật, H4) từ A2, khi người chơi không tắt âm phố.
+    if (mode === 'listen' && E().vo?.amb !== 0 && lv !== 'A1') ambStart((['market', 'market', 'harbor', 'forest'] as const)[chapterAt(ysave())?.act ?? 1] ?? 'market');
     host.render();
   }
   function tAnswer(i: number): void {
@@ -847,6 +862,10 @@ export function init(host: EHost): EngineModule {
     const e = E(), sv = tsave(r.mode) as ReturnType<typeof tsave> & { lastId?: string }, n = r.qs.length, win = caseSolved(r.ok, n);
     r.done = true;
     host.readSave?.(r.text.id, r.text.src, r.mode, n ? r.ok / n : 0);
+    // v122 Bảng đo H: phút nghe / đọc liền mạch (H3), nghe có âm phố (H4). Ước tính: nghe 2,5 từ / giây × số lần nghe, đọc 3 từ / giây.
+    { const wds = (r.mode === 'listen' && r.text.lines ? r.text.lines.map(l => l.t) : r.text.paras).join(' ').split(/\s+/).filter(Boolean).length;
+      if (r.mode === 'listen') { vc.hlog('lis', Math.round((wds / 2.5) * Math.max(1, r.plays))); if (ambOn()) for (const f of r.first) if (f !== null) vc.hlog('l4', f); ambStop(); }
+      else vc.hlog('rd', Math.round(wds / 3)); }
     sv.runs++; if (win) sv.solved++; sv.stars += caseStars(r.ok, n); sv.day = host.today(); sv.lastId = r.text.id;
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'diag', subj: `${r.mode === 'read' ? 'case' : 'radio'}:${r.floor}`, dec: `${r.mode === 'read' ? 'case' : 'radio'}:${win ? 'win' : 'lose'}`, rule: `${RULE_ID}/${QUEST_VER}`,
       info: { ok: r.ok, of: n, looked: r.looked, text: r.text.id, src: r.text.src, lv: r.text.lv, node: r.node, coins: r.coins }, evs: [] }, false);
@@ -1486,6 +1505,7 @@ export function init(host: EHost): EngineModule {
       played, last: sv.last, tts: !!host.tts?.(), asr: !!host.hasAsr?.(), acc: recentAcc(), rote: roteNodes(e.ev, (p.all ?? []).map(r => r.node)).length,
       flag: sv.last === 'wheel' || sv.last === 'hunt' ? sv.last : (() => { for (let i = e.ev.led.length - 1; i >= 0; i--) { const c = e.ev.led[i]!.ctx; if (c === 'wheel' || c === 'hunt') return c; } return ''; })(),
       recent: (() => { const r: Record<string, number> = { u: 0, g: 0, fn: 0, ph: 0 }; for (const l of e.ev.led) if (l.day > today - 7) { const k = l.node.split(':')[0]!; if (k in r) r[k]!++; } return r; })(),
+      fading: vc.fading(), talk: !!(host as { convs?: () => unknown[] }).convs,
     };
   }
   // Lộ trình hôm nay + game chơi tiếp. Ghi snapshot (Vì sao?) khi game được chọn đổi.
@@ -1505,6 +1525,7 @@ export function init(host: EHost): EngineModule {
   // Game đang chạy (để ghi "vừa chơi" khi bắt đầu, "xong" khi tới màn kết).
   const bfx = new Map<string, { run: object; n: number }>();   // v108: số đếm hiệu ứng bàn chơi theo lượt
   function activeGame(): { game: GameId; done: boolean } | null {
+    const va = vc.active(); if (va) return va;
     if (nrun) return { game: 'hunt', done: nrun.over };
     if (hrun) return { game: 'wheel', done: hrun.done };
     if (grun) return { game: 'garden', done: grun.done };
@@ -1588,6 +1609,7 @@ export function init(host: EHost): EngineModule {
   }
 
   function questBody(c: ECtx): string {
+    { const vb = vc.body(c); if (vb !== null) return vb; }
     if (brun && bview) return `<section class="stack"><span class="eyebrow">🎯 Bắt Âm</span><h1>🎯 Màn ${brun.stage}</h1><p class="hint">Màn chơi đang mở toàn màn hình.</p></section>`;
     if (brun) return brun.done ? viewBubblesEnd(c, brun, (brun as BubbleRun & { prevBest?: number }).prevBest ?? 0) : viewBubbles(c, brun, host.probe('ph:s-01').length > 0);
     if (frun) return frun.done ? viewCafeEnd(c, frun, fsave().stars) : viewCafe(c, frun, fsave().stars);
@@ -1609,7 +1631,7 @@ export function init(host: EHost): EngineModule {
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null, dir = c.e.goals.length ? director() : null, gs = dir ? goalSum(c.e, dir.x.review) : null;
     // v118 cảnh Phố Chữ ở đầu sảnh: khu / chương truyện + Sương Câm dày theo phần kỹ năng mục tiêu chưa vững (học thật thì sương tan).
     const sc = dir ? { scene: sceneOf(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)), fog: gs && gs.s.total ? 1 - gs.s.solid / gs.s.total : 0.6 } : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, dir, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '', gs ? viewGoalSlim(c, gs.s) + (nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '') : '', (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave())), sc);
+    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, dir, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)) + vc.hub(c) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '', gs ? viewGoalSlim(c, gs.s) + (nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '') : '', (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave())), sc);
   }
   const routes: Record<string, (c: ECtx) => string> = {
     // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).
@@ -1692,6 +1714,7 @@ export function init(host: EHost): EngineModule {
   }
 
   const act: Record<string, (el: HTMLElement) => void> = {
+    ...vc.acts,
     go(el) { host.go(el.dataset.r || 'goals'); },
     add(el) {
       const id = el.dataset.g || '';
@@ -1923,7 +1946,7 @@ export function init(host: EHost): EngineModule {
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
     stexit(el) { act.qhome!(el); },   // v102 nút ✕ của sân khấu (tách khỏi qhome để không trùng nút "Về sảnh" của từng game)
-    qhome() { bClose(); cClose(); nClose(); nrun = null; hClose(); hrun = null; qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; host.render(); },
+    qhome() { vc.reset(); bClose(); cClose(); nClose(); nrun = null; hClose(); hrun = null; qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
     qans(el) { if (!qrun?.q) return; const q = qrun.q, i = Number(el.dataset.i); qAnswer(i >= 0 && i === q.ans, i >= 0 ? q.opts?.[i] ?? '' : ''); },
@@ -1935,6 +1958,7 @@ export function init(host: EHost): EngineModule {
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
+    ...vc.forms,
     certscore(f) {
       const e = E(), goal = f.dataset.g || '', d = new FormData(f), score = Math.round(Number(d.get('score'))), min = CES_MIN[goal];
       if (!min || !Number.isFinite(score) || score < 80 || score > 230) { host.toast('Điểm theo thang Cambridge từ 80 đến 230.'); return; }
@@ -2054,6 +2078,7 @@ export function init(host: EHost): EngineModule {
   for (const [k, f] of Object.entries(act)) act[k] = el => {
     const game = START.get(k);
     if (game) {
+      if (vc.START[k]) { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; drun = null; } else vc.reset();   // v123: Phố Chữ nói và game khác không chạy cùng lúc
       if (game !== 'wheel') { hClose(); hrun = null; }   // mở game khác: đóng lớp phủ Vòng Chữ
       if (game !== 'hunt') { nClose(); nrun = null; }
       if (game !== 'cards') cClose();
@@ -2105,6 +2130,7 @@ export function init(host: EHost): EngineModule {
       return nextStep(host, e, ix);
     },
     sanitize: sanitizeE,
+    hlog(k, v = 1) { const H = new Set(['sp', 'ty', 'ch', 'lis', 'rd', 'cv', 'rw', 'l4', 'xf', 'r7', 'r30', 'ph', 'lat']); if (H.has(k)) vc.hlog(k as HKind, v); },
     merge: mergeE,
     // v102: game kỹ năng đang chạy → sân khấu (game chủ lực có lớp phủ riêng nên không tính).
     stage(on) {
@@ -2143,6 +2169,7 @@ export function init(host: EHost): EngineModule {
       if (kind) { const k = `app:${kind}`, was = bfx.get(k); if (!was || n < was.n) bfx.set(k, { run: bfx, n }); else if (n > was.n) { was.n = n; stageBurst('#app .q .pill.accent', { cls: 'stpop' }); } }
     },
     peek() {
+      { const vp = vc.peek(); if (vp || vc.active()) return vp; }
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;
       if (drun?.fog?.wait) { const half = Math.ceil((drun.d.max ?? 16) / 2); return { run: 'fogpick', node: '', level: 0, id: `fog:${drun.fog.open.length}`, prompt: '', opts: ['u', 'g'].filter(k => drun!.fog!.kinds[k as 'u' | 'g'] < half), game: 'fog' }; }

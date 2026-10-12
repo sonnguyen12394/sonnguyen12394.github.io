@@ -1,11 +1,14 @@
 # English Ladder
 
-Học tiếng Anh miễn phí theo khung CEFR, từ Pre-A1 (người mới tinh) tới C2, cho người Việt tự học. Từ v52 app theo **Master Spec v2.4** (`docs/SPEC-v2.4.md`): mục tiêu duy nhất của bản MVP là CEFR; app thu bằng chứng từ từng câu trả lời, tìm chỗ còn thiếu, chỉ cho học đúng phần đó và chỉ xác nhận đạt cấp khi có đủ bằng chứng. Phần ôn IELTS/VSTEP vẫn còn nguyên nhưng tạm ẩn (Cài đặt → Nâng cao → Mục tiêu tương lai). Không cần tài khoản, không quảng cáo của bên thứ ba. Bản thử có năng lượng theo lượt và gói Super giả lập, chưa thu tiền.
+Game chữ tiếng Anh cho người Việt: vuốt chữ thành từ, đào chữ trong mỏ, xếp lá từ thành câu. Chữ tiếng Anh chính là quân cờ, nên chơi giỏi lên thì tiếng Anh cũng giỏi lên. Bên dưới là một engine chọn từ và câu hợp với trình độ của bạn theo khung CEFR (Pre-A1 tới C2) và nhắc ôn đúng lúc để nhớ lâu. Ai cần biết mình đã đạt cấp nào thì xem trong hồ sơ (tuỳ chọn). Không cần tài khoản, không quảng cáo của bên thứ ba, chạy được khi mất mạng.
+
+Từ v121 app định vị **game trước** (`docs/SPEC.md`, dòng "Định vị game-first"). Engine theo **Master Spec v2.4** (`docs/SPEC-v2.4.md`): thu bằng chứng từ từng lượt chơi, tìm chỗ còn thiếu, chọn nội dung cho màn tiếp theo, chỉ xác nhận đạt cấp khi có đủ bằng chứng. Phần ôn IELTS/VSTEP vẫn còn nguyên nhưng tạm ẩn (Cài đặt → Nâng cao → Mục tiêu tương lai). Bản thử có năng lượng theo lượt và gói Super giả lập, chưa thu tiền.
 
 👉 **https://sonnguyen12394.github.io/**
 
 ## Có gì
 
+- **Phố Chữ nói (v122–v127):** game mà muốn thắng phải nói, hỏi, nghe ra bằng tiếng Anh. 🗣️ Quán Phố Chữ (nói hoặc gõ để đáp khách), 🔎 Hỏi chuyện nhân chứng (tự đặt câu hỏi để có manh mối), ⚓ Bến Cảng lệnh giọng (cặp âm dễ lẫn), 🌫️ Sương quay lại (nhớ lại từ sắp quên, ôn FSRS thật), 📻 Đài Phố Chữ có âm phố, 🌍 Phố thật (một nhiệm vụ ngoài đời mỗi tuần). **📏 Bảng đo H** đo trên chính người học xem học xong có dùng được không (`src/engine/hmeter.ts`, GAME-CRITERIA §12–§13).
 - **Kế hoạch và sổ lỗi sai (v38):** lịch từng ngày tới ngày thi (`src/exam/plan.ts`), cảnh báo không kịp kèm đề xuất; sổ lỗi sai ôn theo FSRS-5 (`src/exam/notebook.ts`).
 - **Kiểm tra đầu vào (v37):** Đọc + Nghe thích ứng ≤ 15 phút (mô hình 3PL, ≤ 12 câu mỗi kỹ năng), kho 96 câu band 3–8,5 có giải thích tiếng Việt từng phương án; âm thanh tạo sẵn (`tools/audio.cjs`, Kokoro giọng Anh/Mỹ) trong `a/`. Soát độc lập: `tools/review-export.mjs` → phiên AI khác tự làm → `tools/review-compare.mjs`.
 - **Band ước tính (v36):** Nghe, Đọc, Viết, Nói kèm khoảng sai số (độ tin cậy 80%), cấp CEFR, quy đổi IELTS ↔ VSTEP; ghi điểm thi thật; trang độ chính xác (công bố khi đủ 100 cặp mỗi kỹ năng); chia sẻ thống kê ẩn danh tự chọn, có kiểm tuổi.

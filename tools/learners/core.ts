@@ -443,6 +443,38 @@ export async function run(P: Profile): Promise<void> {
     note('karaoke-end', { head: end.split('\n').slice(0, 3).join(' | ') });
     await click('Về sảnh');
   }
+  // v123–v126 Phố Chữ nói: bot gõ câu (bậc lùi của micro). Biết nút thì gõ câu mẫu, không biết thì gõ câu lạc ý (khách / nhân chứng hỏi lại).
+  async function playVoice(start: string): Promise<void> {
+    await shot('lobby');
+    await openAll(); const btn = page.locator(`[data-e="${start}"]`).filter({ visible: true }).first();
+    if (!(await btn.count())) { note('stuck', `không thấy ${start}`); return; }
+    await btn.click(); await sleep(120);
+    const typeIn = async (form: string, v: string) => { const i = page.locator(`form[data-eform="${form}"] input`).first(); await i.fill(v); await i.press('Enter'); };
+    for (let steps = 0; steps < 60; steps++) {
+      await sleep(40);
+      if (/Hết ca|Phá án|Xong vụ|biển sáng lại|Hết ca bốc hàng/.test((await text()).slice(0, 300)) && !(await visible('form[data-eform]'))) break;
+      const pk = await peek();
+      const know = rnd() < Math.max(0.35, pk?.node ? eff(k(pk.node), DAY) : 0.6);
+      if (pk?.run === 'talk') { await typeIn('tksay', know ? pk.accept![0]! : 'I am not sure'); continue; }
+      if (pk?.run === 'talkuse') { await typeIn('tksay', pk.accept![0]!); continue; }
+      if (pk?.run === 'talkwait') { await page.locator('[data-e="tknext"]').first().click(); continue; }
+      if (pk?.run === 'ask') { await typeIn('aksay', know ? pk.accept![0]! : 'Tell me more'); continue; }
+      if (pk?.run === 'askpick') { if (await visible('[data-e="akdone"]')) await page.locator('[data-e="akdone"]').first().click(); else await page.locator('[data-e="akpick"]').nth(pk.ans ?? 0).click(); continue; }
+      if (pk?.run === 'port') {
+        await page.evaluate(([key, t, kk]) => { const w = window as any, A = w.eval('ASR'); A.key = key; A.on = false; A.err = ''; A.res = { word: true, k: kk, heard: t }; w.eval('render()'); }, [pk.id, pk.prompt, know ? 'ok' : 'other'] as const);   // eslint-disable-line @typescript-eslint/no-explicit-any
+        await page.locator('[data-e="ptsend"]').first().click(); await page.locator('[data-e="ptnext"]').first().click(); continue;
+      }
+      if (pk?.run === 'portlisten') { await page.locator(`[data-e="pttap"]`).nth(know ? 0 : 1).click().catch(() => {}); await page.locator('[data-e="ptnext"]').first().click(); continue; }
+      if (pk?.run === 'signs') { if (know) await typeIn('sgsay', pk.accept![0]!); else await page.locator('[data-e="sgno"]').first().click(); continue; }
+      if (await visible('[data-e="sgnext"]')) { await page.locator('[data-e="sgnext"]').first().click(); continue; }
+      if (await visible('[data-e="ptnext"]')) { await page.locator('[data-e="ptnext"]').first().click(); continue; }
+      if (await visible('[data-e="tknext"]')) { await page.locator('[data-e="tknext"]').first().click(); continue; }
+      note('stuck', { why: `${start}: không có lượt / nút tiếp`, text: (await text()).slice(0, 200) }); break;
+    }
+    const end = await shot(`${start}-end`);
+    note(`${start}-end`, { head: end.split('\n').slice(0, 3).join(' | ') });
+    await click('Về sảnh');
+  }
   // v82 Xưởng sửa câu: câu tự gõ như câu thường (ô nhập đã điền sẵn câu hỏng).
   async function playShop(): Promise<void> {
     await shot('lobby');
@@ -649,7 +681,7 @@ export async function run(P: Profile): Promise<void> {
     const floors = P.floors ? P.floors(day, rnd) : day === 0 ? 2 : 2 + (rnd() < 0.3 ? 1 : 0);
     // v72–v73: sảnh có nhiều game; mặc định bot luân phiên tháp, Xếp Khối, Bàn Cờ (--games tower: chỉ tháp, như trước v72).
     // v88 --games director: bot bấm game "Chơi tiếp" mà bộ não của app chọn (không tự chọn / xoay vòng).
-    const DIR_PLAY: Record<string, () => Promise<void>> = { hunt: playHunt, wheel: playWheel, tower: playFloor, blocks: playBlocks, board: playBoard, cards: playCards, cafe: playCafe, bubbles: playBubbles, puzzle: playPuzzle, case: () => playCase('read'), radio: () => playCase('listen'), kara: playKara, shop: playShop, letter: playLetter, robot: playRobot, fog: playFog, garden: playGarden };
+    const DIR_PLAY: Record<string, () => Promise<void>> = { hunt: playHunt, wheel: playWheel, tower: playFloor, blocks: playBlocks, board: playBoard, cards: playCards, cafe: playCafe, bubbles: playBubbles, puzzle: playPuzzle, case: () => playCase('read'), radio: () => playCase('listen'), kara: playKara, shop: playShop, letter: playLetter, robot: playRobot, fog: playFog, garden: playGarden, talk: () => playVoice('tkstart'), ask: () => playVoice('akstart'), port: () => playVoice('ptstart'), signs: () => playVoice('sgstart') };
     if (GAMES === 'director') {
       for (let f = 0; f < floors; f++) {
         await story();

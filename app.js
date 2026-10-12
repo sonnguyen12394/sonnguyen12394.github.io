@@ -1212,6 +1212,7 @@ function srsStep(w,correct,typed){
   if(!w.learned) return;
   const t=today(), F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
   if(w.due==null){ if(correct){ w.stage=0; if(F){ const c=F.newCard(typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.max(1,c.due-t); } else w.ivl=1; w.due=t+w.ivl; } return; }   // lịch ôn bắt đầu từ lần đầu tự nhớ ra đúng, không phải lúc xem thẻ
+  if(w.due<=t&&w.fl!=null&&EM&&EM.hlog){ const gap=t-w.fl; try{ if(gap>=30) EM.hlog('r30',!!correct); else if(gap>=7) EM.hlog('r7',!!correct); }catch(e){} }   // v122 Bảng đo H (H6 nhớ trễ)
   if(!correct){                                         // quên → độ bền giảm theo FSRS, ôn lại ngày mai
     if(w.due<=t){ w.lp=(w.lp||0)+1; w.ld=t; }          // số lần quên khi đến hạn (forgetting patterns, docs/DANH-GIA-DU-LIEU-HOC.md); ld = ngày quên gần nhất (Goal Achieved CEFR: không quên trong 14 ngày)
     if(F) fsrsKeep(w,F.review(fsrsCard(w,t),1,t));
@@ -7496,6 +7497,7 @@ function startConv(id){ const c=CVI[id]; if(!c) return; evc('s:conv'); go('conv'
 function cvSay(){ const C=ui.cv, c=CVI[C.id], nd=c.n[C.node]; if(!HAS_TTS) return; if(C.said===C.node+':'+C.log.length) return; C.said=C.node+':'+C.log.length; const pre=C.pre?C.pre+' ':''; say(pre+nd.a,false,c.k); }
 function cvAnswer(text){ const C=ui.cv; if(!C||C.done) return; text=String(text||'').trim(); if(!text) return;
   const c=CVI[C.id], nd=c.n[C.node], ms=Date.now()-C.t0, words=wcount(text), L=c.lv, min=CV_MIN[L];
+  try{ if(EM&&EM.hlog&&words>=3) EM.hlog(C.viaMic?'sp':'ty'); if(EM&&EM.hlog&&C.viaMic) EM.hlog('lat',Math.max(0,ms/1000-wcount(nd.a)/2.5)); }catch(e){} C.viaMic=false;   // v122 Bảng đo H
   const m=cvMatch(nd,text), rec={node:C.node,q:nd.a,text,ms,words,hint:!!C.hint};
   C.hint=false; C.vi=false;
   if(!m&&C.miss<1){ rec.ok='repair'; C.log.push(rec); C.miss++; C.pre=nd.rp||"Sorry, I didn't catch that."; C.t0=Date.now(); sfx('pop'); return render(); }
@@ -7509,7 +7511,7 @@ function cvScore(C){ const c=CVI[C.id], ans=C.log.filter(x=>x.ok!=='repair'&&x.o
   const text=C.log.map(x=>x.text).join('. '), e=wcount(text)>=15?perfEst(text,'S'):null, hints=grammarHints(C.log.map(x=>x.text).join('. '));
   const pass=und>=.7&&words>=CV_MIN[c.lv];
   return {turns,und,words,sec,e,hints,pass,score:Math.min(1,und*(words>=CV_MIN[c.lv]?1:.75))}; }
-function cvFinish(){ const C=ui.cv, s=cvScore(C), r=(st.conv ||= {})[C.id] ||= {best:0,n:0}; r.best=Math.max(r.best,s.score); r.n++; r.day=today(); if(s.e) r.est=Math.max(r.est||0,+s.e.p.toFixed(2));
+function cvFinish(){ const C=ui.cv, s=cvScore(C), r=(st.conv ||= {})[C.id] ||= {best:0,n:0}; try{ if(EM&&EM.hlog&&s.und>=.7) EM.hlog('cv'); }catch(e){} r.best=Math.max(r.best,s.score); r.n++; r.day=today(); if(s.e) r.est=Math.max(r.est||0,+s.e.p.toFixed(2));
   markActive(); bump('talk'); tally(true,selfXP('cv:'+C.id,s.pass?30:15),true); questCheck(); save(); try{ checkBadges(); }catch(e){} }
 function viewConv(){ const C=ui.cv; if(!C) return viewTalk(); const c=CVI[C.id], nd=c.n[C.node], L=c.lv;
   const bub=(who,t,me,sub)=>`<div class="dl ${me?'me B':''}"><span class="who">${esc(who)}</span><span lang="en">${esc(t)}</span>${sub?`<span class="hint">${sub}</span>`:''}</div>`;
@@ -7557,7 +7559,7 @@ document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closes
 document.addEventListener('submit',e=>{ const f=e.target; if(!f||f.dataset.form!=='cvans') return; e.preventDefault(); const v=f.querySelector('input').value; cvAnswer(v); });
 // Nói xong (máy chép một câu): dùng lời máy nghe được làm câu trả lời; tự đọc lượt lời mới của người kia.
 const _render31c = render; render = function(){ _render31c(); try{ if(ui.view!=='conv'||!ui.cv) return; const C=ui.cv, akey='cv:'+C.id+':'+C.log.length;
-  if(ASR.key===akey&&ASR.res&&!ASR.on&&ASR.res.heard&&C.took!==akey){ C.took=akey; const t=ASR.res.heard; setTimeout(()=>cvAnswer(t),0); return; }
+  if(ASR.key===akey&&ASR.res&&!ASR.on&&ASR.res.heard&&C.took!==akey){ C.took=akey; C.viaMic=true; const t=ASR.res.heard; setTimeout(()=>cvAnswer(t),0); return; }
   document.body.classList.add('lesson');
   if(!C.done) cvSay(); else if(C.said!=='end'){ C.said='end'; const c=CVI[C.id]; if(HAS_TTS) say((C.pre?C.pre+' ':'')+c.n[C.node].a,false,c.k); } }catch(e){} };
 const _viewRender31c = {};
@@ -8396,7 +8398,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.206109c691.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.cb19e8b81b.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
@@ -8441,6 +8443,23 @@ const EHOST = {
   // Kết quả đóng vai (như nút "Dễ / Được / Khó" của màn Đóng vai): giữ mức tốt nhất, tính vào Can-Do nói.
   rpSave:(id,k)=>{ if(!DLG[id]||!['easy','ok','hard'].includes(k)) return; const o={hard:0,ok:1,easy:2}, r=st.dlg[id]||={best:0,n:0}; if(!r.rp||o[k]>o[r.rp]) r.rp=k; r.day=today(); bump('talk'); save(); try{ checkBadges(); }catch(e){} },
   say:t=>{ try{ say(t); }catch(e){} },
+  // v123–v126 Phố Chữ nói (src/engine/voicectl.ts): hội thoại nhánh của Hội thoại mở (CONV), nhận ý bằng từ khoá (cvMatch, không AI).
+  sayAs:(t,k,slow)=>{ try{ say(t,!!slow,k?1:0); }catch(e){} },
+  asrStop:()=>{ try{ ASR.r&&ASR.r.stop(); }catch(e){} },
+  convs:()=>(EHOST._cv||=CONV.map(c=>({id:c.id,lv:c.lv,title:c.title,vi:c.vi,who:c.who,k:c.k?1:0,start:c.start,n:Object.fromEntries(Object.entries(c.n).map(([k,x])=>[k,{a:x.a,v:x.v||'',h:x.h||'',m:x.m||'',end:!!x.end}]))}))),
+  cvTurn:(id,node,text)=>{ const c=CVI[id], nd=c&&c.n[node]; if(!nd||nd.end||!nd.o) return null; const m=cvMatch(nd,String(text||'')), g=m?m.o:(nd.d||nd.o[0]); if(!g) return null; return {hit:!!m,next:g.n,reply:cvFill(g.r||'',m&&m.w),rp:nd.rp||''}; },
+  // Lưu như Hội thoại mở (cvFinish): điểm tốt nhất, số lần, Can-Do nói.
+  convSave:(id,log)=>{ if(!CVI[id]||!Array.isArray(log)||!log.length) return null; const C={id,log:log.map(x=>({node:String(x.node),q:String(x.q||''),text:String(x.text||'').slice(0,400),ms:+x.ms||0,words:+x.words||0,hint:!!x.hint,ok:String(x.ok)}))};
+    const s=cvScore(C), r=(st.conv ||= {})[id] ||= {best:0,n:0}; r.best=Math.max(r.best,s.score); r.n++; r.day=today(); if(s.e) r.est=Math.max(r.est||0,+s.e.p.toFixed(2));
+    try{ markActive(); bump('talk'); }catch(e){} save(); try{ checkBadges(); }catch(e){} return {und:s.und,pass:s.pass}; },
+  // v124 Sương quay lại: từ đã học có khả năng nhớ (FSRS) thấp nhất; nhớ lại = một lần ôn thật (srsStep).
+  fading:n=>{ const F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null, t=today(); if(!F) return [];
+    const out=[]; for(const w of ALL_WORDS){ const s=st.words[w.id]; if(!s||!s.learned||s.fs==null||s.fl==null||!UNIT_OF[w.id]) continue; const r=F.retrievability(Math.max(0,t-s.fl),s.fs); if(r<0.9||(s.due!=null&&s.due<=t)) out.push({id:w.id,en:w.word,vi:w.vi,pic:w.pic||'',node:'u:'+UNIT_OF[w.id].id,r:+r.toFixed(3),gap:t-s.fl,due:s.due!=null&&s.due<=t}); }
+    return out.sort((a,b)=>a.r-b.r).slice(0,Math.max(1,Math.min(30,+n||12))); },
+  wordRecall:(id,ok,typed)=>{ if(!st.words[id]) return; srsStep(W(id),!!ok,!!typed); save(); },
+  // v126 Bến Cảng: 26 cặp âm (từ của từng cặp).
+  sounds:()=>SOUNDS.map(x=>({id:x.id,title:x.title,vi:x.vi,tip:x.tip,pairs:x.pairs.map(p=>[p[0],p[2]])})),
+  ghints:text=>grammarHints(String(text||'')).slice(0,3).map(h=>({why:h.why,snip:h.snip})),
   transfer:node=>eXfer(node),
   micro:node=>eMicroCard(node),
   back:()=>microBack(),

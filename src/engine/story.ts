@@ -12,7 +12,7 @@ export const ACT_BG: Array<[string, string]> = [['#3b2f63', '#120c26'], ['#ff9a6
 export const KIND_VI: Record<StoryKind, { ico: string; vi: string; game: string; start: string }> = {
   dig: { ico: '⛏️', vi: 'Đào viên chữ ở Mỏ Chữ', game: 'Mỏ Chữ', start: 'hnstart' },
   light: { ico: '🎡', vi: 'Thắp đèn: qua màn Vòng Chữ', game: 'Vòng Chữ', start: 'whstart' },
-  voice: { ico: '🃏', vi: 'Trả câu nói: câu đúng ở Bài Câu', game: 'Bài Câu', start: 'cdstart' },
+  voice: { ico: '🃏', vi: 'Trả câu nói: câu đúng ở Bài Câu, câu khách hiểu ở Quán Phố Chữ', game: 'Bài Câu', start: 'cdstart' },
 };
 const N = (dig: number, light: number, voice: number): Record<StoryKind, number> => ({ dig, light, voice });
 
