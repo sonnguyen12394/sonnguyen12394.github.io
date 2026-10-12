@@ -12,6 +12,7 @@ import {
 } from './bag.ts';
 import { viewBag, viewBagHub, type BagTab, type CraftRun } from './bagview.ts';
 import { cluesOf, CHAPTERS, type StorySave } from './story.ts';
+import { makeForge, type ForgeDeps } from './forgectl.ts';
 
 export interface BagDeps {
   host: EHost;
@@ -26,12 +27,14 @@ export interface BagDeps {
   hlog: (k: HKind, v?: number | boolean) => void;
   wk: (kind: 'sentence' | 'word', n: number, game: string) => void;
   coins: (n: number) => void;
+  forge: Omit<ForgeDeps, 'host' | 'E' | 'coins'>;   // v129 Lò rèn năng lực
 }
 
 export function makeBag(d: BagDeps) {
   const { host } = d;
   const sv = (): BagSave => { const e = d.E() as EState & { bg?: BagSave }; return (e.bg ||= freshBag()); };
   let tab: BagTab | null = null, cr: CraftRun | null = null, micN = 0, used = '';
+  const fg = makeForge({ ...d.forge, host, E: d.E, coins: d.coins });
   const words = (): number => { const e = d.E(); return (e.gn?.words ?? 0) + (e.gh?.words ?? 0); };
   const ear = (): Earned => { const h = d.hx(); return earned({ words: words(), sp: h.sp, ty: h.ty, recall: h.recall }); };
   const rows = (): StatRow[] => statsOf(d.statIn());
@@ -40,7 +43,7 @@ export function makeBag(d: BagDeps) {
   const rec: Record<string, string[]> = {};   // đề vừa làm (tránh lặp ngay), chỉ trong phiên
   const recent = (k: string): string[] => rec[k] ?? [];
   const remember = (k: string, v: string) => { const r = (rec[k] ||= []); r.push(v); if (r.length > 6) r.shift(); };
-  function reset(): void { tab = null; cr = null; }
+  function reset(): void { tab = null; cr = null; fg.reset(); }
 
   function start(kind: CraftRun['kind']): void {
     const e = ear(), s = sv();
@@ -70,9 +73,10 @@ export function makeBag(d: BagDeps) {
   }
 
   const acts: Record<string, (el: HTMLElement) => void> = {
-    bgopen: el => { cr = null; tab = (el.dataset.t as BagTab) || 'bag'; host.render(); window.scrollTo?.(0, 0); },
+    bgopen: el => { cr = null; fg.reset(); tab = (el.dataset.t as BagTab) || 'bag'; host.render(); window.scrollTo?.(0, 0); },
     bgcraft: () => { cr = null; tab = 'craft'; host.render(); window.scrollTo?.(0, 0); },
-    bgtab: el => { cr = null; tab = (el.dataset.t as BagTab) || 'bag'; host.render(); },
+    bgtab: el => { cr = null; fg.reset(); tab = (el.dataset.t as BagTab) || 'bag'; host.render(); },
+    ...Object.fromEntries(Object.entries(fg.acts).map(([k, f]) => [k, (el: HTMLElement) => { if (k === 'bgfgo') { cr = null; tab = 'forge'; } f(el); }])),
     bgdone: () => { cr = null; tab = 'craft'; host.render(); },
     bgmk: el => start((el.dataset.k as CraftRun['kind']) || 'morph'),
     bgaff: el => {
@@ -134,6 +138,7 @@ export function makeBag(d: BagDeps) {
       host.save(); host.render();
     },
     bgsoul: f => { const v = val(f); if (v) soul(v, 'type'); },
+    ...fg.forms,
   };
   function mic(): { has: boolean; busy: boolean | string; heard: string | null } {
     const has = !!host.hasAsr?.(), r = cr;
@@ -158,13 +163,14 @@ export function makeBag(d: BagDeps) {
       const gems = [...gm.values()].filter(g => by.has(g.id)).map(g => ({ ...g, en: by.get(g.id)!.en, vi: by.get(g.id)!.vi, fading: fade.has(g.id) })).sort((a, b) => b.tier - a.tier || b.last - a.last);
       const albums = albumsOf(lx, gm, s.alb).map(a => ({ ...a, vi: host.group?.(a.node)?.vi ?? host.group?.(a.node)?.topic ?? a.node }));
       const sy = (e as EState & { sy?: StorySave }).sy;
-      return viewBag(c, { s, e: ear(), rows: rows(), tab, act: d.act(), gems, albums, clues: cluesOf(sy), clueTotal: CHAPTERS.filter(x => x.clue).length, who: d.resident(), giftDone: d.giftDone(), cr, mic: mic() });
+      return viewBag(c, { s, e: ear(), rows: rows(), tab, act: d.act(), gems, albums, clues: cluesOf(sy), clueTotal: CHAPTERS.filter(x => x.clue).length, who: d.resident(), giftDone: d.giftDone(), cr, mic: mic(), forge: tab === 'forge' || tab === 'map' ? fg.body(c, tab) : '' });
     },
     hub(c: ECtx): string {
       const s = sv(), e = ear(), rs = rows();
       const ready = (['morph', 'col', 'sent'] as const).filter(k => canPay(e, s, CRAFT_COST[k])).length + GEAR.filter(g => !s.gear.includes(g.id) && (g.act ?? 0) <= d.act() && (!g.after || s.gear.includes(g.after)) && canPay(e, s, g.cost)).length;
-      return viewBagHub(c, s, e, rs, ready);
+      return viewBagHub(c, s, e, rs, ready, fg.cov());
     },
     have: (k: Parameters<typeof have>[2]) => have(ear(), sv(), k),
+    peek: () => (tab === 'forge' ? fg.peek() : null),
   };
 }

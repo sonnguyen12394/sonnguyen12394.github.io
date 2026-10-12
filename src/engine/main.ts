@@ -516,6 +516,14 @@ export function init(host: EHost): EngineModule {
     }
     return { pass, h: Object.fromEntries(vc.hrows().map(r => [r.id, { score: r.score, measured: r.measured }])) };
   }
+  // Lộ trình cho Lò rèn: tính lại chỉ khi sổ bằng chứng / mục tiêu / ngày đổi (một màn vẽ gọi nhiều lần).
+  let fpk = '', fpv: ReturnType<typeof computePath> | null = null;
+  function fpath(): ReturnType<typeof computePath> | null {
+    const v = V(); if (!loaded() || !v.goals.length) return null;
+    const k = `${v.ev.led.length}|${v.ev.led[v.ev.led.length - 1]?.id ?? ''}|${Object.keys(v.ev.pri).length}|${Object.keys(v.m).length}|${v.goals.map(g => g.id).join(',')}|${host.today()}`;
+    if (k !== fpk || !fpv) { fpv = computePath(host, v, loaded()!); fpk = k; }
+    return fpv;
+  }
   const bag = makeBag({
     host, E,
     act: () => { const c = chapterAt(ysave()); return c ? Math.max(1, c.act) : 4; },
@@ -526,6 +534,17 @@ export function init(host: EHost): EngineModule {
     hlog: (k, v) => vc.hlog(k, v),
     wk: (kind, n, game) => wk(kind as WkKind, n, game),
     coins: n => { const q = qsave(); q.coins += n; q.day = host.today(); },
+    // v129 Lò rèn năng lực: kỹ năng của mục tiêu (đóng tiền đề) + thứ tự ưu tiên của engine; câu trả lời là bằng chứng thật.
+    forge: {
+      rows: () => fpath()?.all ?? [],
+      open: () => fpath()?.open ?? [],
+      vi: n => loaded()?.node.get(n)?.vi ?? n,
+      pass: (n, l) => nodeStat(host, V(), n, l).pass,
+      none: n => !Object.keys(E().m[n] ?? {}).length,
+      transfer: n => xferItems(host, E(), n),
+      ev: o => { const e = E(); ingest(e.ev, e.m, o, { dev: dev(), ts: Date.now(), day: host.today(), recent: e.r }); },
+      goalLv: () => goalOf(V())?.vi ?? '',
+    },
   });
   // Số kỹ năng vững thật của mục tiêu chính (mốc cuối mỗi khu truyện cần con số này).
   function solidNow(): number { const g = E().goals.map(sg => loaded()?.goal.get(sg.id)).find(Boolean); return g && loaded() ? skillsOf(E(), g).solid : 0; }
@@ -2203,6 +2222,7 @@ export function init(host: EHost): EngineModule {
       if (kind) { const k = `app:${kind}`, was = bfx.get(k); if (!was || n < was.n) bfx.set(k, { run: bfx, n }); else if (n > was.n) { was.n = n; stageBurst('#app .q .pill.accent', { cls: 'stpop' }); } }
     },
     peek() {
+      { const bp = bag.peek(); if (bp) return bp; }
       { const vp = vc.peek(); if (vp || vc.active()) return vp; }
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>
         q ? { run, node, level: q.level, id: q.id, prompt: q.prompt, ...(q.opts ? { opts: q.opts, ans: q.ans ?? 0 } : { accept: q.accept ?? [] }), ...x } : null;

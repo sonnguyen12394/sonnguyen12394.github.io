@@ -1976,3 +1976,63 @@ Gốc rễ chung của cả bốn: **phần thưởng không gắn với hành �
   - rèn Cuốc Bạc;
   - 5 tab đạt WCAG AA ở 390 px;
   - không cuộn ngang.
+
+## 16. Lò rèn năng lực và Bản đồ phủ cấp (v129)
+
+### 16.0 Yêu cầu và phản biện
+
+**Ý của người sáng lập:** muốn đạt một cấp thì cần nhiều bằng chứng. Vậy dùng cách chế tạo bằng chứng từ nhỏ tới lớn, để app biết người học đã phủ kiến thức tới đâu.
+
+**Engine đã có thang đó.** Mỗi kỹ năng (761 nút) được đo ở 5 mức: Nhận ra → Hiểu → Nhớ ra → Dùng có kiểm soát → Dùng tự do. Luật "đạt" đã chặt:
+- trừ phần đoán mò;
+- câu lặp trong 24 giờ chỉ tính nửa;
+- bằng chứng mức cao tính cho mức thấp;
+- m ≥ 0,8 và cận dưới ≥ 0,6;
+- mức 4–5 phải đúng ở câu chưa gặp.
+
+**Gốc rễ thật:**
+1. Xưởng v128 không gắn vào nút nào của bản đồ, nên dù ghi bằng chứng cũng không biết tính cho kỹ năng nào.
+2. Bộ đề cố định 101 món thì học thuộc được.
+3. Người học không nhìn thấy độ phủ.
+
+**Hai chỗ chỉnh lại ý ban đầu:**
+- "Từ nhỏ tới lớn" đúng khi **học** kỹ năng mới. Khi **đo** người đã biết thì nên thử bậc cao trước.
+- Thước đo là **độ đa dạng** (dạng câu, ngữ cảnh, câu mới, cách ngày), không phải số lượng bằng chứng.
+
+Người sáng lập chọn phương án B: giữ ghép từ / ghép cụm / đúc câu của v128 làm "🔨 Luyện tay", ghi rõ là không tính bằng chứng.
+
+### 16.1 Đã làm (`forge.ts`, `forgeview.ts`, `forgectl.ts`)
+
+| Phần | Làm gì |
+|---|---|
+| Mỗi kỹ năng là một món 5 bậc | 🪨 Mảnh, 🔩 Phôi, ⚙️ Linh kiện, 🛠️ Đồ, 💎 Báu vật, ứng với mức 1–5. **Bậc = mức cao nhất đang Đạt trong engine** (`tierOf`), không có kho riêng. |
+| Đề lấy từ nội dung của nút | Nguồn: câu dò `probe` (mức 1–3), câu xếp lá `order` (có lá thừa là lỗi hay gặp), câu sửa lỗi `fixes` (mức 4), câu chức năng `fn`, câu ở ngữ cảnh mới chưa gặp (`xferItems`, được ưu tiên ở mức cao). Không có bộ đề riêng nên không học thuộc được. |
+| Bằng chứng thật | Đi qua `ingest` với `ctx: 'forge'`, `src: 'game'`, giữ nguyên đoán mò `g` và mã câu. Luật lặp lại, câu mới, xác minh mức 4–5, lan xuống của engine **giữ nguyên**. Nhãn `ctx` chỉ góp vào độ tin cậy "cao" (≥ 3 ngữ cảnh), không vào quyết định Đạt; mỗi game vốn có nhãn riêng. |
+| 🔨 Rèn từ dưới | Bắt đầu ở bậc hiện tại + 1; đúng 2 câu liền thì lên mức. Món mới tinh thì có bí kíp 1 phút trước (`micro`). |
+| ⚡ Rèn vượt bậc | Bắt đầu ở mức mục tiêu cần; đúng thì giữ / lên (bậc dưới được tính theo luật lan xuống); sai thì lùi một mức, không mất gì. |
+| Chọn món | Danh sách kỹ năng đang mở của mục tiêu theo thứ tự ưu tiên của engine (`computePath().open`), bỏ món đã Đạt. Người chơi không cày được món mình đã giỏi. |
+| Chặn cày | Mỗi kỹ năng tối đa **5 lượt có tính mỗi ngày**, bằng mức trần của Leo tháp cho người đang đúng nhiều. Mỗi lần rèn 5 câu. |
+| 🗺️ Bản đồ phủ cấp | Đọc thẳng `computePath().all` (mọi kỹ năng mục tiêu cần, đã đóng tiền đề), nhóm theo Từ vựng / Ngữ pháp / Chức năng / Âm / Can-Do. Mỗi ô có bậc hiện tại, mức cần và nút ⚡ rèn. Dòng tổng: "Đã phủ x/y", và "Chưa đạt A2 vì còn thiếu: …" (spec §61). |
+| Thưởng | +2 xu mỗi câu đúng, +10 xu mỗi lần lên bậc. Xu không vào năng lực. |
+| Sảnh | Thẻ Túi chữ: nút chính là 🔥 Lò rèn năng lực, kèm 🗺️ "Đã phủ x/y". |
+
+### 16.2 Kiểm
+
+- **Unit `engine-forge` (5):**
+  - chuẩn hoá đề giữ mức và đoán mò;
+  - chấm chọn / gõ / xếp lá / sửa câu;
+  - bậc = mức cao nhất Đạt;
+  - chọn câu (đúng mức, mức dưới, tránh câu vừa gặp, ưu tiên câu lạ ở mức cao);
+  - hai cách rèn;
+  - bản đồ phủ.
+- **e2e `bag.spec` (v129):**
+  - rèn vượt bậc trên mục tiêu A1 đến hết lượt; mỗi câu đúng ghi đúng một sự kiện `ctx: 'forge'`, `src: 'game'`;
+  - Bản đồ phủ hiện "Đã phủ x/y";
+  - Luyện tay không thêm sự kiện nào vào sổ;
+  - WCAG AA ở 390 px, không cuộn ngang.
+
+### 16.3 Phản biện, nói thẳng
+
+- **💎 Báu vật (mức 5) hầu như không rèn được ở Lò**, vì kho câu chỉ tới mức 4. Mức 5 đến từ việc dùng tự do (nói ở Quán, viết Thư, trận cổng). Đây là đúng bản chất mức 5, không phải lỗi.
+- **Kỹ năng Can-Do / đọc / nghe / viết / nói** (khoảng 1/3 yêu cầu của một cấp) hiện trên bản đồ nhưng không rèn ở Lò: chúng đo bằng bài làm thật.
+- Lò rèn là **một đường mới đưa bằng chứng vào sổ**. Cần theo dõi chỉ số H9 (cấp app ước tính so với trận cổng / thi thật) sau 2–4 tuần. Nếu người chỉ rèn ở Lò mà qua cổng kém hơn người chơi đủ các game, thì phải hạ trọng số hoặc giới hạn của Lò.

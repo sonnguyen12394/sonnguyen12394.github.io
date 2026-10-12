@@ -783,6 +783,14 @@ html.whopen,html.whopen body{overflow:hidden}
 .bgbig{font:800 24px system-ui,sans-serif}.bgword{font-size:22px}.bgok{color:var(--good);font-weight:700}.bgno{color:var(--bad);font-weight:600}
 .pill.ok{border-color:var(--good);color:var(--good)}.bghub{margin-top:12px}
 .bgroot [aria-disabled="true"]{border-style:dashed}
+/* v129 Lò rèn năng lực + Bản đồ phủ */
+.fgladder{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.fgladder li{display:grid;justify-items:center;gap:2px;padding:6px 2px;border:2px solid var(--line);border-radius:10px;font-size:12px;text-align:center;background:var(--surface)}
+.fgladder li span:first-child{font-size:22px}.fgladder li.on{border-color:var(--good);background:var(--good-soft)}.fgladder li.need{outline:3px dashed var(--accent);outline-offset:1px}
+.fgarea{border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--surface)}.fgarea summary{cursor:pointer;min-height:32px}
+.fgmap{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.fgcell{display:flex;gap:6px;align-items:center;padding:6px 8px;border:1px dashed var(--line);border-radius:10px;font-size:14px}.fgcell span:nth-child(2){flex:1}
+.fgcell.ok{border-style:solid;border-color:var(--good);background:var(--good-soft)}
 /* v102 sân khấu game kỹ năng: ẩn khung app, cảnh động phía sau, nội dung trên thẻ nền đặc (giữ tương phản) */
 body.stage .top,body.stage #bnav,body.stage #nav{display:none}
 #stagefx{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}

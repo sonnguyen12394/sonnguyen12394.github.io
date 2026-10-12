@@ -7,7 +7,7 @@ import {
   type BagSave, type Earned, type StatRow, type Album, type Gem, type MorphTask, type ColTask, type SentTask,
 } from './bag.ts';
 
-export type BagTab = 'bag' | 'alb' | 'clue' | 'craft' | 'stat';
+export type BagTab = 'forge' | 'map' | 'bag' | 'alb' | 'clue' | 'craft' | 'stat';
 export interface CraftRun {
   kind: 'morph' | 'col' | 'sent'; seed: number;
   morph?: MorphTask; col?: ColTask; sent?: SentTask;
@@ -18,26 +18,27 @@ export interface BagIn {
   s: BagSave; e: Earned; rows: StatRow[]; tab: BagTab; act: number;
   gems: Array<Gem & { en: string; vi: string; fading: boolean }>; albums: Array<Album & { vi: string }>; clues: Clue[]; clueTotal: number;
   who: [string, string] | null; giftDone: boolean; cr: CraftRun | null; mic: { has: boolean; busy: boolean | string; heard: string | null };
+  forge: string;   // v129 HTML của tab Lò rèn / Bản đồ phủ (forgectl)
 }
 
-const TABS: Array<[BagTab, string]> = [['bag', '🎒 Túi'], ['craft', '🔨 Xưởng'], ['stat', '📊 Chỉ số'], ['alb', '📖 Album'], ['clue', '📜 Kỷ vật']];
+const TABS: Array<[BagTab, string]> = [['forge', '🔥 Lò rèn'], ['map', '🗺️ Bản đồ phủ'], ['bag', '🎒 Túi'], ['craft', '🔨 Luyện tay'], ['stat', '📊 Chỉ số'], ['alb', '📖 Album'], ['clue', '📜 Kỷ vật']];
 const bar = (v: number, max: number, label: string) => `<span class="bgbar" role="img" aria-label="${label}"><i style="width:${Math.round((100 * Math.min(max, v)) / Math.max(1, max))}%"></i></span>`;
 
 // Thẻ ở sảnh: nguyên liệu, cấp Thợ Chữ, hai lối vào.
-export function viewBagHub(c: ECtx, s: BagSave, e: Earned, rows: StatRow[], ready: number): string {
+export function viewBagHub(c: ECtx, s: BagSave, e: Earned, rows: StatRow[], ready: number, cov: { done: number; total: number } | null = null): string {
   const mats = MATS.map(m => `<span class="pill" title="${MAT[m].vi}">${MAT[m].ico} ${have(e, s, m)}</span>`).join(' ');
   const items = ITEMS.filter(i => s.it[i]).map(i => `<span class="pill" title="${ITEM[i].vi}">${ITEM[i].ico} ${s.it[i]}</span>`).join(' ');
   return `<section class="panel stack bghub" aria-label="Túi chữ và Xưởng của Tí">
     <div class="spread"><h2>🎒 Túi chữ · Xưởng của Tí</h2><span class="pill">🧑‍🔧 Thợ Chữ cấp ${charLv(rows)}</span></div>
     <p class="hint">Đồ là tiếng Anh: từ bạn tìm được thành ngọc, chế tạo bằng cách ghép từ, ghép cụm, đúc câu rồi nói. Chỉ số là năng lực thật của bạn.</p>
     <div class="row">${mats} ${items}</div>
-    <div class="row"><button class="btn primary small" data-e="bgopen" data-t="craft">🔨 Vào Xưởng${ready ? ` · ${ready} việc làm được` : ''}</button><button class="btn small" data-e="bgopen" data-t="bag">🎒 Mở túi</button><button class="btn ghost small" data-e="bgopen" data-t="stat">📊 Chỉ số</button></div>
+    <div class="row"><button class="btn primary small" data-e="bgopen" data-t="forge">🔥 Lò rèn năng lực</button>${cov?.total ? `<button class="btn small" data-e="bgopen" data-t="map">🗺️ Đã phủ ${cov.done}/${cov.total}</button>` : ''}<button class="btn small" data-e="bgopen" data-t="craft">🔨 Luyện tay${ready ? ` · ${ready}` : ''}</button><button class="btn ghost small" data-e="bgopen" data-t="bag">🎒 Túi</button><button class="btn ghost small" data-e="bgopen" data-t="stat">📊 Chỉ số</button></div>
   </section>`;
 }
 
 export function viewBag(c: ECtx, x: BagIn): string {
   const tabs = `<div class="bgtabs" role="tablist" aria-label="Túi chữ">${TABS.map(([t, vi]) => `<button role="tab" class="btn small${t === x.tab ? ' primary' : ' ghost'}" aria-selected="${t === x.tab}" data-e="bgtab" data-t="${t}">${vi}</button>`).join('')}</div>`;
-  const body = x.tab === 'craft' ? (x.cr ? craftRun(c, x) : craftMenu(c, x)) : x.tab === 'stat' ? stats(c, x) : x.tab === 'alb' ? albums(c, x) : x.tab === 'clue' ? clues(c, x) : bag(c, x);
+  const body = x.tab === 'forge' || x.tab === 'map' ? x.forge : x.tab === 'craft' ? (x.cr ? craftRun(c, x) : craftMenu(c, x)) : x.tab === 'stat' ? stats(c, x) : x.tab === 'alb' ? albums(c, x) : x.tab === 'clue' ? clues(c, x) : bag(c, x);
   return `<section class="stack bgroot"><span class="eyebrow">🎒 Túi chữ · Thợ Chữ cấp ${charLv(x.rows)}</span>${tabs}${body}</section>
     <div class="row"><button class="btn ghost" data-e="qhome">← Về sảnh</button></div>`;
 }
@@ -73,7 +74,7 @@ function craftMenu(c: ECtx, x: BagIn): string {
     return `<li class="bgcell${locked ? ' off' : ''}"><span class="bgico" aria-hidden="true">${locked ? '🔒' : g.ico}</span><b>${esc(g.vi)}</b><span>${esc(g.eff)}</span>
       ${locked ? `<span class="hint">${g.act && g.act > x.act ? 'Mở khi tới khu Phố Đêm trong truyện' : 'Cần có đồ trước đó'}</span>` : `<span class="row">${need}</span><span class="hint">Phát huy khi: ${reqVi(g.req)} ${req ? '✅' : '(chỉ số thật của bạn chưa đủ: vẫn rèn được, phát huy khi đạt)'}</span>
       <button class="btn small${pay ? ' primary' : ''}" data-e="bgforge" data-id="${g.id}" ${pay ? '' : 'aria-disabled="true"'}>🔥 Rèn</button>`}</li>`; }).join('');
-  return `<h2>🔨 Xưởng của Tí</h2><p class="hint">Sương nuốt lời, Xưởng làm lại lời. Mỗi công thức là một phép tiếng Anh thật; làm sai không mất nguyên liệu.</p>
+  return `<h2>🔨 Xưởng của Tí · Luyện tay</h2><p class="hint">Mini-game luyện tay: <b>không tính vào bằng chứng</b> (bộ đề cố định, làm nhiều lần là nhớ đáp án). Muốn app ghi nhận năng lực thật, rèn ở <button class="stlink inl" data-e="bgtab" data-t="forge">🔥 Lò rèn năng lực</button>. Làm sai không mất nguyên liệu.</p>
     <div class="stack">${rec('morph', '🔩', 'Ghép từ', `Từ gốc + tiền tố / hậu tố, rồi tự gõ từ mới. Linh kiện đang mở: theo khu truyện.`)}
     ${rec('col', '🔗', 'Ghép cụm', 'Chọn đúng động từ: make a mistake hay do a mistake?')}
     ${rec('sent', '💬', 'Đúc câu', `Xếp lá chữ thành câu của cư dân${x.who ? ` (ưu tiên câu của ${esc(x.who[1])})` : ''}, rồi thổi hồn: nói hoặc gõ lại không nhìn → 🌟 Lời vàng.`)}</div>

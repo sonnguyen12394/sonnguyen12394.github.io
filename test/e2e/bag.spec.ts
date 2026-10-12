@@ -115,3 +115,47 @@ test('v128 Xưởng của Tí: ghép từ (tự gõ), ghép cụm, đúc câu + 
   await expect(page.locator('.bgroot')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
+
+test('v129 Lò rèn năng lực: rèn kỹ năng của mục tiêu ghi bằng chứng thật (ctx forge); bản đồ phủ; luyện tay không ghi bằng chứng; WCAG', async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await lobby(page);
+  await expect(page.locator('.bghub')).toContainText('Lò rèn');
+  await page.locator('.bghub [data-e="bgopen"][data-t="forge"]').click();
+  const root = page.locator('.bgroot');
+  await expect(root).toContainText('Lò rèn năng lực');
+  await axe(page, '.bgroot');
+  const led0 = await page.evaluate(() => (window as any).eval('st').e.ev.led.length);
+  await root.locator('[data-e="bgfgo"][data-m="jump"]').first().click();
+  let answered = 0;
+  for (let i = 0; i < 12; i++) {
+    if (await root.locator('[data-e="bgfteach"]').count()) { await root.locator('[data-e="bgfteach"]').click(); continue; }
+    const pk = await page.evaluate(() => (window as any).eval('EM').peek());
+    if (!pk || pk.run !== 'forge') break;
+    if (pk.opts) await root.locator(`[data-e="bgfpick"][data-i="${pk.ans}"]`).click();
+    else if (pk.tiles) { for (const k of pk.order) await root.locator(`[data-e="bgftile"][data-i="${k}"]`).click(); await root.locator('[data-e="bgfdone"]').click(); }
+    else { await root.locator('#bgfin').fill(pk.accept[0]); await root.locator('#bgfin').press('Enter'); }
+    await expect(root.locator('.bgok')).toBeVisible();
+    answered++;
+    if (answered === 1) await axe(page, '.bgroot');
+    await root.locator('[data-e="bgfnext"]').click();
+  }
+  expect(answered).toBeGreaterThan(0);
+  await expect(root).toContainText('Xong lượt rèn');
+  const ev = await page.evaluate((n) => (window as any).eval('st').e.ev.led.slice(n).map((x: any) => [x.ctx, x.src, x.ok]), led0);
+  expect(ev.length).toBe(answered);
+  expect(ev.every((x: any[]) => x[0] === 'forge' && x[1] === 'game' && x[2] === 1)).toBe(true);
+  // Bản đồ phủ của mục tiêu: nhóm theo loại kỹ năng, có dòng "còn thiếu".
+  await root.locator('.bgtabs [data-t="map"]').click();
+  await expect(root).toContainText('Bản đồ phủ');
+  await expect(root).toContainText(/Đã phủ \d+\/\d+/);
+  await axe(page, '.bgroot');
+  await noHorizontalScroll(page);
+  // Luyện tay (bộ đề cố định) ghi rõ là không tính bằng chứng, và thật sự không ghi.
+  await root.locator('.bgtabs [data-t="craft"]').click();
+  await expect(root).toContainText('không tính vào bằng chứng');
+  const led1 = await page.evaluate(() => (window as any).eval('st').e.ev.led.length);
+  await root.locator('[data-e="bgmk"][data-k="col"]').click();
+  await root.locator('[data-e="bgverb"]').first().click();
+  expect(await page.evaluate(() => (window as any).eval('st').e.ev.led.length)).toBe(led1);
+  expect(errors).toEqual([]);
+});
