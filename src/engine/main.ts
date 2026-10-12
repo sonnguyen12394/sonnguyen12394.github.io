@@ -1685,7 +1685,28 @@ export function init(host: EHost): EngineModule {
     if (c.route !== wroute) { wroute = c.route; if (c.route === 'quest/all') wlist = true; }
     const solid = g ? skillsOf(c.e, g).solid : 0, S = sc?.scene ?? null, b = town(E());
     const w = world({ b, act: S?.act ?? 0, done: !!S?.done, plan: dir ? dir.plan.map(p => p.game) : [], played: dir ? dir.x.played.filter(isGame) : [], next: dir?.next.game ?? null, deco: (E().tw ?? freshTown()).deco });
-    const panel = (id: PlaceId): string => {
+    // Dòng trạng thái riêng của từng game (trước nằm ở thẻ game của sảnh), hiện trong bảng công trình.
+    const stat = (id: PlaceId): string => {
+      const e = E(), t = host.today(), h = (x: string) => `<p class="hint wstat">${x}</p>`;
+      switch (id) {
+        case 'fog': return h(`🧭 ${e.gf?.runs ?? 0} lần thám hiểm${e.gf?.day && t - e.gf.day < 7 ? ` · bản đồ mới sau ${7 - (t - e.gf.day)} ngày` : ''}`);
+        case 'garden': return h(`🌸 ${e.gv?.blooms ?? 0} hoa · ${Object.keys(e.gv?.plants ?? {}).length} cây`);
+        case 'blocks': return h(`🏆 ${e.bk?.best ?? 0} · 🔥 ${e.bk?.streak ?? 0} ngày`);
+        case 'puzzle': return h(`${e.gd && e.gd.last === t ? '✅ Đã giải hôm nay' : '🆕 Câu đố hôm nay đang chờ'} · ${e.gd?.days ?? 0} ngày đã giải`);
+        case 'shop': return h(`📦 ${e.gw?.packed ?? 0} câu đã sửa · kỷ lục ${e.gw?.best ?? 0}/6`);
+        case 'letter': return h(`💌 ${e.gl?.runs ?? 0} thư · ${e.gl?.gifts ?? 0} món quà`);
+        case 'case': return h(`🗂️ ${e.gt?.solved ?? 0} hồ sơ đã phá · ${e.gt?.runs ?? 0} hồ sơ`);
+        case 'radio': return h(`📼 ${e.gr?.solved ?? 0} bản tin bắt được sóng`) + (host.tts?.() ? '' : h('📻 Đài Phố Chữ cần giọng đọc tiếng Anh của máy (máy này chưa có).'));
+        case 'cafe': return h(`⭐ ${e.gq?.stars ?? 0} sao · ${e.gq?.runs ?? 0} ca`);
+        case 'bubbles': return h(`🏆 ${e.gs?.best ?? 0} điểm · màn ${e.gs?.stage ?? 1}`);
+        case 'kara': return h(`🎵 kỷ lục ${e.gk?.best ?? 0} · ${e.gk?.runs ?? 0} bài`);
+        case 'robot': return h(`🏁 ${e.gb?.wins ?? 0} nhiệm vụ · ${e.gb?.picked ?? 0} đồ đã nhặt`);
+        case 'board': return h(`🏠 ${(e.bd?.lots ?? []).reduce((a, x) => a + x, 0)} tầng nhà · vòng phố ${e.bd?.laps ?? 0}`);
+        default: return '';
+      }
+    };
+    const panel = (id: PlaceId): string => stat(id) + extra(id);
+    const extra = (id: PlaceId): string => {
       switch (id) {
         case 'wheel': return viewWheelHero(c, hsave(), host.today());
         case 'hunt': return viewHuntHero(c, nsave(), host.today(), playtest());
