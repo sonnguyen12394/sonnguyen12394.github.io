@@ -90,5 +90,5 @@ export function viewShopEnd(c: ECtx, r: ShopRun, best: number): string {
     ${r.spots ? `<p>🔍 Tìm đúng chỗ hỏng ${r.spots}/${r.n} đơn.</p>` : ''}
     ${r.passed?.length ? `<div class="fb good" role="status"><strong>⬆ Lên cấp: ${r.passed.slice(0, 4).map(esc).join(', ')}</strong><span>đã vững (từ câu bạn tự sửa, không phải từ điểm game)</span></div>` : ''}
     <p class="hint">Mỗi câu bạn tự sửa được ghi vào bản đồ năng lực (ngữ pháp mức 4). Hộp và xu chỉ để vui.</p></section>
-    <div class="row"><button class="btn primary" data-e="wsstart">✍️ Ca mới</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="wsstart">✍️ Ca mới</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }

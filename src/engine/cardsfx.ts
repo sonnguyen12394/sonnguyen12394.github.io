@@ -161,7 +161,7 @@ export function openCards(st: () => CardsFxState | null, onBuilt: (order: number
           <p>🏆 Thắng ${s.won}/${TABLES} bàn · ⭐ ${s.total} điểm${rec ? ' · Kỷ lục mới!' : ''}</p><p>${s.ok}/${s.n} câu đúng · +${s.coins} xu</p>
           ${s.passed?.length ? `<p>⬆ Đã vững: ${s.passed.slice(0, 4).map(esc).join(', ')}</p>` : ''}${s.goalNote ? `<p class="whgoal">${esc(s.goalNote)}</p>` : ''}
           <p class="cdsmall">Điểm, bàn thắng và bùa chỉ để vui, không đổi đánh giá năng lực. Mọi câu bạn tự xếp đã được ghi vào bản đồ năng lực.</p>
-          <div class="whrow"><button class="whbig" data-e="cdstart">🃏 Ván mới</button><button class="whb wide" data-e="cdexit">Về sảnh</button></div>`;
+          <div class="whrow"><button class="whbig" data-e="cdstart">🃏 Ván mới</button><button class="whb wide" data-e="cdexit">Về bản đồ</button></div>`;
         live.textContent = `Xong ván, thắng ${s.won} trên ${TABLES} bàn.`;
         if (s.won) { snd.win(); for (let k = 0; k < 4; k++) burst(W * (0.2 + k * 0.2), H * 0.3, ['#fde68a', '#22c55e', '#f472b6', '#67e8f9'][k]!, 26); }
       } else if (s.tableEnd) {

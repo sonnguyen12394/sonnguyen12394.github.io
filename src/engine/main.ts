@@ -22,7 +22,7 @@ import { microVerdict, MICRO, MICRO_VER } from './micro.ts';
 import { planFloor, picker, reward, hearts, freshQuest, QUEST_VER, QUEST, type Enc, type FloorIn, type Challenge } from './quest.ts';
 import { roll, move, build, canBuild, freshBoardSave, TILES, ROLLS, price } from './board.ts';
 import { freshBlocks, deal, place, anyFits, fits, trayEmpty, anchor, freshBlocksSave, bumpStreak } from './blocks.ts';
-import { viewLobby, viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoardEnd } from './gameview.ts';
+import { viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoardEnd } from './gameview.ts';
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
 import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, TIER_COINS, type WkKind } from './weekly.ts';
@@ -54,7 +54,10 @@ import { openHunt, type HuntState, type HuntHandle, type HuntResult } from './hu
 import { direct, planDay, nextGame, isGame, freshDirSave, GAMES, type DirIn, type DirPick, type GameId, type Need } from './director.ts';
 import { freshPlay, playStart, playAct, playDone, playQuit, playReport, type Via } from './play.ts';
 import { town, townKey, townGain, freshTown, buyDeco, spend } from './town.ts';
-import { viewTown, viewTownGain, viewPlayStats } from './townview.ts';
+import { viewDecoShop, viewTownGain, viewPlayStats } from './townview.ts';
+import { world, type PlaceId } from './worldmap.ts';
+import { viewWorld } from './worldview.ts';
+import { mapMount, mapZoom, mapHome, justDragged } from './mappan.ts';
 import { viewShop, viewShopEnd, accepted as shopOk, badSpots, ORDERS, freshShopSave, type ShopRun } from './workshop.ts';
 import { pick as karaPick, linePoints, verdict as karaVerdict, ROLE, freshKaraSave } from './karaoke.ts';
 import { choose as caseChoose, order as caseOrder, options as caseOptions, solved as caseSolved, caseStars, freshCaseSave } from './detective.ts';
@@ -89,6 +92,7 @@ export interface EngineModule {
   version: number;
   render(route: string): string;
   after(route: string): void;
+  mapReset?(): void;                                       // v130: bấm tab Hôm nay → về bản đồ (đóng bảng công trình, thôi danh sách)
   stage?(on: boolean): void;                               // v102 sân khấu dùng chung cho game kỹ năng (app gọi sau mỗi lần vẽ)
   stageApp?(kind: string | null, n: number): void;         // v109 sân khấu cho trò nhanh cũ của app.js
   next(): { h: string; p: string; btn: string } | null;   // nút chính trang chủ theo lộ trình; null = dùng cách cũ
@@ -358,6 +362,7 @@ export function init(host: EHost): EngineModule {
   // Mỗi lượt là một câu do engine chọn (quest.ts dựng tầng từ NBA). Câu trả lời → bằng chứng thật (src 'game', hoặc 'transfer'
   // với trùm câu mới); xu / tim / tầng chỉ là telemetry trong e.q, không bao giờ vào mastery (P14).
   let qrun: QuestRun | null = null;
+  let wsel: PlaceId | null = null, wlist = false, wroute = '';   // v130 bản đồ: công trình đang mở bảng, chế độ danh sách
   const qsave = () => { const e = E(); return (e.q ||= freshQuest()); };
   // Câu cho một lượt (v65): lỗ hổng của nút quyết định cách sửa (remedy.ts) — chưa biết thì hỏi nhận ra, nhận ra rồi thì bắt tự gõ,
   // nhớ rồi thì sửa lỗi / sản sinh, thiếu phần nền đã kiểm chứng thì đổi sang phần nền, cần transfer thì câu mới.
@@ -1675,7 +1680,27 @@ export function init(host: EHost): EngineModule {
     const g = c.e.goals.map(sg => loaded()!.goal.get(sg.id)).find(Boolean), r = g ? readinessOf(host, c.e, g) : null, dir = c.e.goals.length ? director() : null, gs = dir ? goalSum(c.e, dir.x.review) : null;
     // v118 cảnh Phố Chữ ở đầu sảnh: khu / chương truyện + Sương Câm dày theo phần kỹ năng mục tiêu chưa vững (học thật thì sương tan).
     const sc = dir ? { scene: sceneOf(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)), fog: gs && gs.s.total ? 1 - gs.s.solid / gs.s.total : 0.6 } : null;
-    return viewLobby(c, E().bk, E().bd, E().gc, E().gq, E().gs, E().gd, E().gt, E().gr, !!host.tts?.(), E().gk, E().gw, E().gl, E().gb, E().gf, E().gv, dir, c.e.goals.length ? viewStory(E().sy, g ? skillsOf(c.e, g).solid : 0, storyGate(c.e)) + bag.hub(c) + vc.hub(c) + viewWheelHero(c, hsave(), host.today()) + viewHuntHero(c, nsave(), host.today(), playtest()) + viewCardsHero(c, csave()) + viewWeekly(E().wk, host.today()) : '', gs ? viewGoalSlim(c, gs.s) + (nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '') : '', (c.e.goals.length ? viewTown(c, town(E()), E().tw ?? freshTown(), wallet()) : '') + viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, c.e.goals.length ? nextStep(host, c.e, loaded()!) : null, g ? skillsOf(c.e, g) : null, c.e.goals.length ? neckOf(c.e) : null, true) + viewPlayStats(c, playReport(pmsave())), sc);
+    if (!c.e.goals.length) return '';
+    // v130 Bản đồ Phố Chữ thay sảnh: mọi lối vào game, truyện, Túi chữ, Bảng tin đều là công trình trên một bản đồ (worldmap.ts).
+    if (c.route !== wroute) { wroute = c.route; if (c.route === 'quest/all') wlist = true; }
+    const solid = g ? skillsOf(c.e, g).solid : 0, S = sc?.scene ?? null, b = town(E());
+    const w = world({ b, act: S?.act ?? 0, done: !!S?.done, plan: dir ? dir.plan.map(p => p.game) : [], played: dir ? dir.x.played.filter(isGame) : [], next: dir?.next.game ?? null, deco: (E().tw ?? freshTown()).deco });
+    const panel = (id: PlaceId): string => {
+      switch (id) {
+        case 'wheel': return viewWheelHero(c, hsave(), host.today());
+        case 'hunt': return viewHuntHero(c, nsave(), host.today(), playtest());
+        case 'cards': return viewCardsHero(c, csave());
+        case 'talk': return vc.hub(c);
+        case 'tower': return viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, nextStep(host, c.e, loaded()!), g ? skillsOf(c.e, g) : null, neckOf(c.e), true);
+        case 'bag': return bag.hub(c);
+        case 'notice': return viewWeekly(E().wk, host.today()) + (b.some(x => x.lv) ? viewDecoShop(c, b, E().tw ?? freshTown(), wallet()) : '<p class="hint">Chơi một ván bất kỳ để có công trình đầu tiên, rồi trang trí phố bằng xu ở đây.</p>') + viewPlayStats(c, playReport(pmsave()));
+        case 'story': return (S?.ready ? `<button class="btn primary" data-e="stscene" data-ch="${S.no}">📖 ${S.no ? `Xem cảnh: ${host.esc(S.who?.[1] ?? 'Phố')} nói lại được` : 'Bắt đầu câu chuyện'}</button>` : '') + viewStory(E().sy, solid, storyGate(c.e));
+        case 'arena': return '<p class="hint">Thử thách của app: giải đấu tuần, luyện đề VSTEP rút gọn, thách đấu bạn bè bằng mã, Leo tháp và trò nhanh cũ (Tốc độ 60 giây, Ghép cặp).</p><button class="btn primary big" data-go="games">🏟️ Vào Đấu trường</button>';
+        default: return '';
+      }
+    };
+    if (wsel && !w.places.some(p => p.id === wsel)) wsel = null;
+    return viewWorld(c, w, { sel: wsel, list: wlist }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '') + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
   }
   const routes: Record<string, (c: ECtx) => string> = {
     // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).
@@ -1761,6 +1786,12 @@ export function init(host: EHost): EngineModule {
     ...vc.acts,
     ...bag.acts,
     go(el) { host.go(el.dataset.r || 'goals'); },
+    // v130 bản đồ: mở / đóng bảng công trình (bỏ qua cú chạm ngay sau khi kéo), phóng, về chỗ đang ở, đổi bản đồ ↔ danh sách.
+    wmopen(el) { if (justDragged()) return; const p = el.dataset.p as PlaceId | undefined; wsel = p && wsel !== p ? p : null; host.render(); },
+    wmclose() { wsel = null; host.render(); },
+    wmzoom(el) { mapZoom(Number(el.dataset.k) || 1); },
+    wmhome() { mapHome(); },
+    wmlist() { wlist = !wlist; wsel = null; host.render(); },
     add(el) {
       const id = el.dataset.g || '';
       if (!addGoal(id, 'pick')) return;
@@ -1996,7 +2027,7 @@ export function init(host: EHost): EngineModule {
     bksel(el) { const bk = qrun?.bk, i = Number(el.dataset.p); if (!bk || bk.phase !== 'place' || !bk.tray[i] || !fits(bk.g, bk.tray[i]!)) return; bk.sel = i; host.render(); },
     bkput(el) { bkPut(Number(el.dataset.r), Number(el.dataset.c)); },
     mstart() { measureStart(); },
-    stexit(el) { act.qhome!(el); },   // v102 nút ✕ của sân khấu (tách khỏi qhome để không trùng nút "Về sảnh" của từng game)
+    stexit(el) { act.qhome!(el); },   // v102 nút ✕ của sân khấu (tách khỏi qhome để không trùng nút "Về bản đồ" của từng game)
     qhome() { vc.reset(); bag.reset(); bClose(); cClose(); nClose(); nrun = null; hClose(); hrun = null; qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; host.render(); },
     qnext() { qNext(); },
     qcheck() { if (!qrun || qrun.q || !qrun.chk) return; qrun.q = qrun.chk; host.render(); },
@@ -2168,7 +2199,8 @@ export function init(host: EHost): EngineModule {
   return {
     version: MODULE_VERSION,
     render,
-    after(route) { if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('gate') && gtRun?.res) gtRun = null; if (!route.startsWith('treasure')) chestDone = 0; if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } if (!route.startsWith('micro')) mrun = null; },
+    mapReset() { wsel = null; wlist = false; },
+    after(route) { if (route.startsWith('quest')) mapMount(); if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('gate') && gtRun?.res) gtRun = null; if (!route.startsWith('treasure')) chestDone = 0; if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } if (!route.startsWith('micro')) mrun = null; },
     autoGoal(id, why) {
       if (V().goals.length) return false;
       const ok = addGoal(id, why === 'pick' ? 'pick' : 'auto');

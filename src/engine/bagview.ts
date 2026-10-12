@@ -40,7 +40,7 @@ export function viewBag(c: ECtx, x: BagIn): string {
   const tabs = `<div class="bgtabs" role="tablist" aria-label="Túi chữ">${TABS.map(([t, vi]) => `<button role="tab" class="btn small${t === x.tab ? ' primary' : ' ghost'}" aria-selected="${t === x.tab}" data-e="bgtab" data-t="${t}">${vi}</button>`).join('')}</div>`;
   const body = x.tab === 'forge' || x.tab === 'map' ? x.forge : x.tab === 'craft' ? (x.cr ? craftRun(c, x) : craftMenu(c, x)) : x.tab === 'stat' ? stats(c, x) : x.tab === 'alb' ? albums(c, x) : x.tab === 'clue' ? clues(c, x) : bag(c, x);
   return `<section class="stack bgroot"><span class="eyebrow">🎒 Túi chữ · Thợ Chữ cấp ${charLv(x.rows)}</span>${tabs}${body}</section>
-    <div class="row"><button class="btn ghost" data-e="qhome">← Về sảnh</button></div>`;
+    <div class="row"><button class="btn ghost" data-e="qhome">← Về bản đồ</button></div>`;
 }
 
 function bag(c: ECtx, x: BagIn): string {

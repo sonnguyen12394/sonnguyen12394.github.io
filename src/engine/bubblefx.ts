@@ -95,11 +95,11 @@ export function openBubbles(st: () => BubbleFxState | null, mascot?: (m: 'happy'
           <p>✨ ${s.score} điểm${rec ? ' · 🏆 Kỷ lục mới!' : ''}</p><p>${s.ok}/${s.n} từ bắt trúng · +${s.coins} xu</p>
           ${s.passed?.length ? `<p>⬆ Đã vững: ${s.passed.slice(0, 4).map(esc).join(', ')}</p>` : ''}
           <p class="cdsmall">Điểm và màn chỉ để vui, không đổi đánh giá năng lực. Mọi câu trả lời đã được ghi vào bản đồ năng lực.</p>
-          <div class="whrow"><button class="whbig" data-e="bbstart">🎯 Màn mới</button><button class="whb wide" data-e="bbexit">Về sảnh</button></div>`;
+          <div class="whrow"><button class="whbig" data-e="bbstart">🎯 Màn mới</button><button class="whb wide" data-e="bbexit">Về bản đồ</button></div>`;
         live.textContent = `Xong màn, ${s.ok} trên ${s.n} từ.`;
         if (s.ok) { snd.win(); for (let k = 0; k < 4; k++) burst(W * (0.2 + k * 0.2), H * 0.3, ['#fde68a', '#86efac', '#67e8f9', '#f9a8d4'][k]!, 26); }
       } else if (bk) {
-        win.innerHTML = `<p>${s.tts ? 'Chưa có cặp âm nào cho mục tiêu này.' : 'Máy này không có giọng đọc tiếng Anh nên chưa chơi được Bắt Âm.'}</p><div class="whrow"><button class="whbig" data-e="bbnext">Tiếp</button><button class="whb wide" data-e="bbexit">Về sảnh</button></div>`;
+        win.innerHTML = `<p>${s.tts ? 'Chưa có cặp âm nào cho mục tiêu này.' : 'Máy này không có giọng đọc tiếng Anh nên chưa chơi được Bắt Âm.'}</p><div class="whrow"><button class="whbig" data-e="bbnext">Tiếp</button><button class="whb wide" data-e="bbexit">Về bản đồ</button></div>`;
       } else win.innerHTML = '';
       if (bk) setTimeout(() => (win.querySelector('.whbig') as HTMLElement | null)?.focus(), 40);
     }

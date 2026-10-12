@@ -40,7 +40,7 @@ test('Kho báu ẩn: thẻ ở sảnh → mở 12 rương không hiện đúng /
   const r = await page.evaluate(() => { const e = (window as any).eval('st').e; return { n: e.ms.set.length, pre: e.ms.checks[0]?.phase, snap: e.ev.snap.some((s: any) => s.dec === 'measure:pre'), coins: e.q?.coins ?? 0 }; });
   expect(r.pre).toBe('pre'); expect(r.snap).toBe(true);
   expect(r.coins - coins0).toBe(3 * r.n);
-  await page.getByRole('button', { name: 'Về sảnh chơi' }).click();
+  await page.getByRole('button', { name: 'Về bản đồ' }).click();
   await expect(page.locator('.tcard')).toHaveCount(0);   // lần đo sau chưa tới hạn
   expect(errors).toEqual([]);
 });

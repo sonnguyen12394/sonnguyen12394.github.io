@@ -40,7 +40,7 @@ export function viewKaraEnd(c: ECtx, r: KaraRun): string {
     <p>${esc(r.d.title)} · ${mine.length} câu của bạn · trung bình ${Math.round((mine.reduce((a, b) => a + b, 0) / Math.max(1, mine.length)) * 100)}% ${r.asr ? 'từ máy nghe ra' : '(tự chấm)'}.</p>
     ${stage(c, r)}
     <p class="hint">Kết quả lưu như màn Đóng vai (tính vào Can-Do nói). ${r.asr ? 'Máy nghe ra chưa chắc là phát âm chuẩn: đây là phép thử “người nghe có hiểu bạn không”.' : ''} Điểm và combo chỉ để vui, không đổi mức thuộc của từ / ngữ pháp.</p></section>
-    <div class="row"><button class="btn primary" data-e="krstart">🎤 Bài khác</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="krstart">🎤 Bài khác</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }
 
 // v92 Màn biểu diễn (GAME-CRITERIA §8.2 "trình diễn", T7 / T8): từng câu của bạn với mức máy nghe ra; câu hay nhất và câu nên luyện lại

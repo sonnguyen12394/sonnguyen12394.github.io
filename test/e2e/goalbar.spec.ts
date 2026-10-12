@@ -48,7 +48,7 @@ test('Sảnh: thẻ 🎯 gọn ngay dưới Chơi tiếp, trong khung đầu; ch
 
 test('Màn kết: dòng 🎯 nối ván với mục tiêu (Vườn từ), kể cả khi chưa vững thêm phần nào', async ({ page, errors }) => {
   await lobby(page);
-  await page.locator('.twt[data-e="gdstart"]').click();
+  await page.locator('.wlist [data-e="gdstart"]').click();
   for (let i = 0; i < 40; i++) {
     if (await page.getByRole('heading', { name: /Vườn của bạn/ }).isVisible()) break;
     const pk = await peek(page);

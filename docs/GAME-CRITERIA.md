@@ -2036,3 +2036,85 @@ Người sáng lập chọn phương án B: giữ ghép từ / ghép cụm / đ�
 - **💎 Báu vật (mức 5) hầu như không rèn được ở Lò**, vì kho câu chỉ tới mức 4. Mức 5 đến từ việc dùng tự do (nói ở Quán, viết Thư, trận cổng). Đây là đúng bản chất mức 5, không phải lỗi.
 - **Kỹ năng Can-Do / đọc / nghe / viết / nói** (khoảng 1/3 yêu cầu của một cấp) hiện trên bản đồ nhưng không rèn ở Lò: chúng đo bằng bài làm thật.
 - Lò rèn là **một đường mới đưa bằng chứng vào sổ**. Cần theo dõi chỉ số H9 (cấp app ước tính so với trận cổng / thi thật) sau 2–4 tuần. Nếu người chỉ rèn ở Lò mà qua cổng kém hơn người chơi đủ các game, thì phải hạ trọng số hoặc giới hạn của Lò.
+
+## 17. Bản đồ Phố Chữ toàn cảnh (v130)
+
+### 17.0 Yêu cầu và phản biện
+
+**Yêu cầu:** "Game trên app phức tạp, muốn thiết kế dạng bản đồ toàn cảnh liên kết."
+
+**Phản biện, tìm gốc rễ:**
+- Gốc rễ không phải ở chỗ thiếu bản đồ. Gốc rễ là mỗi bản lại xếp thêm một hệ thống vào cùng một sảnh dọc (dàn trải, §10.3 / §11.1):
+  - Cùng một game mở được từ khoảng 8 lối vào: Chơi tiếp, 3 đèn lồng, thẻ truyện, thẻ hero, 13 thẻ kỹ năng, 21 công trình phố, Thư viện → Tất cả trò chơi, tab Thử thách.
+  - Có khoảng 10 thước đo song song: xu, sao phố, cấp Vòng / Mỏ, chương truyện, đèn lồng, kỹ năng vững, Túi, Lò rèn, XP.
+  - Có 3 "bản đồ" rời nhau: sương mù, bản đồ phủ, bản đồ CEFR.
+- Nếu chỉ **thêm** một bản đồ thì nó thành lối vào thứ 9 và còn rối hơn. Bản đồ chỉ giải được gốc rễ khi nó **thay** sảnh, mục "Tự chọn", thẻ phố, thẻ truyện và tab Thử thách, đồng thời gom tiến độ về một thứ thấy được.
+- Bài học theo chủ đề, Kỹ năng và Sổ từ là bài học chứ không phải game, nên vẫn ở Thư viện.
+- Logic học không đổi: bộ não `planDay` / `nextGame`, bằng chứng và mức thuộc giữ nguyên. Bản đồ chỉ là lớp trình bày và điều hướng.
+
+Người sáng lập đã chốt: bản đồ thay **mọi** lối vào game, kiểu **2D kéo / thu phóng**, hiện **đủ 21 game**.
+
+### 17.1 Đã làm (`worldmap.ts`, `worldview.ts`, `mappan.ts`)
+
+**Thế giới 5 khu** theo `ACTS` của truyện: Quảng trường → Chợ Sáng → Bến Cảng → Rừng Trúc → Phố Đêm, nối nhau bằng đường truyện. Mỗi game ở đúng một khu:
+
+| Khu | Công trình |
+|---|---|
+| Quảng trường | 🎡 Vòng đu quay, ⛏️ Mỏ chữ, 🗺️ Cổng bản đồ, 🏰 Tháp canh, 🕰️ Tháp đồng hồ, 🏟️ Đấu trường, 🎒 Xưởng của Tí, 📋 Bảng tin phố |
+| Chợ Sáng | 🌷 Vườn hoa, ☕ Quán cà phê, 🍜 Quán Phố Chữ, 🏮 Dãy biển hiệu, 🏤 Bưu điện |
+| Bến Cảng | ⚓ Cần cẩu, 🏭 Xưởng, 🏗️ Công trường, 📡 Đài |
+| Rừng Trúc | 🫧 Hồ bong bóng, 🔎 Đồn hỏi chuyện, 🕵️ Thám tử, 🤖 Trạm robot |
+| Phố Đêm | 🎪 Sân khấu, 🃏 Câu lạc bộ bài, 🏘️ Khu nhà |
+
+**Trên bản đồ:**
+- **Sương** phủ các khu truyện chưa tới. Sương chỉ để trang trí và **không khoá** game nào (P13, P14): bấm công trình trong sương vẫn chơi được.
+- **📍 Bạn ở đây** là công trình "Truyện Phố Chữ", đặt ở khu của chương đang mở.
+- **Lộ trình hôm nay:** 3 chặng của bộ não được nối bằng vạch vàng. Mỗi chặng có số đèn trên công trình, game chơi tiếp thì nhấp nháy.
+- **Một thước đo phố:** "Phố hồi sinh N/5 khu · ★ sao phố". Các thước đo riêng (cấp Vòng, xu, Túi…) chỉ hiện trong bảng của công trình đó.
+- **Chạm công trình** mở bảng dưới bản đồ: tên, ★ và mốc kế, mô tả một dòng, chặng lộ trình, ▶ Chơi, rồi phần riêng của công trình:
+  - Vòng / Mỏ / Bài Câu: thẻ hero.
+  - Quán Phố Chữ: Bảng đo H.
+  - Tháp canh: Leo tháp.
+  - Xưởng của Tí: Túi chữ, Lò rèn.
+  - Bảng tin: sự kiện tuần, trang trí, số liệu chơi.
+  - Truyện: thẻ chương.
+  - Đấu trường: mở màn thử thách cũ của app.
+
+**Đầu màn** dùng lại khung cảnh v118: nơi đang ở, Tí, **một** nút "▶ Chơi tiếp", liên kết xem cảnh truyện, thước đo phố, 3 đèn lồng, thẻ 🎯 mục tiêu. Luật màn đầu "một việc chính" (v117) giữ nguyên, và test clarity vẫn chạy như cũ.
+
+**Kéo / thu phóng:**
+- Viết bằng vanilla pointer events, không thêm thư viện: một ngón kéo, hai ngón chụm, con lăn, nút ＋ / － / ⌂.
+- Kẹp biên và giới hạn độ phóng 0,35–2,5.
+- Kéo quá 6 px thì không tính là chạm.
+- Camera nhớ ở `localStorage['el-map-cam']`, chỉ là tiện ích của máy này, không vào `st.e`.
+
+**Truy cập:**
+- Công trình là `<button>` thật, xếp theo thứ tự khu.
+- Tab tới công trình nằm ngoài khung thì camera kéo tới đó; phím mũi tên kéo bản đồ khi đang ở khung.
+- Chế độ **☰ Danh sách** mở sẵn bảng của mọi công trình theo khu, dành cho trình đọc màn hình hoặc khi không muốn kéo.
+- Tôn trọng `prefers-reduced-motion`.
+
+**Thư viện và điều hướng:**
+- Thư viện bỏ "Tất cả trò chơi" và "Thử thách", thay bằng một dòng "Bản đồ Phố Chữ".
+- Đấu trường (`games`) thuộc tab Hôm nay.
+- Bấm tab Hôm nay luôn về bản đồ: đóng bảng, thôi chế độ danh sách.
+- Mọi nút "Về sảnh" đổi thành "Về bản đồ".
+
+### 17.2 Kiểm
+
+- **Unit** `engine-worldmap.test.ts`:
+  - Mỗi game đúng một công trình; khu không chồng nhau; công trình nằm trong khu và không đè chữ (ở cả 5 vị trí ghim truyện).
+  - Sương không khoá game; ★ khớp `town()`; lộ trình 3 chặng; hàm thuần, không đổi bản lưu.
+  - Kẹp camera.
+- **E2E** `worldmap.spec.ts`:
+  - Kéo / phóng đổi camera; chạm ngay sau khi kéo không mở bảng; camera giữ qua lần vẽ lại.
+  - Tab đưa camera theo, Enter mở bảng, ▶ Chơi vào đúng game.
+  - Đấu trường đi và về bản đồ.
+  - WCAG AA sáng / tối ở 390 px cho cả bản đồ, bảng và danh sách.
+- Các spec cũ chuyển bộ chọn từ sảnh / phố sang bản đồ hoặc danh sách: `town`, `clarity`, `director`, `goalbar`, `v91`, `fixtures.toLobby`. Ý định kiểm giữ nguyên.
+
+### 17.3 Phản biện, nói thẳng
+
+- **Trên điện thoại, màn đầu vẫn là khung "Chơi tiếp", bản đồ nằm ngay dưới** (lộ ra khoảng 1/5 ở khung nhìn đầu). Đây là cố ý: luật v117 "một việc chính" và giới hạn chiều cao màn đầu được giữ. Nếu số liệu cho thấy người học không cuộn xuống bản đồ, hướng sửa là thu gọn đèn lồng thành một dòng, không phải bỏ nút Chơi tiếp.
+- **2D kéo / thu phóng khó dùng một tay hơn danh sách.** Chế độ danh sách là lối thay thế đầy đủ. Cần đo §8.3: nếu phần lớn lượt vào game vẫn đi từ "Chơi tiếp" chứ không từ bản đồ, thì bản đồ đang làm đúng vai "thế giới để nhìn thấy tiến độ", không phải menu.
+- **21 game vẫn là 21 game.** Bản đồ gom lối vào, không giảm số game. Luật §11.2 (làm sâu 3 game chủ lực, chọn game yếu theo số liệu để gộp / ẩn) vẫn đúng và vẫn cần làm.

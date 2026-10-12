@@ -1,13 +1,13 @@
 import AxeBuilder from '@axe-core/playwright';
-import { test, expect, noHorizontalScroll, toLobby } from './fixtures.ts';
+import { test, expect, noHorizontalScroll, toLobby, openPick } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
-// v89 Phố chung + số liệu chơi (GAME-CRITERIA §8–§9): sảnh có phố 15 công trình (chạm để chơi); màn kết báo công trình lên cấp
+// v89 Phố chung + số liệu chơi (GAME-CRITERIA §8–§9); v130: phố là Bản đồ Phố Chữ (chạm công trình → bảng → chơi); màn kết báo công trình lên cấp
 // và mốc gần nhất; ván được đếm (đi từ "Chơi tiếp", xong, thời lượng); bảng số liệu ở sảnh.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 test.use({ future: false });
 
-async function lobby(page: Page): Promise<void> {
+async function lobby(page: Page, list = true): Promise<void> {
   await page.goto('/');
   await page.waitForFunction(() => (window as any).ELREADY === true);
   await page.evaluate(() => {
@@ -17,19 +17,24 @@ async function lobby(page: Page): Promise<void> {
     st.e.gf = { runs: 1, day: w.eval('today()') - 1 };
     w.eval('save()'); w.eval("go('games')");
   });
-  await toLobby(page);
+  await toLobby(page, list);
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 
-test('Phố chung: 21 công trình (v93 Vòng đu quay, v95 Mỏ chữ, v123–v126 Phố Chữ nói), đã xây / chưa xây, chạm công trình mở đúng game', async ({ page, errors }) => {
-  await lobby(page);
-  const tiles = page.locator('.twt');
-  await expect(tiles).toHaveCount(21);
-  await expect(page.locator('.twbox')).toContainText('Phố của bạn');
-  await expect(page.locator('.twt:not(.off)')).toHaveCount(1);              // Cổng bản đồ (đã thám hiểm 1 lần)
+test('Bản đồ Phố Chữ (v130): 21 công trình game + 4 mốc trên 5 khu, ★ theo Phố chung, chạm công trình mở bảng rồi ▶ Chơi mở đúng game', async ({ page, errors }) => {
+  await lobby(page, false);
+  const places = page.locator('.wmap .wplace');
+  await expect(places).toHaveCount(25);                                       // 21 game + Đấu trường, Xưởng của Tí, Bảng tin, Truyện
+  await expect(page.locator('.wmap .wzone')).toHaveCount(5);
+  await expect(page.locator('.whud')).toContainText(/★ 1\/84 sao phố/);      // Cổng bản đồ (đã thám hiểm 1 lần) có ★ thứ 1
+  await expect(page.locator('.wplace[data-p="fog"] .wst')).toHaveText('★☆☆☆');
   await expect(page.locator('.dbox .tisay')).toHaveCount(1);                // Tí dẫn đường
   await page.screenshot({ path: 'test-results/town-lobby.png', fullPage: true });
-  await page.locator('.twt[data-e="gdstart"]').click();
+  await page.locator('.wplace[data-p="garden"]').evaluate((el: HTMLElement) => el.click());   // có thể nằm ngoài khung nhìn của bản đồ
+  const sheet = page.locator('.wsheet');
+  await expect(sheet).toContainText('Vườn hoa');
+  await expect(page.locator('.wplace[data-p="garden"]')).toHaveAttribute('aria-expanded', 'true');
+  await sheet.locator('[data-e="gdstart"]').click();
   const s = await page.evaluate(() => (window as any).eval('st').e.pm);
   expect(s.cur.g).toBe('garden'); expect(s.cur.via).toBe('self'); expect(s.g.garden.n).toBe(1);
   expect(errors).toEqual([]);
@@ -61,6 +66,7 @@ test('Màn kết: ván được đếm (từ Chơi tiếp, xong, thời lượng
   await page.evaluate(() => (window as any).eval('render()'));
   expect(await page.evaluate(() => (window as any).eval('st').e.pm.g.garden.done)).toBe(1);
   await page.locator('[data-e="qhome"]').first().click();
+  await openPick(page);   // v130: bảng số liệu ở Bảng tin phố (chế độ danh sách mở sẵn mọi bảng)
   const stats = page.locator('details:not([data-lobby])', { hasText: 'Số liệu chơi' });
   await expect(stats).toHaveCount(1);
   await stats.locator('summary').click();

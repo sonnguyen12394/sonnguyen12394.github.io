@@ -41,7 +41,9 @@ test('L1 L2 L3: màn đầu có đúng một nút chính trong khung đầu (Ch�
     return r.height > 0 && !el.matches('section:has(> h1), details');
   }).length);
   expect(blocks, 'tối đa 3 khối: Chơi tiếp, mục tiêu, kho báu').toBeLessThanOrEqual(3);
-  await expect(page.locator('details[data-lobby]')).not.toHaveAttribute('open', '');
+  // v130: màn đầu là bản đồ (không mở sẵn bảng công trình hay danh sách).
+  await expect(page.locator('#app .wmap')).toBeVisible();
+  await expect(page.locator('#app .wsheet, #app .wlist')).toHaveCount(0);
   expect(await page.locator('#app').innerText()).not.toMatch(JARGON);
   // Thẻ mục tiêu gọn: một con số chính, chạm mở bản đầy đủ ở trang mục tiêu.
   await expect(page.locator('.gbar.slim')).toContainText(/🎯 A1 · \d+\/\d+ kỹ năng đã vững/);
@@ -64,7 +66,7 @@ test('L7: từ màn đầu, một chạm vào "Chơi tiếp" là vào game có c
   expect(errors).toEqual([]);
 });
 
-test('L6: 4 tab không trùng nghĩa; Thư viện → Tất cả trò chơi mở mục Tự chọn; bấm Hôm nay thu lại', async ({ page, errors }) => {
+test('L6: 4 tab không trùng nghĩa; Thư viện → Bản đồ Phố Chữ; danh sách bản đồ, bấm Hôm nay về bản đồ', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
   await expect(page.locator('#bnav button')).toHaveText(['Hôm nay', 'Ôn tập', 'Thư viện', 'Tôi'].map(t => new RegExp(`^${t}`)));
@@ -72,12 +74,17 @@ test('L6: 4 tab không trùng nghĩa; Thư viện → Tất cả trò chơi mở
   await expect(page.getByRole('heading', { name: 'Tự chọn bài', level: 1 })).toBeVisible();
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(r.violations.map(v => v.id)).toEqual([]);
-  for (const t of [/Tất cả trò chơi/, /Bài học theo chủ đề/, /Kỹ năng/, /Sổ từ/, /Thử thách/]) await expect(page.getByRole('button', { name: t })).toBeVisible();
-  await page.getByRole('button', { name: /Tất cả trò chơi/ }).click();
-  await expect(page.locator('details[data-lobby]')).toHaveAttribute('open', '');
+  // v130: mọi trò chơi (cả Đấu trường thay mục Thử thách) nằm trên Bản đồ Phố Chữ; Thư viện chỉ còn một lối tới đó.
+  for (const t of [/Bản đồ Phố Chữ/, /Bài học theo chủ đề/, /Kỹ năng/, /Sổ từ/]) await expect(page.getByRole('button', { name: t })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Tất cả trò chơi|Thử thách/ })).toHaveCount(0);
+  await page.getByRole('button', { name: /Bản đồ Phố Chữ/ }).click();
+  await expect(page.locator('#app .wmap')).toBeVisible();
   await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Hôm nay');
+  await page.locator('[data-e="wmlist"]').click();
+  await expect(page.locator('#app .wlist')).toBeVisible();
   await page.locator('#bnav button', { hasText: 'Hôm nay' }).click();
-  await expect(page.locator('details[data-lobby]')).not.toHaveAttribute('open', '');
+  await expect(page.locator('#app .wmap')).toBeVisible();
+  await expect(page.locator('#app .wlist')).toHaveCount(0);
   // Màn học cũ (unit) thuộc tab Thư viện.
   await page.locator('#bnav button', { hasText: 'Thư viện' }).click();
   await page.getByRole('button', { name: /Bài học theo chủ đề/ }).click();
@@ -117,8 +124,10 @@ for (const dark of [false, true]) test(`v118 cảnh Phố Chữ (${dark ? 'tối
   await expect(scene.locator('.tisay-b')).toContainText('Bà Lan');
   await expect(scene.locator('.lanterns li')).toHaveCount(3);
   await expect(scene).toContainText(/Thắp 0\/3 đèn hôm nay/);
-  const fog = await scene.locator('.scfog').evaluate(el => Number(getComputedStyle(el).opacity));
-  expect(fog, 'chưa vững kỹ năng nào → sương dày').toBeGreaterThan(0.6);
+  // v130: sương phủ các khu truyện chưa tới (Bến Cảng, Rừng Trúc, Phố Đêm); khu đang ở có ghim.
+  await expect(page.locator('.wzone.fog')).toHaveCount(3);
+  await expect(page.locator('.wzone.here')).toContainText('Khu Chợ Sáng');
+  await expect(page.locator('.wplace.pin')).toContainText('Bạn ở đây');
   const prim = await page.locator('#app .btn.primary:visible, #app .dgo:visible').count();
   expect(prim).toBe(1);
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();

@@ -47,5 +47,5 @@ export function viewGardenEnd(c: ECtx, r: GardenRun, plants: Record<string, Plan
     <div class="gdbed">${all.slice(0, 60).map(([id, p]) => `<span class="gdplant s${p.s}" title="${esc(STAGE_VI[p.s]!)}">${STAGE[p.s]}<small lang="en">${esc(words[id] ?? id)}</small></span>`).join('')}</div>
     ${r.passed?.length ? `<div class="fb good" role="status"><strong>⬆ Lên cấp: ${r.passed.slice(0, 4).map(esc).join(', ')}</strong><span>đã vững (từ câu bạn tự trả lời, không phải từ số hoa)</span></div>` : ''}
     <p class="hint">Mỗi cây lớn tối đa một bậc mỗi ngày (giãn cách để nhớ lâu). Hoa nở = bạn đã tự gõ được từ. Mỗi câu trả lời được ghi vào bản đồ năng lực.</p></section>
-    <div class="row"><button class="btn primary" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="qhome">Về bản đồ</button></div>`;
 }

@@ -59,7 +59,7 @@ export function viewTalkEnd(c: ECtx, r: TalkRun, sv: VoiceSave['tk']): string {
     <div class="stats"><div class="stat"><b>${said}/${all.length}</b><span>Lượt bạn tự nói / gõ</span></div><div class="stat"><b>${first}</b><span>Lượt khách hiểu ngay</span></div><div class="stat"><b>${med === null ? '–' : med.toFixed(1) + ' s'}</b><span>Thời gian nghĩ (trung vị, khi nói)</span></div></div>
     ${r.special ? `<p>${r.special.ok ? '✅' : '–'} Món đặc biệt: dùng từ <b lang="en">${esc(r.special.en)}</b> trong câu của bạn.</p>` : ''}
     <p class="hint">Mỗi hội thoại lưu như màn Hội thoại mở (tính vào Can-Do nói). Câu bạn tự nói / gõ và thời gian nghĩ vào Bảng đo H. Tổng ${sv.served} khách đã phục vụ.</p></section>
-    <div class="row"><button class="btn primary" data-e="tkstart">🗣️ Ca mới</button><button class="btn ghost" data-e="hmeter">📏 Bảng đo H</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="tkstart">🗣️ Ca mới</button><button class="btn ghost" data-e="hmeter">📏 Bảng đo H</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }
 
 // ---------- 🔎 Hỏi chuyện nhân chứng ----------
@@ -90,7 +90,7 @@ export function viewAskEnd(c: ECtx, r: AskRun, sv: VoiceSave['ak']): string {
     <p>Đáp án: <b>${esc(k.sus[k.ans]!.name)}</b>. ${r.tries > 1 ? `Bạn chọn ${r.tries} lần mới đúng.` : ''}</p>
     <details class="panel stack"><summary><b>Câu hỏi mẫu cho từng manh mối</b></summary>${k.facts.map(f => `<p><b>${esc(f.vi)}</b> <span lang="en">${esc(f.q[0]!.split(' ').map(s => s.split('|')[0]).join(' '))}…?</span> → <span lang="en">${esc(f.a)}</span></p>`).join('')}</details>
     <p class="hint">Câu hỏi bạn tự đặt và nhân chứng hiểu được tính là "dùng ở tình huống mới" trong Bảng đo H. Đã phá ${sv.solved} vụ.</p></section>
-    <div class="row"><button class="btn primary" data-e="akstart">🔎 Vụ khác</button><button class="btn ghost" data-e="hmeter">📏 Bảng đo H</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="akstart">🔎 Vụ khác</button><button class="btn ghost" data-e="hmeter">📏 Bảng đo H</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }
 
 // ---------- ⚓ Bến Cảng lệnh giọng ----------
@@ -122,7 +122,7 @@ export function viewPortEnd(c: ECtx, r: PortRun, sv: VoiceSave['pt']): string {
   return `<section class="stack"><span class="eyebrow">⚓ Bến Cảng</span><h1>⚓ Hết ca bốc hàng</h1><p style="font-size:22px">🚢 ${ok}/${n} thùng đúng ${r.mode === 'speak' ? '(máy nghe giọng của bạn)' : '(nghe phân biệt)'}</p>
     ${miss.length ? `<section class="panel stack"><b>Cặp âm nên luyện thêm</b>${[...new Map(miss.map(m => [m.o.set, m.o])).values()].map(o => `<p><b>${esc(o.title)}</b>: ${esc(o.tip)}</p>`).join('')}</section>` : ''}
     <p class="hint">${r.mode === 'speak' ? 'Máy nghe ra đúng từ là phép thử "người nghe có hiểu bạn không", không phải chấm phát âm chuẩn. Kết quả vào Bảng đo H (H7).' : 'Nghe phân biệt cặp âm là bằng chứng cho phần âm (như màn Âm).'} Kỷ lục ${sv.best}%.</p></section>
-    <div class="row"><button class="btn primary" data-e="ptstart">⚓ Ca mới</button><button class="btn ghost" data-e="hmeter">📏 Bảng đo H</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="ptstart">⚓ Ca mới</button><button class="btn ghost" data-e="hmeter">📏 Bảng đo H</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }
 
 // ---------- 🌫️ Sương quay lại ----------
@@ -143,7 +143,7 @@ export function viewSignsEnd(c: ECtx, r: SignRun): string {
   return `<section class="stack"><span class="eyebrow">🌫️ Sương quay lại</span><h1>🏮 ${ok}/${r.signs.length} biển sáng lại</h1>
     <ul class="stack" style="gap:4px">${r.signs.map((s, i) => `<li>${r.res[i] ? '🏮' : '🌫️'} <b lang="en">${esc(s.en)}</b> · ${esc(s.vi)} · ôn lần trước ${s.gap} ngày</li>`).join('')}</ul>
     <p class="hint">Mỗi biển là một lần ôn thật (lịch FSRS). Nhớ được sau ≥ 7 / ≥ 30 ngày vào Bảng đo H (H6 nhớ lâu).</p></section>
-    <div class="row"><button class="btn ghost" data-e="hmeter">📏 Bảng đo H</button><button class="btn primary" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn ghost" data-e="hmeter">📏 Bảng đo H</button><button class="btn primary" data-e="qhome">Về bản đồ</button></div>`;
 }
 
 // ---------- Sảnh: Phố Chữ nói ----------
@@ -171,5 +171,5 @@ export function viewHMeter(c: ECtx, rows: HRow[], total: number, measured: numbe
     <p class="hint">Đo trên chính bạn, 28 ngày gần nhất. Tiêu chí chưa đủ số liệu chỉ là ước tính, tối đa 6. Không đo chuỗi ngày, XP hay số bài đã xong: những số đó không cho biết bạn dùng được tiếng Anh.</p>
     <ul class="vhlist" aria-label="Bảng đo H, 10 tiêu chí">${li}</ul>
     <p class="hint">Muốn tăng: Quán Phố Chữ (H1, H5, H8), Hỏi chuyện (H2), Đài Phố Chữ có âm phố (H3, H4), Sương quay lại (H6), Bến Cảng (H7), trận cổng (H9), Phố thật (H10).</p></section>
-    <div class="row"><button class="btn primary" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="qhome">Về bản đồ</button></div>`;
 }

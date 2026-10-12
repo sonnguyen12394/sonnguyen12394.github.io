@@ -44,5 +44,5 @@ export function viewCafeEnd(c: ECtx, r: CafeRun, total: number): string {
     ${r.passed?.length ? `<div class="fb good" role="status"><strong>⬆ Lên cấp: ${r.passed.slice(0, 4).map(esc).join(', ')}</strong><span>đã vững (từ câu trả lời của bạn, không phải từ sao)</span></div>` : ''}
     ${weak.length ? `<p class="muted">Ca sau sẽ gặp lại: ${weak.map(esc).join(', ')}.</p>` : ''}
     <p class="hint">Sao và đồ trang trí chỉ để vui, không đổi đánh giá năng lực. Mọi câu trả lời đã được ghi vào bản đồ năng lực.</p></section>
-    <div class="row"><button class="btn primary" data-e="cfstart">☕ Ca mới</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="cfstart">☕ Ca mới</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }

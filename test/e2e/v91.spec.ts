@@ -28,7 +28,7 @@ test('Phố: trang trí công trình bằng xu chung; ví trừ đúng; món sau
   await shop.locator('summary').click();
   await shop.locator('[data-e="twbuy"][data-g="cafe"]').click();
   await expect(page.locator('details.twshop')).toContainText('70 xu');
-  await expect(page.locator('.twt[data-e="cfstart"] .twd')).toHaveText('☂️');
+  await expect(page.locator('[data-deco="cafe"]')).toHaveText('☂️');
   const tw = await page.evaluate(() => (window as any).eval('st').e.tw);
   expect(tw).toEqual({ spent: 30, deco: { cafe: 1 } });
   await page.locator('details.twshop').evaluate((d: any) => { d.open = true; });

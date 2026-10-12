@@ -1,24 +1,11 @@
-// Phố chung + số liệu chơi (v89): chỉ trình bày. Công trình là nút mở đúng game đó (phố cũng là chỗ chọn game).
+// Phố chung + số liệu chơi (v89): chỉ trình bày. v130: công trình nằm trên Bản đồ Phố Chữ (worldview.ts); ở đây còn màn kết, trang trí, số liệu.
 
 import type { ECtx } from './views.ts';
 import { GAMES } from './director.ts';
-import { MAX_LV, LV_VI, townLevel, DECO, canDeco, type Building, type TownSave } from './town.ts';
+import { MAX_LV, LV_VI, DECO, canDeco, type Building, type TownSave } from './town.ts';
 import { TH, MIN_N, type GReport } from './play.ts';
 
 const stars = (lv: number) => '★'.repeat(lv) + '☆'.repeat(MAX_LV - lv);
-
-export function viewTown(c: ECtx, b: Building[], t: TownSave, wallet: number): string {
-  const esc = c.host.esc, lv = townLevel(b), built = b.filter(x => x.lv).length;
-  const tiles = b.map(x => {
-    const g = GAMES[x.game], tip = x.next === null ? 'đủ 4 ★' : `${x.v}/${x.next} ${x.unit} tới ★ thứ ${x.lv + 1}`;
-    return `<button class="twt${x.lv ? '' : ' off'}" data-e="${g.start}" style="--lv:${x.lv}" aria-label="${esc(x.vi)}: ${esc(LV_VI[x.lv])}, ${x.lv} trên 4 sao, ${esc(tip)}. Mở ${esc(g.vi)}">
-      <span class="twi" aria-hidden="true">${x.ico}</span>${t.deco[x.game] ? `<span class="twd" aria-hidden="true">${DECO[x.game].slice(0, t.deco[x.game]).join('')}</span>` : ''}<b>${esc(x.vi)}</b><span class="tws" aria-hidden="true">${stars(x.lv)}</span><span class="twn">${esc(tip)}</span></button>`;
-  }).join('');
-  return `<section class="stack twbox"><div class="spread"><span class="eyebrow">🏙️ Phố của bạn · ${lv}/${b.length * MAX_LV} ★</span><span class="hint">${built}/${b.length} công trình</span></div>
-    <div class="twg">${tiles}</div>
-    ${built ? viewDecoShop(c, b, t, wallet) : ''}
-    <p class="hint">Mỗi game xây một công trình trên phố. Chạm công trình để chơi. ★ của phố chỉ để vui, không phải cấp tiếng Anh: cấp của bạn chỉ lên từ câu trả lời.</p></section>`;
-}
 
 // Màn kết: công trình vừa lên cấp + mốc gần nhất của game vừa chơi (gần đích thì muốn chơi tiếp, không dựa vào sợ mất).
 export function viewTownGain(c: ECtx, gain: Building[], cur: Building | undefined): string {
@@ -45,7 +32,7 @@ export function viewPlayStats(c: ECtx, rows: GReport[]): string {
 }
 
 // v91 Trang trí phố bằng xu chung: chọn công trình nào trang trí trước. Mỗi ★ mở chỗ cho một món; giá tăng dần.
-function viewDecoShop(c: ECtx, b: Building[], t: TownSave, wallet: number): string {
+export function viewDecoShop(c: ECtx, b: Building[], t: TownSave, wallet: number): string {
   const esc = c.host.esc;
   const rows = b.filter(x => x.lv).map(x => {
     const d = canDeco(t, x, wallet), next = DECO[x.game][d.k];

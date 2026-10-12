@@ -69,5 +69,5 @@ export function viewCaseEnd(c: ECtx, r: CaseRun, total: number): string {
     <p>${read ? `Sổ thám tử: ${total} hồ sơ đã phá.` : `Kệ băng: ${total} bản tin đã bắt sóng.`}</p>
     <details class="dtrec"><summary>${read ? '🗂️ Biên bản vụ án' : '🗒️ Ghi chép bản tin'}</summary><ol class="stack" style="gap:6px">${r.qs.map((q, k) => `<li><span lang="en">${esc(q.q)}</span><br><b lang="en">${esc(q.a)}</b> ${r.first[k] ? '<span aria-label="đúng ngay lần đầu">✓</span>' : '<span aria-label="chưa đúng lần đầu">✗</span>'}</li>`).join('')}</ol></details>${script}
     <p class="hint">Điểm ${read ? 'đọc' : 'nghe'} của bài được lưu như ở tab ${read ? 'Đọc' : 'Nghe'} (tính vào Can-Do ${read ? 'đọc' : 'nghe'}). Sao, xu và ${read ? 'sổ thám tử' : 'kệ băng'} chỉ để vui, không đổi đánh giá năng lực.</p></section>
-    <div class="row"><button class="btn primary" data-e="${read ? 'dtstart' : 'rdstart'}">${read ? '🔍 Hồ sơ mới' : '📻 Bản tin mới'}</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="${read ? 'dtstart' : 'rdstart'}">${read ? '🔍 Hồ sơ mới' : '📻 Bản tin mới'}</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }
