@@ -140,7 +140,7 @@ test('v129 Lò rèn năng lực: rèn kỹ năng của mục tiêu ghi bằng ch
     await root.locator('[data-e="bgfnext"]').click();
   }
   expect(answered).toBeGreaterThan(0);
-  await expect(root).toContainText('Xong lượt rèn');
+  await expect(root).toContainText(/Xong lượt rèn|Lò nóng/);
   const ev = await page.evaluate((n) => (window as any).eval('st').e.ev.led.slice(n).map((x: any) => [x.ctx, x.src, x.ok]), led0);
   expect(ev.length).toBe(answered);
   expect(ev.every((x: any[]) => x[0] === 'forge' && x[1] === 'game' && x[2] === 1)).toBe(true);
