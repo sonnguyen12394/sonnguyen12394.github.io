@@ -21,10 +21,10 @@ async function lobby(page: Page): Promise<void> {
 }
 const peek = (page: Page) => page.evaluate(() => (window as any).eval('EM').peek());
 
-test('Phố chung: 17 công trình (v93 Vòng đu quay, v95 Mỏ chữ), đã xây / chưa xây, chạm công trình mở đúng game', async ({ page, errors }) => {
+test('Phố chung: 21 công trình (v93 Vòng đu quay, v95 Mỏ chữ, v123–v126 Phố Chữ nói), đã xây / chưa xây, chạm công trình mở đúng game', async ({ page, errors }) => {
   await lobby(page);
   const tiles = page.locator('.twt');
-  await expect(tiles).toHaveCount(17);
+  await expect(tiles).toHaveCount(21);
   await expect(page.locator('.twbox')).toContainText('Phố của bạn');
   await expect(page.locator('.twt:not(.off)')).toHaveCount(1);              // Cổng bản đồ (đã thám hiểm 1 lần)
   await expect(page.locator('.dbox .tisay')).toHaveCount(1);                // Tí dẫn đường
