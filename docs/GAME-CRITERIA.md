@@ -2118,3 +2118,63 @@ Người sáng lập đã chốt: bản đồ thay **mọi** lối vào game, ki
 - **Trên điện thoại, màn đầu vẫn là khung "Chơi tiếp", bản đồ nằm ngay dưới** (lộ ra khoảng 1/5 ở khung nhìn đầu). Đây là cố ý: luật v117 "một việc chính" và giới hạn chiều cao màn đầu được giữ. Nếu số liệu cho thấy người học không cuộn xuống bản đồ, hướng sửa là thu gọn đèn lồng thành một dòng, không phải bỏ nút Chơi tiếp.
 - **2D kéo / thu phóng khó dùng một tay hơn danh sách.** Chế độ danh sách là lối thay thế đầy đủ. Cần đo §8.3: nếu phần lớn lượt vào game vẫn đi từ "Chơi tiếp" chứ không từ bản đồ, thì bản đồ đang làm đúng vai "thế giới để nhìn thấy tiến độ", không phải menu.
 - **21 game vẫn là 21 game.** Bản đồ gom lối vào, không giảm số game. Luật §11.2 (làm sâu 3 game chủ lực, chọn game yếu theo số liệu để gộp / ẩn) vẫn đúng và vẫn cần làm.
+
+
+## 18. Trục G: đối chiếu Gunny (v131)
+
+### 18.0 Yêu cầu và phản biện
+
+**Yêu cầu:** "Dựa vào game Gunny, đưa ra các tiêu chí đánh giá trên thang điểm 10 với app về các phần có liên quan."
+
+Gunny là game bắn súng theo lượt: ngắm góc, chọn lực, tính gió, địa hình bị phá, đấu 1v1–4v4, phó bản, cường hoá trang bị, hội, kết hôn.
+
+**Phản biện trước khi chấm:**
+- **Mốc 10 = Gunny làm tốt nhất ở từng hệ thống, không phải "app phải thành Gunny".** Đây là app học tiếng Anh.
+  - Kỹ năng của Gunny là vật lý (góc, lực, gió).
+  - Kỹ năng của app phải là tiếng Anh. Luật HG24 đã ghi: thao tác không phải tiếng Anh trong vòng chơi là sai.
+  - Vì vậy không chép cơ chế ngắm bắn. Chỉ chép những gì làm Gunny giữ chân người chơi: đánh với người thật, đồng đội, nhịp trận ngắn, tiến triển thấy được.
+- **Không chép phần độc hại của Gunny:**
+  - Nạp tiền mạnh mới thắng (VIP, lực chiến mua bằng tiền).
+  - Quay thưởng (gacha).
+  - Cường hoá thất bại thì mất đồ.
+  - Ba thứ này trái P13 (điểm game không vào năng lực), trái lời hứa "không quảng cáo, không ép", và gây hại cho người học.
+- **Điểm dưới đây là tự chấm khi đọc code, chưa đo trên người dùng.** Cần đối chiếu với số liệu chơi (§8.3) sau 2–4 tuần.
+
+### 18.1 Mười tiêu chí và điểm (tự chấm v131)
+
+| # | Tiêu chí (hệ thống của Gunny) | Gunny làm gì (mốc 10) | App hiện có | Điểm |
+|---|---|---|---|---|
+| G1 | **Vòng chơi lõi có kỹ năng** | Mỗi lượt: góc + lực + gió, thấy quỹ đạo, trượt hay trúng đều do tay mình; người giỏi thắng rõ. | Vòng Chữ, Mỏ Chữ, Bài Câu, Quán nói: hành động chính là tiếng Anh (vuốt từ, xếp câu, nói). Phần lớn game kỹ năng vẫn là "chọn đáp án", ít biến số mỗi lượt (không có thứ như "gió"). | **5** |
+| G2 | **Đấu với người thật theo lượt** | Phòng 1v1–4v4, ghép trận theo trình độ, trận 3–5 phút. | Không có đấu trực tiếp. "Thách đấu bạn bè" là gửi mã 10 câu để so điểm, không đánh qua lại. Giải đấu tuần chỉ đua XP. | **2** |
+| G3 | **Đồng đội và xã hội** | Hội, bạn bè, chat, kết hôn, nhiệm vụ hội; chơi vì bạn bè. | Chỉ có "Công cụ lớp học" cho giáo viên (gộp file thủ công). Không có bạn bè, nhóm hay hội trong app. | **1,5** |
+| G4 | **Phó bản và boss** | Phó bản theo cấp, boss có cơ chế riêng, khó dần, phần thưởng theo ải. | Leo tháp có boss và hồi tim; Mỏ Chữ có màn băng, màn rương; truyện 4 khu, mỗi khu kết bằng trận cổng; bản đồ 5 khu (v130). Boss chủ yếu là "câu khó hơn", chưa có cơ chế riêng. | **6** |
+| G5 | **Tiến triển nhân vật** (trang bị, cường hoá, khảm ngọc, lực chiến) | Đồ có cấp, ngọc, chỉ số; thấy rõ mình mạnh lên. | Túi chữ, Lò rèn, 7 chỉ số thật Lv 1–10 gắn với kỹ năng thật (hay hơn Gunny vì không mua được). Nhưng chỉ có 5 món trang bị, hiệu ứng nhỏ, và nhân vật người chơi không hiện hình. | **6** |
+| G6 | **Nhịp trận và phản hồi tức thì** | Quỹ đạo, nổ, đất vỡ, số sát thương bay, rung màn; trận ngắn. | Sân khấu toàn màn, nổ hạt, nảy, rung (v102–v109); ván 3–5 phút; âm thanh. Thiếu "số bay" và cảm giác có đối thủ trên màn. | **6,5** |
+| G7 | **Nhiệm vụ ngày, quà đăng nhập, sự kiện** | Nhiệm vụ ngày, điểm danh, sự kiện theo mùa. | Lộ trình 3 đèn, sự kiện tuần, Kho báu ẩn, chuỗi ngày, nhắc học. Cố ý không dùng "sợ mất" (đúng). | **7,5** |
+| G8 | **Bản sắc và nhân vật** | Nhân vật chibi, vũ khí riêng, trượt cũng vui, cộng đồng nhận ra ngay. | Tí, cốt truyện Phố Chữ (Mờ, cú lật, 3 lựa chọn), bản đồ phố. Người chơi chưa có nhân vật của mình. | **6** |
+| G9 | **Xếp hạng và danh vọng** | Hạng theo kỹ năng thắng thua, lực chiến, danh hiệu. | Giải đấu 5 hạng Đồng → Kim cương, nhóm 30 người, nhưng xếp theo XP (chăm chỉ), không theo thắng thua. Chưa có danh hiệu. | **5** |
+| G10 | **Cá nhân hoá và kinh tế** | Thời trang, thú cưng, tiền trong game có nhiều chỗ tiêu. | Tủ đồ của Tí, trang trí phố bằng xu, không nạp tiền (đúng). Người chơi không có hình đại diện riêng, xu ít chỗ tiêu. | **4,5** |
+
+**Trung bình: 5,0 / 10.**
+- Mạnh: G7 (nhịp ngày), G6 (phản hồi), G4 và G5 (tiến triển, phó bản). Đây là các phần app đã đầu tư từ v88 đến v130.
+- Yếu: G2 (đấu người thật) và G3 (đồng đội). Đây là **gốc rễ giữ chân của Gunny**: người ta quay lại Gunny vì bạn bè và đối thủ thật, không phải vì đồ.
+
+### 18.2 Gốc rễ chênh lệch
+App được thiết kế "một người + máy" để không cần tài khoản, chạy khi mất mạng, giữ riêng tư. Thiết kế đó đúng cho việc học, nhưng làm cho G2, G3 và G9 gần như bằng 0. Supabase đã có sẵn (giải đấu, đồng bộ, nhắc học), nên có thể thêm phần xã hội **mà vẫn không cần tài khoản**, chỉ dùng biệt danh và mã như giải đấu đang làm.
+
+### 18.3 Việc ưu tiên (chưa làm)
+1. **Đấu theo lượt với "bóng" của người thật** (G2: 2 → 5–6)
+   - Hai người cùng mã trận: cùng hạt giống câu, cùng bàn Vòng Chữ hoặc Bài Câu.
+   - Lượt của đối thủ được phát lại như bóng ma; thắng thua tính bằng câu tiếng Anh đúng và nhanh.
+   - Không cần máy chủ thời gian thực: mở rộng mã "Thách đấu" hiện có.
+2. **Tổ học 3–5 người** (G3: 1,5 → 5)
+   - Chung một mục tiêu tuần (tổng số đèn thắp được).
+   - Nhìn thấy nhau trên bản đồ Phố Chữ.
+   - Lưu trên Supabase theo mã tổ, giống giải đấu.
+3. **Hạng theo trận** (G9: 5 → 7)
+   - Elo từ các trận ở mục 1, tách khỏi XP.
+   - Thêm danh hiệu theo kỹ năng thật (chỉ số Lv của Túi chữ).
+4. **Nhân vật của người chơi trên bản đồ** (G8, G10)
+   - Hình đại diện chibi đi trên bản đồ v130, mặc đồ từ trang bị đã rèn.
+   - Không bán bằng tiền thật.
+5. **Không làm:** nạp tiền để mạnh hơn, quay thưởng, cường hoá thất bại mất đồ, ngắm bắn bằng góc / lực không qua tiếng Anh.
