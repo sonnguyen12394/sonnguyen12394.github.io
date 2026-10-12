@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 67;
+const STATE_V = 18, APP_VERSION = 68;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1794,7 +1794,7 @@ const ACC = {
   phones:{t:'Tai nghe',chest:1,svg:'<path d="M13 30 q0-22 19-22 q19 0 19 22" fill="none" stroke="#1B2233" stroke-width="3"/><rect x="9" y="27" width="7" height="11" rx="3" fill="#E24B3B"/><rect x="48" y="27" width="7" height="11" rx="3" fill="#E24B3B"/>'},
   star:{t:'Huy hiệu sao',chest:1,svg:'<path d="M32 44 l2 4 4 .5 -3 3 1 4 -4-2 -4 2 1-4 -3-3 4-.5z" fill="#E9B949"/>'},
 };
-function mascot(mood='happy',size=64){
+function mascot(mood='happy',size=64,wear){   // wear: phụ kiện để thử (v131 Tủ đồ xem trước); bỏ trống = đồ đang đeo
   // Tí là chú chó cỏ vàng "bốn mắt" (chấm lông trên mày), một tai dựng một tai cụp, đuôi vẫy. Tự vẽ bằng SVG, không dùng id/gradient
   // để nhiều hình trên một trang không đụng nhau. Toạ độ mắt (24,30)/(40,30) giữ nguyên để phụ kiện trong tủ đồ khớp.
   const up = mood==='cheer' ? -1.2 : 0;
@@ -1810,8 +1810,8 @@ function mascot(mood='happy',size=64){
     : mood==='sleep' ? '<path d="M29.5 41.5 q2.5 1.8 5 0" stroke="#2A1E16" stroke-width="1.8" fill="none" stroke-linecap="round"/>'
     : '<path d="M32 38.6 v2 M27.6 40.6 q4.4 3.6 4.4 0 q0 3.6 4.4 0" stroke="#2A1E16" stroke-width="1.8" fill="none" stroke-linecap="round"/>';
   const paw = mood==='cheer' ? '<g class="paw"><path d="M46 50 C50 46 53 40 54 35" stroke="var(--ti)" stroke-width="6.4" fill="none" stroke-linecap="round"/><ellipse cx="54.4" cy="33.6" rx="4.2" ry="3.6" fill="var(--ti-belly)"/></g>' : '';
-  const acc = st.cos&&ACC[st.cos.acc] ? ACC[st.cos.acc].svg : '';
-  const extra = mood==='party' ? (!/hat|crown/.test(st.cos&&st.cos.acc||'') ? '<path d="M26 11 L32 -2 L38 11Z" fill="#E85D9C"/><path d="M28.4 6 L35.6 6 M27.4 9 L36.6 9" stroke="#fff" stroke-width="1.2" opacity=".7"/><circle cx="32" cy="-1.5" r="2.2" fill="#E9B949"/>' : '')
+  const wk = wear!==undefined ? wear : st.cos&&st.cos.acc, acc = ACC[wk] ? ACC[wk].svg : '';
+  const extra = mood==='party' ? (!/hat|crown/.test(wk||'') ? '<path d="M26 11 L32 -2 L38 11Z" fill="#E85D9C"/><path d="M28.4 6 L35.6 6 M27.4 9 L36.6 9" stroke="#fff" stroke-width="1.2" opacity=".7"/><circle cx="32" cy="-1.5" r="2.2" fill="#E9B949"/>' : '')
       +'<g class="confetti"><rect x="2" y="30" width="3" height="3" rx=".6" fill="#E85D9C"/><rect x="58" y="36" width="3" height="3" rx=".6" fill="#2F64D6"/><circle cx="62" cy="4" r="1.6" fill="#E9B949"/><circle cx="1" cy="0" r="1.4" fill="#23905A"/></g>'
     : mood==='sleep' ? '<g class="zz" fill="var(--muted)" font-family="sans-serif" font-weight="800"><text x="50" y="8" font-size="9">z</text><text x="56" y="0" font-size="7">z</text></g>' : '';
   return `<svg class="ti ${mood}" width="${size}" height="${size}" viewBox="-2 -4 68 72" aria-hidden="true">
@@ -1844,13 +1844,13 @@ const hasSkin = k => !!SKINS[k] && (!SKINS[k].need || (st.cos.sk||[]).includes(k
 function applySkin(){ try{ const de=document.documentElement, k=hasSkin(st.cos.skin)?st.cos.skin:''; if(de&&de.setAttribute) de.setAttribute('data-skin',k); }catch(e){} }
 function viewCloset(){
   const L=xpLevel().L;
-  const accBtn=(k,a)=>{ const own=hasAcc(k), on=st.cos.acc===k; return `<button class="goal closet ${on?'on':''} ${own?'':'locked'}" data-acc="${k}" aria-pressed="${on}"><b>${esc(a.t)}${on?' ✓':''}</b><span class="muted">${own?(on?'Đang đeo · bấm để tháo':'Bấm để đeo'):a.need!=null?`🔒 Mở khi có ${a.need} unit vững (đang có ${solidUnits()})`:'🔒 Hiếm: rơi từ rương'}</span></button>`; };
+  const accBtn=(k,a)=>{ const own=hasAcc(k), on=st.cos.acc===k; return `<button class="goal closet ${on?'on':''} ${own?'':'locked'}" data-acc="${k}" aria-pressed="${on}"><span class="cltry" aria-hidden="true">${mascot('happy',64,k)}</span><b>${esc(a.t)}${on?' ✓':''}</b><span class="muted">${own?(on?'Đang đeo · bấm để tháo':'Bấm để đeo'):a.need!=null?`🔒 Mở khi có ${a.need} unit vững (đang có ${solidUnits()})`:'🔒 Hiếm: rơi từ rương'}</span></button>`; };
   const skinBtn=(k,s)=>{ const own=hasSkin(k), on=(st.cos.skin||'')===k; return `<button class="goal closet ${on?'on':''} ${own?'':'locked'}" data-skin="${k}" aria-pressed="${on}"><b><span class="swatch sw-${k||'base'}"></span> ${esc(s.t)}${on?' ✓':''}</b><span class="muted">${own?(on?'Đang dùng':'Bấm để dùng'):`🔒 Mở khi có ${s.need} unit vững (đang có ${solidUnits()})`}</span></button>`; };
   const album=CONTENT.levels.filter(l=>l.units.length).map(l=>{ const ws=l.units.flatMap(u=>u.words), k=ws.filter(w=>isMastered(w.id)).length;
     return `<div class="dimrow" style="--lv:var(--lv-${l.id.toLowerCase()})"><span><b class="lvtag">${l.id}</b> ${esc(l.vi)}</span>${meter(ws.length?k/ws.length:0,'good')}<span class="v">${k}/${ws.length}</span></div>`; }).join('');
   return `<button class="btn ghost back" data-go="more">← Thêm</button>
   <section class="panel hero"><div class="hero-in"><div class="tibox">${mascot('party',110)}</div><div class="stack" style="gap:6px"><span class="eyebrow">${esc(compTitle())} · bậc ${L}</span><h1>Tủ đồ của Tí</h1>
-    <p class="muted">Mỗi unit “vững” (nhớ đúng ở lần ôn sau) giúp mở phụ kiện và màu giao diện mới. Phụ kiện hiếm chỉ rơi ra từ rương mỗi ngày (xong 3 nhiệm vụ).</p>
+    <p class="muted">Thử đồ ngay trên Tí; học vững thêm để mở.</p><details class="dwhy"><summary>❓ Mở đồ thế nào</summary><p class="hint">Mỗi unit “vững” (nhớ đúng ở lần ôn sau) giúp mở phụ kiện và màu giao diện mới. Phụ kiện hiếm chỉ rơi ra từ rương mỗi ngày (xong 3 nhiệm vụ).</p></details>
     <p class="num">${Object.keys(ACC).filter(hasAcc).length}/${Object.keys(ACC).length} phụ kiện · ${Object.keys(SKINS).filter(hasSkin).length}/${Object.keys(SKINS).length} màu</p></div></div></section>
   <section class="panel stack"><h3>Phụ kiện</h3><div class="goals">${Object.entries(ACC).map(([k,a])=>accBtn(k,a)).join('')}</div></section>
   <section class="panel stack"><h3>Màu giao diện</h3><div class="goals">${Object.entries(SKINS).map(([k,s])=>skinBtn(k,s)).join('')}</div></section>
@@ -2439,7 +2439,8 @@ function renderChrome(){
   if(bn){ bn.style.gridTemplateColumns=`repeat(${NAV.length},1fr)`; } if(bn) bn.innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}><span class="bi">${ico(ic)}</span><span>${l}</span>${badge(k)}</button>`).join('');
   // v117: hai con số, có chữ đi kèm (chuỗi ngày, câu đúng hôm nay / mục tiêu ngày). Năng lượng chỉ hiện khi đang thiếu (lúc đó mới cần biết).
   const enLow=!FOCUS()&&(money().s||enNow()<EN.cap);   // Super vẫn hiện (người học đã bật, cần thấy trạng thái)
-  document.getElementById('clock').innerHTML = `${FOCUS()?'':`<span title="Chuỗi ngày học liên tiếp">${ico('flame')} <b>${streak()}</b> ngày</span> · `}<span title="Câu đúng hôm nay / mục tiêu ngày">hôm nay <b>${Math.min(goalCount(),goal())}/${goal()}</b> câu</span>${enLow?enPill():''}${st.set.demo?` · ngày ${dayNo(today())} <button class="btn small" data-act="nextday" title="Chế độ demo: tua nhanh thời gian để thử lịch ôn">+1 ngày</button>`:''}`;
+  const er=EM&&EM.res?(()=>{ try{ return EM.res(); }catch(e){ return null; } })():null;   // v131 thanh tài nguyên: xu chung của phố (engine)
+  document.getElementById('clock').innerHTML = `${er&&!FOCUS()?`<span class="clxu" title="Xu của phố: tiêu ở Bảng tin phố">🪙 <b>${er.coins}</b> · </span>`:''}${FOCUS()?'':`<span title="Chuỗi ngày học liên tiếp">${ico('flame')} <b>${streak()}</b> ngày</span> · `}<span title="Câu đúng hôm nay / mục tiêu ngày">hôm nay <b>${Math.min(goalCount(),goal())}/${goal()}</b> câu</span>${enLow?enPill():''}${st.set.demo?` · ngày ${dayNo(today())} <button class="btn small" data-act="nextday" title="Chế độ demo: tua nhanh thời gian để thử lịch ôn">+1 ngày</button>`:''}`;
 }
 // v117 Thư viện: nơi TỰ CHỌN. Tab Hôm nay đã chọn sẵn việc cần nhất; ở đây người học muốn chọn bài / game cụ thể.
 function viewLib(){
@@ -2456,7 +2457,8 @@ function viewMore(){
   const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
   const x=xpLevel(), r=recalledWeek();
   const lx=lvLayer();
-  return `<section class="stack"><span class="eyebrow">Tôi</span><h1>${esc(st.set.name||x.title)}</h1></section>
+  return `<section class="panel hero mehero"><div class="hero-in"><div class="tibox">${mascot('happy',96)}</div><div class="stack" style="gap:4px"><span class="eyebrow">Tôi${st.set.name?` · ${esc(x.title)}`:''}</span><h1>${esc(st.set.name||x.title)}</h1>
+    ${featOn('closet')?`<div class="row"><button class="btn small" data-go="closet">${ico('shirt')} Tủ đồ của Tí</button></div>`:''}</div></div></section>
   <section class="panel stack"><div class="me-stats me3">
       <div class="stat"><b>${streak()}</b><span class="muted">ngày liên tiếp</span></div>
       <div class="stat"><b>${(st.xp||0).toLocaleString('vi')}</b><span class="muted">XP</span></div>
@@ -3219,7 +3221,7 @@ function chNext(){ const g=ui.game; g.i++; g.pick=null;
   render(); }
 function viewGames(){
   const G=st.games, lv=currentUnit().level;
-  return `<button class="btn ghost back" data-go="play">← Bản đồ Phố Chữ</button><section class="stack"><span class="eyebrow">🏟️ Đấu trường</span><h1>Chơi mà học</h1><p class="muted note">Mỗi trò vài phút, dùng những từ bạn đã học (chưa đủ thì lấy từ các unit đầu). Câu trả lời cũng tính vào mục tiêu ngày, XP và nhiệm vụ.</p></section>
+  return `<button class="btn ghost back" data-go="play">← Bản đồ Phố Chữ</button><section class="stack"><span class="eyebrow">🏟️ Đấu trường</span><h1>Chơi mà học</h1><details class="dwhy"><summary>❓ Tính điểm thế nào</summary><p class="muted note">Mỗi trò vài phút, dùng những từ bạn đã học (chưa đủ thì lấy từ các unit đầu). Câu trả lời cũng tính vào mục tiêu ngày, XP và nhiệm vụ.</p></details></section>
   ${leaguePanel()}
   ${(()=>{ const ex=(st.exam||[])[0]; return `<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>${ico('exam')} Thi thử VSTEP rút gọn</h3><p class="muted">Nghe + Đọc có tính giờ, B1 → C1, ước tính bậc.${ex?` Lần gần nhất: ${exLevel((ex.l+ex.r)/2)} (Nghe ${ex.l}, Đọc ${ex.r}).`:''}</p></div><div class="row"><button class="btn primary" data-act="exgo">Vào thi</button></div></section>`; })()}
   <section class="panel stack"><h3>🏰 Ladder Quest</h3><p class="muted">Leo tháp: mỗi đòn đánh là một câu tiếng Anh app chọn từ đúng những gì bạn còn thiếu để lên cấp. Câu càng giúp bạn tiến bộ, càng nhiều xu.</p>
@@ -4226,6 +4228,7 @@ function lessonChrome(){ const v=ui.view, app=document.getElementById('app'); if
   if(kind!=='neutral'&&!FOCUS()) sh.insertAdjacentHTML('afterbegin',`<div class="sheet-ti">${mascot(kind==='good'?'party':'cheer',60)}</div>`);
   if(fb) sh.appendChild(fb); const xp=box.querySelector('.xpf'); if(xp) sh.appendChild(xp); sh.appendChild(row);
   nb.classList.add('big'); app.appendChild(sh); document.body.classList.add('has-sheet'); }
+const GX_VIEWS=new Set(['more','games','league','closet','progress','cefr']);
 const GALL_OPEN=new Set(), gallKey=d=>d.dataset.gv+'|'+((d.querySelector('summary')||{}).textContent||'').trim().slice(0,8);
 function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
@@ -4237,6 +4240,8 @@ function render(){
   // v99: mục thu gọn (details.gall: Luyện tập, Leo tháp…) giữ trạng thái mở qua các lần vẽ lại #app (trước đây vẽ lại là đóng sập).
   document.querySelectorAll('#app details.gall[data-gv]').forEach(d=>{ const k=gallKey(d); if(d.open) GALL_OPEN.add(k); else GALL_OPEN.delete(k); });
   document.getElementById('app').innerHTML=html;
+  // v131 (GAME-CRITERIA §18.4, P4): màn ngoài trận dùng chung khung game; màn bài học giữ kiểu yên tĩnh.
+  document.getElementById('app').classList.toggle('gx',GX_VIEWS.has(ui.view));
   document.querySelectorAll('#app details.gall').forEach(d=>{ d.dataset.gv=ui.view; if(GALL_OPEN.has(gallKey(d))) d.open=true; });
   countUp();
   try{ lessonChrome(); }catch(e){}
@@ -4754,6 +4759,10 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:68,d:'2026-10-12',t:'Bản đồ Phố Chữ và sảnh mới',items:[
+    'Tab Hôm nay là bản đồ 5 khu: mọi trò chơi là một công trình, kéo / phóng để khám phá; nút ☰ Danh sách nếu không muốn kéo.',
+    'Tí là nhân vật của bạn trên bản đồ (mặc đồ ở Tủ đồ). Thanh 🪙 xu · 🏮 đèn · ⭐ cấp ở đầu màn; chấm đỏ báo chỗ có việc làm được ngay (tối đa 3).',
+    'Sổ nhiệm vụ gom việc hôm nay; Túi chữ có màn Nhân vật; Tủ đồ cho thử đồ lên Tí trước khi mở.']},
   {v:29,d:'2026-09-30',t:'Dễ bắt đầu, dễ cài, minh bạch',items:[
     'Bắt đầu học chỉ bằng một chạm: bài đầu tiên ngay, chọn mục tiêu sau.',
     'Hướng dẫn cài app cho iPhone, Android và máy tính, kể cả khi trình duyệt không tự hiện nút cài. Giữ biểu tượng trên màn hình chính để mở nhanh vào Ôn tập, Kỹ năng, Pre-A1.',
@@ -8397,7 +8406,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.656e21f5fd.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.78a68a8a9f.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

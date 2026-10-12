@@ -7,7 +7,7 @@ import type { ECtx } from './views.ts';
 import type { HKind } from './hmeter.ts';
 import { sfx } from './sfx.ts';
 import {
-  freshBag, earned, have, canPay, pay, gemsOf, albumsOf, claimAlbum, statsOf, reqOk, GEAR, CRAFT_COST,
+  freshBag, earned, have, canPay, pay, gemsOf, albumsOf, claimAlbum, statsOf, reqOk, charLv, GEAR, CRAFT_COST,
   morphTask, morphPick, typedOk, colTask, colPick, sentTask, sentOk, soulOk, type BagSave, type Earned, type StatRow, type Perk, type StatIn,
 } from './bag.ts';
 import { viewBag, viewBagHub, type BagTab, type CraftRun } from './bagview.ts';
@@ -73,7 +73,7 @@ export function makeBag(d: BagDeps) {
   }
 
   const acts: Record<string, (el: HTMLElement) => void> = {
-    bgopen: el => { cr = null; fg.reset(); tab = (el.dataset.t as BagTab) || 'bag'; host.render(); window.scrollTo?.(0, 0); },
+    bgopen: el => { cr = null; fg.reset(); tab = (el.dataset.t as BagTab) || 'me'; host.render(); window.scrollTo?.(0, 0); },
     bgcraft: () => { cr = null; tab = 'craft'; host.render(); window.scrollTo?.(0, 0); },
     bgtab: el => { cr = null; fg.reset(); tab = (el.dataset.t as BagTab) || 'bag'; host.render(); },
     ...Object.fromEntries(Object.entries(fg.acts).map(([k, f]) => [k, (el: HTMLElement) => { if (k === 'bgfgo') { cr = null; tab = 'forge'; } f(el); }])),
@@ -148,6 +148,8 @@ export function makeBag(d: BagDeps) {
     return { has, busy, heard: h?.heard ?? null };
   }
 
+  // Số món làm được ngay: công thức ở Xưởng đủ nguyên liệu + trang bị mở được và đủ nguyên liệu.
+  const readyOf = (s: BagSave, e: Earned): number => (['morph', 'col', 'sent'] as const).filter(k => canPay(e, s, CRAFT_COST[k])).length + GEAR.filter(g => !s.gear.includes(g.id) && (g.act ?? 0) <= d.act() && (!g.after || s.gear.includes(g.after)) && canPay(e, s, g.cost)).length;
   return {
     acts, forms, reset,
     open(): boolean { return tab !== null; },
@@ -165,9 +167,12 @@ export function makeBag(d: BagDeps) {
       const sy = (e as EState & { sy?: StorySave }).sy;
       return viewBag(c, { s, e: ear(), rows: rows(), tab, act: d.act(), gems, albums, clues: cluesOf(sy), clueTotal: CHAPTERS.filter(x => x.clue).length, who: d.resident(), giftDone: d.giftDone(), cr, mic: mic(), forge: tab === 'forge' || tab === 'map' ? fg.body(c, tab) : '' });
     },
+    // v131 thanh tài nguyên + chấm đỏ: cấp Thợ Chữ và số món làm được ngay (cùng cách tính với thẻ ở sảnh).
+    lv: (): number => charLv(rows()),
+    ready(): number { const s = sv(), e = ear(); return readyOf(s, e); },
     hub(c: ECtx): string {
       const s = sv(), e = ear(), rs = rows();
-      const ready = (['morph', 'col', 'sent'] as const).filter(k => canPay(e, s, CRAFT_COST[k])).length + GEAR.filter(g => !s.gear.includes(g.id) && (g.act ?? 0) <= d.act() && (!g.after || s.gear.includes(g.after)) && canPay(e, s, g.cost)).length;
+      const ready = readyOf(s, e);
       return viewBagHub(c, s, e, rs, ready, fg.cov());
     },
     have: (k: Parameters<typeof have>[2]) => have(ear(), sv(), k),

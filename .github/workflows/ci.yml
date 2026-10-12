@@ -29,7 +29,7 @@ jobs:
   e2e:
     name: Test giao diện (Chrome Android, Safari iOS, máy tính, offline)
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 40   # v131: bộ e2e ×3 trình duyệt đã ~22 phút (Safari iOS chậm), 25 phút bị huỷ giữa chừng
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

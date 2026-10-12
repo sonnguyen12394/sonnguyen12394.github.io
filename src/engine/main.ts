@@ -53,7 +53,8 @@ import { goalLevel, goalWord, collectChests, breakIce, applyWord, keepSolvable, 
 import { openHunt, type HuntState, type HuntHandle, type HuntResult } from './huntview.ts';
 import { direct, planDay, nextGame, isGame, freshDirSave, GAMES, type DirIn, type DirPick, type GameId, type Need } from './director.ts';
 import { freshPlay, playStart, playAct, playDone, playQuit, playReport, type Via } from './play.ts';
-import { town, townKey, townGain, freshTown, buyDeco, spend } from './town.ts';
+import { town, townKey, townGain, freshTown, buyDeco, spend, canDeco } from './town.ts';
+import { dots } from './dots.ts';
 import { viewDecoShop, viewTownGain, viewPlayStats } from './townview.ts';
 import { world, type PlaceId } from './worldmap.ts';
 import { viewWorld } from './worldview.ts';
@@ -93,6 +94,7 @@ export interface EngineModule {
   render(route: string): string;
   after(route: string): void;
   mapReset?(): void;                                       // v130: bấm tab Hôm nay → về bản đồ (đóng bảng công trình, thôi danh sách)
+  res?(): { coins: number; lv: number };                   // v131 thanh tài nguyên của app (xu, cấp Thợ Chữ)
   stage?(on: boolean): void;                               // v102 sân khấu dùng chung cho game kỹ năng (app gọi sau mỗi lần vẽ)
   stageApp?(kind: string | null, n: number): void;         // v109 sân khấu cho trò nhanh cũ của app.js
   next(): { h: string; p: string; btn: string } | null;   // nút chính trang chủ theo lộ trình; null = dùng cách cũ
@@ -362,7 +364,7 @@ export function init(host: EHost): EngineModule {
   // Mỗi lượt là một câu do engine chọn (quest.ts dựng tầng từ NBA). Câu trả lời → bằng chứng thật (src 'game', hoặc 'transfer'
   // với trùm câu mới); xu / tim / tầng chỉ là telemetry trong e.q, không bao giờ vào mastery (P14).
   let qrun: QuestRun | null = null;
-  let wsel: PlaceId | null = null, wlist = false, wroute = '';   // v130 bản đồ: công trình đang mở bảng, chế độ danh sách
+  let wsel: PlaceId | null = null, wlist = false, wroute = '', wq = false;   // wq: v131 Sổ nhiệm vụ đang mở   // v130 bản đồ: công trình đang mở bảng, chế độ danh sách
   const qsave = () => { const e = E(); return (e.q ||= freshQuest()); };
   // Câu cho một lượt (v65): lỗ hổng của nút quyết định cách sửa (remedy.ts) — chưa biết thì hỏi nhận ra, nhận ra rồi thì bắt tự gõ,
   // nhớ rồi thì sửa lỗi / sản sinh, thiếu phần nền đã kiểm chứng thì đổi sang phần nền, cần transfer thì câu mới.
@@ -1684,7 +1686,8 @@ export function init(host: EHost): EngineModule {
     // v130 Bản đồ Phố Chữ thay sảnh: mọi lối vào game, truyện, Túi chữ, Bảng tin đều là công trình trên một bản đồ (worldmap.ts).
     if (c.route !== wroute) { wroute = c.route; if (c.route === 'quest/all') wlist = true; }
     const solid = g ? skillsOf(c.e, g).solid : 0, S = sc?.scene ?? null, b = town(E());
-    const w = world({ b, act: S?.act ?? 0, done: !!S?.done, plan: dir ? dir.plan.map(p => p.game) : [], played: dir ? dir.x.played.filter(isGame) : [], next: dir?.next.game ?? null, deco: (E().tw ?? freshTown()).deco });
+    const w = world({ b, act: S?.act ?? 0, done: !!S?.done, plan: dir ? dir.plan.map(p => p.game) : [], played: dir ? dir.x.played.filter(isGame) : [], next: dir?.next.game ?? null, deco: (E().tw ?? freshTown()).deco,
+      dots: dots({ story: !!S?.ready, bag: bag.ready(), fading: vc.fading(), puzzle: E().gd?.last !== host.today(), deco: b.some(x => x.lv > 0 && canDeco(E().tw ?? freshTown(), x, wallet()).ok) }) });
     // Dòng trạng thái riêng của từng game (trước nằm ở thẻ game của sảnh), hiện trong bảng công trình.
     const stat = (id: PlaceId): string => {
       const e = E(), t = host.today(), h = (x: string) => `<p class="hint wstat">${x}</p>`;
@@ -1714,14 +1717,23 @@ export function init(host: EHost): EngineModule {
         case 'talk': return vc.hub(c);
         case 'tower': return viewQuestHome(c, qsave(), g && r && r.kind === 'mastery' ? { done: r.done, total: r.total, vi: g.vi } : null, nextStep(host, c.e, loaded()!), g ? skillsOf(c.e, g) : null, neckOf(c.e), true);
         case 'bag': return bag.hub(c);
-        case 'notice': return viewWeekly(E().wk, host.today()) + (b.some(x => x.lv) ? viewDecoShop(c, b, E().tw ?? freshTown(), wallet()) : '<p class="hint">Chơi một ván bất kỳ để có công trình đầu tiên, rồi trang trí phố bằng xu ở đây.</p>') + viewPlayStats(c, playReport(pmsave()));
-        case 'story': return (S?.ready ? `<button class="btn primary" data-e="stscene" data-ch="${S.no}">📖 ${S.no ? `Xem cảnh: ${host.esc(S.who?.[1] ?? 'Phố')} nói lại được` : 'Bắt đầu câu chuyện'}</button>` : '') + viewStory(E().sy, solid, storyGate(c.e));
+        case 'notice': return (b.some(x => x.lv) ? viewDecoShop(c, b, E().tw ?? freshTown(), wallet()) : '<p class="hint">Chơi một ván bất kỳ để có công trình đầu tiên, rồi trang trí phố bằng xu ở đây.</p>') + viewPlayStats(c, playReport(pmsave()));
+        case 'story': return '<div class="row"><button class="btn small" data-go="closet">👕 Tủ đồ của Tí</button></div>' + (S?.ready ? `<button class="btn primary" data-e="stscene" data-ch="${S.no}">📖 ${S.no ? `Xem cảnh: ${host.esc(S.who?.[1] ?? 'Phố')} nói lại được` : 'Bắt đầu câu chuyện'}</button>` : '') + viewStory(E().sy, solid, storyGate(c.e));
         case 'arena': return '<p class="hint">Thử thách của app: giải đấu tuần, luyện đề VSTEP rút gọn, thách đấu bạn bè bằng mã, Leo tháp và trò nhanh cũ (Tốc độ 60 giây, Ghép cặp).</p><button class="btn primary big" data-go="games">🏟️ Vào Đấu trường</button>';
         default: return '';
       }
     };
+    // v131 Sổ nhiệm vụ (P8): một chỗ gom việc hôm nay (3 chặng), việc cư dân nhờ, sự kiện tuần, mốc ★ gần nhất của phố.
+    const quests = (): string => {
+      const esc = host.esc, row = (attr: string, ico: string, b1: string, sub: string, ok = false) => `<li><button class="wqrow${ok ? ' ok' : ''}" ${attr}><span class="wqi" aria-hidden="true">${ok ? '✅' : ico}</span><span class="stack" style="gap:1px"><b>${b1}</b><span class="hint">${sub}</span></span></button></li>`;
+      const today = dir ? dir.plan.map((p, i) => { const gm = GAMES[p.game], ok = dir.x.played.includes(p.game); return row(`data-e="${gm.start}" data-g="${p.game}"`, gm.ico, `Chặng ${i + 1}: ${esc(gm.vi)}`, ok ? 'Đã xong hôm nay' : esc(p.why), ok); }).join('') : '';
+      const tale = S && !S.done ? row('data-e="wmopen" data-p="story"', '📖', `Truyện · ${esc(S.zone)}${S.no ? ` · chương ${S.no}` : ''}`, esc(S.intro)) : '';
+      const near = b.filter(x => x.next !== null).sort((p, q) => (p.next! - p.v) / p.next! - (q.next! - q.v) / q.next!)[0];
+      const town1 = near ? row(`data-e="wmopen" data-p="${near.game}"`, near.ico, `Phố: ${esc(near.vi)} ★ thứ ${near.lv + 1}`, `Còn ${near.next! - near.v} ${esc(near.unit)} nữa`) : '';
+      return `<ul class="wqlist" aria-label="Việc hôm nay">${today}${tale}${town1}</ul>${viewWeekly(E().wk, host.today())}`;
+    };
     if (wsel && !w.places.some(p => p.id === wsel)) wsel = null;
-    return viewWorld(c, w, { sel: wsel, list: wlist }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '') + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
+    return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
   }
   const routes: Record<string, (c: ECtx) => string> = {
     // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).
@@ -1808,11 +1820,12 @@ export function init(host: EHost): EngineModule {
     ...bag.acts,
     go(el) { host.go(el.dataset.r || 'goals'); },
     // v130 bản đồ: mở / đóng bảng công trình (bỏ qua cú chạm ngay sau khi kéo), phóng, về chỗ đang ở, đổi bản đồ ↔ danh sách.
-    wmopen(el) { if (justDragged()) return; const p = el.dataset.p as PlaceId | undefined; wsel = p && wsel !== p ? p : null; host.render(); },
-    wmclose() { wsel = null; host.render(); },
+    wmopen(el) { if (justDragged()) return; const p = el.dataset.p as PlaceId | undefined; wq = false; wsel = p && wsel !== p ? p : null; host.render(); },
+    wmclose() { wsel = null; wq = false; host.render(); },
+    wmquests() { if (justDragged()) return; wsel = null; wq = !wq; host.render(); },
     wmzoom(el) { mapZoom(Number(el.dataset.k) || 1); },
     wmhome() { mapHome(); },
-    wmlist() { wlist = !wlist; wsel = null; host.render(); },
+    wmlist() { wlist = !wlist; wsel = null; wq = false; host.render(); },
     add(el) {
       const id = el.dataset.g || '';
       if (!addGoal(id, 'pick')) return;
@@ -2220,7 +2233,8 @@ export function init(host: EHost): EngineModule {
   return {
     version: MODULE_VERSION,
     render,
-    mapReset() { wsel = null; wlist = false; },
+    mapReset() { wsel = null; wlist = false; wq = false; },
+    res() { return { coins: wallet(), lv: bag.lv() }; },
     after(route) { if (route.startsWith('quest')) mapMount(); if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('gate') && gtRun?.res) gtRun = null; if (!route.startsWith('treasure')) chestDone = 0; if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } if (!route.startsWith('micro')) mrun = null; },
     autoGoal(id, why) {
       if (V().goals.length) return false;

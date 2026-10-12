@@ -12,9 +12,9 @@ export function viewForgeHome(c: ECtx, next: ForgeNext[], cov: { done: number; t
   const esc = c.host.esc;
   const items = next.map(n => `<li class="bgcell"><b>${TIER_F[n.tier]![0]} ${esc(n.vi)}</b><span class="hint">Đang: ${TIER_F[n.tier]![1]} · mục tiêu cần: ${TIER_F[n.need]![0]} ${TIER_F[n.need]![1]} (${esc(LEVEL_DO[n.need as 1])})</span>
       ${n.left > 0 ? `<span class="row"><button class="btn small primary" data-e="bgfgo" data-n="${esc(n.node)}" data-m="up">🔨 Rèn từ dưới</button><button class="btn small" data-e="bgfgo" data-n="${esc(n.node)}" data-m="jump">⚡ Vượt bậc</button></span>` : '<span class="hint">🔥 Lò đã nóng hết lượt hôm nay cho món này: mai rèn tiếp (cách ngày giúp nhớ lâu).</span>'}</li>`).join('');
-  return `<h2>🔥 Lò rèn năng lực</h2>
-    <p class="hint">Mỗi kỹ năng mục tiêu cần là một món đồ 5 bậc: ${TIER_F.slice(1).map(([i, v], k) => `${i} ${v} = ${LEVEL_DO[(k + 1) as 1]}`).join(' · ')}. Bậc chính là mức bạn đạt thật: <b>có tính vào bằng chứng</b>. Câu lấy từ kho của app, không học thuộc được.</p>
-    <p class="hint">🔨 <b>Từ dưới</b>: cho kỹ năng mới, đi từng bậc. ⚡ <b>Vượt bậc</b>: nếu bạn nghĩ mình đã biết, thử bậc cao trước; đúng thì bậc dưới được tính luôn, sai thì lùi một bậc, không mất gì.</p>
+  return `<h2>🔥 Lò rèn năng lực</h2><p>Rèn kỹ năng mục tiêu lên từng bậc: bậc đạt thật được tính vào năng lực.</p>
+    <details class="dwhy"><summary>❓ Cách rèn</summary><p class="hint">Mỗi kỹ năng mục tiêu cần là một món đồ 5 bậc: ${TIER_F.slice(1).map(([i, v], k) => `${i} ${v} = ${LEVEL_DO[(k + 1) as 1]}`).join(' · ')}. Bậc chính là mức bạn đạt thật: <b>có tính vào bằng chứng</b>. Câu lấy từ kho của app, không học thuộc được.</p>
+    <p class="hint">🔨 <b>Từ dưới</b>: cho kỹ năng mới, đi từng bậc. ⚡ <b>Vượt bậc</b>: nếu bạn nghĩ mình đã biết, thử bậc cao trước; đúng thì bậc dưới được tính luôn, sai thì lùi một bậc, không mất gì.</p></details>
     ${cov ? `<p><button class="btn ghost small" data-e="bgtab" data-t="map">🗺️ Bản đồ phủ ${esc(cov.lv)}: ${cov.done}/${cov.total}</button></p>` : ''}
     ${items ? `<ul class="bggrid fgnext">${items}</ul>` : '<p class="hint">Chưa có món nào để rèn: chọn mục tiêu CEFR trước, hoặc bạn đã đạt mọi kỹ năng rèn được của mục tiêu.</p>'}`;
 }

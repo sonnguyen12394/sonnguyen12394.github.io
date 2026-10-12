@@ -4,7 +4,7 @@
 import { clampCam, camCss, ZMAX, type Cam } from './worldmap.ts';
 
 const KEY = 'el-map-cam', TAP = 6;
-let cam: Cam | null = null, home: Cam | null = null, dragged = 0, shown = '';
+let cam: Cam | null = null, home: Cam | null = null, dragged = 0, shown = '', lastMoved = false;
 
 function load(): Cam | null {
   try { const v = JSON.parse(localStorage.getItem(KEY) || 'null'); return v && [v.cx, v.cy, v.z].every(n => typeof n === 'number' && isFinite(n)) ? v : null; } catch { return null; }
@@ -25,8 +25,8 @@ function apply(f: HTMLElement, c: Cam, smooth = false): void {
 // không quá 1,1 trên màn rộng (nhìn được nhiều khu một lúc).
 const homeOf = (f: HTMLElement, hx: number, hy: number): Cam => ({ cx: hx, cy: hy, z: Math.min(1.1, Math.max(0.6, f.clientWidth / 440)) });
 
-// Vừa kéo (không phải chạm) thì bỏ qua cú bấm công trình ngay sau đó.
-export const justDragged = (): boolean => Date.now() - dragged < 250;
+// Vừa kéo (không phải chạm) thì bỏ qua cú click kết thúc chính lần kéo đó. Lần nhấn mới (pointerdown) xoá cờ, nên bấm ＋ ngay sau khi kéo vẫn ăn.
+export const justDragged = (): boolean => lastMoved && Date.now() - dragged < 400;
 export function mapZoom(k: number): void {
   const f = frame(); if (!f || !cam) return;
   apply(f, { ...cam, z: cam.z * k }, true); store(cam!);
@@ -47,6 +47,8 @@ export function mapMount(): void {
   home = homeOf(f, hx, hy);
   apply(f, cam ?? load() ?? home);
 
+  // Vừa kéo xong thì nuốt cú bấm (mọi nút trên bản đồ, kể cả data-go của app), trước khi tới bộ bắt sự kiện ở document.
+  f.addEventListener('click', ev => { if (justDragged()) { ev.stopPropagation(); ev.preventDefault(); } }, true);
   const pts = new Map<number, { x: number; y: number }>();
   let start: { x: number; y: number; c: Cam; d: number; mx: number; my: number } | null = null, moved = false;
   const mid = () => { const a = [...pts.values()]; return { x: a.reduce((s, p) => s + p.x, 0) / a.length, y: a.reduce((s, p) => s + p.y, 0) / a.length, d: a.length > 1 ? Math.hypot(a[0]!.x - a[1]!.x, a[0]!.y - a[1]!.y) : 0 }; };
@@ -54,7 +56,7 @@ export function mapMount(): void {
   f.addEventListener('pointerdown', ev => {
     if (ev.button > 0) return;
     pts.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
-    if (pts.size === 1) moved = false;
+    if (pts.size === 1) { moved = false; lastMoved = false; }
     begin();
   });
   f.addEventListener('pointermove', ev => {
@@ -68,7 +70,7 @@ export function mapMount(): void {
   });
   const end = (ev: PointerEvent) => {
     if (!pts.delete(ev.pointerId)) return;
-    if (moved) { dragged = Date.now(); if (cam) store(cam); }
+    if (moved) { dragged = Date.now(); lastMoved = true; if (cam) store(cam); }
     if (pts.size) begin(); else start = null;
   };
   f.addEventListener('pointerup', end);
