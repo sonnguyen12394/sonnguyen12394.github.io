@@ -1786,3 +1786,33 @@ Thứ tự làm (mỗi bản có playtest M và đo H):
 - **Nói dưới áp lực giờ dễ làm người mới sợ.** Ở A1 gần như không ép giờ.
 - **H10 khó vượt 5–6** vì app không kiểm chứng được việc ngoài đời.
 - **H3 tốn nhiều nội dung nhất;** âm thu sẵn mới tới B1.
+
+### 13.5 Đã làm v122–v127 (chấm lại theo bản thật)
+
+**Việc làm** (chi tiết từng bản ở `docs/SPEC.md`, lộ trình v122–v127):
+- **v122 Bảng đo H** (`src/engine/hmeter.ts`): nhật ký số đo theo ngày, chấm 10 tiêu chí theo mốc §12.1. Màn "📏 Bảng đo H" ở sảnh và ở màn kết của game nói.
+- **v123 🗣️ Quán Phố Chữ bằng giọng:** khách là hội thoại nhánh của app. Bạn nói (hoặc gõ) để hỏi và đáp; chọn câu chỉ là bậc lùi sau khi khách hỏi lại. Có thanh kiên nhẫn, tip khi đáp kịp, món đặc biệt dùng từ vừa đào được.
+- **v124 🌫️ Sương quay lại + âm cảnh:** biển hiệu của từ sắp quên; nhớ lại là một lần ôn FSRS thật. Âm nền theo khu (từ A2).
+- **v125 🔎 Hỏi chuyện nhân chứng:** 9 vụ A1–B1, manh mối chỉ có khi tự đặt câu hỏi.
+- **v126 ⚓ Bến Cảng lệnh giọng:** cặp âm yếu nhất trước; nói thiếu âm cuối thì cẩu nhấc nhầm thùng.
+- **v127 📻 Đài Phố Chữ + 🌍 Phố thật:** ghi phút nghe / đọc và nghe có âm phố; mỗi tuần một nhiệm vụ ngoài đời.
+
+**Chấm H** (tự chấm theo khả năng của bản; điểm trên 6 chỉ hợp lệ khi Bảng đo H của người học thật cho số):
+
+| | H1 | H2 | H3 | H4 | H5 | H6 | H7 | H8 | H9 | H10 | H |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Trước v122 (cả app) | 6 | 6 | 5 | 6 | 4 | 5 | 6 | 4 | 6 | 1 | 5,1 |
+| Sau v127, khả năng của bản (chưa đo) | 8 | 7 | 6 | 7 | 8 | 8 | 7 | 8 | 8 | 5 | **7,3** |
+| Hiển thị trong app khi chưa có số liệu | 6 | 6 | 5 | 6 | 5 | 6 | 6 | 5 | 6 | 4 | 5,6 |
+
+**Phản biện, nói thẳng:**
+- Những con số trên vẫn là **tôi tự chấm**. Bài học §10.0 vẫn đúng: chỉ người học thật và Bảng đo H mới xác nhận được.
+- Ba chỗ yếu còn lại:
+  - **H3:** nội dung nghe dài vẫn là bài sẵn có, chưa có truyện kỳ mới viết riêng cho Phố Chữ.
+  - **H4:** âm nền là tổng hợp, chưa có giọng người thật khác nhau. Âm thu sẵn mới có hai giọng.
+  - **H10:** nhiệm vụ ngoài đời chỉ tự báo cáo, không kiểm chứng được.
+- Việc tiếp theo: người sáng lập chơi thử 4 game nói theo phiếu M (§10.1), rồi xem Bảng đo H sau 2–4 tuần dùng thật.
+
+**Kiểm:**
+- Unit test `engine-voice.test.ts` (mốc chấm, lưu / gộp, nhận câu hỏi, bộ não, Phố).
+- e2e `voice.spec.ts` (4 game tới màn kết bằng gõ và bằng kết quả máy nghe giả lập, số đo H được ghi, ôn FSRS thật, WCAG AA).

@@ -54,7 +54,7 @@ export function viewGateRun(c: ECtx, r: GateRun): string {
 // Phần thấp hơn ngưỡng (đọc / nghe) → gợi ý game luyện đúng kỹ năng đó. Chỉ gợi ý, không tự đổi lộ trình.
 const weak = (r: GateResult): string => {
   const thr = GATE_THR[r.goal] ?? 2.75, w = (['R', 'L'] as const).filter(k => r.sk[k] && r.sk[k]!.theta < thr);
-  return w.length ? ` Phần còn thấp: ${w.map(k => (k === 'R' ? 'đọc (chơi thêm 🔍 Thám tử)' : 'nghe (chơi thêm 📻 Đài phát thanh, ☕ Quán)')).join(', ')}.` : '';
+  return w.length ? ` Phần còn thấp: ${w.map(k => (k === 'R' ? 'đọc (chơi thêm 🔍 Thám tử)' : 'nghe (chơi thêm 📻 Đài Phố Chữ, ☕ Quán)')).join(', ')}.` : '';
 };
 function resultBox(c: ECtx, r: GateResult): string {
   const lv = LV(r.goal), sk = (k: 'R' | 'L', vi: string) => { const s = r.sk[k]; return s ? `<div class="stat"><b>${s.ok}/${s.n}</b><span class="muted">${vi} · ≈ ${bandToCefr(s.theta)}</span></div>` : ''; };

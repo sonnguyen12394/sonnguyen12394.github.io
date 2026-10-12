@@ -16,7 +16,7 @@ const head = (c: ECtx, r: CaseRun): string => {
   const cards = r.qs.map((_, k) => `<span class="dtclue${r.flipped[k] ? ' on' : ''}${k === r.i && !r.done ? ' cur' : ''}" aria-hidden="true">${r.flipped[k] ? (r.mode === 'read' ? '🔍' : '📶') : k === n - 1 && r.qs[k]?.k === 'main' ? '⭐' : '🔒'}</span>`).join('');
   const t = r.text, top = r.mode === 'read'
     ? `<span class="eyebrow">🔍 Thám tử · hồ sơ #${r.floor} · manh mối ${Math.min(r.i + 1, n)}/${n}</span>`
-    : `<span class="eyebrow">📻 Đài phát thanh · ${(88 + (r.floor % 50) * 0.4).toFixed(1)} MHz · câu ${Math.min(r.i + 1, n)}/${n}</span>`;
+    : `<span class="eyebrow">📻 Đài Phố Chữ · tập ${r.floor} · ${(88 + (r.floor % 50) * 0.4).toFixed(1)} MHz · câu ${Math.min(r.i + 1, n)}/${n}</span>`;
   const noise = r.mode === 'listen' ? `<div class="rdwave" role="img" aria-label="Tiếng rè còn ${Math.round((1 - f / Math.max(1, n)) * 100)}%">${Array.from({ length: 16 }, (_, k) => { const q = 1 - f / Math.max(1, n), wave = 0.5 + 0.45 * Math.sin(k * 0.8), hiss = ((k * 37) % 11) / 11; return `<i style="height:${Math.round(15 + 80 * ((1 - q) * wave + q * hiss))}%;opacity:${(0.45 + 0.55 * (1 - q)).toFixed(2)}"></i>`; }).join('')}</div>` : '';
   return `<section class="stack" style="gap:6px"><div class="spread">${top}<span>🪙 ${r.coins}</span></div>
     <p class="hint">${esc(t.kind)} · <b lang="en">${esc(t.title)}</b>${t.tvi ? ` · ${esc(t.tvi)}` : ''}</p><div class="row dtcards" style="gap:6px">${cards}</div>${noise}${board(c, r)}</section>`;
@@ -64,7 +64,7 @@ export function viewCaseEnd(c: ECtx, r: CaseRun, total: number): string {
   const esc = c.host.esc, n = r.qs.length, read = r.mode === 'read', win = solved(r.ok, n), s = caseStars(r.ok, n);
   const title = read ? (win ? '🔍 Phá án!' : '🔍 Hồ sơ còn bỏ ngỏ') : win ? '📻 Bắt được sóng!' : '📻 Sóng còn rè';
   const script = !read && r.text.lines ? `<details><summary>Lời bản tin</summary><div class="stack" lang="en" style="gap:4px">${r.text.lines.map(l => `<p>${esc(l.t)}</p>`).join('')}</div></details>` : '';
-  return `<section class="stack"><span class="eyebrow">${read ? '🔍 Thám tử' : '📻 Đài phát thanh'}</span><h1>${title}</h1>
+  return `<section class="stack"><span class="eyebrow">${read ? '🔍 Thám tử' : '📻 Đài Phố Chữ'}</span><h1>${title}</h1>
     <p style="font-size:22px">${'⭐'.repeat(s)} · đúng ${r.ok}/${n} ${read ? 'manh mối' : 'câu'} ngay lần đầu · +${r.coins} xu</p>
     <p>${read ? `Sổ thám tử: ${total} hồ sơ đã phá.` : `Kệ băng: ${total} bản tin đã bắt sóng.`}</p>
     <details class="dtrec"><summary>${read ? '🗂️ Biên bản vụ án' : '🗒️ Ghi chép bản tin'}</summary><ol class="stack" style="gap:6px">${r.qs.map((q, k) => `<li><span lang="en">${esc(q.q)}</span><br><b lang="en">${esc(q.a)}</b> ${r.first[k] ? '<span aria-label="đúng ngay lần đầu">✓</span>' : '<span aria-label="chưa đúng lần đầu">✗</span>'}</li>`).join('')}</ol></details>${script}
