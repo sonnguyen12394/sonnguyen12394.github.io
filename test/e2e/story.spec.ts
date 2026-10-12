@@ -22,7 +22,7 @@ async function lobby(page: Page, sy?: unknown): Promise<void> {
 }
 async function watch(page: Page): Promise<void> {
   await expect(page.locator('#stfx')).toBeVisible();
-  for (let i = 0; i < 12 && await page.locator('#stfx').count(); i++) { await page.locator('#stfx [data-st="next"]').click(); }
+  for (let i = 0; i < 30 && await page.locator('#stfx').count(); i++) { await page.locator('#stfx [data-st="next"]').click(); }
   await expect(page.locator('#stfx')).toHaveCount(0);
 }
 

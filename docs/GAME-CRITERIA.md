@@ -1816,3 +1816,163 @@ Thứ tự làm (mỗi bản có playtest M và đo H):
 **Kiểm:**
 - Unit test `engine-voice.test.ts` (mốc chấm, lưu / gộp, nhận câu hỏi, bộ não, Phố).
 - e2e `voice.spec.ts` (4 game tới màn kết bằng gõ và bằng kết quả máy nghe giả lập, số đo H được ghi, ôn FSRS thật, WCAG AA).
+
+## 14. Trục S: tiêu chí cốt truyện (v128)
+
+### 14.0 Gốc rễ
+
+Truyện "Phố Chữ mất tiếng" (v101) mới là một **khung nhiệm vụ**, chưa thành **câu chuyện**. Sương Câm chỉ là thời tiết, không có ai đứng sau và không ai hỏi vì sao. Cả 12 chương lặp một công thức. Tí không có chuyện riêng. Người chơi không được chọn gì. Truyện kết bằng "Còn tiếp".
+
+Vì vậy truyện thiếu một xung đột có nhân vật và có ý nghĩa.
+
+### 14.1 Mười tiêu chí (thang 10)
+
+Các tiêu chí rút từ những game có truyện được khen và cùng thể loại với app:
+- Homescapes / Royal Match: truyện nhẹ đi kèm game ghép 3;
+- Duolingo: nhân vật, Duolingo Stories;
+- Professor Layton, Ace Attorney: giải đố gắn với truyện;
+- Spiritfarer, A Short Hike, Stardew Valley: truyện ấm áp, giàu cảm xúc;
+- Undertale: cách chơi chính là thông điệp.
+
+| # | Tiêu chí | Trọng số | 10 điểm trông như thế nào |
+|---|---|---|---|
+| S1 | Móc mở đầu (60 giây đầu) | 1 | Tiền đề rõ, có một hình ảnh mạnh, người chơi xong được việc đầu ngay |
+| S2 | Câu hỏi lớn / bí ẩn | 1,5 | Mỗi chương hé một mảnh; giữa truyện có cú lật; cú lật cuối giải thích lại mọi thứ |
+| S3 | Nhân vật có mong muốn và thay đổi | 1,5 | Nhân vật chính và vài nhân vật phụ có mạch riêng trọn vẹn |
+| S4 | Nhịp và độ đa dạng | 1 | Mỗi khu một kiểu; chương nào cũng có câu móc |
+| S5 | Truyện khớp với cách chơi | 1,5 | Mỗi hành động chơi có lý do trong truyện |
+| S6 | Người chơi được chọn, lựa chọn có hệ quả | 1 | Lựa chọn đổi cả kết cục |
+| S7 | Chủ đề và cảm xúc | 1 | Chủ đề là chuyện của chính người chơi; có lúc chạm cảm xúc |
+| S8 | Thế giới và bản sắc | 0,5 | Giọng văn và hình ảnh riêng, nhìn là nhận ra |
+| S9 | Cao trào và kết | 1 | Có kết thúc, mọi manh mối được trả |
+| S10 | Truyện phục vụ việc học | 1,5 | Tiếng Anh khó dần theo khu; phải nói hoặc hiểu mới đi tiếp |
+
+### 14.2 Đã làm v128
+
+| Phần | Làm gì | Tiêu chí |
+|---|---|---|
+| Bí ẩn | Sương Câm là **Mờ**, một bạn nhỏ từng nói "I love rice" mà nghe thành "lice" và bị cả lớp cười; Tí cười to nhất. Mờ thôi nói; im lặng lớn thành sương nuốt lời cả phố "để không ai bị cười nữa". Mỗi chương để lại **một kỷ vật** (17 món): câu xoá dở trên tường, trang vở gạch đỏ, vé một chiều ký "M", nhật ký của Mờ… | S2, S7 |
+| Cú lật | Cuối khu Bến Cảng, Tí thú nhận Mờ là bạn cũ và mình đã cười Mờ | S2, S3 |
+| Mạch nhân vật | **Tí:** từ né tránh, thú nhận, đến xin lỗi.<br>**Bé Bin:** từ "cháu sợ nói", đọc biển, rồi nói sai trước đám đông ("I goed") và không ai cười.<br>**Mờ:** từ "đừng cười tớ" đến "I… love… rice!" | S3 |
+| Khu 4 Phố Đêm | Nơi ai cũng thì thầm vì sợ sai; thêm 2 cư dân (Chị Hằng, Anh Khoa) và hình SVG riêng (trăng, dây đèn lồng) | S4, S8 |
+| Trận cuối | Không đánh nhau mà là một **cuộc nói chuyện**. Câu then chốt do người chơi tự nói: *"I make mistakes too. Everyone does. It's OK."* Cần 14 kỹ năng vững. Trận cổng của mục tiêu (v115, "khu cuối") giờ nằm ở chương cuối Phố Đêm; Rừng Trúc giữ điều kiện 9 kỹ năng vững. Người đã xong 3 khu (bản cũ "Còn tiếp") đi tiếp thẳng vào Phố Đêm | S7, S9 |
+| Lựa chọn | 3 cờ: f1 kể sự thật hay giữ bí mật; f2 rung chuông to hay khẽ; f3 quà cho Mờ (vở / bài hát / hoa). Mỗi phương án có lời thoại riêng về sau và ở cảnh kết. Bấm "Bỏ qua" thì chọn sẵn phương án đầu | S6 |
+| Câu bạn nói | Chương nào cũng có một khung "Đến lượt bạn": nói (máy nghe) hoặc gõ câu trả lời cho cư dân. Câu khớp khi đủ khoảng 75% từ (`sayOk`). Không bắt buộc (luôn có nút Bỏ qua). Câu khớp và dài từ 3 từ trở lên được ghi vào nhật ký H | S10, H1 |
+| Tiếng Anh lớn dần | Trần số từ mỗi câu theo khu: 10 / 10 / 12 / 14 / 16 (test kiểm). Câu thoại ở Phố Đêm đã ở mức A2–B1 | S10 |
+| Mỗi khu một game nói | Nhiệm vụ "trả câu nói" chỉ sang: Bài Câu (Chợ), Quán nói (Bến Cảng), Hỏi chuyện (Rừng Trúc), Quán nói (Phố Đêm) | S4, S5 |
+| Kết có hậu và nối với game | Sương tan, chỉ còn "sương sớm" quay lại mỗi khi ta quên một từ. Như vậy 🌫️ Sương quay lại có lý do trong truyện. Câu cuối dẫn ra 🌍 Phố thật: *"Now go outside. Say hello to someone real!"* | S5, S9, H10 |
+
+### 14.3 Chấm (tự chấm)
+
+| | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 | S9 | S10 | **S** |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| v101–v127 | 5 | 2 | 3 | 3 | 6 | 1 | 4 | 5 | 2 | 5 | **3,6** |
+| v128 | 7 | 8 | 7 | 7 | 8 | 5 | 8 | 6 | 8 | 8 | **7,3** |
+| Mốc so sánh (ước lượng) | Homescapes ≈ 5 · Duolingo (phần truyện) ≈ 5,5 · Layton ≈ 8 · Undertale ≈ 9,5 | | | | | | | | | | |
+
+**Phản biện, nói thẳng:**
+- **S6 dừng ở 5:** lựa chọn mới đổi lời thoại và người đứng cạnh ở cảnh kết, chưa đổi kết cục. Muốn lên 8 cần các kết thật sự khác nhau, tức là gấp đôi nội dung.
+- **S8 dừng ở 6:** nhân vật vẫn là emoji (M4). Muốn lên 8 cần tranh nhân vật và tranh cho từng chương.
+- **S1:** móc mở đầu vẫn là chữ. Một cảnh động khi Sương nuốt biển hiệu sẽ mạnh hơn.
+- Các số trên là tôi tự chấm. Chỉ đo được bằng người chơi thật: tỉ lệ quay lại sau chương 1, tỉ lệ xem hết cảnh và tỉ lệ người chơi tự nói ở khung "Đến lượt bạn".
+
+**Kiểm:**
+- Unit `engine-story` (10): 4 khu × 4 chương; trần số từ theo khu, kể cả các phương án chọn; chương nào cũng có kỷ vật và câu tự nói; đủ 3 lựa chọn; cảnh kết đổi theo lựa chọn; `choose`, `settle`, lưu / gộp cờ; `sayOk`; mỗi khu dẫn sang một game nói riêng.
+- e2e `bag.spec` (truyện):
+  - gõ câu ở khung "Đến lượt bạn" thì nhật ký H tăng;
+  - chọn "giữ bí mật" thì cờ được lưu;
+  - thẻ truyện hiện kỷ vật;
+  - đạt WCAG AA.
+
+## 15. Túi chữ · Xưởng của Tí · Chỉ số thật (v128)
+
+### 15.0 Yêu cầu và phản biện
+
+**Yêu cầu của người sáng lập:** hướng có kho đồ, thu thập, chế tạo, nâng chỉ số.
+
+**Bẫy cần tránh:** mô hình Prodigy Math, tức "trả lời câu hỏi để được đánh quái". Khi đó câu hỏi chỉ là trạm thu phí, người chơi tìm cách vượt nhanh nhất. Cụ thể có bốn rủi ro:
+- cày đồ ở màn dễ;
+- chỉ số giả (mạnh lên nhờ đồ đeo);
+- đồ trợ giúp làm sai bằng chứng;
+- trả tiền để mạnh.
+
+Gốc rễ chung của cả bốn: **phần thưởng không gắn với hành động ngôn ngữ thật.**
+
+### 15.1 Bảy luật nền (`bag.ts`)
+
+1. **Đồ là đơn vị ngôn ngữ:**
+   - nguyên liệu: ✨ viên chữ, ✍️ mực, 🗣️ lời nói, 🧠 ký ức;
+   - 💎 ngọc từ;
+   - đồ làm ra: 🔩 từ ghép, 🔗 cụm từ, 💬 Lời, 🌟 Lời vàng.
+2. **Chế tạo là hành động ngôn ngữ:**
+   - **Ghép từ:** chọn đúng tiền tố / hậu tố, rồi tự gõ từ mới đúng chính tả;
+   - **Ghép cụm:** chọn đúng động từ (make / do / take…);
+   - **Đúc câu:** xếp lá chữ thành câu của cư dân;
+   - **Thổi hồn:** nói câu đó, hoặc gõ lại không nhìn, để có 🌟 Lời vàng.
+3. **Chỉ số nhân vật là năng lực thật.** Có 7 chỉ số:
+
+   | Chỉ số | Lấy từ |
+   |---|---|
+   | 📚 Từ vựng | Số nút `u:` vững |
+   | 🧩 Ngữ pháp | Số nút `g:` vững |
+   | 🔤 Phát âm | Số nút `ph:` vững + H7 |
+   | 🗣️ Nói | H1, H5, H8 |
+   | 👂 Nghe | H3, H4 |
+   | 🧠 Trí nhớ | H6 |
+   | 🌍 Dùng thật | Số nút `fn:` vững + H2, H10 |
+
+   Chỉ dùng dòng H **đã đủ số liệu**, không dùng ước tính. Không mua được, không đeo đồ mà tăng. Quên thì có thể tụt.
+4. **Trang bị chỉ đổi game:** thêm lượt Mỏ Chữ, thanh kiên nhẫn ở Quán, xu. Trang bị không đổi cách chấm và không chạm bằng chứng. Thời gian nghĩ ghi vào H5 vẫn là thời gian thật. Trang bị **chỉ phát huy khi chỉ số thật đủ**, ví dụ Cuốc Bạc cần 📚 Lv 2.
+5. **Nguyên liệu suy ra từ việc học đã có**, không lưu thêm số kiếm được:
+
+   | Nguyên liệu | Lấy từ |
+   |---|---|
+   | ✨ Viên chữ | Từ tìm được ở Mỏ Chữ / Vòng Chữ, cộng 10 viên quà của Tí |
+   | 🗣️ Lời nói / ✍️ Mực | Lượt tự nói / tự gõ cả câu (nhật ký H) |
+   | 🧠 Ký ức | Lần nhớ lại sau ≥ 7 ngày + biển hiệu thắp lại |
+
+   Đồ cao cấp cần 🗣️ / 🧠, nên muốn có đồ xịn thì phải nói và phải nhớ lâu.
+6. **Không phạt:**
+   - làm sai không mất nguyên liệu (chỉ trả khi làm đúng);
+   - ngọc của từ sắp quên chỉ **mờ đi**, có lối thắp lại ở 🌫️ Sương quay lại.
+7. **Không bán bằng tiền.**
+
+### 15.2 Bốn phần
+
+| Phần | Có gì | Tệp |
+|---|---|---|
+| 🎒 Túi | **Nguyên liệu và đồ đã làm.**<br>**Ngọc từ:** độ hiếm là độ nhớ thật: ⚪ đúng 1 ngày; 🟢 ≥ 2 ngày; 🔵 ≥ 3 ngày cách nhau ≥ 7 ngày; 🟣 ≥ 4 ngày cách nhau ≥ 30 ngày, hoặc hoa 🌸 trong Vườn từ đã ≥ 21 ngày.<br>**Trang bị:** hiện đang phát huy hay "cần ôn".<br>**Tặng Lời:** tặng cư dân của chương (việc phụ thứ ba của truyện, +10 xu) | `bag.ts` `gemsOf`, `bagview.ts` |
+| 📖 Album, 📜 Kỷ vật | **Album:** mỗi cụm từ (unit) là một album, đủ 50% được ⭐ (+10 xu), đủ 100% được 🏆 (+40 xu), mỗi mốc nhận một lần. Album thực chất là bản đồ độ phủ từ vựng.<br>**Kỷ vật:** 17 mảnh bí ẩn của truyện | `albumsOf`, `cluesOf` |
+| 🔨 Xưởng của Tí | **Nội dung:** 37 từ ghép, 32 cụm, 32 câu. Linh kiện mở dần theo khu truyện: Chợ có -er, -y, un-; Bến Cảng thêm -ful, -less, -ly; Rừng Trúc thêm re-, -ness, dis-; Phố Đêm thêm -ment, -ship, im-.<br>**Đúc câu** ưu tiên câu của cư dân đang cần giúp, và tính là "trả câu nói" của truyện.<br>**Rèn 5 trang bị:** ⛏️ Cuốc Bạc, 🫖 Ấm Trà Kiên Nhẫn, 🔔 Chuông Đồng, 🏮 Đèn Lồng Phố Đêm, 💎 Cuốc Kim Cương | `morphTask`, `colTask`, `sentTask`, `GEAR` |
+| 📊 Chỉ số | 7 chỉ số Lv 0–10, mỗi chỉ số có nút "Nâng ở…" dẫn vào đúng game (Vườn từ, Bài Câu, Bến Cảng, Quán, Đài, Sương quay lại, Hỏi chuyện). Cấp Thợ Chữ = tổng chỉ số ÷ 3 + 1 | `statsOf`, `charLv` |
+
+**Lưu:** `st.e.bg` lưu nguyên liệu đã tiêu, đồ, trang bị, album đã nhận và từ đã ghép. Gộp hai máy lấy giá trị lớn hơn và hợp các danh sách.
+
+**Nối vào app (`bagctl.ts`, `main.ts`):**
+- thẻ ở sảnh, ngay dưới thẻ truyện;
+- hiệu ứng trang bị: số lượt Mỏ Chữ, `pm` của Quán, xu của game nói và xu thắng Vòng Chữ;
+- mọi hành động ngoài Túi chữ đều đóng Túi chữ.
+
+### 15.3 Chấm (tự chấm)
+
+| Trục | Trước | Sau | Vì sao |
+|---|---|---|---|
+| M8 meta / phần thưởng (sảnh) | 5 | 8 | Kho đồ, sưu tập, chế tạo, trang bị; phần thưởng là tiếng Anh |
+| M10 lý do quay lại | 6 | 7 | Ngọc mờ đi khi sắp quên, album còn trống, trang bị chờ đủ chỉ số |
+| T5 thế giới chung lớn dần | 7 | 8 | Túi và Thợ Chữ đi xuyên mọi game |
+| H1 tự nói / tự viết | 8 | 8,5 | Thêm lượt tự nói ở cảnh truyện và lúc thổi hồn ở Xưởng |
+| H6 nhớ lâu | 8 | 8,5 | Ngọc mờ là lời nhắc nhìn thấy được; 🧠 Ký ức thành nguyên liệu quý |
+
+**Phản biện, nói thẳng:**
+- **Lạm phát ✨ khi cày màn dễ.** Viên chữ đến từ số từ tìm được, nên chơi lại màn dễ vẫn ra ✨. Giới hạn: ✨ chỉ đủ cho đồ thường; trang bị cần đồ làm ra cộng 🗣️ / 🧠, và chỉ phát huy khi chỉ số thật đủ. Cày ✨ không làm ai "mạnh" lên. Cần bot giả lập (`npm run sim`) đo tỉ lệ ✨ / phút theo màn để xác nhận.
+- **Chỉ số có thể tụt:** nút đang vững mà bằng chứng mới mâu thuẫn thì chỉ số giảm. Đây là cố ý, nhưng có thể làm người chơi hụt hẫng. Đổi lại, chỉ số là thật.
+- **Người không có micro** vẫn có 🌟 Lời vàng (gõ lại không nhìn), nhưng không có 🗣️ nên không rèn được Ấm Trà / Chuông Đồng. Đây là đánh đổi có chủ ý (nói là mục tiêu H1).
+
+**Kiểm:**
+- Unit `engine-bag` (6): nội dung hợp lệ; nguyên liệu suy ra và trả; độ hiếm ngọc; album; chỉ số thật (dòng H chưa đo thì Lv 0); chế tạo; lưu / gộp.
+- e2e `bag.spec`:
+  - ghép từ → ghép cụm (chọn sai không mất gì) → đúc câu → 🌟 Lời vàng;
+  - tặng Bà Lan +10 xu một lần;
+  - rèn Cuốc Bạc;
+  - 5 tab đạt WCAG AA ở 390 px;
+  - không cuộn ngang.
