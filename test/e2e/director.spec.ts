@@ -26,13 +26,14 @@ test('Bộ não: người mới chưa xếp lớp → nút Chơi tiếp là Thá
   await expect(go).toContainText('Chơi tiếp: Thám hiểm sương mù');
   await expect(go).toContainText('Vì:');
   await expect(page.locator('.dplan li')).toHaveCount(3);
-  await expect(page.locator('details.gall').first()).not.toHaveAttribute('open', '');   // v99: mục Luyện tập (đầu tiên); Leo tháp cũng thu gọn
-  // v99: mở mục thu gọn rồi app vẽ lại #app (dữ liệu nền tải xong, bấm nút…) → mục vẫn mở; mục khác vẫn đóng.
-  await page.locator('details.gall summary').first().click();
+  // v130: danh sách game nằm sau bản đồ (chế độ ☰ Danh sách đóng); app vẽ lại #app (dữ liệu nền tải xong…) → chế độ được giữ.
+  await expect(page.locator('#app .wlist')).toHaveCount(0);
+  await page.locator('[data-e="wmlist"]').click();
   await page.evaluate(() => (window as any).eval('render()'));
-  await expect(page.locator('details.gall').first()).toHaveAttribute('open', '');
+  await expect(page.locator('#app .wlist')).toBeVisible();
   await expect(page.locator('details.gtower')).not.toHaveAttribute('open', '');
-  await page.locator('details.gall summary').first().click();
+  await page.locator('[data-e="wmlist"]').click();
+  await expect(page.locator('#app .wmap')).toBeVisible();
   await page.screenshot({ path: 'test-results/director-new.png', fullPage: true });
   await go.click();
   await expect(page.getByRole('heading', { name: /Đi đường nào/ })).toBeVisible();
@@ -43,7 +44,7 @@ test('Bộ não: bấm Chơi tiếp vào đúng game; xong game → màn kết c
   await open(page, true);
   const go = page.locator('.dgo').first(), g0 = await go.getAttribute('data-g');
   expect(g0).toBeTruthy();
-  await page.screenshot({ path: 'test-results/director-lobby.png', fullPage: true });
+  await page.screenshot({ path: 'test-results/director-lobby.png' });   // v130: danh sách bản đồ mở hết dài hơn giới hạn ảnh của WebKit ×3
   // Ép chặng đầu là Vườn từ (luồng chơi ngắn, đã có test riêng) để kiểm phần chuyển game.
   await page.evaluate(() => { const st = (window as any).eval('st'); st.e.gp.plan[0] = { game: 'garden', need: 'vocab', why: 'Từ mới cần cho mục tiêu.' }; st.e.gp.plan = st.e.gp.plan.filter((p: any, i: number) => i === 0 || p.game !== 'garden'); (window as any).eval('save()'); (window as any).eval('render()'); });
   await expect(page.locator('.dgo')).toHaveAttribute('data-g', 'garden');

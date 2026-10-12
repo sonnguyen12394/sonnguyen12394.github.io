@@ -55,5 +55,5 @@ export function viewPuzzleEnd(c: ECtx, r: PuzzleRun, days: number): string {
     <p>Nhớ lại đúng ${r.ok}/${r.n} từ · +${r.coins} xu${r.daily ? ` · đã giải ${days} ngày` : ''}.</p>
     ${r.passed?.length ? `<div class="fb good" role="status"><strong>⬆ Lên cấp: ${r.passed.slice(0, 4).map(esc).join(', ')}</strong><span>đã vững (từ câu bạn tự nhớ ra, không phải từ sao)</span></div>` : ''}
     <p class="hint">Sao và số ngày giải chỉ để vui, bỏ một ngày không mất gì. Chỉ câu nhớ lại được ghi vào bản đồ năng lực.</p></section>
-    <div class="row"><button class="btn primary" data-e="pzstart">📅 Ván luyện thêm</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="pzstart">📅 Ván luyện thêm</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }

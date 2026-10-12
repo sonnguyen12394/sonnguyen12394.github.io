@@ -63,22 +63,25 @@ export async function noHorizontalScroll(page: Page): Promise<void> {
 export const navTo = (page: Page, label: string) =>
   page.locator('#bnav:visible button, #nav:visible button').filter({ hasText: label }).first().click();
 
-// v88: sảnh mở đầu bằng nút "Chơi tiếp" do bộ não chọn; thẻ từng game nằm trong mục thu gọn "Tất cả trò chơi". Test mở mục đó rồi bấm game.
+// v88: sảnh mở đầu bằng nút "Chơi tiếp" do bộ não chọn; v130: từng game là công trình trên bản đồ. Test chuyển sang danh sách rồi bấm game.
 export async function play(page: Page, start: string): Promise<void> {
+  await openPick(page);
   await page.evaluate(() => document.querySelectorAll('details.gall').forEach(d => { (d as HTMLDetailsElement).open = true; }));
   await page.locator(`[data-e="${start}"]`).filter({ visible: true }).first().click();
 }
 
 // v99: Leo tháp (game cũ) nằm trong mục thu gọn ở sảnh: mở mọi mục thu gọn trước khi tìm.
 export async function openAll(page: Page): Promise<void> {
+  await openPick(page);
   await page.evaluate(() => document.querySelectorAll('details.gall').forEach(d => { (d as HTMLDetailsElement).open = true; }));
 }
 
 // Sảnh game từ màn "games": nạp engine trước (không đo thời gian tải ở đây), chờ bài học chi tiết tải xong, bấm "▶ Chơi", chờ sảnh
 // (chạm trong game lúc đang tải bị giữ chờ — hành vi riêng, không phải điều test này kiểm). Hụt thì báo màn đang hiện
 // (view, chữ trong #app) để biết gốc rễ: CI Safari iOS thỉnh thoảng không thấy sảnh sau 15 s.
-// v117: sảnh chỉ hiện "Chơi tiếp" + mục tiêu; truyện, game chủ lực, phố, tháp nằm trong mục thu gọn "Tự chọn" (details[data-lobby]).
-// Mặc định test mở sẵn mục đó (trạng thái mở được giữ qua các lần vẽ lại) để test các phần bên trong như trước; clarity.spec dùng open=false.
+// v130: màn Hôm nay là Bản đồ Phố Chữ (kéo / thu phóng). Chế độ "☰ Danh sách" mở sẵn bảng của mọi công trình (game, truyện, Túi chữ,
+// Bảng tin…), giống mục "Tự chọn" cũ. Mặc định test chuyển sang danh sách (giữ qua các lần vẽ lại) để test các phần bên trong như trước;
+// worldmap.spec / clarity.spec dùng open=false để test chính bản đồ.
 export async function toLobby(page: Page, open = true): Promise<void> {
   await page.evaluate(() => (window as any).eval('emLoad()'));
   // Chờ bài học chi tiết tải xong TRƯỚC khi bấm: tải xong thì app vẽ lại màn, nút có thể xê dịch đúng lúc bấm (CI Safari iOS).
@@ -91,8 +94,14 @@ export async function toLobby(page: Page, open = true): Promise<void> {
     const s = await page.evaluate(() => { const w = window as any; return { view: w.eval('ui.view'), er: w.eval('ui.er'), em: !!w.eval('EM'), app: (document.getElementById('app')?.innerText ?? '').slice(0, 300), stage: document.body.className }; });
     throw new Error(`sảnh không hiện: ${JSON.stringify(s)}\n${(e as Error).message}`);
   }
-  if (open) await openPick(page);
+  if (open) await openMore(page);
 }
 export async function openPick(page: Page): Promise<void> {
-  await page.evaluate(() => document.querySelectorAll('#app details[data-lobby]').forEach(d => { (d as HTMLDetailsElement).open = true; }));
+  const b = page.locator('#app [data-e="wmlist"][aria-pressed="false"]');
+  if (await b.count()) { await b.click(); await expect(page.locator('#app .wlist')).toBeVisible(); }
+}
+// Danh sách bản đồ: mở "Chi tiết" của công trình (thẻ hero, Túi chữ, truyện, Bảng tin…). Không truyền id thì mở tất cả.
+export async function openMore(page: Page, id?: string): Promise<void> {
+  await openPick(page);
+  await page.evaluate((k) => document.querySelectorAll(`#app details[data-wm${k ? `="${k}"` : ''}]`).forEach(d => { (d as HTMLDetailsElement).open = true; }), id ?? '');
 }

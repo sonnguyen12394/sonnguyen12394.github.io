@@ -1580,7 +1580,7 @@ function gExplain(ex,given){
 
 /* ================== UI STATE ================== */
 const ui = { view:'play', unitId:null, sess:null, summary:null, learn:null, speak:null, filter:'learned', wb:{q:'',lv:'',st:'',ty:'',n:60}, openLv:{}, allUnits:{} };
-function go(view,extra={}){ if(!('allGames' in extra)){ ui.allGames=0; if(view==='play'&&typeof document!=='undefined') document.querySelectorAll('#app details[data-lobby]').forEach(d=>{ d.open=false; }); }   // v117: bấm tab Hôm nay = về màn một việc (thu mục Tự chọn)
+function go(view,extra={}){ if(!('allGames' in extra)){ ui.allGames=0; if(view==='play'&&EM&&EM.mapReset) try{ EM.mapReset(); }catch(e){} }   // v117: bấm tab Hôm nay = về màn một việc; v130: về bản đồ (đóng bảng, thôi danh sách)
   if(view!=='game') stopTimer(); if(view!=='exam') exStop(); if(!['summary','gsum','quiz','session','gsess'].includes(view)) ui.streakUp=null; const nh=extra._nohist; delete extra._nohist; Object.assign(ui,{view},extra); sayStop(); recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
 /* ---------- Điều hướng: nút Quay lại của điện thoại/trình duyệt, hộp thoại, lượt dở ----------
    Mỗi lần go() ghi một mục lịch sử (history.pushState) nên nút Back về đúng màn trước, không thoát app.
@@ -2417,11 +2417,11 @@ const CD_REF={u:'unit',ul:'unit của cấp',g:'bài ngữ pháp',gl:'bài ngữ
 /* ================== VIEWS ================== */
 // Thanh điều hướng: trên máy tính là hàng tab ở đầu trang; trên điện thoại (≤ 640px) là thanh dưới đáy. Cả hai dùng chung một cách tính mục đang mở.
 // v117 (SCORECARD nhóm L): 4 tab, mỗi tab trả lời một câu hỏi khác nhau: Hôm nay (app chọn việc cho bạn) · Ôn tập (phần sắp quên) ·
-// Thư viện (bạn tự chọn: bài học, kỹ năng, mọi trò chơi) · Tôi (tiến độ, mục tiêu, cài đặt). Trước đây Chơi / Học / Kỹ năng đều là "học".
+// Thư viện (bạn tự chọn: bài học, kỹ năng, sổ từ; v130: mọi trò chơi nằm trên Bản đồ Phố Chữ ở tab Hôm nay) · Tôi (tiến độ, mục tiêu, cài đặt). Trước đây Chơi / Học / Kỹ năng đều là "học".
 const BNAV=[['thi','Ôn thi','exam'],['play','Hôm nay','home'],['review','Ôn tập','repeat'],['lib','Thư viện','book'],['more','Tôi','user']];
 const ico = n => `<svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${n}"/></svg>`;
 function navActive(){
-  if(ui.view==='play'||(ui.view==='goal'&&/^quest/.test(ui.er||''))) return 'play';   // v64: Ladder Quest là màn chính
+  if(ui.view==='play'||ui.view==='games'||ui.view==='game'||(ui.view==='goal'&&/^quest/.test(ui.er||''))) return 'play';   // v64: Ladder Quest là màn chính; v130: Đấu trường là công trình trên bản đồ
   const v=ui.view, kind = v==='session' ? ui.sess?.kind : v==='summary' ? ui.summary?.kind : null;
   if(['talk','dlg','fn','rp','wtask','stask','lread','shadow','sounds','sound'].includes(v)||(v==='quiz'&&ui.qz)){ const n=(ui.qz&&ui.qz.meta&&ui.qz.meta.nav)||'lib'; return n==='talk'||n==='path'?'lib':n; }
   if(['thi','exam','vx'].includes(v)) return 'thi';
@@ -2446,11 +2446,10 @@ function viewLib(){
   const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
   return `<section class="stack"><span class="eyebrow">Thư viện</span><h1>Tự chọn bài</h1><p class="muted">Không biết học gì? Tab <b>Hôm nay</b> đã chọn sẵn phần bạn cần nhất.</p></section>
   <div class="units">
-    <button class="unit morei" data-act="allgames"><span class="no">${ico('trophy')}</span><span class="t"><strong>Tất cả trò chơi</strong><span class="muted">Vườn từ, Thám tử, Quán Cà Phê, Karaoke… và truyện Phố Chữ</span></span></button>
+    ${it('play','map','Bản đồ Phố Chữ','Mọi trò chơi, truyện Phố Chữ và Đấu trường (thử thách, thi thử) trên một bản đồ')}
     ${it('path','book','Bài học theo chủ đề','Từ vựng và ngữ pháp theo unit, từ Pre-A1 tới C2')}
     ${it('talk','mic','Kỹ năng','Nghe, nói, đọc, viết và hội thoại theo cấp của bạn')}
     ${it('words','read','Sổ từ','Tra mọi từ đã học và chưa học: tìm không dấu, lọc theo cấp, từ hay quên')}
-    ${it('games','users','Thử thách','Giải đấu tuần, thách đấu bạn bè, Leo tháp')}
   </div>`;
 }
 function viewMore(){
@@ -3220,7 +3219,7 @@ function chNext(){ const g=ui.game; g.i++; g.pick=null;
   render(); }
 function viewGames(){
   const G=st.games, lv=currentUnit().level;
-  return `<section class="stack"><span class="eyebrow">Thử thách</span><h1>Chơi mà học</h1><p class="muted note">Mỗi trò vài phút, dùng những từ bạn đã học (chưa đủ thì lấy từ các unit đầu). Câu trả lời cũng tính vào mục tiêu ngày, XP và nhiệm vụ.</p></section>
+  return `<button class="btn ghost back" data-go="play">← Bản đồ Phố Chữ</button><section class="stack"><span class="eyebrow">🏟️ Đấu trường</span><h1>Chơi mà học</h1><p class="muted note">Mỗi trò vài phút, dùng những từ bạn đã học (chưa đủ thì lấy từ các unit đầu). Câu trả lời cũng tính vào mục tiêu ngày, XP và nhiệm vụ.</p></section>
   ${leaguePanel()}
   ${(()=>{ const ex=(st.exam||[])[0]; return `<section class="panel spread"><div class="stack" style="gap:2px;flex:1 1 240px"><h3>${ico('exam')} Thi thử VSTEP rút gọn</h3><p class="muted">Nghe + Đọc có tính giờ, B1 → C1, ước tính bậc.${ex?` Lần gần nhất: ${exLevel((ex.l+ex.r)/2)} (Nghe ${ex.l}, Đọc ${ex.r}).`:''}</p></div><div class="row"><button class="btn primary" data-act="exgo">Vào thi</button></div></section>`; })()}
   <section class="panel stack"><h3>🏰 Ladder Quest</h3><p class="muted">Leo tháp: mỗi đòn đánh là một câu tiếng Anh app chọn từ đúng những gì bạn còn thiếu để lên cấp. Câu càng giúp bạn tiến bộ, càng nhiều xu.</p>
@@ -3239,7 +3238,7 @@ function viewGames(){
   </section>`;
 }
 function viewGame(){
-  const g=ui.game, back=`<button class="btn ghost back" data-act="gameexit">← Thử thách</button>`;
+  const g=ui.game, back=`<button class="btn ghost back" data-act="gameexit">← Đấu trường</button>`;
   const opts=(q,attr,pick)=>`<div class="opts">${q.opts.map((o,i)=>{ let cls=''; if(pick!=null){ if(i===q.ans) cls='right'; else if(i===pick) cls='wrong'; }
     return `<button class="opt ${cls}" ${attr}="${i}" ${pick!=null?'disabled':''}><kbd>${i+1}</kbd><span>${esc(o)}</span></button>`; }).join('')}</div>`;
   if(g.kind==='speed'){
@@ -8398,7 +8397,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.4f7e51b84a.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.656e21f5fd.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

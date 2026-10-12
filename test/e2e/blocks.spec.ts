@@ -54,7 +54,7 @@ test('Xếp Khối: sảnh Chơi → ván mới → trả lời, đặt khối �
   try { await page.locator('[data-e="qhome"]').click({ timeout: 8000 }); }
   catch (e) {
     const d = await page.evaluate(() => { const w = window as any, b = document.querySelector('[data-e="qhome"]')?.getBoundingClientRect(); return { view: w.eval('ui.view'), detail: w.eval('detailAll()'), body: document.body.className, modal: (document.querySelector('.modal, .sheet, [role="dialog"]') as HTMLElement | null)?.innerText?.slice(0, 120) ?? '', box: b ? [b.x, b.y, b.width, b.height] : null }; });
-    throw new Error(`Về sảnh không bấm được: ${JSON.stringify(d)}\n${(e as Error).message}`);
+    throw new Error(`Về bản đồ không bấm được: ${JSON.stringify(d)}\n${(e as Error).message}`);
   }
   await expect(page.getByRole('heading', { name: /Hôm nay chơi gì/ })).toBeVisible();
   void typed;

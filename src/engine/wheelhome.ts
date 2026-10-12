@@ -17,13 +17,13 @@ export function viewWheelHero(c: ECtx, sv: WheelSave, today: number): string {
 
 export function viewWheelBehind(c: ECtx, r: WheelState & { done: boolean; mode: string }, sv: WheelSave, open: boolean): string {
   const esc = c.host.esc;
-  if (!r.done) return `<section class="stack"><span class="eyebrow">🎡 Vòng Chữ</span><h1>${esc(r.title)}</h1>${open ? '<p class="hint">Màn chơi đang mở toàn màn hình.</p>' : '<div class="row"><button class="btn primary" data-e="whopen">▶ Mở lại màn chơi</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>'}</section>`;
+  if (!r.done) return `<section class="stack"><span class="eyebrow">🎡 Vòng Chữ</span><h1>${esc(r.title)}</h1>${open ? '<p class="hint">Màn chơi đang mở toàn màn hình.</p>' : '<div class="row"><button class="btn primary" data-e="whopen">▶ Mở lại màn chơi</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>'}</section>`;
   const words = r.level.slots.map(s => `<li><b lang="en">${esc(s.en)}</b> · ${esc(s.vi)}</li>`).join('');
   return `<section class="stack"><span class="eyebrow">🎡 Vòng Chữ</span><h1>${r.daily ? '📅 Xong thử thách ngày!' : `🎡 Qua màn ${sv.lv - 1}!`}</h1>
     <p style="font-size:20px">${'⭐'.repeat(r.win?.stars ?? 1)} · +${r.gained} xu · ${r.found.size} từ${r.bonusFound.size ? ` + ${r.bonusFound.size} từ thưởng` : ''}</p>
     <details><summary>Các từ của màn</summary><ul>${words}</ul></details>
     <p class="hint">Mỗi từ của cụm đang học bạn tự tìm ra được ghi vào bản đồ năng lực (nhớ ra từ theo nghĩa). Sao, xu và màn chỉ để vui.</p></section>
-    <div class="row">${r.daily ? '<button class="btn primary" data-e="whshare">📤 Chia sẻ</button>' : '<button class="btn primary" data-e="whstart">▶ Màn tiếp</button>'}<button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row">${r.daily ? '<button class="btn primary" data-e="whshare">📤 Chia sẻ</button>' : '<button class="btn primary" data-e="whstart">▶ Màn tiếp</button>'}<button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }
 
 // v94 Sổ từ (M8): mọi từ đã tìm ra, xếp theo chương; chạm để nghe. Từ gặp nhiều lần có dấu ⭐.
@@ -53,13 +53,13 @@ export function viewHuntHero(c: ECtx, sv: HuntSave, today: number, pt = false): 
 }
 export function viewHuntBehind(c: ECtx, r: HuntState & { over: boolean }, sv: HuntSave, open: boolean): string {
   const esc = c.host.esc;
-  if (!r.over) return `<section class="stack"><span class="eyebrow">⛏️ Mỏ Chữ</span><h1>${esc(r.title)}</h1>${open ? '<p class="hint">Màn chơi đang mở toàn màn hình.</p>' : '<div class="row"><button class="btn primary" data-e="hnopen">▶ Mở lại màn chơi</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>'}</section>`;
+  if (!r.over) return `<section class="stack"><span class="eyebrow">⛏️ Mỏ Chữ</span><h1>${esc(r.title)}</h1>${open ? '<p class="hint">Màn chơi đang mở toàn màn hình.</p>' : '<div class="row"><button class="btn primary" data-e="hnopen">▶ Mở lại màn chơi</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>'}</section>`;
   const ms = r.missions.map(m => `<li>${r.done.has(m.en) ? '✓' : '·'} <b lang="en">${esc(m.en)}</b> · ${esc(m.vi)}</li>`).join('');
   return `<section class="stack"><span class="eyebrow">⛏️ Mỏ Chữ</span><h1>${r.win ? (r.daily ? '📅 Xong mỏ hôm nay!' : `⛏️ Qua màn ${sv.lv - 1}!`) : '⛏️ Hết lượt vuốt'}</h1>
     <p style="font-size:20px">${r.win ? '⭐'.repeat(r.win.stars) + ' · ' : ''}${r.score} điểm · +${r.gained} xu · ${r.done.size}/${r.missions.length} từ nhiệm vụ</p>
     <details><summary>Từ nhiệm vụ của màn</summary><ul>${ms}</ul></details>
     <p class="hint">Mỗi từ nhiệm vụ của cụm đang học bạn tự tìm ra được ghi vào bản đồ năng lực. Điểm, xu và màn chỉ để vui.</p></section>
-    <div class="row">${r.win ? (r.daily ? '<button class="btn primary" data-e="hnshare">📤 Chia sẻ</button>' : '<button class="btn primary" data-e="hnstart">▶ Màn tiếp</button>') : '<button class="btn primary" data-e="hnstart">↺ Chơi lại</button>'}<button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row">${r.win ? (r.daily ? '<button class="btn primary" data-e="hnshare">📤 Chia sẻ</button>' : '<button class="btn primary" data-e="hnstart">▶ Màn tiếp</button>') : '<button class="btn primary" data-e="hnstart">↺ Chơi lại</button>'}<button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }
 
 // v97 Bài Câu (game chủ lực ngữ pháp): thẻ ở sảnh.

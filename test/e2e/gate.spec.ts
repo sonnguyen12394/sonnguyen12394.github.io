@@ -66,7 +66,7 @@ test('Trận cổng: chơi hết bằng câu lạ, không đáp án trong trận
   expect(Object.keys(gg.done)).toEqual(['a2-1']); expect(gg.seen).toContain('a2-1');
   expect(await page.evaluate(() => (window as any).eval('st').e.ev.snap.some((s: any) => s.kind === 'readiness' && /^GATE:/.test(s.dec)))).toBe(true);
   // Đề đã mở không dùng lại: lần sau là đề song song a2-2 (nếu chưa qua).
-  await page.getByRole('button', { name: 'Về sảnh chơi' }).click();
+  await page.getByRole('button', { name: 'Về bản đồ' }).click();
   const st = await page.evaluate(() => (window as any).eval('st').e.gg.done['a2-1'].passed);
   if (!st) { await page.evaluate(() => (window as any).eval("go('goal',{er:'gate'})")); await page.getByRole('button', { name: /▶ Vào trận cổng/ }).click(); await expect(page.locator('form[data-eform="gtnext"] legend').first()).toBeVisible(); expect(await page.evaluate(() => (window as any).eval('st').e.gg.seen)).toContain('a2-2'); }
   expect(errors).toEqual([]);

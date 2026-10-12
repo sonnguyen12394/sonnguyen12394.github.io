@@ -41,7 +41,7 @@ export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, t
     ${open ? `<div class="row"><button class="btn primary big" data-e="gtstart">▶ Vào trận cổng</button></div>` : ''}
     ${last}<p class="hint">Trận ${esc(GATE_SPEC[goal] ?? '')}. Đậu khi khả năng qua ≥ ${pc(GATE.ready)}.</p>${back()}`;
 }
-const back = () => '<div class="row"><button class="btn ghost" data-e="go" data-r="quest">Về sảnh chơi</button></div>';
+const back = () => '<div class="row"><button class="btn ghost" data-e="go" data-r="quest">Về bản đồ</button></div>';
 
 export function viewGateRun(c: ECtx, r: GateRun): string {
   const g = r.groups[r.gi]!, n = r.groups.length;
@@ -75,7 +75,7 @@ export function viewGateEnd(c: ECtx, r: GateRun): string {
     ${resultBox(c, res)}
     ${r.skipL ? '<p class="hint">Bạn bỏ qua phần Nghe: kết luận chỉ dựa vào phần Đọc.</p>' : ''}
     <details class="panel"><summary>Xem chữa bài từng câu</summary><ul class="stack" style="list-style:none;padding:0;margin:8px 0 0;gap:8px">${review}</ul></details>
-    <div class="row"><button class="btn primary" data-e="go" data-r="quest">Về sảnh chơi</button><button class="btn ghost" data-e="go" data-r="goal/${esc(r.goal)}">Xem mục tiêu</button></div>`;
+    <div class="row"><button class="btn primary" data-e="go" data-r="quest">Về bản đồ</button><button class="btn ghost" data-e="go" data-r="goal/${esc(r.goal)}">Xem mục tiêu</button></div>`;
 }
 
 // Chứng chỉ (tuỳ chọn ở hồ sơ, SPEC "Đề sát hạch", neo ngoài): chỉ người bật mới thấy. Nhập điểm đề mẫu chính thức / thi thật theo

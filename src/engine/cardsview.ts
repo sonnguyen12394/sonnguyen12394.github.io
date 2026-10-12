@@ -60,5 +60,5 @@ export function viewCardsEnd(c: ECtx, r: CardsRun, best: number): string {
     ${r.passed?.length ? `<div class="fb good" role="status"><strong>⬆ Lên cấp: ${r.passed.slice(0, 4).map(esc).join(', ')}</strong><span>đã vững (từ câu bạn tự xếp, không phải từ điểm game)</span></div>` : ''}
     ${weak.length ? `<p class="muted">Ván sau app sẽ cho xếp lại: ${weak.map(esc).join(', ')}.</p>` : ''}
     <p class="hint">Điểm, bàn thắng và bùa chỉ để vui, không đổi đánh giá năng lực. Mọi câu đã được ghi vào bản đồ năng lực.</p></section>
-    <div class="row"><button class="btn primary" data-e="cdstart">🃏 Ván mới</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="cdstart">🃏 Ván mới</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }

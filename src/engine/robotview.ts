@@ -34,5 +34,5 @@ export function viewRobotEnd(c: ECtx, r: RobotRun): string {
     <p style="font-size:20px">${win ? `Xong nhiệm vụ với ${b.cmds} lệnh · ${b.moves} bước` : 'Lần sau thử lại nhé'}</p>
     <p>Đồ trên bàn: ${b.items.map(i => `${i.pic} <b lang="en">${esc(i.en)}</b> (${esc(i.vi)})`).join(' · ')}</p>
     <p class="hint">Lệnh nói / gõ chỉ để luyện, không đổi mức thuộc. Máy nghe ra chưa chắc là phát âm chuẩn.</p></section>
-    <div class="row"><button class="btn primary" data-e="rbstart">🤖 Nhiệm vụ mới</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="rbstart">🤖 Nhiệm vụ mới</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }

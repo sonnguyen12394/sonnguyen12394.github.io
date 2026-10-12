@@ -1,0 +1,109 @@
+// v130 Bản đồ Phố Chữ: chỉ trình bày (mô hình từ worldmap.ts). Một khung kéo / thu phóng chứa 5 khu, đường truyện, đường lộ trình hôm nay
+// và các công trình là <button> thật (Tab theo thứ tự khu). Chạm công trình → bảng dưới (tên, tiến độ, ▶ Chơi). Nút "Chơi tiếp" luôn nổi
+// ở đáy khung: màn đầu vẫn chỉ một việc chính (v116–v117). Chế độ "☰ Danh sách" là lối thay thế cho trình đọc màn hình / không kéo được.
+
+import type { ECtx } from './views.ts';
+import { GAMES } from './director.ts';
+import { sceneArt, type Scene } from './story.ts';
+import { MAX_LV, LV_VI } from './town.ts';
+import { WORLD, roadPath, type World, type WPlace, type PlaceId } from './worldmap.ts';
+import { planRow, tiSay, type Dir } from './gameview.ts';
+
+// Mô tả một dòng của từng công trình (trước nằm ở thẻ game của sảnh).
+export const DESC: Partial<Record<PlaceId, string>> = {
+  wheel: 'Nối chữ trên vòng quay để tìm từ, mỗi màn thắp một ngọn đèn phố.',
+  hunt: 'Đào chữ trong mỏ: quẹt tìm từ đúng nhiệm vụ, phá băng, lấy viên chữ.',
+  fog: 'Xếp lại cấp CEFR: mỗi điểm dò mở một ô bản đồ. Trả lời thật, đúng hay sai ô đều mở.',
+  tower: 'Leo tháp: mỗi đòn đánh là một câu đúng phần bạn còn thiếu để lên cấp.',
+  puzzle: 'Tìm 4 nhóm từ cùng chủ đề trong 16 ô, rồi nhớ lại thêm một từ mỗi nhóm. Mỗi ngày một câu đố.',
+  garden: 'Từ mới: gieo hạt, mỗi ngày tưới một lần: nhận ra → nhớ ngược → tự gõ thì cây nở hoa.',
+  cafe: 'Nghe khách nói, hiểu ý, chọn câu đáp đúng văn phong. 6 khách mỗi ca.',
+  talk: 'Nói (hoặc gõ) cho khách hiểu: động từ chơi là chính câu tiếng Anh của bạn.',
+  signs: 'Biển hiệu bị Sương xoá: nhớ lại từ đang mờ để thắp lại biển.',
+  letter: 'Cư dân nhờ bạn viết thư, tin nhắn, thiệp mời; đủ ý thì được quà trang trí phố.',
+  port: 'Ra lệnh cho cần cẩu bằng giọng nói: nói cặp âm cho đúng thì hàng mới lên tàu.',
+  shop: 'Câu hỏng chạy trên băng chuyền, tự gõ lại cho đúng để đóng gói. 6 đơn mỗi ca.',
+  blocks: 'Trả lời đúng để nhận khối, xếp đầy hàng để nổ. Ván 3–5 phút.',
+  radio: 'Nghe cả bản tin / cuộc trò chuyện rồi trả lời ý chính và chi tiết.',
+  bubbles: 'Nghe một từ, chạm đúng bong bóng (ship hay sheep?). 10 từ mỗi màn.',
+  ask: 'Tự đặt câu hỏi tiếng Anh cho nhân chứng để phá vụ án.',
+  case: 'Đọc hồ sơ (biển báo, thư, bài báo) để tìm manh mối và phá án.',
+  robot: 'Nói (hoặc gõ) lệnh tiếng Anh để robot đi lấy đúng đồ vật.',
+  kara: 'Đóng một vai trong hội thoại, nghe mẫu rồi nói theo.',
+  cards: 'Xếp lá bài thành câu đúng để thắng từng bàn.',
+  board: 'Tung xúc xắc đi quanh phố, gặp thử thách tiếng Anh, xây nhà bằng xu.',
+};
+
+export interface WorldUi { sel: PlaceId | null; list: boolean }
+// Phần thân của bảng công trình (game chủ lực, Túi chữ, truyện…) do main.ts gom: main giữ trạng thái các game.
+export type PanelOf = (id: PlaceId) => string;
+
+const stars = (lv: number) => '★'.repeat(lv) + '☆'.repeat(MAX_LV - lv);
+const tipOf = (p: WPlace) => (!p.game ? '' : p.next === null ? 'đủ 4 ★' : `${p.v}/${p.next} ${p.unit} tới ★ thứ ${p.lv + 1}`);
+
+function placeBtn(c: ECtx, p: WPlace, sel: boolean): string {
+  const esc = c.host.esc, cls = ['wplace', p.isNext ? 'next' : '', p.plan >= 0 ? 'plan' : '', p.played ? 'played' : '', p.fog ? 'fogged' : '', p.game ? '' : 'mark', p.id === 'story' ? 'pin' : '', sel ? 'sel' : ''].filter(Boolean).join(' ');
+  const say = p.game ? `${p.vi}: ${p.lv} trên 4 sao${p.plan >= 0 ? `, chặng ${p.plan + 1} hôm nay${p.played ? ', đã xong' : ''}` : ''}${p.isNext ? ', chơi tiếp' : ''}${p.fog ? ', khu còn sương' : ''}` : `${p.vi}: ${LANDMARKS_SAY[p.id] ?? ''}`;
+  return `<button class="${cls}" data-e="wmopen" data-p="${p.id}" data-x="${p.x}" data-y="${p.y}" style="left:${p.x}px;top:${p.y}px" aria-label="${esc(say)}"${sel ? ' aria-expanded="true"' : ''}>
+    ${p.id === 'story' ? '<span class="wpin" aria-hidden="true">📍 Bạn ở đây</span>' : ''}<span class="wico" aria-hidden="true">${p.ico}</span><b aria-hidden="true">${esc(p.vi)}</b>${p.deco ? `<span class="wdeco" aria-hidden="true">${p.deco}</span>` : ''}${p.game ? `<span class="wst" aria-hidden="true">${stars(p.lv)}</span>` : ''}${p.plan >= 0 ? `<span class="wlamp${p.played ? ' on' : ''}" aria-hidden="true">${p.plan + 1}</span>` : ''}</button>`;
+}
+const LANDMARKS_SAY: Partial<Record<PlaceId, string>> = { arena: 'thử thách và luyện đề', bag: 'Túi chữ và Lò rèn', notice: 'sự kiện tuần và trang trí', story: 'bạn ở đây, mở truyện' };
+
+// Bảng của một công trình: đầu bảng (tên, ★, mốc kế, lộ trình) + nút chơi + phần riêng do main gom.
+export function viewPlace(c: ECtx, p: WPlace, extra: string, inList = false): string {
+  const esc = c.host.esc, H = inList ? 'h3' : 'h2';
+  const head = `<div class="wsh"><span class="wsico" aria-hidden="true">${p.ico}</span><div class="stack" style="gap:2px"><${H} id="wsh-${p.id}">${esc(p.vi)}${p.deco ? ` <span class="twd" data-deco="${p.id}" aria-label="Trang trí">${p.deco}</span>` : ''}</${H}>${p.game ? `<span class="hint"><span aria-hidden="true">${stars(p.lv)}</span> ${esc(LV_VI[p.lv]!)} · ${esc(tipOf(p))}</span>` : ''}</div></div>`;
+  const desc = DESC[p.id] ? `<p class="hint">${esc(DESC[p.id]!)}</p>` : p.game ? '' : '';
+  const plan = p.plan >= 0 ? `<p class="hint">🏮 Chặng ${p.plan + 1} trong lộ trình hôm nay${p.played ? ' · ✅ đã xong' : ''}</p>` : '';
+  const fog = p.fog ? '<p class="hint">🌫️ Khu này còn Sương Câm (truyện chưa tới), nhưng vẫn chơi được ngay.</p>' : '';
+  const go = p.game ? `<button class="btn primary big" data-e="${p.start}"${p.isNext ? ` data-g="${p.game}"` : ''}>▶ Chơi ${esc(GAMES[p.game].vi)}</button>` : '';
+  return `${head}${desc}${plan}${fog}${go}${extra}`;
+}
+
+export function viewWorld(c: ECtx, w: World, ui: WorldUi, dir: Dir | null, sc: Scene | null, panel: PanelOf, goal = ''): string {
+  const esc = c.host.esc, next = dir ? GAMES[dir.next.game] : null;
+  const where = sc ? `📍 ${esc(sc.zone)}${sc.no ? ` · Chương ${sc.no}: ${esc(sc.title)}` : ` · ${esc(sc.title)}`}` : '📍 Phố Chữ';
+  // Liên kết phụ (không phải nút chính, v118): cảnh truyện đã sẵn sàng để xem.
+  const story = sc?.ready ? `<button class="sclink" data-e="stscene" data-ch="${sc.no}">📖 ${sc.no ? `Xem cảnh: ${esc(sc.who?.[1] ?? 'Phố')} nói lại được` : 'Bắt đầu câu chuyện'} ›</button>` : '';
+  const z = w.zones.find(x => x.here) ?? w.zones[0]!, ti = dir ? tiSay(c, dir, false, sc) : '';
+  const cta = dir && next ? `<button class="gcard dgo wcta" data-e="${next.start}" data-g="${dir.next.game}"><span class="gico" aria-hidden="true" style="font-size:30px">${next.ico}</span><span class="stack" style="gap:2px;text-align:left"><b>▶ ${dir.inPlan ? 'Chơi tiếp' : 'Chơi thêm'}: ${esc(next.vi)}</b><span class="hint">Vì: ${esc(dir.next.why)}</span></span></button>` : '';
+  // Đầu bản đồ dùng lại khung cảnh .lscene (v118): nơi đang ở, Tí, MỘT nút chơi tiếp, một thước đo phố, 3 đèn lồng.
+  const hud = `<div class="whud dbox lscene stack" style="--s1:${z.c1};--s2:${z.c2}"><span class="sceyebrow">${where}</span><h1>Hôm nay chơi gì?</h1>${ti}${cta}${story}
+    <p class="wmeter"><span>🌅 Phố hồi sinh <b>${w.revived}/${w.zones.length}</b> khu</span><span>★ <b>${w.stars}</b>/${w.max} sao phố</span></p>
+    ${dir ? planRow(c, dir) : ''}</div>`;
+  const tools = `<div class="wtools" role="toolbar" aria-label="Điều khiển bản đồ">
+    ${ui.list ? '' : `<button class="btn small" data-e="wmzoom" data-k="1.25" aria-label="Phóng to">＋</button><button class="btn small" data-e="wmzoom" data-k="0.8" aria-label="Thu nhỏ">－</button><button class="btn small" data-e="wmhome" aria-label="Về chỗ bạn đang ở">⌂</button>`}
+    <button class="btn small" data-e="wmlist" aria-pressed="${ui.list}">${ui.list ? '🗺️ Bản đồ' : '☰ Danh sách'}</button></div>`;
+  if (ui.list) return `<section class="wwrap stack" aria-label="Bản đồ Phố Chữ"><div class="wside stack">${hud}${goal}</div><div class="wmain stack">${tools}${viewList(c, w, panel)}</div></section>`;
+
+  const zones = w.zones.map(z => {
+    const r = z.rect;
+    return `<div class="wzone${z.fog ? ' fog' : ''}${z.here ? ' here' : ''}" style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;--s1:${z.c1};--s2:${z.c2}">
+      <div class="wart" aria-hidden="true">${sceneArt(z.act)}</div>
+      <span class="wzn">${z.revived ? '🌅 ' : z.fog ? '🌫️ ' : ''}${esc(z.vi)}</span>${z.fog ? '<i class="wfog" aria-hidden="true"></i>' : ''}</div>`;
+  }).join('');
+  const route = w.route.length > 1 ? `<polyline class="wroute" points="${w.route.map(p => p.join(',')).join(' ')}"/>` : '';
+  const sel = ui.sel ? w.places.find(p => p.id === ui.sel) ?? null : null;
+  const byZone = w.zones.map(z => `<div role="group" aria-label="Khu ${esc(z.vi)}${z.fog ? ' (còn sương)' : ''}">${w.places.filter(p => p.zone === z.act).map(p => placeBtn(c, p, p === sel)).join('')}</div>`).join('');
+  const sheet = sel ? `<div class="wsheet stack" role="region" aria-labelledby="wsh-${sel.id}"><button class="btn ghost small wclose" data-e="wmclose" aria-label="Đóng">✕</button>${viewPlace(c, sel, panel(sel.id))}</div>` : '';
+  return `<section class="wwrap stack" aria-label="Bản đồ Phố Chữ"><div class="wside stack">${hud}${goal}</div><div class="wmain stack">
+    <div class="wmap" tabindex="0" aria-label="Bản đồ: kéo để di chuyển, chụm hoặc nút ＋ － để phóng. Phím mũi tên để kéo khi đứng ở khung." data-hx="${w.here[0]}" data-hy="${w.here[1]}">${tools}
+      <div class="wworld" style="width:${WORLD.w}px;height:${WORLD.h}px">
+        ${zones}
+        <svg class="wbg" viewBox="0 0 ${WORLD.w} ${WORLD.h}" width="${WORLD.w}" height="${WORLD.h}" aria-hidden="true" focusable="false"><path class="wroad" d="${roadPath()}"/>${route}</svg>
+        ${byZone}
+      </div>
+    </div>${sheet}</div></section>`;
+}
+
+// Chế độ danh sách: mọi khu, mọi công trình (tên, ★, trạng thái, ▶ Chơi); phần riêng dài (thẻ hero, Túi chữ, truyện, Bảng tin…) thu gọn
+// trong "Chi tiết" để danh sách không dài cả chục màn hình. Dòng trạng thái ngắn (p.wstat) vẫn hiện ngay.
+const more = (html: string, p: WPlace): string => {
+  const m = html.match(/^((?:<p class="hint wstat">.*?<\/p>)*)([\s\S]*)$/)!, head = m[1] ?? '', rest = m[2] ?? '';
+  return rest.trim() ? `${head}<details class="gall wmore" data-wm="${p.id}"><summary>Chi tiết ${p.game ? '' : '· mở '}${p.vi}</summary>${rest}</details>` : head;
+};
+function viewList(c: ECtx, w: World, panel: PanelOf): string {
+  const esc = c.host.esc;
+  return `<div class="wlist stack">${w.zones.map(z => `<section class="wlz stack" style="--s1:${z.c1};--s2:${z.c2}"><h2 class="wlzh">${z.revived ? '🌅 ' : z.fog ? '🌫️ ' : ''}${esc(z.vi)}${z.here ? ' <span class="hint">· 📍 bạn ở đây</span>' : ''}</h2>
+    ${w.places.filter(p => p.zone === z.act).map(p => `<article class="wlp stack">${viewPlace(c, p, more(panel(p.id), p), true)}</article>`).join('')}</section>`).join('')}</div>`;
+}

@@ -85,5 +85,5 @@ export function viewLetterEnd(c: ECtx, r: LetterRun, gifts: number): string {
     <p style="font-size:20px">${ico} ${esc(name)} đã nhận thư · gửi ${r.sends} lần · quà ${r.gift ?? ''}</p>
     <p>Phố của bạn: ${GIFTS.slice(0, Math.min(gifts, 8)).join(' ') || '🏘️'} (${gifts} món quà)</p>
     <p class="hint">Thư được lưu như màn Viết theo đề (tính vào Can-Do viết; giáo viên có thể chấm ở mục Bài viết). Quà chỉ để vui.</p></section>
-    <div class="row"><button class="btn primary" data-e="ltstart">✉️ Thư mới</button><button class="btn ghost" data-e="qhome">Về sảnh</button></div>`;
+    <div class="row"><button class="btn primary" data-e="ltstart">✉️ Thư mới</button><button class="btn ghost" data-e="qhome">Về bản đồ</button></div>`;
 }
