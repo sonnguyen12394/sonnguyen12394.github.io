@@ -1631,8 +1631,8 @@ Quyết định của người sáng lập (11/10/2026, `docs/SPEC.md` dòng "Đ
 
 ### 11.2 Luật làm việc từ v121
 
-1. **Hai game chủ lực:** 🎡 Vòng Chữ và ⛏️ Mỏ Chữ, vì chữ chính là cơ chế. 🃏 Bài Câu là ứng viên thứ ba, chỉ được làm tiếp khi hai game đầu đạt ngưỡng.
-2. **Ngưng mở rộng** các game kỹ năng còn lại. Chúng vẫn ở "Luyện tập" làm cơ chế bằng chứng; chỉ sửa lỗi.
+1. **Lõi gồm hai game chữ và một game nói** (sửa ở §13): 🎡 Vòng Chữ, ⛏️ Mỏ Chữ, và Quán Phố Chữ bằng giọng (v123). 🃏 Bài Câu chỉ được làm tiếp khi lõi đạt ngưỡng.
+2. **Ngưng mở rộng riêng lẻ** các game kỹ năng còn lại; chúng vẫn ở "Luyện tập" làm cơ chế bằng chứng, chỉ sửa lỗi. Ngoại lệ: cơ chế của ☕ Quán, 🎤 Karaoke, 🤖 Robot, 🔍 Thám tử được **gộp vào** các game lõi theo §13, không làm thêm game mới cùng loại.
 3. **Làm theo thứ tự cấp:** game chủ lực phải chạy tốt ở Pre-A1–B1 trước. Muốn mở C1–C2 thì dùng chính cơ chế đó với nội dung khó hơn, không làm game riêng cho cấp cao.
 4. **HG24 hiểu là "chữ là quân cờ":** không chèn câu hỏi gác cổng giữa các lượt của một game khác (§10.3 gốc rễ 2).
 5. **Nghiệm thu bằng người chơi, không tự chấm:**
@@ -1725,3 +1725,64 @@ Căn cứ dòng English Ladder (theo README):
   - Ngay sau hai game chủ lực, phải có ít nhất một game mà **cơ chế chính là nói hoặc hội thoại**. Game này nâng H1, H5, H8, dùng lại engine và 5.753 tệp âm thu sẵn.
   - Các chức năng luyện nói, nghe, viết ở tab cũ không được bỏ khi đổi sang game-first.
 - H10 gần 0 ở mọi dòng. Không app nào thay được việc dùng tiếng Anh với người thật; app tốt chỉ dẫn người học tới đó.
+
+## 13. Chiến lược game hoá để nâng trục H (v122–v127)
+
+### 13.0 Sửa nhận định ở §12.4
+
+Người sáng lập phản biện: kết luận "phần giúp giỏi thật nằm ở tab học cũ" sai ở gốc. Nó đánh đồng "game" với "game chữ". Mọi tiêu chí H đều làm được thành **cơ chế chơi**, miễn là động từ chính của game là một hành động ngôn ngữ thật: muốn thắng phải nói, phải hỏi, phải nghe ra.
+
+Gốc rễ thật không phải thiếu công nghệ. App đã có:
+- máy nghe giọng `asrStart` / `asrMatch` / `asrWord`, nghe tự do `asrHear`;
+- bộ dò ý `ideaCheck` / `medCheck`;
+- 24 hội thoại nhánh `CONV` có đo độ trễ nói (`CV_RT`, `cvMed`);
+- 5.753 tệp âm, tiếng ồn `noiseOn`, `ACCENTS`;
+- transfer `novel`, trận cổng, FSRS, hồ sơ 26 cặp âm.
+
+Các phần này nằm rải ở tab học và ở game nhỏ, chưa phần nào là **lõi game** của Phố Chữ. Mà tiền đề của Phố Chữ lại đúng là "**cư dân mất tiếng nói**": nói để trả lại tiếng là cơ chế hợp với truyện nhất.
+
+### 13.1 Nguyên tắc
+
+1. **Động từ chơi là hành động ngôn ngữ.** Thắng nhờ nói đúng, hỏi đúng, nghe ra; không thắng nhờ chọn A/B/C.
+2. **Một lớp nhập "Lời nói" dùng chung,** có bậc lùi mic → gõ → chọn (khi không có mic hoặc đang ở nơi công cộng). Bằng chứng ghi theo bậc: lượt chọn không tính vào H1.
+3. **Hệ quả trong game là phản hồi.** Nói sai âm cuối thì nhân vật hiểu sai và làm sai việc, không hiện bảng "sai rồi".
+4. **Đo trước rồi mới làm:** bảng đo H (v122) đi trước mọi game mới.
+
+### 13.2 Bản đồ tiêu chí → cơ chế
+
+| Tiêu chí | Cơ chế | Dùng lại |
+|---|---|---|
+| H1, H5, H8 | **Quán Phố Chữ bằng giọng** (phục vụ theo thời gian): khách kèm nhu cầu, người chơi nói để hỏi và đáp; thanh kiên nhẫn theo độ trễ, nới theo cấp; đúng ý thì khách nói lại được, sương tan | `CONV`, `cvMatch`, `ideaCheck`, `CV_RT`, `asrHear`, cảnh Quán |
+| H2, H8 | **Thám tử hỏi chuyện** (khoảng trống thông tin): manh mối chỉ có khi tự đặt câu hỏi đúng; từ và cấu trúc cũ trong vụ án, nhân vật, bối cảnh mới | `CONV` nút `@any`, `transfer.ts`, `grammarHints` |
+| H2 | **Từ đào được phải đem dùng:** từ tìm ở Mỏ Chữ / Vòng Chữ thành món cần giao, phải dùng trong câu với cư dân | `director.ts`, `story.ts` |
+| H3 | **Đài Phố Chữ:** truyện kỳ nghe/đọc 3–8 phút làm phần thưởng chương; lựa chọn trong truyện chỉ đúng khi đã hiểu | `DIALOGUES`, bài dài, `tools/clips-*` |
+| H4 | **Âm cảnh từng khu:** chợ ồn, bến có gió và còi; mỗi cư dân một giọng; tốc độ tăng theo khu | `noiseOn`, `clipPlay`, `ACCENTS` |
+| H6 | **Sương quay lại:** biển hiệu của từ sắp quên mờ dần (FSRS); thắp lại là nhớ trễ 7/30 ngày | `retain.ts`, `town.ts` |
+| H7 | **Bến Cảng lệnh giọng:** cặp âm tối thiểu (back/bag, ten/tent); thiếu âm cuối thì tàu làm sai; màn sinh từ hồ sơ âm hay nhầm | `asrWord`, `SOUNDS`, `startPdx`, `robot.ts` |
+| H9 | **Trùm cuối khu = trận cổng** đề chưa thấy, thêm phần nói / hội thoại chưa gặp | `gate.ts`, `vxEvidence` |
+| H10 | **Phố thật hằng tuần:** một nhiệm vụ ngoài đời, ghi âm hoặc tự báo cáo, đổi lấy trang trí phố | `HAS_REC`, `weekly.ts` |
+
+### 13.3 Thứ tự và điểm mục tiêu
+
+Thứ tự làm (mỗi bản có playtest M và đo H):
+1. v122 bảng đo H;
+2. v123 Quán bằng giọng;
+3. v124 Sương quay lại + âm cảnh;
+4. v125 Thám tử hỏi chuyện + từ đào phải đem dùng;
+5. v126 Bến Cảng lệnh giọng;
+6. v127 Đài Phố Chữ + Phố thật.
+
+Điểm H tự chấm; con số trên 6 chỉ hợp lệ khi bảng đo cho số thật:
+
+| | H1 | H2 | H3 | H4 | H5 | H6 | H7 | H8 | H9 | H10 | H |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Hiện tại (cả app) | 6 | 6 | 5 | 6 | 4 | 5 | 6 | 4 | 6 | 1 | 5,1 |
+| Mục tiêu sau v127 | 8 | 7 | 7 | 8 | 8 | 8 | 8 | 8 | 8 | 5 | **7,5** |
+
+### 13.4 Giới hạn
+
+- **Không có AI lúc chạy:** nói tự do chỉ chấm bằng dò ý theo từ khoá. Hội thoại phải có "ý cần nói" rõ ràng.
+- **Máy nghe giọng của trình duyệt** không có ở mọi máy, và có máy cần mạng. Bậc lùi gõ phím giữ cho game chạy được nhưng H1 thấp hơn. Phải đo tỉ lệ người chơi có mic.
+- **Nói dưới áp lực giờ dễ làm người mới sợ.** Ở A1 gần như không ép giờ.
+- **H10 khó vượt 5–6** vì app không kiểm chứng được việc ngoài đời.
+- **H3 tốn nhiều nội dung nhất;** âm thu sẵn mới tới B1.
