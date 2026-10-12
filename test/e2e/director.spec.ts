@@ -44,7 +44,7 @@ test('Bộ não: bấm Chơi tiếp vào đúng game; xong game → màn kết c
   await open(page, true);
   const go = page.locator('.dgo').first(), g0 = await go.getAttribute('data-g');
   expect(g0).toBeTruthy();
-  await page.screenshot({ path: 'test-results/director-lobby.png', fullPage: true });
+  await page.screenshot({ path: 'test-results/director-lobby.png' });   // v130: danh sách bản đồ mở hết dài hơn giới hạn ảnh của WebKit ×3
   // Ép chặng đầu là Vườn từ (luồng chơi ngắn, đã có test riêng) để kiểm phần chuyển game.
   await page.evaluate(() => { const st = (window as any).eval('st'); st.e.gp.plan[0] = { game: 'garden', need: 'vocab', why: 'Từ mới cần cho mục tiêu.' }; st.e.gp.plan = st.e.gp.plan.filter((p: any, i: number) => i === 0 || p.game !== 'garden'); (window as any).eval('save()'); (window as any).eval('render()'); });
   await expect(page.locator('.dgo')).toHaveAttribute('data-g', 'garden');

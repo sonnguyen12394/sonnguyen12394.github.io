@@ -36,7 +36,7 @@ test('Sảnh: thẻ 🎯 gọn ngay dưới Chơi tiếp, trong khung đầu; ch
   const r = await new AxeBuilder({ page }).include('#app').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
   await noHorizontalScroll(page);
-  await page.screenshot({ path: 'test-results/goalbar-lobby.png', fullPage: true });
+  await page.screenshot({ path: 'test-results/goalbar-lobby.png' });   // v130: danh sách bản đồ mở hết dài hơn giới hạn ảnh của WebKit ×3
   await bar.click();
   await expect(page.locator('#app')).toContainText(/Chưa đạt .+ vì còn thiếu/);
   const full = page.locator('.gbar');

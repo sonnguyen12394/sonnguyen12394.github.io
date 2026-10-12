@@ -94,9 +94,14 @@ export async function toLobby(page: Page, open = true): Promise<void> {
     const s = await page.evaluate(() => { const w = window as any; return { view: w.eval('ui.view'), er: w.eval('ui.er'), em: !!w.eval('EM'), app: (document.getElementById('app')?.innerText ?? '').slice(0, 300), stage: document.body.className }; });
     throw new Error(`sảnh không hiện: ${JSON.stringify(s)}\n${(e as Error).message}`);
   }
-  if (open) await openPick(page);
+  if (open) await openMore(page);
 }
 export async function openPick(page: Page): Promise<void> {
   const b = page.locator('#app [data-e="wmlist"][aria-pressed="false"]');
   if (await b.count()) { await b.click(); await expect(page.locator('#app .wlist')).toBeVisible(); }
+}
+// Danh sách bản đồ: mở "Chi tiết" của công trình (thẻ hero, Túi chữ, truyện, Bảng tin…). Không truyền id thì mở tất cả.
+export async function openMore(page: Page, id?: string): Promise<void> {
+  await openPick(page);
+  await page.evaluate((k) => document.querySelectorAll(`#app details[data-wm${k ? `="${k}"` : ''}]`).forEach(d => { (d as HTMLDetailsElement).open = true; }), id ?? '');
 }

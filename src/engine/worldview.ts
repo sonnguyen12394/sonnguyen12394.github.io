@@ -96,9 +96,14 @@ export function viewWorld(c: ECtx, w: World, ui: WorldUi, dir: Dir | null, sc: S
     </div>${sheet}</div></section>`;
 }
 
-// Chế độ danh sách: mọi khu, mọi công trình mở sẵn bảng (giống "Tự chọn" cũ: một trang cuộn, không cần kéo).
+// Chế độ danh sách: mọi khu, mọi công trình (tên, ★, trạng thái, ▶ Chơi); phần riêng dài (thẻ hero, Túi chữ, truyện, Bảng tin…) thu gọn
+// trong "Chi tiết" để danh sách không dài cả chục màn hình. Dòng trạng thái ngắn (p.wstat) vẫn hiện ngay.
+const more = (html: string, p: WPlace): string => {
+  const m = html.match(/^((?:<p class="hint wstat">.*?<\/p>)*)([\s\S]*)$/)!, head = m[1] ?? '', rest = m[2] ?? '';
+  return rest.trim() ? `${head}<details class="gall wmore" data-wm="${p.id}"><summary>Chi tiết ${p.game ? '' : '· mở '}${p.vi}</summary>${rest}</details>` : head;
+};
 function viewList(c: ECtx, w: World, panel: PanelOf): string {
   const esc = c.host.esc;
   return `<div class="wlist stack">${w.zones.map(z => `<section class="wlz stack" style="--s1:${z.c1};--s2:${z.c2}"><h2 class="wlzh">${z.revived ? '🌅 ' : z.fog ? '🌫️ ' : ''}${esc(z.vi)}${z.here ? ' <span class="hint">· 📍 bạn ở đây</span>' : ''}</h2>
-    ${w.places.filter(p => p.zone === z.act).map(p => `<article class="wlp stack">${viewPlace(c, p, panel(p.id), true)}</article>`).join('')}</section>`).join('')}</div>`;
+    ${w.places.filter(p => p.zone === z.act).map(p => `<article class="wlp stack">${viewPlace(c, p, more(panel(p.id), p), true)}</article>`).join('')}</section>`).join('')}</div>`;
 }

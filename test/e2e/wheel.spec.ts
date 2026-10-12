@@ -148,6 +148,6 @@ test('v94 Vòng Chữ: hũ từ thưởng đầy → gợi ý miễn phí (khôn
   const box = page.locator('details.whbookbox');
   await box.locator('summary').click();
   await expect(box.locator('.whw')).toHaveCount(book.length);
-  await page.screenshot({ path: 'test-results/wheel-book.png', fullPage: true });
+  await page.screenshot({ path: 'test-results/wheel-book.png' });   // v130: danh sách bản đồ mở hết dài hơn giới hạn ảnh của WebKit ×3
   expect(errors).toEqual([]);
 });
