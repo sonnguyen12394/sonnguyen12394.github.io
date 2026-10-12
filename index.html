@@ -762,6 +762,35 @@ html.whopen,html.whopen body{overflow:hidden}
 .stwho{display:flex;align-items:center;gap:12px;font:800 20px system-ui,sans-serif}.stico{font-size:56px;line-height:1}
 .sten{margin:0;font:800 24px/1.35 system-ui,sans-serif;min-height:2.7em}.stvi{margin:0;font:500 17px/1.4 system-ui,sans-serif;color:#f1ecff}
 .stdots{display:flex;gap:6px;justify-content:center}.stdots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35)}.stdots i.on{background:#ffd166}
+/* v128 cảnh truyện: lựa chọn, câu bạn tự nói */
+.stpick{display:grid;gap:8px}.stopt{display:grid;gap:2px;text-align:left;min-height:48px;border:2px solid rgba(255,255,255,.5);border-radius:14px;padding:10px 12px;background:rgba(0,0,0,.35);color:#fff;font:600 16px system-ui,sans-serif;cursor:pointer}
+.stopt span{font-weight:500;font-size:14px;color:#f1ecff}.stopt:hover,.stopt:focus-visible{border-color:#ffd166;outline:none}
+.stme{border:2px solid #ffd166}.stsay{margin:0;font:700 14px system-ui,sans-serif;color:#ffd166}
+.stok{margin:0;padding:8px 10px;border-radius:10px;background:rgba(22,128,90,.85);color:#fff;font-weight:700}.stno{margin:0;padding:8px 10px;border-radius:10px;background:rgba(0,0,0,.45);color:#fff}
+.stform{display:flex;gap:6px;flex:1 1 220px}.stform input{flex:1;min-width:0;min-height:44px;border-radius:10px;border:0;padding:0 10px;font:500 16px system-ui,sans-serif}
+.stlink.inl{color:var(--accent)}
+/* v128 Túi chữ · Xưởng của Tí · Chỉ số */
+.bgtabs{display:flex;gap:6px;flex-wrap:wrap}
+.bggrid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.bgcell{display:grid;gap:2px;align-content:start;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}.bgcell b{font-size:18px}
+.bgcell.on{border-color:var(--good);background:var(--good-soft)}.bgcell.off{border-style:dashed;background:var(--surface-2)}.bgico{font-size:28px;line-height:1}
+.bggems{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.bggem{display:flex;gap:4px;align-items:center;padding:4px 10px;border-radius:999px;border:2px solid var(--line);background:var(--surface)}
+.bggem.t1{border-color:#2bb673}.bggem.t2{border-color:#3a86ff}.bggem.t3{border-color:#9b5de5;background:color-mix(in srgb,#9b5de5 14%,var(--surface))}.bggem.fade{opacity:.5;border-style:dashed}
+.bgbar{display:block;height:8px;border-radius:4px;background:var(--line);overflow:hidden;max-width:320px}.bgbar i{display:block;height:100%;background:var(--accent)}
+.bgtiles{display:flex;flex-wrap:wrap;gap:8px}.bgtile{min-height:44px;padding:6px 14px;border-radius:12px;border:2px solid var(--accent);background:var(--accent-soft);color:var(--ink);font:700 17px system-ui,sans-serif;cursor:pointer}.bgtile:disabled{opacity:.3;cursor:default}
+.bgline{min-height:2.4em;padding:10px 12px;border:2px dashed var(--line);border-radius:12px;font:700 20px system-ui,sans-serif}
+.bgbig{font:800 24px system-ui,sans-serif}.bgword{font-size:22px}.bgok{color:var(--good);font-weight:700}.bgno{color:var(--bad);font-weight:600}
+.pill.ok{border-color:var(--good);color:var(--good)}.bghub{margin-top:12px}
+.bgroot [aria-disabled="true"]{border-style:dashed}
+/* v129 Lò rèn năng lực + Bản đồ phủ */
+.fgladder{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.fgladder li{display:grid;justify-items:center;gap:2px;padding:6px 2px;border:2px solid var(--line);border-radius:10px;font-size:12px;text-align:center;background:var(--surface)}
+.fgladder li span:first-child{font-size:22px}.fgladder li.on{border-color:var(--good);background:var(--good-soft)}.fgladder li.need{outline:3px dashed var(--accent);outline-offset:1px}
+.fgarea{border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--surface)}.fgarea summary{cursor:pointer;min-height:32px}
+.fgmap{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.fgcell{display:flex;gap:6px;align-items:center;padding:6px 8px;border:1px dashed var(--line);border-radius:10px;font-size:14px}.fgcell span:nth-child(2){flex:1}
+.fgcell.ok{border-style:solid;border-color:var(--good);background:var(--good-soft)}
 /* v102 sân khấu game kỹ năng: ẩn khung app, cảnh động phía sau, nội dung trên thẻ nền đặc (giữ tương phản) */
 body.stage .top,body.stage #bnav,body.stage #nav{display:none}
 #stagefx{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
@@ -1008,4 +1037,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.c35e369aca.js" defer></script><script src="app.js?v=67" defer></script>
+<script src="x/core.fc99580d60.js" defer></script><script src="app.js?v=67" defer></script>

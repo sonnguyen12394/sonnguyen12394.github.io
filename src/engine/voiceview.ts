@@ -22,6 +22,7 @@ const viaVi: Record<Via, string> = { mic: '🎙 nói', type: '⌨️ gõ', pick:
 // ---------- 🗣️ Quán Phố Chữ bằng giọng ----------
 export interface TalkTurn { node: string; q: string; text: string; via: Via; hit: boolean; first: boolean; think: number | null; coins: number; tip: boolean }
 export interface TalkRun {
+  pm?: number;   // v128 Ấm Trà: hệ số thanh kiên nhẫn
   floor: number; seed: number; lv: string; convs: Conv[]; ci: number; node: string; pre: string; t0: number; miss: number; hint: boolean; vi: boolean;
   turns: TalkTurn[]; per: TalkTurn[][]; coins: number; tips: number; served: number; done: boolean; amb: boolean;
   special: { id: string; en: string; vi: string; node: string; done: boolean; ok: boolean | null; text: string } | null;
@@ -38,7 +39,7 @@ export function viewTalk(c: ECtx, r: TalkRun, mic: Mic): string {
   }
   if (!cv) return head;
   const nd = cv.n[r.node]!, who = cv.who, face = FACE[who] ?? '🧑', line = (r.pre ? r.pre + ' ' : '') + nd.a;
-  const bar = r.phase === 'talk' ? `<div class="vpat" role="img" aria-label="Thanh kiên nhẫn của khách"><i style="animation-duration:${patience(r.lv, line)}s" data-k="${r.turns.length}:${r.miss}"></i></div>` : '';
+  const bar = r.phase === 'talk' ? `<div class="vpat" role="img" aria-label="Thanh kiên nhẫn của khách"><i style="animation-duration:${Math.round(patience(r.lv, line) * (r.pm ?? 1))}s" data-k="${r.turns.length}:${r.miss}"></i></div>` : '';
   const last = r.last ? (r.last.hit ? `<p class="hint" role="status">✅ Khách hiểu (${viaVi[r.last.via]})${r.last.tip ? ' · 💁 trả lời nhanh: +tip' : ''}</p>` : `<p class="hint" role="status">🤔 Khách chưa hiểu, họ hỏi lại.</p>`) : '';
   const hist = r.turns.slice(-2).map(t => `<div class="dl me B"><span class="who">Bạn</span><span lang="en">${esc(t.text)}</span></div>`).join('');
   return `${head}<section class="panel stack vtalk"><div class="vguest"><span class="vface" aria-hidden="true">${face}</span><div class="stack" style="gap:2px"><b>${esc(who)}</b><span class="hint">${esc(cv.vi)} · ${esc(cv.lv)}</span></div></div>

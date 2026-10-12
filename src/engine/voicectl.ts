@@ -27,6 +27,7 @@ export interface VoiceDeps {
   coins: (n: number) => void;
   wk: (kind: 'sentence' | 'play' | 'word', n: number, game: string) => void;
   snap: (subj: string, dec: string, info: Record<string, number | string>) => void;
+  perk?: (p: 'pat') => number;                        // v128 trang bị (Ấm Trà): khách kiên nhẫn hơn (chỉ đổi game, không đổi số đo H)
 }
 export interface VoiceHostX {   // móc của app.js dành cho Phố Chữ nói (khai báo tuỳ chọn trong EHost bằng ép kiểu: app cũ không có thì game ẩn)
   convs?(): Conv[];
@@ -73,7 +74,7 @@ export function makeVoice(d: VoiceDeps) {
     const s = sv(), convs = pickConvs(all, d.lv(), s.tk.played, seed(), 2);
     if (!convs.length) { host.toast('Chưa có khách ở cấp này.'); return; }
     reset(); micN++;
-    talk = { floor: s.tk.runs + 1, seed: seed(), lv: convs[0]!.lv, convs, ci: 0, node: convs[0]!.start, pre: '', t0: Date.now(), miss: 0, hint: false, vi: false, turns: [], per: [[]], coins: 0, tips: 0, served: 0, done: false, amb: !!s.amb && convs[0]!.lv !== 'A1', special: dugWord(), phase: 'talk', picks: null, last: null };
+    talk = { floor: s.tk.runs + 1, seed: seed(), lv: convs[0]!.lv, convs, ci: 0, node: convs[0]!.start, pre: '', t0: Date.now(), miss: 0, hint: false, vi: false, turns: [], per: [[]], coins: 0, tips: 0, served: 0, done: false, amb: !!s.amb && convs[0]!.lv !== 'A1', special: dugWord(), phase: 'talk', picks: null, last: null, pm: d.perk?.('pat') ?? 1 };
     if (talk.amb) ambStart(amb());
     tkSay(); host.render();
   }
@@ -96,7 +97,7 @@ export function makeVoice(d: VoiceDeps) {
       r.miss++; r.pre = res.rp || "Sorry, I didn't catch that."; r.t0 = Date.now(); r.picks = pickOpts(cv, r.node, r.seed + r.turns.length); r.last = { hit: false, via, tip: false, reply: '' };
       sfx('place'); tkSay(); host.render(); return;
     }
-    const first = res.hit && r.miss === 0, pay = turnCoins(first, via, think, r.lv);
+    const first = res.hit && r.miss === 0, pay = turnCoins(first, via, think === null ? null : think / (r.pm ?? 1), r.lv);   // v128 Ấm Trà: tip theo thanh kiên nhẫn dài hơn; số đo H vẫn lấy thời gian thật
     const t = { node: r.node, q: line, text, via, hit: res.hit, first, think, coins: res.hit ? pay.coins : 1, tip: res.hit && pay.tip };
     r.turns.push(t); r.per[r.ci]!.push(t); r.coins += t.coins; if (t.tip) r.tips++;
     if (res.hit) { sfx('ok'); if (via !== 'pick') d.wk('sentence', 1, 'talk'); }
@@ -330,6 +331,14 @@ export function makeVoice(d: VoiceDeps) {
       return viewVoiceHub(c, sv(), signsOf(fadingList(), 6).length, realTask(d.lv(), today()), vWeek(today()), h.total);
     },
     fading: (): number => signsOf(fadingList(), 6).length,
+    // v128 Túi chữ: id từ đang mờ, số dòng Bảng đo H (chỉ số thật), tổng lượt tự nói / tự gõ / nhớ lại (nguyên liệu).
+    fadeIds: (): Set<string> => new Set(fadingList().map(f => f.id)),
+    hrows() { const e = d.E(); return hScore({ log: sv().hx, led: e.ev.led, today: today(), gate: Object.keys(e.gg?.done ?? {}).length, real: host.exam?.().real.length ?? 0 }).rows; },
+    hsum(): { sp: number; ty: number; recall: number } {
+      let sp = 0, ty = 0, recall = 0;
+      for (const x of Object.values(sv().hx.d)) { sp += x.sp ?? 0; ty += x.ty ?? 0; recall += (x.r7?.[0] ?? 0) + (x.r30?.[0] ?? 0); }
+      return { sp, ty, recall: recall + (sv().sg.lit ?? 0) };
+    },
     total(): number { const e = d.E(); return hScore({ log: sv().hx, led: e.ev.led, today: today(), gate: Object.keys(e.gg?.done ?? {}).length, real: 0 }).total; },
     peek(): Peek | null {
       if (talk && !talk.done) {
