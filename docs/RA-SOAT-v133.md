@@ -166,8 +166,11 @@ Ba điểm cần cân khi đổi game thành lò:
 
 Không gỡ mã cũ trước mốc 2: nếu mốc 1 cho thấy trận đấu không cuốn, còn đường lui.
 
-## 5. Câu hỏi còn mở
+## 5. Đã quyết (13/10/2026)
 
-- **Q21.** 7 chỉ số thật hiện có (Từ vựng, Ngữ pháp, Phát âm, Nói, Nghe, Trí nhớ, Dùng thật) khác 7 ô đã chốt (… Đọc, Viết thay cho Trí nhớ, Dùng thật). Đề xuất: theo ô đã chốt (đúng 4 kỹ năng + 3 nền tảng của CEFR); **Trí nhớ** thành độ bền đồ (cùn / sắc), **Dùng thật** thành điều kiện tôi luyện bậc cao (transfer), không phải ô riêng.
-- **Q22.** Xếp Khối, Bàn Cờ, Leo tháp, Robot, Tốc độ 60 giây, Ghép cặp, Thách đấu: cất vào Thư viện như đề xuất, hay giữ làm phó bản kiếm thô (không rèn đồ)?
-- **Q23.** Cốt truyện: Mờ (Sương Câm) đang là nhân vật bị tổn thương được hoà giải bằng lời nói, không phải kẻ thù. Boss trận đấu là ai: tay sai của sương, hay giữ Mờ và đổi trận cuối thành "đấu để giải thoát"?
+Ghi ở `docs/SPEC.md`, khối đầu tệp, mục 17–22:
+- **Q21:** theo 7 ô đã chốt. Trí nhớ thành độ sắc của đồ; Dùng thật thành điều kiện tôi luyện bậc 4–5. Ba hệ đồ gộp làm một.
+- **Q22:** cất vào Thư viện, không rơi nguyên liệu.
+- **Q23:** boss là Tiếng Ồn do Sương tạo ra; Mờ giữ vai được hoà giải.
+- **Soát cổng:** AI soát chéo, người sáng lập không xem đề; đề mẫu Cambridge A2 Key là trọng tài.
+- **Bộ tiêu chí:** đóng băng các thang cũ; một bảng duy nhất "Chiến Binh Chữ → A2".

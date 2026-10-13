@@ -52,6 +52,34 @@
 > 15. **Mỹ thuật:** bộ hình giấy phép mở (CC0, ví dụ Kenney) cho địa hình, đạn, hiệu ứng; nhân vật chibi ghép từ SVG hiện có. Ghi nguồn và giấy phép từng bộ hình.
 > 16. **Mốc 1:** một trận PvE đánh boss khu A1 + một lò rèn Vũ khí (nội dung từ Vòng Chữ / Mỏ Chữ) + "Thợ rèn gợi ý"; đồ đổi kết quả trận theo tỉ lệ 70/30. Mục đích: kiểm vòng "học → rèn → thắng" có cuốn không, trước khi làm tài khoản và đấu người thật.
 >
+> **Bổ sung sau rà soát (`docs/RA-SOAT-v133.md`).** Người sáng lập giao Claude tự quyết theo hướng mới; hai điểm có * là người sáng lập chốt.
+> 17. **Chỉ số → ô đồ:** theo đúng 7 ô ở mục 5. Hai chỉ số cũ không thành ô riêng:
+>     - **Trí nhớ** (FSRS, H6) thành **độ sắc** của mọi món: nhớ kém thì đồ cùn, như mục 6.
+>     - **Dùng thật** (chức năng giao tiếp, transfer) thành **điều kiện tôi luyện** đồ bậc 4–5.
+>
+>     Ba hệ đồ hiện có (trang bị v132, 5 món buff game của Túi chữ v128, món theo kỹ năng của Lò rèn v129) gộp thành **một** hệ đồ chiến đấu; 5 món buff game bỏ.
+> 18. **Game kiểu câu hỏi xen lượt chơi** (Xếp Khối, Bàn Cờ, Leo tháp, Robot, Tốc độ 60 giây, Ghép cặp, Thách đấu 10 câu): cất vào Thư viện, không rơi nguyên liệu, chỉ sửa lỗi. Vai "game vui" nay là trận đấu.
+> 19. **Truyện:** boss mỗi khu là **Tiếng Ồn**, sinh vật do Sương tạo ra. Mờ giữ vai nhân vật được hoà giải bằng lời nói ở cuối (truyện v128). Trận cuối khu 4 vẫn là cuộc nói chuyện.
+> 20. **Soát trận cổng\*:** người sáng lập **không xem đề** (giữ đề lạ cho chính mình). Một phiên AI độc lập soát đáp án, cấp độ, câu đố (`tools/review-export.mjs` → `review-compare.mjs`). Đề mẫu Cambridge A2 Key người sáng lập tự làm ngoài app là trọng tài: lệch nhiều so với dự đoán thì sửa cổng.
+> 21. **Bộ tiêu chí\*:** mục tiêu hiện tại là **hoàn thành A2**; mọi đánh giá tính theo đó. Các thang cũ (Conformance 200, Scorecard 400, Scorecard v111, trục M / H / S / G / P) **đóng băng làm lịch sử, ngưng chấm**. Một bảng duy nhất "Chiến Binh Chữ → A2" thay thế:
+>     - đo tiến tới A2 bằng bằng chứng thật;
+>     - trận đấu đủ cuốn;
+>     - đồ quyết định khoảng 70% (đo bằng số liệu trận);
+>     - không trả tiền mua được năng lực;
+>     - nhớ sau 7 / 30 ngày.
+>
+>     Điểm tự chấm chỉ để tham khảo (mục 14).
+> 22. **Phần cũ:**
+>     - tiến độ người đang dùng được giữ, chuyển thành bậc đồ;
+>     - nhánh v45 bỏ;
+>     - IELTS / VSTEP giữ ẩn, không đầu tư trước khi xong A2;
+>     - Super giả lập thành cửa hàng giả lập (gói nguyên liệu thô);
+>     - năng lượng theo lượt và quảng cáo giả gỡ ở mốc 2;
+>     - người dưới 16 tuổi không nạp được khi chưa có cha mẹ đồng ý;
+>     - không ưu đãi ép giờ, không quay thưởng.
+>
+>     Không gỡ mã cũ trước mốc 2, để còn đường lui nếu trận đấu không cuốn.
+>
 > **Ba rủi ro ghi nhận (không dùng để đổi hướng):**
 > - Trận đấu phải vui tự thân; nếu không, học thành việc cày và cả vòng sụp. Mốc 1 kiểm đúng điều này.
 > - Không có playtest định kỳ thì dễ lặp lại lần trước: tự chấm game khoảng 7, người sáng lập chơi thật thấy "quá tệ" (GAME-CRITERIA §10).
