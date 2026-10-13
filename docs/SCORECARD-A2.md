@@ -54,6 +54,28 @@ Bảng chấm duy nhất từ 13/10/2026 (`docs/SPEC.md`, khối đầu tệp, m
 - **Rủi ro lớn nhất cho đích A2 nằm ở C7, không ở game.** Chỉ có 2 đề cổng A2 (Đọc + Nghe), chưa soát chéo, chưa có Viết / Nói. Rớt hai lần là hết đề lạ. Việc này phải xong trước khi bạn chạm tới A2. Thứ tự hợp lý: soát chéo + soạn thêm đề ở mốc 2.
 - **Không thể đạt 10 khi chỉ một mình tôi làm:** C1, C2, C9, C15 cần bạn chơi và cần thời gian (30 ngày cho số đo nhớ lâu).
 
+## Chấm lại sau mốc 1 (v133, 13/10/2026): tự chấm, CHƯA người thật kiểm
+
+| # | v132 | v133 | Bằng chứng / vì sao chưa cao hơn |
+|---|---|---|---|
+| C1 *(đo)* | 0 | **5** | Có trận ngắm góc / lực / gió (`fight.ts`, `fightview.ts`): kéo ná, quỹ đạo 1/3, dấu ✕ phát trước, boss Rè có cơ chế (gió đảo chiều, Sóng rè), số sát thương, rung, chậm thời gian khi kết liễu. Chưa ai chơi thật; hình tự vẽ |
+| C2 *(đo)* | 0 | **5** | Công thức đồ × tay ngắm; mô phỏng khoá dải ở `engine-fight.test.ts` (chênh −1 ngắm giỏi 42%, −2: 2%, +1 ngắm kém 59%, đúng bậc giỏi 85% / kém 30%). Bot ≠ người; chưa có số liệu trận thật |
+| C3 | 2 | **6** | Thua vì thiếu bậc → màn kết nói đúng ô, một nút mở đúng lò; tinh hoa chỉ từ câu đúng ở lò; rèn → mặc khi Từ vựng đủ. Mới một ô (Vũ khí) |
+| C4 | 4 | **4** | Vũ khí khoá đúng luật (bậc mặc = min(đã rèn, Từ vựng Lv), test xu / tinh hoa vô hạn không vượt). Nhưng tạm thời có thêm một hệ đồ nữa cho tới khi gộp ở mốc 2 |
+| C5 | 5 | **6** | Thợ rèn gợi ý (bản đầu, chỉ ô Vũ khí), lý do bằng lời game, +25% tinh hoa khi theo |
+| C6 | 7 | **7** | Thêm test: mô-đun trận không gọi `ingest`; e2e: sổ bằng chứng không đổi sau trận |
+| C7 | 4 | 4 | Chưa làm (mốc 2) |
+| C8 | 7 | 7 | — |
+| C9 *(đo)* | 4 | 4 | Chưa gắn độ sắc (mốc 2) |
+| C10 | 4 | **4** | Sảnh có một nút chính ⚔️; nhưng còn thêm khối, phần cũ chưa gỡ (luật mốc 2) |
+| C11 | 3 | **4** | Tinh hoa không mua được; thô = xu. Năng lượng, quảng cáo giả còn (gỡ ở mốc 2) |
+| C12 | 4 | **5** | Hình trận tự vẽ, nhân vật cầm Vũ khí đúng bậc, số sát thương, rung, âm theo đòn. Chưa có bộ hình CC0 (mạng chặn, `docs/ASSETS.md`) |
+| C13 | 2 | 2 | — |
+| C14 | 1 | 1 | — |
+| C15 | 2 | **5** | 💬 trong trận và ở màn Chiến Binh, xuất văn bản; số liệu trận theo chênh bậc; `PLAYTEST.md` Phần 0. Chưa có buổi chơi thật |
+
+**Tổng ≈ 99,5 ÷ 20 ≈ 5,0 / 10** (ước tính cũ 5,4). Thấp hơn vì: không có bộ hình CC0, C4 chưa gộp, và giữ trần thấp cho mọi thứ chưa người thật chơi. Bắt buộc: C1 = 5, C3 = 6 **chưa đạt**; C6 = 7 đạt. Bước tiếp theo là **người sáng lập chơi 15 phút theo `PLAYTEST.md` Phần 0 và chấm C1**.
+
 ## Lịch chấm
 
 Chấm lại sau mỗi mốc; ghi điểm mới cạnh điểm cũ, kèm "đã / chưa người thật kiểm". Không đổi mốc 10 để điểm đẹp hơn; muốn đổi mốc hoặc trọng số phải hỏi người sáng lập.

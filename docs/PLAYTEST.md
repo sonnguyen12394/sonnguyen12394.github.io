@@ -1,5 +1,34 @@
 # Chơi thử nghiệm thu
 
+## Phần 0: Chiến Binh Chữ, mốc 1 (v133). Làm phần này trước
+
+Mục đích: kiểm **trận đấu có vui tự thân không (C1)** và **vòng học → rèn → thắng có cuốn không (C3)**, trước mọi việc khác (`docs/KE-HOACH-A2.md` §3). Điểm C1 thật **< 6** thì mốc sau phải sửa trận trước.
+
+### Chuẩn bị (1 phút)
+- Dùng **điện thoại**, bật tiếng. Mở app bình thường (**không cần** ẩn danh): trận đấu không ghi bằng chứng học, còn lò rèn là học thật nên nên ghi vào bản lưu của bạn.
+- Bấm giờ 15 phút.
+
+### Kịch bản (15 phút)
+
+| # | Làm gì | Để ý điều gì |
+|---|---|---|
+| 1 | Sảnh → **⚔️ Vào trận: Luyện tay 1**. Kéo ngược từ nhân vật (như kéo ná), thả để bắn | Mấy giây thì bắn phát đầu? Có hiểu cách ngắm không cần đọc chữ không? |
+| 2 | Thắng → **▶ Trận tiếp: Luyện tay 2** (có gió) | Có đọc được gió (cờ trên cùng, mây trôi) không? Bắn trượt có thấy *do mình* không? |
+| 3 | Thắng → **Tiếng Ồn Rè** (boss, cần Vũ khí bậc 2). Đánh thật tới khi thắng hoặc thua | Có muốn đánh lại không? Sóng rè, gió đảo chiều có thú vị hay chỉ khó chịu? |
+| 4 | Nếu thua: đọc màn kết, bấm **🔨 Rèn Vũ khí: vào …** (mở thẳng lò) | Có hiểu *vì sao* thua và cần làm gì không? |
+| 5 | Chơi lò đó 3–5 phút, về sảnh, bấm **🔨 Rèn Vũ khí** khi đủ tinh hoa (hoặc vào 🗡️ → Chiến Binh) | Có thấy tinh hoa đến từ việc trả lời đúng không? Học có thành "cày" không? |
+| 6 | Đánh lại boss | Đồ mạnh hơn có *cảm* thấy khác không (số sát thương lớn hơn)? |
+| 7 | Bất kỳ lúc nào: bấm **💬** trong trận, chấm sao + một dòng | |
+
+### Phiếu chấm (0–10, ghi vào 💬 hoặc gửi cho tôi)
+- **C1 Trận vui tự thân:** nếu không có chuyện học, bạn có tự mở trận để chơi không? Ngắm / bắn / nổ có đã tay không?
+- **C2 Đồ quyết định:** thua vì thiếu bậc có thấy công bằng không? Thắng sau khi rèn có thấy *nhờ* rèn không?
+- **C3 Vòng khép kín:** sau 15 phút, bạn kể lại được chuỗi "thua → học ở lò → rèn → thắng" không?
+
+### Gửi lại cho tôi
+- Màn Chiến Binh (🗡️ ở sảnh) → **📤 Gửi cho nhà làm game**: văn bản gồm góp ý + số liệu trận (không có dữ liệu học). Dán vào tin nhắn cho phiên làm việc sau.
+- Ba điểm C1, C2, C3 và một câu: điều gì làm bạn muốn bỏ ngang?
+
 ## Phần 1: mục tiêu, đầu vào, trận cổng (v110–v116)
 
 Mục đích: xem người học có biết **mình đang ở đâu, đang hướng tới đâu, khi nào thì "đạt"** hay không, và màn nào còn cảm giác "đi thi".

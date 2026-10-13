@@ -40,6 +40,7 @@ export interface WorldUi { sel: PlaceId | null; list: boolean; quests: boolean }
 export interface WorldExtra {
   coins: number; lv: number; quests: () => string;
   // v132 sảnh kiểu Gunny (GAME-CRITERIA §19): nhân vật của người chơi (avatar.ts), Lực chữ, nhạc nền, dòng tin, giờ trong ngày.
+  cb?: string;   // v133 khối Chiến Binh (fightctl bar): ⚔️ nút chính duy nhất + 🔨 Thợ rèn gợi ý
   me?: (size: number) => string; power?: number; music?: boolean; news?: string[]; made?: boolean; phase?: Phase; fresh?: number;   // fresh: số ô vừa lên bậc chưa xem
 }
 // Thời lượng một ván (phút, ước tính) cho phòng chờ trước ván (P7).
@@ -80,7 +81,7 @@ export function viewWorld(c: ECtx, w: World, ui: WorldUi, dir: Dir | null, sc: S
   // Liên kết phụ (không phải nút chính, v118): cảnh truyện đã sẵn sàng để xem.
   const story = sc?.ready ? `<button class="sclink" data-e="stscene" data-ch="${sc.no}">📖 ${sc.no ? `Xem cảnh: ${esc(sc.who?.[1] ?? 'Phố')} nói lại được` : 'Bắt đầu câu chuyện'} ›</button>` : '';
   const z = w.zones.find(x => x.here) ?? w.zones[0]!, ti = dir ? tiSay(c, dir, false, sc) : '', lit = dir ? dir.plan.filter(p => dir.x.played.includes(p.game)).length : 0;
-  const cta = dir && next ? `<button class="gcard dgo wcta" data-e="${next.start}" data-g="${dir.next.game}"><span class="gico" aria-hidden="true" style="font-size:30px">${next.ico}</span><span class="stack" style="gap:2px;text-align:left"><b>▶ ${dir.inPlan ? 'Chơi tiếp' : 'Chơi thêm'}: ${esc(next.vi)}</b><span class="hint">Vì: ${esc(dir.next.why)}</span></span></button>` : '';
+  const cta = dir && next ? `<button class="gcard dgo wcta${x.cb ? ' slim' : ''}" data-e="${next.start}" data-g="${dir.next.game}"><span class="gico" aria-hidden="true" style="font-size:30px">${next.ico}</span><span class="stack" style="gap:2px;text-align:left"><b>▶ ${dir.inPlan ? 'Chơi tiếp' : 'Chơi thêm'}: ${esc(next.vi)}</b><span class="hint">Vì: ${esc(dir.next.why)}</span></span></button>` : '';
   // Đầu bản đồ dùng lại khung cảnh .lscene (v118): nơi đang ở, Tí, MỘT nút chơi tiếp, một thước đo phố, 3 đèn lồng.
   // v132 sảnh kiểu Gunny: thanh tài nguyên một dòng (avatar, ⚔️ Lực chữ, 🪙, 🏮, ⭐, nhạc), sân khấu vẽ (phố theo giờ, nhân vật của bạn
   // đứng cạnh Tí đang nói), dòng tin hệ thống thay khung chat, hàng lối tắt. "Chơi tiếp" vẫn là nút chính duy nhất (v117).
@@ -104,7 +105,7 @@ export function viewWorld(c: ECtx, w: World, ui: WorldUi, dir: Dir | null, sc: S
       <button class="wchip" data-e="wmopen" data-p="bag" aria-label="Thợ Chữ cấp ${x.lv}, mở Xưởng của Tí">⭐ <b>Lv ${x.lv}</b></button>
       ${x.music === undefined ? '' : `<button class="wchip" data-e="wmmusic" aria-pressed="${x.music}" aria-label="Nhạc nền">${x.music ? '🔊' : '🔇'}</button>`}
       <span class="wchip">🌅 <b>${w.revived}/${w.zones.length}</b> khu</span><span class="wchip">★ <b>${w.stars}/${w.max}</b> sao phố</span></div>
-    ${stage}${cta}${story}
+    ${x.cb ?? ''}${stage}${cta}${story}
     ${dir ? planRow(c, dir) : ''}</div>`;
   const tools = `<div class="wtools" role="toolbar" aria-label="Điều khiển bản đồ">
     ${ui.list ? '' : `<button class="btn small" data-e="wmzoom" data-k="1.25" aria-label="Phóng to">＋</button><button class="btn small" data-e="wmzoom" data-k="0.8" aria-label="Thu nhỏ">－</button><button class="btn small" data-e="wmhome" aria-label="Về chỗ bạn đang ở">⌂</button>`}

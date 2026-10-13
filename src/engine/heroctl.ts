@@ -21,7 +21,7 @@ export interface HeroDeps {
   wallet: () => number;
   open: (tab: HeroTab) => void;   // chuyển tab Túi chữ
 }
-export interface SvgOpt { wear?: Partial<Record<FSlot, string>>; showF?: boolean; label?: string; cls?: string; look?: Look }
+export interface SvgOpt { wear?: Partial<Record<FSlot, string>>; showF?: boolean; label?: string; cls?: string; look?: Look; gear?: Partial<Record<Slot, number>> }   // v133 gear: đè bậc vài ô (Vũ khí đã rèn)
 
 export function makeHero(d: HeroDeps) {
   const { host } = d;
@@ -31,7 +31,7 @@ export function makeHero(d: HeroDeps) {
   const peek = (): AvSave => d.E().av ?? freshAv(seed());
   const sv = (): AvSave => (d.E().av ||= freshAv(seed()));
   const gear = () => gearOf(d.rows());
-  const svg = (size: number, o: SvgOpt = {}): string => { const a = peek(); return avatar(o.look ?? a.look, tiers(gear()), { size, wear: o.wear ?? a.wear, showF: o.showF ?? a.showF, label: o.label, cls: o.cls }); };
+  const svg = (size: number, o: SvgOpt = {}): string => { const a = peek(); return avatar(o.look ?? a.look, { ...tiers(gear()), ...o.gear }, { size, wear: o.wear ?? a.wear, showF: o.showF ?? a.showF, label: o.label, cls: o.cls }); };
   const pet = (): string => host.mascot?.('happy', 64) ?? '';
 
   // Mở tab Trang bị: ô nào vừa lên bậc thì ăn mừng một lần (tiếng + viền sáng), rồi ghi đã xem.

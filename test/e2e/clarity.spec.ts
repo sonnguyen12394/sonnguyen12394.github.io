@@ -23,18 +23,20 @@ const AXE = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
 // Từ nội bộ không được nằm ở màn đầu (chi tiết ở trang mục tiêu, cách một lần chạm).
 const JARGON = /năng lực|cổng khu|bằng chứng|Can-Do|Pre-A1|kết luận|Target Model|readiness/i;
 
-test('L1 L2 L3: màn đầu có đúng một nút chính trong khung đầu (Chơi tiếp), ít khối, không thuật ngữ nội bộ; WCAG AA', async ({ page, errors }) => {
+test('L1 L2 L3: màn đầu có đúng một nút chính trong khung đầu (⚔️ vào trận), ít khối, không thuật ngữ nội bộ; WCAG AA', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
   const prim = await page.evaluate(() => {
     const nav = document.getElementById('bnav')?.getBoundingClientRect().top ?? innerHeight;
-    return [...document.querySelectorAll('#app .btn.primary, #app .dgo')].filter(el => {
+    return [...document.querySelectorAll('#app .btn.primary')].filter(el => {
       const r = el.getBoundingClientRect();
       return r.width > 0 && r.height > 0 && r.top < nav && r.bottom > 0;
     }).map(el => (el as HTMLElement).innerText.trim().slice(0, 40));
   });
+  // v133 Chiến Binh Chữ (SPEC 13/10/2026): nút chính duy nhất là ⚔️ vào trận; "▶ Chơi tiếp" cũ còn ở dưới nhưng không còn là nút chính.
   expect(prim, 'đúng một nút chính trong khung nhìn đầu tiên').toHaveLength(1);
-  expect(prim[0]).toMatch(/Chơi tiếp/);
+  expect(prim[0]).toMatch(/⚔️/);
+  await expect(page.locator('#app .dgo')).toContainText(/Chơi tiếp/);
   // Khối hiện ra (con trực tiếp của #app có kích thước), không tính tiêu đề và mục thu gọn.
   const blocks = await page.evaluate(() => [...document.querySelectorAll('#app > *')].filter(el => {
     const r = el.getBoundingClientRect();
@@ -48,7 +50,8 @@ test('L1 L2 L3: màn đầu có đúng một nút chính trong khung đầu (Ch�
   // Thẻ mục tiêu gọn: một con số chính, chạm mở bản đầy đủ ở trang mục tiêu.
   await expect(page.locator('.gbar.slim')).toContainText(/🎯 A1 · \d+\/\d+ kỹ năng đã vững/);
   const h = await page.evaluate(() => document.documentElement.scrollHeight);
-  expect(h, 'màn đầu gần vừa một màn hình (trước v117 ~4.300 px)').toBeLessThanOrEqual(1300);
+  // v133: +khối Chiến Binh (⚔️ + 🔨, SPEC 13/10/2026); phần cũ chưa gỡ trước mốc 2 nên nới 1.300 → 1.400.
+  expect(h, 'màn đầu gần vừa một màn hình (trước v117 ~4.300 px)').toBeLessThanOrEqual(1400);
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
   await page.screenshot({ path: 'test-results/clarity-lobby.png' });
@@ -128,7 +131,7 @@ for (const dark of [false, true]) test(`v118 cảnh Phố Chữ (${dark ? 'tối
   await expect(page.locator('.wzone.fog')).toHaveCount(3);
   await expect(page.locator('.wzone.here')).toContainText('Khu Chợ Sáng');
   await expect(page.locator('.wplace.pin')).toContainText('Bạn ở đây');
-  const prim = await page.locator('#app .btn.primary:visible, #app .dgo:visible').count();
+  const prim = await page.locator('#app .btn.primary:visible').count();   // v133: ⚔️ là nút chính; ▶ Chơi tiếp thành nút phụ
   expect(prim).toBe(1);
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
