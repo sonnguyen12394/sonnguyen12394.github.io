@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 69;
+const STATE_V = 18, APP_VERSION = 70;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -4760,6 +4760,11 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:70,d:'2026-10-13',t:'Chiến Binh Chữ: trận đấu đầu tiên',items:[
+    'Nút ⚔️ ở sảnh: vào trận ngắm bắn kiểu Gunny. Kéo ngược từ nhân vật như kéo ná để chọn góc và lực, xem gió rồi bắn. Trong trận không có câu tiếng Anh.',
+    'Hai trận luyện tay rồi tới boss Tiếng Ồn Rè: gió mạnh, đảo chiều mỗi 2 lượt, cứ 3 lượt bắn Sóng rè.',
+    'Vũ khí quyết định phần lớn sát thương. Rèn Vũ khí bằng ✨ tinh hoa (chỉ có khi trả lời đúng ở Vườn từ, Vòng Chữ, Mỏ Chữ, Lò rèn) và xu. Mặc được khi Từ vựng đủ bậc.',
+    '🔨 Thợ rèn gợi ý nên vào lò nào; thua boss thì màn kết chỉ thẳng chỗ cần rèn. Nút 💬 để góp ý nhanh ngay trong trận.']},
   {v:69,d:'2026-10-13',t:'Nhân vật của bạn và sảnh mới',items:[
     'Bạn có nhân vật riêng: chọn tóc, màu tóc, màu da, mắt, miệng (không chọn giới tính), đổi lại lúc nào cũng được. Tí đi cạnh như thú cưng.',
     '7 ô trang bị (Bút, Mũ, Kính, Tai nghe, Áo, Khăn, Cánh), mỗi ô gắn một chỉ số thật: giỏi lên thì món tự lên bậc gỗ → đồng → bạc → vàng → kim cương. Không mua được, không bao giờ hỏng.',
@@ -8413,7 +8418,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.2c77a2e518.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.78ca13ac7a.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

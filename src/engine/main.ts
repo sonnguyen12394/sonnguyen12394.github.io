@@ -7,7 +7,9 @@ import { GOALS, loadGraph, loaded, goalOn } from './data.ts';
 import { viewGoals, viewPick, viewGoal, dayOf, type ECtx } from './views.ts';
 import { viewDiagIntro, viewDiagRun, viewDiagResult, viewLoading, lrBand, viewFogPick, FOG_EVERY, type DiagRun } from './diagview.ts';
 import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, autoGoal, guessCorrected, recognitionLevel, QUICK_PROBES, type Cand } from './diag.ts';
-import { ingest, setPrior } from './ev/store.ts';
+import { ingest as ingest0, setPrior } from './ev/store.ts';
+import { makeFight } from './fightctl.ts';
+import { statsOf, LV_AT } from './bag.ts';
 import { dev } from './core.ts';
 import { addSnap } from './ev/snapshot.ts';
 import { RULE_ID } from './ev/evaluate.ts';
@@ -110,6 +112,11 @@ export interface EngineModule {
 export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[]; bonus?: string[] }
 
 let bound = false;
+
+// v133 Chiến Binh Chữ: mọi bằng chứng vẫn đi qua ingest như cũ; lớp bọc chỉ ĐỌC kết quả để cộng tinh hoa Vũ khí (fightctl onEv).
+// Trận đấu không bao giờ gọi hàm này (P13).
+let onEvHook: ((o: Parameters<typeof ingest0>[2], ev: ReturnType<typeof ingest0>) => void) | null = null;
+const ingest: typeof ingest0 = (st, m, o, c) => { const ev = ingest0(st, m, o, c); try { onEvHook?.(o, ev); } catch { /* tinh hoa không được làm hỏng bằng chứng */ } return ev; };
 
 export function init(host: EHost): EngineModule {
   const E = (): EState => {
@@ -559,6 +566,22 @@ export function init(host: EHost): EngineModule {
       goalLv: () => goalOf(V())?.vi ?? '',
     },
   });
+  // ---------- v133 Chiến Binh Chữ: trận + ô Vũ khí (fightctl.ts). Trận không ghi bằng chứng; tinh hoa đọc kết quả qua onEvHook. ----------
+  const fc = makeFight({
+    host, E,
+    rows: () => statsOf(statIn()),
+    vocPass: () => statIn().pass.u ?? 0,
+    lvAt: LV_AT,
+    wallet: () => wallet(),
+    heroSvg: (n, w) => bag.hero.svg(n, { gear: { pen: Math.min(5, w) } }),
+    garden: () => { const t = host.today(); return Object.values(E().gv?.plants ?? {}).filter(x => x.s < 3 && x.d < t).length; },
+    last: () => E().gp?.last ?? '',
+    dirGame: () => { try { return loaded() && E().goals.length ? director().next.game : undefined; } catch { return undefined; } },
+    start: k => { const f = act[k]; if (f) f(document.createElement('button')); },
+    coins: n => { const q = qsave(); q.coins += n; q.day = host.today(); },
+    ver: 'v133',
+  });
+  onEvHook = (o, ev) => fc.onEv(o, ev);
   // Số kỹ năng vững thật của mục tiêu chính (mốc cuối mỗi khu truyện cần con số này).
   function solidNow(): number { const g = E().goals.map(sg => loaded()?.goal.get(sg.id)).find(Boolean); return g && loaded() ? skillsOf(E(), g).solid : 0; }
   // Bộ chọn cho game chỉ dùng một loại nút (ngữ pháp / chức năng giao tiếp / âm): biên lộ trình có ít nút loại đó → thêm nút chưa Đạt của
@@ -1342,7 +1365,7 @@ export function init(host: EHost): EngineModule {
   const bsave = () => { const e = E(); return (e.bd ||= freshBoardSave()); };
   // Ví xu chung = xu kiếm được ở mọi game − xu tiêu ở Bàn Cờ − xu tiêu ở Phố / hồi tim (v91) − thời trang (v132).
   const twsave = () => { const e = E(); return (e.tw ||= freshTown()); };
-  const wallet = () => Math.max(0, qsave().coins - bsave().spent - (E().tw?.spent ?? 0) - (E().av?.spent ?? 0));   // v132 − tủ thời trang
+  const wallet = () => Math.max(0, qsave().coins - bsave().spent - (E().tw?.spent ?? 0) - (E().av?.spent ?? 0) - (E().cb?.spent ?? 0));   // v132 − tủ thời trang; v133 − rèn Vũ khí
   const REVIVE = 25;
   function bdRoll(): void {
     const bd = qrun?.bd;
@@ -1744,9 +1767,10 @@ export function init(host: EHost): EngineModule {
       return `<ul class="wqlist" aria-label="Việc hôm nay">${today}${tale}${town1}</ul>${viewWeekly(E().wk, host.today())}`;
     };
     if (wsel && !w.places.some(p => p.id === wsel)) wsel = null;
-    return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests, me: n => bag.hero.svg(n), power: bag.hero.power(), music: !musicOff(), news: lobbyNews(), made: bag.hero.made(), fresh: bag.hero.pending().length, phase: phaseOf(new Date().getHours()) }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
+    return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests, me: n => bag.hero.svg(n), power: bag.hero.power(), music: !musicOff(), news: lobbyNews(), made: bag.hero.made(), fresh: bag.hero.pending().length, phase: phaseOf(new Date().getHours()), cb: fc.bar() }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
   }
   const routes: Record<string, (c: ECtx) => string> = {
+    cb: c => fc.view(c),   // v133 Chiến Binh: Vũ khí, trận khu 1, số liệu trận, góp ý
     // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).
     treasure: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -1827,6 +1851,7 @@ export function init(host: EHost): EngineModule {
   }
 
   const act: Record<string, (el: HTMLElement) => void> = {
+    ...fc.acts,
     ...vc.acts,
     ...bag.acts,
     go(el) { host.go(el.dataset.r || 'goals'); },
@@ -2090,6 +2115,7 @@ export function init(host: EHost): EngineModule {
     tans(el) { if (!tout) return; const q = tout.qs[tout.i]!, i = Number(el.dataset.i); toutAnswer(i >= 0 && i === q.ans); },
   };
   const forms: Record<string, (f: HTMLFormElement) => void> = {
+    ...fc.forms,
     ...vc.forms,
     ...bag.forms,
     certscore(f) {

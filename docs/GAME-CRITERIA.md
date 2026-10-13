@@ -1644,6 +1644,8 @@ Quyết định của người sáng lập (11/10/2026, `docs/SPEC.md` dòng "Đ
 
 ### 11.3 Còn mở (chờ người sáng lập)
 
+> **Đã chốt 13/10/2026** (`docs/SPEC.md`, khối "Đổi hướng: Chiến Binh Chữ"): kiếm tiền = nạp rút ngắn cày nguyên liệu, không mua năng lực; cổng lên store = người sáng lập chơi tới khi đạt A2; tên mới Chiến Binh Chữ. Luật 4 ở §11.2 (HG24 "chữ là quân cờ") không còn áp cho trận đấu: trận đấu là game thuần, tiếng Anh nằm ở lò rèn.
+
 - Kiếm tiền "kiểu app học" và cổng lên store "bằng điểm thi thật" (`docs/SPEC.md`) chưa đổi. Hai điểm này cần xem lại cho hợp định vị game.
 - Tên sản phẩm "English Ladder" vẫn mang nghĩa app học.
 
