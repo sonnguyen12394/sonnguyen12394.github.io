@@ -50,7 +50,7 @@ Bảng chấm duy nhất từ 13/10/2026 (`docs/SPEC.md`, khối đầu tệp, m
 ## Đọc điểm, nói thẳng
 
 - **3,0 không có nghĩa app tệ.** Phần học (nhóm B ≈ 5,4) là phần mạnh nhất và tốn công nhất, và nó giữ nguyên giá trị. Điểm thấp vì đích đã đổi: lõi của hướng mới là trận đấu, mà trận đấu chưa tồn tại.
-- **Một việc kéo được nhiều điểm nhất là mốc 1.** Trận PvE + ô Vũ khí + Thợ rèn gợi ý + góp ý nhanh chạm C1, C2, C3, C4, C5, C12, C15. Ước tính sau mốc 1, tự chấm lên khoảng **4,5–5**. C1 và C2 vẫn bị giới hạn ở 6 cho tới khi bạn chơi thật.
+- **Một việc kéo được nhiều điểm nhất là mốc 1.** Trận PvE + ô Vũ khí + Thợ rèn gợi ý + góp ý nhanh chạm C1, C2, C3, C4, C5, C12, C15. Ước tính sau mốc 1, tự chấm lên khoảng **5,4**. C1 và C2 vẫn bị giới hạn ở 6 cho tới khi bạn chơi thật.
 - **Rủi ro lớn nhất cho đích A2 nằm ở C7, không ở game.** Chỉ có 2 đề cổng A2 (Đọc + Nghe), chưa soát chéo, chưa có Viết / Nói. Rớt hai lần là hết đề lạ. Việc này phải xong trước khi bạn chạm tới A2. Thứ tự hợp lý: soát chéo + soạn thêm đề ở mốc 2.
 - **Không thể đạt 10 khi chỉ một mình tôi làm:** C1, C2, C9, C15 cần bạn chơi và cần thời gian (30 ngày cho số đo nhớ lâu).
 
