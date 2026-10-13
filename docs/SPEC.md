@@ -1,5 +1,62 @@
 # English Ladder — Master Spec v2
 
+> **13/10/2026 — Đổi hướng: Chiến Binh Chữ.** Người sáng lập chốt sau buổi rà lại spec (20 câu hỏi). Khối này đứng trên mọi phần bên dưới; dòng nào bên dưới trái với khối này thì theo khối này (các dòng bị thay có ghi "thay bởi 13/10/2026").
+>
+> **Định vị và vòng lõi**
+> 1. **Sản phẩm:** game nhập vai kiểu Gunny, tên mới **Chiến Binh Chữ** (thay "English Ladder"; đổi tên trong app trước khi lên store, tra trùng thương hiệu và tên trên store trước khi chốt).
+> 2. **Trận đấu là game thuần:** ngắm góc, lực, gió kiểu Gunny; **không có câu tiếng Anh trong lượt bắn**. Trận đấu không ghi bằng chứng (P13). Thay luật HG24 "chữ là quân cờ" (GAME-CRITERIA §11.2 luật 4) và dòng 2 của khối 08/10/2026 ("mỗi hành động trong game là thử thách ngôn ngữ").
+> 3. **Học là để rèn, chế đồ.** Kết quả trận phụ thuộc **khoảng 70% vào đồ, 30% vào tay ngắm**: chênh một bậc đồ thì ngắm giỏi vẫn lật được, chênh từ hai bậc thì gần như không. Người chơi muốn thắng thì tự nguyện học để nâng chỉ số.
+> 4. **Đồ khoá theo chỉ số thật:** đồ bậc N chỉ mặc được khi kỹ năng tiếng Anh thật đạt N (luật v128 giữ nguyên). Người nạp và người không nạp có cùng trình độ thì có cùng trần sức mạnh.
+> 5. **Mỗi ô đồ là một nhóm kỹ năng:**
+>
+>    | Ô đồ | Kỹ năng | Tác dụng trong trận |
+>    | --- | --- | --- |
+>    | Vũ khí | Từ vựng | Sát thương |
+>    | Giáp | Ngữ pháp | Phòng thủ |
+>    | Khiên | Nghe | |
+>    | Mũ | Đọc | |
+>    | Giày | Phát âm | Di chuyển |
+>    | Bùa | Nói | Tuyệt kỹ |
+>    | Nhẫn | Viết | |
+>
+>    Boss mỗi khu nhắm điểm yếu khác nhau. Một món không được hơn món yếu nhất quá một bậc (chống học lệch). Bùa và Nhẫn có trần bậc khi Viết/Nói còn giới hạn Confidence Vừa (Quyết định kỹ thuật §10). Máy không có micro / máy nghe thì Bùa có đường rèn thay thế (gõ câu) với trần thấp hơn, không để kẹt.
+> 6. **Quên thì đồ cùn, không mất:** phần đồ gắn với mục sắp quên (FSRS) bị giảm lực; ôn đến hạn = **mài đồ**, lấy lại đủ lực. Không có cường hoá hỏng mất đồ.
+> 7. **Game cũ thành lò rèn / phó bản, mở dần.** 17 game hiện có không mở cùng lúc: lò mới mở theo bậc đồ và độ khó bài (dễ → khó), để người chơi không phải chọn giữa quá nhiều thứ. Học diễn ra trong lò; trận đấu chỉ để chơi, không trộn hai việc.
+>
+> **Bộ não điều phối trong game**
+>
+> Người chơi chọn **rèn món nào**; bộ não quyết định **món đó đòi học gì**.
+>
+> | Bộ não cũ | Vai trò mới |
+> | --- | --- |
+> | `path.ts` (đường đi tối thiểu) | Cây công thức đồ của từng khu; mở lò theo tiền đề |
+> | `nba.ts` (bước tiếp theo) | Nội dung của mỗi lần rèn: học mới = luyện phôi (có thẻ dạy trước), ôn đến hạn = mài đồ cùn, dò = thử quặng lạ, transfer = tôi luyện (bắt buộc khi lên bậc cao, chống học tủ) |
+> | `director.ts` (chọn game) | Chọn lò hợp nhu cầu và đánh dấu **"Thợ rèn gợi ý"**: một món đáng rèn nhất, lý do bằng lời của game; theo gợi ý được thêm tinh hoa. Nút "▶ Chơi tiếp" đổi thành gợi ý này |
+> | Bằng chứng L0–L4, mastery, FSRS, đèn báo học tủ | Giữ nguyên. Lượt rèn là lượt đo: không ép giờ, chỉ số trận đấu không đổi câu hỏi (P14) |
+> | Trận cổng (v113–v116) | Rèn **Bảo vật khu**: câu lạ, làm một lần, không gợi ý, thành khi P(đậu) ≥ 80%. Có Bảo vật mới được đánh boss cuối khu; trận boss vẫn là game thuần |
+>
+> **Đối thủ, tài khoản, kiếm tiền**
+> 8. **Thứ tự làm đối thủ:** đánh máy (PvE: boss, phó bản, chạy khi mất mạng) → đấu bóng ma bất đồng bộ (phát lại lượt của người thật, Supabase) → đấu thời gian thực khi đủ người.
+> 9. **Tài khoản:** Supabase Auth. Người mới **chơi trước, đăng nhập sau**: chương mở đầu và vài trận PvE không cần tài khoản; đăng nhập khi đấu người thật, khi nạp, hoặc để giữ đồ. Dữ liệu khách chuyển sang tài khoản. Tuân Nghị định 13/2023, đồng ý của cha mẹ với người dưới 16 tuổi. Thay lời hứa "không tài khoản" (README, trang quyền riêng tư, mục 42 ở "Các mục được sửa").
+> 10. **Kiếm tiền:** nạp để **rút ngắn thời gian cày nguyên liệu**, không mua được năng lực. Hai loại nguyên liệu:
+>     - **nguyên liệu thô** (sắt, gỗ, xu) rơi từ trận đấu, mua được;
+>     - **tinh hoa chữ** chỉ có khi trả lời đúng ở lò rèn, không mua được.
+>
+>     Món đồ cần cả hai loại và vẫn khoá theo chỉ số thật. Không quay thưởng, không VIP cộng lực chiến. Thay dòng "Kiếm tiền" (kiểu Duolingo: năng lượng theo lượt, quảng cáo) và Quyết định kỹ thuật §11.
+>
+> **Đích và nghiệm thu**
+> 11. **Đích vẫn là đạt cấp CEFR**; game là phương tiện. Thay ý "xác nhận CEFR chỉ là tuỳ chọn ở hồ sơ" của dòng "Định vị game-first" (v121).
+> 12. **Đích đầu tiên: A2.** Xác nhận đạt cấp bằng **trận cổng (Bảo vật khu) + đề mẫu Cambridge chính thức làm ngoài app** trong điều kiện thi; app chốt dự đoán trước, đối chiếu sau. Câu cổng A1/A2 do AI soạn, cần người sáng lập soát.
+> 13. **Cổng lên store:** người sáng lập chơi đủ cuốn để chơi liên tục tới khi đạt cấp mục tiêu (A2, xác nhận như mục 12). Thay dòng "Cổng lên store" (điểm thi thật).
+> 14. **Cách làm:** AI xây liên tục, người sáng lập chơi thử khi rảnh. Mỗi bản ghi rõ "chưa người thật kiểm"; điểm tự chấm chỉ để tham khảo, không cộng dồn thành kết luận. Trong trận có nút **góp ý nhanh** (chấm 1–5 + một dòng) để người sáng lập ghi ngay khi chơi.
+> 15. **Mỹ thuật:** bộ hình giấy phép mở (CC0, ví dụ Kenney) cho địa hình, đạn, hiệu ứng; nhân vật chibi ghép từ SVG hiện có. Ghi nguồn và giấy phép từng bộ hình.
+> 16. **Mốc 1:** một trận PvE đánh boss khu A1 + một lò rèn Vũ khí (nội dung từ Vòng Chữ / Mỏ Chữ) + "Thợ rèn gợi ý"; đồ đổi kết quả trận theo tỉ lệ 70/30. Mục đích: kiểm vòng "học → rèn → thắng" có cuốn không, trước khi làm tài khoản và đấu người thật.
+>
+> **Ba rủi ro ghi nhận (không dùng để đổi hướng):**
+> - Trận đấu phải vui tự thân; nếu không, học thành việc cày và cả vòng sụp. Mốc 1 kiểm đúng điều này.
+> - Không có playtest định kỳ thì dễ lặp lại lần trước: tự chấm game khoảng 7, người sáng lập chơi thật thấy "quá tệ" (GAME-CRITERIA §10).
+> - Đích A2 dựa vào câu cổng do AI soạn, chưa soát.
+
 > **08/10/2026 — Spec v2.4 thay hướng sản phẩm.** Người sáng lập chốt: nguồn sự thật là **Master Spec v2.4** (`docs/SPEC-v2.4.md`), triển khai **thuần v2.4**:
 > 1. MVP chỉ một Target Model là **CEFR Pre-A1 → C2**. IELTS, VSTEP, giao tiếp là Future Target Models: dữ liệu giữ nguyên (`status: "future"` trong `content/engine/goals/`), ẩn khỏi người học, bật lại được trong Cài đặt → Nâng cao; dùng để kiểm chứng mở rộng ở M10 của v2.4.
 > 2. **Game là trải nghiệm chính**: người học chơi để thắng, việc học tiếng Anh nằm ẩn trong luật chơi (stealth learning) — mỗi hành động trong game là một thử thách ngôn ngữ do engine chọn, nhằm lên cấp nhanh nhất. Không dùng dark pattern; tiến độ học và dữ liệu luôn xem được.
@@ -7,7 +64,7 @@
 >
 > Các quyết định ở phần dưới vẫn có hiệu lực khi không trái với ba điểm trên (năng lượng/Super giả lập giữ nguyên). Lộ trình xây mới: v52 → v88 (xem phần "Lộ trình v2.4" cuối tệp).
 
-Cập nhật: 11/10/2026 (đồng bộ tới v121: định vị game-first). Bản đọc và bình luận: Claude Docs "English Ladder — Spec (v115)" (https://claude.ai/code/artifact/4391badc-cdcb-4248-8f65-4bbfec7ea9f7). Tệp này là bản AI đọc khi xây; hai bản phải giống nhau. Doc cũ "English Ladder — Master Spec v2" không còn được cập nhật.
+Cập nhật: 13/10/2026 (đổi hướng Chiến Binh Chữ, khối đầu tệp; trước đó 11/10/2026 đồng bộ tới v121). Bản Claude Docs dưới đây chưa đồng bộ khối 13/10/2026. Bản đọc và bình luận: Claude Docs "English Ladder — Spec (v115)" (https://claude.ai/code/artifact/4391badc-cdcb-4248-8f65-4bbfec7ea9f7). Tệp này là bản AI đọc khi xây; hai bản phải giống nhau. Doc cũ "English Ladder — Master Spec v2" không còn được cập nhật.
 
 ## Cách đọc
 
@@ -28,14 +85,14 @@ App là một engine học dùng chung cho mọi mục tiêu, kiếm tiền ki�
 | Cách xây | Xây lên app hiện tại (v44), không viết lại. AI viết code và soạn nội dung; người sáng lập định hướng và kiểm tra |
 | Thời gian | Không gấp, miễn đúng. Người sáng lập đợi engine và bắt đầu học từ M4; ngày thi và doanh thu lùi theo tốc độ xây |
 | Người dùng đầu tiên | Chính người sáng lập: mất gốc (A1–A2), muốn thi VSTEP và IELTS |
-| Kiếm tiền | Giống Duolingo: thuê bao tháng/năm, quảng cáo ở bản miễn phí, năng lượng theo lượt (mỗi bài tốn như nhau, đúng hay sai), XP theo hoạt động, game hoá, quy mô lớn |
+| Kiếm tiền | **Thay bởi 13/10/2026 mục 10.** Giống Duolingo: thuê bao tháng/năm, quảng cáo ở bản miễn phí, năng lượng theo lượt (mỗi bài tốn như nhau, đúng hay sai), XP theo hoạt động, game hoá, quy mô lớn |
 | Giai đoạn demo | Web, chạy đủ cơ chế kiếm tiền nhưng chưa thu tiền thật |
-| Cổng lên store | Người sáng lập đạt điểm thi thật ở kỳ thi chọn ngay sau bài chẩn đoán đầu vào trên engine (M3); khi đó mới làm tài khoản, thanh toán, store |
+| Cổng lên store | **Thay bởi 13/10/2026 mục 13.** Người sáng lập đạt điểm thi thật ở kỳ thi chọn ngay sau bài chẩn đoán đầu vào trên engine (M3); khi đó mới làm tài khoản, thanh toán, store |
 | AI | Làm sau. Trước hết mọi chức năng phải tốt nhất có thể mà không lệ thuộc AI |
 | Điểm kỹ thuật còn mở | Giao cho Claude quyết, miễn đúng triết lý spec |
 | Thước đo đạt mục tiêu (11/10/2026, v111) | Đạt = **đậu một đề chưa từng thấy ở đúng cấp, không học tủ**. Chuẩn "đậu" theo thang Cambridge English Scale cho từng cấp. Đề trong app do app tự soạn theo đặc tả công khai của các bài Cambridge (không chép đề, không dùng tên thương hiệu như đề chính thức). Đề mẫu chính thức làm ngoài app là neo đối chiếu. Thi thật là trọng tài cuối. Chi tiết: mục "Đề sát hạch và chống học tủ" |
 | Game hoá mọi chức năng (11/10/2026, v111) | Mọi chức năng học và đo đã có (xếp lớp, chọn mục tiêu, học mới, ôn, 4 kỹ năng, chẩn đoán, đo hiệu quả, kết luận đạt cấp) đều phải có **vỏ game**. Người học chỉ thấy mình đang chơi; app vẫn thu được kết quả nó cần. Màn chơi không bắt người học "làm bài", "đi thi", không dùng chữ thi / đề / kiểm tra. Đề mẫu chính thức và thi thật là **tuỳ chọn ở hồ sơ**, chỉ cho ai cần chứng chỉ. Chi tiết: mục "Game hoá mọi chức năng" |
-| Định vị game-first (11/10/2026, v121) | Sản phẩm là **game chữ tiếng Anh cho người Việt**, không định vị là "một app học tiếng Anh" để khỏi bị so với các app học lớn. Chữ tiếng Anh là cơ chế chơi (chữ là quân cờ); engine (NBA, FSRS, evidence) giữ nguyên bên dưới để chọn từ/câu cho màn chơi. **Phạm vi:** giữ CEFR Pre-A1 → C2, nhưng làm game theo thứ tự cấp: mỗi game chủ lực chạy tốt ở Pre-A1–B1 trước, rồi mở C1–C2 bằng chính cơ chế đó, không thêm game riêng cho cấp cao. IELTS/VSTEP vẫn ẩn. **Thước đo hai tầng, game trước:** mặt tiền đo bằng người chơi quay lại D1/D7 và số từ còn nhớ sau 7/30 ngày (FSRS); xác nhận đạt cấp CEFR bằng bằng chứng vẫn có trong engine nhưng là **tuỳ chọn ở hồ sơ**, không phải lời hứa ở mặt tiền. **Lõi:** 1–2 game chủ lực (🎡 Vòng Chữ, ⛏️ Mỏ Chữ); các game khác ngưng mở rộng, nằm ở "Luyện tập". Bước đầu là playtest của người sáng lập (`docs/PLAYTEST.md` Phần 2); điểm thật < 6 thì sửa lõi hai game này trước mọi việc khác. **Còn mở, chờ người sáng lập xem lại:** dòng "Kiếm tiền" (kiểu Duolingo) và "Cổng lên store" (điểm thi thật) chưa đổi. **Thành công = vừa quay lại, vừa dùng được:** game chủ lực đạt M ≥ 7 (GAME-CRITERIA §10) **và** cả app đạt H ≥ 7 (trục hiệu quả học thật, GAME-CRITERIA §12). Chi tiết: GAME-CRITERIA §11–§12 |
+| Định vị game-first (11/10/2026, v121) | **Thay một phần bởi 13/10/2026** (mục 1–2, 11: game nhập vai, trận đấu không có câu tiếng Anh, đích CEFR là thước đo chính). Sản phẩm là **game chữ tiếng Anh cho người Việt**, không định vị là "một app học tiếng Anh" để khỏi bị so với các app học lớn. Chữ tiếng Anh là cơ chế chơi (chữ là quân cờ); engine (NBA, FSRS, evidence) giữ nguyên bên dưới để chọn từ/câu cho màn chơi. **Phạm vi:** giữ CEFR Pre-A1 → C2, nhưng làm game theo thứ tự cấp: mỗi game chủ lực chạy tốt ở Pre-A1–B1 trước, rồi mở C1–C2 bằng chính cơ chế đó, không thêm game riêng cho cấp cao. IELTS/VSTEP vẫn ẩn. **Thước đo hai tầng, game trước:** mặt tiền đo bằng người chơi quay lại D1/D7 và số từ còn nhớ sau 7/30 ngày (FSRS); xác nhận đạt cấp CEFR bằng bằng chứng vẫn có trong engine nhưng là **tuỳ chọn ở hồ sơ**, không phải lời hứa ở mặt tiền. **Lõi:** 1–2 game chủ lực (🎡 Vòng Chữ, ⛏️ Mỏ Chữ); các game khác ngưng mở rộng, nằm ở "Luyện tập". Bước đầu là playtest của người sáng lập (`docs/PLAYTEST.md` Phần 2); điểm thật < 6 thì sửa lõi hai game này trước mọi việc khác. **Còn mở, chờ người sáng lập xem lại:** dòng "Kiếm tiền" (kiểu Duolingo) và "Cổng lên store" (điểm thi thật) chưa đổi. **Thành công = vừa quay lại, vừa dùng được:** game chủ lực đạt M ≥ 7 (GAME-CRITERIA §10) **và** cả app đạt H ≥ 7 (trục hiệu quả học thật, GAME-CRITERIA §12). Chi tiết: GAME-CRITERIA §11–§12 |
 | Bản v45 (nhánh `claude/v45-ai-copy-honest-free`) | Để nguyên, quyết sau. Không gộp nguyên trạng vì chữ "không quảng cáo" trái với mô hình đã chọn |
 
 Bài học từ lịch sử app: bản v35 chuyển sang "miễn phí 100%" do AI khuyên, không phải ý người sáng lập. Từ nay AI không đổi hướng sản phẩm khi chưa hỏi.
@@ -228,8 +285,8 @@ Bốn mục của spec gốc được sửa cho khớp quyết định của ng�
 | --- | --- | --- |
 | 35. AI khi chạy | Không dùng AI khi chạy | Engine không phụ thuộc AI: mọi chức năng chạy đầy đủ khi không có AI. AI là lớp cắm thêm ở giai đoạn sau (ví dụ chấm Viết/Nói trong gói trả phí), qua một giao diện "người chấm" chung với máy chấm luật và tự chấm |
 | 40. Động lực | Không thao túng | Game hoá kiểu Duolingo: năng lượng theo lượt, chuỗi ngày, giải đấu, XP theo hoạt động. Năng lượng trừ theo lượt chứ không theo lỗi, vì engine cố ý cho câu vừa đủ khó; chẩn đoán, ôn đến hạn, bài Can-Do, thi thử không tốn năng lượng |
-| 42. Quyền riêng tư và tài khoản | Không cần tài khoản; mã hoá xuất/nhập | Demo web: lưu trên máy + mã đồng bộ hiện có, không tài khoản. Giai đoạn store: tài khoản cho mọi người dùng (đồng bộ, mua gói); vẫn tuân Nghị định 13/2023, đồng ý của cha mẹ với người dưới 16 tuổi, không bán dữ liệu |
-| 43. Kinh doanh | Không quảng cáo, không gói trả phí; nghiên cứu B2B | Thuê bao tháng/năm + quảng cáo ở bản miễn phí + giới hạn lượt bằng năng lượng. Demo chạy đủ cơ chế, chưa thu tiền. B2B (trường, trung tâm) là hướng phụ, để sau |
+| 42. Quyền riêng tư và tài khoản | Không cần tài khoản; mã hoá xuất/nhập | **Thay bởi 13/10/2026 mục 9** (tài khoản ngay, chơi trước đăng nhập sau). Demo web: lưu trên máy + mã đồng bộ hiện có, không tài khoản. Giai đoạn store: tài khoản cho mọi người dùng (đồng bộ, mua gói); vẫn tuân Nghị định 13/2023, đồng ý của cha mẹ với người dưới 16 tuổi, không bán dữ liệu |
+| 43. Kinh doanh | Không quảng cáo, không gói trả phí; nghiên cứu B2B | **Thay bởi 13/10/2026 mục 10.** Thuê bao tháng/năm + quảng cáo ở bản miễn phí + giới hạn lượt bằng năng lượng. Demo chạy đủ cơ chế, chưa thu tiền. B2B (trường, trung tâm) là hướng phụ, để sau |
 
 ## Quyết định kỹ thuật (mục 50)
 
@@ -315,6 +372,8 @@ Mỗi kỳ thi có Target Model riêng. Bảng quy đổi có nguồn trong `src
 - Readiness Viết/Nói được giới hạn ở Confidence Vừa cho tới khi có người chấm AI hoặc cặp điểm thật.
 
 ### 11. Kiếm tiền trong demo (mục 50.11)
+
+> Thay bởi 13/10/2026 mục 10 (nạp rút ngắn cày nguyên liệu thô; tinh hoa chữ không mua được). Phần dưới giữ làm lịch sử.
 
 - **Năng lượng theo lượt**: mỗi bài học mới hoặc luyện tập tốn năng lượng như nhau, đúng hay sai không đổi; hồi theo thời gian; hết thì dừng học mới. Không trừ theo lỗi vì engine cố ý cho câu vừa đủ khó (đúng 75–85%): 5 tim trừ theo lỗi sẽ hết sau 20–33 câu. Dung lượng, chi phí mỗi bài và tốc độ hồi là tham số cấu hình. **XP** tính theo hoạt động (số bài, số phút) như Duolingo, hiển thị tách khỏi Readiness.
 - **Không tốn năng lượng**: ôn tập đến hạn, chẩn đoán, bài Can-Do, đề thi thử (để không làm sai phép đo).
