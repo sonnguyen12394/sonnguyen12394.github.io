@@ -7,7 +7,7 @@ import {
   type BagSave, type Earned, type StatRow, type Album, type Gem, type MorphTask, type ColTask, type SentTask,
 } from './bag.ts';
 
-export type BagTab = 'me' | 'forge' | 'map' | 'bag' | 'alb' | 'clue' | 'craft' | 'stat';
+export type BagTab = 'me' | 'look' | 'make' | 'forge' | 'map' | 'bag' | 'alb' | 'clue' | 'craft' | 'stat';
 export interface CraftRun {
   kind: 'morph' | 'col' | 'sent'; seed: number;
   morph?: MorphTask; col?: ColTask; sent?: SentTask;
@@ -19,13 +19,14 @@ export interface BagIn {
   gems: Array<Gem & { en: string; vi: string; fading: boolean }>; albums: Array<Album & { vi: string }>; clues: Clue[]; clueTotal: number;
   who: [string, string] | null; giftDone: boolean; cr: CraftRun | null; mic: { has: boolean; busy: boolean | string; heard: string | null };
   forge: string;   // v129 HTML của tab Lò rèn / Bản đồ phủ (forgectl)
+  hero: string;    // v132 HTML của tab Trang bị / Thời trang / Tạo nhân vật (heroctl)
 }
 
-// v131 (P5): 8 tab gom thành 3 nhóm như màn nhân vật của game: Nhân vật · Lò rèn · Kho.
+// v131 (P5): các tab gom thành 3 nhóm như màn nhân vật của game: Nhân vật · Lò rèn · Kho. v132: Trang bị (7 ô) + Thời trang như Gunny.
 const GROUPS: Array<[string, Array<[BagTab, string]>]> = [
-  ['🧑 Nhân vật', [['me', '🐯 Tổng quan'], ['stat', '📊 Chỉ số'], ['clue', '📜 Kỷ vật']]],
+  ['🧑 Nhân vật', [['me', '⚔️ Trang bị'], ['look', '👗 Thời trang'], ['stat', '📊 Chỉ số'], ['clue', '📜 Kỷ vật']]],
   ['⚒️ Rèn', [['forge', '🔥 Lò rèn'], ['map', '🗺️ Bản đồ phủ'], ['craft', '🔨 Luyện tay']]],
-  ['🎒 Kho', [['bag', '🎒 Túi'], ['alb', '📖 Album']]],
+  ['🎒 Kho', [['bag', '🎒 Túi đồ'], ['alb', '📖 Album']]],
 ];
 const bar = (v: number, max: number, label: string) => `<span class="bgbar" role="img" aria-label="${label}"><i style="width:${Math.round((100 * Math.min(max, v)) / Math.max(1, max))}%"></i></span>`;
 
@@ -42,7 +43,7 @@ export function viewBagHub(c: ECtx, s: BagSave, e: Earned, rows: StatRow[], read
 
 export function viewBag(c: ECtx, x: BagIn): string {
   const tabs = `<div class="bgtabs" role="tablist" aria-label="Túi chữ">${GROUPS.map(([g, ts]) => `<div class="bggrp${ts.some(([t]) => t === x.tab) ? ' cur' : ''}"><span class="bggn" aria-hidden="true">${g}</span>${ts.map(([t, vi]) => `<button role="tab" class="btn small${t === x.tab ? ' primary' : ' ghost'}" aria-selected="${t === x.tab}" data-e="bgtab" data-t="${t}">${vi}</button>`).join('')}</div>`).join('')}</div>`;
-  const body = x.tab === 'forge' || x.tab === 'map' ? x.forge : x.tab === 'craft' ? (x.cr ? craftRun(c, x) : craftMenu(c, x)) : x.tab === 'stat' ? stats(c, x) : x.tab === 'alb' ? albums(c, x) : x.tab === 'clue' ? clues(c, x) : x.tab === 'me' ? me(c, x) : bag(c, x);
+  const body = x.tab === 'forge' || x.tab === 'map' ? x.forge : x.tab === 'craft' ? (x.cr ? craftRun(c, x) : craftMenu(c, x)) : x.tab === 'stat' ? stats(c, x) : x.tab === 'alb' ? albums(c, x) : x.tab === 'clue' ? clues(c, x) : x.tab === 'me' ? me(c, x) : x.tab === 'look' || x.tab === 'make' ? x.hero : bag(c, x);
   return `<section class="stack bgroot gx"><span class="eyebrow">🎒 Túi chữ · Thợ Chữ cấp ${charLv(x.rows)}</span>${tabs}${body}</section>
     <div class="row"><button class="btn ghost" data-e="qhome">← Về bản đồ</button></div>`;
 }
@@ -145,17 +146,17 @@ function clues(c: ECtx, x: BagIn): string {
     <ul class="bggrid">${x.clues.map(k => `<li class="bgcell"><span class="bgico" aria-hidden="true">${k.ico}</span><b>${esc(k.name)}</b><span>${esc(k.vi)}</span></li>`).join('')}${Array.from({ length: left }, () => '<li class="bgcell off"><span class="bgico" aria-hidden="true">❔</span><b>Chưa tìm thấy</b><span class="hint">Đi tiếp câu chuyện để mở.</span></li>').join('')}</ul>`;
 }
 
-// v131 màn Nhân vật (P5): Tí ở giữa, 5 ô trang bị quanh, 7 chỉ số thật dạng thanh, kho đếm nhanh. Chạm ô / thanh để đi tới chỗ nâng.
+// v131 màn Nhân vật (P5) → v132: nhân vật ghép lớp + 7 ô trang bị theo chỉ số thật (heroview.ts) ở trên; dưới là hàng Đạo cụ
+// (5 món rèn ở Xưởng, như thanh đạo cụ chiến đấu của Gunny) và 7 chỉ số thật dạng thanh. Chạm ô / thanh để đi tới chỗ nâng.
 function me(c: ECtx, x: BagIn): string {
-  const esc = c.host.esc, ti = c.host.mascot?.('happy', 120) ?? '🐯';
+  const esc = c.host.esc;
   const slots = GEAR.map(g => { const own = x.s.gear.includes(g.id), on = own && reqOk(g, x.rows);
     return `<li class="mslot${own ? (on ? ' on' : ' off') : ' none'}" title="${esc(`${g.vi}: ${g.eff}`)}"><span aria-hidden="true">${own ? g.ico : '🔒'}</span><span class="sr-only">${esc(g.vi)}: ${own ? (on ? 'đang phát huy' : 'đã rèn, chưa phát huy') : 'chưa rèn'}</span></li>`; }).join('');
   const stat = x.rows.map(r => { const s = STAT[r.id];
     return `<li><button class="mstat" data-e="bgtab" data-t="stat" aria-label="${esc(`${s.vi} cấp ${r.lv} trên 10`)}"><span aria-hidden="true">${s.ico}</span><b aria-hidden="true">${esc(s.vi)} · Lv ${r.lv}</b>${bar(r.lv, 10, `${s.vi} cấp ${r.lv} trên 10`)}</button></li>`; }).join('');
   const own = GEAR.filter(g => x.s.gear.includes(g.id)).length;
-  return `<div class="mhero"><div class="mti" aria-hidden="true">${ti}</div><div class="stack" style="gap:4px"><h2>🧑‍🔧 Thợ Chữ cấp ${charLv(x.rows)}</h2>
-      <p class="hint">${own}/${GEAR.length} trang bị · ${x.gems.length} ngọc từ · ${x.clues.length}/${x.clueTotal} kỷ vật</p>
-      <div class="row"><button class="btn small primary" data-e="bgtab" data-t="craft">🔨 Rèn đồ</button><button class="btn small" data-go="closet">👕 Tủ đồ</button></div></div></div>
-    <h3>Trang bị</h3><ul class="mslots" aria-label="Ô trang bị">${slots}</ul>
+  return `${x.hero}
+    <div class="spread"><h3>🧪 Đạo cụ (${own}/${GEAR.length})</h3><button class="btn small" data-e="bgtab" data-t="craft">🔨 Rèn đạo cụ</button></div><ul class="mslots" aria-label="Đạo cụ">${slots}</ul>
+    <p class="hint">${x.gems.length} ngọc từ · ${x.clues.length}/${x.clueTotal} kỷ vật</p>
     <h3>Chỉ số thật</h3><ul class="mstats" aria-label="Chỉ số thật">${stat}</ul>`;
 }

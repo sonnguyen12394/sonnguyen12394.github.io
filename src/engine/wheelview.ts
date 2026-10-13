@@ -3,7 +3,7 @@
 // bày + nhận thao tác (vuốt, bàn phím, ô gõ cho trình đọc màn hình / máy không vuốt được). Nút có data-e đi qua bộ bắt sự kiện chung.
 
 import type { Level, Verdict } from './wordwheel.ts';
-import { muted } from './sfx.ts';
+import { muted, musicOff } from './sfx.ts';
 
 export interface WheelState {
   level: Level; title: string; sub: string; theme: { a: string; b: string; c: string }; daily: boolean;
@@ -17,8 +17,6 @@ type Pt = { x: number; y: number };
 interface Particle { x: number; y: number; vx: number; vy: number; life: number; c: string; r: number }
 
 const STILL = () => typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-const MKEY = 'el-music-off';
-const musicOff = () => { try { return localStorage.getItem(MKEY) === '1'; } catch { return false; } };
 
 // ---- Âm thanh: nốt theo chữ (thang ngũ cung đi lên khi vuốt), hợp âm khi tìm ra từ, nhạc nền nhẹ (tắt được) ----
 let ac: AudioContext | null = null;
@@ -272,7 +270,7 @@ export function letterCenters(): Array<{ ch: string; x: number; y: number }> {
   const root = document.getElementById('whfx') as (HTMLElement & { _pos?: () => Array<{ ch: string; x: number; y: number }> }) | null;
   return root?._pos ? root._pos() : [];
 }
-export { Music, musicOff, MKEY, snd, STILL };
+export { Music, musicOff, snd, STILL };
 
 // v94 Phong cảnh theo chương (M4), vẽ bằng canvas ở nửa dưới màn, chuyển động chậm (tắt khi giảm chuyển động):
 // 0 bình minh: mặt trời có tia xoay + đồi · 1 biển: sóng trôi + thuyền · 2 rừng trúc: thân trúc đung đưa · 3 phố đêm: nhà cao, cửa sổ nhấp nháy

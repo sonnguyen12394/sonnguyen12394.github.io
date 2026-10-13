@@ -49,7 +49,9 @@ export interface EHost {
   exam(): { resp: import('../exam/state.ts').Resp[]; real: import('../exam/state.ts').RealScore[] };   // câu Nghe/Đọc đã làm + điểm thi thật (phần ôn thi)
   lapse(): number | null;
   future?(): boolean;
-  mascot?(mood: 'happy' | 'cheer' | 'party' | 'sleep', size: number): string;   // v89: SVG Tí của app (nhân vật dẫn đường trong game)
+  mascot?(mood: 'happy' | 'cheer' | 'party' | 'sleep', size: number, wear?: string): string;   // v89: SVG Tí của app; v132 wear: phụ kiện để thử
+  sound?(): { sfx: boolean; music: boolean };       // v132 một công tắc âm thanh: cài đặt của app (st.set.sfx, st.set.music)
+  setMusic?(on: boolean): void;                     // v132 bật / tắt nhạc nền (lưu ở st.set.music)
   cheer?(big: boolean): void; 
   lexicon?(): Array<{ en: string; vi: string; lv: string; node: string; id: string; pic?: string }>;   // v93 Vòng Chữ: kho từ đơn 3–8 chữ cái của app (cấp, cụm)
   share?(text: string): void;                      // v93: chia sẻ văn bản (thử thách ngày), dùng shareText của app
