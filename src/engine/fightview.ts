@@ -65,8 +65,10 @@ export function openFight(ui: FightUi): FightHandle {
       <input name="t" maxlength="200" autocomplete="off" placeholder="Một dòng: vui ở đâu, chán ở đâu?" aria-label="Một dòng góp ý"><input type="hidden" name="s" value="0">
       <div class="whrow"><button class="whbig" type="submit">Gửi</button><button class="whb wide" type="button" data-e="cbfbclose">Đóng</button></div></form>
     <p class="sr-only whlive" role="status" aria-live="polite"></p>`;
+  root.tabIndex = -1;   // nhận phím (mũi tên chỉnh góc / đi, +/− lực, Enter bắn)
   document.body.appendChild(root);
   document.documentElement.classList.add('whopen');
+  setTimeout(() => { if (!root.contains(document.activeElement)) root.focus({ preventScroll: true }); }, 30);
   const cv = root.querySelector('canvas')!, g = cv.getContext('2d')!, live = root.querySelector('.whlive')!, endBox = root.querySelector<HTMLElement>('.cbend')!;
   const fbBox = root.querySelector<HTMLFormElement>('.cbfb')!, aimEl = root.querySelector<HTMLElement>('.cbaim')!, timeEl = root.querySelector<HTMLElement>('.cbtime')!;
   const still = STILL(), music = new Music();
