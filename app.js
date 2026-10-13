@@ -1003,12 +1003,12 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 68;
+const STATE_V = 18, APP_VERSION = 69;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
 const realDay = () => Math.floor(Date.now()/86400000);
-const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,focus:false});
+const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,music:true,focus:false});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},e:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
 // Mã ngẫu nhiên, không gắn với tên hay thiết bị: để gộp các file dữ liệu nghiên cứu của cùng một người học mà không biết người đó là ai.
 const newRid = () => Math.random().toString(36).slice(2,10);
@@ -4032,7 +4032,8 @@ function viewSettings0(){
   <section class="panel stack"><h3>Dành cho giáo viên</h3><p class="note">Gộp tiến độ cả lớp từ file dữ liệu ẩn danh của học sinh, in bảng theo dõi.</p><div class="row"><button class="btn" data-go="class">${ico('users')} Công cụ lớp học</button></div></section>
   <section class="panel stack"><h3>Nâng cao</h3>
     <div class="setrow"><span>Mục tiêu tương lai (thử nghiệm): hiện tab Ôn thi và mục tiêu IELTS, VSTEP, giao tiếp. Bản này tập trung vào CEFR Pre-A1 → C2</span><button class="btn" data-act="future" aria-pressed="${FUTURE()}">${FUTURE()?'Tắt':'Bật'}</button></div>
-    <div class="setrow"><span>Âm thanh khi trả lời đúng/sai, lên bậc</span><button class="btn" data-act="sfx">${st.set.sfx?'Tắt':'Bật'}</button></div>
+    <div class="setrow"><span>Âm thanh khi trả lời đúng/sai, lên bậc (cả trong game)</span><button class="btn" data-act="sfx">${st.set.sfx?'Tắt':'Bật'}</button></div>
+    <div class="setrow"><span>Nhạc nền ở sảnh và trong game</span><button class="btn" data-act="music">${st.set.music!==false?'Tắt':'Bật'}</button></div>
     <div class="setrow"><span>Chế độ tập trung: ẩn XP, combo, từ vàng, màn thưởng và chuỗi ngày; giữ phản hồi đúng/sai và lời giải thích ${info('focus')}</span><button class="btn" data-act="focus" aria-pressed="${FOCUS()}">${FOCUS()?'Tắt':'Bật'}</button></div>
     <div class="setrow"><span>Chế độ demo: nút “+1 ngày”, nạp tiến độ mẫu, tab Kiến trúc</span><button class="btn" data-act="demo">${st.set.demo?'Tắt':'Bật'}</button></div>
     <div class="row">${st.set.demo?'<button class="btn" data-act="seed">Nạp tiến độ mẫu</button>':''}<button class="btn ghost" data-act="reset">Xoá toàn bộ tiến độ</button></div></section>`;
@@ -4759,6 +4760,11 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:69,d:'2026-10-13',t:'Nhân vật của bạn và sảnh mới',items:[
+    'Bạn có nhân vật riêng: chọn tóc, màu tóc, màu da, mắt, miệng (không chọn giới tính), đổi lại lúc nào cũng được. Tí đi cạnh như thú cưng.',
+    '7 ô trang bị (Bút, Mũ, Kính, Tai nghe, Áo, Khăn, Cánh), mỗi ô gắn một chỉ số thật: giỏi lên thì món tự lên bậc gỗ → đồng → bạc → vàng → kim cương. Không mua được, không bao giờ hỏng.',
+    '👗 Thời trang: 12 món chỉ đổi hình (nón lá, áo dài, cánh bướm…), thử miễn phí, mua bằng xu kiếm trong game. ⚔️ Lực chữ là tổng sức mạnh thật của bạn.',
+    'Sảnh có cảnh phố đổi theo giờ, nhạc nền nhẹ, dòng tin và hàng lối tắt. Một công tắc âm thanh và một công tắc nhạc trong Cài đặt cho cả app lẫn game.']},
   {v:68,d:'2026-10-12',t:'Bản đồ Phố Chữ và sảnh mới',items:[
     'Tab Hôm nay là bản đồ 5 khu: mọi trò chơi là một công trình, kéo / phóng để khám phá; nút ☰ Danh sách nếu không muốn kéo.',
     'Tí là nhân vật của bạn trên bản đồ (mặc đồ ở Tủ đồ). Thanh 🪙 xu · 🏮 đèn · ⭐ cấp ở đầu màn; chấm đỏ báo chỗ có việc làm được ngay (tối đa 3).',
@@ -5214,6 +5220,7 @@ document.addEventListener('click',e=>{
     case 'focus': st.set.focus=!st.set.focus; save(); toast(st.set.focus?'Đã bật chế độ tập trung.':'Đã tắt chế độ tập trung.'); return render();
     case 'future': st.set.future=!st.set.future; if(!st.set.future) try{ localStorage.removeItem('el-future'); }catch(e){} save(); toast(FUTURE()?'Đã hiện tab Ôn thi và mục tiêu tương lai.':'Đã ẩn tab Ôn thi: tập trung CEFR.'); return render();
     case 'sfx': st.set.sfx=!st.set.sfx; save(); sfx('ok'); toast(st.set.sfx?'Đã bật âm thanh.':'Đã tắt âm thanh.'); return render();
+    case 'music': st.set.music=st.set.music===false; save(); toast(st.set.music?'Đã bật nhạc nền.':'Đã tắt nhạc nền.'); return render();
     case 'demo': st.set.demo=!st.set.demo; save(); toast(st.set.demo?'Đã bật chế độ demo.':'Đã tắt chế độ demo.'); return render();
     case 'export': return exportBackup();
     case 'evexport': return exportResearch();
@@ -8406,7 +8413,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.78a68a8a9f.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.2c77a2e518.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
@@ -8423,7 +8430,9 @@ const EHOST = {
   readSave:(id,src,mode,score)=>eReadSave(id,src,mode,score),
   sayLines:(lines,slow)=>{ try{ sayLines(lines,slow); }catch(e){} },
   tts:()=>!!HAS_TTS,
-  mascot:(m,sz)=>mascot(m,sz),
+  mascot:(m,sz,w)=>mascot(m,sz,w),
+  sound:()=>({sfx:!!st.set.sfx,music:st.set.music!==false&&!FOCUS()}),   // v132 một công tắc cho cả app và engine
+  setMusic:on=>{ st.set.music=!!on; save(); },
   lexicon:()=>(EHOST._lex||=ALL_WORDS.filter(w=>/^[a-z]{3,8}$/.test(w.word)&&UNIT_OF[w.id]).map(w=>({en:w.word,vi:w.vi,lv:UNIT_OF[w.id].level,node:'u:'+UNIT_OF[w.id].id,id:w.id,pic:w.pic||''}))),
   share:(text)=>{ try{ shareText(text,'wheel'); }catch(e){} },
   cheer:big=>{ try{ if(big&&!FOCUS()){ sfx('win'); if(!STILL()) confetti(); } }catch(e){} },

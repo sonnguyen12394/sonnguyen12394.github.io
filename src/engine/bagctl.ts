@@ -13,6 +13,7 @@ import {
 import { viewBag, viewBagHub, type BagTab, type CraftRun } from './bagview.ts';
 import { cluesOf, CHAPTERS, type StorySave } from './story.ts';
 import { makeForge, type ForgeDeps } from './forgectl.ts';
+import { makeHero, type HeroTab } from './heroctl.ts';
 
 export interface BagDeps {
   host: EHost;
@@ -27,6 +28,7 @@ export interface BagDeps {
   hlog: (k: HKind, v?: number | boolean) => void;
   wk: (kind: 'sentence' | 'word', n: number, game: string) => void;
   coins: (n: number) => void;
+  wallet: () => number;                               // v132 ví xu chung (mua thời trang)
   forge: Omit<ForgeDeps, 'host' | 'E' | 'coins'>;   // v129 Lò rèn năng lực
 }
 
@@ -38,12 +40,15 @@ export function makeBag(d: BagDeps) {
   const words = (): number => { const e = d.E(); return (e.gn?.words ?? 0) + (e.gh?.words ?? 0); };
   const ear = (): Earned => { const h = d.hx(); return earned({ words: words(), sp: h.sp, ty: h.ty, recall: h.recall }); };
   const rows = (): StatRow[] => statsOf(d.statIn());
+  // v132 nhân vật: 7 ô trang bị theo chỉ số thật, thời trang, tạo nhân vật (heroctl.ts).
+  const hero = makeHero({ host, E: d.E, rows, lv: () => charLv(rows()), wallet: d.wallet, open: (t: HeroTab) => { tab = t; if (t === 'me') hero.enter(); host.render(); window.scrollTo?.(0, 0); } });
+  const toTab = (t: BagTab): void => { cr = null; fg.reset(); hero.reset(); tab = t; if (t === 'me') hero.enter(); };
   const seed = () => (Date.now() ^ (sv().mk * 2654435761)) >>> 0;
   const lex = () => host.lexicon?.() ?? [];
   const rec: Record<string, string[]> = {};   // đề vừa làm (tránh lặp ngay), chỉ trong phiên
   const recent = (k: string): string[] => rec[k] ?? [];
   const remember = (k: string, v: string) => { const r = (rec[k] ||= []); r.push(v); if (r.length > 6) r.shift(); };
-  function reset(): void { tab = null; cr = null; fg.reset(); }
+  function reset(): void { tab = null; cr = null; fg.reset(); hero.reset(); }
 
   function start(kind: CraftRun['kind']): void {
     const e = ear(), s = sv();
@@ -73,9 +78,10 @@ export function makeBag(d: BagDeps) {
   }
 
   const acts: Record<string, (el: HTMLElement) => void> = {
-    bgopen: el => { cr = null; fg.reset(); tab = (el.dataset.t as BagTab) || 'me'; host.render(); window.scrollTo?.(0, 0); },
+    ...hero.acts,
+    bgopen: el => { toTab((el.dataset.t as BagTab) || 'me'); host.render(); window.scrollTo?.(0, 0); },
     bgcraft: () => { cr = null; tab = 'craft'; host.render(); window.scrollTo?.(0, 0); },
-    bgtab: el => { cr = null; fg.reset(); tab = (el.dataset.t as BagTab) || 'bag'; host.render(); },
+    bgtab: el => { toTab((el.dataset.t as BagTab) || 'bag'); host.render(); },
     ...Object.fromEntries(Object.entries(fg.acts).map(([k, f]) => [k, (el: HTMLElement) => { if (k === 'bgfgo') { cr = null; tab = 'forge'; } f(el); }])),
     bgdone: () => { cr = null; tab = 'craft'; host.render(); },
     bgmk: el => start((el.dataset.k as CraftRun['kind']) || 'morph'),
@@ -151,7 +157,7 @@ export function makeBag(d: BagDeps) {
   // Số món làm được ngay: công thức ở Xưởng đủ nguyên liệu + trang bị mở được và đủ nguyên liệu.
   const readyOf = (s: BagSave, e: Earned): number => (['morph', 'col', 'sent'] as const).filter(k => canPay(e, s, CRAFT_COST[k])).length + GEAR.filter(g => !s.gear.includes(g.id) && (g.act ?? 0) <= d.act() && (!g.after || s.gear.includes(g.after)) && canPay(e, s, g.cost)).length;
   return {
-    acts, forms, reset,
+    acts, forms, reset, hero,
     open(): boolean { return tab !== null; },
     // Hiệu ứng trang bị đang phát huy (sở hữu + chỉ số thật đủ). moves: cộng; pat, vcoin: nhân (mặc định 1); wcoin: cộng.
     perk(p: Perk): number {
@@ -165,7 +171,7 @@ export function makeBag(d: BagDeps) {
       const gems = [...gm.values()].filter(g => by.has(g.id)).map(g => ({ ...g, en: by.get(g.id)!.en, vi: by.get(g.id)!.vi, fading: fade.has(g.id) })).sort((a, b) => b.tier - a.tier || b.last - a.last);
       const albums = albumsOf(lx, gm, s.alb).map(a => ({ ...a, vi: host.group?.(a.node)?.vi ?? host.group?.(a.node)?.topic ?? a.node }));
       const sy = (e as EState & { sy?: StorySave }).sy;
-      return viewBag(c, { s, e: ear(), rows: rows(), tab, act: d.act(), gems, albums, clues: cluesOf(sy), clueTotal: CHAPTERS.filter(x => x.clue).length, who: d.resident(), giftDone: d.giftDone(), cr, mic: mic(), forge: tab === 'forge' || tab === 'map' ? fg.body(c, tab) : '' });
+      return viewBag(c, { s, e: ear(), rows: rows(), tab, act: d.act(), gems, albums, clues: cluesOf(sy), clueTotal: CHAPTERS.filter(x => x.clue).length, who: d.resident(), giftDone: d.giftDone(), cr, mic: mic(), forge: tab === 'forge' || tab === 'map' ? fg.body(c, tab) : '', hero: tab === 'me' || tab === 'look' || tab === 'make' ? hero.body(c, tab) : '' });
     },
     // v131 thanh tài nguyên + chấm đỏ: cấp Thợ Chữ và số món làm được ngay (cùng cách tính với thẻ ở sảnh).
     lv: (): number => charLv(rows()),

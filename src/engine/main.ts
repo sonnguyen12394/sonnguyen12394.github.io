@@ -25,7 +25,8 @@ import { freshBlocks, deal, place, anyFits, fits, trayEmpty, anchor, freshBlocks
 import { viewNextBar, viewBlocks, viewBlocksEnd, viewBoard, viewBoardEnd } from './gameview.ts';
 import { viewCards, viewCardsEnd, type CardsRun } from './cardsview.ts';
 import { openCards, type CardsHandle, type CardsFxState } from './cardsfx.ts';
-import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, TIER_COINS, type WkKind } from './weekly.ts';
+import { wkAdd, weekOf, themeOf, freshWeek, viewWeekly, daysLeft, TIER_COINS, type WkKind } from './weekly.ts';
+import { FASH } from './avatar.ts';
 import { FACE, resident, sideDone, sideTasks, choose, kindOf, SIDE_COINS, CHAPTERS as STORY, storyAdd, advance, chapterAt, freshStory, viewStory, sceneOf, storyNote, type StoryKind, type StoryGateOf } from './story.ts';
 import { openScene } from './storyfx.ts';
 import { stageSync, stageBurst, type Scene } from './stagefx.ts';
@@ -35,7 +36,9 @@ import { viewBubbles, viewBubblesEnd, speakKey, type BubbleRun } from './bubblev
 import { openBubbles, type BubbleHandle, type BubbleFxState } from './bubblefx.ts';
 import { WORDS, points as bubblePoints, freshBubblesSave } from './bubbles.ts';
 import { TABLES, PLAYS, score as cardScore, offer as cardOffer, deal as cardDeal, check as cardCheck, target as cardTarget, freshCardsSave } from './cards.ts';
-import { sfx } from './sfx.ts';
+import { sfx, soundFrom, migrateSound, toggleMusic, musicOff } from './sfx.ts';
+import { lobbyMusic } from './bgm.ts';
+import { phaseOf } from './lobbyscene.ts';
 import { viewPuzzle, viewPuzzleEnd, type PuzzleRun, type RecallItem } from './puzzleview.ts';
 import { GROUPS, PER, deal as pzDeal, judge as pzJudge, stars as pzStars, distinct as pzDistinct, family as pzFamily, freshPuzzleSave, type PzGroup, type PzWord } from './puzzle.ts';
 import { rand } from './blocks.ts';
@@ -118,6 +121,8 @@ export function init(host: EHost): EngineModule {
     return next;
   };
   E();
+  // v132 một công tắc âm thanh: engine hỏi cài đặt của app (st.set.sfx / st.set.music), chuyển khoá nhạc cũ một lần.
+  if (host.sound) { soundFrom(host.sound, host.setMusic ?? null); migrateSound(); }
   // Mục tiêu đang mở (spec v2.4: MVP chỉ CEFR). Mục tiêu "tương lai" đã chọn trước đây vẫn nằm trong bản lưu nhưng
   // không vào lộ trình, chẩn đoán hay Readiness. V() là bản nhìn của E() chỉ gồm mục tiêu đang mở (dùng chung kho bằng chứng).
   const future = (): boolean => !!host.future?.();
@@ -541,6 +546,7 @@ export function init(host: EHost): EngineModule {
     hlog: (k, v) => vc.hlog(k, v),
     wk: (kind, n, game) => wk(kind as WkKind, n, game),
     coins: n => { const q = qsave(); q.coins += n; q.day = host.today(); },
+    wallet: () => wallet(),
     // v129 Lò rèn năng lực: kỹ năng của mục tiêu (đóng tiền đề) + thứ tự ưu tiên của engine; câu trả lời là bằng chứng thật.
     forge: {
       rows: () => fpath()?.all ?? [],
@@ -1334,9 +1340,9 @@ export function init(host: EHost): EngineModule {
 
   // ---------- Bàn Cờ Phố (v73) ----------
   const bsave = () => { const e = E(); return (e.bd ||= freshBoardSave()); };
-  // Ví xu chung = xu kiếm được ở mọi game − xu tiêu ở Bàn Cờ − xu tiêu ở Phố / hồi tim (v91).
+  // Ví xu chung = xu kiếm được ở mọi game − xu tiêu ở Bàn Cờ − xu tiêu ở Phố / hồi tim (v91) − thời trang (v132).
   const twsave = () => { const e = E(); return (e.tw ||= freshTown()); };
-  const wallet = () => Math.max(0, qsave().coins - bsave().spent - (E().tw?.spent ?? 0));
+  const wallet = () => Math.max(0, qsave().coins - bsave().spent - (E().tw?.spent ?? 0) - (E().av?.spent ?? 0));   // v132 − tủ thời trang
   const REVIVE = 25;
   function bdRoll(): void {
     const bd = qrun?.bd;
@@ -1687,7 +1693,7 @@ export function init(host: EHost): EngineModule {
     if (c.route !== wroute) { wroute = c.route; if (c.route === 'quest/all') wlist = true; }
     const solid = g ? skillsOf(c.e, g).solid : 0, S = sc?.scene ?? null, b = town(E());
     const w = world({ b, act: S?.act ?? 0, done: !!S?.done, plan: dir ? dir.plan.map(p => p.game) : [], played: dir ? dir.x.played.filter(isGame) : [], next: dir?.next.game ?? null, deco: (E().tw ?? freshTown()).deco,
-      dots: dots({ story: !!S?.ready, bag: bag.ready(), fading: vc.fading(), puzzle: E().gd?.last !== host.today(), deco: b.some(x => x.lv > 0 && canDeco(E().tw ?? freshTown(), x, wallet()).ok) }) });
+      dots: dots({ story: !!S?.ready, bag: bag.ready() + bag.hero.pending().length, fading: vc.fading(), puzzle: E().gd?.last !== host.today(), deco: b.some(x => x.lv > 0 && canDeco(E().tw ?? freshTown(), x, wallet()).ok) }) });
     // Dòng trạng thái riêng của từng game (trước nằm ở thẻ game của sảnh), hiện trong bảng công trình.
     const stat = (id: PlaceId): string => {
       const e = E(), t = host.today(), h = (x: string) => `<p class="hint wstat">${x}</p>`;
@@ -1724,6 +1730,11 @@ export function init(host: EHost): EngineModule {
       }
     };
     // v131 Sổ nhiệm vụ (P8): một chỗ gom việc hôm nay (3 chặng), việc cư dân nhờ, sự kiện tuần, mốc ★ gần nhất của phố.
+    // v132 dòng tin hệ thống ở sảnh (thay khung chat của Gunny): chỉ từ dữ liệu trên máy, tối đa 3 tin, không doạ "sắp mất".
+    const lobbyNews = (): string[] => {
+      const t = host.today(), th = themeOf(weekOf(t)), cheap = FASH.filter(f => !(E().av?.fash ?? []).includes(f.id)).reduce((m, f) => Math.min(m, f.price), Infinity);
+      return [...bag.hero.news(), ...(S?.ready ? ['📖 Có cảnh truyện mới đang chờ'] : []), `${th.ico} Sự kiện tuần: ${th.vi} · còn ${daysLeft(t)} ngày`, ...(wallet() >= cheap ? [`👗 Đủ xu mua thời trang mới (${wallet()} xu)`] : [])].slice(0, 3);
+    };
     const quests = (): string => {
       const esc = host.esc, row = (attr: string, ico: string, b1: string, sub: string, ok = false) => `<li><button class="wqrow${ok ? ' ok' : ''}" ${attr}><span class="wqi" aria-hidden="true">${ok ? '✅' : ico}</span><span class="stack" style="gap:1px"><b>${b1}</b><span class="hint">${sub}</span></span></button></li>`;
       const today = dir ? dir.plan.map((p, i) => { const gm = GAMES[p.game], ok = dir.x.played.includes(p.game); return row(`data-e="${gm.start}" data-g="${p.game}"`, gm.ico, `Chặng ${i + 1}: ${esc(gm.vi)}`, ok ? 'Đã xong hôm nay' : esc(p.why), ok); }).join('') : '';
@@ -1733,7 +1744,7 @@ export function init(host: EHost): EngineModule {
       return `<ul class="wqlist" aria-label="Việc hôm nay">${today}${tale}${town1}</ul>${viewWeekly(E().wk, host.today())}`;
     };
     if (wsel && !w.places.some(p => p.id === wsel)) wsel = null;
-    return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
+    return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests, me: n => bag.hero.svg(n), power: bag.hero.power(), music: !musicOff(), news: lobbyNews(), made: bag.hero.made(), fresh: bag.hero.pending().length, phase: phaseOf(new Date().getHours()) }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
   }
   const routes: Record<string, (c: ECtx) => string> = {
     // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).
@@ -1823,9 +1834,14 @@ export function init(host: EHost): EngineModule {
     wmopen(el) { if (justDragged()) return; const p = el.dataset.p as PlaceId | undefined; wq = false; wsel = p && wsel !== p ? p : null; host.render(); },
     wmclose() { wsel = null; wq = false; host.render(); },
     wmquests() { if (justDragged()) return; wsel = null; wq = !wq; host.render(); },
+    // v132 lối tắt ở sân khấu sảnh: Sổ nhiệm vụ, Bảng tin (sự kiện tuần, trang trí). Tên riêng để không trùng nút ở thanh tài nguyên.
+    wmbook() { wsel = null; wq = true; sfx('open'); host.render(); },
+    wmevent() { wq = false; wsel = 'notice'; sfx('open'); host.render(); },
     wmzoom(el) { mapZoom(Number(el.dataset.k) || 1); },
     wmhome() { mapHome(); },
     wmlist() { wlist = !wlist; wsel = null; wq = false; host.render(); },
+    // v132 nhạc nền sảnh: một công tắc chung với Cài đặt (st.set.music).
+    wmmusic() { const on = toggleMusic(); lobbyMusic(on); sfx('tap'); host.render(); },
     add(el) {
       const id = el.dataset.g || '';
       if (!addGoal(id, 'pick')) return;
@@ -1939,7 +1955,7 @@ export function init(host: EHost): EngineModule {
     cdnext() { cNext(); },
     cdgo() { if (crun?.ans?.ok) cNext(); },
     cdexit() { cClose(); if (crun && !crun.done) { const pm = pmsave(); if (pm.cur && !pm.cur.d) playQuit(pm); } crun = null; host.save(); host.render(); },
-    cdmusic() { try { const off = localStorage.getItem('el-music-off') === '1'; if (off) localStorage.removeItem('el-music-off'); else localStorage.setItem('el-music-off', '1'); } catch { /* bỏ qua */ } cview?.music(); },
+    cdmusic() { toggleMusic(); cview?.music(); },
     cfstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; fStart(); markStart(); },
     cfans(el) { fAnswer(Number(el.dataset.i)); },
     cfnext() { fNext(); },
@@ -1948,7 +1964,7 @@ export function init(host: EHost): EngineModule {
     bbnext() { bNext(); },
     bbgo() { if (brun?.ans?.ok) bNext(); },
     bbexit() { bClose(); if (brun && !brun.done) { const pm = pmsave(); if (pm.cur && !pm.cur.d) playQuit(pm); } brun = null; host.save(); host.render(); },
-    bbmusic() { try { const off = localStorage.getItem('el-music-off') === '1'; if (off) localStorage.removeItem('el-music-off'); else localStorage.setItem('el-music-off', '1'); } catch { /* bỏ qua */ } bview?.music(); },
+    bbmusic() { toggleMusic(); bview?.music(); },
     pzstart() { qrun = null; crun = null; frun = null; brun = null; zrun = null; trun = null; krun = null; wrun = null; lrun = null; rrun = null; grun = null; zStart(); markStart(); },
     pztile(el) { const r = zrun, i = Number(el.dataset.i); if (!r || r.recall || !(i >= 0 && i < r.tiles.length) || r.solved.includes(r.tiles[i]![0])) return; const k = r.sel.indexOf(i); if (k >= 0) r.sel.splice(k, 1); else if (r.sel.length < PER) r.sel.push(i); r.msg = null; sfx('place'); host.render(); },
     pzclear() { if (zrun && !zrun.recall) { zrun.sel = []; zrun.msg = null; host.render(); } },
@@ -2024,9 +2040,9 @@ export function init(host: EHost): EngineModule {
       const p = findPath(r.grid, word); if (!p || !spend(twsave(), wallet(), HINT_COST)) return;
       r.hint = p[0]!; r.hintWord = word; r.coins = wallet(); host.save(); nview?.refresh();
     },
-    hnmusic() { try { const off = localStorage.getItem('el-music-off') === '1'; if (off) localStorage.removeItem('el-music-off'); else localStorage.setItem('el-music-off', '1'); } catch { /* bỏ qua */ } nview?.music(); nview?.refresh(); },
+    hnmusic() { toggleMusic(); nview?.music(); nview?.refresh(); },
     hnshare() { const r = nrun, sv = nsave(); if (!r) return; host.share?.(`Mỏ Chữ · ngày ${host.today() % 10000}\n${'💎'.repeat(r.done.size)}${'⬛'.repeat(Math.max(0, r.missions.length - r.done.size))}\n${r.score} điểm · còn ${r.moves} lượt${sv.daily.streak > 1 ? ` · 🔥 ${sv.daily.streak} ngày` : ''}`); },
-    whmusic() { try { const off = localStorage.getItem('el-music-off') === '1'; if (off) localStorage.removeItem('el-music-off'); else localStorage.setItem('el-music-off', '1'); } catch { /* bỏ qua */ } hview?.music(); hview?.refresh(); },
+    whmusic() { toggleMusic(); hview?.music(); hview?.refresh(); },
     whshare() { const r = hrun, sv = hsave(); if (!r) return; host.share?.(wheelShare(host.today(), r.found.size, r.level.slots.length, sv.daily.hints, sv.daily.secs)); },
     // v91 Hồi tim bằng xu (một lần mỗi tầng): quyết định meta — tiêu xu để học tiếp hay giữ cho phố. Tim là độ khó game (P14), câu không đổi.
     qrevive() {
@@ -2235,7 +2251,7 @@ export function init(host: EHost): EngineModule {
     render,
     mapReset() { wsel = null; wlist = false; wq = false; },
     res() { return { coins: wallet(), lv: bag.lv() }; },
-    after(route) { if (route.startsWith('quest')) mapMount(); if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('gate') && gtRun?.res) gtRun = null; if (!route.startsWith('treasure')) chestDone = 0; if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } if (!route.startsWith('micro')) mrun = null; },
+    after(route) { if (route.startsWith('quest')) mapMount(); lobbyMusic(route.startsWith('quest') && !!document.querySelector('.lbstage')); if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('gate') && gtRun?.res) gtRun = null; if (!route.startsWith('treasure')) chestDone = 0; if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } if (!route.startsWith('micro')) mrun = null; },
     autoGoal(id, why) {
       if (V().goals.length) return false;
       const ok = addGoal(id, why === 'pick' ? 'pick' : 'auto');

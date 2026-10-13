@@ -2222,3 +2222,140 @@ App được thiết kế "một người + máy" để không cần tài khoả
   - Tí chưa đi giữa các khu và chưa "mặc" trang bị đã rèn.
 - **Thanh tài nguyên và chấm đỏ là chỗ dễ trượt sang ép người chơi nhất.** Phải đo §8.3 sau 2 tuần: nếu số lần mở app tăng mà câu bằng chứng / phút không tăng, thì giảm chấm (ví dụ bỏ chấm câu đố ngày và trang trí).
 - **Khung `.gx` mới là lớp vỏ CSS**, chưa phải mỹ thuật vẽ tay. Lên trên 8 ở P4 cần hoạ sĩ.
+
+
+## 19. Sảnh và Nhân vật / Trang bị kiểu Gunny (v132)
+
+### 19.0 Yêu cầu và phản biện
+
+**Yêu cầu:** "Phần 2 (màn hình chính) và phần 3 (nhân vật, trang bị) của Gunny: thiết kế app tương tự, gồm vẽ và âm thanh. Đưa ra tiêu chí đánh giá thang 10."
+
+Người sáng lập đã chốt:
+- Làm trong English Ladder.
+- Vẽ bằng SVG từ code.
+- Âm thanh tổng hợp bằng Web Audio.
+
+**Gốc rễ (đọc code v131):**
+1. **Người chơi chưa có nhân vật.** Tí (linh vật) đang đứng tạm vào chỗ đó. "5 ô trang bị" chỉ là 5 món `GEAR`, đồ không có cấp, không có lớp hình.
+2. **Sảnh là một khung chữ** đặt trên bản đồ.
+3. **Hai công tắc âm thanh không thông nhau.** Cài đặt (`st.set.sfx`) không tắt được âm của engine, vì engine đọc riêng `localStorage el-sfx-off` mà không chỗ nào ghi khoá đó. Chưa có nhạc sảnh.
+4. **`EHOST.mascot` bỏ tham số `wear`**, nên engine không vẽ được Tí đang thử đồ.
+
+**Quyết định:**
+- Người chơi có **chibi riêng ghép lớp**. **Tí thành thú cưng**, giống hệ thống thú cưng của Gunny.
+- **Cường hoá = học thật:**
+  - Cấp của mỗi món = Lv của một chỉ số thật (`statsOf`).
+  - Không mua được, không thất bại, không mất đồ (§18.0).
+- **Thời trang chỉ đổi hình**, mua bằng xu kiếm trong game.
+- Giữ 5 giới hạn của §18.4.
+
+### 19.1 Đã làm
+
+**Nhân vật** (`avatar.ts`, hàm thuần):
+- SVG 14 lớp: hào quang, cánh, tóc sau, chân, áo, tay, khăn, mặt, tóc, mũ, tai nghe, kính, bút, hiệu ứng. Không dùng `id`.
+- Ngoại hình: 6 kiểu tóc × 8 màu tóc × 5 màu da × 4 kiểu mắt × 3 kiểu miệng.
+- **7 ô, mỗi ô gắn một chỉ số thật:**
+
+  | Ô | Chỉ số |
+  |---|---|
+  | Bút | Dùng thật |
+  | Mũ | Trí nhớ |
+  | Kính | Từ vựng |
+  | Tai nghe | Nghe |
+  | Áo | Ngữ pháp |
+  | Khăn | Nói |
+  | Cánh | Phát âm |
+
+- **Bậc của món theo Lv:** 1–2 gỗ, 3–4 đồng, 5–6 bạc, 7–8 vàng (hào quang), 9–10 kim cương (lấp lánh).
+- **⚔️ Lực chữ** = Σ(Lv × 100 + Lv² × 10). Số suy ra, không lưu.
+- **12 món thời trang:** nón lá, mũ lưỡi trai, vương miện giấy, áo dài, hoodie, vest, áo mưa, cánh thiên thần, cánh bướm, kính râm, hoa rơi, nốt nhạc bay.
+- **Bản lưu `st.e.av`:** gồm sanitize và gộp hai máy. Ví xu chung trừ thêm `av.spent`.
+
+**Màn Trang bị** (`heroview.ts`, `heroctl.ts`, tab ⚔️ của Túi chữ):
+- Nhân vật 190 px ở giữa, Tí ngồi cạnh. 4 ô trái, 3 ô phải, có `+N` và màu theo bậc.
+- Chạm ô mở thẻ món:
+  - Bậc gỗ → kim cương.
+  - Chỉ số đang nuôi món đó, mốc kế.
+  - Nút **⚒️ Luyện ngay** tới đúng game của chỉ số.
+- Ô vừa lên bậc: viền sáng và tiếng fanfare, chỉ một lần. Đã xem lưu ở `av.seen`.
+- Bên dưới giữ nguyên hàng **🧪 Đạo cụ** (5 món rèn ở Xưởng, như thanh đạo cụ chiến đấu của Gunny) và 7 chỉ số thật.
+
+**Thời trang:**
+- Thử miễn phí, xem ngay trên người.
+- Mua bằng xu: đủ xu thì tự mặc; thiếu xu thì báo còn thiếu bao nhiêu và phát tiếng `nope`.
+- Mặc / tháo được; công tắc "Ẩn thời trang" để thấy lại trang bị.
+
+**Tạo nhân vật:**
+- Chọn kiểu, không chọn giới tính. Có 🎲 Ngẫu nhiên.
+- Không bắt buộc: chưa tạo thì có ngoại hình mặc định ổn định, kèm nhãn "🎨 Tạo" trên nhân vật ở sảnh.
+
+**Sảnh** (`worldview.ts`, `lobbyscene.ts`):
+- Thanh trên một dòng, vuốt ngang được: ⚔️ Lực chữ, 🪙, 🏮, ⭐, 🔊 / 🔇, 🌅 khu, ★ sao.
+- **Sân khấu** là phố vẽ SVG theo giờ trên máy:
+  - 4 thời điểm: sáng sớm, ngày, chiều, đêm. Đêm có sao, trăng và cửa sổ sáng đèn.
+  - Mây trôi, đèn lồng đung đưa.
+  - Nhân vật của bạn đứng cạnh Tí đang nói.
+- **Dòng tin hệ thống** (thay khung chat): đồ vừa lên bậc, cảnh truyện mới, sự kiện tuần còn mấy ngày, đủ xu mua thời trang.
+- **Hàng 5 lối tắt:** Trang bị, Thời trang, Lò rèn, Nhiệm vụ, Sự kiện.
+- **Ghim "Bạn ở đây"** trên bản đồ: nhân vật + Tí.
+- "▶ Chơi tiếp" vẫn là nút chính duy nhất. Màn đầu cao 1283 px, dưới giới hạn 1300 px (v117).
+
+**Âm thanh** (`sfx.ts`, `bgm.ts`):
+- **Một công tắc:** engine hỏi app qua `EHost.sound()` (`st.set.sfx`, `st.set.music` mới).
+  - Cài đặt có thêm dòng "Nhạc nền".
+  - 4 nút nhạc trong game và nút 🔊 ở sảnh cùng ghi vào một chỗ.
+  - Khoá `el-music-off` cũ được chuyển sang một lần.
+  - Chế độ tập trung thì không có nhạc.
+- **9 âm giao diện mới:** `tap`, `open`, `close`, `equip`, `unequip`, `tierup`, `coin`, `buy`, `nope`.
+- **Nhạc sảnh:** 16 ô nhịp, 84 BPM, gam ngũ cung, 3 bè (bass, hợp âm rải I–vi–IV–V, giai điệu), sinh từ hạt giống cố định.
+  - Chỉ phát sau lần chạm đầu.
+  - Tự dừng khi rời sảnh.
+  - Không tạo AudioContext khi đã tắt.
+
+### 19.2 Tiêu chí và điểm (chấm lại trên bản v132 thật, chưa đo trên người dùng)
+
+Mốc 10 = Gunny làm tốt nhất ở phần đó (đã trừ những gì §18 cấm: nạp tiền, quay thưởng, cường hoá mất đồ, chat). "Trước" là điểm đọc code v131. Cột "Cách kiểm" chỉ ra chỗ có thể chấm lại.
+
+**Phần 2: Màn hình chính**
+
+| # | Tiêu chí | Mốc 10 | Trước | v132 | Cách kiểm | Vì sao chưa 10 |
+|---|---|---|---|---|---|---|
+| M1 | Cảnh sảnh vẽ, nhân vật người chơi ở giữa | Cảnh có chiều sâu, nhân vật lớn ở trung tâm | 5 | **7,5** | hero.spec M1 | Nhân vật chỉ 100 px vì giới hạn chiều cao màn đầu; cảnh vẽ bằng code |
+| M2 | Thanh trên: cấp, lực chiến, tiền, chạm tới nơi tiêu | Đủ thông tin, mỗi ô là lối tắt | 7 | **8** | hero.spec, lobby.spec P2 | Không có avatar nhỏ + tên ở thanh trên (nhân vật nằm ở sân khấu) |
+| M3 | Icon sự kiện + chấm đỏ | Icon cố định, chấm khi làm được ngay | 6 | **7,5** | engine-dots, lobby.spec P3 | Lối tắt chỉ có chấm cho "đồ vừa lên bậc"; các chấm khác vẫn nằm trên bản đồ |
+| M4 | Điều hướng nhanh | 4–6 lối chính, một chạm | 5 | **8** | hero.spec | Thanh dưới của app (#bnav) + hàng 5 lối tắt; chưa có ngăn kéo "thêm" như Gunny |
+| M5 | Kênh tin (thay chat) | Gunny có chat thế giới; mức trần tự đặt 6 | 1 | **5,5** | hero.spec M5 | Chạy chữ một dòng; chưa có lịch sử tin để mở xem lại |
+| M6 | Đồ hoạ đồng nhất, sáng / tối đạt AA | Một phong cách, WCAG AA cả hai chế độ | 6,5 | **7,5** | hero.spec M6 (axe sáng / tối) | SVG từ code, trần ~8 nếu không có hoạ sĩ |
+| M7 | Âm thanh sảnh | Nhạc nền + âm UI, một công tắc | 3 | **7,5** | engine-avatar M7, engine-bgm, hero.spec M7 | Nhạc tổng hợp đơn giản; chưa nghe thử trên nhiều loa / tai thật |
+| M8 | Sảnh sống | Thở, mây, ngày / đêm; giảm chuyển động thì đứng yên | 6,5 | **8** | engine-bgm (giờ), CSS reduced-motion | Nhân vật chưa đi giữa các khu trên bản đồ |
+| M9 | Vẫn một việc chính, gọn | Một nút chính; ≤ 1300 px; không cuộn ngang | 7,5 | **8** | clarity.spec L1, hero.spec | Chỉ còn ~17 px dư so với giới hạn 1300 px; chưa chạy Lighthouse |
+
+**Trung bình Phần 2: 5,3 → 7,5.**
+
+**Phần 3: Nhân vật và trang bị**
+
+| # | Tiêu chí | Mốc 10 | Trước | v132 | Cách kiểm | Vì sao chưa 10 |
+|---|---|---|---|---|---|---|
+| C1 | Tạo nhân vật | Chọn ngoại hình khi vào game, đổi lại được | 0 | **7,5** | hero.spec C1 | Không bắt buộc ở lần đầu (chỉ có nhãn "🎨 Tạo"); chưa đặt tên |
+| C2 | Nhân vật ghép lớp | ≥ 8 lớp đúng chỗ, đổi là thấy ngay | 2 | **8** | engine-avatar C2 | Một tư thế, chưa có hoạt ảnh vũ khí |
+| C3 | Ô trang bị quanh nhân vật | 7 ô, có `+N`, màu theo bậc | 3 | **8,5** | hero.spec C3, engine-avatar C3 | Chưa kéo-thả (chạm thì có) |
+| C4 | Chỉ số + lực chiến | Rõ ràng, một số tổng, so trước / sau | 6 | **7** | hero.spec C4 | Chưa có "so trước / sau" khi một chỉ số lên |
+| C5 | Cường hoá thấy được | Bậc → hình đổi; +7 phát sáng | 2 | **7,5** | engine-avatar C5 | Người mới mọi ô Lv 0 nên phải học một thời gian mới thấy món đầu (cố ý: không cho đồ miễn phí) |
+| C6 | Túi đồ nhiều tab | Trang bị / Thời trang / Đạo cụ / Nguyên liệu | 5 | **7** | bag.spec, lobby.spec | Đạo cụ và nguyên liệu vẫn chung tab "🎒 Túi đồ" (giữ nguyên test v128) |
+| C7 | Thời trang đè lớp trang bị | Thử trước, mua bằng xu kiếm được, bật / tắt | 3 | **8** | hero.spec C7, engine-avatar C7 | 12 món, chưa có bộ theo mùa / sự kiện |
+| C8 | Thú cưng | Pet theo người chơi, có đồ riêng, có kỹ năng | 4 | **6,5** | hero.spec (svg.ti cạnh nhân vật) | Tí chưa có kỹ năng / cấp riêng |
+| C9 | Âm thanh và hiệu ứng thao tác | Mặc / tháo / lên bậc có âm và chuyển động | 2 | **7,5** | engine-avatar M7, hero.spec C7 (nảy) | Có âm riêng và cú nảy khi mặc / tháo; chưa có hạt bay như Gunny |
+| C10 | Từ món đồ tới cách mạnh lên | Mỗi ô chỉ đúng việc học để nâng | 5 | **8,5** | hero.spec C3 (nút Luyện ngay) | Chưa ước lượng "còn mấy phút học nữa lên bậc" |
+
+**Trung bình Phần 3: 3,2 → 7,7.**
+
+### 19.3 Phản biện, nói thẳng
+
+- **Kế hoạch dự kiến ~8,1 cho cả hai phần; bản thật đạt 7,5 và 7,7** (sau đợt 2: nảy khi mặc đồ, chạy chữ, chấm trên lối tắt). Phần hụt nằm ở:
+  - Giới hạn chiều cao màn đầu (M1, M9): giữ luật v117 quan trọng hơn nhân vật to.
+  - Không có chat (M5).
+  - Không có hoạ sĩ (M6, C2).
+  - Việc đã hứa trong kế hoạch mà chưa làm: nhân vật đi theo đường trên bản đồ khi đổi khu (M8).
+- **Mọi ô Lv 0 với người mới là cố ý**, nhưng là rủi ro: tuần đầu người chơi thấy 7 ổ khoá. Nếu số liệu §8.3 cho thấy người mới không quay lại màn Trang bị, hướng sửa là cho bậc gỗ ở Lv 1 tới sớm hơn (bậc đầu đo theo số kỹ năng đã học, không phải đã vững). Không sửa bằng cách cho đồ miễn phí.
+- **Nhạc nền mặc định bật** (nhỏ, chỉ ở sảnh, sau lần chạm đầu). Nếu đo thấy nhiều người tắt ngay, đổi mặc định sang tắt.
+- **Thời trang là chỗ tiêu xu mới.** Phải theo dõi để xu không lấn át bằng chứng học: nếu số ván "cày xu" tăng mà câu bằng chứng / phút không tăng, giảm giá hoặc bớt tin "đủ xu mua thời trang".
