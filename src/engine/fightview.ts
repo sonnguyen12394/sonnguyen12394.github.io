@@ -314,7 +314,8 @@ export function openFight(ui: FightUi): FightHandle {
     if (!alive) return;
     raf = requestAnimationFrame(frame);
     const f = ui.f(); if (!f || !disp) return;
-    const scale = slow > now ? 0.28 : 1, dt = Math.min(0.05, (now - prev) / 1000) * scale; prev = now;
+    // Thời gian trận theo đồng hồ thật (tối đa 0,5 giây mỗi khung): máy chậm / ít khung hình vẫn xong lượt đúng giờ, chỉ giật hơn.
+    const scale = slow > now ? 0.28 : 1, dt = Math.max(0, Math.min(0.5, (now - prev) / 1000)) * scale; prev = now;
     // Hoạt cảnh đạn: mỗi điểm đường bay = 2 bước vật lý (1/30 giây). Chạy nhanh hơn thật 1,25 lần.
     let proj: { x: number; y: number } | null = null, focus = disp.units[f.turn]?.x ?? 0;
     if (anim) {
