@@ -12,6 +12,7 @@ import {
 export interface HeroIn {
   av: AvSave; gear: GearRow[]; rows: StatRow[]; lv: number; power: number; coins: number;
   sel: Slot | null; tryId: string | null; party: Slot[];          // party: ô vừa lên bậc (ăn mừng lần này)
+  pop: boolean;                                                   // vừa mặc / tháo / đổi ngoại hình: nhân vật nảy một lần
   hero: (size: number, o?: { wear?: Partial<Record<FSlot, string>>; showF?: boolean; label?: string; cls?: string; look?: Look }) => string;
   pet: string;                                                    // SVG Tí (thú cưng)
 }
@@ -44,7 +45,7 @@ export function viewEquip(c: ECtx, x: HeroIn): string {
     <div class="eqtop"><span class="eqpow" aria-label="Lực chữ ${x.power}">⚔️ Lực chữ <b>${fmt(x.power)}</b></span><span class="pill">🧑‍🔧 Thợ Chữ cấp ${x.lv}</span></div>
     ${party}
     <div class="eqgrid">${col(LEFT, 'l')}
-      <div class="eqhero"><div class="eqfig">${x.hero(190, { label: 'Nhân vật của bạn', cls: 'big' })}</div><div class="eqpet" aria-hidden="true">${x.pet}</div></div>
+      <div class="eqhero"><div class="eqfig${x.pop ? ' pop' : ''}">${x.hero(190, { label: 'Nhân vật của bạn', cls: 'big' })}</div><div class="eqpet" aria-hidden="true">${x.pet}</div></div>
       ${col(RIGHT, 'r')}</div>
     ${x.sel ? card(c, by(x.sel)) : '<p class="hint eqtip">Chạm một ô để xem món, bậc và cách nâng.</p>'}
     <div class="row eqbar"><button class="btn small" data-e="bgtab" data-t="look">👗 Thời trang${worn ? ` · ${worn}` : ''}</button><button class="btn small" data-e="bgavmake">🎨 Ngoại hình</button>${worn ? `<button class="btn small ghost" data-e="bgavshow" aria-pressed="${x.av.showF}">${x.av.showF ? '🙈 Ẩn thời trang' : '👀 Hiện thời trang'}</button>` : ''}<button class="btn small ghost" data-go="closet">🐯 Tủ đồ của Tí</button></div>
@@ -62,7 +63,7 @@ export function viewLook(c: ECtx, x: HeroIn): string {
       <span class="fimg" aria-hidden="true">${x.hero(84, { wear: { [f.slot]: f.id }, showF: true })}</span><b aria-hidden="true">${f.ico} ${esc(f.vi)}</b><span class="hint" aria-hidden="true">${own(f.id) ? (on(f.id) ? '✅ Đang mặc' : '✔ Đã có') : `🪙 ${f.price}`}</span></button></li>`).join('')}</ul>`).join('');
   return `<div class="lkstage stack"><div class="spread"><h2>👗 Thời trang</h2><span class="pill" aria-label="${x.coins} xu">🪙 ${x.coins}</span></div>
     <details class="dwhy"><summary>❓ Thời trang khác trang bị thế nào</summary><p class="hint">Thời trang chỉ đổi hình, không thêm chỉ số. Mua bằng xu kiếm trong game, không có nạp tiền, không quay thưởng. Thời trang mặc đè lên hình của trang bị; tắt "Hiện thời trang" để thấy lại trang bị.</p></details>
-    <div class="lkprev"><div class="eqfig">${x.hero(170, { wear, showF: true, label: t ? `Bạn đang thử ${t.vi}` : 'Nhân vật của bạn', cls: 'big' })}</div><div class="eqpet" aria-hidden="true">${x.pet}</div></div>
+    <div class="lkprev"><div class="eqfig${x.pop ? ' pop' : ''}">${x.hero(170, { wear, showF: true, label: t ? `Bạn đang thử ${t.vi}` : 'Nhân vật của bạn', cls: 'big' })}</div><div class="eqpet" aria-hidden="true">${x.pet}</div></div>
     <div class="stack lkact" aria-live="polite">${act}</div>${sec}</div>`;
 }
 
@@ -71,7 +72,7 @@ export function viewMake(c: ECtx, x: HeroIn): string {
   const opt = (k: keyof Look, label: string, n: number, vi: (i: number) => string, sw?: string[]) => `<div class="mkrow" role="group" aria-label="${label}"><b>${label}</b><div class="mkopts">${Array.from({ length: n }, (_, i) => `<button class="mkopt${sw ? ' sw' : ''}" data-e="bgavset" data-k="${k}" data-v="${i}" aria-pressed="${L[k] === i}"${sw ? ` style="--sw:${sw[i]}" aria-label="${label} ${i + 1}"` : ''}>${sw ? '' : vi(i)}</button>`).join('')}</div></div>`;
   return `<div class="mkstage stack"><h2>🎨 ${x.av.made ? 'Đổi ngoại hình' : 'Tạo nhân vật của bạn'}</h2>
     <p class="hint">Chọn kiểu, không chọn giới tính. Đổi lại lúc nào cũng được, miễn phí.</p>
-    <div class="lkprev"><div class="eqfig">${x.hero(170, { label: 'Nhân vật đang tạo', cls: 'big' })}</div><div class="eqpet" aria-hidden="true">${x.pet}</div></div>
+    <div class="lkprev"><div class="eqfig${x.pop ? ' pop' : ''}">${x.hero(170, { label: 'Nhân vật đang tạo', cls: 'big' })}</div><div class="eqpet" aria-hidden="true">${x.pet}</div></div>
     ${opt('h', 'Kiểu tóc', HAIRS.length, i => HAIR_VI[i]!)}${opt('hc', 'Màu tóc', HAIR_C.length, () => '', HAIR_C)}${opt('sk', 'Màu da', SKIN_C.length, () => '', SKIN_C)}${opt('ey', 'Mắt', EYES.length, i => EYES_VI[i]!)}${opt('mo', 'Miệng', MOUTHS.length, i => MOUTH_VI[i]!)}
     <div class="row"><button class="btn" data-e="bgavrand">🎲 Ngẫu nhiên</button><button class="btn primary" data-e="bgavdone">✓ Xong</button></div></div>`;
 }

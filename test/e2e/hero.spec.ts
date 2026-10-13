@@ -88,6 +88,7 @@ test('C7: thời trang: thử miễn phí; đủ xu thì mua, tự mặc, ví tr
   await page.locator('[data-e="bgavbuy"]').click();
   const av = (await E(page)).av;
   expect(av.spent).toBe(40); expect(av.fash).toEqual(['f-cap']); expect(av.wear.hat).toBe('f-cap');
+  await expect(page.locator('.lkprev .eqfig.pop')).toHaveCount(1);         // C9: mặc đồ thì nhân vật nảy một lần
   await expect(page.locator('.lkstage .pill')).toContainText('🪙 60');
   await page.locator('.bgtabs [data-t="me"]').click();
   await page.locator('[data-e="bgavshow"]').click();

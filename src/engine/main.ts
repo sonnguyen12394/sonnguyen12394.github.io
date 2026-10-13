@@ -1744,7 +1744,7 @@ export function init(host: EHost): EngineModule {
       return `<ul class="wqlist" aria-label="Việc hôm nay">${today}${tale}${town1}</ul>${viewWeekly(E().wk, host.today())}`;
     };
     if (wsel && !w.places.some(p => p.id === wsel)) wsel = null;
-    return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests, me: n => bag.hero.svg(n), power: bag.hero.power(), music: !musicOff(), news: lobbyNews(), made: bag.hero.made(), phase: phaseOf(new Date().getHours()) }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
+    return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests, me: n => bag.hero.svg(n), power: bag.hero.power(), music: !musicOff(), news: lobbyNews(), made: bag.hero.made(), fresh: bag.hero.pending().length, phase: phaseOf(new Date().getHours()) }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
   }
   const routes: Record<string, (c: ECtx) => string> = {
     // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).

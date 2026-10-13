@@ -25,7 +25,7 @@ export interface SvgOpt { wear?: Partial<Record<FSlot, string>>; showF?: boolean
 
 export function makeHero(d: HeroDeps) {
   const { host } = d;
-  let sel: Slot | null = null, tryId: string | null = null, party: Slot[] = [];
+  let sel: Slot | null = null, tryId: string | null = null, party: Slot[] = [], pop = false;
   // Ngoại hình mặc định ổn định theo máy (ngày chọn mục tiêu đầu tiên), để chưa tạo nhân vật vẫn thấy cùng một người.
   const seed = (): number => (d.E().goals[0]?.since ?? 7) * 2654435761;
   const peek = (): AvSave => d.E().av ?? freshAv(seed());
@@ -39,10 +39,10 @@ export function makeHero(d: HeroDeps) {
     const g = gear(); party = fresh(peek(), g);
     if (party.length) { markSeen(sv(), g); sfx('tierup'); host.save(); }
   }
-  function reset(): void { sel = null; tryId = null; party = []; }
+  function reset(): void { sel = null; tryId = null; party = []; pop = false; }
   function input(): HeroIn {
-    const rs = d.rows();
-    return { av: peek(), gear: gearOf(rs), rows: rs, lv: d.lv(), power: power(rs), coins: d.wallet(), sel, tryId, party, hero: svg, pet: pet() };
+    const rs = d.rows(), p = pop; pop = false;   // nảy đúng một lần vẽ
+    return { av: peek(), gear: gearOf(rs), rows: rs, lv: d.lv(), power: power(rs), coins: d.wallet(), sel, tryId, party, pop: p, hero: svg, pet: pet() };
   }
   function body(c: ECtx, tab: HeroTab): string {
     const x = input();
@@ -51,25 +51,25 @@ export function makeHero(d: HeroDeps) {
 
   const acts: Record<string, (el: HTMLElement) => void> = {
     bgavslot: el => { const s = el.dataset.s as Slot; if (!(s in SLOT)) return; sel = sel === s ? null : s; sfx(sel ? 'open' : 'close'); party = []; host.render(); },
-    bgavtry: el => { const id = el.dataset.id ?? ''; if (!fashById(id)) return; tryId = tryId === id ? null : id; sfx('tap'); host.render(); },
+    bgavtry: el => { const id = el.dataset.id ?? ''; if (!fashById(id)) return; tryId = tryId === id ? null : id; pop = true; sfx('tap'); host.render(); },
     bgavbuy: el => {
       const id = el.dataset.id ?? '', f = fashById(id), v = canBuy(peek(), id, d.wallet()); if (!f) return;
       if (!v.ok) { sfx('nope'); host.toast(v.why === 'coins' ? `Chưa đủ xu: cần ${f.price}, đang có ${d.wallet()}. Chơi một ván để kiếm thêm.` : 'Bạn đã có món này.'); return; }
-      buy(sv(), id, d.wallet()); sfx('buy'); host.toast(`👗 Đã mua và mặc ${f.vi}.`); host.save(); host.render();
+      buy(sv(), id, d.wallet()); pop = true; sfx('buy'); host.toast(`👗 Đã mua và mặc ${f.vi}.`); host.save(); host.render();
     },
     bgavwear: el => {
       const id = el.dataset.id ?? '', r = toggleWear(sv(), id); if (!r) return;
-      const a = sv(); if (r === 'on') a.showF = true;
+      const a = sv(); if (r === 'on') a.showF = true; pop = true;
       sfx(r === 'on' ? 'equip' : 'unequip'); host.save(); host.render();
     },
-    bgavshow: () => { const a = sv(); a.showF = !a.showF; sfx(a.showF ? 'equip' : 'unequip'); host.save(); host.render(); },
+    bgavshow: () => { const a = sv(); a.showF = !a.showF; pop = true; sfx(a.showF ? 'equip' : 'unequip'); host.save(); host.render(); },
     bgavmake: () => { sfx('open'); d.open('make'); },
     bgavset: el => {
       const k = el.dataset.k as keyof Look, v = Number(el.dataset.v);
       if (!(k in LOOK_MAX) || !(v >= 0 && v < LOOK_MAX[k])) return;
-      sv().look[k] = v; sfx('tap'); host.save(); host.render();
+      sv().look[k] = v; pop = true; sfx('tap'); host.save(); host.render();
     },
-    bgavrand: () => { sv().look = randomLook((Date.now() ^ 0x9e3779b9) >>> 0); sfx('tap'); host.save(); host.render(); },
+    bgavrand: () => { sv().look = randomLook((Date.now() ^ 0x9e3779b9) >>> 0); pop = true; sfx('tap'); host.save(); host.render(); },
     bgavdone: () => { const a = sv(); const first = !a.made; a.made = true; sfx('equip'); host.save(); if (first) host.toast('🎨 Xong! Nhân vật của bạn đã ra phố.'); d.open('me'); },
   };
 

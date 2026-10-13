@@ -2322,15 +2322,15 @@ Mốc 10 = Gunny làm tốt nhất ở phần đó (đã trừ những gì §18 
 |---|---|---|---|---|---|---|
 | M1 | Cảnh sảnh vẽ, nhân vật người chơi ở giữa | Cảnh có chiều sâu, nhân vật lớn ở trung tâm | 5 | **7,5** | hero.spec M1 | Nhân vật chỉ 100 px vì giới hạn chiều cao màn đầu; cảnh vẽ bằng code |
 | M2 | Thanh trên: cấp, lực chiến, tiền, chạm tới nơi tiêu | Đủ thông tin, mỗi ô là lối tắt | 7 | **8** | hero.spec, lobby.spec P2 | Không có avatar nhỏ + tên ở thanh trên (nhân vật nằm ở sân khấu) |
-| M3 | Icon sự kiện + chấm đỏ | Icon cố định, chấm khi làm được ngay | 6 | **7** | engine-dots, lobby.spec P3 | Chấm đỏ vẫn nằm trên bản đồ, chưa hiện trên hàng lối tắt |
+| M3 | Icon sự kiện + chấm đỏ | Icon cố định, chấm khi làm được ngay | 6 | **7,5** | engine-dots, lobby.spec P3 | Lối tắt chỉ có chấm cho "đồ vừa lên bậc"; các chấm khác vẫn nằm trên bản đồ |
 | M4 | Điều hướng nhanh | 4–6 lối chính, một chạm | 5 | **8** | hero.spec | Thanh dưới của app (#bnav) + hàng 5 lối tắt; chưa có ngăn kéo "thêm" như Gunny |
-| M5 | Kênh tin (thay chat) | Gunny có chat thế giới; mức trần tự đặt 6 | 1 | **5** | hero.spec M5 | Một dòng cắt bằng "…", chưa chạy chữ hoặc mở xem hết |
+| M5 | Kênh tin (thay chat) | Gunny có chat thế giới; mức trần tự đặt 6 | 1 | **5,5** | hero.spec M5 | Chạy chữ một dòng; chưa có lịch sử tin để mở xem lại |
 | M6 | Đồ hoạ đồng nhất, sáng / tối đạt AA | Một phong cách, WCAG AA cả hai chế độ | 6,5 | **7,5** | hero.spec M6 (axe sáng / tối) | SVG từ code, trần ~8 nếu không có hoạ sĩ |
 | M7 | Âm thanh sảnh | Nhạc nền + âm UI, một công tắc | 3 | **7,5** | engine-avatar M7, engine-bgm, hero.spec M7 | Nhạc tổng hợp đơn giản; chưa nghe thử trên nhiều loa / tai thật |
 | M8 | Sảnh sống | Thở, mây, ngày / đêm; giảm chuyển động thì đứng yên | 6,5 | **8** | engine-bgm (giờ), CSS reduced-motion | Nhân vật chưa đi giữa các khu trên bản đồ |
 | M9 | Vẫn một việc chính, gọn | Một nút chính; ≤ 1300 px; không cuộn ngang | 7,5 | **8** | clarity.spec L1, hero.spec | Chỉ còn ~17 px dư so với giới hạn 1300 px; chưa chạy Lighthouse |
 
-**Trung bình Phần 2: 5,3 → 7,4.**
+**Trung bình Phần 2: 5,3 → 7,5.**
 
 **Phần 3: Nhân vật và trang bị**
 
@@ -2344,18 +2344,18 @@ Mốc 10 = Gunny làm tốt nhất ở phần đó (đã trừ những gì §18 
 | C6 | Túi đồ nhiều tab | Trang bị / Thời trang / Đạo cụ / Nguyên liệu | 5 | **7** | bag.spec, lobby.spec | Đạo cụ và nguyên liệu vẫn chung tab "🎒 Túi đồ" (giữ nguyên test v128) |
 | C7 | Thời trang đè lớp trang bị | Thử trước, mua bằng xu kiếm được, bật / tắt | 3 | **8** | hero.spec C7, engine-avatar C7 | 12 món, chưa có bộ theo mùa / sự kiện |
 | C8 | Thú cưng | Pet theo người chơi, có đồ riêng, có kỹ năng | 4 | **6,5** | hero.spec (svg.ti cạnh nhân vật) | Tí chưa có kỹ năng / cấp riêng |
-| C9 | Âm thanh và hiệu ứng thao tác | Mặc / tháo / lên bậc có âm và chuyển động | 2 | **7** | engine-avatar M7 | Có âm riêng; chuyển động khi mặc đồ chưa làm (chỉ có viền sáng khi lên bậc) |
+| C9 | Âm thanh và hiệu ứng thao tác | Mặc / tháo / lên bậc có âm và chuyển động | 2 | **7,5** | engine-avatar M7, hero.spec C7 (nảy) | Có âm riêng và cú nảy khi mặc / tháo; chưa có hạt bay như Gunny |
 | C10 | Từ món đồ tới cách mạnh lên | Mỗi ô chỉ đúng việc học để nâng | 5 | **8,5** | hero.spec C3 (nút Luyện ngay) | Chưa ước lượng "còn mấy phút học nữa lên bậc" |
 
-**Trung bình Phần 3: 3,2 → 7,6.**
+**Trung bình Phần 3: 3,2 → 7,7.**
 
 ### 19.3 Phản biện, nói thẳng
 
-- **Kế hoạch dự kiến ~8,1 cho cả hai phần; bản thật đạt 7,4 và 7,6.** Phần hụt nằm ở:
+- **Kế hoạch dự kiến ~8,1 cho cả hai phần; bản thật đạt 7,5 và 7,7** (sau đợt 2: nảy khi mặc đồ, chạy chữ, chấm trên lối tắt). Phần hụt nằm ở:
   - Giới hạn chiều cao màn đầu (M1, M9): giữ luật v117 quan trọng hơn nhân vật to.
   - Không có chat (M5).
   - Không có hoạ sĩ (M6, C2).
-  - Hai việc đã hứa trong kế hoạch mà chưa làm: chuyển động khi mặc đồ (C9) và nhân vật đi theo đường trên bản đồ (M8).
+  - Việc đã hứa trong kế hoạch mà chưa làm: nhân vật đi theo đường trên bản đồ khi đổi khu (M8).
 - **Mọi ô Lv 0 với người mới là cố ý**, nhưng là rủi ro: tuần đầu người chơi thấy 7 ổ khoá. Nếu số liệu §8.3 cho thấy người mới không quay lại màn Trang bị, hướng sửa là cho bậc gỗ ở Lv 1 tới sớm hơn (bậc đầu đo theo số kỹ năng đã học, không phải đã vững). Không sửa bằng cách cho đồ miễn phí.
 - **Nhạc nền mặc định bật** (nhỏ, chỉ ở sảnh, sau lần chạm đầu). Nếu đo thấy nhiều người tắt ngay, đổi mặc định sang tắt.
 - **Thời trang là chỗ tiêu xu mới.** Phải theo dõi để xu không lấn át bằng chứng học: nếu số ván "cày xu" tăng mà câu bằng chứng / phút không tăng, giảm giá hoặc bớt tin "đủ xu mua thời trang".

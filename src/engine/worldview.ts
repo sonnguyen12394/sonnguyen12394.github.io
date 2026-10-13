@@ -40,7 +40,7 @@ export interface WorldUi { sel: PlaceId | null; list: boolean; quests: boolean }
 export interface WorldExtra {
   coins: number; lv: number; quests: () => string;
   // v132 sảnh kiểu Gunny (GAME-CRITERIA §19): nhân vật của người chơi (avatar.ts), Lực chữ, nhạc nền, dòng tin, giờ trong ngày.
-  me?: (size: number) => string; power?: number; music?: boolean; news?: string[]; made?: boolean; phase?: Phase;
+  me?: (size: number) => string; power?: number; music?: boolean; news?: string[]; made?: boolean; phase?: Phase; fresh?: number;   // fresh: số ô vừa lên bậc chưa xem
 }
 // Thời lượng một ván (phút, ước tính) cho phòng chờ trước ván (P7).
 const DUR: Partial<Record<PlaceId, string>> = { wheel: '3', hunt: '4', fog: '10–15', tower: '5', puzzle: '4', garden: '3', cafe: '4', talk: '5', signs: '2', letter: '5', port: '3', shop: '4', blocks: '3–5', radio: '5', bubbles: '3', ask: '5', case: '5', robot: '4', kara: '4', cards: '5', board: '5' };
@@ -85,9 +85,11 @@ export function viewWorld(c: ECtx, w: World, ui: WorldUi, dir: Dir | null, sc: S
   // v132 sảnh kiểu Gunny: thanh tài nguyên một dòng (avatar, ⚔️ Lực chữ, 🪙, 🏮, ⭐, nhạc), sân khấu vẽ (phố theo giờ, nhân vật của bạn
   // đứng cạnh Tí đang nói), dòng tin hệ thống thay khung chat, hàng lối tắt. "Chơi tiếp" vẫn là nút chính duy nhất (v117).
   const me = x.me?.(100) ?? '', pow = x.power ?? 0;
-  const news = (x.news ?? []).slice(0, 3), ticker = news.length ? `<p class="lbnews" aria-live="off"><span aria-hidden="true">📣</span> ${news.map(esc).join(' · ')}</p>` : '';
+  const news = (x.news ?? []).slice(0, 3), line = news.map(esc).join(' · ');
+  // Chạy chữ (hai bản nối đuôi cho liền mạch); trình đọc màn hình đọc bản đầu, bản sau ẩn. Giảm chuyển động: đứng yên, cắt "…".
+  const ticker = news.length ? `<p class="lbnews" aria-live="off"><span class="lbmq"><span>📣 ${line}</span><span aria-hidden="true">📣 ${line}</span></span></p>` : '';
   const dock = me ? `<div class="lbdock" role="toolbar" aria-label="Lối tắt">
-      <button class="lbd" data-e="bgopen" data-t="me"><span aria-hidden="true">⚔️</span>Trang bị</button>
+      <button class="lbd" data-e="bgopen" data-t="me"${x.fresh ? ` aria-label="Trang bị, ${x.fresh} món vừa lên bậc"` : ''}><span aria-hidden="true">⚔️</span>Trang bị${x.fresh ? '<i class="wdot" aria-hidden="true"></i>' : ''}</button>
       <button class="lbd" data-e="bgopen" data-t="look"><span aria-hidden="true">👗</span>Thời trang</button>
       <button class="lbd" data-e="bgopen" data-t="forge"><span aria-hidden="true">🔥</span>Lò rèn</button>
       <button class="lbd" data-e="wmbook"><span aria-hidden="true">📜</span>Nhiệm vụ</button>

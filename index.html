@@ -675,6 +675,9 @@ button.wchip{cursor:pointer}button.wchip:active{transform:translateY(2px);box-sh
 .lbscene .lb-cloud{animation:lbcloud 60s linear infinite;animation-delay:var(--d,0s)}@keyframes lbcloud{from{transform:translateX(-60px)}to{transform:translateX(420px)}}
 .lbscene .lb-lamp{transform-box:fill-box;transform-origin:50% 0;animation:lblamp 3s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lblamp{50%{transform:rotate(6deg)}}
 .lbnews{position:absolute;z-index:2;top:6px;right:8px;left:auto;margin:0;max-width:calc(100% - 112px);padding:3px 10px;border-radius:999px;background:rgba(20,14,40,.72);color:#fff;font:600 12px/1.35 system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lbmq{display:inline-flex;gap:28px;animation:lbmq 22s linear infinite}.lbmq>span{flex:none}@keyframes lbmq{to{transform:translateX(calc(-50% - 14px))}}
+.lbd{position:relative}.lbd .wdot{top:2px;right:4px;left:auto;width:12px;height:12px;border-width:2px}
+.eqfig.pop .av{animation:eqpop .45s cubic-bezier(.3,1.6,.5,1)}@keyframes eqpop{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-10px) scale(1.04,.97)}100%{transform:none}}
 .lbrow{position:relative;z-index:1;display:grid;grid-template-columns:auto 1fr;align-items:end;gap:4px}
 .lbfig{position:relative;padding:0;border:0;background:none;line-height:0;cursor:pointer;border-radius:16px}.lbfig:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .lbfig .av{filter:drop-shadow(0 3px 0 rgba(0,0,0,.18))}.lbfig:active .av{transform:translateY(2px)}
@@ -684,7 +687,7 @@ button.wchip{cursor:pointer}button.wchip:active{transform:translateY(2px);box-sh
 .lbd{display:grid;justify-items:center;gap:0;min-height:44px;padding:3px 1px;white-space:nowrap;letter-spacing:-.2px;border:0;border-radius:12px;background:rgba(255,255,255,.94);color:#1d1b3a;font:700 10.5px/1.15 system-ui,sans-serif;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.28)}
 .lbd>span{font-size:17px;line-height:1.15}.lbd:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.28)}
 .wplace.pin .wico .av{display:inline-block;vertical-align:bottom;margin-right:-6px}
-@media (prefers-reduced-motion: reduce){.lbscene .lb-cloud,.lbscene .lb-lamp{animation:none}}
+@media (prefers-reduced-motion: reduce){.lbscene .lb-cloud,.lbscene .lb-lamp,.lbmq,.eqfig.pop .av{animation:none}.lbmq>span+span{display:none}.lbnews{text-overflow:ellipsis}}
 .wdot{position:absolute;top:-5px;left:-5px;width:16px;height:16px;border-radius:50%;background:#e01e37;border:3px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35);animation:wping 1.6s ease-out infinite}
 .wdotl{display:flex;align-items:center;gap:8px;margin:0;font-weight:700;color:var(--ink)}.wdotl .wdot{position:static;flex:none}
 @keyframes wping{0%{box-shadow:0 0 0 0 rgba(224,30,55,.55)}80%,100%{box-shadow:0 0 0 9px rgba(224,30,55,0)}}
