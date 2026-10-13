@@ -172,7 +172,7 @@ Mỗi dòng: cách làm được chọn, lý do chọn, cách đo để lên đi
 | Sau mốc 1 | 6 | 6 | 6 | 5 | 6 | 7 | 4 | 7 | 4 | 5 | 4 | 6 | 2 | 1 | 6 | ≈ 5,4 |
 | Sau mốc 2 | 6 | 6 | 8 | 8 | 8 | 8 | 7 | 8 | 6 | 8 | 8 | 7 | 2 | 1 | 7 | ≈ 6,9 |
 | Sau mốc 3–4 | 6 | 6 | 8 | 8 | 8 | 8 | 7 | 8 | 6 | 8 | 8 | 7 | 8 | 6 | 7 | ≈ 7,2 |
-| Có người thật chơi ≥ 30 ngày | 8+ | 8+ | 9 | 9 | 9 | 9 | 9 | 9 | 8+ | 9 | 9 | 8 | 8 | 7 | 9 | ≈ 8,7 |
+| Có người thật chơi ≥ 30 ngày | 8+ | 8+ | 9 | 9 | 9 | 9 | 9 | 9 | 8+ | 9 | 9 | 8 | 8 | 7 | 9 | ≈ 8,6 |
 
 \* tiêu chí *(đo)*: trần 6 cho tới khi có số liệu chơi thật. Lên 9–10 cần người sáng lập chơi đều và đề mẫu Cambridge xác nhận.
 
