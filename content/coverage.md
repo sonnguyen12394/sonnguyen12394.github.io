@@ -30,5 +30,15 @@ Tạo bởi `node tools/coverage.mjs`. Chỉ tiêu mỗi dạng: có bài học 
 | Nghe | VSTEP Nghe phần 2: hội thoại (Part 2: conversations) | VSTEP | ✓ | 32/30 |  | 8 | 24 |  |  | 8/8 | ✓ |
 | Nghe | VSTEP Nghe phần 3: bài nói, bài giảng (Part 3: talks & lectures) | VSTEP | ✓ | 30/30 |  | 5 | 20 | 5 |  | 6/6 | ✓ |
 | Đọc | VSTEP Đọc: trắc nghiệm theo bài đọc (Reading passages) | VSTEP | ✓ | 30/30 |  | 10 | 10 | 10 |  | — | ✓ |
+| Đọc | Biển báo, tin nhắn ngắn (Reading Part 1) | A2 Key | ✓ | 30/30 | 30 |  |  |  |  | — | ✓ |
+| Đọc | Ghép câu với ba bài ngắn (Reading Part 2) | A2 Key | ✓ | 35/30 | 35 |  |  |  |  | — | ✓ |
+| Đọc | Bài đọc dài, chọn đáp án (Reading Part 3) | A2 Key | ✓ | 30/30 | 30 |  |  |  |  | — | ✓ |
+| Đọc | Chọn từ điền vào bài (Reading Part 4) | A2 Key | ✓ | 30/30 | 30 |  |  |  |  | — | ✓ |
+| Đọc | Tự điền một từ (Reading Part 5) | A2 Key | ✓ | 30/30 | 30 |  |  |  |  | — | ✓ |
+| Nghe | Năm đoạn ngắn, chọn đáp án (Listening Part 1) | A2 Key | ✓ | 30/30 | 30 |  |  |  |  | 6/6 | ✓ |
+| Nghe | Nghe và ghi thông tin (Listening Part 2) | A2 Key | ✓ | 30/30 | 30 |  |  |  |  | 6/6 | ✓ |
+| Nghe | Hội thoại dài, chọn đáp án (Listening Part 3) | A2 Key | ✓ | 30/30 | 30 |  |  |  |  | 6/6 | ✓ |
+| Nghe | Năm đoạn ngắn, hiểu ý chính (Listening Part 4) | A2 Key | ✓ | 30/30 | 30 |  |  |  |  | 6/6 | ✓ |
+| Nghe | Ghép người với việc (Listening Part 5) | A2 Key | ✓ | 30/30 | 30 |  |  |  |  | 6/6 | ✓ |
 
-Đạt 26/26 dạng. Kiểm tra đầu vào: 96 câu. Đề thi thử: 0 câu.
+Đạt 36/36 dạng. Kiểm tra đầu vào: 96 câu. Đề thi thử: 0 câu.

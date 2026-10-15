@@ -22,7 +22,7 @@ Lần đầu tôi cho "Riêng tư" 9 điểm và đề xuất thêm thông báo 
 |---|---|---|---|---|---|
 | 1 | Từ vựng | 8 | 8 | 10 | Không đổi. Lên 10 cần số đo nhớ sau 30 ngày trên người thật |
 | 2 | Ngữ pháp | 7 | 7 | 9 | Không đổi (phần viết câu có kiểm soát đã có sẵn) |
-| 3 | Đọc theo dạng A2 Key | 6 | **8** | 10 | **148 câu luyện** đúng 5 phần Đọc A2 Key. Phần 1 vẫn dễ đoán khi không có bài (72%, xem mục 4) |
+| 3 | Đọc theo dạng A2 Key | 6 | **8** | 10 | **155 câu luyện** đúng 5 phần Đọc A2 Key. Phần 1 vẫn dễ đoán khi không có bài (72%, xem mục 4) |
 | 4 | Nghe | 6 | **8** | 9 | **150 câu luyện** đúng 5 phần Nghe, Kokoro nhiều giọng, có bản chậm, nghe lại được |
 | 5 | Viết: luyện | 6 | **7** | 7 | Máy dò "đủ ý cần có" cho 18 đề A1 / A2; bài mẫu 3 mức cho 10 đề A2; 2 đề đúng dạng A2 Key |
 | 6 | Viết: đo | 3 | 3 | 5 | Chưa làm: chưa có cặp điểm thật, Viết chưa vào trận cổng |

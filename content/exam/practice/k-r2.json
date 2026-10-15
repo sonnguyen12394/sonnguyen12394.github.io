@@ -565,5 +565,146 @@
         }
       }
     ]
+  },
+  {
+    "id": "k-r2-05",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r2",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "A good place to study",
+    "instr": "For each question, choose the correct answer: A, B or C.",
+    "paras": [
+      "A Lan: I study in a small cafe near the market. It's never quiet, but I like the noise because it helps me think. The owner knows me, so I can stay for hours with one coffee. The only problem is the wifi: it often stops, so I download everything at home first.",
+      "B Viet: My favourite place is the city library. It closes at six, which is a bit early for me, so I go on Saturday mornings. It's free, and the chairs are very comfortable. I don't like studying alone, so I usually meet two classmates there and we test each other.",
+      "C Rosa: I study on the roof of our building! My uncle put a table and a lamp up there last summer. In the rainy season I can't use it, so I study in the kitchen instead. My little brother is often too noisy in the house, but on the roof nobody can find me."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "Lan"
+      },
+      {
+        "k": "B",
+        "t": "Viet"
+      },
+      {
+        "k": "C",
+        "t": "Rosa"
+      }
+    ],
+    "items": [
+      {
+        "id": "k-r2-05-1",
+        "q": "Who likes some noise when they study?",
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "I like the noise because it helps me think"
+        },
+        "why": "Lan thích tiếng ồn vì giúp cô suy nghĩ.",
+        "wrong": {
+          "B": "Viet học ở thư viện, không nói thích ồn.",
+          "C": "Rosa trốn tiếng ồn của em trai."
+        }
+      },
+      {
+        "id": "k-r2-05-2",
+        "q": "Who has a problem with the internet?",
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "The only problem is the wifi"
+        },
+        "why": "Wifi ở quán hay mất.",
+        "wrong": {
+          "B": "Viet không nhắc mạng.",
+          "C": "Rosa không nhắc mạng."
+        }
+      },
+      {
+        "id": "k-r2-05-3",
+        "q": "Who studies with other people?",
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "I usually meet two classmates there"
+        },
+        "why": "Viet hẹn hai bạn cùng lớp để hỏi bài nhau.",
+        "wrong": {
+          "A": "Lan học một mình ở quán.",
+          "C": "Rosa học ở nơi không ai tìm thấy."
+        }
+      },
+      {
+        "id": "k-r2-05-4",
+        "q": "Whose place is not open late?",
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "It closes at six"
+        },
+        "why": "Thư viện đóng cửa lúc sáu giờ.",
+        "wrong": {
+          "A": "Lan ngồi quán hàng giờ, không nói giờ đóng cửa.",
+          "C": "Mái nhà không có giờ đóng cửa."
+        }
+      },
+      {
+        "id": "k-r2-05-5",
+        "q": "Who got help from a family member to get their study place ready?",
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "My uncle put a table and a lamp up there"
+        },
+        "why": "Chú của Rosa đặt bàn và đèn trên mái.",
+        "wrong": {
+          "A": "Lan quen chủ quán, không phải người nhà.",
+          "B": "Viet học ở thư viện thành phố."
+        }
+      },
+      {
+        "id": "k-r2-05-6",
+        "q": "Who sometimes has to study somewhere else?",
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "so I study in the kitchen instead"
+        },
+        "why": "Mùa mưa Rosa học trong bếp.",
+        "wrong": {
+          "A": "Lan chỉ tải tài liệu ở nhà trước.",
+          "B": "Viet đi thư viện sáng thứ Bảy."
+        }
+      },
+      {
+        "id": "k-r2-05-7",
+        "q": "Who is friendly with the person who owns their study place?",
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "The owner knows me"
+        },
+        "why": "Chủ quán quen Lan.",
+        "wrong": {
+          "B": "Viet không nói quen ai ở thư viện.",
+          "C": "Chú của Rosa giúp làm chỗ học, nhưng mái nhà không có người phụ trách."
+        }
+      }
+    ]
   }
 ]

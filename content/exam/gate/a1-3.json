@@ -1,811 +1,811 @@
 [
- {
-  "id": "gt-a1-3-r1",
-  "kind": "reading",
-  "exams": [
-   "ielts-ac",
-   "ielts-gt",
-   "vstep"
-  ],
-  "qtype": "pl-r",
-  "level": "A1",
-  "band": 1.5,
-  "mode": "gate",
-  "title": "Signs in a shopping centre",
-  "instr": "Read the signs and answer the questions.",
-  "paras": [
-   "SUPERMARKET: Open every day from 7 am to 10 pm. Hot bread at 8 am and 4 pm.",
-   "TOILETS: On the first floor, next to the cinema. The toilets on the second floor are closed today.",
-   "GAMES SHOP: Children can play the games on the red table. The blue table is for adults.",
-   "BANK: Closed on Monday. Open on Saturday and Sunday from 8 am to 12 pm.",
-   "SHOE SHOP: Buy one pair of shoes, and the second pair is half price. Not for children's shoes."
-  ],
-  "items": [
-   {
-    "id": "gt-a1-3-r1-a",
-    "q": "When can you buy hot bread?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "at seven in the morning"
-     },
-     {
-      "k": "B",
-      "t": "at ten at night"
-     },
-     {
-      "k": "C",
-      "t": "at four in the afternoon"
-     }
+  {
+    "id": "gt-a1-3-r1",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
     ],
-    "ans": "C",
-    "b": 2,
-    "ev": {
-     "p": 0,
-     "s": "Hot bread at 8 am and 4 pm."
-    },
-    "why": "Bánh mì mới ra lò lúc 8 giờ sáng và 4 giờ chiều.",
-    "wrong": {
-     "A": "Bảy giờ là giờ siêu thị mở cửa.",
-     "B": "Mười giờ tối là giờ đóng cửa."
-    }
-   },
-   {
-    "id": "gt-a1-3-r1-b",
-    "q": "Where can you use the toilets today?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "on the first floor"
-     },
-     {
-      "k": "B",
-      "t": "in the cinema"
-     },
-     {
-      "k": "C",
-      "t": "on the second floor"
-     }
+    "qtype": "pl-r",
+    "level": "A1",
+    "band": 1.5,
+    "mode": "gate",
+    "title": "Signs in a shopping centre",
+    "instr": "Read the signs and answer the questions.",
+    "paras": [
+      "SUPERMARKET: Open every day from 7 am to 10 pm. Hot bread at 8 am and 4 pm.",
+      "TOILETS: On the first floor, next to the cinema. The toilets on the second floor are closed today.",
+      "GAMES SHOP: Children can play the games on the red table. The blue table is for adults.",
+      "BANK: Closed on Monday. Open on Saturday and Sunday from 8 am to 12 pm.",
+      "SHOE SHOP: Buy one pair of shoes, and the second pair is half price. Not for children's shoes."
     ],
-    "ans": "A",
-    "b": 2,
-    "ev": {
-     "p": 1,
-     "s": "On the first floor, next to the cinema."
-    },
-    "why": "Nhà vệ sinh mở ở tầng một.",
-    "wrong": {
-     "B": "Nhà vệ sinh ở cạnh rạp, không ở trong rạp.",
-     "C": "Nhà vệ sinh tầng hai hôm nay đóng."
-    }
-   },
-   {
-    "id": "gt-a1-3-r1-c",
-    "q": "Where can children play?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "at the big table"
-     },
-     {
-      "k": "B",
-      "t": "at the blue table"
-     },
-     {
-      "k": "C",
-      "t": "at the red table"
-     }
+    "items": [
+      {
+        "id": "gt-a1-3-r1-a",
+        "q": "When can you buy hot bread?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at seven in the morning"
+          },
+          {
+            "k": "B",
+            "t": "at ten at night"
+          },
+          {
+            "k": "C",
+            "t": "at four in the afternoon"
+          }
+        ],
+        "ans": "C",
+        "b": 2,
+        "ev": {
+          "p": 0,
+          "s": "Hot bread at 8 am and 4 pm."
+        },
+        "why": "Bánh mì mới ra lò lúc 8 giờ sáng và 4 giờ chiều.",
+        "wrong": {
+          "A": "Bảy giờ là giờ siêu thị mở cửa.",
+          "B": "Mười giờ tối là giờ đóng cửa."
+        }
+      },
+      {
+        "id": "gt-a1-3-r1-b",
+        "q": "Where can you use the toilets today?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "on the first floor"
+          },
+          {
+            "k": "B",
+            "t": "in the cinema"
+          },
+          {
+            "k": "C",
+            "t": "on the second floor"
+          }
+        ],
+        "ans": "A",
+        "b": 2,
+        "ev": {
+          "p": 1,
+          "s": "On the first floor, next to the cinema."
+        },
+        "why": "Nhà vệ sinh mở ở tầng một.",
+        "wrong": {
+          "B": "Nhà vệ sinh ở cạnh rạp, không ở trong rạp.",
+          "C": "Nhà vệ sinh tầng hai hôm nay đóng."
+        }
+      },
+      {
+        "id": "gt-a1-3-r1-c",
+        "q": "Where can children play?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at the big table"
+          },
+          {
+            "k": "B",
+            "t": "at the blue table"
+          },
+          {
+            "k": "C",
+            "t": "at the red table"
+          }
+        ],
+        "ans": "C",
+        "b": 2,
+        "ev": {
+          "p": 2,
+          "s": "Children can play the games on the red table."
+        },
+        "why": "Trẻ em chơi ở bàn đỏ.",
+        "wrong": {
+          "A": "Biển không nhắc bàn to.",
+          "B": "Bàn xanh dành cho người lớn."
+        }
+      },
+      {
+        "id": "gt-a1-3-r1-d",
+        "q": "When is the bank closed?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "on Sunday"
+          },
+          {
+            "k": "B",
+            "t": "on Monday"
+          },
+          {
+            "k": "C",
+            "t": "on Saturday"
+          }
+        ],
+        "ans": "B",
+        "b": 2,
+        "ev": {
+          "p": 3,
+          "s": "BANK: Closed on Monday."
+        },
+        "why": "Ngân hàng đóng cửa thứ Hai.",
+        "wrong": {
+          "A": "Chủ nhật mở từ 8 giờ đến 12 giờ.",
+          "C": "Thứ Bảy mở từ 8 giờ đến 12 giờ."
+        }
+      },
+      {
+        "id": "gt-a1-3-r1-e",
+        "q": "A man buys two pairs of shoes for himself. The first pair is 20 dollars. How much is the second pair?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "10 dollars"
+          },
+          {
+            "k": "B",
+            "t": "20 dollars"
+          },
+          {
+            "k": "C",
+            "t": "nothing"
+          }
+        ],
+        "ans": "A",
+        "b": 2.5,
+        "ev": {
+          "p": 4,
+          "s": "the second pair is half price"
+        },
+        "why": "Đôi thứ hai giảm nửa giá: 10 đô.",
+        "wrong": {
+          "B": "Đôi thứ hai được giảm nửa giá.",
+          "C": "Đôi thứ hai giảm nửa, không miễn phí."
+        }
+      }
     ],
-    "ans": "C",
-    "b": 2,
-    "ev": {
-     "p": 2,
-     "s": "Children can play the games on the red table."
-    },
-    "why": "Trẻ em chơi ở bàn đỏ.",
-    "wrong": {
-     "A": "Biển không nhắc bàn to.",
-     "B": "Bàn xanh dành cho người lớn."
-    }
-   },
-   {
-    "id": "gt-a1-3-r1-d",
-    "q": "When is the bank closed?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "on Sunday"
-     },
-     {
-      "k": "B",
-      "t": "on Monday"
-     },
-     {
-      "k": "C",
-      "t": "on Saturday"
-     }
-    ],
-    "ans": "B",
-    "b": 2,
-    "ev": {
-     "p": 3,
-     "s": "BANK: Closed on Monday."
-    },
-    "why": "Ngân hàng đóng cửa thứ Hai.",
-    "wrong": {
-     "A": "Chủ nhật mở từ 8 giờ đến 12 giờ.",
-     "C": "Thứ Bảy mở từ 8 giờ đến 12 giờ."
-    }
-   },
-   {
-    "id": "gt-a1-3-r1-e",
-    "q": "A man buys two pairs of shoes for himself. The first pair is 20 dollars. How much is the second pair?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "10 dollars"
-     },
-     {
-      "k": "B",
-      "t": "20 dollars"
-     },
-     {
-      "k": "C",
-      "t": "nothing"
-     }
-    ],
-    "ans": "A",
-    "b": 2.5,
-    "ev": {
-     "p": 4,
-     "s": "the second pair is half price"
-    },
-    "why": "Đôi thứ hai giảm nửa giá: 10 đô.",
-    "wrong": {
-     "B": "Đôi thứ hai được giảm nửa giá.",
-     "C": "Đôi thứ hai giảm nửa, không miễn phí."
-    }
-   }
-  ],
-  "allow": [
-   "price"
-  ]
- },
- {
-  "id": "gt-a1-3-r2",
-  "kind": "reading",
-  "exams": [
-   "ielts-ac",
-   "ielts-gt",
-   "vstep"
-  ],
-  "qtype": "pl-r",
-  "level": "A1",
-  "band": 2,
-  "mode": "gate",
-  "title": "Minh's postcard",
-  "instr": "Read the postcard and answer the questions.",
-  "paras": [
-   "Dear Grandma, I am at the beach in Quy Nhon with my school. We are here for five days. The hotel is small, but it is near the sea.",
-   "Every morning we visit places, and in the afternoon we swim. Yesterday we went to an old tower. Today it is very windy, so we are playing games in the hotel.",
-   "My friend Lan is here too. She can't ride a bike, so I am teaching her! We go home on Friday. Love, Minh"
-  ],
-  "items": [
-   {
-    "id": "gt-a1-3-r2-a",
-    "q": "Who is Minh on holiday with?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "his family"
-     },
-     {
-      "k": "B",
-      "t": "his school"
-     },
-     {
-      "k": "C",
-      "t": "his grandma"
-     }
-    ],
-    "ans": "B",
-    "b": 1.5,
-    "ev": {
-     "p": 0,
-     "s": "I am at the beach in Quy Nhon with my school."
-    },
-    "why": "Minh đi với trường.",
-    "wrong": {
-     "A": "Minh không nhắc gia đình.",
-     "C": "Minh gửi bưu thiếp cho bà; bà không đi."
-    }
-   },
-   {
-    "id": "gt-a1-3-r2-b",
-    "q": "What do they do in the morning?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "They play games."
-     },
-     {
-      "k": "B",
-      "t": "They visit places."
-     },
-     {
-      "k": "C",
-      "t": "They go swimming."
-     }
-    ],
-    "ans": "B",
-    "b": 2,
-    "ev": {
-     "p": 1,
-     "s": "Every morning we visit places"
-    },
-    "why": "Buổi sáng họ đi tham quan.",
-    "wrong": {
-     "A": "Chơi trò chơi là hôm nay vì trời gió.",
-     "C": "Bơi là buổi chiều."
-    }
-   },
-   {
-    "id": "gt-a1-3-r2-c",
-    "q": "What is the weather like today?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "sunny"
-     },
-     {
-      "k": "B",
-      "t": "windy"
-     },
-     {
-      "k": "C",
-      "t": "rainy"
-     }
-    ],
-    "ans": "B",
-    "b": 1.5,
-    "ev": {
-     "p": 1,
-     "s": "Today it is very windy"
-    },
-    "why": "Hôm nay trời gió to.",
-    "wrong": {
-     "A": "Hôm nay gió, không nói nắng.",
-     "C": "Bưu thiếp không nhắc mưa."
-    }
-   },
-   {
-    "id": "gt-a1-3-r2-d",
-    "q": "What is Minh teaching Lan?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "to ride a bike"
-     },
-     {
-      "k": "B",
-      "t": "to swim"
-     },
-     {
-      "k": "C",
-      "t": "to play games"
-     }
-    ],
-    "ans": "A",
-    "b": 2.5,
-    "ev": {
-     "p": 2,
-     "s": "She can't ride a bike, so I am teaching her!"
-    },
-    "why": "Lan không biết đi xe đạp nên Minh dạy bạn.",
-    "wrong": {
-     "B": "Bơi là việc cả lớp làm buổi chiều.",
-     "C": "Chơi trò chơi là việc hôm nay vì trời gió."
-    }
-   }
-  ]
- },
- {
-  "id": "gt-a1-3-r3",
-  "kind": "reading",
-  "exams": [
-   "ielts-ac",
-   "ielts-gt",
-   "vstep"
-  ],
-  "qtype": "pl-r",
-  "level": "A1",
-  "band": 2,
-  "mode": "gate",
-  "title": "My best friend",
-  "instr": "Choose the right word for each gap.",
-  "paras": [
-   "My best friend (1) ___ Hoa. She is twelve, and she lives (2) ___ my street.",
-   "Hoa has (3) ___ long black hair. She likes drawing and she is very good at it. On Saturdays we go to the park (4) ___ our bikes. We sit under a big tree and eat ice cream."
-  ],
-  "items": [
-   {
-    "id": "gt-a1-3-r3-a",
-    "q": "Gap 1",
-    "opts": [
-     {
-      "k": "A",
-      "t": "is"
-     },
-     {
-      "k": "B",
-      "t": "are"
-     },
-     {
-      "k": "C",
-      "t": "am"
-     }
-    ],
-    "ans": "A",
-    "b": 1.5,
-    "ev": {
-     "p": 0,
-     "s": "My best friend (1) ___ Hoa."
-    },
-    "why": "Chủ ngữ số ít \"My best friend\" đi với \"is\".",
-    "wrong": {
-     "B": "\"are\" dùng cho chủ ngữ số nhiều hoặc \"you\".",
-     "C": "\"am\" chỉ dùng với \"I\"."
-    }
-   },
-   {
-    "id": "gt-a1-3-r3-b",
-    "q": "Gap 2",
-    "opts": [
-     {
-      "k": "A",
-      "t": "at"
-     },
-     {
-      "k": "B",
-      "t": "to"
-     },
-     {
-      "k": "C",
-      "t": "in"
-     }
-    ],
-    "ans": "C",
-    "b": 2,
-    "ev": {
-     "p": 0,
-     "s": "she lives (2) ___ my street"
-    },
-    "why": "\"live in + phố\".",
-    "wrong": {
-     "A": "\"at\" cần số nhà cụ thể (at 12 Le Loi Street).",
-     "B": "\"live to\" không đúng."
-    }
-   },
-   {
-    "id": "gt-a1-3-r3-c",
-    "q": "Gap 3",
-    "opts": [
-     {
-      "k": "A",
-      "t": "gets"
-     },
-     {
-      "k": "B",
-      "t": "get"
-     },
-     {
-      "k": "C",
-      "t": "got"
-     }
-    ],
-    "ans": "C",
-    "b": 2.5,
-    "ev": {
-     "p": 1,
-     "s": "Hoa has (3) ___ long black hair."
-    },
-    "why": "\"has got\" = có.",
-    "wrong": {
-     "A": "Sau \"has\" không dùng \"gets\".",
-     "B": "Sau \"has\" dùng \"got\", không dùng \"get\"."
-    }
-   },
-   {
-    "id": "gt-a1-3-r3-d",
-    "q": "Gap 4",
-    "opts": [
-     {
-      "k": "A",
-      "t": "at"
-     },
-     {
-      "k": "B",
-      "t": "by"
-     },
-     {
-      "k": "C",
-      "t": "on"
-     }
-    ],
-    "ans": "C",
-    "b": 2.5,
-    "ev": {
-     "p": 1,
-     "s": "we go to the park (4) ___ our bikes"
-    },
-    "why": "\"go … on our bikes\" = đi bằng xe đạp của mình.",
-    "wrong": {
-     "A": "\"at our bikes\" không đúng.",
-     "B": "\"by\" không đi với \"our\" (by bike)."
-    }
-   }
-  ]
- },
- {
-  "id": "gt-a1-3-l1",
-  "kind": "listening",
-  "exams": [
-   "ielts-ac",
-   "ielts-gt",
-   "vstep"
-  ],
-  "qtype": "pl-l",
-  "level": "A1",
-  "band": 1.5,
-  "mode": "gate",
-  "title": "Four short conversations",
-  "instr": "Listen and answer the questions. You will hear each conversation once.",
-  "script": [
-   {
-    "sp": "Girl",
-    "t": "Mum, is my piano lesson at four today?"
-   },
-   {
-    "sp": "Woman",
-    "t": "Yes, at four, like every week. But next week it's at five."
-   },
-   {
-    "sp": "Man",
-    "t": "How much is this hat?"
-   },
-   {
-    "sp": "Woman",
-    "t": "The small one is six dollars. The big one is nine dollars."
-   },
-   {
-    "sp": "Man",
-    "t": "I'll take the small one, please."
-   },
-   {
-    "sp": "Boy",
-    "t": "Is your new car white, Mr Long?"
-   },
-   {
-    "sp": "Man",
-    "t": "Yes, it's white. My old car was grey."
-   },
-   {
-    "sp": "Woman",
-    "t": "Where's the cat? Is she under the bed?"
-   },
-   {
-    "sp": "Boy",
-    "t": "No, she's in the garden, sleeping on the chair."
-   }
-  ],
-  "voices": {
-   "Girl": "af_sky",
-   "Woman": "bf_emma",
-   "Man": "am_adam",
-   "Boy": "am_michael"
+    "allow": [
+      "price"
+    ]
   },
-  "items": [
-   {
-    "id": "gt-a1-3-l1-a",
-    "q": "What time is the piano lesson today?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "at five"
-     },
-     {
-      "k": "B",
-      "t": "at six"
-     },
-     {
-      "k": "C",
-      "t": "at four"
-     }
+  {
+    "id": "gt-a1-3-r2",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
     ],
-    "ans": "C",
-    "b": 2,
-    "ev": {
-     "p": 1,
-     "s": "Yes, at four, like every week."
-    },
-    "why": "Hôm nay vẫn học lúc bốn giờ như mọi tuần.",
-    "wrong": {
-     "A": "Năm giờ là giờ của tuần sau.",
-     "B": "Không ai nhắc sáu giờ."
-    }
-   },
-   {
-    "id": "gt-a1-3-l1-b",
-    "q": "How much does the man pay?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "eight dollars"
-     },
-     {
-      "k": "B",
-      "t": "six dollars"
-     },
-     {
-      "k": "C",
-      "t": "nine dollars"
-     }
+    "qtype": "pl-r",
+    "level": "A1",
+    "band": 2,
+    "mode": "gate",
+    "title": "Minh's postcard",
+    "instr": "Read the postcard and answer the questions.",
+    "paras": [
+      "Dear Grandma, I am at the beach in Quy Nhon with my school. We are here for five days. The hotel is small, but it is near the sea.",
+      "Every morning we visit places, and in the afternoon we swim. Yesterday we went to an old tower. Today it is very windy, so we are playing games in the hotel.",
+      "My friend Lan is here too. She can't ride a bike, so I am teaching her! We go home on Friday. Love, Minh"
     ],
-    "ans": "B",
-    "b": 2,
-    "ev": {
-     "p": 4,
-     "s": "I'll take the small one, please."
-    },
-    "why": "Ông lấy cái mũ nhỏ giá sáu đô.",
-    "wrong": {
-     "A": "Không ai nhắc tám đô.",
-     "C": "Chín đô là giá mũ to."
-    }
-   },
-   {
-    "id": "gt-a1-3-l1-c",
-    "q": "What colour is Mr Long's new car?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "white"
-     },
-     {
-      "k": "B",
-      "t": "grey"
-     },
-     {
-      "k": "C",
-      "t": "black"
-     }
-    ],
-    "ans": "A",
-    "b": 1.5,
-    "ev": {
-     "p": 6,
-     "s": "Yes, it's white."
-    },
-    "why": "Xe mới màu trắng.",
-    "wrong": {
-     "B": "Xe cũ mới màu xám.",
-     "C": "Không ai nhắc màu đen."
-    }
-   },
-   {
-    "id": "gt-a1-3-l1-d",
-    "q": "Where is the cat?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "under the bed"
-     },
-     {
-      "k": "B",
-      "t": "in the garden"
-     },
-     {
-      "k": "C",
-      "t": "on the sofa"
-     }
-    ],
-    "ans": "B",
-    "b": 1.5,
-    "ev": {
-     "p": 8,
-     "s": "she's in the garden"
-    },
-    "why": "Con mèo ở trong vườn.",
-    "wrong": {
-     "A": "Con mèo không ở dưới giường.",
-     "C": "Con mèo nằm trên ghế trong vườn, không phải ghế sofa."
-    }
-   }
-  ],
-  "audio": {
-   "file": "a/gt-a1-3-l1.mp3",
-   "dur": 29.4,
-   "voices": [
-    "af_sky",
-    "bf_emma",
-    "am_adam",
-    "am_michael"
-   ]
-  }
- },
- {
-  "id": "gt-a1-3-l2",
-  "kind": "listening",
-  "exams": [
-   "ielts-ac",
-   "ielts-gt",
-   "vstep"
-  ],
-  "qtype": "pl-l",
-  "level": "A1",
-  "band": 2,
-  "mode": "gate",
-  "title": "Ordering a pizza",
-  "instr": "Listen to the phone call and answer the questions.",
-  "script": [
-   {
-    "sp": "Man",
-    "t": "Hello, Mario's Pizza."
-   },
-   {
-    "sp": "Woman",
-    "t": "Hi. Can I have a big pizza with chicken, please?"
-   },
-   {
-    "sp": "Man",
-    "t": "Sorry, we haven't got any chicken today. We've got fish or cheese."
-   },
-   {
-    "sp": "Woman",
-    "t": "OK, cheese, please. And two cans of cola."
-   },
-   {
-    "sp": "Man",
-    "t": "That's fourteen dollars. What's your address?"
-   },
-   {
-    "sp": "Woman",
-    "t": "Twenty-two River Road. It's the blue house opposite the park. The school is at the end of the road."
-   },
-   {
-    "sp": "Man",
-    "t": "Thank you. We're very busy tonight, so it's ready in forty-five minutes, not thirty."
-   }
-  ],
-  "voices": {
-   "Man": "bm_lewis",
-   "Woman": "af_bella"
+    "items": [
+      {
+        "id": "gt-a1-3-r2-a",
+        "q": "Who is Minh on holiday with?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "his family"
+          },
+          {
+            "k": "B",
+            "t": "his school"
+          },
+          {
+            "k": "C",
+            "t": "his grandma"
+          }
+        ],
+        "ans": "B",
+        "b": 1.5,
+        "ev": {
+          "p": 0,
+          "s": "I am at the beach in Quy Nhon with my school."
+        },
+        "why": "Minh đi với trường.",
+        "wrong": {
+          "A": "Minh không nhắc gia đình.",
+          "C": "Minh gửi bưu thiếp cho bà; bà không đi."
+        }
+      },
+      {
+        "id": "gt-a1-3-r2-b",
+        "q": "What do they do in the morning?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "They play games."
+          },
+          {
+            "k": "B",
+            "t": "They visit places."
+          },
+          {
+            "k": "C",
+            "t": "They go swimming."
+          }
+        ],
+        "ans": "B",
+        "b": 2,
+        "ev": {
+          "p": 1,
+          "s": "Every morning we visit places"
+        },
+        "why": "Buổi sáng họ đi tham quan.",
+        "wrong": {
+          "A": "Chơi trò chơi là hôm nay vì trời gió.",
+          "C": "Bơi là buổi chiều."
+        }
+      },
+      {
+        "id": "gt-a1-3-r2-c",
+        "q": "What is the weather like today?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "sunny"
+          },
+          {
+            "k": "B",
+            "t": "windy"
+          },
+          {
+            "k": "C",
+            "t": "rainy"
+          }
+        ],
+        "ans": "B",
+        "b": 1.5,
+        "ev": {
+          "p": 1,
+          "s": "Today it is very windy"
+        },
+        "why": "Hôm nay trời gió to.",
+        "wrong": {
+          "A": "Hôm nay gió, không nói nắng.",
+          "C": "Bưu thiếp không nhắc mưa."
+        }
+      },
+      {
+        "id": "gt-a1-3-r2-d",
+        "q": "What is Minh teaching Lan?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to ride a bike"
+          },
+          {
+            "k": "B",
+            "t": "to swim"
+          },
+          {
+            "k": "C",
+            "t": "to play games"
+          }
+        ],
+        "ans": "A",
+        "b": 2.5,
+        "ev": {
+          "p": 2,
+          "s": "She can't ride a bike, so I am teaching her!"
+        },
+        "why": "Lan không biết đi xe đạp nên Minh dạy bạn.",
+        "wrong": {
+          "B": "Bơi là việc cả lớp làm buổi chiều.",
+          "C": "Chơi trò chơi là việc hôm nay vì trời gió."
+        }
+      }
+    ]
   },
-  "items": [
-   {
-    "id": "gt-a1-3-l2-a",
-    "q": "What pizza does the woman order?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "cheese"
-     },
-     {
-      "k": "B",
-      "t": "chicken"
-     },
-     {
-      "k": "C",
-      "t": "fish"
-     }
+  {
+    "id": "gt-a1-3-r3",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
     ],
-    "ans": "A",
-    "b": 2,
-    "ev": {
-     "p": 3,
-     "s": "OK, cheese, please."
-    },
-    "why": "Bà gọi pizza phô mai.",
-    "wrong": {
-     "B": "Hôm nay hết gà.",
-     "C": "Có cá nhưng bà chọn phô mai."
-    }
-   },
-   {
-    "id": "gt-a1-3-l2-b",
-    "q": "What else does she order?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "water"
-     },
-     {
-      "k": "B",
-      "t": "cola"
-     },
-     {
-      "k": "C",
-      "t": "juice"
-     }
+    "qtype": "pl-r",
+    "level": "A1",
+    "band": 2,
+    "mode": "gate",
+    "title": "My best friend",
+    "instr": "Choose the right word for each gap.",
+    "paras": [
+      "My best friend (1) ___ Hoa. She is twelve, and she lives (2) ___ my street.",
+      "Hoa has (3) ___ long black hair. She likes drawing and she is very good at it. On Saturdays we go to the park (4) ___ our bikes. We sit under a big tree and eat ice cream."
     ],
-    "ans": "B",
-    "b": 1.5,
-    "ev": {
-     "p": 3,
-     "s": "And two cans of cola."
-    },
-    "why": "Bà gọi hai lon cola.",
-    "wrong": {
-     "A": "Không ai nhắc nước lọc.",
-     "C": "Không ai nhắc nước trái cây."
-    }
-   },
-   {
-    "id": "gt-a1-3-l2-c",
-    "q": "Where does the woman live?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "next to a school"
-     },
-     {
-      "k": "B",
-      "t": "next to a shop"
-     },
-     {
-      "k": "C",
-      "t": "opposite a park"
-     }
+    "items": [
+      {
+        "id": "gt-a1-3-r3-a",
+        "q": "Gap 1",
+        "opts": [
+          {
+            "k": "A",
+            "t": "is"
+          },
+          {
+            "k": "B",
+            "t": "are"
+          },
+          {
+            "k": "C",
+            "t": "am"
+          }
+        ],
+        "ans": "A",
+        "b": 1.5,
+        "ev": {
+          "p": 0,
+          "s": "My best friend (1) ___ Hoa."
+        },
+        "why": "Chủ ngữ số ít \"My best friend\" đi với \"is\".",
+        "wrong": {
+          "B": "\"are\" dùng cho chủ ngữ số nhiều hoặc \"you\".",
+          "C": "\"am\" chỉ dùng với \"I\"."
+        }
+      },
+      {
+        "id": "gt-a1-3-r3-b",
+        "q": "Gap 2",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at"
+          },
+          {
+            "k": "B",
+            "t": "to"
+          },
+          {
+            "k": "C",
+            "t": "in"
+          }
+        ],
+        "ans": "C",
+        "b": 2,
+        "ev": {
+          "p": 0,
+          "s": "she lives (2) ___ my street"
+        },
+        "why": "\"live in + phố\".",
+        "wrong": {
+          "A": "\"at\" cần số nhà cụ thể (at 12 Le Loi Street).",
+          "B": "\"live to\" không đúng."
+        }
+      },
+      {
+        "id": "gt-a1-3-r3-c",
+        "q": "Gap 3",
+        "opts": [
+          {
+            "k": "A",
+            "t": "gets"
+          },
+          {
+            "k": "B",
+            "t": "get"
+          },
+          {
+            "k": "C",
+            "t": "got"
+          }
+        ],
+        "ans": "C",
+        "b": 2.5,
+        "ev": {
+          "p": 1,
+          "s": "Hoa has (3) ___ long black hair."
+        },
+        "why": "\"has got\" = có.",
+        "wrong": {
+          "A": "Sau \"has\" không dùng \"gets\".",
+          "B": "Sau \"has\" dùng \"got\", không dùng \"get\"."
+        }
+      },
+      {
+        "id": "gt-a1-3-r3-d",
+        "q": "Gap 4",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at"
+          },
+          {
+            "k": "B",
+            "t": "by"
+          },
+          {
+            "k": "C",
+            "t": "on"
+          }
+        ],
+        "ans": "C",
+        "b": 2.5,
+        "ev": {
+          "p": 1,
+          "s": "we go to the park (4) ___ our bikes"
+        },
+        "why": "\"go … on our bikes\" = đi bằng xe đạp của mình.",
+        "wrong": {
+          "A": "\"at our bikes\" không đúng.",
+          "B": "\"by\" không đi với \"our\" (by bike)."
+        }
+      }
+    ]
+  },
+  {
+    "id": "gt-a1-3-l1",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
     ],
-    "ans": "C",
-    "b": 2.5,
-    "ev": {
-     "p": 5,
-     "s": "It's the blue house opposite the park."
-    },
-    "why": "Nhà màu xanh đối diện công viên.",
-    "wrong": {
-     "A": "Trường ở cuối đường, không ở cạnh nhà.",
-     "B": "Không ai nhắc cửa hàng."
-    }
-   },
-   {
-    "id": "gt-a1-3-l2-d",
-    "q": "When will the pizza be ready?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "in an hour"
-     },
-     {
-      "k": "B",
-      "t": "in 30 minutes"
-     },
-     {
-      "k": "C",
-      "t": "in 45 minutes"
-     }
+    "qtype": "pl-l",
+    "level": "A1",
+    "band": 1.5,
+    "mode": "gate",
+    "title": "Four short conversations",
+    "instr": "Listen and answer the questions. You will hear each conversation once.",
+    "script": [
+      {
+        "sp": "Girl",
+        "t": "Mum, is my piano lesson at four today?"
+      },
+      {
+        "sp": "Woman",
+        "t": "Yes, at four, like every week. But next week it's at five."
+      },
+      {
+        "sp": "Man",
+        "t": "How much is this hat?"
+      },
+      {
+        "sp": "Woman",
+        "t": "The small one is six dollars. The big one is nine dollars."
+      },
+      {
+        "sp": "Man",
+        "t": "I'll take the small one, please."
+      },
+      {
+        "sp": "Boy",
+        "t": "Is your new car white, Mr Long?"
+      },
+      {
+        "sp": "Man",
+        "t": "Yes, it's white. My old car was grey."
+      },
+      {
+        "sp": "Woman",
+        "t": "Where's the cat? Is she under the bed?"
+      },
+      {
+        "sp": "Boy",
+        "t": "No, she's in the garden, sleeping on the chair."
+      }
     ],
-    "ans": "C",
-    "b": 2.5,
-    "ev": {
-     "p": 6,
-     "s": "it's ready in forty-five minutes"
+    "voices": {
+      "Girl": "af_sky",
+      "Woman": "bf_emma",
+      "Man": "am_adam",
+      "Boy": "am_michael"
     },
-    "why": "Tối nay đông nên 45 phút mới xong.",
-    "wrong": {
-     "A": "Không ai nhắc một giờ.",
-     "B": "30 phút là thời gian thường ngày."
+    "items": [
+      {
+        "id": "gt-a1-3-l1-a",
+        "q": "What time is the piano lesson today?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at five"
+          },
+          {
+            "k": "B",
+            "t": "at six"
+          },
+          {
+            "k": "C",
+            "t": "at four"
+          }
+        ],
+        "ans": "C",
+        "b": 2,
+        "ev": {
+          "p": 1,
+          "s": "Yes, at four, like every week."
+        },
+        "why": "Hôm nay vẫn học lúc bốn giờ như mọi tuần.",
+        "wrong": {
+          "A": "Năm giờ là giờ của tuần sau.",
+          "B": "Không ai nhắc sáu giờ."
+        }
+      },
+      {
+        "id": "gt-a1-3-l1-b",
+        "q": "How much does the man pay?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "eight dollars"
+          },
+          {
+            "k": "B",
+            "t": "six dollars"
+          },
+          {
+            "k": "C",
+            "t": "nine dollars"
+          }
+        ],
+        "ans": "B",
+        "b": 2,
+        "ev": {
+          "p": 4,
+          "s": "I'll take the small one, please."
+        },
+        "why": "Ông lấy cái mũ nhỏ giá sáu đô.",
+        "wrong": {
+          "A": "Không ai nhắc tám đô.",
+          "C": "Chín đô là giá mũ to."
+        }
+      },
+      {
+        "id": "gt-a1-3-l1-c",
+        "q": "What colour is Mr Long's new car?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "white"
+          },
+          {
+            "k": "B",
+            "t": "grey"
+          },
+          {
+            "k": "C",
+            "t": "black"
+          }
+        ],
+        "ans": "A",
+        "b": 1.5,
+        "ev": {
+          "p": 6,
+          "s": "Yes, it's white."
+        },
+        "why": "Xe mới màu trắng.",
+        "wrong": {
+          "B": "Xe cũ mới màu xám.",
+          "C": "Không ai nhắc màu đen."
+        }
+      },
+      {
+        "id": "gt-a1-3-l1-d",
+        "q": "Where is the cat?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "under the bed"
+          },
+          {
+            "k": "B",
+            "t": "in the garden"
+          },
+          {
+            "k": "C",
+            "t": "on the sofa"
+          }
+        ],
+        "ans": "B",
+        "b": 1.5,
+        "ev": {
+          "p": 8,
+          "s": "she's in the garden"
+        },
+        "why": "Con mèo ở trong vườn.",
+        "wrong": {
+          "A": "Con mèo không ở dưới giường.",
+          "C": "Con mèo nằm trên ghế trong vườn, không phải ghế sofa."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/gt-a1-3-l1.mp3",
+      "dur": 28.3,
+      "voices": [
+        "af_sky",
+        "bf_emma",
+        "am_adam",
+        "am_michael"
+      ]
     }
-   }
-  ],
-  "audio": {
-   "file": "a/gt-a1-3-l2.mp3",
-   "dur": 24.6,
-   "voices": [
-    "bm_lewis",
-    "af_bella"
-   ]
+  },
+  {
+    "id": "gt-a1-3-l2",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "A1",
+    "band": 2,
+    "mode": "gate",
+    "title": "Ordering a pizza",
+    "instr": "Listen to the phone call and answer the questions.",
+    "script": [
+      {
+        "sp": "Man",
+        "t": "Hello, Mario's Pizza."
+      },
+      {
+        "sp": "Woman",
+        "t": "Hi. Can I have a big pizza with chicken, please?"
+      },
+      {
+        "sp": "Man",
+        "t": "Sorry, we haven't got any chicken today. We've got fish or cheese."
+      },
+      {
+        "sp": "Woman",
+        "t": "OK, cheese, please. And two cans of cola."
+      },
+      {
+        "sp": "Man",
+        "t": "That's fourteen dollars. What's your address?"
+      },
+      {
+        "sp": "Woman",
+        "t": "Twenty-two River Road. It's the blue house opposite the park. The school is at the end of the road."
+      },
+      {
+        "sp": "Man",
+        "t": "Thank you. We're very busy tonight, so it's ready in forty-five minutes, not thirty."
+      }
+    ],
+    "voices": {
+      "Man": "bm_lewis",
+      "Woman": "af_bella"
+    },
+    "items": [
+      {
+        "id": "gt-a1-3-l2-a",
+        "q": "What pizza does the woman order?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "cheese"
+          },
+          {
+            "k": "B",
+            "t": "chicken"
+          },
+          {
+            "k": "C",
+            "t": "fish"
+          }
+        ],
+        "ans": "A",
+        "b": 2,
+        "ev": {
+          "p": 3,
+          "s": "OK, cheese, please."
+        },
+        "why": "Bà gọi pizza phô mai.",
+        "wrong": {
+          "B": "Hôm nay hết gà.",
+          "C": "Có cá nhưng bà chọn phô mai."
+        }
+      },
+      {
+        "id": "gt-a1-3-l2-b",
+        "q": "What else does she order?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "water"
+          },
+          {
+            "k": "B",
+            "t": "cola"
+          },
+          {
+            "k": "C",
+            "t": "juice"
+          }
+        ],
+        "ans": "B",
+        "b": 1.5,
+        "ev": {
+          "p": 3,
+          "s": "And two cans of cola."
+        },
+        "why": "Bà gọi hai lon cola.",
+        "wrong": {
+          "A": "Không ai nhắc nước lọc.",
+          "C": "Không ai nhắc nước trái cây."
+        }
+      },
+      {
+        "id": "gt-a1-3-l2-c",
+        "q": "Where does the woman live?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "next to a school"
+          },
+          {
+            "k": "B",
+            "t": "next to a shop"
+          },
+          {
+            "k": "C",
+            "t": "opposite a park"
+          }
+        ],
+        "ans": "C",
+        "b": 2.5,
+        "ev": {
+          "p": 5,
+          "s": "It's the blue house opposite the park."
+        },
+        "why": "Nhà màu xanh đối diện công viên.",
+        "wrong": {
+          "A": "Trường ở cuối đường, không ở cạnh nhà.",
+          "B": "Không ai nhắc cửa hàng."
+        }
+      },
+      {
+        "id": "gt-a1-3-l2-d",
+        "q": "When will the pizza be ready?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "in an hour"
+          },
+          {
+            "k": "B",
+            "t": "in 30 minutes"
+          },
+          {
+            "k": "C",
+            "t": "in 45 minutes"
+          }
+        ],
+        "ans": "C",
+        "b": 2.5,
+        "ev": {
+          "p": 6,
+          "s": "it's ready in forty-five minutes"
+        },
+        "why": "Tối nay đông nên 45 phút mới xong.",
+        "wrong": {
+          "A": "Không ai nhắc một giờ.",
+          "B": "30 phút là thời gian thường ngày."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/gt-a1-3-l2.mp3",
+      "dur": 28.7,
+      "voices": [
+        "bm_lewis",
+        "af_bella"
+      ]
+    }
   }
- }
 ]

@@ -1,832 +1,832 @@
 [
- {
-  "id": "gt-a2-3-r1",
-  "kind": "reading",
-  "exams": [
-   "ielts-ac",
-   "ielts-gt",
-   "vstep"
-  ],
-  "qtype": "pl-r",
-  "level": "A2",
-  "band": 3,
-  "mode": "gate",
-  "title": "Messages and notices",
-  "instr": "Read the messages and notices and answer the questions.",
-  "paras": [
-   "Hi Long, the dentist called. Your appointment isn't on Tuesday now. It's on Wednesday, at the same time. They're closed on Tuesday. Mum",
-   "COMPUTER CLASS: Bring your own laptop if you have one. If not, you can use one of ours, but please book it a day before.",
-   "BAKERY: Birthday cakes need two days. Order by phone or in the shop. We can write a name on the cake for free.",
-   "BEACH CLEAN-UP: Saturday 7 to 9 am. Water and bags are free. Please bring your own gloves.",
-   "Thu, I can't find my keys. I think I left them in your bag at the cinema. Can you check and text me? I'm at home until 6. Kien"
-  ],
-  "items": [
-   {
-    "id": "gt-a2-3-r1-a",
-    "q": "What has changed about the appointment?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "the day and the time"
-     },
-     {
-      "k": "B",
-      "t": "the time"
-     },
-     {
-      "k": "C",
-      "t": "the day"
-     }
+  {
+    "id": "gt-a2-3-r1",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
     ],
-    "ans": "C",
-    "b": 3,
-    "ev": {
-     "p": 0,
-     "s": "It's on Wednesday, at the same time."
-    },
-    "why": "Lịch hẹn chuyển sang thứ Tư, cùng giờ.",
-    "wrong": {
-     "A": "Chỉ ngày đổi, giờ vẫn như cũ.",
-     "B": "Giờ vẫn như cũ (\"same time\")."
-    }
-   },
-   {
-    "id": "gt-a2-3-r1-b",
-    "q": "What should students without a laptop do?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "bring a tablet"
-     },
-     {
-      "k": "B",
-      "t": "come to class early"
-     },
-     {
-      "k": "C",
-      "t": "book a computer the day before"
-     }
+    "qtype": "pl-r",
+    "level": "A2",
+    "band": 3,
+    "mode": "gate",
+    "title": "Messages and notices",
+    "instr": "Read the messages and notices and answer the questions.",
+    "paras": [
+      "Hi Long, the dentist called. Your appointment isn't on Tuesday now. It's on Wednesday, at the same time. They're closed on Tuesday. Mum",
+      "COMPUTER CLASS: Bring your own laptop if you have one. If not, you can use one of ours, but please book it a day before.",
+      "BAKERY: Birthday cakes need two days. Order by phone or in the shop. We can write a name on the cake for free.",
+      "BEACH CLEAN-UP: Saturday 7 to 9 am. Water and bags are free. Please bring your own gloves.",
+      "Thu, I can't find my keys. I think I left them in your bag at the cinema. Can you check and text me? I'm at home until 6. Kien"
     ],
-    "ans": "C",
-    "b": 3.5,
-    "ev": {
-     "p": 1,
-     "s": "please book it a day before"
-    },
-    "why": "Không có máy thì đặt mượn máy trước một ngày.",
-    "wrong": {
-     "A": "Thông báo không nhắc máy tính bảng.",
-     "B": "Thông báo không nói đến sớm."
-    }
-   },
-   {
-    "id": "gt-a2-3-r1-c",
-    "q": "What does the bakery say?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "You must order a birthday cake two days before."
-     },
-     {
-      "k": "B",
-      "t": "You can only order cakes in the shop."
-     },
-     {
-      "k": "C",
-      "t": "Writing a name on a cake costs extra."
-     }
-    ],
-    "ans": "A",
-    "b": 3,
-    "ev": {
-     "p": 2,
-     "s": "Birthday cakes need two days."
-    },
-    "why": "Bánh sinh nhật cần đặt trước hai ngày.",
-    "wrong": {
-     "B": "Có thể đặt qua điện thoại.",
-     "C": "Viết tên miễn phí."
-    }
-   },
-   {
-    "id": "gt-a2-3-r1-d",
-    "q": "What must people bring to the beach clean-up?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "water"
-     },
-     {
-      "k": "B",
-      "t": "gloves"
-     },
-     {
-      "k": "C",
-      "t": "bags"
-     }
-    ],
-    "ans": "B",
-    "b": 3.5,
-    "ev": {
-     "p": 3,
-     "s": "Please bring your own gloves."
-    },
-    "why": "Phải tự mang găng tay.",
-    "wrong": {
-     "A": "Nước được phát miễn phí.",
-     "C": "Túi được phát miễn phí."
-    }
-   },
-   {
-    "id": "gt-a2-3-r1-e",
-    "q": "What does Kien want Thu to do?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "go back to the cinema"
-     },
-     {
-      "k": "B",
-      "t": "look for his keys in her bag"
-     },
-     {
-      "k": "C",
-      "t": "bring his keys to his house"
-     }
-    ],
-    "ans": "B",
-    "b": 3,
-    "ev": {
-     "p": 4,
-     "s": "Can you check and text me?"
-    },
-    "why": "Kiên nhờ Thu xem trong túi có chìa khoá không.",
-    "wrong": {
-     "A": "Kiên nghĩ chìa khoá ở trong túi của Thu, không ở rạp.",
-     "C": "Kiên chỉ nhờ kiểm tra rồi nhắn tin."
-    }
-   }
-  ]
- },
- {
-  "id": "gt-a2-3-r2",
-  "kind": "reading",
-  "exams": [
-   "ielts-ac",
-   "ielts-gt",
-   "vstep"
-  ],
-  "qtype": "pl-r",
-  "level": "A2",
-  "band": 3.5,
-  "mode": "gate",
-  "title": "Life on the river",
-  "instr": "Read the text and answer the questions.",
-  "paras": [
-   "My grandfather, Mr Sau, has lived on a boat on the Mekong River for fifty years. People often think he is a fisherman, but he isn't. He sells fruit to people in other boats at the floating market. He starts work at four in the morning, because the market finishes before nine.",
-   "Last year his children asked him to move into a house in the town. He stayed there for two weeks, but he didn't sleep well because of the motorbikes. \"Everyone thinks I missed the river,\" he laughs, \"but I just missed sleeping!\" Now he is back on his boat, and my uncle visits him every Sunday."
-  ],
-  "items": [
-   {
-    "id": "gt-a2-3-r2-a",
-    "q": "What is Mr Sau's job?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "selling fruit"
-     },
-     {
-      "k": "B",
-      "t": "catching fish"
-     },
-     {
-      "k": "C",
-      "t": "driving a boat for tourists"
-     }
-    ],
-    "ans": "A",
-    "b": 3,
-    "ev": {
-     "p": 0,
-     "s": "He sells fruit to people in other boats"
-    },
-    "why": "Ông bán trái cây ở chợ nổi.",
-    "wrong": {
-     "B": "Nhiều người nghĩ ông là ngư dân nhưng không phải.",
-     "C": "Bài không nói ông chở khách du lịch."
-    }
-   },
-   {
-    "id": "gt-a2-3-r2-b",
-    "q": "Why does he start work so early?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "He likes to finish before his family wakes up."
-     },
-     {
-      "k": "B",
-      "t": "The market ends early."
-     },
-     {
-      "k": "C",
-      "t": "It is cooler in the morning."
-     }
-    ],
-    "ans": "B",
-    "b": 3.5,
-    "ev": {
-     "p": 0,
-     "s": "because the market finishes before nine"
-    },
-    "why": "Chợ kết thúc trước chín giờ.",
-    "wrong": {
-     "A": "Bài không nói vậy.",
-     "C": "Bài không nhắc trời mát."
-    }
-   },
-   {
-    "id": "gt-a2-3-r2-c",
-    "q": "Why didn't Mr Sau like the house?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "The house was too small."
-     },
-     {
-      "k": "B",
-      "t": "The town was too noisy."
-     },
-     {
-      "k": "C",
-      "t": "He missed the sound of the river."
-     }
-    ],
-    "ans": "B",
-    "b": 3.5,
-    "ev": {
-     "p": 1,
-     "s": "he didn't sleep well because of the motorbikes"
-    },
-    "why": "Xe máy ồn khiến ông ngủ không được.",
-    "wrong": {
-     "A": "Bài không nói nhà nhỏ.",
-     "C": "Mọi người nghĩ vậy, nhưng ông nói chỉ nhớ giấc ngủ."
-    }
-   },
-   {
-    "id": "gt-a2-3-r2-d",
-    "q": "How long did he live in the house?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "a month"
-     },
-     {
-      "k": "B",
-      "t": "a year"
-     },
-     {
-      "k": "C",
-      "t": "two weeks"
-     }
-    ],
-    "ans": "C",
-    "b": 3,
-    "ev": {
-     "p": 1,
-     "s": "He stayed there for two weeks"
-    },
-    "why": "Ông ở nhà hai tuần.",
-    "wrong": {
-     "A": "Không ai nhắc một tháng.",
-     "B": "Năm ngoái là lúc các con đề nghị."
-    }
-   }
-  ]
- },
- {
-  "id": "gt-a2-3-r3",
-  "kind": "reading",
-  "exams": [
-   "ielts-ac",
-   "ielts-gt",
-   "vstep"
-  ],
-  "qtype": "pl-r",
-  "level": "A2",
-  "band": 3.5,
-  "mode": "gate",
-  "title": "Street food in Hanoi",
-  "instr": "Choose the right word for each gap.",
-  "paras": [
-   "Hanoi is famous (1) ___ its street food. Many visitors (2) ___ that the best food is in restaurants, but most people in the city eat on small plastic chairs by the road.",
-   "My favourite dish is bun cha. I usually eat it at a small place near my office. The food there is very good, (3) ___ it is always busy at lunchtime. It (4) ___ about two dollars. If you visit Hanoi, you (5) ___ try it!"
-  ],
-  "items": [
-   {
-    "id": "gt-a2-3-r3-a",
-    "q": "Gap 1",
-    "opts": [
-     {
-      "k": "A",
-      "t": "of"
-     },
-     {
-      "k": "B",
-      "t": "with"
-     },
-     {
-      "k": "C",
-      "t": "for"
-     }
-    ],
-    "ans": "C",
-    "b": 3,
-    "ev": {
-     "p": 0,
-     "s": "Hanoi is famous (1) ___ its street food."
-    },
-    "why": "\"famous for\" = nổi tiếng vì.",
-    "wrong": {
-     "A": "\"famous of\" không đúng.",
-     "B": "\"famous with\" dùng cho người biết đến (famous with tourists), không cho lý do."
-    }
-   },
-   {
-    "id": "gt-a2-3-r3-b",
-    "q": "Gap 2",
-    "opts": [
-     {
-      "k": "A",
-      "t": "think"
-     },
-     {
-      "k": "B",
-      "t": "know"
-     },
-     {
-      "k": "C",
-      "t": "say to"
-     }
-    ],
-    "ans": "A",
-    "b": 3.5,
-    "ev": {
-     "p": 0,
-     "s": "Many visitors (2) ___ that the best food is in restaurants"
-    },
-    "why": "\"Many visitors think…\" = nhiều khách nghĩ (mà thật ra không đúng).",
-    "wrong": {
-     "B": "\"know\" là biết chắc; câu sau cho thấy điều đó sai.",
-     "C": "\"say to\" cần người nghe (say to me)."
-    }
-   },
-   {
-    "id": "gt-a2-3-r3-c",
-    "q": "Gap 3",
-    "opts": [
-     {
-      "k": "A",
-      "t": "so"
-     },
-     {
-      "k": "B",
-      "t": "because"
-     },
-     {
-      "k": "C",
-      "t": "or"
-     }
-    ],
-    "ans": "A",
-    "b": 3.5,
-    "ev": {
-     "p": 1,
-     "s": "The food there is very good, (3) ___ it is always busy at lunchtime."
-    },
-    "why": "Đồ ăn ngon NÊN luôn đông: \"so\" chỉ kết quả.",
-    "wrong": {
-     "B": "\"because\" đảo ngược quan hệ: đông không phải lý do đồ ăn ngon.",
-     "C": "\"or\" chỉ sự lựa chọn, không nối nguyên nhân với kết quả."
-    }
-   },
-   {
-    "id": "gt-a2-3-r3-d",
-    "q": "Gap 4",
-    "opts": [
-     {
-      "k": "A",
-      "t": "spends"
-     },
-     {
-      "k": "B",
-      "t": "pays"
-     },
-     {
-      "k": "C",
-      "t": "costs"
-     }
-    ],
-    "ans": "C",
-    "b": 3.5,
-    "ev": {
-     "p": 1,
-     "s": "It (4) ___ about two dollars."
-    },
-    "why": "\"It costs + giá\" = có giá.",
-    "wrong": {
-     "A": "\"spend\" có chủ ngữ là người tiêu tiền.",
-     "B": "\"pay\" có chủ ngữ là người trả."
-    }
-   },
-   {
-    "id": "gt-a2-3-r3-e",
-    "q": "Gap 5",
-    "opts": [
-     {
-      "k": "A",
-      "t": "have"
-     },
-     {
-      "k": "B",
-      "t": "should"
-     },
-     {
-      "k": "C",
-      "t": "need"
-     }
-    ],
-    "ans": "B",
-    "b": 3,
-    "ev": {
-     "p": 1,
-     "s": "you (5) ___ try it!"
-    },
-    "why": "\"you should try it\" = bạn nên thử.",
-    "wrong": {
-     "A": "\"have\" cần \"to\" (have to try).",
-     "C": "\"need\" cần \"to\" (need to try)."
-    }
-   }
-  ]
- },
- {
-  "id": "gt-a2-3-l1",
-  "kind": "listening",
-  "exams": [
-   "ielts-ac",
-   "ielts-gt",
-   "vstep"
-  ],
-  "qtype": "pl-l",
-  "level": "A2",
-  "band": 3,
-  "mode": "gate",
-  "title": "Four short conversations",
-  "instr": "Listen and answer the questions. You will hear each conversation once.",
-  "script": [
-   {
-    "sp": "Woman",
-    "t": "Did you go to the gallery on Saturday?"
-   },
-   {
-    "sp": "Man",
-    "t": "We wanted to, but it was full. So we went to the new bookshop instead. Next week we'll try the gallery again."
-   },
-   {
-    "sp": "Girl",
-    "t": "How was your exam, Phong?"
-   },
-   {
-    "sp": "Boy",
-    "t": "The listening was easy, and the writing was OK. But the reading was really hard. I didn't finish it."
-   },
-   {
-    "sp": "Man",
-    "t": "Excuse me, does this bus go to the hospital?"
-   },
-   {
-    "sp": "Woman",
-    "t": "Not this one. Take the number 6. It stops in front of the main door. The 16 goes to the stadium."
-   },
-   {
-    "sp": "Boy",
-    "t": "Shall we meet at the cafe at three?"
-   },
-   {
-    "sp": "Girl",
-    "t": "I've got a lesson until three. Let's say half past three, at the bookshop next to the cafe."
-   }
-  ],
-  "voices": {
-   "Woman": "bf_emma",
-   "Man": "am_adam",
-   "Girl": "af_sky",
-   "Boy": "am_michael"
+    "items": [
+      {
+        "id": "gt-a2-3-r1-a",
+        "q": "What has changed about the appointment?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "the day and the time"
+          },
+          {
+            "k": "B",
+            "t": "the time"
+          },
+          {
+            "k": "C",
+            "t": "the day"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "It's on Wednesday, at the same time."
+        },
+        "why": "Lịch hẹn chuyển sang thứ Tư, cùng giờ.",
+        "wrong": {
+          "A": "Chỉ ngày đổi, giờ vẫn như cũ.",
+          "B": "Giờ vẫn như cũ (\"same time\")."
+        }
+      },
+      {
+        "id": "gt-a2-3-r1-b",
+        "q": "What should students without a laptop do?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "bring a tablet"
+          },
+          {
+            "k": "B",
+            "t": "come to class early"
+          },
+          {
+            "k": "C",
+            "t": "book a computer the day before"
+          }
+        ],
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "please book it a day before"
+        },
+        "why": "Không có máy thì đặt mượn máy trước một ngày.",
+        "wrong": {
+          "A": "Thông báo không nhắc máy tính bảng.",
+          "B": "Thông báo không nói đến sớm."
+        }
+      },
+      {
+        "id": "gt-a2-3-r1-c",
+        "q": "What does the bakery say?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "You must order a birthday cake two days before."
+          },
+          {
+            "k": "B",
+            "t": "You can only order cakes in the shop."
+          },
+          {
+            "k": "C",
+            "t": "Writing a name on a cake costs extra."
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "Birthday cakes need two days."
+        },
+        "why": "Bánh sinh nhật cần đặt trước hai ngày.",
+        "wrong": {
+          "B": "Có thể đặt qua điện thoại.",
+          "C": "Viết tên miễn phí."
+        }
+      },
+      {
+        "id": "gt-a2-3-r1-d",
+        "q": "What must people bring to the beach clean-up?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "water"
+          },
+          {
+            "k": "B",
+            "t": "gloves"
+          },
+          {
+            "k": "C",
+            "t": "bags"
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 3,
+          "s": "Please bring your own gloves."
+        },
+        "why": "Phải tự mang găng tay.",
+        "wrong": {
+          "A": "Nước được phát miễn phí.",
+          "C": "Túi được phát miễn phí."
+        }
+      },
+      {
+        "id": "gt-a2-3-r1-e",
+        "q": "What does Kien want Thu to do?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "go back to the cinema"
+          },
+          {
+            "k": "B",
+            "t": "look for his keys in her bag"
+          },
+          {
+            "k": "C",
+            "t": "bring his keys to his house"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 4,
+          "s": "Can you check and text me?"
+        },
+        "why": "Kiên nhờ Thu xem trong túi có chìa khoá không.",
+        "wrong": {
+          "A": "Kiên nghĩ chìa khoá ở trong túi của Thu, không ở rạp.",
+          "C": "Kiên chỉ nhờ kiểm tra rồi nhắn tin."
+        }
+      }
+    ]
   },
-  "items": [
-   {
-    "id": "gt-a2-3-l1-a",
-    "q": "Where did the man go on Saturday?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "to a gallery"
-     },
-     {
-      "k": "B",
-      "t": "to a bookshop"
-     },
-     {
-      "k": "C",
-      "t": "to a stadium"
-     }
+  {
+    "id": "gt-a2-3-r2",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
     ],
-    "ans": "B",
-    "b": 3,
-    "ev": {
-     "p": 1,
-     "s": "So we went to the new bookshop instead."
-    },
-    "why": "Phòng tranh kín chỗ nên họ đi hiệu sách mới.",
-    "wrong": {
-     "A": "Phòng tranh kín chỗ; tuần sau mới thử lại.",
-     "C": "Sân vận động là chuyện xe buýt số 6."
-    }
-   },
-   {
-    "id": "gt-a2-3-l1-b",
-    "q": "Which part of the exam was difficult for Phong?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "reading"
-     },
-     {
-      "k": "B",
-      "t": "writing"
-     },
-     {
-      "k": "C",
-      "t": "listening"
-     }
+    "qtype": "pl-r",
+    "level": "A2",
+    "band": 3.5,
+    "mode": "gate",
+    "title": "Life on the river",
+    "instr": "Read the text and answer the questions.",
+    "paras": [
+      "My grandfather, Mr Sau, has lived on a boat on the Mekong River for fifty years. People often think he is a fisherman, but he isn't. He sells fruit to people in other boats at the floating market. He starts work at four in the morning, because the market finishes before nine.",
+      "Last year his children asked him to move into a house in the town. He stayed there for two weeks, but he didn't sleep well because of the motorbikes. \"Everyone thinks I missed the river,\" he laughs, \"but I just missed sleeping!\" Now he is back on his boat, and my uncle visits him every Sunday."
     ],
-    "ans": "A",
-    "b": 3,
-    "ev": {
-     "p": 3,
-     "s": "But the reading was really hard."
-    },
-    "why": "Phần đọc rất khó, Phong làm không kịp.",
-    "wrong": {
-     "B": "Phần viết tạm ổn.",
-     "C": "Phần nghe dễ."
-    }
-   },
-   {
-    "id": "gt-a2-3-l1-c",
-    "q": "Which bus goes to the hospital?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "this bus"
-     },
-     {
-      "k": "B",
-      "t": "number 16"
-     },
-     {
-      "k": "C",
-      "t": "number 6"
-     }
-    ],
-    "ans": "C",
-    "b": 3.5,
-    "ev": {
-     "p": 5,
-     "s": "Take the number 6."
-    },
-    "why": "Xe số 6 dừng trước cửa chính bệnh viện.",
-    "wrong": {
-     "A": "Xe này không đi bệnh viện.",
-     "B": "Xe số 16 đi sân vận động."
-    }
-   },
-   {
-    "id": "gt-a2-3-l1-d",
-    "q": "Where will they meet?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "at the bookshop"
-     },
-     {
-      "k": "B",
-      "t": "at the lesson"
-     },
-     {
-      "k": "C",
-      "t": "at the cafe"
-     }
-    ],
-    "ans": "A",
-    "b": 3.5,
-    "ev": {
-     "p": 7,
-     "s": "at the bookshop next to the cafe"
-    },
-    "why": "Hẹn ở hiệu sách cạnh quán cà phê.",
-    "wrong": {
-     "B": "Cô bé có lớp học đến ba giờ, không hẹn ở đó.",
-     "C": "Quán cà phê là đề nghị đầu tiên."
-    }
-   }
-  ],
-  "audio": {
-   "file": "a/gt-a2-3-l1.mp3",
-   "dur": 36,
-   "voices": [
-    "bf_emma",
-    "am_adam",
-    "af_sky",
-    "am_michael"
-   ]
-  }
- },
- {
-  "id": "gt-a2-3-l2",
-  "kind": "listening",
-  "exams": [
-   "ielts-ac",
-   "ielts-gt",
-   "vstep"
-  ],
-  "qtype": "pl-l",
-  "level": "A2",
-  "band": 3.5,
-  "mode": "gate",
-  "title": "Booking a homestay",
-  "instr": "Listen to the phone call and answer the questions.",
-  "script": [
-   {
-    "sp": "Woman",
-    "t": "Green Hill Homestay, good morning."
-   },
-   {
-    "sp": "Man",
-    "t": "Hello. I'd like a room for three people for two nights, from Friday."
-   },
-   {
-    "sp": "Woman",
-    "t": "We've got a room with a garden view for forty dollars a night, or a small room for thirty."
-   },
-   {
-    "sp": "Man",
-    "t": "The small one is fine. Is breakfast included?"
-   },
-   {
-    "sp": "Woman",
-    "t": "Yes, it is. And we can cook dinner too, but you need to tell us by four o'clock."
-   },
-   {
-    "sp": "Man",
-    "t": "Great. We're coming by motorbike. Can we leave it there?"
-   },
-   {
-    "sp": "Woman",
-    "t": "Yes, in front of the house. Please don't leave it in the garden."
-   }
-  ],
-  "voices": {
-   "Woman": "af_sarah",
-   "Man": "bm_george"
+    "items": [
+      {
+        "id": "gt-a2-3-r2-a",
+        "q": "What is Mr Sau's job?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "selling fruit"
+          },
+          {
+            "k": "B",
+            "t": "catching fish"
+          },
+          {
+            "k": "C",
+            "t": "driving a boat for tourists"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "He sells fruit to people in other boats"
+        },
+        "why": "Ông bán trái cây ở chợ nổi.",
+        "wrong": {
+          "B": "Nhiều người nghĩ ông là ngư dân nhưng không phải.",
+          "C": "Bài không nói ông chở khách du lịch."
+        }
+      },
+      {
+        "id": "gt-a2-3-r2-b",
+        "q": "Why does he start work so early?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "He likes to finish before his family wakes up."
+          },
+          {
+            "k": "B",
+            "t": "The market ends early."
+          },
+          {
+            "k": "C",
+            "t": "It is cooler in the morning."
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "because the market finishes before nine"
+        },
+        "why": "Chợ kết thúc trước chín giờ.",
+        "wrong": {
+          "A": "Bài không nói vậy.",
+          "C": "Bài không nhắc trời mát."
+        }
+      },
+      {
+        "id": "gt-a2-3-r2-c",
+        "q": "Why didn't Mr Sau like the house?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "The house was too small."
+          },
+          {
+            "k": "B",
+            "t": "The town was too noisy."
+          },
+          {
+            "k": "C",
+            "t": "He missed the sound of the river."
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "he didn't sleep well because of the motorbikes"
+        },
+        "why": "Xe máy ồn khiến ông ngủ không được.",
+        "wrong": {
+          "A": "Bài không nói nhà nhỏ.",
+          "C": "Mọi người nghĩ vậy, nhưng ông nói chỉ nhớ giấc ngủ."
+        }
+      },
+      {
+        "id": "gt-a2-3-r2-d",
+        "q": "How long did he live in the house?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "a month"
+          },
+          {
+            "k": "B",
+            "t": "a year"
+          },
+          {
+            "k": "C",
+            "t": "two weeks"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "He stayed there for two weeks"
+        },
+        "why": "Ông ở nhà hai tuần.",
+        "wrong": {
+          "A": "Không ai nhắc một tháng.",
+          "B": "Năm ngoái là lúc các con đề nghị."
+        }
+      }
+    ]
   },
-  "items": [
-   {
-    "id": "gt-a2-3-l2-a",
-    "q": "How many nights will the man stay?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "four"
-     },
-     {
-      "k": "B",
-      "t": "two"
-     },
-     {
-      "k": "C",
-      "t": "three"
-     }
+  {
+    "id": "gt-a2-3-r3",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
     ],
-    "ans": "B",
-    "b": 3,
-    "ev": {
-     "p": 1,
-     "s": "for two nights, from Friday"
-    },
-    "why": "Ông đặt hai đêm từ thứ Sáu.",
-    "wrong": {
-     "A": "Không ai nhắc bốn đêm.",
-     "C": "Ba là số người."
-    }
-   },
-   {
-    "id": "gt-a2-3-l2-b",
-    "q": "How much will the room cost each night?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "30 dollars"
-     },
-     {
-      "k": "B",
-      "t": "40 dollars"
-     },
-     {
-      "k": "C",
-      "t": "70 dollars"
-     }
+    "qtype": "pl-r",
+    "level": "A2",
+    "band": 3.5,
+    "mode": "gate",
+    "title": "Street food in Hanoi",
+    "instr": "Choose the right word for each gap.",
+    "paras": [
+      "Hanoi is famous (1) ___ its street food. Many visitors (2) ___ that the best food is in restaurants, but most people in the city eat on small plastic chairs by the road.",
+      "My favourite dish is bun cha. I usually eat it at a small place near my office. The food there is very good, (3) ___ it is always busy at lunchtime. It (4) ___ about two dollars. If you visit Hanoi, you (5) ___ try it!"
     ],
-    "ans": "A",
-    "b": 3.5,
-    "ev": {
-     "p": 3,
-     "s": "The small one is fine."
-    },
-    "why": "Ông chọn phòng nhỏ giá ba mươi đô.",
-    "wrong": {
-     "B": "Bốn mươi đô là phòng nhìn ra vườn.",
-     "C": "Ông chỉ đặt một phòng."
-    }
-   },
-   {
-    "id": "gt-a2-3-l2-c",
-    "q": "What must guests do if they want dinner?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "tell the homestay before 6 pm"
-     },
-     {
-      "k": "B",
-      "t": "tell the homestay before 4 pm"
-     },
-     {
-      "k": "C",
-      "t": "pay for it before 4 pm"
-     }
+    "items": [
+      {
+        "id": "gt-a2-3-r3-a",
+        "q": "Gap 1",
+        "opts": [
+          {
+            "k": "A",
+            "t": "of"
+          },
+          {
+            "k": "B",
+            "t": "with"
+          },
+          {
+            "k": "C",
+            "t": "for"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "Hanoi is famous (1) ___ its street food."
+        },
+        "why": "\"famous for\" = nổi tiếng vì.",
+        "wrong": {
+          "A": "\"famous of\" không đúng.",
+          "B": "\"famous with\" dùng cho người biết đến (famous with tourists), không cho lý do."
+        }
+      },
+      {
+        "id": "gt-a2-3-r3-b",
+        "q": "Gap 2",
+        "opts": [
+          {
+            "k": "A",
+            "t": "think"
+          },
+          {
+            "k": "B",
+            "t": "know"
+          },
+          {
+            "k": "C",
+            "t": "say to"
+          }
+        ],
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "Many visitors (2) ___ that the best food is in restaurants"
+        },
+        "why": "\"Many visitors think…\" = nhiều khách nghĩ (mà thật ra không đúng).",
+        "wrong": {
+          "B": "\"know\" là biết chắc; câu sau cho thấy điều đó sai.",
+          "C": "\"say to\" cần người nghe (say to me)."
+        }
+      },
+      {
+        "id": "gt-a2-3-r3-c",
+        "q": "Gap 3",
+        "opts": [
+          {
+            "k": "A",
+            "t": "so"
+          },
+          {
+            "k": "B",
+            "t": "because"
+          },
+          {
+            "k": "C",
+            "t": "or"
+          }
+        ],
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "The food there is very good, (3) ___ it is always busy at lunchtime."
+        },
+        "why": "Đồ ăn ngon NÊN luôn đông: \"so\" chỉ kết quả.",
+        "wrong": {
+          "B": "\"because\" đảo ngược quan hệ: đông không phải lý do đồ ăn ngon.",
+          "C": "\"or\" chỉ sự lựa chọn, không nối nguyên nhân với kết quả."
+        }
+      },
+      {
+        "id": "gt-a2-3-r3-d",
+        "q": "Gap 4",
+        "opts": [
+          {
+            "k": "A",
+            "t": "spends"
+          },
+          {
+            "k": "B",
+            "t": "pays"
+          },
+          {
+            "k": "C",
+            "t": "costs"
+          }
+        ],
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "It (4) ___ about two dollars."
+        },
+        "why": "\"It costs + giá\" = có giá.",
+        "wrong": {
+          "A": "\"spend\" có chủ ngữ là người tiêu tiền.",
+          "B": "\"pay\" có chủ ngữ là người trả."
+        }
+      },
+      {
+        "id": "gt-a2-3-r3-e",
+        "q": "Gap 5",
+        "opts": [
+          {
+            "k": "A",
+            "t": "have"
+          },
+          {
+            "k": "B",
+            "t": "should"
+          },
+          {
+            "k": "C",
+            "t": "need"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "you (5) ___ try it!"
+        },
+        "why": "\"you should try it\" = bạn nên thử.",
+        "wrong": {
+          "A": "\"have\" cần \"to\" (have to try).",
+          "C": "\"need\" cần \"to\" (need to try)."
+        }
+      }
+    ]
+  },
+  {
+    "id": "gt-a2-3-l1",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
     ],
-    "ans": "B",
-    "b": 3.5,
-    "ev": {
-     "p": 4,
-     "s": "you need to tell us by four o'clock"
-    },
-    "why": "Phải báo trước bốn giờ chiều.",
-    "wrong": {
-     "A": "Hạn là bốn giờ, không phải sáu giờ.",
-     "C": "Chỉ cần báo trước, không nói trả tiền trước."
-    }
-   },
-   {
-    "id": "gt-a2-3-l2-d",
-    "q": "Where can the man leave his motorbike?",
-    "opts": [
-     {
-      "k": "A",
-      "t": "behind the house"
-     },
-     {
-      "k": "B",
-      "t": "in the garden"
-     },
-     {
-      "k": "C",
-      "t": "in front of the house"
-     }
+    "qtype": "pl-l",
+    "level": "A2",
+    "band": 3,
+    "mode": "gate",
+    "title": "Four short conversations",
+    "instr": "Listen and answer the questions. You will hear each conversation once.",
+    "script": [
+      {
+        "sp": "Woman",
+        "t": "Did you go to the gallery on Saturday?"
+      },
+      {
+        "sp": "Man",
+        "t": "We wanted to, but it was full. So we went to the new bookshop instead. Next week we'll try the gallery again."
+      },
+      {
+        "sp": "Girl",
+        "t": "How was your exam, Phong?"
+      },
+      {
+        "sp": "Boy",
+        "t": "The listening was easy, and the writing was OK. But the reading was really hard. I didn't finish it."
+      },
+      {
+        "sp": "Man",
+        "t": "Excuse me, does this bus go to the hospital?"
+      },
+      {
+        "sp": "Woman",
+        "t": "Not this one. Take the number 6. It stops in front of the main door. The 16 goes to the stadium."
+      },
+      {
+        "sp": "Boy",
+        "t": "Shall we meet at the cafe at three?"
+      },
+      {
+        "sp": "Girl",
+        "t": "I've got a lesson until three. Let's say half past three, at the bookshop next to the cafe."
+      }
     ],
-    "ans": "C",
-    "b": 3,
-    "ev": {
-     "p": 6,
-     "s": "Yes, in front of the house."
+    "voices": {
+      "Woman": "bf_emma",
+      "Man": "am_adam",
+      "Girl": "af_sky",
+      "Boy": "am_michael"
     },
-    "why": "Để xe trước nhà.",
-    "wrong": {
-     "A": "Không ai nói để sau nhà.",
-     "B": "Chủ nhà dặn đừng để trong vườn."
+    "items": [
+      {
+        "id": "gt-a2-3-l1-a",
+        "q": "Where did the man go on Saturday?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to a gallery"
+          },
+          {
+            "k": "B",
+            "t": "to a bookshop"
+          },
+          {
+            "k": "C",
+            "t": "to a stadium"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "So we went to the new bookshop instead."
+        },
+        "why": "Phòng tranh kín chỗ nên họ đi hiệu sách mới.",
+        "wrong": {
+          "A": "Phòng tranh kín chỗ; tuần sau mới thử lại.",
+          "C": "Sân vận động là chuyện xe buýt số 6."
+        }
+      },
+      {
+        "id": "gt-a2-3-l1-b",
+        "q": "Which part of the exam was difficult for Phong?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "reading"
+          },
+          {
+            "k": "B",
+            "t": "writing"
+          },
+          {
+            "k": "C",
+            "t": "listening"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 3,
+          "s": "But the reading was really hard."
+        },
+        "why": "Phần đọc rất khó, Phong làm không kịp.",
+        "wrong": {
+          "B": "Phần viết tạm ổn.",
+          "C": "Phần nghe dễ."
+        }
+      },
+      {
+        "id": "gt-a2-3-l1-c",
+        "q": "Which bus goes to the hospital?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "this bus"
+          },
+          {
+            "k": "B",
+            "t": "number 16"
+          },
+          {
+            "k": "C",
+            "t": "number 6"
+          }
+        ],
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 5,
+          "s": "Take the number 6."
+        },
+        "why": "Xe số 6 dừng trước cửa chính bệnh viện.",
+        "wrong": {
+          "A": "Xe này không đi bệnh viện.",
+          "B": "Xe số 16 đi sân vận động."
+        }
+      },
+      {
+        "id": "gt-a2-3-l1-d",
+        "q": "Where will they meet?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at the bookshop"
+          },
+          {
+            "k": "B",
+            "t": "at the lesson"
+          },
+          {
+            "k": "C",
+            "t": "at the cafe"
+          }
+        ],
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 7,
+          "s": "at the bookshop next to the cafe"
+        },
+        "why": "Hẹn ở hiệu sách cạnh quán cà phê.",
+        "wrong": {
+          "B": "Cô bé có lớp học đến ba giờ, không hẹn ở đó.",
+          "C": "Quán cà phê là đề nghị đầu tiên."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/gt-a2-3-l1.mp3",
+      "dur": 36,
+      "voices": [
+        "bf_emma",
+        "am_adam",
+        "af_sky",
+        "am_michael"
+      ]
     }
-   }
-  ],
-  "audio": {
-   "file": "a/gt-a2-3-l2.mp3",
-   "dur": 29.8,
-   "voices": [
-    "af_sarah",
-    "bm_george"
-   ]
+  },
+  {
+    "id": "gt-a2-3-l2",
+    "kind": "listening",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "pl-l",
+    "level": "A2",
+    "band": 3.5,
+    "mode": "gate",
+    "title": "Booking a homestay",
+    "instr": "Listen to the phone call and answer the questions.",
+    "script": [
+      {
+        "sp": "Woman",
+        "t": "Green Hill Homestay, good morning."
+      },
+      {
+        "sp": "Man",
+        "t": "Hello. I'd like a room for three people for two nights, from Friday."
+      },
+      {
+        "sp": "Woman",
+        "t": "We've got a room with a garden view for forty dollars a night, or a small room for thirty."
+      },
+      {
+        "sp": "Man",
+        "t": "The small one is fine. Is breakfast included?"
+      },
+      {
+        "sp": "Woman",
+        "t": "Yes, it is. And we can cook dinner too, but you need to tell us by four o'clock."
+      },
+      {
+        "sp": "Man",
+        "t": "Great. We're coming by motorbike. Can we leave it there?"
+      },
+      {
+        "sp": "Woman",
+        "t": "Yes, in front of the house. Please don't leave it in the garden."
+      }
+    ],
+    "voices": {
+      "Woman": "af_sarah",
+      "Man": "bm_george"
+    },
+    "items": [
+      {
+        "id": "gt-a2-3-l2-a",
+        "q": "How many nights will the man stay?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "four"
+          },
+          {
+            "k": "B",
+            "t": "two"
+          },
+          {
+            "k": "C",
+            "t": "three"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "for two nights, from Friday"
+        },
+        "why": "Ông đặt hai đêm từ thứ Sáu.",
+        "wrong": {
+          "A": "Không ai nhắc bốn đêm.",
+          "C": "Ba là số người."
+        }
+      },
+      {
+        "id": "gt-a2-3-l2-b",
+        "q": "How much will the room cost each night?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "30 dollars"
+          },
+          {
+            "k": "B",
+            "t": "40 dollars"
+          },
+          {
+            "k": "C",
+            "t": "70 dollars"
+          }
+        ],
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 3,
+          "s": "The small one is fine."
+        },
+        "why": "Ông chọn phòng nhỏ giá ba mươi đô.",
+        "wrong": {
+          "B": "Bốn mươi đô là phòng nhìn ra vườn.",
+          "C": "Ông chỉ đặt một phòng."
+        }
+      },
+      {
+        "id": "gt-a2-3-l2-c",
+        "q": "What must guests do if they want dinner?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "tell the homestay before 6 pm"
+          },
+          {
+            "k": "B",
+            "t": "tell the homestay before 4 pm"
+          },
+          {
+            "k": "C",
+            "t": "pay for it before 4 pm"
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 4,
+          "s": "you need to tell us by four o'clock"
+        },
+        "why": "Phải báo trước bốn giờ chiều.",
+        "wrong": {
+          "A": "Hạn là bốn giờ, không phải sáu giờ.",
+          "C": "Chỉ cần báo trước, không nói trả tiền trước."
+        }
+      },
+      {
+        "id": "gt-a2-3-l2-d",
+        "q": "Where can the man leave his motorbike?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "behind the house"
+          },
+          {
+            "k": "B",
+            "t": "in the garden"
+          },
+          {
+            "k": "C",
+            "t": "in front of the house"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 6,
+          "s": "Yes, in front of the house."
+        },
+        "why": "Để xe trước nhà.",
+        "wrong": {
+          "A": "Không ai nói để sau nhà.",
+          "B": "Chủ nhà dặn đừng để trong vườn."
+        }
+      }
+    ],
+    "audio": {
+      "file": "a/gt-a2-3-l2.mp3",
+      "dur": 30.8,
+      "voices": [
+        "af_sarah",
+        "bm_george"
+      ]
+    }
   }
- }
 ]
