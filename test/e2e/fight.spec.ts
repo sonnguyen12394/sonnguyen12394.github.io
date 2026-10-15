@@ -123,8 +123,10 @@ test('điều khiển: phím chạy, DASH, lên cấp chọn thẻ bằng chạm
   const st = () => page.evaluate(() => (document.getElementById('whfx') as any)._state());
   const x0 = (await st()).x;
   await page.locator('#whfx').focus();
-  await page.keyboard.down('d'); await page.waitForTimeout(500); await page.keyboard.up('d');
-  expect((await st()).x).toBeGreaterThan(x0 + 30);
+  // Giữ phím tới khi nhân vật đi đủ xa (WebKit chạy khung hình đầu chậm hơn: không đo theo một mốc thời gian cố định).
+  await page.keyboard.down('d');
+  await expect.poll(async () => (await st()).x, { timeout: 5000 }).toBeGreaterThan(x0 + 30);
+  await page.keyboard.up('d');
   await page.locator('#whfx .cbsk.dash').dispatchEvent('pointerdown');
   await expect.poll(async () => (await st()).dashCd).toBeGreaterThan(0);
   await page.evaluate(() => (document.getElementById('whfx') as any)._xp(40));

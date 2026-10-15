@@ -132,13 +132,13 @@ export function makeFight(d: FcDeps) {
     if (add && before < need && cb.ess >= need) host.toast(`🔨 Đủ tinh hoa rèn Vũ khí bậc ${cb.w + 1}! Về sảnh bấm Thợ rèn.`);
   }
 
-  // ---------- Sảnh: khối Chiến Binh (nút chính duy nhất: ⚔️) ----------
+  // ---------- Sảnh: khối Chiến Binh (nút chính duy nhất: ⚔️). Thợ rèn gọn một dòng (lý do đầy đủ ở title + trang Chiến Binh) để sảnh vừa ~một màn. ----------
   function bar(): string {
     const s = peek(), nx = nextFight(s), w = worn(), t = tip();
     const label = nx.boss ? 'Đánh boss' : 'Vào trận';
     const sub = `${esc(nx.vi)} · cần Vũ khí bậc ${nx.need} · bạn bậc ${w}`;
-    const smith = t.ready ? `<button class="btn cbsmith" data-e="cbforge"><span aria-hidden="true">🔨</span><span class="stack" style="gap:1px;text-align:left"><b>Rèn Vũ khí bậc ${s.w + 1} ngay</b><span class="hint">${esc(t.why)}</span></span></button>`
-      : `<button class="btn cbsmith" data-e="cblo" data-g="${t.forge}"><span aria-hidden="true">🔨</span><span class="stack" style="gap:1px;text-align:left"><b>Thợ rèn gợi ý: ${FORGE_VI[t.forge].ico} ${esc(FORGE_VI[t.forge].vi)}</b><span class="hint">${esc(t.why)}</span></span></button>`;
+    const smith = t.ready ? `<button class="btn cbsmith" data-e="cbforge" title="${esc(t.why)}"><span aria-hidden="true">🔨</span><span class="cbsl"><b>Rèn Vũ khí bậc ${s.w + 1} ngay</b><span class="hint">${esc(t.why)}</span></span></button>`
+      : `<button class="btn cbsmith" data-e="cblo" data-g="${t.forge}" title="${esc(t.why)}"><span aria-hidden="true">🔨</span><span class="cbsl"><b>Thợ rèn gợi ý: ${FORGE_VI[t.forge].ico} ${esc(FORGE_VI[t.forge].vi)}</b><span class="hint">${esc(t.why)}</span></span></button>`;
     return `<div class="cbbar stack"><button class="btn primary big cbgo" data-e="cbgo" data-id="${nx.id}">⚔️ ${label}: ${esc(nx.vi)}<small>${sub}</small></button>
       <div class="cbrow">${smith}<button class="btn cblink" data-e="go" data-r="cb" aria-label="Chiến Binh: Vũ khí ${esc(W_VI[w])}, ${s.ess} tinh hoa"><span aria-hidden="true">🗡️</span><small>✨ ${s.ess}</small></button></div></div>`;
   }
