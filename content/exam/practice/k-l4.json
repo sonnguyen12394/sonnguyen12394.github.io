@@ -217,7 +217,21 @@
           "C": "Ông rất thích kỳ nghỉ."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l4-01.mp3",
+      "dur": 75.4,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "bf_emma",
+        "am_michael",
+        "af_sky",
+        "bm_lewis",
+        "af_sarah"
+      ],
+      "slow": "a/k-l4-01.slow.mp3"
+    }
   },
   {
     "id": "k-l4-02",
@@ -440,7 +454,21 @@
           "B": "Họ muốn cắm trại nhưng trời quá lạnh."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l4-02.mp3",
+      "dur": 68.4,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "bf_emma",
+        "am_michael",
+        "af_sky",
+        "bm_lewis",
+        "af_sarah"
+      ],
+      "slow": "a/k-l4-02.slow.mp3"
+    }
   },
   {
     "id": "k-l4-03",
@@ -659,7 +687,21 @@
           "C": "Không ai nói cậu quên đồ."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l4-03.mp3",
+      "dur": 65.8,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "bf_emma",
+        "am_michael",
+        "af_sky",
+        "bm_lewis",
+        "af_sarah"
+      ],
+      "slow": "a/k-l4-03.slow.mp3"
+    }
   },
   {
     "id": "k-l4-04",
@@ -883,7 +925,21 @@
           "C": "Không nói thời tiết."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l4-04.mp3",
+      "dur": 68.5,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "bf_emma",
+        "am_michael",
+        "af_sky",
+        "bm_lewis",
+        "af_sarah"
+      ],
+      "slow": "a/k-l4-04.slow.mp3"
+    }
   },
   {
     "id": "k-l4-05",
@@ -1096,7 +1152,21 @@
           "C": "Đoàn vừa thăm đền xong."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l4-05.mp3",
+      "dur": 66.3,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "bf_emma",
+        "am_michael",
+        "af_sky",
+        "bm_lewis",
+        "af_sarah"
+      ],
+      "slow": "a/k-l4-05.slow.mp3"
+    }
   },
   {
     "id": "k-l4-06",
@@ -1316,6 +1386,20 @@
           "B": "Con trai học đại học ở Canada."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l4-06.mp3",
+      "dur": 66.8,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "bf_emma",
+        "am_michael",
+        "af_sky",
+        "bm_lewis",
+        "af_sarah"
+      ],
+      "slow": "a/k-l4-06.slow.mp3"
+    }
   }
 ]

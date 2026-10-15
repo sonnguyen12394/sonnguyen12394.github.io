@@ -180,7 +180,17 @@
           "D": "Tranh quá đắt."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l5-01.mp3",
+      "dur": 50.2,
+      "voices": [
+        "bm_george",
+        "af_bella",
+        "bm_lewis"
+      ],
+      "slow": "a/k-l5-01.slow.mp3"
+    }
   },
   {
     "id": "k-l5-02",
@@ -361,7 +371,17 @@
           "H": "Thầy Long tự đứng ở cổng."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l5-02.mp3",
+      "dur": 46.6,
+      "voices": [
+        "bm_george",
+        "am_adam",
+        "af_sky"
+      ],
+      "slow": "a/k-l5-02.slow.mp3"
+    }
   },
   {
     "id": "k-l5-03",
@@ -534,7 +554,17 @@
           "F": "Núi là chỗ chị gái Josh đi."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l5-03.mp3",
+      "dur": 47.6,
+      "voices": [
+        "bm_george",
+        "am_michael",
+        "bf_isabella"
+      ],
+      "slow": "a/k-l5-03.slow.mp3"
+    }
   },
   {
     "id": "k-l5-04",
@@ -715,7 +745,17 @@
           "B": "Không ai đang đạp xe."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l5-04.mp3",
+      "dur": 50.7,
+      "voices": [
+        "bm_george",
+        "af_nicole",
+        "am_adam"
+      ],
+      "slow": "a/k-l5-04.slow.mp3"
+    }
   },
   {
     "id": "k-l5-05",
@@ -900,7 +940,17 @@
           "A": "Thứ Hai Kevin tự làm."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l5-05.mp3",
+      "dur": 53.8,
+      "voices": [
+        "bm_george",
+        "bf_emma",
+        "am_michael"
+      ],
+      "slow": "a/k-l5-05.slow.mp3"
+    }
   },
   {
     "id": "k-l5-06",
@@ -1085,6 +1135,15 @@
           "A": "Bánh ngọt là của Anh."
         }
       }
-    ]
+    ],
+    "audio": {
+      "file": "a/k-l5-06.mp3",
+      "dur": 46.5,
+      "voices": [
+        "bm_george",
+        "af_bella"
+      ],
+      "slow": "a/k-l5-06.slow.mp3"
+    }
   }
 ]
