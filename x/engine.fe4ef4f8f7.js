@@ -419,7 +419,8 @@ ${"⭐".repeat(yc(s))} · ${s} gợi ý · ⏱ ${o}:${r}`}var qm=3e3;function Bm
       ${l.music===void 0?"":`<button class="wchip" data-e="wmmusic" aria-pressed="${l.music}" aria-label="Nhạc nền">${l.music?"🔊":"🔇"}</button>`}
       <span class="wchip">🌅 <b>${e.revived}/${e.zones.length}</b> khu</span><span class="wchip">★ <b>${e.stars}/${e.max}</b> sao phố</span></div>
     ${l.cb??""}${at}${f}${h}
-    ${s?ud(t,s):""}</div>`,vt=`<div class="wtools" role="toolbar" aria-label="Điều khiển bản đồ">
+    ${s?ud(t,s):""}
+    <button class="sclink a2tog" data-act="a2lobby"><span class="a2on">🧭 Hiện đủ mục (bản đồ, truyện, Túi chữ)</span><span class="a2off">🎯 Về sảnh A2 gọn</span></button></div>`,vt=`<div class="wtools" role="toolbar" aria-label="Điều khiển bản đồ">
     ${n.list?"":'<button class="btn small" data-e="wmzoom" data-k="1.25" aria-label="Phóng to">＋</button><button class="btn small" data-e="wmzoom" data-k="0.8" aria-label="Thu nhỏ">－</button><button class="btn small" data-e="wmhome" aria-label="Về chỗ bạn đang ở">⌂</button>'}
     <button class="btn small" data-e="wmlist" aria-pressed="${n.list}">${n.list?"🗺️ Bản đồ":"☰ Danh sách"}</button></div>`;if(n.list)return`<section class="wwrap stack" aria-label="Bản đồ Phố Chữ"><div class="wside stack">${kt}${r}</div><div class="wmain stack">${vt}<section class="wlq stack" aria-labelledby="wsh-quests"><h2 id="wsh-quests">📜 Sổ nhiệm vụ</h2>${l.quests()}</section>${bx(t,e,o)}</div></section>`;let At=e.zones.map(J=>{let L=J.rect;return`<div class="wzone${J.fog?" fog":""}${J.here?" here":""}" style="left:${L.x}px;top:${L.y}px;width:${L.w}px;height:${L.h}px;--s1:${J.c1};--s2:${J.c2}">
       <div class="wart" aria-hidden="true">${qg(J.act)}</div>
