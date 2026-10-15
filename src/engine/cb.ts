@@ -1,14 +1,15 @@
-// v133 Chiến Binh Chữ, mốc 1: ô Vũ khí (Từ vựng), tinh hoa chữ, rèn, khoá theo chỉ số thật, Thợ rèn gợi ý, số liệu trận, góp ý nhanh.
+// v133 Chiến Binh Chữ, mốc 1 (v134: trận kiểu Chaos Orbit, thêm nhân vật / thành tích / kỷ lục): ô Vũ khí (Từ vựng), tinh hoa chữ, rèn, khoá theo chỉ số thật, Thợ rèn gợi ý, số liệu trận, góp ý nhanh.
 // Hai cổng tách bạch (docs/MOC1-KE-HOACH.md §1):
 //   • tinh hoa: CHỈ từ câu trả lời đúng ở lò (Vườn từ, Vòng Chữ, Mỏ Chữ, Lò rèn) cho nút từ vựng; không mua được;
 //   • chỉ số thật: Vũ khí bậc N chỉ MẶC được khi Từ vựng Lv ≥ N (bag.ts statsOf). Rèn rồi mà chỉ số chưa đủ = "đã rèn, chưa mặc được".
 // Xu (thô) chỉ là phí rèn, không thay được hai cổng trên. Thuần hàm; không ghi bằng chứng (chỉ đọc kết quả của ingest).
 
 import { FIGHTS, type FightDef } from './fight.ts';
+import { ACH, CHAR_IDS, freshBest, isChar, type Best, type CharId } from './fightmeta.ts';
 
 // ---------- Rèn Vũ khí ----------
 export const W_MAX = 3;   // mốc 1 rèn tới bậc 3
-export const W_VI = ['Que gỗ', 'Ná Chữ Gỗ', 'Ná Chữ Đồng', 'Ná Chữ Bạc', 'Ná Chữ Vàng', 'Ná Chữ Kim cương'] as const;
+export const W_VI = ['Lưỡi gỗ thô', 'Lưỡi Chữ Gỗ', 'Lưỡi Chữ Đồng', 'Lưỡi Chữ Bạc', 'Lưỡi Chữ Vàng', 'Lưỡi Chữ Kim cương'] as const;
 export const W_COST: Array<{ ess: number; coins: number; voc: number }> = [
   { ess: 0, coins: 0, voc: 0 },
   { ess: 8, coins: 20, voc: 1 },
@@ -30,10 +31,23 @@ export interface CbSave {
   tip: { day: number; game: string } | null;   // lò Thợ rèn gợi ý mà người chơi đã bấm hôm nay (+25% tinh hoa)
   log: FightLog[];                   // số liệu trận (≤ LOG_MAX)
   fb: Fb[];                          // góp ý nhanh (≤ FB_MAX)
+  ch: CharId;                        // nhân vật đang chọn (v134, lối chơi ngang sức)
+  ach: string[];                     // thành tích đã mở (chỉ để khoe + mở nhân vật)
+  best: Best;                        // kỷ lục trận (mở nhân vật / thành tích)
+  pos: { x: number; y: number } | null;   // vị trí cụm nút DASH / TUYỆT KỸ người chơi đã kéo
 }
 export const LOG_MAX = 60, FB_MAX = 200;
-export const freshCb = (): CbSave => ({ w: 0, ess: 0, got: 0, day: 0, today: 0, spent: 0, clr: [], tip: null, log: [], fb: [] });
+export const freshCb = (): CbSave => ({ w: 0, ess: 0, got: 0, day: 0, today: 0, spent: 0, clr: [], tip: null, log: [], fb: [], ch: 'orbiter', ach: [], best: freshBest(), pos: null });
 
+// Bản lưu v133 (hoặc dữ liệu đưa thẳng vào bộ nhớ) chưa có trường v134: bù mặc định tại chỗ, giữ nguyên phần đã có.
+export function ensureCb(s: CbSave): CbSave {
+  const o = s as Partial<CbSave>;
+  if (!isChar(o.ch)) s.ch = 'orbiter';
+  if (!Array.isArray(o.ach)) s.ach = [];
+  if (!o.best || typeof o.best !== 'object') s.best = freshBest(); else { const b = freshBest(); for (const k of Object.keys(b) as Array<keyof Best>) if (typeof s.best[k] !== 'number') s.best[k] = 0; }
+  if (o.pos === undefined) s.pos = null;
+  return s;
+}
 const nn = (v: unknown, hi = 1e7): number => (typeof v === 'number' && Number.isFinite(v) ? Math.max(0, Math.min(hi, v)) : 0);
 const half = (v: number): number => Math.round(v * 2) / 2;
 const ob = (v: unknown): Record<string, unknown> => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
@@ -52,6 +66,11 @@ export function sanitizeCb(raw: unknown): CbSave | undefined {
   o.fb = (Array.isArray(x.fb) ? x.fb : []).map(ob).filter(f => (f.at === 'fight' || f.at === 'forge') && typeof f.id === 'string' && ID.test(f.id)).map((f): Fb => ({
     d: Math.round(nn(f.d, 1e6)), at: f.at as Fb['at'], id: f.id as string, s: Math.max(1, Math.min(5, Math.round(nn(f.s, 5)))), t: typeof f.t === 'string' ? f.t.slice(0, 200) : '',
   })).slice(-FB_MAX);
+  if (isChar(x.ch)) o.ch = x.ch;
+  o.ach = [...new Set((Array.isArray(x.ach) ? x.ach : []).filter((s): s is string => typeof s === 'string' && ACH.some(a => a.id === s)))];
+  const bx = ob(x.best), b = o.best;
+  for (const k of Object.keys(b) as Array<keyof Best>) b[k] = Math.round(nn(bx[k], 1e7));
+  const ps = ob(x.pos); if (x.pos && typeof ps.x === 'number' && typeof ps.y === 'number') o.pos = { x: Math.round(nn(ps.x, 1e4)), y: Math.round(nn(ps.y, 1e4)) };
   return o;
 }
 // Hai máy: bậc / tổng lấy lớn hơn; tinh hoa đang có lấy của máy có tổng nhận lớn hơn (không cộng trùng); nhật ký hợp theo (ngày, trận, giây).
@@ -60,7 +79,9 @@ export function mergeCb(a?: CbSave, b?: CbSave): CbSave | undefined {
   const main = a.got >= b.got ? a : b, key = (l: FightLog) => `${l.d}|${l.id}|${l.sec}|${l.r}`, fkey = (f: Fb) => `${f.d}|${f.id}|${f.s}|${f.t}`;
   const log = [...new Map([...a.log, ...b.log].map(l => [key(l), l])).values()].sort((p, q) => p.d - q.d).slice(-LOG_MAX);
   const fb = [...new Map([...a.fb, ...b.fb].map(f => [fkey(f), f])).values()].sort((p, q) => p.d - q.d).slice(-FB_MAX);
-  return { w: Math.max(a.w, b.w), ess: main.ess, got: Math.max(a.got, b.got), day: main.day, today: main.today, spent: Math.max(a.spent, b.spent), clr: [...new Set([...a.clr, ...b.clr])], tip: main.tip, log, fb };
+  const best = freshBest(); for (const k of Object.keys(best) as Array<keyof Best>) best[k] = Math.max(a.best?.[k] ?? 0, b.best?.[k] ?? 0);
+  return { w: Math.max(a.w, b.w), ess: main.ess, got: Math.max(a.got, b.got), day: main.day, today: main.today, spent: Math.max(a.spent, b.spent), clr: [...new Set([...a.clr, ...b.clr])], tip: main.tip, log, fb,
+    ch: main.ch ?? 'orbiter', ach: [...new Set([...(a.ach ?? []), ...(b.ach ?? [])])], best, pos: main.pos ?? null };
 }
 
 // ---------- Tinh hoa ----------
@@ -108,6 +129,20 @@ export const reward = (s: CbSave, def: FightDef): number => def.coins + (s.clr.i
 export function logFight(s: CbSave, l: FightLog): void { s.log.push(l); if (s.log.length > LOG_MAX) s.log.splice(0, s.log.length - LOG_MAX); }
 export function addFb(s: CbSave, f: Fb): void { s.fb.push({ ...f, t: f.t.slice(0, 200), s: Math.max(1, Math.min(5, Math.round(f.s))) }); if (s.fb.length > FB_MAX) s.fb.splice(0, s.fb.length - FB_MAX); }
 
+// ---------- Kỷ lục, thành tích (v134) ----------
+export interface RunRes { id: string; win: boolean; t: number; kills: number; combo: number; evos: number; boss: boolean }
+// Ghi kỷ lục một trận; trả thành tích mới mở (để báo). Nhân vật mở theo kỷ lục (fightmeta.ts charOpen), không lưu riêng.
+export function addRun(s: CbSave, r: RunRes): string[] {
+  const b = s.best;
+  b.runs++; b.total += r.kills; b.t = Math.max(b.t, Math.floor(r.t)); b.kills = Math.max(b.kills, r.kills); b.combo = Math.max(b.combo, r.combo); b.evo += r.evos;
+  if (r.win && r.boss) b.boss++;
+  if (r.win && r.id === 'k1-l2') b.l2++;
+  const got = ACH.filter(a => !s.ach.includes(a.id) && a.chk(b)).map(a => a.id);
+  s.ach.push(...got);
+  return got;
+}
+export const pickChar = (s: CbSave, id: string): boolean => { if (!isChar(id) || !CHAR_IDS.includes(id)) return false; s.ch = id; return true; };
+
 // ---------- Thợ rèn gợi ý (bản đầu: chỉ ô Vũ khí) ----------
 export type Forge = 'garden' | 'wheel' | 'hunt';
 export const FORGE_VI: Record<Forge, { ico: string; vi: string; start: string }> = {
@@ -145,7 +180,7 @@ export function loseAdvice(def: FightDef, worn: number, s: CbSave, coins: number
       : `Vũ khí của bạn bậc ${worn}, ${def.vi} cần bậc ${def.need}.`;
     return { gap: true, text, act: !made && ready ? 'forge' : 'lo' };
   }
-  return { gap: false, text: 'Đồ đã đủ bậc: trận này do tay ngắm. Nhìn dấu ✕ của phát trước và cờ gió rồi chỉnh lực từng chút.', act: 'retry' };
+  return { gap: false, text: 'Đồ đã đủ bậc: trận này do tay né. Giữ quái ở tầm lưỡi kiếm, DASH khi bị vây, ra xa khi sóng rè sắp nổ.', act: 'retry' };
 }
 
 // ---------- Số liệu trận (C1, C2, C15) ----------

@@ -1,10 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  freshCb, essOf, addEss, wornW, canForge, forge, sanitizeCb, mergeCb, nextFight, unlocked, reward, tipOf, loseAdvice, fightStats, fbText, addFb, logFight,
+  addRun, pickChar, freshCb, essOf, addEss, wornW, canForge, forge, sanitizeCb, mergeCb, nextFight, unlocked, reward, tipOf, loseAdvice, fightStats, fbText, addFb, logFight,
   ESS_DAY, W_COST, W_MAX, FB_MAX, LOG_MAX,
 } from '../../src/engine/cb.ts';
 import { fightById } from '../../src/engine/fight.ts';
+import { charOpen, freshBest } from '../../src/engine/fightmeta.ts';
 
 // v133 Chiến Binh Chữ mốc 1: ô Vũ khí. Hai cổng: tinh hoa (chỉ từ trả lời đúng ở lò) + chỉ số thật (Từ vựng Lv ≥ bậc mới mặc được).
 const ok = { node: 'u:a1.food', ok: true, ctx: 'wheel', nov: false, day: 10 };
@@ -53,13 +54,13 @@ test('trận kế tiếp, mở khoá, thưởng lần đầu', () => {
   s.clr = ['k1-l1', 'k1-l2']; assert.equal(nextFight(s).id, 'k1-boss'); assert.ok(unlocked(s, 'k1-boss'));
   const d = fightById('k1-boss')!; assert.equal(reward(s, d), d.coins + d.first); s.clr.push(d.id); assert.equal(reward(s, d), d.coins);
 });
-test('thua boss: thiếu bậc thì chỉ thẳng Vũ khí; đủ bậc thì do tay ngắm', () => {
+test('thua boss: thiếu bậc thì chỉ thẳng Vũ khí; đủ bậc thì do tay né', () => {
   const d = fightById('k1-boss')!, s = freshCb();
   const a = loseAdvice(d, 0, s, 0, 0);
   assert.ok(a.gap && /Vũ khí của bạn bậc 0, Tiếng Ồn Rè cần bậc 2/.test(a.text)); assert.equal(a.act, 'lo');
   s.ess = 10; assert.equal(loseAdvice(d, 0, s, 100, 0).act, 'forge');
   s.w = 2; const b = loseAdvice(d, 1, s, 0, 1); assert.ok(/đã rèn bậc 2 nhưng mới mặc được bậc 1/.test(b.text)); assert.equal(b.act, 'lo');
-  assert.equal(loseAdvice(d, 2, s, 0, 2).act, 'retry');
+  assert.equal(loseAdvice(d, 2, s, 0, 2).act, 'retry'); assert.ok(/tay né/.test(loseAdvice(d, 2, s, 0, 2).text));
 });
 test('Thợ rèn gợi ý: tưới cây đến hạn → Vườn từ; thiếu chỉ số → Vườn từ; còn lại Vòng Chữ / Mỏ Chữ thay nhau', () => {
   const s = freshCb(), base = { s, vocLv: 3, vocLeft: 0, coins: 0, garden: 0, last: '' };
@@ -77,4 +78,21 @@ test('số liệu trận và góp ý: giới hạn, văn bản gửi đi không 
   assert.equal(s.log.length, LOG_MAX); assert.equal(s.fb.length, FB_MAX);
   const st = fightStats(s.log); assert.equal(st.n, LOG_MAX); assert.ok(st.bySide.some(b => b.d === -2) && st.t1 !== null);
   const txt = fbText(s, 'v133'); assert.ok(/chênh bậc -2/.test(txt) && /★★★★☆ vui/.test(txt)); assert.ok(!/u:|g:|ev|mastery/.test(txt));
+});
+
+// v134: nhân vật (ngang sức, mở bằng việc làm trong trận), thành tích, kỷ lục; lưu / hợp hai máy.
+test('kỷ lục + thành tích + mở nhân vật; lưu sạch, hợp hai máy', () => {
+  const s = freshCb();
+  assert.equal(s.ch, 'orbiter'); assert.ok(!charOpen('sprinter', s.best)); assert.ok(!pickChar(s, 'xx'));
+  const got = addRun(s, { id: 'k1-boss', win: true, t: 130, kills: 320, combo: 55, evos: 1, boss: true });
+  assert.deepEqual(got.sort(), ['boss', 'combo50', 'evo', 'k300', 'run1', 'surv2']);
+  assert.deepEqual(addRun(s, { id: 'k1-l1', win: false, t: 10, kills: 2, combo: 1, evos: 0, boss: false }), []);
+  assert.ok(charOpen('sprinter', s.best) && charOpen('berserker', s.best) && charOpen('revenant', s.best) && !charOpen('gambler', s.best));
+  assert.ok(pickChar(s, 'sprinter')); assert.equal(s.ch, 'sprinter');
+  const x = sanitizeCb({ ...s, ch: 'hack', ach: ['boss', 'zz', 'boss'], best: { ...s.best, boss: -4, kills: 'x' }, pos: { x: 10, y: 'a' } })!;
+  assert.equal(x.ch, 'orbiter'); assert.deepEqual(x.ach, ['boss']); assert.equal(x.best.boss, 0); assert.equal(x.best.kills, 0); assert.equal(x.pos, null);
+  const old = sanitizeCb({ w: 1, clr: [] })!;   // bản lưu v133 chưa có trường mới
+  assert.deepEqual([old.ch, old.ach, old.best.runs, old.pos], ['orbiter', [], 0, null]);
+  const m = mergeCb({ ...freshCb(), ach: ['run1'], best: { ...freshBest(), kills: 9, boss: 1 } }, { ...freshCb(), ach: ['boss'], best: { ...freshBest(), kills: 4, t: 99 } })!;
+  assert.deepEqual(m.ach.sort(), ['boss', 'run1']); assert.deepEqual([m.best.kills, m.best.boss, m.best.t], [9, 1, 99]);
 });

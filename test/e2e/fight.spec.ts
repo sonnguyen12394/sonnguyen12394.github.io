@@ -2,7 +2,7 @@ import { test, expect, noHorizontalScroll, toLobby } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// v133 Chiến Binh Chữ mốc 1 (docs/MOC1-KE-HOACH.md): sảnh có ⚔️ là nút chính; vào trận, bắn, thắng / thua; thua vì thiếu bậc thì
+// v133 Chiến Binh Chữ mốc 1 (docs/MOC1-KE-HOACH.md), v134 trận kiểu Chaos Orbit: sảnh có ⚔️ là nút chính; vào trận, chạy né, thắng / thua; thua vì thiếu bậc thì
 // màn kết chỉ thẳng Vũ khí và mở đúng lò; rèn; góp ý nhanh. Trận không ghi bằng chứng (sổ bằng chứng không đổi).
 test.use({ future: false });
 
@@ -27,7 +27,7 @@ async function ready(page: Page): Promise<boolean> {
   return page.locator('.cbend').isHidden();
 }
 
-test('sảnh: ⚔️ là nút chính duy nhất; vào trận luyện tay, bắn trúng tới thắng; sổ bằng chứng không đổi', async ({ page, errors }) => {
+test('sảnh: ⚔️ là nút chính duy nhất; vào trận luyện tay, chạy né tới thắng; sổ bằng chứng không đổi', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
   await expect(page.locator('#app .btn.primary')).toHaveCount(1);
@@ -38,13 +38,16 @@ test('sảnh: ⚔️ là nút chính duy nhất; vào trận luyện tay, bắn 
   await expect(page.locator('#whfx canvas')).toBeVisible();
   await expect(page.locator('#whfx .whti')).toHaveText('Luyện tay 1');
   await noHorizontalScroll(page);
-  for (let k = 0; k < 14 && await ready(page); k++) await page.evaluate(() => { const r = document.getElementById('whfx') as any, a = r._solve(); r._fire(a.ang, a.pow); });
-  await expect(page.locator('.cbend')).toContainText('Thắng Luyện tay 1');
-  await expect(page.locator('.cbend')).toContainText('+30');
+  await ready(page);
+  // Bot né giỏi điều khiển thay, tăng tốc mô phỏng để test chạy nhanh (luật vẫn là bước cố định của fight.ts).
+  await page.evaluate(() => { const r = document.getElementById('whfx') as any; r._auto('good'); r._speed(30); });
+  await expect(page.locator('.cbend')).toContainText('Thắng Luyện tay 1', { timeout: 60000 });
+  await expect(page.locator('.cbend')).toContainText(/\+(3\d|4\d) 🪙/);
   const cb = await cbs(page);
   expect(cb.clr).toEqual(['k1-l1']);
   expect(cb.log[0]).toMatchObject({ id: 'k1-l1', r: 'w', w: 0, need: 0 });
   expect(cb.log[0].n).toBeGreaterThan(0);
+  expect(cb.best.runs).toBe(1); expect(cb.ach).toContain('run1');
   expect(await led(page), 'trận không ghi bằng chứng (P13)').toBe(n0);
   await page.locator('.cbend [data-e="cbnext"]').click();
   await expect(page.locator('#whfx .whti')).toHaveText('Luyện tay 2');
@@ -89,9 +92,12 @@ test('Chiến Binh: rèn Vũ khí bằng tinh hoa + xu; khoá theo Từ vựng; 
   expect(cb).toMatchObject({ w: 1, ess: 1, spent: 20 });
   // Người mới chưa có kỹ năng từ vựng vững: đã rèn nhưng chưa mặc được.
   await expect(page.locator('#app')).toContainText('Đã rèn bậc 1');
-  await page.locator('#app form[data-eform="cbfb2"] input[name="t"]').fill('Bắn vui, gió hơi khó');
+  await page.locator('#app form[data-eform="cbfb2"] input[name="t"]').fill('Chém vui, boss hơi khó');
   await page.locator('#app form[data-eform="cbfb2"] button[type="submit"]').click();
-  expect((await cbs(page)).fb).toEqual([expect.objectContaining({ at: 'forge', s: 5, t: 'Bắn vui, gió hơi khó' })]);
+  expect((await cbs(page)).fb).toEqual([expect.objectContaining({ at: 'forge', s: 5, t: 'Chém vui, boss hơi khó' })]);
+  // Nhân vật: người mới chỉ có Orbiter; nhân vật khác khoá kèm điều kiện mở.
+  await expect(page.locator('#app .cbch.on')).toContainText('Orbiter');
+  await expect(page.locator('#app .cbch.lock')).toHaveCount(6);
   expect(errors).toEqual([]);
 });
 
@@ -106,5 +112,30 @@ test('góp ý nhanh ngay trong trận: chấm sao + một dòng; đồng hồ d�
   await fb.locator('button[type="submit"]').click();
   await expect(fb).toBeHidden();
   expect((await cbs(page)).fb).toEqual([expect.objectContaining({ at: 'fight', id: 'k1-l1', s: 4, t: 'Nhân vật dễ thương' })]);
+  expect(errors).toEqual([]);
+});
+
+test('điều khiển: phím chạy, DASH, lên cấp chọn thẻ bằng chạm; trận dừng khi đang chọn', async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await lobby(page);
+  await page.locator('#app .cbgo').click();
+  await ready(page);
+  const st = () => page.evaluate(() => (document.getElementById('whfx') as any)._state());
+  const x0 = (await st()).x;
+  await page.locator('#whfx').focus();
+  await page.keyboard.down('d'); await page.waitForTimeout(500); await page.keyboard.up('d');
+  expect((await st()).x).toBeGreaterThan(x0 + 30);
+  await page.locator('#whfx .cbsk.dash').dispatchEvent('pointerdown');
+  await expect.poll(async () => (await st()).dashCd).toBeGreaterThan(0);
+  await page.evaluate(() => (document.getElementById('whfx') as any)._xp(40));
+  const lv = page.locator('#whfx .cblv');
+  await expect(lv).toBeVisible();
+  await expect(lv.locator('.cbcard')).toHaveCount(3);
+  await noHorizontalScroll(page);
+  const t = (await st()).t; await page.waitForTimeout(400); expect((await st()).t).toBe(t);
+  // 40 XP có thể lên nhiều cấp: chọn tới khi hết thẻ.
+  for (let k = 0; k < 8 && await lv.isVisible(); k++) { await lv.locator('.cbcard').first().click(); await page.waitForTimeout(80); }
+  await expect.poll(async () => (await st()).level).toBeGreaterThan(1);
+  await expect.poll(async () => (await st()).pick).toBeNull();
   expect(errors).toEqual([]);
 });

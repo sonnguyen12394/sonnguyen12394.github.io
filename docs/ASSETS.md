@@ -5,8 +5,8 @@ Mỗi bộ hình / âm dùng trong app ghi nguồn và giấy phép ở đây (S
 | Phần | Nguồn | Giấy phép | Ghi chú |
 |---|---|---|---|
 | Nhân vật chibi (sảnh, trận) | Tự vẽ bằng SVG trong `src/engine/avatar.ts` (v132) | Mã của dự án | |
-| Trận đấu (v133): trời, phố xa, đồi, địa hình, boss / lính Tiếng Ồn, đạn, nổ, hạt | Tự vẽ bằng canvas trong `src/engine/fightview.ts` | Mã của dự án | Không dùng tệp ảnh nào |
-| Âm trận (bắn, nổ, trúng, đồng hồ, thua) | Tổng hợp WebAudio trong `fightview.ts`, `sfx.ts`, `wheelview.ts` | Mã của dự án | Không dùng tệp âm nào |
+| Trận đấu (v134, kiểu Chaos Orbit): lưới nền, quái, lưỡi quỹ đạo, boss Tiếng Ồn, vòng nổ, sét, hạt | Tự vẽ bằng canvas trong `src/engine/fightview.ts`, port từ repo `chaos-orbit-prototype` của dự án | Mã của dự án | Không dùng tệp ảnh nào |
+| Âm trận (chém, chí mạng, hạ quái, lên cấp, DASH, Tuyệt kỹ, thua) | Tổng hợp WebAudio trong `fightview.ts`, `sfx.ts`, `wheelview.ts` | Mã của dự án | Không dùng tệp âm nào |
 | Giọng đọc tiếng Anh (5.753 tệp) | Kokoro (xem `a/`) | Như ghi ở thư mục âm | Có từ trước v133 |
 
 ## Bộ hình CC0 (chưa có)
