@@ -20,6 +20,10 @@ export const KIND_VI: Record<GoalKind, [string, string]> = {
   comm: ['Giao tiếp', 'Hằng ngày, du lịch, nơi làm việc, học tập: đủ năng lực dùng thật, không gắn kỳ thi.'],
 };
 const KINDS = Object.keys(KIND_VI) as GoalKind[];
+// v134 (docs/DANH-GIA-KHONG-AI.md): B2–C2 chưa hoàn thiện khi chưa có AI: không có âm thanh thu sẵn, không có trận cổng, Viết / Nói
+// không đo được ở mức này. Ghi rõ thay vì ẩn, để người chọn biết trước (không đổi gì khác của mục tiêu).
+export const UNFINISHED = new Set(['cefr-b2', 'cefr-c1', 'cefr-c2']);
+export const UNFINISHED_VI = '🚧 Chưa hoàn thiện: chưa có cổng khu và giọng thu sẵn; app chưa kết luận được bạn đạt cấp này.';
 const AREA_VI: Record<Area, string> = { voc: 'Từ vựng', gra: 'Ngữ pháp', pro: 'Phát âm', lis: 'Nghe', rd: 'Đọc', wr: 'Viết', spk: 'Nói', task: 'Dạng bài thi' };
 const AREA_ORDER: Area[] = ['voc', 'gra', 'pro', 'lis', 'rd', 'wr', 'spk', 'task'];
 export interface NStat { pass: boolean; pct: number; conf: 'low' | 'mid' | 'high'; none: boolean; state?: NodeState }
@@ -73,7 +77,7 @@ export function viewPick(c: ECtx): string {
   const body = k === 'ielts-ac' || k === 'ielts-gt'
     ? `<section class="panel stack"><h3>Chọn band mục tiêu</h3><div class="row" style="gap:6px">${list.map(g => btn(g, g.target)).join('')}</div>
        <p class="hint">Band 5.5–6.5 ứng với B2, 7.0–8.0 với C1 (bảng quy đổi có nguồn ở trang Ôn thi → Cách tính điểm). Band cao hơn trong cùng cấp đòi mức làm bài cao hơn.</p></section>`
-    : `<div class="units">${list.map(g => `<div class="unit morei"><span class="t"><strong>${esc(g.vi)}</strong><span class="muted">${g.n} năng lực ghi trực tiếp · Target Model ${esc(g.version)}</span></span>${btn(g, have.has(g.id) ? 'Đã chọn' : 'Chọn')}</div>`).join('')}</div>`;
+    : `<div class="units">${list.map(g => `<div class="unit morei"><span class="t"><strong>${esc(g.vi)}</strong><span class="muted">${g.n} năng lực ghi trực tiếp · Target Model ${esc(g.version)}</span>${UNFINISHED.has(g.id) ? `<span class="hint">${UNFINISHED_VI}</span>` : ''}</span>${btn(g, have.has(g.id) ? 'Đã chọn' : 'Chọn')}</div>`).join('')}</div>`;
   return `<section class="stack"><span class="eyebrow">Mục tiêu · ${esc(KIND_VI[k][0])}</span><h1>${esc(KIND_VI[k][0])}</h1><p class="muted">${esc(KIND_VI[k][1])}</p></section>${body}${back()}`;
 }
 

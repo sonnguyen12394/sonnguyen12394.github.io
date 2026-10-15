@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Bảng phủ nội dung (yêu cầu 6.1, 6.2): mỗi dạng câu IELTS/VSTEP cần bài học + ≥ 30 câu luyện, trải cấp B1–C1 (trọng tâm).
+// Bảng phủ nội dung (yêu cầu 6.1, 6.2): mỗi dạng câu IELTS/VSTEP (và Sân tập A2 Key, v134) cần bài học + ≥ 30 câu luyện, trải cấp B1–C1 (trọng tâm).
 // In bảng tình trạng và ghi content/coverage.md. Không làm CI đỏ (phát hành dần, 4.4) nhưng ghi rõ dạng nào chưa đủ.
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -21,7 +21,7 @@ const rows = QT.map(q => {
 });
 const lines = ['# Bảng phủ nội dung ôn thi', '', 'Tạo bởi `node tools/coverage.mjs`. Chỉ tiêu mỗi dạng: có bài học + ≥ 30 câu luyện, trọng tâm B1–C1 (yêu cầu 6.1, 6.2).', '',
   '| Kỹ năng | Dạng câu | Kỳ thi | Bài học | Số câu | A2 | B1 | B2 | C1 | C2 | Âm thanh | Đạt |', '|---|---|---|---|---|---|---|---|---|---|---|---|',
-  ...rows.map(r => `| ${r.skill === 'L' ? 'Nghe' : 'Đọc'} | ${r.vi} (${r.en}) | ${r.exams === 'V' ? 'VSTEP' : 'IELTS'} | ${r.lesson ? '✓' : '—'} | ${r.n}/${NEED} | ${LV.map(L => r.lv[L] || '').join(' | ')} | ${r.audio} | ${r.ok ? '✓' : '—'} |`),
+  ...rows.map(r => `| ${r.skill === 'L' ? 'Nghe' : 'Đọc'} | ${r.vi} (${r.en}) | ${r.id.startsWith('k-') ? 'A2 Key' : r.exams === 'V' ? 'VSTEP' : 'IELTS'} | ${r.lesson ? '✓' : '—'} | ${r.n}/${NEED} | ${LV.map(L => r.lv[L] || '').join(' | ')} | ${r.audio} | ${r.ok ? '✓' : '—'} |`),
   '', `Đạt ${rows.filter(r => r.ok).length}/${rows.length} dạng. Kiểm tra đầu vào: ${groups.filter(g => g.mode === 'place').reduce((s, g) => s + g.items.length, 0)} câu. Đề thi thử: ${groups.filter(g => g.mode === 'mock').reduce((s, g) => s + g.items.length, 0)} câu.`];
 writeFileSync(join(ROOT, 'content/coverage.md'), lines.join('\n') + '\n');
 console.log(lines.slice(-1)[0]);

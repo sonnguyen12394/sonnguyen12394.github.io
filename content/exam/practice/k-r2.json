@@ -1,0 +1,569 @@
+[
+  {
+    "id": "k-r2-01",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r2",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "A pet of my own",
+    "instr": "For each question, choose the correct answer: A, B or C.",
+    "paras": [
+      "A Huong: I always wanted a dog, but our flat is too small, so my parents got me two fish for my tenth birthday. I was a bit disappointed at first. Now I love watching them swim, and it helps me relax after school. My little brother feeds them when I'm away, but he sometimes forgets!",
+      "B Peter: My cat, Tiger, came into our garden one rainy night. Nobody knew where she lived, so we kept her. She costs more than I thought, because she only eats expensive food. She sleeps on my bed every night, and she wakes me up at five o'clock when she's hungry.",
+      "C Sofia: I've had my rabbit for three years. I bought him with my own money from my weekend job. He lives in the garden in summer and in the kitchen in winter. My grandmother didn't like him at first, but now she gives him vegetables from her garden every week."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "Huong"
+      },
+      {
+        "k": "B",
+        "t": "Peter"
+      },
+      {
+        "k": "C",
+        "t": "Sofia"
+      }
+    ],
+    "allow": [
+      "rabbit"
+    ],
+    "items": [
+      {
+        "id": "k-r2-01-1",
+        "q": "Who didn't get the pet they really wanted?",
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "I always wanted a dog"
+        },
+        "why": "Huong muốn nuôi chó nhưng được tặng cá.",
+        "wrong": {
+          "B": "Peter không nói muốn con vật khác.",
+          "C": "Sofia tự mua thỏ."
+        }
+      },
+      {
+        "id": "k-r2-01-2",
+        "q": "Who found their pet?",
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "My cat, Tiger, came into our garden one rainy night."
+        },
+        "why": "Con mèo tự vào vườn nhà Peter một đêm mưa.",
+        "wrong": {
+          "A": "Cá là quà sinh nhật.",
+          "C": "Sofia mua thỏ."
+        }
+      },
+      {
+        "id": "k-r2-01-3",
+        "q": "Who paid for their pet themselves?",
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "I bought him with my own money"
+        },
+        "why": "Sofia mua thỏ bằng tiền làm thêm cuối tuần.",
+        "wrong": {
+          "A": "Bố mẹ mua cá cho Huong.",
+          "B": "Con mèo tự đến, không mua."
+        }
+      },
+      {
+        "id": "k-r2-01-4",
+        "q": "Whose pet is expensive to look after?",
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "She costs more than I thought"
+        },
+        "why": "Mèo của Peter chỉ ăn đồ đắt tiền.",
+        "wrong": {
+          "A": "Huong không nói tốn tiền.",
+          "C": "Bà cho thỏ rau trong vườn."
+        }
+      },
+      {
+        "id": "k-r2-01-5",
+        "q": "Whose family member sometimes forgets something?",
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "he sometimes forgets"
+        },
+        "why": "Em trai Huong đôi khi quên cho cá ăn.",
+        "wrong": {
+          "B": "Peter không nhắc người nhà quên gì.",
+          "C": "Bà Sofia lúc đầu không thích thỏ, không phải quên."
+        }
+      },
+      {
+        "id": "k-r2-01-6",
+        "q": "Whose pet lives in different places at different times of year?",
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "He lives in the garden in summer and in the kitchen in winter."
+        },
+        "why": "Thỏ ở vườn mùa hè, trong bếp mùa đông.",
+        "wrong": {
+          "A": "Cá luôn ở trong bể.",
+          "B": "Mèo ngủ trên giường mỗi đêm."
+        }
+      },
+      {
+        "id": "k-r2-01-7",
+        "q": "Who says their pet helps them feel calm?",
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "it helps me relax after school"
+        },
+        "why": "Ngắm cá bơi giúp Huong thư giãn.",
+        "wrong": {
+          "B": "Mèo đánh thức Peter lúc năm giờ.",
+          "C": "Sofia không nói thỏ giúp bình tĩnh."
+        }
+      }
+    ]
+  },
+  {
+    "id": "k-r2-02",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r2",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "A weekend away",
+    "instr": "For each question, choose the correct answer: A, B or C.",
+    "paras": [
+      "A Linh: Last month I went to a small island with my cousins. We planned to go diving, but the sea was too rough, so we went fishing with a local family instead. The hotel was old and quite far from the beach. I'd like to go back in the dry season, when the water is calm.",
+      "B Carlos: I took the night train to the mountains with two friends from work. We walked for six hours on Saturday and saw beautiful waterfalls. It rained all day on Sunday, but we still walked to a lake and had a picnic in the rain. Our guesthouse was cheap and the owner cooked amazing soup for us.",
+      "C Mia: My sister lives in the capital, so I visited her for her birthday. We went to three museums and a night market. The city was very noisy and I didn't sleep well, but the food was fantastic. I spent too much money on clothes, so next time I'll leave my bank card at home!"
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "Linh"
+      },
+      {
+        "k": "B",
+        "t": "Carlos"
+      },
+      {
+        "k": "C",
+        "t": "Mia"
+      }
+    ],
+    "items": [
+      {
+        "id": "k-r2-02-1",
+        "q": "Who changed their plans because of the weather?",
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "the sea was too rough, so we went fishing with a local family instead"
+        },
+        "why": "Biển động nên Linh đi câu cá thay vì lặn.",
+        "wrong": {
+          "B": "Trời mưa nhưng nhóm của Carlos vẫn đi bộ ra hồ như dự định.",
+          "C": "Mia không nhắc thời tiết."
+        }
+      },
+      {
+        "id": "k-r2-02-2",
+        "q": "Who stayed somewhere that didn't cost much?",
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "Our guesthouse was cheap"
+        },
+        "why": "Nhà nghỉ của Carlos rẻ.",
+        "wrong": {
+          "A": "Linh chê khách sạn cũ và xa biển, không nói giá rẻ.",
+          "C": "Mia ở với chị gái và tiêu nhiều tiền."
+        }
+      },
+      {
+        "id": "k-r2-02-3",
+        "q": "Who went away for a family celebration?",
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "I visited her for her birthday."
+        },
+        "why": "Mia đến thăm chị nhân sinh nhật chị.",
+        "wrong": {
+          "A": "Linh đi với anh chị em họ nhưng không vì một dịp mừng nào.",
+          "B": "Carlos đi với bạn cùng chỗ làm."
+        }
+      },
+      {
+        "id": "k-r2-02-4",
+        "q": "Who had trouble sleeping?",
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "I didn't sleep well"
+        },
+        "why": "Thành phố ồn nên Mia ngủ không ngon.",
+        "wrong": {
+          "A": "Linh chê khách sạn xa biển, không nói chuyện ngủ.",
+          "B": "Carlos không nhắc giấc ngủ."
+        }
+      },
+      {
+        "id": "k-r2-02-5",
+        "q": "Who wants to return at a different time of year?",
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "I'd like to go back in the dry season"
+        },
+        "why": "Linh muốn quay lại vào mùa khô khi biển êm.",
+        "wrong": {
+          "B": "Carlos không nói muốn quay lại.",
+          "C": "Mia nói lần sau sẽ để thẻ ở nhà, không nói về thời điểm trong năm."
+        }
+      },
+      {
+        "id": "k-r2-02-6",
+        "q": "Who enjoyed a meal made by the person they stayed with?",
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "the owner cooked amazing soup for us"
+        },
+        "why": "Chủ nhà nghỉ nấu súp rất ngon cho Carlos.",
+        "wrong": {
+          "A": "Linh đi câu với một gia đình địa phương, không nhắc bữa ăn họ nấu.",
+          "C": "Mia khen đồ ăn của thành phố, không nói chị gái nấu."
+        }
+      },
+      {
+        "id": "k-r2-02-7",
+        "q": "Who is going to be more careful with money?",
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "next time I'll leave my bank card at home"
+        },
+        "why": "Mia tiêu quá nhiều tiền mua quần áo nên lần sau sẽ để thẻ ở nhà.",
+        "wrong": {
+          "A": "Linh không nói về tiền.",
+          "B": "Carlos chỉ nói nhà nghỉ rẻ."
+        }
+      }
+    ]
+  },
+  {
+    "id": "k-r2-03",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r2",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "Learning to play music",
+    "instr": "For each question, choose the correct answer: A, B or C.",
+    "paras": [
+      "A Duc: I started the piano when I was forty. My daughter was having lessons, and I wanted to help her practise. Now I enjoy it more than she does! My teacher comes to our flat on Thursday evenings. I'm slow at reading music, but I can play a few easy songs.",
+      "B Emma: I learned the drums from videos on the internet, so I've never paid for a lesson. My neighbours weren't happy at first, so now I practise in my school's music room. Last year I joined a band with three classmates, and we played at the school festival.",
+      "C Kenji: My grandfather gave me his old violin. I go to a music school on Saturday mornings with about ten other students. It was very difficult at the beginning and I almost stopped. Now I'm in the school orchestra, but we haven't played a concert yet. I want to play in a big concert hall one day."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "Duc"
+      },
+      {
+        "k": "B",
+        "t": "Emma"
+      },
+      {
+        "k": "C",
+        "t": "Kenji"
+      }
+    ],
+    "items": [
+      {
+        "id": "k-r2-03-1",
+        "q": "Who taught themselves to play?",
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "I learned the drums from videos on the internet"
+        },
+        "why": "Emma học trống qua video trên mạng, chưa từng trả tiền học.",
+        "wrong": {
+          "A": "Duc có giáo viên đến nhà.",
+          "C": "Kenji học ở trường nhạc."
+        }
+      },
+      {
+        "id": "k-r2-03-2",
+        "q": "Who got their instrument from a family member?",
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "My grandfather gave me his old violin."
+        },
+        "why": "Ông của Kenji cho anh cây đàn violin cũ.",
+        "wrong": {
+          "A": "Duc học vì con gái, không nói nhận đàn từ ai.",
+          "B": "Emma không nói đàn trống từ đâu."
+        }
+      },
+      {
+        "id": "k-r2-03-3",
+        "q": "Who has lessons at home?",
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "My teacher comes to our flat on Thursday evenings."
+        },
+        "why": "Giáo viên đến căn hộ của Duc vào tối thứ Năm.",
+        "wrong": {
+          "B": "Emma tập ở phòng nhạc của trường và không học thầy.",
+          "C": "Kenji đến trường nhạc vào sáng thứ Bảy."
+        }
+      },
+      {
+        "id": "k-r2-03-4",
+        "q": "Who nearly gave up?",
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "I almost stopped."
+        },
+        "why": "Lúc đầu rất khó nên Kenji suýt bỏ.",
+        "wrong": {
+          "A": "Duc đọc nhạc chậm nhưng không nói muốn bỏ.",
+          "B": "Hàng xóm không vui, nhưng Emma chỉ đổi chỗ tập."
+        }
+      },
+      {
+        "id": "k-r2-03-5",
+        "q": "Who changed where they practise?",
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "now I practise in my school's music room"
+        },
+        "why": "Hàng xóm phàn nàn nên Emma chuyển sang tập ở phòng nhạc của trường.",
+        "wrong": {
+          "A": "Duc học ở nhà, không nói đổi chỗ.",
+          "C": "Kenji học ở trường nhạc từ đầu."
+        }
+      },
+      {
+        "id": "k-r2-03-6",
+        "q": "Who started playing because of someone else's lessons?",
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "My daughter was having lessons, and I wanted to help her practise."
+        },
+        "why": "Duc học đàn để giúp con gái tập.",
+        "wrong": {
+          "B": "Emma học một mình qua video.",
+          "C": "Kenji học ở trường nhạc vì có đàn của ông, không vì buổi học của ai."
+        }
+      },
+      {
+        "id": "k-r2-03-7",
+        "q": "Who has already played for an audience?",
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "we played at the school festival"
+        },
+        "why": "Ban nhạc của Emma đã chơi ở lễ hội của trường.",
+        "wrong": {
+          "A": "Duc chỉ chơi được vài bài dễ, không nói biểu diễn.",
+          "C": "Kenji mới mong một ngày chơi ở nhà hát lớn."
+        }
+      }
+    ]
+  },
+  {
+    "id": "k-r2-04",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r2",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "How I get to work",
+    "instr": "For each question, choose the correct answer: A, B or C.",
+    "paras": [
+      "A Trang: I take two buses to work, and the journey is about fifty minutes. I used to drive, but parking near my office was too expensive. On the bus I read or listen to English podcasts. The only problem is that the second bus is often full, so I have to stand.",
+      "B Oliver: I cycle to the office every day, even when it rains. It takes me twenty minutes, which is quicker than the bus. There's a shower at work, so I can change before I start. My company gives a little extra money to people who cycle, which is great.",
+      "C Hanh: I live five minutes from my office, so I walk. Last year I worked in another part of the city and spent two hours in traffic every day. I moved house because of that. Now I have time for breakfast with my children, and I go to the gym after work."
+    ],
+    "options": [
+      {
+        "k": "A",
+        "t": "Trang"
+      },
+      {
+        "k": "B",
+        "t": "Oliver"
+      },
+      {
+        "k": "C",
+        "t": "Hanh"
+      }
+    ],
+    "items": [
+      {
+        "id": "k-r2-04-1",
+        "q": "Who uses the journey to study?",
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "On the bus I read or listen to English podcasts."
+        },
+        "why": "Trang nghe podcast tiếng Anh trên xe buýt.",
+        "wrong": {
+          "B": "Oliver đạp xe, không nói học gì.",
+          "C": "Hanh đi bộ năm phút, không nói học."
+        }
+      },
+      {
+        "id": "k-r2-04-2",
+        "q": "Who gets money for the way they travel?",
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "My company gives a little extra money to people who cycle"
+        },
+        "why": "Công ty cho thêm tiền người đi xe đạp.",
+        "wrong": {
+          "A": "Trang nói gửi xe đắt, không nói được tiền.",
+          "C": "Hanh không nhắc tiền."
+        }
+      },
+      {
+        "id": "k-r2-04-3",
+        "q": "Who stopped driving because of the cost?",
+        "ans": "A",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "parking near my office was too expensive"
+        },
+        "why": "Trang thôi lái xe vì phí đỗ xe gần văn phòng đắt.",
+        "wrong": {
+          "B": "Oliver không nói từng lái xe.",
+          "C": "Hanh từng mất hai giờ kẹt xe, nhưng lý do là thời gian, không phải chi phí."
+        }
+      },
+      {
+        "id": "k-r2-04-4",
+        "q": "Who moved home to make the journey shorter?",
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "I moved house because of that."
+        },
+        "why": "Hanh chuyển nhà vì mất hai giờ mỗi ngày trên đường.",
+        "wrong": {
+          "A": "Trang đổi từ ô tô sang xe buýt, không chuyển nhà.",
+          "B": "Oliver không nói chuyển nhà."
+        }
+      },
+      {
+        "id": "k-r2-04-5",
+        "q": "Who sometimes doesn't get a seat?",
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "the second bus is often full, so I have to stand"
+        },
+        "why": "Chuyến xe buýt thứ hai thường đầy nên Trang phải đứng.",
+        "wrong": {
+          "B": "Oliver đạp xe.",
+          "C": "Hanh đi bộ."
+        }
+      },
+      {
+        "id": "k-r2-04-6",
+        "q": "Who travels in all kinds of weather?",
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "I cycle to the office every day, even when it rains."
+        },
+        "why": "Oliver đạp xe mỗi ngày, kể cả trời mưa.",
+        "wrong": {
+          "A": "Trang đi xe buýt, không nói về thời tiết.",
+          "C": "Hanh đi bộ nhưng không nói về thời tiết."
+        }
+      },
+      {
+        "id": "k-r2-04-7",
+        "q": "Who now spends more time with their family?",
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "Now I have time for breakfast with my children"
+        },
+        "why": "Hanh giờ có thời gian ăn sáng với các con.",
+        "wrong": {
+          "A": "Trang không nhắc gia đình.",
+          "B": "Oliver không nhắc gia đình."
+        }
+      }
+    ]
+  }
+]

@@ -30,7 +30,7 @@ export function typeStats(c: Ctx, qid: string): { done: number; acc: number | nu
 
 export function viewPracticeList(c: Ctx): string {
   const { x, host } = c, esc = host.esc, exam = x.exam || 'ielts-ac';
-  const types = QTYPES.filter(q => q.exams.includes(exam) && !q.id.startsWith('pl-'));
+  const types = QTYPES.filter(q => q.exams.includes(exam) && !q.id.startsWith('pl-') && !q.id.startsWith('k-'));
   const row = (q: typeof types[number]): string => {
     const n = typeCount(q.id), st = typeStats(c, q.id);
     if (!n.items) return `<li class="spread" style="gap:8px"><span>${esc(q.vi)} <span class="hint" lang="en">(${esc(q.en)})</span></span><span class="hint">đang soạn</span></li>`;

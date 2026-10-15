@@ -20,7 +20,11 @@ export const LENGTH: Record<string, Record<string, [number, number]>> = {
   listening: { place: [20, 320], practice: [120, 1100], mock: [150, 1300], gate: [20, 320] },
 };
 // Ngoại lệ theo dạng câu (bộ luyện): Phần 1 Nghe VSTEP là các thông báo ngắn ~30–40 từ, mỗi bộ gồm 3 đoạn.
-export const QLENGTH: Record<string, [number, number]> = { 'v-l1': [60, 400] };
+export const QLENGTH: Record<string, [number, number]> = { 'v-l1': [60, 400],
+  // v134 Sân tập A2 Key (định dạng công khai từ 2020): Đọc 1 = 6 biển báo / tin nhắn ngắn; Đọc 2 = 3 bài ngắn; Đọc 3 = một bài dài;
+  // Đọc 4–5 = bài điền từ; Nghe 1 / 4 = 5 đoạn ngắn kèm lời dẫn; Nghe 2 = một người nói; Nghe 3 / 5 = một hội thoại.
+  'k-r1': [70, 260], 'k-r2': [140, 420], 'k-r3': [180, 340], 'k-r4': [90, 200], 'k-r5': [80, 180],
+  'k-l1': [150, 480], 'k-l2': [130, 320], 'k-l3': [150, 400], 'k-l4': [150, 480], 'k-l5': [110, 400] };
 
 // Dạng có danh sách cố định (TRUE/FALSE/NOT GIVEN…) không xét thứ tự đáp án.
 const ORDERLESS = new Set(['r-tfng', 'r-ynng']);

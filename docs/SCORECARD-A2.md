@@ -76,6 +76,17 @@ Bảng chấm duy nhất từ 13/10/2026 (`docs/SPEC.md`, khối đầu tệp, m
 
 **Tổng ≈ 99,5 ÷ 20 ≈ 5,0 / 10** (ước tính cũ 5,4). Thấp hơn vì: không có bộ hình CC0, C4 chưa gộp, và giữ trần thấp cho mọi thứ chưa người thật chơi. Bắt buộc: C1 = 5, C3 = 6 **chưa đạt**; C6 = 7 đạt. Bước tiếp theo là **người sáng lập chơi 15 phút theo `PLAYTEST.md` Phần 0 và chấm C1**.
 
+## Chấm lại sau v134 (15/10/2026): tự chấm, CHƯA người thật kiểm
+
+Chỉ hai tiêu chí đổi; phần trò chơi của mốc 2 chưa làm.
+
+| # | v133 | v134 | Bằng chứng / vì sao chưa cao hơn |
+|---|---|---|---|
+| C7 | 4 | **6** | 4 trận cổng / cấp A1, A2 (rớt 3 lần vẫn còn đề lạ); cả 8 trận đã soát chéo độc lập, đáp án khớp 100%; phép thử không có bài cho 4 trận mới (`content/exam/gate/README.md`). Chưa có Viết / Nói trong cổng; độ khó câu chưa hiệu chỉnh trên người thật |
+| C8 | 7 | **8** | Sân tập: khoảng 300 câu đúng 10 phần Đọc / Nghe A2 Key, 30 bài nghe có âm thanh Kokoro + bản chậm; máy dò "đủ ý" cho Viết. Viết / Nói vẫn chỉ chấm bằng luật |
+
+**Tổng ≈ (99,5 + 2×2 + 1) ÷ 20 ≈ 5,2 / 10** (v133: 5,0). Chi tiết theo kỹ năng và theo cấp: `docs/DANH-GIA-KHONG-AI.md`.
+
 ## Lịch chấm
 
 Chấm lại sau mỗi mốc; ghi điểm mới cạnh điểm cũ, kèm "đã / chưa người thật kiểm". Không đổi mốc 10 để điểm đẹp hơn; muốn đổi mốc hoặc trọng số phải hỏi người sáng lập.

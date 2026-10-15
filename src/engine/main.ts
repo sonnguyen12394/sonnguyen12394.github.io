@@ -80,6 +80,9 @@ import { roteNodes } from './rote.ts';
 import { viewLrRun } from './lrview.ts';
 import { viewTreasureCard, viewTreasureIntro, viewTreasureDone, CHEST_COINS } from './treasureview.ts';
 import { viewGateHome, viewGateRun, viewGateEnd, type GateRun } from './gateview.ts';
+import { viewDrillHome, viewDrillRun, type DrillRun } from './drillview.ts';
+import { DRILL_GOALS, nextGroup, markGroup, recordGroup, type DrillPart } from './drill.ts';
+import { readGiven } from '../exam/views/items.ts';
 import { gateScore, gateState, lastP, CES_MIN, GATE_FORMS, type GateAns } from './gate.ts';
 import type { LrApi } from '../exam/main.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
@@ -153,6 +156,13 @@ export function init(host: EHost): EngineModule {
   let lrApi: LrApi | null = null, lrPlays = 0, lrErr = '';
   // v111 trận cổng cuối khu (gate.ts, gateview.ts): câu lạ, chơi một lần, không đáp án trong trận; kết quả là bằng chứng quyết định.
   let gtRun: GateRun | null = null;
+  // v134 Sân tập trước cổng (drill.ts, drillview.ts): bài luyện dạng A2 Key, chữa ngay; lần làm đầu là số đo theo phần.
+  let drRun: DrillRun | null = null, drTotals: Record<string, number> | null = null, drErr = '';
+  function drLoadTotals(): void {
+    if (!host.drillCounts) { drErr = 'Bản app này chưa có sân tập.'; return; }
+    drErr = '';
+    host.drillCounts().then(t => { drTotals = t; host.render(); }).catch(() => { drErr = 'Chưa mở được sân tập (cần mạng ở lần đầu).'; host.render(); });
+  }
   function gtFinish(): void {
     const r = gtRun;
     if (!r) return;
@@ -1833,7 +1843,13 @@ export function init(host: EHost): EngineModule {
       const g = goalOf(c.e);
       if (!g) return viewGoals(c);
       const sk = skillsOf(c.e, g);
-      return viewGateHome(c, g.id, g.vi, sk.solid, sk.total, E().gg, playtest());
+      return viewGateHome(c, g.id, g.vi, sk.solid, sk.total, E().gg, playtest(), DRILL_GOALS.has(g.id));
+    },
+    drill: c => {
+      if (drRun) return viewDrillRun(c, drRun);
+      if (!drTotals && !drErr) drLoadTotals();
+      const g = c.e.goals.find(x => DRILL_GOALS.has(x.id));
+      return viewDrillHome(c, g ? g.id.replace('cefr-', '').toUpperCase() : 'A2', E().gg?.dr, drTotals, drErr);
     },
     why: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewWhy(c); },
     pick: viewPick,
@@ -1911,6 +1927,18 @@ export function init(host: EHost): EngineModule {
       }).catch(() => host.toast('Chưa tải được trận cổng (cần mạng ở lần đầu).'));
     },
     certon() { const e = E(); (e.gg ||= { done: {} }).cert = 1; host.save(); host.render(); },
+    drhome() { drRun = null; drTotals = null; drLoadTotals(); host.go('drill'); },
+    drpart(el) {
+      const q = el.dataset.q as DrillPart | undefined;
+      if (!q || !/^k-[rl][1-5]$/.test(q) || !host.drill) return;
+      host.drill(q).then(gs => {
+        const ids = gs.map(g => g.id), id = nextGroup(ids, E().gg?.dr), g = gs.find(x => x.id === id);
+        if (!g) { host.toast('Phần này chưa có bài.'); return; }
+        drRun = { q, ids, g, given: {}, marks: null, first: !E().gg?.dr?.[g.id], ok: 0, n: 0 };
+        if (lastRoute === 'drill') host.render(); else host.go('drill');
+        window.scrollTo?.(0, 0);
+      }).catch(() => host.toast('Chưa tải được bài luyện (cần mạng ở lần đầu).'));
+    },
     gtskip() {
       const r = gtRun;
       if (!r) return;
@@ -2135,6 +2163,15 @@ export function init(host: EHost): EngineModule {
       while (r.skipL && r.gi < r.groups.length && r.groups[r.gi]!.kind === 'listening') r.gi++;
       if (r.gi >= r.groups.length) gtFinish(); else { host.render(); window.scrollTo?.(0, 0); }
     },
+    drmark(f) {
+      const r = drRun;
+      if (!r || r.marks) return;
+      r.given = readGiven(f, r.g.items, r.g);
+      const m = markGroup(r.g, r.given), e = E(), gg = (e.gg ||= { done: {} });
+      r.marks = m.marks; r.ok = m.ok; r.n = m.n; r.first = !gg.dr?.[r.g.id];
+      gg.dr = recordGroup(gg.dr, r.g.id, m.ok, m.n, host.today());
+      host.save(); host.render(); window.scrollTo?.(0, 0);
+    },
     lrnext(f) {
       if (!lrApi) return;
       const given: Record<string, string | undefined> = {};
@@ -2277,7 +2314,7 @@ export function init(host: EHost): EngineModule {
     render,
     mapReset() { wsel = null; wlist = false; wq = false; },
     res() { return { coins: wallet(), lv: bag.lv() }; },
-    after(route) { if (route.startsWith('quest')) mapMount(); lobbyMusic(route.startsWith('quest') && !!document.querySelector('.lbstage')); if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('gate') && gtRun?.res) gtRun = null; if (!route.startsWith('treasure')) chestDone = 0; if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } if (!route.startsWith('micro')) mrun = null; },
+    after(route) { if (route.startsWith('quest')) mapMount(); lobbyMusic(route.startsWith('quest') && !!document.querySelector('.lbstage')); if (needGraph(route) && !loaded()) ensure(); if (!route.startsWith('gate') && gtRun?.res) gtRun = null; if (!route.startsWith('drill')) drRun = null; if (!route.startsWith('treasure')) chestDone = 0; if (!route.startsWith('tout')) { tout = null; toutRes = null; } if (!route.startsWith('probe')) { prun = null; pres = null; } if (!route.startsWith('xfer')) { xrun = null; xres = null; } if (!route.startsWith('micro')) mrun = null; },
     autoGoal(id, why) {
       if (V().goals.length) return false;
       const ok = addGoal(id, why === 'pick' ? 'pick' : 'auto');

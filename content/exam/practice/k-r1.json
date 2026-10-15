@@ -1,0 +1,997 @@
+[
+  {
+    "id": "k-r1-01",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r1",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "Notices and messages: shops and services",
+    "instr": "For each question, choose the correct answer.",
+    "paras": [
+      "PHARMACY: From this week we are open on Sundays, but only in the morning. On weekdays we now close at 7 pm, not 9 pm.",
+      "Hi Lan, sorry, I took your blue umbrella by mistake. Mine is the same colour! I'll leave yours at the reception desk tomorrow morning. Ha",
+      "PHONE REPAIRS: Most phones are ready in one hour. Screen repairs take two days. We do not repair tablets.",
+      "Shake well before use. Keep away from sunlight. Do not put in the fridge.",
+      "BOOK CLUB: This month we are reading The Green River. Copies are on the shelf by the door. Take one and bring it back at our next meeting.",
+      "Mia, Dad says you can use the car tonight, but you must put petrol in it before you bring it back. The keys are on the kitchen table. Mum"
+    ],
+    "items": [
+      {
+        "id": "k-r1-01-1",
+        "q": "What time does the pharmacy close on weekdays now?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "9 pm"
+          },
+          {
+            "k": "B",
+            "t": "7 pm"
+          },
+          {
+            "k": "C",
+            "t": "8 pm"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "On weekdays we now close at 7 pm, not 9 pm."
+        },
+        "why": "Ngày thường giờ đóng cửa là 7 giờ tối.",
+        "wrong": {
+          "A": "9 giờ là giờ cũ.",
+          "C": "Không ai nhắc 8 giờ."
+        }
+      },
+      {
+        "id": "k-r1-01-2",
+        "q": "Where will Lan's umbrella be tomorrow morning?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at Lan's flat"
+          },
+          {
+            "k": "B",
+            "t": "in Ha's bag"
+          },
+          {
+            "k": "C",
+            "t": "at the reception desk"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "I'll leave yours at the reception desk tomorrow morning."
+        },
+        "why": "Hà sẽ để ô của Lan ở quầy lễ tân.",
+        "wrong": {
+          "A": "Hà không mang đến nhà Lan.",
+          "B": "Hà đang giữ ô, nhưng sáng mai sẽ để ở quầy."
+        }
+      },
+      {
+        "id": "k-r1-01-3",
+        "q": "How long does a screen repair take?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "two days"
+          },
+          {
+            "k": "B",
+            "t": "one day"
+          },
+          {
+            "k": "C",
+            "t": "one hour"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "Screen repairs take two days."
+        },
+        "why": "Sửa màn hình mất hai ngày.",
+        "wrong": {
+          "B": "Không ai nhắc một ngày.",
+          "C": "Một giờ là cho phần lớn điện thoại."
+        }
+      },
+      {
+        "id": "k-r1-01-4",
+        "q": "Where should you keep it?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "out of the sun"
+          },
+          {
+            "k": "B",
+            "t": "in the fridge"
+          },
+          {
+            "k": "C",
+            "t": "near a window"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 3,
+          "s": "Keep away from sunlight."
+        },
+        "why": "Tránh ánh nắng.",
+        "wrong": {
+          "B": "Nhãn ghi không để tủ lạnh.",
+          "C": "Gần cửa sổ là có nắng."
+        }
+      },
+      {
+        "id": "k-r1-01-5",
+        "q": "Where can members find the book?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at the next meeting"
+          },
+          {
+            "k": "B",
+            "t": "at the bookshop"
+          },
+          {
+            "k": "C",
+            "t": "on the shelf by the door"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 4,
+          "s": "Copies are on the shelf by the door."
+        },
+        "why": "Sách để trên kệ cạnh cửa.",
+        "wrong": {
+          "A": "Buổi sau là lúc mang trả.",
+          "B": "Không cần mua ở hiệu sách."
+        }
+      },
+      {
+        "id": "k-r1-01-6",
+        "q": "What must Mia do before she brings the car back?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "take the keys to Dad"
+          },
+          {
+            "k": "B",
+            "t": "put petrol in it"
+          },
+          {
+            "k": "C",
+            "t": "wash it"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 5,
+          "s": "you must put petrol in it before you bring it back"
+        },
+        "why": "Phải đổ xăng trước khi mang xe về.",
+        "wrong": {
+          "A": "Chìa khoá ở trên bàn bếp.",
+          "C": "Mẹ không nhắc rửa xe."
+        }
+      }
+    ]
+  },
+  {
+    "id": "k-r1-02",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r1",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "Notices and messages: travel",
+    "instr": "For each question, choose the correct answer.",
+    "paras": [
+      "TAXIS: Taxis from this rank go to the airport only. For the city centre, please use the taxi rank outside Gate 3.",
+      "Hi Duc, the boat trip is cancelled because of the wind. They offered our money back, but I've changed our tickets to tomorrow, same time. Linh",
+      "HOTEL POOL: For hotel guests only. Towels are at reception, not by the pool. Children may swim from 9 to 12 only.",
+      "Dear passengers, today the 10.15 bus to Hue will leave from stop 6. The 11.15 bus will leave from stop 2 as usual.",
+      "BIKE HIRE: 5 dollars for one hour, 12 dollars for the whole day. Helmets are free. Please show your passport or ID card.",
+      "Hi Mum, my flight is three hours late, so I'll land at 9, not 6. Don't come to the airport. Uncle Tam will meet me. Huy"
+    ],
+    "items": [
+      {
+        "id": "k-r1-02-1",
+        "q": "Where do taxis from this rank go?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "to the city centre"
+          },
+          {
+            "k": "B",
+            "t": "to Gate 3"
+          },
+          {
+            "k": "C",
+            "t": "to the airport"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "Taxis from this rank go to the airport only."
+        },
+        "why": "Taxi ở đây chỉ đi sân bay.",
+        "wrong": {
+          "A": "Đi trung tâm phải ra điểm ngoài Cổng 3.",
+          "B": "Cổng 3 là chỗ có điểm đón khác."
+        }
+      },
+      {
+        "id": "k-r1-02-2",
+        "q": "When will Linh and Duc go on the boat trip?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "tomorrow"
+          },
+          {
+            "k": "B",
+            "t": "next week"
+          },
+          {
+            "k": "C",
+            "t": "today"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "I've changed our tickets to tomorrow, same time"
+        },
+        "why": "Linh đổi vé sang ngày mai.",
+        "wrong": {
+          "B": "Không ai nhắc tuần sau.",
+          "C": "Hôm nay bị huỷ vì gió."
+        }
+      },
+      {
+        "id": "k-r1-02-3",
+        "q": "Where can guests get towels?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "by the pool"
+          },
+          {
+            "k": "B",
+            "t": "at reception"
+          },
+          {
+            "k": "C",
+            "t": "in their rooms"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "Towels are at reception, not by the pool."
+        },
+        "why": "Khăn ở quầy lễ tân.",
+        "wrong": {
+          "A": "Biển ghi không ở cạnh bể.",
+          "C": "Biển không nhắc phòng."
+        }
+      },
+      {
+        "id": "k-r1-02-4",
+        "q": "Where will the 10.15 bus leave from today?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "stop 2"
+          },
+          {
+            "k": "B",
+            "t": "stop 6"
+          },
+          {
+            "k": "C",
+            "t": "stop 5"
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 3,
+          "s": "today the 10.15 bus to Hue will leave from stop 6"
+        },
+        "why": "Hôm nay chuyến 10.15 đi từ điểm 6.",
+        "wrong": {
+          "A": "Điểm 2 là của chuyến 11.15.",
+          "C": "Không ai nhắc điểm 5."
+        }
+      },
+      {
+        "id": "k-r1-02-5",
+        "q": "How much is a bike for the whole day?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "10 dollars"
+          },
+          {
+            "k": "B",
+            "t": "5 dollars"
+          },
+          {
+            "k": "C",
+            "t": "12 dollars"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 4,
+          "s": "12 dollars for the whole day"
+        },
+        "why": "Thuê cả ngày 12 đô.",
+        "wrong": {
+          "A": "Không ai nhắc 10 đô.",
+          "B": "5 đô là một giờ."
+        }
+      },
+      {
+        "id": "k-r1-02-6",
+        "q": "What time will Huy's plane land?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at 9"
+          },
+          {
+            "k": "B",
+            "t": "at 6"
+          },
+          {
+            "k": "C",
+            "t": "at 3"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 5,
+          "s": "I'll land at 9, not 6"
+        },
+        "why": "Máy bay hạ cánh lúc 9 giờ.",
+        "wrong": {
+          "B": "6 giờ là giờ dự kiến cũ.",
+          "C": "Ba là số giờ trễ, không phải giờ hạ cánh."
+        }
+      }
+    ]
+  },
+  {
+    "id": "k-r1-03",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r1",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "Notices and messages: school",
+    "instr": "For each question, choose the correct answer.",
+    "paras": [
+      "SCHOOL CANTEEN: From Monday, students must bring their own cup for drinks. We will not give out plastic cups.",
+      "Hi Thanh, Mr Hung isn't ill, but he has a meeting, so our maths test is now on Friday. We still have the maths lesson today. An",
+      "LOST PROPERTY: Things left in classrooms are kept in the office for one week. After that, we give them to charity.",
+      "SCHOOL CONCERT: Free for students. Parents pay 3 dollars. Parents, please sit in the back rows.",
+      "Ms Lan, my son Bao has a bad cough. He can come to school today, but please don't let him do sport. Thank you. Mrs Huong",
+      "ART ROOM: Please wash the brushes before you leave. Don't wash them in the toilets. Use the sink by the window."
+    ],
+    "items": [
+      {
+        "id": "k-r1-03-1",
+        "q": "What must students bring from Monday?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "their own drink"
+          },
+          {
+            "k": "B",
+            "t": "their own lunch"
+          },
+          {
+            "k": "C",
+            "t": "their own cup"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "students must bring their own cup for drinks"
+        },
+        "why": "Học sinh mang cốc riêng.",
+        "wrong": {
+          "A": "Phải mang cốc, không phải đồ uống.",
+          "B": "Biển không nhắc bữa trưa."
+        }
+      },
+      {
+        "id": "k-r1-03-2",
+        "q": "When is the maths test now?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "on Thursday"
+          },
+          {
+            "k": "B",
+            "t": "on Friday"
+          },
+          {
+            "k": "C",
+            "t": "today"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "our maths test is now on Friday"
+        },
+        "why": "Bài kiểm tra chuyển sang thứ Sáu.",
+        "wrong": {
+          "A": "Không ai nhắc thứ Năm.",
+          "C": "Hôm nay vẫn có tiết toán, không phải bài kiểm tra."
+        }
+      },
+      {
+        "id": "k-r1-03-3",
+        "q": "How long does the office keep lost things?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "one week"
+          },
+          {
+            "k": "B",
+            "t": "one day"
+          },
+          {
+            "k": "C",
+            "t": "one month"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "kept in the office for one week"
+        },
+        "why": "Văn phòng giữ một tuần.",
+        "wrong": {
+          "B": "Không ai nhắc một ngày.",
+          "C": "Không ai nhắc một tháng."
+        }
+      },
+      {
+        "id": "k-r1-03-4",
+        "q": "How much do parents pay for the concert?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "5 dollars"
+          },
+          {
+            "k": "B",
+            "t": "3 dollars"
+          },
+          {
+            "k": "C",
+            "t": "nothing"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 3,
+          "s": "Parents pay 3 dollars."
+        },
+        "why": "Phụ huynh trả 3 đô.",
+        "wrong": {
+          "A": "Không ai nhắc 5 đô.",
+          "C": "Miễn phí là học sinh."
+        }
+      },
+      {
+        "id": "k-r1-03-5",
+        "q": "What must Bao not do today?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "sport"
+          },
+          {
+            "k": "B",
+            "t": "lessons"
+          },
+          {
+            "k": "C",
+            "t": "go outside at break time"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 4,
+          "s": "please don't let him do sport"
+        },
+        "why": "Mẹ xin cho Bảo không tập thể thao.",
+        "wrong": {
+          "B": "Bảo vẫn đi học được.",
+          "C": "Mẹ không nhắc giờ ra chơi."
+        }
+      },
+      {
+        "id": "k-r1-03-6",
+        "q": "Where should students wash the brushes?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "in the toilets"
+          },
+          {
+            "k": "B",
+            "t": "at the sink by the door"
+          },
+          {
+            "k": "C",
+            "t": "at the sink by the window"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 5,
+          "s": "Use the sink by the window."
+        },
+        "why": "Rửa ở bồn cạnh cửa sổ.",
+        "wrong": {
+          "A": "Biển cấm rửa trong nhà vệ sinh.",
+          "B": "Bồn ở cạnh cửa sổ, không phải cạnh cửa ra vào."
+        }
+      }
+    ]
+  },
+  {
+    "id": "k-r1-04",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r1",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "Notices and messages: home and neighbours",
+    "instr": "For each question, choose the correct answer.",
+    "paras": [
+      "TO ALL NEIGHBOURS: There will be no water on Tuesday from 8 am to 2 pm. Please keep some water on Monday night. Building manager",
+      "Hi Tuan, your parcel came while you were out. I didn't want to leave it outside your door, so it's at my flat, number 12. Come any time after 6. Mrs Oanh",
+      "FOR SALE: Sofa, two years old, 50 dollars. You must collect it yourself. Free table if you buy before Sunday.",
+      "Hi Kim, can you water my plants while I'm away? Only the ones on the balcony. The ones inside don't need any water. Thanks! Vy",
+      "CAR PARK: Residents only after 6 pm. Visitors may park here during the day.",
+      "Grandma, I've taken the dog for a walk. I'll be back in an hour. I've already fed him, so please don't give him dinner. Linh"
+    ],
+    "items": [
+      {
+        "id": "k-r1-04-1",
+        "q": "When will there be no water?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "on Tuesday from 2 to 8"
+          },
+          {
+            "k": "B",
+            "t": "on Tuesday from 8 to 2"
+          },
+          {
+            "k": "C",
+            "t": "on Monday night"
+          }
+        ],
+        "ans": "B",
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "There will be no water on Tuesday from 8 am to 2 pm."
+        },
+        "why": "Mất nước thứ Ba từ 8 giờ sáng đến 2 giờ chiều.",
+        "wrong": {
+          "A": "Từ 2 giờ chiều thứ Ba đã có nước lại.",
+          "C": "Tối thứ Hai là lúc tích nước."
+        }
+      },
+      {
+        "id": "k-r1-04-2",
+        "q": "Which flat is the parcel in now?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "number 2"
+          },
+          {
+            "k": "B",
+            "t": "number 6"
+          },
+          {
+            "k": "C",
+            "t": "number 12"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "it's at my flat, number 12"
+        },
+        "why": "Gói hàng ở căn hộ số 12.",
+        "wrong": {
+          "A": "Không ai nhắc số 2.",
+          "B": "6 giờ là giờ Tuấn đến lấy được."
+        }
+      },
+      {
+        "id": "k-r1-04-3",
+        "q": "What do you get if you buy the sofa before Sunday?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "a chair"
+          },
+          {
+            "k": "B",
+            "t": "a lamp"
+          },
+          {
+            "k": "C",
+            "t": "a table"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "Free table if you buy before Sunday."
+        },
+        "why": "Mua trước Chủ nhật được tặng bàn.",
+        "wrong": {
+          "A": "Không ai nhắc ghế.",
+          "B": "Không ai nhắc đèn."
+        }
+      },
+      {
+        "id": "k-r1-04-4",
+        "q": "Which plants should Kim water?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "the ones inside"
+          },
+          {
+            "k": "B",
+            "t": "the ones on the balcony"
+          },
+          {
+            "k": "C",
+            "t": "the ones in the garden"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 3,
+          "s": "Only the ones on the balcony."
+        },
+        "why": "Chỉ tưới cây ngoài ban công.",
+        "wrong": {
+          "A": "Cây trong nhà không cần nước.",
+          "C": "Vy không nhắc vườn."
+        }
+      },
+      {
+        "id": "k-r1-04-5",
+        "q": "When can visitors park here?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "during the day"
+          },
+          {
+            "k": "B",
+            "t": "after 6 pm"
+          },
+          {
+            "k": "C",
+            "t": "only at weekends"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 4,
+          "s": "Visitors may park here during the day."
+        },
+        "why": "Khách được đỗ ban ngày.",
+        "wrong": {
+          "B": "Sau 6 giờ tối chỉ cư dân.",
+          "C": "Biển không nói chỉ cuối tuần."
+        }
+      },
+      {
+        "id": "k-r1-04-6",
+        "q": "What should Grandma not do?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "give the dog dinner"
+          },
+          {
+            "k": "B",
+            "t": "take the dog for a walk"
+          },
+          {
+            "k": "C",
+            "t": "wait for Linh"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 5,
+          "s": "please don't give him dinner"
+        },
+        "why": "Linh dặn đừng cho chó ăn tối.",
+        "wrong": {
+          "B": "Linh đã dắt chó đi rồi.",
+          "C": "Linh không dặn bà đừng đợi."
+        }
+      }
+    ]
+  },
+  {
+    "id": "k-r1-05",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r1",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "Notices and messages: free time",
+    "instr": "For each question, choose the correct answer.",
+    "paras": [
+      "CINEMA: Tuesday is half-price day. This offer is not for 3D films.",
+      "Hi Ben, the concert starts at 8, but the doors open at 7. Let's meet by the doors at 7 to get good seats. Ana",
+      "SWIMMING IN THE LAKE: Only at weekends, from 10 am to 5 pm. There is nobody to help you on weekdays.",
+      "Hi Phuong, I've got two tickets for the football on Saturday, but my brother can't come. Do you want his ticket? It's free! Nam",
+      "GAME SHOP: Bring your old games and get money for new ones. We don't buy games without their boxes.",
+      "Hi Tom, the restaurant is full on Friday, so I've booked a table for Saturday. It's at 7, the same time as we planned. Mai"
+    ],
+    "items": [
+      {
+        "id": "k-r1-05-1",
+        "q": "Which day is half price?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "Monday"
+          },
+          {
+            "k": "B",
+            "t": "Tuesday"
+          },
+          {
+            "k": "C",
+            "t": "Thursday"
+          }
+        ],
+        "ans": "B",
+        "b": 2.5,
+        "ev": {
+          "p": 0,
+          "s": "Tuesday is half-price day."
+        },
+        "why": "Thứ Ba giảm nửa giá.",
+        "wrong": {
+          "A": "Không ai nhắc thứ Hai.",
+          "C": "Không ai nhắc thứ Năm."
+        }
+      },
+      {
+        "id": "k-r1-05-2",
+        "q": "When do the doors open?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "at 7"
+          },
+          {
+            "k": "B",
+            "t": "at 8"
+          },
+          {
+            "k": "C",
+            "t": "at 6.30"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "the doors open at 7"
+        },
+        "why": "Cửa mở lúc 7 giờ.",
+        "wrong": {
+          "B": "8 giờ là giờ hoà nhạc bắt đầu.",
+          "C": "Không ai nhắc 6.30."
+        }
+      },
+      {
+        "id": "k-r1-05-3",
+        "q": "When can people swim in the lake?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "every day"
+          },
+          {
+            "k": "B",
+            "t": "at weekends"
+          },
+          {
+            "k": "C",
+            "t": "on weekdays"
+          }
+        ],
+        "ans": "B",
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "Only at weekends, from 10 am to 5 pm."
+        },
+        "why": "Chỉ bơi cuối tuần.",
+        "wrong": {
+          "A": "Chỉ cuối tuần.",
+          "C": "Ngày thường không có ai giúp nên không được bơi."
+        }
+      },
+      {
+        "id": "k-r1-05-4",
+        "q": "Whose ticket does Nam want to give Phuong?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "his own"
+          },
+          {
+            "k": "B",
+            "t": "his father's"
+          },
+          {
+            "k": "C",
+            "t": "his brother's"
+          }
+        ],
+        "ans": "C",
+        "b": 3.5,
+        "ev": {
+          "p": 3,
+          "s": "Do you want his ticket?"
+        },
+        "why": "Nam tặng vé của em trai.",
+        "wrong": {
+          "A": "Nam vẫn đi xem.",
+          "B": "Không ai nhắc bố."
+        }
+      },
+      {
+        "id": "k-r1-05-5",
+        "q": "Which games won't the shop buy?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "new games"
+          },
+          {
+            "k": "B",
+            "t": "games for children"
+          },
+          {
+            "k": "C",
+            "t": "games without boxes"
+          }
+        ],
+        "ans": "C",
+        "b": 3,
+        "ev": {
+          "p": 4,
+          "s": "We don't buy games without their boxes."
+        },
+        "why": "Không mua game không có hộp.",
+        "wrong": {
+          "A": "Cửa hàng mua game cũ, không nhắc game mới.",
+          "B": "Biển không nhắc game trẻ em."
+        }
+      },
+      {
+        "id": "k-r1-05-6",
+        "q": "When will Mai and Tom go to the restaurant?",
+        "opts": [
+          {
+            "k": "A",
+            "t": "on Saturday"
+          },
+          {
+            "k": "B",
+            "t": "on Friday"
+          },
+          {
+            "k": "C",
+            "t": "on Sunday"
+          }
+        ],
+        "ans": "A",
+        "b": 3,
+        "ev": {
+          "p": 5,
+          "s": "I've booked a table for Saturday"
+        },
+        "why": "Mai đặt bàn thứ Bảy.",
+        "wrong": {
+          "B": "Thứ Sáu nhà hàng kín chỗ.",
+          "C": "Không ai nhắc Chủ nhật."
+        }
+      }
+    ]
+  }
+]

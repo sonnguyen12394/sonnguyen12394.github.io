@@ -1,0 +1,619 @@
+[
+  {
+    "id": "k-r5-01",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r5",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "A new home",
+    "instr": "For each question, write the correct answer. Write ONE word for each gap.",
+    "paras": [
+      "Hi Sam, I'm sorry I didn't write (1) ___ you last week. We were very busy because we moved to a new flat on Saturday.",
+      "The flat is on the sixth floor, so there's a great view (2) ___ the city. It's bigger (3) ___ our old flat, and I've got my own bedroom now!",
+      "There's a park near here, and I go running there every morning. (4) ___ you like to come and stay next month? You can sleep in my room and I'll sleep on the sofa. Let me know (5) ___ you can come. My mum says you are welcome any time. See you (6) ___, Ben"
+    ],
+    "items": [
+      {
+        "id": "k-r5-01-1",
+        "q": "(1) ___",
+        "ans": {
+          "accept": [
+            "to"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "I'm sorry I didn't write (1) ___ you last week."
+        },
+        "why": "\"write to somebody\" = viết thư cho ai."
+      },
+      {
+        "id": "k-r5-01-2",
+        "q": "(2) ___",
+        "ans": {
+          "accept": [
+            "of",
+            "over",
+            "across"
+          ]
+        },
+        "limit": 1,
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "there's a great view (2) ___ the city"
+        },
+        "why": "\"a view of / over + nơi\" = tầm nhìn ra đâu."
+      },
+      {
+        "id": "k-r5-01-3",
+        "q": "(3) ___",
+        "ans": {
+          "accept": [
+            "than"
+          ]
+        },
+        "limit": 1,
+        "b": 2.5,
+        "ev": {
+          "p": 1,
+          "s": "It's bigger (3) ___ our old flat"
+        },
+        "why": "So sánh hơn: bigger than."
+      },
+      {
+        "id": "k-r5-01-4",
+        "q": "(4) ___",
+        "ans": {
+          "accept": [
+            "Would"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "(4) ___ you like to come and stay next month?"
+        },
+        "why": "Lời mời lịch sự: Would you like to…?"
+      },
+      {
+        "id": "k-r5-01-5",
+        "q": "(5) ___",
+        "ans": {
+          "accept": [
+            "if",
+            "when",
+            "whether"
+          ]
+        },
+        "limit": 1,
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "Let me know (5) ___ you can come."
+        },
+        "why": "\"Let me know if / when you can come\" = báo mình biết bạn có đến được không / khi nào đến được."
+      },
+      {
+        "id": "k-r5-01-6",
+        "q": "(6) ___",
+        "ans": {
+          "accept": [
+            "soon",
+            "later",
+            "then"
+          ]
+        },
+        "limit": 1,
+        "b": 2.5,
+        "ev": {
+          "p": 2,
+          "s": "See you (6) ___, Ben"
+        },
+        "why": "Câu kết thư quen thuộc: See you soon."
+      }
+    ]
+  },
+  {
+    "id": "k-r5-02",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r5",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "Party invitation",
+    "instr": "For each question, write the correct answer. Write ONE word for each gap.",
+    "paras": [
+      "Hi everyone! It's my birthday next Saturday, and I'm having a party (1) ___ my house. It starts at seven o'clock and finishes at about eleven.",
+      "My parents (2) ___ going to cook some Vietnamese food, so please don't eat dinner before you come! There will (3) ___ music and games in the garden.",
+      "Please don't buy me a present. I'd prefer you to bring (4) ___ CD or a book that you have already read, and we can swap them. If you need help finding the house, call me (5) ___ text me. Please tell me by Wednesday if you (6) ___ come. Mai"
+    ],
+    "items": [
+      {
+        "id": "k-r5-02-1",
+        "q": "(1) ___",
+        "ans": {
+          "accept": [
+            "at",
+            "in"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "I'm having a party (1) ___ my house"
+        },
+        "why": "\"at / in my house\" = ở nhà mình."
+      },
+      {
+        "id": "k-r5-02-2",
+        "q": "(2) ___",
+        "ans": {
+          "accept": [
+            "are"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "My parents (2) ___ going to cook some Vietnamese food"
+        },
+        "why": "\"be going to\": chủ ngữ số nhiều \"My parents\" → are."
+      },
+      {
+        "id": "k-r5-02-3",
+        "q": "(3) ___",
+        "ans": {
+          "accept": [
+            "be"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "There will (3) ___ music and games in the garden."
+        },
+        "why": "\"There will be\" = sẽ có."
+      },
+      {
+        "id": "k-r5-02-4",
+        "q": "(4) ___",
+        "ans": {
+          "accept": [
+            "a",
+            "one",
+            "any",
+            "your"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "I'd prefer you to bring (4) ___ CD or a book"
+        },
+        "why": "Danh từ đếm được số ít: a CD (hoặc one / any / your CD)."
+      },
+      {
+        "id": "k-r5-02-5",
+        "q": "(5) ___",
+        "ans": {
+          "accept": [
+            "or"
+          ]
+        },
+        "limit": 1,
+        "b": 2.5,
+        "ev": {
+          "p": 2,
+          "s": "call me (5) ___ text me"
+        },
+        "why": "\"call me or text me\" = gọi hoặc nhắn tin."
+      },
+      {
+        "id": "k-r5-02-6",
+        "q": "(6) ___",
+        "ans": {
+          "accept": [
+            "can",
+            "can't",
+            "cannot",
+            "could",
+            "will",
+            "won't"
+          ]
+        },
+        "limit": 1,
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "Please tell me by Wednesday if you (6) ___ come."
+        },
+        "why": "\"if you can / can't come\" = bạn có đến được hay không."
+      }
+    ]
+  },
+  {
+    "id": "k-r5-03",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r5",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "My weekend",
+    "instr": "For each question, write the correct answer. Write ONE word for each gap.",
+    "paras": [
+      "Last weekend was really busy. On Saturday morning, I played football (1) ___ my brother and his friends. We lost, but it was fun.",
+      "In the afternoon, I went to the shopping centre because I needed (2) ___ new pair of shoes. I looked in five shops, but I didn't find (3) ___ I liked. In the end I bought a T-shirt instead.",
+      "On Sunday, it rained all day, (4) ___ I stayed at home. I watched two films and did my homework. My sister made a cake, and we ate it while we were watching the second film. It was (5) ___ best cake I've ever had! Next weekend I'm going to visit my cousins, (6) ___ live in Hai Phong."
+    ],
+    "items": [
+      {
+        "id": "k-r5-03-1",
+        "q": "(1) ___",
+        "ans": {
+          "accept": [
+            "with",
+            "against"
+          ]
+        },
+        "limit": 1,
+        "b": 2.5,
+        "ev": {
+          "p": 0,
+          "s": "I played football (1) ___ my brother and his friends"
+        },
+        "why": "\"play football with / against somebody\" = chơi cùng / chơi với đội của ai."
+      },
+      {
+        "id": "k-r5-03-2",
+        "q": "(2) ___",
+        "ans": {
+          "accept": [
+            "a"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "I needed (2) ___ new pair of shoes"
+        },
+        "why": "\"a new pair of shoes\" = một đôi giày mới."
+      },
+      {
+        "id": "k-r5-03-3",
+        "q": "(3) ___",
+        "ans": {
+          "accept": [
+            "anything",
+            "any",
+            "one",
+            "what"
+          ]
+        },
+        "limit": 1,
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "I didn't find (3) ___ I liked"
+        },
+        "why": "Câu phủ định: didn't find anything / any (that) I liked."
+      },
+      {
+        "id": "k-r5-03-4",
+        "q": "(4) ___",
+        "ans": {
+          "accept": [
+            "so"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "it rained all day, (4) ___ I stayed at home"
+        },
+        "why": "\"so\" nối kết quả: trời mưa nên ở nhà."
+      },
+      {
+        "id": "k-r5-03-5",
+        "q": "(5) ___",
+        "ans": {
+          "accept": [
+            "the"
+          ]
+        },
+        "limit": 1,
+        "b": 2.5,
+        "ev": {
+          "p": 2,
+          "s": "It was (5) ___ best cake I've ever had!"
+        },
+        "why": "So sánh nhất: the best."
+      },
+      {
+        "id": "k-r5-03-6",
+        "q": "(6) ___",
+        "ans": {
+          "accept": [
+            "who"
+          ]
+        },
+        "limit": 1,
+        "b": 4,
+        "ev": {
+          "p": 2,
+          "s": "my cousins, (6) ___ live in Hai Phong"
+        },
+        "why": "Đại từ quan hệ chỉ người: my cousins, who live in Hai Phong."
+      }
+    ]
+  },
+  {
+    "id": "k-r5-04",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r5",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "Asking about a course",
+    "instr": "For each question, write the correct answer. Write ONE word for each gap.",
+    "paras": [
+      "Dear Sir or Madam, I saw your advert for a cooking course (1) ___ the internet, and I would like some more information.",
+      "First, (2) ___ much does the course cost? I am a student, so I hope there is a cheaper price for students. Also, I work (3) ___ Monday to Friday, so can I join the Saturday class?",
+      "I have (4) ___ cooked Japanese food before, so I am a beginner. Do I need (5) ___ bring my own knives? I look forward to hearing (6) ___ you. Yours faithfully, Tran Van Nam"
+    ],
+    "items": [
+      {
+        "id": "k-r5-04-1",
+        "q": "(1) ___",
+        "ans": {
+          "accept": [
+            "on"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 0,
+          "s": "I saw your advert for a cooking course (1) ___ the internet"
+        },
+        "why": "\"on the internet\" = trên mạng."
+      },
+      {
+        "id": "k-r5-04-2",
+        "q": "(2) ___",
+        "ans": {
+          "accept": [
+            "how"
+          ]
+        },
+        "limit": 1,
+        "b": 2.5,
+        "ev": {
+          "p": 1,
+          "s": "(2) ___ much does the course cost?"
+        },
+        "why": "\"How much…?\" hỏi giá."
+      },
+      {
+        "id": "k-r5-04-3",
+        "q": "(3) ___",
+        "ans": {
+          "accept": [
+            "from"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "I work (3) ___ Monday to Friday"
+        },
+        "why": "\"from Monday to Friday\" = từ thứ Hai đến thứ Sáu."
+      },
+      {
+        "id": "k-r5-04-4",
+        "q": "(4) ___",
+        "ans": {
+          "accept": [
+            "never",
+            "not"
+          ]
+        },
+        "limit": 1,
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "I have (4) ___ cooked Japanese food before, so I am a beginner."
+        },
+        "why": "\"I have never / not cooked\" = chưa từng nấu; vì vậy mới là người mới bắt đầu."
+      },
+      {
+        "id": "k-r5-04-5",
+        "q": "(5) ___",
+        "ans": {
+          "accept": [
+            "to"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "Do I need (5) ___ bring my own knives?"
+        },
+        "why": "\"need to + động từ\"."
+      },
+      {
+        "id": "k-r5-04-6",
+        "q": "(6) ___",
+        "ans": {
+          "accept": [
+            "from"
+          ]
+        },
+        "limit": 1,
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "I look forward to hearing (6) ___ you."
+        },
+        "why": "\"look forward to hearing from you\" = mong nhận được hồi âm."
+      }
+    ]
+  },
+  {
+    "id": "k-r5-05",
+    "kind": "reading",
+    "exams": [
+      "ielts-ac",
+      "ielts-gt",
+      "vstep"
+    ],
+    "qtype": "k-r5",
+    "level": "A2",
+    "band": 3,
+    "mode": "practice",
+    "title": "The lost dog",
+    "instr": "For each question, write the correct answer. Write ONE word for each gap.",
+    "paras": [
+      "Last Tuesday, my dog Lucky ran away (1) ___ we were walking in the park. A man was flying a big kite, and Lucky was scared of it.",
+      "I looked for him everywhere, but I couldn't find him. I was so worried that I couldn't sleep (2) ___ night. The next morning, my dad and I made some posters with Lucky's photo and put (3) ___ up in the streets near our house.",
+      "In the afternoon, a woman phoned us. She said that Lucky was in her garden, eating (4) ___ cat's food! When we arrived, Lucky ran to me and jumped up. I was (5) ___ happy that I started to cry. Now I always keep him on a lead when there (6) ___ kites in the sky."
+    ],
+    "items": [
+      {
+        "id": "k-r5-05-1",
+        "q": "(1) ___",
+        "ans": {
+          "accept": [
+            "while",
+            "when",
+            "as"
+          ]
+        },
+        "limit": 1,
+        "b": 3.5,
+        "ev": {
+          "p": 0,
+          "s": "my dog Lucky ran away (1) ___ we were walking in the park"
+        },
+        "why": "\"while / when we were walking\" = trong lúc đang đi dạo."
+      },
+      {
+        "id": "k-r5-05-2",
+        "q": "(2) ___",
+        "ans": {
+          "accept": [
+            "that",
+            "all",
+            "at",
+            "last"
+          ]
+        },
+        "limit": 1,
+        "b": 3.5,
+        "ev": {
+          "p": 1,
+          "s": "I couldn't sleep (2) ___ night"
+        },
+        "why": "\"that night\" / \"all night\" = đêm đó / cả đêm."
+      },
+      {
+        "id": "k-r5-05-3",
+        "q": "(3) ___",
+        "ans": {
+          "accept": [
+            "them"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 1,
+          "s": "put (3) ___ up in the streets near our house"
+        },
+        "why": "Đại từ thay cho \"some posters\"."
+      },
+      {
+        "id": "k-r5-05-4",
+        "q": "(4) ___",
+        "ans": {
+          "accept": [
+            "her",
+            "the",
+            "its"
+          ]
+        },
+        "limit": 1,
+        "b": 3.5,
+        "ev": {
+          "p": 2,
+          "s": "eating (4) ___ cat's food"
+        },
+        "why": "\"her / the / its cat's food\" = thức ăn của con mèo (nhà bà ấy)."
+      },
+      {
+        "id": "k-r5-05-5",
+        "q": "(5) ___",
+        "ans": {
+          "accept": [
+            "so"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "I was (5) ___ happy that I started to cry."
+        },
+        "why": "\"so + tính từ + that\" = quá… đến nỗi."
+      },
+      {
+        "id": "k-r5-05-6",
+        "q": "(6) ___",
+        "ans": {
+          "accept": [
+            "are"
+          ]
+        },
+        "limit": 1,
+        "b": 3,
+        "ev": {
+          "p": 2,
+          "s": "when there (6) ___ kites in the sky"
+        },
+        "why": "\"there are + danh từ số nhiều\" (kites)."
+      }
+    ]
+  }
+]

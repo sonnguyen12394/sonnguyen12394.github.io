@@ -1,0 +1,23 @@
+{
+  "id": "k-l2",
+  "lesson": [
+    "Phần 2 Nghe là một người nói (thông báo, giới thiệu một sự kiện, lời nhắn). Bạn điền 5 chỗ trống trong một tờ ghi chú.",
+    "Mỗi chỗ là MỘT từ, một con số, một ngày hoặc một giờ. Tên riêng thường được đánh vần: phải viết đúng từng chữ cái."
+  ],
+  "steps": [
+    "Đọc tờ ghi chú trước, đoán mỗi chỗ cần loại gì (số tiền? ngày? đồ vật?).",
+    "Nghe theo thứ tự ghi chú; thông tin đến đúng thứ tự.",
+    "Có hai con số được nhắc thì chọn số đúng với câu hỏi (giá trẻ em hay người lớn?).",
+    "Kiểm chính tả sau khi nghe."
+  ],
+  "tips": [
+    "Đánh vần: nghe kỹ các chữ dễ lẫn E / I, G / J, A / R.",
+    "Giờ viết kiểu 7.30 hoặc 7:30 đều được.",
+    "Ngày tháng có thể nói kiểu 'the fifteenth of May' hoặc 'May the fifteenth': cả hai đều là 15 May."
+  ],
+  "traps": [
+    "Viết thông tin bị sửa lại ('It was Tuesday, but now it's Thursday').",
+    "Viết nhiều hơn một từ."
+  ],
+  "time": "khoảng 3 phút"
+}

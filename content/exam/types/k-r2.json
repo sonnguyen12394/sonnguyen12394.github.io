@@ -1,0 +1,23 @@
+{
+  "id": "k-r2",
+  "lesson": [
+    "Phần 2 Đọc có 7 câu và 3 bài ngắn (A, B, C) về cùng một chủ đề, ví dụ ba người kể về kỳ nghỉ, ba quán ăn, ba câu lạc bộ. Mỗi câu hỏi hỏi: điều này đúng với người / nơi nào?",
+    "Cả ba bài thường nhắc tới cùng một ý (giá, thời gian, bạn bè), nhưng chỉ một bài nói đúng điều câu hỏi hỏi. Đáp án có thể dùng một bài nhiều lần."
+  ],
+  "steps": [
+    "Đọc 7 câu hỏi trước, gạch từ khoá của mỗi câu.",
+    "Đọc bài A, đánh dấu câu nào nói về A; làm tiếp với B, C.",
+    "Với mỗi câu, kiểm lại hai bài còn lại có nói điều ngược lại không.",
+    "Không bỏ trống: luôn chọn một trong A, B, C."
+  ],
+  "tips": [
+    "Câu hỏi thường dùng từ đồng nghĩa: 'cheap' trong câu, 'didn't cost much' trong bài.",
+    "Chú ý 'wanted to but didn't', 'next year', 'used to': việc muốn làm khác việc đã làm.",
+    "Đọc lướt cả ba bài một lượt trước để biết mỗi người là ai, rồi mới đối chiếu từng câu."
+  ],
+  "traps": [
+    "Chọn bài có từ giống câu hỏi mà ý lại ngược (He LIKES / He DOESN'T like).",
+    "Nghĩ mỗi bài chỉ được chọn một hoặc hai lần."
+  ],
+  "time": "khoảng 8 phút cho cả phần"
+}

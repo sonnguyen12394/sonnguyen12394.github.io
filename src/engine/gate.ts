@@ -5,11 +5,13 @@
 // Viết / Nói không vào phán quyết cổng (chỉ tin cậy Vừa khi chưa có AI, SPEC mục 10): trang tiến độ hiện từ bài Thư / Karaoke.
 
 import { estimate, type Response } from '../exam/irt.ts';
+import { sanitizeDrill, mergeDrill, type DrillSave } from './drill.ts';
 
 export const GATE = { open: 0.7, ready: 0.8, sd: 1.5 } as const;
 // Ngưỡng trên thang band của bộ chấm (src/exam/scales.ts CEFR_TABLE: A1 từ band 1, A2 từ band 3, B1 từ band 4; làm tròn 0,5 nên ngưỡng thật là −0,25).
 export const GATE_THR: Record<string, number> = { 'cefr-a1': 0.75, 'cefr-a2': 2.75, 'cefr-b1': 3.75 };
-export const GATE_FORMS: Record<string, string[]> = { 'cefr-a1': ['a1-1', 'a1-2'], 'cefr-a2': ['a2-1', 'a2-2'], 'cefr-b1': ['b1-1', 'b1-2'] };
+// v134: thêm a1-3, a1-4, a2-3, a2-4 (soạn và soát chéo theo content/exam/gate/README.md) để rớt cổng vẫn còn đề lạ.
+export const GATE_FORMS: Record<string, string[]> = { 'cefr-a1': ['a1-1', 'a1-2', 'a1-3', 'a1-4'], 'cefr-a2': ['a2-1', 'a2-2', 'a2-3', 'a2-4'], 'cefr-b1': ['b1-1', 'b1-2'] };
 // Đặc tả tham chiếu (soát 11/10/2026, nguồn công khai về định dạng A2 Key từ 2020: Đọc 30 câu / 5 phần, Viết 2 phần, Nghe 25 câu / 5 phần,
 // thang Cambridge 120–139 = A2). Đề cổng là bản rút gọn cùng kiểu bài (biển báo / tin nhắn, bài đọc ngắn, điền từ, hội thoại ngắn, hội thoại dài).
 // B1 (v116): rút gọn từ định dạng công khai của B1 Preliminary (Đọc phần 1 thông báo, phần 3 bài dài có ý / thái độ, phần 5 điền từ; Nghe đoạn ngắn + phỏng vấn;
@@ -21,7 +23,8 @@ export interface GateSkill { n: number; ok: number; theta: number; se: number }
 export interface GateResult { form: string; goal: string; day: number; n: number; ok: number; theta: number; se: number; p: number; lo: number; hi: number; passed: boolean; secs: number; sk: Partial<Record<'R' | 'L', GateSkill>> }
 export interface GateSave { done: Record<string, GateResult>; seen?: string[]; cert?: 1;   // cert: người học bật "thi lấy chứng chỉ" (tuỳ chọn ở hồ sơ)
    // seen: đề đã mở (câu đã lộ) dù chưa xong: không dùng lại
-  ext?: Array<{ goal: string; day: number; score: number; pass: boolean; pred: number | null; src: 'sample' | 'real' }> }
+  ext?: Array<{ goal: string; day: number; score: number; pass: boolean; pred: number | null; src: 'sample' | 'real' }>;
+  dr?: DrillSave }   // v134 Sân tập trước cổng (drill.ts): lần làm đầu của từng bài luyện dạng A2 Key
 
 // Thang Cambridge English Scale: điểm tối thiểu được công nhận từng cấp (nguồn công khai: A2 Key 120–139 = A2, 140–150 = B1;
 // B1 Preliminary từ 140; B2 First từ 160; C1 Advanced từ 180; C2 Proficiency từ 200). A1 / Pre-A1 không có bài cho người lớn.
@@ -67,6 +70,8 @@ export function sanitizeGate(x: unknown): GateSave | undefined {
     out.done[k] = { form: k, goal, day: num(r.day, 0, 1e6), n: num(r.n, 0, 99), ok: num(r.ok, 0, 99), theta: num(r.theta, 0, 9), se: num(r.se, 0, 9), p: num(r.p, 0, 1), lo: num(r.lo, -9, 9), hi: num(r.hi, 0, 18), passed: r.passed === true, secs: num(r.secs, 0, 1e5), sk };
   }
   if (o.cert === 1) out.cert = 1;
+  const dr = sanitizeDrill(o.dr);
+  if (dr) out.dr = dr;
   if (Array.isArray(o.seen)) { const seen = [...new Set(o.seen.filter((f): f is string => typeof f === 'string' && /^[a-z0-9-]{2,20}$/.test(f)))].slice(-40); if (seen.length) out.seen = seen; }
   if (Array.isArray(o.ext)) out.ext = o.ext.slice(-20).filter((e): e is Record<string, unknown> => !!e && typeof e === 'object').filter(e => !!GATE_THR[String(e.goal)])
     .map(e => ({ goal: String(e.goal), day: num(e.day, 0, 1e6), score: num(e.score, 0, 250), pass: e.pass === true, pred: typeof e.pred === 'number' ? num(e.pred, 0, 1) : null, src: e.src === 'real' ? 'real' : 'sample' }));
@@ -79,5 +84,6 @@ export function mergeGate(a: GateSave | undefined, b: GateSave | undefined): Gat
   for (const [k, v] of Object.entries(a.done)) if (!done[k] || v.day <= done[k]!.day) done[k] = v;
   const ext = [...(a.ext ?? []), ...(b.ext ?? [])].filter((e, i, xs) => xs.findIndex(y => y.day === e.day && y.goal === e.goal && y.score === e.score) === i).sort((x, y) => x.day - y.day);
   const seen = [...new Set([...(a.seen ?? []), ...(b.seen ?? [])])];
-  return { done, ...(a.cert || b.cert ? { cert: 1 as const } : {}), ...(seen.length ? { seen } : {}), ...(ext.length ? { ext } : {}) };
+  const dr = mergeDrill(a.dr, b.dr);
+  return { done, ...(a.cert || b.cert ? { cert: 1 as const } : {}), ...(seen.length ? { seen } : {}), ...(ext.length ? { ext } : {}), ...(dr ? { dr } : {}) };
 }

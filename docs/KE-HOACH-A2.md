@@ -152,6 +152,13 @@ Mỗi dòng: cách làm được chọn, lý do chọn, cách đo để lên đi
 - Migrate bản lưu (`st.e` thêm phiên bản): tiến độ cũ → bậc đồ.
 - **Xong khi:** C3 ≥ 7, C4 ≥ 8, C7 ≥ 7 (tự chấm), CI xanh, bot L01–L03 không chậm hơn đường cũ quá 10%.
 
+**Phần nội dung của mốc 2 đã làm ở v134** (15/10/2026, đợt 1 của `docs/DANH-GIA-KHONG-AI.md`):
+- [x] Soát chéo cả 8 trận cổng A1 / A2 bằng phiên độc lập (đáp án khớp 100%) + thêm a1-3, a1-4, a2-3, a2-4 (4 đề / cấp), có âm thanh.
+- [x] Sân tập trước cổng (`src/engine/drill.ts`, `drillview.ts`): khoảng 300 câu luyện đúng 10 phần Đọc / Nghe A2 Key, chữa ngay; lần làm đầu là số đo theo phần.
+- [x] Viết: máy dò "đủ ý cần có" (`WTASKS.pts`) + bài mẫu 3 mức + 2 đề A2 Key. Nói: 2 đề A2 Key.
+- [ ] Viết / Nói **trong** cổng A2: chưa làm (cổng vẫn chỉ Đọc + Nghe; Viết / Nói trần tin cậy Vừa).
+- [ ] Phần trò chơi của mốc 2 (7 ô, độ sắc, boss khu 2–4, gỡ năng lượng…): chưa làm.
+
 ### Mốc 3 (v136) — Danh tính + tên mới
 - Supabase Auth, chơi trước đăng nhập sau, chuyển dữ liệu; `privacy.html` mới.
 - Đổi tên Chiến Binh Chữ: `manifest.webmanifest`, `index.html`, README, màn "Về", chia sẻ. Tra trùng tên trên Google Play / thương hiệu trước khi đổi.

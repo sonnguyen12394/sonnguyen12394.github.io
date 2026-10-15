@@ -1,0 +1,23 @@
+{
+  "id": "k-r1",
+  "lesson": [
+    "Phần 1 Đọc của A2 Key có 6 câu. Mỗi câu là một văn bản rất ngắn: biển báo, ghi chú, tin nhắn điện thoại, email ngắn, nhãn hàng. Bạn chọn một trong ba câu nói đúng ý của văn bản.",
+    "Câu hỏi hỏi về MỤC ĐÍCH hoặc Ý CHÍNH: văn bản muốn người đọc làm gì, điều gì đã thay đổi, ai cần làm gì. Ba phương án thường đều dùng lại vài từ trong văn bản, nên không chọn theo từ giống nhau."
+  ],
+  "steps": [
+    "Đọc văn bản, tự hỏi: ai viết, cho ai, để làm gì?",
+    "Đọc ba phương án, gạch điểm khác nhau giữa chúng (ai, khi nào, phải hay không phải).",
+    "Quay lại văn bản, tìm câu chứa ý đó; chú ý từ phủ định (not, only, no longer) và từ thời gian.",
+    "Loại hai phương án sai bằng lý do cụ thể, không chọn theo cảm giác."
+  ],
+  "tips": [
+    "'Only', 'not', 'must', 'can' đổi hẳn nghĩa câu: đọc kỹ những từ này.",
+    "Biển báo thường viết tắt, bỏ chủ ngữ: 'Closed Mondays' = 'The shop is closed on Mondays'.",
+    "Phương án đúng thường nói lại ý bằng từ khác (paraphrase)."
+  ],
+  "traps": [
+    "Chọn phương án có nhiều từ giống văn bản nhất.",
+    "Không để ý ai là người phải làm việc đó (người viết hay người đọc)."
+  ],
+  "time": "khoảng 1 phút mỗi câu"
+}

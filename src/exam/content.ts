@@ -50,6 +50,18 @@ export const QTYPES: QTypeInfo[] = [
   // Kiểm tra đầu vào: bài ngắn, trắc nghiệm 4 phương án, dùng chung cho mọi kỳ thi (đo năng lực Nghe/Đọc trên thang band)
   { id: 'pl-r', vi: 'Đọc hiểu ngắn (kiểm tra đầu vào)', en: 'Short reading', skill: 'R', exams: ALL, kind: 'choice', guess: 0.25 },
   { id: 'pl-l', vi: 'Nghe hiểu ngắn (kiểm tra đầu vào)', en: 'Short listening', skill: 'L', exams: ALL, kind: 'choice', guess: 0.25 },
+  // v134 Sân tập trước cổng A2: 5 phần Đọc + 5 phần Nghe theo định dạng công khai của A2 Key (Cambridge, từ 2020). Không thuộc kỳ thi
+  // nào của tab Ôn thi (lọc khỏi danh sách dạng ở views/practice.ts); engine mở bằng host.drill (src/engine/drill.ts).
+  { id: 'k-r1', vi: 'Biển báo, tin nhắn ngắn', en: 'Reading Part 1', skill: 'R', exams: ALL, kind: 'choice', guess: 0.33 },
+  { id: 'k-r2', vi: 'Ghép câu với ba bài ngắn', en: 'Reading Part 2', skill: 'R', exams: ALL, kind: 'choice', guess: 0.33 },
+  { id: 'k-r3', vi: 'Bài đọc dài, chọn đáp án', en: 'Reading Part 3', skill: 'R', exams: ALL, kind: 'choice', guess: 0.33 },
+  { id: 'k-r4', vi: 'Chọn từ điền vào bài', en: 'Reading Part 4', skill: 'R', exams: ALL, kind: 'choice', guess: 0.33 },
+  { id: 'k-r5', vi: 'Tự điền một từ', en: 'Reading Part 5', skill: 'R', exams: ALL, kind: 'text', guess: 0 },
+  { id: 'k-l1', vi: 'Năm đoạn ngắn, chọn đáp án', en: 'Listening Part 1', skill: 'L', exams: ALL, kind: 'choice', guess: 0.33 },
+  { id: 'k-l2', vi: 'Nghe và ghi thông tin', en: 'Listening Part 2', skill: 'L', exams: ALL, kind: 'text', guess: 0 },
+  { id: 'k-l3', vi: 'Hội thoại dài, chọn đáp án', en: 'Listening Part 3', skill: 'L', exams: ALL, kind: 'choice', guess: 0.33 },
+  { id: 'k-l4', vi: 'Năm đoạn ngắn, hiểu ý chính', en: 'Listening Part 4', skill: 'L', exams: ALL, kind: 'choice', guess: 0.33 },
+  { id: 'k-l5', vi: 'Ghép người với việc', en: 'Listening Part 5', skill: 'L', exams: ALL, kind: 'choice', guess: 0.12 },
 ];
 
 export const QT: Record<string, QTypeInfo> = Object.fromEntries(QTYPES.map(q => [q.id, q]));

@@ -91,7 +91,7 @@ for (const f of dump.content?.funcs ?? []) nodes.push({
   acts: [{ at: `data-fn="${f.id}"`, t: f.vi }], minutes: 15,
 });
 // Dạng câu thi Nghe/Đọc (bỏ dạng chỉ dùng cho kiểm tra đầu vào) và bài Viết/Nói thi.
-for (const q of QTYPES.filter(q => !q.id.startsWith('pl-'))) nodes.push({
+for (const q of QTYPES.filter(q => !q.id.startsWith('pl-') && !q.id.startsWith('k-'))) nodes.push({
   id: `x:${q.id}`, kind: 'task', area: 'task', skill: q.skill as Skill, cefr: null, vi: q.vi, en: q.en, ctx: ['exam'],
   acts: [{ at: `data-xr="type/${q.id}"`, t: q.vi }], minutes: 30,
 });
@@ -218,7 +218,7 @@ for (const L of CEFRS) goals.push({
   req: candos(c => c.lv === L).map(c => cdReq(c, L === 'C1' || L === 'C2')),
 });
 const taskLevel = (x: number, lo: number, hi: number): Level => (x < lo ? 3 : x < hi ? 4 : 5);
-const IEXAM = QTYPES.filter(q => q.exams.includes('ielts-ac') && !q.id.startsWith('pl-'));
+const IEXAM = QTYPES.filter(q => q.exams.includes('ielts-ac') && !q.id.startsWith('pl-') && !q.id.startsWith('k-'));
 for (const kind of ['ielts-ac', 'ielts-gt'] as const) for (let b = 4; b <= 9; b += 0.5) {
   const L = bandToCefr(b), lv = taskLevel(b, 5.5, 7), high = b >= 7;
   const t1 = kind === 'ielts-ac' ? 'xw:ielts-t1-ac' : 'xw:ielts-t1-gt';

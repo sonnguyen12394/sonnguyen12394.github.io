@@ -1,0 +1,23 @@
+{
+  "id": "k-r5",
+  "lesson": [
+    "Phần 5 Đọc là một bài ngắn (thường là email) có 6 chỗ trống, không có từ cho sẵn. Bạn tự gõ MỘT từ cho mỗi chỗ.",
+    "Từ cần điền gần như luôn là từ ngữ pháp: giới từ (in, at, for), mạo từ (a, the), đại từ (it, them), trợ động từ (are, did, have), từ nối (and, but, because), từ hỏi (what, how)."
+  ],
+  "steps": [
+    "Đọc cả câu có chỗ trống và câu trước, câu sau.",
+    "Tự hỏi: chỗ này cần loại từ gì (giới từ? trợ động từ?).",
+    "Gõ một từ, đúng chính tả.",
+    "Đọc lại cả câu xem đã đúng ngữ pháp chưa (thì, số ít / số nhiều)."
+  ],
+  "tips": [
+    "Trước V-ing sau giới từ: 'thanks FOR coming'.",
+    "Câu hỏi thiếu trợ động từ: '___ you like it?' → Do / Did.",
+    "So sánh: 'bigger ___ mine' → than."
+  ],
+  "traps": [
+    "Gõ hai từ ('a lot') vào một chỗ trống.",
+    "Sai chính tả: một chữ sai là không được điểm."
+  ],
+  "time": "khoảng 6 phút"
+}

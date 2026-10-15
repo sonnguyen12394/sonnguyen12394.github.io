@@ -23,12 +23,14 @@ test('v111 chấm cổng: đúng hết → qua; đoán bừa (1/3) → không qu
 test('v111 luật mở cổng: khoá khi bản đồ chưa gần đủ; mở khi đủ; đề đã mở (dù chưa xong) không dùng lại; qua rồi thì không mở nữa', () => {
   assert.equal(gateState('cefr-a2', 10, 100, undefined).open, false);
   const s = gateState('cefr-a2', 80, 100, undefined);
-  assert.equal(s.open, true); assert.deepEqual(s.left, ['a2-1', 'a2-2']);
-  assert.deepEqual(gateState('cefr-a2', 80, 100, { done: {}, seen: ['a2-1'] }).left, ['a2-2']);
+  assert.equal(s.open, true); assert.deepEqual(s.left, ['a2-1', 'a2-2', 'a2-3', 'a2-4'], 'v134: 4 đề mỗi cấp A1 / A2');
+  assert.deepEqual(gateState('cefr-a2', 80, 100, { done: {}, seen: ['a2-1'] }).left, ['a2-2', 'a2-3', 'a2-4']);
   const fail = gateScore('cefr-a2', 'a2-1', answers('a2-1', 0.4), 1, 60), pass = gateScore('cefr-a2', 'a2-2', answers('a2-2', 1), 2, 60);
   assert.equal(gateState('cefr-a2', 80, 100, { done: { 'a2-1': fail } }).open, true, 'rớt thì còn đề lạ thứ hai');
   const both = gateState('cefr-a2', 80, 100, { done: { 'a2-1': fail, 'a2-2': pass } });
   assert.equal(both.open, false); assert.equal(both.passed?.form, 'a2-2');
+  const used = gateState('cefr-a2', 80, 100, { done: { 'a2-1': fail }, seen: ['a2-1', 'a2-2', 'a2-3', 'a2-4'] });
+  assert.equal(used.open, false, 'hết đề lạ thì cổng khoá'); assert.deepEqual(used.left, []);
   assert.equal(gateState('cefr-b1', 80, 100, undefined).has, true, 'v116 có cổng B1');
   assert.equal(gateState('cefr-b2', 80, 100, undefined).has, false);
   assert.ok(GATE.open > 0 && GATE.ready === 0.8);

@@ -13,7 +13,7 @@ import { isoToDay } from './views/ui.ts';
 import { profile } from './estimate.ts';
 import { refresh, sendPairs, hiddenItems } from './net.ts';
 import { vstepToBand } from './scales.ts';
-import { itemParams, cleanCache, loadPack } from './packs.ts';
+import { itemParams, cleanCache, loadPack, IDX } from './packs.ts';
 import { viewPlaceIntro, viewPlaceRun, viewPlaceResult, FLAG_REASONS, type PRun } from './views/place.ts';
 import { newPlacement, advance, answerGroup, results, remainingMs, MAX_ITEMS, type PSkill } from './placement.ts';
 import { sendAttempt } from './net.ts';
@@ -41,6 +41,8 @@ export interface ExamModule {
   merge(a: unknown, b: unknown): XState;
   lr: LrApi;
   gate(form: string): Promise<Group[]>;   // v111 trận cổng: các nhóm của một đề (gói "gate" riêng, không lẫn gói luyện)
+  drill(q: string): Promise<Group[]>;     // v134 Sân tập trước cổng: các bài luyện của một phần A2 Key (gói "p-k-…")
+  drillCounts(): Record<string, number>;  // số bài có sẵn mỗi phần (theo index, không cần tải gói)
 }
 
 // v111 (docs/SPEC.md "Mô hình học v111" §2): xếp lớp Nghe / Đọc cho chương mở đầu của engine. Cùng thuật toán thích ứng và kho câu
@@ -425,5 +427,7 @@ export function init(host: Host): ExamModule {
     merge: mergeX,
     lr,
     async gate(form) { const gs = await loadPack('gate'); return gs.filter(g => g.id.startsWith(`gt-${form}-`)).sort((a, b) => (a.id < b.id ? -1 : 1)); },
+    async drill(q) { if (!/^k-[rl][1-5]$/.test(q) || !IDX.packs['p-' + q]) return []; const gs = await loadPack('p-' + q); return [...gs].sort((a, b) => (a.id < b.id ? -1 : 1)); },
+    drillCounts() { return Object.fromEntries(Object.entries(IDX.packs).filter(([k]) => /^p-k-[rl][1-5]$/.test(k)).map(([k, v]) => [k.slice(2), v.groups])); },
   };
 }

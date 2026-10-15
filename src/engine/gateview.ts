@@ -27,11 +27,14 @@ export function groupForm(c: ECtx, g: Group, form: string, btn: string, plays: n
 }
 
 // Cửa vào trận cổng: trạng thái (khoá / mở / đã qua) + vì sao.
-export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, total: number, sv: GateSave | undefined, test = false): string {
+export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, total: number, sv: GateSave | undefined, test = false, drill = false): string {
   const esc = c.host.esc, st = gateState(goal, solid, total, sv), lv = LV(goal);
+  // v134 Sân tập trước cổng: luyện đúng kiểu bài của cổng bằng câu khác, chữa ngay (drill.ts).
+  const yard = drill ? `<section class="panel stack"><h3>🏹 Sân tập trước cổng</h3><p class="muted">Luyện 10 kiểu bài đọc, nghe giống trận cổng, bằng câu khác. Chữa ngay, nghe lại được, làm lại được.</p>
+    <div class="row"><button class="btn${st.open ? '' : ' primary'}" data-e="drhome">Vào sân tập</button></div></section>` : '';
   if (!st.has) return `<section class="stack"><span class="eyebrow">🚪 Cổng khu ${esc(lv)}</span><h1>Cổng khu ${esc(lv)} chưa xây</h1><p class="muted">Trận cổng hiện có cho khu A1 và A2. Khu này dùng bản đồ năng lực để theo dõi; kết luận đạt sẽ có khi cổng được xây.</p></section>${back()}`;
   const last = st.last ? resultBox(c, st.last) : '';
-  if (st.passed) return `<section class="stack"><span class="eyebrow">🚪 Cổng khu ${esc(lv)}</span><h1>✓ Bạn đã qua cổng khu ${esc(lv)}</h1></section>${resultBox(c, st.passed)}${back()}`;
+  if (st.passed) return `<section class="stack"><span class="eyebrow">🚪 Cổng khu ${esc(lv)}</span><h1>✓ Bạn đã qua cổng khu ${esc(lv)}</h1></section>${resultBox(c, st.passed)}${yard}${back()}`;
   const open = st.open || (test && st.left.length > 0);
   const why = st.left.length === 0 ? 'Bạn đã dùng hết các trận cổng lạ của khu này. Tí đang xây thêm trận mới; trong lúc chờ, cứ luyện tiếp để vững hơn.'
     : open ? `Cổng đã mở. Trận gồm vài biển báo, mẩu tin để đọc và vài đoạn hội thoại để nghe, toàn câu bạn <b>chưa gặp bao giờ</b>. Mỗi trận chỉ chơi một lần, không có đồng hồ, không hiện đáp án trong lúc chơi.`
@@ -39,7 +42,7 @@ export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, t
   return `<section class="stack"><span class="eyebrow">🚪 Cổng khu ${esc(lv)} · ${esc(vi)}</span><h1>${open ? 'Cổng đã mở' : 'Cổng còn khoá'}</h1>
     <p class="muted">${why}</p></section>
     ${open ? `<div class="row"><button class="btn primary big" data-e="gtstart">▶ Vào trận cổng</button></div>` : ''}
-    ${last}<p class="hint">Trận ${esc(GATE_SPEC[goal] ?? '')}. Đậu khi khả năng qua ≥ ${pc(GATE.ready)}.</p>${back()}`;
+    ${yard}${last}<p class="hint">Trận ${esc(GATE_SPEC[goal] ?? '')}. Đậu khi khả năng qua ≥ ${pc(GATE.ready)}.</p>${back()}`;
 }
 const back = () => '<div class="row"><button class="btn ghost" data-e="go" data-r="quest">Về bản đồ</button></div>';
 

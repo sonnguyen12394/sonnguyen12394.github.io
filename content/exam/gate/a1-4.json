@@ -1,0 +1,818 @@
+[
+ {
+  "id": "gt-a1-4-r1",
+  "kind": "reading",
+  "exams": [
+   "ielts-ac",
+   "ielts-gt",
+   "vstep"
+  ],
+  "qtype": "pl-r",
+  "level": "A1",
+  "band": 1.5,
+  "mode": "gate",
+  "title": "Signs at the zoo",
+  "instr": "Read the signs and answer the questions.",
+  "paras": [
+   "ZOO TICKETS: Adults 8 dollars. Children 5 to 12: 4 dollars. Children under 5: free.",
+   "MONKEYS: You can give the monkeys fruit from the zoo shop. Please don't take photos with a flash.",
+   "ZOO CAFE: Open from 9 am to 3 pm. Hot food all day.",
+   "BIRD HOUSE: Today it is open in the afternoon only, from 2 pm.",
+   "ZOO TRAIN: Every 30 minutes from the main door. The last train is at 3.30."
+  ],
+  "items": [
+   {
+    "id": "gt-a1-4-r1-a",
+    "q": "How much is a ticket for a four-year-old boy?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "4 dollars"
+     },
+     {
+      "k": "B",
+      "t": "nothing"
+     },
+     {
+      "k": "C",
+      "t": "8 dollars"
+     }
+    ],
+    "ans": "B",
+    "b": 2.5,
+    "ev": {
+     "p": 0,
+     "s": "Children under 5: free."
+    },
+    "why": "Trẻ dưới 5 tuổi được miễn phí.",
+    "wrong": {
+     "A": "4 đô là vé trẻ từ 5 đến 12 tuổi.",
+     "C": "8 đô là vé người lớn."
+    }
+   },
+   {
+    "id": "gt-a1-4-r1-b",
+    "q": "What must visitors not do near the monkeys?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "use a flash"
+     },
+     {
+      "k": "B",
+      "t": "give them fruit"
+     },
+     {
+      "k": "C",
+      "t": "take photos"
+     }
+    ],
+    "ans": "A",
+    "b": 2,
+    "ev": {
+     "p": 1,
+     "s": "Please don't take photos with a flash."
+    },
+    "why": "Không được chụp ảnh có đèn flash.",
+    "wrong": {
+     "B": "Được cho khỉ ăn trái cây mua ở cửa hàng.",
+     "C": "Chụp ảnh được, chỉ không dùng đèn flash."
+    }
+   },
+   {
+    "id": "gt-a1-4-r1-c",
+    "q": "What can you buy at the cafe at 4 pm?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "nothing"
+     },
+     {
+      "k": "B",
+      "t": "cold food"
+     },
+     {
+      "k": "C",
+      "t": "hot food"
+     }
+    ],
+    "ans": "A",
+    "b": 2.5,
+    "ev": {
+     "p": 2,
+     "s": "Open from 9 am to 3 pm."
+    },
+    "why": "Quán đóng cửa lúc 3 giờ chiều.",
+    "wrong": {
+     "B": "4 giờ quán đã đóng.",
+     "C": "Có đồ nóng cả ngày, nhưng 4 giờ quán đã đóng."
+    }
+   },
+   {
+    "id": "gt-a1-4-r1-d",
+    "q": "When can you see the birds today?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "at 10 am"
+     },
+     {
+      "k": "B",
+      "t": "at 3 pm"
+     },
+     {
+      "k": "C",
+      "t": "at 11 am"
+     }
+    ],
+    "ans": "B",
+    "b": 2,
+    "ev": {
+     "p": 3,
+     "s": "Today it is open in the afternoon only, from 2 pm."
+    },
+    "why": "Hôm nay nhà chim mở từ 2 giờ chiều.",
+    "wrong": {
+     "A": "Buổi sáng nhà chim đóng.",
+     "C": "Buổi sáng nhà chim đóng."
+    }
+   },
+   {
+    "id": "gt-a1-4-r1-e",
+    "q": "When is the last zoo train?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "at half past three"
+     },
+     {
+      "k": "B",
+      "t": "at three o'clock"
+     },
+     {
+      "k": "C",
+      "t": "at half past four"
+     }
+    ],
+    "ans": "A",
+    "b": 2,
+    "ev": {
+     "p": 4,
+     "s": "The last train is at 3.30."
+    },
+    "why": "Chuyến cuối lúc 3.30.",
+    "wrong": {
+     "B": "Ba giờ là giờ quán cà phê đóng.",
+     "C": "Không ai nhắc 4.30."
+    }
+   }
+  ],
+  "allow": [
+   "monkeys",
+   "flash"
+  ]
+ },
+ {
+  "id": "gt-a1-4-r2",
+  "kind": "reading",
+  "exams": [
+   "ielts-ac",
+   "ielts-gt",
+   "vstep"
+  ],
+  "qtype": "pl-r",
+  "level": "A1",
+  "band": 2,
+  "mode": "gate",
+  "title": "Tam's new school",
+  "instr": "Read the email and answer the questions.",
+  "paras": [
+   "Hi Nga, I'm at my new school now. It's very big, and there are forty students in my class. My teacher is Mr Dung. He's old, and he is very kind.",
+   "I go to school by bus because it's far from my house. It takes thirty minutes. My favourite lesson is music, but we only have it on Monday.",
+   "I haven't got many friends yet, but a girl called Vy sits next to me. She lives in my street too! Write soon! Tam"
+  ],
+  "items": [
+   {
+    "id": "gt-a1-4-r2-a",
+    "q": "What is Mr Dung like?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "kind"
+     },
+     {
+      "k": "B",
+      "t": "funny"
+     },
+     {
+      "k": "C",
+      "t": "young"
+     }
+    ],
+    "ans": "A",
+    "b": 2,
+    "ev": {
+     "p": 0,
+     "s": "he is very kind"
+    },
+    "why": "Thầy Dũng rất tốt bụng.",
+    "wrong": {
+     "B": "Thư không nói thầy vui tính.",
+     "C": "Thầy đã lớn tuổi."
+    }
+   },
+   {
+    "id": "gt-a1-4-r2-b",
+    "q": "How does Tam go to school?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "on foot"
+     },
+     {
+      "k": "B",
+      "t": "by bike"
+     },
+     {
+      "k": "C",
+      "t": "by bus"
+     }
+    ],
+    "ans": "C",
+    "b": 1.5,
+    "ev": {
+     "p": 1,
+     "s": "I go to school by bus"
+    },
+    "why": "Tâm đi xe buýt vì trường xa.",
+    "wrong": {
+     "A": "Trường xa nhà nên không đi bộ.",
+     "B": "Thư không nhắc xe đạp."
+    }
+   },
+   {
+    "id": "gt-a1-4-r2-c",
+    "q": "When does Tam have music?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "on Tuesday"
+     },
+     {
+      "k": "B",
+      "t": "on Thursday"
+     },
+     {
+      "k": "C",
+      "t": "on Monday"
+     }
+    ],
+    "ans": "C",
+    "b": 2,
+    "ev": {
+     "p": 1,
+     "s": "we only have it on Monday"
+    },
+    "why": "Chỉ có tiết nhạc vào thứ Hai.",
+    "wrong": {
+     "A": "Thư không nhắc thứ Ba.",
+     "B": "Thư không nhắc thứ Năm."
+    }
+   },
+   {
+    "id": "gt-a1-4-r2-d",
+    "q": "What does Tam say about Vy?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "She is in a different class."
+     },
+     {
+      "k": "B",
+      "t": "She lives near Tam."
+     },
+     {
+      "k": "C",
+      "t": "She is Tam's old friend."
+     }
+    ],
+    "ans": "B",
+    "b": 2.5,
+    "ev": {
+     "p": 2,
+     "s": "She lives in my street too!"
+    },
+    "why": "Vy ở cùng phố với Tâm.",
+    "wrong": {
+     "A": "Vy ngồi cạnh Tâm nên cùng lớp.",
+     "C": "Tâm mới quen Vy ở trường mới."
+    }
+   }
+  ]
+ },
+ {
+  "id": "gt-a1-4-r3",
+  "kind": "reading",
+  "exams": [
+   "ielts-ac",
+   "ielts-gt",
+   "vstep"
+  ],
+  "qtype": "pl-r",
+  "level": "A1",
+  "band": 2,
+  "mode": "gate",
+  "title": "Our holiday",
+  "instr": "Choose the right word for each gap.",
+  "paras": [
+   "Last summer my family (1) ___ to Da Lat. We stayed in a small hotel next to a river.",
+   "The weather was cool, so we wore jackets. We (2) ___ a lot of fruit and visited a flower garden. My sister took (3) ___ photos. It was (4) ___ best holiday of my life!"
+  ],
+  "items": [
+   {
+    "id": "gt-a1-4-r3-a",
+    "q": "Gap 1",
+    "opts": [
+     {
+      "k": "A",
+      "t": "goes"
+     },
+     {
+      "k": "B",
+      "t": "go"
+     },
+     {
+      "k": "C",
+      "t": "went"
+     }
+    ],
+    "ans": "C",
+    "b": 2,
+    "ev": {
+     "p": 0,
+     "s": "Last summer my family (1) ___ to Da Lat."
+    },
+    "why": "\"Last summer\": quá khứ đơn \"went\".",
+    "wrong": {
+     "A": "\"goes\" là hiện tại, ngôi ba số ít.",
+     "B": "\"go\" là hiện tại."
+    }
+   },
+   {
+    "id": "gt-a1-4-r3-b",
+    "q": "Gap 2",
+    "opts": [
+     {
+      "k": "A",
+      "t": "eat"
+     },
+     {
+      "k": "B",
+      "t": "ate"
+     },
+     {
+      "k": "C",
+      "t": "eating"
+     }
+    ],
+    "ans": "B",
+    "b": 2.5,
+    "ev": {
+     "p": 1,
+     "s": "We (2) ___ a lot of fruit"
+    },
+    "why": "Quá khứ đơn của \"eat\" là \"ate\".",
+    "wrong": {
+     "A": "Kể chuyện đã qua nên dùng quá khứ.",
+     "C": "\"We eating\" thiếu động từ \"to be\"."
+    }
+   },
+   {
+    "id": "gt-a1-4-r3-c",
+    "q": "Gap 3",
+    "opts": [
+     {
+      "k": "A",
+      "t": "any"
+     },
+     {
+      "k": "B",
+      "t": "much"
+     },
+     {
+      "k": "C",
+      "t": "lots of"
+     }
+    ],
+    "ans": "C",
+    "b": 2.5,
+    "ev": {
+     "p": 1,
+     "s": "My sister took (3) ___ photos."
+    },
+    "why": "\"lots of photos\" = nhiều ảnh.",
+    "wrong": {
+     "A": "\"any\" dùng trong câu phủ định / câu hỏi.",
+     "B": "\"much\" dùng cho danh từ không đếm được."
+    }
+   },
+   {
+    "id": "gt-a1-4-r3-d",
+    "q": "Gap 4",
+    "opts": [
+     {
+      "k": "A",
+      "t": "the"
+     },
+     {
+      "k": "B",
+      "t": "an"
+     },
+     {
+      "k": "C",
+      "t": "a"
+     }
+    ],
+    "ans": "A",
+    "b": 2,
+    "ev": {
+     "p": 1,
+     "s": "It was (4) ___ best holiday of my life!"
+    },
+    "why": "So sánh nhất: the best.",
+    "wrong": {
+     "B": "Không dùng \"an\" trước so sánh nhất.",
+     "C": "Không dùng \"a\" trước so sánh nhất."
+    }
+   }
+  ]
+ },
+ {
+  "id": "gt-a1-4-l1",
+  "kind": "listening",
+  "exams": [
+   "ielts-ac",
+   "ielts-gt",
+   "vstep"
+  ],
+  "qtype": "pl-l",
+  "level": "A1",
+  "band": 1.5,
+  "mode": "gate",
+  "title": "Four short conversations",
+  "instr": "Listen and answer the questions. You will hear each conversation once.",
+  "script": [
+   {
+    "sp": "Boy",
+    "t": "Dad, can we have noodles for dinner?"
+   },
+   {
+    "sp": "Man",
+    "t": "We had noodles yesterday. Let's have rice tonight."
+   },
+   {
+    "sp": "Woman",
+    "t": "Excuse me, where is the post office?"
+   },
+   {
+    "sp": "Man",
+    "t": "It's not on this street. It's on Hai Ba Trung Street, opposite the bank."
+   },
+   {
+    "sp": "Girl",
+    "t": "Is your birthday in June, Tuan?"
+   },
+   {
+    "sp": "Boy",
+    "t": "No, my sister's birthday is in June. Mine is in May."
+   },
+   {
+    "sp": "Woman",
+    "t": "How many students are in your English class?"
+   },
+   {
+    "sp": "Girl",
+    "t": "Last year there were twenty-five. This year there are twenty-two."
+   }
+  ],
+  "voices": {
+   "Boy": "am_michael",
+   "Man": "am_adam",
+   "Woman": "bf_emma",
+   "Girl": "af_sky"
+  },
+  "items": [
+   {
+    "id": "gt-a1-4-l1-a",
+    "q": "What will they have for dinner?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "chicken"
+     },
+     {
+      "k": "B",
+      "t": "rice"
+     },
+     {
+      "k": "C",
+      "t": "noodles"
+     }
+    ],
+    "ans": "B",
+    "b": 1.5,
+    "ev": {
+     "p": 1,
+     "s": "Let's have rice tonight."
+    },
+    "why": "Tối nay ăn cơm.",
+    "wrong": {
+     "A": "Không ai nhắc gà.",
+     "C": "Hôm qua đã ăn mì."
+    }
+   },
+   {
+    "id": "gt-a1-4-l1-b",
+    "q": "Where is the post office?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "opposite the bank"
+     },
+     {
+      "k": "B",
+      "t": "on this street"
+     },
+     {
+      "k": "C",
+      "t": "next to the bank"
+     }
+    ],
+    "ans": "A",
+    "b": 2,
+    "ev": {
+     "p": 3,
+     "s": "opposite the bank"
+    },
+    "why": "Bưu điện đối diện ngân hàng.",
+    "wrong": {
+     "B": "Bưu điện không ở phố này.",
+     "C": "Đối diện, không phải cạnh."
+    }
+   },
+   {
+    "id": "gt-a1-4-l1-c",
+    "q": "When is Tuan's birthday?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "in July"
+     },
+     {
+      "k": "B",
+      "t": "in June"
+     },
+     {
+      "k": "C",
+      "t": "in May"
+     }
+    ],
+    "ans": "C",
+    "b": 2,
+    "ev": {
+     "p": 5,
+     "s": "Mine is in May."
+    },
+    "why": "Sinh nhật Tuấn tháng Năm.",
+    "wrong": {
+     "A": "Không ai nhắc tháng Bảy.",
+     "B": "Tháng Sáu là sinh nhật chị Tuấn."
+    }
+   },
+   {
+    "id": "gt-a1-4-l1-d",
+    "q": "How many students are in the class this year?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "twenty-two"
+     },
+     {
+      "k": "B",
+      "t": "twenty-five"
+     },
+     {
+      "k": "C",
+      "t": "twelve"
+     }
+    ],
+    "ans": "A",
+    "b": 2,
+    "ev": {
+     "p": 7,
+     "s": "This year there are twenty-two."
+    },
+    "why": "Năm nay lớp có hai mươi hai học sinh.",
+    "wrong": {
+     "B": "Hai mươi lăm là năm ngoái.",
+     "C": "Không ai nhắc mười hai."
+    }
+   }
+  ],
+  "allow": [
+   "birthday",
+   "excuse",
+   "noodles"
+  ],
+  "audio": {
+   "file": "a/gt-a1-4-l1.mp3",
+   "dur": 27,
+   "voices": [
+    "am_michael",
+    "am_adam",
+    "bf_emma",
+    "af_sky"
+   ]
+  }
+ },
+ {
+  "id": "gt-a1-4-l2",
+  "kind": "listening",
+  "exams": [
+   "ielts-ac",
+   "ielts-gt",
+   "vstep"
+  ],
+  "qtype": "pl-l",
+  "level": "A1",
+  "band": 2,
+  "mode": "gate",
+  "title": "At the clothes shop",
+  "instr": "Listen to the conversation and answer the questions.",
+  "script": [
+   {
+    "sp": "Woman",
+    "t": "Hello. Can I help you?"
+   },
+   {
+    "sp": "Boy",
+    "t": "Yes. I want a T-shirt for my dad. It's his birthday. My brother wants one too, but not today."
+   },
+   {
+    "sp": "Woman",
+    "t": "What colour does he like? We've got red, green and black."
+   },
+   {
+    "sp": "Boy",
+    "t": "He likes red, but he's got lots of red T-shirts. I'll take the green one."
+   },
+   {
+    "sp": "Woman",
+    "t": "What size? Small or medium?"
+   },
+   {
+    "sp": "Boy",
+    "t": "He's very tall, so a large one, please."
+   },
+   {
+    "sp": "Woman",
+    "t": "The red ones are eleven dollars, but the green ones are nine. So that's nine dollars."
+   }
+  ],
+  "voices": {
+   "Woman": "bf_isabella",
+   "Boy": "am_michael"
+  },
+  "items": [
+   {
+    "id": "gt-a1-4-l2-a",
+    "q": "Who is the T-shirt for?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "the boy's brother"
+     },
+     {
+      "k": "B",
+      "t": "the boy's dad"
+     },
+     {
+      "k": "C",
+      "t": "the boy"
+     }
+    ],
+    "ans": "B",
+    "b": 2,
+    "ev": {
+     "p": 1,
+     "s": "I want a T-shirt for my dad."
+    },
+    "why": "Áo cho bố nhân sinh nhật.",
+    "wrong": {
+     "A": "Em trai cũng muốn nhưng hôm nay không mua.",
+     "C": "Cậu mua cho bố, không cho mình."
+    }
+   },
+   {
+    "id": "gt-a1-4-l2-b",
+    "q": "What colour T-shirt does the boy buy?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "green"
+     },
+     {
+      "k": "B",
+      "t": "black"
+     },
+     {
+      "k": "C",
+      "t": "red"
+     }
+    ],
+    "ans": "A",
+    "b": 2,
+    "ev": {
+     "p": 3,
+     "s": "I'll take the green one."
+    },
+    "why": "Cậu chọn áo xanh lá.",
+    "wrong": {
+     "B": "Có màu đen nhưng cậu không chọn.",
+     "C": "Bố thích đỏ nhưng có nhiều áo đỏ rồi."
+    }
+   },
+   {
+    "id": "gt-a1-4-l2-c",
+    "q": "What size does he buy?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "medium"
+     },
+     {
+      "k": "B",
+      "t": "small"
+     },
+     {
+      "k": "C",
+      "t": "large"
+     }
+    ],
+    "ans": "C",
+    "b": 2.5,
+    "ev": {
+     "p": 5,
+     "s": "so a large one, please"
+    },
+    "why": "Em rất cao nên lấy cỡ lớn.",
+    "wrong": {
+     "A": "Cậu chọn cỡ lớn.",
+     "B": "Người bán hỏi nhỏ hay vừa, cậu chọn lớn."
+    }
+   },
+   {
+    "id": "gt-a1-4-l2-d",
+    "q": "How much is the T-shirt?",
+    "opts": [
+     {
+      "k": "A",
+      "t": "11 dollars"
+     },
+     {
+      "k": "B",
+      "t": "9 dollars"
+     },
+     {
+      "k": "C",
+      "t": "12 dollars"
+     }
+    ],
+    "ans": "B",
+    "b": 2.5,
+    "ev": {
+     "p": 6,
+     "s": "So that's nine dollars."
+    },
+    "why": "Áo xanh lá giá chín đô.",
+    "wrong": {
+     "A": "Mười một đô là giá áo đỏ.",
+     "C": "Không ai nhắc mười hai đô."
+    }
+   }
+  ],
+  "allow": [
+   "birthday",
+   "medium",
+   "size"
+  ],
+  "audio": {
+   "file": "a/gt-a1-4-l2.mp3",
+   "dur": 24.9,
+   "voices": [
+    "bf_isabella",
+    "am_michael"
+   ]
+  }
+ }
+]
