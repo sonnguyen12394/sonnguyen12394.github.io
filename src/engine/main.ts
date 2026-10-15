@@ -579,7 +579,7 @@ export function init(host: EHost): EngineModule {
     dirGame: () => { try { return loaded() && E().goals.length ? director().next.game : undefined; } catch { return undefined; } },
     start: k => { const f = act[k]; if (f) f(document.createElement('button')); },
     coins: n => { const q = qsave(); q.coins += n; q.day = host.today(); },
-    ver: 'v133',
+    ver: 'v134',
   });
   onEvHook = (o, ev) => fc.onEv(o, ev);
   // Số kỹ năng vững thật của mục tiêu chính (mốc cuối mỗi khu truyện cần con số này).

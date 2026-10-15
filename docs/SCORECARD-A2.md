@@ -58,8 +58,8 @@ Bảng chấm duy nhất từ 13/10/2026 (`docs/SPEC.md`, khối đầu tệp, m
 
 | # | v132 | v133 | Bằng chứng / vì sao chưa cao hơn |
 |---|---|---|---|
-| C1 *(đo)* | 0 | **5** | Có trận ngắm góc / lực / gió (`fight.ts`, `fightview.ts`): kéo ná, quỹ đạo 1/3, dấu ✕ phát trước, boss Rè có cơ chế (gió đảo chiều, Sóng rè), số sát thương, rung, chậm thời gian khi kết liễu. Chưa ai chơi thật; hình tự vẽ |
-| C2 *(đo)* | 0 | **5** | Công thức đồ × tay ngắm; mô phỏng khoá dải ở `engine-fight.test.ts` (chênh −1 ngắm giỏi 42%, −2: 2%, +1 ngắm kém 59%, đúng bậc giỏi 85% / kém 30%). Bot ≠ người; chưa có số liệu trận thật |
+| C1 *(đo)* | 0 | **5** | v134: trận kiểu Chaos Orbit (`fight.ts`, `fightview.ts`): chạy né, lưỡi quỹ đạo, lên cấp 1/3, tiến hoá, DASH, Tuyệt kỹ, Elite, boss Rè (Sóng rè, gọi lính, hạn 75 giây). Thay trận ngắm bắn v133 theo quyết định 15/10/2026. Chưa người thật kiểm; hình tự vẽ |
+| C2 *(đo)* | 0 | **5** | v134: đồ × tay né; bot né (giỏi / TB / kém) khoá dải ở `engine-fight.test.ts` (40 trận/ô: chênh −1 né giỏi 33%, −2: 0%, +1 né kém 63%, đúng bậc giỏi 88% / kém 10%). Bot ≠ người; chưa có số liệu trận thật |
 | C3 | 2 | **6** | Thua vì thiếu bậc → màn kết nói đúng ô, một nút mở đúng lò; tinh hoa chỉ từ câu đúng ở lò; rèn → mặc khi Từ vựng đủ. Mới một ô (Vũ khí) |
 | C4 | 4 | **4** | Vũ khí khoá đúng luật (bậc mặc = min(đã rèn, Từ vựng Lv), test xu / tinh hoa vô hạn không vượt). Nhưng tạm thời có thêm một hệ đồ nữa cho tới khi gộp ở mốc 2 |
 | C5 | 5 | **6** | Thợ rèn gợi ý (bản đầu, chỉ ô Vũ khí), lý do bằng lời game, +25% tinh hoa khi theo |

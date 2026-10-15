@@ -1,5 +1,13 @@
 # English Ladder — Master Spec v2
 
+> **15/10/2026 — Trận đổi sang kiểu Chaos Orbit (v134).** Người sáng lập chốt: thay trận ngắm bắn kiểu Gunny bằng lối chơi hiện tại của repo `chaos-orbit-prototype` (kiểu Vampire Survivors). Khối này sửa khối 13/10/2026 ngay dưới; phần khác của khối đó giữ nguyên.
+> 1. **Thay mục 2:** trận là game thuần kiểu Chaos Orbit: chạy để né, vũ khí quỹ đạo tự chém, lên cấp chọn 1 trong 3 nâng cấp, combo, tiến hoá, DASH, Tuyệt kỹ, Elite rơi rương, boss. Vẫn **không có câu tiếng Anh** trong trận, trận không ghi bằng chứng (P13).
+> 2. **Thay mục 3:** kết quả trận ≈ **70% đồ, 30% tay né + cách chọn nâng cấp**. Dải khoá giữ như cũ (chênh −1 bậc, né giỏi: 20–45%; chênh −2: < 10%; dư +1 bậc, né kém: ≥ 55%; đúng bậc, né giỏi ≥ 70%). Cách làm: sát thương Vũ khí ×1,32^w, quái khu nhân máu ×1,32^bậc cần, lệch bậc so với bậc cần nhân thêm ×1,32^(1,5 × lệch) (`fight.ts` `edgeOf`).
+> 3. **Ô đồ trong trận:** Vũ khí (Từ vựng) = sát thương lưỡi; Giáp (Ngữ pháp) = giảm sát thương nhận; Khiên (Nghe) = giảm Sóng rè của boss; Giày (Phát âm) = tốc chạy + hồi DASH; Bùa (Nói) = sạc Tuyệt kỹ; Mũ, Nhẫn chưa có tác dụng.
+> 4. **Meta của Chaos giữ nhưng sửa cho hợp luật:** gold → xu thô (thắng trận + nhặt trong trận, phần nhặt không quá thưởng của trận); shop nâng cấp vĩnh viễn → bỏ, sức mạnh ngoài trận chỉ đến từ đồ rèn; 7 nhân vật giữ, là **lối chơi ngang sức** (test: lệch tỉ lệ thắng ≤ 20 điểm), mở bằng thành tích trong trận, không mua được; thành tích chỉ để khoe + mở nhân vật; chọn thời lượng 3/5/10 phút → bỏ, mỗi trận có thời lượng riêng; bảng tinh chỉnh chỉ bật với `?dev`.
+> 5. **Thay mục 22 riêng phần trận:** mã trận Gunny (v133) xoá hẳn; còn trong lịch sử git nếu cần lui.
+> 6. **Mục 15 (mỹ thuật):** trận không còn địa hình / đạn; hình vẫn tự vẽ canvas, nhân vật chibi SVG.
+
 > **13/10/2026 — Đổi hướng: Chiến Binh Chữ.** Người sáng lập chốt sau buổi rà lại spec (20 câu hỏi). Khối này đứng trên mọi phần bên dưới; dòng nào bên dưới trái với khối này thì theo khối này (các dòng bị thay có ghi "thay bởi 13/10/2026").
 >
 > **Định vị và vòng lõi**

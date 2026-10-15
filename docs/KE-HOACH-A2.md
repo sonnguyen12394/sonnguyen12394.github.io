@@ -40,7 +40,8 @@ Nhánh chứa các tài liệu trên: `claude/v133-spec-chien-binh-chu` (chỉ t
 Mỗi dòng: cách làm được chọn, lý do chọn, cách đo để lên điểm cao.
 
 ### C1 Trận đấu vui tự thân (trọng số 3, bắt buộc ≥ 7)
-- **Cách làm:** trận ngắm bắn theo lượt kiểu Gunny trên canvas (theo khuôn lớp phủ `wheelview.ts` / `huntview.ts`: ngoài `#app`, 60 fps, pointer events). Kéo để chọn góc + lực, mũi tên quỹ đạo dự đoán ngắn (chỉ 1/3 đường như Gunny), gió đổi mỗi lượt, địa hình bị khoét khi nổ (mặt nạ alpha trên canvas địa hình). Mỗi lượt ≤ 15 giây, trận 2–4 phút, 1 boss + tối đa 2 lính.
+- **v134 (15/10/2026):** trận đổi sang kiểu Chaos Orbit (docs/SPEC.md khối 15/10/2026); dải C2 giữ nguyên, bot ngắm thay bằng bot né. Dòng dưới là thiết kế v133 (lịch sử).
+- **Cách làm (v133, đã thay):** trận ngắm bắn theo lượt kiểu Gunny trên canvas (theo khuôn lớp phủ `wheelview.ts` / `huntview.ts`: ngoài `#app`, 60 fps, pointer events). Kéo để chọn góc + lực, mũi tên quỹ đạo dự đoán ngắn (chỉ 1/3 đường như Gunny), gió đổi mỗi lượt, địa hình bị khoét khi nổ (mặt nạ alpha trên canvas địa hình). Mỗi lượt ≤ 15 giây, trận 2–4 phút, 1 boss + tối đa 2 lính.
 - **Boss có cơ chế riêng** (không chỉ "máu trâu"): khu 1 Tiếng Ồn Rè (chắn gió, đổi hướng gió mỗi 2 lượt), khu 2 Tiếng Ồn Vọng (nhân đôi đạn), khu 3 Tiếng Ồn Câm (giấu thanh lực)… Mỗi boss nhắm vào **một ô yếu** (mục 5 spec) để buộc học đều.
 - **Cảm giác:** số sát thương bay, rung màn khi trúng mạnh, chậm thời gian 150 ms khi kết liễu, âm theo đòn (`sfx.ts`), nhân vật mặc đúng đồ đã rèn (`avatar.ts`).
 - **Lý do:** C1 nặng nhất và đã từng thất bại (playtest v92 "quá tệ"). Phải làm ít mà sâu: một kiểu trận, một boss làm thật tốt trước khi thêm.
