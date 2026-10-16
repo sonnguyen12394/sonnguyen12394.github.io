@@ -152,6 +152,58 @@ test('v141 bài sinh theo tiêu chí: hai lần mở ra hai bài khác nhau; đ�
   expect(errors).toEqual([]);
 });
 
+test('v141 🎲 Thử sức từng kỹ năng ở 🎯 Mục tiêu: bài ngắn sinh mới, ra "Đúng x/y", không vào mức thuộc / thi chuyển cấp, làm lại là bài khác', async ({ page, errors }) => {
+  test.setTimeout(120_000);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await setup(page);
+  const ledBefore = await page.evaluate(() => (window as any).eval('st').e.ev.led.length);
+  const tryLis = async (): Promise<string> => {
+    const form = page.locator('form[data-eform="gtnext"]');
+    await expect(page.locator('#app .eyebrow').first()).toContainText('🎲 Thử sức Nghe A2');
+    await expect(page.locator('[data-e="gttts"]')).toBeVisible();
+    const keys = await page.evaluate(() => (window as any).eval('EM').peek()?.keys ?? {});
+    const ids = Object.keys(keys).sort().join(',');
+    for (const [id, k] of Object.entries(keys)) await form.locator(`input[name="${id}"][value="${k}"]`).check();
+    await form.getByRole('button').last().click();
+    return ids + JSON.stringify(Object.values(keys));
+  };
+  await page.evaluate(() => (window as any).eval("go('aim')"));
+  await page.locator('#app [data-e="trystart"][data-sk="lis"]').click();
+  await expect(page.locator('form[data-eform="gtnext"]')).toBeVisible();
+  let ans = '';
+  for (let i = 0; i < 3 && (await page.locator('form[data-eform="gtnext"]').count()); i++) ans += await tryLis();
+  await expect(page.locator('#app h1')).toHaveText(/^Đúng (\d+)\/\1 \(100%\)$/);
+  expect(await chrome(page)).not.toMatch(BANNED);
+  await noHorizontalScroll(page);
+  const st = await page.evaluate(() => { const e = (window as any).eval('st').e; return { tries: e.gg.tries, done: Object.keys(e.gg.done ?? {}), led: e.ev.led.length }; });
+  expect(st.tries).toHaveLength(1); expect(st.tries[0]).toMatchObject({ lv: 'A2', sk: 'lis' }); expect(st.tries[0].ok).toBe(st.tries[0].n);
+  expect(st.done).toEqual([]); expect(st.led).toBe(ledBefore);   // chỉ là phép đo: không ghi bằng chứng, không vào thi chuyển cấp
+  // Thử bài mới: câu khác (hạt mới)
+  const first = await page.evaluate(() => (window as any).eval('st').e.gg.tries.length);
+  await page.getByRole('button', { name: /🎲 Thử bài mới/ }).click();
+  await expect(page.locator('form[data-eform="gtnext"]')).toBeVisible();
+  const script = await page.locator('#app').innerText();
+  let ans2 = '';
+  for (let i = 0; i < 3 && (await page.locator('form[data-eform="gtnext"]').count()); i++) ans2 += await tryLis();
+  expect(first).toBe(1); expect(script.length).toBeGreaterThan(0); expect(ans2).not.toEqual(ans);
+  // Viết: một bài ngắn, có % tiêu chí
+  await page.evaluate(() => (window as any).eval("go('aim')"));
+  await page.locator('#app [data-e="trystart"][data-sk="wr"]').click();
+  const ws = page.locator('form[data-eform="gtws"]');
+  await expect(ws).toBeVisible();
+  await ws.locator('textarea').fill('Hi Ana! Can you water my plants this weekend, please? I will be back on Sunday evening. Thank you very much!');
+  await ws.getByRole('button').last().click();
+  await expect(page.locator('#app')).toContainText(/✍️ Viết: \d+% tiêu chí/);
+  expect(await page.evaluate(() => (window as any).eval('st').e.gg.tries.length)).toBe(3);
+  // Từ vựng / Phát âm: câu theo nút của đúng kỹ năng đó
+  for (const [sk, h] of [['voc', 'Words and grammar'], ['pro', 'Sounds']]) {
+    await page.evaluate(() => (window as any).eval("go('aim')"));
+    await page.locator(`#app [data-e="trystart"][data-sk="${sk}"]`).click();
+    await expect(page.locator('#app h2').first()).toHaveText(h!);
+  }
+  expect(errors).toEqual([]);
+});
+
 test('Chứng chỉ tuỳ chọn ở trang mục tiêu: chỉ hiện khi bật, ghi điểm kèm dự đoán của app', async ({ page, errors }) => {
   await setup(page, '?playtest=0');
   await page.evaluate(() => (window as any).eval("go('goal',{er:'goal/cefr-a2'})"));

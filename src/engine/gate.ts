@@ -15,7 +15,8 @@ export const GATE_THR: Record<string, number> = { 'cefr-a1': 0.75, 'cefr-a2': 2.
 export const GEN_LV: Record<string, 'A1' | 'A2'> = { 'cefr-a1': 'A1', 'cefr-a2': 'A2' };
 // Làm lại sau khi rớt: chờ WAIT ngày VÀ có thêm phần vững so với lúc làm (không làm đi làm lại để thử vận may).
 export const RETRY = { wait: 3 } as const;
-export const USED_MAX = 600;
+export const USED_MAX = 600, TRY_MAX = 50;
+export interface GateTry { day: number; lv: string; sk: string; ok: number; n: number; w?: number }
 export const GATE_FORMS: Record<string, string[]> = { 'cefr-a1': ['a1-1', 'a1-2'], 'cefr-a2': ['a2-1', 'a2-2'], 'cefr-b1': ['b1-1', 'b1-2'] };
 // Đặc tả tham chiếu (soát 11/10/2026, nguồn công khai về định dạng A2 Key từ 2020: Đọc 30 câu / 5 phần, Viết 2 phần, Nghe 25 câu / 5 phần,
 // thang Cambridge 120–139 = A2). Đề cổng là bản rút gọn cùng kiểu bài (biển báo / tin nhắn, bài đọc ngắn, điền từ, hội thoại ngắn, hội thoại dài).
@@ -29,7 +30,8 @@ export interface GateResult { form: string; goal: string; day: number; n: number
 export interface GateSave { done: Record<string, GateResult>; seen?: string[]; cert?: 1;   // cert: người học bật "thi lấy chứng chỉ" (tuỳ chọn ở hồ sơ)
    // seen: đề đã mở (câu đã lộ) dù chưa xong: không dùng lại
   ext?: Array<{ goal: string; day: number; score: number; pass: boolean; pred: number | null; src: 'sample' | 'real' }>;
-  used?: string[] }   // v141 mã câu có sẵn đã ra trong một bài (không ra lại), ≤ USED_MAX
+  used?: string[];   // v141 mã câu có sẵn đã ra trong một bài (không ra lại), ≤ USED_MAX
+  tries?: GateTry[] }   // v141 Thử sức từng kỹ năng (chỉ là phép đo, không vào mức thuộc), ≤ TRY_MAX
 
 // Thang Cambridge English Scale: điểm tối thiểu được công nhận từng cấp (nguồn công khai: A2 Key 120–139 = A2, 140–150 = B1;
 // B1 Preliminary từ 140; B2 First từ 160; C1 Advanced từ 180; C2 Proficiency từ 200). A1 / Pre-A1 không có bài cho người lớn.
@@ -87,6 +89,8 @@ export function sanitizeGate(x: unknown): GateSave | undefined {
       .map(w => ({ id: String(w.id), kind: w.kind as 'w' | 's', pct: num(w.pct, 0, 1), words: Math.round(num(w.words, 0, 999)) })); if (ws.length) out.done[k]!.ws = ws; }
   }
   if (o.cert === 1) out.cert = 1;
+  if (Array.isArray(o.tries)) { const t = o.tries.filter((x): x is Record<string, unknown> => !!x && typeof x === 'object' && /^(A1|A2)$/.test(String(x.lv)) && /^[a-z]{2,3}$/.test(String(x.sk))).slice(-TRY_MAX)
+    .map(x => ({ day: Math.round(num(x.day, 0, 1e6)), lv: String(x.lv), sk: String(x.sk), ok: Math.round(num(x.ok, 0, 99)), n: Math.round(num(x.n, 0, 99)), ...(typeof x.w === 'number' ? { w: num(x.w, 0, 1) } : {}) })); if (t.length) out.tries = t; }
   if (Array.isArray(o.used)) { const u = [...new Set(o.used.filter((f): f is string => typeof f === 'string' && /^[a-z0-9-]{2,40}$/.test(f)))].slice(-USED_MAX); if (u.length) out.used = u; }
   if (Array.isArray(o.seen)) { const seen = [...new Set(o.seen.filter((f): f is string => typeof f === 'string' && /^[a-z0-9-]{2,20}$/.test(f)))].slice(-40); if (seen.length) out.seen = seen; }
   if (Array.isArray(o.ext)) out.ext = o.ext.slice(-20).filter((e): e is Record<string, unknown> => !!e && typeof e === 'object').filter(e => !!GATE_THR[String(e.goal)])
@@ -100,5 +104,6 @@ export function mergeGate(a: GateSave | undefined, b: GateSave | undefined): Gat
   for (const [k, v] of Object.entries(a.done)) if (!done[k] || v.day <= done[k]!.day) done[k] = v;
   const ext = [...(a.ext ?? []), ...(b.ext ?? [])].filter((e, i, xs) => xs.findIndex(y => y.day === e.day && y.goal === e.goal && y.score === e.score) === i).sort((x, y) => x.day - y.day);
   const seen = [...new Set([...(a.seen ?? []), ...(b.seen ?? [])])], used = [...new Set([...(a.used ?? []), ...(b.used ?? [])])].slice(-USED_MAX);
-  return { done, ...(a.cert || b.cert ? { cert: 1 as const } : {}), ...(seen.length ? { seen } : {}), ...(ext.length ? { ext } : {}), ...(used.length ? { used } : {}) };
+  const tries = [...(a.tries ?? []), ...(b.tries ?? [])].filter((t, i, xs) => xs.findIndex(y => JSON.stringify(y) === JSON.stringify(t)) === i).sort((x, y) => x.day - y.day).slice(-TRY_MAX);
+  return { ...(tries.length ? { tries } : {}), done, ...(a.cert || b.cert ? { cert: 1 as const } : {}), ...(seen.length ? { seen } : {}), ...(ext.length ? { ext } : {}), ...(used.length ? { used } : {}) };
 }

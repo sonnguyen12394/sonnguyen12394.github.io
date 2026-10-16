@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 78;
+const STATE_V = 18, APP_VERSION = 79;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -4791,6 +4791,10 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:79,d:'2026-10-16',t:'🎲 Thử sức từng kỹ năng',items:[
+    'Ở 🎯 Mục tiêu, mỗi kỹ năng có nút 🎲 Thử sức: một bài ngắn mới mỗi lần (Từ vựng, Ngữ pháp, Phát âm, Đọc, Nghe, Viết, Nói).',
+    'Xong thấy ngay đúng mấy câu và chữa từng câu. Thử sức chỉ để biết mình đang ở đâu, không tính vào mức thuộc.',
+    'Không giới hạn số lần, vì lần nào cũng là câu mới.']},
   {v:78,d:'2026-10-16',t:'Thi chuyển cấp: bài mới mỗi lần',items:[
     'Thi chuyển cấp A1, A2 không còn bộ soạn sẵn: mỗi lần làm, máy sinh một bài mới theo tiêu chí của cấp (biển báo, tin nhắn, email, hội thoại, từ vựng, ngữ pháp, viết, nói).',
     'Câu bạn đã gặp không ra lại. Phần Nghe mới do máy đọc hai giọng.',
@@ -8477,7 +8481,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.ddc4af3e03.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.fa843d5d57.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

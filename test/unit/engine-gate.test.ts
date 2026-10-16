@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { gateScore, gateState, sanitizeGate, mergeGate, phi, GATE, GATE_FORMS, type GateAns } from '../../src/engine/gate.ts';
+import { gateScore, gateState, sanitizeGate, mergeGate, phi, GATE, GATE_FORMS, TRY_MAX, type GateAns } from '../../src/engine/gate.ts';
 
 // v111 trận cổng (SPEC "Mô hình học v111" §3–§4): câu lạ, P(đậu) ≥ 80%, mở khi bản đồ gần đủ, đề đã mở không dùng lại.
 const FORM = (f: string) => JSON.parse(readFileSync(`content/exam/gate/${f}.json`, 'utf8')) as Array<{ id: string; kind: string; mode: string; items: Array<{ id: string; b: number; opts: unknown[] }> }>;
@@ -59,4 +59,12 @@ test('v111 cách ly: đề cổng nằm riêng (mode gate, gói gate), đủ 2 �
   for (const id of ids) assert.ok(!other.has(id), id);
   const idx = JSON.parse(readFileSync('src/exam/gen/index.json', 'utf8')) as { packs: Record<string, { qtypes: string[] }> };
   assert.ok(idx.packs.gate, 'gói gate riêng');
+});
+
+test('v141 Thử sức: làm sạch (chỉ A1 / A2, mã kỹ năng hợp lệ, ≤ TRY_MAX), gộp hai máy bỏ trùng theo ngày', () => {
+  const t = { day: 3, lv: 'A2', sk: 'lis', ok: 4, n: 7 };
+  const s = sanitizeGate({ done: {}, tries: [t, { ...t, lv: 'B1' }, { ...t, sk: '<x>' }, 5, ...Array.from({ length: 80 }, (_, i) => ({ ...t, day: i }))] })!;
+  assert.ok(s.tries!.length <= TRY_MAX); assert.ok(s.tries!.every(x => x.lv === 'A2' && x.sk === 'lis'));
+  const m = mergeGate({ done: {}, tries: [t] }, { done: {}, tries: [t, { ...t, day: 1, sk: 'wr', w: 60 }] })!;
+  assert.deepEqual(m.tries!.map(x => x.day), [1, 3]);
 });

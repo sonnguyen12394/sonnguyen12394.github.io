@@ -84,8 +84,8 @@ import { viewLrRun } from './lrview.ts';
 import { viewTreasureCard, viewTreasureIntro, viewTreasureDone, CHEST_COINS } from './treasureview.ts';
 import { viewGateHome, viewGateRun, viewGateEnd, viewGateWs, viewCert, type GateRun } from './gateview.ts';
 import { GATE_WS, NEXT_LV, wsPct, wordsOf as gwWords } from './gatews.ts';
-import { genForm, type NodePool } from './testgen.ts';
-import { gateScore, gateState, lastP, CES_MIN, GATE_FORMS, GEN_LV, USED_MAX, type GateAns } from './gate.ts';
+import { genForm, TRY_PARTS, type NodePool } from './testgen.ts';
+import { gateScore, gateState, lastP, CES_MIN, GATE_FORMS, GEN_LV, USED_MAX, TRY_MAX, type GateAns } from './gate.ts';
 import type { LrApi } from '../exam/main.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
 import { viewMeasure } from './measureview.ts';
@@ -176,6 +176,12 @@ export function init(host: EHost): EngineModule {
     }
     const e = E(), res = gateScore(r.goal, r.form, ans, host.today(), Math.round((Date.now() - r.t0) / 1000));
     if (r.ws?.out.length) res.ws = r.ws.out;   // v140 Viết + Nói: tham khảo, không vào đậu / rớt
+    if (r.try) {
+      // v141 Thử sức: chỉ là phép đo, không vào mức thuộc, không vào thi chuyển cấp, không lên cấp; lưu số để xem tiến bộ.
+      r.res = res; const gg = (e.gg ||= { done: {} }), w = res.ws?.[0];
+      gg.tries = [...(gg.tries ?? []), { day: host.today(), lv: GEN_LV[r.goal] ?? 'A2', sk: r.try, ok: res.ok, n: res.n, ...(w ? { w: Math.round(w.pct * 100) } : {}) }].slice(-TRY_MAX);
+      host.save(); host.render(); window.scrollTo?.(0, 0); return;
+    }
     if (r.gen) { res.sol = r.gen.sol; res.seed = r.gen.seed; }   // v141 luật làm lại + chữa bài theo hạt
     r.res = res;
     // v140 qua thi chuyển cấp → tự lên cấp (người sáng lập 16/10/2026): cấp kế thành đích chính, 🎯 Mục tiêu theo đích mới.
@@ -1990,6 +1996,18 @@ export function init(host: EHost): EngineModule {
         const gg = (E().gg ||= { done: {} }); gg.seen = [...new Set([...(gg.seen ?? []), form])]; host.save();   // đã mở là đã lộ câu: không dùng lại đề này
         gtRun = { goal: g.id, form, groups, gi: 0, given: {}, plays: 0, t0: Date.now(), skipL: false, res: null }; lrPlays = 0; host.render(); window.scrollTo?.(0, 0);
       }).catch(() => host.toast('Chưa tải được bài thi chuyển cấp (cần mạng ở lần đầu).'));
+    },
+    // v141 🎲 Thử sức một kỹ năng ở 🎯 Mục tiêu: bài ngắn sinh mới mỗi lần (ô TRY_PARTS của kỹ năng), cùng màn làm bài với thi chuyển cấp.
+    trystart(el) {
+      if (!loaded()) { ensure(); return; }
+      const sk = el.dataset.sk ?? '', parts = TRY_PARTS[sk], lv = isAimLv(el.dataset.lv) ? el.dataset.lv : (aimLv ?? (goalOf(V())?.id === 'cefr-a1' ? 'A1' : 'A2'));
+      const gid = AIM_LVS.find(([l]) => l === lv)?.[1]; if (!parts || !gid) return;
+      const e = E(), seed = ((Date.now() ^ Math.imul(e.ev.led.length + 7, 2654435761)) >>> 0) || 1;
+      const f = genForm({ goal: gid, seed, bank: [], used: new Set(), pools: genPools(gid), seen: (n, id) => seenHas(e.ev, n, id), parts, ...(['voc', 'gra', 'pro'].includes(sk) ? { areas: [sk] } : {}) });
+      if (!f.groups.length && !f.ws.length) { host.toast('Chưa có câu mới cho kỹ năng này. Học thêm ở 📘 Học rồi quay lại nhé.'); return; }
+      gtRun = { goal: gid, form: f.id, groups: f.groups, gi: 0, given: {}, plays: 0, t0: Date.now(), skipL: false, res: null, gen: { seed, ws: f.ws, sol: 0 }, try: sk }; lrPlays = 0;
+      if (!f.groups.length) gtAfterRL();
+      host.go('gate'); window.scrollTo?.(0, 0);
     },
     // v141 phần Nghe sinh từ khuôn: phát lời thoại bằng máy đọc hai giọng, một lần (như nghe giọng thu sẵn).
     gttts() {

@@ -11,9 +11,13 @@ import type { GwTask, WsOut } from './gatews.ts';
 export interface GateRun { goal: string; form: string; groups: Group[]; gi: number; given: Record<string, string | undefined>; plays: number; t0: number; skipL: boolean; res: GateResult | null;
   ws?: { tasks: GwTask[]; i: number; out: WsOut[]; key: string; draft: string };   // v140 phần Viết + Nói sau Đọc + Nghe
   up?: string;                                                                          // v140 cấp mới sau khi qua (đã tự lên)
-  gen?: { seed: number; ws: GwTask[]; sol: number } }                                    // v141 bài sinh theo tiêu chí: hạt, Viết / Nói, số vững lúc làm
+  gen?: { seed: number; ws: GwTask[]; sol: number };                                    // v141 bài sinh theo tiêu chí: hạt, Viết / Nói, số vững lúc làm
+  try?: string }   // v141 Thử sức một kỹ năng (voc, gra, pro, lis, spk, rd, wr): cùng màn làm bài, không lưu vào thi chuyển cấp
 
 const LV = (goal: string) => goal.replace('cefr-', '').toUpperCase().replace('PRE-A1', 'Pre-A1');
+export const SK_VI: Record<string, string> = { voc: 'Từ vựng', gra: 'Ngữ pháp', pro: 'Phát âm', lis: 'Nghe', spk: 'Nói', rd: 'Đọc', wr: 'Viết' };
+// Dòng tiêu đề của bài: Thi chuyển cấp hay Thử sức một kỹ năng.
+const head = (r: GateRun): string => (r.try ? `🎲 Thử sức ${SK_VI[r.try] ?? ''} ${LV(r.goal)}` : `🚪 Thi chuyển cấp ${LV(r.goal)}`);
 const pc = (x: number) => `${Math.round(x * 100)}%`;
 
 // Một nhóm câu (đọc hoặc nghe) dưới dạng biểu mẫu chọn, dùng chung cho đèn Nghe + Đọc và trận cổng.
@@ -54,10 +58,10 @@ const back = () => '<div class="row"><button class="btn ghost" data-e="go" data-
 
 export function viewGateRun(c: ECtx, r: GateRun): string {
   const g = r.groups[r.gi]!, n = r.groups.length;
-  return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${c.host.esc(LV(r.goal))} · ${g.kind === 'listening' ? 'Nghe' : 'Đọc'} · phần ${r.gi + 1}/${n}</span>
+  return `<section class="stack"><span class="eyebrow">${c.host.esc(head(r))} · ${g.kind === 'listening' ? 'Nghe' : 'Đọc'} · phần ${r.gi + 1}/${n}</span>
     <div class="bar" role="progressbar" aria-label="Tiến độ thi chuyển cấp" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${r.gi}"><i style="width:${Math.round((r.gi / n) * 100)}%"></i></div>
     <p class="hint">Không có đáp án trong lúc chơi. Không chắc thì cứ để trống, đừng đoán bừa.</p></section>
-    ${groupForm(c, g, 'gtnext', r.gi + 1 < n ? 'Phần tiếp' : 'Xong Đọc + Nghe', r.plays, g.kind === 'listening' ? 'gtskip' : '')}`;
+    ${groupForm(c, g, 'gtnext', r.gi + 1 < n ? 'Phần tiếp' : r.try ? 'Xong' : 'Xong Đọc + Nghe', r.plays, g.kind === 'listening' ? 'gtskip' : '')}`;
 }
 
 // v140 phần Viết / Nói: một bài mỗi màn. Viết: gõ bài. Nói: bấm 🎙 nói (máy nghe được thì chép lời), không thì nói to rồi gõ lại.
@@ -65,7 +69,7 @@ export function viewGateRun(c: ECtx, r: GateRun): string {
 export function viewGateWs(c: ECtx, r: GateRun, mic: { has: boolean; busy: boolean; heard: string }): string {
   const esc = c.host.esc, ws = r.ws!, t = ws.tasks[ws.i]!, n = ws.tasks.length, sp = t.kind === 's';
   const draft = sp && mic.heard ? mic.heard : ws.draft;
-  return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${esc(LV(r.goal))} · ${sp ? 'Nói' : 'Viết'} · bài ${ws.i + 1}/${n}</span>
+  return `<section class="stack"><span class="eyebrow">${esc(head(r))} · ${sp ? 'Nói' : 'Viết'} · bài ${ws.i + 1}/${n}</span>
     <div class="bar" role="progressbar" aria-label="Tiến độ Viết + Nói" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${ws.i}"><i style="width:${Math.round((ws.i / n) * 100)}%"></i></div></section>
     <section class="panel stack"><h2>${sp ? '🗣️' : '✍️'} ${esc(t.vi)} <span class="hint" lang="en">${esc(t.en)}</span></h2>
       <p lang="en"><b>${esc(t.p)}</b></p><p class="hint">${esc(t.pv)}</p>
@@ -103,6 +107,7 @@ function resultBox(c: ECtx, r: GateResult): string {
 // Kết quả + chữa bài (sau khi xong trận mới hiện đáp án).
 export function viewGateEnd(c: ECtx, r: GateRun): string {
   const esc = c.host.esc, res = r.res!;
+  if (r.try) return viewTryEnd(c, r);
   const review = r.groups.map(g => g.items.map(it => {
     const given = r.given[it.id], ok = given === it.ans, o = (it.opts ?? g.options ?? []).find(x => x.k === it.ans);
     return `<li><span class="pill${ok ? ' good' : ''}">${ok ? '✓' : given ? '✕' : '–'}</span> <b lang="en">${esc(it.q)}</b> → <span lang="en">${esc(o?.t ?? String(it.ans))}</span><br><span class="hint">${esc(it.why)} · mã câu ${esc(it.id)}</span></li>`;
@@ -112,6 +117,20 @@ export function viewGateEnd(c: ECtx, r: GateRun): string {
     ${r.skipL ? '<p class="hint">Bạn bỏ qua phần Nghe: kết luận chỉ dựa vào phần Đọc.</p>' : ''}
     <details class="panel"><summary>Xem chữa bài Đọc + Nghe từng câu</summary><ul class="stack" style="list-style:none;padding:0;margin:8px 0 0;gap:8px">${review}</ul></details>
     <div class="row"><button class="btn primary" data-e="go" data-r="aim">🎯 Xem mục tiêu${r.up ? ` ${esc(LV(r.up))}` : ''}</button><button class="btn ghost" data-e="go" data-r="quest">⚔️ Về sảnh</button></div>`;
+}
+
+// v141 kết quả Thử sức: đúng x/y (hoặc % tiêu chí Viết / Nói), không phải kết luận; làm lại là bài mới; học tiếp ở app.
+function viewTryEnd(c: ECtx, r: GateRun): string {
+  const esc = c.host.esc, res = r.res!, sk = r.try!, pct = res.n ? Math.round((res.ok / res.n) * 100) : 0;
+  const ws = res.ws?.length ? `<p>${res.ws.map(w => `${w.kind === 'w' ? '✍️ Viết' : '🗣️ Nói'}: ${pc(w.pct)} tiêu chí, ${w.words} từ`).join(' · ')} <span class="hint">(chấm bằng luật + tự đánh dấu, tham khảo)</span></p>` : '';
+  const review = r.groups.map(g => g.items.map(it => {
+    const given = r.given[it.id], ok = given === it.ans, o = (it.opts ?? g.options ?? []).find(x => x.k === it.ans);
+    return `<li><span class="pill${ok ? ' good' : ''}">${ok ? '✓' : given ? '✕' : '–'}</span> <b lang="en">${esc(it.q)}</b> → <span lang="en">${esc(o?.t ?? String(it.ans))}</span><br><span class="hint">${esc(it.why)}</span></li>`;
+  }).join('')).join('');
+  return `<section class="stack"><span class="eyebrow">${esc(head(r))}</span><h1>${res.n ? `Đúng ${res.ok}/${res.n} (${pct}%)` : 'Đã làm xong'}</h1>
+    <p class="muted">Thử sức chỉ cho bạn biết đang ở đâu, không tính vào mức thuộc. Làm lại là một bài mới.</p></section>
+    ${ws}${review ? `<details class="panel"><summary>Xem chữa bài từng câu</summary><ul class="stack" style="list-style:none;padding:0;margin:8px 0 0;gap:8px">${review}</ul></details>` : ''}
+    <div class="row"><button class="btn primary" data-e="trystart" data-sk="${esc(sk)}" data-lv="${esc(LV(r.goal))}">🎲 Thử bài mới</button><button class="btn" data-act="skgo" data-sk="${esc(sk)}">📘 Học ${esc(SK_VI[sk] ?? '')} ở app</button><button class="btn ghost" data-e="go" data-r="aim">🎯 Về mục tiêu</button></div>`;
 }
 
 // Chứng chỉ (tuỳ chọn ở hồ sơ, SPEC "Đề sát hạch", neo ngoài): chỉ người bật mới thấy. Nhập điểm đề mẫu chính thức / thi thật theo
