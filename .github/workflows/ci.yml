@@ -27,17 +27,19 @@ jobs:
         run: npm run fresh
 
   e2e:
-    name: Test giao diện (Chrome Android, Safari iOS, máy tính, offline)
+    # 16/10/2026 người sáng lập: tạm chỉ test lõi Chromium (như Cốc Cốc trên máy tính / Android) cho nhanh; Safari iOS (WebKit) tạm tắt.
+    # Bật lại Safari: bỏ PW_NO_WEBKIT dưới đây, thêm "webkit" vào lệnh cài, tăng timeout về 40.
+    name: Test giao diện (Chromium như Cốc Cốc: Android, máy tính, offline)
     runs-on: ubuntu-latest
-    timeout-minutes: 40   # v131: bộ e2e ×3 trình duyệt đã ~22 phút (Safari iOS chậm), 25 phút bị huỷ giữa chừng
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
-      - run: npx playwright install --with-deps chromium webkit
+      - run: npx playwright install --with-deps chromium
       - run: npx playwright test
-        env: { CI: '1' }
+        env: { CI: '1', PW_NO_WEBKIT: '1' }
       - uses: actions/upload-artifact@v4
         if: failure()
         with: { name: playwright-report, path: playwright-report, retention-days: 7 }
