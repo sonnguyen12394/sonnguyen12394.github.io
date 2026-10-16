@@ -69,14 +69,12 @@ test('L7: từ màn đầu, một chạm vào "Chơi tiếp" là vào game có c
   expect(errors).toEqual([]);
 });
 
-test('L6 (v136 hai lối): lối game chỉ Hôm nay + Tôi; lối Học 4 tab không trùng nghĩa; Thư viện → Bản đồ Phố Chữ', async ({ page, errors }) => {
+test('L6 (v138 ba phần): Chơi · Học · Mục tiêu · Tôi không trùng nghĩa; Học → Bản đồ Phố Chữ; bấm Chơi về bản đồ', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
-  await expect(page.locator('#bnav button')).toHaveText(['Hôm nay', 'Tôi', 'Lối Học'].map(t => new RegExp(t)));
-  await page.locator('#bnav [data-act="door"]').click();
-  await expect(page.locator('#bnav button')).toHaveText(['Hôm nay', 'Ôn tập', 'Thư viện', 'Tôi', 'Lối game'].map(t => new RegExp(t)));
-  await page.locator('#bnav button', { hasText: 'Thư viện' }).click();
-  await expect(page.getByRole('heading', { name: 'Tự chọn bài', level: 1 })).toBeVisible();
+  await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
+  await page.locator('#bnav button', { hasText: 'Học' }).click();
+  await expect(page.getByRole('heading', { name: '📘 Học', level: 1 })).toBeVisible();
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(r.violations.map(v => v.id)).toEqual([]);
   // v130: mọi trò chơi (cả Đấu trường thay mục Thử thách) nằm trên Bản đồ Phố Chữ; Thư viện chỉ còn một lối tới đó.
@@ -84,16 +82,16 @@ test('L6 (v136 hai lối): lối game chỉ Hôm nay + Tôi; lối Học 4 tab k
   await expect(page.getByRole('button', { name: /Tất cả trò chơi|Thử thách/ })).toHaveCount(0);
   await page.getByRole('button', { name: /Bản đồ Phố Chữ/ }).click();
   await expect(page.locator('#app .wmap')).toBeVisible();
-  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Hôm nay');
+  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Chơi');
   await page.locator('[data-e="wmlist"]').click();
   await expect(page.locator('#app .wlist')).toBeVisible();
-  await page.locator('#bnav button', { hasText: 'Hôm nay' }).click();
+  await page.locator('#bnav button', { hasText: 'Chơi' }).click();
   await expect(page.locator('#app .wmap')).toBeVisible();
   await expect(page.locator('#app .wlist')).toHaveCount(0);
-  // Màn học cũ (unit) thuộc tab Thư viện.
-  await page.locator('#bnav button', { hasText: 'Thư viện' }).click();
+  // Màn học cũ (unit) thuộc tab Học.
+  await page.locator('#bnav button', { hasText: 'Học' }).click();
   await page.getByRole('button', { name: /Bài học theo chủ đề/ }).click();
-  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Thư viện');
+  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Học');
   expect(errors).toEqual([]);
 });
 

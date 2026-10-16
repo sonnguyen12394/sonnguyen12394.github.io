@@ -1,0 +1,52 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync, readdirSync } from 'node:fs';
+import { index, closure, defaultLevel } from '../../src/engine/graph.ts';
+import type { Edge, Goal, Node } from '../../src/engine/types.ts';
+import { compareOf } from '../../src/engine/compare.ts';
+import { viewAim, AIM_LVS, isAimLv, type AimIn } from '../../src/engine/aimview.ts';
+import { freshE } from '../../src/engine/state.ts';
+import type { ECtx } from '../../src/engine/views.ts';
+
+const nodes = JSON.parse(readFileSync('content/engine/nodes.json', 'utf8')) as Node[];
+const edges = JSON.parse(readFileSync('content/engine/edges.json', 'utf8')) as Edge[];
+const goals = readdirSync('content/engine/goals').map(f => JSON.parse(readFileSync(`content/engine/goals/${f}`, 'utf8')) as Goal);
+const ix = index({ nodes, edges, goals });
+const need = (id: string) => closure(ix, ix.goal.get(id)!.req, defaultLevel).map(r => ({ ...r, area: ix.node.get(r.node)?.area }));
+const esc = (s: unknown) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const c = { host: { esc }, e: freshE(), route: 'aim' } as unknown as ECtx;
+const gate0 = { has: true, open: false, passed: false, ratio: 0.42 };
+const aim = (o: Partial<AimIn> = {}): AimIn => ({ lv: 'A2', o: compareOf(need('cefr-a2'), () => false, undefined), chosen: true, gate: gate0, forge: 'wheel', cap: 6, ...o });
+const text = (h: string) => h.replace(/<[^>]+>/g, ' ');
+
+test('v138 Mục tiêu: chỉ A1 và A2; A1 cũng chia đủ 7 kỹ năng', () => {
+  assert.deepEqual(AIM_LVS.map(([l, g]) => [l, g]), [['A1', 'cefr-a1'], ['A2', 'cefr-a2']]);
+  assert.ok(isAimLv('A1') && isAimLv('A2') && !isAimLv('B1'));
+  const a1 = compareOf(need('cefr-a1'), () => false, undefined);
+  assert.equal(a1.total, 185);
+  assert.equal(a1.rows.filter(r => r.total).length, 7);
+});
+
+test('v138 Mục tiêu: 7 kỹ năng, mỗi kỹ năng có "📘 Học ở app"; chỉ Từ vựng có "⚔️ Rèn ở game" (mở lò Thợ rèn gợi ý)', () => {
+  const h = viewAim(c, aim());
+  assert.equal((h.match(/class="cmprow/g) ?? []).length, 7);
+  assert.equal((h.match(/data-act="skgo"/g) ?? []).length, 7);
+  assert.equal((h.match(/data-e="cblo" data-g="wheel"/g) ?? []).length, 1);
+  assert.equal((h.match(/🔒 game chưa có lò/g) ?? []).length, 6);
+  assert.match(h, /Cần đạt để qua A2<\/b> · 0\/359 phần đã vững/);
+  assert.match(h, /data-e="aimlv" data-lv="A1" aria-pressed="false"/);
+  assert.match(h, /data-r="goal\/cefr-a2"/);
+  assert.doesNotMatch(h, /data-e="aimpick"/, 'đã là đích: không hỏi chọn');
+  assert.match(viewAim(c, aim({ chosen: false })), /data-e="aimpick" data-g="cefr-a2">Chọn A2 làm đích/);
+  assert.doesNotMatch(text(h), /\b(thi|đề|kiểm tra)\b/i);
+});
+
+test('v138 Mục tiêu: trận cổng ba trạng thái; chỉ mở nút vào cổng khi cấp này là đích', () => {
+  assert.match(viewAim(c, aim()), /Mở khi các kỹ năng gần vững hết \(hiện 42%\)/);
+  const open = viewAim(c, aim({ gate: { ...gate0, open: true } }));
+  assert.match(open, /data-e="go" data-r="gate">🚪 Vào trận cổng A2/);
+  assert.doesNotMatch(viewAim(c, aim({ chosen: false, gate: { ...gate0, open: true } })), /data-r="gate"/);
+  assert.match(viewAim(c, aim({ gate: { ...gate0, passed: true } })), /✓ Đã qua trận cổng A2/);
+  assert.match(viewAim(c, aim({ gate: { ...gate0, has: false } })), /chưa có trận cổng/);
+  assert.match(viewAim(c, null), /Đang tải/);
+});

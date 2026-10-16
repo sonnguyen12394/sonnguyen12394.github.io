@@ -3,24 +3,21 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { index, closure, defaultLevel } from '../../src/engine/graph.ts';
 import type { Edge, Goal, Node } from '../../src/engine/types.ts';
-import { doorOf, tally, sanitizeSrc, mergeSrc, compareOf, cmpVerdict, skillRows, type SrcMap } from '../../src/engine/compare.ts';
-import { viewCompare } from '../../src/engine/compareview.ts';
+import { doorOfCtx, GAME_CTX, tally, sanitizeSrc, mergeSrc, compareOf, cmpVerdict, skillRows, type SrcMap } from '../../src/engine/compare.ts';
+import { ESS_GAMES } from '../../src/engine/cb.ts';
 import { sanitizeE, mergeE, freshE } from '../../src/engine/state.ts';
 import { ev as coreEv } from '../../src/engine/core.ts';
-import type { ECtx } from '../../src/engine/views.ts';
 
 const nodes = JSON.parse(readFileSync('content/engine/nodes.json', 'utf8')) as Node[];
 const edges = JSON.parse(readFileSync('content/engine/edges.json', 'utf8')) as Edge[];
 const goals = readdirSync('content/engine/goals').map(f => JSON.parse(readFileSync(`content/engine/goals/${f}`, 'utf8')) as Goal);
 const ix = index({ nodes, edges, goals });
 const a2 = closure(ix, ix.goal.get('cefr-a2')!.req, defaultLevel).map(r => ({ ...r, area: ix.node.get(r.node)?.area }));
-const esc = (s: unknown) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-test('v136 lối: mặc định là game; chỉ "app" mới là lối Học', () => {
-  assert.equal(doorOf({}), 'game');
-  assert.equal(doorOf({ set: { door: 'app' } }), 'app');
-  assert.equal(doorOf({ set: { door: 'lạ' } }), 'game');
-  assert.equal(doorOf(null), 'game');
+test('v138 nguồn theo nơi học: ngữ cảnh lò game (Vườn từ, Vòng Chữ, Mỏ Chữ, Lò rèn) là game, còn lại là app; khớp cb.ts ESS_GAMES', () => {
+  assert.deepEqual([...GAME_CTX].sort(), Object.keys(ESS_GAMES).sort());
+  for (const c of ['learn', 'wheel', 'hunt', 'forge']) assert.equal(doorOfCtx(c), 'game');
+  for (const c of ['rec', 'listen', 'cards', 'diag', undefined, 7]) assert.equal(doorOfCtx(c), 'app');
 });
 
 test('v136 tally: chỉ đếm câu đúng đã vào sổ, đúng lối; bỏ id lạ', () => {
@@ -44,12 +41,11 @@ test('v136 bản lưu: lọc bộ đếm hỏng, gộp hai máy lấy số lớn
   assert.deepEqual(m.src, { 'u:a': { g: 5, a: 2 } });
 });
 
-test('v136 đường bài học cũ (ELCORE.ev) ghi nguồn theo lối, không đổi sổ bằng chứng so với không đếm', () => {
-  const st: { e?: unknown; set: { door: string } } = { set: { door: 'app' } };
+test('v138 đường ELCORE.ev ghi nguồn theo ngữ cảnh câu; sổ bằng chứng như cũ', () => {
+  const st: { e?: unknown } = {};
   const o = { node: 'u:a1-food', level: 2 as const, ok: true, g: 0.25, item: 'w:x:rec', qt: 'mcq', ctx: 'rec', src: 'vocab' as const };
   coreEv(st, o, 100);
-  st.set.door = 'game';
-  coreEv(st, { ...o, item: 'w:x:rec2' }, 100);
+  coreEv(st, { ...o, item: 'w:x:wh', ctx: 'wheel' }, 100);
   coreEv(st, { ...o, ok: false, item: 'w:x:rec3' }, 100);
   const e = st.e as ReturnType<typeof freshE>;
   assert.deepEqual(e.src, { 'u:a1-food': { g: 1, a: 1 } });
@@ -90,16 +86,9 @@ test('v136 đối chiếu: vững nhờ game / app / cả hai / từ trước; c
   assert.deepEqual([o.solid, o.game, o.app, o.both, o.before], [5, 1, 2, 1, 1]);
 });
 
-test('v136 kết luận và màn đối chiếu: nói thẳng nhóm chỉ học được ở lối Học; không dùng chữ thi / đề / kiểm tra', () => {
+test('v136 kết luận: nói thẳng kỹ năng nào game chưa có lò', () => {
   const o = compareOf(a2, () => false, undefined);
   const v = cmpVerdict(o, 6);
   assert.match(v, /chỉ cho lý do học Từ vựng, và chỉ tới khi đủ 6 kỹ năng vững \(2% của 359/);
-  assert.match(v, /Ngữ pháp, Phát âm, Nghe, Nói, Đọc, Viết: chỉ học được ở lối 📘 Học/);
-  const c = { host: { esc }, e: freshE(), route: 'cmp' } as unknown as ECtx;
-  const h = viewCompare(c, o, 'game', 'Tiếng Anh tổng quát A2', 6);
-  assert.match(h, /data-act="door" data-door="app"/);
-  assert.match(h, /🔒 Game chưa có lò cho nhóm này/);
-  assert.match(h, /0\/359 phần đã vững/);
-  assert.doesNotMatch(h.replace(/<[^>]+>/g, ' '), /\b(thi|đề|kiểm tra)\b/i);
-  assert.match(viewCompare(c, null, 'app', ''), /data-door="game"/);
+  assert.match(v, /Ngữ pháp, Phát âm, Nghe, Nói, Đọc, Viết: hiện chỉ học được ở phần 📘 Học/);
 });

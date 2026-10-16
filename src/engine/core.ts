@@ -15,7 +15,7 @@ import type { Level } from './types.ts';
 import { microDecide, type MicroDecision } from './micro.ts';
 import { drift, estimate } from './ev/audit.ts';
 import { addSnap } from './ev/snapshot.ts';
-import { doorOf, tally } from './compare.ts';
+import { doorOfCtx, tally } from './compare.ts';
 
 function eOf(st: { e?: unknown }): EState {
   const cur = st.e as EState | undefined;
@@ -49,7 +49,7 @@ export function ev(st: { e?: unknown }, o: Evidence & Observation, today: number
   try {
     e = eOf(st);
     const r = ingest(e.ev, e.m, { sess: SESS, ...o }, { dev: dev(), ts: Date.now(), day: today, recent: e.r });
-    try { tally(e.src ??= {}, o.node, o.ok, !!r, doorOf(st)); } catch { /* bộ đếm đối chiếu không được làm hỏng bằng chứng */ }
+    try { tally(e.src ??= {}, o.node, o.ok, !!r, doorOfCtx(o.ctx)); } catch { /* bộ đếm đối chiếu không được làm hỏng bằng chứng */ }
     return r;
   } catch (x) {
     try { if (e) { e.ev.integ.err++; e.ev.integ.last = `${new Date().toISOString()} ${String(x).slice(0, 150)}`; } } catch { /* bỏ qua */ }

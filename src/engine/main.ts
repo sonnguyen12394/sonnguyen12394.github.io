@@ -10,8 +10,8 @@ import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, autoG
 import { ingest as ingest0, setPrior } from './ev/store.ts';
 import { makeFight } from './fightctl.ts';
 import { W_MAX } from './cb.ts';
-import { compareOf, doorOf, tally, skillRows, type CmpOut, type SkillRow } from './compare.ts';
-import { viewCompare } from './compareview.ts';
+import { compareOf, doorOfCtx, tally, skillRows, type CmpOut, type SkillRow } from './compare.ts';
+import { viewAim, AIM_LVS, isAimLv, type AimLv } from './aimview.ts';
 import { statsOf, LV_AT } from './bag.ts';
 import { dev } from './core.ts';
 import { addSnap } from './ev/snapshot.ts';
@@ -82,7 +82,7 @@ import { goalSummary, viewGoalBar, viewGoalSlim, goalLine, goalText, type GoalSu
 import { roteNodes } from './rote.ts';
 import { viewLrRun } from './lrview.ts';
 import { viewTreasureCard, viewTreasureIntro, viewTreasureDone, CHEST_COINS } from './treasureview.ts';
-import { viewGateHome, viewGateRun, viewGateEnd, type GateRun } from './gateview.ts';
+import { viewGateHome, viewGateRun, viewGateEnd, viewCert, type GateRun } from './gateview.ts';
 import { gateScore, gateState, lastP, CES_MIN, GATE_FORMS, type GateAns } from './gate.ts';
 import type { LrApi } from '../exam/main.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
@@ -593,7 +593,7 @@ export function init(host: EHost): EngineModule {
     ver: 'v134',
   });
   onEvHook = (o, ev) => fc.onEv(o, ev);
-  onSrcHook = (o, ev) => { const e = E(); tally(e.src ??= {}, o.node, o.ok, !!ev, doorOf(host.state())); };
+  onSrcHook = (o, ev) => { const e = E(); tally(e.src ??= {}, o.node, o.ok, !!ev, doorOfCtx(o.ctx)); };
   // Số kỹ năng vững thật của mục tiêu chính (mốc cuối mỗi khu truyện cần con số này).
   function solidNow(): number { const g = E().goals.map(sg => loaded()?.goal.get(sg.id)).find(Boolean); return g && loaded() ? skillsOf(E(), g).solid : 0; }
   // Bộ chọn cho game chỉ dùng một loại nút (ngữ pháp / chức năng giao tiếp / âm): biên lộ trình có ít nút loại đó → thêm nút chưa Đạt của
@@ -1779,24 +1779,30 @@ export function init(host: EHost): EngineModule {
       return `<ul class="wqlist" aria-label="Việc hôm nay">${today}${tale}${town1}</ul>${viewWeekly(E().wk, host.today())}`;
     };
     if (wsel && !w.places.some(p => p.id === wsel)) wsel = null;
-    return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests, me: n => bag.hero.svg(n), power: bag.hero.power(), music: !musicOff(), news: lobbyNews(), made: bag.hero.made(), fresh: bag.hero.pending().length, phase: phaseOf(new Date().getHours()), cb: doorOf(host.state()) === 'game' ? fc.bar() : '' }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
+    return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests, me: n => bag.hero.svg(n), power: bag.hero.power(), music: !musicOff(), news: lobbyNews(), made: bag.hero.made(), fresh: bag.hero.pending().length, phase: phaseOf(new Date().getHours()), cb: fc.bar() }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
   }
-  // v136–v137 đối chiếu / bảng 7 kỹ năng của đích hiện tại (mặc định A2). "Vững" như skillsOf: Đạt và đang vững thật (Can-Do: Đạt).
-  function cmpNow(v: EState): { o: CmpOut; vi: string } | null {
+  // v137–v138 bảng 7 kỹ năng (Thư viện) và 🎯 Mục tiêu của một cấp (mặc định đích hiện tại, không có thì A2).
+  // "Vững" như skillsOf: Đạt và đang vững thật (Can-Do: Đạt).
+  let aimLv: AimLv | null = null;   // cấp đang xem ở màn Mục tiêu (A1 / A2); null = theo đích
+  function cmpNow(v: EState, gid?: string): { o: CmpOut; vi: string; id: string } | null {
     const ix = loaded(); if (!ix) return null;
-    const g = goalOf(v) ?? ix.goal.get('cefr-a2') ?? null; if (!g) return null;
+    const g = (gid ? ix.goal.get(gid) : null) ?? goalOf(v) ?? ix.goal.get('cefr-a2') ?? null; if (!g) return null;
     const need = closure(ix, g.req, defaultLevel).map(r => ({ ...r, area: ix.node.get(r.node)?.area }));
     const solid = (n: string, l: number): boolean => { const s = nodeStat(host, v, n, l as Level); return s.pass && (n.startsWith('cd:') || s.state === 'mastered'); };
-    return { o: compareOf(need, solid, E().src), vi: g.vi };
+    return { o: compareOf(need, solid, E().src), vi: g.vi, id: g.id };
   }
   const routes: Record<string, (c: ECtx) => string> = {
     cb: c => fc.view(c),   // v133 Chiến Binh: Vũ khí, trận khu 1, số liệu trận, góp ý
-    // v136 đối chiếu game / app theo nhóm của đích (mặc định A2): vững nhờ lối nào, nhóm nào game chưa có lò (compareview.ts).
-    cmp: c => {
-      if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
-      const r = cmpNow(c.e);
-      return r ? viewCompare(c, r.o, doorOf(host.state()), r.vi, LV_AT[W_MAX - 1]) : viewCompare(c, null, doorOf(host.state()), '');
+    // v138 🎯 Mục tiêu: cấp A1 / A2 cần đạt gì (7 kỹ năng, nhờ game / nhờ app, nút học ở hai phần, trận cổng). 'cmp' (Đối chiếu cũ) dẫn về đây.
+    aim: c => {
+      if (!loaded()) { ensure(); return viewAim(c, null); }
+      const ix = loaded()!, cur = goalOf(c.e)?.id, lv: AimLv = aimLv ?? (cur === 'cefr-a1' ? 'A1' : 'A2'), id = AIM_LVS.find(([l]) => l === lv)![1];
+      const g = ix.goal.get(id), r = cmpNow(c.e, id); if (!g || !r) return viewAim(c, null);
+      const sk = skillsOf(c.e, g), gs = gateState(id, sk.solid, sk.total, E().gg), chosen = cur === id;
+      return viewAim(c, { lv, o: r.o, chosen, gate: { has: gs.has, open: gs.open || (playtest() && gs.left.length > 0 && !gs.passed), passed: !!gs.passed, ratio: gs.ratio },
+        forge: fc.forge(), cert: chosen ? viewCert(c, id, E().gg) : '', cap: LV_AT[W_MAX - 1] });
     },
+    cmp: c => routes.aim!(c),
     // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).
     treasure: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
@@ -1893,6 +1899,14 @@ export function init(host: EHost): EngineModule {
     wmlist() { wlist = !wlist; wsel = null; wq = false; host.render(); },
     // v132 nhạc nền sảnh: một công tắc chung với Cài đặt (st.set.music).
     wmmusic() { const on = toggleMusic(); lobbyMusic(on); sfx('tap'); host.render(); },
+    aimlv(el) { const l = el.dataset.lv; if (isAimLv(l)) { aimLv = l; host.render(); } },
+    // Chọn cấp làm đích chính (đứng đầu danh sách mục tiêu), ở lại màn Mục tiêu.
+    aimpick(el) {
+      const id = el.dataset.g || ''; if (!AIM_LVS.some(([, g]) => g === id)) return;
+      const e = E(); if (!e.goals.some(g => g.id === id) && !addGoal(id, 'pick')) return;
+      e.goals = [...e.goals.filter(g => g.id === id), ...e.goals.filter(g => g.id !== id)];
+      host.save(); host.toast(`Đích chính: ${GOALS.get(id)!.vi}.`); host.render();
+    },
     add(el) {
       const id = el.dataset.g || '';
       if (!addGoal(id, 'pick')) return;

@@ -1,17 +1,16 @@
-// v136 Một não, hai lối (docs/DOI-CHIEU-GAME-APP.md): người chơi vào bằng lối ⚔️ Chiến Binh (game) hoặc 📘 Học (app cũ).
-// Tiến độ, bằng chứng, FSRS, bản đồ A2 vẫn DÙNG CHUNG. Chỉ thêm một bộ đếm nhỏ: mỗi nút có bao nhiêu câu trả lời đúng ở lối nào,
-// để màn đối chiếu chỉ ra phần A2 nào vững nhờ game, phần nào nhờ app, phần nào game chưa có lò.
+// v136–v138 nguồn câu đúng + đối chiếu (docs/DOI-CHIEU-GAME-APP.md). Ba phần ⚔️ Chơi · 📘 Học · 🎯 Mục tiêu dùng chung một bộ não:
+// tiến độ, bằng chứng, FSRS, bản đồ A2. Chỉ thêm một bộ đếm nhỏ: mỗi nút có bao nhiêu câu đúng ở phần game / phần học app,
+// để 🎯 Mục tiêu chỉ ra phần nào vững nhờ game, phần nào nhờ app, kỹ năng nào game chưa có lò.
 // Bộ đếm chỉ ĐỌC kết quả của ingest (không đổi bằng chứng, không đổi mastery). Thuần hàm.
 
 export type Door = 'game' | 'app';
-export interface SrcCell { g: number; a: number }   // số câu đúng có tính ở lối game / lối app
+export interface SrcCell { g: number; a: number }   // số câu đúng có tính ở phần game / phần học app
 export type SrcMap = Record<string, SrcCell>;
 
-// Lối đang dùng: cài đặt của app (st.set.door). Mặc định là lối game (hướng Chiến Binh Chữ).
-export const doorOf = (root: unknown): Door => {
-  const set = root && typeof root === 'object' ? (root as { set?: { door?: unknown } }).set : undefined;
-  return set && set.door === 'app' ? 'app' : 'game';
-};
+// v138 ba phần (Chơi · Học · Mục tiêu): không còn đổi lối. Nguồn của câu đúng = NƠI học: ngữ cảnh của lò game
+// (Vườn từ, Vòng Chữ, Mỏ Chữ, Lò rèn = cb.ts ESS_GAMES; test khoá hai danh sách khớp nhau) là game, mọi chỗ khác là app.
+export const GAME_CTX: ReadonlySet<string> = new Set(['learn', 'wheel', 'hunt', 'forge']);
+export const doorOfCtx = (ctx: unknown): Door => (typeof ctx === 'string' && GAME_CTX.has(ctx) ? 'game' : 'app');
 
 const NODE = /^(cd|u|g|ph|fn):[a-z0-9][a-z0-9._-]{0,60}$/;
 const CAP = 1e6;
@@ -93,6 +92,6 @@ export function cmpVerdict(o: CmpOut, cap?: number): string {
   const pulled = o.rows.filter(r => r.pull && r.total).map(r => r.vi), off = o.rows.filter(r => !r.pull && r.total);
   const capTxt = cap ? `, và chỉ tới khi đủ ${cap} kỹ năng vững (${o.total ? Math.max(1, Math.round((100 * cap) / o.total)) : 0}% của ${o.total} phần cần cho đích)` : '';
   const head = pulled.length ? `Game hiện chỉ cho lý do học ${pulled.join(', ')}${capTxt}.` : 'Game hiện chưa cho lý do học nhóm nào của đích.';
-  const tail = off.length ? ` ${off.map(r => r.vi).join(', ')}: chỉ học được ở lối 📘 Học.` : '';
+  const tail = off.length ? ` ${off.map(r => r.vi).join(', ')}: hiện chỉ học được ở phần 📘 Học.` : '';
   return head + tail;
 }
