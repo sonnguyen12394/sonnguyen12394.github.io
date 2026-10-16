@@ -41,13 +41,15 @@ test('sảnh A2: chỉ ⚔️, 🔨, mục tiêu và nút hiện đủ mục; b�
   await expect(page.locator('html')).not.toHaveClass(/\ba2\b/);
   await expect(page.locator('#app .wmap')).toBeVisible();
   await expect(page.locator('#app .dgo')).toBeVisible();
-  await expect(page.locator('#app .a2tog')).toContainText('Về sảnh A2');
+  await expect(page.locator('#app .a2tog')).toBeHidden();
+  await expect(page.locator('#app .a2chip')).toBeVisible();
   await page.reload();
   await page.waitForFunction(() => (window as any).ELREADY === true);
   await page.evaluate(() => (window as any).eval("go('games')"));
   await toLobby(page, false);
   await expect(page.locator('#app .wmap')).toBeVisible();
-  await page.locator('#app .a2tog').click();
+  await page.locator('#app .a2chip').click();
   await expect(page.locator('#app .wmap')).toBeHidden();
+  await expect(page.locator('#app .a2tog')).toBeVisible();
   expect(errors).toEqual([]);
 });

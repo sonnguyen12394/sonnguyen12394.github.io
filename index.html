@@ -800,7 +800,7 @@ button.wchip{cursor:pointer}button.wchip:active{transform:translateY(2px);box-sh
 .lscene .dgo.gcard:focus-visible,.sclink:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .sclink{align-self:flex-start;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 14px;font:600 14px system-ui,sans-serif;cursor:pointer}
 /* v135 Sảnh A2 (app.js A2LOBBY): chỉ còn ⚔️ Vào trận, 🔨 Thợ rèn, 🪙, nhạc, thẻ mục tiêu; phần cũ ẩn (không xoá). */
-.a2tog{font-size:13px;padding:5px 12px;opacity:.85}.a2tog .a2on,html.a2 .a2tog .a2off{display:none}html.a2 .a2tog .a2on{display:inline}
+.a2tog{font-size:13px;padding:5px 12px;opacity:.85}html:not(.a2) .a2tog,html.a2 .a2chip{display:none}
 html.a2 .wwrap .lbstage,html.a2 .wwrap .dgo,html.a2 .wwrap .sclink:not(.a2tog),html.a2 .wwrap .lanterns,html.a2 .wwrap .lanthint,html.a2 .wwrap .wmain,html.a2 #app>.wwrap~.tcard,html.a2 .wres .wpow,html.a2 .wres [data-e=wmquests],html.a2 .wres [data-p=bag],html.a2 .wres span.wchip{display:none!important}
 .lanterns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;position:relative;padding-top:12px;margin-top:4px}
 .lanterns::before{content:"";position:absolute;left:12%;right:12%;top:12px;border-top:2px dashed var(--line)}.lscene .lanterns::before{border-top-color:rgba(255,255,255,.55)}
