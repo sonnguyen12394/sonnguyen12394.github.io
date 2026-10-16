@@ -10,7 +10,8 @@ import type { GwTask, WsOut } from './gatews.ts';
 
 export interface GateRun { goal: string; form: string; groups: Group[]; gi: number; given: Record<string, string | undefined>; plays: number; t0: number; skipL: boolean; res: GateResult | null;
   ws?: { tasks: GwTask[]; i: number; out: WsOut[]; key: string; draft: string };   // v140 phần Viết + Nói sau Đọc + Nghe
-  up?: string }                                                                         // v140 cấp mới sau khi qua (đã tự lên)
+  up?: string;                                                                          // v140 cấp mới sau khi qua (đã tự lên)
+  gen?: { seed: number; ws: GwTask[]; sol: number } }                                    // v141 bài sinh theo tiêu chí: hạt, Viết / Nói, số vững lúc làm
 
 const LV = (goal: string) => goal.replace('cefr-', '').toUpperCase().replace('PRE-A1', 'Pre-A1');
 const pc = (x: number) => `${Math.round(x * 100)}%`;
@@ -18,10 +19,11 @@ const pc = (x: number) => `${Math.round(x * 100)}%`;
 // Một nhóm câu (đọc hoặc nghe) dưới dạng biểu mẫu chọn, dùng chung cho đèn Nghe + Đọc và trận cổng.
 export function groupForm(c: ECtx, g: Group, form: string, btn: string, plays: number, skip: string): string {
   const esc = c.host.esc, lis = g.kind === 'listening', opts = (it: Group['items'][number]) => it.opts ?? g.options ?? [];
+  const tts = lis && !g.audio?.file && !!g.script;   // v141 nghe sinh từ khuôn: máy đọc lời thoại (hai giọng)
   const src = lis
-    ? `<section class="panel stack"><p class="muted">Đọc câu hỏi trước, rồi nghe <b>một lần</b>.</p>
-        <audio id="elaudio" preload="auto" src="${esc(g.audio?.file ?? '')}"></audio>
-        <div class="row"><button class="btn${plays < 1 ? ' primary' : ''}" data-e="lrplay"${plays < 1 ? '' : ' disabled'}>${plays < 1 ? '▶ Nghe' : 'Đã nghe'}</button></div>
+    ? `<section class="panel stack"><p class="muted">Đọc câu hỏi trước, rồi nghe <b>một lần</b>.${tts ? ' Lời thoại do máy đọc.' : ''}</p>
+        ${tts ? (c.host.tts?.() === false ? `<p class="hint">Máy này chưa đọc được tiếng Anh: đọc lời thoại dưới đây thay cho nghe.</p>${(g.script ?? []).filter(l => l.sp !== 'N').map(l => `<p lang="en">${esc(l.sp)}: ${esc(l.t)}</p>`).join('')}` : '') : `<audio id="elaudio" preload="auto" src="${esc(g.audio?.file ?? '')}"></audio>`}
+        <div class="row"><button class="btn${plays < 1 ? ' primary' : ''}" data-e="${tts ? 'gttts' : 'lrplay'}"${plays < 1 ? '' : ' disabled'}>${plays < 1 ? '▶ Nghe' : 'Đã nghe'}</button></div>
         ${skip ? `<p class="hint"><button class="linkbtn" data-e="${skip}">Không nghe được lúc này? Bỏ qua phần Nghe</button></p>` : ''}</section>`
     : `<section class="panel stack">${(g.paras ?? []).map(p => `<p lang="en" class="reading">${esc(p)}</p>`).join('')}</section>`;
   return `<h2 lang="en" style="font-size:20px">${esc(g.title)}</h2><p class="muted" lang="en">${esc(g.instr)}</p>${src}
@@ -31,20 +33,23 @@ export function groupForm(c: ECtx, g: Group, form: string, btn: string, plays: n
 }
 
 // Cửa vào trận cổng: trạng thái (khoá / mở / đã qua) + vì sao.
-export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, total: number, sv: GateSave | undefined, test = false): string {
-  const esc = c.host.esc, st = gateState(goal, solid, total, sv), lv = LV(goal);
+export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, total: number, sv: GateSave | undefined, test = false, today?: number): string {
+  const esc = c.host.esc, st = gateState(goal, solid, total, sv, today), lv = LV(goal);
   if (!st.has) return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${esc(lv)}</span><h1>Cấp ${esc(lv)} chưa có bài thi chuyển cấp</h1><p class="muted">Thi chuyển cấp hiện có cho A1 và A2. Cấp này dùng bản đồ năng lực để theo dõi; kết luận đạt sẽ có khi có bài.</p></section>${back()}`;
   const last = st.last ? resultBox(c, st.last) : '';
   if (st.passed) return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${esc(lv)}</span><h1>✓ Bạn đã qua ${esc(lv)}</h1></section>${resultBox(c, st.passed)}${back()}`;
   const open = st.open || (test && st.left.length > 0);
-  const why = st.left.length === 0 ? 'Bạn đã dùng hết các bài thi chuyển cấp lạ của cấp này. Tí đang soạn thêm bài mới; trong lúc chờ, cứ luyện tiếp để vững hơn.'
+  const why = st.wait ? `Lần trước chưa qua. Mỗi lần là một bài mới hoàn toàn, nhưng cần học thêm rồi mới làm lại: ${waitTxt(st.wait)}.`
+    : st.left.length === 0 ? 'Bạn đã dùng hết các bài thi chuyển cấp lạ của cấp này. Tí đang soạn thêm bài mới; trong lúc chờ, cứ luyện tiếp để vững hơn.'
     : open ? `Đã mở. Bài gồm 4 phần: <b>Đọc</b> (biển báo, mẩu tin), <b>Nghe</b> (hội thoại ngắn), <b>Viết</b> (tin nhắn, chuyện ngắn) và <b>Nói</b> (trả lời câu hỏi về bạn), toàn câu bạn <b>chưa gặp bao giờ</b>. Mỗi bài làm một lần, không có đồng hồ, không hiện đáp án trong lúc làm. Đọc + Nghe quyết định đậu; Viết + Nói để tham khảo.`
-    : `Mở khi bạn đã gần xong mục tiêu: ${pc(GATE.open)} kỹ năng của cấp đã vững thật (bạn đang có ${pc(st.ratio)}). Bài dùng câu lạ, chỉ làm được ${st.left.length} lần, nên chỉ mở khi bạn có khả năng qua.`;
+    : `Mở khi bạn đã gần xong mục tiêu: ${pc(GATE.open)} kỹ năng của cấp đã vững thật (bạn đang có ${pc(st.ratio)}). ${st.gen ? 'Mỗi lần làm, máy sinh một bài mới theo tiêu chí của cấp, nên không học tủ được.' : `Bài dùng câu lạ, chỉ làm được ${st.left.length} lần, nên chỉ mở khi bạn có khả năng qua.`}`;
   return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${esc(lv)} · ${esc(vi)}</span><h1>${open ? 'Đã mở' : 'Chưa mở'}</h1>
     <p class="muted">${why}</p></section>
     ${open ? `<div class="row"><button class="btn primary big" data-e="gtstart">▶ Vào thi chuyển cấp</button></div>` : ''}
     ${last}<p class="hint">Phần Đọc + Nghe ${esc(GATE_SPEC[goal] ?? '')}. Đậu khi khả năng qua ≥ ${pc(GATE.ready)}.</p>${back()}`;
 }
+// v141 làm lại sau khi rớt: còn bao nhiêu ngày, cần vững thêm bao nhiêu phần.
+export const waitTxt = (w: { days: number; more: number }): string => [w.days ? `còn ${w.days} ngày` : '', w.more ? `vững thêm ${w.more} phần nữa` : ''].filter(Boolean).join(' và ');
 const back = () => '<div class="row"><button class="btn ghost" data-e="go" data-r="quest">Về bản đồ</button></div>';
 
 export function viewGateRun(c: ECtx, r: GateRun): string {

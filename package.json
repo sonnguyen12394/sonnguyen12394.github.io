@@ -20,7 +20,8 @@
     "engine": "node tools/engine-dump.mjs && node --experimental-strip-types --no-warnings tools/engine-gen.ts",
     "sim": "node --experimental-strip-types --no-warnings tools/sim/run.ts",
     "score": "node --experimental-strip-types --no-warnings tools/score/score.ts",
-    "fightsim": "node --experimental-strip-types --no-warnings tools/sim/fight.ts"
+    "fightsim": "node --experimental-strip-types --no-warnings tools/sim/fight.ts",
+    "testgen": "node --experimental-strip-types --no-warnings tools/testgen-sample.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",

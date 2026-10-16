@@ -1,5 +1,7 @@
 # Trận cổng (đề sát hạch cấp) · trên màn hình: "Thi chuyển cấp"
 
+v141: A1 / A2 không còn dùng nguyên bộ: mỗi lần thi chuyển cấp là một bài **sinh theo tiêu chí** (`src/engine/testgen.ts`, khuôn ở `testbank.ts`); các bộ dưới đây thành ngân hàng câu có sẵn (nhóm nào chưa ra thì được trộn vào, đã ra thì ghi `gg.used`). Soát câu sinh: `npm run testgen` (in bài), `npm run testgen -- --blind` rồi `-- --score` (phép thử "không có bài"). B1 vẫn dùng 2 bộ cố định.
+
 v140: sau phần Đọc + Nghe dưới đây là phần Viết (2 bài) + Nói (1 bài) cho các bộ A1 / A2, soạn trong `src/engine/gatews.ts` (bài lạ theo dạng A2 Key; chấm bằng luật + tự đánh dấu, chỉ tham khảo, không vào đậu / rớt). Bộ B1 chưa có Viết / Nói. Mở khi vững ≥ 80%; qua thì tự lên cấp.
 
 Mỗi cấp có 2 đề song song (Đọc + Nghe, 21–24 câu), dùng một lần cho mỗi người học. Đặc tả: `docs/SPEC.md`, mục "Đề sát hạch". Đề do AI soạn, **chưa qua vòng soát của người**: người sáng lập cần đọc lại cả 134 câu (86 câu A1 / A2 + 48 câu B1) trước khi coi kết quả trận cổng là kết luận đạt cấp.
