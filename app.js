@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 81;
+const STATE_V = 18, APP_VERSION = 82;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -2072,10 +2072,12 @@ function viewTalk(){
       +card(`data-act="rxgo" data-lv="${L}"`,'chat','Phản xạ hội thoại',`Đáp lời trong vài giây, chọn cách nói hợp hoàn cảnh · ${RX_N} câu`,(st.rx||{})[L])
       +card(`data-act="csgo" data-lv="${L}"`,'ear','Nối âm, dạng yếu, ngữ điệu','Câu thoại cấp này: chỗ nối âm, từ đọc lướt, lên/xuống giọng, từ được nhấn · 10 câu',st.pron['cs-'+L])
       +card('data-go="sounds"','ear','Phát âm','Cặp âm người Việt hay nhầm, trọng âm, ngữ điệu, đuôi -s/-ed',null)
-      +card('data-act="paste"','read','📋 Dán bài của bạn','Bài nói / viết của bạn: tách từng câu, phiên âm, nghĩa từng từ, ngữ pháp',null))
+      +card('data-act="paste"','read','📋 Dán bài của bạn','Bài nói / viết của bạn: tách từng câu, phiên âm, nghĩa từng từ, ngữ pháp',null)
+      +card(`data-act="gp" data-lv="${L==='A1'?'A1':'A2'}" data-kind="talk" data-mode="say"`,'mic','📝 Bài luyện theo cấp','Bài mới mỗi lần, A1 / A2 từ dễ tới khó: luyện phát âm hoặc dịch hai chiều',null))
     +sec(`Nói theo đề ${L}`,ss.map(x=>{ const h=st.stask[x.id]||[]; return card(`data-stk="${x.id}"`,'mic',esc(x.vi),`<span lang="en">${esc(x.en)}</span> · chuẩn bị ${x.prep}s, nói ${x.speak}s`,h.length?`Đã nói ${h.length} lần`:null); }).join(''))
     +'<p class="hint">Muốn nói bằng câu của mình và được máy so ý? Mở một hội thoại ở tab Hội thoại rồi bấm Đóng vai.</p>';
-  if(T==='doc') body=sec('Bài của bạn',card('data-act="paste"','read','📋 Dán bài của bạn','Dán bài tiếng Anh bất kỳ: tách từng câu, phiên âm, nghĩa từng từ, ngữ pháp, đọc to',null))+sec(`Đọc văn bản đời thường ${L}`,rs.filter(x=>x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.kind)} · ${esc(x.tvi)} · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))+sec(`Đọc bài dài ${L}`,rs.filter(x=>!x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.tvi)} · ${wc(x.text.join(' '))} từ · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
+  if(T==='doc') body=sec('Bài của bạn',card('data-act="paste"','read','📋 Dán bài của bạn','Dán bài tiếng Anh bất kỳ: tách từng câu, phiên âm, nghĩa từng từ, ngữ pháp, đọc to',null)
+      +card(`data-act="gp" data-lv="${L==='A1'?'A1':'A2'}" data-kind="read" data-mode="e2v"`,'read','📝 Bài luyện theo cấp','Bài mới mỗi lần, A1 / A2 từ dễ tới khó: đọc to, dịch Anh → Việt, Việt → Anh',null))+sec(`Đọc văn bản đời thường ${L}`,rs.filter(x=>x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.kind)} · ${esc(x.tvi)} · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))+sec(`Đọc bài dài ${L}`,rs.filter(x=>!x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.tvi)} · ${wc(x.text.join(' '))} từ · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
     +((L==='A1'||L==='A2')?sec(`📖 Đọc to ${L}: từng câu có hướng dẫn phát âm`,UNITS.filter(u=>u.level===L&&unlocked(u)&&raOk(u)).reverse().slice(0,12).map(u=>{ const r=st.pron['ra:'+u.id]; return card(`data-act="rago" data-uid="${u.id}"`,'mic',`<span lang="en">${esc(u.reading.title)}</span>`,`${uname(u)} · phiên âm, nối âm, âm cuối, ngữ điệu`,r&&r.n?{best:r.best}:null); }).join('')):'')
     +sec('Truyện dài kỳ',card('data-go="stories"','read','Cuốn sổ của Lan',`Đã đọc ${STORY.filter(e=>st.story[e.id]!=null).length}/${STORY.length} tập`,null))
     +(rs.length?'':`<p class="hint">Bài đọc dài có từ B1. Ở ${L}, mỗi unit từ vựng đã có một bài đọc ngắn.</p>`)+exam;
@@ -4269,7 +4271,7 @@ function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); applyA2(); renderChrome();
   if((ui.view==='path'||ui.view==='play'||(ui.view==='goal'&&ui.er==='aim'))&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={thi:viewThi,lib:viewLib,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,ra:viewRA,paste:viewPaste,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  const v={thi:viewThi,lib:viewLib,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,ra:viewRA,paste:viewPaste,gp:viewGP,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   // v99: mục thu gọn (details.gall: Luyện tập, Leo tháp…) giữ trạng thái mở qua các lần vẽ lại #app (trước đây vẽ lại là đóng sập).
@@ -4794,6 +4796,10 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:82,d:'2026-10-16',t:'📝 Bài luyện theo cấp',items:[
+    'Bài mới mỗi lần cho A1, A2, ba bậc Dễ → Vừa → Khó: app ghép bài mới từ khuôn có sẵn bản dịch, hoặc lấy một bài có sẵn của app.',
+    'Ba cách luyện: 🗣 phát âm (đọc to từng câu), 🇬🇧 → 🇻🇳 dịch nghĩa (xem nghĩa rồi tự chấm), 🇻🇳 → 🇬🇧 dịch sang Anh (máy so từng từ với câu gốc).',
+    'Ở 📘 Học (tab Nói, Đọc) và 🎯 Mục tiêu. Làm tốt thì app gợi ý lên bậc. Chỉ để luyện, không tính vào mức thuộc.']},
   {v:81,d:'2026-10-16',t:'📋 Phân tích bài của bạn',items:[
     'Dán một bài nói hoặc bài viết tiếng Anh (📘 Học → Nói / Đọc, hoặc Tôi): app tách từng câu.',
     'Mỗi câu có phiên âm và cách đọc, nghĩa từng từ / cụm từ (kèm từ gốc: went → go), gợi ý ngữ pháp (thì, câu hỏi, so sánh…) và mẹo phát âm. Từ trên cấp đích được tô màu.',
@@ -5149,6 +5155,7 @@ document.addEventListener('click',e=>{
   if(d.qsel!=null){ const s=ui.qz, k=+d.qsel; if(!s.ans){ s.sel=s.sel.includes(k)?s.sel.filter(x=>x!==k):[...s.sel,k]; render(); } return; }
   if(d.rprate) return rpRate(d.rprate);
   if(d.shself!=null){ if(ui.sh){ ui.sh.self=+d.shself; render(); } return; }
+  if(d.gpself!=null){ if(ui.gp){ ui.gp.self=+d.gpself; render(); } return; }
   if(d.raself!=null){ if(ui.ra){ ui.ra.self=+d.raself; render(); } return; }
   if(d.exp){ const [sec,bi,qi,k]=d.exp.split(':'), E=ui.ex; if(E&&E.sec===sec){ E.picks[sec][bi+':'+qi]=+k; render(); } return; }
   switch(d.act){
@@ -5165,8 +5172,19 @@ document.addEventListener('click',e=>{
     case 'rago': return startRA(d.uid);
     case 'rasay': return raSay(d.slow==='1');
     case 'ranext': return raNext();
-    case 'raagain': { const R=ui.ra; return R&&raStart({key:R.key,title:R.title,back:R.back,backL:R.backL,q:R.q}); }
+    case 'raagain': { const R=ui.ra; return R&&raStart({key:R.key,title:R.title,back:R.back,backL:R.backL,q:R.q,vi:R.vi}); }
     case 'paste': return go('paste');
+    case 'gp': { if(d.lv&&GP_LV.includes(d.lv)) (ui.gp||(ui.gp={tier:1,mode:'say',kind:'read'})).lv=d.lv; if(ui.gp&&d.mode&&GP_MODE[d.mode]) ui.gp.mode=d.mode; if(ui.gp&&d.kind&&GP_KIND[d.kind]) ui.gp.kind=d.kind; if(ui.gp) ui.gp.text=null; return go('gp'); }
+    case 'gplv': ui.gp.lv=d.v; ui.gp.text=null; return render();
+    case 'gptier': ui.gp.tier=+d.v; ui.gp.text=null; return render();
+    case 'gpkind': ui.gp.kind=d.v; ui.gp.text=null; return render();
+    case 'gpmode': ui.gp.mode=d.v; ui.gp.text=null; return render();
+    case 'gpnew': return gpNew();
+    case 'gpstop': ui.gp.text=null; return render();
+    case 'gpshow': { const el=document.getElementById('gptyped'); ui.gp.typed=el?el.value:''; ui.gp.shown=true; return render(); }
+    case 'gpcheck': return gpCheck();
+    case 'gpskip': { const G=ui.gp; G.shown=true; G.chk={words:gsent(G.text.lines[G.i].en).split(' ').filter(Boolean),hit:[],p:0}; return render(); }
+    case 'gpnext': return gpNext();
     case 'pastego': return pasteGo();
     case 'pasteclr': ui.pasteRes=null; pasteSave(''); return render();
     case 'pastera': { const P=ui.pasteRes; return P&&P.length&&raStart({key:null,title:'Bài của bạn',back:'data-act="paste"',backL:'Bài của bạn',q:P}); }
@@ -6116,6 +6134,84 @@ function viewPaste(){
     ${(()=>{ const vp=vocabProfileHtml({lv:tgt},all); return vp?`<details class="pnkey"><summary>Hồ sơ từ vựng theo cấp</summary>${vp}</details>`:''; })()}${pnKey()}</section>
   ${res.map(card).join('')}`;
 }
+// ---------- v144 📝 Bài luyện theo cấp: bài ngẫu nhiên A1 / A2 × 3 bậc, luyện phát âm hoặc dịch nghĩa hai chiều ----------
+// Nguồn: sinh từ khuôn song song Anh – Việt (ELCORE.textgen) hoặc rút bài có sẵn đã có nghĩa từng câu (hội thoại; bài đọc unit tách câu khớp
+// bản dịch), xếp bậc theo số từ trung bình mỗi câu (chia ba theo phân vị trong cấp). Chỉ để luyện: không ghi bằng chứng (người sáng lập 16/10/2026).
+const GP_LV=['A1','A2'], GP_TIER=['Dễ','Vừa','Khó'], GP_MODE={say:'🗣 Phát âm',e2v:'🇬🇧 → 🇻🇳 Dịch nghĩa',v2e:'🇻🇳 → 🇬🇧 Dịch sang Anh'}, GP_KIND={read:'📖 Bài đọc',talk:'💬 Hội thoại'};
+const TG = () => (typeof ELCORE!=='undefined'&&ELCORE.textgen)||null;
+let _gpPool=null;
+function gpPool(){ if(_gpPool) return _gpPool; const P=PN(), T=TG(), out=[]; if(!P||!T) return out;
+  for(const d of DIALOGUES) if(GP_LV.includes(d.lv)&&d.lines.every(l=>l.vi)) out.push({id:d.id,lv:d.lv,kind:'talk',title:d.title,tvi:d.vi,lines:d.lines.slice(0,10).map(l=>({en:l.t,vi:l.vi,sp:l.s}))});
+  for(const u of UNITS) if(GP_LV.includes(u.level)&&u.reading){ const en=P.sentencesOf(u.reading.text), vi=String(u.reading.vi||'').split(/(?<=[.!?…])\s+/);
+    if(en.length===vi.length&&en.length>=3) out.push({id:u.id,lv:u.level,kind:'read',title:u.reading.title,tvi:u.reading.tvi||'',lines:en.slice(0,8).map((e,i)=>({en:e,vi:vi[i]}))}); }
+  // bậc: chia ba theo phân vị độ dài câu trong từng cấp × loại bài
+  for(const lv of GP_LV) for(const k of ['read','talk']){ const xs=out.filter(x=>x.lv===lv&&x.kind===k).map(x=>({x,a:T.avgLen(x.lines.map(l=>l.en))})).sort((p,q)=>p.a-q.a);
+    xs.forEach((o,i)=>{ o.x.tier=1+Math.min(2,Math.floor(3*i/xs.length)); }); }
+  if(out.length) _gpPool=out; return out; }
+function gpNew(){ const G=ui.gp, T=TG(); if(!G||!T) return;
+  const seen=ui.gpSeen||(ui.gpSeen=[]), have=gpPool().filter(x=>x.lv===G.lv&&x.kind===G.kind&&x.tier===G.tier&&!seen.includes(x.id));
+  let t;
+  if(have.length&&Math.random()<.5){ t={...have[Math.floor(Math.random()*have.length)],src:'have'}; }
+  else { const g=T.genText({lv:G.lv,tier:G.tier,kind:G.kind,seed:(Date.now()^Math.floor(Math.random()*1e9))>>>0||1}); t={id:g.id,title:g.title,tvi:g.tvi,lines:g.lines,src:'gen'}; }
+  seen.push(t.id); if(seen.length>30) seen.shift();
+  G.text=t; G.i=0; G.res=[]; G.self=null; G.typed=''; G.shown=false; G.chk=null; G.done=false;
+  if(G.mode==='say') return raStart({key:`gp:${G.lv}:${G.tier}:say`,title:t.title,back:'data-act="gp"',backL:'Bài luyện theo cấp',q:t.lines.map(l=>l.en),vi:t.lines.map(l=>l.vi)});
+  render(); window.scrollTo(0,0); }
+const gpKey = G => `gp:${G.lv}:${G.tier}:${G.mode}`;
+function gpBest(G){ return (st.pron[gpKey(G)]||{}).best||0; }
+function gpNext(){ const G=ui.gp; if(!G||!G.text) return; const sc=G.mode==='v2e'?(G.chk?G.chk.p:null):G.self;
+  G.res.push({en:G.text.lines[G.i].en,p:sc}); G.i++; G.self=null; G.typed=''; G.shown=false; G.chk=null;
+  if(G.i>=G.text.lines.length){ G.done=true; const got=G.res.filter(r=>r.p!=null); G.avg=got.length?got.reduce((a,r)=>a+r.p,0)/got.length:0;
+    if(got.length){ const k=gpKey(G), o=st.pron[k]||{best:0,n:0}; st.pron[k]={best:Math.max(o.best||0,G.avg),n:(o.n||0)+1,day:today()}; save(); } }
+  render(); window.scrollTo(0,0); }
+function gpCheck(){ const G=ui.gp, el=document.getElementById('gptyped'), t=String(el?el.value:'').slice(0,400); if(!G||!G.text) return;
+  if(!t.trim()) return toast('Gõ câu tiếng Anh của bạn trước nhé.');
+  G.typed=t; const m=asrMatch(G.text.lines[G.i].en,[t]); G.chk={words:m.words,hit:m.hit,p:m.words.length?m.hit.length/m.words.length:0}; G.shown=true; render(); }
+function viewGP(){
+  const G=ui.gp||(ui.gp={lv:pasteTgt()==='A1'?'A1':'A2',tier:1,mode:'say',kind:'read'}), T=TG();
+  const seg=(act,cur,opts)=>`<div class="row" role="group" style="gap:6px">${Object.entries(opts).map(([k,l])=>`<button class="btn small ${String(cur)===k?'primary':''}" data-act="${act}" data-v="${k}" aria-pressed="${String(cur)===k}">${l}</button>`).join('')}</div>`;
+  const best=gpBest(G), up=best>=.8&&G.tier<3;
+  const setup=`<button class="btn ghost back" data-go="talk">← Giao tiếp</button>
+  <section class="stack"><span class="eyebrow">📝 Bài luyện theo cấp</span><h1>Bài mới mỗi lần, dễ tới khó</h1>
+    <p class="muted">Chọn cấp, bậc và cách luyện. App ghép bài mới từ khuôn có sẵn bản dịch, hoặc lấy một bài có sẵn của app. Chỉ để luyện, không tính vào mức thuộc.</p></section>
+  <section class="panel stack"><h3 class="h4">Cấp</h3>${seg('gplv',G.lv,{A1:'A1',A2:'A2'})}
+    <h3 class="h4">Bậc</h3>${seg('gptier',G.tier,{1:'Dễ',2:'Vừa',3:'Khó'})}
+    <h3 class="h4">Loại bài</h3>${seg('gpkind',G.kind,GP_KIND)}
+    <h3 class="h4">Cách luyện</h3>${seg('gpmode',G.mode,GP_MODE)}
+    <p class="hint">${best?`Điểm cao nhất ${G.lv} · ${GP_TIER[G.tier-1]} · ${GP_MODE[G.mode]}: ${pct(best)}. `:''}${up?`Bạn đã làm tốt bậc này: thử bậc ${GP_TIER[G.tier]}.`:''}</p>
+    <div class="row"><button class="btn primary" data-act="gpnew">${G.text?'Bài mới':'Bắt đầu'}</button>${up?`<button class="btn" data-act="gptier" data-v="${G.tier+1}">Lên bậc ${GP_TIER[G.tier]}</button>`:''}</div></section>`;
+  if(!T) return setup+'<p class="hint">Chưa tải xong bộ sinh bài. Thử lại sau giây lát.</p>';
+  if(!G.text||G.mode==='say') return setup;
+  const t=G.text, n=t.lines.length, head=`<div class="spread"><button class="btn ghost back" data-act="gpstop">← Chọn bài khác</button><span class="num muted">${Math.min(G.i+1,n)}/${n}</span></div>`;
+  if(G.done){ const got=G.res.filter(r=>r.p!=null);
+    return `${head}<section class="panel stack" style="text-align:center;justify-items:center">${mascot(G.avg>=.8?'party':'happy',84)}<h1>${got.length?pct(G.avg):'Đã xong'}</h1>
+      <p class="muted"><span lang="en">${esc(t.title)}</span> · ${G.lv} · ${GP_TIER[G.tier-1]} · ${GP_MODE[G.mode]}. ${G.avg>=.8&&G.tier<3?`Tốt lắm! Thử bậc ${GP_TIER[G.tier]} nhé.`:'Làm bài mới để luyện thêm.'}</p></section>
+      <div class="row endrow"><button class="btn primary" data-act="gpnew">Bài mới</button>${G.avg>=.8&&G.tier<3?`<button class="btn" data-act="gptier" data-v="${G.tier+1}">Lên bậc ${GP_TIER[G.tier]}</button>`:''}<button class="btn ghost" data-act="gpstop">Chọn lại</button></div>`; }
+  const l=t.lines[G.i], who=l.sp?`<span class="pill">${l.sp==='A'?'Người A':'Người B'}</span> `:'';
+  let body='';
+  if(G.mode==='e2v'){
+    body=`<p class="eyebrow">${who}Đọc câu, nghĩ (hoặc gõ) nghĩa tiếng Việt, rồi xem nghĩa</p>${pnHtml(pnNote(l.en))}
+      <div class="row">${HAS_TTS?`<button class="btn small" data-say="${esc(l.en)}">${SPK} Nghe</button>`:''}${pnToggle()}</div>
+      <label class="hint" for="gptyped">Nghĩa bạn hiểu (không bắt buộc)</label><textarea id="gptyped" rows="2">${esc(G.typed)}</textarea>
+      ${G.shown?`<div class="fb neutral" role="status"><strong>Nghĩa: ${esc(l.vi)}</strong></div>
+        ${(()=>{ const gl=glossSent(l.en); return gl.length?`<div class="glw">${gl.map(g=>`<span class="glc"><b lang="en">${esc(g.w)}</b> → ${g.vi?esc(g.vi):'…'}</span>`).join('')}</div>`:''; })()}
+        <p class="hint">Bạn hiểu đúng tới đâu?</p><div class="rate"><button class="btn ${G.self===.3?'primary':''}" data-gpself=".3">Chưa đúng</button><button class="btn ${G.self===.6?'primary':''}" data-gpself=".6">Gần đúng</button><button class="btn ${G.self===1?'primary':''}" data-gpself="1">Đúng</button></div>`
+      :`<div class="row"><button class="btn primary" data-act="gpshow">Xem nghĩa</button></div>`}`;
+  } else {
+    const c=G.chk;
+    body=`<p class="eyebrow">${who}Dịch câu này sang tiếng Anh</p><p class="prompt">${esc(l.vi)}</p>
+      <label class="hint" for="gptyped">Câu tiếng Anh của bạn</label><textarea id="gptyped" rows="2" lang="en" autocapitalize="sentences">${esc(G.typed)}</textarea>
+      ${c?`<div class="fb ${c.p>=.8?'good':c.p>=.5?'neutral':'bad'}" role="status"><strong>Khớp ${c.hit.length}/${c.words.length} từ với câu gốc (${pct(c.p)})</strong>
+          <p lang="en" style="font:400 18px/1.5 var(--display)">${c.words.map((w,i)=>`<span class="${c.hit.includes(i)?'asr-ok':'asr-miss'}">${esc(w)}</span>`).join(' ')}</p>
+          <span class="hint">Từ gạch đỏ là từ của câu gốc mà bài của bạn chưa có. Câu khác cách diễn đạt mà đúng nghĩa vẫn được, tự đối chiếu bên dưới.</span></div>
+        ${pnHtml(pnNote(l.en))}<div class="row">${HAS_TTS?`<button class="btn small" data-say="${esc(l.en)}">${SPK} Nghe câu gốc</button>`:''}<button class="btn small ghost" data-act="gpcheck">So lại</button></div>`
+      :`<div class="row"><button class="btn primary" data-act="gpcheck">So với câu gốc</button><button class="btn ghost small" data-act="gpskip">Chịu, xem câu gốc</button></div>`}`;
+  }
+  const ok=G.mode==='e2v'?G.self!=null:!!G.chk||G.shown;
+  return `${head}<div class="bar"><i style="width:${G.i/n*100}%"></i></div>
+  <section class="q stack"><p class="hint"><span lang="en">${esc(t.title)}</span> · ${esc(t.tvi)} · ${G.lv} · ${GP_TIER[G.tier-1]}</p>${body}
+    ${ok?`<div class="row"><button class="btn primary" data-act="gpnext">${G.i+1<n?'Câu tiếp':'Xem kết quả'}</button></div>`:''}</section>`;
+}
 // Đọc to chỉ mở cho bài đọc A1 / A2 (đích hiện tại); bộ chú thích phủ ≥ 98% từ ở hai cấp này (test engine-pronote).
 const raOk = u => !!(u&&u.reading&&(u.level==='A1'||u.level==='A2')&&PN());
 function startRA(uid){ const u=UNITS.find(x=>x.id===uid), P=PN(); if(!u||!u.reading||!P) return toast('Chưa mở được bài đọc này.');
@@ -6143,6 +6239,7 @@ function viewRA(){
   return `${back}<div class="bar"><i style="width:${R.i/R.q.length*100}%"></i></div>
   <section class="q stack"><p class="eyebrow">📖 Đọc to · <span lang="en">${esc(R.title)}</span></p>
     ${pnHtml(n)}
+    ${R.vi&&R.vi[R.i]?`<details><summary>Nghĩa</summary><p class="hint">${esc(R.vi[R.i])}</p></details>`:''}
     <div class="row">${HAS_TTS?`<button class="btn" data-act="rasay">${SPK} Nghe mẫu</button><button class="btn" data-act="rasay" data-slow="1">🐢 Nghe chậm</button>`:''}${pnToggle()}</div>
     ${pnTips(n)}${pnKey()}
     ${HAS_ASR?asrBox('ra'+R.i,x,null,'Đọc câu này cho máy nghe'):`<p class="hint">Trình duyệt này chưa có máy nghe giọng: ghi âm, nghe lại rồi tự chấm.</p><div class="row">${recBtns}</div>
@@ -8644,7 +8741,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.f76868ce48.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.95f96cd083.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

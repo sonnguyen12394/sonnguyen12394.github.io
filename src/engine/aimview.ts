@@ -23,6 +23,8 @@ export interface AimIn {
 
 const pct = (n: number, t: number): number => (t ? Math.round((100 * n) / t) : 0);
 
+// v144 nút 📝 Bài luyện theo cấp (app.js viewGP) ở dòng Phát âm / Nói / Đọc: [loại bài, cách luyện].
+const GP_OF: Record<string, [string, string]> = { pro: ['read', 'say'], spk: ['talk', 'say'], rd: ['read', 'e2v'] };
 export function viewAim(c: ECtx, x: AimIn | null): string {
   const esc = c.host.esc;
   const tabs = `<div class="row aimtabs" role="group" aria-label="Cấp">${AIM_LVS.map(([l]) => `<button class="btn small${x?.lv === l ? ' primary' : ''}" data-e="aimlv" data-lv="${l}" aria-pressed="${x?.lv === l}">${l}</button>`).join('')}</div>`;
@@ -43,7 +45,7 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
       <span class="cmpbar" role="img" aria-label="${esc(r.vi)}: ${r.game} nhờ game, ${r.app} nhờ app, ${r.both} cả hai, ${r.before} từ trước, ${r.total - r.solid} chưa vững">${seg('cg', r.game)}${seg('ca', r.app)}${seg('cb2', r.both)}${seg('cp', r.before)}</span>
       <span class="hint aimmore">Bấm để xem ${r.total} phần cần đạt</span></summary>
       ${list}</details>
-      <div class="row aimgo">${game}<button class="btn small" data-act="skgo" data-sk="${r.id}">📘 Học ở app</button><button class="btn small" data-e="trystart" data-sk="${r.id}" data-lv="${x.lv}">🎲 Thử sức</button></div>
+      <div class="row aimgo">${game}<button class="btn small" data-act="skgo" data-sk="${r.id}">📘 Học ở app</button><button class="btn small" data-e="trystart" data-sk="${r.id}" data-lv="${x.lv}">🎲 Thử sức</button>${GP_OF[r.id] ? `<button class="btn small" data-act="gp" data-lv="${x.lv}" data-kind="${GP_OF[r.id]![0]}" data-mode="${GP_OF[r.id]![1]}">📝 Bài luyện</button>` : ''}</div>
     </li>`;
   }).join('');
   const g = x.gate;
