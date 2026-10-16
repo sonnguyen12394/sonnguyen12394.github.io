@@ -26,7 +26,7 @@ Mỗi khó khăn ghi **gốc rễ**, vì cách chữa phải nhắm vào gốc, 
 | K11 | Ít thời gian, học rời rạc | Người đi làm chỉ có vài phút rời. Bài dài thì bỏ |
 | K12 | Không ai dẫn liền mạch tới đích | Có tài liệu nhưng không có lộ trình nối từ hôm nay tới cấp đích, và không ai báo "đủ rồi, sang chặng sau" |
 
-## 2. Tách hai lối, một não (đã làm ở bản này)
+## 2. Tách hai lối, một não (bản 73; thay bởi ba phần ở §6)
 
 Quyết định của người sáng lập (16/10/2026, trả lời câu hỏi):
 - **Một não, hai lối.** Tiến độ, bằng chứng, FSRS, bản đồ A2 dùng chung. Không tách hồ sơ, vì bạn là một người học: tách hồ sơ thì phải học lại hai lần, mà đầu bạn vẫn là một.
@@ -126,3 +126,23 @@ Người sáng lập đề xuất tách lối Học thành 6 phần: Từ vựng
 Hai góp ý ghi lại (chưa đổi ở bản này):
 1. **Bản đồ A2 lệch về Từ vựng + Ngữ pháp** (258 / 359 = 72%). Đọc, Nghe, Viết mỗi kỹ năng chỉ 8–10 phần. Một phần vững làm thanh nhảy 10–12%. Trong khi đó A2 Key chấm Đọc + Viết 50%, Nghe 25%, Nói 25%. Việc nội dung sau (C8): chia nhỏ năng lực Đọc / Nghe / Viết thành nhiều phần đo được.
 2. **Nói, Viết chấm bằng luật**, độ tin cậy tối đa "Vừa". Thanh của hai kỹ năng này chỉ để tham khảo cho tới khi có cách chấm tốt hơn.
+
+## 6. Ba phần: ⚔️ Chơi · 📘 Học · 🎯 Mục tiêu (v138, APP_VERSION 75)
+
+Người sáng lập thấy "hai lối + nút đổi lối" (§2) chưa đúng ý. Ý đúng là **ba phần đứng cạnh nhau**, chơi hay học đều phục vụ mục tiêu. Đã chốt:
+- Thanh điều hướng: **Chơi · Học · Mục tiêu · Tôi**. Bỏ nút đổi lối.
+- 📘 Học gộp Hôm nay + Ôn tập + Thư viện của app cũ: việc nên làm (như trang chủ cũ), nút Ôn tập (số mục đến hạn), bảng 7 kỹ năng, tự chọn bài. Chấm đỏ ôn tập hiện trên tab Học.
+- 🎯 Mục tiêu chỉ hiện **A1 và A2**. **Mở app vào Mục tiêu.**
+
+Màn 🎯 Mục tiêu, mỗi cấp:
+- Cần đạt để qua cấp: số phần đã vững / tổng (A1 185, A2 359).
+- 7 kỹ năng: x/y vững, thanh chia nhờ game / nhờ app / cả hai / từ trước. Mỗi kỹ năng có hai nút:
+  - "⚔️ Rèn ở game": mở lò Thợ rèn gợi ý; hiện chỉ Từ vựng có lò, 6 kỹ năng còn lại ghi "🔒 game chưa có lò";
+  - "📘 Học ở app": mở đúng màn của kỹ năng.
+- Trận cổng của cấp: chưa mở (bao nhiêu %), mở (nút vào, chỉ khi cấp này là đích), đã qua ✓. Kèm ô chứng chỉ ngoài app.
+- Nút "Chọn làm đích" khi cấp này chưa là đích chính.
+- Một dòng kết luận: game đang cho lý do học kỹ năng nào.
+
+**Nguồn câu đúng đổi cách gán (quyết định kỹ thuật):** không còn "lối đang mở", nên gán theo **nơi học**: ngữ cảnh của lò game (`learn`, `wheel`, `hunt`, `forge` = `cb.ts ESS_GAMES`) là game, mọi chỗ khác là app. Số đã đếm theo lối ở bản 73–74 giữ nguyên.
+
+**Người mới:** vẫn qua màn chào và chương mở đầu như cũ; lần mở app sau thì vào Mục tiêu.

@@ -231,6 +231,7 @@ export function makeFight(d: FcDeps) {
     open: (): boolean => !!view, close: () => stop(true),
     peek: () => f,
     worn,
+    forge: (): string => tip().forge,   // v138 lò Thợ rèn đang gợi ý (nút ⚔️ Rèn ở game của màn Mục tiêu)
     spent: (): number => d.E().cb?.spent ?? 0,
   };
 }

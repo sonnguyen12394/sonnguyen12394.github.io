@@ -1,0 +1,58 @@
+// v138 🎯 Mục tiêu (route 'aim'): phần thứ ba cạnh ⚔️ Chơi và 📘 Học. Mỗi cấp (A1, A2) nói rõ cần đạt gì: 7 kỹ năng = 7 ô đồ,
+// phần đã vững nhờ game / nhờ app, nút học ở game hoặc ở app, và trận cổng của cấp. Chơi hay học đều đổ vào đây.
+// Thuần chuỗi HTML; số liệu từ compare.ts (compareOf) và gate.ts (gateState). Không dùng chữ "thi / đề / kiểm tra".
+
+import type { ECtx } from './views.ts';
+import { cmpVerdict, type CmpOut } from './compare.ts';
+
+export const AIM_LVS = [['A1', 'cefr-a1'], ['A2', 'cefr-a2']] as const;
+export type AimLv = typeof AIM_LVS[number][0];
+export const isAimLv = (v: unknown): v is AimLv => AIM_LVS.some(([l]) => l === v);
+
+export interface AimIn {
+  lv: AimLv;
+  o: CmpOut;
+  chosen: boolean;                          // cấp này đang là đích chính
+  gate: { has: boolean; open: boolean; passed: boolean; ratio: number };
+  forge: string;                            // lò Thợ rèn đang gợi ý (data-g của nút cblo)
+  cert?: string;                            // ô chứng chỉ ngoài app (gateview viewCert), chỉ khi đã chọn
+  cap?: number;                             // số kỹ năng vững mà vòng game còn đòi (cmpVerdict)
+}
+
+const pct = (n: number, t: number): number => (t ? Math.round((100 * n) / t) : 0);
+
+export function viewAim(c: ECtx, x: AimIn | null): string {
+  const esc = c.host.esc;
+  const tabs = `<div class="row aimtabs" role="group" aria-label="Cấp">${AIM_LVS.map(([l]) => `<button class="btn small${x?.lv === l ? ' primary' : ''}" data-e="aimlv" data-lv="${l}" aria-pressed="${x?.lv === l}">${l}</button>`).join('')}</div>`;
+  const head = `<section class="stack"><span class="eyebrow">Mục tiêu</span><h1>🎯 Cần đạt ở mỗi cấp</h1>
+    <p class="hint">⚔️ Chơi và 📘 Học đều đổ vào đây. Một phần chỉ tính là vững khi bạn làm đúng nhiều lần, cách ngày.</p>${tabs}</section>`;
+  if (!x) return `${head}<p class="muted" role="status">Đang tải bản đồ năng lực…</p>`;
+  const o = x.o, p = pct(o.solid, o.total), id = AIM_LVS.find(([l]) => l === x.lv)![1];
+  const rows = o.rows.filter(r => r.total).map(r => {
+    const seg = (cls: string, n: number) => (n ? `<i class="${cls}" style="width:${pct(n, r.total)}%"></i>` : '');
+    const game = r.pull ? `<button class="btn small" data-e="cblo" data-g="${esc(x.forge)}">⚔️ Rèn ở game</button>` : '<span class="hint aimlock">🔒 game chưa có lò</span>';
+    return `<li class="cmprow stack">
+      <b>${r.ico} ${esc(r.vi)} · ${r.solid}/${r.total} vững <span class="hint">· ô ${esc(r.slot)}${r.mid ? ' · tin cậy vừa' : ''}</span></b>
+      <span class="cmpbar" role="img" aria-label="${esc(r.vi)}: ${r.game} nhờ game, ${r.app} nhờ app, ${r.both} cả hai, ${r.before} từ trước, ${r.total - r.solid} chưa vững">${seg('cg', r.game)}${seg('ca', r.app)}${seg('cb2', r.both)}${seg('cp', r.before)}</span>
+      <div class="row aimgo">${game}<button class="btn small" data-act="skgo" data-sk="${r.id}">📘 Học ở app</button></div>
+    </li>`;
+  }).join('');
+  const g = x.gate;
+  const gate = !g.has ? '<p class="hint">Cấp này chưa có trận cổng.</p>'
+    : g.passed ? `<p><b>✓ Đã qua trận cổng ${x.lv}.</b></p>`
+    : g.open && x.chosen ? `<p>Đã đủ gần để thử. Câu lạ, làm một lần, không gợi ý.</p><div class="row"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào trận cổng ${x.lv}</button></div>`
+    : `<p class="hint">Mở khi các kỹ năng gần vững hết (hiện ${pct(g.ratio, 1)}%). Trận cổng dùng câu lạ, làm một lần, nên app chỉ mở khi kết quả có thể đổi.</p>`;
+  const pick = x.chosen ? '' : `<div class="row"><button class="btn primary" data-e="aimpick" data-g="${id}">Chọn ${x.lv} làm đích</button></div>`;
+  return `${head}
+    <section class="panel stack cmp aim">
+      <p><b>Cần đạt để qua ${x.lv}</b> · ${o.solid}/${o.total} phần đã vững (${p}%)</p>
+      <span class="lskbar" role="progressbar" aria-label="Tiến độ ${x.lv}" aria-valuemin="0" aria-valuemax="${o.total}" aria-valuenow="${o.solid}"><i style="width:${p}%"></i></span>
+      ${pick}
+      <p class="hint cmpleg"><i class="cg"></i> nhờ game · <i class="ca"></i> nhờ app · <i class="cb2"></i> cả hai · <i class="cp"></i> có từ trước</p>
+      <ul class="cmplist">${rows}</ul>
+    </section>
+    <section class="panel stack"><h2>🚪 Trận cổng ${x.lv}</h2>${gate}</section>
+    ${x.cert ?? ''}
+    <p class="cmpv">${esc(cmpVerdict(o, x.cap))}</p>
+    <div class="row"><button class="btn" data-e="go" data-r="goal/${id}">Xem từng năng lực của ${x.lv}</button></div>`;
+}

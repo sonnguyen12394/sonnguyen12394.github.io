@@ -1,11 +1,11 @@
 # English Ladder — Master Spec v2
 
-> **16/10/2026 — Một não, hai lối (v136).** Người sáng lập chốt: tách game và app học cũ thành **hai lối** để đối chiếu xem chỉ chơi game có học được như app không.
-> 1. **⚔️ Lối Chiến Binh** (mặc định): sảnh, trận, lò rèn. **📘 Lối Học**: các tab của app cũ (Ôn tập, Thư viện). Đổi lối ở thanh điều hướng, không mất gì.
-> 2. **Một não:** tiến độ, bằng chứng, FSRS, bản đồ A2 dùng chung (không tách hồ sơ). Mỗi câu đúng ghi thêm nó đến từ lối nào (`st.e.src`); không đổi bằng chứng, không đổi mastery.
-> 3. **Màn ⚖️ Đối chiếu** (Tôi): nút của đích chia 5 nhóm (Từ vựng, Ngữ pháp, Phát âm, Chức năng, Việc làm được), vững nhờ lối nào, nhóm nào game chưa có lò.
-> 4. Khối này **sửa mục 22 "Phần cũ"**: lối Học không cất / gỡ cho tới khi màn đối chiếu cho thấy game phủ được mọi nhóm. Đánh giá theo 12 khó khăn học tiếng Anh: `docs/DOI-CHIEU-GAME-APP.md` (game v134 ≈ 3,0 / 10, app cũ ≈ 5,9; tự chấm, chưa người thật kiểm).
-> 5. **(v137) Lối Học theo dõi theo 7 kỹ năng** (Từ vựng, Ngữ pháp, Phát âm, Nghe, Nói, Đọc, Viết = 7 ô đồ): bảng ở đầu Thư viện, màn ⚖️ Đối chiếu cùng cách chia. Tách để theo dõi, **không tách bài** (bài theo chủ đề giữ nguyên).
+> **16/10/2026 — Ba phần: ⚔️ Chơi · 📘 Học · 🎯 Mục tiêu (v138; thay "hai lối" v136).** Người sáng lập chốt: tách game và app học cũ để đối chiếu, và thêm phần thứ ba là mục tiêu từng cấp; chơi hay học đều phục vụ mục tiêu.
+> 1. **Thanh điều hướng:** Chơi · Học · Mục tiêu · Tôi. ⚔️ Chơi: sảnh, trận, lò rèn. 📘 Học: app cũ (việc nên làm, ôn tập, thư viện, bảng 7 kỹ năng). 🎯 Mục tiêu: A1 và A2 (chỉ hai cấp này) cần đạt gì. **Mở app vào 🎯 Mục tiêu.** Không còn nút đổi lối.
+> 2. **Một não:** tiến độ, bằng chứng, FSRS, bản đồ năng lực dùng chung. Mỗi câu đúng ghi thêm nơi học (`st.e.src`): lò game (Vườn từ, Vòng Chữ, Mỏ Chữ, Lò rèn) là game, còn lại là app. Không đổi bằng chứng, không đổi mastery.
+> 3. **🎯 Mục tiêu** mỗi cấp: 7 kỹ năng = 7 ô đồ (Từ vựng, Ngữ pháp, Phát âm, Nghe, Nói, Đọc, Viết), phần vững nhờ game / nhờ app, nút "⚔️ Rèn ở game" (khi game có lò) và "📘 Học ở app", trận cổng của cấp, chứng chỉ ngoài app. Màn ⚖️ Đối chiếu cũ gộp vào đây.
+> 4. Khối này **sửa mục 22 "Phần cũ"**: phần Học (app cũ) không cất / gỡ cho tới khi 🎯 Mục tiêu cho thấy game phủ được mọi kỹ năng. Đánh giá theo 12 khó khăn học tiếng Anh: `docs/DOI-CHIEU-GAME-APP.md` (game v134 ≈ 3,0 / 10, app cũ ≈ 5,9; tự chấm, chưa người thật kiểm).
+> 5. **Theo dõi theo 7 kỹ năng, không tách bài:** bài theo chủ đề (từ + ngữ pháp cùng ngữ cảnh) giữ nguyên; bảng 7 kỹ năng ở đầu tab Học.
 
 > **15/10/2026 — Trận đổi sang kiểu Chaos Orbit (v134).** Người sáng lập chốt: thay trận ngắm bắn kiểu Gunny bằng lối chơi hiện tại của repo `chaos-orbit-prototype` (kiểu Vampire Survivors). Khối này sửa khối 13/10/2026 ngay dưới; phần khác của khối đó giữ nguyên.
 > 1. **Thay mục 2:** trận là game thuần kiểu Chaos Orbit: chạy để né, vũ khí quỹ đạo tự chém, lên cấp chọn 1 trong 3 nâng cấp, combo, tiến hoá, DASH, Tuyệt kỹ, Elite rơi rương, boss. Vẫn **không có câu tiếng Anh** trong trận, trận không ghi bằng chứng (P13).

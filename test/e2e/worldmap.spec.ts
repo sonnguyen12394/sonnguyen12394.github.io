@@ -71,13 +71,13 @@ test('Tab tới công trình ngoài khung → camera kéo tới; Enter mở bả
   expect(errors).toEqual([]);
 });
 
-test('Đấu trường mở thử thách cũ của app; nút quay lại về bản đồ; tab Hôm nay vẫn sáng', async ({ page, errors }) => {
+test('Đấu trường mở thử thách cũ của app; nút quay lại về bản đồ; tab Chơi vẫn sáng', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await map(page);
   await page.locator('.wplace[data-p="arena"]').evaluate((el: HTMLElement) => el.click());
   await page.locator('.wsheet [data-go="games"]').click();
   await expect(page.locator('#app')).toContainText('Đấu trường');
-  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Hôm nay');
+  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Chơi');
   await page.getByRole('button', { name: '← Bản đồ Phố Chữ' }).click();
   await expect(page.locator('#app .wmap')).toBeVisible();
   expect(errors).toEqual([]);

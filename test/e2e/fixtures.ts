@@ -5,12 +5,15 @@ import { test as base, expect, type Page } from '@playwright/test';
 // future (mặc định bật cho các test cũ): localStorage 'el-future' = '1' trước khi trang nạp, để tab Ôn thi và mục tiêu
 // IELTS/VSTEP/giao tiếp hiện như trước v52. Test của bản MVP chỉ CEFR dùng test.use({ future: false }).
 // full (mặc định bật cho test cũ): localStorage 'el-full' = '1' để sảnh hiện đủ mục như trước v135 Sảnh A2. Test sảnh A2 dùng test.use({ full: false }).
-export const test = base.extend<{ errors: string[]; future: boolean; full: boolean; futureInit: void }>({
+// home (mặc định bật cho test cũ): localStorage 'el-home' = 'play' để mở app vào ⚔️ Chơi như trước v138 (bản mới mở vào 🎯 Mục tiêu).
+export const test = base.extend<{ errors: string[]; future: boolean; full: boolean; home: boolean; futureInit: void }>({
   future: [true, { option: true }],
   full: [true, { option: true }],
-  futureInit: [async ({ page, future, full }, use) => {
+  home: [true, { option: true }],
+  futureInit: [async ({ page, future, full, home }, use) => {
     if (future) await page.addInitScript(() => { try { localStorage.setItem('el-future', '1'); } catch { /* bỏ qua */ } });
     if (full) await page.addInitScript(() => { try { localStorage.setItem('el-full', '1'); } catch { /* bỏ qua */ } });
+    if (home) await page.addInitScript(() => { try { localStorage.setItem('el-home', 'play'); } catch { /* bỏ qua */ } });
     await use();
   }, { auto: true }],
   errors: async ({ page }, use) => {
@@ -63,12 +66,10 @@ export async function noHorizontalScroll(page: Page): Promise<void> {
   expect(over, 'trang không được cuộn ngang').toBeLessThanOrEqual(1);
 }
 
-// v136 hai lối: tab của app cũ (Ôn tập, Thư viện) chỉ có ở lối 📘 Học; chưa thấy tab thì đổi lối trước.
-export async function navTo(page: Page, label: string): Promise<void> {
-  const tab = page.locator('#bnav:visible button, #nav:visible button').filter({ hasText: label }).first();
-  if (!(await tab.count())) await page.locator('#bnav:visible [data-act="door"][data-door="app"], #nav:visible [data-act="door"][data-door="app"]').first().click();
-  await tab.click();
-}
+// v138 ba phần: thanh dưới = Chơi · Học · Mục tiêu · Tôi. Tên tab cũ vẫn dùng được: Thư viện → Học, Hôm nay → Chơi.
+const TAB_NOW: Record<string, string> = { 'Thư viện': 'Học', 'Hôm nay': 'Chơi' };
+export const navTo = (page: Page, label: string) =>
+  page.locator('#bnav:visible button, #nav:visible button').filter({ hasText: TAB_NOW[label] ?? label }).first().click();
 
 // v88: sảnh mở đầu bằng nút "Chơi tiếp" do bộ não chọn; v130: từng game là công trình trên bản đồ. Test chuyển sang danh sách rồi bấm game.
 export async function play(page: Page, start: string): Promise<void> {
