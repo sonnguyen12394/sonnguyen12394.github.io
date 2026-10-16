@@ -82,7 +82,8 @@ import { goalSummary, viewGoalBar, viewGoalSlim, goalLine, goalText, type GoalSu
 import { roteNodes } from './rote.ts';
 import { viewLrRun } from './lrview.ts';
 import { viewTreasureCard, viewTreasureIntro, viewTreasureDone, CHEST_COINS } from './treasureview.ts';
-import { viewGateHome, viewGateRun, viewGateEnd, viewCert, type GateRun } from './gateview.ts';
+import { viewGateHome, viewGateRun, viewGateEnd, viewGateWs, viewCert, type GateRun } from './gateview.ts';
+import { GATE_WS, NEXT_LV, wsPct, wordsOf as gwWords } from './gatews.ts';
 import { gateScore, gateState, lastP, CES_MIN, GATE_FORMS, type GateAns } from './gate.ts';
 import type { LrApi } from '../exam/main.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
@@ -113,7 +114,7 @@ export interface EngineModule {
   skills?(): { vi: string; rows: SkillRow[] } | null;     // v137 bảng 7 kỹ năng của đích (Thư viện, lối Học); null = chưa tải nội dung / chưa có đích
   peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
-export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[]; bonus?: string[] }
+export interface Peek { keys?: Record<string, string>; run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[]; bonus?: string[] }
 
 let bound = false;
 
@@ -173,11 +174,25 @@ export function init(host: EHost): EngineModule {
       for (const it of g.items) ans.push({ skill: g.kind === 'reading' ? 'R' : 'L', b: it.b, g: 1 / Math.max(2, (it.opts ?? g.options ?? []).length), ok: r.given[it.id] === it.ans });
     }
     const e = E(), res = gateScore(r.goal, r.form, ans, host.today(), Math.round((Date.now() - r.t0) / 1000));
+    if (r.ws?.out.length) res.ws = r.ws.out;   // v140 Viết + Nói: tham khảo, không vào đậu / rớt
     r.res = res;
+    // v140 qua thi chuyển cấp → tự lên cấp (người sáng lập 16/10/2026): cấp kế thành đích chính, 🎯 Mục tiêu theo đích mới.
+    const up = res.passed ? NEXT_LV[r.goal] : undefined;
+    if (up && GOALS.get(up) && (e.goals.some(g => g.id === up) || addGoal(up, 'pick'))) {
+      e.goals = [...e.goals.filter(g => g.id === up), ...e.goals.filter(g => g.id !== up)];
+      r.up = up; aimLv = null;
+    }
     (e.gg ||= { done: {} }).done[r.form] = res;
     addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'readiness', subj: r.goal, dec: res.passed ? 'GATE:PASS' : 'GATE:FAIL', rule: `${RULE_ID}/gate-1`,
-      info: { form: r.form, p: res.p, theta: res.theta, se: res.se, ok: res.ok, n: res.n, ...(r.skipL ? { skipL: 'yes' } : {}) }, evs: [] }, false);
+      info: { form: r.form, p: res.p, theta: res.theta, se: res.se, ok: res.ok, n: res.n, ...(r.skipL ? { skipL: 'yes' } : {}), ...(res.ws ? { ws: res.ws.map(w => `${w.kind}:${Math.round(w.pct * 100)}`).join(',') } : {}), ...(r.up ? { up: r.up } : {}) }, evs: [] }, false);
     host.save(); host.cheer?.(res.passed); host.render(); window.scrollTo?.(0, 0);
+  }
+  // v140 xong Đọc + Nghe → phần Viết + Nói (nếu bộ này có), rồi mới chấm.
+  function gtAfterRL(): void {
+    const r = gtRun; if (!r) return;
+    const tasks = GATE_WS[r.form] ?? [];
+    if (tasks.length && !r.ws) { r.ws = { tasks, i: 0, out: [], key: '', draft: '' }; host.render(); window.scrollTo?.(0, 0); return; }
+    gtFinish();
   }
   function lrDone(): void {
     const res = lrApi?.result() ?? [], e = E();
@@ -1862,7 +1877,12 @@ export function init(host: EHost): EngineModule {
     lr: c => viewLrRun(c, lrApi?.cur() ?? null, lrPlays, lrErr),
     gate: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
-      if (gtRun) return gtRun.res ? viewGateEnd(c, gtRun) : viewGateRun({ ...c }, { ...gtRun, plays: lrPlays });
+      if (gtRun) {
+        if (gtRun.res) return viewGateEnd(c, gtRun);
+        const ws = gtRun.ws;
+        if (ws) return viewGateWs(c, gtRun, { has: !!host.hasAsr?.(), busy: ws.key ? !!host.asrBusy?.(ws.key) : false, heard: ws.key ? host.asrHeard?.(ws.key)?.heard ?? '' : '' });
+        return viewGateRun({ ...c }, { ...gtRun, plays: lrPlays });
+      }
       const g = goalOf(c.e);
       if (!g) return viewGoals(c);
       const sk = skillsOf(c.e, g);
@@ -1946,10 +1966,10 @@ export function init(host: EHost): EngineModule {
       const sk = skillsOf(v, g), st = gateState(g.id, sk.solid, sk.total, E().gg), form = st.left[0];
       if (!form || (!st.open && !playtest())) return;
       host.gate(form).then(groups => {
-        if (!groups.length) { host.toast('Chưa tải được trận cổng.'); return; }
+        if (!groups.length) { host.toast('Chưa tải được bài thi chuyển cấp.'); return; }
         const gg = (E().gg ||= { done: {} }); gg.seen = [...new Set([...(gg.seen ?? []), form])]; host.save();   // đã mở là đã lộ câu: không dùng lại đề này
         gtRun = { goal: g.id, form, groups, gi: 0, given: {}, plays: 0, t0: Date.now(), skipL: false, res: null }; lrPlays = 0; host.render(); window.scrollTo?.(0, 0);
-      }).catch(() => host.toast('Chưa tải được trận cổng (cần mạng ở lần đầu).'));
+      }).catch(() => host.toast('Chưa tải được bài thi chuyển cấp (cần mạng ở lần đầu).'));
     },
     certon() { const e = E(); (e.gg ||= { done: {} }).cert = 1; host.save(); host.render(); },
     gtskip() {
@@ -1957,7 +1977,7 @@ export function init(host: EHost): EngineModule {
       if (!r) return;
       r.skipL = true; lrPlays = 0;
       while (r.gi < r.groups.length && r.groups[r.gi]!.kind === 'listening') r.gi++;
-      if (r.gi >= r.groups.length) gtFinish(); else host.render();
+      if (r.gi >= r.groups.length) gtAfterRL(); else host.render();
     },
     dstart(el) {
       if (!loaded()) { ensure(); return; }
@@ -2174,7 +2194,22 @@ export function init(host: EHost): EngineModule {
       for (const [k, v] of new FormData(f).entries()) r.given[k] = String(v);
       lrPlays = 0; r.gi++;
       while (r.skipL && r.gi < r.groups.length && r.groups[r.gi]!.kind === 'listening') r.gi++;
-      if (r.gi >= r.groups.length) gtFinish(); else { host.render(); window.scrollTo?.(0, 0); }
+      if (r.gi >= r.groups.length) gtAfterRL(); else { host.render(); window.scrollTo?.(0, 0); }
+    },
+    // v140 một bài Viết / Nói của thi chuyển cấp: lưu % tiêu chí (luật Viết của app + ý tự đánh dấu), sang bài kế; hết bài thì chấm.
+    gtws(f) {
+      const r = gtRun, ws = r?.ws; if (!r || !ws || r.res) return;
+      const t = ws.tasks[ws.i]!, d = new FormData(f), text = String(d.get('t') ?? '').slice(0, 3000), words = gwWords(text);
+      const self = t.c.map((_, k) => d.get(`c${k}`) === '1');
+      const checks = t.kind === 'w' && text.trim() ? host.wcheckT?.(t, text)?.checks ?? [] : [];
+      ws.out.push({ id: t.id, kind: t.kind, pct: text.trim() ? wsPct(t, words, checks, self) : 0, words });
+      ws.i++; ws.key = ''; ws.draft = '';
+      if (ws.i >= ws.tasks.length) gtFinish(); else { host.render(); window.scrollTo?.(0, 0); }
+    },
+    gtmic(el) {
+      const ws = gtRun?.ws; if (!ws) return;
+      const ta = el.closest('form')?.querySelector('textarea') as HTMLTextAreaElement | null; if (ta) ws.draft = ta.value;
+      ws.key = `gtws:${ws.i}:${Date.now() % 1e6}`; host.asrHear?.(ws.key); host.render();
     },
     lrnext(f) {
       if (!lrApi) return;
@@ -2373,6 +2408,8 @@ export function init(host: EHost): EngineModule {
     },
     skills() { if (!loaded()) { ensure(); return null; } const r = cmpNow(V()); return r ? { vi: r.vi, rows: skillRows(r.o) } : null; },
     peek() {
+      // v140 thi chuyển cấp: đáp án nhóm câu đang làm (keys: mã câu → phương án đúng) cho bot / test e2e; Viết / Nói không có đáp án.
+      if (gtRun && !gtRun.res && !gtRun.ws) { const g = gtRun.groups[gtRun.gi]; if (g) return { run: 'gate', node: '', level: 0, id: g.id, prompt: g.title, keys: Object.fromEntries(g.items.map(it => [it.id, String(it.ans)])) }; }
       { const bp = bag.peek(); if (bp) return bp; }
       { const vp = vc.peek(); if (vp || vc.active()) return vp; }
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>

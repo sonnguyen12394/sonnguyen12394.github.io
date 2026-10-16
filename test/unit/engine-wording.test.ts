@@ -5,7 +5,9 @@ import { readFileSync, readdirSync } from 'node:fs';
 // v111 (SPEC.md "Game hoá mọi chức năng", luật 1): màn chơi không dùng chữ thi / đề thi / kiểm tra / bài dò / chẩn đoán / làm bài.
 // Quét mọi chuỗi trong src/engine (bỏ chú thích). Chỉ phần mục tiêu kỳ thi tương lai (đang ẩn, bật ở Cài đặt → Nâng cao) và phần
 // chứng chỉ tuỳ chọn được phép, liệt kê đích danh dưới đây.
+// v140 ngoại lệ duy nhất do người sáng lập đặt (16/10/2026): "thi chuyển cấp" (bài cuối mỗi cấp). Bỏ cụm này trước khi quét.
 const BANNED = /(?<![\p{L}\p{N}])(thi|kiểm tra|bài dò|chẩn đoán|bài kiểm tra|đề thi|làm bài)(?![\p{L}\p{N}])/iu;
+const OK_PHRASE = /thi chuyển cấp/giu;
 const ALLOW: Array<[string, RegExp]> = [
   ['diagview.ts', /c\.future|Kỳ thi<|kỳ thi đầu tiên|tới từng kỳ thi/],   // bảng giờ học tới từng kỳ thi: chỉ khi bật mục tiêu tương lai
   ['readyview.ts', /SRC_VI|data-xr="place"|vxnew|thi thật|Nếu thi hôm nay|kỳ thi chỉ được xác nhận/],   // Readiness mục tiêu kỳ thi (tương lai)
@@ -18,7 +20,7 @@ test('v111 màn chơi không dùng chữ thi / kiểm tra / bài dò / chẩn đ
   const bad: string[] = [];
   for (const f of readdirSync('src/engine').filter(x => x.endsWith('.ts'))) {
     readFileSync(`src/engine/${f}`, 'utf8').split('\n').forEach((line, i) => {
-      const code = strip(line);
+      const code = strip(line).replace(OK_PHRASE, '');
       const m = code.match(BANNED);
       if (!m) return;
       if (ALLOW.some(([af, re]) => af === f && re.test(code))) return;

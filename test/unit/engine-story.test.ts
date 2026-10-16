@@ -82,7 +82,7 @@ test('v115 khu truyện = cấp: chương cuối khu có cổng chỉ xem đư�
   assert.equal(ready(s, 99, gate(false)), false, 'chưa qua cổng: đủ nhiệm vụ, đủ kỹ năng vẫn chưa xem được');
   assert.equal(advance(s, 99, gate(false)), null);
   const html = viewStory(s, 99, gate(false));
-  assert.match(html, /trận cổng khu A2/); assert.match(html, /data-r="gate"/); assert.doesNotMatch(html, /data-e="stscene"/);
+  assert.match(html, /thi chuyển cấp A2/); assert.match(html, /data-r="gate"/); assert.doesNotMatch(html, /data-e="stscene"/);
   assert.equal(ready(s, 0, gate(true)), false, 'qua cổng vẫn cần đủ kỹ năng vững của chương');
   assert.deepEqual(advance(s, 99, gate(true)), { coins: 50, act: ACTS[last] });
   assert.equal(finished(s), true);

@@ -46,10 +46,10 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
     </li>`;
   }).join('');
   const g = x.gate;
-  const gate = !g.has ? '<p class="hint">Cấp này chưa có trận cổng.</p>'
-    : g.passed ? `<p><b>✓ Đã qua trận cổng ${x.lv}.</b></p>`
-    : g.open && x.chosen ? `<p>Đã đủ gần để thử. Câu lạ, làm một lần, không gợi ý.</p><div class="row"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào trận cổng ${x.lv}</button></div>`
-    : `<p class="hint">Mở khi các kỹ năng gần vững hết (hiện ${pct(g.ratio, 1)}%). Trận cổng dùng câu lạ, làm một lần, nên app chỉ mở khi kết quả có thể đổi.</p>`;
+  const gate = !g.has ? '<p class="hint">Cấp này chưa có bài thi chuyển cấp.</p>'
+    : g.passed ? `<p><b>✓ Đã qua thi chuyển cấp ${x.lv}.</b></p>`
+    : g.open && x.chosen ? `<p>Bạn đã gần xong mục tiêu. Bài gồm Đọc, Nghe, Viết, Nói; câu lạ, làm một lần, không gợi ý. Qua là tự lên cấp.</p><div class="row"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào thi chuyển cấp ${x.lv}</button></div>`
+    : `<p class="hint">Mở khi đã vững ≥ 80% (hiện ${pct(g.ratio, 1)}%). Bài dùng câu lạ, làm một lần, nên app chỉ mở khi bạn gần xong mục tiêu. Qua là tự lên cấp.</p>`;
   const pick = x.chosen ? '' : `<div class="row"><button class="btn primary" data-e="aimpick" data-g="${id}">Chọn ${x.lv} làm đích</button></div>`;
   return `${head}
     <section class="panel stack cmp aim">
@@ -59,7 +59,7 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
       <p class="hint cmpleg"><i class="cg"></i> nhờ game · <i class="ca"></i> nhờ app · <i class="cb2"></i> cả hai · <i class="cp"></i> có từ trước</p>
       <ul class="cmplist">${rows}</ul>
     </section>
-    <section class="panel stack"><h2>🚪 Trận cổng ${x.lv}</h2>${gate}</section>
+    <section class="panel stack"><h2>🚪 Thi chuyển cấp ${x.lv}</h2>${gate}</section>
     ${x.cert ?? ''}
     <p class="cmpv">${esc(cmpVerdict(o, x.cap))}</p>
     <div class="row"><button class="btn" data-e="go" data-r="goal/${id}">Xem từng năng lực của ${x.lv}</button></div>`;

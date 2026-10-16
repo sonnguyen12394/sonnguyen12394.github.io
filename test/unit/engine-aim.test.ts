@@ -38,16 +38,16 @@ test('v138 Mục tiêu: 7 kỹ năng, mỗi kỹ năng có "📘 Học ở app";
   assert.match(h, /data-r="goal\/cefr-a2"/);
   assert.doesNotMatch(h, /data-e="aimpick"/, 'đã là đích: không hỏi chọn');
   assert.match(viewAim(c, aim({ chosen: false })), /data-e="aimpick" data-g="cefr-a2">Chọn A2 làm đích/);
-  assert.doesNotMatch(text(h), /\b(thi|đề|kiểm tra)\b/i);
+  assert.doesNotMatch(text(h).replace(/thi chuyển cấp/gi, ''), /\b(thi|đề|kiểm tra)\b/i);
 });
 
 test('v138 Mục tiêu: trận cổng ba trạng thái; chỉ mở nút vào cổng khi cấp này là đích', () => {
-  assert.match(viewAim(c, aim()), /Mở khi các kỹ năng gần vững hết \(hiện 42%\)/);
+  assert.match(viewAim(c, aim()), /Mở khi đã vững ≥ 80% \(hiện 42%\)/);
   const open = viewAim(c, aim({ gate: { ...gate0, open: true } }));
-  assert.match(open, /data-e="go" data-r="gate">🚪 Vào trận cổng A2/);
+  assert.match(open, /data-e="go" data-r="gate">🚪 Vào thi chuyển cấp A2/);
   assert.doesNotMatch(viewAim(c, aim({ chosen: false, gate: { ...gate0, open: true } })), /data-r="gate"/);
-  assert.match(viewAim(c, aim({ gate: { ...gate0, passed: true } })), /✓ Đã qua trận cổng A2/);
-  assert.match(viewAim(c, aim({ gate: { ...gate0, has: false } })), /chưa có trận cổng/);
+  assert.match(viewAim(c, aim({ gate: { ...gate0, passed: true } })), /✓ Đã qua thi chuyển cấp A2/);
+  assert.match(viewAim(c, aim({ gate: { ...gate0, has: false } })), /chưa có bài thi chuyển cấp/);
   assert.match(viewAim(c, null), /Đang tải/);
 });
 

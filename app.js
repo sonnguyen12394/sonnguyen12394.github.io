@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 76;
+const STATE_V = 18, APP_VERSION = 77;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -4791,6 +4791,10 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:77,d:'2026-10-16',t:'Thi chuyển cấp',items:[
+    'Khi đã vững ≥ 80% mục tiêu của cấp, 🎯 Mục tiêu mở nút 🚪 Thi chuyển cấp.',
+    'Bài gồm 4 phần bạn chưa gặp bao giờ: Đọc, Nghe, Viết (tin nhắn, chuyện ngắn) và Nói (trả lời câu hỏi về bạn; có 🎙 nếu máy nghe được).',
+    'Đọc + Nghe quyết định đậu; Viết + Nói chấm bằng luật và tự đánh dấu, để tham khảo. Qua là tự lên cấp: A1 → A2.']},
   {v:76,d:'2026-10-16',t:'Mục tiêu: bấm để xem chi tiết',items:[
     'Ở 🎯 Mục tiêu, bấm vào một kỹ năng để xem từng phần cần đạt: đã vững, đang học bao nhiêu %, hay chưa bắt đầu.',
     'Phần chưa vững đứng trước, phần gần xong nhất ở trên cùng. Mỗi phần ghi mức cần đạt và học nhờ game hay nhờ app.']},
@@ -8469,7 +8473,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.398384184e.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.28dbe64280.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
@@ -8501,6 +8505,7 @@ const EHOST = {
     return {node,topic:u.title,vi:u.vi||u.title,words:u.words.map(w=>({id:w.id,en:w.word,vi:w.vi,pos:w.pos||'',pic:w.pic||'',ipa:w.ipa||'',ex:w.ex||'',exVi:w.exVi||''})),pool}; },
   // v83 Thư gửi cư dân phố: đề viết (WTASKS), máy kiểm bài viết (writeChecks + lỗi hay gặp), lưu như màn Viết theo đề (Can-Do viết).
   wtasks:lv=>WTASKS.filter(t=>t.lv===lv).map(t=>({id:t.id,lv:t.lv,genre:t.genre,en:t.en,vi:t.vi,p:t.p,pv:t.pv,min:t.min,max:t.max,par:t.par,c:t.c.slice(),u:t.u.map(x=>[x[0],x[1]]),m:(t.m||[]).slice(),text:(st.wtask[t.id]||{}).text||'',done:wtDone(t.id)})),
+  wcheckT:(t,text)=>({n:wc(text),checks:writeChecks(t,text).map(([ok,l])=>[!!ok,l])}),   // v140 Viết của thi chuyển cấp
   wcheck:(id,text)=>{ const t=WT[id]; if(!t) return null; return {n:wc(text),checks:writeChecks(t,text).map(([ok,l])=>[!!ok,l]),hints:grammarHints(text).slice(0,4).map(h=>({m:h.m,why:h.why,snip:h.snip}))}; },
   wsave:(id,text,self)=>{ const t=WT[id]; if(!t||!text) return; const s=st.wtask[id]||={}, first=!s.text; s.text=String(text).slice(0,8000); s.day=today(); try{ markActive(); }catch(e){}
     if(first){ try{ addXP(20); bump('talk'); questCheck(); }catch(e){} } if(Array.isArray(self)&&self.length===WRUB.length) s.self=self.map(v=>Math.max(1,Math.min(RUBL.length,Math.round(+v||1)))); save(); try{ checkBadges(); }catch(e){} },

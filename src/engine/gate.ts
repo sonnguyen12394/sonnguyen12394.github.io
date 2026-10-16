@@ -5,8 +5,10 @@
 // Viết / Nói không vào phán quyết cổng (chỉ tin cậy Vừa khi chưa có AI, SPEC mục 10): trang tiến độ hiện từ bài Thư / Karaoke.
 
 import { estimate, type Response } from '../exam/irt.ts';
+import type { WsOut } from './gatews.ts';
 
-export const GATE = { open: 0.7, ready: 0.8, sd: 1.5 } as const;
+// v140 open 0,7 → 0,8 (người sáng lập: thi chuyển cấp mở khi vững ≥ 80%: gần xong mục tiêu, không phí bộ câu lạ).
+export const GATE = { open: 0.8, ready: 0.8, sd: 1.5 } as const;
 // Ngưỡng trên thang band của bộ chấm (src/exam/scales.ts CEFR_TABLE: A1 từ band 1, A2 từ band 3, B1 từ band 4; làm tròn 0,5 nên ngưỡng thật là −0,25).
 export const GATE_THR: Record<string, number> = { 'cefr-a1': 0.75, 'cefr-a2': 2.75, 'cefr-b1': 3.75 };
 export const GATE_FORMS: Record<string, string[]> = { 'cefr-a1': ['a1-1', 'a1-2'], 'cefr-a2': ['a2-1', 'a2-2'], 'cefr-b1': ['b1-1', 'b1-2'] };
@@ -18,7 +20,7 @@ export const GATE_SPEC: Record<string, string> = { 'cefr-a1': 'soạn theo mô t
 
 export interface GateAns { skill: 'R' | 'L'; b: number; g: number; ok: boolean }
 export interface GateSkill { n: number; ok: number; theta: number; se: number }
-export interface GateResult { form: string; goal: string; day: number; n: number; ok: number; theta: number; se: number; p: number; lo: number; hi: number; passed: boolean; secs: number; sk: Partial<Record<'R' | 'L', GateSkill>> }
+export interface GateResult { form: string; goal: string; day: number; n: number; ok: number; theta: number; se: number; p: number; lo: number; hi: number; passed: boolean; secs: number; sk: Partial<Record<'R' | 'L', GateSkill>>; ws?: WsOut[] }   // v140 ws: Viết / Nói (tham khảo, không vào đậu / rớt)
 export interface GateSave { done: Record<string, GateResult>; seen?: string[]; cert?: 1;   // cert: người học bật "thi lấy chứng chỉ" (tuỳ chọn ở hồ sơ)
    // seen: đề đã mở (câu đã lộ) dù chưa xong: không dùng lại
   ext?: Array<{ goal: string; day: number; score: number; pass: boolean; pred: number | null; src: 'sample' | 'real' }> }
@@ -65,6 +67,8 @@ export function sanitizeGate(x: unknown): GateSave | undefined {
     const sk: GateResult['sk'] = {};
     for (const s of ['R', 'L'] as const) { const q = (r.sk as Record<string, Record<string, unknown>> | undefined)?.[s]; if (q) sk[s] = { n: num(q.n, 0, 99), ok: num(q.ok, 0, 99), theta: num(q.theta, 0, 9), se: num(q.se, 0, 9) }; }
     out.done[k] = { form: k, goal, day: num(r.day, 0, 1e6), n: num(r.n, 0, 99), ok: num(r.ok, 0, 99), theta: num(r.theta, 0, 9), se: num(r.se, 0, 9), p: num(r.p, 0, 1), lo: num(r.lo, -9, 9), hi: num(r.hi, 0, 18), passed: r.passed === true, secs: num(r.secs, 0, 1e5), sk };
+    if (Array.isArray(r.ws)) { const ws = r.ws.filter((w): w is Record<string, unknown> => !!w && typeof w === 'object' && typeof w.id === 'string' && /^[a-z0-9-]{2,30}$/.test(w.id) && (w.kind === 'w' || w.kind === 's')).slice(0, 6)
+      .map(w => ({ id: String(w.id), kind: w.kind as 'w' | 's', pct: num(w.pct, 0, 1), words: Math.round(num(w.words, 0, 999)) })); if (ws.length) out.done[k]!.ws = ws; }
   }
   if (o.cert === 1) out.cert = 1;
   if (Array.isArray(o.seen)) { const seen = [...new Set(o.seen.filter((f): f is string => typeof f === 'string' && /^[a-z0-9-]{2,20}$/.test(f)))].slice(-40); if (seen.length) out.seen = seen; }

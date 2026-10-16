@@ -1,4 +1,6 @@
-# Trận cổng (đề sát hạch cấp)
+# Trận cổng (đề sát hạch cấp) · trên màn hình: "Thi chuyển cấp"
+
+v140: sau phần Đọc + Nghe dưới đây là phần Viết (2 bài) + Nói (1 bài) cho các bộ A1 / A2, soạn trong `src/engine/gatews.ts` (bài lạ theo dạng A2 Key; chấm bằng luật + tự đánh dấu, chỉ tham khảo, không vào đậu / rớt). Bộ B1 chưa có Viết / Nói. Mở khi vững ≥ 80%; qua thì tự lên cấp.
 
 Mỗi cấp có 2 đề song song (Đọc + Nghe, 21–24 câu), dùng một lần cho mỗi người học. Đặc tả: `docs/SPEC.md`, mục "Đề sát hạch". Đề do AI soạn, **chưa qua vòng soát của người**: người sáng lập cần đọc lại cả 134 câu (86 câu A1 / A2 + 48 câu B1) trước khi coi kết quả trận cổng là kết luận đạt cấp.
 

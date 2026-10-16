@@ -170,6 +170,6 @@ export function viewHMeter(c: ECtx, rows: HRow[], total: number, measured: numbe
     <p style="font-size:22px">Điểm H: <b>${total.toFixed(1)}</b>/10 · ${measured}/10 tiêu chí đã đủ số liệu</p>
     <p class="hint">Đo trên chính bạn, 28 ngày gần nhất. Tiêu chí chưa đủ số liệu chỉ là ước tính, tối đa 6. Không đo chuỗi ngày, XP hay số bài đã xong: những số đó không cho biết bạn dùng được tiếng Anh.</p>
     <ul class="vhlist" aria-label="Bảng đo H, 10 tiêu chí">${li}</ul>
-    <p class="hint">Muốn tăng: Quán Phố Chữ (H1, H5, H8), Hỏi chuyện (H2), Đài Phố Chữ có âm phố (H3, H4), Sương quay lại (H6), Bến Cảng (H7), trận cổng (H9), Phố thật (H10).</p></section>
+    <p class="hint">Muốn tăng: Quán Phố Chữ (H1, H5, H8), Hỏi chuyện (H2), Đài Phố Chữ có âm phố (H3, H4), Sương quay lại (H6), Bến Cảng (H7), thi chuyển cấp (H9), Phố thật (H10).</p></section>
     <div class="row"><button class="btn primary" data-e="qhome">Về bản đồ</button></div>`;
 }

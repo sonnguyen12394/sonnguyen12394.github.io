@@ -47,7 +47,7 @@ export function viewGoalSlim(c: ECtx, s: GoalSum): string {
   return `<button class="gbar slim" data-e="go" data-r="goal/${esc(s.id)}" aria-label="Mục tiêu ${esc(s.vi)}: ${s.solid}/${s.total} kỹ năng đã vững. Xem chi tiết">
     <span>🎯 <b>${lv}</b> · ${s.solid}/${s.total} kỹ năng đã vững</span><span class="hint">Chi tiết ›</span>
     <span class="bar gbbar" role="progressbar" aria-label="Kỹ năng đã vững" aria-valuemin="0" aria-valuemax="${s.total}" aria-valuenow="${s.solid}"><i style="width:${pc(s.solid, s.total)}%"></i><i class="gbclaim" style="width:${pc(s.claimed, s.total)}%"></i></span>
-    ${warn ? `<span class="gbrote">${warn}</span>` : ''}</button>${gt?.open && !gt.passed ? `<div class="row" style="margin:-4px 0 12px"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào trận cổng khu ${esc(gt.lv)}</button></div>` : ''}`;
+    ${warn ? `<span class="gbrote">${warn}</span>` : ''}</button>${gt?.open && !gt.passed ? `<div class="row" style="margin:-4px 0 12px"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào thi chuyển cấp ${esc(gt.lv)}</button></div>` : ''}`;
 }
 
 // Bản đầy đủ (đầu trang mục tiêu; trước v117 nằm ở đầu sảnh). Thanh hai lớp: vững thật (đậm) và chỉ suy ra từ xếp lớp (nhạt, đang kiểm
@@ -70,10 +70,10 @@ export function viewGoalBar(c: ECtx, s: GoalSum): string {
   const zones = s.zones.length ? `<span class="gbzone" aria-label="Các khu của Phố Chữ">${s.zones.map(z => z.cur ? `<b>📍${esc(z.lv)}</b>` : z.passed ? `${esc(z.lv)} ✓` : `<span class="hint">${esc(z.lv)}</span>`).join(' · ')}</span>` : '';
   const gt = s.gate;
   const gline = !gt || !gt.has ? '<span class="hint">Đây là bản đồ để biết học gì tiếp, chưa phải kết luận đủ trình độ.</span>'
-    : gt.passed ? `<span class="gbup">🚪 Đã qua cổng khu ${esc(gt.lv)}</span>`
-    : gt.open ? `<span class="gbup">🚪 Cổng khu ${esc(gt.lv)} đã mở: vào trận cổng để Tí xác nhận bạn đủ trình độ.</span>`
-    : `<span class="hint">🚪 Cổng khu ${esc(gt.lv)} còn khoá: mở khi ${Math.round(GATE.open * 100)}% kỹ năng đã vững (đang ${Math.round(gt.ratio * 100)}%). Bản đồ này chưa phải kết luận.</span>`;
-  const cta = gt?.open && !gt.passed ? `<div class="row" style="margin:-4px 0 12px"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào trận cổng khu ${esc(gt.lv)}</button></div>` : '';
+    : gt.passed ? `<span class="gbup">🚪 Đã qua thi chuyển cấp ${esc(gt.lv)}</span>`
+    : gt.open ? `<span class="gbup">🚪 Thi chuyển cấp ${esc(gt.lv)} đã mở: qua là lên cấp.</span>`
+    : `<span class="hint">🚪 Thi chuyển cấp ${esc(gt.lv)} chưa mở: mở khi ${Math.round(GATE.open * 100)}% kỹ năng đã vững (đang ${Math.round(gt.ratio * 100)}%). Bản đồ này chưa phải kết luận.</span>`;
+  const cta = gt?.open && !gt.passed ? `<div class="row" style="margin:-4px 0 12px"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào thi chuyển cấp ${esc(gt.lv)}</button></div>` : '';
   return `<section class="gbar stack" aria-label="Tiến độ mục tiêu" style="cursor:default">
     <span class="spread"><span class="eyebrow">🎯 Mục tiêu: ${esc(s.vi)}</span></span>
     <span class="spread"><b>${s.solid}/${s.total} kỹ năng đã vững</b>${week}</span>
