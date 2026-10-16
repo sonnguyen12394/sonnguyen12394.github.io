@@ -40,7 +40,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.locator('#app')).toContainText('vài trăm MB');
     await page.locator('[data-act="phload"]').click();
     await expect(page.locator('#app')).toContainText('Đã sẵn sàng');
-    await page.evaluate(() => (window as any).eval('phRun')(new Float32Array(16000)));
+    await page.evaluate(() => (window as any).eval('phGo')(Float32Array.from({ length: 32000 }, (_, i) => 0.3 * Math.sin(i / 5))));
     await expect(page.locator('#app .fb strong', { hasText: 'Điểm phát âm' })).toBeVisible();
     const seasons = page.locator('.phd', { hasText: 'seasons' });
     await expect(seasons.locator('summary')).toHaveClass(/phw (a|r)/);
@@ -48,6 +48,8 @@ for (const scheme of ['light', 'dark'] as const) {
     await seasons.locator('summary').click();
     await expect(seasons).toContainText('nghe gần như /ʃ/');
     await expect(page.locator('#app')).toContainText('chấm 456 ms');
+    await expect(page.locator('#app')).toContainText('Máy nghe ra các âm');
+    await expect(page.locator('#app')).toContainText('có tiếng 100%');
     await noHorizontalScroll(page);
     const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
     expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
@@ -55,6 +57,21 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(errors).toEqual([]);
   });
 }
+
+test('v147 im lặng thì không chấm, báo rõ; fp16 có cảnh báo cho iPhone', async ({ page, errors }) => {
+  await open(page);
+  await page.evaluate(() => (window as any).eval("go('phon')"));
+  await page.locator('[data-act="phdt"][data-v="fp16"]').click();
+  await expect(page.locator('#app')).toContainText('dành cho bản app');
+  await expect(page.locator('#app .fb.bad')).toContainText('600 MB');
+  await page.locator('[data-act="phdt"][data-v="q8"]').click();
+  await page.locator('[data-act="phload"]').click();
+  await expect(page.locator('#app')).toContainText('Đã sẵn sàng');
+  await page.evaluate(() => (window as any).eval('phGo')(new Float32Array(32000)));
+  await expect(page.locator('#app .fb.bad')).toContainText('chưa nghe thấy tiếng');
+  await expect(page.locator('#app .fb strong', { hasText: 'Điểm phát âm' })).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
 
 test('đổi câu để chấm; xoá mô hình đưa về trạng thái chưa tải', async ({ page, errors }) => {
   await open(page);

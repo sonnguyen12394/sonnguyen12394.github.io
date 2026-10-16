@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { toModelPhones, ctcAlign, logSoftmax, score, type GopPhone } from '../../src/engine/gop.ts';
+import { toModelPhones, ctcAlign, logSoftmax, score, greedy, loudness, type GopPhone } from '../../src/engine/gop.ts';
 import { noteOf } from '../../src/engine/pronote.ts';
 import { corpus } from '../../tools/pronote-cov.ts';
 
@@ -46,4 +46,27 @@ test('v146 bộ âm phủ đủ âm của câu A1–A2 (dùng phiên âm thật 
   const c = corpus(), miss = new Set<string>();
   for (const l of [...c.dlg, ...c.read.slice(0, 300)]) for (const t of noteOf(l, c.ipaOf).toks) if (t.ipa) toModelPhones(t.ipa, VOC, miss);
   assert.deepEqual([...miss], []);
+});
+
+// Kiểu CTC thật: mỗi âm chỉ bật 1 khung, giữa là 3 khung lặng; khung bật cũng còn chút xác suất lặng.
+function spiky(spoken: number[]): { data: Float32Array; T: number } {
+  const T = spoken.length * 4 + 2, data = new Float32Array(T * V);
+  for (let t = 0; t < T; t++) { const k = Math.floor((t - 1) / 4), on = t >= 1 && (t - 1) % 4 === 1 && k < spoken.length; data[t * V + BLANK] = on ? 3 : 8; if (on) data[t * V + spoken[k]!] = 7; }
+  return { data, T };
+}
+test('v147 chấm kiểu CTC thật (âm bật 1 khung): nói đúng vẫn ≥ 80; nói sai một âm thì âm đó thấp; bỏ âm cuối thì thiếu', () => {
+  const words = ['see', 'his'], ph = phonesOf(['siː', 'hɪz']);
+  const ok = spiky(ph.map(p => p.tok)), r = score(ok.data, ok.T, V, ph, words, TOKS, BLANK)!;
+  assert.ok(r.words.every(w => w.phones.every(p => p.score >= 80)), JSON.stringify(r.words.map(w => w.phones.map(p => p.score))));
+  const bad = spiky(ph.map(p => (TOKS[p.tok] === 's' ? VOC['ʃ']! : p.tok))), rb = score(bad.data, bad.T, V, ph, words, TOKS, BLANK)!;
+  const s = rb.words[0]!.phones[0]!; assert.ok(s.score < 40, String(s.score)); assert.equal(s.heard, 'ʃ');
+  const drop = spiky(ph.slice(0, -1).map(p => p.tok)), rd = score(drop.data, drop.T, V, ph, words, TOKS, BLANK)!;
+  assert.ok(rd.words[1]!.phones.at(-1)!.missing, JSON.stringify(rd.words[1]!.phones.at(-1)));
+});
+test('v147 đọc tham lam ra chuỗi âm máy nghe; âm lượng: im lặng thì không có tiếng', () => {
+  const ph = phonesOf(['siː', 'hɪz']), { data, T } = spiky(ph.map(p => p.tok));
+  assert.equal(greedy(data, T, V, TOKS, BLANK), 'siːhɪz');
+  assert.equal(loudness(new Float32Array(16000)).voiced, 0);
+  const tone = Float32Array.from({ length: 16000 }, (_, i) => 0.3 * Math.sin(i / 5));
+  assert.ok(loudness(tone).voiced > 0.9 && loudness(tone).rms > 0.1);
 });

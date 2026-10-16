@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 84;
+const STATE_V = 18, APP_VERSION = 85;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -4809,6 +4809,11 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:85,d:'2026-10-17',t:'🧪 Chấm từng âm: sửa theo lần thử trên iPhone',items:[
+    'Khi ghi âm có vạch âm lượng và đồng hồ: thấy ngay micro có thu được giọng không. Ghi xong có nút ▶ Nghe lại giọng bạn.',
+    'Âm thanh gần như im lặng thì app báo rõ, không chấm (trước đây vẫn chấm và ra điểm rất thấp).',
+    'Sau khi chấm có dòng “Máy nghe ra các âm” đặt cạnh âm mong đợi. Cách chấm mới hợp với mô hình hơn: âm nói đúng không còn bị chấm thấp oan.',
+    'Kiểu fp16 (~600 MB) vẫn giữ nhưng có cảnh báo: trình duyệt trên iPhone thường hết bộ nhớ, dành cho bản app sau này.']},
   {v:84,d:'2026-10-16',t:'🧪 Thử chấm từng âm trên máy',items:[
     'Thử nghiệm ở Tôi → “🧪 Chấm từng âm”: như ELSA, máy chấm từng âm trong câu bạn nói, từ tô xanh / vàng / đỏ; bấm một từ để xem âm nào sai, bị nuốt, hay nghe thành âm khác.',
     'Mô hình chạy ngay trên điện thoại, âm thanh không gửi đi đâu. Lần đầu phải tải vài trăm MB (nên dùng Wi-Fi); máy yếu có thể chậm.',
@@ -5198,6 +5203,7 @@ document.addEventListener('click',e=>{
     case 'phload': return phLoad();
     case 'phdel': return phDel();
     case 'phrec': return phRec();
+    case 'phplay': { try{ PH.url&&new Audio(PH.url).play(); }catch(e){} return; }
     case 'phdt': PH.dtype=d.v; return render();
     case 'phset': { const el=document.getElementById('phsent'), v=String(el?el.value:'').trim().slice(0,120); if(v){ PH.sent=v; PH.res=null; PH.err=''; } return render(); }
     case 'gp': { if(d.lv&&GP_LV.includes(d.lv)) (ui.gp||(ui.gp={tier:1,mode:'say',kind:'read'})).lv=d.lv; if(ui.gp&&d.mode&&GP_MODE[d.mode]) ui.gp.mode=d.mode; if(ui.gp&&d.kind&&GP_KIND[d.kind]) ui.gp.kind=d.kind; if(ui.gp) ui.gp.text=null; return go('gp'); }
@@ -6241,7 +6247,7 @@ function viewGP(){
 // ---------- v146 🧪 Chấm từng âm trên máy (thử nghiệm, kiểu ELSA) ----------
 // Mô hình nhận âm vị wav2vec2 (IPA espeak, ONNX) chạy trong phon-worker.js; app ghi âm, đổi về 16 kHz, gửi worker, nhận logits rồi chấm từng âm
 // bằng ELCORE.gop (căn hàng CTC + GOP). Âm thanh không rời khỏi máy; mô hình tải một lần (vài trăm MB). Chỉ để thử: không ghi bằng chứng.
-const PH = {w:null,st:'idle',prog:0,total:0,vocab:null,err:'',loadMs:0,runMs:0,rec:null,recT:0,chunks:[],res:null,dtype:'q8',sent:'Hanoi has four seasons.',dur:0,frames:0,miss:[]};
+const PH = {w:null,st:'idle',prog:0,total:0,vocab:null,err:'',loadMs:0,runMs:0,rec:null,recT:0,chunks:[],res:null,dtype:'q8',sent:'Hanoi has four seasons.',dur:0,frames:0,miss:[],heard:'',url:'',rms:0,voiced:0,meter:null,t0:0};
 const phProgTxt = () => PH.total?`${Math.round(PH.prog/1048576)} / ${Math.round(PH.total/1048576)} MB`:'Đang chuẩn bị…';
 function phWorker(){ if(PH.w) return PH.w;
   const w=new Worker('phon-worker.js',{type:'module'});
@@ -6259,22 +6265,36 @@ async function phDel(){ try{ PH.w&&PH.w.terminate(); }catch(e){} Object.assign(P
 async function phRec(){ if(PH.rec) return phStop(); PH.err=''; PH.res=null;
   try{ const s=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true}}), mr=new MediaRecorder(s); PH.chunks=[];
     mr.ondataavailable=e=>{ if(e.data&&e.data.size) PH.chunks.push(e.data); };
-    mr.onstop=()=>{ s.getTracks().forEach(t=>t.stop()); phDecode(new Blob(PH.chunks,{type:mr.mimeType||'audio/mp4'})); };
-    mr.start(); PH.rec=mr; PH.st='rec'; PH.recT=setTimeout(phStop,6000); render();
+    mr.onstop=()=>{ phMeterStop(); s.getTracks().forEach(t=>t.stop()); const b=new Blob(PH.chunks,{type:mr.mimeType||'audio/mp4'}); try{ PH.url&&URL.revokeObjectURL(PH.url); PH.url=URL.createObjectURL(b); }catch(e){} phDecode(b); };
+    mr.start(); PH.rec=mr; PH.st='rec'; PH.t0=Date.now(); PH.recT=setTimeout(phStop,6000); render(); phMeter(s);
   }catch(e){ PH.err='Không mở được micro: '+(e.message||e.name||e)+'. Cho phép micro cho trình duyệt rồi thử lại.'; render(); } }
+// v147 vạch âm lượng + đồng hồ khi ghi: thấy ngay micro có thu được giọng không.
+function phMeter(stream){ try{ const AC=window.AudioContext||window.webkitAudioContext, ac=new AC(), an=ac.createAnalyser(); an.fftSize=512; ac.createMediaStreamSource(stream).connect(an);
+  const buf=new Float32Array(an.fftSize); let peak=0;
+  const tick=()=>{ if(!PH.meter) return; an.getFloatTimeDomainData(buf); let e=0; for(let i=0;i<buf.length;i++) e+=buf[i]*buf[i]; const r=Math.sqrt(e/buf.length); peak=Math.max(peak*0.9,r);
+    const bar=document.getElementById('phlvl'), tm=document.getElementById('phtime'), hint=document.getElementById('phquiet');
+    if(bar) bar.style.width=Math.min(100,Math.round(peak*400))+'%'; if(tm) tm.textContent=((Date.now()-PH.t0)/1000).toFixed(1)+' s';
+    if(hint) hint.hidden=!(Date.now()-PH.t0>1500&&peak<0.01);
+    PH.meter.raf=requestAnimationFrame(tick); };
+  PH.meter={ac,raf:0}; tick(); }catch(e){} }
+function phMeterStop(){ const m=PH.meter; PH.meter=null; if(!m) return; try{ cancelAnimationFrame(m.raf); m.ac.close(); }catch(e){} }
 function phStop(){ clearTimeout(PH.recT); const r=PH.rec; PH.rec=null; PH.st='scoring'; try{ r&&r.state!=='inactive'&&r.stop(); }catch(e){} render(); }
 async function phDecode(blob){
   try{ const AC=window.AudioContext||window.webkitAudioContext, ac=new AC(), buf=await ac.decodeAudioData(await blob.arrayBuffer()); try{ ac.close(); }catch(e){}
     const n=Math.max(1,Math.ceil(buf.duration*16000)), oc=new OfflineAudioContext(1,n,16000), src=oc.createBufferSource(); src.buffer=buf; src.connect(oc.destination); src.start();
-    const out=await oc.startRendering(); PH.dur=buf.duration; phRun(out.getChannelData(0));
+    const out=await oc.startRendering(); PH.dur=buf.duration; phGo(out.getChannelData(0));
   }catch(e){ PH.err='Không đọc được âm thanh vừa ghi: '+(e.message||e); PH.st='ready'; render(); } }
+// Kiểm âm lượng trước khi chấm: gần như im lặng thì báo rõ, không chấm (tránh điểm thấp vì máy không thu được giọng).
+function phGo(x){ const L=ELCORE.gop.loudness(x); PH.rms=L.rms; PH.voiced=L.voiced; PH.res=null;
+  if(L.voiced<0.05){ PH.st='ready'; PH.err='Máy chưa nghe thấy tiếng của bạn (âm thanh gần như im lặng). Bấm ▶ Nghe lại để kiểm, rồi nói to hơn, gần micro hơn.'; return render(); }
+  PH.err=''; phRun(x); }
 function phRun(audio){ PH.st='scoring'; phWorker().postMessage({type:'run',audio}); }
 // Âm mong đợi của câu: phiên âm từng từ (dạng đọc nhẹ nếu là từ chức năng), đổi sang bộ âm của mô hình.
 function phTarget(){ const G=ELCORE.gop, n=pnNote(PH.sent), miss=new Set(), words=[], phones=[];
   for(const t of (n?n.toks:[])){ if(!t.ipa) continue; const w=words.length; words.push(pnWord(t)); for(const p of G.toModelPhones(t.ipa,PH.vocab,miss)) phones.push({...p,w}); }
   return {words,phones,miss:[...miss]}; }
 function phScore(m){ const T=m.dims[1], V=m.dims[2], idTo=[]; for(const [k,v] of Object.entries(PH.vocab||{})) idTo[v]=k;
-  const tg=phTarget(); PH.miss=tg.miss; PH.frames=T;
+  const tg=phTarget(); PH.miss=tg.miss; PH.frames=T; PH.heard=ELCORE.gop.greedy(m.data,T,V,idTo,(PH.vocab||{})['<pad>']??0);
   PH.res=ELCORE.gop.score(m.data,T,V,tg.phones,tg.words,idTo,(PH.vocab||{})['<pad>']??0);
   if(!PH.res) PH.err='Âm thanh ngắn hơn câu mẫu: nói hết câu, rõ từng từ rồi thử lại.'; }
 const phCls = s => s>=80?'g':s>=60?'a':'r';
@@ -6285,10 +6305,11 @@ function viewPhon(){
     <p class="muted">Giống ELSA: máy chấm từng âm trong câu bạn nói (xanh đúng, vàng gần đúng, đỏ sai hoặc thiếu). Mô hình chạy ngay trên điện thoại, âm thanh không gửi đi đâu.</p>
     <p class="hint">Lưu ý: lần đầu phải tải mô hình vài trăm MB (nên dùng Wi-Fi). Trên iPhone có thể chậm hoặc trang bị tải lại nếu máy thiếu bộ nhớ. Điểm là ước tính, kém chính xác hơn ELSA, chưa người thật kiểm. Không tính vào mức thuộc.</p></section>`;
   if(!ok) return head+'<p class="hint">Trình duyệt này chưa chạy được bộ chấm (thiếu Worker).</p>';
-  const dt=[['q8','Nén 8-bit (khuyên dùng)'],['q4','Nén 4-bit (nhỏ hơn)'],['fp16','fp16 (lớn hơn)']];
+  const dt=[['q8','Nén 8-bit (đã chạy trên iPhone, khuyên dùng)'],['q4','Nén 4-bit (nhẹ hơn)'],['fp16','fp16 (~600 MB, dành cho bản app sau này)']];
   const model=PH.st==='loading'?`<p>Đang tải mô hình: <b id="phprog" class="num">${phProgTxt()}</b></p><p class="hint">Giữ màn hình mở. Lần sau không phải tải lại.</p>`
     :PH.vocab?`<p class="fb good" role="status"><strong>Đã sẵn sàng</strong><span>Tải và mở mô hình mất ${(PH.loadMs/1000).toFixed(1)} giây.</span></p><div class="row"><button class="btn ghost small" data-act="phdel">Xoá mô hình khỏi máy</button></div>`
     :`<div class="row" role="group" style="gap:6px">${dt.map(([k,l])=>`<button class="btn small ${PH.dtype===k?'primary':''}" data-act="phdt" data-v="${k}" aria-pressed="${PH.dtype===k}">${l}</button>`).join('')}</div>
+      ${PH.dtype==='fp16'?'<p class="fb bad" role="status"><span>fp16 nặng ~600 MB: trình duyệt trên iPhone thường hết bộ nhớ và tự tải lại trang. Chỉ để thử trên máy tính hoặc cho bản app cài từ App Store sau này.</span></p>':''}
       <div class="row"><button class="btn primary" data-act="phload">Tải mô hình</button></div>`;
   const words=R?R.words.map(w=>w.score<0?'':`<details class="phd"><summary class="phw ${phCls(w.score)}"><span lang="en">${esc(w.text)}</span> <b class="num">${w.score}</b></summary>
       <ul class="pntips">${w.phones.map(p=>`<li><span class="phw ${p.missing?'r':phCls(p.score)}">/${esc(p.ipa)}/ <b class="num">${p.score}</b></span> ${p.missing?'thiếu âm này (bị nuốt)':p.heard?`nghe gần như /${esc(p.heard)}/`:p.score>=80?'tốt':'chưa rõ'}</li>`).join('')}</ul></details>`).join(''):'';
@@ -6299,11 +6320,16 @@ function viewPhon(){
     <div class="row"><button class="btn small" data-act="phset">Dùng câu này</button>${HAS_TTS?`<button class="btn small" data-say="${esc(PH.sent)}">${SPK} Nghe mẫu</button><button class="btn small" data-say="${esc(PH.sent)}" data-slow="1">🐢 Nghe chậm</button>`:''}</div>
     ${pnHtml(n)}</section>
   <section class="panel stack"><h2>3. Nói và chấm</h2>
-    ${!PH.vocab?'<p class="hint">Tải mô hình trước.</p>':PH.st==='rec'?`<p class="hint">🎙 Đang ghi… nói câu trên (tối đa 6 giây).</p><div class="row"><button class="btn primary" data-act="phrec">■ Dừng</button></div>`
+    ${!PH.vocab?'<p class="hint">Tải mô hình trước.</p>':PH.st==='rec'?`<p class="hint">🎙 Đang ghi… nói câu trên (tối đa 6 giây). <b id="phtime" class="num">0.0 s</b></p>
+      <div class="phmeter" role="img" aria-label="Âm lượng micro"><i id="phlvl"></i></div>
+      <p id="phquiet" class="hint" hidden>Chưa nghe thấy tiếng: nói to hơn hoặc gần micro hơn.</p>
+      <div class="row"><button class="btn primary" data-act="phrec">■ Dừng</button></div>`
       :PH.st==='scoring'?'<p role="status">Đang chấm từng âm…</p>':`<div class="row"><button class="btn primary" data-act="phrec">● Ghi âm và chấm</button></div>`}
     ${PH.err?`<p class="fb bad" role="status"><span>${esc(PH.err)}</span></p>`:''}
-    ${R?`<div class="fb ${R.score>=80?'good':R.score>=60?'neutral':'bad'}" role="status"><strong>Điểm phát âm: ${R.score}/100</strong><span>Bấm một từ để xem từng âm.</span></div><div class="phws">${words}</div>`:''}
-    ${R||PH.runMs?`<p class="hint num">Số liệu (gửi lại để cải thiện): tải ${(PH.loadMs/1000).toFixed(1)} s · chấm ${Math.round(PH.runMs)} ms · âm thanh ${PH.dur.toFixed(1)} s · ${PH.frames} khung · kiểu ${esc(PH.dtype)}${PH.miss.length?` · âm chưa có trong mô hình: ${esc(PH.miss.join(' '))}`:''}</p>`:''}
+    ${PH.url&&PH.st!=='rec'?`<div class="row"><button class="btn small" data-act="phplay">▶ Nghe lại giọng bạn</button></div>`:''}
+    ${R?`<div class="fb ${R.score>=80?'good':R.score>=60?'neutral':'bad'}" role="status"><strong>Điểm phát âm: ${R.score}/100</strong><span>Bấm một từ để xem từng âm.</span></div><div class="phws">${words}</div>
+      <p class="hint">Máy nghe ra các âm: <span class="ipa">/${esc(PH.heard||'…')}/</span><br>Âm mong đợi: <span class="ipa">/${esc((n||{toks:[]}).toks.filter(t=>t.ipa).map(t=>t.ipa.replace(/[ˈˌ]/g,'')).join(' '))}/</span></p>`:''}
+    ${R||PH.runMs?`<p class="hint num">Số liệu (gửi lại để cải thiện): tải ${(PH.loadMs/1000).toFixed(1)} s · chấm ${Math.round(PH.runMs)} ms · âm thanh ${PH.dur.toFixed(1)} s · ${PH.frames} khung · kiểu ${esc(PH.dtype)} · âm lượng ${PH.rms.toFixed(3)} · có tiếng ${Math.round(PH.voiced*100)}%${PH.miss.length?` · âm chưa có trong mô hình: ${esc(PH.miss.join(' '))}`:''}</p>`:''}
   </section>`;
 }
 // Đọc to chỉ mở cho bài đọc A1 / A2 (đích hiện tại); bộ chú thích phủ ≥ 98% từ ở hai cấp này (test engine-pronote).
@@ -8835,7 +8861,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.acf17b562e.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.092119f158.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
