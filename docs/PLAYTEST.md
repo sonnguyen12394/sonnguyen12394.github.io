@@ -1,33 +1,39 @@
 # Chơi thử nghiệm thu
 
-## Phần 0: Chiến Binh Chữ, mốc 1 (v133). Làm phần này trước
+## Phần 0: Chiến Binh Chữ, sảnh A2 + trận chạy né (v135). Làm phần này trước
 
-Mục đích: kiểm **trận đấu có vui tự thân không (C1)** và **vòng học → rèn → thắng có cuốn không (C3)**, trước mọi việc khác (`docs/KE-HOACH-A2.md` §3). Điểm C1 thật **< 6** thì mốc sau phải sửa trận trước.
+Mục đích: kiểm **trận đấu có vui tự thân không (C1)** và **vòng học → rèn → thắng có cuốn không (C3)**, trước mọi việc khác (`docs/KE-HOACH-A2.md` §3, `docs/DUONG-A2.md`). Điểm C1 thật **< 6** thì mốc sau phải sửa trận trước.
+
+> Bản cũ của phần này tả trận ngắm bắn kiểu Gunny (kéo ná, gió). Từ v134 trận là **chạy né kiểu Chaos Orbit**; v135 sảnh mặc định gọn (Sảnh A2).
 
 ### Chuẩn bị (1 phút)
-- Dùng **điện thoại**, bật tiếng. Mở app bình thường (**không cần** ẩn danh): trận đấu không ghi bằng chứng học, còn lò rèn là học thật nên nên ghi vào bản lưu của bạn.
+- Dùng **điện thoại**, bật tiếng. Mở app bình thường (**không cần** ẩn danh): trận không ghi bằng chứng học; lò rèn là học thật nên ghi vào bản lưu của bạn.
+- Sảnh phải chỉ có: **⚔️ Vào trận**, **🔨 Thợ rèn gợi ý**, 🗡️, thẻ 🎯 A2 và nút 🧭. Nếu còn thấy bản đồ / truyện / đèn lồng: bấm chip **🎯 A2** ở hàng 🪙 / 🔊 trên cùng.
+- **Không** mở trận cổng (Bảo vật khu / Cổng bản đồ) trong buổi này: đề chỉ dùng một lần.
 - Bấm giờ 15 phút.
 
 ### Kịch bản (15 phút)
 
 | # | Làm gì | Để ý điều gì |
 |---|---|---|
-| 1 | Sảnh → **⚔️ Vào trận: Luyện tay 1**. Kéo ngược từ nhân vật (như kéo ná), thả để bắn | Mấy giây thì bắn phát đầu? Có hiểu cách ngắm không cần đọc chữ không? |
-| 2 | Thắng → **▶ Trận tiếp: Luyện tay 2** (có gió) | Có đọc được gió (cờ trên cùng, mây trôi) không? Bắn trượt có thấy *do mình* không? |
-| 3 | Thắng → **Tiếng Ồn Rè** (boss, cần Vũ khí bậc 2). Đánh thật tới khi thắng hoặc thua | Có muốn đánh lại không? Sóng rè, gió đảo chiều có thú vị hay chỉ khó chịu? |
-| 4 | Nếu thua: đọc màn kết, bấm **🔨 Rèn Vũ khí: vào …** (mở thẳng lò) | Có hiểu *vì sao* thua và cần làm gì không? |
-| 5 | Chơi lò đó 3–5 phút, về sảnh, bấm **🔨 Rèn Vũ khí** khi đủ tinh hoa (hoặc vào 🗡️ → Chiến Binh) | Có thấy tinh hoa đến từ việc trả lời đúng không? Học có thành "cày" không? |
-| 6 | Đánh lại boss | Đồ mạnh hơn có *cảm* thấy khác không (số sát thương lớn hơn)? |
-| 7 | Bất kỳ lúc nào: bấm **💬** trong trận, chấm sao + một dòng | |
+| 1 | Sảnh → **⚔️ Vào trận: Luyện tay 1** (sống sót 75 giây). Giữ và kéo trên màn (hoặc phím mũi tên) để chạy; lưỡi kiếm quay quanh bạn tự chém | Mấy giây thì hiểu phải làm gì, không cần đọc chữ? |
+| 2 | Khi lên cấp: chọn 1 trong 3 thẻ nâng cấp. Thử nút **DASH** (lướt né) và **Tuyệt kỹ** khi sạc đầy | Chọn nâng cấp có thấy *mình* quyết định không? Né trúng / bị trúng có thấy do tay mình không? |
+| 3 | Thắng → **▶ Trận tiếp: Luyện tay 2** (90 giây, có Elite rơi rương) | Muốn chơi tiếp hay thấy lặp? |
+| 4 | Thắng → **Tiếng Ồn Rè** (boss, cần Vũ khí bậc 2, phải hạ trong 75 giây). Đánh thật tới khi thắng hoặc thua | Sóng rè, lính boss gọi ra có thú vị hay chỉ khó chịu? Có muốn đánh lại không? |
+| 5 | Nếu thua: đọc màn kết, bấm **🔨 Rèn Vũ khí: vào …** (mở thẳng lò) | Có hiểu *vì sao* thua (thiếu bậc đồ hay do tay) và cần làm gì không? |
+| 6 | Chơi lò đó 3–5 phút, về sảnh, bấm **🔨 Rèn Vũ khí bậc …** khi đủ tinh hoa (hoặc 🗡️ → Chiến Binh) | Có thấy ✨ tinh hoa đến từ việc trả lời đúng không? Học có thành "cày" không? |
+| 7 | Đánh lại boss | Đồ mạnh hơn có *cảm* thấy khác không (số sát thương lớn hơn, quái chết nhanh hơn)? |
+| 8 | Bất kỳ lúc nào: bấm **💬** trong trận, chấm sao + một dòng | |
 
 ### Phiếu chấm (0–10, ghi vào 💬 hoặc gửi cho tôi)
-- **C1 Trận vui tự thân:** nếu không có chuyện học, bạn có tự mở trận để chơi không? Ngắm / bắn / nổ có đã tay không?
+- **C1 Trận vui tự thân:** nếu không có chuyện học, bạn có tự mở trận để chơi không? Chạy né / chọn nâng cấp có đã tay không?
 - **C2 Đồ quyết định:** thua vì thiếu bậc có thấy công bằng không? Thắng sau khi rèn có thấy *nhờ* rèn không?
 - **C3 Vòng khép kín:** sau 15 phút, bạn kể lại được chuỗi "thua → học ở lò → rèn → thắng" không?
+- **C10 Không ngợp:** sảnh A2 có còn chỗ nào làm bạn phân vân không biết bấm gì?
 
 ### Gửi lại cho tôi
 - Màn Chiến Binh (🗡️ ở sảnh) → **📤 Gửi cho nhà làm game**: văn bản gồm góp ý + số liệu trận (không có dữ liệu học). Dán vào tin nhắn cho phiên làm việc sau.
-- Ba điểm C1, C2, C3 và một câu: điều gì làm bạn muốn bỏ ngang?
+- Bốn điểm C1, C2, C3, C10 và một câu: điều gì làm bạn muốn bỏ ngang?
 
 ## Phần 1: mục tiêu, đầu vào, trận cổng (v110–v116)
 

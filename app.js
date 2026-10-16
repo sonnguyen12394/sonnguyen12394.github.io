@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 71;
+const STATE_V = 18, APP_VERSION = 72;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -2614,6 +2614,10 @@ const FEAT_NEW = [['talk','Kỹ năng','Luyện nghe, nói, đọc, viết và h
 // v35: không khoá nội dung theo ngày học hay cấp (yêu cầu 3.1 “không khoá nội dung”): mọi tính năng mở ngay từ đầu.
 // v52 (spec v2.4 §7): MVP chỉ CEFR Pre-A1 → C2. IELTS/VSTEP/giao tiếp là Target Model "tương lai": tab Ôn thi ẩn,
 // bật lại trong Cài đặt → Nâng cao (hoặc localStorage 'el-future' = '1', dùng cho test phần ôn thi).
+// v135 Sảnh A2 (docs/DUONG-A2.md): mặc định sảnh chỉ còn ⚔️ Vào trận, 🔨 Thợ rèn gợi ý, thẻ mục tiêu; phần cũ ẩn bằng CSS (html.a2),
+// không xoá mã. Tắt ở nút "Hiện đủ mục" dưới sảnh hoặc Cài đặt → Tính năng (localStorage 'el-full' = '1' dùng cho test cũ).
+function A2LOBBY(){ try{ if(localStorage.getItem('el-full')==='1') return false; }catch(e){} return !(st&&st.set&&st.set.full); }
+function applyA2(){ try{ document.documentElement.classList.toggle('a2',A2LOBBY()); }catch(e){} }
 function FUTURE(){ try{ if(localStorage.getItem('el-future')==='1') return true; }catch(e){} return !!(st&&st.set&&st.set.future); }
 function featOn(k){ return k==='thi' ? FUTURE() : true; }
 function featCheck(){ if(!['path','review','more'].includes(ui.view)||ui.modal) return; const fs=st.set.featSeen||(st.set.featSeen=[]);
@@ -4028,7 +4032,7 @@ function viewSettings0(){
     <p class="note">Khi thấy một câu hỏi sai đáp án, có hai đáp án đúng hoặc sai chính tả, bấm “⚑ Báo lỗi câu này” ngay dưới phần phản hồi. Danh sách lưu trên máy này. Bấm “Gửi cho người soạn” để gửi ẩn danh (chỉ câu hỏi, đáp án của app, câu bạn trả lời và lý do; không tên, không tiến độ), hoặc tải file.</p>
     ${st.flags.length?`<div class="tablewrap"><table style="min-width:0"><thead><tr><th>Phần</th><th>Câu</th><th>Lý do</th></tr></thead><tbody>${st.flags.slice(-20).reverse().map(f=>`<tr><td>${esc(f.kind)}</td><td style="white-space:normal"><span lang="en">${esc(f.item)}</span>${f.prompt?`<br><span class="hint" lang="en">${esc(f.prompt)}</span>`:''}<br><span class="hint">Đáp án app: <b lang="en">${esc(f.answer)}</b></span></td><td style="white-space:normal">${esc(f.reason)}</td></tr>`).join('')}</tbody></table></div>
     <div class="row">${(()=>{ const n=st.flags.filter(f=>!f.sent).length; return n?`<button class="btn primary" data-act="flagssend">📤 Gửi ${n} câu cho người soạn</button>`:'<span class="pill good">Đã gửi hết</span>'; })()}<button class="btn" data-act="flagsexport">Tải danh sách (.json)</button><button class="btn ghost" data-act="flagsclear">Xoá danh sách</button></div>`:''}</section>
-  <section class="panel stack"><h3>Tính năng</h3><p class="note">Để app gọn cho người mới: Kỹ năng mở sau 3 ngày học, Thử thách sau 7 ngày, Thi thử khi qua A2.</p><div class="row"><button class="btn" data-act="allfeat">${st.set.allFeat?'Trở lại chế độ gọn':'Hiện tất cả tính năng ngay'}</button></div></section>
+  <section class="panel stack"><h3>Tính năng</h3><p class="note">Để app gọn cho người mới: Kỹ năng mở sau 3 ngày học, Thử thách sau 7 ngày, Thi thử khi qua A2.</p><div class="row"><button class="btn" data-act="allfeat">${st.set.allFeat?'Trở lại chế độ gọn':'Hiện tất cả tính năng ngay'}</button></div><div class="setrow"><span>Sảnh A2: chỉ hiện ⚔️ Vào trận, 🔨 Thợ rèn gợi ý và mục tiêu; mục cũ (bản đồ, truyện, Túi chữ, đèn lồng) ẩn đi</span><button class="btn" data-act="a2lobby" aria-pressed="${A2LOBBY()}">${A2LOBBY()?'Tắt':'Bật'}</button></div></section>
   <section class="panel stack"><h3>Dành cho giáo viên</h3><p class="note">Gộp tiến độ cả lớp từ file dữ liệu ẩn danh của học sinh, in bảng theo dõi.</p><div class="row"><button class="btn" data-go="class">${ico('users')} Công cụ lớp học</button></div></section>
   <section class="panel stack"><h3>Nâng cao</h3>
     <div class="setrow"><span>Mục tiêu tương lai (thử nghiệm): hiện tab Ôn thi và mục tiêu IELTS, VSTEP, giao tiếp. Bản này tập trung vào CEFR Pre-A1 → C2</span><button class="btn" data-act="future" aria-pressed="${FUTURE()}">${FUTURE()?'Tắt':'Bật'}</button></div>
@@ -4233,7 +4237,7 @@ const GX_VIEWS=new Set(['more','games','league','closet','progress','cefr']);
 const GALL_OPEN=new Set(), gallKey=d=>d.dataset.gv+'|'+((d.querySelector('summary')||{}).textContent||'').trim().slice(0,8);
 function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
-  applySkin(); renderChrome();
+  applySkin(); applyA2(); renderChrome();
   if((ui.view==='path'||ui.view==='play')&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
   const v={thi:viewThi,lib:viewLib,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
@@ -4760,6 +4764,10 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:72,d:'2026-10-15',t:'Sảnh A2: gọn còn một đường',items:[
+    'Sảnh chỉ còn ⚔️ Vào trận, 🔨 Thợ rèn gợi ý và thẻ mục tiêu A2. Bản đồ, truyện, đèn lồng, Túi chữ, kho báu tạm ẩn (không mất tiến độ).',
+    'Muốn xem lại đủ mục: nút "🧭 Hiện đủ mục" cuối khối sảnh; về lại: chip 🎯 A2 ở hàng 🪙 trên cùng (hoặc Tôi → Cài đặt → Tính năng).',
+    'Trận đấu nay là kiểu chạy né: kéo trên màn (hoặc phím mũi tên) để chạy, lưỡi quay tự chém; lên cấp chọn 1 trong 3 nâng cấp.']},
   {v:70,d:'2026-10-13',t:'Chiến Binh Chữ: trận đấu đầu tiên',items:[
     'Nút ⚔️ ở sảnh: vào trận ngắm bắn kiểu Gunny. Kéo ngược từ nhân vật như kéo ná để chọn góc và lực, xem gió rồi bắn. Trong trận không có câu tiếng Anh.',
     'Hai trận luyện tay rồi tới boss Tiếng Ồn Rè: gió mạnh, đảo chiều mỗi 2 lượt, cứ 3 lượt bắn Sóng rè.',
@@ -5223,6 +5231,7 @@ document.addEventListener('click',e=>{
     case 'allgames': return go('play',{allGames:1});
     case 'allunits': ui.allUnits[d.l]=true; return render();
     case 'focus': st.set.focus=!st.set.focus; save(); toast(st.set.focus?'Đã bật chế độ tập trung.':'Đã tắt chế độ tập trung.'); return render();
+    case 'a2lobby': st.set.full=A2LOBBY(); if(!st.set.full) try{ localStorage.removeItem('el-full'); }catch(e){} save(); toast(A2LOBBY()?'Sảnh A2: chỉ còn ⚔️ Vào trận và 🔨 Thợ rèn.':'Đã hiện đủ mục cũ ở sảnh.'); return render();
     case 'future': st.set.future=!st.set.future; if(!st.set.future) try{ localStorage.removeItem('el-future'); }catch(e){} save(); toast(FUTURE()?'Đã hiện tab Ôn thi và mục tiêu tương lai.':'Đã ẩn tab Ôn thi: tập trung CEFR.'); return render();
     case 'sfx': st.set.sfx=!st.set.sfx; save(); sfx('ok'); toast(st.set.sfx?'Đã bật âm thanh.':'Đã tắt âm thanh.'); return render();
     case 'music': st.set.music=st.set.music===false; save(); toast(st.set.music?'Đã bật nhạc nền.':'Đã tắt nhạc nền.'); return render();
@@ -8418,7 +8427,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.217d87cd89.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.efaafcd365.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
