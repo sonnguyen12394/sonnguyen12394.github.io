@@ -1,4 +1,4 @@
-// v135 Màn đối chiếu (route 'cmp'): phần A2 đã vững nhờ lối ⚔️ Chiến Binh (game) hay lối 📘 Học (app cũ), và nhóm nào game chưa có lò.
+// v135 Màn đối chiếu (route 'cmp'; v136 chia theo 7 kỹ năng = 7 ô đồ): phần A2 đã vững nhờ lối ⚔️ Chiến Binh (game) hay lối 📘 Học (app cũ), và nhóm nào game chưa có lò.
 // Thuần chuỗi HTML; số liệu từ compare.ts. Không dùng chữ "thi / đề / kiểm tra".
 
 import type { ECtx } from './views.ts';
@@ -19,7 +19,7 @@ export function viewCompare(c: ECtx, o: CmpOut | null, door: Door, goalVi: strin
   const rows = o.rows.filter(r => r.total).map(r => {
     const seg = (cls: string, n: number) => (n ? `<i class="${cls}" style="width:${pct(n, r.total)}%"></i>` : '');
     return `<li class="cmprow stack">
-      <b>${r.ico} ${esc(r.vi)} · ${r.solid}/${r.total} vững</b>
+      <b>${r.ico} ${esc(r.vi)} · ${r.solid}/${r.total} vững <span class="hint">· ô ${esc(r.slot)}${r.mid ? ' · chấm bằng luật, tin cậy vừa' : ''}</span></b>
       <span class="cmpbar" role="img" aria-label="${esc(r.vi)}: ${r.game} nhờ game, ${r.app} nhờ app, ${r.both} cả hai, ${r.before} từ trước, ${r.total - r.solid} chưa vững">${seg('cg', r.game)}${seg('ca', r.app)}${seg('cb2', r.both)}${seg('cp', r.before)}</span>
       <span class="hint">⚔️ ${r.game} · 📘 ${r.app} · cả hai ${r.both} · từ trước ${r.before} · câu đúng: game ${r.ansG}, app ${r.ansA}</span>
       <span class="hint">${r.pull ? '⚔️ Game có lò cho nhóm này.' : '🔒 Game chưa có lò cho nhóm này: hiện chỉ học được ở lối 📘 Học.'}</span>

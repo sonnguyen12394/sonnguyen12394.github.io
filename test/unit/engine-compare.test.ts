@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { index, closure, defaultLevel } from '../../src/engine/graph.ts';
 import type { Edge, Goal, Node } from '../../src/engine/types.ts';
-import { doorOf, tally, sanitizeSrc, mergeSrc, compareOf, cmpVerdict, type SrcMap } from '../../src/engine/compare.ts';
+import { doorOf, tally, sanitizeSrc, mergeSrc, compareOf, cmpVerdict, skillRows, type SrcMap } from '../../src/engine/compare.ts';
 import { viewCompare } from '../../src/engine/compareview.ts';
 import { sanitizeE, mergeE, freshE } from '../../src/engine/state.ts';
 import { ev as coreEv } from '../../src/engine/core.ts';
@@ -13,7 +13,7 @@ const nodes = JSON.parse(readFileSync('content/engine/nodes.json', 'utf8')) as N
 const edges = JSON.parse(readFileSync('content/engine/edges.json', 'utf8')) as Edge[];
 const goals = readdirSync('content/engine/goals').map(f => JSON.parse(readFileSync(`content/engine/goals/${f}`, 'utf8')) as Goal);
 const ix = index({ nodes, edges, goals });
-const a2 = closure(ix, ix.goal.get('cefr-a2')!.req, defaultLevel);
+const a2 = closure(ix, ix.goal.get('cefr-a2')!.req, defaultLevel).map(r => ({ ...r, area: ix.node.get(r.node)?.area }));
 const esc = (s: unknown) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 test('v135 lối: mặc định là game; chỉ "app" mới là lối Học', () => {
@@ -56,12 +56,26 @@ test('v135 đường bài học cũ (ELCORE.ev) ghi nguồn theo lối, không �
   assert.equal(e.ev.led.length, 3, 'ba câu vẫn vào sổ như cũ');
 });
 
-test('v135 đối chiếu A2 thật: 5 nhóm 174 / 58 / 16 / 18 / 93; game chỉ có lò Từ vựng', () => {
+test('v136 đối chiếu A2 thật theo 7 kỹ năng = 7 ô đồ: 188 / 70 / 29 / 10 / 44 / 8 / 10; game chỉ có lò Từ vựng', () => {
   const o = compareOf(a2, () => false, undefined);
-  assert.deepEqual(o.rows.map(r => [r.id, r.total]), [['u', 174], ['g', 58], ['ph', 16], ['fn', 18], ['cd', 93]]);
+  assert.deepEqual(o.rows.map(r => [r.id, r.total]), [['voc', 188], ['gra', 70], ['pro', 29], ['lis', 10], ['spk', 44], ['rd', 8], ['wr', 10]]);
+  assert.deepEqual(o.rows.map(r => r.slot), ['Vũ khí', 'Giáp', 'Giày', 'Khiên', 'Bùa', 'Mũ', 'Nhẫn']);
   assert.equal(o.total, 359);
-  assert.deepEqual(o.rows.filter(r => r.pull).map(r => r.id), ['u']);
+  assert.deepEqual(o.rows.filter(r => r.pull).map(r => r.id), ['voc']);
+  assert.deepEqual(o.rows.filter(r => r.mid).map(r => r.id), ['spk', 'wr']);
   assert.equal(o.solid, 0);
+  assert.ok(a2.filter(r => r.node.startsWith('fn:')).every(r => r.area === 'spk'), 'chức năng giao tiếp tính vào Nói');
+});
+
+test('v136 bảng kỹ năng: "thiếu nhất" là kỹ năng % thấp nhất còn phần chưa vững; kỹ năng đủ rồi không bị đánh dấu', () => {
+  const rd = a2.filter(r => r.area === 'rd').map(r => r.node), lis = a2.filter(r => r.area === 'lis').map(r => r.node).slice(0, 1);
+  const voc = a2.filter(r => r.area === 'voc').map(r => r.node).slice(0, 100);
+  const all = new Set([...rd, ...lis, ...voc, ...a2.filter(r => ['gra', 'pro', 'spk', 'wr'].includes(r.area ?? '')).map(r => r.node).slice(0, 200)]);
+  const rows = skillRows(compareOf(a2, n => all.has(n) && !a2.some(r => r.node === n && r.area === 'wr'), undefined));
+  assert.equal(rows.length, 7);
+  assert.deepEqual(rows.filter(r => r.low).map(r => r.id), ['wr']);
+  assert.equal(rows.find(r => r.id === 'rd')!.solid, 8);
+  assert.equal(skillRows(compareOf([], () => false, undefined)).length, 0);
 });
 
 test('v135 đối chiếu: vững nhờ game / app / cả hai / từ trước; chưa vững không xếp nguồn', () => {
@@ -70,7 +84,7 @@ test('v135 đối chiếu: vững nhờ game / app / cả hai / từ trước; c
   const solid = new Set([u1, u2, u3, u4, g1]);
   const src: SrcMap = { [u1!]: { g: 3, a: 0 }, [u2!]: { g: 0, a: 2 }, [u3!]: { g: 1, a: 1 }, [g1]: { g: 0, a: 4 }, 'u:khong-vung': { g: 9, a: 0 } };
   const o = compareOf(a2, n => solid.has(n), src);
-  const u = o.rows.find(r => r.id === 'u')!, g = o.rows.find(r => r.id === 'g')!;
+  const u = o.rows.find(r => r.id === 'voc')!, g = o.rows.find(r => r.id === 'gra')!;
   assert.deepEqual([u.solid, u.game, u.app, u.both, u.before], [4, 1, 1, 1, 1]);
   assert.deepEqual([g.solid, g.app, g.game], [1, 1, 0]);
   assert.deepEqual([o.solid, o.game, o.app, o.both, o.before], [5, 1, 2, 1, 1]);
@@ -80,7 +94,7 @@ test('v135 kết luận và màn đối chiếu: nói thẳng nhóm chỉ học 
   const o = compareOf(a2, () => false, undefined);
   const v = cmpVerdict(o, 6);
   assert.match(v, /chỉ cho lý do học Từ vựng, và chỉ tới khi đủ 6 kỹ năng vững \(2% của 359/);
-  assert.match(v, /Ngữ pháp, Phát âm, Chức năng giao tiếp, .*: chỉ học được ở lối 📘 Học/);
+  assert.match(v, /Ngữ pháp, Phát âm, Nghe, Nói, Đọc, Viết: chỉ học được ở lối 📘 Học/);
   const c = { host: { esc }, e: freshE(), route: 'cmp' } as unknown as ECtx;
   const h = viewCompare(c, o, 'game', 'Tiếng Anh tổng quát A2', 6);
   assert.match(h, /data-act="door" data-door="app"/);

@@ -39,7 +39,7 @@ test('hai lối: lối game gọn (sảnh + Tôi), đổi sang lối Học có �
   expect(errors).toEqual([]);
 });
 
-test('đối chiếu: câu đúng ghi theo lối; màn ⚖️ chia 5 nhóm A2 và nói nhóm nào game chưa có lò', async ({ page, errors }) => {
+test('đối chiếu: câu đúng ghi theo lối; màn ⚖️ chia 7 kỹ năng A2 và nói nhóm nào game chưa có lò', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
   await answer(page, 'w:x:g1');
@@ -51,10 +51,28 @@ test('đối chiếu: câu đúng ghi theo lối; màn ⚖️ chia 5 nhóm A2 v�
   await navTo(page, 'Tôi');
   await page.getByRole('button', { name: /Đối chiếu game và app/ }).click();
   await expect(page.getByRole('heading', { name: /Đối chiếu game và app/ })).toBeVisible();
-  await expect(page.locator('#app .cmprow')).toHaveCount(5);
+  await expect(page.locator('#app .cmprow')).toHaveCount(7);
   await expect(page.locator('#app')).toContainText(/\/359 phần đã vững/);
   await expect(page.locator('#app')).toContainText('Game chưa có lò cho nhóm này');
   await expect(page.locator('#app .cmprow').first()).toContainText('câu đúng: game 1, app 2');
   await noHorizontalScroll(page);
+  expect(errors).toEqual([]);
+});
+
+test('v136 Thư viện: bảng 7 kỹ năng (thanh vững, "thiếu nhất"); chạm Nghe mở đúng tab Nghe, chạm Phát âm mở màn phát âm', async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await lobby(page);
+  await navTo(page, 'Thư viện');
+  const rows = page.locator('#app .lskrow');
+  await expect(rows).toHaveCount(7);
+  await expect(rows).toHaveText(['Từ vựng', 'Ngữ pháp', 'Phát âm', 'Nghe', 'Nói', 'Đọc', 'Viết'].map(t => new RegExp(t)));
+  await expect(page.locator('#app .lskrow.low')).toHaveCount(1);
+  await expect(rows.filter({ hasText: 'Nói' })).toContainText('tin cậy vừa');
+  await noHorizontalScroll(page);
+  await rows.filter({ hasText: 'Nghe' }).click();
+  await expect(page.locator('[data-ttab="nghe"]')).toHaveAttribute('aria-selected', 'true');
+  await navTo(page, 'Thư viện');
+  await rows.filter({ hasText: 'Phát âm' }).click();
+  await expect(page.locator('#app h1')).toContainText(/Phát âm|âm/i);
   expect(errors).toEqual([]);
 });

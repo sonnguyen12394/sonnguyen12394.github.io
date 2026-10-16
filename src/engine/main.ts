@@ -10,7 +10,7 @@ import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, autoG
 import { ingest as ingest0, setPrior } from './ev/store.ts';
 import { makeFight } from './fightctl.ts';
 import { W_MAX } from './cb.ts';
-import { compareOf, doorOf, tally } from './compare.ts';
+import { compareOf, doorOf, tally, skillRows, type CmpOut, type SkillRow } from './compare.ts';
 import { viewCompare } from './compareview.ts';
 import { statsOf, LV_AT } from './bag.ts';
 import { dev } from './core.ts';
@@ -110,6 +110,7 @@ export interface EngineModule {
   sanitize(e: unknown): EState;
   merge(a: unknown, b: unknown): EState;
   hlog?(k: string, v?: number | boolean): void;            // v122: app ghi số đo H (nói / gõ câu, thời gian nghĩ, nhớ trễ…) vào nhật ký H
+  skills?(): { vi: string; rows: SkillRow[] } | null;     // v136 bảng 7 kỹ năng của đích (Thư viện, lối Học); null = chưa tải nội dung / chưa có đích
   peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
 export interface Peek { run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[]; bonus?: string[] }
@@ -1780,16 +1781,21 @@ export function init(host: EHost): EngineModule {
     if (wsel && !w.places.some(p => p.id === wsel)) wsel = null;
     return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests, me: n => bag.hero.svg(n), power: bag.hero.power(), music: !musicOff(), news: lobbyNews(), made: bag.hero.made(), fresh: bag.hero.pending().length, phase: phaseOf(new Date().getHours()), cb: doorOf(host.state()) === 'game' ? fc.bar() : '' }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
   }
+  // v135–v136 đối chiếu / bảng 7 kỹ năng của đích hiện tại (mặc định A2). "Vững" như skillsOf: Đạt và đang vững thật (Can-Do: Đạt).
+  function cmpNow(v: EState): { o: CmpOut; vi: string } | null {
+    const ix = loaded(); if (!ix) return null;
+    const g = goalOf(v) ?? ix.goal.get('cefr-a2') ?? null; if (!g) return null;
+    const need = closure(ix, g.req, defaultLevel).map(r => ({ ...r, area: ix.node.get(r.node)?.area }));
+    const solid = (n: string, l: number): boolean => { const s = nodeStat(host, v, n, l as Level); return s.pass && (n.startsWith('cd:') || s.state === 'mastered'); };
+    return { o: compareOf(need, solid, E().src), vi: g.vi };
+  }
   const routes: Record<string, (c: ECtx) => string> = {
     cb: c => fc.view(c),   // v133 Chiến Binh: Vũ khí, trận khu 1, số liệu trận, góp ý
     // v135 đối chiếu game / app theo nhóm của đích (mặc định A2): vững nhờ lối nào, nhóm nào game chưa có lò (compareview.ts).
     cmp: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
-      const ix = loaded()!, g = goalOf(c.e) ?? ix.goal.get('cefr-a2') ?? null;
-      if (!g) return viewCompare(c, null, doorOf(host.state()), '');
-      const need = closure(ix, g.req, defaultLevel);
-      const solid = (n: string, l: number): boolean => { const s = nodeStat(host, c.e, n, l as Level); return s.pass && (n.startsWith('cd:') || s.state === 'mastered'); };
-      return viewCompare(c, compareOf(need, solid, E().src), doorOf(host.state()), g.vi, LV_AT[W_MAX - 1]);
+      const r = cmpNow(c.e);
+      return r ? viewCompare(c, r.o, doorOf(host.state()), r.vi, LV_AT[W_MAX - 1]) : viewCompare(c, null, doorOf(host.state()), '');
     },
     // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).
     treasure: c => {
@@ -2350,6 +2356,7 @@ export function init(host: EHost): EngineModule {
       stageSync(kind, null, 'data-act="gameexit"');
       if (kind) { const k = `app:${kind}`, was = bfx.get(k); if (!was || n < was.n) bfx.set(k, { run: bfx, n }); else if (n > was.n) { was.n = n; stageBurst('#app .q .pill.accent', { cls: 'stpop' }); } }
     },
+    skills() { if (!loaded()) { ensure(); return null; } const r = cmpNow(V()); return r ? { vi: r.vi, rows: skillRows(r.o) } : null; },
     peek() {
       { const bp = bag.peek(); if (bp) return bp; }
       { const vp = vc.peek(); if (vp || vc.active()) return vp; }

@@ -45,13 +45,17 @@ Quyết định của người sáng lập (16/10/2026, trả lời câu hỏi):
   - số câu đúng ở mỗi lối;
   - game có lò cho nhóm này hay chưa.
 
-| Nhóm A2 | Số nút | Game có lý do học? |
-|---|---|---|
-| 📚 Từ vựng | 174 | Có (ô Vũ khí), nhưng chỉ tới 6 kỹ năng vững |
-| 🧩 Ngữ pháp | 58 | Chưa |
-| 🔊 Phát âm | 16 | Chưa |
-| 💬 Chức năng giao tiếp | 18 | Chưa |
-| 🎯 Việc làm được (đọc, nghe, nói, viết) | 93 | Chưa |
+Từ v136, màn đối chiếu chia theo **7 kỹ năng = 7 ô đồ** (trường `area` của nút; xem §5).
+
+| Kỹ năng A2 | Ô đồ | Số phần | Game có lý do học? |
+|---|---|---|---|
+| 📚 Từ vựng | Vũ khí | 188 | Có, nhưng chỉ tới 6 kỹ năng vững |
+| 🧩 Ngữ pháp | Giáp | 70 | Chưa |
+| 🔊 Phát âm | Giày | 29 | Chưa |
+| 🎧 Nghe | Khiên | 10 | Chưa |
+| 🗣️ Nói (gồm 18 chức năng giao tiếp) | Bùa | 44 | Chưa |
+| 📖 Đọc | Mũ | 8 | Chưa |
+| ✍️ Viết | Nhẫn | 10 | Chưa |
 
 **Cách đọc màn đối chiếu:**
 - Phần "có từ trước khi tách lối" là tiến độ cũ, không gán được cho lối nào.
@@ -103,3 +107,22 @@ Câu hỏi của bảng này: **nếu chỉ chơi game (lối Chiến Binh), cá
 - Chơi 2–4 tuần ở lối Chiến Binh. Học bù ở lối Học khi cần.
 - Mở ⚖️ Đối chiếu mỗi tuần, ghi vào `docs/PLAYTEST.md`.
 - K1 và K2 chỉ lên trên 6 khi có số liệu thật: chơi tiếp sau trận ≥ 60%, nhớ sau 7 / 30 ngày ≥ 80%.
+
+## 5. Lối Học theo 7 kỹ năng (v136, APP_VERSION 73)
+
+Người sáng lập đề xuất tách lối Học thành 6 phần: Từ vựng, Ngữ pháp, Nghe, Nói, Đọc, Viết. Sau góp ý, đã chốt:
+- **Thêm Phát âm thành 7.** Đây là khó khăn lớn nhất của người Việt (K5), có 29 phần A2. Nó cũng khớp 1–1 với 7 ô đồ của game.
+- **Tách để theo dõi, không tách bài.** Bài theo chủ đề dạy từ và ngữ pháp trong cùng ngữ cảnh, tách ra là mất ngữ cảnh. Tab học riêng theo kỹ năng thì dễ học lệch theo sở thích. Tab Hôm nay vẫn chọn sẵn chỗ thiếu nhất.
+
+Đã có trong app:
+- Thư viện mở bằng **bảng 7 kỹ năng**. Mỗi kỹ năng có thanh "x/y vững" của đích. Kỹ năng % thấp nhất có nhãn "thiếu nhất". Nói và Viết ghi "tin cậy vừa".
+- Chạm một kỹ năng là mở màn có sẵn của nó:
+  - Từ vựng → Bài học theo chủ đề;
+  - Ngữ pháp → Ngữ pháp;
+  - Phát âm → Phát âm;
+  - Nghe / Nói / Đọc / Viết → đúng tab của màn Kỹ năng.
+- Hội thoại và chức năng giao tiếp tính vào Nói; chuyển ý Việt → Anh tính vào Viết.
+
+Hai góp ý ghi lại (chưa đổi ở bản này):
+1. **Bản đồ A2 lệch về Từ vựng + Ngữ pháp** (258 / 359 = 72%). Đọc, Nghe, Viết mỗi kỹ năng chỉ 8–10 phần. Một phần vững làm thanh nhảy 10–12%. Trong khi đó A2 Key chấm Đọc + Viết 50%, Nghe 25%, Nói 25%. Việc nội dung sau (C8): chia nhỏ năng lực Đọc / Nghe / Viết thành nhiều phần đo được.
+2. **Nói, Viết chấm bằng luật**, độ tin cậy tối đa "Vừa". Thanh của hai kỹ năng này chỉ để tham khảo cho tới khi có cách chấm tốt hơn.
