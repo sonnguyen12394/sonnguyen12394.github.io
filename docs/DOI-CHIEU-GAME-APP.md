@@ -127,6 +127,8 @@ Hai góp ý ghi lại (chưa đổi ở bản này):
 1. **Bản đồ A2 lệch về Từ vựng + Ngữ pháp** (258 / 359 = 72%). Đọc, Nghe, Viết mỗi kỹ năng chỉ 8–10 phần. Một phần vững làm thanh nhảy 10–12%. Trong khi đó A2 Key chấm Đọc + Viết 50%, Nghe 25%, Nói 25%. Việc nội dung sau (C8): chia nhỏ năng lực Đọc / Nghe / Viết thành nhiều phần đo được.
 2. **Nói, Viết chấm bằng luật**, độ tin cậy tối đa "Vừa". Thanh của hai kỹ năng này chỉ để tham khảo cho tới khi có cách chấm tốt hơn.
 
+**Phát âm trong bài Nói / Đọc (bản 80):** Nói nhại và 📖 Đọc to hiện từng câu kèm phiên âm, nhấn, đọc nhẹ, âm cuối, nối âm, ngữ điệu và mẹo; từ máy chưa nghe ra có mẹo đúng âm. Chỉ để luyện, không tính vào kỹ năng Phát âm (người sáng lập chọn). Chưa người thật kiểm.
+
 ## 6. Ba phần: ⚔️ Chơi · 📘 Học · 🎯 Mục tiêu (v138, APP_VERSION 75)
 
 Người sáng lập thấy "hai lối + nút đổi lối" (§2) chưa đúng ý. Ý đúng là **ba phần đứng cạnh nhau**, chơi hay học đều phục vụ mục tiêu. Đã chốt:

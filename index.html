@@ -240,6 +240,22 @@ details summary{cursor:pointer;color:var(--accent);font-weight:600}
 .tbl{min-width:0}.tbl td{white-space:normal}
 .hearts{font:600 13px/1 var(--mono)}
 .asr-ok{color:var(--good);font-weight:600}.asr-miss{color:var(--bad);text-decoration:underline wavy;text-underline-offset:3px}
+/* v142 hướng dẫn phát âm từng câu (Nói nhại, Đọc to): dòng đôi chữ / phiên âm */
+.pn{display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px 2px;font:400 20px/1.25 var(--display);color:var(--ink);min-width:0}
+.pnw{display:inline-grid;justify-items:center;gap:3px;padding:0 3px;min-width:0}
+.pnw.c .pnt{font-weight:700}
+.pnw.wk .pnt{font-style:italic;font-weight:400}
+.pni{font:400 14px/1.2 var(--ipa);color:var(--muted);text-align:center}
+.pni .stress{color:var(--accent);font-weight:700}.pni .sep{opacity:.5}
+.pnw.wk .pni{font-style:italic}
+.pnk{display:block;font:500 11px/1.2 var(--body);color:var(--muted)}
+.pnx{font:italic 400 12px/1.2 var(--body)}
+.pne{text-decoration:underline 2px;text-decoration-color:var(--bad);text-underline-offset:3px;color:var(--ink)}
+.pnl{color:var(--accent);font-weight:700;margin:0 -3px}.pnl sup{font-size:11px}
+.pntune{color:var(--accent);font-weight:700;padding-left:4px}
+.pn.pnoff .pni{display:none}
+.pntips{list-style:none;margin:0;padding:0;display:grid;gap:8px}.pntips li{line-height:1.45}
+.pnkey summary{cursor:pointer;color:var(--muted);font-size:14px}
 .adslot{border-style:dashed}
 .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
 table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
@@ -1262,4 +1278,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.d24a66588f.js" defer></script><script src="app.js?v=79" defer></script>
+<script src="x/core.fc1d53dcee.js" defer></script><script src="app.js?v=80" defer></script>
