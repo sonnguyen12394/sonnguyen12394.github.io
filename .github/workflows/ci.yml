@@ -27,16 +27,18 @@ jobs:
         run: npm run fresh
 
   e2e:
-    name: Test giao diện (Chrome Android, Safari iOS, máy tính, offline)
+    # 16/10/2026 người sáng lập dùng Cốc Cốc trên iPhone (mọi trình duyệt iPhone đều chạy lõi WebKit như Safari): CI tạm chỉ chạy
+    # dự án ios-safari (iPhone 13, WebKit) cho nhanh. Chạy lại cả ba trình duyệt: bỏ "--project=ios-safari", cài thêm chromium, timeout 40.
+    name: Test giao diện (iPhone WebKit, như Cốc Cốc trên iPhone)
     runs-on: ubuntu-latest
-    timeout-minutes: 40   # v131: bộ e2e ×3 trình duyệt đã ~22 phút (Safari iOS chậm), 25 phút bị huỷ giữa chừng
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
-      - run: npx playwright install --with-deps chromium webkit
-      - run: npx playwright test
+      - run: npx playwright install --with-deps webkit
+      - run: npx playwright test --project=ios-safari
         env: { CI: '1' }
       - uses: actions/upload-artifact@v4
         if: failure()

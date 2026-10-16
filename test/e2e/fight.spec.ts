@@ -28,6 +28,9 @@ async function ready(page: Page): Promise<boolean> {
 }
 
 test('sảnh: ⚔️ là nút chính duy nhất; vào trận luyện tay, chạy né tới thắng; sổ bằng chứng không đổi', async ({ page, errors }) => {
+  // Hạt trận cố định: với hạt theo giờ, bot né giỏi thua Luyện tay 1 khoảng 5–6% số lần (mô phỏng 160 trận), làm CI lúc đỏ lúc xanh.
+  // Hạt 20 thắng ở mọi độ trễ bật bot đã thử (0 / 1 / 3 / 6 giây đứng yên), máu còn ≥ 79%.
+  await page.addInitScript(() => { (window as any).__elFightSeed = 20; });
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
   await expect(page.locator('#app .btn.primary')).toHaveCount(1);

@@ -27,6 +27,8 @@ test.describe('mở app (home: false)', () => {
   test('mở app vào 🎯 Mục tiêu; thanh = Chơi · Học · Mục tiêu · Tôi; A1 / A2 đổi được; WCAG', async ({ page, errors }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await seed(page);
+    // Chờ bài học chi tiết tải xong rồi mới tải lại trang: tải lại giữa chừng thì Safari báo lỗi fetch bị cắt ngang (CI WebKit).
+    await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
     await page.reload();
     await expect(page.getByRole('heading', { name: /Cần đạt ở mỗi cấp/ })).toBeVisible({ timeout: 20000 });
     await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
