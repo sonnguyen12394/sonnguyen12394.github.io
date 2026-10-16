@@ -1003,12 +1003,12 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 72;
+const STATE_V = 18, APP_VERSION = 74;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
 const realDay = () => Math.floor(Date.now()/86400000);
-const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,music:true,focus:false});
+const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,music:true,focus:false,door:'game'});
 function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},e:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
 // Mã ngẫu nhiên, không gắn với tên hay thiết bị: để gộp các file dữ liệu nghiên cứu của cùng một người học mà không biết người đó là ai.
 const newRid = () => Math.random().toString(36).slice(2,10);
@@ -2419,6 +2419,11 @@ const CD_REF={u:'unit',ul:'unit của cấp',g:'bài ngữ pháp',gl:'bài ngữ
 // v117 (SCORECARD nhóm L): 4 tab, mỗi tab trả lời một câu hỏi khác nhau: Hôm nay (app chọn việc cho bạn) · Ôn tập (phần sắp quên) ·
 // Thư viện (bạn tự chọn: bài học, kỹ năng, sổ từ; v130: mọi trò chơi nằm trên Bản đồ Phố Chữ ở tab Hôm nay) · Tôi (tiến độ, mục tiêu, cài đặt). Trước đây Chơi / Học / Kỹ năng đều là "học".
 const BNAV=[['thi','Ôn thi','exam'],['play','Hôm nay','home'],['review','Ôn tập','repeat'],['lib','Thư viện','book'],['more','Tôi','user']];
+// v136 một não, hai lối (docs/DOI-CHIEU-GAME-APP.md): ⚔️ lối Chiến Binh (game) chỉ có sảnh + Tôi; 📘 lối Học giữ đủ tab của app cũ.
+// Tiến độ dùng chung; nút cuối thanh điều hướng đổi lối, không mất gì. Bằng chứng ghi thêm "câu đúng ở lối nào" để màn ⚖️ Đối chiếu so.
+const DOOR = () => st.set.door==='app' ? 'app' : 'game';
+const DOOR_TABS = { game:['thi','play','more'], app:['thi','play','review','lib','more'] };
+function setDoor(d){ st.set.door = d==='app' ? 'app' : 'game'; save(); toast(d==='app' ? '📘 Lối Học: bài học, ôn tập, thư viện như app cũ. Tiến độ dùng chung.' : '⚔️ Lối Chiến Binh: trận đấu và lò rèn. Tiến độ dùng chung.'); }
 const ico = n => `<svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${n}"/></svg>`;
 function navActive(){
   if(ui.view==='play'||ui.view==='games'||ui.view==='game'||(ui.view==='goal'&&/^quest/.test(ui.er||''))) return 'play';   // v64: Ladder Quest là màn chính; v130: Đấu trường là công trình trên bản đồ
@@ -2433,19 +2438,35 @@ function renderChrome(){
   const due=dueWords().length, gdue=dueG().length, active=navActive();
 
   const badge = k => k==='review'&&due+gdue ? `<span class="badge" aria-label="${due+gdue} mục đến hạn ôn">${due+gdue}</span>` : '';
-  featCheck(); const NAV=BNAV.filter(([k])=>featOn(k));
-  document.getElementById('nav').innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${badge(k)}</button>`).join('');
+  featCheck(); const NAV=BNAV.filter(([k])=>featOn(k)&&DOOR_TABS[DOOR()].includes(k));
+  document.getElementById('nav').innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${badge(k)}</button>`).join('')+(DOOR()==='game'?'<button class="doorsw" data-act="door" data-door="app">📘 <span>Lối Học</span></button>':'<button class="doorsw" data-act="door" data-door="game">⚔️ <span>Lối game</span></button>');
   const bn=document.getElementById('bnav');
-  if(bn){ bn.style.gridTemplateColumns=`repeat(${NAV.length},1fr)`; } if(bn) bn.innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}><span class="bi">${ico(ic)}</span><span>${l}</span>${badge(k)}</button>`).join('');
+  const other = DOOR()==='game' ? ['app','📘','Lối Học','Sang lối Học (app cũ)'] : ['game','⚔️','Lối game','Sang lối Chiến Binh (game)'];
+  const doorBtn = `<button class="doorsw" data-act="door" data-door="${other[0]}" aria-label="${other[3]}"><span class="bi" aria-hidden="true">${other[1]}</span><span>${other[2]}</span></button>`;
+  if(bn){ bn.style.gridTemplateColumns=`repeat(${NAV.length+1},1fr)`; } if(bn) bn.innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}><span class="bi">${ico(ic)}</span><span>${l}</span>${badge(k)}</button>`).join('')+doorBtn;
   // v117: hai con số, có chữ đi kèm (chuỗi ngày, câu đúng hôm nay / mục tiêu ngày). Năng lượng chỉ hiện khi đang thiếu (lúc đó mới cần biết).
   const enLow=!FOCUS()&&(money().s||enNow()<EN.cap);   // Super vẫn hiện (người học đã bật, cần thấy trạng thái)
   const er=EM&&EM.res?(()=>{ try{ return EM.res(); }catch(e){ return null; } })():null;   // v131 thanh tài nguyên: xu chung của phố (engine)
   document.getElementById('clock').innerHTML = `${er&&!FOCUS()?`<span class="clxu" title="Xu của phố: tiêu ở Bảng tin phố">🪙 <b>${er.coins}</b> · </span>`:''}${FOCUS()?'':`<span title="Chuỗi ngày học liên tiếp">${ico('flame')} <b>${streak()}</b> ngày</span> · `}<span title="Câu đúng hôm nay / mục tiêu ngày">hôm nay <b>${Math.min(goalCount(),goal())}/${goal()}</b> câu</span>${enLow?enPill():''}${st.set.demo?` · ngày ${dayNo(today())} <button class="btn small" data-act="nextday" title="Chế độ demo: tua nhanh thời gian để thử lịch ôn">+1 ngày</button>`:''}`;
 }
 // v117 Thư viện: nơi TỰ CHỌN. Tab Hôm nay đã chọn sẵn việc cần nhất; ở đây người học muốn chọn bài / game cụ thể.
+// v137 lối Học theo 7 kỹ năng (docs/DOI-CHIEU-GAME-APP.md §5): tách để THEO DÕI, không tách bài. Mỗi kỹ năng = một ô đồ của game.
+// Số liệu từ engine (EM.skills: phần của đích đã vững thật); chạm một kỹ năng mở đúng màn có sẵn của nó.
+const SK_GO={voc:['path'],gra:['grammar'],pro:['sounds'],lis:['talk','nghe'],spk:['talk','noi'],rd:['talk','doc'],wr:['talk','viet']};
+function libSkills(){
+  let d=null; if(EM&&EM.skills){ try{ d=EM.skills(); }catch(e){ d=null; } } else if(!_emP&&!_emErr) emLoad().catch(()=>{});
+  const head='<h2 id="lsk-h">Kỹ năng của bạn</h2>';
+  if(!d||!d.rows.length) return `<section class="panel stack lsk" aria-labelledby="lsk-h">${head}<p class="muted" role="status">${EM&&EM.skills?'Chọn đích (ví dụ A2) để xem 7 kỹ năng.':'Đang tính…'}</p></section>`;
+  const row=r=>{ const p=Math.round(100*r.solid/Math.max(1,r.total));
+    return `<button class="lskrow${r.low?' low':''}" data-act="skgo" data-sk="${r.id}"><span class="lski" aria-hidden="true">${r.ico}</span><span class="stack" style="gap:2px;min-width:0"><b>${esc(r.vi)}${r.low?' <span class="pill warn">thiếu nhất</span>':''}</b><span class="lskbar" role="progressbar" aria-label="${esc(r.vi)}" aria-valuemin="0" aria-valuemax="${r.total}" aria-valuenow="${r.solid}"><i style="width:${p}%"></i></span><span class="muted">${r.solid}/${r.total} vững · ${p}%${r.mid?' · tin cậy vừa':''}</span></span></button>`; };
+  return `<section class="panel stack lsk" aria-labelledby="lsk-h">${head}<p class="hint">Phần của đích <b>${esc(d.vi)}</b> đã vững, chia theo kỹ năng. Chạm một kỹ năng để mở bài của nó.</p>
+    <div class="lskgrid">${d.rows.map(row).join('')}</div>
+    <p class="hint">Đọc, Nghe, Viết có ít phần nên % nhảy theo bậc lớn. Nói, Viết chấm bằng luật: tin cậy vừa.</p></section>`;
+}
 function viewLib(){
   const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
   return `<section class="stack"><span class="eyebrow">Thư viện</span><h1>Tự chọn bài</h1><p class="muted">Không biết học gì? Tab <b>Hôm nay</b> đã chọn sẵn phần bạn cần nhất.</p></section>
+  ${libSkills()}
   <div class="units">
     ${it('play','map','Bản đồ Phố Chữ','Mọi trò chơi, truyện Phố Chữ và Đấu trường (thử thách, thi thử) trên một bản đồ')}
     ${it('path','book','Bài học theo chủ đề','Từ vựng và ngữ pháp theo unit, từ Pre-A1 tới C2')}
@@ -2465,6 +2486,8 @@ function viewMore(){
       <div class="stat"><b>${lx.L} · ${pct(lx.n?lx.passed/lx.n:0)}</b><span class="muted">cấp đang học</span></div></div>
     <div class="row"><button class="btn primary" data-go="progress">${ico('chart')} Tiến độ chi tiết</button><button class="btn" data-go="cefr">${ico('map')} Bản đồ CEFR</button></div></section>
   <div class="units">
+    <button class="unit morei" data-act="cmp"><span class="no" aria-hidden="true">⚖️</span><span class="t"><strong>Đối chiếu game và app</strong><span class="muted">Phần A2 nào vững nhờ lối game, phần nào nhờ lối Học, nhóm nào game chưa có lò</span></span></button>
+    <button class="unit morei" data-act="door" data-door="${DOOR()==='game'?'app':'game'}"><span class="no" aria-hidden="true">${DOOR()==='game'?'📘':'⚔️'}</span><span class="t"><strong>${DOOR()==='game'?'Sang lối Học (app cũ)':'Sang lối Chiến Binh (game)'}</strong><span class="muted">Đang ở lối ${DOOR()==='game'?'Chiến Binh':'Học'}. Hai lối dùng chung tiến độ.</span></span></button>
     ${it('goal','map','Mục tiêu của bạn','Chọn mục tiêu (CEFR, IELTS, VSTEP, giao tiếp) và xem chính xác những gì cần đạt')}
     ${featOn('closet')?it('closet','shirt','Tủ đồ của Tí','Phụ kiện cho linh vật, màu giao diện, album từ đã thuộc'):''}
     ${it('settings','gear','Cài đặt','Mục tiêu, nhắc học, giọng đọc, sao lưu, đồng bộ nhiều máy')}
@@ -2616,7 +2639,8 @@ const FEAT_NEW = [['talk','Kỹ năng','Luyện nghe, nói, đọc, viết và h
 // bật lại trong Cài đặt → Nâng cao (hoặc localStorage 'el-future' = '1', dùng cho test phần ôn thi).
 // v135 Sảnh A2 (docs/DUONG-A2.md): mặc định sảnh chỉ còn ⚔️ Vào trận, 🔨 Thợ rèn gợi ý, thẻ mục tiêu; phần cũ ẩn bằng CSS (html.a2),
 // không xoá mã. Tắt ở nút "Hiện đủ mục" dưới sảnh hoặc Cài đặt → Tính năng (localStorage 'el-full' = '1' dùng cho test cũ).
-function A2LOBBY(){ try{ if(localStorage.getItem('el-full')==='1') return false; }catch(e){} return !(st&&st.set&&st.set.full); }
+// v137 lối 📘 Học là app cũ đủ mục: sảnh A2 gọn chỉ áp cho lối ⚔️ Chiến Binh.
+function A2LOBBY(){ if(st&&st.set&&st.set.door==='app') return false; try{ if(localStorage.getItem('el-full')==='1') return false; }catch(e){} return !(st&&st.set&&st.set.full); }
 function applyA2(){ try{ document.documentElement.classList.toggle('a2',A2LOBBY()); }catch(e){} }
 function FUTURE(){ try{ if(localStorage.getItem('el-future')==='1') return true; }catch(e){} return !!(st&&st.set&&st.set.future); }
 function featOn(k){ return k==='thi' ? FUTURE() : true; }
@@ -4764,6 +4788,14 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:74,d:'2026-10-16',t:'Thư viện theo 7 kỹ năng',items:[
+    'Thư viện mở bằng bảng 7 kỹ năng: Từ vựng, Ngữ pháp, Phát âm, Nghe, Nói, Đọc, Viết. Mỗi kỹ năng có thanh phần đã vững của đích.',
+    'Kỹ năng thấp nhất được đánh dấu “thiếu nhất”. Chạm một kỹ năng để mở bài của nó.',
+    'Màn ⚖️ Đối chiếu cũng chia theo 7 kỹ năng, mỗi kỹ năng ứng với một ô đồ của Chiến Binh.']},
+  {v:73,d:'2026-10-16',t:'Hai lối: Chiến Binh và Học',items:[
+    'Nút cuối thanh điều hướng đổi lối. ⚔️ Lối Chiến Binh: sảnh, trận đấu, lò rèn. 📘 Lối Học: bài học, ôn tập, thư viện như app cũ.',
+    'Hai lối dùng chung tiến độ: học ở đâu cũng tính, đổi lối không mất gì.',
+    'Tôi → ⚖️ Đối chiếu game và app: phần nào của đích đã vững nhờ lối game, phần nào nhờ lối Học, nhóm nào game chưa có lò.']},
   {v:72,d:'2026-10-15',t:'Sảnh A2: gọn còn một đường',items:[
     'Sảnh chỉ còn ⚔️ Vào trận, 🔨 Thợ rèn gợi ý và thẻ mục tiêu A2. Bản đồ, truyện, đèn lồng, Túi chữ, kho báu tạm ẩn (không mất tiến độ).',
     'Muốn xem lại đủ mục: nút "🧭 Hiện đủ mục" cuối khối sảnh; về lại: chip 🎯 A2 ở hàng 🪙 trên cùng (hoặc Tôi → Cài đặt → Tính năng).',
@@ -8427,7 +8459,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.efaafcd365.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.70f5e06135.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
@@ -8660,7 +8692,14 @@ function viewGoalE(route){
 document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('[data-act="emretry"],[data-xr]'); if(!t) return;
   if(t.dataset.xr){ e.preventDefault(); return go('thi',{xr:t.dataset.xr}); }
   _emErr=''; emLoad().catch(()=>{}); render(); });
-DETAIL_SAFE_VIEW.add('goal'); DETAIL_SAFE_VIEW.add('play'); DETAIL_SAFE_GO.add('play'); DETAIL_SAFE_GO.add('goal'); DETAIL_SAFE_ACT.add('emretry');
+// v137 chạm một kỹ năng ở Thư viện → màn có sẵn của kỹ năng đó (Nghe / Nói / Đọc / Viết = tab tương ứng của màn Kỹ năng).
+document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('[data-act="skgo"]'); if(!t) return; e.preventDefault();
+  const g=SK_GO[t.dataset.sk]; if(!g) return; return g[1]?go(g[0],{talkTab:g[1]}):go(g[0]); });
+// v136 đổi lối (⚔️ game / 📘 Học) và mở màn ⚖️ Đối chiếu (route 'cmp' của engine). Đổi lối thì về sảnh của lối đó.
+document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('[data-act="door"],[data-act="cmp"]'); if(!t) return; e.preventDefault();
+  if(t.dataset.act==='cmp') return go('goal',{er:'cmp'});
+  setDoor(t.dataset.door); if(ui.view==='goal'&&ui.er==='cmp') render(); else go('play'); });
+DETAIL_SAFE_VIEW.add('goal'); DETAIL_SAFE_VIEW.add('play'); DETAIL_SAFE_GO.add('play'); DETAIL_SAFE_GO.add('goal'); DETAIL_SAFE_ACT.add('emretry'); DETAIL_SAFE_ACT.add('door'); DETAIL_SAFE_ACT.add('cmp');
 // Nút "▶ Chơi" (data-act=quest) chỉ mở sảnh game của engine, không dùng bài học chi tiết: không giữ chờ tải (trước đây mạng chậm thì phải chờ, vẽ lại giữa chừng là mất cú bấm).
 DETAIL_SAFE_ACT.add('quest');
 if(typeof window!=='undefined') (window.requestIdleCallback||(f=>setTimeout(f,2500)))(()=>emLoad(true).catch(()=>{}));

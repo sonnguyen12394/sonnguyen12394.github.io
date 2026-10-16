@@ -1,5 +1,12 @@
 # English Ladder — Master Spec v2
 
+> **16/10/2026 — Một não, hai lối (v136).** Người sáng lập chốt: tách game và app học cũ thành **hai lối** để đối chiếu xem chỉ chơi game có học được như app không.
+> 1. **⚔️ Lối Chiến Binh** (mặc định): sảnh, trận, lò rèn. **📘 Lối Học**: các tab của app cũ (Ôn tập, Thư viện). Đổi lối ở thanh điều hướng, không mất gì.
+> 2. **Một não:** tiến độ, bằng chứng, FSRS, bản đồ A2 dùng chung (không tách hồ sơ). Mỗi câu đúng ghi thêm nó đến từ lối nào (`st.e.src`); không đổi bằng chứng, không đổi mastery.
+> 3. **Màn ⚖️ Đối chiếu** (Tôi): nút của đích chia 5 nhóm (Từ vựng, Ngữ pháp, Phát âm, Chức năng, Việc làm được), vững nhờ lối nào, nhóm nào game chưa có lò.
+> 4. Khối này **sửa mục 22 "Phần cũ"**: lối Học không cất / gỡ cho tới khi màn đối chiếu cho thấy game phủ được mọi nhóm. Đánh giá theo 12 khó khăn học tiếng Anh: `docs/DOI-CHIEU-GAME-APP.md` (game v134 ≈ 3,0 / 10, app cũ ≈ 5,9; tự chấm, chưa người thật kiểm).
+> 5. **(v137) Lối Học theo dõi theo 7 kỹ năng** (Từ vựng, Ngữ pháp, Phát âm, Nghe, Nói, Đọc, Viết = 7 ô đồ): bảng ở đầu Thư viện, màn ⚖️ Đối chiếu cùng cách chia. Tách để theo dõi, **không tách bài** (bài theo chủ đề giữ nguyên).
+
 > **15/10/2026 — Trận đổi sang kiểu Chaos Orbit (v134).** Người sáng lập chốt: thay trận ngắm bắn kiểu Gunny bằng lối chơi hiện tại của repo `chaos-orbit-prototype` (kiểu Vampire Survivors). Khối này sửa khối 13/10/2026 ngay dưới; phần khác của khối đó giữ nguyên.
 > 1. **Thay mục 2:** trận là game thuần kiểu Chaos Orbit: chạy để né, vũ khí quỹ đạo tự chém, lên cấp chọn 1 trong 3 nâng cấp, combo, tiến hoá, DASH, Tuyệt kỹ, Elite rơi rương, boss. Vẫn **không có câu tiếng Anh** trong trận, trận không ghi bằng chứng (P13).
 > 2. **Thay mục 3:** kết quả trận ≈ **70% đồ, 30% tay né + cách chọn nâng cấp**. Dải khoá giữ như cũ (chênh −1 bậc, né giỏi: 20–45%; chênh −2: < 10%; dư +1 bậc, né kém: ≥ 55%; đúng bậc, né giỏi ≥ 70%). Cách làm: sát thương Vũ khí ×1,32^w, quái khu nhân máu ×1,32^bậc cần, lệch bậc so với bậc cần nhân thêm ×1,32^(1,5 × lệch) (`fight.ts` `edgeOf`).

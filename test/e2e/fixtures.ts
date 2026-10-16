@@ -63,8 +63,12 @@ export async function noHorizontalScroll(page: Page): Promise<void> {
   expect(over, 'trang không được cuộn ngang').toBeLessThanOrEqual(1);
 }
 
-export const navTo = (page: Page, label: string) =>
-  page.locator('#bnav:visible button, #nav:visible button').filter({ hasText: label }).first().click();
+// v136 hai lối: tab của app cũ (Ôn tập, Thư viện) chỉ có ở lối 📘 Học; chưa thấy tab thì đổi lối trước.
+export async function navTo(page: Page, label: string): Promise<void> {
+  const tab = page.locator('#bnav:visible button, #nav:visible button').filter({ hasText: label }).first();
+  if (!(await tab.count())) await page.locator('#bnav:visible [data-act="door"][data-door="app"], #nav:visible [data-act="door"][data-door="app"]').first().click();
+  await tab.click();
+}
 
 // v88: sảnh mở đầu bằng nút "Chơi tiếp" do bộ não chọn; v130: từng game là công trình trên bản đồ. Test chuyển sang danh sách rồi bấm game.
 export async function play(page: Page, start: string): Promise<void> {

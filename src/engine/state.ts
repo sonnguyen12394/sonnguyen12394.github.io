@@ -34,6 +34,7 @@ import { sanitizeGate, mergeGate, type GateSave } from './gate.ts';
 import { sanitizeVoice, mergeVoice, type VoiceSave } from './voice.ts';
 import { sanitizeBag, mergeBag, type BagSave } from './bag.ts';
 import { sanitizeCb, mergeCb, type CbSave } from './cb.ts';
+import { sanitizeSrc, mergeSrc, type SrcMap } from './compare.ts';
 
 export const E_V = 4;
 
@@ -80,6 +81,7 @@ export interface EState {
   gd?: PuzzleSave;                 // v77 Câu đố ngày: số ngày giải, sao (telemetry, không vào mastery)
   vo?: VoiceSave;                  // v122–v127 Phố Chữ nói + nhật ký số đo H (telemetry, không vào mastery)
   bg?: BagSave;                    // v128 Túi chữ · Xưởng của Tí: nguyên liệu đã tiêu, đồ đã làm, trang bị, album đã nhận (telemetry)
+  src?: SrcMap;                    // v136 một não, hai lối: số câu đúng mỗi nút ở lối game / lối app (chỉ để đối chiếu, không vào mastery)
   cb?: CbSave;                     // v133 Chiến Binh Chữ: Vũ khí đã rèn, tinh hoa, trận đã thắng, số liệu trận, góp ý (không vào mastery)
   av?: AvSave;                     // v132 nhân vật của người chơi: ngoại hình, thời trang đã mua / đang mặc, xu đã tiêu, bậc đồ đã xem (telemetry)
 }
@@ -178,6 +180,8 @@ export function sanitizeE(raw: unknown): EState {
   if (av) out.av = av;
   const cb = sanitizeCb(x.cb);
   if (cb) out.cb = cb;
+  const src = sanitizeSrc(x.src);
+  if (src) out.src = src;
   if (gb) out.gb = gb;
   { const raw = x.gl as { lastId?: unknown } | undefined, v = sanitizeLetter(raw); if (v) out.gl = { ...v, ...(typeof raw?.lastId === 'string' ? { lastId: raw.lastId.slice(0, 40) } : {}) }; }
   if (gw) out.gw = gw;
@@ -195,5 +199,5 @@ export function mergeE(a: unknown, b: unknown): EState {
     else by.set(g.id, { ...cur, since: Math.min(cur.since, g.since), date: cur.date ?? g.date });
   }
   const ev = mergeEv(A.ev, B.ev);
-  return sanitizeE({ v: E_V, goals: [...by.values()].sort((p, q) => p.since - q.since), m: recomputeAll(ev), ev, r: { ...B.r, ...A.r }, pri: A.pri || B.pri ? 1 : 0, diag: !A.diag ? B.diag : !B.diag ? A.diag : A.diag.day >= B.diag.day ? A.diag : B.diag, q: mergeQuest(A.q, B.q), ms: mergeMeasure(A.ms, B.ms), bk: mergeBlocks(A.bk, B.bk), bd: mergeBoard(A.bd, B.bd), gc: mergeCards(A.gc, B.gc), gq: mergeCafe(A.gq, B.gq), gs: mergeBubbles(A.gs, B.gs), gd: mergePuzzle(A.gd, B.gd), gt: mergeCase(A.gt, B.gt), gr: mergeCase(A.gr, B.gr), gk: mergeKara(A.gk, B.gk), gw: mergeShop(A.gw, B.gw), gl: mergeLetter(A.gl, B.gl), gb: mergeRobot(A.gb, B.gb), gv: mergeGarden(A.gv, B.gv), pm: mergePlay(A.pm, B.pm), tw: mergeTown(A.tw, B.tw), gh: mergeWheel(A.gh, B.gh), gn: mergeHunt(A.gn, B.gn), wk: mergeWeek(A.wk, B.wk), sy: mergeStory(A.sy, B.sy), gg: mergeGate(A.gg, B.gg), gp: mergeDir(A.gp, B.gp), vo: mergeVoice(A.vo, B.vo), bg: mergeBag(A.bg, B.bg), av: mergeAv(A.av, B.av), cb: mergeCb(A.cb, B.cb), gf: A.gf || B.gf ? { runs: Math.max(A.gf?.runs ?? 0, B.gf?.runs ?? 0), day: Math.max(A.gf?.day ?? 0, B.gf?.day ?? 0) } : undefined });
+  return sanitizeE({ v: E_V, goals: [...by.values()].sort((p, q) => p.since - q.since), m: recomputeAll(ev), ev, r: { ...B.r, ...A.r }, pri: A.pri || B.pri ? 1 : 0, diag: !A.diag ? B.diag : !B.diag ? A.diag : A.diag.day >= B.diag.day ? A.diag : B.diag, q: mergeQuest(A.q, B.q), ms: mergeMeasure(A.ms, B.ms), bk: mergeBlocks(A.bk, B.bk), bd: mergeBoard(A.bd, B.bd), gc: mergeCards(A.gc, B.gc), gq: mergeCafe(A.gq, B.gq), gs: mergeBubbles(A.gs, B.gs), gd: mergePuzzle(A.gd, B.gd), gt: mergeCase(A.gt, B.gt), gr: mergeCase(A.gr, B.gr), gk: mergeKara(A.gk, B.gk), gw: mergeShop(A.gw, B.gw), gl: mergeLetter(A.gl, B.gl), gb: mergeRobot(A.gb, B.gb), gv: mergeGarden(A.gv, B.gv), pm: mergePlay(A.pm, B.pm), tw: mergeTown(A.tw, B.tw), gh: mergeWheel(A.gh, B.gh), gn: mergeHunt(A.gn, B.gn), wk: mergeWeek(A.wk, B.wk), sy: mergeStory(A.sy, B.sy), gg: mergeGate(A.gg, B.gg), gp: mergeDir(A.gp, B.gp), vo: mergeVoice(A.vo, B.vo), bg: mergeBag(A.bg, B.bg), av: mergeAv(A.av, B.av), cb: mergeCb(A.cb, B.cb), src: mergeSrc(A.src, B.src), gf: A.gf || B.gf ? { runs: Math.max(A.gf?.runs ?? 0, B.gf?.runs ?? 0), day: Math.max(A.gf?.day ?? 0, B.gf?.day ?? 0) } : undefined });
 }
