@@ -287,3 +287,96 @@ export function coverage(lines: string[], ipaOf: IpaOf): { n: number; hit: numbe
   }
   return { n, hit, miss };
 }
+
+// ---------- v143 Phân tích bài dán vào: từ gốc + gợi ý ngữ pháp (chạy trên máy, không dịch cả câu) ----------
+// Bất quy tắc → từ gốc (cùng bảng với wordLevel của app.js, thêm vài từ).
+const IRR_BASE: Record<string, string> = {
+  went: 'go', gone: 'go', goes: 'go', had: 'have', has: 'have', did: 'do', done: 'do', does: 'do', saw: 'see', seen: 'see', came: 'come',
+  got: 'get', gotten: 'get', made: 'make', took: 'take', taken: 'take', bought: 'buy', ate: 'eat', eaten: 'eat', drank: 'drink', drunk: 'drink',
+  said: 'say', says: 'say', told: 'tell', gave: 'give', given: 'give', found: 'find', thought: 'think', met: 'meet', wrote: 'write', written: 'write',
+  began: 'begin', begun: 'begin', knew: 'know', known: 'know', felt: 'feel', sat: 'sit', stood: 'stand', ran: 'run', swam: 'swim', swum: 'swim',
+  flew: 'fly', flown: 'fly', slept: 'sleep', spent: 'spend', lost: 'lose', won: 'win', became: 'become', brought: 'bring', caught: 'catch',
+  taught: 'teach', heard: 'hear', paid: 'pay', sold: 'sell', sent: 'send', built: 'build', drove: 'drive', driven: 'drive', forgot: 'forget',
+  forgotten: 'forget', broke: 'break', broken: 'break', chose: 'choose', chosen: 'choose', woke: 'wake', wore: 'wear', worn: 'wear', left: 'leave',
+  kept: 'keep', meant: 'mean', spoke: 'speak', spoken: 'speak', understood: 'understand', grew: 'grow', grown: 'grow', threw: 'throw',
+  thrown: 'throw', fell: 'fall', fallen: 'fall', held: 'hold', led: 'lead', rode: 'ride', ridden: 'ride', sang: 'sing', sung: 'sing',
+  learnt: 'learn', lent: 'lend', shot: 'shoot', hid: 'hide', shook: 'shake', drew: 'draw', drawn: 'draw', fed: 'feed', hung: 'hang',
+  children: 'child', people: 'person', men: 'man', women: 'woman', feet: 'foot', teeth: 'tooth', mice: 'mouse',
+  better: 'good', best: 'good', worse: 'bad', worst: 'bad', was: 'be', were: 'be', been: 'be', am: 'be', is: 'be', are: 'be',
+};
+const PAST_IRR = new Set(['went', 'had', 'did', 'saw', 'came', 'got', 'made', 'took', 'bought', 'ate', 'drank', 'said', 'told', 'gave', 'found',
+  'thought', 'met', 'wrote', 'began', 'knew', 'felt', 'sat', 'stood', 'ran', 'swam', 'flew', 'slept', 'spent', 'lost', 'won', 'became', 'brought',
+  'caught', 'taught', 'heard', 'paid', 'sold', 'sent', 'built', 'drove', 'forgot', 'broke', 'chose', 'woke', 'wore', 'left', 'kept', 'meant',
+  'spoke', 'understood', 'grew', 'threw', 'fell', 'held', 'led', 'rode', 'sang', 'learnt', 'lent', 'shot', 'hid', 'shook', 'drew', 'fed', 'hung']);
+const PART_IRR = new Set(['gone', 'done', 'seen', 'been', 'had', 'got', 'gotten', 'made', 'taken', 'bought', 'eaten', 'drunk', 'said', 'told', 'given',
+  'found', 'met', 'written', 'begun', 'known', 'felt', 'stood', 'run', 'swum', 'flown', 'slept', 'spent', 'lost', 'won', 'become', 'brought',
+  'caught', 'taught', 'heard', 'paid', 'sold', 'sent', 'built', 'driven', 'forgotten', 'broken', 'chosen', 'worn', 'left', 'kept', 'spoken',
+  'understood', 'grown', 'thrown', 'fallen', 'held', 'ridden', 'sung', 'learnt', 'put', 'read', 'come', 'cut', 'hit', 'let', 'set']);
+export type LemmaForm = '' | 'pl' | '3sg' | 'past' | 'part' | 'ing' | 'cmp' | 'sup' | 'adv' | 'poss' | 'irr';
+export const FORM_VI: Record<LemmaForm, string> = { '': '', pl: 'thêm -s / -es (số nhiều hoặc ngôi 3)', '3sg': 'ngôi 3 số ít', past: 'quá khứ', part: 'quá khứ / phân từ', ing: 'đang / -ing', cmp: 'so sánh hơn', sup: 'so sánh nhất', adv: 'trạng từ', poss: 'sở hữu', irr: 'dạng bất quy tắc' };
+// Từ gốc của một từ (đã viết thường) theo từ điển `has`: thử nguyên dạng → bất quy tắc → luật đuôi. Không ra thì trả về chính từ đó.
+export function lemmaOf(w0: string, has: (w: string) => boolean): { base: string; f: LemmaForm } {
+  const w = w0.toLowerCase().replace(/’/g, "'");
+  if (has(w)) return { base: w, f: '' };
+  if (IRR_BASE[w] && has(IRR_BASE[w]!)) return { base: IRR_BASE[w]!, f: /^(children|people|men|women|feet|teeth|mice)$/.test(w) ? 'pl' : /^(better|worse)$/.test(w) ? 'cmp' : /^(best|worst)$/.test(w) ? 'sup' : PAST_IRR.has(w) ? 'past' : PART_IRR.has(w) ? 'part' : 'irr' };
+  const t = (xs: string[], f: LemmaForm) => { for (const x of xs) if (x.length >= 2 && has(x)) return { base: x, f }; return null; };
+  const dbl = (s: string) => (/([bdgklmnprt])\1$/.test(s) ? [s.slice(0, -1)] : []);
+  let m: RegExpMatchArray | null, r: { base: string; f: LemmaForm } | null = null;
+  if ((m = w.match(/^(.+)'s$/))) r = t([m[1]!], 'poss');
+  else if ((m = w.match(/^(.+)ies$/))) r = t([m[1] + 'y'], 'pl');
+  else if ((m = w.match(/^(.+)s$/))) r = t([m[1]!], 'pl') ?? (/(s|x|z|ch|sh|o)es$/.test(w) ? t([w.slice(0, -2)], 'pl') : null);
+  else if ((m = w.match(/^(.+)ied$/))) r = t([m[1] + 'y'], 'past');
+  else if ((m = w.match(/^(.+)ed$/))) r = t([m[1]!, m[1] + 'e', ...dbl(m[1]!)], 'past');
+  else if ((m = w.match(/^(.+)ing$/))) r = t([m[1]!, m[1] + 'e', ...dbl(m[1]!)], 'ing');
+  else if ((m = w.match(/^(.+)iest$/))) r = t([m[1] + 'y'], 'sup');
+  else if ((m = w.match(/^(.+)ier$/))) r = t([m[1] + 'y'], 'cmp');
+  else if ((m = w.match(/^(.+)est$/))) r = t([m[1]!, m[1] + 'e', ...dbl(m[1]!)], 'sup');
+  else if ((m = w.match(/^(.+)er$/))) r = t([m[1]!, m[1] + 'e', ...dbl(m[1]!)], 'cmp');
+  else if ((m = w.match(/^(.+)ily$/))) r = t([m[1] + 'y'], 'adv');
+  else if ((m = w.match(/^(.+)ly$/))) r = t([m[1]!, m[1] + 'le'], 'adv');
+  return r ?? { base: w, f: '' };
+}
+
+// Gợi ý ngữ pháp một câu (tối đa 3), theo luật đơn giản trên chữ. Chỉ là gợi ý, không phải phân tích đầy đủ.
+export interface GramHint { id: string; t: string }
+export function grammarOf(sentence: string): GramHint[] {
+  const s = sentence.replace(/[’‘]/g, "'"), w = s.toLowerCase().replace(/[^a-z' ]+/g, ' ').split(/\s+/).filter(Boolean), out: GramHint[] = [];
+  const at = (re: RegExp) => w.findIndex(x => re.test(x)), add = (id: string, t: string) => { if (!out.some(x => x.id === id) && out.length < 3) out.push({ id, t }); };
+  const BE = /^(am|is|are|i'm|you're|we're|they're|he's|she's|it's|that's)$/, ing = (k: number) => !!w[k] && /ing$/.test(w[k]!) && w[k]!.length > 4;
+  const join = w.join(' ');
+  let tense = false;
+  const gi = w.findIndex((x, k) => BE.test(x) && w[k + 1] === 'going' && w[k + 2] === 'to');
+  if (gi >= 0) { add('fut-go', `Tương lai gần “be going to + động từ” (${w.slice(gi, gi + 4).join(' ')}): dự định đã có.`); tense = true; }
+  const wi = at(/^(will|won't|i'll|you'll|he'll|she'll|we'll|they'll|it'll)$/);
+  if (wi >= 0) { add('fut-will', `Tương lai “will + động từ” (${w.slice(wi, wi + 2).join(' ')}): quyết định, dự đoán, lời hứa.`); tense = true; }
+  const pp = w.findIndex((x, k) => /^(have|has|i've|you've|we've|they've|haven't|hasn't)$/.test(x) && !!w[k + 1] && (/ed$/.test(w[k + 1]!) || PART_IRR.has(w[k + 1]!) || (w[k + 1] === 'never' || w[k + 1] === 'already' || w[k + 1] === 'just') && !!w[k + 2] && (/ed$/.test(w[k + 2]!) || PART_IRR.has(w[k + 2]!))));
+  // Câu hỏi đảo: "Have you (ever) tried …?" → hiện tại hoàn thành.
+  const qpp = /^(have|has|haven't|hasn't)$/.test(w[0] ?? '') && w.slice(2, 5).some(x => /ed$/.test(x) || PART_IRR.has(x)) ? 0 : -1;
+  if (pp < 0 && qpp === 0) { add('pres-perf', `Hiện tại hoàn thành, dạng câu hỏi “Have / Has + chủ ngữ + phân từ” (${w.slice(0, 4).join(' ')}): hỏi về trải nghiệm tới bây giờ.`); tense = true; }
+  if (pp >= 0) { add('pres-perf', `Hiện tại hoàn thành “have / has + phân từ” (${w.slice(pp, pp + 2).join(' ')}): việc đã xảy ra, còn liên quan tới bây giờ.`); tense = true; }
+  const pc = w.findIndex((x, k) => BE.test(x) && ing(k + 1) && w[k + 1] !== 'going');
+  if (pc >= 0) { add('pres-cont', `Hiện tại tiếp diễn “am / is / are + V-ing” (${w.slice(pc, pc + 2).join(' ')}): việc đang diễn ra.`); tense = true; }
+  const wc = w.findIndex((x, k) => /^(was|were)$/.test(x) && ing(k + 1));
+  if (wc >= 0) { add('past-cont', `Quá khứ tiếp diễn “was / were + V-ing” (${w.slice(wc, wc + 2).join(' ')}): việc đang diễn ra lúc đó.`); tense = true; }
+  if (!tense) {
+    const ps = w.findIndex((x, k) => PAST_IRR.has(x) && !(x === 'left' && /^(on|to|the)$/.test(w[k - 1] ?? '')) || /^(was|were|did|didn't|wasn't|weren't)$/.test(x)
+      || /ed$/.test(x) && x.length > 4 && !/^(have|has|had|was|were|is|are|be|been|get|got)$/.test(w[k - 1] ?? '') && !/^(need|bed|red|feed|speed|seed|hundred|tired|interested|bored|excited|married|used)$/.test(x));
+    if (ps >= 0) { add('past', `Quá khứ đơn (${w[ps]}): việc đã xảy ra và đã xong trong quá khứ.`); tense = true; }
+  }
+  // Câu kể có chủ ngữ là đại từ + động từ thường (I need…, We usually make…) cũng là hiện tại đơn.
+  const SUBJ = /^(i|you|we|they|he|she|it)$/, ADV = /^(usually|often|always|sometimes|never|also|really|just|only|still)$/;
+  const subjVerb = w.some((x, k) => SUBJ.test(x) && !!w[k + 1] && !FN[w[k + 1]!] && !ADV.test(w[k + 1]!) || SUBJ.test(x) && ADV.test(w[k + 1] ?? '') && !!w[k + 2] && !FN[w[k + 2]!]);
+  const hasModal = at(/^(can|could|must|should|may|might|would|can't|couldn't|mustn't|shouldn't|wouldn't)$/) >= 0 || /\b(have|has|had) to\b/.test(join);
+  if (!tense && !hasModal && subjVerb && !/\?\s*$/.test(s)) add('pres', 'Hiện tại đơn: thói quen, sự thật, trạng thái (he / she / it thì động từ thêm -s / -es).');
+  if (!tense && w.length >= 3 && at(/^(am|is|are|do|does|don't|doesn't|i'm|you're|we're|they're|he's|she's|it's)$/) >= 0 || !tense && w.some((x, k) => k > 0 && /^(he|she|it|[a-z]+)$/.test(w[k - 1]!) && /[^s]s$/.test(x) && x.length > 3 && /^(he|she|it)$/.test(w[k - 1]!)))
+    add('pres', 'Hiện tại đơn: thói quen, sự thật, trạng thái (he / she / it thì động từ thêm -s / -es).');
+  if (/\?\s*$/.test(s)) add('q', /^(what|where|when|who|why|how|which|whose)/.test(w[0] ?? '') ? `Câu hỏi có từ để hỏi (${w[0]}): xuống giọng ở cuối.` : 'Câu hỏi Có / Không: trợ động từ đứng trước chủ ngữ, lên giọng ở cuối.');
+  if (at(/^(not|never|don't|doesn't|didn't|isn't|aren't|wasn't|weren't|can't|won't|haven't|hasn't|couldn't|shouldn't|mustn't)$/) >= 0) add('neg', 'Câu phủ định (not / n\'t / never).');
+  const md = at(/^(can|could|must|should|may|might|can't|couldn't|mustn't|shouldn't)$/);
+  if (md >= 0) add('modal', `Động từ khuyết thiếu “${w[md]} + động từ nguyên mẫu”: ${/^(can|could|can't|couldn't)$/.test(w[md]!) ? 'khả năng / xin phép' : /^(must|mustn't)$/.test(w[md]!) ? 'bắt buộc / cấm' : /^(should|shouldn't)$/.test(w[md]!) ? 'lời khuyên' : 'có thể'}.`);
+  if (/\bhave to\b|\bhas to\b|\bhad to\b/.test(join)) add('haveto', '“have to + động từ”: phải làm (do hoàn cảnh).');
+  if (/\b(\w+er|more \w+|less \w+) than\b/.test(join)) add('cmp', 'So sánh hơn “-er / more … than”.');
+  if (/\bthe (\w+est|most \w+|best|worst)\b/.test(join)) add('sup', 'So sánh nhất “the -est / the most …”.');
+  if (/\bthere (is|are|was|were|'s)\b/.test(join) || /\bthere's\b/.test(join)) add('there', '“There is / are …”: có (cái gì ở đâu).');
+  return out;
+}

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { noteOf, missTip, sentencesOf, coverage } from '../../src/engine/pronote.ts';
+import { noteOf, missTip, sentencesOf, coverage, lemmaOf, grammarOf } from '../../src/engine/pronote.ts';
 import { corpus } from '../../tools/pronote-cov.ts';
 
 // v142 hướng dẫn phát âm từng câu (Nói nhại, Đọc to): phiên âm ghép từ danh sách từ + bảng + luật đuôi; nối âm; từ đọc nhẹ; ngữ điệu; mẹo.
@@ -58,4 +58,27 @@ test('v142 độ phủ phiên âm trên câu hội thoại + bài đọc A1–A2
     const r = coverage(lines, c.ipaOf);
     assert.ok(r.hit / r.n >= 0.98, `${(100 * r.hit / r.n).toFixed(1)}%: ${[...r.miss.keys()].slice(0, 30).join(' ')}`);
   }
+});
+
+test('v143 từ gốc (bài dán vào): bất quy tắc, -s / -ed / -ing / -er / -est / -ly, sở hữu', () => {
+  const has = (w: string) => ['go', 'child', 'city', 'big', 'happy', 'play', 'stop', 'watch', 'quick', 'gentle', 'teacher', 'good', 'make'].includes(w);
+  const L = (w: string) => { const r = lemmaOf(w, has); return `${r.base}:${r.f}`; };
+  assert.equal(L('went'), 'go:past'); assert.equal(L('children'), 'child:pl'); assert.equal(L('cities'), 'city:pl'); assert.equal(L('bigger'), 'big:cmp');
+  assert.equal(L('happiest'), 'happy:sup'); assert.equal(L('stopped'), 'stop:past'); assert.equal(L('making'), 'make:ing'); assert.equal(L('watches'), 'watch:pl');
+  assert.equal(L('quickly'), 'quick:adv'); assert.equal(L('gently'), 'gentle:adv'); assert.equal(L("teacher's"), 'teacher:poss'); assert.equal(L('better'), 'good:cmp');
+  assert.equal(L('xyzzy'), 'xyzzy:');
+});
+
+test('v143 gợi ý ngữ pháp từng câu: thì, câu hỏi, phủ định, động từ khuyết thiếu, so sánh, there is', () => {
+  const G = (s: string) => grammarOf(s).map(x => x.id);
+  assert.deepEqual(G('I went to the market yesterday.'), ['past']);
+  assert.deepEqual(G('She is reading a book.'), ['pres-cont']);
+  assert.deepEqual(G('Will you come to my party?'), ['fut-will', 'q']);
+  assert.deepEqual(G('I am going to visit my aunt next week.'), ['fut-go']);
+  assert.deepEqual(G('Have you ever tried Vietnamese coffee?'), ['pres-perf', 'q']);
+  assert.deepEqual(G('They were watching TV when I called.'), ['past-cont']);
+  assert.ok(G('I need some help.').includes('pres')); assert.ok(G('There are three apples here.').includes('there'));
+  assert.ok(G('My brother is taller than me.').includes('cmp')); assert.ok(G('This is the best café in town.').includes('sup'));
+  assert.deepEqual(G("You shouldn't eat too much sugar."), ['neg', 'modal']);
+  assert.ok(grammarOf('I went home.')[0]!.t.length > 10);
 });
