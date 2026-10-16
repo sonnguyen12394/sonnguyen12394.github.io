@@ -138,7 +138,8 @@ Màn 🎯 Mục tiêu, mỗi cấp:
 - Cần đạt để qua cấp: số phần đã vững / tổng (A1 185, A2 359).
 - 7 kỹ năng: x/y vững, thanh chia nhờ game / nhờ app / cả hai / từ trước. Mỗi kỹ năng có hai nút:
   - "⚔️ Rèn ở game": mở lò Thợ rèn gợi ý; hiện chỉ Từ vựng có lò, 6 kỹ năng còn lại ghi "🔒 game chưa có lò";
-  - "📘 Học ở app": mở đúng màn của kỹ năng.
+  - "📘 Học ở app": mở đúng màn của kỹ năng;
+  - "🎲 Thử sức" (bản 79): bài ngắn máy sinh mới mỗi lần cho đúng kỹ năng đó, xong thấy "Đúng x/y" + chữa bài. Chỉ để đo, không vào mức thuộc. Chưa người thật kiểm độ khó.
 - Trận cổng của cấp: chưa mở (bao nhiêu %), mở (nút vào, chỉ khi cấp này là đích), đã qua ✓. Kèm ô chứng chỉ ngoài app.
 - Nút "Chọn làm đích" khi cấp này chưa là đích chính.
 - Một dòng kết luận: game đang cho lý do học kỹ năng nào.

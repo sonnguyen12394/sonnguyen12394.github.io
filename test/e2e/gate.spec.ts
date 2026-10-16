@@ -74,14 +74,17 @@ test('Thi chuyển cấp: Đọc + Nghe bằng câu lạ, rồi Viết + Nói; k
   await expect(page.getByText('Xem chữa bài Đọc + Nghe từng câu')).toBeVisible();
   await page.screenshot({ path: 'test-results/gate-end.png', fullPage: true });
   const gg = await page.evaluate(() => (window as any).eval('st').e.gg);
-  expect(Object.keys(gg.done)).toEqual(['a2-1']); expect(gg.seen).toContain('a2-1');
-  expect(gg.done['a2-1'].ws.map((w: any) => w.kind)).toEqual(['w', 'w', 's']);
-  if (gg.done['a2-1'].passed) expect(await page.evaluate(() => (window as any).eval('st').e.goals[0].id)).toBe('cefr-b1');   // qua thì tự lên cấp
+  // v141 bài sinh theo tiêu chí: mã bài a2-g<hạt>, lưu hạt + số vững lúc làm; câu có sẵn đã ra ghi vào used.
+  const key = Object.keys(gg.done)[0]!;
+  expect(Object.keys(gg.done)).toHaveLength(1); expect(key).toMatch(/^a2-g\d+$/);
+  expect(typeof gg.done[key].seed).toBe('number'); expect(typeof gg.done[key].sol).toBe('number');
+  expect(gg.done[key].ws.map((w: any) => w.kind)).toEqual(['w', 'w', 's']);
+  if (gg.done[key].passed) expect(await page.evaluate(() => (window as any).eval('st').e.goals[0].id)).toBe('cefr-b1');   // qua thì tự lên cấp
   expect(await page.evaluate(() => (window as any).eval('st').e.ev.snap.some((s: any) => s.kind === 'readiness' && /^GATE:/.test(s.dec)))).toBe(true);
-  // Đề đã mở không dùng lại: lần sau là đề song song a2-2 (nếu chưa qua).
+  // Rớt thì làm lại sau 3 ngày VÀ khi vững thêm: màn thi chuyển cấp nói rõ còn bao lâu (chế độ chơi thử tắt để thấy luật thật).
   await page.getByRole('button', { name: '⚔️ Về sảnh' }).click();
-  const st = await page.evaluate(() => (window as any).eval('st').e.gg.done['a2-1'].passed);
-  if (!st) { await page.evaluate(() => (window as any).eval("go('goal',{er:'gate'})")); await page.getByRole('button', { name: /▶ Vào thi chuyển cấp/ }).click(); await expect(page.locator('form[data-eform="gtnext"] legend').first()).toBeVisible(); expect(await page.evaluate(() => (window as any).eval('st').e.gg.seen)).toContain('a2-2'); }
+  const passed = await page.evaluate(k => (window as any).eval('st').e.gg.done[k].passed, key);
+  if (!passed) { await page.evaluate(() => { try { localStorage.setItem('el-playtest', '0'); } catch { /* */ } (window as any).eval("go('goal',{er:'gate'})"); }); await expect(page.locator('#app')).toContainText(/còn 3 ngày/); }
   expect(errors).toEqual([]);
 });
 
@@ -113,6 +116,91 @@ test('v140 qua thi chuyển cấp A1 (làm đúng hết) → tự lên cấp A2:
   await expect(page.locator('#app')).toContainText('Cần đạt để qua A2');
   await page.locator('[data-e="aimlv"][data-lv="A1"]').click();
   await expect(page.locator('#app')).toContainText('✓ Đã qua thi chuyển cấp A1');
+  expect(errors).toEqual([]);
+});
+
+test('v141 bài sinh theo tiêu chí: hai lần mở ra hai bài khác nhau; đủ phần Đọc, Từ vựng + Ngữ pháp, Nghe (máy đọc)', async ({ page, errors }) => {
+  test.setTimeout(120_000);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await setup(page, '?playtest=1');
+  const run = async (): Promise<{ titles: string[]; first: string }> => {
+    await page.evaluate(() => (window as any).eval("go('goal',{er:'gate'})"));
+    await page.getByRole('button', { name: /▶ Vào thi chuyển cấp/ }).click();
+    const titles: string[] = []; let first = '';
+    for (let i = 0; i < 12; i++) {
+      const form = page.locator('form[data-eform="gtnext"]');
+      if (!(await form.isVisible().catch(() => false))) { await page.waitForTimeout(300); if (!(await form.isVisible())) break; }
+      const t = await page.locator('#app h2').first().innerText(); titles.push(t);
+      if (i === 0) first = await page.locator('#app .reading').first().innerText();
+      if (t === 'Short conversations') await expect(page.locator('[data-e="gttts"]')).toBeVisible();
+      const keys = await page.evaluate(() => (window as any).eval('EM').peek()?.keys ?? {});
+      for (const [id, k] of Object.entries(keys)) await form.locator(`input[name="${id}"][value="${k}"]`).check();
+      await form.getByRole('button').last().click();
+    }
+    for (let k = 0; k < 3; k++) { const ws = page.locator('form[data-eform="gtws"]'); await ws.locator('textarea').fill('I usually play football at the weekend with my friends, and last weekend we went to the park. Next month I am going to visit my aunt.'); await ws.getByRole('button').last().click(); }
+    await expect(page.locator('.gres')).toBeVisible();
+    await page.evaluate(() => (window as any).eval("go('play')"));
+    return { titles, first };
+  };
+  const a = await run();
+  expect(a.titles).toEqual(expect.arrayContaining(['Notices and messages', 'Words and grammar', 'Short conversations']));
+  // làm lại (chế độ chơi thử bỏ qua thời gian chờ): bài mới, khác bài trước; đích có thể đã lên B1 nếu qua, nên đặt lại A2
+  await page.evaluate(() => { const w = window as any, st = w.eval('st'); st.e.goals = [{ id: 'cefr-a2', version: '1.0', since: w.eval('today()'), date: null }]; st.e.gg = { done: {}, used: st.e.gg?.used ?? [] }; w.eval('save()'); });
+  const b = await run();
+  expect(b.first).not.toEqual(a.first);
+  expect(Object.keys(await page.evaluate(() => (window as any).eval('st').e.gg.done))).toHaveLength(1);
+  expect(errors).toEqual([]);
+});
+
+test('v141 🎲 Thử sức từng kỹ năng ở 🎯 Mục tiêu: bài ngắn sinh mới, ra "Đúng x/y", không vào mức thuộc / thi chuyển cấp, làm lại là bài khác', async ({ page, errors }) => {
+  test.setTimeout(120_000);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await setup(page);
+  const ledBefore = await page.evaluate(() => (window as any).eval('st').e.ev.led.length);
+  const tryLis = async (): Promise<string> => {
+    const form = page.locator('form[data-eform="gtnext"]');
+    await expect(page.locator('#app .eyebrow').first()).toContainText('🎲 Thử sức Nghe A2');
+    await expect(page.locator('[data-e="gttts"]')).toBeVisible();
+    const keys = await page.evaluate(() => (window as any).eval('EM').peek()?.keys ?? {});
+    const ids = Object.keys(keys).sort().join(',');
+    for (const [id, k] of Object.entries(keys)) await form.locator(`input[name="${id}"][value="${k}"]`).check();
+    await form.getByRole('button').last().click();
+    return ids + JSON.stringify(Object.values(keys));
+  };
+  await page.evaluate(() => (window as any).eval("go('aim')"));
+  await page.locator('#app [data-e="trystart"][data-sk="lis"]').click();
+  await expect(page.locator('form[data-eform="gtnext"]')).toBeVisible();
+  let ans = '';
+  for (let i = 0; i < 3 && (await page.locator('form[data-eform="gtnext"]').count()); i++) ans += await tryLis();
+  await expect(page.locator('#app h1')).toHaveText(/^Đúng (\d+)\/\1 \(100%\)$/);
+  expect(await chrome(page)).not.toMatch(BANNED);
+  await noHorizontalScroll(page);
+  const st = await page.evaluate(() => { const e = (window as any).eval('st').e; return { tries: e.gg.tries, done: Object.keys(e.gg.done ?? {}), led: e.ev.led.length }; });
+  expect(st.tries).toHaveLength(1); expect(st.tries[0]).toMatchObject({ lv: 'A2', sk: 'lis' }); expect(st.tries[0].ok).toBe(st.tries[0].n);
+  expect(st.done).toEqual([]); expect(st.led).toBe(ledBefore);   // chỉ là phép đo: không ghi bằng chứng, không vào thi chuyển cấp
+  // Thử bài mới: câu khác (hạt mới)
+  const first = await page.evaluate(() => (window as any).eval('st').e.gg.tries.length);
+  await page.getByRole('button', { name: /🎲 Thử bài mới/ }).click();
+  await expect(page.locator('form[data-eform="gtnext"]')).toBeVisible();
+  const script = await page.locator('#app').innerText();
+  let ans2 = '';
+  for (let i = 0; i < 3 && (await page.locator('form[data-eform="gtnext"]').count()); i++) ans2 += await tryLis();
+  expect(first).toBe(1); expect(script.length).toBeGreaterThan(0); expect(ans2).not.toEqual(ans);
+  // Viết: một bài ngắn, có % tiêu chí
+  await page.evaluate(() => (window as any).eval("go('aim')"));
+  await page.locator('#app [data-e="trystart"][data-sk="wr"]').click();
+  const ws = page.locator('form[data-eform="gtws"]');
+  await expect(ws).toBeVisible();
+  await ws.locator('textarea').fill('Hi Ana! Can you water my plants this weekend, please? I will be back on Sunday evening. Thank you very much!');
+  await ws.getByRole('button').last().click();
+  await expect(page.locator('#app')).toContainText(/✍️ Viết: \d+% tiêu chí/);
+  expect(await page.evaluate(() => (window as any).eval('st').e.gg.tries.length)).toBe(3);
+  // Từ vựng / Phát âm: câu theo nút của đúng kỹ năng đó
+  for (const [sk, h] of [['voc', 'Words and grammar'], ['pro', 'Sounds']]) {
+    await page.evaluate(() => (window as any).eval("go('aim')"));
+    await page.locator(`#app [data-e="trystart"][data-sk="${sk}"]`).click();
+    await expect(page.locator('#app h2').first()).toHaveText(h!);
+  }
   expect(errors).toEqual([]);
 });
 

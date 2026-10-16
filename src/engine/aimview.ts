@@ -5,6 +5,7 @@
 import type { ECtx } from './views.ts';
 import { cmpVerdict, type AimItem, type CmpOut } from './compare.ts';
 import { LEVEL_VI, type Level } from './types.ts';
+import { waitTxt } from './gateview.ts';
 
 export const AIM_LVS = [['A1', 'cefr-a1'], ['A2', 'cefr-a2']] as const;
 export type AimLv = typeof AIM_LVS[number][0];
@@ -14,7 +15,7 @@ export interface AimIn {
   lv: AimLv;
   o: CmpOut;
   chosen: boolean;                          // cấp này đang là đích chính
-  gate: { has: boolean; open: boolean; passed: boolean; ratio: number };
+  gate: { has: boolean; open: boolean; passed: boolean; ratio: number; wait?: { days: number; more: number } | null };
   forge: string;                            // lò Thợ rèn đang gợi ý (data-g của nút cblo)
   cert?: string;                            // ô chứng chỉ ngoài app (gateview viewCert), chỉ khi đã chọn
   cap?: number;                             // số kỹ năng vững mà vòng game còn đòi (cmpVerdict)
@@ -42,14 +43,15 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
       <span class="cmpbar" role="img" aria-label="${esc(r.vi)}: ${r.game} nhờ game, ${r.app} nhờ app, ${r.both} cả hai, ${r.before} từ trước, ${r.total - r.solid} chưa vững">${seg('cg', r.game)}${seg('ca', r.app)}${seg('cb2', r.both)}${seg('cp', r.before)}</span>
       <span class="hint aimmore">Bấm để xem ${r.total} phần cần đạt</span></summary>
       ${list}</details>
-      <div class="row aimgo">${game}<button class="btn small" data-act="skgo" data-sk="${r.id}">📘 Học ở app</button></div>
+      <div class="row aimgo">${game}<button class="btn small" data-act="skgo" data-sk="${r.id}">📘 Học ở app</button><button class="btn small" data-e="trystart" data-sk="${r.id}" data-lv="${x.lv}">🎲 Thử sức</button></div>
     </li>`;
   }).join('');
   const g = x.gate;
   const gate = !g.has ? '<p class="hint">Cấp này chưa có bài thi chuyển cấp.</p>'
     : g.passed ? `<p><b>✓ Đã qua thi chuyển cấp ${x.lv}.</b></p>`
-    : g.open && x.chosen ? `<p>Bạn đã gần xong mục tiêu. Bài gồm Đọc, Nghe, Viết, Nói; câu lạ, làm một lần, không gợi ý. Qua là tự lên cấp.</p><div class="row"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào thi chuyển cấp ${x.lv}</button></div>`
-    : `<p class="hint">Mở khi đã vững ≥ 80% (hiện ${pct(g.ratio, 1)}%). Bài dùng câu lạ, làm một lần, nên app chỉ mở khi bạn gần xong mục tiêu. Qua là tự lên cấp.</p>`;
+    : g.wait && x.chosen ? `<p class="hint">Lần trước chưa qua. Mỗi lần là bài mới, nhưng cần học thêm rồi mới làm lại: ${esc(waitTxt(g.wait))}.</p>`
+    : g.open && x.chosen ? `<p>Bạn đã gần xong mục tiêu. Bài gồm Đọc, Nghe, Viết, Nói, sinh mới mỗi lần theo tiêu chí của cấp; không gợi ý. Qua là tự lên cấp.</p><div class="row"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào thi chuyển cấp ${x.lv}</button></div>`
+    : `<p class="hint">Mở khi đã vững ≥ 80% (hiện ${pct(g.ratio, 1)}%). Mỗi lần làm là một bài mới sinh theo tiêu chí. Qua là tự lên cấp.</p>`;
   const pick = x.chosen ? '' : `<div class="row"><button class="btn primary" data-e="aimpick" data-g="${id}">Chọn ${x.lv} làm đích</button></div>`;
   return `${head}
     <section class="panel stack cmp aim">

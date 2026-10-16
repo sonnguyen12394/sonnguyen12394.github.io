@@ -58,8 +58,11 @@ test('đồ thị engine khớp Can-Do, unit, điểm ngữ pháp của app (ch�
 // M3: chẩn đoán dò đồ thị — trả lời "Không biết" liên tục thì kết thúc ở cấp thấp; kết quả có bảng giờ tới từng kỳ thi.
 test('chẩn đoán: làm tới hết, có kết quả, tiên nghiệm được đặt cho nút chưa dò', async ({ page, errors }) => {
   await openApp(page);
-  await navTo(page, 'Tôi');
-  await page.getByRole('button', { name: /Mục tiêu của bạn/ }).click();
+  // App mở vào 🎯 Mục tiêu, màn này tải đồ thị rồi vẽ lại: chờ engine xong, bấm lại tab nếu cú bấm rơi vào lúc vẽ lại (WebKit chậm hơn).
+  await page.waitForFunction(() => (window as unknown as { ELREADY?: boolean }).ELREADY === true);
+  const goalsBtn = page.getByRole('button', { name: /Mục tiêu của bạn/ });
+  await expect(async () => { if (!(await goalsBtn.isVisible())) await navTo(page, 'Tôi'); await expect(goalsBtn).toBeVisible({ timeout: 3000 }); }).toPass({ timeout: 20000 });
+  await goalsBtn.click();
   await page.getByRole('button', { name: 'Thử sức để xếp lớp' }).click();
   await expect(page.getByRole('heading', { name: 'Bạn đang ở đâu?', level: 1 })).toBeVisible();
   await page.getByRole('button', { name: 'Bắt đầu thử sức' }).click();

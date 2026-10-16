@@ -84,7 +84,8 @@ import { viewLrRun } from './lrview.ts';
 import { viewTreasureCard, viewTreasureIntro, viewTreasureDone, CHEST_COINS } from './treasureview.ts';
 import { viewGateHome, viewGateRun, viewGateEnd, viewGateWs, viewCert, type GateRun } from './gateview.ts';
 import { GATE_WS, NEXT_LV, wsPct, wordsOf as gwWords } from './gatews.ts';
-import { gateScore, gateState, lastP, CES_MIN, GATE_FORMS, type GateAns } from './gate.ts';
+import { genForm, TRY_PARTS, type NodePool } from './testgen.ts';
+import { gateScore, gateState, lastP, CES_MIN, GATE_FORMS, GEN_LV, USED_MAX, TRY_MAX, type GateAns } from './gate.ts';
 import type { LrApi } from '../exam/main.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
 import { viewMeasure } from './measureview.ts';
@@ -175,6 +176,13 @@ export function init(host: EHost): EngineModule {
     }
     const e = E(), res = gateScore(r.goal, r.form, ans, host.today(), Math.round((Date.now() - r.t0) / 1000));
     if (r.ws?.out.length) res.ws = r.ws.out;   // v140 Viết + Nói: tham khảo, không vào đậu / rớt
+    if (r.try) {
+      // v141 Thử sức: chỉ là phép đo, không vào mức thuộc, không vào thi chuyển cấp, không lên cấp; lưu số để xem tiến bộ.
+      r.res = res; const gg = (e.gg ||= { done: {} }), w = res.ws?.[0];
+      gg.tries = [...(gg.tries ?? []), { day: host.today(), lv: GEN_LV[r.goal] ?? 'A2', sk: r.try, ok: res.ok, n: res.n, ...(w ? { w: Math.round(w.pct * 100) } : {}) }].slice(-TRY_MAX);
+      host.save(); host.render(); window.scrollTo?.(0, 0); return;
+    }
+    if (r.gen) { res.sol = r.gen.sol; res.seed = r.gen.seed; }   // v141 luật làm lại + chữa bài theo hạt
     r.res = res;
     // v140 qua thi chuyển cấp → tự lên cấp (người sáng lập 16/10/2026): cấp kế thành đích chính, 🎯 Mục tiêu theo đích mới.
     const up = res.passed ? NEXT_LV[r.goal] : undefined;
@@ -190,7 +198,7 @@ export function init(host: EHost): EngineModule {
   // v140 xong Đọc + Nghe → phần Viết + Nói (nếu bộ này có), rồi mới chấm.
   function gtAfterRL(): void {
     const r = gtRun; if (!r) return;
-    const tasks = GATE_WS[r.form] ?? [];
+    const tasks = r.gen?.ws ?? GATE_WS[r.form] ?? [];
     if (tasks.length && !r.ws) { r.ws = { tasks, i: 0, out: [], key: '', draft: '' }; host.render(); window.scrollTo?.(0, 0); return; }
     gtFinish();
   }
@@ -1546,7 +1554,7 @@ export function init(host: EHost): EngineModule {
     const r = readinessOf(host, v, g), sk = skillsOf(v, g);
     const ix = loaded()!, rote = roteNodes(v.ev, sk.ids).map(x => ix.node.get(x.node)?.vi ?? x.node), date = v.goals.find(x => x.id === g.id)?.date ?? null;
     const due = date === null ? null : { days: date - host.today(), mins: computePath(host, v, ix).minutes };
-    const st = gateState(g.id, sk.solid, sk.total, E().gg), lv = (id: string) => id.replace('cefr-', '').toUpperCase().replace('PRE-A1', 'Pre-A1');
+    const st = gateState(g.id, sk.solid, sk.total, E().gg, host.today()), lv = (id: string) => id.replace('cefr-', '').toUpperCase().replace('PRE-A1', 'Pre-A1');
     const gate = { lv: lv(g.id), has: st.has, open: st.open || (playtest() && st.left.length > 0 && !st.passed), passed: !!st.passed, ratio: st.ratio, left: st.left.length };
     const CE = ['cefr-pre-a1', 'cefr-a1', 'cefr-a2', 'cefr-b1', 'cefr-b2', 'cefr-c1', 'cefr-c2'], k = CE.indexOf(g.id);
     const zones = k < 0 ? [] : CE.slice(0, Math.min(CE.length, k + 2)).map(id => ({ lv: lv(id), cur: id === g.id, passed: Object.values(E().gg?.done ?? {}).some(x => x.goal === id && x.passed) }));
@@ -1799,6 +1807,12 @@ export function init(host: EHost): EngineModule {
   // v137–v138 bảng 7 kỹ năng (Thư viện) và 🎯 Mục tiêu của một cấp (mặc định đích hiện tại, không có thì A2).
   // "Vững" như skillsOf: Đạt và đang vững thật (Can-Do: Đạt).
   let aimLv: AimLv | null = null;   // cấp đang xem ở màn Mục tiêu (A1 / A2); null = theo đích
+  // v141 câu theo nút cho máy sinh bài (Từ vựng / Ngữ pháp / Phát âm của đích), từ ngân hàng câu dò của app.
+  function genPools(gid: string): NodePool[] {
+    const ix = loaded(), g = ix?.goal.get(gid); if (!ix || !g) return [];
+    return closure(ix, g.req, defaultLevel).map(r => ix.node.get(r.node)).filter((n): n is NonNullable<typeof n> => !!n && ['voc', 'gra', 'pro'].includes(n.area))
+      .map(n => ({ node: n.id, area: n.area, cefr: n.cefr ?? '', items: (() => { try { return host.probe(n.id); } catch { return []; } })() }));
+  }
   function cmpNow(v: EState, gid?: string, detail = false): { o: CmpOut; vi: string; id: string } | null {
     const ix = loaded(); if (!ix) return null;
     const g = (gid ? ix.goal.get(gid) : null) ?? goalOf(v) ?? ix.goal.get('cefr-a2') ?? null; if (!g) return null;
@@ -1814,8 +1828,8 @@ export function init(host: EHost): EngineModule {
       if (!loaded()) { ensure(); return viewAim(c, null); }
       const ix = loaded()!, cur = goalOf(c.e)?.id, lv: AimLv = aimLv ?? (cur === 'cefr-a1' ? 'A1' : 'A2'), id = AIM_LVS.find(([l]) => l === lv)![1];
       const g = ix.goal.get(id), r = cmpNow(c.e, id, true); if (!g || !r) return viewAim(c, null);
-      const sk = skillsOf(c.e, g), gs = gateState(id, sk.solid, sk.total, E().gg), chosen = cur === id;
-      return viewAim(c, { lv, o: r.o, chosen, gate: { has: gs.has, open: gs.open || (playtest() && gs.left.length > 0 && !gs.passed), passed: !!gs.passed, ratio: gs.ratio },
+      const sk = skillsOf(c.e, g), gs = gateState(id, sk.solid, sk.total, E().gg, host.today()), chosen = cur === id;
+      return viewAim(c, { lv, o: r.o, chosen, gate: { has: gs.has, open: gs.open || (playtest() && gs.left.length > 0 && !gs.passed), passed: !!gs.passed, ratio: gs.ratio, wait: gs.wait },
         forge: fc.forge(), cert: chosen ? viewCert(c, id, E().gg) : '', cap: LV_AT[W_MAX - 1] });
     },
     cmp: c => routes.aim!(c),
@@ -1886,7 +1900,7 @@ export function init(host: EHost): EngineModule {
       const g = goalOf(c.e);
       if (!g) return viewGoals(c);
       const sk = skillsOf(c.e, g);
-      return viewGateHome(c, g.id, g.vi, sk.solid, sk.total, E().gg, playtest());
+      return viewGateHome(c, g.id, g.vi, sk.solid, sk.total, E().gg, playtest(), host.today());
     },
     why: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewWhy(c); },
     pick: viewPick,
@@ -1963,13 +1977,44 @@ export function init(host: EHost): EngineModule {
     gtstart() {
       const v = V(), g = goalOf(v);
       if (!g || !host.gate) return;
-      const sk = skillsOf(v, g), st = gateState(g.id, sk.solid, sk.total, E().gg), form = st.left[0];
+      const sk = skillsOf(v, g), st = gateState(g.id, sk.solid, sk.total, E().gg, host.today()), form = st.left[0];
       if (!form || (!st.open && !playtest())) return;
+      if (GEN_LV[g.id]) {
+        // v141 bài sinh theo tiêu chí: gom ngân hàng (bộ cổng cũ của cấp) + câu theo nút của đích, sinh bài mới với hạt mới.
+        Promise.all((GATE_FORMS[g.id] ?? []).map(f => host.gate!(f).catch(() => []))).then(bs => {
+          const e = E(), gg = (e.gg ||= { done: {} }), seed = ((Date.now() ^ Math.imul(e.ev.led.length + 1, 2654435761)) >>> 0) || 1;
+          const f = genForm({ goal: g.id, seed, bank: bs.flat(), used: new Set(gg.used ?? []), pools: genPools(g.id), seen: (n, id) => seenHas(e.ev, n, id) });
+          if (!f.groups.length) { host.toast('Chưa sinh được bài thi chuyển cấp.'); return; }
+          if (f.bankIds.length) gg.used = [...new Set([...(gg.used ?? []), ...f.bankIds])].slice(-USED_MAX);
+          host.save();
+          gtRun = { goal: g.id, form: f.id, groups: f.groups, gi: 0, given: {}, plays: 0, t0: Date.now(), skipL: false, res: null, gen: { seed, ws: f.ws, sol: sk.solid } }; lrPlays = 0; host.render(); window.scrollTo?.(0, 0);
+        });
+        return;
+      }
       host.gate(form).then(groups => {
         if (!groups.length) { host.toast('Chưa tải được bài thi chuyển cấp.'); return; }
         const gg = (E().gg ||= { done: {} }); gg.seen = [...new Set([...(gg.seen ?? []), form])]; host.save();   // đã mở là đã lộ câu: không dùng lại đề này
         gtRun = { goal: g.id, form, groups, gi: 0, given: {}, plays: 0, t0: Date.now(), skipL: false, res: null }; lrPlays = 0; host.render(); window.scrollTo?.(0, 0);
       }).catch(() => host.toast('Chưa tải được bài thi chuyển cấp (cần mạng ở lần đầu).'));
+    },
+    // v141 🎲 Thử sức một kỹ năng ở 🎯 Mục tiêu: bài ngắn sinh mới mỗi lần (ô TRY_PARTS của kỹ năng), cùng màn làm bài với thi chuyển cấp.
+    trystart(el) {
+      if (!loaded()) { ensure(); return; }
+      const sk = el.dataset.sk ?? '', parts = TRY_PARTS[sk], lv = isAimLv(el.dataset.lv) ? el.dataset.lv : (aimLv ?? (goalOf(V())?.id === 'cefr-a1' ? 'A1' : 'A2'));
+      const gid = AIM_LVS.find(([l]) => l === lv)?.[1]; if (!parts || !gid) return;
+      const e = E(), seed = ((Date.now() ^ Math.imul(e.ev.led.length + 7, 2654435761)) >>> 0) || 1;
+      const f = genForm({ goal: gid, seed, bank: [], used: new Set(), pools: genPools(gid), seen: (n, id) => seenHas(e.ev, n, id), parts, ...(['voc', 'gra', 'pro'].includes(sk) ? { areas: [sk] } : {}) });
+      if (!f.groups.length && !f.ws.length) { host.toast('Chưa có câu mới cho kỹ năng này. Học thêm ở 📘 Học rồi quay lại nhé.'); return; }
+      gtRun = { goal: gid, form: f.id, groups: f.groups, gi: 0, given: {}, plays: 0, t0: Date.now(), skipL: false, res: null, gen: { seed, ws: f.ws, sol: 0 }, try: sk }; lrPlays = 0;
+      if (!f.groups.length) gtAfterRL();
+      host.go('gate'); window.scrollTo?.(0, 0);
+    },
+    // v141 phần Nghe sinh từ khuôn: phát lời thoại bằng máy đọc hai giọng, một lần (như nghe giọng thu sẵn).
+    gttts() {
+      const g = gtRun?.groups[gtRun.gi];
+      if (!g?.script || lrPlays >= 1) return;
+      host.sayLines?.(g.script.map(l => ({ s: l.sp === 'B' ? 'B' : 'A', t: l.t })));
+      lrPlays = 1; host.render();
     },
     certon() { const e = E(); (e.gg ||= { done: {} }).cert = 1; host.save(); host.render(); },
     gtskip() {

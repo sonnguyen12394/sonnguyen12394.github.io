@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { gateScore, gateState, sanitizeGate, mergeGate, phi, GATE, GATE_FORMS, type GateAns } from '../../src/engine/gate.ts';
+import { gateScore, gateState, sanitizeGate, mergeGate, phi, GATE, GATE_FORMS, TRY_MAX, type GateAns } from '../../src/engine/gate.ts';
 
 // v111 trận cổng (SPEC "Mô hình học v111" §3–§4): câu lạ, P(đậu) ≥ 80%, mở khi bản đồ gần đủ, đề đã mở không dùng lại.
 const FORM = (f: string) => JSON.parse(readFileSync(`content/exam/gate/${f}.json`, 'utf8')) as Array<{ id: string; kind: string; mode: string; items: Array<{ id: string; b: number; opts: unknown[] }> }>;
@@ -20,16 +20,18 @@ test('v111 chấm cổng: đúng hết → qua; đoán bừa (1/3) → không qu
   assert.ok(Math.abs(phi(0) - 0.5) < 1e-6 && Math.abs(phi(1.2816) - 0.9) < 1e-3);
 });
 
-test('v111 luật mở cổng: khoá khi bản đồ chưa gần đủ; mở khi đủ; đề đã mở (dù chưa xong) không dùng lại; qua rồi thì không mở nữa', () => {
-  assert.equal(gateState('cefr-a2', 10, 100, undefined).open, false);
-  const s = gateState('cefr-a2', 80, 100, undefined);
-  assert.equal(s.open, true); assert.deepEqual(s.left, ['a2-1', 'a2-2']);
-  assert.deepEqual(gateState('cefr-a2', 80, 100, { done: {}, seen: ['a2-1'] }).left, ['a2-2']);
-  const fail = gateScore('cefr-a2', 'a2-1', answers('a2-1', 0.4), 1, 60), pass = gateScore('cefr-a2', 'a2-2', answers('a2-2', 1), 2, 60);
-  assert.equal(gateState('cefr-a2', 80, 100, { done: { 'a2-1': fail } }).open, true, 'rớt thì còn đề lạ thứ hai');
-  const both = gateState('cefr-a2', 80, 100, { done: { 'a2-1': fail, 'a2-2': pass } });
-  assert.equal(both.open, false); assert.equal(both.passed?.form, 'a2-2');
-  assert.equal(gateState('cefr-b1', 80, 100, undefined).has, true, 'v116 có cổng B1');
+test('v111 luật mở cổng (bộ cố định, nay chỉ còn B1): khoá khi chưa gần đủ; mở khi đủ; bộ đã mở không dùng lại; qua rồi thì không mở nữa', () => {
+  assert.equal(gateState('cefr-b1', 10, 100, undefined).open, false);
+  const s = gateState('cefr-b1', 80, 100, undefined);
+  assert.equal(s.open, true); assert.deepEqual(s.left, ['b1-1', 'b1-2']);
+  assert.deepEqual(gateState('cefr-b1', 80, 100, { done: {}, seen: ['b1-1'] }).left, ['b1-2']);
+  const fail = gateScore('cefr-b1', 'b1-1', answers('b1-1', 0.4), 1, 60), pass = gateScore('cefr-b1', 'b1-2', answers('b1-2', 1), 2, 60);
+  assert.equal(gateState('cefr-b1', 80, 100, { done: { 'b1-1': fail } }).open, true, 'rớt thì còn bộ lạ thứ hai');
+  const both = gateState('cefr-b1', 80, 100, { done: { 'b1-1': fail, 'b1-2': pass } });
+  assert.equal(both.open, false); assert.equal(both.passed?.form, 'b1-2');
+  // v141 A1 / A2: bài sinh mỗi lần, không có "hết bộ"; qua rồi thì không mở nữa
+  assert.deepEqual(gateState('cefr-a2', 80, 100, undefined).left, ['gen']);
+  assert.equal(gateState('cefr-a2', 80, 100, { done: { 'a2-g1': { ...pass, form: 'a2-g1', goal: 'cefr-a2' } } }).open, false);
   assert.equal(gateState('cefr-b2', 80, 100, undefined).has, false);
   assert.ok(GATE.open > 0 && GATE.ready === 0.8);
 });
@@ -57,4 +59,12 @@ test('v111 cách ly: đề cổng nằm riêng (mode gate, gói gate), đủ 2 �
   for (const id of ids) assert.ok(!other.has(id), id);
   const idx = JSON.parse(readFileSync('src/exam/gen/index.json', 'utf8')) as { packs: Record<string, { qtypes: string[] }> };
   assert.ok(idx.packs.gate, 'gói gate riêng');
+});
+
+test('v141 Thử sức: làm sạch (chỉ A1 / A2, mã kỹ năng hợp lệ, ≤ TRY_MAX), gộp hai máy bỏ trùng theo ngày', () => {
+  const t = { day: 3, lv: 'A2', sk: 'lis', ok: 4, n: 7 };
+  const s = sanitizeGate({ done: {}, tries: [t, { ...t, lv: 'B1' }, { ...t, sk: '<x>' }, 5, ...Array.from({ length: 80 }, (_, i) => ({ ...t, day: i }))] })!;
+  assert.ok(s.tries!.length <= TRY_MAX); assert.ok(s.tries!.every(x => x.lv === 'A2' && x.sk === 'lis'));
+  const m = mergeGate({ done: {}, tries: [t] }, { done: {}, tries: [t, { ...t, day: 1, sk: 'wr', w: 60 }] })!;
+  assert.deepEqual(m.tries!.map(x => x.day), [1, 3]);
 });
