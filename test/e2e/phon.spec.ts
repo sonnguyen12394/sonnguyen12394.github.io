@@ -84,3 +84,72 @@ test('đổi câu để chấm; xoá mô hình đưa về trạng thái chưa t�
   await expect(page.locator('[data-act="phload"]')).toBeVisible();
   expect(errors).toEqual([]);
 });
+
+// v148 hai mô hình cùng lúc: micro giả + MediaRecorder giả cho mô hình chấm âm, máy nhận diện chữ giả của trình duyệt cho chữ hiện ngay.
+async function openLive(page: Page, asrOk: boolean): Promise<number> {
+  await page.addInitScript(() => {
+    const w = window as any; w.__asr = []; w.__order = [];
+    w.webkitSpeechRecognition = class { constructor() { w.__asr.push(this); } start() { w.__order.push('asr'); } stop() { (this as any).stopped = true; } abort() {} };
+    w.SpeechRecognition = undefined;
+    Object.defineProperty(navigator, 'mediaDevices', { value: { getUserMedia: async () => { w.__order.push('mic'); return { getTracks: () => [{ stop() {} }] }; } } });
+    w.MediaRecorder = class { state = 'inactive'; mimeType = 'audio/mp4'; ondataavailable: any; onstop: any;
+      start() { this.state = 'recording'; } stop() { this.state = 'inactive'; setTimeout(() => this.onstop && this.onstop(), 10); } };
+  });
+  const led0 = await open(page);
+  await page.evaluate((ok: boolean) => { const w = window as any; w.eval('st').set.asr = ok; w.eval('save()');
+    w.eval("phDecode = function(){ PH.dur = 2; phGo(Float32Array.from({ length: 32000 }, (_, i) => 0.3 * Math.sin(i / 5))); }"); w.eval("go('phon')"); }, asrOk);
+  await page.locator('[data-act="phload"]').click();
+  await expect(page.locator('#app')).toContainText('Đã sẵn sàng');
+  return led0;
+}
+const emit = (page: Page, text: string, final: boolean) => page.evaluate(([t, f]) => {
+  const w = window as any, r = w.__asr[w.__asr.length - 1]; r.onresult({ results: [Object.assign([{ transcript: t }], { isFinal: f })] });
+}, [text, final] as const);
+
+test('v148 đang nói: chữ hiện ngay (micro mở trước nhận diện); dừng thì có "Máy nghe ra n/m từ" rồi điểm từng âm; không đếm', async ({ page, errors }) => {
+  const led0 = await openLive(page, true), ev0 = await page.evaluate(() => JSON.stringify((window as any).eval('st').ev?.c || {}));
+  await page.locator('[data-act="phrec"]').click();
+  await expect(page.locator('#asrlive')).toHaveText('…');
+  expect(await page.evaluate(() => (window as any).__order)).toEqual(['mic', 'asr']);
+  await emit(page, 'hanoi has four', false);
+  await expect(page.locator('#asrlive')).toHaveText('hanoi has four');
+  await page.locator('[data-act="phrec"]').click();
+  expect(await page.evaluate(() => (window as any).__asr[0].stopped)).toBe(true);
+  await emit(page, 'hanoi has four seasons', true);
+  await expect(page.locator('#app')).toContainText('Máy nghe ra 4/4 từ');
+  await expect(page.locator('#app .fb strong', { hasText: 'Điểm phát âm' })).toBeVisible();
+  await expect(page.locator('#app')).toContainText('chữ: bật, nghe 100%');
+  expect(await page.evaluate(() => JSON.stringify((window as any).eval('st').ev?.c || {}))).toBe(ev0);
+  expect(await page.evaluate(() => (window as any).eval('st').e.ev.led.length)).toBe(led0);
+  const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
+  expect(r.violations.map(v => v.id)).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
+test('v148 nhận diện chữ lỗi (iPhone giành micro) thì vẫn chấm âm, báo mã lỗi; tắt "Hiện chữ khi nói" thì không bật nhận diện', async ({ page, errors }) => {
+  await openLive(page, true);
+  await page.locator('[data-act="phrec"]').click();
+  await page.evaluate(() => { const w = window as any; w.__asr[0].onerror({ error: 'audio-capture' }); });
+  await page.locator('[data-act="phrec"]').click();
+  await expect(page.locator('#app .fb strong', { hasText: 'Điểm phát âm' })).toBeVisible();
+  await expect(page.locator('#app')).toContainText('Chữ không hiện được lần này (audio-capture)');
+  await expect(page.locator('#app')).toContainText('chữ: lỗi audio-capture');
+  await page.locator('[data-act="phlive"]').click();
+  await expect(page.locator('[data-act="phlive"]')).toHaveAttribute('aria-pressed', 'false');
+  await page.locator('[data-act="phrec"]').click();
+  await page.locator('[data-act="phrec"]').click();
+  await expect(page.locator('#app .fb strong', { hasText: 'Điểm phát âm' })).toBeVisible();
+  expect(await page.evaluate(() => (window as any).__asr.length)).toBe(1);
+  await expect(page.locator('#app')).toContainText('chữ: tắt');
+  expect(errors).toEqual([]);
+});
+
+test('v148 chưa đồng ý máy nghe giọng: bấm ghi thì hỏi trước; đồng ý thì ghi luôn kèm chữ', async ({ page, errors }) => {
+  await openLive(page, false);
+  await page.locator('[data-act="phrec"]').click();
+  await expect(page.locator('[data-act="asrok"]')).toBeVisible();
+  await page.locator('[data-act="asrok"]').click();
+  await expect(page.locator('#asrlive')).toBeVisible();
+  expect(await page.evaluate(() => (window as any).__order)).toEqual(['mic', 'asr']);
+  expect(errors).toEqual([]);
+});
