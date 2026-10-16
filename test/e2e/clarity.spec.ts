@@ -69,7 +69,7 @@ test('L7: từ màn đầu, một chạm vào "Chơi tiếp" là vào game có c
   expect(errors).toEqual([]);
 });
 
-test('L6 (v135 hai lối): lối game chỉ Hôm nay + Tôi; lối Học 4 tab không trùng nghĩa; Thư viện → Bản đồ Phố Chữ', async ({ page, errors }) => {
+test('L6 (v136 hai lối): lối game chỉ Hôm nay + Tôi; lối Học 4 tab không trùng nghĩa; Thư viện → Bản đồ Phố Chữ', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
   await expect(page.locator('#bnav button')).toHaveText(['Hôm nay', 'Tôi', 'Lối Học'].map(t => new RegExp(t)));

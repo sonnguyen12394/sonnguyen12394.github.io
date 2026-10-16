@@ -4,10 +4,13 @@ import { test as base, expect, type Page } from '@playwright/test';
 // Mỗi test: chặn font Google (không phụ thuộc mạng ngoài), gom lỗi JavaScript của trang để kiểm "không im lặng hỏng".
 // future (mặc định bật cho các test cũ): localStorage 'el-future' = '1' trước khi trang nạp, để tab Ôn thi và mục tiêu
 // IELTS/VSTEP/giao tiếp hiện như trước v52. Test của bản MVP chỉ CEFR dùng test.use({ future: false }).
-export const test = base.extend<{ errors: string[]; future: boolean; futureInit: void }>({
+// full (mặc định bật cho test cũ): localStorage 'el-full' = '1' để sảnh hiện đủ mục như trước v135 Sảnh A2. Test sảnh A2 dùng test.use({ full: false }).
+export const test = base.extend<{ errors: string[]; future: boolean; full: boolean; futureInit: void }>({
   future: [true, { option: true }],
-  futureInit: [async ({ page, future }, use) => {
+  full: [true, { option: true }],
+  futureInit: [async ({ page, future, full }, use) => {
     if (future) await page.addInitScript(() => { try { localStorage.setItem('el-future', '1'); } catch { /* bỏ qua */ } });
+    if (full) await page.addInitScript(() => { try { localStorage.setItem('el-full', '1'); } catch { /* bỏ qua */ } });
     await use();
   }, { auto: true }],
   errors: async ({ page }, use) => {
@@ -60,7 +63,7 @@ export async function noHorizontalScroll(page: Page): Promise<void> {
   expect(over, 'trang không được cuộn ngang').toBeLessThanOrEqual(1);
 }
 
-// v135 hai lối: tab của app cũ (Ôn tập, Thư viện) chỉ có ở lối 📘 Học; chưa thấy tab thì đổi lối trước.
+// v136 hai lối: tab của app cũ (Ôn tập, Thư viện) chỉ có ở lối 📘 Học; chưa thấy tab thì đổi lối trước.
 export async function navTo(page: Page, label: string): Promise<void> {
   const tab = page.locator('#bnav:visible button, #nav:visible button').filter({ hasText: label }).first();
   if (!(await tab.count())) await page.locator('#bnav:visible [data-act="door"][data-door="app"], #nav:visible [data-act="door"][data-door="app"]').first().click();

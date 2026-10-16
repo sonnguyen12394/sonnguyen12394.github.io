@@ -1,4 +1,4 @@
-# Đối chiếu game và app học cũ (16/10/2026, v135 / APP_VERSION 72)
+# Đối chiếu game và app học cũ (16/10/2026, v136 / APP_VERSION 73)
 
 Trả lời ba câu của người sáng lập:
 1. Học tiếng Anh khó ở đâu?
@@ -45,7 +45,7 @@ Quyết định của người sáng lập (16/10/2026, trả lời câu hỏi):
   - số câu đúng ở mỗi lối;
   - game có lò cho nhóm này hay chưa.
 
-Từ v136, màn đối chiếu chia theo **7 kỹ năng = 7 ô đồ** (trường `area` của nút; xem §5).
+Từ v137, màn đối chiếu chia theo **7 kỹ năng = 7 ô đồ** (trường `area` của nút; xem §5).
 
 | Kỹ năng A2 | Ô đồ | Số phần | Game có lý do học? |
 |---|---|---|---|
@@ -108,7 +108,7 @@ Câu hỏi của bảng này: **nếu chỉ chơi game (lối Chiến Binh), cá
 - Mở ⚖️ Đối chiếu mỗi tuần, ghi vào `docs/PLAYTEST.md`.
 - K1 và K2 chỉ lên trên 6 khi có số liệu thật: chơi tiếp sau trận ≥ 60%, nhớ sau 7 / 30 ngày ≥ 80%.
 
-## 5. Lối Học theo 7 kỹ năng (v136, APP_VERSION 73)
+## 5. Lối Học theo 7 kỹ năng (v137, APP_VERSION 74)
 
 Người sáng lập đề xuất tách lối Học thành 6 phần: Từ vựng, Ngữ pháp, Nghe, Nói, Đọc, Viết. Sau góp ý, đã chốt:
 - **Thêm Phát âm thành 7.** Đây là khó khăn lớn nhất của người Việt (K5), có 29 phần A2. Nó cũng khớp 1–1 với 7 ô đồ của game.

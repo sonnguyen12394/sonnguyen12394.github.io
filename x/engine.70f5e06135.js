@@ -430,9 +430,11 @@ ${"⭐".repeat(kc(s))} · ${s} gợi ý · ⏱ ${o}:${r}`}var Hm=3e3;function Om
       <button class="wchip" data-e="wmquests" aria-label="Đèn hôm nay ${y}/${s?.plan.length??3}, mở Sổ nhiệm vụ">🏮 <b>${y}/${s?.plan.length??3}</b></button>
       <button class="wchip" data-e="wmopen" data-p="bag" aria-label="Thợ Chữ cấp ${l.lv}, mở Xưởng của Tí">⭐ <b>Lv ${l.lv}</b></button>
       ${l.music===void 0?"":`<button class="wchip" data-e="wmmusic" aria-pressed="${l.music}" aria-label="Nhạc nền">${l.music?"🔊":"🔇"}</button>`}
+      <button class="wchip a2chip" data-act="a2lobby" aria-label="Về sảnh A2 gọn">🎯 A2</button>
       <span class="wchip">🌅 <b>${e.revived}/${e.zones.length}</b> khu</span><span class="wchip">★ <b>${e.stars}/${e.max}</b> sao phố</span></div>
     ${l.cb??""}${at}${f}${h}
-    ${s?pd(t,s):""}</div>`,vt=`<div class="wtools" role="toolbar" aria-label="Điều khiển bản đồ">
+    ${s?pd(t,s):""}
+    <button class="sclink a2tog" data-act="a2lobby">🧭 Hiện đủ mục (bản đồ, truyện, Túi chữ)</button></div>`,vt=`<div class="wtools" role="toolbar" aria-label="Điều khiển bản đồ">
     ${n.list?"":'<button class="btn small" data-e="wmzoom" data-k="1.25" aria-label="Phóng to">＋</button><button class="btn small" data-e="wmzoom" data-k="0.8" aria-label="Thu nhỏ">－</button><button class="btn small" data-e="wmhome" aria-label="Về chỗ bạn đang ở">⌂</button>'}
     <button class="btn small" data-e="wmlist" aria-pressed="${n.list}">${n.list?"🗺️ Bản đồ":"☰ Danh sách"}</button></div>`;if(n.list)return`<section class="wwrap stack" aria-label="Bản đồ Phố Chữ"><div class="wside stack">${kt}${r}</div><div class="wmain stack">${vt}<section class="wlq stack" aria-labelledby="wsh-quests"><h2 id="wsh-quests">📜 Sổ nhiệm vụ</h2>${l.quests()}</section>${Bx(t,e,o)}</div></section>`;let At=e.zones.map(J=>{let q=J.rect;return`<div class="wzone${J.fog?" fog":""}${J.here?" here":""}" style="left:${q.x}px;top:${q.y}px;width:${q.w}px;height:${q.h}px;--s1:${J.c1};--s2:${J.c2}">
       <div class="wart" aria-hidden="true">${Hg(J.act)}</div>

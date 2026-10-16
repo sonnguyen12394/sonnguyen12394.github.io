@@ -2,7 +2,7 @@ import { test, expect, noHorizontalScroll, toLobby, navTo } from './fixtures.ts'
 import type { Page } from '@playwright/test';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// v135 một não, hai lối (docs/DOI-CHIEU-GAME-APP.md): ⚔️ lối Chiến Binh chỉ có sảnh + Tôi; 📘 lối Học có đủ tab app cũ.
+// v136 một não, hai lối (docs/DOI-CHIEU-GAME-APP.md): ⚔️ lối Chiến Binh chỉ có sảnh + Tôi; 📘 lối Học có đủ tab app cũ.
 // Tiến độ dùng chung; mỗi câu đúng ghi thêm nó đến từ lối nào; màn ⚖️ Đối chiếu so theo nhóm A2.
 test.use({ future: false });
 
@@ -59,7 +59,7 @@ test('đối chiếu: câu đúng ghi theo lối; màn ⚖️ chia 7 kỹ năng 
   expect(errors).toEqual([]);
 });
 
-test('v136 Thư viện: bảng 7 kỹ năng (thanh vững, "thiếu nhất"); chạm Nghe mở đúng tab Nghe, chạm Phát âm mở màn phát âm', async ({ page, errors }) => {
+test('v137 Thư viện: bảng 7 kỹ năng (thanh vững, "thiếu nhất"); chạm Nghe mở đúng tab Nghe, chạm Phát âm mở màn phát âm', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
   await navTo(page, 'Thư viện');
@@ -75,4 +75,20 @@ test('v136 Thư viện: bảng 7 kỹ năng (thanh vững, "thiếu nhất"); ch
   await rows.filter({ hasText: 'Phát âm' }).click();
   await expect(page.locator('#app h1')).toContainText(/Phát âm|âm/i);
   expect(errors).toEqual([]);
+});
+
+test.describe('sảnh A2 (full: false)', () => {
+  test.use({ full: false });
+  test('v136 sảnh A2 gọn chỉ áp cho lối game; lối Học là app cũ đủ mục (không còn sảnh trống)', async ({ page, errors }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await lobby(page);
+    await expect(page.locator('html')).toHaveClass(/\ba2\b/);
+    await expect(page.locator('#app .cbgo')).toBeVisible();
+    await page.locator('#bnav [data-act="door"]').click();
+    await expect(page.locator('html')).not.toHaveClass(/\ba2\b/);
+    await expect(page.locator('#app .wwrap .lbstage, #app .wwrap .dgo').first()).toBeVisible();
+    await page.locator('#bnav [data-act="door"]').click();
+    await expect(page.locator('html')).toHaveClass(/\ba2\b/);
+    expect(errors).toEqual([]);
+  });
 });

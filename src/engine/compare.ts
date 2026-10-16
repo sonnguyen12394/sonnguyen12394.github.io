@@ -1,4 +1,4 @@
-// v135 Một não, hai lối (docs/DOI-CHIEU-GAME-APP.md): người chơi vào bằng lối ⚔️ Chiến Binh (game) hoặc 📘 Học (app cũ).
+// v136 Một não, hai lối (docs/DOI-CHIEU-GAME-APP.md): người chơi vào bằng lối ⚔️ Chiến Binh (game) hoặc 📘 Học (app cũ).
 // Tiến độ, bằng chứng, FSRS, bản đồ A2 vẫn DÙNG CHUNG. Chỉ thêm một bộ đếm nhỏ: mỗi nút có bao nhiêu câu trả lời đúng ở lối nào,
 // để màn đối chiếu chỉ ra phần A2 nào vững nhờ game, phần nào nhờ app, phần nào game chưa có lò.
 // Bộ đếm chỉ ĐỌC kết quả của ingest (không đổi bằng chứng, không đổi mastery). Thuần hàm.
@@ -43,7 +43,7 @@ export function mergeSrc(a?: SrcMap, b?: SrcMap): SrcMap | undefined {
   return out;
 }
 
-// ---------- Bảng đối chiếu theo 7 kỹ năng (v136) ----------
+// ---------- Bảng đối chiếu theo 7 kỹ năng (v137) ----------
 // Kỹ năng = trường `area` của nút; khớp 1–1 với 7 ô đồ của game (SPEC khối 13/10/2026 mục 5). Chức năng giao tiếp (fn) có area spk → Nói.
 export type Grp = 'voc' | 'gra' | 'pro' | 'lis' | 'spk' | 'rd' | 'wr';
 export const SKILLS: Array<{ id: Grp; ico: string; vi: string; slot: string; mid?: true }> = [

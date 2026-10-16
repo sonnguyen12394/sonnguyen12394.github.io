@@ -81,7 +81,7 @@ export interface EState {
   gd?: PuzzleSave;                 // v77 Câu đố ngày: số ngày giải, sao (telemetry, không vào mastery)
   vo?: VoiceSave;                  // v122–v127 Phố Chữ nói + nhật ký số đo H (telemetry, không vào mastery)
   bg?: BagSave;                    // v128 Túi chữ · Xưởng của Tí: nguyên liệu đã tiêu, đồ đã làm, trang bị, album đã nhận (telemetry)
-  src?: SrcMap;                    // v135 một não, hai lối: số câu đúng mỗi nút ở lối game / lối app (chỉ để đối chiếu, không vào mastery)
+  src?: SrcMap;                    // v136 một não, hai lối: số câu đúng mỗi nút ở lối game / lối app (chỉ để đối chiếu, không vào mastery)
   cb?: CbSave;                     // v133 Chiến Binh Chữ: Vũ khí đã rèn, tinh hoa, trận đã thắng, số liệu trận, góp ý (không vào mastery)
   av?: AvSave;                     // v132 nhân vật của người chơi: ngoại hình, thời trang đã mua / đang mặc, xu đã tiêu, bậc đồ đã xem (telemetry)
 }

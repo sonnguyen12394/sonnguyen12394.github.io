@@ -67,7 +67,7 @@ Bảng chấm duy nhất từ 13/10/2026 (`docs/SPEC.md`, khối đầu tệp, m
 | C7 | 4 | 4 | Chưa làm (mốc 2) |
 | C8 | 7 | 7 | — |
 | C9 *(đo)* | 4 | 4 | Chưa gắn độ sắc (mốc 2) |
-| C10 | 4 | **4** | Sảnh có một nút chính ⚔️; nhưng còn thêm khối, phần cũ chưa gỡ (luật mốc 2) |
+| C10 | 4 | **5** | Sảnh có một nút chính ⚔️. v135: Sảnh A2 mặc định ẩn phần cũ (bản đồ, truyện, đèn lồng, Túi chữ, kho báu), ≤ 7 thứ bấm được (`a2lobby.spec.ts`). Chưa gỡ mã, lò chưa mở dần theo bậc (mốc 2) |
 | C11 | 3 | **4** | Tinh hoa không mua được; thô = xu. Năng lượng, quảng cáo giả còn (gỡ ở mốc 2) |
 | C12 | 4 | **5** | Hình trận tự vẽ, nhân vật cầm Vũ khí đúng bậc, số sát thương, rung, âm theo đòn. Chưa có bộ hình CC0 (mạng chặn, `docs/ASSETS.md`) |
 | C13 | 2 | 2 | — |

@@ -1,4 +1,4 @@
-// v135 Màn đối chiếu (route 'cmp'; v136 chia theo 7 kỹ năng = 7 ô đồ): phần A2 đã vững nhờ lối ⚔️ Chiến Binh (game) hay lối 📘 Học (app cũ), và nhóm nào game chưa có lò.
+// v136 Màn đối chiếu (route 'cmp'; v137 chia theo 7 kỹ năng = 7 ô đồ): phần A2 đã vững nhờ lối ⚔️ Chiến Binh (game) hay lối 📘 Học (app cũ), và nhóm nào game chưa có lò.
 // Thuần chuỗi HTML; số liệu từ compare.ts. Không dùng chữ "thi / đề / kiểm tra".
 
 import type { ECtx } from './views.ts';

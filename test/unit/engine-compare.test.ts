@@ -16,14 +16,14 @@ const ix = index({ nodes, edges, goals });
 const a2 = closure(ix, ix.goal.get('cefr-a2')!.req, defaultLevel).map(r => ({ ...r, area: ix.node.get(r.node)?.area }));
 const esc = (s: unknown) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-test('v135 lối: mặc định là game; chỉ "app" mới là lối Học', () => {
+test('v136 lối: mặc định là game; chỉ "app" mới là lối Học', () => {
   assert.equal(doorOf({}), 'game');
   assert.equal(doorOf({ set: { door: 'app' } }), 'app');
   assert.equal(doorOf({ set: { door: 'lạ' } }), 'game');
   assert.equal(doorOf(null), 'game');
 });
 
-test('v135 tally: chỉ đếm câu đúng đã vào sổ, đúng lối; bỏ id lạ', () => {
+test('v136 tally: chỉ đếm câu đúng đã vào sổ, đúng lối; bỏ id lạ', () => {
   const s: SrcMap = {};
   tally(s, 'u:food', true, true, 'game');
   tally(s, 'u:food', true, true, 'app');
@@ -34,7 +34,7 @@ test('v135 tally: chỉ đếm câu đúng đã vào sổ, đúng lối; bỏ id
   assert.deepEqual(s, { 'u:food': { g: 1, a: 2 } });
 });
 
-test('v135 bản lưu: lọc bộ đếm hỏng, gộp hai máy lấy số lớn hơn, đi qua sanitizeE / mergeE', () => {
+test('v136 bản lưu: lọc bộ đếm hỏng, gộp hai máy lấy số lớn hơn, đi qua sanitizeE / mergeE', () => {
   assert.equal(sanitizeSrc(null), undefined);
   assert.deepEqual(sanitizeSrc({ 'u:a': { g: 2.4, a: -3 }, 'zz': { g: 1 }, 'g:b': { g: 0, a: 0 }, 'ph:c': 'x' }), { 'u:a': { g: 2, a: 0 } });
   assert.deepEqual(mergeSrc({ 'u:a': { g: 3, a: 1 } }, { 'u:a': { g: 1, a: 4 }, 'g:b': { g: 0, a: 2 } }), { 'u:a': { g: 3, a: 4 }, 'g:b': { g: 0, a: 2 } });
@@ -44,7 +44,7 @@ test('v135 bản lưu: lọc bộ đếm hỏng, gộp hai máy lấy số lớn
   assert.deepEqual(m.src, { 'u:a': { g: 5, a: 2 } });
 });
 
-test('v135 đường bài học cũ (ELCORE.ev) ghi nguồn theo lối, không đổi sổ bằng chứng so với không đếm', () => {
+test('v136 đường bài học cũ (ELCORE.ev) ghi nguồn theo lối, không đổi sổ bằng chứng so với không đếm', () => {
   const st: { e?: unknown; set: { door: string } } = { set: { door: 'app' } };
   const o = { node: 'u:a1-food', level: 2 as const, ok: true, g: 0.25, item: 'w:x:rec', qt: 'mcq', ctx: 'rec', src: 'vocab' as const };
   coreEv(st, o, 100);
@@ -56,7 +56,7 @@ test('v135 đường bài học cũ (ELCORE.ev) ghi nguồn theo lối, không �
   assert.equal(e.ev.led.length, 3, 'ba câu vẫn vào sổ như cũ');
 });
 
-test('v136 đối chiếu A2 thật theo 7 kỹ năng = 7 ô đồ: 188 / 70 / 29 / 10 / 44 / 8 / 10; game chỉ có lò Từ vựng', () => {
+test('v137 đối chiếu A2 thật theo 7 kỹ năng = 7 ô đồ: 188 / 70 / 29 / 10 / 44 / 8 / 10; game chỉ có lò Từ vựng', () => {
   const o = compareOf(a2, () => false, undefined);
   assert.deepEqual(o.rows.map(r => [r.id, r.total]), [['voc', 188], ['gra', 70], ['pro', 29], ['lis', 10], ['spk', 44], ['rd', 8], ['wr', 10]]);
   assert.deepEqual(o.rows.map(r => r.slot), ['Vũ khí', 'Giáp', 'Giày', 'Khiên', 'Bùa', 'Mũ', 'Nhẫn']);
@@ -67,7 +67,7 @@ test('v136 đối chiếu A2 thật theo 7 kỹ năng = 7 ô đồ: 188 / 70 / 2
   assert.ok(a2.filter(r => r.node.startsWith('fn:')).every(r => r.area === 'spk'), 'chức năng giao tiếp tính vào Nói');
 });
 
-test('v136 bảng kỹ năng: "thiếu nhất" là kỹ năng % thấp nhất còn phần chưa vững; kỹ năng đủ rồi không bị đánh dấu', () => {
+test('v137 bảng kỹ năng: "thiếu nhất" là kỹ năng % thấp nhất còn phần chưa vững; kỹ năng đủ rồi không bị đánh dấu', () => {
   const rd = a2.filter(r => r.area === 'rd').map(r => r.node), lis = a2.filter(r => r.area === 'lis').map(r => r.node).slice(0, 1);
   const voc = a2.filter(r => r.area === 'voc').map(r => r.node).slice(0, 100);
   const all = new Set([...rd, ...lis, ...voc, ...a2.filter(r => ['gra', 'pro', 'spk', 'wr'].includes(r.area ?? '')).map(r => r.node).slice(0, 200)]);
@@ -78,7 +78,7 @@ test('v136 bảng kỹ năng: "thiếu nhất" là kỹ năng % thấp nhất c�
   assert.equal(skillRows(compareOf([], () => false, undefined)).length, 0);
 });
 
-test('v135 đối chiếu: vững nhờ game / app / cả hai / từ trước; chưa vững không xếp nguồn', () => {
+test('v136 đối chiếu: vững nhờ game / app / cả hai / từ trước; chưa vững không xếp nguồn', () => {
   const [u1, u2, u3, u4] = a2.filter(r => r.node.startsWith('u:')).map(r => r.node);
   const g1 = a2.find(r => r.node.startsWith('g:'))!.node;
   const solid = new Set([u1, u2, u3, u4, g1]);
@@ -90,7 +90,7 @@ test('v135 đối chiếu: vững nhờ game / app / cả hai / từ trước; c
   assert.deepEqual([o.solid, o.game, o.app, o.both, o.before], [5, 1, 2, 1, 1]);
 });
 
-test('v135 kết luận và màn đối chiếu: nói thẳng nhóm chỉ học được ở lối Học; không dùng chữ thi / đề / kiểm tra', () => {
+test('v136 kết luận và màn đối chiếu: nói thẳng nhóm chỉ học được ở lối Học; không dùng chữ thi / đề / kiểm tra', () => {
   const o = compareOf(a2, () => false, undefined);
   const v = cmpVerdict(o, 6);
   assert.match(v, /chỉ cho lý do học Từ vựng, và chỉ tới khi đủ 6 kỹ năng vững \(2% của 359/);
