@@ -20,4 +20,4 @@ Game nhập vai cho người Việt học tiếng Anh: trận đấu kiểu Chao
 ## Lệnh
 `npm ci` · `npm run check` · `npm test` · `npm run content` · `npm run build` · `npm run fresh` · `npm run e2e` · `npm run sim` · `npm run fightsim` (bảng tỉ lệ thắng trận theo tay né × chênh bậc; thêm `-- 40 nv` cho bảng nhân vật). Tăng `APP_VERSION` trong `app.js` khi phát hành. `app.js` ≈ 3,2 MB: dùng grep, không đọc cả tệp. Tệp build trong `x/` phải commit.
 
-Trình duyệt test (16/10/2026, người sáng lập): tạm chỉ Chromium (như Cốc Cốc). CI và máy soạn chạy e2e với `PW_NO_WEBKIT=1` (Chrome Android + máy tính); Safari iOS tạm tắt, cách bật lại ghi trong `.github/workflows/ci.yml`.
+Trình duyệt test (16/10/2026, người sáng lập dùng Cốc Cốc trên iPhone, tức lõi WebKit): CI tạm chỉ chạy e2e dự án `ios-safari` (`--project=ios-safari`). Máy soạn không có WebKit thì chạy Chrome Android + máy tính (`PW_NO_WEBKIT=1`) để kiểm trước; lỗi chỉ có ở WebKit do CI bắt. Cách chạy lại đủ ba trình duyệt ghi trong `.github/workflows/ci.yml`.
