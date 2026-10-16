@@ -9,6 +9,9 @@ import { viewDiagIntro, viewDiagRun, viewDiagResult, viewLoading, lrBand, viewFo
 import { startDiag, nextProbe, answer, finished, level, priorFor, cefrIdx, autoGoal, guessCorrected, recognitionLevel, QUICK_PROBES, type Cand } from './diag.ts';
 import { ingest as ingest0, setPrior } from './ev/store.ts';
 import { makeFight } from './fightctl.ts';
+import { W_MAX } from './cb.ts';
+import { compareOf, doorOf, tally } from './compare.ts';
+import { viewCompare } from './compareview.ts';
 import { statsOf, LV_AT } from './bag.ts';
 import { dev } from './core.ts';
 import { addSnap } from './ev/snapshot.ts';
@@ -116,7 +119,14 @@ let bound = false;
 // v133 Chiến Binh Chữ: mọi bằng chứng vẫn đi qua ingest như cũ; lớp bọc chỉ ĐỌC kết quả để cộng tinh hoa Vũ khí (fightctl onEv).
 // Trận đấu không bao giờ gọi hàm này (P13).
 let onEvHook: ((o: Parameters<typeof ingest0>[2], ev: ReturnType<typeof ingest0>) => void) | null = null;
-const ingest: typeof ingest0 = (st, m, o, c) => { const ev = ingest0(st, m, o, c); try { onEvHook?.(o, ev); } catch { /* tinh hoa không được làm hỏng bằng chứng */ } return ev; };
+// v135 một não, hai lối: cùng lớp bọc đếm câu đúng theo lối đang dùng (compare.ts), chỉ để đối chiếu game / app.
+let onSrcHook: ((o: Parameters<typeof ingest0>[2], ev: ReturnType<typeof ingest0>) => void) | null = null;
+const ingest: typeof ingest0 = (st, m, o, c) => {
+  const ev = ingest0(st, m, o, c);
+  try { onEvHook?.(o, ev); } catch { /* tinh hoa không được làm hỏng bằng chứng */ }
+  try { onSrcHook?.(o, ev); } catch { /* bộ đếm đối chiếu cũng vậy */ }
+  return ev;
+};
 
 export function init(host: EHost): EngineModule {
   const E = (): EState => {
@@ -582,6 +592,7 @@ export function init(host: EHost): EngineModule {
     ver: 'v134',
   });
   onEvHook = (o, ev) => fc.onEv(o, ev);
+  onSrcHook = (o, ev) => { const e = E(); tally(e.src ??= {}, o.node, o.ok, !!ev, doorOf(host.state())); };
   // Số kỹ năng vững thật của mục tiêu chính (mốc cuối mỗi khu truyện cần con số này).
   function solidNow(): number { const g = E().goals.map(sg => loaded()?.goal.get(sg.id)).find(Boolean); return g && loaded() ? skillsOf(E(), g).solid : 0; }
   // Bộ chọn cho game chỉ dùng một loại nút (ngữ pháp / chức năng giao tiếp / âm): biên lộ trình có ít nút loại đó → thêm nút chưa Đạt của
@@ -1767,10 +1778,19 @@ export function init(host: EHost): EngineModule {
       return `<ul class="wqlist" aria-label="Việc hôm nay">${today}${tale}${town1}</ul>${viewWeekly(E().wk, host.today())}`;
     };
     if (wsel && !w.places.some(p => p.id === wsel)) wsel = null;
-    return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests, me: n => bag.hero.svg(n), power: bag.hero.power(), music: !musicOff(), news: lobbyNews(), made: bag.hero.made(), fresh: bag.hero.pending().length, phase: phaseOf(new Date().getHours()), cb: fc.bar() }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
+    return viewWorld(c, w, { sel: wsel, list: wlist, quests: wq }, dir, S, panel, gs ? viewGoalSlim(c, gs.s) : '', { coins: wallet(), lv: bag.lv(), quests, me: n => bag.hero.svg(n), power: bag.hero.power(), music: !musicOff(), news: lobbyNews(), made: bag.hero.made(), fresh: bag.hero.pending().length, phase: phaseOf(new Date().getHours()), cb: doorOf(host.state()) === 'game' ? fc.bar() : '' }) + (gs && nextPhase(E().ms, host.today())?.due ? viewTreasureCard(c, !E().ms?.checks.length) : '');
   }
   const routes: Record<string, (c: ECtx) => string> = {
     cb: c => fc.view(c),   // v133 Chiến Binh: Vũ khí, trận khu 1, số liệu trận, góp ý
+    // v135 đối chiếu game / app theo nhóm của đích (mặc định A2): vững nhờ lối nào, nhóm nào game chưa có lò (compareview.ts).
+    cmp: c => {
+      if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
+      const ix = loaded()!, g = goalOf(c.e) ?? ix.goal.get('cefr-a2') ?? null;
+      if (!g) return viewCompare(c, null, doorOf(host.state()), '');
+      const need = closure(ix, g.req, defaultLevel);
+      const solid = (n: string, l: number): boolean => { const s = nodeStat(host, c.e, n, l as Level); return s.pass && (n.startsWith('cd:') || s.state === 'mastered'); };
+      return viewCompare(c, compareOf(need, solid, E().src), doorOf(host.state()), g.vi, LV_AT[W_MAX - 1]);
+    },
     // v111 Kho báu ẩn: bộ đo 12 câu giữ riêng trong vỏ game (treasureview.ts).
     treasure: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }

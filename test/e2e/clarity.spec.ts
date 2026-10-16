@@ -69,10 +69,12 @@ test('L7: từ màn đầu, một chạm vào "Chơi tiếp" là vào game có c
   expect(errors).toEqual([]);
 });
 
-test('L6: 4 tab không trùng nghĩa; Thư viện → Bản đồ Phố Chữ; danh sách bản đồ, bấm Hôm nay về bản đồ', async ({ page, errors }) => {
+test('L6 (v135 hai lối): lối game chỉ Hôm nay + Tôi; lối Học 4 tab không trùng nghĩa; Thư viện → Bản đồ Phố Chữ', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
-  await expect(page.locator('#bnav button')).toHaveText(['Hôm nay', 'Ôn tập', 'Thư viện', 'Tôi'].map(t => new RegExp(`^${t}`)));
+  await expect(page.locator('#bnav button')).toHaveText(['Hôm nay', 'Tôi', 'Lối Học'].map(t => new RegExp(t)));
+  await page.locator('#bnav [data-act="door"]').click();
+  await expect(page.locator('#bnav button')).toHaveText(['Hôm nay', 'Ôn tập', 'Thư viện', 'Tôi', 'Lối game'].map(t => new RegExp(t)));
   await page.locator('#bnav button', { hasText: 'Thư viện' }).click();
   await expect(page.getByRole('heading', { name: 'Tự chọn bài', level: 1 })).toBeVisible();
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
