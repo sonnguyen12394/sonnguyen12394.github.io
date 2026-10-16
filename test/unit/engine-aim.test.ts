@@ -50,3 +50,22 @@ test('v138 Mục tiêu: trận cổng ba trạng thái; chỉ mở nút vào c�
   assert.match(viewAim(c, aim({ gate: { ...gate0, has: false } })), /chưa có trận cổng/);
   assert.match(viewAim(c, null), /Đang tải/);
 });
+
+test('v139 bấm dòng kỹ năng: danh sách từng phần (chưa vững trước, gần xong nhất trước; đã vững sau), mức cần, nguồn game / app', () => {
+  const nd = need('cefr-a1'), voc = nd.filter(r => r.area === 'voc').map(r => r.node);
+  const [s1, s2, p1, p2] = voc;
+  const solid = new Set([s1, s2]), pct: Record<string, number> = { [p1!]: 0.6, [p2!]: 0.2 };
+  const o = compareOf(nd, n => solid.has(n), { [s1!]: { g: 2, a: 0 }, [s2!]: { g: 0, a: 1 } }, undefined, n => ({ vi: `Tên ${n}`, pct: pct[n] ?? 0 }));
+  const row = o.rows.find(r => r.id === 'voc')!;
+  assert.equal(row.items!.length, row.total);
+  assert.deepEqual(row.items!.slice(0, 2).map(i => i.node), [p1, p2], 'chưa vững, gần xong nhất trước');
+  assert.deepEqual(row.items!.slice(-2).map(i => i.solid), [true, true], 'đã vững ở cuối');
+  const h = viewAim(c, { ...aim(), lv: 'A1', o });
+  assert.match(h, /<details class="aimsk">/);
+  assert.match(h, /Bấm để xem 102 phần cần đạt/);
+  assert.match(h, /🟡 Tên [^<]+<\/span><span class="hint">đang học · 60% · cần: /);
+  assert.match(h, /✅ Tên [^<]+<\/span><span class="hint">đã vững · cần: [^<·]+ · ⚔️ nhờ game/);
+  assert.match(h, /Còn 100 phần chưa vững/);
+  assert.match(h, /Đã vững 2 phần/);
+  assert.doesNotMatch(viewAim(c, aim()), /class="aimdet/, 'không có info thì không có danh sách');
+});

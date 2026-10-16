@@ -1159,6 +1159,10 @@ span.bkslot:empty{border-style:dashed;opacity:.4;cursor:default}
 .cbbar .cbrow{display:flex;gap:6px}.cbbar .cbrow .cbsmith{flex:1;min-width:0}
 .cbbar .cblink{flex:none;width:58px;display:grid;place-items:center;gap:0;padding:2px;min-height:44px;background:#fff;color:#1d1b3a;border-color:#fff;font-size:20px;line-height:1.1}.cbbar .cblink small{font:700 11px system-ui,sans-serif}
 .cbpage .cbhero{display:flex;gap:12px;align-items:center}
+.aimsk>summary{list-style:none;cursor:pointer;display:grid;gap:4px}.aimsk>summary::-webkit-details-marker{display:none}
+.aimmore::after{content:" ▾"}.aimsk[open] .aimmore::after{content:" ▴"}
+.aimdet{margin-top:8px;gap:6px}.aimits{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.aimit{display:grid;gap:1px;padding:6px 8px;border-radius:8px;background:var(--bg)}.aimit.ok{opacity:.85}
 .aimgo{gap:6px}.aimtabs{gap:6px}.aimlock{align-self:center}
 .lskgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 .lskrow{display:flex;gap:10px;align-items:center;text-align:left;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;min-height:44px}
@@ -1258,4 +1262,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.1a2bcb1de7.js" defer></script><script src="app.js?v=75" defer></script>
+<script src="x/core.1a2bcb1de7.js" defer></script><script src="app.js?v=76" defer></script>

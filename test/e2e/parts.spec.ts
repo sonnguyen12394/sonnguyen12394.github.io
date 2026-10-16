@@ -38,6 +38,12 @@ test.describe('mở app (home: false)', () => {
     await expect(page.locator('#app [data-e="cblo"]')).toHaveCount(1);
     await expect(page.locator('#app [data-act="skgo"]')).toHaveCount(7);
     await expect(page.locator('#app')).toContainText('Trận cổng A2');
+    // v139: bấm dòng kỹ năng → mở danh sách từng phần cần đạt
+    const voc = page.locator('#app .aimsk').first();
+    await expect(voc.locator('.aimdet')).toBeHidden();
+    await voc.locator('summary').click();
+    await expect(voc.locator('.aimit').first()).toBeVisible();
+    await expect(voc).toContainText(/Còn \d+ phần chưa vững/);
     await noHorizontalScroll(page);
     const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
     expect(r.violations.map(v => v.id)).toEqual([]);
@@ -61,7 +67,7 @@ test('câu đúng ghi nguồn theo nơi học; Mục tiêu tách nhờ game / nh
   await page.evaluate(() => (window as any).eval('emLoad()'));
   await navTo(page, 'Mục tiêu');
   await expect(page.locator('#app .cmprow')).toHaveCount(7);
-  await page.locator('#app .cmprow', { hasText: 'Nghe' }).locator('[data-act="skgo"]').click();
+  await page.locator('#app [data-act="skgo"][data-sk="lis"]').click();
   await expect(page.locator('[data-ttab="nghe"]')).toHaveAttribute('aria-selected', 'true');
   await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Học');
   expect(errors).toEqual([]);

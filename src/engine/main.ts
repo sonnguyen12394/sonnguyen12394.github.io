@@ -1784,12 +1784,13 @@ export function init(host: EHost): EngineModule {
   // v137–v138 bảng 7 kỹ năng (Thư viện) và 🎯 Mục tiêu của một cấp (mặc định đích hiện tại, không có thì A2).
   // "Vững" như skillsOf: Đạt và đang vững thật (Can-Do: Đạt).
   let aimLv: AimLv | null = null;   // cấp đang xem ở màn Mục tiêu (A1 / A2); null = theo đích
-  function cmpNow(v: EState, gid?: string): { o: CmpOut; vi: string; id: string } | null {
+  function cmpNow(v: EState, gid?: string, detail = false): { o: CmpOut; vi: string; id: string } | null {
     const ix = loaded(); if (!ix) return null;
     const g = (gid ? ix.goal.get(gid) : null) ?? goalOf(v) ?? ix.goal.get('cefr-a2') ?? null; if (!g) return null;
     const need = closure(ix, g.req, defaultLevel).map(r => ({ ...r, area: ix.node.get(r.node)?.area }));
     const solid = (n: string, l: number): boolean => { const s = nodeStat(host, v, n, l as Level); return s.pass && (n.startsWith('cd:') || s.state === 'mastered'); };
-    return { o: compareOf(need, solid, E().src), vi: g.vi, id: g.id };
+    const info = detail ? (n: string, l: number) => ({ vi: ix.node.get(n)?.vi ?? n, pct: nodeStat(host, v, n, l as Level).pct }) : undefined;
+    return { o: compareOf(need, solid, E().src, undefined, info), vi: g.vi, id: g.id };
   }
   const routes: Record<string, (c: ECtx) => string> = {
     cb: c => fc.view(c),   // v133 Chiến Binh: Vũ khí, trận khu 1, số liệu trận, góp ý
@@ -1797,7 +1798,7 @@ export function init(host: EHost): EngineModule {
     aim: c => {
       if (!loaded()) { ensure(); return viewAim(c, null); }
       const ix = loaded()!, cur = goalOf(c.e)?.id, lv: AimLv = aimLv ?? (cur === 'cefr-a1' ? 'A1' : 'A2'), id = AIM_LVS.find(([l]) => l === lv)![1];
-      const g = ix.goal.get(id), r = cmpNow(c.e, id); if (!g || !r) return viewAim(c, null);
+      const g = ix.goal.get(id), r = cmpNow(c.e, id, true); if (!g || !r) return viewAim(c, null);
       const sk = skillsOf(c.e, g), gs = gateState(id, sk.solid, sk.total, E().gg), chosen = cur === id;
       return viewAim(c, { lv, o: r.o, chosen, gate: { has: gs.has, open: gs.open || (playtest() && gs.left.length > 0 && !gs.passed), passed: !!gs.passed, ratio: gs.ratio },
         forge: fc.forge(), cert: chosen ? viewCert(c, id, E().gg) : '', cap: LV_AT[W_MAX - 1] });
