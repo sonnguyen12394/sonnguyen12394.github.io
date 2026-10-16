@@ -16,6 +16,7 @@ import { microDecide, type MicroDecision } from './micro.ts';
 import { drift, estimate } from './ev/audit.ts';
 import { addSnap } from './ev/snapshot.ts';
 import { doorOfCtx, tally } from './compare.ts';
+import { noteOf, missTip, sentencesOf } from './pronote.ts';
 
 function eOf(st: { e?: unknown }): EState {
   const cur = st.e as EState | undefined;
@@ -38,6 +39,8 @@ export function dev(): string {
 }
 
 export const fsrs = { review, newCard, interval, retrievability };
+// v142 hướng dẫn phát âm từng câu (Nói nhại, Đọc to): app.js gọi ELCORE.pronote.noteOf(câu, tra IPA).
+export const pronote = { noteOf, missTip, sentencesOf };
 export const rules = { ...RULE, id: RULE_ID };
 
 // Phiên học: đổi khi app mở lại (provenance §36: session).

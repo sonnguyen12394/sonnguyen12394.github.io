@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 79;
+const STATE_V = 18, APP_VERSION = 80;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1074,7 +1074,7 @@ function sanitizeState(x){
   const c=obj(x.cos); x.cos={own:(Array.isArray(c.own)?c.own:[]).filter(k=>!!ACC_KEYS[k]),sk:(Array.isArray(c.sk)?c.sk:[]).filter(k=>!!SKIN_KEYS[k]),acc:ACC_KEYS[c.acc]?c.acc:'',skin:SKIN_KEYS[c.skin]?c.skin:''};
   if(x.money!=null){ const mo=obj(x.money); x.money={e:numIn(mo.e,0,EN.cap,EN.cap),t:numIn(mo.t,0,1e14,Date.now()),s:!!mo.s,out:Math.round(numIn(mo.out,0,1e6,0)),blk:Math.round(numIn(mo.blk,0,1e8,0)),ad:Math.round(numIn(mo.ad,0,1e7,0)),used:Math.round(numIn(mo.used,0,1e7,0)),bs:numIn(mo.bs,0,1e14,0),be:numIn(mo.be,0,1e14,0)}; }
   const m=obj(x.me); x.me={...m,src:SRC[m.src]?m.src:'',who:typeof m.who==='string'&&/^[a-z]{0,12}$/.test(m.who)?m.who:'',target:LVS.includes(m.target)?m.target:'',mins:numIn(m.mins,0,600),deadline:m.deadline==null?null:numIn(m.deadline,0,1e6,null)};
-  const se=obj(x.set); x.set={...se,path:typeof se.path==='string'&&/^[a-z]{0,12}$/.test(se.path)?se.path:'',goal:Math.round(numIn(se.goal,5,500,20)),newMax:Math.round(numIn(se.newMax,0,500,20)),rate:numIn(se.rate,.5,1.5,.9),voice:typeof se.voice==='string'?se.voice.slice(0,80):'',remind:/^\d\d:\d\d$/.test(se.remind||'')?se.remind:'20:00',asr:se.asr===true,notif:se.notif===true};
+  const se=obj(x.set); x.set={...se,path:typeof se.path==='string'&&/^[a-z]{0,12}$/.test(se.path)?se.path:'',goal:Math.round(numIn(se.goal,5,500,20)),newMax:Math.round(numIn(se.newMax,0,500,20)),rate:numIn(se.rate,.5,1.5,.9),voice:typeof se.voice==='string'?se.voice.slice(0,80):'',remind:/^\d\d:\d\d$/.test(se.remind||'')?se.remind:'20:00',asr:se.asr===true,notif:se.notif===true,pnHide:se.pnHide===true};
   x.start=Math.round(numIn(x.start,0,1e6,0)); x.offset=Math.round(numIn(x.offset,0,1e5,0));
   const bestBag=b=>Object.fromEntries(Object.entries(obj(b)).filter(([k,v])=>LVS.includes(k)&&v&&typeof v==='object').map(([k,v])=>[k,{best:numIn(v.best,0,1,0),n:Math.round(numIn(v.n,0,1e6,0)),...(v.day!=null?{day:Math.round(numIn(v.day,0,1e6,0))}:{})}]));
   x.lis=bestBag(x.lis); x.rx=bestBag(x.rx); x.pv=bestBag(x.pv); x.sp=bestBag(x.sp); x.pa=paBag(x.pa); x.med=medBag(x.med); { const h=!!obj(x.shadow).hide; x.shadow=bestBag(x.shadow); if(h) x.shadow.hide=true; }
@@ -2075,6 +2075,7 @@ function viewTalk(){
     +sec(`Nói theo đề ${L}`,ss.map(x=>{ const h=st.stask[x.id]||[]; return card(`data-stk="${x.id}"`,'mic',esc(x.vi),`<span lang="en">${esc(x.en)}</span> · chuẩn bị ${x.prep}s, nói ${x.speak}s`,h.length?`Đã nói ${h.length} lần`:null); }).join(''))
     +'<p class="hint">Muốn nói bằng câu của mình và được máy so ý? Mở một hội thoại ở tab Hội thoại rồi bấm Đóng vai.</p>';
   if(T==='doc') body=sec(`Đọc văn bản đời thường ${L}`,rs.filter(x=>x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.kind)} · ${esc(x.tvi)} · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))+sec(`Đọc bài dài ${L}`,rs.filter(x=>!x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.tvi)} · ${wc(x.text.join(' '))} từ · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
+    +((L==='A1'||L==='A2')?sec(`📖 Đọc to ${L}: từng câu có hướng dẫn phát âm`,UNITS.filter(u=>u.level===L&&unlocked(u)&&raOk(u)).reverse().slice(0,12).map(u=>{ const r=st.pron['ra:'+u.id]; return card(`data-act="rago" data-uid="${u.id}"`,'mic',`<span lang="en">${esc(u.reading.title)}</span>`,`${uname(u)} · phiên âm, nối âm, âm cuối, ngữ điệu`,r&&r.n?{best:r.best}:null); }).join('')):'')
     +sec('Truyện dài kỳ',card('data-go="stories"','read','Cuốn sổ của Lan',`Đã đọc ${STORY.filter(e=>st.story[e.id]!=null).length}/${STORY.length} tập`,null))
     +(rs.length?'':`<p class="hint">Bài đọc dài có từ B1. Ở ${L}, mỗi unit từ vựng đã có một bài đọc ngắn.</p>`)+exam;
   if(T==='viet') body=sec(`Viết theo đề ${L}`,ws.map(x=>card(`data-wt="${x.id}"`,'pen',esc(x.vi),`${esc(x.genre)} · ${x.min}–${x.max} từ`,st.wtask[x.id]&&st.wtask[x.id].text?'Đã viết':null)).join(''))
@@ -3011,7 +3012,7 @@ function viewRead(){
     <p class="muted">Bài đang ẩn chữ. Nghe cả bài (nghe lại bao nhiêu lần cũng được), rồi trả lời câu hỏi bên dưới. Nộp bài xong sẽ hiện chữ và bản dịch để đối chiếu.</p>
     <div class="row">${listenBtns('primary')}<button class="btn ghost small" data-act="readshow" title="Chuyển sang đọc; điểm tính như bài đọc">Xem chữ</button></div>
   </article>`:`<article class="card">
-    ${HAS_TTS?`<div class="row">${listenBtns('')}</div>`:''}
+    ${HAS_TTS||raOk(u)?`<div class="row">${HAS_TTS?listenBtns(''):''}${raOk(u)?`<button class="btn" data-act="rago" data-uid="${u.id}">📖 Đọc to từng câu</button>`:''}</div>`:''}
     <p class="reading" lang="en">${readHtml(r.text,u)}</p>
     <details ${R.listen?'open':''}><summary>Xem bản dịch</summary><p class="vi" style="margin-top:8px">${esc(r.vi)}</p></details>
     <p class="hint">Từ của unit trong bài (tô vàng): ${used.map(w=>`<b lang="en">${esc(w.word)}</b> ${esc(w.vi)}`).join(' · ')}</p>
@@ -4266,7 +4267,7 @@ function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); applyA2(); renderChrome();
   if((ui.view==='path'||ui.view==='play'||(ui.view==='goal'&&ui.er==='aim'))&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={thi:viewThi,lib:viewLib,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  const v={thi:viewThi,lib:viewLib,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,ra:viewRA,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   // v99: mục thu gọn (details.gall: Luyện tập, Leo tháp…) giữ trạng thái mở qua các lần vẽ lại #app (trước đây vẽ lại là đóng sập).
@@ -4791,6 +4792,10 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:80,d:'2026-10-16',t:'Hướng dẫn phát âm từng câu',items:[
+    'Nói nhại: mỗi câu hiện phiên âm từng từ, từ cần nhấn (in đậm), từ đọc nhẹ, âm cuối phải giữ, chỗ nối âm ‿ và lên / xuống giọng ↗ ↘, kèm mẹo cho người Việt.',
+    'Mới: 📖 Đọc to từng câu cho bài đọc A1, A2 (ở bài đọc của unit và tab Đọc). Đọc cho máy nghe; từ máy chưa nghe ra có mẹo đúng âm đó và nút luyện âm.',
+    'Có nút ẩn / hiện phiên âm. Chỉ để luyện, không tính vào mức thuộc. Phiên âm do máy ghép, chưa người thật kiểm.']},
   {v:79,d:'2026-10-16',t:'🎲 Thử sức từng kỹ năng',items:[
     'Ở 🎯 Mục tiêu, mỗi kỹ năng có nút 🎲 Thử sức: một bài ngắn mới mỗi lần (Từ vựng, Ngữ pháp, Phát âm, Đọc, Nghe, Viết, Nói).',
     'Xong thấy ngay đúng mấy câu và chữa từng câu. Thử sức chỉ để biết mình đang ở đâu, không tính vào mức thuộc.',
@@ -5138,6 +5143,7 @@ document.addEventListener('click',e=>{
   if(d.qsel!=null){ const s=ui.qz, k=+d.qsel; if(!s.ans){ s.sel=s.sel.includes(k)?s.sel.filter(x=>x!==k):[...s.sel,k]; render(); } return; }
   if(d.rprate) return rpRate(d.rprate);
   if(d.shself!=null){ if(ui.sh){ ui.sh.self=+d.shself; render(); } return; }
+  if(d.raself!=null){ if(ui.ra){ ui.ra.self=+d.raself; render(); } return; }
   if(d.exp){ const [sec,bi,qi,k]=d.exp.split(':'), E=ui.ex; if(E&&E.sec===sec){ E.picks[sec][bi+':'+qi]=+k; render(); } return; }
   switch(d.act){
     case 'qznext': return qzNext();
@@ -5149,6 +5155,10 @@ document.addEventListener('click',e=>{
     case 'shsay': return shSay(d.slow==='1');
     case 'shhide': { ui.sh.hide=!ui.sh.hide; (st.shadow||(st.shadow={})).hide=ui.sh.hide; save(); return render(); }
     case 'shnext': return shNext();
+    case 'pnhide': st.set.pnHide=!st.set.pnHide; save(); return render();
+    case 'rago': return startRA(d.uid);
+    case 'rasay': return raSay(d.slow==='1');
+    case 'ranext': return raNext();
     case 'exgo': case 'exnew': return startExam();
     case 'exbegin': return exBegin(d.sec);
     case 'explay': { const b=ui.ex&&ui.ex.lis[+d.i]; if(b&&b.plays<EX_PLAYS){ b.plays++; sayLines(b.lines.map(l=>({t:l.t,s:l.s}))); render(); } return; }
@@ -5447,7 +5457,7 @@ function startShadow(L){ go('shadow',{sh:{L,q:shLines(L),i:0,res:[],hide:!!(st.s
 function shSay(slow){ const S=ui.sh, x=S&&!S.done&&S.q[S.i]; if(x) say(x.t,!!slow,x.v); }
 function shScore(){ const S=ui.sh; if(ASR.key==='sh'+S.i&&ASR.res&&!ASR.res.word) return {p:ASR.res.p,asr:true}; return S.self!=null?{p:S.self,asr:false}:null; }
 function shNext(){ const S=ui.sh, x=S.q[S.i], sc=shScore();
-  S.res.push({t:x.t,p:sc?sc.p:null,asr:!!(sc&&sc.asr)});
+  S.res.push({t:x.t,p:sc?sc.p:null,asr:!!(sc&&sc.asr),miss:sc&&sc.asr?pnMissWords('sh'+S.i,pnNote(x.t)):[]});
   if(sc&&sc.asr) tally(sc.p>=.8,xpFor('sh:'+nt(x.t),10,sc.p>=.8)); else if(sc) addXP(selfXP('sh:'+nt(x.t),5));
   recReset(); asrReset(); S.i++; S.self=null;
   if(S.i<S.q.length){ render(); window.scrollTo(0,0); return shSay(); }
@@ -5461,17 +5471,20 @@ function viewShadow(){
   if(S.done){ const best=((st.shadow||{})[S.L]||{}).best||0;
     return `${back}<section class="panel stack" style="text-align:center;justify-items:center">${mascot(S.avg>=.8?'party':'happy',84)}<h1>${pct(S.avg)} từ được nghe ra</h1>
       <p class="muted">Điểm cao nhất ${S.L}: ${pct(best)}. ${S.avg>=.8?'Rất rõ! Thử ẩn chữ để luyện nghe và nhớ câu.':'Nghe chậm từng câu, chú ý âm cuối và trọng âm, rồi làm lượt mới.'}</p></section>
+      ${pnMissSum(S.res)}
       <section class="panel stack"><h3>Từng câu</h3>${S.res.map(r=>`<p><span lang="en">${esc(r.t)}</span><br><span class="hint">${r.p==null?'Bỏ qua':r.asr?`Máy nghe ra ${pct(r.p)} số từ`:`Tự chấm: ${pct(r.p)}`}</span></p>`).join('')}</section>
       <div class="row endrow"><button class="btn primary" data-act="shnew">Lượt mới</button><button class="btn" data-go="talk">Về Giao tiếp</button></div>`; }
   const x=S.q[S.i], sc=shScore(), recBtns=!HAS_REC?'':REC.on?'<button class="btn" data-act="recstop">■ Dừng ghi âm</button>':`<button class="btn" data-act="recstart">● Ghi âm</button>${REC.url?'<button class="btn" data-act="recplay">▶ Nghe giọng bạn</button>':''}`;
   return `${back}<div class="bar"><i style="width:${S.i/S.q.length*100}%"></i></div>
   <section class="q"><p class="eyebrow">Nghe câu mẫu rồi nói lại y như vậy: cùng tốc độ, cùng ngữ điệu</p>
-    ${S.hide&&!sc?`<p class="prompt muted" style="font-weight:400">Chữ đang ẩn: nghe rồi nói lại.</p>`:`<p class="prompt sent" lang="en">${esc(x.t)}</p>`}
+    ${S.hide&&!sc?`<p class="prompt muted" style="font-weight:400">Chữ đang ẩn: nghe rồi nói lại.</p>`:pnNote(x.t)?pnHtml(pnNote(x.t)):`<p class="prompt sent" lang="en">${esc(x.t)}</p>`}
     <details><summary>Nghĩa</summary><p class="hint">${esc(x.vi)}</p></details>
-    <div class="row">${HAS_TTS?`<button class="btn" data-act="shsay">${SPK} Nghe</button><button class="btn" data-act="shsay" data-slow="1">🐢 Nghe chậm</button>`:''}<button class="btn ghost small" data-act="shhide" aria-pressed="${S.hide}">${S.hide?'Hiện chữ':'Ẩn chữ (khó hơn)'}</button></div>
+    <div class="row">${HAS_TTS?`<button class="btn" data-act="shsay">${SPK} Nghe</button><button class="btn" data-act="shsay" data-slow="1">🐢 Nghe chậm</button>`:''}<button class="btn ghost small" data-act="shhide" aria-pressed="${S.hide}">${S.hide?'Hiện chữ':'Ẩn chữ (khó hơn)'}</button>${S.hide&&!sc?'':pnToggle()}</div>
+    ${S.hide&&!sc?'':pnTips(pnNote(x.t))+pnKey()}
     ${HAS_ASR?asrBox('sh'+S.i,x.t,null,'Nói lại câu này'):`<p class="hint">Trình duyệt này chưa có máy nghe giọng: ghi âm, nghe lại rồi tự chấm.</p><div class="row">${recBtns}</div>
       <div class="rate"><button class="btn ${S.self===.3?'primary':''}" data-shself=".3">Còn khác nhiều</button><button class="btn ${S.self===.6?'primary':''}" data-shself=".6">Gần giống</button><button class="btn ${S.self===1?'primary':''}" data-shself="1">Giống mẫu</button></div>`}
     <div class="row"><button class="btn ${sc?'primary':''}" data-act="shnext">${S.i+1<S.q.length?(sc?'Câu tiếp':'Bỏ qua câu này'):'Xem kết quả'}</button></div></section>
+  ${pnMiss('sh'+S.i,pnNote(x.t))}
   <p class="hint">Mẹo: nói nhại ngay sau khi nghe (không cần hiểu hết) giúp quen nhịp, nối âm và âm cuối của người bản xứ.</p>`;
 }
 
@@ -5987,6 +6000,82 @@ const CS_FN = new Set('a an the to of and at for from is are was were in on but 
 const csToks = t => t.replace(/[“”]/g,'"').split(/\s+/).filter(Boolean).map(r=>({r,w:r.toLowerCase().replace(/^[^a-z']+|[^a-z']+$/g,''),end:/[.,!?;:—–-]["')]*$/.test(r)}));
 const csConsEnd = w => /[bcdfgjklmnpqrstvxz]$/.test(w)||(/[^aeiouy]e$/.test(w)&&w.length>2&&!['the','be','he','she','we','me'].includes(w));
 const csVowStart = w => /^[aeio]/.test(w)&&!/^(one|once|eu|ewe)/.test(w);
+// ---------- v142 Hướng dẫn phát âm từng câu (Nói nhại, Đọc to) ----------
+// Bộ chú thích ở src/engine/pronote.ts (ELCORE.pronote): IPA từng từ (danh sách từ + bảng + luật đuôi), từ nhấn, từ đọc nhẹ, âm cuối, nối âm,
+// lên / xuống giọng, mẹo cho người Việt. Chỉ để luyện: không ghi bằng chứng (người sáng lập 16/10/2026). Phiên âm do máy ghép, chưa người thật kiểm.
+let _ipaMap=null;
+function ipaOfW(w){ if(!_ipaMap){ _ipaMap=new Map(); for(const L of CONTENT.levels) for(const u of L.units) for(const x of u.words||[]){ const k=x.word.toLowerCase(); if(x.ipa&&!_ipaMap.has(k)) _ipaMap.set(k,x.ipa); } } return _ipaMap.get(w); }
+const PN = () => (typeof ELCORE!=='undefined'&&ELCORE.pronote)||null;
+const _pnCache=new Map();
+function pnNote(t){ const P=PN(); if(!P||!t) return null; if(!_pnCache.has(t)){ if(_pnCache.size>400) _pnCache.clear(); _pnCache.set(t,P.noteOf(t,ipaOfW)); } return _pnCache.get(t); }
+const pnWord = t => t.r.replace(/^[^A-Za-z0-9']+|[^A-Za-z0-9']+$/g,'');
+function pnIpa(t){
+  if(!t.ipa) return `<span class="pni pnx">${t.kind==='name'?'tên riêng':t.kind==='num'?'số':'…'}</span>`;
+  let h=ipaHtml('/'+t.ipa+'/').html;
+  if(t.end){ const e=esc(t.end.ipa); h=h.replace(new RegExp(e.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'((?:</b>|</u>)?)/$'),`<u class="pne">${e}</u>$1/`); }
+  return `<span class="pni">${h}${t.weak?'<span class="pnk">nhẹ</span>':''}</span>`;
+}
+// Câu dạng dòng đôi: chữ ở trên, phiên âm ở dưới; từ nhấn in đậm, từ đọc nhẹ in nghiêng, âm cuối gạch chân, ‿ nối âm, ↗ / ↘ cuối câu.
+function pnHtml(n){
+  if(!n) return '';
+  const ws=n.toks.map((t,i)=>`<span class="pnw${t.content?' c':''}${t.weak?' wk':''}${t.end?' e':''}"><span class="pnt">${esc(t.r)}</span>${pnIpa(t)}</span>${t.link!==undefined&&i<n.toks.length-1?`<span class="pnl" title="nối âm">‿${t.link==='r'?'<sup>r</sup>':''}</span>`:''}`).join('');
+  return `<div class="pn${st.set.pnHide?' pnoff':''}" lang="en">${ws}<span class="pntune" title="${n.tune==='↗'?'lên giọng cuối câu':'xuống giọng cuối câu'}">${n.tune}</span></div>`;
+}
+const pnSnd = id => id&&SND[id]?` <button class="btn ghost small" data-snd="${id}">Luyện âm ${esc(SND[id].a)} – ${esc(SND[id].b)}</button>`:'';
+const pnTips = n => n&&n.tips.length?`<ul class="pntips">${n.tips.map(x=>`<li>💡 ${esc(x.t)}${pnSnd(x.snd)}</li>`).join('')}</ul>`:'';
+const pnKey = () => `<details class="pnkey"><summary>Cách đọc ký hiệu</summary><p class="hint"><b>Đậm</b>: từ nhấn trong câu; âm tiết đậm trong phiên âm là trọng âm của từ · <i>nghiêng</i> + “nhẹ”: từ đọc nhẹ, nhanh · <u>gạch chân</u>: âm cuối phải giữ rõ · ‿: nối âm · ↗ ↘: lên / xuống giọng cuối câu. Phiên âm do máy ghép từ từ điển của app, chưa người thật kiểm.</p></details>`;
+const pnToggle = () => `<button class="btn ghost small" data-act="pnhide" aria-pressed="${!st.set.pnHide}">${st.set.pnHide?'Hiện phiên âm':'Ẩn phiên âm'}</button>`;
+// Từ máy nghe chưa ra (sau khi nói một câu) → mẹo đúng âm của từ đó.
+function pnMissWords(key,n){ if(!n||ASR.key!==key||!ASR.res||ASR.res.word) return []; const r=ASR.res, hit=new Set(r.hit); return r.words.filter((w,i)=>!hit.has(i)); }
+function pnMiss(key,n){
+  const P=PN(), miss=[...new Set(pnMissWords(key,n))]; if(!P||!miss.length) return '';
+  const out=[];
+  for(const w of miss){ const t=n.toks.find(x=>gsent(x.r)===w); if(!t||t.kind==='num') continue; const tip=P.missTip(t);
+    out.push(`<li><b lang="en" class="asr-miss">${esc(pnWord(t))}</b>${t.ipa?` <span class="ipa">/${esc(t.ipa)}/</span>`:''}: ${esc(tip.t)}${pnSnd(tip.snd)}</li>`); if(out.length>=4) break; }
+  return out.length?`<section class="panel stack"><h3>🔴 Từ máy chưa nghe ra</h3><ul class="pntips">${out.join('')}</ul></section>`:'';
+}
+// Màn kết: những từ hay chưa nghe ra nhất (qua mọi câu) kèm mẹo.
+function pnMissSum(res){
+  const P=PN(), cnt=new Map(); if(!P) return '';
+  for(const r of res) for(const w of r.miss||[]){ const k=w.toLowerCase(); const c=cnt.get(k)||{n:0,t:r.t}; c.n++; cnt.set(k,c); }
+  const top=[...cnt].sort((a,b)=>b[1].n-a[1].n).slice(0,5); if(!top.length) return '';
+  return `<section class="panel stack"><h3>Từ cần luyện thêm</h3><ul class="pntips">${top.map(([w,c])=>{ const t=(pnNote(c.t)||{toks:[]}).toks.find(x=>gsent(x.r)===w); if(!t) return ''; const tip=P.missTip(t);
+    return `<li><b lang="en">${esc(pnWord(t))}</b>${t.ipa?` <span class="ipa">/${esc(t.ipa)}/</span>`:''} · ${c.n} lần: ${esc(tip.t)}${pnSnd(tip.snd)}</li>`; }).join('')}</ul></section>`;
+}
+
+// 📖 Đọc to: bài đọc của unit A1 / A2, từng câu có hướng dẫn phát âm; máy nghe (hoặc ghi âm + tự chấm). Lưu st.pron['ra:'+unit] chỉ để xem.
+// Đọc to chỉ mở cho bài đọc A1 / A2 (đích hiện tại); bộ chú thích phủ ≥ 98% từ ở hai cấp này (test engine-pronote).
+const raOk = u => !!(u&&u.reading&&(u.level==='A1'||u.level==='A2')&&PN());
+function startRA(uid){ const u=UNITS.find(x=>x.id===uid), P=PN(); if(!u||!u.reading||!P) return toast('Chưa mở được bài đọc này.');
+  go('ra',{ra:{uid,q:P.sentencesOf(u.reading.text),i:0,res:[],self:null,done:false}}); }
+function raSay(slow){ const R=ui.ra, x=R&&!R.done&&R.q[R.i]; if(x) say(x,!!slow,0); }
+function raScore(){ const R=ui.ra; if(ASR.key==='ra'+R.i&&ASR.res&&!ASR.res.word) return {p:ASR.res.p,asr:true}; return R.self!=null?{p:R.self,asr:false}:null; }
+function raNext(){ const R=ui.ra, x=R.q[R.i], sc=raScore();
+  R.res.push({t:x,p:sc?sc.p:null,asr:!!(sc&&sc.asr),miss:sc&&sc.asr?pnMissWords('ra'+R.i,pnNote(x)):[]});
+  recReset(); asrReset(); R.i++; R.self=null;
+  if(R.i<R.q.length){ render(); window.scrollTo(0,0); return; }
+  R.done=true; const got=R.res.filter(r=>r.p!=null); R.avg=got.length?got.reduce((a,r)=>a+r.p,0)/got.length:0;
+  if(got.length){ const k='ra:'+R.uid, o=st.pron[k]||{best:0,n:0}; st.pron[k]={best:Math.max(o.best||0,R.avg),n:(o.n||0)+1,day:today()}; save(); }
+  render(); window.scrollTo(0,0); }
+function viewRA(){
+  const R=ui.ra, u=UNITS.find(x=>x.id===R.uid), r=u.reading, back=`<div class="spread"><button class="btn ghost back" data-unit="${u.id}">← ${uname(u)}</button><span class="num muted">📖 Đọc to · ${Math.min(R.i+1,R.q.length)}/${R.q.length}</span></div>`;
+  if(R.done){ const best=(st.pron['ra:'+R.uid]||{}).best||0, got=R.res.filter(x=>x.p!=null);
+    return `${back}<section class="panel stack" style="text-align:center;justify-items:center">${mascot(R.avg>=.8?'party':'happy',84)}<h1>${got.length?`${pct(R.avg)} từ được nghe ra`:'Đã đọc xong'}</h1>
+      <p class="muted">${got.length?`Điểm cao nhất bài này: ${pct(best)}. `:''}Đọc to chỉ để luyện, không tính vào mức thuộc.</p></section>
+      ${pnMissSum(R.res)}
+      <section class="panel stack"><h3>Từng câu</h3>${R.res.map(x=>`<p><span lang="en">${esc(x.t)}</span><br><span class="hint">${x.p==null?'Bỏ qua':x.asr?`Máy nghe ra ${pct(x.p)} số từ`:`Tự chấm: ${pct(x.p)}`}</span></p>`).join('')}</section>
+      <div class="row endrow"><button class="btn primary" data-act="rago" data-uid="${u.id}">Đọc lại</button><button class="btn" data-unit="${u.id}">Về ${uname(u)}</button></div>`; }
+  const x=R.q[R.i], n=pnNote(x), sc=raScore(), recBtns=!HAS_REC?'':REC.on?'<button class="btn" data-act="recstop">■ Dừng ghi âm</button>':`<button class="btn" data-act="recstart">● Ghi âm</button>${REC.url?'<button class="btn" data-act="recplay">▶ Nghe giọng bạn</button>':''}`;
+  return `${back}<div class="bar"><i style="width:${R.i/R.q.length*100}%"></i></div>
+  <section class="q stack"><p class="eyebrow">📖 Đọc to · <span lang="en">${esc(r.title)}</span></p>
+    ${pnHtml(n)}
+    <div class="row">${HAS_TTS?`<button class="btn" data-act="rasay">${SPK} Nghe mẫu</button><button class="btn" data-act="rasay" data-slow="1">🐢 Nghe chậm</button>`:''}${pnToggle()}</div>
+    ${pnTips(n)}${pnKey()}
+    ${HAS_ASR?asrBox('ra'+R.i,x,null,'Đọc câu này cho máy nghe'):`<p class="hint">Trình duyệt này chưa có máy nghe giọng: ghi âm, nghe lại rồi tự chấm.</p><div class="row">${recBtns}</div>
+      <div class="rate"><button class="btn ${R.self===.3?'primary':''}" data-raself=".3">Còn khác nhiều</button><button class="btn ${R.self===.6?'primary':''}" data-raself=".6">Gần giống</button><button class="btn ${R.self===1?'primary':''}" data-raself="1">Giống mẫu</button></div>`}
+    <div class="row"><button class="btn ${sc?'primary':''}" data-act="ranext">${R.i+1<R.q.length?(sc?'Câu tiếp':'Bỏ qua câu này'):'Xem kết quả'}</button></div></section>
+  ${pnMiss('ra'+R.i,n)}`;
+}
 function csItems(L){ const lines=shuffle(lisLines(L).map(x=>({t:x.l.t,v:x.l.s==='B'?1:0,vi:x.l.vi})).filter(x=>{ const n=wcount(x.t); return n>=4&&n<=18&&!/\d/.test(x.t); }));
   const items=[], used=new Set(), want={link:3,weak:3,into:2,stress:2}, got={link:0,weak:0,into:0,stress:0};
   const hl=(ts,is)=>ts.map((x,i)=>is.includes(i)?`<mark>${esc(x.r)}</mark>`:esc(x.r)).join(' ');
@@ -8481,7 +8570,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.fa843d5d57.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.1c6990ac4c.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
