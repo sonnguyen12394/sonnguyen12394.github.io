@@ -8,7 +8,7 @@ Mục đích: kiểm **trận đấu có vui tự thân không (C1)** và **vòn
 
 ### Chuẩn bị (1 phút)
 - Dùng **điện thoại**, bật tiếng. Mở app bình thường (**không cần** ẩn danh): trận không ghi bằng chứng học; lò rèn là học thật nên ghi vào bản lưu của bạn.
-- Sảnh phải chỉ có: **⚔️ Vào trận**, **🔨 Thợ rèn gợi ý**, 🗡️, thẻ 🎯 A2 và nút 🧭. Nếu còn thấy bản đồ / truyện / đèn lồng: bấm **🎯 Về sảnh A2 gọn**.
+- Sảnh phải chỉ có: **⚔️ Vào trận**, **🔨 Thợ rèn gợi ý**, 🗡️, thẻ 🎯 A2 và nút 🧭. Nếu còn thấy bản đồ / truyện / đèn lồng: bấm chip **🎯 A2** ở hàng 🪙 / 🔊 trên cùng.
 - **Không** mở trận cổng (Bảo vật khu / Cổng bản đồ) trong buổi này: đề chỉ dùng một lần.
 - Bấm giờ 15 phút.
 

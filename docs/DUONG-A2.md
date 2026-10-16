@@ -29,7 +29,7 @@ Câu 1 và 2 làm được ngay. Câu 3 cần nhiều tuần học thật, và c
 4. Về sảnh → **🔨 Rèn Vũ khí bậc …** (mặc được khi chỉ số Từ vựng thật đủ).
 5. **⚔️** đánh lại boss.
 
-Bỏ qua mọi thứ khác. Nếu lỡ bấm 🧭 Hiện đủ mục: bấm 🎯 Về sảnh A2 gọn.
+Bỏ qua mọi thứ khác. Nếu lỡ bấm 🧭 Hiện đủ mục: bấm chip **🎯 A2** ở hàng 🪙 / 🔊 trên cùng.
 
 ## Chưa làm được (đừng tìm trong app)
 - **Bảo vật khu A2** chưa gắn vào trận (mốc 2). Trận cổng A2 hiện chỉ có 2 đề Đọc + Nghe, chưa soát chéo, chưa có Viết / Nói. Rớt 2 lần là hết đề lạ, nên **chưa mở cổng A2** cho tới khi soát chéo + thêm đề (mốc 2).

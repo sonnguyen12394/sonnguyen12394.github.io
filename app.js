@@ -4766,7 +4766,7 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
 const CHANGELOG = [
   {v:72,d:'2026-10-15',t:'Sảnh A2: gọn còn một đường',items:[
     'Sảnh chỉ còn ⚔️ Vào trận, 🔨 Thợ rèn gợi ý và thẻ mục tiêu A2. Bản đồ, truyện, đèn lồng, Túi chữ, kho báu tạm ẩn (không mất tiến độ).',
-    'Muốn xem lại đủ mục: nút "🧭 Hiện đủ mục" cuối khối sảnh, hoặc Tôi → Cài đặt → Tính năng.',
+    'Muốn xem lại đủ mục: nút "🧭 Hiện đủ mục" cuối khối sảnh; về lại: chip 🎯 A2 ở hàng 🪙 trên cùng (hoặc Tôi → Cài đặt → Tính năng).',
     'Trận đấu nay là kiểu chạy né: kéo trên màn (hoặc phím mũi tên) để chạy, lưỡi quay tự chém; lên cấp chọn 1 trong 3 nâng cấp.']},
   {v:70,d:'2026-10-13',t:'Chiến Binh Chữ: trận đấu đầu tiên',items:[
     'Nút ⚔️ ở sảnh: vào trận ngắm bắn kiểu Gunny. Kéo ngược từ nhân vật như kéo ná để chọn góc và lực, xem gió rồi bắn. Trong trận không có câu tiếng Anh.',
