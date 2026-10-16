@@ -18,6 +18,7 @@ import { addSnap } from './ev/snapshot.ts';
 import { doorOfCtx, tally } from './compare.ts';
 import { noteOf, missTip, sentencesOf, lemmaOf, grammarOf, FORM_VI } from './pronote.ts';
 import { genText, avgLen } from './textgen.ts';
+import { toModelPhones, score as gopScore } from './gop.ts';
 
 function eOf(st: { e?: unknown }): EState {
   const cur = st.e as EState | undefined;
@@ -44,6 +45,8 @@ export const fsrs = { review, newCard, interval, retrievability };
 export const pronote = { noteOf, missTip, sentencesOf, lemmaOf, grammarOf, FORM_VI };
 // v144 bài luyện ngẫu nhiên theo cấp (sinh từ khuôn, song song Anh – Việt).
 export const textgen = { genText, avgLen };
+// v146 chấm từng âm trên máy (thử nghiệm): căn hàng CTC + GOP trên logits của mô hình nhận âm vị.
+export const gop = { toModelPhones, score: gopScore };
 export const rules = { ...RULE, id: RULE_ID };
 
 // Phiên học: đổi khi app mở lại (provenance §36: session).

@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 83;
+const STATE_V = 18, APP_VERSION = 84;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -2498,6 +2498,7 @@ function viewMore(){
   <div class="units">
     ${it('goal','map','Mục tiêu của bạn','Chọn mục tiêu (CEFR, IELTS, VSTEP, giao tiếp) và xem chính xác những gì cần đạt')}
     ${it('paste','read','📋 Phân tích bài dán vào','Dán bài nói / viết tiếng Anh: từng câu có phiên âm, nghĩa từng từ, ngữ pháp')}
+    ${it('phon','mic','🧪 Chấm từng âm (thử nghiệm)','Như ELSA: máy chấm từng âm trong câu bạn nói, chạy ngay trên điện thoại')}
     ${featOn('closet')?it('closet','shirt','Tủ đồ của Tí','Phụ kiện cho linh vật, màu giao diện, album từ đã thuộc'):''}
     ${it('settings','gear','Cài đặt','Mục tiêu, nhắc học, giọng đọc, sao lưu, đồng bộ nhiều máy')}
     ${it('help','help','Hướng dẫn','Cách học mỗi ngày, giải thích thuật ngữ, câu hỏi thường gặp')}
@@ -4283,7 +4284,7 @@ function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); applyA2(); renderChrome();
   if((ui.view==='path'||ui.view==='play'||(ui.view==='goal'&&ui.er==='aim'))&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={thi:viewThi,lib:viewLib,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,ra:viewRA,paste:viewPaste,gp:viewGP,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  const v={thi:viewThi,lib:viewLib,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,ra:viewRA,phon:viewPhon,paste:viewPaste,gp:viewGP,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   // v99: mục thu gọn (details.gall: Luyện tập, Leo tháp…) giữ trạng thái mở qua các lần vẽ lại #app (trước đây vẽ lại là đóng sập).
@@ -4808,6 +4809,10 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:84,d:'2026-10-16',t:'🧪 Thử chấm từng âm trên máy',items:[
+    'Thử nghiệm ở Tôi → “🧪 Chấm từng âm”: như ELSA, máy chấm từng âm trong câu bạn nói, từ tô xanh / vàng / đỏ; bấm một từ để xem âm nào sai, bị nuốt, hay nghe thành âm khác.',
+    'Mô hình chạy ngay trên điện thoại, âm thanh không gửi đi đâu. Lần đầu phải tải vài trăm MB (nên dùng Wi-Fi); máy yếu có thể chậm.',
+    'Đây là bản thử để xem iPhone có chạy nổi không. Điểm là ước tính, kém chính xác hơn ELSA. Không tính vào mức thuộc.']},
   {v:83,d:'2026-10-16',t:'🎙 Máy nghe hiện chữ khi bạn nói',items:[
     'Khi bấm 🎙 và nói, chữ máy nghe được hiện ngay bên dưới (như ELSA). Nói xong bấm “Xong”: từ máy nghe ra tô xanh, từ chưa nghe ra tô đỏ kèm mẹo; từ máy nghe nhầm bị gạch.',
     'Sửa lỗi trên iPhone: trước đây máy đã nghe được chữ mà vẫn báo “chưa nghe thấy gì”. Nếu iPhone vẫn không nghe, app chỉ cách bật Đọc chính tả và micro.',
@@ -5190,6 +5195,11 @@ document.addEventListener('click',e=>{
     case 'ranext': return raNext();
     case 'raagain': { const R=ui.ra; return R&&raStart({key:R.key,title:R.title,back:R.back,backL:R.backL,q:R.q,vi:R.vi}); }
     case 'paste': return go('paste');
+    case 'phload': return phLoad();
+    case 'phdel': return phDel();
+    case 'phrec': return phRec();
+    case 'phdt': PH.dtype=d.v; return render();
+    case 'phset': { const el=document.getElementById('phsent'), v=String(el?el.value:'').trim().slice(0,120); if(v){ PH.sent=v; PH.res=null; PH.err=''; } return render(); }
     case 'gp': { if(d.lv&&GP_LV.includes(d.lv)) (ui.gp||(ui.gp={tier:1,mode:'say',kind:'read'})).lv=d.lv; if(ui.gp&&d.mode&&GP_MODE[d.mode]) ui.gp.mode=d.mode; if(ui.gp&&d.kind&&GP_KIND[d.kind]) ui.gp.kind=d.kind; if(ui.gp) ui.gp.text=null; return go('gp'); }
     case 'gplv': ui.gp.lv=d.v; ui.gp.text=null; return render();
     case 'gptier': ui.gp.tier=+d.v; ui.gp.text=null; return render();
@@ -6227,6 +6237,74 @@ function viewGP(){
   return `${head}<div class="bar"><i style="width:${G.i/n*100}%"></i></div>
   <section class="q stack"><p class="hint"><span lang="en">${esc(t.title)}</span> · ${esc(t.tvi)} · ${G.lv} · ${GP_TIER[G.tier-1]}</p>${body}
     ${ok?`<div class="row"><button class="btn primary" data-act="gpnext">${G.i+1<n?'Câu tiếp':'Xem kết quả'}</button></div>`:''}</section>`;
+}
+// ---------- v146 🧪 Chấm từng âm trên máy (thử nghiệm, kiểu ELSA) ----------
+// Mô hình nhận âm vị wav2vec2 (IPA espeak, ONNX) chạy trong phon-worker.js; app ghi âm, đổi về 16 kHz, gửi worker, nhận logits rồi chấm từng âm
+// bằng ELCORE.gop (căn hàng CTC + GOP). Âm thanh không rời khỏi máy; mô hình tải một lần (vài trăm MB). Chỉ để thử: không ghi bằng chứng.
+const PH = {w:null,st:'idle',prog:0,total:0,vocab:null,err:'',loadMs:0,runMs:0,rec:null,recT:0,chunks:[],res:null,dtype:'q8',sent:'Hanoi has four seasons.',dur:0,frames:0,miss:[]};
+const phProgTxt = () => PH.total?`${Math.round(PH.prog/1048576)} / ${Math.round(PH.total/1048576)} MB`:'Đang chuẩn bị…';
+function phWorker(){ if(PH.w) return PH.w;
+  const w=new Worker('phon-worker.js',{type:'module'});
+  w.onmessage=e=>{ const m=e.data||{};
+    if(m.type==='progress'){ PH.prog=m.loaded; PH.total=m.total; const el=document.getElementById('phprog'); if(el) el.textContent=phProgTxt(); return; }
+    if(m.type==='ready'){ PH.vocab=m.vocab; PH.st='ready'; PH.loadMs=m.ms; }
+    else if(m.type==='logits'){ PH.runMs=m.ms; PH.st='ready'; phScore(m); }
+    else if(m.type==='error'){ PH.err=m.msg; PH.st=PH.vocab?'ready':'idle'; }
+    if(ui.view==='phon') render(); };
+  w.onerror=e=>{ PH.err='Bộ chấm gặp lỗi: '+(e.message||'không rõ (có thể máy thiếu bộ nhớ)'); PH.st=PH.vocab?'ready':'idle'; if(ui.view==='phon') render(); };
+  return PH.w=w; }
+function phLoad(){ PH.err=''; PH.st='loading'; PH.prog=0; PH.total=0; phWorker().postMessage({type:'load',dtype:PH.dtype}); render(); }
+async function phDel(){ try{ PH.w&&PH.w.terminate(); }catch(e){} Object.assign(PH,{w:null,st:'idle',vocab:null,res:null,err:'',prog:0,total:0});
+  try{ if(typeof caches!=='undefined') await caches.delete('transformers-cache'); toast('Đã xoá mô hình khỏi máy.'); }catch(e){} render(); }
+async function phRec(){ if(PH.rec) return phStop(); PH.err=''; PH.res=null;
+  try{ const s=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true}}), mr=new MediaRecorder(s); PH.chunks=[];
+    mr.ondataavailable=e=>{ if(e.data&&e.data.size) PH.chunks.push(e.data); };
+    mr.onstop=()=>{ s.getTracks().forEach(t=>t.stop()); phDecode(new Blob(PH.chunks,{type:mr.mimeType||'audio/mp4'})); };
+    mr.start(); PH.rec=mr; PH.st='rec'; PH.recT=setTimeout(phStop,6000); render();
+  }catch(e){ PH.err='Không mở được micro: '+(e.message||e.name||e)+'. Cho phép micro cho trình duyệt rồi thử lại.'; render(); } }
+function phStop(){ clearTimeout(PH.recT); const r=PH.rec; PH.rec=null; PH.st='scoring'; try{ r&&r.state!=='inactive'&&r.stop(); }catch(e){} render(); }
+async function phDecode(blob){
+  try{ const AC=window.AudioContext||window.webkitAudioContext, ac=new AC(), buf=await ac.decodeAudioData(await blob.arrayBuffer()); try{ ac.close(); }catch(e){}
+    const n=Math.max(1,Math.ceil(buf.duration*16000)), oc=new OfflineAudioContext(1,n,16000), src=oc.createBufferSource(); src.buffer=buf; src.connect(oc.destination); src.start();
+    const out=await oc.startRendering(); PH.dur=buf.duration; phRun(out.getChannelData(0));
+  }catch(e){ PH.err='Không đọc được âm thanh vừa ghi: '+(e.message||e); PH.st='ready'; render(); } }
+function phRun(audio){ PH.st='scoring'; phWorker().postMessage({type:'run',audio}); }
+// Âm mong đợi của câu: phiên âm từng từ (dạng đọc nhẹ nếu là từ chức năng), đổi sang bộ âm của mô hình.
+function phTarget(){ const G=ELCORE.gop, n=pnNote(PH.sent), miss=new Set(), words=[], phones=[];
+  for(const t of (n?n.toks:[])){ if(!t.ipa) continue; const w=words.length; words.push(pnWord(t)); for(const p of G.toModelPhones(t.ipa,PH.vocab,miss)) phones.push({...p,w}); }
+  return {words,phones,miss:[...miss]}; }
+function phScore(m){ const T=m.dims[1], V=m.dims[2], idTo=[]; for(const [k,v] of Object.entries(PH.vocab||{})) idTo[v]=k;
+  const tg=phTarget(); PH.miss=tg.miss; PH.frames=T;
+  PH.res=ELCORE.gop.score(m.data,T,V,tg.phones,tg.words,idTo,(PH.vocab||{})['<pad>']??0);
+  if(!PH.res) PH.err='Âm thanh ngắn hơn câu mẫu: nói hết câu, rõ từng từ rồi thử lại.'; }
+const phCls = s => s>=80?'g':s>=60?'a':'r';
+function viewPhon(){
+  const ok=typeof ELCORE!=='undefined'&&ELCORE.gop&&typeof Worker!=='undefined', R=PH.res, n=pnNote(PH.sent);
+  const head=`<button class="btn ghost back" data-go="more">← Tôi</button>
+  <section class="stack"><span class="eyebrow">🧪 Thử nghiệm</span><h1>Chấm từng âm trên máy</h1>
+    <p class="muted">Giống ELSA: máy chấm từng âm trong câu bạn nói (xanh đúng, vàng gần đúng, đỏ sai hoặc thiếu). Mô hình chạy ngay trên điện thoại, âm thanh không gửi đi đâu.</p>
+    <p class="hint">Lưu ý: lần đầu phải tải mô hình vài trăm MB (nên dùng Wi-Fi). Trên iPhone có thể chậm hoặc trang bị tải lại nếu máy thiếu bộ nhớ. Điểm là ước tính, kém chính xác hơn ELSA, chưa người thật kiểm. Không tính vào mức thuộc.</p></section>`;
+  if(!ok) return head+'<p class="hint">Trình duyệt này chưa chạy được bộ chấm (thiếu Worker).</p>';
+  const dt=[['q8','Nén 8-bit (khuyên dùng)'],['q4','Nén 4-bit (nhỏ hơn)'],['fp16','fp16 (lớn hơn)']];
+  const model=PH.st==='loading'?`<p>Đang tải mô hình: <b id="phprog" class="num">${phProgTxt()}</b></p><p class="hint">Giữ màn hình mở. Lần sau không phải tải lại.</p>`
+    :PH.vocab?`<p class="fb good" role="status"><strong>Đã sẵn sàng</strong><span>Tải và mở mô hình mất ${(PH.loadMs/1000).toFixed(1)} giây.</span></p><div class="row"><button class="btn ghost small" data-act="phdel">Xoá mô hình khỏi máy</button></div>`
+    :`<div class="row" role="group" style="gap:6px">${dt.map(([k,l])=>`<button class="btn small ${PH.dtype===k?'primary':''}" data-act="phdt" data-v="${k}" aria-pressed="${PH.dtype===k}">${l}</button>`).join('')}</div>
+      <div class="row"><button class="btn primary" data-act="phload">Tải mô hình</button></div>`;
+  const words=R?R.words.map(w=>w.score<0?'':`<details class="phd"><summary class="phw ${phCls(w.score)}"><span lang="en">${esc(w.text)}</span> <b class="num">${w.score}</b></summary>
+      <ul class="pntips">${w.phones.map(p=>`<li><span class="phw ${p.missing?'r':phCls(p.score)}">/${esc(p.ipa)}/ <b class="num">${p.score}</b></span> ${p.missing?'thiếu âm này (bị nuốt)':p.heard?`nghe gần như /${esc(p.heard)}/`:p.score>=80?'tốt':'chưa rõ'}</li>`).join('')}</ul></details>`).join(''):'';
+  return `${head}
+  <section class="panel stack"><h2>1. Mô hình</h2>${model}</section>
+  <section class="panel stack"><h2>2. Câu để nói</h2>
+    <label class="hint" for="phsent">Câu tiếng Anh (ngắn, 3–10 từ)</label><input id="phsent" lang="en" value="${esc(PH.sent)}" maxlength="120">
+    <div class="row"><button class="btn small" data-act="phset">Dùng câu này</button>${HAS_TTS?`<button class="btn small" data-say="${esc(PH.sent)}">${SPK} Nghe mẫu</button><button class="btn small" data-say="${esc(PH.sent)}" data-slow="1">🐢 Nghe chậm</button>`:''}</div>
+    ${pnHtml(n)}</section>
+  <section class="panel stack"><h2>3. Nói và chấm</h2>
+    ${!PH.vocab?'<p class="hint">Tải mô hình trước.</p>':PH.st==='rec'?`<p class="hint">🎙 Đang ghi… nói câu trên (tối đa 6 giây).</p><div class="row"><button class="btn primary" data-act="phrec">■ Dừng</button></div>`
+      :PH.st==='scoring'?'<p role="status">Đang chấm từng âm…</p>':`<div class="row"><button class="btn primary" data-act="phrec">● Ghi âm và chấm</button></div>`}
+    ${PH.err?`<p class="fb bad" role="status"><span>${esc(PH.err)}</span></p>`:''}
+    ${R?`<div class="fb ${R.score>=80?'good':R.score>=60?'neutral':'bad'}" role="status"><strong>Điểm phát âm: ${R.score}/100</strong><span>Bấm một từ để xem từng âm.</span></div><div class="phws">${words}</div>`:''}
+    ${R||PH.runMs?`<p class="hint num">Số liệu (gửi lại để cải thiện): tải ${(PH.loadMs/1000).toFixed(1)} s · chấm ${Math.round(PH.runMs)} ms · âm thanh ${PH.dur.toFixed(1)} s · ${PH.frames} khung · kiểu ${esc(PH.dtype)}${PH.miss.length?` · âm chưa có trong mô hình: ${esc(PH.miss.join(' '))}`:''}</p>`:''}
+  </section>`;
 }
 // Đọc to chỉ mở cho bài đọc A1 / A2 (đích hiện tại); bộ chú thích phủ ≥ 98% từ ở hai cấp này (test engine-pronote).
 const raOk = u => !!(u&&u.reading&&(u.level==='A1'||u.level==='A2')&&PN());
@@ -8757,7 +8835,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.95f96cd083.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.acf17b562e.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
