@@ -91,7 +91,7 @@ export const H_VI: Record<HId, [string, string]> = {
   H6: ['Nhớ lâu', 'Nhớ lại từ sau ≥ 30 ngày (chưa đủ thì sau ≥ 7 ngày). Mốc 10: ≥ 80%.'],
   H7: ['Sửa lỗi phát âm của người Việt', 'Nói cặp âm dễ lẫn (âm cuối, i ngắn / dài…): máy nghe ra đúng từ. Mốc 10: ≥ 85%.'],
   H8: ['Hội thoại thật', 'Hội thoại nhiều lượt hoàn thành, người kia hiểu ngay ≥ 70% lượt. Mốc 10: ≥ 3 mỗi tuần.'],
-  H9: ['Đo tiến bộ trung thực', 'Đã qua đề chưa từng thấy (trận cổng); có kết quả chứng chỉ thật để đối chiếu.'],
+  H9: ['Đo tiến bộ trung thực', 'Đã qua bài chưa từng thấy (thi chuyển cấp); có kết quả chứng chỉ thật để đối chiếu.'],
   H10: ['Dẫn ra đời thật', 'Nhiệm vụ tiếng Anh ngoài đời mỗi tuần (tự báo cáo, nên tối đa 7). Mốc: ≥ 1 / tuần.'],
 };
 // Ước tính khi chưa đủ số liệu: khả năng app đang có (sau v123–v127), trần 6 theo §12.0.
@@ -143,7 +143,7 @@ export function hScore(x: HIn): { rows: HRow[]; total: number; measured: number 
   // H8: hội thoại nhiều lượt đạt mỗi tuần.
   { const n = sum(d28, 'cv'), wk = n / 4; row('H8', n, 3, lin(wk, 0, 3), `${wk.toFixed(1)} hội thoại / tuần`); }
   // H9: trận cổng (đề chưa thấy) + kết quả chứng chỉ thật.
-  { const s = x.gate ? (x.real ? 10 : 8) : 5; row('H9', x.gate, 1, s, x.gate ? `${x.gate} đề chưa thấy${x.real ? ` · ${x.real} kết quả chứng chỉ thật` : ''}` : 'chưa làm trận cổng'); }
+  { const s = x.gate ? (x.real ? 10 : 8) : 5; row('H9', x.gate, 1, s, x.gate ? `${x.gate} đề chưa thấy${x.real ? ` · ${x.real} kết quả chứng chỉ thật` : ''}` : 'chưa làm thi chuyển cấp'); }
   // H10: nhiệm vụ ngoài đời (tự báo cáo → trần 7).
   { const n = sum(d28, 'rw'), wk = n / 4; row('H10', n, 2, Math.min(7, lin(wk, 0, 1)), `${n} nhiệm vụ trong 4 tuần`); }
   const W = H_IDS.reduce((a, id) => a + H_W[id], 0);

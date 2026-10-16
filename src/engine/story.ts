@@ -318,7 +318,7 @@ export function viewStory(s: StorySave | undefined, solid: number, gateFn?: Stor
     const v = kindOf(k, c.act), d = st.prog[k] >= c.need[k];
     return `<li><button class="stask${d ? ' ok' : ''}" data-e="${v.start}"><span aria-hidden="true">${d ? '✅' : v.ico}</span> ${esc(v.vi)} <b>${st.prog[k]}/${c.need[k]}</b></button></li>`;
   }).join('');
-  const gate = sg && !sg.passed ? `<p class="${tasksDone(st) && solid >= (c.solid ?? 0) ? 'stgate' : 'stsmall'}">🚪 Chương cuối khu là <b>trận cổng khu ${esc(sg.lv)}</b>: qua cổng thì ${esc(ACTS[c.act]!)} hồi sinh${solid < (c.solid ?? 0) ? ` (cần thêm ${c.solid} kỹ năng vững, bạn có ${solid})` : ''}. <button class="stlink" data-e="go" data-r="gate">Tới trận cổng</button></p>`
+  const gate = sg && !sg.passed ? `<p class="${tasksDone(st) && solid >= (c.solid ?? 0) ? 'stgate' : 'stsmall'}">🚪 Chương cuối khu là <b>thi chuyển cấp ${esc(sg.lv)}</b>: qua bài thì ${esc(ACTS[c.act]!)} hồi sinh${solid < (c.solid ?? 0) ? ` (cần thêm ${c.solid} kỹ năng vững, bạn có ${solid})` : ''}. <button class="stlink" data-e="go" data-r="gate">Tới trận cổng</button></p>`
     : c.solid && tasksDone(st) && solid < c.solid ? `<p class="stgate">🔒 Chương cuối khu cần <b>${c.solid} kỹ năng vững</b> trên bản đồ năng lực (bạn có ${solid}). Học ở <button class="stlink" data-e="go" data-r="today">Lộ trình hôm nay</button>, mỗi kỹ năng vững là một tiếng nói được trả lại.</p>` : c.solid ? `<p class="stsmall">⭐ Chương cuối khu: cần thêm ${c.solid} kỹ năng vững thật (bạn có ${solid}).</p>` : '';
   const rv = revived(st);
   return `<section class="stcard" style="background:linear-gradient(135deg,${a},${b})" aria-label="Cốt truyện Phố Chữ">

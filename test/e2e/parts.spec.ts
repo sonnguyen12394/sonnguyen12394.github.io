@@ -37,7 +37,7 @@ test.describe('mở app (home: false)', () => {
     await expect(page.locator('#app')).toContainText(/Cần đạt để qua A2 · \d+\/359 phần đã vững/);
     await expect(page.locator('#app [data-e="cblo"]')).toHaveCount(1);
     await expect(page.locator('#app [data-act="skgo"]')).toHaveCount(7);
-    await expect(page.locator('#app')).toContainText('Trận cổng A2');
+    await expect(page.locator('#app')).toContainText('Thi chuyển cấp A2');
     // v139: bấm dòng kỹ năng → mở danh sách từng phần cần đạt
     const voc = page.locator('#app .aimsk').first();
     await expect(voc.locator('.aimdet')).toBeHidden();

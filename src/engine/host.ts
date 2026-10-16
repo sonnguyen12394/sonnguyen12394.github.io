@@ -30,7 +30,8 @@ export interface EHost {
   wordsOf?(node: string): { node: string; topic: string; vi: string; words: GWord[]; pool: Array<{ en: string; vi: string }> } | null;   // v87 Vườn từ                    // v82 Xưởng sửa câu: câu sai của một điểm ngữ pháp
   wtasks?(lv: string): WTask[];                      // v83 Thư: đề viết ở một cấp
   wcheck?(id: string, text: string): { n: number; checks: Array<[boolean, string]>; hints: Array<{ m: string; why: string; snip: string }> } | null;
-  wsave?(id: string, text: string, self?: number[]): void;   // lưu như màn Viết theo đề (Can-Do viết)
+  wsave?(id: string, text: string, self?: number[]): void;
+  wcheckT?(t: { lv: string; reg: string; min: number; max: number; par: number; p: string; en: string; u: Array<[string, string]> }, text: string): { n: number; checks: Array<[boolean, string]> };   // v140 chấm luật Viết cho bài bất kỳ (thi chuyển cấp)   // lưu như màn Viết theo đề (Can-Do viết)
   wrub?(): { crit: Array<[string, string]>; levels: string[]; ok: number };
   hasAsr?(): boolean;                                // v80–v81: trình duyệt nghe được giọng nói
   asr?(key: string, target: string, other?: string, label?: string): string;   // nút "🎙 Nói" + kết quả (HTML của app, asrBox)

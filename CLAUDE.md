@@ -15,7 +15,7 @@ Game nhập vai cho người Việt học tiếng Anh: trận đấu kiểu Chao
 - Trận đấu không ghi bằng chứng; lượt rèn là lượt đo (không ép giờ).
 - Không nạp để mạnh, không quay thưởng, không cường hoá hỏng mất đồ, không ưu đãi ép giờ.
 - Điểm tự chấm chỉ tham khảo; ghi "đã / chưa người thật kiểm".
-- Viết tiếng Việt có dấu, câu ngắn; màn chơi không dùng chữ "thi / đề / kiểm tra".
+- Viết tiếng Việt có dấu, câu ngắn; màn chơi không dùng chữ "thi / đề / kiểm tra" (ngoại lệ duy nhất: "Thi chuyển cấp", người sáng lập đặt 16/10/2026; test `engine-wording` bỏ qua cụm này).
 
 ## Lệnh
 `npm ci` · `npm run check` · `npm test` · `npm run content` · `npm run build` · `npm run fresh` · `npm run e2e` · `npm run sim` · `npm run fightsim` (bảng tỉ lệ thắng trận theo tay né × chênh bậc; thêm `-- 40 nv` cho bảng nhân vật). Tăng `APP_VERSION` trong `app.js` khi phát hành. `app.js` ≈ 3,2 MB: dùng grep, không đọc cả tệp. Tệp build trong `x/` phải commit.

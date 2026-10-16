@@ -72,6 +72,6 @@ test('v117 thẻ Mục tiêu gọn ở sảnh: một con số chính, chạm m�
   assert.equal((h.replace(/<[^>]+>/g, ' ').match(/\d+/g) ?? []).length, 3, 'chỉ "A1" và "x/y"');
   assert.match(viewGoalSlim(ctx, goalSummary({ ...ca, rote: ['Đồ ăn'] })), /⚠ 1 phần đang nhớ câu cũ/);
   assert.match(viewGoalSlim(ctx, goalSummary({ ...ca, due: { days: 0, mins: 900 } })), /Đã tới hạn/);
-  assert.match(viewGoalSlim(ctx, goalSummary({ ...ca, gate: { lv: 'A1', has: true, open: true, passed: false, ratio: 0.8, left: 3 } })), /Vào trận cổng khu A1/);
+  assert.match(viewGoalSlim(ctx, goalSummary({ ...ca, gate: { lv: 'A1', has: true, open: true, passed: false, ratio: 0.8, left: 3 } })), /Vào thi chuyển cấp A1/);
   assert.match(viewGoalSlim(ctx, goalSummary({ ...ca, ready: { done: 9, total: 9, achieved: true } })), /Đã đạt Tiếng Anh tổng quát A1/);
 });
