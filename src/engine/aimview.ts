@@ -3,7 +3,8 @@
 // Thuần chuỗi HTML; số liệu từ compare.ts (compareOf) và gate.ts (gateState). Không dùng chữ "thi / đề / kiểm tra".
 
 import type { ECtx } from './views.ts';
-import { cmpVerdict, type CmpOut } from './compare.ts';
+import { cmpVerdict, type AimItem, type CmpOut } from './compare.ts';
+import { LEVEL_VI, type Level } from './types.ts';
 
 export const AIM_LVS = [['A1', 'cefr-a1'], ['A2', 'cefr-a2']] as const;
 export type AimLv = typeof AIM_LVS[number][0];
@@ -31,9 +32,16 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
   const rows = o.rows.filter(r => r.total).map(r => {
     const seg = (cls: string, n: number) => (n ? `<i class="${cls}" style="width:${pct(n, r.total)}%"></i>` : '');
     const game = r.pull ? `<button class="btn small" data-e="cblo" data-g="${esc(x.forge)}">⚔️ Rèn ở game</button>` : '<span class="hint aimlock">🔒 game chưa có lò</span>';
-    return `<li class="cmprow stack">
-      <b>${r.ico} ${esc(r.vi)} · ${r.solid}/${r.total} vững <span class="hint">· ô ${esc(r.slot)}${r.mid ? ' · tin cậy vừa' : ''}</span></b>
+    // v139 bấm dòng kỹ năng → mở danh sách từng phần cần đạt (details/summary: bấm được, đọc được bằng trình đọc màn hình).
+    const items = r.items ?? [], open = items.filter(i => !i.solid), done = items.filter(i => i.solid);
+    const src = (i: AimItem) => (i.g && i.a ? ' · ⚔️📘' : i.g ? ' · ⚔️ nhờ game' : i.a ? ' · 📘 nhờ app' : '');
+    const li = (i: AimItem) => `<li class="aimit${i.solid ? ' ok' : ''}"><span>${i.solid ? '✅' : i.pct > 0 ? '🟡' : '⬜'} ${esc(i.vi)}</span><span class="hint">${i.solid ? 'đã vững' : i.pct > 0 ? `đang học · ${Math.round(i.pct * 100)}%` : 'chưa bắt đầu'} · cần: ${esc(LEVEL_VI[i.level as Level] ?? '')}${src(i)}</span></li>`;
+    const list = items.length ? `<div class="aimdet stack">${open.length ? `<p class="hint"><b>Còn ${open.length} phần chưa vững</b> (gần xong nhất ở trên)</p><ul class="aimits">${open.map(li).join('')}</ul>` : ''}${done.length ? `<p class="hint"><b>Đã vững ${done.length} phần</b></p><ul class="aimits">${done.map(li).join('')}</ul>` : ''}</div>` : '';
+    return `<li class="cmprow stack"><details class="aimsk">
+      <summary><b>${r.ico} ${esc(r.vi)} · ${r.solid}/${r.total} vững <span class="hint">· ô ${esc(r.slot)}${r.mid ? ' · tin cậy vừa' : ''}</span></b>
       <span class="cmpbar" role="img" aria-label="${esc(r.vi)}: ${r.game} nhờ game, ${r.app} nhờ app, ${r.both} cả hai, ${r.before} từ trước, ${r.total - r.solid} chưa vững">${seg('cg', r.game)}${seg('ca', r.app)}${seg('cb2', r.both)}${seg('cp', r.before)}</span>
+      <span class="hint aimmore">Bấm để xem ${r.total} phần cần đạt</span></summary>
+      ${list}</details>
       <div class="row aimgo">${game}<button class="btn small" data-act="skgo" data-sk="${r.id}">📘 Học ở app</button></div>
     </li>`;
   }).join('');

@@ -55,12 +55,16 @@ export const isGrp = (v: unknown): v is Grp => SKILLS.some(k => k.id === v);
 // Nhóm mà vòng game hiện có lý do để học (cho tinh hoa → rèn đồ → thắng trận). Mốc 1: chỉ ô Vũ khí = Từ vựng (cb.ts essOf).
 export const GAME_PULL: ReadonlySet<Grp> = new Set<Grp>(['voc']);
 
-export interface GrpRow { id: Grp; ico: string; vi: string; slot: string; mid: boolean; total: number; solid: number; game: number; app: number; both: number; before: number; ansG: number; ansA: number; pull: boolean }
+// v139 chi tiết một kỹ năng (bấm dòng kỹ năng ở 🎯 Mục tiêu): từng phần cần đạt, vững chưa, được bao nhiêu, nhờ game / app.
+export interface AimItem { node: string; vi: string; level: number; solid: boolean; pct: number; g: number; a: number }
+export interface GrpRow { id: Grp; ico: string; vi: string; slot: string; mid: boolean; total: number; solid: number; game: number; app: number; both: number; before: number; ansG: number; ansA: number; pull: boolean; items?: AimItem[] }
 export interface CmpOut { rows: GrpRow[]; total: number; solid: number; game: number; app: number; both: number; before: number; ansG: number; ansA: number }
 export interface Need { node: string; level: number; area?: string }
 
 // need: các nút của đích (đóng tiền đề) kèm mức cần và kỹ năng; solid(node, level): đã vững thật ở mức đó.
-export function compareOf(need: Need[], solid: (node: string, level: number) => boolean, src: SrcMap | undefined, pull: ReadonlySet<Grp> = GAME_PULL): CmpOut {
+// info (tuỳ chọn): tên và % tiến độ của một nút ở mức cần; có thì mỗi kỹ năng kèm danh sách phần (items):
+// chưa vững trước (gần xong nhất trước), đã vững sau.
+export function compareOf(need: Need[], solid: (node: string, level: number) => boolean, src: SrcMap | undefined, pull: ReadonlySet<Grp> = GAME_PULL, info?: (node: string, level: number) => { vi: string; pct: number }): CmpOut {
   const s = src ?? {};
   const rows: GrpRow[] = SKILLS.map(g => ({ id: g.id, ico: g.ico, vi: g.vi, slot: g.slot, mid: !!g.mid, total: 0, solid: 0, game: 0, app: 0, both: 0, before: 0, ansG: 0, ansA: 0, pull: pull.has(g.id) }));
   const by = new Map(rows.map(r => [r.id, r]));
@@ -70,10 +74,13 @@ export function compareOf(need: Need[], solid: (node: string, level: number) => 
     const row = isGrp(r.area) ? by.get(r.area) : undefined; if (!row) continue;
     const c = s[r.node] ?? { g: 0, a: 0 };
     row.total++; row.ansG += c.g; row.ansA += c.a;
-    if (!solid(r.node, r.level)) continue;
+    const ok = solid(r.node, r.level);
+    if (info) { const i = info(r.node, r.level); (row.items ??= []).push({ node: r.node, vi: i.vi, level: r.level, solid: ok, pct: ok ? 1 : Math.max(0, Math.min(0.99, i.pct)), g: c.g, a: c.a }); }
+    if (!ok) continue;
     row.solid++;
     if (c.g && c.a) row.both++; else if (c.g) row.game++; else if (c.a) row.app++; else row.before++;
   }
+  if (info) for (const r of rows) r.items?.sort((p, q) => Number(p.solid) - Number(q.solid) || q.pct - p.pct || p.vi.localeCompare(q.vi, 'vi'));
   const sum = (k: keyof Pick<GrpRow, 'total' | 'solid' | 'game' | 'app' | 'both' | 'before' | 'ansG' | 'ansA'>) => rows.reduce((a, r) => a + r[k], 0);
   return { rows, total: sum('total'), solid: sum('solid'), game: sum('game'), app: sum('app'), both: sum('both'), before: sum('before'), ansG: sum('ansG'), ansA: sum('ansA') };
 }
