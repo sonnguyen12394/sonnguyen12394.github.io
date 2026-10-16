@@ -48,7 +48,9 @@ export function makeFight(d: FcDeps) {
     const s = sv(); if (!unlocked(s, def.id)) { host.toast('Thắng trận trước để mở trận này.'); return; }
     stop(false);
     const ch = isChar(s.ch) && charOpen(s.ch, s.best) ? s.ch : 'orbiter';
-    f = newFight(def, gear(), (Date.now() ^ (s.log.length * 2654435761)) >>> 0, ch, true);
+    // Hạt trận theo giờ (mỗi trận một khác). Test e2e ghim hạt qua window.__elFightSeed để bot cho kết quả tất định (CI không lúc thắng lúc thua).
+    const pin = Number((globalThis as { __elFightSeed?: unknown }).__elFightSeed);
+    f = newFight(def, gear(), pin > 0 ? pin >>> 0 : (Date.now() ^ (s.log.length * 2654435761)) >>> 0, ch, true);
     t0 = Date.now(); t1 = 0; logged = false;
     if (typeof document === 'undefined') return;
     view = openFight({
