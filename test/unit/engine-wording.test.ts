@@ -13,6 +13,7 @@ const ALLOW: Array<[string, RegExp]> = [
   ['readyview.ts', /SRC_VI|data-xr="place"|vxnew|thi thật|Nếu thi hôm nay|kỳ thi chỉ được xác nhận/],   // Readiness mục tiêu kỳ thi (tương lai)
   ['views.ts', /comm: \['Giao tiếp'|AREA_VI|c\.hidden|Ôn thi → Cách tính điểm/],                        // nhãn mục tiêu tương lai
   ['gateview.ts', /chứng chỉ|thi thật/i],   // phần chứng chỉ tuỳ chọn ở hồ sơ (chỉ người bật mới thấy), SPEC "Đề sát hạch"
+  ['textbank.ts', /làm bài tập/],   // v144 nội dung bài luyện: bản dịch của "do my homework" (làm bài tập về nhà), không phải chữ trên màn
 ];
 const strip = (l: string) => l.replace(/^\s*\/\/.*$/, '').replace(/\s\/\/\s.*$/, '').replace(/\/\*.*?\*\//g, '');
 
