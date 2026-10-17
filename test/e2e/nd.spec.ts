@@ -191,3 +191,18 @@ test('v153 đổi tên + Ôn tập về Ôn luyện: Học bài không còn nút
   await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
   expect(errors).toEqual([]);
 });
+
+// v154 Mục tiêu hai thanh: 📘 Học (đã qua bài cuối) và 🔁 Nhớ (nhớ ra sau ≥ 3 ngày, chưa phai); mở thi khi Học ≥ 80% VÀ Nhớ ≥ 70%.
+test('v154 Mục tiêu có hai thanh Học / Nhớ; qua bài cuối unit làm thanh Học tăng; dòng thi chuyển cấp nói luật mới', async ({ page, errors }) => {
+  await open(page);
+  await page.evaluate(() => (window as any).eval("go('aim')"));
+  await expect(page.locator('#app [aria-label="Học và Nhớ"]')).toBeVisible({ timeout: 30000 });
+  const learn0 = await page.locator('#app [aria-label="Học và Nhớ"] [role="progressbar"]').first().getAttribute('aria-valuenow');
+  await page.evaluate(() => { const w = window as any; w.eval('U')(w.eval('UNITS')[0].id).passed = true; w.eval('save()'); w.eval('render()'); });
+  await expect(page.locator('#app [aria-label="Học và Nhớ"] [role="progressbar"]').first()).not.toHaveAttribute('aria-valuenow', learn0!);
+  await expect(page.locator('#app [aria-label="Học và Nhớ"]')).toContainText('cần 70%');
+  await expect(page.locator('#app')).toContainText('Mở khi 📘 Học ≥ 80% và 🔁 Nhớ ≥ 70%');
+  const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
+  expect(r.violations.map(v => v.id)).toEqual([]);
+  expect(errors).toEqual([]);
+});

@@ -163,3 +163,4 @@ Người sáng lập (17/10/2026) tách mọi chức năng luyện nói, đọc 
 - Khó khăn chính phần này nhắm tới: **K5** (phát âm) và **K8** (không có chỗ nói). Khi phần này cho thấy hiệu quả thật (người sáng lập tự đánh giá, hoặc điểm chấm từng âm ổn định), người sáng lập quyết có tính vào Mục tiêu hay không.
 - **Bản 90 (v152), vai trò:** 📘 Học cho người mới (học từ đầu, thi qua cấp); 🗣 Nói & Đọc cho người đã học (ôn nhanh, lộ chỗ quên, quay lại 📘 Học đúng chỗ). Bảng "Sức khoẻ kiến thức" (vững / đang phai / đã quên / chưa học) nhắm khó khăn **K2** (học trước quên sau).
 - **Bản 91 (v153), đổi tên:** 📘 Học bài (học mới tới vững, não không đẩy ôn lên đầu) · 🔁 Ôn luyện (thẻ đến hạn + đã quên + đang phai + bài đọc / nói) · 🎯 Mục tiêu. Cân học / ôn tuỳ người học chọn phần nào.
+- **Bản 92 (v154):** 🎯 Mục tiêu có hai thanh: 📘 Học (đã qua bài cuối) và 🔁 Nhớ (nhớ ra sau ≥ 3 ngày, chưa phai). Mở thi khi Học ≥ 80% và Nhớ ≥ 70%.

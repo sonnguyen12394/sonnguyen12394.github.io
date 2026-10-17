@@ -4,7 +4,7 @@
 
 import type { ECtx } from './views.ts';
 import type { Group } from '../exam/content.ts';
-import { GATE, GATE_SPEC, GATE_THR, CES_MIN, gateState, type GateResult, type GateSave } from './gate.ts';
+import { GATE, GATE_SPEC, GATE_THR, CES_MIN, gateState, type GateResult, type GateSave, type GateParts } from './gate.ts';
 import { bandToCefr } from '../exam/scales.ts';
 import type { GwTask, WsOut } from './gatews.ts';
 
@@ -37,8 +37,8 @@ export function groupForm(c: ECtx, g: Group, form: string, btn: string, plays: n
 }
 
 // Cửa vào trận cổng: trạng thái (khoá / mở / đã qua) + vì sao.
-export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, total: number, sv: GateSave | undefined, test = false, today?: number): string {
-  const esc = c.host.esc, st = gateState(goal, solid, total, sv, today), lv = LV(goal);
+export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, total: number, sv: GateSave | undefined, test = false, today?: number, parts?: GateParts): string {
+  const esc = c.host.esc, st = gateState(goal, solid, total, sv, today, parts), lv = LV(goal);
   if (!st.has) return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${esc(lv)}</span><h1>Cấp ${esc(lv)} chưa có bài thi chuyển cấp</h1><p class="muted">Thi chuyển cấp hiện có cho A1 và A2. Cấp này dùng bản đồ năng lực để theo dõi; kết luận đạt sẽ có khi có bài.</p></section>${back()}`;
   const last = st.last ? resultBox(c, st.last) : '';
   if (st.passed) return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${esc(lv)}</span><h1>✓ Bạn đã qua ${esc(lv)}</h1></section>${resultBox(c, st.passed)}${back()}`;
@@ -46,7 +46,7 @@ export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, t
   const why = st.wait ? `Lần trước chưa qua. Mỗi lần là một bài mới hoàn toàn, nhưng cần học thêm rồi mới làm lại: ${waitTxt(st.wait)}.`
     : st.left.length === 0 ? 'Bạn đã dùng hết các bài thi chuyển cấp lạ của cấp này. Tí đang soạn thêm bài mới; trong lúc chờ, cứ luyện tiếp để vững hơn.'
     : open ? `Đã mở. Bài gồm 4 phần: <b>Đọc</b> (biển báo, mẩu tin), <b>Nghe</b> (hội thoại ngắn), <b>Viết</b> (tin nhắn, chuyện ngắn) và <b>Nói</b> (trả lời câu hỏi về bạn), toàn câu bạn <b>chưa gặp bao giờ</b>. Mỗi bài làm một lần, không có đồng hồ, không hiện đáp án trong lúc làm. Đọc + Nghe quyết định đậu; Viết + Nói để tham khảo.`
-    : `Mở khi bạn đã gần xong mục tiêu: ${pc(GATE.open)} kỹ năng của cấp đã vững thật (bạn đang có ${pc(st.ratio)}). ${st.gen ? 'Mỗi lần làm, máy sinh một bài mới theo tiêu chí của cấp, nên không học tủ được.' : `Bài dùng câu lạ, chỉ làm được ${st.left.length} lần, nên chỉ mở khi bạn có khả năng qua.`}`;
+    : st.parts ? `Mở khi 📘 Học ≥ ${pc(GATE.learn)} (đã qua bài; bạn đang có ${pc(st.learn ?? 0)}) và 🔁 Nhớ ≥ ${pc(GATE.mem)} (nhớ ra sau ≥ ${GATE.memDays} ngày, chưa phai; bạn đang có ${pc(st.mem ?? 0)}).` + (st.gen ? ' Mỗi lần làm, máy sinh một bài mới theo tiêu chí của cấp.' : '') : `Mở khi bạn đã gần xong mục tiêu: ${pc(GATE.open)} kỹ năng của cấp đã vững thật (bạn đang có ${pc(st.ratio)}). ${st.gen ? 'Mỗi lần làm, máy sinh một bài mới theo tiêu chí của cấp, nên không học tủ được.' : `Bài dùng câu lạ, chỉ làm được ${st.left.length} lần, nên chỉ mở khi bạn có khả năng qua.`}`;
   return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${esc(lv)} · ${esc(vi)}</span><h1>${open ? 'Đã mở' : 'Chưa mở'}</h1>
     <p class="muted">${why}</p></section>
     ${open ? `<div class="row"><button class="btn primary big" data-e="gtstart">▶ Vào thi chuyển cấp</button></div>` : ''}

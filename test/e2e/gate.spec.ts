@@ -29,7 +29,7 @@ test('Thi chuyển cấp chưa mở khi bản đồ chưa gần đủ: thẻ �
   await expect(page.getByRole('button', { name: /Vào thi chuyển cấp/ })).toHaveCount(0);
   await page.locator('.gbar.slim').click();   // v117: chi tiết cổng nằm ở bản đầy đủ, đầu trang mục tiêu
   const bar = page.locator('.gbar');
-  await expect(bar).toContainText('Thi chuyển cấp A2 chưa mở: mở khi 80%');
+  await expect(bar).toContainText('Thi chuyển cấp A2 chưa mở: mở khi 📘 Học ≥ 80%');   // v154 hai thanh Học / Nhớ
   await expect(bar).toContainText(/📍A2/);
   await expect(page.getByRole('button', { name: /Vào thi chuyển cấp/ })).toHaveCount(0);
   await page.evaluate(() => (window as any).eval("go('goal',{er:'gate'})"));

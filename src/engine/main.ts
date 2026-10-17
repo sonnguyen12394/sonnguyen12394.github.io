@@ -85,7 +85,7 @@ import { viewTreasureCard, viewTreasureIntro, viewTreasureDone, CHEST_COINS } fr
 import { viewGateHome, viewGateRun, viewGateEnd, viewGateWs, viewCert, type GateRun } from './gateview.ts';
 import { GATE_WS, NEXT_LV, wsPct, wordsOf as gwWords } from './gatews.ts';
 import { genForm, TRY_PARTS, type NodePool } from './testgen.ts';
-import { gateScore, gateState, lastP, CES_MIN, GATE_FORMS, GEN_LV, USED_MAX, TRY_MAX, type GateAns } from './gate.ts';
+import { gateScore, gateState, lastP, CES_MIN, GATE, GATE_FORMS, GEN_LV, USED_MAX, TRY_MAX, type GateAns, type GateParts } from './gate.ts';
 import type { LrApi } from '../exam/main.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
 import { viewMeasure } from './measureview.ts';
@@ -1543,6 +1543,22 @@ export function init(host: EHost): EngineModule {
   // v110 Mục tiêu + tiến độ (goalbar.ts): gom số đã có cho thẻ đầu sảnh và dòng ở màn kết.
   // Vừa vững (full) = Đạt ĐÚNG mức mục tiêu cần và đang vững thật, nên khớp với số "x/y kỹ năng đã vững". Đạt ở mức thấp hơn (part, ví dụ
   // Vườn từ: nhận ra mặt chữ, mục tiêu cần tự nhớ ra) là tiến một bậc, báo riêng để không mâu thuẫn với con số trên.
+  // v154 hai thanh của Mục tiêu (người sáng lập 17/10/2026). Trên các nút u: / g: / ph: / fn: của mục tiêu (như skillsOf):
+  // 📘 Học = đã qua bài cuối của bài học chứa nút (host.lessonDone; host cũ không có thì dùng "vững").
+  // 🔁 Nhớ = có câu đúng tự lực ở nút đó cách lần gặp đầu ≥ GATE.memDays ngày, và khả năng nhớ hiện ≥ 0,9 (chưa phai).
+  function partsOf(v: EState, g: NonNullable<ReturnType<typeof goalOf>>): GateParts {
+    const ix = loaded()!, seen = new Set<string>(), nodes: Array<{ node: string; level: number }> = [];
+    for (const r of closure(ix, g.req.filter(r => r.type !== 'performance'), defaultLevel)) if (/^(u|g|ph|fn):/.test(r.node) && !seen.has(r.node)) { seen.add(r.node); nodes.push(r); }
+    const first = new Map<string, number>(), okLast = new Map<string, number>();
+    for (const x of v.ev.led) { if (!seen.has(x.node)) continue; const f = first.get(x.node); if (f === undefined || x.day < f) first.set(x.node, x.day); if (x.ok && !x.asst) { const l = okLast.get(x.node); if (l === undefined || x.day > l) okLast.set(x.node, x.day); } }
+    let learn = 0, mem = 0;
+    for (const r of nodes) {
+      if (host.lessonDone ? host.lessonDone(r.node) : nodeStat(host, v, r.node, r.level as Level).pass) learn++;
+      const f = first.get(r.node), l = okLast.get(r.node);
+      if (f !== undefined && l !== undefined && l - f >= GATE.memDays && (recallOf(host, v, r.node) ?? 0) >= 0.9) mem++;
+    }
+    return { learn, mem, total: nodes.length };
+  }
   function goalOf(v: EState) { const ix = loaded(); return ix ? v.goals.map(sg => ix.goal.get(sg.id)).find(Boolean) ?? null : null; }
   // v115 khu truyện = cấp: chương cuối khu cuối (Rừng Trúc) là trận cổng của đích, nếu đích có cổng. Hai khu đầu giữ điều kiện kỹ năng vững
   // (khu 1–2 tới sớm, gắn cổng ở đó sẽ chặn truyện hàng tuần; nút "Tới trận cổng" cũng chỉ mở cổng của đích hiện tại).
@@ -1556,8 +1572,8 @@ export function init(host: EHost): EngineModule {
     const r = readinessOf(host, v, g), sk = skillsOf(v, g);
     const ix = loaded()!, rote = roteNodes(v.ev, sk.ids).map(x => ix.node.get(x.node)?.vi ?? x.node), date = v.goals.find(x => x.id === g.id)?.date ?? null;
     const due = date === null ? null : { days: date - host.today(), mins: computePath(host, v, ix).minutes };
-    const st = gateState(g.id, sk.solid, sk.total, E().gg, host.today()), lv = (id: string) => id.replace('cefr-', '').toUpperCase().replace('PRE-A1', 'Pre-A1');
-    const gate = { lv: lv(g.id), has: st.has, open: st.open || (playtest() && st.left.length > 0 && !st.passed), passed: !!st.passed, ratio: st.ratio, left: st.left.length };
+    const st = gateState(g.id, sk.solid, sk.total, E().gg, host.today(), partsOf(v, g)), lv = (id: string) => id.replace('cefr-', '').toUpperCase().replace('PRE-A1', 'Pre-A1');
+    const gate = { lv: lv(g.id), has: st.has, open: st.open || (playtest() && st.left.length > 0 && !st.passed), passed: !!st.passed, ratio: st.ratio, left: st.left.length, learn: st.learn, mem: st.mem };
     const CE = ['cefr-pre-a1', 'cefr-a1', 'cefr-a2', 'cefr-b1', 'cefr-b2', 'cefr-c1', 'cefr-c2'], k = CE.indexOf(g.id);
     const zones = k < 0 ? [] : CE.slice(0, Math.min(CE.length, k + 2)).map(id => ({ lv: lv(id), cur: id === g.id, passed: Object.values(E().gg?.done ?? {}).some(x => x.goal === id && x.passed) }));
     return { s: goalSummary({ id: g.id, vi: g.vi, sk, ready: r.kind === 'mastery' ? { done: r.done, total: r.total, achieved: r.achieved } : null, missing: missingOf(host, v, g), review, rote, due, gate, zones }), ids: sk.ids, solidIds: sk.solidIds };
@@ -1830,8 +1846,8 @@ export function init(host: EHost): EngineModule {
       if (!loaded()) { ensure(); return viewAim(c, null); }
       const ix = loaded()!, cur = goalOf(c.e)?.id, lv: AimLv = aimLv ?? (cur === 'cefr-a1' ? 'A1' : 'A2'), id = AIM_LVS.find(([l]) => l === lv)![1];
       const g = ix.goal.get(id), r = cmpNow(c.e, id, true); if (!g || !r) return viewAim(c, null);
-      const sk = skillsOf(c.e, g), gs = gateState(id, sk.solid, sk.total, E().gg, host.today()), chosen = cur === id;
-      return viewAim(c, { lv, o: r.o, chosen, gate: { has: gs.has, open: gs.open || (playtest() && gs.left.length > 0 && !gs.passed), passed: !!gs.passed, ratio: gs.ratio, wait: gs.wait },
+      const sk = skillsOf(c.e, g), gs = gateState(id, sk.solid, sk.total, E().gg, host.today(), partsOf(c.e, g)), chosen = cur === id;
+      return viewAim(c, { lv, o: r.o, chosen, gate: { has: gs.has, open: gs.open || (playtest() && gs.left.length > 0 && !gs.passed), passed: !!gs.passed, ratio: gs.ratio, wait: gs.wait, parts: gs.parts },
         forge: fc.forge(), cert: chosen ? viewCert(c, id, E().gg) : '', cap: LV_AT[W_MAX - 1] });
     },
     cmp: c => routes.aim!(c),
@@ -1902,7 +1918,7 @@ export function init(host: EHost): EngineModule {
       const g = goalOf(c.e);
       if (!g) return viewGoals(c);
       const sk = skillsOf(c.e, g);
-      return viewGateHome(c, g.id, g.vi, sk.solid, sk.total, E().gg, playtest(), host.today());
+      return viewGateHome(c, g.id, g.vi, sk.solid, sk.total, E().gg, playtest(), host.today(), partsOf(c.e, g));
     },
     why: c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } return viewWhy(c); },
     pick: viewPick,
@@ -1979,7 +1995,7 @@ export function init(host: EHost): EngineModule {
     gtstart() {
       const v = V(), g = goalOf(v);
       if (!g || !host.gate) return;
-      const sk = skillsOf(v, g), st = gateState(g.id, sk.solid, sk.total, E().gg, host.today()), form = st.left[0];
+      const sk = skillsOf(v, g), st = gateState(g.id, sk.solid, sk.total, E().gg, host.today(), partsOf(v, g)), form = st.left[0];
       if (!form || (!st.open && !playtest())) return;
       if (GEN_LV[g.id]) {
         // v141 bài sinh theo tiêu chí: gom ngân hàng (bộ cổng cũ của cấp) + câu theo nút của đích, sinh bài mới với hạt mới.

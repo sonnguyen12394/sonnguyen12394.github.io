@@ -68,3 +68,13 @@ test('v141 Thử sức: làm sạch (chỉ A1 / A2, mã kỹ năng hợp lệ, �
   const m = mergeGate({ done: {}, tries: [t] }, { done: {}, tries: [t, { ...t, day: 1, sk: 'wr', w: 60 }] })!;
   assert.deepEqual(m.tries!.map(x => x.day), [1, 3]);
 });
+
+test('v154 hai thanh: mở thi khi Học ≥ 80% VÀ Nhớ ≥ 70%; Nhớ không bù cho Học', () => {
+  const T = 100, sv = undefined;
+  assert.equal(gateState('cefr-a2', 90, T, sv, 10, { learn: 80, mem: 70, total: T }).open, true);
+  assert.equal(gateState('cefr-a2', 90, T, sv, 10, { learn: 79, mem: 100, total: T }).open, false, 'Học 79% thì Nhớ 100% cũng không mở');
+  assert.equal(gateState('cefr-a2', 90, T, sv, 10, { learn: 100, mem: 69, total: T }).open, false, 'Nhớ dưới 70%');
+  assert.equal(gateState('cefr-a2', 10, T, sv, 10, { learn: 85, mem: 75, total: T }).open, true, 'có hai thanh thì không dùng luật vững cũ');
+  const s = gateState('cefr-a2', 0, T, sv, 10, { learn: 50, mem: 20, total: T });
+  assert.equal(s.learn, 0.5); assert.equal(s.mem, 0.2);
+});
