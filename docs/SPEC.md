@@ -1,5 +1,11 @@
 # English Ladder — Master Spec v2
 
+> **17/10/2026 — 📘 Học bài · 🔁 Ôn luyện · 🎯 Mục tiêu (v153, bản 91; đứng trên khối 16/10).** Người sáng lập: mỗi mục tiêu có nhiều điểm kiến thức, điểm nào cũng có thời gian quên; đạt mục tiêu rồi vẫn phải ôn. Đổi tên: **Học bài** (app học, trước là "Học"), **Ôn luyện** (trước là "Nói & Đọc"), **Mục tiêu**. Chốt: phần chưa học trong bài Ôn luyện vẫn hỏi (đúng là đi tắt); **cân ngày tuỳ người học**: vào phần nào thì não điều phối theo phần đó; Ôn tập (thẻ đến hạn) chuyển sang Ôn luyện.
+> - **Não ở 📘 Học bài (học tới vững):** lượt dở → phần đang học chưa vững → bài mới theo tiền đề (giữ giới hạn từ mới / ngày). Không đẩy ôn lên đầu (`mainAction({learn:true})`, `EM.next({learn:true})` bỏ bước ôn); có mục đến hạn thì chỉ nhắc một dòng sang Ôn luyện.
+> - **Não ở 🔁 Ôn luyện (giữ khỏi quên):** thẻ đến hạn (FSRS) → đã quên (từng vững, nay không) → đang phai (nhớ < 0,9) → bài đọc / nói chứa những chỗ đó (chưa học vẫn hỏi, đúng là đi tắt). Sai → lịch ôn + nút "📘 Học lại bài này" về đúng bài.
+> - **🎯 Mục tiêu:** thước đo chung, một luật "vững" cho mọi nguồn (nhờ game / nhờ Học bài / nhờ Ôn luyện). Đạt rồi vẫn thấy phần đang phai / đã quên ở bảng Sức khoẻ (Ôn luyện).
+> - Mã nội bộ giữ (`lib`, `nd`, `ctx:'nd'`) để không đổi dữ liệu đã lưu. Chưa người thật kiểm.
+
 > **17/10/2026 — Phần thứ ba: 🗣 Nói & Đọc (v149, bản 87).** Người sáng lập: tách mọi chức năng luyện nói / đọc to / phát âm thành một phần riêng để tập trung phát triển, coi là con đường thứ ba song song ⚔️ Chơi và 📘 Học, dùng để đi tới mục tiêu.
 > 1. **Thanh điều hướng:** Chơi · Học · **Nói & Đọc** · Mục tiêu · Tôi. Gồm: Nói nhại, 📖 Đọc to (bài đọc unit A1 / A2), 📝 Bài luyện theo cấp (nói và đọc), 📋 Dán bài, Âm và cặp âm (cả trọng âm từ, bài phát âm), Nối âm – ngữ điệu, Dò phát âm 26 cặp, 🧪 Chấm từng âm. **Chuyển hẳn:** tab Nói / Đọc của 📘 Học và màn Tôi bỏ các mục này, chỉ còn lời chỉ sang. Phản xạ, Nói đáp lời, Nói theo đề, bài đọc có câu hỏi, truyện: ở lại 📘 Học.
 > 2. **Chưa tính, chỉ theo dõi riêng** (người sáng lập chọn "thôi tính tất cả", kể cả bài cũ): không bằng chứng (bộ cặp âm thôi ghi `ph:`), không Can-Do, không mục tiêu ngày / chuỗi ngày / XP / nhiệm vụ của phần Học. Bảng riêng `st.nd.d[ngày]`: số câu, số đạt, tỉ lệ máy nghe ra; số ngày luyện liền; điểm chấm từng âm gần nhất.
