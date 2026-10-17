@@ -28,11 +28,11 @@ async function open(page: Page): Promise<number> {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await page.waitForFunction(() => (window as any).ELREADY === true);
-  return page.evaluate(() => { const w = window as any, st = w.eval('st'); st.onboarded = true; w.eval('save()'); w.eval("go('more')"); return st.e.ev.led.length; });
+  return page.evaluate(() => { const w = window as any, st = w.eval('st'); st.onboarded = true; w.eval('save()'); w.eval("go('nd')"); return st.e.ev.led.length; });
 }
 
 for (const scheme of ['light', 'dark'] as const) {
-  test(`Tôi → 🧪 chấm từng âm: tải mô hình, chấm câu, từ tô màu theo điểm, bấm từ thấy từng âm và "nghe gần như"; WCAG AA (${scheme}), 390 px`, async ({ page, errors }) => {
+  test(`🗣 Nói & Đọc → 🧪 chấm từng âm: tải mô hình, chấm câu, từ tô màu theo điểm, bấm từ thấy từng âm và "nghe gần như"; WCAG AA (${scheme}), 390 px`, async ({ page, errors }) => {
     await page.emulateMedia({ colorScheme: scheme });
     const led0 = await open(page);
     await page.locator('#app [data-go="phon"]').click();

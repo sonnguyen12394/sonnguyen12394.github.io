@@ -8,7 +8,7 @@ Game nhập vai cho người Việt học tiếng Anh: trận đấu kiểu Chao
 3. `docs/KE-HOACH-A2.md`: kế hoạch theo mốc, cách nâng từng tiêu chí. Mốc 1 (v133) xong phần mã: `docs/MOC1-KE-HOACH.md`; trận ở `src/engine/fight*.ts` (nhân vật / thành tích: `fightmeta.ts`), ô Vũ khí ở `cb.ts`.
 4. `docs/RA-SOAT-v133.md`: số phận từng chức năng cũ.
 5. `docs/DUONG-A2.md`: đường test duy nhất tới A2; sảnh A2 (v135) mặc định ẩn phần cũ bằng CSS `html.a2`, test e2e cũ chạy với `el-full` (fixture `full`).
-6. `docs/DOI-CHIEU-GAME-APP.md`: ba phần ⚔️ Chơi · 📘 Học · 🎯 Mục tiêu (một não; §6) + đánh giá game theo 12 khó khăn học tiếng Anh; màn Mục tiêu ở `aimview.ts`, nguồn câu đúng ở `compare.ts`. Test e2e cũ mở vào Chơi qua fixture `home` (`el-home`).
+6. `docs/DOI-CHIEU-GAME-APP.md`: ba phần ⚔️ Chơi · 📘 Học · 🎯 Mục tiêu (một não; §6) + phần thứ ba 🗣 Nói & Đọc (v149, §7; `viewND` trong `app.js`, chỉ theo dõi riêng `st.nd`, không tính vào Mục tiêu) + đánh giá game theo 12 khó khăn học tiếng Anh; màn Mục tiêu ở `aimview.ts`, nguồn câu đúng ở `compare.ts`. Test e2e cũ mở vào Chơi qua fixture `home` (`el-home`).
 
 ## Luật
 - Không tự đổi quyết định của người sáng lập; hỏi lại. Điểm kỹ thuật thì tự quyết, ghi lý do.

@@ -1,5 +1,11 @@
 # English Ladder — Master Spec v2
 
+> **17/10/2026 — Phần thứ ba: 🗣 Nói & Đọc (v149, bản 87).** Người sáng lập: tách mọi chức năng luyện nói / đọc to / phát âm thành một phần riêng để tập trung phát triển, coi là con đường thứ ba song song ⚔️ Chơi và 📘 Học, dùng để đi tới mục tiêu.
+> 1. **Thanh điều hướng:** Chơi · Học · **Nói & Đọc** · Mục tiêu · Tôi. Gồm: Nói nhại, 📖 Đọc to (bài đọc unit A1 / A2), 📝 Bài luyện theo cấp (nói và đọc), 📋 Dán bài, Âm và cặp âm (cả trọng âm từ, bài phát âm), Nối âm – ngữ điệu, Dò phát âm 26 cặp, 🧪 Chấm từng âm. **Chuyển hẳn:** tab Nói / Đọc của 📘 Học và màn Tôi bỏ các mục này, chỉ còn lời chỉ sang. Phản xạ, Nói đáp lời, Nói theo đề, bài đọc có câu hỏi, truyện: ở lại 📘 Học.
+> 2. **Chưa tính, chỉ theo dõi riêng** (người sáng lập chọn "thôi tính tất cả", kể cả bài cũ): không bằng chứng (bộ cặp âm thôi ghi `ph:`), không Can-Do, không mục tiêu ngày / chuỗi ngày / XP / nhiệm vụ của phần Học. Bảng riêng `st.nd.d[ngày]`: số câu, số đạt, tỉ lệ máy nghe ra; số ngày luyện liền; điểm chấm từng âm gần nhất.
+> 3. **Quyết định kỹ thuật (lý do: không làm mất tiến độ đã có, không chặn mục tiêu):** kết quả phát âm đã đạt trước bản này được chụp một lần (`st.ndfz`); Can-Do phát âm (`snd`, `p`, `ws`, `cs`) chỉ đọc bản chụp. Câu Can-Do "nối âm, ngữ điệu" thôi đếm vào kỹ năng Nghe (ở lại nền tảng Phát âm), để Nghe A1 / A2 không phụ thuộc phần không tính. Nhiệm vụ ngày "Luyện 1 bộ phát âm" thôi được chọn. Bắt Âm và Bến Cảng là game ở ⚔️ Chơi: vẫn ghi bằng chứng `ph:` như cũ, nên kỹ năng Phát âm ở 🎯 Mục tiêu vẫn lên được. Nút của dòng Phát âm ở Mục tiêu đổi thành "🗣 Nói & Đọc".
+> 4. Chưa người thật kiểm.
+
 > **16/10/2026 — Ba phần: ⚔️ Chơi · 📘 Học · 🎯 Mục tiêu (v138; thay "hai lối" v136).** Người sáng lập chốt: tách game và app học cũ để đối chiếu, và thêm phần thứ ba là mục tiêu từng cấp; chơi hay học đều phục vụ mục tiêu.
 > 1. **Thanh điều hướng:** Chơi · Học · Mục tiêu · Tôi. ⚔️ Chơi: sảnh, trận, lò rèn. 📘 Học: app cũ (việc nên làm, ôn tập, thư viện, bảng 7 kỹ năng). 🎯 Mục tiêu: A1 và A2 (chỉ hai cấp này) cần đạt gì. **Mở app vào 🎯 Mục tiêu.** Không còn nút đổi lối.
 > 2. **Một não:** tiến độ, bằng chứng, FSRS, bản đồ năng lực dùng chung. Mỗi câu đúng ghi thêm nơi học (`st.e.src`): lò game (Vườn từ, Vòng Chữ, Mỏ Chữ, Lò rèn) là game, còn lại là app. Không đổi bằng chứng, không đổi mastery.

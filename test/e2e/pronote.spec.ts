@@ -81,12 +81,12 @@ for (const scheme of ['light', 'dark'] as const) {
   });
 }
 
-test('📖 Đọc to có lối vào ở bài đọc của unit A1 và ở tab Đọc (📘 Học)', async ({ page, errors }) => {
+test('📖 Đọc to có lối vào ở bài đọc của unit A1 và ở 🗣 Nói & Đọc', async ({ page, errors }) => {
   await open(page);
   await page.evaluate(() => (window as any).eval("startRead('a1-u1')"));
   await page.locator('[data-act="rago"][data-uid="a1-u1"]').click();
   await expect(page.locator('#app .pn')).toBeVisible();
-  await page.evaluate(() => { const w = window as any; w.eval("ui.talkTab='doc'"); w.eval("go('talk')"); });
+  await page.evaluate(() => (window as any).eval("go('nd')"));
   await expect(page.locator('#app [data-act="rago"]').first()).toBeVisible();
   expect(errors).toEqual([]);
 });
