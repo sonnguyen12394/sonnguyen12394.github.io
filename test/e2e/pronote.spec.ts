@@ -87,6 +87,7 @@ test('📖 Đọc to có lối vào ở bài đọc của unit A1 và ở 🗣 N
   await page.locator('[data-act="rago"][data-uid="a1-u1"]').click();
   await expect(page.locator('#app .pn')).toBeVisible();
   await page.evaluate(() => (window as any).eval("go('nd')"));
+  await page.evaluate(() => { const w = window as any; w.eval('ui').ndPh = true; w.eval('render()'); });   // v157 mở mục 🗣 Luyện phát âm
   await expect(page.locator('#app [data-act="rago"]').first()).toBeVisible();
   expect(errors).toEqual([]);
 });

@@ -164,3 +164,4 @@ Người sáng lập (17/10/2026) tách mọi chức năng luyện nói, đọc 
 - **Bản 90 (v152), vai trò:** 📘 Học cho người mới (học từ đầu, thi qua cấp); 🗣 Nói & Đọc cho người đã học (ôn nhanh, lộ chỗ quên, quay lại 📘 Học đúng chỗ). Bảng "Sức khoẻ kiến thức" (vững / đang phai / đã quên / chưa học) nhắm khó khăn **K2** (học trước quên sau).
 - **Bản 91 (v153), đổi tên:** 📘 Học bài (học mới tới vững, não không đẩy ôn lên đầu) · 🔁 Ôn luyện (thẻ đến hạn + đã quên + đang phai + bài đọc / nói) · 🎯 Mục tiêu. Cân học / ôn tuỳ người học chọn phần nào.
 - **Bản 92 (v154):** 🎯 Mục tiêu có hai thanh: 📘 Học (đã qua bài cuối) và 🔁 Nhớ (nhớ ra sau ≥ 3 ngày, chưa phai). Mở thi khi Học ≥ 80% và Nhớ ≥ 70%.
+- **Bản 95 (v157):** 🔁 Ôn luyện = đọc / nghe nguyên bài của một unit + câu hỏi hiểu (+ 1–2 câu ngữ pháp của bài). Hiểu ≥ 80% không xem nghĩa → qua unit; ngữ pháp đúng ở 2 bài khác nhau → qua điểm đó. Bỏ bài lẻ và danh sách vượt; phát âm gom vào một mục. 📘 Học bài cũng có hai thanh Học / Nhớ.

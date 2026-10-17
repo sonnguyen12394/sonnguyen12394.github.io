@@ -24,8 +24,13 @@ for (const scheme of ['light', 'dark'] as const) {
     await open(page);
     await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
     await expect(page.getByRole('heading', { name: 'Ôn luyện', level: 1 })).toBeVisible();
+    await expect(page.locator('#app [data-act="ndnext"]')).toBeVisible();   // v157 ▶ Ôn tiếp
+    // bấm thật để mở; vẽ lại màn (như khi engine tải xong) thì mục vẫn mở
+    await expect(async () => { await page.locator('#app details.ndph:not([open]) summary').click({ timeout: 2000 }); }).toPass().catch(() => {});
+    await page.evaluate(() => (window as any).eval('render()'));
+    await expect(page.locator('#app details.ndph')).toHaveAttribute('open', '');
     for (const sel of ['[data-act="shgo"]', '[data-act="gp"][data-kind="talk"]', '[data-go="phon"]', '[data-act="gp"][data-kind="read"]', '[data-act="paste"]', '[data-act="rago"]', '[data-go="sounds"]', '[data-act="csgo"]'])
-      await expect(page.locator(`#app ${sel}`).first()).toBeVisible();
+      await expect(page.locator(`#app details.ndph ${sel}`).first()).toBeVisible();
     await expect(page.locator('#app')).toContainText('làm rồi ôn lại');
     await page.locator('[data-act="ndlv"][data-v="A2"]').click();
     await expect(page.locator('#app [data-act="shgo"]')).toHaveAttribute('data-lv', 'A2');
@@ -52,6 +57,7 @@ test('chuyển hẳn: tab Nói / Đọc của 📘 Học và màn Tôi không c�
 test('v151 tính: bộ cặp âm ghi bằng chứng nguồn Nói & Đọc (nd-pair), không cộng mục tiêu ngày / XP; Nói nhại chỉ tăng theo dõi riêng', async ({ page, errors }) => {
   await open(page);
   const s0 = await snap(page);
+  await page.evaluate(() => { const w = window as any; w.eval('ui').ndPh = true; w.eval('render()'); });   // v157 mở mục 🗣 Luyện phát âm
   await page.locator('#app [data-go="sounds"]').click();
   await page.locator('#app [data-snd]').first().click();
   await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
@@ -60,6 +66,7 @@ test('v151 tính: bộ cặp âm ghi bằng chứng nguồn Nói & Đọc (nd-pa
   expect(s1.led).toBe(s0.led + 1); expect(s1.xp).toBe(s0.xp); expect(s1.ok).toBe(s0.ok); expect(s1.nd).toBe(s0.nd + 1);
   expect(await page.evaluate(() => { const l = (window as any).eval('st').e.ev.led; return l[l.length - 1].ctx; })).toBe('nd-pair');
   await page.evaluate(() => { const w = window as any; w.eval("go('nd')"); });
+  await page.evaluate(() => { const w = window as any; w.eval('ui').ndPh = true; w.eval('render()'); });   // v157 mở mục 🗣 Luyện phát âm
   await page.locator('#app [data-act="shgo"]').click();
   await page.evaluate(() => { const w = window as any; w.eval('ui').sh.self = 1; w.eval('shNext')(); });
   const s2 = await snap(page);
@@ -69,36 +76,79 @@ test('v151 tính: bộ cặp âm ghi bằng chứng nguồn Nói & Đọc (nd-pa
   expect(errors).toEqual([]);
 });
 
-test('v151 làm rồi ôn lại: đọc to bài theo cấp → làm bài từ vựng + ngữ pháp của chính bài; đúng ghi bằng chứng nguồn nd, sai vào Ôn tập ngày mai; Mục tiêu có đoạn "nhờ Nói & Đọc"', async ({ page, errors }) => {
+// v157 Ôn luyện = đọc / nghe nguyên bài + câu hỏi hiểu (+ 1–2 câu ngữ pháp của bài). Đúng ≥ 80% không xem nghĩa → unit qua.
+async function ndRead(page: Page, uid: string, listen = false): Promise<void> {
+  await page.evaluate(([u, l]) => (window as any).eval('ndRead')(u, l), [uid, listen] as const);
+  await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
+}
+// chọn đáp án qua giao diện: đúng hết, hoặc sai ở các câu hiểu có chỉ số trong `bad`
+async function answer(page: Page, bad: number[] = [], gBad = false): Promise<void> {
+  const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read, u = w.eval('UNITS').find((x: any) => x.id === R.uid);
+    return { q: u.reading.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)) }; });
+  for (const [i, k] of R.q.entries()) await page.locator(`[data-rpick="${i}:${bad.includes(i) ? (k + 1) % 3 : k}"]`).click();
+  for (const [j, k] of R.g.entries()) await page.locator(`[data-ndg="${j}:${gBad ? (k + 1) % 2 : k}"]`).click();
+  await page.locator('[data-act="rsubmit"]').click();
+}
+test('v157 ▶ Ôn tiếp: đọc nguyên bài, không lộ nghĩa; đúng hết → unit qua (ctx nd), từ vào lịch ôn +3 ngày; có câu ngữ pháp của bài; WCAG AA', async ({ page, errors }) => {
   await open(page);
-  await page.evaluate(() => { const w = window as any; w.eval('ui').gp = { lv: 'A1', tier: 2, mode: 'say', kind: 'read' }; w.eval("go('gp')"); });
-  await page.locator('[data-act="gpnew"]').click();
-  await expect(page.locator('#app .eyebrow').first()).toContainText('📖 Đọc to');
-  const n = await page.evaluate(() => (window as any).eval('ui').ra.q.length as number);
-  for (let i = 0; i < n; i++) { await page.evaluate(() => { (window as any).eval('ui').ra.self = 1; }); await page.locator('[data-act="ranext"]').click(); }
-  await page.locator('[data-act="ndxgo"]').click();
-  await expect(page.locator('#ndxin')).toBeVisible();
+  await page.evaluate(() => { const w = window as any; w.eval("ui.ndLv='A1'"); w.eval('render()'); });
+  await page.locator('#app [data-act="ndnext"]').click();
+  await expect(page.locator('#app .eyebrow').first()).toContainText('🔁 Ôn luyện');
+  const uid = await page.evaluate(() => (window as any).eval('ui').read.uid as string);
+  expect(uid.startsWith('a1-')).toBe(true);
+  await expect(page.locator('#app .reading mark[title]')).toHaveCount(0);   // không lộ nghĩa
+  await expect(page.locator('#app [data-act="ndpeek"]')).toBeVisible();
+  const ax = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
+  expect(ax.violations.map(v => v.id)).toEqual([]);
   const led0 = await page.evaluate(() => (window as any).eval('st').e.ev.led.length as number);
-  const q = await page.evaluate(() => (window as any).eval('ui').ndx.q as any[]);
-  expect(q.length).toBeGreaterThan(0);
-  // câu 1 đúng
-  await page.locator('#ndxin').fill(q[0].ans); await page.locator('[data-act="ndxok"]').click();
-  await expect(page.locator('#app .fb.good')).toContainText('Đúng');
-  const e1 = await page.evaluate(() => { const l = (window as any).eval('st').e.ev.led; return l[l.length - 1]; });
-  expect(e1.ctx).toBe('nd'); expect(e1.ok).toBeTruthy(); expect(e1.node).toBe(q[0].node);
-  // câu 2 (nếu có) sai → vào Ôn tập ngày mai
-  if (q.length > 1) {
-    await page.locator('[data-act="ndxnext"]').click();
-    await page.locator('#ndxin').fill('zzz'); await page.locator('[data-act="ndxok"]').click();
-    await expect(page.locator('#app .fb.bad')).toContainText('lịch ôn');
-    const due = await page.evaluate((it: any) => { const w = window as any, s = it.k === 'w' ? w.eval('st').words[it.wid] : w.eval('st').gram[it.gid]; return s.due - w.eval('today()'); }, q[1]);
-    expect(due).toBe(1);
-  }
-  expect(await page.evaluate(() => (window as any).eval('st').e.ev.led.length as number)).toBeGreaterThan(led0);
-  const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
-  expect(r.violations.map(v => v.id)).toEqual([]);
+  const s0 = await snap(page);
+  await answer(page);
+  await expect(page.locator('#app .fb.good')).toContainText('nhờ đọc hiểu');
+  const r = await page.evaluate((u: string) => { const w = window as any, st = w.eval('st'), U = w.eval('U'), W = w.eval('W'), t = w.eval('today()'), led = st.e.ev.led;
+    const unit = w.eval('UNITS').find((x: any) => x.id === u); const last = led[led.length - 1];
+    return { passed: U(u).passed, due: W(unit.words[0].id).due - t, ctx: last.ctx, n: led.length, nodes: [...new Set(led.slice(-8).map((x: any) => x.node.split(':')[0]))] }; }, uid);
+  expect(r.passed).toBe(true); expect(r.due).toBe(3); expect(r.ctx).toBe('nd'); expect(r.n).toBeGreaterThan(led0);
+  const s1 = await snap(page); expect(s1.xp).toBe(s0.xp); expect(s1.ok).toBe(s0.ok);   // không tính XP / mục tiêu ngày của Học bài
+  // bài kế: không lặp lại bài vừa làm trong ngày
+  await page.locator('#app [data-act="ndnext"]').click();
+  expect(await page.evaluate(() => (window as any).eval('ui').read.uid as string)).not.toBe(uid);
   await page.evaluate(() => (window as any).eval("go('aim')"));
   await expect(page.locator('#app .cmpleg')).toContainText('nhờ Ôn luyện');
+  expect(errors).toEqual([]);
+});
+
+test('v157 xem bản dịch → lượt này không tính qua unit (câu ghi có trợ giúp); sai nhiều → nút 📘 Học lại bài này về đúng unit', async ({ page, errors }) => {
+  await open(page);
+  const uid = await page.evaluate(() => (window as any).eval('CONTENT').levels[0].units[4].id as string);
+  await ndRead(page, uid);
+  await page.locator('#app [data-act="ndpeek"]').click();
+  await expect(page.locator('#app details .vi')).toBeVisible();
+  await answer(page);
+  await expect(page.locator('#app .fb')).toContainText('không tính qua unit');
+  const r = await page.evaluate((u: string) => { const w = window as any, l = w.eval('st').e.ev.led; return { passed: !!w.eval('U')(u).passed, asst: l[l.length - 1].asst }; }, uid);
+  expect(r).toEqual({ passed: false, asst: 1 });
+  await ndRead(page, uid);
+  await answer(page, [0, 1]);
+  await expect(page.locator('#app .fb.bad')).toContainText('≥ 80%');
+  expect(await page.evaluate((u: string) => !!(window as any).eval('U')(u).passed, uid)).toBe(false);
+  await page.locator(`#app [data-unit="${uid}"]`, { hasText: 'Học lại bài này' }).click();
+  await expect(page.locator('#bnav [data-go="lib"]')).toHaveAttribute('aria-current', 'page');
+  expect(errors).toEqual([]);
+});
+
+test('v157 ngữ pháp trong bài: đúng ở 2 bài khác nhau → điểm ngữ pháp qua; đúng 2 lần cùng một bài thì chưa', async ({ page, errors }) => {
+  await open(page);
+  const pair = await page.evaluate(() => { const w = window as any, us = w.eval('UNITS').filter((u: any) => u.level === 'A1' && u.reading), gq = w.eval('ndGQ'), m = new Map();
+    for (const u of us) for (const q of gq(u)) { const a = m.get(q.gid) || []; a.push(u.id); m.set(q.gid, a); }
+    for (const [g, a] of m) if (a.length >= 2) return { g, a: a.slice(0, 2) }; return null; });
+  expect(pair).not.toBeNull();
+  const { g, a } = pair!;
+  const go = async (uid: string) => { await page.evaluate(([u, gid]) => { const w = window as any; w.eval('ndRead')(u, false); const R = w.eval('ui').read; R.gq = R.gq.filter((q: any) => q.gid === gid); w.eval('render()'); }, [uid, g] as const); await answer(page); };
+  await go(a[0]); await go(a[0]);
+  expect(await page.evaluate((x: string) => !!(window as any).eval('G')(x).passed, g)).toBe(false);
+  await go(a[1]);
+  await expect(page.locator('#app .fb')).toContainText('đúng ở 2 bài khác nhau');
+  expect(await page.evaluate((x: string) => (window as any).eval('G')(x).passed, g)).toBe(true);
   expect(errors).toEqual([]);
 });
 
@@ -140,33 +190,17 @@ test('v152 sức khoẻ kiến thức: engine chia vững / đang phai / đã qu
   expect(errors).toEqual([]);
 });
 
-test('v152 não ưu tiên chỗ đang phai: từ "rice" (u:a1-food) đang phai → Ôn nhanh A1 chọn bài có từ đó, hỏi trước với nhãn "Ôn lại"; sai → nút 📘 Học lại bài này mở đúng unit', async ({ page, errors }) => {
+test('v152 → v157 não ưu tiên chỗ đang phai: unit chứa "rice" đang phai → ▶ Ôn tiếp A1 chọn bài của unit đó (lý do: đang phai)', async ({ page, errors }) => {
   await open(page);
   await page.waitForFunction(() => { const w = window as any, EM = w.eval('EM'); return !!(EM && EM.health && EM.health('cefr-a1')); }, null, { timeout: 30000 });
-  const node = await page.evaluate(() => { const w = window as any, u = w.eval('UNIT_OF')['rice']; const EM = w.eval('EM'), real = EM.health.bind(EM), n = 'u:' + u.id;
+  const uid = await page.evaluate(() => { const w = window as any, u = w.eval('UNIT_OF')['rice']; const EM = w.eval('EM'), real = EM.health.bind(EM), n = 'u:' + u.id;
     EM.health = (g: string) => { const r = real(g); if (!r) return r; for (const k of ['solid', 'lost', 'open']) r[k] = r[k].filter((x: string) => x !== n); r.fading = [n, ...r.fading.filter((x: string) => x !== n)]; return r; };
-    return n; });
-  await page.evaluate(() => (window as any).eval('render()'));
+    w.eval("ui.ndLv='A1'"); w.eval('render()'); return u.id as string; });
+  await expect(page.locator('#app [aria-label="Ôn tiếp"]')).toContainText('đang phai');
   await page.locator('#app [data-act="ndshow"][data-v="A1"]').click();
-  await expect(page.locator(`#app [aria-label="Sức khoẻ kiến thức"] [data-unit]`).first()).toBeVisible();
+  await expect(page.locator(`#app [aria-label="Sức khoẻ kiến thức"] [data-unit="${uid}"]`)).toBeVisible();
   await page.locator('#app [data-act="ndquick"][data-v="A1"]').click();
-  await expect(page.locator('#app .eyebrow').first()).toContainText('📖 Đọc to');
-  const q = await page.evaluate(() => (window as any).eval('ui').ra.q as string[]);
-  const n = q.length;
-  for (let i = 0; i < n; i++) { await page.evaluate(() => { (window as any).eval('ui').ra.self = 1; }); await page.locator('[data-act="ranext"]').click(); }
-  await page.locator('[data-act="ndxgo"]').click();
-  const x = await page.evaluate(() => (window as any).eval('ui').ndx.q as any[]);
-  const fadingFirst = x[0].node === node && x[0].kind === 'fading';
-  if (q.join(' ').toLowerCase().includes('rice')) expect(fadingFirst).toBe(true);
-  // trả lời sai câu đầu → kết quả có Chỗ bị quên với nút về đúng bài
-  await page.locator('#ndxin').fill('zzz'); await page.locator('[data-act="ndxok"]').click();
-  for (let i = 1; i < x.length; i++) { await page.locator('[data-act="ndxnext"]').click(); await page.locator('#ndxin').fill(x[i].ans); await page.locator('[data-act="ndxok"]').click(); }
-  await page.locator('[data-act="ndxnext"]').click();
-  await expect(page.locator('#app h3', { hasText: 'Chỗ bị quên' })).toBeVisible();
-  const home = page.locator('#app [data-unit], #app [data-gp]').first();
-  await expect(home).toContainText('Học lại bài này');
-  await home.click();
-  await expect(page.locator('#bnav [data-go="lib"]')).toHaveAttribute('aria-current', 'page');
+  expect(await page.evaluate(() => (window as any).eval('ui').read.uid as string)).toBe(uid);
   expect(errors).toEqual([]);
 });
 
@@ -207,25 +241,24 @@ test('v154 Mục tiêu có hai thanh Học / Nhớ; qua bài cuối unit làm th
   expect(errors).toEqual([]);
 });
 
-// v155 Vượt bài đã biết: Ôn luyện vừa ôn vừa đo trình độ, đánh dấu vào bài học bằng đúng bài cuối có sẵn của Học bài.
-test('v155 Vượt bài đã biết: có bằng chứng ≥ 50% số từ của unit → não gợi ý ⚡ Vượt unit, bấm vào thẳng bài cuối; có nút vượt cả cấp', async ({ page, errors }) => {
+// v157 Học bài cũng có hai thanh Học / Nhớ (người sáng lập 17/10/2026); Ôn luyện không còn danh sách vượt dài và bài lẻ.
+test('v157 Học bài hiện hai thanh Học / Nhớ; Ôn luyện gọn: không còn ⚡ Vượt bài đã biết, công cụ phát âm trong mục đóng sẵn', async ({ page, errors }) => {
   await open(page);
-  const uid = await page.evaluate(() => { const w = window as any, u = w.eval('CONTENT').levels.find((l: any) => l.id === 'A1').units[2];
-    for (const x of u.words.slice(0, Math.ceil(u.words.length * 0.6))) w.eval('eEv')({ node: 'u:' + u.id, level: 3, ok: true, g: 0, item: 'nd:' + x.id + ':t', qt: 'typed', ctx: 'nd', src: 'vocab', ch: 'nd:t' });
-    w.eval("ui.ndLv='A1'"); w.eval('render()'); return u.id; });
-  const box = page.locator('#app [aria-label="Vượt bài đã biết"]');
-  const sug = box.locator(`[data-act="test"][data-u="${uid}"]`, { hasText: 'Vượt unit' });   // v156: còn có trong danh sách đủ (thu gọn)
-  await expect(sug).toBeVisible();
-  await expect(box.locator('[data-act="place"][data-l="A1"]')).toBeVisible();
-  const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
-  expect(r.violations.map(v => v.id)).toEqual([]);
-  await sug.click();
-  await expect.poll(() => page.evaluate(() => { const w = window as any; return w.eval('ui').view === 'session' && w.eval('ui').sess.kind; })).toBe('test');
+  await page.waitForFunction(() => { const w = window as any, EM = w.eval('EM'); return !!(EM && EM.parts && EM.parts('cefr-a1')); }, null, { timeout: 30000 });
+  await page.evaluate(() => (window as any).eval('render()'));
+  await expect(page.locator('#app [aria-label="Vượt bài đã biết"]')).toHaveCount(0);
+  await expect(page.locator('#app details.ndph')).not.toHaveAttribute('open', '');
+  await page.locator('#bnav [data-go="lib"]').click();
+  const box = page.locator('#app [aria-label^="Học và Nhớ"]');
+  await expect(box).toContainText('cần 80%');
+  await expect(box.locator('[role="progressbar"]')).toHaveCount(2);
+  const ax = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
+  expect(ax.violations.map(v => v.id)).toEqual([]);
   expect(errors).toEqual([]);
 });
 
 // v156 Người chỉ dùng Ôn luyện: hai thanh ngay trong Ôn luyện; vượt cả cấp chỉ đánh dấu unit được hỏi và đúng hết; qua bài → vào lịch ôn sau 3 ngày.
-test('v156 vượt cả từ vựng A1: chỉ unit được hỏi và đúng hết được đánh dấu; từ của unit đó vào lịch ôn +3 ngày; Ôn luyện có hai thanh, danh sách vượt đủ, thẻ chức năng giao tiếp', async ({ page, errors }) => {
+test('v156 vượt cả từ vựng A1: chỉ unit được hỏi và đúng hết được đánh dấu; từ của unit đó vào lịch ôn +3 ngày; Ôn luyện có hai thanh, thẻ chức năng giao tiếp', async ({ page, errors }) => {
   await open(page);
   const r = await page.evaluate(() => { const w = window as any, L = w.eval('CONTENT').levels.find((l: any) => l.id === 'A1'), [a, b, c] = L.units.slice(1, 4);
     const res = [{ wid: a.words[0].id, dim: 'rec', correct: true }, { wid: a.words[1].id, dim: 'rcl', correct: true }, { wid: b.words[0].id, dim: 'rec', correct: false },
@@ -240,8 +273,7 @@ test('v156 vượt cả từ vựng A1: chỉ unit được hỏi và đúng h�
   await page.waitForFunction(() => { const w = window as any, EM = w.eval('EM'); return !!(EM && EM.parts && EM.parts('cefr-a1')); }, null, { timeout: 30000 });
   await page.evaluate(() => (window as any).eval('render()'));
   await expect(page.locator('#app [aria-label="Học và Nhớ A1"]')).toContainText('cần 80%');
-  await expect(page.locator('#app [aria-label="Vượt bài đã biết"] details [data-act="test"]').first()).toBeAttached();
-  await expect(page.locator('#app [data-act="ndfn"]')).toBeVisible();
+  await expect(page.locator('#app details.ndph [data-act="ndfn"]')).toBeAttached();
   const ax = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(ax.violations.map(v => v.id)).toEqual([]);
   expect(errors).toEqual([]);
