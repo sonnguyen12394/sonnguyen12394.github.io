@@ -40,8 +40,8 @@ test('v128 truyện: tự gõ câu cho cư dân (ghi nhật ký H), lựa chọn
   for (let i = 0; i < 40; i++) {
     if (await fx.locator('.stme').count()) {
       const en = await fx.locator('.sten').innerText();
-      await fx.locator('input[name="t"]').fill(en); await fx.locator('input[name="t"]').press('Enter');
-      await expect(fx.locator('.stok')).toBeVisible();
+      // WebKit trên CI: phím Enter có lúc rơi vào lúc ô gõ vừa vẽ lại → gõ lại nếu chưa có kết quả.
+      await expect(async () => { const t = fx.locator('input[name="t"]'); if (await t.count()) { await t.fill(en); await t.press('Enter'); } await expect(fx.locator('.stok')).toBeVisible({ timeout: 3000 }); }).toPass({ timeout: 20000 });
       await axe(page, '#stfx');
     }
     if (await fx.locator('[data-st="pick"]').count()) { await fx.locator('[data-st="pick"][data-v="secret"]').click(); continue; }

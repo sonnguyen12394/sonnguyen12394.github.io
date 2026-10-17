@@ -153,3 +153,21 @@ test('v148 chưa đồng ý máy nghe giọng: bấm ghi thì hỏi trước; đ
   expect(await page.evaluate(() => (window as any).__order)).toEqual(['mic', 'asr']);
   expect(errors).toEqual([]);
 });
+
+test('v148 như ELSA web: nhận diện tự tắt khi ngừng nhịp thì tự bật lại, chữ cộng dồn chạy suốt; bấm Dừng mới chấm cả câu', async ({ page, errors }) => {
+  await openLive(page, true);
+  await page.locator('[data-act="phrec"]').click();
+  await emit(page, 'hanoi has', false);
+  await page.evaluate(() => { const w = window as any; w.__asr[0].onend(); });
+  expect(await page.evaluate(() => (window as any).__asr.length)).toBe(2);
+  await expect(page.locator('#asrlive')).toHaveText('hanoi has');
+  await expect(page.locator('#app .fb strong', { hasText: 'Máy nghe ra' })).toHaveCount(0);
+  await emit(page, 'four seasons', false);
+  await expect(page.locator('#asrlive')).toHaveText('hanoi has four seasons');
+  await page.locator('[data-act="phrec"]').click();
+  await page.evaluate(() => { const w = window as any; w.__asr[1].onend(); });
+  await expect(page.locator('#app')).toContainText('Máy nghe ra 4/4 từ');
+  await expect(page.locator('#app .fb strong', { hasText: 'Điểm phát âm' })).toBeVisible();
+  expect(await page.evaluate(() => (window as any).__asr.length)).toBe(2);
+  expect(errors).toEqual([]);
+});

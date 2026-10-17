@@ -10,8 +10,10 @@ async function zero(page: Page): Promise<void> {
   await page.goto('/');
   await page.getByRole('button', { name: 'Bắt đầu', exact: true }).click();
   await expect(page.getByText(/Sương Câm/).first()).toBeVisible({ timeout: 15000 });
-  await page.getByRole('button', { name: 'Tôi chưa biết gì tiếng Anh' }).click();
-  await expect(page.getByRole('heading', { name: 'Bắt đầu từ chữ cái' })).toBeVisible();
+  // WebKit trên CI: bấm trúng lúc app vẽ lại (máy nạp xong) thì mất lượt bấm → chờ máy nạp, bấm lại nếu chưa sang màn.
+  await page.waitForFunction(() => (window as any).ELREADY === true);
+  const zeroBtn = page.getByRole('button', { name: 'Tôi chưa biết gì tiếng Anh' }), head = page.getByRole('heading', { name: 'Bắt đầu từ chữ cái' });
+  await expect(async () => { if (await zeroBtn.isVisible()) await zeroBtn.click(); await expect(head).toBeVisible({ timeout: 3000 }); }).toPass({ timeout: 20000 });
 }
 const lastEv = (page: Page) => page.evaluate(() => { const l = (window as any).eval('st').e.ev.led; return l[l.length - 1]; });
 async function lobby(page: Page): Promise<void> {
