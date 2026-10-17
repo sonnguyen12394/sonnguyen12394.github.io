@@ -1,5 +1,5 @@
-// v140 Thi chuyển cấp: phần Viết + Nói (người sáng lập 16/10/2026 chọn "đủ 4 kỹ năng ngay"). Đọc + Nghe vẫn quyết định đậu / rớt
-// (IRT, gate.ts); Viết / Nói chấm bằng luật + tự chấm nên chỉ để THAM KHẢO (tin cậy Vừa, SPEC Quyết định kỹ thuật §10), ghi kèm kết quả.
+// v140 Thi chuyển cấp: phần Viết + Nói (người sáng lập 16/10/2026 chọn "đủ 4 kỹ năng ngay"). Đọc + Nghe quyết định bằng IRT
+// (gate.ts); Viết / Nói chấm bằng luật + tự chấm. v158 (người sáng lập 17/10/2026): Viết / Nói vào phán quyết, mỗi bài ≥ GATE.ws (gatePassAll).
 // Bài soạn mới theo dạng công khai của A2 Key (Viết: tin nhắn ≥ 25 từ trả lời 3 ý, chuyện ngắn ≥ 35 từ theo 3 cảnh; Nói: trả lời câu hỏi
 // về bản thân). A1 là bản nhẹ hơn. Bài lạ: không trùng Viết theo đề / Nói theo đề ở Kỹ năng. Mỗi bộ đi với một bộ Đọc + Nghe (cùng mã).
 // Do AI soạn, chưa người thật soát (như phần Đọc + Nghe). Thuần dữ liệu + hàm.
