@@ -15,7 +15,7 @@ export interface AimIn {
   lv: AimLv;
   o: CmpOut;
   chosen: boolean;                          // cấp này đang là đích chính
-  gate: { has: boolean; open: boolean; passed: boolean; ratio: number; wait?: { days: number; more: number } | null };
+  gate: { has: boolean; open: boolean; passed: boolean; ratio: number; wait?: { days: number; more: number } | null; parts?: { learn: number; mem: number; total: number } };
   forge: string;                            // lò Thợ rèn đang gợi ý (data-g của nút cblo)
   cert?: string;                            // ô chứng chỉ ngoài app (gateview viewCert), chỉ khi đã chọn
   cap?: number;                             // số kỹ năng vững mà vòng game còn đòi (cmpVerdict)
@@ -53,7 +53,12 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
     : g.passed ? `<p><b>✓ Đã qua thi chuyển cấp ${x.lv}.</b></p>`
     : g.wait && x.chosen ? `<p class="hint">Lần trước chưa qua. Mỗi lần là bài mới, nhưng cần học thêm rồi mới làm lại: ${esc(waitTxt(g.wait))}.</p>`
     : g.open && x.chosen ? `<p>Bạn đã gần xong mục tiêu. Bài gồm Đọc, Nghe, Viết, Nói, sinh mới mỗi lần theo tiêu chí của cấp; không gợi ý. Qua là tự lên cấp.</p><div class="row"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào thi chuyển cấp ${x.lv}</button></div>`
+    : g.parts ? `<p class="hint">Mở khi 📘 Học ≥ 80% và 🔁 Nhớ ≥ 70% (xem hai thanh ở trên). Mỗi lần làm là một bài mới sinh theo tiêu chí. Qua là tự lên cấp.</p>`
     : `<p class="hint">Mở khi đã vững ≥ 80% (hiện ${pct(g.ratio, 1)}%). Mỗi lần làm là một bài mới sinh theo tiêu chí. Qua là tự lên cấp.</p>`;
+  // v154 hai thanh (người sáng lập 17/10/2026): 📘 Học (đã qua bài cuối) và 🔁 Nhớ (nhớ ra sau ≥ 3 ngày, chưa phai). Mở thi: Học ≥ 80% VÀ Nhớ ≥ 70%.
+  const pt = g.parts, bar = (ic: string, t: string, n: number, need: number, sub: string) => { const q = pt && pt.total ? Math.round(100 * n / pt.total) : 0;
+    return `<div class="stack" style="gap:4px"><p><b>${ic} ${t}</b> · ${n}/${pt!.total} phần (${q}%) <span class="hint">· cần ${Math.round(need * 100)}% ${q >= need * 100 ? '✓' : ''}</span></p><span class="lskbar" role="progressbar" aria-label="${t} ${x.lv}" aria-valuemin="0" aria-valuemax="${pt!.total}" aria-valuenow="${n}"><i style="width:${q}%"></i></span><p class="hint">${sub}</p></div>`; };
+  const two = pt && pt.total ? `<section class="panel stack aimtwo" aria-label="Học và Nhớ"><h2>Mở thi chuyển cấp ${x.lv} khi</h2>${bar('📘', 'Học', pt.learn, 0.8, 'Đã qua bài cuối của bài học (unit, điểm ngữ pháp, cặp âm, chức năng giao tiếp).')}${bar('🔁', 'Nhớ', pt.mem, 0.7, 'Làm đúng lại sau ≥ 3 ngày kể từ lúc học và hiện chưa phai. Nhớ không bù cho Học.')}</section>` : '';
   const pick = x.chosen ? '' : `<div class="row"><button class="btn primary" data-e="aimpick" data-g="${id}">Chọn ${x.lv} làm đích</button></div>`;
   return `${head}
     <section class="panel stack cmp aim">
@@ -63,6 +68,7 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
       <p class="hint cmpleg"><i class="cg"></i> nhờ game · <i class="ca"></i> nhờ Học bài · <i class="cn"></i> nhờ Ôn luyện · <i class="cb2"></i> từ hai nguồn · <i class="cp"></i> có từ trước</p>
       <ul class="cmplist">${rows}</ul>
     </section>
+    ${two}
     <section class="panel stack"><h2>🚪 Thi chuyển cấp ${x.lv}</h2>${gate}</section>
     ${x.cert ?? ''}
     <p class="cmpv">${esc(cmpVerdict(o, x.cap))}</p>

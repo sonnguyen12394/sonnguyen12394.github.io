@@ -8,7 +8,10 @@ import { estimate, type Response } from '../exam/irt.ts';
 import type { WsOut } from './gatews.ts';
 
 // v140 open 0,7 → 0,8 (người sáng lập: thi chuyển cấp mở khi vững ≥ 80%: gần xong mục tiêu, không phí bộ câu lạ).
-export const GATE = { open: 0.8, ready: 0.8, sd: 1.5 } as const;
+// v154 (người sáng lập 17/10/2026): Mục tiêu tách hai thanh. 📘 Học = đã qua bài cuối của bài học; 🔁 Nhớ = nhớ ra sau ≥ 3 ngày và chưa phai.
+// Mở thi khi Học ≥ 80% VÀ Nhớ ≥ 70% (Học quan trọng hơn, Nhớ không bù cho Học).
+export const GATE = { open: 0.8, ready: 0.8, sd: 1.5, learn: 0.8, mem: 0.7, memDays: 3 } as const;
+export interface GateParts { learn: number; mem: number; total: number }
 // Ngưỡng trên thang band của bộ chấm (src/exam/scales.ts CEFR_TABLE: A1 từ band 1, A2 từ band 3, B1 từ band 4; làm tròn 0,5 nên ngưỡng thật là −0,25).
 export const GATE_THR: Record<string, number> = { 'cefr-a1': 0.75, 'cefr-a2': 2.75, 'cefr-b1': 3.75 };
 // v141 bài sinh theo tiêu chí (testgen.ts) cho các cấp này: mỗi lần làm là bài mới; bộ cố định dưới đây chỉ còn là nguồn câu có sẵn.
@@ -58,10 +61,11 @@ export function gateScore(goal: string, form: string, ans: GateAns[], day: numbe
 
 // Cổng mở khi bản đồ báo gần đủ (tỉ lệ kỹ năng của mục tiêu đã vững thật ≥ GATE.open) hoặc người học đã qua một lần đề trước mà rớt
 // (vẫn cần đề lạ còn lại). Trận cổng là tài nguyên có hạn: mở sớm thì phí đề và kết quả "chưa đậu" ai cũng đoán trước được (P10).
-export interface GateState { has: boolean; open: boolean; left: string[]; passed: GateResult | null; last: GateResult | null; ratio: number; gen: boolean; wait: { days: number; more: number } | null }
+export interface GateState { has: boolean; open: boolean; left: string[]; passed: GateResult | null; last: GateResult | null; ratio: number; gen: boolean; wait: { days: number; more: number } | null; parts?: GateParts; learn?: number; mem?: number }
 // v141 cấp có bài sinh (GEN_LV): không còn "hết bộ lạ"; rớt thì mở lại khi đủ RETRY.wait ngày VÀ vững thêm ít nhất 1 phần.
 // today bỏ trống = không xét thời gian chờ (màn chỉ đọc kết quả).
-export function gateState(goal: string, solid: number, total: number, sv: GateSave | undefined, today?: number): GateState {
+// parts (v154): số nút qua bài (learn) / có bằng chứng nhớ (mem) trên tổng; có thì luật mở dùng hai thanh, không thì luật cũ (vững ≥ 80%).
+export function gateState(goal: string, solid: number, total: number, sv: GateSave | undefined, today?: number, parts?: GateParts): GateState {
   const gen = !!GEN_LV[goal], forms = GATE_FORMS[goal] ?? [], done = sv?.done ?? {};
   const left = gen ? ['gen'] : forms.filter(f => !done[f] && !(sv?.seen ?? []).includes(f));
   const mine = Object.values(done).filter(r => r.goal === goal).sort((a, b) => a.day - b.day);
@@ -71,7 +75,9 @@ export function gateState(goal: string, solid: number, total: number, sv: GateSa
     const days = Math.max(0, last.day + RETRY.wait - today), more = Math.max(0, (last.sol ?? -1) + 1 - solid);
     if (days > 0 || more > 0) wait = { days, more };
   }
-  return { has: gen || forms.length > 0, open: !passed && left.length > 0 && ratio >= GATE.open && !wait, left, passed, last, ratio, gen, wait };
+  const learn = parts && parts.total ? parts.learn / parts.total : undefined, mem = parts && parts.total ? parts.mem / parts.total : undefined;
+  const ready = learn !== undefined && mem !== undefined ? learn >= GATE.learn && mem >= GATE.mem : ratio >= GATE.open;
+  return { has: gen || forms.length > 0, open: !passed && left.length > 0 && ready && !wait, left, passed, last, ratio, gen, wait, ...(parts ? { parts, learn, mem } : {}) };
 }
 export function sanitizeGate(x: unknown): GateSave | undefined {
   if (!x || typeof x !== 'object') return undefined;

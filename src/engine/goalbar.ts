@@ -14,7 +14,7 @@ export interface GoalIn {
   review: number;                                                                // phần sắp quên (cùng số bộ não chọn game dùng)
   rote?: string[];                                                               // v111: phần đúng ở câu cũ mà sai ở câu lạ (rote.ts)
   due?: { days: number; mins: number } | null;                                   // v111: hạn người học đặt (ngày còn lại) + phút học ước tính còn cần
-  gate?: { lv: string; has: boolean; open: boolean; passed: boolean; ratio: number; left: number } | null;   // v111 trận cổng của khu (cấp) mục tiêu
+  gate?: { lv: string; has: boolean; open: boolean; passed: boolean; ratio: number; left: number; learn?: number; mem?: number } | null;   // v111 trận cổng của khu (cấp) mục tiêu
   zones?: Array<{ lv: string; passed: boolean; cur: boolean }>;                // v111 khu = cấp: thang khu, khu đã qua cổng, khu đang ở
 }
 export interface GoalSum {
@@ -72,6 +72,7 @@ export function viewGoalBar(c: ECtx, s: GoalSum): string {
   const gline = !gt || !gt.has ? '<span class="hint">Đây là bản đồ để biết học gì tiếp, chưa phải kết luận đủ trình độ.</span>'
     : gt.passed ? `<span class="gbup">🚪 Đã qua thi chuyển cấp ${esc(gt.lv)}</span>`
     : gt.open ? `<span class="gbup">🚪 Thi chuyển cấp ${esc(gt.lv)} đã mở: qua là lên cấp.</span>`
+    : gt.learn !== undefined && gt.mem !== undefined ? `<span class="hint">🚪 Thi chuyển cấp ${esc(gt.lv)} chưa mở: mở khi 📘 Học ≥ ${Math.round(GATE.learn * 100)}% (đang ${Math.round(gt.learn * 100)}%) và 🔁 Nhớ ≥ ${Math.round(GATE.mem * 100)}% (đang ${Math.round(gt.mem * 100)}%).</span>`
     : `<span class="hint">🚪 Thi chuyển cấp ${esc(gt.lv)} chưa mở: mở khi ${Math.round(GATE.open * 100)}% kỹ năng đã vững (đang ${Math.round(gt.ratio * 100)}%). Bản đồ này chưa phải kết luận.</span>`;
   const cta = gt?.open && !gt.passed ? `<div class="row" style="margin:-4px 0 12px"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào thi chuyển cấp ${esc(gt.lv)}</button></div>` : '';
   return `<section class="gbar stack" aria-label="Tiến độ mục tiêu" style="cursor:default">

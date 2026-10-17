@@ -31,7 +31,7 @@ async function dragTo(page: Page, from: { x: number; y: number }, to: { x: numbe
 }
 
 test('Bài Câu: xếp đúng thì ra bài có điểm (tự chuyển lượt), sai thì hiện câu đúng; 3 bàn × 3 lượt; bằng chứng đúng nút ngữ pháp', async ({ page, errors }) => {
-  test.setTimeout(120_000);   // 9 lượt bấm từng lá: WebKit CI chậm, 60 giây mặc định quá sát (hết giờ → trang bị đóng giữa chừng)
+  test.setTimeout(180_000);   // 9 lượt bấm từng lá: WebKit CI chậm (~5 lần Chrome: 23 s → 110–120 s), 120 giây vẫn sát (hết giờ → trang bị đóng giữa chừng)
   await open(page);
   const end = page.getByRole('heading', { name: /Xong ván/ });
   let plays = 0, good = 0, shot = 0;
