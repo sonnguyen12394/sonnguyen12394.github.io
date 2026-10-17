@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 84;
+const STATE_V = 18, APP_VERSION = 86;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -3635,7 +3635,7 @@ function recReset(){ REC.keep=false; recStop(); if(REC.url){ try{URL.revokeObjec
 const SPEECH_REC = typeof window!=='undefined' ? (window.SpeechRecognition||window.webkitSpeechRecognition||null) : null;
 const HAS_ASR = !!SPEECH_REC;
 const ASR = {on:false,key:'',res:null,err:'',r:null,pending:null,live:'',fin:null,t:0};
-function asrReset(){ const r=ASR.r; clearTimeout(ASR.t); Object.assign(ASR,{on:false,key:'',res:null,err:'',r:null,live:'',fin:null,t:0}); try{ r&&r.abort(); }catch(e){} }
+function asrReset(){ const r=ASR.r; clearTimeout(ASR.t); Object.assign(ASR,{on:false,key:'',res:null,err:'',code:'',r:null,live:'',acc:'',n:0,fin:null,t:0}); try{ r&&r.abort(); }catch(e){} }
 // v145 chữ máy đang nghe được, hiện ngay khi nói (kiểu ELSA): ô #asrlive cập nhật thẳng, không vẽ lại cả màn.
 const asrLive = () => `<p id="asrlive" class="asrlive" lang="en" aria-live="polite">${esc(ASR.live)||'…'}</p>`;
 const ASR_IOS = typeof navigator!=='undefined'&&/iPhone|iPad|iPod/.test(navigator.userAgent||'');
@@ -3656,34 +3656,52 @@ function asrWord(target,other,heard){
 }
 const ASR_ERR = {'not-allowed':'Trình duyệt chưa cho dùng micro (trình xem artifact luôn chặn). Mở bản web của app và cho phép micro.','service-not-allowed':'Trình duyệt này không cho nhận diện giọng nói ở đây. Hãy thử Chrome hoặc Edge, mở bản web của app.',
   'no-speech':ASR_IOS?'Máy chưa nghe thấy gì. Trên iPhone: vào Cài đặt → Chung → Bàn phím, bật “Đọc chính tả”; cho phép Micrô cho trình duyệt (Cài đặt → tên trình duyệt). Rồi bấm 🎙 và nói ngay.':'Máy chưa nghe thấy gì. Bấm lại rồi nói ngay.','audio-capture':'Không tìm thấy micro.','network':'Nhận diện giọng cần mạng (trình duyệt gửi âm thanh đi nhận diện).'};
-function asrStart(key,target,other){
+// o.quiet (v148 màn Chấm từng âm): không đếm, không lưu (phát âm không tính).
+function asrStart(key,target,other,o){
   if(!HAS_ASR) return;
   if(st.set.asr!==true){ ASR.pending={key,target,other}; return modal({ic:'🎙',title:'Bật máy nghe giọng?',html:true,
     sub:'Bạn nói, máy của trình duyệt nghe và cho biết nó nghe ra những từ nào: người nghe có hiểu bạn không. Đây <b>không phải</b> chấm phát âm chuẩn như giáo viên.<br><br>Để nhận diện, trình duyệt <b>có thể gửi âm thanh tới máy chủ của hãng trình duyệt</b> (Chrome, Edge thường gửi; Safari có khi nhận diện ngay trên máy). English Ladder không lưu và không gửi gì khác. Tắt được bất cứ lúc nào trong Cài đặt.',
     buttons:[{label:'Đồng ý, bật',act:'asrok',primary:true},{label:'Không',act:'mclose'}]}); }
   recStop(); asrReset();
-  let r; try{ r=new SPEECH_REC(); }catch(e){ toast('Trình duyệt này chưa nhận diện được giọng nói.'); return; }
+  const mk=()=>{ let r; try{ r=new SPEECH_REC(); }catch(e){ return null; } r.lang='en-US'; r.interimResults=true; r.maxAlternatives=5; r.continuous=false; return r; };
   // v145 interimResults: chữ tạm hiện ngay khi nói; WebKit iPhone hay không trả kết quả cuối (onend tới trước) → dùng chữ tạm cuối cùng để chấm,
   // không báo "chưa nghe thấy gì" khi máy đã nghe được chữ.
-  r.lang='en-US'; r.interimResults=true; r.maxAlternatives=5; r.continuous=false;
-  Object.assign(ASR,{on:true,key,r,res:null,err:'',live:''});
-  const finish=alts=>{ if(ASR.r!==r||!ASR.on) return; clearTimeout(ASR.t); ASR.on=false;
+  const r0=mk(); if(!r0){ toast('Trình duyệt này chưa nhận diện được giọng nói.'); return; }
+  Object.assign(ASR,{on:true,key,r:r0,res:null,err:'',live:'',acc:'',n:0});
+  const finish=alts=>{ if(!ASR.on||ASR.key!==key) return; clearTimeout(ASR.t); ASR.on=false;
     ASR.res=target==='*'?{free:true,heard:alts[0]||'',alts,p:1,k:'ok'}:/\s/.test(target.trim())?asrMatch(target,alts):asrWord(target,other,alts);   // '*': nghe tự do (v84 Robot: lệnh)
-    evc('asr'); if(ASR.res.word?ASR.res.k==='ok':ASR.res.p>=.8) evc('asr:ok'); save(); render(); };
-  const fail=code=>{ if(ASR.r!==r||!ASR.on) return; clearTimeout(ASR.t); ASR.on=false; ASR.err=ASR_ERR[code]||'Máy chưa nhận diện được lần này. Thử lại.'; render(); };
+    if(!(o&&o.quiet)){ evc('asr'); if(ASR.res.word?ASR.res.k==='ok':ASR.res.p>=.8) evc('asr:ok'); save(); } render(); };
+  const fail=code=>{ if(!ASR.on||ASR.key!==key) return; clearTimeout(ASR.t); ASR.on=false; ASR.code=code||''; ASR.err=ASR_ERR[code]||'Máy chưa nhận diện được lần này. Thử lại.'; render(); };
   ASR.fin=()=>{ if(ASR.live) finish([ASR.live]); else fail('no-speech'); };
-  r.onresult=e=>{ if(ASR.r!==r) return; const res=Array.from(e.results||[]);
-    ASR.live=res.map(x=>x[0]&&x[0].transcript||'').join(' ').replace(/\s+/g,' ').trim();
-    const el=typeof document!=='undefined'&&document.getElementById('asrlive'); if(el) el.textContent=ASR.live||'…';
-    if(!res.length||!res.every(x=>x.isFinal)) return;
-    const alts=[]; if(res[0]) for(let j=0;j<res[0].length;j++) alts.push(res[0][j].transcript);
-    if(res.length>1) alts.unshift(res.map(x=>x[0].transcript).join(' '));
-    finish(alts); };
-  r.onerror=e=>{ if(ASR.r!==r) return; if(ASR.live&&(e.error==='no-speech'||e.error==='aborted')) return finish([ASR.live]); fail(e.error); };
-  r.onend=()=>{ if(ASR.r!==r||!ASR.on) return; ASR.fin(); };
-  try{ r.start(); }catch(e){ ASR.on=false; ASR.err='Máy chưa nhận diện được lần này. Thử lại.'; }
+  // v148 o.keep() (màn Chấm từng âm, như ELSA web): còn đang ghi thì phiên nhận diện tự tắt khi ngừng nhịp sẽ được bật lại, chữ cộng dồn,
+  // chữ chạy suốt tới lúc bấm Dừng. Tối đa 10 lần mỗi lượt để không lặp mãi.
+  const again=()=>{ if(!(o&&o.keep&&o.keep())||ASR.n>=10) return false; const r2=mk(); if(!r2) return false;
+    ASR.n++; ASR.acc=ASR.live; ASR.r=r2; bind(r2); try{ r2.start(); return true; }catch(e){ return false; } };
+  const bind=r=>{
+    r.onresult=e=>{ if(ASR.r!==r) return; const res=Array.from(e.results||[]);
+      const cur=res.map(x=>x[0]&&x[0].transcript||'').join(' ');
+      ASR.live=(ASR.acc+' '+cur).replace(/\s+/g,' ').trim();
+      const el=typeof document!=='undefined'&&document.getElementById('asrlive'); if(el) el.textContent=ASR.live||'…';
+      if(!res.length||!res.every(x=>x.isFinal)) return;
+      if(again()) return;
+      if(ASR.acc) return finish([ASR.live]);
+      const alts=[]; if(res[0]) for(let j=0;j<res[0].length;j++) alts.push(res[0][j].transcript);
+      if(res.length>1) alts.unshift(res.map(x=>x[0].transcript).join(' '));
+      finish(alts); };
+    r.onerror=e=>{ if(ASR.r!==r) return; if((e.error==='no-speech'||e.error==='aborted')&&again()) return;
+      if(ASR.live&&(e.error==='no-speech'||e.error==='aborted')) return finish([ASR.live]); fail(e.error); };
+    r.onend=()=>{ if(ASR.r!==r||!ASR.on) return; if(again()) return; ASR.fin(); };
+  };
+  bind(r0);
+  try{ r0.start(); }catch(e){ ASR.on=false; ASR.err='Máy chưa nhận diện được lần này. Thử lại.'; }
   render();
 }
+// Kết quả một câu: từ máy nghe ra (xanh) / chưa ra (đỏ), từ lạ gạch ngang.
+function asrResHtml(r){ const hit=new Set(r.hit), n=hit.size, all=r.words.length;
+  return `<div class="fb ${r.p>=.8?'good':r.p>=.5?'neutral':'bad'}" role="status"><strong>Máy nghe ra ${n}/${all} từ</strong>
+      <p lang="en" style="font:400 18px/1.5 var(--display)">${r.words.map((w,i)=>`<span class="${hit.has(i)?'asr-ok':'asr-miss'}">${esc(w)}</span>`).join(' ')}</p>
+      <span class="hint">Máy nghe được: “<span lang="en">${(()=>{ const tw=new Set(r.words); return (r.heard||'').split(/\s+/).filter(Boolean).map(h=>{ const g=gsent(h); return g&&!tw.has(g)?`<s class="asr-x" title="không có trong câu mẫu">${esc(h)}</s>`:esc(h); }).join(' ')||'…'; })()}</span>”</span>
+      <span>${r.p>=.9?'Rất rõ: máy hiểu gần như cả câu.':r.p>=.5?'Nghe lại mẫu, chú ý từ gạch đỏ (thường là âm cuối hoặc trọng âm), rồi nói lại.':'Máy chưa nghe ra phần lớn câu. Nói chậm hơn, gần micro, ở chỗ yên tĩnh.'}</span></div>`; }
 // Nút + kết quả. key phân biệt từng câu; other = từ kia của cặp âm (chỉ với một từ).
 function asrBox(key,target,other,label){
   if(!HAS_ASR||!target) return '';
@@ -3698,11 +3716,7 @@ function asrBox(key,target,other,label){
       :r.k==='other'?`<div class="fb bad" role="status"><strong>Máy nghe thành “<span lang="en">${o}</span>”</strong><span>Âm bạn nói gần với từ kia của cặp. Nghe mẫu, đọc mẹo rồi nói lại.</span></div>`
       :`<div class="fb neutral" role="status"><strong>Máy chưa nghe ra “<span lang="en">${esc(target)}</span>”</strong><span>Máy nghe được: “<span lang="en">${esc(r.heard)||'…'}</span>”. Nói chậm, rõ âm cuối rồi thử lại.</span></div>`;
   } else {
-    const hit=new Set(r.hit), n=hit.size, all=r.words.length;
-    body=`<div class="fb ${r.p>=.8?'good':r.p>=.5?'neutral':'bad'}" role="status"><strong>Máy nghe ra ${n}/${all} từ</strong>
-      <p lang="en" style="font:400 18px/1.5 var(--display)">${r.words.map((w,i)=>`<span class="${hit.has(i)?'asr-ok':'asr-miss'}">${esc(w)}</span>`).join(' ')}</p>
-      <span class="hint">Máy nghe được: “<span lang="en">${(()=>{ const tw=new Set(r.words); return (r.heard||'').split(/\s+/).filter(Boolean).map(h=>{ const g=gsent(h); return g&&!tw.has(g)?`<s class="asr-x" title="không có trong câu mẫu">${esc(h)}</s>`:esc(h); }).join(' ')||'…'; })()}</span>”</span>
-      <span>${r.p>=.9?'Rất rõ: máy hiểu gần như cả câu.':r.p>=.5?'Nghe lại mẫu, chú ý từ gạch đỏ (thường là âm cuối hoặc trọng âm), rồi nói lại.':'Máy chưa nghe ra phần lớn câu. Nói chậm hơn, gần micro, ở chỗ yên tĩnh.'}</span></div>`;
+    body=asrResHtml(r);
   }
   return `<div class="stack" style="gap:6px">${body}<div class="row">${btn}</div><p class="hint">Máy nghe ra chưa chắc là phát âm chuẩn; đây là phép thử “người nghe có hiểu bạn không”.</p></div>`;
 }
@@ -4809,6 +4823,15 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:86,d:'2026-10-17',t:'🧪 Chấm từng âm: chữ hiện ngay khi nói',items:[
+    'Hai mô hình chạy cùng lúc: khi bạn nói, chữ máy nghe được hiện ngay (như Nói và Đọc to); nói xong máy chấm từng âm.',
+    'Như ELSA web: chữ chạy suốt lúc nói (ngừng một nhịp máy tự nghe tiếp), bấm Dừng mới chấm. Ghi xong thấy ngay “Máy nghe ra n/m từ”, rồi tới điểm từng âm.',
+    'Trên iPhone, nếu chữ không hiện được cùng lúc với ghi âm, app vẫn chấm âm và báo rõ. Có nút tắt “Hiện chữ khi nói”.']},
+  {v:85,d:'2026-10-17',t:'🧪 Chấm từng âm: sửa theo lần thử trên iPhone',items:[
+    'Khi ghi âm có vạch âm lượng và đồng hồ: thấy ngay micro có thu được giọng không. Ghi xong có nút ▶ Nghe lại giọng bạn.',
+    'Âm thanh gần như im lặng thì app báo rõ, không chấm (trước đây vẫn chấm và ra điểm rất thấp).',
+    'Sau khi chấm có dòng “Máy nghe ra các âm” đặt cạnh âm mong đợi. Cách chấm mới hợp với mô hình hơn: âm nói đúng không còn bị chấm thấp oan.',
+    'Kiểu fp16 (~600 MB) vẫn giữ nhưng có cảnh báo: trình duyệt trên iPhone thường hết bộ nhớ, dành cho bản app sau này.']},
   {v:84,d:'2026-10-16',t:'🧪 Thử chấm từng âm trên máy',items:[
     'Thử nghiệm ở Tôi → “🧪 Chấm từng âm”: như ELSA, máy chấm từng âm trong câu bạn nói, từ tô xanh / vàng / đỏ; bấm một từ để xem âm nào sai, bị nuốt, hay nghe thành âm khác.',
     'Mô hình chạy ngay trên điện thoại, âm thanh không gửi đi đâu. Lần đầu phải tải vài trăm MB (nên dùng Wi-Fi); máy yếu có thể chậm.',
@@ -5198,7 +5221,9 @@ document.addEventListener('click',e=>{
     case 'phload': return phLoad();
     case 'phdel': return phDel();
     case 'phrec': return phRec();
+    case 'phplay': { try{ PH.url&&new Audio(PH.url).play(); }catch(e){} return; }
     case 'phdt': PH.dtype=d.v; return render();
+    case 'phlive': st.set.phLive=!phLiveOn(); if(!st.set.phLive&&ASR.key==='phon') asrReset(); save(); return render();
     case 'phset': { const el=document.getElementById('phsent'), v=String(el?el.value:'').trim().slice(0,120); if(v){ PH.sent=v; PH.res=null; PH.err=''; } return render(); }
     case 'gp': { if(d.lv&&GP_LV.includes(d.lv)) (ui.gp||(ui.gp={tier:1,mode:'say',kind:'read'})).lv=d.lv; if(ui.gp&&d.mode&&GP_MODE[d.mode]) ui.gp.mode=d.mode; if(ui.gp&&d.kind&&GP_KIND[d.kind]) ui.gp.kind=d.kind; if(ui.gp) ui.gp.text=null; return go('gp'); }
     case 'gplv': ui.gp.lv=d.v; ui.gp.text=null; return render();
@@ -5391,7 +5416,7 @@ document.addEventListener('click',e=>{
     case 'syncwipe': if(t.dataset.confirm!=='1'){ t.dataset.confirm='1'; t.textContent='Bấm lần nữa để xoá trên máy chủ'; return; } return syncWipe();
     case 'syncjoinok': closeModal(); return syncJoin(ui.syncHash);
     case 'asrstop': { try{ ASR.r&&ASR.r.stop(); }catch(e){} clearTimeout(ASR.t); ASR.t=setTimeout(()=>{ if(ASR.on&&ASR.fin) ASR.fin(); },8000); return; }   // v145 an toàn: không có onend thì tự chấm bằng chữ tạm
-    case 'asrok': { st.set.asr=true; save(); closeModal(); const q=ASR.pending; ASR.pending=null; return q&&asrStart(q.key,q.target,q.other); }
+    case 'asrok': { st.set.asr=true; save(); closeModal(); const q=ASR.pending; ASR.pending=null; if(q&&q.key==='phon') return phRec(); return q&&asrStart(q.key,q.target,q.other); }
     case 'asroff': st.set.asr=false; asrReset(); save(); toast('Đã tắt máy nghe giọng.'); return render();
     case 'recstop': return recStop();
     case 'recplay': return recPlay();
@@ -6241,7 +6266,7 @@ function viewGP(){
 // ---------- v146 🧪 Chấm từng âm trên máy (thử nghiệm, kiểu ELSA) ----------
 // Mô hình nhận âm vị wav2vec2 (IPA espeak, ONNX) chạy trong phon-worker.js; app ghi âm, đổi về 16 kHz, gửi worker, nhận logits rồi chấm từng âm
 // bằng ELCORE.gop (căn hàng CTC + GOP). Âm thanh không rời khỏi máy; mô hình tải một lần (vài trăm MB). Chỉ để thử: không ghi bằng chứng.
-const PH = {w:null,st:'idle',prog:0,total:0,vocab:null,err:'',loadMs:0,runMs:0,rec:null,recT:0,chunks:[],res:null,dtype:'q8',sent:'Hanoi has four seasons.',dur:0,frames:0,miss:[]};
+const PH = {w:null,st:'idle',prog:0,total:0,vocab:null,err:'',loadMs:0,runMs:0,rec:null,recT:0,chunks:[],res:null,dtype:'q8',sent:'Hanoi has four seasons.',dur:0,frames:0,miss:[],heard:'',url:'',rms:0,voiced:0,meter:null,t0:0};
 const phProgTxt = () => PH.total?`${Math.round(PH.prog/1048576)} / ${Math.round(PH.total/1048576)} MB`:'Đang chuẩn bị…';
 function phWorker(){ if(PH.w) return PH.w;
   const w=new Worker('phon-worker.js',{type:'module'});
@@ -6256,25 +6281,46 @@ function phWorker(){ if(PH.w) return PH.w;
 function phLoad(){ PH.err=''; PH.st='loading'; PH.prog=0; PH.total=0; phWorker().postMessage({type:'load',dtype:PH.dtype}); render(); }
 async function phDel(){ try{ PH.w&&PH.w.terminate(); }catch(e){} Object.assign(PH,{w:null,st:'idle',vocab:null,res:null,err:'',prog:0,total:0});
   try{ if(typeof caches!=='undefined') await caches.delete('transformers-cache'); toast('Đã xoá mô hình khỏi máy.'); }catch(e){} render(); }
-async function phRec(){ if(PH.rec) return phStop(); PH.err=''; PH.res=null;
+// v148 hai mô hình cùng lúc (người sáng lập 16/10/2026): micro + MediaRecorder cho mô hình chấm âm mở TRƯỚC (phần chính), rồi mới bật
+// nhận diện chữ của trình duyệt để chữ hiện ngay khi nói. iPhone có thể không cho hai bên dùng micro cùng lúc: nhận diện lỗi thì vẫn chấm âm.
+const phLiveOn = () => HAS_ASR&&st.set.phLive!==false;
+async function phRec(){ if(PH.rec) return phStop(); PH.err=''; PH.res=null; if(ASR.key==='phon') asrReset();
+  if(phLiveOn()&&st.set.asr!==true&&!PH.asked){ PH.asked=true; return asrStart('phon',PH.sent,null,{quiet:true}); }
   try{ const s=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true}}), mr=new MediaRecorder(s); PH.chunks=[];
     mr.ondataavailable=e=>{ if(e.data&&e.data.size) PH.chunks.push(e.data); };
-    mr.onstop=()=>{ s.getTracks().forEach(t=>t.stop()); phDecode(new Blob(PH.chunks,{type:mr.mimeType||'audio/mp4'})); };
-    mr.start(); PH.rec=mr; PH.st='rec'; PH.recT=setTimeout(phStop,6000); render();
+    mr.onstop=()=>{ phMeterStop(); s.getTracks().forEach(t=>t.stop()); const b=new Blob(PH.chunks,{type:mr.mimeType||'audio/mp4'}); try{ PH.url&&URL.revokeObjectURL(PH.url); PH.url=URL.createObjectURL(b); }catch(e){} phDecode(b); };
+    mr.start(); PH.rec=mr; PH.st='rec'; PH.t0=Date.now(); PH.recT=setTimeout(phStop,6000); render(); phMeter(s);
+    if(phLiveOn()&&st.set.asr===true) try{ asrStart('phon',PH.sent,null,{quiet:true,keep:()=>PH.st==='rec'}); }catch(e){ ASR.err='Máy chưa bật được nhận diện chữ.'; }
   }catch(e){ PH.err='Không mở được micro: '+(e.message||e.name||e)+'. Cho phép micro cho trình duyệt rồi thử lại.'; render(); } }
-function phStop(){ clearTimeout(PH.recT); const r=PH.rec; PH.rec=null; PH.st='scoring'; try{ r&&r.state!=='inactive'&&r.stop(); }catch(e){} render(); }
+// v147 vạch âm lượng + đồng hồ khi ghi: thấy ngay micro có thu được giọng không.
+function phMeter(stream){ try{ const AC=window.AudioContext||window.webkitAudioContext, ac=new AC(), an=ac.createAnalyser(); an.fftSize=512; ac.createMediaStreamSource(stream).connect(an);
+  const buf=new Float32Array(an.fftSize); let peak=0;
+  const tick=()=>{ if(!PH.meter) return; an.getFloatTimeDomainData(buf); let e=0; for(let i=0;i<buf.length;i++) e+=buf[i]*buf[i]; const r=Math.sqrt(e/buf.length); peak=Math.max(peak*0.9,r);
+    const bar=document.getElementById('phlvl'), tm=document.getElementById('phtime'), hint=document.getElementById('phquiet');
+    if(bar) bar.style.width=Math.min(100,Math.round(peak*400))+'%'; if(tm) tm.textContent=((Date.now()-PH.t0)/1000).toFixed(1)+' s';
+    if(hint) hint.hidden=!(Date.now()-PH.t0>1500&&peak<0.01);
+    PH.meter.raf=requestAnimationFrame(tick); };
+  PH.meter={ac,raf:0}; tick(); }catch(e){} }
+function phMeterStop(){ const m=PH.meter; PH.meter=null; if(!m) return; try{ cancelAnimationFrame(m.raf); m.ac.close(); }catch(e){} }
+function phStop(){ clearTimeout(PH.recT); const r=PH.rec; PH.rec=null; PH.st='scoring'; try{ r&&r.state!=='inactive'&&r.stop(); }catch(e){}
+  if(ASR.key==='phon'&&ASR.on){ try{ ASR.r&&ASR.r.stop(); }catch(e){} clearTimeout(ASR.t); ASR.t=setTimeout(()=>{ if(ASR.key==='phon'&&ASR.on&&ASR.fin) ASR.fin(); },4000); }
+  render(); }
 async function phDecode(blob){
   try{ const AC=window.AudioContext||window.webkitAudioContext, ac=new AC(), buf=await ac.decodeAudioData(await blob.arrayBuffer()); try{ ac.close(); }catch(e){}
     const n=Math.max(1,Math.ceil(buf.duration*16000)), oc=new OfflineAudioContext(1,n,16000), src=oc.createBufferSource(); src.buffer=buf; src.connect(oc.destination); src.start();
-    const out=await oc.startRendering(); PH.dur=buf.duration; phRun(out.getChannelData(0));
+    const out=await oc.startRendering(); PH.dur=buf.duration; phGo(out.getChannelData(0));
   }catch(e){ PH.err='Không đọc được âm thanh vừa ghi: '+(e.message||e); PH.st='ready'; render(); } }
+// Kiểm âm lượng trước khi chấm: gần như im lặng thì báo rõ, không chấm (tránh điểm thấp vì máy không thu được giọng).
+function phGo(x){ const L=ELCORE.gop.loudness(x); PH.rms=L.rms; PH.voiced=L.voiced; PH.res=null;
+  if(L.voiced<0.05){ PH.st='ready'; PH.err='Máy chưa nghe thấy tiếng của bạn (âm thanh gần như im lặng). Bấm ▶ Nghe lại để kiểm, rồi nói to hơn, gần micro hơn.'; return render(); }
+  PH.err=''; phRun(x); }
 function phRun(audio){ PH.st='scoring'; phWorker().postMessage({type:'run',audio}); }
 // Âm mong đợi của câu: phiên âm từng từ (dạng đọc nhẹ nếu là từ chức năng), đổi sang bộ âm của mô hình.
 function phTarget(){ const G=ELCORE.gop, n=pnNote(PH.sent), miss=new Set(), words=[], phones=[];
   for(const t of (n?n.toks:[])){ if(!t.ipa) continue; const w=words.length; words.push(pnWord(t)); for(const p of G.toModelPhones(t.ipa,PH.vocab,miss)) phones.push({...p,w}); }
   return {words,phones,miss:[...miss]}; }
 function phScore(m){ const T=m.dims[1], V=m.dims[2], idTo=[]; for(const [k,v] of Object.entries(PH.vocab||{})) idTo[v]=k;
-  const tg=phTarget(); PH.miss=tg.miss; PH.frames=T;
+  const tg=phTarget(); PH.miss=tg.miss; PH.frames=T; PH.heard=ELCORE.gop.greedy(m.data,T,V,idTo,(PH.vocab||{})['<pad>']??0);
   PH.res=ELCORE.gop.score(m.data,T,V,tg.phones,tg.words,idTo,(PH.vocab||{})['<pad>']??0);
   if(!PH.res) PH.err='Âm thanh ngắn hơn câu mẫu: nói hết câu, rõ từng từ rồi thử lại.'; }
 const phCls = s => s>=80?'g':s>=60?'a':'r';
@@ -6285,10 +6331,11 @@ function viewPhon(){
     <p class="muted">Giống ELSA: máy chấm từng âm trong câu bạn nói (xanh đúng, vàng gần đúng, đỏ sai hoặc thiếu). Mô hình chạy ngay trên điện thoại, âm thanh không gửi đi đâu.</p>
     <p class="hint">Lưu ý: lần đầu phải tải mô hình vài trăm MB (nên dùng Wi-Fi). Trên iPhone có thể chậm hoặc trang bị tải lại nếu máy thiếu bộ nhớ. Điểm là ước tính, kém chính xác hơn ELSA, chưa người thật kiểm. Không tính vào mức thuộc.</p></section>`;
   if(!ok) return head+'<p class="hint">Trình duyệt này chưa chạy được bộ chấm (thiếu Worker).</p>';
-  const dt=[['q8','Nén 8-bit (khuyên dùng)'],['q4','Nén 4-bit (nhỏ hơn)'],['fp16','fp16 (lớn hơn)']];
+  const dt=[['q8','Nén 8-bit (đã chạy trên iPhone, khuyên dùng)'],['q4','Nén 4-bit (nhẹ hơn)'],['fp16','fp16 (~600 MB, dành cho bản app sau này)']];
   const model=PH.st==='loading'?`<p>Đang tải mô hình: <b id="phprog" class="num">${phProgTxt()}</b></p><p class="hint">Giữ màn hình mở. Lần sau không phải tải lại.</p>`
     :PH.vocab?`<p class="fb good" role="status"><strong>Đã sẵn sàng</strong><span>Tải và mở mô hình mất ${(PH.loadMs/1000).toFixed(1)} giây.</span></p><div class="row"><button class="btn ghost small" data-act="phdel">Xoá mô hình khỏi máy</button></div>`
     :`<div class="row" role="group" style="gap:6px">${dt.map(([k,l])=>`<button class="btn small ${PH.dtype===k?'primary':''}" data-act="phdt" data-v="${k}" aria-pressed="${PH.dtype===k}">${l}</button>`).join('')}</div>
+      ${PH.dtype==='fp16'?'<p class="fb bad" role="status"><span>fp16 nặng ~600 MB: trình duyệt trên iPhone thường hết bộ nhớ và tự tải lại trang. Chỉ để thử trên máy tính hoặc cho bản app cài từ App Store sau này.</span></p>':''}
       <div class="row"><button class="btn primary" data-act="phload">Tải mô hình</button></div>`;
   const words=R?R.words.map(w=>w.score<0?'':`<details class="phd"><summary class="phw ${phCls(w.score)}"><span lang="en">${esc(w.text)}</span> <b class="num">${w.score}</b></summary>
       <ul class="pntips">${w.phones.map(p=>`<li><span class="phw ${p.missing?'r':phCls(p.score)}">/${esc(p.ipa)}/ <b class="num">${p.score}</b></span> ${p.missing?'thiếu âm này (bị nuốt)':p.heard?`nghe gần như /${esc(p.heard)}/`:p.score>=80?'tốt':'chưa rõ'}</li>`).join('')}</ul></details>`).join(''):'';
@@ -6299,11 +6346,21 @@ function viewPhon(){
     <div class="row"><button class="btn small" data-act="phset">Dùng câu này</button>${HAS_TTS?`<button class="btn small" data-say="${esc(PH.sent)}">${SPK} Nghe mẫu</button><button class="btn small" data-say="${esc(PH.sent)}" data-slow="1">🐢 Nghe chậm</button>`:''}</div>
     ${pnHtml(n)}</section>
   <section class="panel stack"><h2>3. Nói và chấm</h2>
-    ${!PH.vocab?'<p class="hint">Tải mô hình trước.</p>':PH.st==='rec'?`<p class="hint">🎙 Đang ghi… nói câu trên (tối đa 6 giây).</p><div class="row"><button class="btn primary" data-act="phrec">■ Dừng</button></div>`
+    ${!PH.vocab?'<p class="hint">Tải mô hình trước.</p>':PH.st==='rec'?`<p class="hint">🎙 Đang ghi… nói câu trên (tối đa 6 giây). <b id="phtime" class="num">0.0 s</b></p>
+      <div class="phmeter" role="img" aria-label="Âm lượng micro"><i id="phlvl"></i></div>
+      <p id="phquiet" class="hint" hidden>Chưa nghe thấy tiếng: nói to hơn hoặc gần micro hơn.</p>
+      ${ASR.key==='phon'&&(ASR.on||ASR.live)?`<p class="hint">Máy nghe ra chữ:</p>${asrLive()}`:''}
+      <div class="row"><button class="btn primary" data-act="phrec">■ Dừng</button></div>`
       :PH.st==='scoring'?'<p role="status">Đang chấm từng âm…</p>':`<div class="row"><button class="btn primary" data-act="phrec">● Ghi âm và chấm</button></div>`}
     ${PH.err?`<p class="fb bad" role="status"><span>${esc(PH.err)}</span></p>`:''}
-    ${R?`<div class="fb ${R.score>=80?'good':R.score>=60?'neutral':'bad'}" role="status"><strong>Điểm phát âm: ${R.score}/100</strong><span>Bấm một từ để xem từng âm.</span></div><div class="phws">${words}</div>`:''}
-    ${R||PH.runMs?`<p class="hint num">Số liệu (gửi lại để cải thiện): tải ${(PH.loadMs/1000).toFixed(1)} s · chấm ${Math.round(PH.runMs)} ms · âm thanh ${PH.dur.toFixed(1)} s · ${PH.frames} khung · kiểu ${esc(PH.dtype)}${PH.miss.length?` · âm chưa có trong mô hình: ${esc(PH.miss.join(' '))}`:''}</p>`:''}
+    ${PH.st!=='rec'&&ASR.key==='phon'?ASR.res&&!ASR.res.word&&!ASR.res.free?asrResHtml(ASR.res)
+      :ASR.on?`<p class="hint">Máy nghe ra chữ:</p>${asrLive()}`
+      :ASR.err?`<p class="hint" role="status">Chữ không hiện được lần này (${esc(ASR.code||'lỗi')}): trên máy này nhận diện chữ có thể không chạy cùng lúc với ghi âm. Điểm từng âm vẫn chấm.${PH.err&&/im lặng/.test(PH.err)?' Nếu bản ghi bị im lặng, tắt “Hiện chữ khi nói” rồi ghi lại.':''}</p>`:'':''}
+    ${HAS_ASR?`<div class="row"><button class="btn small ghost" data-act="phlive" aria-pressed="${phLiveOn()}">${phLiveOn()?'✓ Hiện chữ khi nói (đang bật)':'Hiện chữ khi nói (đang tắt)'}</button></div>`:'<p class="hint">Trình duyệt này không hiện chữ khi nói được; vẫn chấm từng âm.</p>'}
+    ${PH.url&&PH.st!=='rec'?`<div class="row"><button class="btn small" data-act="phplay">▶ Nghe lại giọng bạn</button></div>`:''}
+    ${R?`<div class="fb ${R.score>=80?'good':R.score>=60?'neutral':'bad'}" role="status"><strong>Điểm phát âm: ${R.score}/100</strong><span>Bấm một từ để xem từng âm.</span></div><div class="phws">${words}</div>
+      <p class="hint">Máy nghe ra các âm: <span class="ipa">/${esc(PH.heard||'…')}/</span><br>Âm mong đợi: <span class="ipa">/${esc((n||{toks:[]}).toks.filter(t=>t.ipa).map(t=>t.ipa.replace(/[ˈˌ]/g,'')).join(' '))}/</span></p>`:''}
+    ${R||PH.runMs?`<p class="hint num">Số liệu (gửi lại để cải thiện): tải ${(PH.loadMs/1000).toFixed(1)} s · chấm ${Math.round(PH.runMs)} ms · âm thanh ${PH.dur.toFixed(1)} s · ${PH.frames} khung · kiểu ${esc(PH.dtype)} · âm lượng ${PH.rms.toFixed(3)} · có tiếng ${Math.round(PH.voiced*100)}% · chữ: ${!HAS_ASR?'không có':!phLiveOn()?'tắt':ASR.key==='phon'&&ASR.err?'lỗi '+esc(ASR.code||'?'):ASR.key==='phon'&&ASR.res?'bật, nghe '+Math.round(ASR.res.p*100)+'%':'bật'}${PH.miss.length?` · âm chưa có trong mô hình: ${esc(PH.miss.join(' '))}`:''}</p>`:''}
   </section>`;
 }
 // Đọc to chỉ mở cho bài đọc A1 / A2 (đích hiện tại); bộ chú thích phủ ≥ 98% từ ở hai cấp này (test engine-pronote).
@@ -8835,7 +8892,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.acf17b562e.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.092119f158.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

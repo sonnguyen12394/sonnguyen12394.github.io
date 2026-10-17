@@ -63,23 +63,29 @@ export function ctcAlign(lp: Float32Array, T: number, V: number, target: number[
   return span;
 }
 
-// Chấm: GOP từng âm → 0–100. Âm mạnh nhất (không tính khoảng lặng) trên các khung của âm, nếu khác âm mong đợi và điểm thấp → "nghe gần như".
+// Chấm (v147, sau lần thử thật trên iPhone): mô hình CTC chỉ "bật" mỗi âm 1–2 khung, còn lại là khoảng lặng, nên lấy trung bình mọi khung
+// (bản 84) kéo điểm âm đúng xuống 20–40. Nay: điểm âm = ĐỈNH xác suất của âm mong đợi trong đoạn căn hàng (nới ±2 khung), chuẩn hoá trên
+// các âm không phải khoảng lặng, nhân độ "có tiếng" của khung (1 − P(lặng)). Âm mạnh nhất ở khung có tiếng nhất = "nghe gần như".
 export function score(logits: ArrayLike<number>, T: number, V: number, phones: GopPhone[], words: string[], idToTok: string[], blank: number): GopResult | null {
   const lp = logSoftmax(logits, T, V), span = ctcAlign(lp, T, V, phones.map(p => p.tok), blank);
   if (!span) return null;
   const ps: PhoneScore[] = phones.map((p, k) => {
-    const [t0, t1] = span[k]!; let sum = 0, n = 0; const votes = new Map<number, number>();
+    const [a, b] = span[k]!, t0 = Math.max(0, a - 2), t1 = Math.min(T - 1, b + 2);
+    let best = 0, speechMax = 0, top = -1;
     for (let t = t0; t <= t1; t++) {
-      let m = -Infinity, arg = -1; for (let v = 0; v < V; v++) if (v !== blank && lp[t * V + v]! > m) { m = lp[t * V + v]!; arg = v; }
-      sum += lp[t * V + p.tok]! - m; n++; votes.set(arg, (votes.get(arg) ?? 0) + 1);
+      let z = 0, m = -Infinity, arg = -1;
+      for (let v = 0; v < V; v++) if (v !== blank) { const e = Math.exp(lp[t * V + v]!); z += e; if (lp[t * V + v]! > m) { m = lp[t * V + v]!; arg = v; } }
+      const speech = 1 - Math.exp(lp[t * V + blank]!), q = z > 0 ? Math.exp(lp[t * V + p.tok]!) / z : 0;
+      best = Math.max(best, q * Math.min(1, speech / 0.5));
+      // Âm nghe được: chỉ xét trong đoạn căn hàng gốc (đoạn nới ±2 khung có thể lấn sang âm bên cạnh).
+      if (t >= a && t <= b && speech > speechMax) { speechMax = speech; top = arg; }
     }
-    const g = n ? sum / n : -10, sc = Math.round(100 * Math.exp(Math.max(-10, g) / 2));
-    const top = [...votes].sort((a, b) => b[1] - a[1])[0]?.[0] ?? -1;
-    let blankShare = 0; for (let t = t0; t <= t1; t++) if (Math.exp(lp[t * V + blank]!) > 0.5) blankShare++;
-    // Thiếu âm: điểm rất thấp và các khung của nó là khoảng lặng, hoặc là âm liền trước / liền sau (bị căn hàng "mượn" khung).
-    const nb = top === phones[k - 1]?.tok || top === phones[k + 1]?.tok, missing = sc < 30 && (blankShare / Math.max(1, n) > 0.5 || nb);
+    const sc = Math.round(100 * Math.sqrt(best));
+    // Thiếu âm: đoạn của nó gần như không có tiếng, hoặc tiếng mạnh nhất là âm liền trước / liền sau (căn hàng "mượn" khung của âm bên cạnh).
+    const nb = top >= 0 && top !== p.tok && (top === phones[k - 1]?.tok || top === phones[k + 1]?.tok);
+    const missing = sc < 40 && (speechMax < 0.2 || nb);
     const heard = !missing && sc < 60 && top >= 0 && top !== p.tok ? idToTok[top] ?? null : null;
-    return { ipa: p.ipa, score: sc, heard, missing, t0, t1 };
+    return { ipa: p.ipa, score: sc, heard, missing, t0: a, t1: b };
   });
   const ws: WordScore[] = words.map((text, w) => {
     const mine = ps.filter((_, k) => phones[k]!.w === w);
@@ -89,4 +95,22 @@ export function score(logits: ArrayLike<number>, T: number, V: number, phones: G
   });
   const sc = ws.filter(x => x.score >= 0);
   return { score: sc.length ? Math.round(sc.reduce((a, x) => a + x.score, 0) / sc.length) : 0, words: ws, frames: T };
+}
+
+// Đọc tham lam các âm mô hình nghe ra (argmax từng khung, gộp lặp, bỏ khoảng lặng / ký hiệu đặc biệt): để người học thấy máy nghe được gì.
+export function greedy(logits: ArrayLike<number>, T: number, V: number, idToTok: string[], blank: number): string {
+  let out = '', prev = -1;
+  for (let t = 0; t < T; t++) {
+    let m = -Infinity, arg = blank; for (let v = 0; v < V; v++) if (logits[t * V + v]! > m) { m = logits[t * V + v]!; arg = v; }
+    if (arg !== prev && arg !== blank) { const tk = idToTok[arg] ?? ''; out += tk === '|' ? ' ' : /^<.*>$/.test(tk) ? '' : tk; }
+    prev = arg;
+  }
+  return out.replace(/\s+/g, ' ').trim();
+}
+
+// Âm lượng (RMS) của đoạn âm thanh và tỉ lệ khung có tiếng: để biết máy có thu được giọng không (quá nhỏ thì không chấm).
+export function loudness(x: ArrayLike<number>): { rms: number; voiced: number } {
+  const F = 320; let sum = 0, voiced = 0, n = 0;
+  for (let i = 0; i + F <= x.length; i += F) { let e = 0; for (let j = 0; j < F; j++) e += x[i + j]! * x[i + j]!; e = Math.sqrt(e / F); sum += e; n++; if (e > 0.02) voiced++; }
+  return { rms: n ? sum / n : 0, voiced: n ? voiced / n : 0 };
 }
