@@ -4852,6 +4852,8 @@ const CHANGELOG = [
     'Câu hỏi hiểu bài viết lại: đáp án diễn đạt khác với bài (không dò chữ mà chọn được), thêm 1 câu ý chính / suy luận mỗi bài.',
     'Qua unit ở Ôn luyện cần đạt ≥ 80% ở 2 ngày khác nhau. Thanh 🔁 Nhớ của unit tính theo từng từ: ≥ 70% số từ nhớ lại sau ≥ 3 ngày.',
     'Thi chuyển cấp mở khi 📘 Học ≥ 80% và 🔁 Nhớ ≥ 50% (trước là 70%): cần hoàn thành bài học là chính.',
+    'Qua Thi chuyển cấp cần đủ 4 kỹ năng: Đọc + Nghe qua và mỗi bài Viết / Nói đạt ≥ 60% tiêu chí. Nhớ còn dưới 70% thì app nhắc 🎲 Thử sức trước.',
+    '🎯 Mục tiêu luôn có thẻ So với bài mẫu Cambridge (ghi số câu đúng Đọc / Nghe, so với app) và màn 🔍 Soát câu Thi chuyển cấp cho người soát.',
     'Màn kết quả có nút 📖 Đọc to bài này để luyện phát âm ngay trên bài vừa đọc.']},
   {v:95,d:'2026-10-17',t:'🔁 Ôn luyện: đọc / nghe nguyên bài rồi trả lời câu hỏi',items:[
     '▶ Ôn tiếp: não chọn bài đọc / nghe của unit bạn chưa qua hoặc đang quên; trả lời câu hỏi hiểu bài, thêm 1–2 câu ngữ pháp của bài.',
@@ -9213,7 +9215,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.b921abc7b4.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.ab9de3c61d.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

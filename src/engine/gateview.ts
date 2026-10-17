@@ -1,10 +1,10 @@
 // Màn thi chuyển cấp (v111 "trận cổng", gate.ts). Chỉ trình bày. v140: người sáng lập đặt tên "Thi chuyển cấp" (ngoại lệ duy nhất
-// của luật không dùng chữ "thi"), thêm Viết + Nói (gatews.ts, tham khảo) và tự lên cấp khi qua. Trong bài không đáp án, không giờ ép;
+// của luật không dùng chữ "thi"), thêm Viết + Nói (gatews.ts; v158 vào phán quyết: mỗi bài ≥ GATE.ws) và tự lên cấp khi qua. Trong bài không đáp án, không giờ ép;
 // chữa bài sau khi xong.
 
 import type { ECtx } from './views.ts';
 import type { Group } from '../exam/content.ts';
-import { GATE, GATE_SPEC, GATE_THR, CES_MIN, gateState, type GateResult, type GateSave, type GateParts } from './gate.ts';
+import { GATE, GATE_SPEC, GATE_THR, GEN_LV, CES_MIN, gateState, type GateResult, type GateSave, type GateParts } from './gate.ts';
 import { bandToCefr } from '../exam/scales.ts';
 import type { GwTask, WsOut } from './gatews.ts';
 
@@ -45,12 +45,13 @@ export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, t
   const open = st.open || (test && st.left.length > 0);
   const why = st.wait ? `Lần trước chưa qua. Mỗi lần là một bài mới hoàn toàn, nhưng cần học thêm rồi mới làm lại: ${waitTxt(st.wait)}.`
     : st.left.length === 0 ? 'Bạn đã dùng hết các bài thi chuyển cấp lạ của cấp này. Tí đang soạn thêm bài mới; trong lúc chờ, cứ luyện tiếp để vững hơn.'
-    : open ? `Đã mở. Bài gồm 4 phần: <b>Đọc</b> (biển báo, mẩu tin), <b>Nghe</b> (hội thoại ngắn), <b>Viết</b> (tin nhắn, chuyện ngắn) và <b>Nói</b> (trả lời câu hỏi về bạn), toàn câu bạn <b>chưa gặp bao giờ</b>. Mỗi bài làm một lần, không có đồng hồ, không hiện đáp án trong lúc làm. Đọc + Nghe quyết định đậu; Viết + Nói để tham khảo.`
+    : open ? `Đã mở. Bài gồm 4 phần: <b>Đọc</b> (biển báo, mẩu tin), <b>Nghe</b> (hội thoại ngắn), <b>Viết</b> (tin nhắn, chuyện ngắn) và <b>Nói</b> (trả lời câu hỏi về bạn), toàn câu bạn <b>chưa gặp bao giờ</b>. Mỗi bài làm một lần, không có đồng hồ, không hiện đáp án trong lúc làm. Đậu khi Đọc + Nghe qua <b>và</b> mỗi bài Viết / Nói đạt ≥ ${pc(GATE.ws)} tiêu chí.`
     : st.parts ? `Mở khi 📘 Học ≥ ${pc(GATE.learn)} (đã qua bài; bạn đang có ${pc(st.learn ?? 0)}) và 🔁 Nhớ ≥ ${pc(GATE.mem)} (nhớ ra sau ≥ ${GATE.memDays} ngày, chưa phai; bạn đang có ${pc(st.mem ?? 0)}).` + (st.gen ? ' Mỗi lần làm, máy sinh một bài mới theo tiêu chí của cấp.' : '') : `Mở khi bạn đã gần xong mục tiêu: ${pc(GATE.open)} kỹ năng của cấp đã vững thật (bạn đang có ${pc(st.ratio)}). ${st.gen ? 'Mỗi lần làm, máy sinh một bài mới theo tiêu chí của cấp, nên không học tủ được.' : `Bài dùng câu lạ, chỉ làm được ${st.left.length} lần, nên chỉ mở khi bạn có khả năng qua.`}`;
   return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${esc(lv)} · ${esc(vi)}</span><h1>${open ? 'Đã mở' : 'Chưa mở'}</h1>
     <p class="muted">${why}</p></section>
     ${open ? `<div class="row"><button class="btn primary big" data-e="gtstart">▶ Vào thi chuyển cấp</button></div>` : ''}
-    ${last}<p class="hint">Phần Đọc + Nghe ${esc(GATE_SPEC[goal] ?? '')}. Đậu khi khả năng qua ≥ ${pc(GATE.ready)}.</p>${back()}`;
+    ${open && st.mem !== undefined && st.mem < GATE.memTry ? `<p class="fb neutral" role="note"><span>🔁 Nhớ của bạn còn ${pc(st.mem)} (dưới ${pc(GATE.memTry)}): nên <b>🎲 Thử sức</b> từng kỹ năng ở 🎯 Mục tiêu trước, để biết mình đang ở đâu và không tiêu câu chưa gặp.</span></p>` : ''}
+    ${last}<p class="hint">Phần Đọc + Nghe ${esc(GATE_SPEC[goal] ?? '')}. Đậu khi Đọc + Nghe có khả năng qua ≥ ${pc(GATE.ready)} <b>và</b> mỗi bài Viết / Nói đạt ≥ ${pc(GATE.ws)} tiêu chí.</p>${back()}`;
 }
 // v141 làm lại sau khi rớt: còn bao nhiêu ngày, cần vững thêm bao nhiêu phần.
 export const waitTxt = (w: { days: number; more: number }): string => [w.days ? `còn ${w.days} ngày` : '', w.more ? `vững thêm ${w.more} phần nữa` : ''].filter(Boolean).join(' và ');
@@ -88,17 +89,18 @@ const weak = (r: GateResult): string => {
   const thr = GATE_THR[r.goal] ?? 2.75, w = (['R', 'L'] as const).filter(k => r.sk[k] && r.sk[k]!.theta < thr);
   return w.length ? ` Phần còn thấp: ${w.map(k => (k === 'R' ? 'đọc (chơi thêm 🔍 Thám tử)' : 'nghe (chơi thêm 📻 Đài Phố Chữ, ☕ Quán)')).join(', ')}.` : '';
 };
-// v140 Viết + Nói: % tiêu chí (luật + tự đánh dấu), tham khảo.
+// v140 Viết + Nói: % tiêu chí (luật + tự đánh dấu); v158 mỗi bài ≥ GATE.ws mới đậu.
 const wsBox = (r: GateResult): string => {
-  const w = (r.ws ?? []).filter(x => x.kind === 'w'), sp = (r.ws ?? []).filter(x => x.kind === 's');
-  if (!w.length && !sp.length) return '';
-  const avg = (xs: WsOut[]) => pc(xs.reduce((a, x) => a + x.pct, 0) / xs.length);
-  return `<p class="hint">${w.length ? `✍️ Viết: ${avg(w)} tiêu chí (${w.map(x => `${x.words} từ`).join(', ')})` : ''}${w.length && sp.length ? ' · ' : ''}${sp.length ? `🗣️ Nói: ${avg(sp)} tiêu chí (${sp.map(x => `${x.words} từ`).join(', ')})` : ''}. Chấm bằng luật và tự đánh dấu: chỉ để tham khảo, không quyết định đậu.</p>`;
+  const ws = r.ws ?? [];
+  if (!ws.length) return '';
+  return `<ul class="stack" style="list-style:none;padding:0;margin:0;gap:4px">${ws.map(x => `<li>${x.pct >= GATE.ws ? '✓' : '✗'} ${x.kind === 'w' ? '✍️ Viết' : '🗣️ Nói'}: ${pc(x.pct)} tiêu chí, ${x.words} từ (cần ≥ ${pc(GATE.ws)})</li>`).join('')}</ul>
+    <p class="hint">Viết / Nói chấm bằng luật (độ dài, từ nối, cụm của bài…) và ý bạn tự đánh dấu; chưa người thật kiểm.</p>`;
 };
 function resultBox(c: ECtx, r: GateResult): string {
   const lv = LV(r.goal), sk = (k: 'R' | 'L', vi: string) => { const s = r.sk[k]; return s ? `<div class="stat"><b>${s.ok}/${s.n}</b><span class="muted">${vi} · ≈ ${bandToCefr(s.theta)}</span></div>` : ''; };
   return `<section class="panel stack gres${r.passed ? ' ok' : ''}"><h3>${r.passed ? `✓ Qua ${lv}` : `Chưa qua ${lv}`}</h3>
     <div class="me-stats me3">${sk('R', 'đọc')}${sk('L', 'nghe')}<div class="stat"><b>${pc(r.p)}</b><span class="muted">khả năng qua</span></div></div>
+    ${r.ws?.length ? `<p>${(r.rl ?? r.passed) ? '✓' : '✗'} 📖🎧 Đọc + Nghe: ${(r.rl ?? r.passed) ? 'qua' : 'chưa qua'} (cần khả năng qua ≥ ${pc(GATE.ready)})</p>` : ''}
     <p class="hint">Ước tính năng lực ${String(Math.round(r.lo * 10) / 10).replace('.', ',')}–${String(Math.round(r.hi * 10) / 10).replace('.', ',')} trên thang của app (80% tin cậy); ngưỡng ${lv} là ${String(GATE_THR[r.goal]).replace('.', ',')}. Độ khó câu là ước tính của người soạn, chưa hiệu chỉnh bằng dữ liệu nhiều người.</p>
     ${wsBox(r)}
     ${r.passed ? '' : `<p class="muted">Không sao: bài mở lại khi bạn vững hơn, với một bài mới hoàn toàn.${weak(r)}</p>`}</section>`;
@@ -135,17 +137,58 @@ function viewTryEnd(c: ECtx, r: GateRun): string {
 
 // Chứng chỉ (tuỳ chọn ở hồ sơ, SPEC "Đề sát hạch", neo ngoài): chỉ người bật mới thấy. Nhập điểm đề mẫu chính thức / thi thật theo
 // thang Cambridge; app ghi kèm khả năng qua nó đã dự đoán trước đó, rồi cho xem app đoán đúng hay sai.
+const rvBtn = (esc: (s: unknown) => string, goal: string): string => (GEN_LV[goal] ? `<div class="row"><button class="btn small ghost" data-e="gtrev" data-g="${esc(goal)}">🔍 Soát câu Thi chuyển cấp (người soát)</button></div>` : '');
 export function viewCert(c: ECtx, goal: string, sv: GateSave | undefined): string {
   const esc = c.host.esc, min = CES_MIN[goal], lv = LV(goal);
-  if (!sv?.cert) return `<section class="panel stack"><h3>🎓 Chứng chỉ (tuỳ chọn)</h3><p class="muted">Chỉ cần nếu bạn muốn thi lấy chứng chỉ. Bật lên thì có chỗ ghi điểm đề mẫu chính thức hoặc điểm thi thật để đối chiếu với dự đoán của app.</p>
-    <div class="row"><button class="btn small" data-e="certon">Tôi muốn thi lấy chứng chỉ</button></div></section>`;
-  if (!min) return `<section class="panel stack"><h3>🎓 Chứng chỉ</h3><p class="muted">Cấp ${esc(lv)} chưa có kỳ thi cho người lớn theo thang Cambridge, nên app chưa có điểm ngoài để đối chiếu. Kết luận dựa vào trận cổng của app.</p></section>`;
-  const ext = (sv.ext ?? []).filter(x => x.goal === goal);
-  const rows = ext.map(x => `<li>${x.src === 'real' ? 'Thi thật' : 'Đề mẫu chính thức'}: <b>${x.score}</b> (${x.pass ? `đạt ${esc(lv)}` : `chưa đạt ${esc(lv)}`}) · app đã đoán khả năng qua ${x.pred === null ? 'chưa có (chưa vào trận cổng)' : pc(x.pred)} → ${x.pred === null ? '' : (x.pred >= GATE.ready) === x.pass ? 'app đoán đúng' : 'app đoán sai'}</li>`).join('');
-  return `<section class="panel stack"><h3>🎓 Chứng chỉ ${esc(lv)}</h3>
-    <p class="muted">Làm một đề mẫu chính thức ở ngoài app (đúng giờ, không tra cứu), hoặc thi thật, rồi ghi điểm theo thang Cambridge English Scale. Đạt ${esc(lv)} từ ${min} điểm. Đừng đưa đề mẫu vào app để nó luôn là đề lạ với bạn.</p>
-    ${rows ? `<ul class="stack" style="gap:4px">${rows}</ul>` : ''}
-    <form class="row" data-eform="certscore" data-g="${esc(goal)}" style="gap:6px;flex-wrap:wrap"><label class="stack" style="gap:2px"><span class="hint">Điểm</span><input class="field" name="score" type="number" min="80" max="230" required style="width:7em"></label>
-      <label class="stack" style="gap:2px"><span class="hint">Nguồn</span><select class="field" name="src"><option value="sample">Đề mẫu chính thức</option><option value="real">Thi thật</option></select></label>
-      <button class="btn small" style="align-self:flex-end">Ghi điểm</button></form></section>`;
+  // v158 luôn hiện (trước phải bật "thi lấy chứng chỉ"): đây là cách duy nhất để biết app đo đúng cấp hay không.
+  if (!min) return `<section class="panel stack"><h3>🎓 So với bài mẫu Cambridge</h3><p class="muted">Cấp ${esc(lv)} chưa có bài Cambridge cho người lớn, nên chưa có điểm ngoài để đối chiếu. Kết luận dựa vào Thi chuyển cấp của app.</p>${rvBtn(esc, goal)}</section>`;
+  const ext = (sv?.ext ?? []).filter(x => x.goal === goal);
+  // Tỉ lệ đúng gần nhất trong app theo kỹ năng: Thi chuyển cấp (sk R / L), không có thì Thử sức (rd / lis) cùng cấp.
+  const done = Object.values(sv?.done ?? {}).filter(r => r.goal === goal).sort((a, b) => a.day - b.day).at(-1);
+  const tries = (sv?.tries ?? []).filter(t => t.lv === lv);
+  const app = (k: 'R' | 'L'): { ok: number; n: number; src: string } | null => {
+    const s = done?.sk[k]; if (s && s.n) return { ok: s.ok, n: s.n, src: 'Thi chuyển cấp' };
+    const t = tries.filter(x => x.sk === (k === 'R' ? 'rd' : 'lis') && x.n).at(-1); return t ? { ok: t.ok, n: t.n, src: 'Thử sức' } : null;
+  };
+  const cmp = (vi: string, raw: number | undefined, of: number, a: ReturnType<typeof app>) => {
+    if (raw === undefined) return '';
+    const p = raw / of, d = a ? Math.round((a.ok / a.n - p) * 100) : null;
+    return `<br>${vi}: bài mẫu <b>${raw}/${of}</b> (${pc(p)})${a ? ` · app ${a.ok}/${a.n} (${pc(a.ok / a.n)}, ${a.src}) · lệch ${d! > 0 ? '+' : ''}${d} điểm %` : ' · app chưa có số để so (làm 🎲 Thử sức hoặc Thi chuyển cấp)'}`;
+  };
+  const rows = ext.map(x => `<li><b>${x.src === 'real' ? 'Thi thật' : 'Bài mẫu chính thức'}</b>${x.score ? `: ${x.score} điểm thang Cambridge (${x.pass ? `đạt ${esc(lv)}` : `chưa đạt ${esc(lv)}`}) · app đã đoán khả năng qua ${x.pred === null ? 'chưa có' : pc(x.pred)}${x.pred === null ? '' : (x.pred >= GATE.ready) === x.pass ? ' → app đoán đúng' : ' → app đoán sai'}` : ''}${cmp('📖 Đọc', x.rr, 30, app('R'))}${cmp('🎧 Nghe', x.lr, 25, app('L'))}</li>`).join('');
+  const num = (name: string, label: string, max: number) => `<label class="stack" style="gap:2px"><span class="hint">${label}</span><input class="field" name="${name}" type="number" inputmode="numeric" min="0" max="${max}" style="width:6em"></label>`;
+  return `<section class="panel stack" aria-label="So với bài mẫu Cambridge"><h3>🎓 So với bài mẫu Cambridge ${esc(lv)}</h3>
+    <p class="muted">Cách duy nhất để biết app đo đúng cấp: tự làm một bài mẫu chính thức của Cambridge A2 Key ở ngoài app (đúng giờ, không tra cứu; tải ở trang <a href="https://www.cambridgeenglish.org/exams-and-tests/qualifications/key/" target="_blank" rel="noopener">cambridgeenglish.org</a>), tự chấm theo đáp án kèm theo, rồi ghi số câu đúng vào đây. App so với kết quả Đọc / Nghe của bạn trong app.</p>
+    ${rows ? `<ul class="stack" style="gap:6px">${rows}</ul>` : ''}
+    <form class="row" data-eform="certscore" data-g="${esc(goal)}" style="gap:6px;flex-wrap:wrap">${num('rr', 'Đọc đúng / 30', 30)}${num('lr', 'Nghe đúng / 25', 25)}
+      <label class="stack" style="gap:2px"><span class="hint">Điểm thang Cambridge (nếu có)</span><input class="field" name="score" type="number" inputmode="numeric" min="80" max="230" style="width:7em"></label>
+      <label class="stack" style="gap:2px"><span class="hint">Nguồn</span><select class="field" name="src"><option value="sample">Bài mẫu chính thức</option><option value="real">Thi thật</option></select></label>
+      <button class="btn small" style="align-self:flex-end">Ghi</button></form>
+    <p class="hint">Đạt ${esc(lv)} từ ${min} điểm thang Cambridge. Đừng mở bài mẫu ở trong app, để nó luôn là bài lạ với bạn.</p>
+    ${rvBtn(esc, goal)}</section>`;
+}
+
+// v158 Soát câu Thi chuyển cấp (người soát, người sáng lập 17/10/2026). Mỗi lần mở là một bài mẫu sinh như bài thật (cùng khuôn, cùng
+// ngân hàng): thấy bài đọc / lời thoại, câu hỏi, đáp án, lời giải; đánh dấu ✓ ổn / ✗ có lỗi kèm ghi chú. Câu có sẵn bị đánh dấu lỗi
+// không bao giờ ra nữa (revBad); câu từ khuôn được ghi lại kèm bản chụp để người soạn sửa khuôn.
+export interface GateRevRun { goal: string; seed: number; groups: Group[]; ws: GwTask[]; bank: ReadonlySet<string> }
+export function viewGateRev(c: ECtx, r: GateRevRun, sv: GateSave | undefined): string {
+  const esc = c.host.esc, rev = sv?.rev ?? {}, all = Object.values(rev), bad = all.filter(x => !x.ok).length;
+  const mark = (id: string) => { const x = rev[id]; return `<div class="row" style="gap:6px;align-items:flex-end">${x ? `<span class="pill${x.ok ? ' good' : ''}">${x.ok ? '✓ Ổn' : '✗ Có lỗi'}</span>` : ''}
+      <label class="stack" style="gap:2px;flex:1 1 160px"><span class="hint">Ghi chú (nếu có lỗi)</span><input class="field" id="rvn-${esc(id)}" value="${esc(x?.note ?? '')}" maxlength="300"></label>
+      <button class="btn small" data-e="gtrevmark" data-id="${esc(id)}" data-v="ok">✓ Ổn</button><button class="btn small" data-e="gtrevmark" data-id="${esc(id)}" data-v="bad">✗ Có lỗi</button></div>`; };
+  const groups = r.groups.map(g => {
+    const src = g.kind === 'listening' ? (g.script ?? []).filter(l => l.sp !== 'N').map(l => `<p lang="en">${esc(l.sp)}: ${esc(l.t)}</p>`).join('') || '<p class="hint">(giọng thu sẵn, không có lời thoại)</p>'
+      : (g.paras ?? []).map(p => `<p lang="en" class="reading">${esc(p)}</p>`).join('');
+    const items = g.items.map(it => { const o = it.opts ?? g.options ?? [];
+      return `<li class="stack" style="gap:6px"><b lang="en">${esc(it.q)}</b><ul style="margin:0">${o.map(x => `<li lang="en">${x.k === it.ans ? '<b>✓ ' : ''}${esc(x.k)}. ${esc(x.t)}${x.k === it.ans ? '</b>' : ''}</li>`).join('')}</ul>
+        <span class="hint">${esc(it.why ?? '')} · ${r.bank.has(it.id) ? 'câu có sẵn' : 'câu từ khuôn'} · mã ${esc(it.id)}</span>${mark(it.id)}</li>`; }).join('');
+    return `<section class="panel stack"><h3>${g.kind === 'listening' ? '🎧 Nghe' : '📖 Đọc'} · <span lang="en">${esc(g.title)}</span></h3><p class="hint" lang="en">${esc(g.instr)}</p>${src}<ol class="stack" style="gap:12px;padding-left:18px">${items}</ol></section>`;
+  }).join('');
+  const ws = r.ws.map(t => `<section class="panel stack"><h3>${t.kind === 's' ? '🗣️ Nói' : '✍️ Viết'} · ${esc(t.vi)}</h3><p lang="en">${esc(t.p)}</p><p class="hint">${esc(t.pv)} · Ý phải có: ${t.c.map(esc).join(' · ')} · ${t.kind === 's' ? `nói ≥ ${t.min} từ` : `${t.min}–${t.max} từ`} · mã ${esc(t.id)}</p>${mark(t.id)}</section>`).join('');
+  return `<section class="stack"><span class="eyebrow">🔍 Soát câu Thi chuyển cấp ${esc(LV(r.goal))}</span><h1>Soát câu</h1>
+    <p class="muted">Đây là một bài mẫu sinh giống hệt bài thật (có hiện đáp án). Xem từng câu: đáp án có đúng không, có hai đáp án đúng không, câu có quá dễ đoán không, tiếng Anh có tự nhiên không. Câu có sẵn bị đánh dấu lỗi sẽ không ra nữa; câu từ khuôn được ghi lại để sửa khuôn. Người soát không nên làm Thi chuyển cấp của cấp này sau đó (đã thấy đáp án).</p>
+    <p><b>Đã soát ${all.length} câu</b>, ${bad} câu có lỗi.</p>
+    <div class="row" style="gap:6px"><button class="btn" data-e="gtrevnew">🎲 Bài mẫu khác</button>${bad ? '<button class="btn" data-e="gtrevcopy">📋 Sao chép danh sách lỗi</button>' : ''}<button class="btn ghost" data-e="go" data-r="aim">🎯 Về mục tiêu</button></div></section>
+    ${groups}${ws}`;
 }

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { gateScore, gateState, sanitizeGate, mergeGate, phi, GATE, GATE_FORMS, TRY_MAX, type GateAns } from '../../src/engine/gate.ts';
+import { gateScore, gateState, gatePassAll, revBad, sanitizeGate, mergeGate, phi, GATE, GATE_FORMS, TRY_MAX, type GateAns } from '../../src/engine/gate.ts';
 
 // v111 trận cổng (SPEC "Mô hình học v111" §3–§4): câu lạ, P(đậu) ≥ 80%, mở khi bản đồ gần đủ, đề đã mở không dùng lại.
 const FORM = (f: string) => JSON.parse(readFileSync(`content/exam/gate/${f}.json`, 'utf8')) as Array<{ id: string; kind: string; mode: string; items: Array<{ id: string; b: number; opts: unknown[] }> }>;
@@ -77,4 +77,14 @@ test('v154 hai thanh (v158 Nhớ 50%): mở thi khi Học ≥ 80% VÀ Nhớ ≥ 
   assert.equal(gateState('cefr-a2', 10, T, sv, 10, { learn: 85, mem: 75, total: T }).open, true, 'có hai thanh thì không dùng luật vững cũ');
   const s = gateState('cefr-a2', 0, T, sv, 10, { learn: 50, mem: 20, total: T });
   assert.equal(s.learn, 0.5); assert.equal(s.mem, 0.2);
+});
+
+test('v158 đậu cả bài = Đọc + Nghe qua VÀ mỗi bài Viết / Nói ≥ 60%; câu có sẵn bị soát là lỗi thì không ra', () => {
+  const w = (pct: number, kind: 'w' | 's' = 'w') => ({ id: 'g-a2-1-w1', kind, pct, words: 30 });
+  assert.equal(gatePassAll(true, [w(0.6), w(0.8, 's')]), true);
+  assert.equal(gatePassAll(true, [w(0.5), w(0.9, 's')]), false, 'Viết 50% thì rớt dù Đọc + Nghe qua');
+  assert.equal(gatePassAll(false, [w(1)]), false, 'Đọc + Nghe chưa qua thì rớt');
+  assert.equal(gatePassAll(true, undefined), true, 'bộ chưa có Viết / Nói: chỉ Đọc + Nghe');
+  const sv = sanitizeGate({ done: {}, rev: { 'a2-1-r1-1': { ok: false, day: 1, t: 'x', bank: 1 }, 'a2-g9-r1-0': { ok: false, day: 1, t: 'y' }, 'a2-1-r1-2': { ok: true, day: 1, t: 'z', bank: 1 } } });
+  assert.deepEqual(revBad(sv), ['a2-1-r1-1'], 'chỉ câu có sẵn bị đánh dấu lỗi mới bị loại; câu từ khuôn ghi lại để sửa khuôn');
 });

@@ -2,7 +2,8 @@
 // Kết luận "đủ trình độ" chỉ đến từ câu LẠ: đề soạn mới (content/exam/gate, mode "gate"), đóng gói riêng nên không bao giờ lẫn vào
 // luyện tập / xếp lớp / game; mỗi đề chơi một lần. P(đậu) = xác suất năng lực ≥ ngưỡng của cấp, ước lượng IRT 3PL (src/exam/irt.ts)
 // kèm sai số; đậu khi P ≥ 80% (READY_P). Độ khó câu là ước tính của người soạn (chưa hiệu chỉnh bằng dữ liệu), nên P là ước tính.
-// Viết / Nói không vào phán quyết cổng (chỉ tin cậy Vừa khi chưa có AI, SPEC mục 10): trang tiến độ hiện từ bài Thư / Karaoke.
+// v158 (người sáng lập 17/10/2026, đánh giá theo vai chuyên gia: "đạt cấp" phải gồm 4 kỹ năng): Viết + Nói VÀO phán quyết. Đậu khi Đọc + Nghe
+// qua (IRT như trên) VÀ mỗi bài Viết / Nói ≥ GATE.ws tiêu chí (gatews.ts wsPct: 60% luật + 40% ý tự đánh dấu; 60% = đạt phần lớn tiêu chí).
 
 import { estimate, type Response } from '../exam/irt.ts';
 import type { WsOut } from './gatews.ts';
@@ -11,7 +12,7 @@ import type { WsOut } from './gatews.ts';
 // v154 (người sáng lập 17/10/2026): Mục tiêu tách hai thanh. 📘 Học = đã qua bài cuối của bài học; 🔁 Nhớ = nhớ ra sau ≥ 3 ngày và chưa phai.
 // Mở thi khi Học ≥ 80% VÀ Nhớ ≥ 50% (Học quan trọng hơn, Nhớ không bù cho Học).
 // v158 người sáng lập 17/10/2026: chỉ cần tỉ lệ hoàn thành bài học cao, Nhớ 50% cũng được (trước là 70%).
-export const GATE = { open: 0.8, ready: 0.8, sd: 1.5, learn: 0.8, mem: 0.5, memDays: 3, memWord: 0.7 } as const;
+export const GATE = { open: 0.8, ready: 0.8, sd: 1.5, learn: 0.8, mem: 0.5, memDays: 3, memWord: 0.7, ws: 0.6, memTry: 0.7 } as const;
 export interface GateParts { learn: number; mem: number; total: number }
 // Ngưỡng trên thang band của bộ chấm (src/exam/scales.ts CEFR_TABLE: A1 từ band 1, A2 từ band 3, B1 từ band 4; làm tròn 0,5 nên ngưỡng thật là −0,25).
 export const GATE_THR: Record<string, number> = { 'cefr-a1': 0.75, 'cefr-a2': 2.75, 'cefr-b1': 3.75 };
@@ -20,6 +21,11 @@ export const GEN_LV: Record<string, 'A1' | 'A2'> = { 'cefr-a1': 'A1', 'cefr-a2':
 // Làm lại sau khi rớt: chờ WAIT ngày VÀ có thêm phần vững so với lúc làm (không làm đi làm lại để thử vận may).
 export const RETRY = { wait: 3 } as const;
 export const USED_MAX = 600, TRY_MAX = 50;
+// v158 một câu đã soát: ok, ghi chú, ngày, bản chụp câu (để gửi lại người soạn sửa khuôn), câu có sẵn hay từ khuôn.
+export interface GateRev { ok: boolean; note?: string; day: number; t: string; bank?: 1 }
+export const REV_MAX = 400;
+// Mã câu có sẵn bị đánh dấu lỗi: gộp vào `used` khi sinh bài để không bao giờ ra.
+export const revBad = (sv: GateSave | undefined): string[] => Object.entries(sv?.rev ?? {}).filter(([, r]) => !r.ok && r.bank).map(([id]) => id);
 export interface GateTry { day: number; lv: string; sk: string; ok: number; n: number; w?: number }
 export const GATE_FORMS: Record<string, string[]> = { 'cefr-a1': ['a1-1', 'a1-2'], 'cefr-a2': ['a2-1', 'a2-2'], 'cefr-b1': ['b1-1', 'b1-2'] };
 // Đặc tả tham chiếu (soát 11/10/2026, nguồn công khai về định dạng A2 Key từ 2020: Đọc 30 câu / 5 phần, Viết 2 phần, Nghe 25 câu / 5 phần,
@@ -30,11 +36,12 @@ export const GATE_SPEC: Record<string, string> = { 'cefr-a1': 'soạn theo mô t
 
 export interface GateAns { skill: 'R' | 'L'; b: number; g: number; ok: boolean }
 export interface GateSkill { n: number; ok: number; theta: number; se: number }
-export interface GateResult { form: string; goal: string; day: number; n: number; ok: number; theta: number; se: number; p: number; lo: number; hi: number; passed: boolean; secs: number; sk: Partial<Record<'R' | 'L', GateSkill>>; ws?: WsOut[]; sol?: number; seed?: number }   // v141 sol: số phần vững lúc làm (luật làm lại); seed: hạt của bài sinh   // v140 ws: Viết / Nói (tham khảo, không vào đậu / rớt)
+export interface GateResult { form: string; goal: string; day: number; n: number; ok: number; theta: number; se: number; p: number; lo: number; hi: number; passed: boolean; rl?: boolean; secs: number; sk: Partial<Record<'R' | 'L', GateSkill>>; ws?: WsOut[]; sol?: number; seed?: number }   // v141 sol: số phần vững lúc làm (luật làm lại); seed: hạt của bài sinh   // v140 ws: Viết / Nói (tham khảo, không vào đậu / rớt)
 export interface GateSave { done: Record<string, GateResult>; seen?: string[]; cert?: 1;   // cert: người học bật "thi lấy chứng chỉ" (tuỳ chọn ở hồ sơ)
    // seen: đề đã mở (câu đã lộ) dù chưa xong: không dùng lại
-  ext?: Array<{ goal: string; day: number; score: number; pass: boolean; pred: number | null; src: 'sample' | 'real' }>;
+  ext?: Array<{ goal: string; day: number; score: number; pass: boolean; pred: number | null; src: 'sample' | 'real'; rr?: number; lr?: number }>;   // v158 rr / lr: số câu đúng Đọc / 30, Nghe / 25 của bài mẫu (score 0 = chưa quy đổi thang)
   used?: string[];   // v141 mã câu có sẵn đã ra trong một bài (không ra lại), ≤ USED_MAX
+  rev?: Record<string, GateRev>;   // v158 người soát đánh dấu từng câu (mã câu → ổn / có lỗi); câu có sẵn bị đánh dấu lỗi không ra nữa
   tries?: GateTry[] }   // v141 Thử sức từng kỹ năng (chỉ là phép đo, không vào mức thuộc), ≤ TRY_MAX
 
 // Thang Cambridge English Scale: điểm tối thiểu được công nhận từng cấp (nguồn công khai: A2 Key 120–139 = A2, 140–150 = B1;
@@ -42,6 +49,9 @@ export interface GateSave { done: Record<string, GateResult>; seen?: string[]; c
 export const CES_MIN: Record<string, number> = { 'cefr-a2': 120, 'cefr-b1': 140, 'cefr-b2': 160, 'cefr-c1': 180, 'cefr-c2': 200 };
 // Khả năng qua gần nhất của app cho cấp này (để chốt dự đoán trước khi nhập điểm ngoài).
 export const lastP = (sv: GateSave | undefined, goal: string): number | null => { const xs = Object.values(sv?.done ?? {}).filter(r => r.goal === goal).sort((a, b) => a.day - b.day); return xs.length ? xs.at(-1)!.p : null; };
+
+// v158 đậu cả bài = Đọc + Nghe qua VÀ mỗi bài Viết / Nói ≥ GATE.ws (bộ chưa có Viết / Nói thì chỉ Đọc + Nghe).
+export const gatePassAll = (rl: boolean, ws?: WsOut[]): boolean => rl && (ws ?? []).every(w => w.pct >= GATE.ws);
 
 // Hàm phân phối chuẩn (xấp xỉ Abramowitz–Stegun 7.1.26, sai số < 1,5e-7).
 export function phi(z: number): number {
@@ -90,18 +100,22 @@ export function sanitizeGate(x: unknown): GateSave | undefined {
     const sk: GateResult['sk'] = {};
     for (const s of ['R', 'L'] as const) { const q = (r.sk as Record<string, Record<string, unknown>> | undefined)?.[s]; if (q) sk[s] = { n: num(q.n, 0, 99), ok: num(q.ok, 0, 99), theta: num(q.theta, 0, 9), se: num(q.se, 0, 9) }; }
     out.done[k] = { form: k, goal, day: num(r.day, 0, 1e6), n: num(r.n, 0, 99), ok: num(r.ok, 0, 99), theta: num(r.theta, 0, 9), se: num(r.se, 0, 9), p: num(r.p, 0, 1), lo: num(r.lo, -9, 9), hi: num(r.hi, 0, 18), passed: r.passed === true, secs: num(r.secs, 0, 1e5), sk };
+    if (typeof r.rl === 'boolean') out.done[k]!.rl = r.rl;
     if (typeof r.sol === 'number') out.done[k]!.sol = Math.round(num(r.sol, 0, 1e5));
     if (typeof r.seed === 'number') out.done[k]!.seed = Math.round(num(r.seed, 0, 4294967295));
     if (Array.isArray(r.ws)) { const ws = r.ws.filter((w): w is Record<string, unknown> => !!w && typeof w === 'object' && typeof w.id === 'string' && /^[a-z0-9-]{2,30}$/.test(w.id) && (w.kind === 'w' || w.kind === 's')).slice(0, 6)
       .map(w => ({ id: String(w.id), kind: w.kind as 'w' | 's', pct: num(w.pct, 0, 1), words: Math.round(num(w.words, 0, 999)) })); if (ws.length) out.done[k]!.ws = ws; }
   }
   if (o.cert === 1) out.cert = 1;
+  if (o.rev && typeof o.rev === 'object') { const rv: Record<string, GateRev> = {}; for (const [id, v] of Object.entries(o.rev as Record<string, unknown>).slice(-REV_MAX)) { if (!/^[a-z0-9-]{2,60}$/.test(id) || !v || typeof v !== 'object') continue; const x = v as Record<string, unknown>;
+    rv[id] = { ok: x.ok === true, day: Math.round(num(x.day, 0, 1e6)), t: String(x.t ?? '').slice(0, 600), ...(typeof x.note === 'string' && x.note ? { note: x.note.slice(0, 300) } : {}), ...(x.bank === 1 ? { bank: 1 as const } : {}) }; } if (Object.keys(rv).length) out.rev = rv; }
   if (Array.isArray(o.tries)) { const t = o.tries.filter((x): x is Record<string, unknown> => !!x && typeof x === 'object' && /^(A1|A2)$/.test(String(x.lv)) && /^[a-z]{2,3}$/.test(String(x.sk))).slice(-TRY_MAX)
     .map(x => ({ day: Math.round(num(x.day, 0, 1e6)), lv: String(x.lv), sk: String(x.sk), ok: Math.round(num(x.ok, 0, 99)), n: Math.round(num(x.n, 0, 99)), ...(typeof x.w === 'number' ? { w: num(x.w, 0, 1) } : {}) })); if (t.length) out.tries = t; }
   if (Array.isArray(o.used)) { const u = [...new Set(o.used.filter((f): f is string => typeof f === 'string' && /^[a-z0-9-]{2,40}$/.test(f)))].slice(-USED_MAX); if (u.length) out.used = u; }
   if (Array.isArray(o.seen)) { const seen = [...new Set(o.seen.filter((f): f is string => typeof f === 'string' && /^[a-z0-9-]{2,20}$/.test(f)))].slice(-40); if (seen.length) out.seen = seen; }
   if (Array.isArray(o.ext)) out.ext = o.ext.slice(-20).filter((e): e is Record<string, unknown> => !!e && typeof e === 'object').filter(e => !!GATE_THR[String(e.goal)])
-    .map(e => ({ goal: String(e.goal), day: num(e.day, 0, 1e6), score: num(e.score, 0, 250), pass: e.pass === true, pred: typeof e.pred === 'number' ? num(e.pred, 0, 1) : null, src: e.src === 'real' ? 'real' : 'sample' }));
+    .map(e => ({ goal: String(e.goal), day: num(e.day, 0, 1e6), score: num(e.score, 0, 250), pass: e.pass === true, pred: typeof e.pred === 'number' ? num(e.pred, 0, 1) : null, src: e.src === 'real' ? 'real' as const : 'sample' as const,
+      ...(typeof e.rr === 'number' ? { rr: Math.round(num(e.rr, 0, 30)) } : {}), ...(typeof e.lr === 'number' ? { lr: Math.round(num(e.lr, 0, 25)) } : {}) }));
   return out;
 }
 // Gộp hai máy: kết quả đề nào cũng giữ bản làm sớm hơn (lần đầu mới là đề lạ); điểm ngoài lấy hợp.
@@ -112,5 +126,6 @@ export function mergeGate(a: GateSave | undefined, b: GateSave | undefined): Gat
   const ext = [...(a.ext ?? []), ...(b.ext ?? [])].filter((e, i, xs) => xs.findIndex(y => y.day === e.day && y.goal === e.goal && y.score === e.score) === i).sort((x, y) => x.day - y.day);
   const seen = [...new Set([...(a.seen ?? []), ...(b.seen ?? [])])], used = [...new Set([...(a.used ?? []), ...(b.used ?? [])])].slice(-USED_MAX);
   const tries = [...(a.tries ?? []), ...(b.tries ?? [])].filter((t, i, xs) => xs.findIndex(y => JSON.stringify(y) === JSON.stringify(t)) === i).sort((x, y) => x.day - y.day).slice(-TRY_MAX);
-  return { ...(tries.length ? { tries } : {}), done, ...(a.cert || b.cert ? { cert: 1 as const } : {}), ...(seen.length ? { seen } : {}), ...(ext.length ? { ext } : {}), ...(used.length ? { used } : {}) };
+  const rev = { ...(b.rev ?? {}), ...(a.rev ?? {}) };
+  return { ...(Object.keys(rev).length ? { rev } : {}), ...(tries.length ? { tries } : {}), done, ...(a.cert || b.cert ? { cert: 1 as const } : {}), ...(seen.length ? { seen } : {}), ...(ext.length ? { ext } : {}), ...(used.length ? { used } : {}) };
 }

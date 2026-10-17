@@ -53,7 +53,7 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
   const gate = !g.has ? '<p class="hint">Cấp này chưa có bài thi chuyển cấp.</p>'
     : g.passed ? `<p><b>✓ Đã qua thi chuyển cấp ${x.lv}.</b></p>`
     : g.wait && x.chosen ? `<p class="hint">Lần trước chưa qua. Mỗi lần là bài mới, nhưng cần học thêm rồi mới làm lại: ${esc(waitTxt(g.wait))}.</p>`
-    : g.open && x.chosen ? `<p>Bạn đã gần xong mục tiêu. Bài gồm Đọc, Nghe, Viết, Nói, sinh mới mỗi lần theo tiêu chí của cấp; không gợi ý. Qua là tự lên cấp.</p><div class="row"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào thi chuyển cấp ${x.lv}</button></div>`
+    : g.open && x.chosen ? `<p>Bạn đã gần xong mục tiêu. Bài gồm Đọc, Nghe, Viết, Nói, sinh mới mỗi lần theo tiêu chí của cấp; không gợi ý. Mỗi bài Viết / Nói cần ≥ ${Math.round(GATE.ws * 100)}% tiêu chí. Qua là tự lên cấp.</p>${g.parts && g.parts.total && g.parts.mem / g.parts.total < GATE.memTry ? `<p class="hint">🔁 Nhớ còn ${Math.round(100 * g.parts.mem / g.parts.total)}%: nên 🎲 Thử sức từng kỹ năng trước, để không tiêu câu chưa gặp.</p>` : ''}<div class="row"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào thi chuyển cấp ${x.lv}</button></div>`
     : g.parts ? `<p class="hint">Mở khi 📘 Học ≥ ${Math.round(GATE.learn * 100)}% và 🔁 Nhớ ≥ ${Math.round(GATE.mem * 100)}% (xem hai thanh ở trên). Mỗi lần làm là một bài mới sinh theo tiêu chí. Qua là tự lên cấp.</p>`
     : `<p class="hint">Mở khi đã vững ≥ 80% (hiện ${pct(g.ratio, 1)}%). Mỗi lần làm là một bài mới sinh theo tiêu chí. Qua là tự lên cấp.</p>`;
   // v154 hai thanh (người sáng lập 17/10/2026): 📘 Học (đã qua bài cuối) và 🔁 Nhớ (nhớ ra sau ≥ 3 ngày, chưa phai). Mở thi: Học ≥ 80% VÀ Nhớ ≥ 70%.
