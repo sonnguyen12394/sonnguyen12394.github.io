@@ -23,7 +23,7 @@ test('v138 Mục tiêu: chỉ A1 và A2; A1 cũng chia đủ 7 kỹ năng', () =
   assert.deepEqual(AIM_LVS.map(([l, g]) => [l, g]), [['A1', 'cefr-a1'], ['A2', 'cefr-a2']]);
   assert.ok(isAimLv('A1') && isAimLv('A2') && !isAimLv('B1'));
   const a1 = compareOf(need('cefr-a1'), () => false, undefined);
-  assert.equal(a1.total, 185);
+  assert.equal(a1.total, 186);   // v151 +1 Can-Do Nói (Nói & Đọc)
   assert.equal(a1.rows.filter(r => r.total).length, 7);
 });
 
@@ -33,7 +33,7 @@ test('v138 Mục tiêu: 7 kỹ năng, mỗi kỹ năng có "📘 Học ở app";
   assert.equal((h.match(/data-act="skgo"/g) ?? []).length, 7);
   assert.equal((h.match(/data-e="cblo" data-g="wheel"/g) ?? []).length, 1);
   assert.equal((h.match(/🔒 game chưa có lò/g) ?? []).length, 6);
-  assert.match(h, /Cần đạt để qua A2<\/b> · 0\/359 phần đã vững/);
+  assert.match(h, /Cần đạt để qua A2<\/b> · 0\/361 phần đã vững/);
   assert.match(h, /data-e="aimlv" data-lv="A1" aria-pressed="false"/);
   assert.match(h, /data-r="goal\/cefr-a2"/);
   assert.doesNotMatch(h, /data-e="aimpick"/, 'đã là đích: không hỏi chọn');

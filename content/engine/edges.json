@@ -3066,6 +3066,14 @@
   "ver": "1.0"
  },
  {
+  "from": "cd:a2-ndsay",
+  "to": "cd:a1-ndsay",
+  "type": "hard",
+  "w": 0.8,
+  "why": "level-ladder",
+  "ver": "1.0"
+ },
+ {
   "from": "cd:a2-pro1",
   "to": "cd:a1-pro1",
   "type": "hard",

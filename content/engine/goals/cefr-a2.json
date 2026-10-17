@@ -208,6 +208,11 @@
    "type": "skill"
   },
   {
+   "node": "cd:a2-ndsay",
+   "level": 4,
+   "type": "skill"
+  },
+  {
    "node": "cd:a2-pv",
    "level": 3,
    "type": "foundation"

@@ -34,7 +34,7 @@ test.describe('mở app (home: false)', () => {
     await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học', 'Nói & Đọc', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
     await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Mục tiêu');
     await expect(page.locator('#app .cmprow')).toHaveCount(7);
-    await expect(page.locator('#app')).toContainText(/Cần đạt để qua A2 · \d+\/359 phần đã vững/);
+    await expect(page.locator('#app')).toContainText(/Cần đạt để qua A2 · \d+\/361 phần đã vững/);
     await expect(page.locator('#app [data-e="cblo"]')).toHaveCount(1);
     await expect(page.locator('#app [data-act="skgo"]')).toHaveCount(7);
     await expect(page.locator('#app')).toContainText('Thi chuyển cấp A2');
@@ -48,7 +48,7 @@ test.describe('mở app (home: false)', () => {
     const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
     expect(r.violations.map(v => v.id)).toEqual([]);
     await page.locator('[data-e="aimlv"][data-lv="A1"]').click();
-    await expect(page.locator('#app')).toContainText(/Cần đạt để qua A1 · \d+\/185 phần đã vững/);
+    await expect(page.locator('#app')).toContainText(/Cần đạt để qua A1 · \d+\/186 phần đã vững/);
     await expect(page.locator('[data-e="aimpick"]')).toContainText('Chọn A1 làm đích');
     await page.locator('[data-e="aimpick"]').click();
     await expect(page.locator('[data-e="aimpick"]')).toHaveCount(0);

@@ -56,7 +56,11 @@ for (const scheme of ['light', 'dark'] as const) {
     await noHorizontalScroll(page);
     const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
     expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
-    expect(await page.evaluate(() => (window as any).eval('st').e.ev.led.length)).toBe(led0);
+    // v151 chấm từng âm được tính (nguồn Nói & Đọc): âm /s/ nói thành /ʃ/ → bằng chứng sai ở ph:s-07; mọi bằng chứng mới có ngữ cảnh nd-phon
+    const evs = await page.evaluate((n: number) => (window as any).eval('st').e.ev.led.slice(n), led0);
+    expect(evs.length).toBeGreaterThan(0);
+    expect(evs.every((e: any) => e.ctx === 'nd-phon')).toBe(true);
+    expect(evs.some((e: any) => e.node === 'ph:s-07' && !e.ok)).toBe(true);
     expect(errors).toEqual([]);
   });
 }
@@ -123,7 +127,7 @@ test('v148 đang nói: chữ hiện ngay (micro mở trước nhận diện); d�
   await expect(page.locator('#app .fb strong', { hasText: 'Điểm phát âm' })).toBeVisible();
   await expect(page.locator('#app')).toContainText('chữ: bật, nghe 100%');
   expect(await page.evaluate(() => JSON.stringify((window as any).eval('st').ev?.c || {}))).toBe(ev0);
-  expect(await page.evaluate(() => (window as any).eval('st').e.ev.led.length)).toBe(led0);
+  expect(await page.evaluate((n: number) => (window as any).eval('st').e.ev.led.slice(n).every((e: any) => e.ctx === 'nd-phon'), led0)).toBe(true);
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(r.violations.map(v => v.id)).toEqual([]);
   expect(errors).toEqual([]);

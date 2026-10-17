@@ -37,12 +37,12 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
     const game = r.pull ? `<button class="btn small" data-e="cblo" data-g="${esc(x.forge)}">⚔️ Rèn ở game</button>` : '<span class="hint aimlock">🔒 game chưa có lò</span>';
     // v139 bấm dòng kỹ năng → mở danh sách từng phần cần đạt (details/summary: bấm được, đọc được bằng trình đọc màn hình).
     const items = r.items ?? [], open = items.filter(i => !i.solid), done = items.filter(i => i.solid);
-    const src = (i: AimItem) => (i.g && i.a ? ' · ⚔️📘' : i.g ? ' · ⚔️ nhờ game' : i.a ? ' · 📘 nhờ app' : '');
+    const src = (i: AimItem) => { const k = [i.g ? '⚔️' : '', i.a ? '📘' : '', i.n ? '🗣' : ''].filter(Boolean); return k.length > 1 ? ' · ' + k.join('') : i.g ? ' · ⚔️ nhờ game' : i.a ? ' · 📘 nhờ app' : i.n ? ' · 🗣 nhờ Nói &amp; Đọc' : ''; };
     const li = (i: AimItem) => `<li class="aimit${i.solid ? ' ok' : ''}"><span>${i.solid ? '✅' : i.pct > 0 ? '🟡' : '⬜'} ${esc(i.vi)}</span><span class="hint">${i.solid ? 'đã vững' : i.pct > 0 ? `đang học · ${Math.round(i.pct * 100)}%` : 'chưa bắt đầu'} · cần: ${esc(LEVEL_VI[i.level as Level] ?? '')}${src(i)}</span></li>`;
     const list = items.length ? `<div class="aimdet stack">${open.length ? `<p class="hint"><b>Còn ${open.length} phần chưa vững</b> (gần xong nhất ở trên)</p><ul class="aimits">${open.map(li).join('')}</ul>` : ''}${done.length ? `<p class="hint"><b>Đã vững ${done.length} phần</b></p><ul class="aimits">${done.map(li).join('')}</ul>` : ''}</div>` : '';
     return `<li class="cmprow stack"><details class="aimsk">
       <summary><b>${r.ico} ${esc(r.vi)} · ${r.solid}/${r.total} vững <span class="hint">· ô ${esc(r.slot)}${r.mid ? ' · tin cậy vừa' : ''}</span></b>
-      <span class="cmpbar" role="img" aria-label="${esc(r.vi)}: ${r.game} nhờ game, ${r.app} nhờ app, ${r.both} cả hai, ${r.before} từ trước, ${r.total - r.solid} chưa vững">${seg('cg', r.game)}${seg('ca', r.app)}${seg('cb2', r.both)}${seg('cp', r.before)}</span>
+      <span class="cmpbar" role="img" aria-label="${esc(r.vi)}: ${r.game} nhờ game, ${r.app} nhờ app, ${r.nd} nhờ Nói và Đọc, ${r.both} từ hai nguồn, ${r.before} từ trước, ${r.total - r.solid} chưa vững">${seg('cg', r.game)}${seg('ca', r.app)}${seg('cn', r.nd)}${seg('cb2', r.both)}${seg('cp', r.before)}</span>
       <span class="hint aimmore">Bấm để xem ${r.total} phần cần đạt</span></summary>
       ${list}</details>
       <div class="row aimgo">${game}<button class="btn small" data-act="skgo" data-sk="${r.id}">${r.id === 'pro' ? '🗣 Nói &amp; Đọc' : '📘 Học ở app'}</button><button class="btn small" data-e="trystart" data-sk="${r.id}" data-lv="${x.lv}">🎲 Thử sức</button>${GP_OF[r.id] ? `<button class="btn small" data-act="gp" data-lv="${x.lv}" data-kind="${GP_OF[r.id]![0]}" data-mode="${GP_OF[r.id]![1]}">📝 Bài luyện</button>` : ''}</div>
@@ -60,7 +60,7 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
       <p><b>Cần đạt để qua ${x.lv}</b> · ${o.solid}/${o.total} phần đã vững (${p}%)</p>
       <span class="lskbar" role="progressbar" aria-label="Tiến độ ${x.lv}" aria-valuemin="0" aria-valuemax="${o.total}" aria-valuenow="${o.solid}"><i style="width:${p}%"></i></span>
       ${pick}
-      <p class="hint cmpleg"><i class="cg"></i> nhờ game · <i class="ca"></i> nhờ app · <i class="cb2"></i> cả hai · <i class="cp"></i> có từ trước</p>
+      <p class="hint cmpleg"><i class="cg"></i> nhờ game · <i class="ca"></i> nhờ app · <i class="cn"></i> nhờ Nói &amp; Đọc · <i class="cb2"></i> từ hai nguồn · <i class="cp"></i> có từ trước</p>
       <ul class="cmplist">${rows}</ul>
     </section>
     <section class="panel stack"><h2>🚪 Thi chuyển cấp ${x.lv}</h2>${gate}</section>

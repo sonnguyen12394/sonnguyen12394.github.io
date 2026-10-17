@@ -3,14 +3,15 @@
 // để 🎯 Mục tiêu chỉ ra phần nào vững nhờ game, phần nào nhờ app, kỹ năng nào game chưa có lò.
 // Bộ đếm chỉ ĐỌC kết quả của ingest (không đổi bằng chứng, không đổi mastery). Thuần hàm.
 
-export type Door = 'game' | 'app';
-export interface SrcCell { g: number; a: number }   // số câu đúng có tính ở phần game / phần học app
+export type Door = 'game' | 'app' | 'nd';
+export interface SrcCell { g: number; a: number; n?: number }   // số câu đúng có tính ở phần game / phần học app / 🗣 Nói & Đọc (v151)
 export type SrcMap = Record<string, SrcCell>;
 
 // v138 ba phần (Chơi · Học · Mục tiêu): không còn đổi lối. Nguồn của câu đúng = NƠI học: ngữ cảnh của lò game
 // (Vườn từ, Vòng Chữ, Mỏ Chữ, Lò rèn = cb.ts ESS_GAMES; test khoá hai danh sách khớp nhau) là game, mọi chỗ khác là app.
 export const GAME_CTX: ReadonlySet<string> = new Set(['learn', 'wheel', 'hunt', 'forge']);
-export const doorOfCtx = (ctx: unknown): Door => (typeof ctx === 'string' && GAME_CTX.has(ctx) ? 'game' : 'app');
+// v151 🗣 Nói & Đọc (lối đi tắt "làm rồi ôn lại", người sáng lập 17/10/2026): ngữ cảnh 'nd' hoặc 'nd-…' là cửa thứ ba.
+export const doorOfCtx = (ctx: unknown): Door => (typeof ctx === 'string' && GAME_CTX.has(ctx) ? 'game' : typeof ctx === 'string' && /^nd(-|$)/.test(ctx) ? 'nd' : 'app');
 
 const NODE = /^(cd|u|g|ph|fn):[a-z0-9][a-z0-9._-]{0,60}$/;
 const CAP = 1e6;
@@ -20,7 +21,7 @@ const cnt = (v: unknown): number => (typeof v === 'number' && Number.isFinite(v)
 export function tally(src: SrcMap, node: string, ok: boolean, counted: boolean, door: Door): void {
   if (!ok || !counted || !NODE.test(node)) return;
   const c = src[node] ?? (src[node] = { g: 0, a: 0 });
-  if (door === 'game') c.g = Math.min(CAP, c.g + 1); else c.a = Math.min(CAP, c.a + 1);
+  if (door === 'game') c.g = Math.min(CAP, c.g + 1); else if (door === 'nd') c.n = Math.min(CAP, (c.n ?? 0) + 1); else c.a = Math.min(CAP, c.a + 1);
 }
 
 export function sanitizeSrc(raw: unknown): SrcMap | undefined {
@@ -28,8 +29,9 @@ export function sanitizeSrc(raw: unknown): SrcMap | undefined {
   const out: SrcMap = {};
   for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
     if (!NODE.test(k) || !v || typeof v !== 'object') continue;
-    const x = v as Record<string, unknown>, c = { g: cnt(x.g), a: cnt(x.a) };
-    if (c.g || c.a) out[k] = c;
+    const x = v as Record<string, unknown>, c: SrcCell = { g: cnt(x.g), a: cnt(x.a) }, n = cnt(x.n);
+    if (n) c.n = n;
+    if (c.g || c.a || n) out[k] = c;
   }
   return Object.keys(out).length ? out : undefined;
 }
@@ -38,7 +40,7 @@ export function sanitizeSrc(raw: unknown): SrcMap | undefined {
 export function mergeSrc(a?: SrcMap, b?: SrcMap): SrcMap | undefined {
   if (!a) return b; if (!b) return a;
   const out: SrcMap = {};
-  for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) out[k] = { g: Math.max(a[k]?.g ?? 0, b[k]?.g ?? 0), a: Math.max(a[k]?.a ?? 0, b[k]?.a ?? 0) };
+  for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) { const n = Math.max(a[k]?.n ?? 0, b[k]?.n ?? 0); out[k] = { g: Math.max(a[k]?.g ?? 0, b[k]?.g ?? 0), a: Math.max(a[k]?.a ?? 0, b[k]?.a ?? 0), ...(n ? { n } : {}) }; }
   return out;
 }
 
@@ -56,9 +58,9 @@ export const isGrp = (v: unknown): v is Grp => SKILLS.some(k => k.id === v);
 export const GAME_PULL: ReadonlySet<Grp> = new Set<Grp>(['voc']);
 
 // v139 chi tiết một kỹ năng (bấm dòng kỹ năng ở 🎯 Mục tiêu): từng phần cần đạt, vững chưa, được bao nhiêu, nhờ game / app.
-export interface AimItem { node: string; vi: string; level: number; solid: boolean; pct: number; g: number; a: number }
-export interface GrpRow { id: Grp; ico: string; vi: string; slot: string; mid: boolean; total: number; solid: number; game: number; app: number; both: number; before: number; ansG: number; ansA: number; pull: boolean; items?: AimItem[] }
-export interface CmpOut { rows: GrpRow[]; total: number; solid: number; game: number; app: number; both: number; before: number; ansG: number; ansA: number }
+export interface AimItem { node: string; vi: string; level: number; solid: boolean; pct: number; g: number; a: number; n: number }
+export interface GrpRow { id: Grp; ico: string; vi: string; slot: string; mid: boolean; total: number; solid: number; game: number; app: number; nd: number; both: number; before: number; ansG: number; ansA: number; ansN: number; pull: boolean; items?: AimItem[] }
+export interface CmpOut { rows: GrpRow[]; total: number; solid: number; game: number; app: number; nd: number; both: number; before: number; ansG: number; ansA: number; ansN: number }
 export interface Need { node: string; level: number; area?: string }
 
 // need: các nút của đích (đóng tiền đề) kèm mức cần và kỹ năng; solid(node, level): đã vững thật ở mức đó.
@@ -66,23 +68,23 @@ export interface Need { node: string; level: number; area?: string }
 // chưa vững trước (gần xong nhất trước), đã vững sau.
 export function compareOf(need: Need[], solid: (node: string, level: number) => boolean, src: SrcMap | undefined, pull: ReadonlySet<Grp> = GAME_PULL, info?: (node: string, level: number) => { vi: string; pct: number }): CmpOut {
   const s = src ?? {};
-  const rows: GrpRow[] = SKILLS.map(g => ({ id: g.id, ico: g.ico, vi: g.vi, slot: g.slot, mid: !!g.mid, total: 0, solid: 0, game: 0, app: 0, both: 0, before: 0, ansG: 0, ansA: 0, pull: pull.has(g.id) }));
+  const rows: GrpRow[] = SKILLS.map(g => ({ id: g.id, ico: g.ico, vi: g.vi, slot: g.slot, mid: !!g.mid, total: 0, solid: 0, game: 0, app: 0, nd: 0, both: 0, before: 0, ansG: 0, ansA: 0, ansN: 0, pull: pull.has(g.id) }));
   const by = new Map(rows.map(r => [r.id, r]));
   const seen = new Set<string>();
   for (const r of need) {
     if (seen.has(r.node)) continue; seen.add(r.node);
     const row = isGrp(r.area) ? by.get(r.area) : undefined; if (!row) continue;
-    const c = s[r.node] ?? { g: 0, a: 0 };
-    row.total++; row.ansG += c.g; row.ansA += c.a;
+    const c = s[r.node] ?? { g: 0, a: 0 }, cn = c.n ?? 0;
+    row.total++; row.ansG += c.g; row.ansA += c.a; row.ansN += cn;
     const ok = solid(r.node, r.level);
-    if (info) { const i = info(r.node, r.level); (row.items ??= []).push({ node: r.node, vi: i.vi, level: r.level, solid: ok, pct: ok ? 1 : Math.max(0, Math.min(0.99, i.pct)), g: c.g, a: c.a }); }
+    if (info) { const i = info(r.node, r.level); (row.items ??= []).push({ node: r.node, vi: i.vi, level: r.level, solid: ok, pct: ok ? 1 : Math.max(0, Math.min(0.99, i.pct)), g: c.g, a: c.a, n: cn }); }
     if (!ok) continue;
     row.solid++;
-    if (c.g && c.a) row.both++; else if (c.g) row.game++; else if (c.a) row.app++; else row.before++;
+    if ([c.g, c.a, cn].filter(Boolean).length >= 2) row.both++; else if (c.g) row.game++; else if (c.a) row.app++; else if (cn) row.nd++; else row.before++;
   }
   if (info) for (const r of rows) r.items?.sort((p, q) => Number(p.solid) - Number(q.solid) || q.pct - p.pct || p.vi.localeCompare(q.vi, 'vi'));
-  const sum = (k: keyof Pick<GrpRow, 'total' | 'solid' | 'game' | 'app' | 'both' | 'before' | 'ansG' | 'ansA'>) => rows.reduce((a, r) => a + r[k], 0);
-  return { rows, total: sum('total'), solid: sum('solid'), game: sum('game'), app: sum('app'), both: sum('both'), before: sum('before'), ansG: sum('ansG'), ansA: sum('ansA') };
+  const sum = (k: keyof Pick<GrpRow, 'total' | 'solid' | 'game' | 'app' | 'nd' | 'both' | 'before' | 'ansG' | 'ansA' | 'ansN'>) => rows.reduce((a, r) => a + r[k], 0);
+  return { rows, total: sum('total'), solid: sum('solid'), game: sum('game'), app: sum('app'), nd: sum('nd'), both: sum('both'), before: sum('before'), ansG: sum('ansG'), ansA: sum('ansA'), ansN: sum('ansN') };
 }
 
 // Bảng 7 kỹ năng ở Thư viện: % vững từng kỹ năng; "thiếu nhất" = kỹ năng % thấp nhất còn phần chưa vững.
