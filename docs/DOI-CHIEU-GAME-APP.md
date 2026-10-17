@@ -159,5 +159,5 @@ Màn 🎯 Mục tiêu, mỗi cấp:
 Người sáng lập (17/10/2026) tách mọi chức năng luyện nói, đọc to, phát âm thành phần riêng, song song ⚔️ Chơi và 📘 Học:
 - Gồm: Nói nhại, Đọc to, Bài luyện theo cấp, Dán bài, Âm và cặp âm, Nối âm – ngữ điệu, Kiểm tra phát âm, Chấm từng âm.
 - Chuyển hẳn khỏi 📘 Học và màn Tôi.
-- **Không tính vào 🎯 Mục tiêu.** Chỉ có bảng theo dõi riêng. Kết quả đã đạt trước đó vẫn giữ (bản chụp).
+- Bản 87: chưa tính. **Bản 89 (v151): tính** theo lối "làm rồi ôn lại" (SPEC khối 17/10/2026 mục 6): bài từ vựng + ngữ pháp lấy từ chính bài, phát âm, đọc to / nói nhại; nguồn thứ ba "nhờ Nói & Đọc" ở Mục tiêu; câu sai vào Ôn tập.
 - Khó khăn chính phần này nhắm tới: **K5** (phát âm) và **K8** (không có chỗ nói). Khi phần này cho thấy hiệu quả thật (người sáng lập tự đánh giá, hoặc điểm chấm từng âm ổn định), người sáng lập quyết có tính vào Mục tiêu hay không.

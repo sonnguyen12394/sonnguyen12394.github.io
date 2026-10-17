@@ -52,11 +52,11 @@ test('v138 đường ELCORE.ev ghi nguồn theo ngữ cảnh câu; sổ bằng c
   assert.equal(e.ev.led.length, 3, 'ba câu vẫn vào sổ như cũ');
 });
 
-test('v137 đối chiếu A2 thật theo 7 kỹ năng = 7 ô đồ: 188 / 70 / 29 / 10 / 44 / 8 / 10; game chỉ có lò Từ vựng', () => {
+test('v137 đối chiếu A2 thật theo 7 kỹ năng = 7 ô đồ: 188 / 70 / 29 / 10 / 46 / 8 / 10; game chỉ có lò Từ vựng', () => {
   const o = compareOf(a2, () => false, undefined);
-  assert.deepEqual(o.rows.map(r => [r.id, r.total]), [['voc', 188], ['gra', 70], ['pro', 29], ['lis', 10], ['spk', 44], ['rd', 8], ['wr', 10]]);
+  assert.deepEqual(o.rows.map(r => [r.id, r.total]), [['voc', 188], ['gra', 70], ['pro', 29], ['lis', 10], ['spk', 46], ['rd', 8], ['wr', 10]]);
   assert.deepEqual(o.rows.map(r => r.slot), ['Vũ khí', 'Giáp', 'Giày', 'Khiên', 'Bùa', 'Mũ', 'Nhẫn']);
-  assert.equal(o.total, 359);
+  assert.equal(o.total, 361);   // v151 +2 Can-Do Nói (A1, A2) của Nói & Đọc
   assert.deepEqual(o.rows.filter(r => r.pull).map(r => r.id), ['voc']);
   assert.deepEqual(o.rows.filter(r => r.mid).map(r => r.id), ['spk', 'wr']);
   assert.equal(o.solid, 0);
@@ -89,6 +89,17 @@ test('v136 đối chiếu: vững nhờ game / app / cả hai / từ trước; c
 test('v136 kết luận: nói thẳng kỹ năng nào game chưa có lò', () => {
   const o = compareOf(a2, () => false, undefined);
   const v = cmpVerdict(o, 6);
-  assert.match(v, /chỉ cho lý do học Từ vựng, và chỉ tới khi đủ 6 kỹ năng vững \(2% của 359/);
+  assert.match(v, /chỉ cho lý do học Từ vựng, và chỉ tới khi đủ 6 kỹ năng vững \(2% của 361/);
   assert.match(v, /Ngữ pháp, Phát âm, Nghe, Nói, Đọc, Viết: hiện chỉ học được ở phần 📘 Học/);
+});
+
+test('v151 cửa thứ ba 🗣 Nói & Đọc: ngữ cảnh nd / nd-… đếm riêng; gộp hai máy; vững từ hai nguồn vào "cả hai"', () => {
+  assert.equal(doorOfCtx('nd'), 'nd'); assert.equal(doorOfCtx('nd-pair'), 'nd'); assert.equal(doorOfCtx('ndx'), 'app'); assert.equal(doorOfCtx('wheel'), 'game');
+  const src: SrcMap = {};
+  tally(src, 'u:a1-food', true, true, 'nd'); tally(src, 'u:a1-food', true, true, 'nd'); tally(src, 'g:g-a1-08', true, true, 'nd'); tally(src, 'g:g-a1-08', true, true, 'app');
+  assert.deepEqual(src['u:a1-food'], { g: 0, a: 0, n: 2 });
+  assert.deepEqual(sanitizeSrc({ 'u:a1-food': { g: 0, a: 0, n: 2 }, 'u:x': { n: 'z' } }), { 'u:a1-food': { g: 0, a: 0, n: 2 } });
+  assert.deepEqual(mergeSrc({ 'u:a1-food': { g: 0, a: 1, n: 3 } }, { 'u:a1-food': { g: 2, a: 0 } }), { 'u:a1-food': { g: 2, a: 1, n: 3 } });
+  const o = compareOf([{ node: 'u:a1-food', level: 3, area: 'voc' }, { node: 'g:g-a1-08', level: 4, area: 'gra' }], () => true, src);
+  assert.equal(o.nd, 1); assert.equal(o.both, 1); assert.equal(o.ansN, 3);
 });

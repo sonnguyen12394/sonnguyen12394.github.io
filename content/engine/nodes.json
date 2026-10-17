@@ -1222,6 +1222,45 @@
   "scope": "Mediate a Vietnamese text into English for someone else"
  },
  {
+  "id": "cd:a1-ndsay",
+  "kind": "cando",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A1",
+  "vi": "Đọc to và nói lại câu mẫu rõ ràng để người nghe hiểu (A1)",
+  "en": "Read aloud and repeat model sentences clearly",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-act=\"shgo\" data-lv=\"A1\"",
+    "t": "Nói nhại / Đọc to A1: máy nghe ra ≥ 80% (2 ngày)"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "prod"
+  ],
+  "diff": 0.05,
+  "evReq": {
+   "lv": [
+    4,
+    5
+   ],
+   "types": [
+    "production",
+    "task"
+   ]
+  },
+  "imp": {
+   "tr": 0.9,
+   "re": 0.5
+  },
+  "scope": "Read aloud and repeat model sentences clearly"
+ },
+ {
   "id": "cd:a1-pro1",
   "kind": "cando",
   "area": "pro",
@@ -4421,6 +4460,45 @@
    "re": 0.5
   },
   "scope": "Mediate a Vietnamese text into English for someone else"
+ },
+ {
+  "id": "cd:a2-ndsay",
+  "kind": "cando",
+  "area": "spk",
+  "skill": "S",
+  "cefr": "A2",
+  "vi": "Đọc to và nói lại câu mẫu rõ ràng để người nghe hiểu (A2)",
+  "en": "Read aloud and repeat model sentences clearly",
+  "ctx": [
+   "daily"
+  ],
+  "acts": [
+   {
+    "at": "data-act=\"shgo\" data-lv=\"A2\"",
+    "t": "Nói nhại / Đọc to A2: máy nghe ra ≥ 80% (2 ngày)"
+   }
+  ],
+  "minutes": 10,
+  "ver": "1.0",
+  "dims": [
+   "prod"
+  ],
+  "diff": 0.24,
+  "evReq": {
+   "lv": [
+    4,
+    5
+   ],
+   "types": [
+    "production",
+    "task"
+   ]
+  },
+  "imp": {
+   "tr": 0.9,
+   "re": 0.5
+  },
+  "scope": "Read aloud and repeat model sentences clearly"
  },
  {
   "id": "cd:a2-pro1",

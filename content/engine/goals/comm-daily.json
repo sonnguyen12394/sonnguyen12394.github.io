@@ -233,6 +233,11 @@
    "type": "skill"
   },
   {
+   "node": "cd:a1-ndsay",
+   "level": 4,
+   "type": "skill"
+  },
+  {
    "node": "cd:a2-rx",
    "level": 3,
    "type": "performance"
@@ -245,6 +250,11 @@
   {
    "node": "cd:a2-lis",
    "level": 3,
+   "type": "skill"
+  },
+  {
+   "node": "cd:a2-ndsay",
+   "level": 4,
    "type": "skill"
   },
   {

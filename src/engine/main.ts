@@ -113,6 +113,7 @@ export interface EngineModule {
   merge(a: unknown, b: unknown): EState;
   hlog?(k: string, v?: number | boolean): void;            // v122: app ghi số đo H (nói / gõ câu, thời gian nghĩ, nhớ trễ…) vào nhật ký H
   skills?(): { vi: string; rows: SkillRow[] } | null;     // v137 bảng 7 kỹ năng của đích (Thư viện, lối Học); null = chưa tải nội dung / chưa có đích
+  gaps?(gid: string): string[] | null;   // v151 nút u: / g: của mục tiêu cấp gid còn chưa vững (🗣 Nói & Đọc chọn bài nhắm chỗ thiếu)
   peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
 export interface Peek { keys?: Record<string, string>; run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[]; bonus?: string[] }
@@ -2452,6 +2453,14 @@ export function init(host: EHost): EngineModule {
       if (kind) { const k = `app:${kind}`, was = bfx.get(k); if (!was || n < was.n) bfx.set(k, { run: bfx, n }); else if (n > was.n) { was.n = n; stageBurst('#app .q .pill.accent', { cls: 'stpop' }); } }
     },
     skills() { if (!loaded()) { ensure(); return null; } const r = cmpNow(V()); return r ? { vi: r.vi, rows: skillRows(r.o) } : null; },
+    // v151 🗣 Nói & Đọc (lối đi tắt): các nút từ / ngữ pháp của mục tiêu cấp gid còn chưa vững, để não chọn bài nhắm đúng chỗ thiếu.
+    gaps(gid: string): string[] | null {
+      const ix = loaded(); if (!ix) { ensure(); return null; }
+      const g = ix.goal.get(gid); if (!g) return null;
+      const v = V(), out: string[] = [];
+      for (const r of closure(ix, g.req.filter(r => r.type !== 'performance'), defaultLevel)) if (/^(u|g):/.test(r.node)) { const s = nodeStat(host, v, r.node, r.level); if (!(s.pass && s.state === 'mastered')) out.push(r.node); }
+      return out;
+    },
     peek() {
       // v140 thi chuyển cấp: đáp án nhóm câu đang làm (keys: mã câu → phương án đúng) cho bot / test e2e; Viết / Nói không có đáp án.
       if (gtRun && !gtRun.res && !gtRun.ws) { const g = gtRun.groups[gtRun.gi]; if (g) return { run: 'gate', node: '', level: 0, id: g.id, prompt: g.title, keys: Object.fromEntries(g.items.map(it => [it.id, String(it.ans)])) }; }

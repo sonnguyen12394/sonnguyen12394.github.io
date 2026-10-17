@@ -12724,6 +12724,25 @@
    ]
   },
   {
+   "id": "a1-ndsay",
+   "lv": "A1",
+   "grp": "spk",
+   "grp0": "spk",
+   "vi": "Đọc to và nói lại câu mẫu rõ ràng để người nghe hiểu (A1)",
+   "en": "Read aloud and repeat model sentences clearly",
+   "refs": [
+    {
+     "t": "ndsay",
+     "acts": [
+      {
+       "at": "data-act=\"shgo\" data-lv=\"A1\"",
+       "t": "Nói nhại / Đọc to A1: máy nghe ra ≥ 80% (2 ngày)"
+      }
+     ]
+    }
+   ]
+  },
+  {
    "id": "a2-med",
    "lv": "A2",
    "grp": "wr",
@@ -12814,6 +12833,25 @@
       {
        "at": "data-act=\"lisgo\" data-lv=\"A2\"",
        "t": "Luyện nghe A2"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "a2-ndsay",
+   "lv": "A2",
+   "grp": "spk",
+   "grp0": "spk",
+   "vi": "Đọc to và nói lại câu mẫu rõ ràng để người nghe hiểu (A2)",
+   "en": "Read aloud and repeat model sentences clearly",
+   "refs": [
+    {
+     "t": "ndsay",
+     "acts": [
+      {
+       "at": "data-act=\"shgo\" data-lv=\"A2\"",
+       "t": "Nói nhại / Đọc to A2: máy nghe ra ≥ 80% (2 ngày)"
       }
      ]
     }
