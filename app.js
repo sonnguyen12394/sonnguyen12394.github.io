@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 92;
+const STATE_V = 18, APP_VERSION = 93;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -4833,6 +4833,9 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:93,d:'2026-10-17',t:'⚡ Vượt bài đã biết trong Ôn luyện',items:[
+    'Ôn luyện vừa ôn vừa đo trình độ: não gợi ý unit / bài ngữ pháp bạn đã làm đúng phần lớn ở chỗ khác; bấm ⚡ Vượt để làm thẳng bài cuối.',
+    'Có nút ⚡ Vượt cả từ vựng / ngữ pháp của cấp. Qua là bài được đánh dấu xong, thanh 📘 Học ở Mục tiêu tăng; cùng chuẩn với Học bài.']},
   {v:92,d:'2026-10-17',t:'🎯 Mục tiêu: hai thanh Học và Nhớ',items:[
     'Mục tiêu mỗi cấp có hai thanh: 📘 Học (đã qua bài cuối của bài học) và 🔁 Nhớ (làm đúng lại sau ≥ 3 ngày và chưa phai).',
     'Thi chuyển cấp mở khi Học ≥ 80% và Nhớ ≥ 70%. Học quan trọng hơn: Nhớ cao không bù cho Học thấp.']},
@@ -6484,6 +6487,23 @@ function viewNdx(){ const X=ui.ndx; if(!X) return viewND(); const back=`<div cla
 // v149 🗣 Nói & Đọc: con đường thứ ba (người sáng lập 17/10/2026). Gom luyện nói, đọc to, phát âm; chỉ theo dõi riêng, không tính vào 🎯 Mục tiêu.
 const ndHint = what => `<p class="fb neutral" role="note"><span>${what}: đã chuyển sang <button class="btn small" data-go="nd">🔁 Ôn luyện</button></span></p>`;
 const ndLv = () => ui.ndLv||(talkLv()==='A1'?'A1':'A2');
+// v155 Vượt bài đã biết (người sáng lập 17/10/2026: người học lâu năm đã biết nhiều thứ mà app chưa đánh dấu; Ôn luyện vừa ôn vừa đo
+// trình độ để đánh dấu vào bài học). Dùng đúng bài cuối có sẵn của 📘 Học bài (cùng chuẩn): qua thì bài được đánh dấu xong (thanh 📘 Học tăng).
+// Não gợi ý bài từ bằng chứng: unit có ≥ 50% số từ đã đúng ở mức gõ ra (mọi nơi, kể cả Ôn luyện); điểm ngữ pháp đã đúng ở mức gõ / sửa câu.
+const ND_SKIP_MIN = 0.5;
+function ndKnown(){ const u=new Map(), g=new Set(), led=((st.e||{}).ev||{}).led||[];
+  for(const x of led){ if(!x.ok||x.asst||(x.lv||0)<3) continue; const it=String(x.item||'');
+    if(x.node&&x.node.startsWith('u:')){ const m=/^(?:w|nd):([^:]+):/.exec(it); if(m){ const k=x.node.slice(2); (u.get(k)||u.set(k,new Set()).get(k)).add(m[1]); } }
+    else if(x.node&&x.node.startsWith('g:')) g.add(x.node.slice(2)); }
+  return {u,g}; }
+function ndSkipHtml(){ const K=ndKnown(), L=ndLv(), lvl=CONTENT.levels.find(x=>x.id===L), glv=GRAMMAR.levels.find(x=>x.id===L);
+  const us=(lvl?lvl.units:[]).filter(u=>!U(u.id).passed).map(u=>({u,r:(K.u.get(u.id)||new Set()).size/Math.max(1,u.words.length)})).filter(x=>x.r>=ND_SKIP_MIN).sort((a,b)=>b.r-a.r).slice(0,5);
+  const gs=(glv?glv.points:[]).filter(p=>!G(p.id).passed&&K.g.has(p.id)).slice(0,3);
+  const lvDone=lvl?lvl.units.every(u=>U(u.id).passed):true, glDone=glv?glv.points.every(p=>G(p.id).passed):true;
+  return `<section class="panel stack" aria-label="Vượt bài đã biết"><h2>⚡ Vượt bài đã biết (${L})</h2>
+    <p class="hint">Đã biết sẵn thì làm thẳng bài cuối, không cần học lại từng bước. Cùng chuẩn với 📘 Học bài: qua thì bài được đánh dấu xong (thanh 📘 Học ở Mục tiêu tăng); chưa qua thì các câu sai vào lịch ôn.</p>
+    ${us.length||gs.length?`<p><b>Não gợi ý</b> (bạn đã làm đúng phần lớn ở chỗ khác):</p><div class="stack" style="gap:6px">${us.map(x=>`<div class="spread" style="gap:8px"><span>${uname(x.u)} · ${esc(x.u.vi||x.u.title)} <span class="hint num">đã đúng ${pct(x.r)} số từ</span></span><button class="btn small" data-act="test" data-u="${x.u.id}">⚡ Vượt unit</button></div>`).join('')}${gs.map(p=>`<div class="spread" style="gap:8px"><span>${esc(p.vi)}</span><button class="btn small" data-act="gtest" data-g="${p.id}">⚡ Vượt bài ngữ pháp</button></div>`).join('')}</div>`:'<p class="hint">Chưa có bài nào đủ bằng chứng để gợi ý. Làm Ôn luyện thêm, hoặc vượt cả cấp bên dưới.</p>'}
+    <div class="row" style="gap:6px">${lvDone?'':`<button class="btn" data-act="place" data-l="${L}">⚡ Vượt cả từ vựng ${L}</button>`}${glDone||!glv?'':`<button class="btn" data-act="gplace" data-l="${L}">⚡ Vượt cả ngữ pháp ${L}</button>`}</div></section>`; }
 // v153 Ôn thẻ đến hạn (chuyển từ 📘 Học bài sang đây: mọi việc ôn về một chỗ, người sáng lập 17/10/2026).
 function ndDueHtml(){ const dw=dueWords().length, dg=dueG().length;
   return `<section class="panel stack" aria-label="Ôn thẻ đến hạn"><h2>Ôn thẻ đến hạn</h2>
@@ -6509,6 +6529,7 @@ function viewND(){
     <p class="muted">Giữ cho khỏi quên: ôn thẻ đến hạn, rồi đọc / nói bài não chọn nhắm đúng chỗ đang phai, làm bài từ chính bài đó. Chỗ quên có nút quay lại 📘 Học bài đúng chỗ. (📘 Học bài: học mới tới vững; 🔁 Ôn luyện: giữ những gì đã học.)</p></section>
   ${ndDueHtml()}
   ${ndHealthHtml()}
+  ${ndSkipHtml()}
   <section class="panel stack" aria-label="Theo dõi Nói và Đọc"><h2>Theo dõi riêng</h2>
     <div class="row" style="gap:16px;flex-wrap:wrap"><span>Hôm nay <b class="num">${S.today}</b> câu</span><span>7 ngày <b class="num">${S.week}</b> câu</span><span>Luyện liền <b class="num">${S.run}</b> ngày</span>${S.p!=null?`<span>Máy nghe ra <b class="num">${pct(S.p)}</b> từ (7 ngày)</span>`:''}${S.ph?`<span>Chấm từng âm gần nhất <b class="num">${S.ph.s}/100</b></span>`:''}</div>
     <p class="hint">Lối đi tắt "làm rồi ôn lại": bài từ vựng + ngữ pháp sau mỗi bài, nghe cặp âm, chấm từng âm, đọc to / nói nhại (máy nghe ra ≥ 80%) được cộng vào 🎯 Mục tiêu (nguồn Ôn luyện); câu sai vào lịch ôn. Không tính mục tiêu ngày / XP của Học bài. Điểm máy chấm là ước tính, chưa người thật kiểm.</p></section>

@@ -206,3 +206,19 @@ test('v154 Mục tiêu có hai thanh Học / Nhớ; qua bài cuối unit làm th
   expect(r.violations.map(v => v.id)).toEqual([]);
   expect(errors).toEqual([]);
 });
+
+// v155 Vượt bài đã biết: Ôn luyện vừa ôn vừa đo trình độ, đánh dấu vào bài học bằng đúng bài cuối có sẵn của Học bài.
+test('v155 Vượt bài đã biết: có bằng chứng ≥ 50% số từ của unit → não gợi ý ⚡ Vượt unit, bấm vào thẳng bài cuối; có nút vượt cả cấp', async ({ page, errors }) => {
+  await open(page);
+  const uid = await page.evaluate(() => { const w = window as any, u = w.eval('CONTENT').levels.find((l: any) => l.id === 'A1').units[2];
+    for (const x of u.words.slice(0, Math.ceil(u.words.length * 0.6))) w.eval('eEv')({ node: 'u:' + u.id, level: 3, ok: true, g: 0, item: 'nd:' + x.id + ':t', qt: 'typed', ctx: 'nd', src: 'vocab', ch: 'nd:t' });
+    w.eval("ui.ndLv='A1'"); w.eval('render()'); return u.id; });
+  const box = page.locator('#app [aria-label="Vượt bài đã biết"]');
+  await expect(box.locator(`[data-act="test"][data-u="${uid}"]`)).toBeVisible();
+  await expect(box.locator('[data-act="place"][data-l="A1"]')).toBeVisible();
+  const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
+  expect(r.violations.map(v => v.id)).toEqual([]);
+  await box.locator(`[data-act="test"][data-u="${uid}"]`).click();
+  await expect.poll(() => page.evaluate(() => { const w = window as any; return w.eval('ui').view === 'session' && w.eval('ui').sess.kind; })).toBe('test');
+  expect(errors).toEqual([]);
+});
