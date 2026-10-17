@@ -113,7 +113,8 @@ export interface EngineModule {
   merge(a: unknown, b: unknown): EState;
   hlog?(k: string, v?: number | boolean): void;            // v122: app ghi số đo H (nói / gõ câu, thời gian nghĩ, nhớ trễ…) vào nhật ký H
   skills?(): { vi: string; rows: SkillRow[] } | null;     // v137 bảng 7 kỹ năng của đích (Thư viện, lối Học); null = chưa tải nội dung / chưa có đích
-  gaps?(gid: string): string[] | null;   // v151 nút u: / g: của mục tiêu cấp gid còn chưa vững (🗣 Nói & Đọc chọn bài nhắm chỗ thiếu)
+  gaps?(gid: string): string[] | null;
+  health?(gid: string): { solid: string[]; fading: string[]; lost: string[]; open: string[]; vi: Record<string, string> } | null;   // v152 sức khoẻ kiến thức (Nói & Đọc)   // v151 nút u: / g: của mục tiêu cấp gid còn chưa vững (🗣 Nói & Đọc chọn bài nhắm chỗ thiếu)
   peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
 export interface Peek { keys?: Record<string, string>; run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[]; bonus?: string[] }
@@ -2454,6 +2455,23 @@ export function init(host: EHost): EngineModule {
     },
     skills() { if (!loaded()) { ensure(); return null; } const r = cmpNow(V()); return r ? { vi: r.vi, rows: skillRows(r.o) } : null; },
     // v151 🗣 Nói & Đọc (lối đi tắt): các nút từ / ngữ pháp của mục tiêu cấp gid còn chưa vững, để não chọn bài nhắm đúng chỗ thiếu.
+    // v152 🗣 Nói & Đọc = ôn nhanh cho người đã học (người sáng lập 17/10/2026): sức khoẻ kiến thức của mục tiêu cấp gid.
+    // solid: vững, khả năng nhớ ≥ 0,9 · fading: vững nhưng nhớ < 0,9 (đang phai) · lost: từng vững (sổ có PASS) nay không còn · open: chưa từng vững.
+    health(gid: string) {
+      const ix = loaded(); if (!ix) { ensure(); return null; }
+      const g = ix.goal.get(gid); if (!g) return null;
+      const v = V(), passed = new Set(v.ev.snap.filter(x => x.kind === 'mastery' && x.dec === 'PASS').map(x => x.subj));
+      const out = { solid: [] as string[], fading: [] as string[], lost: [] as string[], open: [] as string[], vi: {} as Record<string, string> };
+      const seen = new Set<string>();
+      for (const r of closure(ix, g.req.filter(r => r.type !== 'performance'), defaultLevel)) {
+        if (!/^(u|g|ph):/.test(r.node) || seen.has(r.node)) continue; seen.add(r.node);
+        const s = nodeStat(host, v, r.node, r.level), ok = s.pass && s.state === 'mastered';
+        if (ok) ((recallOf(host, v, r.node) ?? 1) < 0.9 ? out.fading : out.solid).push(r.node);
+        else (passed.has(r.node) ? out.lost : out.open).push(r.node);
+        out.vi[r.node] = ix.node.get(r.node)?.vi ?? r.node;
+      }
+      return out;
+    },
     gaps(gid: string): string[] | null {
       const ix = loaded(); if (!ix) { ensure(); return null; }
       const g = ix.goal.get(gid); if (!g) return null;

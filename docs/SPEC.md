@@ -13,6 +13,10 @@
 >    - **Nói:** thêm Can-Do `a1-ndsay`, `a2-ndsay` (nhóm Nói): đọc to / nói nhại có máy nghe ra trung bình ≥ 80% ở ≥ 2 ngày. Tổng phần cần đạt: A1 185 → 186, A2 359 → 361 (sinh lại bằng `npm run engine`).
 >    - **Nguồn thứ ba ở 🎯 Mục tiêu:** cửa `nd` trong `compare.ts` (ngữ cảnh `nd` / `nd-…`), đoạn tím "nhờ Nói & Đọc"; phần vững từ ≥ 2 nguồn vào "từ hai nguồn".
 >    - Vẫn không cộng mục tiêu ngày / chuỗi ngày / XP của Học. Điểm máy chấm, ngưỡng 80%: chưa người thật kiểm.
+> 7. **(v152, bản 90) Vai trò hai phần** (người sáng lập 17/10/2026): **📘 Học** cho người mới, học và rèn từ đầu tới cuối, đạt mục tiêu, thi qua cấp. **🗣 Nói & Đọc** cho người đã học: ôn nhanh kiến thức và mục tiêu đã qua, lộ chỗ quên / lủng và quay ngay về 📘 Học đúng chỗ đó. Chốt thêm: phần chưa học trong bài vẫn hỏi (đúng là đi tắt); chỗ quên có nút đi thẳng tới đúng bài; có bảng sức khoẻ kiến thức.
+>    - `EM.health(gid)`: nút `u:` / `g:` / `ph:` của mục tiêu chia vững (nhớ ≥ 0,9) · đang phai (vững, nhớ < 0,9) · đã quên (sổ từng có PASS, nay không vững) · chưa học.
+>    - Não chọn bài: 3 × (đã quên / đang phai / đến hạn ôn ở app) + 1 × chưa học. Bài làm hỏi theo thứ tự đã quên → đang phai → đến hạn → chưa học, có nhãn "Ôn lại" / "Mới".
+>    - Kết quả "Chỗ bị quên": nút "📘 Ôn ở Học" (`data-unit` / `data-gp`), vẫn vào Ôn tập ngày mai. Bảng "Sức khoẻ kiến thức" A1 / A2 ở đầu tab, nút "⚡ Ôn nhanh", danh sách tối đa 10 chỗ đã quên / đang phai.
 
 > **16/10/2026 — Ba phần: ⚔️ Chơi · 📘 Học · 🎯 Mục tiêu (v138; thay "hai lối" v136).** Người sáng lập chốt: tách game và app học cũ để đối chiếu, và thêm phần thứ ba là mục tiêu từng cấp; chơi hay học đều phục vụ mục tiêu.
 > 1. **Thanh điều hướng:** Chơi · Học · Mục tiêu · Tôi. ⚔️ Chơi: sảnh, trận, lò rèn. 📘 Học: app cũ (việc nên làm, ôn tập, thư viện, bảng 7 kỹ năng). 🎯 Mục tiêu: A1 và A2 (chỉ hai cấp này) cần đạt gì. **Mở app vào 🎯 Mục tiêu.** Không còn nút đổi lối.

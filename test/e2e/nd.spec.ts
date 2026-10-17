@@ -125,3 +125,47 @@ test('kết quả phát âm cũ vẫn giữ: bản cũ đã đạt bộ cặp â
   expect(await page.evaluate((k: string) => (window as any).eval('cdActs')({ t: 'snd', v: [k] }, 'A1')[0].done, id)).toBe(true);
   expect(errors).toEqual([]);
 });
+
+// v152 Nói & Đọc = ôn nhanh cho người đã học: sức khoẻ kiến thức theo cấp, não ưu tiên chỗ đang phai, chỗ quên có nút về đúng bài trong 📘 Học.
+test('v152 sức khoẻ kiến thức: engine chia vững / đang phai / đã quên / chưa học; bảng A1 · A2 hiện ở đầu tab; WCAG AA', async ({ page, errors }) => {
+  await open(page);
+  await page.waitForFunction(() => { const w = window as any, EM = w.eval('EM'); return !!(EM && EM.health && EM.health('cefr-a1')); }, null, { timeout: 30000 });
+  const h = await page.evaluate(() => { const r = (window as any).eval('EM').health('cefr-a1'); return { n: r.solid.length + r.fading.length + r.lost.length + r.open.length, u: r.open.some((x: string) => x.startsWith('u:')) }; });
+  expect(h.n).toBeGreaterThan(100); expect(h.u).toBe(true);
+  await page.evaluate(() => (window as any).eval('render()'));
+  await expect(page.locator('#app [aria-label="Sức khoẻ kiến thức"]')).toContainText('chưa học');
+  await expect(page.locator('#app [data-act="ndquick"][data-v="A2"]')).toBeVisible();
+  const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
+  expect(r.violations.map(v => v.id)).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
+test('v152 não ưu tiên chỗ đang phai: từ "rice" (u:a1-food) đang phai → Ôn nhanh A1 chọn bài có từ đó, hỏi trước với nhãn "Ôn lại"; sai → nút 📘 Ôn ở Học mở đúng unit', async ({ page, errors }) => {
+  await open(page);
+  await page.waitForFunction(() => { const w = window as any, EM = w.eval('EM'); return !!(EM && EM.health && EM.health('cefr-a1')); }, null, { timeout: 30000 });
+  const node = await page.evaluate(() => { const w = window as any, u = w.eval('UNIT_OF')['rice']; const EM = w.eval('EM'), real = EM.health.bind(EM), n = 'u:' + u.id;
+    EM.health = (g: string) => { const r = real(g); if (!r) return r; for (const k of ['solid', 'lost', 'open']) r[k] = r[k].filter((x: string) => x !== n); r.fading = [n, ...r.fading.filter((x: string) => x !== n)]; return r; };
+    return n; });
+  await page.evaluate(() => (window as any).eval('render()'));
+  await page.locator('#app [data-act="ndshow"][data-v="A1"]').click();
+  await expect(page.locator(`#app [aria-label="Sức khoẻ kiến thức"] [data-unit]`).first()).toBeVisible();
+  await page.locator('#app [data-act="ndquick"][data-v="A1"]').click();
+  await expect(page.locator('#app .eyebrow').first()).toContainText('📖 Đọc to');
+  const q = await page.evaluate(() => (window as any).eval('ui').ra.q as string[]);
+  const n = q.length;
+  for (let i = 0; i < n; i++) { await page.evaluate(() => { (window as any).eval('ui').ra.self = 1; }); await page.locator('[data-act="ranext"]').click(); }
+  await page.locator('[data-act="ndxgo"]').click();
+  const x = await page.evaluate(() => (window as any).eval('ui').ndx.q as any[]);
+  const fadingFirst = x[0].node === node && x[0].kind === 'fading';
+  if (q.join(' ').toLowerCase().includes('rice')) expect(fadingFirst).toBe(true);
+  // trả lời sai câu đầu → kết quả có Chỗ bị quên với nút về đúng bài
+  await page.locator('#ndxin').fill('zzz'); await page.locator('[data-act="ndxok"]').click();
+  for (let i = 1; i < x.length; i++) { await page.locator('[data-act="ndxnext"]').click(); await page.locator('#ndxin').fill(x[i].ans); await page.locator('[data-act="ndxok"]').click(); }
+  await page.locator('[data-act="ndxnext"]').click();
+  await expect(page.locator('#app h3', { hasText: 'Chỗ bị quên' })).toBeVisible();
+  const home = page.locator('#app [data-unit], #app [data-gp]').first();
+  await expect(home).toContainText('Ôn ở Học');
+  await home.click();
+  await expect(page.locator('#bnav [data-go="lib"]')).toHaveAttribute('aria-current', 'page');
+  expect(errors).toEqual([]);
+});

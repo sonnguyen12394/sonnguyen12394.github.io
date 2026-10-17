@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 89;
+const STATE_V = 18, APP_VERSION = 90;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -4832,6 +4832,10 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:90,d:'2026-10-17',t:'🗣 Nói & Đọc: ôn nhanh cho người đã học',items:[
+    'Đầu tab có bảng “Sức khoẻ kiến thức” A1 / A2: bao nhiêu phần vững, đang phai, đã quên, chưa học. Bấm ⚡ Ôn nhanh để não chọn bài nhắm đúng chỗ đang phai.',
+    'Bài làm hỏi chỗ đã quên / đang phai trước (nhãn “Ôn lại”), phần chưa học sau (nhãn “Mới”, đúng là đi tắt).',
+    'Câu sai hiện ở “Chỗ bị quên”, mỗi chỗ có nút “📘 Ôn ở Học” về đúng bài từ vựng / điểm ngữ pháp; đồng thời vào Ôn tập ngày mai.']},
   {v:89,d:'2026-10-17',t:'🗣 Nói & Đọc: làm rồi ôn lại, tính vào Mục tiêu',items:[
     'Não chọn bài nhắm đúng chỗ Mục tiêu còn thiếu: “Bài này nhắm x từ, y điểm ngữ pháp bạn chưa vững”.',
     'Đọc to xong bấm “✍️ Làm bài từ vựng + ngữ pháp của bài này”: điền từ vào chính câu của bài, sửa câu sai theo điểm ngữ pháp. Đúng là đi tắt (cộng vào 🎯 Mục tiêu), sai thì vào 📘 Ôn tập từ ngày mai.',
@@ -5244,6 +5248,8 @@ document.addEventListener('click',e=>{
     case 'phplay': { try{ PH.url&&new Audio(PH.url).play(); }catch(e){} return; }
     case 'phdt': PH.dtype=d.v; return render();
     case 'ndlv': ui.ndLv=d.v==='A1'?'A1':'A2'; return render();
+    case 'ndshow': ui.ndShow=ui.ndShow===d.v?null:d.v; return render();
+    case 'ndquick': { const lv=d.v==='A1'?'A1':'A2'; ui.gp={lv,tier:lv==='A1'?2:1,mode:'say',kind:'read'}; ui.gp.text=null; go('gp'); return gpNew(); }
     case 'phnew': return phNew();
     case 'ndxgo': { const R=ui.ra, G=ui.gp; if(R&&R.q&&ui.view==='ra') return ndxStart(R.q,R.lv||ndLv(),R.title); if(G&&G.text) return ndxStart(G.text.lines.map(l=>l.en),G.lv,G.text.title); return; }
     case 'ndxok': return ndxAnswer();
@@ -5253,7 +5259,7 @@ document.addEventListener('click',e=>{
     case 'phlv': PH.lv=d.v==='A1'?'A1':'A2'; return phNew();
     case 'phtier': PH.tier=Math.min(3,Math.max(1,+d.v||1)); return phNew();
     case 'phlive': st.set.phLive=!phLiveOn(); if(!st.set.phLive&&ASR.key==='phon') asrReset(); save(); return render();
-    case 'phset': { const el=document.getElementById('phsent'), v=String(el?el.value:'').trim().slice(0,120); if(v){ PH.sent=v; PH.res=null; PH.err=''; } return render(); }
+    case 'phset': { const el=document.getElementById('phsent'), v=String(el?el.value:'').trim().slice(0,120); if(v){ PH.sent=v; PH.draft=null; PH.res=null; PH.err=''; } return render(); }
     case 'gp': { if(d.lv&&GP_LV.includes(d.lv)) (ui.gp||(ui.gp={tier:1,mode:'say',kind:'read'})).lv=d.lv; if(ui.gp&&d.mode&&GP_MODE[d.mode]) ui.gp.mode=d.mode; if(ui.gp&&d.kind&&GP_KIND[d.kind]) ui.gp.kind=d.kind; if(ui.gp) ui.gp.text=null; return go('gp'); }
     case 'gplv': ui.gp.lv=d.v; ui.gp.text=null; return render();
     case 'gptier': ui.gp.tier=+d.v; ui.gp.text=null; return render();
@@ -5487,7 +5493,12 @@ document.addEventListener('submit',e=>{
 });
 // Sổ từ: lọc ngay khi gõ, chỉ vẽ lại danh sách để ô tìm kiếm không mất con trỏ.
 document.addEventListener('input',e=>{ if(e.target.id==='wtin'){ ui.wtText=e.target.value; const c=document.getElementById('wtcount'), t=WT[ui.wtId]; if(c&&t) c.textContent=`${wc(e.target.value)} từ · yêu cầu ${t.min}–${t.max}`; return; }
-  if(e.target.id==='wbq'){ ui.wb.q=e.target.value; ui.wb.n=60; const l=document.getElementById('wblist'); if(l) l.innerHTML=wbList(); } });
+  if(e.target.id==='wbq'){ ui.wb.q=e.target.value; ui.wb.n=60; const l=document.getElementById('wblist'); if(l) l.innerHTML=wbList(); }
+  // v152 giữ chữ đang gõ khi màn vẽ lại giữa chừng (vd. bộ não tải xong): trước đây vẽ lại là mất chữ.
+  if(e.target.id==='gptyped'&&ui.gp) ui.gp.typed=e.target.value;
+  if(e.target.id==='ndxin'&&ui.ndx) ui.ndx.draft=e.target.value;
+  if(e.target.id==='pastebox') ui.pasteTxt=e.target.value;
+  if(e.target.id==='phsent') PH.draft=e.target.value; });
 document.addEventListener('toggle',e=>{ const t=e.target; if(t.matches&&t.matches('details[data-level]')) ui.openLv[t.dataset.level]=t.open; },true);
 document.addEventListener('change',e=>{
   const t=e.target;
@@ -6234,7 +6245,7 @@ function gpNew(){ const G=ui.gp, T=TG(); if(!G||!T) return;
   // v151 não chọn bài: 12 bài sinh + bài có sẵn đúng bậc; lấy bài nhắm nhiều từ / ngữ pháp của mục tiêu còn chưa vững nhất (engine chưa tải → ngẫu nhiên).
   const gaps=ndGaps(G.lv), base=(Date.now()^Math.floor(Math.random()*1e9))>>>0;
   const cand=[...have.slice().sort(()=>Math.random()-.5).slice(0,6).map(x=>({...x,src:'have'})),...Array.from({length:gaps?12:1},(_,k)=>{ const g=T.genText({lv:G.lv,tier:G.tier,kind:G.kind,seed:((base+k*7919)>>>0)||1}); return {id:g.id,title:g.title,tvi:g.tvi,lines:g.lines,src:'gen'}; })].filter(x=>!seen.includes(x.id));
-  if(gaps&&cand.length){ for(const c of cand){ const a=ndAim(c.lines.map(l=>l.en),G.lv,gaps); c.aim={w:new Set(a.gw.map(x=>x.wid)).size,g:a.gg.length}; c.sc=a.score+Math.random()*.5; } cand.sort((a,b)=>b.sc-a.sc); t=cand[0]; }
+  if(gaps&&cand.length){ for(const c of cand){ const a=ndAim(c.lines.map(l=>l.en),G.lv,gaps); c.aim={r:a.rv,n:a.nw}; c.sc=a.score+Math.random()*.5; } cand.sort((a,b)=>b.sc-a.sc); t=cand[0]; }
   else if(have.length&&Math.random()<.5){ t={...have[Math.floor(Math.random()*have.length)],src:'have'}; }
   else { const g=T.genText({lv:G.lv,tier:G.tier,kind:G.kind,seed:base||1}); t={id:g.id,title:g.title,tvi:g.tvi,lines:g.lines,src:'gen'}; }
   seen.push(t.id); if(seen.length>30) seen.shift();
@@ -6371,7 +6382,7 @@ function phNew(){ const T=TG(); if(!T) return toast('Chưa tải xong bộ sinh 
   const t=T.genText({lv,tier:PH.tier,kind:Math.random()<.5?'read':'talk',seed:((Date.now()^Math.random()*1e9)>>>0)||1});
   const all=t.lines.map(l=>l.en).filter(x=>phWc(x)>=2), hit=all.filter(x=>phTierOf(x)===PH.tier);
   PH.lines=(hit.length?hit:all).slice(0,6); PH.li=0; phPick(); }
-function phPick(){ PH.sent=PH.lines[PH.li]||PH.sent; PH.res=null; PH.err=''; PH.heard=''; if(ASR.key==='phon') asrReset(); render(); }
+function phPick(){ PH.draft=null; PH.sent=PH.lines[PH.li]||PH.sent; PH.res=null; PH.err=''; PH.heard=''; if(ASR.key==='phon') asrReset(); render(); }
 function phNext(){ if(PH.li+1<PH.lines.length){ PH.li++; return phPick(); } phNew(); }
 // v150 Sửa thế nào: tối đa 3 âm kém nhất (thiếu / đỏ trước), mỗi âm một bộ cặp âm có lời dạy khẩu hình + nghe mẫu + luyện cặp.
 function phFix(R){ const G=ELCORE.gop, out=[], seen=new Set();
@@ -6412,18 +6423,26 @@ function ndTag(lines,lv){ const P=PN(), ix=ndIx(), has=w=>ix.has(w), words=[], g
     for(const gid of ndGids(en)){ if(seenG.has(gid)||(lv==='A1'&&GPT[gid].level!=='A1')) continue; seenG.add(gid); gram.push({gid,node:'g:'+gid,i}); } });
   return {words,gram}; }
 // Não chọn bài: các nút của mục tiêu cấp lv còn chưa vững (engine); chưa tải engine thì null (chọn ngẫu nhiên như cũ).
-function ndGaps(lv){ try{ const g=EM&&EM.gaps?EM.gaps('cefr-'+lv.toLowerCase()):null; return g?new Set(g):null; }catch(e){ return null; } }
-function ndAim(lines,lv,gaps){ const t=ndTag(lines,lv), gw=gaps?t.words.filter(x=>gaps.has(x.node)):[], gg=gaps?t.gram.filter(x=>gaps.has(x.node)):[];
-  return {t,gw,gg,score:new Set(gw.map(x=>x.wid)).size+2*gg.length}; }
+// v152 (người sáng lập 17/10/2026): Nói & Đọc là nơi ÔN NHANH cho người đã học. Não ưu tiên chỗ đã quên → đang phai → đến hạn ôn ở app,
+// rồi mới tới chỗ chưa học (vẫn hỏi, đúng là đi tắt). Sức khoẻ lấy từ engine (EM.health); chưa tải engine thì null (chọn ngẫu nhiên như cũ).
+function ndHealth(lv){ try{ const h=EM&&EM.health?EM.health('cefr-'+lv.toLowerCase()):null; if(!h) return null;
+  const kind=new Map(); for(const k of ['solid','fading','lost','open']) for(const n of h[k]) kind.set(n,k); return {h,kind}; }catch(e){ return null; } }
+const ND_RANK = {lost:0,fading:1,due:2,open:3,solid:4};
+function ndKind(x,H){ const t=today(), s=x.wid?st.words[x.wid]:st.gram[x.gid], due=!!(s&&s.learned&&s.due!=null&&s.due<=t), k=H?H.kind.get(x.node):null;
+  if(k==='lost'||k==='fading') return k; if(due) return 'due'; if(k==='open') return s&&s.learned?'due':'open'; return k||'open'; }
+function ndAim(lines,lv,H){ const t=ndTag(lines,lv), all=[...t.words,...t.gram].map(x=>({...x,kind:ndKind(x,H)}));
+  const rv=all.filter(x=>ND_RANK[x.kind]<=2).length, nw=all.filter(x=>x.kind==='open').length;
+  return {t,all,rv,nw,score:3*rv+nw}; }
+const ndGaps = lv => ndHealth(lv);
 // Bài làm từ chính bài: tối đa 5 từ (điền vào câu của bài, gõ; mức 4) + 3 điểm ngữ pháp (sửa câu sai, gõ; mức 4). Ưu tiên chỗ còn thiếu.
-function ndxStart(lines,lv,title){ lines=lines.filter(Boolean); if(!lines.length) return; const gaps=ndGaps(lv), A=ndAim(lines,lv,gaps);
-  const pri=x=>gaps&&gaps.has(x.node)?0:1, ws=A.t.words.slice().sort((a,b)=>pri(a)-pri(b)).slice(0,5), gs=A.t.gram.slice().sort((a,b)=>pri(a)-pri(b)).slice(0,3), q=[];
+function ndxStart(lines,lv,title){ lines=lines.filter(Boolean); if(!lines.length) return; const H=ndHealth(lv), A=ndAim(lines,lv,H);
+  const by=x=>ND_RANK[x.kind]??4, ws=A.all.filter(x=>x.wid).sort((a,b)=>by(a)-by(b)).slice(0,5), gs=A.all.filter(x=>x.gid).sort((a,b)=>by(a)-by(b)).slice(0,3), q=[];
   for(const w of ws){ const en=lines[w.i], re=new RegExp(`\\b${w.tok.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\b`);
-    q.push({k:'w',wid:w.wid,node:w.node,level:4,item:'nd:'+w.wid+':'+hash36(en),prompt:en.replace(re,'_____'),vi:WORD[w.wid].vi,ans:w.tok,accept:[w.tok.toLowerCase().replace(/’/g,"'")],line:en}); }
+    q.push({k:'w',wid:w.wid,node:w.node,level:4,item:'nd:'+w.wid+':'+hash36(en),prompt:en.replace(re,'_____'),vi:WORD[w.wid].vi,ans:w.tok,accept:[w.tok.toLowerCase().replace(/’/g,"'")],line:en,kind:w.kind}); }
   for(const g of gs){ const p=GPT[g.gid]; if(!p.fx||!p.fx.length) continue; const ex=gbuild(p,'fix',{test:true});
-    q.push({k:'g',gid:g.gid,node:g.node,level:4,item:'g:'+g.gid+'|fix|'+ex.key,prompt:ex.prompt,ans:ex.ans,accept:ex.accept,title:p.vi||p.title||g.gid,line:lines[g.i]}); }
+    q.push({k:'g',gid:g.gid,node:g.node,level:4,item:'g:'+g.gid+'|fix|'+ex.key,prompt:ex.prompt,ans:ex.ans,accept:ex.accept,title:p.vi||p.title||g.gid,line:lines[g.i],kind:g.kind}); }
   if(!q.length) return toast('Bài này chưa có từ / ngữ pháp để làm.');
-  for(let i=q.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [q[i],q[j]]=[q[j],q[i]]; }
+  q.sort((a,b)=>(ND_RANK[a.kind]??4)-(ND_RANK[b.kind]??4));   // chỗ đã quên / đang phai hỏi trước
   go('ndx',{ndx:{title:title||'Bài của bạn',lv,q,i:0,res:[],ans:null,done:false,ch:'nd:'+hash36(lines.join(' '))}}); }
 function ndxAnswer(){ const X=ui.ndx, it=X&&X.q[X.i]; if(!it||X.ans) return; const el=document.getElementById('ndxin'), v=String(el?el.value:'').trim();
   if(!v) return toast('Gõ câu trả lời của bạn trước nhé.');
@@ -6435,25 +6454,38 @@ function ndxAnswer(){ const X=ui.ndx, it=X&&X.q[X.i]; if(!it||X.ans) return; con
   if(!s.learned){ Object.assign(s,{learned:true,stage:0,ivl:1,ease:EASE.start,due:null}); if(ok) srsStep(s,true,true); else s.due=t+1; }
   else srsStep(s,ok,true);
   ndLog('x',ok); sfx(ok?'ok':'bad'); save(); render(); }
-function ndxNext(){ const X=ui.ndx; X.i++; X.ans=null; if(X.i>=X.q.length) X.done=true; render(); window.scrollTo(0,0); }
+// Nút về đúng bài trong 📘 Học: từ → màn unit chứa từ; ngữ pháp → màn điểm ngữ pháp; âm → bộ cặp âm.
+const ndHome = r => { const n=r.node||'', u=r.wid?UNIT_OF[r.wid]:n.startsWith('u:')?UNITS.find(x=>'u:'+x.id===n):null, gid=r.gid||(n.startsWith('g:')?n.slice(2):null), ph=n.startsWith('ph:')?n.slice(3):null;
+  return u?`<button class="btn small" data-unit="${u.id}">📘 Ôn ở Học</button>`:gid&&GPT[gid]?`<button class="btn small" data-gp="${gid}">📘 Ôn ở Học</button>`:ph&&SND[ph]?`<button class="btn small" data-snd="${ph}">🗣 Luyện cặp âm</button>`:''; };
+function ndxNext(){ const X=ui.ndx; X.i++; X.ans=null; X.draft=''; if(X.i>=X.q.length) X.done=true; render(); window.scrollTo(0,0); }
 function viewNdx(){ const X=ui.ndx; if(!X) return viewND(); const back=`<div class="spread"><button class="btn ghost back" data-go="nd">← Nói &amp; Đọc</button><span class="num muted">✍️ ${Math.min(X.i+1,X.q.length)}/${X.q.length}</span></div>`;
   if(X.done){ const ok=X.res.filter(r=>r.ok).length, bad=X.res.filter(r=>!r.ok);
     return `${back}<section class="panel stack" style="text-align:center;justify-items:center">${mascot(ok===X.res.length?'party':'happy',84)}<h1>Đúng ${ok}/${X.res.length}</h1>
       <p class="muted">Câu đúng được cộng vào 🎯 Mục tiêu (nguồn Nói &amp; Đọc). ${bad.length?`${bad.length} câu sai đã vào 📘 Ôn tập từ ngày mai.`:'Không có câu nào phải ôn.'}</p></section>
-      ${bad.length?`<section class="panel stack"><h3>Cần ôn</h3>${bad.map(r=>`<p><b lang="en">${esc(r.ans)}</b> ${r.k==='w'?`(${esc(r.vi)})`:`· ${esc(r.title)}`}<br><span class="hint" lang="en">${esc(r.line)}</span></p>`).join('')}</section>`:''}
+      ${bad.length?`<section class="panel stack"><h3>Chỗ bị quên</h3><p class="hint">Đã vào 📘 Ôn tập từ ngày mai. Muốn ôn ngay: bấm “📘 Ôn ở Học” để về đúng bài.</p>${bad.map(r=>`<div class="spread" style="gap:8px;align-items:flex-start"><p><b lang="en">${esc(r.ans)}</b> ${r.k==='w'?`(${esc(r.vi)})`:`· ${esc(r.title)}`}<br><span class="hint" lang="en">${esc(r.line)}</span></p>${ndHome(r)}</div>`).join('')}</section>`:''}
       <div class="row endrow"><button class="btn primary" data-act="gpnew">Bài mới</button><button class="btn" data-go="nd">Về Nói &amp; Đọc</button></div>`; }
   const it=X.q[X.i], A=X.ans;
   return `${back}<div class="bar"><i style="width:${X.i/X.q.length*100}%"></i></div>
-  <section class="panel stack"><span class="eyebrow">${it.k==='w'?`Từ vựng · nghĩa: ${esc(it.vi)}`:`Ngữ pháp · ${esc(it.title)}`}</span>
+  <section class="panel stack"><div class="spread"><span class="eyebrow">${it.k==='w'?`Từ vựng · nghĩa: ${esc(it.vi)}`:`Ngữ pháp · ${esc(it.title)}`}</span><span class="pill ${it.kind==='open'?'accent':'good'}">${it.kind==='open'?'Mới':it.kind==='lost'?'Ôn lại · đã quên':it.kind==='fading'?'Ôn lại · đang phai':'Ôn lại'}</span></div>
     <h2 lang="en" style="font:400 20px/1.5 var(--display)">${esc(it.prompt)}</h2>
     <p class="hint">${it.k==='w'?'Điền từ còn thiếu (đúng dạng như trong bài).':'Câu này có lỗi: gõ lại câu đúng.'}</p>
-    <label class="hint" for="ndxin">Câu trả lời</label><input id="ndxin" lang="en" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(A?A.v:'')}" ${A?'disabled':''}>
+    <label class="hint" for="ndxin">Câu trả lời</label><input id="ndxin" lang="en" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(A?A.v:(X.draft||''))}" ${A?'disabled':''}>
     ${A?`<div class="fb ${A.ok?'good':'bad'}" role="status"><strong>${A.ok?'Đúng':'Chưa đúng'}</strong><span>Đáp án: <b lang="en">${esc(it.ans)}</b>${it.k==='w'?`<br><span lang="en">${esc(it.line)}</span>`:''}</span>${A.ok?'':'<span>Đã đưa vào 📘 Ôn tập từ ngày mai.</span>'}</div>
       <div class="row"><button class="btn primary" data-act="ndxnext">${X.i+1<X.q.length?'Câu tiếp':'Xem kết quả'}</button></div>`
       :`<div class="row"><button class="btn primary" data-act="ndxok">Trả lời</button></div>`}</section>`; }
 // v149 🗣 Nói & Đọc: con đường thứ ba (người sáng lập 17/10/2026). Gom luyện nói, đọc to, phát âm; chỉ theo dõi riêng, không tính vào 🎯 Mục tiêu.
 const ndHint = what => `<p class="fb neutral" role="note"><span>${what}: đã chuyển sang <button class="btn small" data-go="nd">🗣 Nói &amp; Đọc</button></span></p>`;
 const ndLv = () => ui.ndLv||(talkLv()==='A1'?'A1':'A2');
+// v152 Sức khoẻ kiến thức mỗi cấp (A1, A2): vững · đang phai · đã quên · chưa học; Ôn nhanh; xem chỗ đã quên (nút về đúng bài trong 📘 Học).
+function ndHealthHtml(){ const rows=['A1','A2'].map(l=>({l,H:ndHealth(l)})).filter(x=>x.H); if(!rows.length) return '';
+  const seg=(c,n,t)=>n?`<i class="${c}" style="flex:${n}" title="${t}"></i>`:'';
+  return `<section class="panel stack" aria-label="Sức khoẻ kiến thức"><h2>Sức khoẻ kiến thức</h2>${rows.map(({l,H})=>{ const h=H.h, sol=h.solid.length, fd=h.fading.length, lo=h.lost.length, op=h.open.length, tot=sol+fd+lo+op||1, sh=ui.ndShow===l;
+    const list=sh?[...h.lost,...h.fading].slice(0,10):[];
+    return `<div class="stack" style="gap:6px"><div class="spread"><b>${l}</b><span class="hint num">${sol} vững · ${fd} đang phai · ${lo} đã quên · ${op} chưa học</span></div>
+      <span class="ndbar" role="img" aria-label="${l}: ${sol} vững, ${fd} đang phai, ${lo} đã quên, ${op} chưa học">${seg('ok',sol,'vững')}${seg('fd',fd,'đang phai')}${seg('lo',lo,'đã quên')}${seg('op',op,'chưa học')}</span>
+      <div class="row" style="gap:6px"><button class="btn small primary" data-act="ndquick" data-v="${l}">⚡ Ôn nhanh ${l}</button>${fd+lo?`<button class="btn small" data-act="ndshow" data-v="${l}" aria-expanded="${sh}">${sh?'Ẩn':'Xem'} chỗ đã quên / đang phai</button>`:''}</div>
+      ${sh?`<ul class="stack" style="gap:6px;list-style:none;padding:0">${list.map(n=>`<li class="spread" style="gap:8px"><span>${h.lost.includes(n)?'🔴':'🟡'} ${esc(h.vi[n]||n)}</span>${ndHome({node:n})}</li>`).join('')}</ul>`:''}</div>`; }).join('')}
+    <p class="hint">Đang phai: đã vững nhưng khả năng nhớ dưới 90%. Đã quên: từng vững, nay sai lại. Ước tính của máy, chưa người thật kiểm.</p></section>`; }
 function viewND(){
   const L=ndLv(), S=ndStats(), pd=(st.me||{}).pdx;
   const card=(attr,ic,t,sub,pill)=>`<button class="unit morei" ${attr}><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${sub}</span>${pill?`<span class="pill ${pill[0]}" style="justify-self:start">${pill[1]}</span>`:''}</span></button>`;
@@ -6461,7 +6493,8 @@ function viewND(){
   const sec=(t,items)=>items?`<section class="stack"><h2>${t}</h2><div class="units">${items}</div></section>`:'';
   const ra=UNITS.filter(u=>u.level===L&&unlocked(u)&&raOk(u)).reverse().slice(0,12).map(u=>card(`data-act="rago" data-uid="${u.id}"`,'mic',`<span lang="en">${esc(u.reading.title)}</span>`,`${uname(u)} · phiên âm, nối âm, âm cuối, ngữ điệu`,bp(st.pron['ra:'+u.id]))).join('');
   return `<section class="stack"><span class="eyebrow">🗣 Nói &amp; Đọc</span><h1>Luyện nói và đọc to</h1>
-    <p class="muted">Con đường thứ ba, song song với ⚔️ Chơi và 📘 Học. 📘 Học là học rồi làm; ở đây là <b>làm rồi ôn lại</b>: não chọn bài nhắm đúng chỗ Mục tiêu còn thiếu, bạn đọc / nói, làm bài từ chính bài đó; đúng là đi tắt, sai thì ôn.</p></section>
+    <p class="muted">Dành cho người đã học: <b>ôn nhanh</b> mục tiêu đã qua, tìm chỗ quên, rồi quay lại 📘 Học đúng chỗ đó. (📘 Học dành cho người mới: học từ đầu tới cuối, thi qua cấp.) Não chọn bài nhắm chỗ đang phai; bạn đọc / nói, làm bài từ chính bài đó.</p></section>
+  ${ndHealthHtml()}
   <section class="panel stack" aria-label="Theo dõi Nói và Đọc"><h2>Theo dõi riêng</h2>
     <div class="row" style="gap:16px;flex-wrap:wrap"><span>Hôm nay <b class="num">${S.today}</b> câu</span><span>7 ngày <b class="num">${S.week}</b> câu</span><span>Luyện liền <b class="num">${S.run}</b> ngày</span>${S.p!=null?`<span>Máy nghe ra <b class="num">${pct(S.p)}</b> từ (7 ngày)</span>`:''}${S.ph?`<span>Chấm từng âm gần nhất <b class="num">${S.ph.s}/100</b></span>`:''}</div>
     <p class="hint">Lối đi tắt "làm rồi ôn lại": bài từ vựng + ngữ pháp sau mỗi bài, nghe cặp âm, chấm từng âm, đọc to / nói nhại (máy nghe ra ≥ 80%) được cộng vào 🎯 Mục tiêu (nguồn Nói &amp; Đọc); câu sai vào 📘 Ôn tập. Không tính mục tiêu ngày / XP của Học. Điểm máy chấm là ước tính, chưa người thật kiểm.</p></section>
@@ -6495,7 +6528,7 @@ function viewPhon(){
   <section class="panel stack"><h2>2. Câu để nói</h2>
     <div class="row" role="group" aria-label="Cấp" style="gap:6px">${['A1','A2'].map(l=>`<button class="btn small ${(PH.lv||ndLv())===l?'primary':''}" data-act="phlv" data-v="${l}" aria-pressed="${(PH.lv||ndLv())===l}">${l}</button>`).join('')}${GP_TIER.map((t,i)=>`<button class="btn small ${PH.tier===i+1?'primary':''}" data-act="phtier" data-v="${i+1}" aria-pressed="${PH.tier===i+1}">${t}</button>`).join('')}</div>
     <div class="row"><button class="btn" data-act="phnew">🎲 Câu mới</button>${PH.lines.length>1?`<span class="hint num">Câu ${PH.li+1}/${PH.lines.length} của bài</span>`:''}</div>
-    <label class="hint" for="phsent">Hoặc tự gõ câu tiếng Anh (ngắn, 3–10 từ)</label><input id="phsent" lang="en" value="${esc(PH.sent)}" maxlength="120">
+    <label class="hint" for="phsent">Hoặc tự gõ câu tiếng Anh (ngắn, 3–10 từ)</label><input id="phsent" lang="en" value="${esc(PH.draft??PH.sent)}" maxlength="120">
     <div class="row"><button class="btn small" data-act="phset">Dùng câu này</button>${HAS_TTS?`<button class="btn small" data-say="${esc(PH.sent)}">${SPK} Nghe mẫu</button><button class="btn small" data-say="${esc(PH.sent)}" data-slow="1">🐢 Nghe chậm</button>`:''}</div>
     ${pnHtml(n)}</section>
   <section class="panel stack"><h2>3. Nói và chấm</h2>
@@ -6542,7 +6575,7 @@ function viewRA(){
       ${pnMissSum(R.res)}
       <section class="panel stack"><h3>Từng câu</h3>${R.res.map(x=>`<p><span lang="en">${esc(x.t)}</span><br><span class="hint">${x.p==null?'Bỏ qua':x.asr?`Máy nghe ra ${pct(x.p)} số từ`:`Tự chấm: ${pct(x.p)}`}</span></p>`).join('')}</section>
       <div class="row endrow"><button class="btn primary" data-act="raagain">Đọc lại</button><button class="btn" ${R.back}>Về ${esc(R.backL)}</button></div>`; }
-  const aimN=R.aim&&R.i===0&&(R.aim.w||R.aim.g)?`<p class="fb neutral" role="note"><span>🎯 Bài này nhắm ${R.aim.w?`${R.aim.w} từ`:''}${R.aim.w&&R.aim.g?', ':''}${R.aim.g?`${R.aim.g} điểm ngữ pháp`:''} bạn chưa vững. Đọc xong làm bài từ vựng + ngữ pháp để cộng vào Mục tiêu.</span></p>`:'';
+  const aimN=R.aim&&R.i===0&&(R.aim.r||R.aim.n)?`<p class="fb neutral" role="note"><span>🎯 Bài này giúp ôn ${R.aim.r} phần đang phai / đã quên${R.aim.n?`, ${R.aim.n} phần mới`:''}. Đọc xong làm bài từ vựng + ngữ pháp: chỗ quên sẽ có nút quay về 📘 Học.</span></p>`:'';
   const x=R.q[R.i], n=pnNote(x), sc=raScore(), recBtns=!HAS_REC?'':REC.on?'<button class="btn" data-act="recstop">■ Dừng ghi âm</button>':`<button class="btn" data-act="recstart">● Ghi âm</button>${REC.url?'<button class="btn" data-act="recplay">▶ Nghe giọng bạn</button>':''}`;
   return `${back}<div class="bar"><i style="width:${R.i/R.q.length*100}%"></i></div>${aimN}
   <section class="q stack"><p class="eyebrow">📖 Đọc to · <span lang="en">${esc(R.title)}</span></p>
@@ -9051,7 +9084,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.c111228a8b.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.46cc8ef9f5.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
