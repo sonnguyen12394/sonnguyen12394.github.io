@@ -1547,16 +1547,22 @@ export function init(host: EHost): EngineModule {
   // v154 hai thanh của Mục tiêu (người sáng lập 17/10/2026). Trên các nút u: / g: / ph: / fn: của mục tiêu (như skillsOf):
   // 📘 Học = đã qua bài cuối của bài học chứa nút (host.lessonDone; host cũ không có thì dùng "vững").
   // 🔁 Nhớ = có câu đúng tự lực ở nút đó cách lần gặp đầu ≥ GATE.memDays ngày, và khả năng nhớ hiện ≥ 0,9 (chưa phai).
+  // v158 (người sáng lập 17/10/2026): nút unit (u:) gồm nhiều từ nên tính theo TỪNG TỪ: ≥ GATE.memWord số từ của unit có câu đúng tự lực
+  // cách lần gặp đầu của chính từ đó ≥ GATE.memDays ngày (từ lấy ở id câu w:<từ>:… / nd:<từ>:…; host cũ không có unitWords thì như nút thường).
   function partsOf(v: EState, g: NonNullable<ReturnType<typeof goalOf>>): GateParts {
     const ix = loaded()!, seen = new Set<string>(), nodes: Array<{ node: string; level: number }> = [];
     for (const r of closure(ix, g.req.filter(r => r.type !== 'performance'), defaultLevel)) if (/^(u|g|ph|fn):/.test(r.node) && !seen.has(r.node)) { seen.add(r.node); nodes.push(r); }
-    const first = new Map<string, number>(), okLast = new Map<string, number>();
-    for (const x of v.ev.led) { if (!seen.has(x.node)) continue; const f = first.get(x.node); if (f === undefined || x.day < f) first.set(x.node, x.day); if (x.ok && !x.asst) { const l = okLast.get(x.node); if (l === undefined || x.day > l) okLast.set(x.node, x.day); } }
+    const first = new Map<string, number>(), okLast = new Map<string, number>(), wf = new Map<string, number>(), wl = new Map<string, number>();
+    const span = (fm: Map<string, number>, lm: Map<string, number>, k: string, day: number, good: boolean) => { const f = fm.get(k); if (f === undefined || day < f) fm.set(k, day); if (good) { const l = lm.get(k); if (l === undefined || day > l) lm.set(k, day); } };
+    for (const x of v.ev.led) { if (!seen.has(x.node)) continue; const good = !!x.ok && !x.asst; span(first, okLast, x.node, x.day, good);
+      const m = x.node.startsWith('u:') ? /^(?:w|nd):([^:]+):/.exec(String(x.item ?? '')) : null; if (m) span(wf, wl, x.node + '|' + m[1], x.day, good); }
+    const memOk = (k: string, fm: Map<string, number>, lm: Map<string, number>) => { const f = fm.get(k), l = lm.get(k); return f !== undefined && l !== undefined && l - f >= GATE.memDays; };
     let learn = 0, mem = 0;
     for (const r of nodes) {
       if (host.lessonDone ? host.lessonDone(r.node) : nodeStat(host, v, r.node, r.level as Level).pass) learn++;
-      const f = first.get(r.node), l = okLast.get(r.node);
-      if (f !== undefined && l !== undefined && l - f >= GATE.memDays && (recallOf(host, v, r.node) ?? 0) >= 0.9) mem++;
+      const ws = r.node.startsWith('u:') && host.unitWords ? host.unitWords(r.node.slice(2)) : null;
+      const held = ws && ws.length ? ws.filter(w => memOk(r.node + '|' + w, wf, wl)).length / ws.length >= GATE.memWord : memOk(r.node, first, okLast);
+      if (held && (recallOf(host, v, r.node) ?? 0) >= 0.9) mem++;
     }
     return { learn, mem, total: nodes.length };
   }
