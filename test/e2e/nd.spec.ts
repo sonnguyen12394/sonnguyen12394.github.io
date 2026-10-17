@@ -23,7 +23,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     await open(page);
     await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
-    await expect(page.getByRole('heading', { name: 'Luyện nói và đọc to' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Ôn luyện', level: 1 })).toBeVisible();
     for (const sel of ['[data-act="shgo"]', '[data-act="gp"][data-kind="talk"]', '[data-go="phon"]', '[data-act="gp"][data-kind="read"]', '[data-act="paste"]', '[data-act="rago"]', '[data-go="sounds"]', '[data-act="csgo"]'])
       await expect(page.locator(`#app ${sel}`).first()).toBeVisible();
     await expect(page.locator('#app')).toContainText('làm rồi ôn lại');
@@ -90,7 +90,7 @@ test('v151 làm rồi ôn lại: đọc to bài theo cấp → làm bài từ v�
   if (q.length > 1) {
     await page.locator('[data-act="ndxnext"]').click();
     await page.locator('#ndxin').fill('zzz'); await page.locator('[data-act="ndxok"]').click();
-    await expect(page.locator('#app .fb.bad')).toContainText('Ôn tập');
+    await expect(page.locator('#app .fb.bad')).toContainText('lịch ôn');
     const due = await page.evaluate((it: any) => { const w = window as any, s = it.k === 'w' ? w.eval('st').words[it.wid] : w.eval('st').gram[it.gid]; return s.due - w.eval('today()'); }, q[1]);
     expect(due).toBe(1);
   }
@@ -98,7 +98,7 @@ test('v151 làm rồi ôn lại: đọc to bài theo cấp → làm bài từ v�
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(r.violations.map(v => v.id)).toEqual([]);
   await page.evaluate(() => (window as any).eval("go('aim')"));
-  await expect(page.locator('#app .cmpleg')).toContainText('nhờ Nói & Đọc');
+  await expect(page.locator('#app .cmpleg')).toContainText('nhờ Ôn luyện');
   expect(errors).toEqual([]);
 });
 
@@ -140,7 +140,7 @@ test('v152 sức khoẻ kiến thức: engine chia vững / đang phai / đã qu
   expect(errors).toEqual([]);
 });
 
-test('v152 não ưu tiên chỗ đang phai: từ "rice" (u:a1-food) đang phai → Ôn nhanh A1 chọn bài có từ đó, hỏi trước với nhãn "Ôn lại"; sai → nút 📘 Ôn ở Học mở đúng unit', async ({ page, errors }) => {
+test('v152 não ưu tiên chỗ đang phai: từ "rice" (u:a1-food) đang phai → Ôn nhanh A1 chọn bài có từ đó, hỏi trước với nhãn "Ôn lại"; sai → nút 📘 Học lại bài này mở đúng unit', async ({ page, errors }) => {
   await open(page);
   await page.waitForFunction(() => { const w = window as any, EM = w.eval('EM'); return !!(EM && EM.health && EM.health('cefr-a1')); }, null, { timeout: 30000 });
   const node = await page.evaluate(() => { const w = window as any, u = w.eval('UNIT_OF')['rice']; const EM = w.eval('EM'), real = EM.health.bind(EM), n = 'u:' + u.id;
@@ -164,8 +164,30 @@ test('v152 não ưu tiên chỗ đang phai: từ "rice" (u:a1-food) đang phai �
   await page.locator('[data-act="ndxnext"]').click();
   await expect(page.locator('#app h3', { hasText: 'Chỗ bị quên' })).toBeVisible();
   const home = page.locator('#app [data-unit], #app [data-gp]').first();
-  await expect(home).toContainText('Ôn ở Học');
+  await expect(home).toContainText('Học lại bài này');
   await home.click();
   await expect(page.locator('#bnav [data-go="lib"]')).toHaveAttribute('aria-current', 'page');
+  expect(errors).toEqual([]);
+});
+
+// v153 Học bài · Ôn luyện · Mục tiêu: mọi việc ôn về Ôn luyện; não ở Học bài điều phối theo học (không đẩy ôn lên đầu).
+test('v153 đổi tên + Ôn tập về Ôn luyện: Học bài không còn nút Ôn tập (chỉ nhắc), Ôn luyện có "Ôn thẻ đến hạn" + chấm đỏ; Việc nên làm ở Học bài vẫn là học tiếp', async ({ page, errors }) => {
+  await open(page);
+  // một từ đã học đến hạn ôn
+  await page.evaluate(() => { const w = window as any, st = w.eval('st'), id = w.eval('UNITS')[0].words[0].id, t = w.eval('today()');
+    Object.assign(w.eval('W')(id), { learned: true, due: t, ivl: 1, stage: 1 }); w.eval('save()'); w.eval('render()'); });
+  await expect(page.locator('#bnav [data-go="nd"] .badge')).toBeVisible();
+  await expect(page.locator('#bnav [data-go="lib"] .badge')).toHaveCount(0);
+  await expect(page.locator('#app [aria-label="Ôn thẻ đến hạn"]')).toContainText('1');
+  await expect(page.locator('#app [aria-label="Ôn thẻ đến hạn"] [data-act="review"]')).toBeVisible();
+  await page.locator('#bnav [data-go="lib"]').click();
+  await expect(page.getByRole('heading', { name: '📘 Học bài', level: 1 })).toBeVisible();
+  await expect(page.locator('#app .lnext [data-go="review"]')).toHaveCount(0);
+  await expect(page.locator('#app .lnext')).toContainText('mục đến hạn ôn');
+  await expect(page.locator('#app .lnext b').first()).not.toContainText('đến hạn ôn');
+  await page.locator('#app .lnext [data-go="nd"]').click();
+  await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
+  await page.evaluate(() => (window as any).eval("go('review')"));
+  await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
   expect(errors).toEqual([]);
 });

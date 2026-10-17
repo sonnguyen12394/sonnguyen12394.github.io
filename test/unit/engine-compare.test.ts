@@ -90,7 +90,7 @@ test('v136 kết luận: nói thẳng kỹ năng nào game chưa có lò', () =>
   const o = compareOf(a2, () => false, undefined);
   const v = cmpVerdict(o, 6);
   assert.match(v, /chỉ cho lý do học Từ vựng, và chỉ tới khi đủ 6 kỹ năng vững \(2% của 361/);
-  assert.match(v, /Ngữ pháp, Phát âm, Nghe, Nói, Đọc, Viết: hiện chỉ học được ở phần 📘 Học/);
+  assert.match(v, /Ngữ pháp, Phát âm, Nghe, Nói, Đọc, Viết: hiện chỉ học được ở phần 📘 Học bài/);
 });
 
 test('v151 cửa thứ ba 🗣 Nói & Đọc: ngữ cảnh nd / nd-… đếm riêng; gộp hai máy; vững từ hai nguồn vào "cả hai"', () => {

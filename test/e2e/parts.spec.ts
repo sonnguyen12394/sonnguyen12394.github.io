@@ -24,14 +24,14 @@ const answer = (page: Page, item: string, ctx: string) => page.evaluate(([it, cx
 
 test.describe('mở app (home: false)', () => {
   test.use({ home: false });
-  test('mở app vào 🎯 Mục tiêu; thanh = Chơi · Học · Nói & Đọc · Mục tiêu · Tôi; A1 / A2 đổi được; WCAG', async ({ page, errors }) => {
+  test('mở app vào 🎯 Mục tiêu; thanh = Chơi · Học bài · Ôn luyện · Mục tiêu · Tôi; A1 / A2 đổi được; WCAG', async ({ page, errors }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await seed(page);
     // Chờ bài học chi tiết tải xong rồi mới tải lại trang: tải lại giữa chừng thì Safari báo lỗi fetch bị cắt ngang (CI WebKit).
     await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
     await page.reload();
     await expect(page.getByRole('heading', { name: /Cần đạt ở mỗi cấp/ })).toBeVisible({ timeout: 20000 });
-    await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học', 'Nói & Đọc', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
+    await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học bài', 'Ôn luyện', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
     await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Mục tiêu');
     await expect(page.locator('#app .cmprow')).toHaveCount(7);
     await expect(page.locator('#app')).toContainText(/Cần đạt để qua A2 · \d+\/361 phần đã vững/);
@@ -73,18 +73,19 @@ test('câu đúng ghi nguồn theo nơi học; Mục tiêu tách nhờ game / nh
   expect(errors).toEqual([]);
 });
 
-test('tab 📘 Học: việc nên làm + Ôn tập + 7 kỹ năng + tự chọn bài; ôn tập sáng tab Học', async ({ page, errors }) => {
+test('tab 📘 Học bài: việc nên làm + 7 kỹ năng + tự chọn bài; Ôn tập đã chuyển sang 🔁 Ôn luyện (v153)', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await seed(page);
   await page.evaluate(() => (window as any).eval('emLoad()'));
   await toLobby(page, false);
   await navTo(page, 'Học');
-  await expect(page.getByRole('heading', { name: '📘 Học', level: 1 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '📘 Học bài', level: 1 })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Việc nên làm' })).toBeVisible();
   await expect(page.locator('#app .lskrow')).toHaveCount(7);
   for (const t of [/Bài học theo chủ đề/, /Kỹ năng/, /Sổ từ/]) await expect(page.getByRole('button', { name: t })).toBeVisible();
   await noHorizontalScroll(page);
-  await page.locator('#app .lnext [data-go="review"]').click();
-  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Học');
+  await expect(page.locator('#app .lnext [data-go="review"]')).toHaveCount(0);
+  await page.evaluate(() => (window as any).eval("go('review')"));
+  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Ôn luyện');
   expect(errors).toEqual([]);
 });

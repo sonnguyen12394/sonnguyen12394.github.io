@@ -101,6 +101,6 @@ export function cmpVerdict(o: CmpOut, cap?: number): string {
   const pulled = o.rows.filter(r => r.pull && r.total).map(r => r.vi), off = o.rows.filter(r => !r.pull && r.total);
   const capTxt = cap ? `, và chỉ tới khi đủ ${cap} kỹ năng vững (${o.total ? Math.max(1, Math.round((100 * cap) / o.total)) : 0}% của ${o.total} phần cần cho đích)` : '';
   const head = pulled.length ? `Game hiện chỉ cho lý do học ${pulled.join(', ')}${capTxt}.` : 'Game hiện chưa cho lý do học nhóm nào của đích.';
-  const tail = off.length ? ` ${off.map(r => r.vi).join(', ')}: hiện chỉ học được ở phần 📘 Học.` : '';
+  const tail = off.length ? ` ${off.map(r => r.vi).join(', ')}: hiện chỉ học được ở phần 📘 Học bài.` : '';
   return head + tail;
 }

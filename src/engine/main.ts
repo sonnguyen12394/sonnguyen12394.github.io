@@ -107,7 +107,7 @@ export interface EngineModule {
   res?(): { coins: number; lv: number };                   // v131 thanh tài nguyên của app (xu, cấp Thợ Chữ)
   stage?(on: boolean): void;                               // v102 sân khấu dùng chung cho game kỹ năng (app gọi sau mỗi lần vẽ)
   stageApp?(kind: string | null, n: number): void;         // v109 sân khấu cho trò nhanh cũ của app.js
-  next(): { h: string; p: string; btn: string } | null;   // nút chính trang chủ theo lộ trình; null = dùng cách cũ
+  next(o?: { learn?: boolean }): { h: string; p: string; btn: string } | null;   // nút chính trang chủ theo lộ trình; null = dùng cách cũ
   autoGoal(id: string, why: string): boolean;              // goal-first (v64): đặt mục tiêu khi người học chưa có mục tiêu nào
   sanitize(e: unknown): EState;
   merge(a: unknown, b: unknown): EState;
@@ -2407,12 +2407,12 @@ export function init(host: EHost): EngineModule {
       if (ok) host.save();
       return ok;
     },
-    next() {
+    next(o?: { learn?: boolean }) {
       const e = V();
       if (!e.goals.length) return null;
       const ix = loaded();
       if (!ix) { ensure(); return null; }
-      return nextStep(host, e, ix);
+      return nextStep(host, e, ix, o);
     },
     sanitize: sanitizeE,
     hlog(k, v = 1) { const H = new Set(['sp', 'ty', 'ch', 'lis', 'rd', 'cv', 'rw', 'l4', 'xf', 'r7', 'r30', 'ph', 'lat']); if (H.has(k)) vc.hlog(k as HKind, v); },

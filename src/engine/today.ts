@@ -126,9 +126,10 @@ export function viewToday(c: ECtx, day: DayInfo): string {
 }
 
 // Nút chính trang chủ (thay "unit kế tiếp" của khoá học cũ). null = chưa sẵn sàng / chưa có mục tiêu → app dùng cách cũ.
-export function nextStep(host: EHost, e: EState, ix: Index): { h: string; p: string; btn: string } | null {
+// v153 learn: não ở 📘 Học bài (học tới vững) bỏ qua bước ôn; việc ôn ở 🔁 Ôn luyện.
+export function nextStep(host: EHost, e: EState, ix: Index, o?: { learn?: boolean }): { h: string; p: string; btn: string } | null {
   if (!e.goals.length) return null;
-  const p = computePath(host, e, ix), acts = computeNba(host, e, ix, p), top = acts[0];
+  const p = computePath(host, e, ix), acts = computeNba(host, e, ix, p), top = o?.learn ? acts.find(a => a.kind !== 'review') : acts[0];
   const esc = host.esc;
   snapNba(host, e, acts);
   if (top && top.kind === 'review') return { h: 'Bước tiếp theo: ôn phần sắp quên', p: `${esc(top.why)}. Ôn đúng lúc giữ những gì bạn đã đạt. Còn ${p.unmet.length}/${p.total} năng lực chưa đạt.`, btn: `${host.dayInfo().reviewItems ? '<button class="btn primary big" data-act="review">▶ Ôn ngay</button>' : '<button class="btn primary big" data-e="go" data-r="quest">▶ Ôn trong tháp (rương)</button>'}<div class="row" style="justify-content:center;gap:6px"><button class="btn ghost small" data-e="go" data-r="today">Lộ trình hôm nay</button></div>` };
