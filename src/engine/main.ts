@@ -114,6 +114,7 @@ export interface EngineModule {
   hlog?(k: string, v?: number | boolean): void;            // v122: app ghi số đo H (nói / gõ câu, thời gian nghĩ, nhớ trễ…) vào nhật ký H
   skills?(): { vi: string; rows: SkillRow[] } | null;     // v137 bảng 7 kỹ năng của đích (Thư viện, lối Học); null = chưa tải nội dung / chưa có đích
   gaps?(gid: string): string[] | null;
+  parts?(gid: string): { learn: number; mem: number; total: number } | null;   // v156 hai thanh Học / Nhớ của mục tiêu cấp gid
   health?(gid: string): { solid: string[]; fading: string[]; lost: string[]; open: string[]; vi: Record<string, string> } | null;   // v152 sức khoẻ kiến thức (Nói & Đọc)   // v151 nút u: / g: của mục tiêu cấp gid còn chưa vững (🗣 Nói & Đọc chọn bài nhắm chỗ thiếu)
   peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
@@ -2471,6 +2472,8 @@ export function init(host: EHost): EngineModule {
     },
     skills() { if (!loaded()) { ensure(); return null; } const r = cmpNow(V()); return r ? { vi: r.vi, rows: skillRows(r.o) } : null; },
     // v151 🗣 Nói & Đọc (lối đi tắt): các nút từ / ngữ pháp của mục tiêu cấp gid còn chưa vững, để não chọn bài nhắm đúng chỗ thiếu.
+    // v156 hai thanh của mục tiêu cấp gid (📘 Học / 🔁 Nhớ), cho Ôn luyện hiện ngay (người chỉ dùng Ôn luyện cũng thấy mình thiếu gì).
+    parts(gid: string) { const ix = loaded(); if (!ix) { ensure(); return null; } const g = ix.goal.get(gid); return g ? partsOf(V(), g) : null; },
     // v152 🗣 Nói & Đọc = ôn nhanh cho người đã học (người sáng lập 17/10/2026): sức khoẻ kiến thức của mục tiêu cấp gid.
     // solid: vững, khả năng nhớ ≥ 0,9 · fading: vững nhưng nhớ < 0,9 (đang phai) · lost: từng vững (sổ có PASS) nay không còn · open: chưa từng vững.
     health(gid: string) {
