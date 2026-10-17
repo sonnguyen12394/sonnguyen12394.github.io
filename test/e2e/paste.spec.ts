@@ -22,7 +22,7 @@ for (const scheme of ['light', 'dark'] as const) {
   test(`dán bài → tách câu, phiên âm, nghĩa từng từ, ngữ pháp; đọc to cả bài; nhớ bài đã dán; WCAG AA (${scheme}), 390 px`, async ({ page, errors }) => {
     await page.emulateMedia({ colorScheme: scheme });
     const led0 = await open(page);
-    await page.evaluate(() => { const w = window as any; w.eval("ui.talkTab='doc'"); w.eval("go('talk')"); });
+    await page.evaluate(() => (window as any).eval("go('nd')"));
     await page.locator('#app [data-act="paste"]').first().click();
     await expect(page.getByRole('heading', { name: 'Phân tích bài dán vào' })).toBeVisible();
     await page.locator('#pastebox').fill(TEXT);
@@ -59,13 +59,13 @@ for (const scheme of ['light', 'dark'] as const) {
   });
 }
 
-test('dán đoạn trống thì nhắc; Tôi có lối vào', async ({ page, errors }) => {
+test('dán đoạn trống thì nhắc; 🗣 Nói & Đọc có lối vào', async ({ page, errors }) => {
   await open(page);
   await page.evaluate(() => (window as any).eval("go('paste')"));
   await page.locator('#pastebox').fill('   ');
   await page.locator('[data-act="pastego"]').click();
   await expect(page.locator('details.pcard')).toHaveCount(0);
-  await page.evaluate(() => (window as any).eval("go('more')"));
-  await expect(page.locator('#app [data-go="paste"]')).toBeVisible();
+  await page.evaluate(() => (window as any).eval("go('nd')"));
+  await expect(page.locator('#app [data-act="paste"]')).toBeVisible();
   expect(errors).toEqual([]);
 });

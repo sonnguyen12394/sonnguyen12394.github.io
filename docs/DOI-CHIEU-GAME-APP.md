@@ -153,3 +153,11 @@ Màn 🎯 Mục tiêu, mỗi cấp:
 **Nguồn câu đúng đổi cách gán (quyết định kỹ thuật):** không còn "lối đang mở", nên gán theo **nơi học**: ngữ cảnh của lò game (`learn`, `wheel`, `hunt`, `forge` = `cb.ts ESS_GAMES`) là game, mọi chỗ khác là app. Số đã đếm theo lối ở bản 73–74 giữ nguyên.
 
 **Người mới:** vẫn qua màn chào và chương mở đầu như cũ; lần mở app sau thì vào Mục tiêu.
+
+## 7. Phần thứ ba: 🗣 Nói & Đọc (v149, APP_VERSION 87)
+
+Người sáng lập (17/10/2026) tách mọi chức năng luyện nói, đọc to, phát âm thành phần riêng, song song ⚔️ Chơi và 📘 Học:
+- Gồm: Nói nhại, Đọc to, Bài luyện theo cấp, Dán bài, Âm và cặp âm, Nối âm – ngữ điệu, Kiểm tra phát âm, Chấm từng âm.
+- Chuyển hẳn khỏi 📘 Học và màn Tôi.
+- **Không tính vào 🎯 Mục tiêu.** Chỉ có bảng theo dõi riêng. Kết quả đã đạt trước đó vẫn giữ (bản chụp).
+- Khó khăn chính phần này nhắm tới: **K5** (phát âm) và **K8** (không có chỗ nói). Khi phần này cho thấy hiệu quả thật (người sáng lập tự đánh giá, hoặc điểm chấm từng âm ổn định), người sáng lập quyết có tính vào Mục tiêu hay không.

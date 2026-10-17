@@ -1003,13 +1003,25 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 86;
+const STATE_V = 18, APP_VERSION = 87;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,music:true,focus:false,door:'game'});
-function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},e:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
+// v149 🗣 Nói & Đọc: con đường thứ ba, song song ⚔️ Chơi và 📘 Học. Chỉ theo dõi riêng (st.nd.d[ngày] = số câu, số đạt, điểm máy nghe);
+// không bằng chứng, không Can-Do, không mục tiêu ngày / chuỗi ngày / XP của phần Học (người sáng lập 17/10/2026). Đã vững trước đó: giữ (st.ndfz).
+const ND_QZ = new Set(['pron','wstress','cs']);
+const ndFz = k => (st.ndfz||{})[k]||{};
+function ndLog(k,ok,p){ const n=st.nd||(st.nd={d:{}}), D=n.d||(n.d={}), t=today(), d=D[t]||(D[t]={n:0,ok:0,ps:0,pn:0});
+  d.n++; if(ok) d.ok++; if(p!=null&&isFinite(p)){ d.ps+=p; d.pn++; } d[k]=(d[k]||0)+1;
+  for(const x of Object.keys(D)) if(+x<t-60) delete D[x];
+  save(); }
+function ndStats(){ const D=(st.nd||{}).d||{}, t=today(), day=x=>D[x]||{n:0,ok:0,ps:0,pn:0};
+  let w=0, ps=0, pn=0; for(let i=0;i<7;i++){ const d=day(t-i); w+=d.n; ps+=d.ps; pn+=d.pn; }
+  let run=0, i=day(t).n?0:1; while(day(t-i).n){ run++; i++; }
+  return {today:day(t).n, week:w, run, p:pn?ps/pn:null, ph:(st.nd||{}).ph||null}; }
+function fresh(){ return {v:STATE_V,app:{seen:APP_VERSION,vh:[]},x:{},e:{},srs:{k:1,n:0},nw:{},rid:newRid(),me:{},ev:{},oral:{},cando:{},dlg:{},fn:{},pron:{},wtask:{},stask:{},lread:{},lis:{},shadow:{},rx:{},pv:{},med:{},sp:{},pa:{},exam:[],xpd:{},rec:{combo:0},cos:{own:[],skin:'',acc:'',sk:[]},xp:0,dayc:null,quest:null,freeze:{n:0,used:[],earned:0},games:{speed:0,match:0,ch:[]},story:{},sounds:{},nd:{d:{}},ndfz:{sounds:{},pron:{}},hist:{},badges:[],flags:[],gram:{},glevels:{},gwrite:{},start:realDay(),offset:0,words:{},units:{},days:[],stats:{a:0,c:0},speak:[],write:{},daily:{},levels:{},set:SETTINGS(),onboarded:false}; }
 // Mã ngẫu nhiên, không gắn với tên hay thiết bị: để gộp các file dữ liệu nghiên cứu của cùng một người học mà không biết người đó là ai.
 const newRid = () => Math.random().toString(36).slice(2,10);
 function migrate(x){
@@ -1044,6 +1056,8 @@ function migrate(x){
   x.nw||={};
   x.rid||=newRid(); x.me||={}; x.ev||={}; x.oral||={};
   for(const k of ['cando','dlg','fn','pron','wtask','stask','lread','lis','shadow','rx','pv','med','sp','pa']) x[k]||={};
+  // v149 🗣 Nói & Đọc (người sáng lập 17/10/2026: thôi tính tất cả): chụp một lần kết quả phát âm đã có; Can-Do chỉ đọc bản chụp này.
+  x.nd||={d:{}}; x.nd.d||={}; if(!x.ndfz) x.ndfz={sounds:JSON.parse(JSON.stringify(x.sounds||{})),pron:JSON.parse(JSON.stringify(x.pron||{}))};
   if(!Array.isArray(x.exam)) x.exam=[];
   x.xpd||={}; x.rec||={combo:0}; x.cos||={own:[],skin:'',acc:''}; x.cos.sk||=[];
   x.xp??=0; x.freeze||={n:0,used:[],earned:0}; x.games||={speed:0,match:0,ch:[]}; x.story||={}; x.sounds||={}; x.gram||={}; x.glevels||={}; x.gwrite||={}; x.flags||=[]; x.hist||={}; x.badges||=[];
@@ -1925,18 +1939,19 @@ function qzAnswer(correct,extra={}){ const s=ui.qz; if(!s||s.ans) return; const 
   if(s.kind==='fn'&&FN[s.ref]) eEv({node:'fn:'+s.ref,level:it.t==='typed'?3:2,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'fn:'+s.ref+':'+(it.plain||s.i),text:it.plain||undefined,qt:it.t==='typed'?'typed':'mcq',ctx:'function',src:'talk',ch:'fn:'+s.ref});
   if(s.kind==='dlg'&&DLG[s.ref]) for(const f of (DLG[s.ref].fn||[]).filter(id=>FN[id])) eEv({node:'fn:'+f,level:2,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'dlg:'+s.ref+':'+(it.plain||s.i),text:it.plain||undefined,qt:'mcq',ctx:'dialogue',src:'talk',ch:'dlg:'+s.ref});
   if(s.kind==='pa') eEv({node:'pa:'+String(s.ref).replace(/^pa-/,''),level:it.t==='typed'?3:1,ok:correct,g:it.t==='mc'&&it.opts?1/it.opts.length:0,item:'pa:'+s.ref+':'+(it.plain||s.i),qt:it.t==='typed'?'typed':'mcq',ctx:'prea1',src:'pa',ch:'pa:'+s.ref});
-  tally(correct, xpFor('q:'+s.kind+':'+s.ref+':'+(it.plain||s.i),it.t==='typed'?15:10,correct)); sfx(correct?'ok':'bad');
+  if(ND_QZ.has(s.kind)) ndLog('q',correct); else tally(correct, xpFor('q:'+s.kind+':'+s.ref+':'+(it.plain||s.i),it.t==='typed'?15:10,correct)); sfx(correct?'ok':'bad');
   s.res.push({correct,q:it.plain||'',right:qzRight(it)}); render(); }
 function qzCheck(){ const s=ui.qz, it=s.q[s.i]; if(s.ans) return;
   if(it.t==='order'){ if(s.ord.length<it.parts.length) return; return qzAnswer(s.ord.every((x,k)=>it.parts[x]===it.parts[it.ans[k]]),{ord:s.ord.slice()}); }
   if(it.t==='multi') return qzAnswer(s.sel.length===it.ans.length&&it.ans.every(k=>s.sel.includes(k)),{sel:s.sel.slice()}); }
 function qzNext(){ const s=ui.qz; s.i++; s.ans=null; s.ord=[]; s.sel=[];
   if(s.i<s.q.length) return render();
-  s.done=true; s.score=s.res.filter(x=>x.correct).length/s.res.length; runActive(s.res);
+  const nd=ND_QZ.has(s.kind);   // v149 bài phát âm (🗣 Nói & Đọc): không chuỗi ngày, không nhiệm vụ, không XP
+  s.done=true; s.score=s.res.filter(x=>x.correct).length/s.res.length; if(!nd) runActive(s.res);
   const C=QZ[s.kind], bag=st[C.bag], r=bag[s.ref]||={best:0,n:0}, first=r.best<.8&&s.score>=.8;
-  r.best=Math.max(r.best,s.score); r.n++; r.day=today(); bump(C.bump); if(first) addXP(20);
+  r.best=Math.max(r.best,s.score); r.n++; r.day=today(); if(!nd){ bump(C.bump); if(first) addXP(20); }
   save(); checkBadges(); questCheck(); render(); window.scrollTo(0,0);
-  if(first) celebrate('🗣️','Đạt bài: '+(s.meta.title||''),`${pct(s.score)} đúng, +20 XP.`); }
+  if(first) celebrate('🗣️','Đạt bài: '+(s.meta.title||''),nd?`${pct(s.score)} đúng.`:`${pct(s.score)} đúng, +20 XP.`); }
 function qzAgain(){ const s=ui.qz; startQuiz(s.kind,s.ref,QZ[s.kind].gen(s.ref),s.meta); }
 function viewQuiz(){
   const s=ui.qz, m=s.meta;
@@ -2068,17 +2083,11 @@ function viewTalk(){
     +(L==='A1'?sec('Khởi động Pre-A1',card('data-act="palist"','headphones','Chữ cái, số, giờ, ngày tháng',`Nghe rồi chọn, nghe rồi gõ · ${paDone()}/${PREA1.length} bài đạt`,null)):'')
     +sec(`Nghe bài viết dài ${L}`,rs.filter(x=>!x.life).map(x=>card(`data-lr="${x.id}" data-listen="1"`,'headphones',`<span lang="en">${esc(x.title)}</span>`,`Nghe cả bài (chưa hiện chữ) rồi trả lời · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
     +(rs.some(x=>!x.life)||ts.length?'':`<p class="hint">Bài nghe dài có từ B1. Ở ${L}, nghe thêm ở tab Hội thoại (bấm “Nghe cả hội thoại” trước khi đọc lời).</p>`)+exam;
-  if(T==='noi') body=sec(`Luyện nói ${L}`,card(`data-act="shgo" data-lv="${L}"`,'mic','Nói nhại',`Nghe câu mẫu rồi nói lại; ${HAS_ASR?'máy tô từ nghe ra và chưa nghe ra':'ghi âm rồi tự so'} · ${SH_N} câu`,(st.shadow||{})[L])
-      +card(`data-act="rxgo" data-lv="${L}"`,'chat','Phản xạ hội thoại',`Đáp lời trong vài giây, chọn cách nói hợp hoàn cảnh · ${RX_N} câu`,(st.rx||{})[L])
-      +card(`data-act="csgo" data-lv="${L}"`,'ear','Nối âm, dạng yếu, ngữ điệu','Câu thoại cấp này: chỗ nối âm, từ đọc lướt, lên/xuống giọng, từ được nhấn · 10 câu',st.pron['cs-'+L])
-      +card('data-go="sounds"','ear','Phát âm','Cặp âm người Việt hay nhầm, trọng âm, ngữ điệu, đuôi -s/-ed',null)
-      +card('data-act="paste"','read','📋 Dán bài của bạn','Bài nói / viết của bạn: tách từng câu, phiên âm, nghĩa từng từ, ngữ pháp',null)
-      +card(`data-act="gp" data-lv="${L==='A1'?'A1':'A2'}" data-kind="talk" data-mode="say"`,'mic','📝 Bài luyện theo cấp','Bài mới mỗi lần, A1 / A2 từ dễ tới khó: luyện phát âm hoặc dịch hai chiều',null))
+  if(T==='noi') body=ndHint('Nói nhại, luyện âm, nối âm – ngữ điệu, bài luyện theo cấp, chấm từng âm')+sec(`Luyện nói ${L}`,card(`data-act="rxgo" data-lv="${L}"`,'chat','Phản xạ hội thoại',`Đáp lời trong vài giây, chọn cách nói hợp hoàn cảnh · ${RX_N} câu`,(st.rx||{})[L])
+      )
     +sec(`Nói theo đề ${L}`,ss.map(x=>{ const h=st.stask[x.id]||[]; return card(`data-stk="${x.id}"`,'mic',esc(x.vi),`<span lang="en">${esc(x.en)}</span> · chuẩn bị ${x.prep}s, nói ${x.speak}s`,h.length?`Đã nói ${h.length} lần`:null); }).join(''))
     +'<p class="hint">Muốn nói bằng câu của mình và được máy so ý? Mở một hội thoại ở tab Hội thoại rồi bấm Đóng vai.</p>';
-  if(T==='doc') body=sec('Bài của bạn',card('data-act="paste"','read','📋 Dán bài của bạn','Dán bài tiếng Anh bất kỳ: tách từng câu, phiên âm, nghĩa từng từ, ngữ pháp, đọc to',null)
-      +card(`data-act="gp" data-lv="${L==='A1'?'A1':'A2'}" data-kind="read" data-mode="e2v"`,'read','📝 Bài luyện theo cấp','Bài mới mỗi lần, A1 / A2 từ dễ tới khó: đọc to, dịch Anh → Việt, Việt → Anh',null))+sec(`Đọc văn bản đời thường ${L}`,rs.filter(x=>x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.kind)} · ${esc(x.tvi)} · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))+sec(`Đọc bài dài ${L}`,rs.filter(x=>!x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.tvi)} · ${wc(x.text.join(' '))} từ · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
-    +((L==='A1'||L==='A2')?sec(`📖 Đọc to ${L}: từng câu có hướng dẫn phát âm`,UNITS.filter(u=>u.level===L&&unlocked(u)&&raOk(u)).reverse().slice(0,12).map(u=>{ const r=st.pron['ra:'+u.id]; return card(`data-act="rago" data-uid="${u.id}"`,'mic',`<span lang="en">${esc(u.reading.title)}</span>`,`${uname(u)} · phiên âm, nối âm, âm cuối, ngữ điệu`,r&&r.n?{best:r.best}:null); }).join('')):'')
+  if(T==='doc') body=ndHint('Đọc to từng câu, dán bài của bạn, bài luyện theo cấp')+sec(`Đọc văn bản đời thường ${L}`,rs.filter(x=>x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.kind)} · ${esc(x.tvi)} · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))+sec(`Đọc bài dài ${L}`,rs.filter(x=>!x.life).map(x=>card(`data-lr="${x.id}"`,'read',`<span lang="en">${esc(x.title)}</span>`,`${esc(x.tvi)} · ${wc(x.text.join(' '))} từ · ${x.qs.length} câu hỏi`,st.lread[x.id])).join(''))
     +sec('Truyện dài kỳ',card('data-go="stories"','read','Cuốn sổ của Lan',`Đã đọc ${STORY.filter(e=>st.story[e.id]!=null).length}/${STORY.length} tập`,null))
     +(rs.length?'':`<p class="hint">Bài đọc dài có từ B1. Ở ${L}, mỗi unit từ vựng đã có một bài đọc ngắn.</p>`)+exam;
   if(T==='viet') body=sec(`Viết theo đề ${L}`,ws.map(x=>card(`data-wt="${x.id}"`,'pen',esc(x.vi),`${esc(x.genre)} · ${x.min}–${x.max} từ`,st.wtask[x.id]&&st.wtask[x.id].text?'Đã viết':null)).join(''))
@@ -2087,7 +2096,6 @@ function viewTalk(){
   const sug=[], dl=ds.find(d=>!((st.dlg[d.id]||{}).best>=.8));
   if(((st.lis||{})[L]||{}).day!==today()) sug.push(`<button class="btn" data-act="lisgo" data-lv="${L}">${ico('headphones')} Luyện nghe ${L}</button>`);
   if(dl) sug.push(`<button class="btn" data-dlg="${dl.id}">${ico('chat')} Hội thoại: ${esc(dl.vi)}</button>`);
-  if(sug.length<2&&((st.shadow||{})[L]||{}).day!==today()) sug.push(`<button class="btn" data-act="shgo" data-lv="${L}">${ico('mic')} Nói nhại ${L}</button>`);
   return `<section class="stack"><span class="eyebrow">Kỹ năng</span><h1>Nghe, nói, đọc, viết</h1></section>
   ${sug.length?`<section class="panel stack"><h3>Gợi ý hôm nay · ${L}</h3><div class="row">${sug.slice(0,2).join('')}</div><p class="hint">Hoặc chọn bài khác bên dưới.</p></section>`:''}
   <div class="seg" role="tablist" aria-label="Kỹ năng">${SK_TABS.map(([k,l,ic])=>`<button role="tab" data-ttab="${k}" aria-selected="${k===T}">${ico(ic)}<span>${l}</span></button>`).join('')}</div>
@@ -2347,9 +2355,9 @@ function cdActs(r,L){
     case 'd': return r.v.map(id=>({done:cdOk(best(st.dlg[id])), s:best(st.dlg[id])??null, at:`data-dlg="${id}"`, t:DLG[id].title}));
     case 'rp': return r.v.map(id=>({done:!!(st.dlg[id]||{}).rp&&(st.dlg[id]||{}).rp!=='hard', s:{easy:1,ok:.85,hard:.45}[(st.dlg[id]||{}).rp]??null, at:`data-dlg="${id}"`, t:'Đóng vai: '+DLG[id].title}));
     case 'f': return r.v.map(id=>({done:cdOk(best(st.fn[id])), s:best(st.fn[id])??null, at:`data-fn="${id}"`, t:FN[id].vi}));
-    case 'p': return r.v.map(id=>({done:cdOk(best(st.pron[id])), s:best(st.pron[id])??null, at:`data-pron="${id}"`, t:PRONL[id].vi}));
-    case 'ws': return r.v.map(l=>({done:cdOk(best(st.pron['ws-'+l])), s:best(st.pron['ws-'+l])??null, at:`data-wstress="${l}"`, t:'Trọng âm từ '+l}));
-    case 'snd': return r.v.map(id=>({done:cdOk(best(st.sounds[id])), s:best(st.sounds[id])??null, at:`data-snd="${id}"`, t:SND[id].a+' – '+SND[id].b}));
+    case 'p': return r.v.map(id=>({done:cdOk(best(ndFz('pron')[id])), s:best(ndFz('pron')[id])??null, at:`data-pron="${id}"`, t:PRONL[id].vi}));
+    case 'ws': return r.v.map(l=>({done:cdOk(best(ndFz('pron')['ws-'+l])), s:best(ndFz('pron')['ws-'+l])??null, at:`data-wstress="${l}"`, t:'Trọng âm từ '+l}));
+    case 'snd': return r.v.map(id=>({done:cdOk(best(ndFz('sounds')[id])), s:best(ndFz('sounds')[id])??null, at:`data-snd="${id}"`, t:SND[id].a+' – '+SND[id].b}));
     case 'w': return r.v.map(id=>({done:wtDone(id), at:`data-wt="${id}"`, t:WT[id].vi}));
     case 's': return r.v.map(id=>({done:stDone(id), at:`data-stk="${id}"`, t:STK[id].vi}));
     case 'lr': return r.v.map(id=>({done:cdOk(best(st.lread[id])), s:best(st.lread[id])??null, at:`data-lr="${id}"`, t:LRD[id].title}));
@@ -2425,7 +2433,7 @@ const CD_REF={u:'unit',ul:'unit của cấp',g:'bài ngữ pháp',gl:'bài ngữ
 // Thanh điều hướng: trên máy tính là hàng tab ở đầu trang; trên điện thoại (≤ 640px) là thanh dưới đáy. Cả hai dùng chung một cách tính mục đang mở.
 // v117 (SCORECARD nhóm L): 4 tab, mỗi tab trả lời một câu hỏi khác nhau: Hôm nay (app chọn việc cho bạn) · Ôn tập (phần sắp quên) ·
 // Thư viện (bạn tự chọn: bài học, kỹ năng, sổ từ; v130: mọi trò chơi nằm trên Bản đồ Phố Chữ ở tab Hôm nay) · Tôi (tiến độ, mục tiêu, cài đặt). Trước đây Chơi / Học / Kỹ năng đều là "học".
-const BNAV=[['thi','Ôn thi','exam'],['play','Chơi','home'],['lib','Học','book'],['aim','Mục tiêu','trophy'],['more','Tôi','user']];
+const BNAV=[['thi','Ôn thi','exam'],['play','Chơi','home'],['lib','Học','book'],['nd','Nói &amp; Đọc','mic'],['aim','Mục tiêu','trophy'],['more','Tôi','user']];   // v149 🗣 Nói & Đọc: con đường thứ ba
 // v138 ba phần (docs/DOI-CHIEU-GAME-APP.md, SPEC khối 16/10/2026): ⚔️ Chơi (sảnh, trận, lò rèn) · 📘 Học (app cũ: việc nên làm, ôn tập,
 // thư viện, 7 kỹ năng) · 🎯 Mục tiêu (A1 / A2 cần đạt gì; chơi hay học đều đổ vào đây). Thay "hai lối + nút đổi lối" (v136).
 const ico = n => `<svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${n}"/></svg>`;
@@ -2433,7 +2441,8 @@ function navActive(){
   if(ui.view==='play'||ui.view==='games'||ui.view==='game'||(ui.view==='goal'&&/^(quest|cb)/.test(ui.er||''))) return 'play';
   if(ui.view==='goal') return 'aim';   // v138 🎯 Mục tiêu (route aim) và chi tiết mục tiêu / trận cổng   // v64: Ladder Quest là màn chính; v130: Đấu trường là công trình trên bản đồ
   const v=ui.view, kind = v==='session' ? ui.sess?.kind : v==='summary' ? ui.summary?.kind : null;
-  if(['talk','dlg','fn','rp','wtask','stask','lread','shadow','sounds','sound'].includes(v)||(v==='quiz'&&ui.qz)){ const n=(ui.qz&&ui.qz.meta&&ui.qz.meta.nav)||'lib'; return n==='talk'||n==='path'?'lib':n; }
+  if(['nd','shadow','sounds','sound','ra','gp','paste','phon','pdx'].includes(v)||(v==='quiz'&&ui.qz&&ND_QZ.has(ui.qz.kind))) return 'nd';   // v149
+  if(['talk','dlg','fn','rp','wtask','stask','lread'].includes(v)||(v==='quiz'&&ui.qz)){ const n=(ui.qz&&ui.qz.meta&&ui.qz.meta.nav)||'lib'; return n==='talk'||n==='path'?'lib':n; }
   if(['thi','exam','vx'].includes(v)) return 'thi';
   if(kind==='review'||['review','oral'].includes(v)) return 'lib';   // v138 ôn tập thuộc phần 📘 Học
   if(['more','progress','cefr','settings','help','closet','class','feedback','arch'].includes(v)) return 'more';
@@ -2455,7 +2464,7 @@ function renderChrome(){
 // v117 Thư viện: nơi TỰ CHỌN. Tab Hôm nay đã chọn sẵn việc cần nhất; ở đây người học muốn chọn bài / game cụ thể.
 // v137 lối Học theo 7 kỹ năng (docs/DOI-CHIEU-GAME-APP.md §5): tách để THEO DÕI, không tách bài. Mỗi kỹ năng = một ô đồ của game.
 // Số liệu từ engine (EM.skills: phần của đích đã vững thật); chạm một kỹ năng mở đúng màn có sẵn của nó.
-const SK_GO={voc:['path'],gra:['grammar'],pro:['sounds'],lis:['talk','nghe'],spk:['talk','noi'],rd:['talk','doc'],wr:['talk','viet']};
+const SK_GO={voc:['path'],gra:['grammar'],pro:['nd'],lis:['talk','nghe'],spk:['talk','noi'],rd:['talk','doc'],wr:['talk','viet']};
 function libSkills(){
   let d=null; if(EM&&EM.skills){ try{ d=EM.skills(); }catch(e){ d=null; } } else if(!_emP&&!_emErr) emLoad().catch(()=>{});
   const head='<h2 id="lsk-h">Kỹ năng của bạn</h2>';
@@ -2497,8 +2506,6 @@ function viewMore(){
     <div class="row"><button class="btn primary" data-go="progress">${ico('chart')} Tiến độ chi tiết</button><button class="btn" data-go="cefr">${ico('map')} Bản đồ CEFR</button></div></section>
   <div class="units">
     ${it('goal','map','Mục tiêu của bạn','Chọn mục tiêu (CEFR, IELTS, VSTEP, giao tiếp) và xem chính xác những gì cần đạt')}
-    ${it('paste','read','📋 Phân tích bài dán vào','Dán bài nói / viết tiếng Anh: từng câu có phiên âm, nghĩa từng từ, ngữ pháp')}
-    ${it('phon','mic','🧪 Chấm từng âm (thử nghiệm)','Như ELSA: máy chấm từng âm trong câu bạn nói, chạy ngay trên điện thoại')}
     ${featOn('closet')?it('closet','shirt','Tủ đồ của Tí','Phụ kiện cho linh vật, màu giao diện, album từ đã thuộc'):''}
     ${it('settings','gear','Cài đặt','Mục tiêu, nhắc học, giọng đọc, sao lưu, đồng bộ nhiều máy')}
     ${it('help','help','Hướng dẫn','Cách học mỗi ngày, giải thích thuật ngữ, câu hỏi thường gặp')}
@@ -3321,9 +3328,9 @@ const sndWord = (set,q,k=q.k) => ({w:set.pairs[q.p][k*2], ipa:set.pairs[q.p][k*2
 function startSound(id){ go('sound',{snd:{id,q:soundItems(SND[id]),i:0,ans:null,res:[],done:false}}); }
 function sAnswer(pick){
   const s=ui.snd, set=SND[s.id], q=s.q[s.i]; if(s.ans||s.done) return;
-  const correct=pick===q.k; s.ans={pick,correct}; sfx(correct?'ok':'bad'); tally(correct,xpFor('snd:'+s.id+':'+(q.w||s.i),10,correct));
-  // v67: nghe phân biệt cặp âm = bằng chứng cho nút âm vị ph:<cặp> (mức 1: nhận ra, 2 lựa chọn nên đoán mò 0,5). Lượt làm lại không tính.
-  if(!q.retry) eEv({node:'ph:'+s.id,level:1,ok:correct,g:.5,item:'snd:'+s.id+':'+q.p,qt:'mcq',ctx:'listen-pair',src:'pron',ch:'snd:'+s.id});
+  const correct=pick===q.k; s.ans={pick,correct}; sfx(correct?'ok':'bad');
+  // v149 (🗣 Nói & Đọc): thôi ghi bằng chứng ph:, thôi tính mục tiêu ngày / XP; chỉ theo dõi riêng. Bắt Âm (game ở ⚔️ Chơi) vẫn ghi bằng chứng ph:.
+  if(!q.retry) ndLog('snd',correct);
   if(!q.retry){ s.res.push({p:q.p,correct}); if(!correct) s.q.push({...sndQ(q.p),retry:true}); }
   render();
 }
@@ -3331,7 +3338,7 @@ function sNext(){
   const s=ui.snd; s.i++; s.ans=null;
   if(s.i<s.q.length) return render();
   const ok=s.res.filter(x=>x.correct).length/s.res.length, r=st.sounds[s.id]||={best:0,n:0};
-  r.best=Math.max(r.best,ok); r.n++; r.last=today(); s.done=true; bump('sound'); questCheck(); s.score=ok; save(); checkBadges(); render(); window.scrollTo(0,0);
+  r.best=Math.max(r.best,ok); r.n++; r.last=today(); s.done=true; s.score=ok; save(); checkBadges(); render(); window.scrollTo(0,0);
 }
 const sndPair = (set,p) => `<span class="row" style="gap:6px"><b lang="en">${esc(set.pairs[p][0])}</b> <span class="ipa">/${esc(set.pairs[p][1])}/</span>${audioBtn(set.pairs[p][0],'Nghe '+set.pairs[p][0])}<span class="muted">–</span><b lang="en">${esc(set.pairs[p][2])}</b> <span class="ipa">/${esc(set.pairs[p][3])}/</span>${audioBtn(set.pairs[p][2],'Nghe '+set.pairs[p][2])}</span>`;
 function viewSounds(){
@@ -3450,7 +3457,7 @@ const QUESTS = {
   review:{t:()=>'Ôn 10 từ đến hạn', n:()=>10, v:()=>DC().review, ok:()=>dueWords().length>=10||DC().review>=10},
   gram:  {t:()=>'Làm 6 câu ngữ pháp', n:()=>6, v:()=>DC().gram},
   read:  {t:()=>'Làm 1 bài đọc, nghe hiểu hoặc 1 tập truyện', n:()=>1, v:()=>DC().read},
-  sound: {t:()=>'Luyện 1 bộ phát âm', n:()=>1, v:()=>DC().sound, ok:()=>Object.values(st.sounds||{}).some(x=>x.last>=today()-7)},
+  sound: {t:()=>'Luyện 1 bộ phát âm', n:()=>1, v:()=>DC().sound, ok:()=>false},   // v149 phát âm ở 🗣 Nói & Đọc, không tính nhiệm vụ
   game:  {t:()=>'Chơi 1 trò chơi trong Thử thách', n:()=>1, v:()=>DC().game, ok:()=>(st.games.last??-99)>=today()-7},
   talk:  {t:()=>'Luyện 1 hội thoại hoặc 1 chức năng giao tiếp', n:()=>1, v:()=>DC().talk||0},
   combo: {t:()=>'Đúng 6 câu liên tiếp', n:()=>6, v:()=>DC().best},
@@ -3921,6 +3928,7 @@ function mergeState(a,b){
   x.games={...a.games,speed:Math.max(a.games.speed||0,b.games.speed||0),match:[a.games.match,b.games.match].filter(Boolean).sort((p,q)=>p-q)[0]||0,ch:[...(a.games.ch||[]),...(b.games.ch||[])].sort((p,q)=>q.day-p.day).slice(0,10)};
   x.start=Math.min(a.start??1e9,b.start??1e9); x.onboarded=true; x.money=moneyMerge(a.money,b.money); if(!(a.me&&a.me.who)&&b.me) x.me=b.me;
   for(const k of ['story','cando','dlg','fn','pron','lread','sounds','wtask','stask','oral','gwrite','lis','shadow','rx','pv','med','sp','pa']) x[k]={...(b[k]||{}),...(a[k]||{})};
+  x.nd={d:{...((b.nd||{}).d||{}),...((a.nd||{}).d||{})}}; if(a.ndfz||b.ndfz){ const fa=a.ndfz||{}, fb=b.ndfz||{}; x.ndfz={sounds:{...(fb.sounds||{}),...(fa.sounds||{})},pron:{...(fb.pron||{}),...(fa.pron||{})}}; }
   { const seen=new Set(); x.exam=[...(a.exam||[]),...(b.exam||[])].filter(e=>{ const k=JSON.stringify(e); return seen.has(k)?false:seen.add(k); }).sort((p,q)=>q.day-p.day).slice(0,10); }
   x.app={seen:Math.max((a.app||{}).seen||0,(b.app||{}).seen||0),vh:((a.app||{}).vh||[]).slice()};
   x.e=typeof ELCORE!=='undefined'?ELCORE.merge(a.e,b.e):EM?EM.merge(a.e,b.e):((a.e&&(a.e.goals||[]).length?a.e:b.e)||{});   // engine: hợp mục tiêu hai máy
@@ -4298,7 +4306,7 @@ function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); applyA2(); renderChrome();
   if((ui.view==='path'||ui.view==='play'||(ui.view==='goal'&&ui.er==='aim'))&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={thi:viewThi,lib:viewLib,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,ra:viewRA,phon:viewPhon,paste:viewPaste,gp:viewGP,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  const v={thi:viewThi,lib:viewLib,nd:viewND,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,ra:viewRA,phon:viewPhon,paste:viewPaste,gp:viewGP,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   // v99: mục thu gọn (details.gall: Luyện tập, Leo tháp…) giữ trạng thái mở qua các lần vẽ lại #app (trước đây vẽ lại là đóng sập).
@@ -4823,6 +4831,10 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:87,d:'2026-10-17',t:'🗣 Nói & Đọc: con đường thứ ba',items:[
+    'Thanh điều hướng có thêm 🗣 Nói & Đọc, đứng cạnh ⚔️ Chơi và 📘 Học. Gom về một chỗ: Nói nhại, Đọc to, Bài luyện theo cấp, Dán bài, Âm và cặp âm, Nối âm – ngữ điệu, Chấm từng âm.',
+    'Có bảng theo dõi riêng: số câu hôm nay, 7 ngày, số ngày luyện liền, tỉ lệ máy nghe ra.',
+    'Luyện ở đây không tính vào 🎯 Mục tiêu, mức thuộc, mục tiêu ngày hay XP. Kết quả phát âm đã đạt trước đây vẫn giữ.']},
   {v:86,d:'2026-10-17',t:'🧪 Chấm từng âm: chữ hiện ngay khi nói',items:[
     'Hai mô hình chạy cùng lúc: khi bạn nói, chữ máy nghe được hiện ngay (như Nói và Đọc to); nói xong máy chấm từng âm.',
     'Như ELSA web: chữ chạy suốt lúc nói (ngừng một nhịp máy tự nghe tiếp), bấm Dừng mới chấm. Ghi xong thấy ngay “Máy nghe ra n/m từ”, rồi tới điểm từng âm.',
@@ -5045,7 +5057,7 @@ function northTrend(){ const t=today(), h=st.hist||{}, ds=Object.keys(h).map(Num
 const SCOPE = {
   path:['lõi',['voc']], unit:['lõi',['voc']], learn:['lõi',['voc']], session:['lõi',['voc']], summary:['lõi',['voc']], review:['lõi',['voc']], oral:['lõi',['voc','pro']], words:['lõi',['voc']], word:['lõi',['voc']], read:['lõi',['ski','voc']],
   grammar:['lõi',['gra']], gpoint:['lõi',['gra']], gsess:['lõi',['gra']], gsum:['lõi',['gra']], cefr:['lõi',['voc','gra','pro','fun','ski','com']],
-  med:['phụ',['com','ski']], spk:['phụ',['com','pro']], pdx:['phụ',['pro']], vx:['phụ',['ski']], talk:['phụ',['fun','com']], dlg:['phụ',['fun','com']], fn:['phụ',['fun']], quiz:['phụ',['fun','pro','ski']], rp:['phụ',['fun','com']], sounds:['phụ',['pro']], sound:['phụ',['pro']],
+  med:['phụ',['com','ski']], spk:['phụ',['com','pro']], pdx:['phụ',['pro']], vx:['phụ',['ski']], talk:['phụ',['fun','com']], dlg:['phụ',['fun','com']], fn:['phụ',['fun']], quiz:['phụ',['fun','pro','ski']], rp:['phụ',['fun','com']], sounds:['phụ',['pro']], sound:['phụ',['pro']], nd:['phụ',['pro','ski']],
   speak:['phụ',['pro','ski']], write:['phụ',['ski']], wtask:['phụ',['ski']], stask:['phụ',['ski']], lread:['phụ',['ski']],
   games:['động lực','giữ chân'], game:['động lực','giữ chân'], stories:['động lực','giữ chân'], story1:['động lực','giữ chân'], closet:['động lực','giữ chân'],
   super:['hệ thống','bền vững'], class:['hệ thống','giáo viên'],
@@ -5223,6 +5235,7 @@ document.addEventListener('click',e=>{
     case 'phrec': return phRec();
     case 'phplay': { try{ PH.url&&new Audio(PH.url).play(); }catch(e){} return; }
     case 'phdt': PH.dtype=d.v; return render();
+    case 'ndlv': ui.ndLv=d.v==='A1'?'A1':'A2'; return render();
     case 'phlive': st.set.phLive=!phLiveOn(); if(!st.set.phLive&&ASR.key==='phon') asrReset(); save(); return render();
     case 'phset': { const el=document.getElementById('phsent'), v=String(el?el.value:'').trim().slice(0,120); if(v){ PH.sent=v; PH.res=null; PH.err=''; } return render(); }
     case 'gp': { if(d.lv&&GP_LV.includes(d.lv)) (ui.gp||(ui.gp={tier:1,mode:'say',kind:'read'})).lv=d.lv; if(ui.gp&&d.mode&&GP_MODE[d.mode]) ui.gp.mode=d.mode; if(ui.gp&&d.kind&&GP_KIND[d.kind]) ui.gp.kind=d.kind; if(ui.gp) ui.gp.text=null; return go('gp'); }
@@ -5538,22 +5551,22 @@ function shSay(slow){ const S=ui.sh, x=S&&!S.done&&S.q[S.i]; if(x) say(x.t,!!slo
 function shScore(){ const S=ui.sh; if(ASR.key==='sh'+S.i&&ASR.res&&!ASR.res.word) return {p:ASR.res.p,asr:true}; return S.self!=null?{p:S.self,asr:false}:null; }
 function shNext(){ const S=ui.sh, x=S.q[S.i], sc=shScore();
   S.res.push({t:x.t,p:sc?sc.p:null,asr:!!(sc&&sc.asr),miss:sc&&sc.asr?pnMissWords('sh'+S.i,pnNote(x.t)):[]});
-  if(sc&&sc.asr) tally(sc.p>=.8,xpFor('sh:'+nt(x.t),10,sc.p>=.8)); else if(sc) addXP(selfXP('sh:'+nt(x.t),5));
+  if(sc) ndLog('sh',sc.p>=.8,sc.p);   // v149 🗣 Nói & Đọc: chỉ theo dõi riêng
   recReset(); asrReset(); S.i++; S.self=null;
   if(S.i<S.q.length){ render(); window.scrollTo(0,0); return shSay(); }
   S.done=true; const got=S.res.filter(r=>r.p!=null), avg=got.length?got.reduce((a,r)=>a+r.p,0)/got.length:0; S.avg=avg;
   const b=st.shadow||(st.shadow={}), r=b[S.L]||(b[S.L]={best:0,n:0}), first=r.best<.8&&avg>=.8&&got.length>=SH_N/2;
-  r.best=Math.max(r.best,avg); r.n++; r.day=today(); bump('talk'); runActive(got.map(g=>({correct:g.p>=.6}))); if(first) addXP(20);
-  save(); checkBadges(); questCheck(); render(); window.scrollTo(0,0);
-  if(first) celebrate('🗣️','Nói nhại '+S.L+' đạt!',`Máy nghe ra trung bình ${pct(avg)} số từ. +20 XP.`); }
+  r.best=Math.max(r.best,avg); r.n++; r.day=today();
+  save(); checkBadges(); render(); window.scrollTo(0,0);
+  if(first) celebrate('🗣️','Nói nhại '+S.L+' đạt!',`Máy nghe ra trung bình ${pct(avg)} số từ.`); }
 function viewShadow(){
-  const S=ui.sh, back=`<div class="spread"><button class="btn ghost back" data-go="talk">← Giao tiếp</button><span class="num muted">🗣 Nói nhại ${S.L} · ${Math.min(S.i+1,S.q.length)}/${S.q.length}</span></div>`;
+  const S=ui.sh, back=`<div class="spread"><button class="btn ghost back" data-go="nd">← Nói &amp; Đọc</button><span class="num muted">🗣 Nói nhại ${S.L} · ${Math.min(S.i+1,S.q.length)}/${S.q.length}</span></div>`;
   if(S.done){ const best=((st.shadow||{})[S.L]||{}).best||0;
     return `${back}<section class="panel stack" style="text-align:center;justify-items:center">${mascot(S.avg>=.8?'party':'happy',84)}<h1>${pct(S.avg)} từ được nghe ra</h1>
       <p class="muted">Điểm cao nhất ${S.L}: ${pct(best)}. ${S.avg>=.8?'Rất rõ! Thử ẩn chữ để luyện nghe và nhớ câu.':'Nghe chậm từng câu, chú ý âm cuối và trọng âm, rồi làm lượt mới.'}</p></section>
       ${pnMissSum(S.res)}
       <section class="panel stack"><h3>Từng câu</h3>${S.res.map(r=>`<p><span lang="en">${esc(r.t)}</span><br><span class="hint">${r.p==null?'Bỏ qua':r.asr?`Máy nghe ra ${pct(r.p)} số từ`:`Tự chấm: ${pct(r.p)}`}</span></p>`).join('')}</section>
-      <div class="row endrow"><button class="btn primary" data-act="shnew">Lượt mới</button><button class="btn" data-go="talk">Về Giao tiếp</button></div>`; }
+      <div class="row endrow"><button class="btn primary" data-act="shnew">Lượt mới</button><button class="btn" data-go="nd">Về Nói &amp; Đọc</button></div>`; }
   const x=S.q[S.i], sc=shScore(), recBtns=!HAS_REC?'':REC.on?'<button class="btn" data-act="recstop">■ Dừng ghi âm</button>':`<button class="btn" data-act="recstart">● Ghi âm</button>${REC.url?'<button class="btn" data-act="recplay">▶ Nghe giọng bạn</button>':''}`;
   return `${back}<div class="bar"><i style="width:${S.i/S.q.length*100}%"></i></div>
   <section class="q"><p class="eyebrow">Nghe câu mẫu rồi nói lại y như vậy: cùng tốc độ, cùng ngữ điệu</p>
@@ -5822,8 +5835,8 @@ function detailWaitUi(){ const w=DETAIL.waiting; if(!w) return; const n=DETAIL.r
   modal({ic:DETAIL.err?'⚠️':'⏳',title:DETAIL.err?'Chưa tải xong bài học':'Đang tải thêm bài học…',sub:DETAIL.err||`Đã có ${n}/${all} cấp. Xong là tự tiếp tục, bạn không cần bấm lại.`,
     buttons:DETAIL.err?[{label:'Thử lại',act:'detailretry',primary:true},{label:'Đóng',act:'mclose'}]:[{label:'Huỷ',act:'mclose'}]}); }
 // Nút và trang dùng được ngay khi mới có khung (không đụng tới câu ví dụ, bài đọc, bài tập của A2–C2).
-const DETAIL_SAFE_VIEW = new Set(['welcome','lib','path','review','talk','games','more','settings','help','grammar','closet','class','feedback','league','words','dlg','fn','lread','wtask','stask','sounds','sound','stories','story1','shadow','exam','quiz','rp','game','gpoint','gsess','gsum','oral']);
-const DETAIL_SAFE_GO = new Set(['lib','path','review','talk','games','more','settings','help','grammar','closet','class','feedback','league','words']);
+const DETAIL_SAFE_VIEW = new Set(['welcome','lib','nd','path','review','talk','games','more','settings','help','grammar','closet','class','feedback','league','words','dlg','fn','lread','wtask','stask','sounds','sound','stories','story1','shadow','exam','quiz','rp','game','gpoint','gsess','gsum','oral']);
+const DETAIL_SAFE_GO = new Set(['lib','nd','path','review','talk','games','more','settings','help','grammar','closet','class','feedback','league','words']);
 const DETAIL_SAFE_ACT = new Set(['showmap','allfeat','wz','who','mclose','celok','install','installhide','share','listview','goalall','tomap','notifon','notifoff','asrok','syncjoinok','detailretry','lgrefresh','lgleave','lgleaveok','flagssend','flagsexport','whatsnew','dlgvi','dlgplay','qzsayall']);
 function detailNeeds(t){ if(detailAll()) return false; const d=t.dataset||{};
   // Tab Ôn thi (mô-đun x/exam) không dùng CONTENT: giữ lại cú bấm ở đây thì trên máy chậm cú bấm có thể mất hẳn (v42, WebKit CI).
@@ -6160,7 +6173,7 @@ function pasteGo(){
 }
 function viewPaste(){
   const P=PN(), res=ui.pasteRes, txt=ui.pasteTxt!=null?ui.pasteTxt:pasteLoad(), tgt=pasteTgt(), FV=(P&&P.FORM_VI)||{};
-  const head=`<button class="btn ghost back" data-go="talk">← Giao tiếp</button>
+  const head=`<button class="btn ghost back" data-go="nd">← Nói &amp; Đọc</button>
   <section class="stack"><span class="eyebrow">📋 Bài của bạn</span><h1>Phân tích bài dán vào</h1>
     <p class="muted">Dán một bài nói hoặc bài viết tiếng Anh. App tách từng câu: phiên âm, cách đọc, nghĩa từng từ và gợi ý ngữ pháp. Chạy ngay trên máy, không gửi chữ đi đâu.</p></section>
   <section class="panel stack"><label for="pastebox" class="hint">Bài tiếng Anh (tối đa ${PASTE_MAX} ký tự, ${PASTE_SENTS} câu)</label>
@@ -6217,12 +6230,12 @@ function gpNext(){ const G=ui.gp; if(!G||!G.text) return; const sc=G.mode==='v2e
   render(); window.scrollTo(0,0); }
 function gpCheck(){ const G=ui.gp, el=document.getElementById('gptyped'), t=String(el?el.value:'').slice(0,400); if(!G||!G.text) return;
   if(!t.trim()) return toast('Gõ câu tiếng Anh của bạn trước nhé.');
-  G.typed=t; const m=asrMatch(G.text.lines[G.i].en,[t]); G.chk={words:m.words,hit:m.hit,p:m.words.length?m.hit.length/m.words.length:0}; G.shown=true; render(); }
+  G.typed=t; const m=asrMatch(G.text.lines[G.i].en,[t]); G.chk={words:m.words,hit:m.hit,p:m.words.length?m.hit.length/m.words.length:0}; G.shown=true; ndLog('gp',G.chk.p>=.8,G.chk.p); render(); }
 function viewGP(){
   const G=ui.gp||(ui.gp={lv:pasteTgt()==='A1'?'A1':'A2',tier:1,mode:'say',kind:'read'}), T=TG();
   const seg=(act,cur,opts)=>`<div class="row" role="group" style="gap:6px">${Object.entries(opts).map(([k,l])=>`<button class="btn small ${String(cur)===k?'primary':''}" data-act="${act}" data-v="${k}" aria-pressed="${String(cur)===k}">${l}</button>`).join('')}</div>`;
   const best=gpBest(G), up=best>=.8&&G.tier<3;
-  const setup=`<button class="btn ghost back" data-go="talk">← Giao tiếp</button>
+  const setup=`<button class="btn ghost back" data-go="nd">← Nói &amp; Đọc</button>
   <section class="stack"><span class="eyebrow">📝 Bài luyện theo cấp</span><h1>Bài mới mỗi lần, dễ tới khó</h1>
     <p class="muted">Chọn cấp, bậc và cách luyện. App ghép bài mới từ khuôn có sẵn bản dịch, hoặc lấy một bài có sẵn của app. Chỉ để luyện, không tính vào mức thuộc.</p></section>
   <section class="panel stack"><h3 class="h4">Cấp</h3>${seg('gplv',G.lv,{A1:'A1',A2:'A2'})}
@@ -6322,11 +6335,36 @@ function phTarget(){ const G=ELCORE.gop, n=pnNote(PH.sent), miss=new Set(), word
 function phScore(m){ const T=m.dims[1], V=m.dims[2], idTo=[]; for(const [k,v] of Object.entries(PH.vocab||{})) idTo[v]=k;
   const tg=phTarget(); PH.miss=tg.miss; PH.frames=T; PH.heard=ELCORE.gop.greedy(m.data,T,V,idTo,(PH.vocab||{})['<pad>']??0);
   PH.res=ELCORE.gop.score(m.data,T,V,tg.phones,tg.words,idTo,(PH.vocab||{})['<pad>']??0);
-  if(!PH.res) PH.err='Âm thanh ngắn hơn câu mẫu: nói hết câu, rõ từng từ rồi thử lại.'; }
+  if(!PH.res) PH.err='Âm thanh ngắn hơn câu mẫu: nói hết câu, rõ từng từ rồi thử lại.';
+  else { (st.nd||(st.nd={d:{}})).ph={s:PH.res.score,day:today()}; ndLog('ph',PH.res.score>=80,PH.res.score/100); } }
 const phCls = s => s>=80?'g':s>=60?'a':'r';
+// v149 🗣 Nói & Đọc: con đường thứ ba (người sáng lập 17/10/2026). Gom luyện nói, đọc to, phát âm; chỉ theo dõi riêng, không tính vào 🎯 Mục tiêu.
+const ndHint = what => `<p class="fb neutral" role="note"><span>${what}: đã chuyển sang <button class="btn small" data-go="nd">🗣 Nói &amp; Đọc</button></span></p>`;
+const ndLv = () => ui.ndLv||(talkLv()==='A1'?'A1':'A2');
+function viewND(){
+  const L=ndLv(), S=ndStats(), pd=(st.me||{}).pdx;
+  const card=(attr,ic,t,sub,pill)=>`<button class="unit morei" ${attr}><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${sub}</span>${pill?`<span class="pill ${pill[0]}" style="justify-self:start">${pill[1]}</span>`:''}</span></button>`;
+  const bp=o=>o&&o.n?[o.best>=.8?'good':'accent',(o.best>=.8?'Đạt':'Đang luyện')+' · '+pct(o.best)]:null;
+  const sec=(t,items)=>items?`<section class="stack"><h2>${t}</h2><div class="units">${items}</div></section>`:'';
+  const ra=UNITS.filter(u=>u.level===L&&unlocked(u)&&raOk(u)).reverse().slice(0,12).map(u=>card(`data-act="rago" data-uid="${u.id}"`,'mic',`<span lang="en">${esc(u.reading.title)}</span>`,`${uname(u)} · phiên âm, nối âm, âm cuối, ngữ điệu`,bp(st.pron['ra:'+u.id]))).join('');
+  return `<section class="stack"><span class="eyebrow">🗣 Nói &amp; Đọc</span><h1>Luyện nói và đọc to</h1>
+    <p class="muted">Con đường thứ ba, song song với ⚔️ Chơi và 📘 Học: nói nhại, đọc to từng câu, luyện âm, chấm từng âm. Mỗi câu có phiên âm và mẹo; máy nghe cho biết từ nào người nghe hiểu được.</p></section>
+  <section class="panel stack" aria-label="Theo dõi Nói và Đọc"><h2>Theo dõi riêng</h2>
+    <div class="row" style="gap:16px;flex-wrap:wrap"><span>Hôm nay <b class="num">${S.today}</b> câu</span><span>7 ngày <b class="num">${S.week}</b> câu</span><span>Luyện liền <b class="num">${S.run}</b> ngày</span>${S.p!=null?`<span>Máy nghe ra <b class="num">${pct(S.p)}</b> từ (7 ngày)</span>`:''}${S.ph?`<span>Chấm từng âm gần nhất <b class="num">${S.ph.s}/100</b></span>`:''}</div>
+    <p class="hint">Chỉ theo dõi ở đây: không tính vào 🎯 Mục tiêu, mức thuộc, mục tiêu ngày hay XP. Điểm máy chấm là ước tính, chưa người thật kiểm.</p></section>
+  <div class="row" role="group" aria-label="Cấp" style="gap:6px">${['A1','A2'].map(l=>`<button class="btn small ${l===L?'primary':''}" data-act="ndlv" data-v="${l}" aria-pressed="${l===L}">${l}</button>`).join('')}</div>
+  ${sec('Nói',card(`data-act="shgo" data-lv="${L}"`,'mic','Nói nhại',`Nghe câu mẫu rồi nói lại; ${HAS_ASR?'máy tô từ nghe ra và chưa nghe ra':'ghi âm rồi tự so'} · ${SH_N} câu`,bp((st.shadow||{})[L]))
+    +card(`data-act="gp" data-lv="${L}" data-kind="talk" data-mode="say"`,'mic','📝 Bài luyện theo cấp','Bài nói mới mỗi lần, dễ tới khó: luyện phát âm hoặc dịch hai chiều',null)
+    +card('data-go="phon"','mic','🧪 Chấm từng âm (thử nghiệm)','Như ELSA: chữ hiện khi nói, dừng thì chấm từng âm; mô hình chạy trên máy',st.nd&&st.nd.ph?['accent','Gần nhất '+st.nd.ph.s+'/100']:null))}
+  ${sec('Đọc to',card(`data-act="gp" data-lv="${L}" data-kind="read" data-mode="say"`,'read','📝 Bài đọc theo cấp','Bài đọc mới mỗi lần: đọc to, dịch Anh → Việt, Việt → Anh',null)
+    +card('data-act="paste"','read','📋 Dán bài của bạn','Bài nói / viết bất kỳ: tách từng câu, phiên âm, nghĩa từng từ, ngữ pháp, đọc to',null)+ra)}
+  ${sec('Âm và ngữ điệu',card('data-go="sounds"','ear','Âm và cặp âm','Cặp âm người Việt hay nhầm, trọng âm từ, ngữ điệu, đuôi -s / -ed',null)
+    +card(`data-act="csgo" data-lv="${L}"`,'ear','Nối âm, dạng yếu, ngữ điệu','Câu thoại cấp này: chỗ nối âm, từ đọc lướt, lên / xuống giọng · 10 câu',bp(st.pron['cs-'+L]))
+    +(HAS_ASR?card('data-act="pdxgo"','ear','Dò phát âm (26 cặp âm)','Nói mỗi cặp một từ; app lập hồ sơ các âm bạn đang lẫn',pd?[pd.bad.length?'accent':'good',pd.bad.length?`Đang lẫn ${pd.bad.length} cặp`:'Không lẫn cặp nào']:null):''))}`;
+}
 function viewPhon(){
   const ok=typeof ELCORE!=='undefined'&&ELCORE.gop&&typeof Worker!=='undefined', R=PH.res, n=pnNote(PH.sent);
-  const head=`<button class="btn ghost back" data-go="more">← Tôi</button>
+  const head=`<button class="btn ghost back" data-go="nd">← Nói &amp; Đọc</button>
   <section class="stack"><span class="eyebrow">🧪 Thử nghiệm</span><h1>Chấm từng âm trên máy</h1>
     <p class="muted">Giống ELSA: máy chấm từng âm trong câu bạn nói (xanh đúng, vàng gần đúng, đỏ sai hoặc thiếu). Mô hình chạy ngay trên điện thoại, âm thanh không gửi đi đâu.</p>
     <p class="hint">Lưu ý: lần đầu phải tải mô hình vài trăm MB (nên dùng Wi-Fi). Trên iPhone có thể chậm hoặc trang bị tải lại nếu máy thiếu bộ nhớ. Điểm là ước tính, kém chính xác hơn ELSA, chưa người thật kiểm. Không tính vào mức thuộc.</p></section>`;
@@ -6372,7 +6410,7 @@ function raStart(o){ go('ra',{ra:{...o,i:0,res:[],self:null,done:false}}); }
 function raSay(slow){ const R=ui.ra, x=R&&!R.done&&R.q[R.i]; if(x) say(x,!!slow,0); }
 function raScore(){ const R=ui.ra; if(ASR.key==='ra'+R.i&&ASR.res&&!ASR.res.word) return {p:ASR.res.p,asr:true}; return R.self!=null?{p:R.self,asr:false}:null; }
 function raNext(){ const R=ui.ra, x=R.q[R.i], sc=raScore();
-  R.res.push({t:x,p:sc?sc.p:null,asr:!!(sc&&sc.asr),miss:sc&&sc.asr?pnMissWords('ra'+R.i,pnNote(x)):[]});
+  R.res.push({t:x,p:sc?sc.p:null,asr:!!(sc&&sc.asr),miss:sc&&sc.asr?pnMissWords('ra'+R.i,pnNote(x)):[]}); if(sc) ndLog('ra',sc.p>=.8,sc.p);
   recReset(); asrReset(); R.i++; R.self=null;
   if(R.i<R.q.length){ render(); window.scrollTo(0,0); return; }
   R.done=true; const got=R.res.filter(r=>r.p!=null); R.avg=got.length?got.reduce((a,r)=>a+r.p,0)/got.length:0;
@@ -6475,7 +6513,7 @@ cdActs = function(r,L){ const best=o=>o&&o.best;
   switch(r.t){
     case 'med': return r.v.map(id=>({done:medDone(id), at:`data-med="${id}"`, t:'Chuyển ý: '+MED[id].vi}));
     case 'rx': return r.v.map(l=>({done:cdOk(best((st.rx||{})[l])), at:`data-act="rxgo" data-lv="${l}"`, t:'Phản xạ hội thoại '+l}));
-    case 'cs': return r.v.map(l=>({done:cdOk(best(st.pron['cs-'+l])), at:`data-act="csgo" data-lv="${l}"`, t:'Nối âm, ngữ điệu '+l}));
+    case 'cs': return r.v.map(l=>({done:cdOk(best(ndFz('pron')['cs-'+l])), at:`data-act="csgo" data-lv="${l}"`, t:'Nối âm, ngữ điệu '+l}));
     case 'lis': return r.v.map(l=>({done:cdOk(best((st.lis||{})[l])), at:`data-act="lisgo" data-lv="${l}"`, t:'Luyện nghe '+l}));
     case 'pv': return r.v.map(l=>({done:cdOk(best((st.pv||{})[l])), at:`data-act="pvgo" data-lv="${l}"`, t:'Cụm động từ, thành ngữ '+l}));
   }
@@ -6486,7 +6524,7 @@ QZ.cs={bag:'pron',bump:'sound',gen:ref=>csItems(ref.slice(3))};
 QZ.pv={bag:'pv',bump:'talk',gen:L=>pvItems(L)};
 QZ.qpx={bag:'lis',bump:'read',gen:()=>qpxItems()};
 const startRx = L => startQuiz('rx',L,rxItems(L),{title:'Phản xạ hội thoại '+L,label:'Phản xạ',eyebrow:L+' · Phản xạ hội thoại',back:'talk',backExtra:{talkLv:L},backLabel:'Về Kỹ năng'});
-const startCs = L => startQuiz('cs','cs-'+L,csItems(L),{title:'Nối âm, ngữ điệu '+L,label:'Nói tự nhiên',eyebrow:L+' · Nối âm, dạng yếu, ngữ điệu',back:'talk',backExtra:{talkLv:L},backLabel:'Về Kỹ năng'});
+const startCs = L => startQuiz('cs','cs-'+L,csItems(L),{title:'Nối âm, ngữ điệu '+L,label:'Nói tự nhiên',eyebrow:L+' · Nối âm, dạng yếu, ngữ điệu',back:'nd',backLabel:'Về Nói & Đọc'});
 const startPv = L => startQuiz('pv',L,pvItems(L),{title:'Cụm từ '+L,label:'Cụm động từ & thành ngữ',eyebrow:L+' · Cụm động từ & thành ngữ',back:'review',backLabel:'Về Ôn tập'});
 const startQpx = () => startQuiz('qpx','qpx',qpxItems(),{title:'Kiểm tra thêm',label:'Kiểm tra đầu vào',eyebrow:'Ngữ pháp và nghe',back:'path',backLabel:'Về Lộ trình'});
 
@@ -6595,9 +6633,9 @@ function startPdx(){ if(!HAS_ASR) return toast('Trình duyệt này chưa có m�
   const q=SOUNDS.map(set=>{ const pr=set.pairs[Math.floor(Math.random()*set.pairs.length)], k=Math.random()<.5?0:1; return {id:set.id,a:set.a,b:set.b,title:set.title,w:pr[k*2],ipa:pr[k*2+1],o:pr[(1-k)*2],oipa:pr[(1-k)*2+1],snd:k?set.b:set.a}; });
   asrReset(); go('pdx',{pdx:{q,i:0,res:[],done:false}}); }
 function pdxNext(skip){ const P=ui.pdx, x=P.q[P.i], r=ASR.key==='pdx'+P.i&&ASR.res; P.res.push({id:x.id,k:skip||!r?'skip':r.k,w:x.w,o:x.o,heard:r&&r.heard||''}); asrReset(); P.i++;
-  if(P.i>=P.q.length){ P.done=true; const g=k=>P.res.filter(z=>z.k===k).map(z=>z.id); (st.me||(st.me={})).pdx={day:today(),bad:g('other'),unc:g('unclear'),ok:g('ok')}; evc('d:pdx'); addXP(selfXP('pdx',15)); save(); }
+  if(P.i>=P.q.length){ P.done=true; const g=k=>P.res.filter(z=>z.k===k).map(z=>z.id); (st.me||(st.me={})).pdx={day:today(),bad:g('other'),unc:g('unclear'),ok:g('ok')}; evc('d:pdx'); ndLog('pdx',true); }
   render(); window.scrollTo(0,0); }
-function viewPdx(){ const P=ui.pdx; if(!P) return viewTalk(); const top=`<div class="spread"><button class="btn ghost back" data-go="talk">← Kỹ năng</button><span class="num muted">🎯 Kiểm tra phát âm · ${Math.min(P.i+1,P.q.length)}/${P.q.length}</span></div>`;
+function viewPdx(){ const P=ui.pdx; if(!P) return viewND(); const top=`<div class="spread"><button class="btn ghost back" data-go="nd">← Nói &amp; Đọc</button><span class="num muted">🎯 Kiểm tra phát âm · ${Math.min(P.i+1,P.q.length)}/${P.q.length}</span></div>`;
   if(P.done){ const by=k=>P.res.filter(z=>z.k===k), bad=by('other'), unc=by('unclear'), ok=by('ok');
     const row=z=>{ const s=SND[z.id]; return `<button class="unit morei" data-snd="${z.id}"><span class="no">${ico('ear')}</span><span class="t"><strong>${esc(s.a)} – ${esc(s.b)} · <span lang="en">${esc(s.title)}</span></strong><span class="muted">Bạn nói “<span lang="en">${esc(z.w)}</span>”${z.k==='other'?`, máy nghe thành “<span lang="en">${esc(z.o)}</span>”`:z.heard?`, máy nghe được “<span lang="en">${esc(z.heard)}</span>”`:''} · bấm để luyện</span></span></button>`; };
     return `${top}<section class="stack"><span class="eyebrow">Hồ sơ phát âm của bạn</span><h1>${ok.length}/${P.res.length} cặp âm máy nghe ra đúng</h1>
@@ -6853,7 +6891,6 @@ viewTalk = function(){ let h=_viewTalk1(); const L=talkLv(), T=SK_TABS.some(x=>x
   const card=(attr,ic,t,sub,pill)=>`<button class="unit morei" ${attr}><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${sub}</span>${pill?`<span class="pill ${pill[0]}" style="justify-self:start">${pill[1]}</span>`:''}</span></button>`;
   if(T==='noi'){ const r=(st.sp||{})[L], pd=(st.me||{}).pdx, v=vxLast('s');
     const extra=card(`data-act="spgo" data-lv="${L}"`,'mic','Nói đáp lời',`Thấy ý tiếng Việt, tự nói câu tiếng Anh; ${HAS_ASR?'máy nghe so với câu mẫu':'tự so với câu mẫu'} · ${SP_N} câu`,r?[r.best>=.8?'good':'accent',(r.best>=.8?'Đạt':'Đang luyện')+' · '+pct(r.best)]:null)
-      +(HAS_ASR?card('data-act="pdxgo"','ear','Kiểm tra phát âm (26 cặp âm)','Nói mỗi cặp một từ; app lập hồ sơ các âm bạn đang lẫn',pd?[pd.bad.length?'accent':'good',pd.bad.length?`Đang lẫn ${pd.bad.length} cặp`:'Không lẫn cặp nào']:null):'')
       +(LVS.indexOf(L)>=2?card('data-act="vxnew" data-m="s"','mic','Thi thử Nói VSTEP','3 phần, tính giờ; ghi âm hoặc máy chép lời; tự chấm 5 tiêu chí',v?['accent','Gần nhất '+String(v.b).replace('.',',')+'/10']:null):'');
     h=h.replace(/(<section class="stack"><h2>Luyện nói [^<]*<\/h2><div class="units">)/,'$1'+extra); }
   if(T==='viet'&&LVS.indexOf(L)>=2){ const v=vxLast('w'); h=h.replace(/(<section class="stack"><h2>Viết theo đề [^<]*<\/h2><div class="units">)/,'$1'+card('data-act="vxnew" data-m="w"','pen','Thi thử Viết VSTEP','Thư ≥ 120 từ + bài luận ≥ 250 từ, 60 phút; máy kiểm tra, tự chấm',v?['accent','Gần nhất '+String(v.b).replace('.',',')+'/10']:null)); }
@@ -8473,7 +8510,7 @@ const skOfRef = r => r.t==='lr' ? (r.v.every(id=>LRD[id]&&LRD[id].lines)?'lis':'
     if(c.grp0==='ski'&&ts.join()==='rd,ls'){ const b2=c.lv==='B2';
       add.push({id:c.id+'-l',lv:c.lv,grp:'lis',grp0:'ski',vi:b2?'Nghe hiểu bài nói về chủ đề cụ thể lẫn trừu tượng':'Nghe hiểu mọi bài nghe của cấp, kể cả nội dung trừu tượng',en:b2?'Understand talks on concrete and abstract topics':'Understand level recordings, including abstract content',ref:[c.ref[1]]});
       c.ref=[c.ref[0]]; c.vi=c.vi.replace('Đọc và nghe hiểu','Đọc hiểu'); c.en=c.en.replace('Read and listen to','Read'); c.grp='rd'; return; }
-    if(['voc','gra','pro'].includes(c.grp0)){ if(ts.includes('cw')) c.grp='wr'; else if(ts.every(t=>t==='cs')) c.grp='lis'; return; }
+    if(['voc','gra','pro'].includes(c.grp0)){ if(ts.includes('cw')) c.grp='wr'; return; }   // v149 nối âm (cs) thôi tính vào Nghe: luyện ở 🗣 Nói & Đọc, không tính
     if(ts.includes('pa')){ c.grp='voc'; return; }
     c.grp=c.ref.map(skOfRef).find(Boolean)||'spk'; });
   CANDO.push(...add); })();
@@ -8892,7 +8929,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.092119f158.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.ba656909df.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

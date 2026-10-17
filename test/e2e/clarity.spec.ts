@@ -69,11 +69,11 @@ test('L7: từ màn đầu, một chạm vào "Chơi tiếp" là vào game có c
   expect(errors).toEqual([]);
 });
 
-test('L6 (v138 ba phần): Chơi · Học · Mục tiêu · Tôi không trùng nghĩa; Học → Bản đồ Phố Chữ; bấm Chơi về bản đồ', async ({ page, errors }) => {
+test('L6 (v138 ba phần): Chơi · Học · Nói & Đọc · Mục tiêu · Tôi không trùng nghĩa; Học → Bản đồ Phố Chữ; bấm Chơi về bản đồ', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
-  await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
-  await page.locator('#bnav button', { hasText: 'Học' }).click();
+  await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học', 'Nói & Đọc', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
+  await page.locator('#bnav button[data-go="lib"]').click();
   await expect(page.getByRole('heading', { name: '📘 Học', level: 1 })).toBeVisible();
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(r.violations.map(v => v.id)).toEqual([]);
@@ -89,7 +89,7 @@ test('L6 (v138 ba phần): Chơi · Học · Mục tiêu · Tôi không trùng n
   await expect(page.locator('#app .wmap')).toBeVisible();
   await expect(page.locator('#app .wlist')).toHaveCount(0);
   // Màn học cũ (unit) thuộc tab Học.
-  await page.locator('#bnav button', { hasText: 'Học' }).click();
+  await page.locator('#bnav button[data-go="lib"]').click();
   await page.getByRole('button', { name: /Bài học theo chủ đề/ }).click();
   await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Học');
   expect(errors).toEqual([]);
