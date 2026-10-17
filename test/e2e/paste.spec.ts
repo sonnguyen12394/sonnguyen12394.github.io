@@ -23,7 +23,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     const led0 = await open(page);
     await page.evaluate(() => (window as any).eval("go('nd')"));
-    await page.locator('#app details.ndph summary').click();   // v157 công cụ phát âm gom vào mục đóng sẵn
+    await page.evaluate(() => { const w = window as any; w.eval('ui').ndPh = true; w.eval('render()'); });   // v157 mở mục 🗣 Luyện phát âm
     await page.locator('#app [data-act="paste"]').first().click();
     await expect(page.getByRole('heading', { name: 'Phân tích bài dán vào' })).toBeVisible();
     await page.locator('#pastebox').fill(TEXT);
@@ -67,7 +67,7 @@ test('dán đoạn trống thì nhắc; 🗣 Nói & Đọc có lối vào', asyn
   await page.locator('[data-act="pastego"]').click();
   await expect(page.locator('details.pcard')).toHaveCount(0);
   await page.evaluate(() => (window as any).eval("go('nd')"));
-  await page.locator('#app details.ndph summary').click();   // v157 công cụ phát âm gom vào mục đóng sẵn
+  await page.evaluate(() => { const w = window as any; w.eval('ui').ndPh = true; w.eval('render()'); });   // v157 mở mục 🗣 Luyện phát âm
   await expect(page.locator('#app [data-act="paste"]')).toBeVisible();
   expect(errors).toEqual([]);
 });

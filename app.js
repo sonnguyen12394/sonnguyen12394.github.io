@@ -5528,6 +5528,8 @@ document.addEventListener('submit',e=>{
   if(f.dataset.form==='write'){ const u=UNITS.find(x=>x.id===ui.unitId); st.write[u.id]=[...f.querySelectorAll('input')].map(i=>i.value.trim()); U(u.id).written=true; markActive(); save(); toast('Đã lưu bài viết.'); render(); }
 });
 // Sổ từ: lọc ngay khi gõ, chỉ vẽ lại danh sách để ô tìm kiếm không mất con trỏ.
+// v157 mục 🗣 Luyện phát âm nhớ trạng thái mở qua các lần vẽ lại (toggle không nổi bọt nên bắt ở pha capture).
+document.addEventListener('toggle',e=>{ if(e.target.classList&&e.target.classList.contains('ndph')) ui.ndPh=e.target.open; },true);
 document.addEventListener('input',e=>{ if(e.target.id==='wtin'){ ui.wtText=e.target.value; const c=document.getElementById('wtcount'), t=WT[ui.wtId]; if(c&&t) c.textContent=`${wc(e.target.value)} từ · yêu cầu ${t.min}–${t.max}`; return; }
   if(e.target.id==='wbq'){ ui.wb.q=e.target.value; ui.wb.n=60; const l=document.getElementById('wblist'); if(l) l.innerHTML=wbList(); }
   // v152 giữ chữ đang gõ khi màn vẽ lại giữa chừng (vd. bộ não tải xong): trước đây vẽ lại là mất chữ.
@@ -6595,7 +6597,7 @@ function viewND(){
     <p class="hint">Bài kế: ${uname(nx.u)} · ${esc(nx.u.vi||nx.u.title)} (${nx.why}) · bài “<span lang="en">${esc(nx.u.reading.title)}</span>”. ${HAS_TTS?'Đọc và nghe xen kẽ.':'Đọc hiểu.'} Có 1–2 câu ngữ pháp của bài.</p></section>`:''}
   ${ndDueHtml()}
   ${ndHealthHtml()}
-  <details class="panel ndph"><summary><h2 style="display:inline">🗣 Luyện phát âm</h2> <span class="hint">nói nhại, đọc to, cặp âm, chấm từng âm</span></summary>
+  <details class="panel ndph" ${ui.ndPh?'open':''}><summary><h2 style="display:inline">🗣 Luyện phát âm</h2> <span class="hint">nói nhại, đọc to, cặp âm, chấm từng âm</span></summary>
     <p class="hint">Nghe cặp âm, chấm từng âm, đọc to / nói nhại (máy nghe ra ≥ 80%) được cộng vào 🎯 Mục tiêu (nguồn Ôn luyện). Điểm máy chấm là ước tính, chưa người thật kiểm.</p>
     <div class="units">${card(`data-act="shgo" data-lv="${L}"`,'mic','Nói nhại',`Nghe câu mẫu rồi nói lại; ${HAS_ASR?'máy tô từ nghe ra và chưa nghe ra':'ghi âm rồi tự so'} · ${SH_N} câu`,bp((st.shadow||{})[L]))
     +card(`data-act="gp" data-lv="${L}" data-kind="talk" data-mode="say"`,'mic','📝 Bài nói theo cấp','Bài nói mới mỗi lần, dễ tới khó: luyện phát âm hoặc dịch hai chiều',null)

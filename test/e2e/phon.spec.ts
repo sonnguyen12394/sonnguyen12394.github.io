@@ -35,7 +35,7 @@ for (const scheme of ['light', 'dark'] as const) {
   test(`🗣 Nói & Đọc → 🧪 chấm từng âm: tải mô hình, chấm câu, từ tô màu theo điểm, bấm từ thấy từng âm và "nghe gần như"; WCAG AA (${scheme}), 390 px`, async ({ page, errors }) => {
     await page.emulateMedia({ colorScheme: scheme });
     const led0 = await open(page);
-    await page.locator('#app details.ndph summary').click();
+    await page.evaluate(() => { const w = window as any; w.eval('ui').ndPh = true; w.eval('render()'); });   // v157 mở mục 🗣 Luyện phát âm
     await page.locator('#app [data-go="phon"]').click();
     await expect(page.getByRole('heading', { name: 'Chấm từng âm trên máy' })).toBeVisible();
     await expect(page.locator('#app')).toContainText('vài trăm MB');

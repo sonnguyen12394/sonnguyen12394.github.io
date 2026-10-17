@@ -25,7 +25,10 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
     await expect(page.getByRole('heading', { name: 'Ôn luyện', level: 1 })).toBeVisible();
     await expect(page.locator('#app [data-act="ndnext"]')).toBeVisible();   // v157 ▶ Ôn tiếp
-    await page.locator('#app details.ndph summary').click();
+    // bấm thật để mở; vẽ lại màn (như khi engine tải xong) thì mục vẫn mở
+    await expect(async () => { await page.locator('#app details.ndph:not([open]) summary').click({ timeout: 2000 }); }).toPass().catch(() => {});
+    await page.evaluate(() => (window as any).eval('render()'));
+    await expect(page.locator('#app details.ndph')).toHaveAttribute('open', '');
     for (const sel of ['[data-act="shgo"]', '[data-act="gp"][data-kind="talk"]', '[data-go="phon"]', '[data-act="gp"][data-kind="read"]', '[data-act="paste"]', '[data-act="rago"]', '[data-go="sounds"]', '[data-act="csgo"]'])
       await expect(page.locator(`#app details.ndph ${sel}`).first()).toBeVisible();
     await expect(page.locator('#app')).toContainText('làm rồi ôn lại');
@@ -54,7 +57,7 @@ test('chuyển hẳn: tab Nói / Đọc của 📘 Học và màn Tôi không c�
 test('v151 tính: bộ cặp âm ghi bằng chứng nguồn Nói & Đọc (nd-pair), không cộng mục tiêu ngày / XP; Nói nhại chỉ tăng theo dõi riêng', async ({ page, errors }) => {
   await open(page);
   const s0 = await snap(page);
-  await page.locator('#app details.ndph summary').click();
+  await page.evaluate(() => { const w = window as any; w.eval('ui').ndPh = true; w.eval('render()'); });   // v157 mở mục 🗣 Luyện phát âm
   await page.locator('#app [data-go="sounds"]').click();
   await page.locator('#app [data-snd]').first().click();
   await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
@@ -63,7 +66,7 @@ test('v151 tính: bộ cặp âm ghi bằng chứng nguồn Nói & Đọc (nd-pa
   expect(s1.led).toBe(s0.led + 1); expect(s1.xp).toBe(s0.xp); expect(s1.ok).toBe(s0.ok); expect(s1.nd).toBe(s0.nd + 1);
   expect(await page.evaluate(() => { const l = (window as any).eval('st').e.ev.led; return l[l.length - 1].ctx; })).toBe('nd-pair');
   await page.evaluate(() => { const w = window as any; w.eval("go('nd')"); });
-  await page.locator('#app details.ndph summary').click();
+  await page.evaluate(() => { const w = window as any; w.eval('ui').ndPh = true; w.eval('render()'); });   // v157 mở mục 🗣 Luyện phát âm
   await page.locator('#app [data-act="shgo"]').click();
   await page.evaluate(() => { const w = window as any; w.eval('ui').sh.self = 1; w.eval('shNext')(); });
   const s2 = await snap(page);
