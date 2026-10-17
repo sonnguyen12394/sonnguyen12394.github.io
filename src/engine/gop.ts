@@ -114,3 +114,40 @@ export function loudness(x: ArrayLike<number>): { rms: number; voiced: number } 
   for (let i = 0; i + F <= x.length; i += F) { let e = 0; for (let j = 0; j < F; j++) e += x[i + j]! * x[i + j]!; e = Math.sqrt(e / F); sum += e; n++; if (e > 0.02) voiced++; }
   return { rms: n ? sum / n : 0, voiced: n ? voiced / n : 0 };
 }
+
+// v150 Sửa thế nào (người sáng lập 17/10/2026: chấm xong phải hướng dẫn phát âm cho đúng). Âm kém → bộ cặp âm có lời dạy khẩu hình
+// (SOUNDS trong app.js, mã s-01..s-26). ipa = âm mong đợi (cách viết của app), heard = âm mô hình nghe ra (bộ âm espeak), fin = âm cuối từ.
+const H = (heard: string | null, ...xs: string[]) => !!heard && xs.some(x => heard.startsWith(x));
+export function fixOf(ipa: string, heard: string | null, missing: boolean, fin: boolean): string | null {
+  const s = ipa.replace(/[ˈˌ/]/g, '');
+  if (fin && /^(t|d)$/.test(s)) return 's-10';
+  if (fin && /^(s|z)$/.test(s)) return 's-11';
+  if (fin && /^(k|ɡ|g)$/.test(s)) return 's-19';
+  if (fin && /^(n|ŋ)$/.test(s)) return 's-25';
+  if (missing && fin) return 's-12';
+  switch (s) {
+    case 'θ': return H(heard, 's') ? 's-22' : 's-05';
+    case 'ð': return 's-06';
+    case 'ʃ': return H(heard, 'tʃ') ? 's-08' : 's-07';
+    case 's': return H(heard, 'θ') ? 's-22' : 's-07';
+    case 'tʃ': return H(heard, 'dʒ') ? 's-26' : H(heard, 'ʃ') ? 's-08' : 's-26';
+    case 'dʒ': return 's-26';
+    case 'p': case 'b': return 's-09';
+    case 'l': return H(heard, 'n') ? 's-13' : 's-14';
+    case 'n': return 's-13';
+    case 'r': return 's-14';
+    case 'v': case 'w': return 's-18';
+    case 'iː': case 'ɪ': return 's-01';
+    case 'æ': return H(heard, 'ʌ', 'ɐ') ? 's-15' : 's-02';
+    case 'e': return H(heard, 'eɪ') ? 's-23' : 's-02';
+    case 'ʌ': return H(heard, 'æ', 'a') ? 's-15' : 's-03';
+    case 'ɑː': return 's-03';
+    case 'ɒ': return 's-04';
+    case 'əʊ': return H(heard, 'ɔ') ? 's-24' : 's-04';
+    case 'ɔː': return H(heard, 'ɜ', 'ɚ') ? 's-17' : 's-24';
+    case 'ɜː': return 's-17';
+    case 'uː': case 'ʊ': return 's-16';
+    case 'eɪ': return 's-23';
+    default: return null;
+  }
+}

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { toModelPhones, ctcAlign, logSoftmax, score, greedy, loudness, type GopPhone } from '../../src/engine/gop.ts';
+import { toModelPhones, ctcAlign, logSoftmax, score, greedy, loudness, type GopPhone , fixOf } from '../../src/engine/gop.ts';
 import { noteOf } from '../../src/engine/pronote.ts';
 import { corpus } from '../../tools/pronote-cov.ts';
 
@@ -69,4 +69,14 @@ test('v147 đọc tham lam ra chuỗi âm máy nghe; âm lượng: im lặng th�
   assert.equal(loudness(new Float32Array(16000)).voiced, 0);
   const tone = Float32Array.from({ length: 16000 }, (_, i) => 0.3 * Math.sin(i / 5));
   assert.ok(loudness(tone).voiced > 0.9 && loudness(tone).rms > 0.1);
+});
+
+test('v150 fixOf: âm kém → bộ cặp âm có lời dạy (âm cuối, cặp hay nhầm, nguyên âm dài / ngắn)', () => {
+  assert.equal(fixOf('s', 'ʃ', false, false), 's-07');
+  assert.equal(fixOf('θ', 's', false, false), 's-22'); assert.equal(fixOf('θ', 't', false, false), 's-05');
+  assert.equal(fixOf('z', null, true, true), 's-11'); assert.equal(fixOf('t', null, true, true), 's-10');
+  assert.equal(fixOf('k', null, false, true), 's-19'); assert.equal(fixOf('ŋ', 'n', false, true), 's-25');
+  assert.equal(fixOf('l', null, true, true), 's-12', 'âm cuối khác bị nuốt → bài giữ âm cuối');
+  assert.equal(fixOf('iː', 'ɪ', false, false), 's-01'); assert.equal(fixOf('ʌ', 'æ', false, false), 's-15');
+  assert.equal(fixOf('h', null, false, false), null);
 });
