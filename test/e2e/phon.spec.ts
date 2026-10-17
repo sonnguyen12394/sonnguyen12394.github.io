@@ -47,6 +47,9 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(page.locator('.phd', { hasText: 'four' }).locator('summary')).toHaveClass(/phw g/);
     await seasons.locator('summary').click();
     await expect(seasons).toContainText('nghe gần như /ʃ/');
+    // v150 Sửa thế nào: âm /s/ nói thành /ʃ/ → lời dạy của bộ cặp /ʃ/ – /s/ + nút luyện cặp + nghe từ
+    await expect(page.locator('.phfix')).toContainText('seasons');
+    await expect(page.locator('.phfix [data-snd="s-07"]')).toBeVisible();
     await expect(page.locator('#app')).toContainText('chấm 456 ms');
     await expect(page.locator('#app')).toContainText('Máy nghe ra các âm');
     await expect(page.locator('#app')).toContainText('có tiếng 100%');
@@ -169,5 +172,24 @@ test('v148 như ELSA web: nhận diện tự tắt khi ngừng nhịp thì tự 
   await expect(page.locator('#app')).toContainText('Máy nghe ra 4/4 từ');
   await expect(page.locator('#app .fb strong', { hasText: 'Điểm phát âm' })).toBeVisible();
   expect(await page.evaluate(() => (window as any).__asr.length)).toBe(2);
+  expect(errors).toEqual([]);
+});
+
+test('v150 câu ngẫu nhiên theo cấp × bậc; câu tiếp theo trong cùng bài', async ({ page, errors }) => {
+  await open(page);
+  await page.evaluate(() => (window as any).eval("go('phon')"));
+  await page.locator('[data-act="phtier"][data-v="1"]').click();
+  const s1 = await page.locator('#phsent').inputValue();
+  expect(s1).not.toBe('Hanoi has four seasons.');
+  expect((s1.match(/[A-Za-z0-9'’-]+/g) || []).length).toBeLessThanOrEqual(10);
+  await page.locator('[data-act="phlv"][data-v="A2"]').click();
+  await expect(page.locator('[data-act="phlv"][data-v="A2"]')).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('[data-act="phload"]').click();
+  await expect(page.locator('#app')).toContainText('Đã sẵn sàng');
+  await page.evaluate(() => (window as any).eval('phGo')(Float32Array.from({ length: 32000 }, (_, i) => 0.3 * Math.sin(i / 5))));
+  const before = await page.locator('#phsent').inputValue();
+  await page.locator('[data-act="phnext"]').click();
+  await expect(page.locator('#phsent')).not.toHaveValue(before);
+  await expect(page.locator('#app .fb strong', { hasText: 'Điểm phát âm' })).toHaveCount(0);
   expect(errors).toEqual([]);
 });

@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 87;
+const STATE_V = 18, APP_VERSION = 88;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -4831,6 +4831,9 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:88,d:'2026-10-17',t:'🧪 Chấm từng âm: câu ngẫu nhiên + cách sửa',items:[
+    'Chọn cấp A1 / A2 và bậc Dễ / Vừa / Khó, bấm 🎲 Câu mới: máy lấy câu từ bài sinh mới mỗi lần. Chấm xong có “Câu tiếp theo”.',
+    'Sau khi chấm có khối “Sửa thế nào”: tối đa 3 âm kém nhất, lời dạy khẩu hình, nghe từ mẫu, nút luyện cặp âm hay nhầm.']},
   {v:87,d:'2026-10-17',t:'🗣 Nói & Đọc: con đường thứ ba',items:[
     'Thanh điều hướng có thêm 🗣 Nói & Đọc, đứng cạnh ⚔️ Chơi và 📘 Học. Gom về một chỗ: Nói nhại, Đọc to, Bài luyện theo cấp, Dán bài, Âm và cặp âm, Nối âm – ngữ điệu, Chấm từng âm.',
     'Có bảng theo dõi riêng: số câu hôm nay, 7 ngày, số ngày luyện liền, tỉ lệ máy nghe ra.',
@@ -5236,6 +5239,11 @@ document.addEventListener('click',e=>{
     case 'phplay': { try{ PH.url&&new Audio(PH.url).play(); }catch(e){} return; }
     case 'phdt': PH.dtype=d.v; return render();
     case 'ndlv': ui.ndLv=d.v==='A1'?'A1':'A2'; return render();
+    case 'phnew': return phNew();
+    case 'phnext': return phNext();
+    case 'phagain': return phRec();
+    case 'phlv': PH.lv=d.v==='A1'?'A1':'A2'; return phNew();
+    case 'phtier': PH.tier=Math.min(3,Math.max(1,+d.v||1)); return phNew();
     case 'phlive': st.set.phLive=!phLiveOn(); if(!st.set.phLive&&ASR.key==='phon') asrReset(); save(); return render();
     case 'phset': { const el=document.getElementById('phsent'), v=String(el?el.value:'').trim().slice(0,120); if(v){ PH.sent=v; PH.res=null; PH.err=''; } return render(); }
     case 'gp': { if(d.lv&&GP_LV.includes(d.lv)) (ui.gp||(ui.gp={tier:1,mode:'say',kind:'read'})).lv=d.lv; if(ui.gp&&d.mode&&GP_MODE[d.mode]) ui.gp.mode=d.mode; if(ui.gp&&d.kind&&GP_KIND[d.kind]) ui.gp.kind=d.kind; if(ui.gp) ui.gp.text=null; return go('gp'); }
@@ -6279,7 +6287,7 @@ function viewGP(){
 // ---------- v146 🧪 Chấm từng âm trên máy (thử nghiệm, kiểu ELSA) ----------
 // Mô hình nhận âm vị wav2vec2 (IPA espeak, ONNX) chạy trong phon-worker.js; app ghi âm, đổi về 16 kHz, gửi worker, nhận logits rồi chấm từng âm
 // bằng ELCORE.gop (căn hàng CTC + GOP). Âm thanh không rời khỏi máy; mô hình tải một lần (vài trăm MB). Chỉ để thử: không ghi bằng chứng.
-const PH = {w:null,st:'idle',prog:0,total:0,vocab:null,err:'',loadMs:0,runMs:0,rec:null,recT:0,chunks:[],res:null,dtype:'q8',sent:'Hanoi has four seasons.',dur:0,frames:0,miss:[],heard:'',url:'',rms:0,voiced:0,meter:null,t0:0};
+const PH = {w:null,st:'idle',prog:0,total:0,vocab:null,err:'',loadMs:0,runMs:0,rec:null,recT:0,chunks:[],res:null,dtype:'q8',sent:'Hanoi has four seasons.',lv:'',tier:1,lines:[],li:0,dur:0,frames:0,miss:[],heard:'',url:'',rms:0,voiced:0,meter:null,t0:0};
 const phProgTxt = () => PH.total?`${Math.round(PH.prog/1048576)} / ${Math.round(PH.total/1048576)} MB`:'Đang chuẩn bị…';
 function phWorker(){ if(PH.w) return PH.w;
   const w=new Worker('phon-worker.js',{type:'module'});
@@ -6338,6 +6346,25 @@ function phScore(m){ const T=m.dims[1], V=m.dims[2], idTo=[]; for(const [k,v] of
   if(!PH.res) PH.err='Âm thanh ngắn hơn câu mẫu: nói hết câu, rõ từng từ rồi thử lại.';
   else { (st.nd||(st.nd={d:{}})).ph={s:PH.res.score,day:today()}; ndLog('ph',PH.res.score>=80,PH.res.score/100); } }
 const phCls = s => s>=80?'g':s>=60?'a':'r';
+// v150 câu ngẫu nhiên theo cấp × bậc (người sáng lập 17/10/2026): lấy từ bộ sinh bài (textgen), ưu tiên câu đúng bậc (≤ 6 / 7–10 / ≥ 11 từ).
+const phWc = x => (String(x).match(/[A-Za-z0-9'’-]+/g)||[]).length, phTierOf = x => { const n=phWc(x); return n<=6?1:n<=10?2:3; };
+function phNew(){ const T=TG(); if(!T) return toast('Chưa tải xong bộ sinh bài.'); const lv=PH.lv||ndLv();
+  const t=T.genText({lv,tier:PH.tier,kind:Math.random()<.5?'read':'talk',seed:((Date.now()^Math.random()*1e9)>>>0)||1});
+  const all=t.lines.map(l=>l.en).filter(x=>phWc(x)>=2), hit=all.filter(x=>phTierOf(x)===PH.tier);
+  PH.lines=(hit.length?hit:all).slice(0,6); PH.li=0; phPick(); }
+function phPick(){ PH.sent=PH.lines[PH.li]||PH.sent; PH.res=null; PH.err=''; PH.heard=''; if(ASR.key==='phon') asrReset(); render(); }
+function phNext(){ if(PH.li+1<PH.lines.length){ PH.li++; return phPick(); } phNew(); }
+// v150 Sửa thế nào: tối đa 3 âm kém nhất (thiếu / đỏ trước), mỗi âm một bộ cặp âm có lời dạy khẩu hình + nghe mẫu + luyện cặp.
+function phFix(R){ const G=ELCORE.gop, out=[], seen=new Set();
+  const ps=R.words.flatMap(w=>w.phones.map((p,k)=>({...p,word:w.text,fin:k===w.phones.length-1})));
+  for(const p of ps.filter(p=>p.missing||p.score<60).sort((a,b)=>(b.missing-a.missing)||(a.score-b.score))){
+    const id=G.fixOf?G.fixOf(p.ipa,p.heard,p.missing,p.fin):null, k=id||'x:'+p.ipa; if(seen.has(k)) continue; seen.add(k); out.push({...p,set:id&&SND[id]}); if(out.length>=3) break; }
+  if(!out.length) return '';
+  return `<section class="stack phfix" aria-label="Sửa thế nào"><h3>Sửa thế nào</h3>${out.map(p=>`<div class="panel stack" style="gap:6px">
+    <p><b lang="en">${esc(p.word)}</b> · âm <span class="ipa">/${esc(p.ipa)}/</span> ${p.missing?'bị nuốt (chưa nghe thấy)':p.heard?`bạn nói gần như <span class="ipa">/${esc(p.heard)}/</span>`:'chưa rõ'}</p>
+    <p>${p.set?esc(p.set.tip):`Nghe mẫu chậm, nói rõ âm /${esc(p.ipa)}/ trong từ này rồi nói lại.`}</p>
+    <div class="row" style="gap:6px">${HAS_TTS?`<button class="btn small" data-say="${esc(p.word)}">${SPK} Nghe từ</button><button class="btn small" data-say="${esc(p.word)}" data-slow="1">🐢 Nghe chậm</button>`:''}${p.set?`<button class="btn small" data-snd="${p.set.id}">Luyện cặp ${esc(p.set.a)} – ${esc(p.set.b)}</button>`:''}</div></div>`).join('')}
+    <p class="hint">Lời dạy lấy từ bài Âm và cặp âm; máy chấm là ước tính, chưa người thật kiểm.</p></section>`; }
 // v149 🗣 Nói & Đọc: con đường thứ ba (người sáng lập 17/10/2026). Gom luyện nói, đọc to, phát âm; chỉ theo dõi riêng, không tính vào 🎯 Mục tiêu.
 const ndHint = what => `<p class="fb neutral" role="note"><span>${what}: đã chuyển sang <button class="btn small" data-go="nd">🗣 Nói &amp; Đọc</button></span></p>`;
 const ndLv = () => ui.ndLv||(talkLv()==='A1'?'A1':'A2');
@@ -6380,7 +6407,9 @@ function viewPhon(){
   return `${head}
   <section class="panel stack"><h2>1. Mô hình</h2>${model}</section>
   <section class="panel stack"><h2>2. Câu để nói</h2>
-    <label class="hint" for="phsent">Câu tiếng Anh (ngắn, 3–10 từ)</label><input id="phsent" lang="en" value="${esc(PH.sent)}" maxlength="120">
+    <div class="row" role="group" aria-label="Cấp" style="gap:6px">${['A1','A2'].map(l=>`<button class="btn small ${(PH.lv||ndLv())===l?'primary':''}" data-act="phlv" data-v="${l}" aria-pressed="${(PH.lv||ndLv())===l}">${l}</button>`).join('')}${GP_TIER.map((t,i)=>`<button class="btn small ${PH.tier===i+1?'primary':''}" data-act="phtier" data-v="${i+1}" aria-pressed="${PH.tier===i+1}">${t}</button>`).join('')}</div>
+    <div class="row"><button class="btn" data-act="phnew">🎲 Câu mới</button>${PH.lines.length>1?`<span class="hint num">Câu ${PH.li+1}/${PH.lines.length} của bài</span>`:''}</div>
+    <label class="hint" for="phsent">Hoặc tự gõ câu tiếng Anh (ngắn, 3–10 từ)</label><input id="phsent" lang="en" value="${esc(PH.sent)}" maxlength="120">
     <div class="row"><button class="btn small" data-act="phset">Dùng câu này</button>${HAS_TTS?`<button class="btn small" data-say="${esc(PH.sent)}">${SPK} Nghe mẫu</button><button class="btn small" data-say="${esc(PH.sent)}" data-slow="1">🐢 Nghe chậm</button>`:''}</div>
     ${pnHtml(n)}</section>
   <section class="panel stack"><h2>3. Nói và chấm</h2>
@@ -6396,7 +6425,8 @@ function viewPhon(){
       :ASR.err?`<p class="hint" role="status">Chữ không hiện được lần này (${esc(ASR.code||'lỗi')}): trên máy này nhận diện chữ có thể không chạy cùng lúc với ghi âm. Điểm từng âm vẫn chấm.${PH.err&&/im lặng/.test(PH.err)?' Nếu bản ghi bị im lặng, tắt “Hiện chữ khi nói” rồi ghi lại.':''}</p>`:'':''}
     ${HAS_ASR?`<div class="row"><button class="btn small ghost" data-act="phlive" aria-pressed="${phLiveOn()}">${phLiveOn()?'✓ Hiện chữ khi nói (đang bật)':'Hiện chữ khi nói (đang tắt)'}</button></div>`:'<p class="hint">Trình duyệt này không hiện chữ khi nói được; vẫn chấm từng âm.</p>'}
     ${PH.url&&PH.st!=='rec'?`<div class="row"><button class="btn small" data-act="phplay">▶ Nghe lại giọng bạn</button></div>`:''}
-    ${R?`<div class="fb ${R.score>=80?'good':R.score>=60?'neutral':'bad'}" role="status"><strong>Điểm phát âm: ${R.score}/100</strong><span>Bấm một từ để xem từng âm.</span></div><div class="phws">${words}</div>
+    ${R?`<div class="fb ${R.score>=80?'good':R.score>=60?'neutral':'bad'}" role="status"><strong>Điểm phát âm: ${R.score}/100</strong><span>Bấm một từ để xem từng âm.</span></div><div class="phws">${words}</div>${phFix(R)}
+      <div class="row"><button class="btn" data-act="phagain">🎙 Nói lại câu này</button><button class="btn primary" data-act="phnext">Câu tiếp theo →</button></div>
       <p class="hint">Máy nghe ra các âm: <span class="ipa">/${esc(PH.heard||'…')}/</span><br>Âm mong đợi: <span class="ipa">/${esc((n||{toks:[]}).toks.filter(t=>t.ipa).map(t=>t.ipa.replace(/[ˈˌ]/g,'')).join(' '))}/</span></p>`:''}
     ${R||PH.runMs?`<p class="hint num">Số liệu (gửi lại để cải thiện): tải ${(PH.loadMs/1000).toFixed(1)} s · chấm ${Math.round(PH.runMs)} ms · âm thanh ${PH.dur.toFixed(1)} s · ${PH.frames} khung · kiểu ${esc(PH.dtype)} · âm lượng ${PH.rms.toFixed(3)} · có tiếng ${Math.round(PH.voiced*100)}% · chữ: ${!HAS_ASR?'không có':!phLiveOn()?'tắt':ASR.key==='phon'&&ASR.err?'lỗi '+esc(ASR.code||'?'):ASR.key==='phon'&&ASR.res?'bật, nghe '+Math.round(ASR.res.p*100)+'%':'bật'}${PH.miss.length?` · âm chưa có trong mô hình: ${esc(PH.miss.join(' '))}`:''}</p>`:''}
   </section>`;
@@ -8929,7 +8959,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.ba656909df.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.e2b34e3ebd.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
