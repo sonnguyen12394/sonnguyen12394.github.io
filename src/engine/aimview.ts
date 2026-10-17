@@ -6,6 +6,7 @@ import type { ECtx } from './views.ts';
 import { cmpVerdict, type AimItem, type CmpOut } from './compare.ts';
 import { LEVEL_VI, type Level } from './types.ts';
 import { waitTxt } from './gateview.ts';
+import { GATE } from './gate.ts';
 
 export const AIM_LVS = [['A1', 'cefr-a1'], ['A2', 'cefr-a2']] as const;
 export type AimLv = typeof AIM_LVS[number][0];
@@ -52,13 +53,13 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
   const gate = !g.has ? '<p class="hint">Cấp này chưa có bài thi chuyển cấp.</p>'
     : g.passed ? `<p><b>✓ Đã qua thi chuyển cấp ${x.lv}.</b></p>`
     : g.wait && x.chosen ? `<p class="hint">Lần trước chưa qua. Mỗi lần là bài mới, nhưng cần học thêm rồi mới làm lại: ${esc(waitTxt(g.wait))}.</p>`
-    : g.open && x.chosen ? `<p>Bạn đã gần xong mục tiêu. Bài gồm Đọc, Nghe, Viết, Nói, sinh mới mỗi lần theo tiêu chí của cấp; không gợi ý. Qua là tự lên cấp.</p><div class="row"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào thi chuyển cấp ${x.lv}</button></div>`
-    : g.parts ? `<p class="hint">Mở khi 📘 Học ≥ 80% và 🔁 Nhớ ≥ 70% (xem hai thanh ở trên). Mỗi lần làm là một bài mới sinh theo tiêu chí. Qua là tự lên cấp.</p>`
+    : g.open && x.chosen ? `<p>Bạn đã gần xong mục tiêu. Bài gồm Đọc, Nghe, Viết, Nói, sinh mới mỗi lần theo tiêu chí của cấp; không gợi ý. Mỗi bài Viết / Nói cần ≥ ${Math.round(GATE.ws * 100)}% tiêu chí. Qua là tự lên cấp.</p>${g.parts && g.parts.total && g.parts.mem / g.parts.total < GATE.memTry ? `<p class="hint">🔁 Nhớ còn ${Math.round(100 * g.parts.mem / g.parts.total)}%: nên 🎲 Thử sức từng kỹ năng trước, để không tiêu câu chưa gặp.</p>` : ''}<div class="row"><button class="btn primary" data-e="go" data-r="gate">🚪 Vào thi chuyển cấp ${x.lv}</button></div>`
+    : g.parts ? `<p class="hint">Mở khi 📘 Học ≥ ${Math.round(GATE.learn * 100)}% và 🔁 Nhớ ≥ ${Math.round(GATE.mem * 100)}% (xem hai thanh ở trên). Mỗi lần làm là một bài mới sinh theo tiêu chí. Qua là tự lên cấp.</p>`
     : `<p class="hint">Mở khi đã vững ≥ 80% (hiện ${pct(g.ratio, 1)}%). Mỗi lần làm là một bài mới sinh theo tiêu chí. Qua là tự lên cấp.</p>`;
   // v154 hai thanh (người sáng lập 17/10/2026): 📘 Học (đã qua bài cuối) và 🔁 Nhớ (nhớ ra sau ≥ 3 ngày, chưa phai). Mở thi: Học ≥ 80% VÀ Nhớ ≥ 70%.
   const pt = g.parts, bar = (ic: string, t: string, n: number, need: number, sub: string) => { const q = pt && pt.total ? Math.round(100 * n / pt.total) : 0;
     return `<div class="stack" style="gap:4px"><p><b>${ic} ${t}</b> · ${n}/${pt!.total} phần (${q}%) <span class="hint">· cần ${Math.round(need * 100)}% ${q >= need * 100 ? '✓' : ''}</span></p><span class="lskbar" role="progressbar" aria-label="${t} ${x.lv}" aria-valuemin="0" aria-valuemax="${pt!.total}" aria-valuenow="${n}"><i style="width:${q}%"></i></span><p class="hint">${sub}</p></div>`; };
-  const two = pt && pt.total ? `<section class="panel stack aimtwo" aria-label="Học và Nhớ"><h2>Mở thi chuyển cấp ${x.lv} khi</h2>${bar('📘', 'Học', pt.learn, 0.8, 'Đã qua bài cuối của bài học (unit, điểm ngữ pháp, cặp âm, chức năng giao tiếp).')}${bar('🔁', 'Nhớ', pt.mem, 0.7, 'Làm đúng lại sau ≥ 3 ngày kể từ lúc học và hiện chưa phai. Nhớ không bù cho Học.')}</section>` : '';
+  const two = pt && pt.total ? `<section class="panel stack aimtwo" aria-label="Học và Nhớ"><h2>Mở thi chuyển cấp ${x.lv} khi</h2>${bar('📘', 'Học', pt.learn, GATE.learn, 'Đã qua bài cuối của bài học (unit, điểm ngữ pháp, cặp âm, chức năng giao tiếp).')}${bar('🔁', 'Nhớ', pt.mem, GATE.mem, 'Làm đúng lại sau ≥ 3 ngày kể từ lúc học và hiện chưa phai. Nhớ không bù cho Học.')}</section>` : '';
   const pick = x.chosen ? '' : `<div class="row"><button class="btn primary" data-e="aimpick" data-g="${id}">Chọn ${x.lv} làm đích</button></div>`;
   return `${head}
     <section class="panel stack cmp aim">

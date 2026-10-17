@@ -82,10 +82,10 @@ import { goalSummary, viewGoalBar, viewGoalSlim, goalLine, goalText, type GoalSu
 import { roteNodes } from './rote.ts';
 import { viewLrRun } from './lrview.ts';
 import { viewTreasureCard, viewTreasureIntro, viewTreasureDone, CHEST_COINS } from './treasureview.ts';
-import { viewGateHome, viewGateRun, viewGateEnd, viewGateWs, viewCert, type GateRun } from './gateview.ts';
+import { viewGateHome, viewGateRun, viewGateEnd, viewGateWs, viewCert, viewGateRev, type GateRun, type GateRevRun } from './gateview.ts';
 import { GATE_WS, NEXT_LV, wsPct, wordsOf as gwWords } from './gatews.ts';
 import { genForm, TRY_PARTS, type NodePool } from './testgen.ts';
-import { gateScore, gateState, lastP, CES_MIN, GATE, GATE_FORMS, GEN_LV, USED_MAX, TRY_MAX, type GateAns, type GateParts } from './gate.ts';
+import { gateScore, gateState, gatePassAll, revBad, REV_MAX, lastP, CES_MIN, GATE, GATE_FORMS, GEN_LV, USED_MAX, TRY_MAX, type GateAns, type GateParts } from './gate.ts';
 import type { LrApi } from '../exam/main.ts';
 import { pickNodes, nextPhase, report, armOf, MEASURE_VER, PHASE_VI, type Phase } from './measure.ts';
 import { viewMeasure } from './measureview.ts';
@@ -169,6 +169,7 @@ export function init(host: EHost): EngineModule {
   let lrApi: LrApi | null = null, lrPlays = 0, lrErr = '';
   // v111 trận cổng cuối khu (gate.ts, gateview.ts): câu lạ, chơi một lần, không đáp án trong trận; kết quả là bằng chứng quyết định.
   let gtRun: GateRun | null = null;
+  let revRun: GateRevRun | null = null;   // v158 bài mẫu để soát câu
   function gtFinish(): void {
     const r = gtRun;
     if (!r) return;
@@ -178,13 +179,14 @@ export function init(host: EHost): EngineModule {
       for (const it of g.items) ans.push({ skill: g.kind === 'reading' ? 'R' : 'L', b: it.b, g: 1 / Math.max(2, (it.opts ?? g.options ?? []).length), ok: r.given[it.id] === it.ans });
     }
     const e = E(), res = gateScore(r.goal, r.form, ans, host.today(), Math.round((Date.now() - r.t0) / 1000));
-    if (r.ws?.out.length) res.ws = r.ws.out;   // v140 Viết + Nói: tham khảo, không vào đậu / rớt
+    if (r.ws?.out.length) res.ws = r.ws.out;   // v140 Viết + Nói (v158: vào phán quyết, xem gatePassAll bên dưới)
     if (r.try) {
       // v141 Thử sức: chỉ là phép đo, không vào mức thuộc, không vào thi chuyển cấp, không lên cấp; lưu số để xem tiến bộ.
       r.res = res; const gg = (e.gg ||= { done: {} }), w = res.ws?.[0];
       gg.tries = [...(gg.tries ?? []), { day: host.today(), lv: GEN_LV[r.goal] ?? 'A2', sk: r.try, ok: res.ok, n: res.n, ...(w ? { w: Math.round(w.pct * 100) } : {}) }].slice(-TRY_MAX);
       host.save(); host.render(); window.scrollTo?.(0, 0); return;
     }
+    res.rl = res.passed; res.passed = gatePassAll(res.passed, res.ws);   // v158 Viết + Nói vào phán quyết
     if (r.gen) { res.sol = r.gen.sol; res.seed = r.gen.seed; }   // v141 luật làm lại + chữa bài theo hạt
     r.res = res;
     // v140 qua thi chuyển cấp → tự lên cấp (người sáng lập 16/10/2026): cấp kế thành đích chính, 🎯 Mục tiêu theo đích mới.
@@ -1547,16 +1549,22 @@ export function init(host: EHost): EngineModule {
   // v154 hai thanh của Mục tiêu (người sáng lập 17/10/2026). Trên các nút u: / g: / ph: / fn: của mục tiêu (như skillsOf):
   // 📘 Học = đã qua bài cuối của bài học chứa nút (host.lessonDone; host cũ không có thì dùng "vững").
   // 🔁 Nhớ = có câu đúng tự lực ở nút đó cách lần gặp đầu ≥ GATE.memDays ngày, và khả năng nhớ hiện ≥ 0,9 (chưa phai).
+  // v158 (người sáng lập 17/10/2026): nút unit (u:) gồm nhiều từ nên tính theo TỪNG TỪ: ≥ GATE.memWord số từ của unit có câu đúng tự lực
+  // cách lần gặp đầu của chính từ đó ≥ GATE.memDays ngày (từ lấy ở id câu w:<từ>:… / nd:<từ>:…; host cũ không có unitWords thì như nút thường).
   function partsOf(v: EState, g: NonNullable<ReturnType<typeof goalOf>>): GateParts {
     const ix = loaded()!, seen = new Set<string>(), nodes: Array<{ node: string; level: number }> = [];
     for (const r of closure(ix, g.req.filter(r => r.type !== 'performance'), defaultLevel)) if (/^(u|g|ph|fn):/.test(r.node) && !seen.has(r.node)) { seen.add(r.node); nodes.push(r); }
-    const first = new Map<string, number>(), okLast = new Map<string, number>();
-    for (const x of v.ev.led) { if (!seen.has(x.node)) continue; const f = first.get(x.node); if (f === undefined || x.day < f) first.set(x.node, x.day); if (x.ok && !x.asst) { const l = okLast.get(x.node); if (l === undefined || x.day > l) okLast.set(x.node, x.day); } }
+    const first = new Map<string, number>(), okLast = new Map<string, number>(), wf = new Map<string, number>(), wl = new Map<string, number>();
+    const span = (fm: Map<string, number>, lm: Map<string, number>, k: string, day: number, good: boolean) => { const f = fm.get(k); if (f === undefined || day < f) fm.set(k, day); if (good) { const l = lm.get(k); if (l === undefined || day > l) lm.set(k, day); } };
+    for (const x of v.ev.led) { if (!seen.has(x.node)) continue; const good = !!x.ok && !x.asst; span(first, okLast, x.node, x.day, good);
+      const m = x.node.startsWith('u:') ? /^(?:w|nd):([^:]+):/.exec(String(x.item ?? '')) : null; if (m) span(wf, wl, x.node + '|' + m[1], x.day, good); }
+    const memOk = (k: string, fm: Map<string, number>, lm: Map<string, number>) => { const f = fm.get(k), l = lm.get(k); return f !== undefined && l !== undefined && l - f >= GATE.memDays; };
     let learn = 0, mem = 0;
     for (const r of nodes) {
       if (host.lessonDone ? host.lessonDone(r.node) : nodeStat(host, v, r.node, r.level as Level).pass) learn++;
-      const f = first.get(r.node), l = okLast.get(r.node);
-      if (f !== undefined && l !== undefined && l - f >= GATE.memDays && (recallOf(host, v, r.node) ?? 0) >= 0.9) mem++;
+      const ws = r.node.startsWith('u:') && host.unitWords ? host.unitWords(r.node.slice(2)) : null;
+      const held = ws && ws.length ? ws.filter(w => memOk(r.node + '|' + w, wf, wl)).length / ws.length >= GATE.memWord : memOk(r.node, first, okLast);
+      if (held && (recallOf(host, v, r.node) ?? 0) >= 0.9) mem++;
     }
     return { learn, mem, total: nodes.length };
   }
@@ -1908,6 +1916,7 @@ export function init(host: EHost): EngineModule {
     'diag-result': c => { if (!loaded()) { if (!loadErr) ensure(); return viewLoading(c, loadErr); } const fog = E().gf?.day === host.today() && E().goals.length; return viewDiagResult(c, lr()) + (fog ? endExtras(c, 'fog') + viewNextBar(c, director()) : ''); },
     goals: viewGoals,
     lr: c => viewLrRun(c, lrApi?.cur() ?? null, lrPlays, lrErr),
+    gaterev: c => { if (!loaded()) { ensure(); return viewLoading(c, loadErr); } return revRun ? viewGateRev(c, revRun, E().gg) : viewGoals(c); },
     gate: c => {
       if (!loaded()) { ensure(); return viewLoading(c, loadErr); }
       if (gtRun) {
@@ -2002,7 +2011,7 @@ export function init(host: EHost): EngineModule {
         // v141 bài sinh theo tiêu chí: gom ngân hàng (bộ cổng cũ của cấp) + câu theo nút của đích, sinh bài mới với hạt mới.
         Promise.all((GATE_FORMS[g.id] ?? []).map(f => host.gate!(f).catch(() => []))).then(bs => {
           const e = E(), gg = (e.gg ||= { done: {} }), seed = ((Date.now() ^ Math.imul(e.ev.led.length + 1, 2654435761)) >>> 0) || 1;
-          const f = genForm({ goal: g.id, seed, bank: bs.flat(), used: new Set(gg.used ?? []), pools: genPools(g.id), seen: (n, id) => seenHas(e.ev, n, id) });
+          const f = genForm({ goal: g.id, seed, bank: bs.flat(), used: new Set([...(gg.used ?? []), ...revBad(gg)]), pools: genPools(g.id), seen: (n, id) => seenHas(e.ev, n, id) });   // v158 câu có sẵn bị soát là lỗi: không ra
           if (!f.groups.length) { host.toast('Chưa sinh được bài thi chuyển cấp.'); return; }
           if (f.bankIds.length) gg.used = [...new Set([...(gg.used ?? []), ...f.bankIds])].slice(-USED_MAX);
           host.save();
@@ -2034,6 +2043,32 @@ export function init(host: EHost): EngineModule {
       if (!g?.script || lrPlays >= 1) return;
       host.sayLines?.(g.script.map(l => ({ s: l.sp === 'B' ? 'B' : 'A', t: l.t })));
       lrPlays = 1; host.render();
+    },
+    // v158 Soát câu: sinh một bài mẫu như bài thật (bỏ câu có sẵn đã bị đánh dấu lỗi), hiện cả đáp án để người soát xem.
+    gtrev(el) {
+      const gid = el.dataset.g || revRun?.goal || ''; if (!GEN_LV[gid] || !host.gate) return;
+      if (!loaded()) { ensure(); return; }
+      Promise.all((GATE_FORMS[gid] ?? []).map(f => host.gate!(f).catch(() => []))).then(bs => {
+        const e = E(), seed = ((Date.now() ^ Math.imul(e.ev.led.length + 11, 2654435761)) >>> 0) || 1, bank = bs.flat();
+        const f = genForm({ goal: gid, seed, bank, used: new Set(revBad(e.gg)), pools: genPools(gid), seen: () => false });
+        revRun = { goal: gid, seed, groups: f.groups, ws: f.ws, bank: new Set(bank.flatMap(g => g.items.map(it => it.id))) };
+        host.go('gaterev'); window.scrollTo?.(0, 0);
+      });
+    },
+    gtrevnew() { if (revRun) act.gtrev!({ dataset: { g: revRun.goal } } as unknown as HTMLElement); },
+    gtrevmark(el) {
+      const r = revRun, id = el.dataset.id ?? ''; if (!r || !id) return;
+      const it = r.groups.flatMap(g => g.items.map(x => ({ x, g }))).find(y => y.x.id === id), t = r.ws.find(w => w.id === id);
+      const snap = it ? `${it.g.kind === 'listening' ? 'Nghe' : 'Đọc'} · ${it.g.title} · ${it.x.q} → ${(it.x.opts ?? it.g.options ?? []).map(o => `${o.k === it.x.ans ? '*' : ''}${o.t}`).join(' / ')}` : t ? `${t.kind === 's' ? 'Nói' : 'Viết'} · ${t.p}` : id;
+      const note = String((document.getElementById(`rvn-${id}`) as HTMLInputElement | null)?.value ?? '').trim().slice(0, 300);
+      const gg = (E().gg ||= { done: {} }), rv = (gg.rev ||= {});
+      rv[id] = { ok: el.dataset.v === 'ok', day: host.today(), t: snap.slice(0, 600), ...(note ? { note } : {}), ...(r.bank.has(id) ? { bank: 1 as const } : {}) };
+      const ks = Object.keys(rv); if (ks.length > REV_MAX) for (const k of ks.slice(0, ks.length - REV_MAX)) delete rv[k];
+      host.save(); host.render();
+    },
+    gtrevcopy() {
+      const rv = E().gg?.rev ?? {}, txt = Object.entries(rv).filter(([, x]) => !x.ok).map(([id, x]) => `- [${id}] ${x.t}${x.note ? `\n  Ghi chú: ${x.note}` : ''}`).join('\n');
+      navigator.clipboard?.writeText(txt).then(() => host.toast('Đã chép danh sách lỗi: dán gửi cho Tí để sửa.'), () => host.toast('Máy chưa cho chép: chụp màn hình gửi cũng được.'));
     },
     certon() { const e = E(); (e.gg ||= { done: {} }).cert = 1; host.save(); host.render(); },
     gtskip() {
@@ -2244,12 +2279,17 @@ export function init(host: EHost): EngineModule {
     ...vc.forms,
     ...bag.forms,
     certscore(f) {
-      const e = E(), goal = f.dataset.g || '', d = new FormData(f), score = Math.round(Number(d.get('score'))), min = CES_MIN[goal];
-      if (!min || !Number.isFinite(score) || score < 80 || score > 230) { host.toast('Điểm theo thang Cambridge từ 80 đến 230.'); return; }
-      const gg = (e.gg ||= { done: {} }), pred = lastP(gg, goal), src = d.get('src') === 'real' ? 'real' as const : 'sample' as const, pass = score >= min;
+      // v158 ghi được số câu đúng Đọc / 30, Nghe / 25 của bài mẫu (không cần biết quy đổi thang); điểm thang Cambridge thì tuỳ chọn.
+      const e = E(), goal = f.dataset.g || '', d = new FormData(f), raw = (k: string) => { const v = String(d.get(k) ?? '').trim(); return v === '' ? null : Math.round(Number(v)); };
+      const sc = raw('score'), rr = raw('rr'), lr = raw('lr'), min = CES_MIN[goal];
+      if (!min) return;
+      if (sc !== null && (!Number.isFinite(sc) || sc < 80 || sc > 230)) { host.toast('Điểm theo thang Cambridge từ 80 đến 230.'); return; }
+      if ((rr !== null && !(rr >= 0 && rr <= 30)) || (lr !== null && !(lr >= 0 && lr <= 25))) { host.toast('Đọc từ 0 đến 30 câu, Nghe từ 0 đến 25 câu.'); return; }
+      if (sc === null && rr === null && lr === null) { host.toast('Ghi ít nhất một số: câu đúng Đọc, Nghe, hoặc điểm thang Cambridge.'); return; }
+      const score = sc ?? 0, gg = (e.gg ||= { done: {} }), pred = lastP(gg, goal), src = d.get('src') === 'real' ? 'real' as const : 'sample' as const, pass = sc !== null && sc >= min;
       // Chốt dự đoán (SPEC "Đề sát hạch", chốt dự đoán): ghi khả năng qua app đang có TRƯỚC khi biết điểm, kèm điểm ngoài.
       addSnap(e.ev, { ts: Date.now(), day: host.today(), kind: 'readiness', subj: goal, dec: pass ? 'EXT:PASS' : 'EXT:FAIL', rule: `${RULE_ID}/ext-1`, info: { score, src, pred: pred ?? -1 }, evs: [] }, false);
-      gg.ext = [...(gg.ext ?? []), { goal, day: host.today(), score, pass, pred, src }].slice(-20);
+      gg.ext = [...(gg.ext ?? []), { goal, day: host.today(), score, pass, pred, src, ...(rr !== null ? { rr } : {}), ...(lr !== null ? { lr } : {}) }].slice(-20);
       host.save(); host.toast(pass ? 'Đã ghi điểm: đạt!' : 'Đã ghi điểm.'); host.render();
     },
     gtnext(f) {

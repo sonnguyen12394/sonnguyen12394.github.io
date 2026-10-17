@@ -70,7 +70,8 @@ test('Thi chuyển cấp: Đọc + Nghe bằng câu lạ, rồi Viết + Nói; k
   }
   await expect(page.getByRole('heading', { name: /Đã làm xong bài|Lên cấp B1!/ })).toBeVisible();
   await expect(page.locator('.gres')).toContainText('khả năng qua');
-  await expect(page.locator('.gres')).toContainText(/Viết: \d+% tiêu chí .*Nói: \d+% tiêu chí/);
+  await expect(page.locator('.gres')).toContainText(/Viết: \d+% tiêu chí[\s\S]*Nói: \d+% tiêu chí/);
+  await expect(page.locator('.gres')).toContainText('Đọc + Nghe');   // v158 từng kỹ năng ✓ / ✗
   await expect(page.getByText('Xem chữa bài Đọc + Nghe từng câu')).toBeVisible();
   await page.screenshot({ path: 'test-results/gate-end.png', fullPage: true });
   const gg = await page.evaluate(() => (window as any).eval('st').e.gg);
@@ -107,7 +108,7 @@ test('v140 qua thi chuyển cấp A1 (làm đúng hết) → tự lên cấp A2:
   for (let k = 0; k < 3; k++) {
     const ws = page.locator('form[data-eform="gtws"]');
     await ws.locator('textarea').fill('Hi Ana! Can you water my plants this weekend, please? I will be back on Sunday evening. Thank you very much, you are a great neighbour! See you soon.');
-    await ws.locator('input[type="checkbox"]').first().check();
+    for (const c of await ws.locator('input[type="checkbox"]').all()) await c.check();   // v158 Viết / Nói vào phán quyết: đủ ý mới đạt ≥ 60%
     await ws.getByRole('button').last().click();
   }
   await expect(page.getByRole('heading', { name: '🎉 Lên cấp A2!' })).toBeVisible();
@@ -204,14 +205,31 @@ test('v141 🎲 Thử sức từng kỹ năng ở 🎯 Mục tiêu: bài ngắn 
   expect(errors).toEqual([]);
 });
 
-test('Chứng chỉ tuỳ chọn ở trang mục tiêu: chỉ hiện khi bật, ghi điểm kèm dự đoán của app', async ({ page, errors }) => {
+test('v158 So với bài mẫu Cambridge luôn hiện ở trang mục tiêu: ghi số câu đúng Đọc / Nghe + điểm thang, so với app; soát câu: đánh dấu lỗi được đếm, câu có sẵn bị lỗi không ra nữa', async ({ page, errors }) => {
+  test.setTimeout(120_000);
   await setup(page, '?playtest=0');
   await page.evaluate(() => (window as any).eval("go('goal',{er:'goal/cefr-a2'})"));
-  await page.getByRole('button', { name: 'Tôi muốn thi lấy chứng chỉ' }).click();
-  await page.getByLabel('Điểm').fill('128');
-  await page.getByRole('button', { name: 'Ghi điểm' }).click();
-  await expect(page.locator('#app')).toContainText(/Đề mẫu chính thức: 128 \(đạt A2\)/);
+  const box = page.locator('#app [aria-label="So với bài mẫu Cambridge"]');
+  await expect(box).toBeVisible();
+  await box.getByLabel('Đọc đúng / 30').fill('22');
+  await box.getByLabel('Nghe đúng / 25').fill('18');
+  await box.getByLabel('Điểm thang Cambridge (nếu có)').fill('128');
+  await box.getByRole('button', { name: 'Ghi', exact: true }).click();
+  await expect(box).toContainText(/Bài mẫu chính thức: 128 điểm thang Cambridge \(đạt A2\)/);
+  await expect(box).toContainText('Đọc: bài mẫu 22/30');
   const gg = await page.evaluate(() => (window as any).eval('st').e.gg);
-  expect(gg.cert).toBe(1); expect(gg.ext[0]).toMatchObject({ score: 128, pass: true, src: 'sample' });
+  expect(gg.ext[0]).toMatchObject({ score: 128, pass: true, src: 'sample', rr: 22, lr: 18 });
+  // Soát câu: bài mẫu có đáp án; đánh dấu câu đầu có lỗi kèm ghi chú
+  await box.getByRole('button', { name: /Soát câu Thi chuyển cấp/ }).click();
+  await expect(page.getByRole('heading', { name: 'Soát câu', level: 1 })).toBeVisible({ timeout: 30000 });
+  const first = page.locator('#app [data-e="gtrevmark"][data-v="bad"]').first(), id = (await first.getAttribute('data-id'))!;
+  await page.locator(`#rvn-${id}`).fill('Hai đáp án cùng đúng');
+  await first.click();
+  await expect(page.locator('#app')).toContainText('Đã soát 1 câu, 1 câu có lỗi');
+  const rv = await page.evaluate((k: string) => (window as any).eval('st').e.gg.rev[k], id);
+  expect(rv).toMatchObject({ ok: false, note: 'Hai đáp án cùng đúng' });
+  const ax = await new AxeBuilder({ page }).include('#app').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(ax.violations.map(v => v.id)).toEqual([]);
   expect(errors).toEqual([]);
 });
+

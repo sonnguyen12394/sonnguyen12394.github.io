@@ -165,3 +165,4 @@ Người sáng lập (17/10/2026) tách mọi chức năng luyện nói, đọc 
 - **Bản 91 (v153), đổi tên:** 📘 Học bài (học mới tới vững, não không đẩy ôn lên đầu) · 🔁 Ôn luyện (thẻ đến hạn + đã quên + đang phai + bài đọc / nói) · 🎯 Mục tiêu. Cân học / ôn tuỳ người học chọn phần nào.
 - **Bản 92 (v154):** 🎯 Mục tiêu có hai thanh: 📘 Học (đã qua bài cuối) và 🔁 Nhớ (nhớ ra sau ≥ 3 ngày, chưa phai). Mở thi khi Học ≥ 80% và Nhớ ≥ 70%.
 - **Bản 95 (v157):** 🔁 Ôn luyện = đọc / nghe nguyên bài của một unit + câu hỏi hiểu (+ 1–2 câu ngữ pháp của bài). Hiểu ≥ 80% không xem nghĩa → qua unit; ngữ pháp đúng ở 2 bài khác nhau → qua điểm đó. Bỏ bài lẻ và danh sách vượt; phát âm gom vào một mục. 📘 Học bài cũng có hai thanh Học / Nhớ.
+- **Bản 96 (v158):** chấm chặt hơn sau đánh giá theo vai chuyên gia: thêm câu nghĩa từ của unit; đáp án hiểu diễn đạt khác bài + câu ý chính; qua unit cần đạt ở 2 ngày khác nhau; 🔁 Nhớ của unit tính theo từng từ (≥ 70%).
