@@ -87,6 +87,7 @@ for (const scheme of ['light', 'dark'] as const) {
 test('Lối vào: tab 🗣 Nói & Đọc (v149) và dòng Phát âm ở 🎯 Mục tiêu', async ({ page, errors }) => {
   await open(page, { lv: 'A1', tier: 1, mode: 'say', kind: 'read' });
   await page.evaluate(() => (window as any).eval("go('nd')"));
+  await page.locator('#app details.ndph summary').click();   // v157 công cụ phát âm gom vào mục đóng sẵn
   await page.locator('#app [data-act="gp"]').first().click();
   await expect(page.locator('[data-act="gpmode"][data-v="say"]')).toHaveAttribute('aria-pressed', 'true');
   await page.evaluate(() => (window as any).eval("go('aim')"));
