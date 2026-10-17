@@ -256,8 +256,8 @@ test('v154 Mục tiêu có hai thanh Học / Nhớ; qua bài cuối unit làm th
   const learn0 = await page.locator('#app [aria-label="Học và Nhớ"] [role="progressbar"]').first().getAttribute('aria-valuenow');
   await page.evaluate(() => { const w = window as any; w.eval('U')(w.eval('UNITS')[0].id).passed = true; w.eval('save()'); w.eval('render()'); });
   await expect(page.locator('#app [aria-label="Học và Nhớ"] [role="progressbar"]').first()).not.toHaveAttribute('aria-valuenow', learn0!);
-  await expect(page.locator('#app [aria-label="Học và Nhớ"]')).toContainText('cần 70%');
-  await expect(page.locator('#app')).toContainText('Mở khi 📘 Học ≥ 80% và 🔁 Nhớ ≥ 70%');
+  await expect(page.locator('#app [aria-label="Học và Nhớ"]')).toContainText('cần 50%');
+  await expect(page.locator('#app')).toContainText('Mở khi 📘 Học ≥ 80% và 🔁 Nhớ ≥ 50%');
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(r.violations.map(v => v.id)).toEqual([]);
   expect(errors).toEqual([]);

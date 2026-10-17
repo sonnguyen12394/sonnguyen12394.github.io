@@ -4851,6 +4851,7 @@ const CHANGELOG = [
     'Mỗi bài đọc / nghe có thêm câu hỏi nghĩa của từ trong unit (tối đa 4 từ), để bài đọc phủ được phần lớn từ của unit.',
     'Câu hỏi hiểu bài viết lại: đáp án diễn đạt khác với bài (không dò chữ mà chọn được), thêm 1 câu ý chính / suy luận mỗi bài.',
     'Qua unit ở Ôn luyện cần đạt ≥ 80% ở 2 ngày khác nhau. Thanh 🔁 Nhớ của unit tính theo từng từ: ≥ 70% số từ nhớ lại sau ≥ 3 ngày.',
+    'Thi chuyển cấp mở khi 📘 Học ≥ 80% và 🔁 Nhớ ≥ 50% (trước là 70%): cần hoàn thành bài học là chính.',
     'Màn kết quả có nút 📖 Đọc to bài này để luyện phát âm ngay trên bài vừa đọc.']},
   {v:95,d:'2026-10-17',t:'🔁 Ôn luyện: đọc / nghe nguyên bài rồi trả lời câu hỏi',items:[
     '▶ Ôn tiếp: não chọn bài đọc / nghe của unit bạn chưa qua hoặc đang quên; trả lời câu hỏi hiểu bài, thêm 1–2 câu ngữ pháp của bài.',
@@ -6593,12 +6594,12 @@ function ndDueHtml(){ const dw=dueWords().length, dg=dueG().length;
 function partsHtml(L,where){ let p=null; try{ p=EM&&EM.parts?EM.parts('cefr-'+L.toLowerCase()):null; }catch(e){ p=null; } if(!p||!p.total) return '';
   const lq=Math.round(100*p.learn/p.total), mq=Math.round(100*p.mem/p.total), lib=where==='lib';
   const next=lq<80?(lib?'Thiếu 📘 Học: học tiếp bài kế và qua bài cuối mỗi unit. Đã biết sẵn thì 🔁 Ôn luyện → ▶ Ôn tiếp: hiểu bài ≥ 80% ở 2 ngày khác nhau là qua unit.':'Thiếu 📘 Học: ▶ Ôn tiếp, đọc / nghe bài; đúng ≥ 80% (không xem nghĩa) ở 2 ngày khác nhau là qua unit.')
-    :mq<70?(lib?'Thiếu 🔁 Nhớ: ôn ở 🔁 Ôn luyện; bằng chứng nhớ cần làm đúng lại sau ≥ 3 ngày.':'Thiếu 🔁 Nhớ: ôn thẻ đến hạn và ▶ Ôn tiếp mỗi ngày; bằng chứng nhớ cần làm đúng lại sau ≥ 3 ngày.')
+    :mq<50?(lib?'Thiếu 🔁 Nhớ: ôn ở 🔁 Ôn luyện; bằng chứng nhớ cần làm đúng lại sau ≥ 3 ngày.':'Thiếu 🔁 Nhớ: ôn thẻ đến hạn và ▶ Ôn tiếp mỗi ngày; bằng chứng nhớ cần làm đúng lại sau ≥ 3 ngày.')
     :'Đủ cả hai: Thi chuyển cấp '+L+' đã mở ở 🎯 Mục tiêu.';
   const bar=(lb,v)=>`<div class="spread"><span>${lb}</span><b class="num">${v}%</b></div><div class="bar" role="progressbar" aria-label="${lb}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${v}"><i style="width:${v}%"></i></div>`;
   return `<section class="panel stack" aria-label="Học và Nhớ ${L}"><h2>Mục tiêu ${L}</h2>
     ${bar('📘 Học',lq)}${bar('🔁 Nhớ',mq)}
-    <p class="hint num">Học ${p.learn}/${p.total} (cần 80%) · Nhớ ${p.mem}/${p.total} (cần 70%). Thi chuyển cấp mở khi đủ cả hai.</p><p>${next}</p></section>`; }
+    <p class="hint num">Học ${p.learn}/${p.total} (cần 80%) · Nhớ ${p.mem}/${p.total} (cần 50%). Thi chuyển cấp mở khi đủ cả hai.</p><p>${next}</p></section>`; }
 // v152 Sức khoẻ kiến thức mỗi cấp (A1, A2): vững · đang phai · đã quên · chưa học; Ôn nhanh; xem chỗ đã quên (nút về đúng bài trong 📘 Học).
 function ndHealthHtml(){ const rows=['A1','A2'].map(l=>({l,H:ndHealth(l)})).filter(x=>x.H); if(!rows.length) return '';
   const seg=(c,n,t)=>n?`<i class="${c}" style="flex:${n}" title="${t}"></i>`:'';
@@ -9212,7 +9213,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.186cf16e32.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.b921abc7b4.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
