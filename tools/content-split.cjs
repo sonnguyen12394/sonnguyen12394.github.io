@@ -3,10 +3,11 @@
 //   node tools/content-split.cjs split   app.js đầy đủ → app.js (khung mọi cấp + chi tiết A1) + data/lv-<cấp>.<băm>.json
 //   node tools/content-split.cjs join    ngược lại: ghép data/*.json vào app.js để có lại bản đầy đủ (sửa nội dung rồi split lại)
 // Khung (luôn nằm trong app.js): unit {id,no,title,vi,words}, từ {id,word,pos,ipa,pic,vi,forms,family,…}.
-// Chi tiết (tải sau, theo cấp): unit {reading,guided,reads (v164 kho bài Ôn luyện)}, từ {en,ex,exVi,ex2,ex2Vi,cloze,col,why,tip}.
+// Chi tiết (tải sau, theo cấp): unit {reading,guided}, từ {en,ex,exVi,ex2,ex2Vi,cloze,col,why,tip}.
+// v164 kho bài Ôn luyện (unit.reads) ở tệp riêng data/rd-<cấp>.<băm>.json, app chỉ tải khi vào Học bài / Ôn luyện (không đè lên lần mở app đầu).
 const fs = require('fs'), path = require('path'), vm = require('vm'), crypto = require('crypto');
 const ROOT = path.join(__dirname, '..'), APP = path.join(ROOT, 'app.js'), DATA = path.join(ROOT, 'data');
-const U_DETAIL = ['reading', 'guided', 'reads'], W_DETAIL = ['en', 'ex', 'exVi', 'ex2', 'ex2Vi', 'cloze', 'col', 'why', 'tip'];
+const U_DETAIL = ['reading', 'guided'], U_READS = 'reads', W_DETAIL = ['en', 'ex', 'exVi', 'ex2', 'ex2Vi', 'cloze', 'col', 'why', 'tip'];
 const INLINE = [];   // v45 (engine M1): cả A1 cũng tải theo cấp; app.js chỉ còn khung, màn chào vẽ sẵn trong index.html
 
 const src = fs.readFileSync(APP, 'utf8');
@@ -30,32 +31,40 @@ const cmd = process.argv[2];
 if (cmd === 'split') {
   const c = findContent(src), C = c.obj, hash = {};
   if (!fs.existsSync(DATA)) fs.mkdirSync(DATA);
-  for (const f of fs.readdirSync(DATA)) if (/^lv-.*\.json$/.test(f)) fs.unlinkSync(path.join(DATA, f));
+  for (const f of fs.readdirSync(DATA)) if (/^(lv|rd)-.*\.json$/.test(f)) fs.unlinkSync(path.join(DATA, f));
+  const rhash = {};
   for (const L of C.levels) {
     if (INLINE.includes(L.id)) continue;
-    const d = { units: {}, words: {} };
+    const d = { units: {}, words: {} }, rd = {};
     for (const u of L.units) {
+      if (U_READS in u) { rd[u.id] = u[U_READS]; delete u[U_READS]; }
       const ud = {}; for (const k of U_DETAIL) if (k in u) { ud[k] = u[k]; delete u[k]; }
       if (Object.keys(ud).length) d.units[u.id] = ud;
       for (const w of u.words) { const wd = {}; for (const k of W_DETAIL) if (k in w) { wd[k] = w[k]; delete w[k]; } if (Object.keys(wd).length) d.words[w.id] = wd; }
     }
     const json = JSON.stringify(d), h = crypto.createHash('sha256').update(json).digest('hex').slice(0, 10);
     fs.writeFileSync(path.join(DATA, `lv-${L.id}.${h}.json`), json); hash[L.id] = h;
+    if (Object.keys(rd).length) { const rj = JSON.stringify(rd), rh = crypto.createHash('sha256').update(rj).digest('hex').slice(0, 10);
+      fs.writeFileSync(path.join(DATA, `rd-${L.id}.${rh}.json`), rj); rhash[L.id] = rh; }
   }
   let out = writeContent(src, c, C);
   out = setConst(out, 'DETAIL_HASH', JSON.stringify(hash));
+  out = setConst(out, 'READS_HASH', JSON.stringify(rhash));
   fs.writeFileSync(APP, out);
-  console.log('split ok', hash);
+  console.log('split ok', hash, 'reads', rhash);
 } else if (cmd === 'join') {
   const c = findContent(src), C = c.obj;
   const m = src.match(/^const DETAIL_HASH = (.*);$/m), hash = m ? JSON.parse(m[1]) : {};
+  const mr = src.match(/^const READS_HASH = (.*);$/m), rhash = mr ? JSON.parse(mr[1]) : {};
   for (const L of C.levels) {
     if (!hash[L.id]) continue;
     const d = JSON.parse(fs.readFileSync(path.join(DATA, `lv-${L.id}.${hash[L.id]}.json`), 'utf8'));
-    for (const u of L.units) { Object.assign(u, d.units[u.id] || {}); for (const w of u.words) Object.assign(w, d.words[w.id] || {}); }
+    const rd = rhash[L.id] ? JSON.parse(fs.readFileSync(path.join(DATA, `rd-${L.id}.${rhash[L.id]}.json`), 'utf8')) : {};
+    for (const u of L.units) { Object.assign(u, d.units[u.id] || {}); if (rd[u.id]) u[U_READS] = rd[u.id]; for (const w of u.words) Object.assign(w, d.words[w.id] || {}); }
   }
   let out = writeContent(src, c, C);
   out = setConst(out, 'DETAIL_HASH', '{}');
+  out = setConst(out, 'READS_HASH', '{}');
   fs.writeFileSync(APP, out);
   console.log('join ok (app.js đầy đủ; nhớ chạy split trước khi phát hành)');
 } else {

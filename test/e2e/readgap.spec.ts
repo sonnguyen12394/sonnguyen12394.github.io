@@ -15,6 +15,7 @@ async function open(page: Page): Promise<void> {
   await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
   await page.evaluate(() => { const w = window as any, st = w.eval('st'); st.onboarded = true; w.eval("ui.ndLv='A1'"); w.eval('save()'); w.eval('emLoad()'); });
   await page.waitForFunction(() => { const w = window as any; return !!(w.eval('EM') && w.eval('EM').parts && w.eval('EM').parts('cefr-a1')); }, null, { timeout: 30000 });
+  await page.evaluate(() => Promise.all(['A1', 'A2'].map(L => (window as any).eval('readsLoad')(L))));   // kho bài tải riêng (data/rd-<cấp>)
 }
 async function answerAll(page: Page): Promise<void> {
   const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read, r = R.rd;
@@ -83,5 +84,19 @@ test('v164 ✍️ viết theo chỗ thiếu: dùng đủ 3 từ trong câu + đ�
   expect(ev.every((x: any) => x.ok)).toBe(true);
   const ax = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(ax.violations.map(v => v.id)).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
+test('v164 kho bài tải riêng: lần mở app đầu chưa đọc data/rd-* (không thêm việc cho luồng chính); vào Ôn luyện thì tải, ndTexts có đủ 5 bài', async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.waitForFunction(() => (window as any).ELREADY === true);
+  await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
+  // service worker có thể tải sẵn tệp để dùng khi mất mạng (detailWarm), nhưng app chưa đọc tệp
+  expect(await page.evaluate(() => (window as any).eval('READS').ready.size)).toBe(0);
+  await page.evaluate(() => { const w = window as any; w.eval('st').onboarded = true; w.eval("ui.ndLv='A1'"); w.eval('save()'); w.eval("go('nd')"); });
+  await page.waitForFunction(() => (window as any).eval("readsOk('A1')"), null, { timeout: 30000 });
+  const n = await page.evaluate(() => { const w = window as any, u = w.eval('UNITS').find((x: any) => x.level === 'A1' && x.reading); return w.eval('ndTexts')(u).length; });
+  expect(n).toBe(5);
   expect(errors).toEqual([]);
 });

@@ -4633,6 +4633,7 @@ const GALL_OPEN=new Set(), gallKey=d=>d.dataset.gv+'|'+((d.querySelector('summar
 function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); applyA2(); renderChrome();
+  if(st.onboarded&&(ui.view==='nd'||ui.view==='lib')) readsKick();
   if((ui.view==='path'||ui.view==='play'||(ui.view==='goal'&&ui.er==='aim'))&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
   const v={thi:viewThi,rpg:viewRpg,wrg:viewWrg,lib:viewLib,nd:viewND,ndx:viewNdx,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,ra:viewRA,phon:viewPhon,paste:viewPaste,gp:viewGP,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
@@ -6239,7 +6240,8 @@ const ygLink = word => /^[A-Za-z][A-Za-z '-]*$/.test(word||'')&&!IN_VIEWER
    kết hợp từ, giải thích lỗi, mẹo) nằm ở data/lv-<cấp>.<băm>.json, tải ngầm ngay sau khi mở (cấp đang học trước).
    DETAIL_HASH do tools/content-split.cjs ghi; rỗng = app.js đầy đủ (chưa tách) và mọi thứ sẵn sàng ngay.
    Hai lớp an toàn khi chưa tải xong: (1) chặn nút cần chi tiết rồi tự bấm lại khi xong, (2) màn cần chi tiết hiện "đang tải". */
-const DETAIL_HASH = {"A1":"9b29f18bb3","A2":"17b279279d","B1":"9e936381dc","B2":"7f68e836a4","C1":"dfa2839b17","C2":"823bc2456d"};
+const DETAIL_HASH = {"A1":"e94d99ec83","A2":"567e2d4556","B1":"9e936381dc","B2":"7f68e836a4","C1":"dfa2839b17","C2":"823bc2456d"};
+const READS_HASH = {"A1":"e1646569e8","A2":"450389ea18"};
 const DETAIL = {ready:new Set(CONTENT.levels.map(L=>L.id).filter(id=>!DETAIL_HASH[id])), p:{}, err:'', waiting:null};
 const detailAll = () => DETAIL.ready.size>=CONTENT.levels.length;
 const UNIT_BY_ID = Object.fromEntries(UNITS.map(u=>[u.id,u]));
@@ -6262,9 +6264,18 @@ function detailDone(){ const w=DETAIL.waiting; DETAIL.waiting=null;
   detailWarm(); }
 // Trang mở lần đầu chưa do service worker quản lý: khi nó quản lý rồi, yêu cầu lại các tệp (lấy từ bộ nhớ HTTP) để nó lưu cho lúc mất mạng.
 function detailWarm(){ try{ if(!navigator.serviceWorker||IN_VIEWER) return;
-  const go=()=>{ Object.keys(DETAIL_HASH).forEach(L=>fetch(detailUrl(L)).catch(()=>{}));
-    if(typeof caches!=='undefined') caches.open('el-data').then(c=>c.keys().then(ks=>{ const keep=new Set(Object.keys(DETAIL_HASH).map(L=>new URL(detailUrl(L),location.href).pathname)); ks.forEach(k=>{ if(!keep.has(new URL(k.url).pathname)) c.delete(k); }); })).catch(()=>{}); };
+  const go=()=>{ Object.keys(DETAIL_HASH).forEach(L=>fetch(detailUrl(L)).catch(()=>{})); Object.keys(READS_HASH).forEach(L=>fetch(readsUrl(L)).catch(()=>{}));
+    if(typeof caches!=='undefined') caches.open('el-data').then(c=>c.keys().then(ks=>{ const keep=new Set([...Object.keys(DETAIL_HASH).map(L=>new URL(detailUrl(L),location.href).pathname),...Object.keys(READS_HASH).map(L=>new URL(readsUrl(L),location.href).pathname)]); ks.forEach(k=>{ if(!keep.has(new URL(k.url).pathname)) c.delete(k); }); })).catch(()=>{}); };
   if(navigator.serviceWorker.controller) go(); else navigator.serviceWorker.addEventListener('controllerchange',go,{once:true}); }catch(e){} }
+// v164 kho bài Ôn luyện (u.reads, ~0,6 MB / cấp) tải riêng, chỉ khi vào Học bài / Ôn luyện hoặc mở một bài đọc: lần mở app đầu không phải đọc thêm
+// (Lighthouse TBT). Chưa tải xong thì Ôn luyện dùng bài cũ của unit; tải xong thì ndTexts tính lại.
+const READS = {ready:new Set(), p:{}};
+const readsUrl = L => `data/rd-${L}.${READS_HASH[L]}.json`;
+const readsOk = L => !READS_HASH[L]||READS.ready.has(L);
+function readsLoad(L){ if(readsOk(L)) return Promise.resolve();
+  return READS.p[L] ||= fetch(readsUrl(L)).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); })
+    .then(d=>{ for(const [id,x] of Object.entries(d)){ const u=UNIT_BY_ID[id]; if(u){ u.reads=x; delete _ndT[id]; } } READS.ready.add(L); }).finally(()=>{ delete READS.p[L]; }); }
+function readsKick(L){ try{ readsLoad(L||ndLv()).catch(()=>{}); }catch(e){} }
 function detailWaitUi(){ const w=DETAIL.waiting; if(!w) return; const n=DETAIL.ready.size, all=CONTENT.levels.length;
   modal({ic:DETAIL.err?'⚠️':'⏳',title:DETAIL.err?'Chưa tải xong bài học':'Đang tải thêm bài học…',sub:DETAIL.err||`Đã có ${n}/${all} cấp. Xong là tự tiếp tục, bạn không cần bấm lại.`,
     buttons:DETAIL.err?[{label:'Thử lại',act:'detailretry',primary:true},{label:'Đóng',act:'mclose'}]:[{label:'Huỷ',act:'mclose'}]}); }
@@ -6962,7 +6973,7 @@ function ndPickText(u,tg){ const rd=(st.nd||{}).rd||{}, L=u.level, sc=r=>ndWords
   const pool=U(u.id).passed?UNITS.filter(x=>x.level===L).flatMap(ndTexts):ndTexts(u), fresh=pool.filter(r=>!rd[r.id]);
   const xs=(fresh.length?fresh:pool.slice().sort((a,b)=>(rd[a.id]||0)-(rd[b.id]||0)).slice(0,Math.max(1,Math.ceil(pool.length/3))));
   return xs.map(r=>({r,s:sc(r)+(r.uid===u.id?1:0)+Math.random()*.5})).sort((a,b)=>b.s-a.s)[0].r; }
-function ndRead(uid,listen){ const u0=UNITS.find(x=>x.id===uid); if(!u0||!u0.reading) return; const n=st.nd||(st.nd={d:{}}), tg=ndTargets(u0.level);
+function ndRead(uid,listen){ const u0=UNITS.find(x=>x.id===uid); if(!u0||!u0.reading) return; const n=st.nd||(st.nd={d:{}}), tg=ndTargets(u0.level); readsKick(u0.level);
   const r=ndPickText(u0,tg), u=UNITS.find(x=>x.id===r.uid)||u0;   // ôn: bài có thể thuộc unit khác cùng cấp (chứa nhiều chỗ thiếu hơn)
   (n.seen||(n.seen={}))[u.id]=today(); n.rl=!!listen; save();
   go('read',{read:{uid:u.id,rd:r,listen:!!listen&&HAS_TTS,order:r.qs.map(q=>shuffle([q.a,...q.w])),picks:{},done:false,nd:true,peek:false,gq:ndGQ(u,r),gp:{},vq:ndVQ(u,r,tg),vp:{}}}); window.scrollTo(0,0); }

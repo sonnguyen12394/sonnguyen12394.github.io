@@ -57,14 +57,16 @@ export function checkAll(map: Record<string, Read[]>, seen = new Set<string>()) 
 
 // Kho trong data/ (gọi từ tools/content-check.ts).
 export function checkData() { const map: Record<string, Read[]> = {}, seen = new Set<string>();
-  for (const lv of ['A1', 'A2']) { const df = readdirSync(join(ROOT, 'data')).find(x => x.startsWith(`lv-${lv}.`))!; const d = JSON.parse(readFileSync(join(ROOT, 'data', df), 'utf8')) as { units: Record<string, { reading?: { text: string }; reads?: Read[] }> };
-    for (const [uid, ud] of Object.entries(d.units)) { if (ud.reading) seen.add(flat(ud.reading.text).split(' ').slice(0, 8).join(' ')); if (ud.reads) map[uid] = ud.reads; } }
+  for (const lv of ['A1', 'A2']) { const df = readdirSync(join(ROOT, 'data')).find(x => x.startsWith(`lv-${lv}.`))!; const d = JSON.parse(readFileSync(join(ROOT, 'data', df), 'utf8')) as { units: Record<string, { reading?: { text: string }; }> };
+    for (const [uid, ud] of Object.entries(d.units)) if (ud.reading) seen.add(flat(ud.reading.text).split(' ').slice(0, 8).join(' '));
+    const rf = readdirSync(join(ROOT, 'data')).find(x => x.startsWith(`rd-${lv}.`)); if (rf) Object.assign(map, JSON.parse(readFileSync(join(ROOT, 'data', rf), 'utf8')) as Record<string, Read[]>); }
   return checkAll(map, seen); }
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const f = process.argv[2]; let map: Record<string, Read[]> = {}; const seen = new Set<string>();
   if (f) map = JSON.parse(readFileSync(f, 'utf8'));
-  else for (const lv of ['A1', 'A2']) { const df = readdirSync(join(ROOT, 'data')).find(x => x.startsWith(`lv-${lv}.`))!; const d = JSON.parse(readFileSync(join(ROOT, 'data', df), 'utf8')) as { units: Record<string, { reading?: { text: string }; reads?: Read[] }> };
-    for (const [uid, ud] of Object.entries(d.units)) { if (ud.reading) seen.add(flat(ud.reading.text).split(' ').slice(0, 8).join(' ')); if (ud.reads) map[uid] = ud.reads; } }
+  else for (const lv of ['A1', 'A2']) { const df = readdirSync(join(ROOT, 'data')).find(x => x.startsWith(`lv-${lv}.`))!; const d = JSON.parse(readFileSync(join(ROOT, 'data', df), 'utf8')) as { units: Record<string, { reading?: { text: string }; }> };
+    for (const [uid, ud] of Object.entries(d.units)) if (ud.reading) seen.add(flat(ud.reading.text).split(' ').slice(0, 8).join(' '));
+    const rf = readdirSync(join(ROOT, 'data')).find(x => x.startsWith(`rd-${lv}.`)); if (rf) Object.assign(map, JSON.parse(readFileSync(join(ROOT, 'data', rf), 'utf8')) as Record<string, Read[]>); }
   const r = checkAll(map, seen);
   for (const e of r.errs) console.log('✗ ' + e);
   console.log(`reads-check: ${r.n} bài, ${r.errs.length} lỗi`);
