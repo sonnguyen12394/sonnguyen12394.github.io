@@ -2767,7 +2767,7 @@ function viewLib(){
   // v161 nút chính là ▶ Hôm nay (dayHtml, một não cho cả Học bài + Ôn luyện); khối này còn để tự học tiếp.
   const todo=`<section class="panel stack lnext" aria-labelledby="ln-h"><h2 id="ln-h">Hoặc tự học tiếp</h2>${ma?`<p><b>${ma.h}</b></p><p class="hint">${ma.p}</p><div class="row">${String(ma.btn).replace('btn primary big','btn')}</div>`:''}
     ${due?`<p class="hint">Có ${due} mục đến hạn ôn → <button class="btn small" data-go="nd">${ico('repeat')} Ôn luyện</button></p>`:''}</section>`;
-  return `<section class="stack"><span class="eyebrow">Học bài</span><h1>📘 Học bài</h1><p class="muted">Học mới từ đầu tới cuối, tới khi vững và qua cấp. Mọi câu đúng ở đây đều tính vào 🎯 Mục tiêu. Ôn lại những gì đã học: 🔁 Ôn luyện.</p></section>
+  return `<section class="stack"><span class="eyebrow">Học bài</span><h1>📘 Học bài</h1><p class="muted">Người mới hoàn toàn: đây là đường nhanh nhất. Học mới từ đầu tới cuối, tới khi vững và qua cấp. Mọi câu đúng ở đây đều tính vào 🎯 Mục tiêu. Ôn lại những gì đã học: 🔁 Ôn luyện.</p></section>
   ${partsHtml(currentUnit().level==='A1'?'A1':'A2','lib')}
   ${dayHtml('lib')}
   ${todo}
@@ -5136,7 +5136,8 @@ const CHANGELOG = [
   {v:100,d:'2026-10-18',t:'Chỉ Học bài hoặc chỉ Ôn luyện cũng tới được Thi chuyển cấp',items:[
     'Học bài: lượt luyện unit tự xen vài từ cũ đến lúc gọi lại (🔁 Ôn lại từ unit trước), nên chỉ dùng Học bài thanh 🔁 Nhớ vẫn lên. Học hết unit mới thì có "Luyện lại" unit cũ.',
     'Ôn luyện: mọi điểm ngữ pháp A1 / A2 đều được hỏi ở ít nhất 2 bài đọc khác nhau (trước đây có điểm như a / an không bao giờ ra).',
-    'Ôn luyện có thêm 🗣️ Nói theo đề (trả lời liền mạch, máy tìm ý) và ✍️ Viết chuyện theo 3 cảnh, giống hai phần của Thi chuyển cấp.']},
+    'Ôn luyện có thêm 🗣️ Nói theo đề (trả lời liền mạch, máy tìm ý) và ✍️ Viết chuyện theo 3 cảnh, giống hai phần của Thi chuyển cấp.',
+    'Đường nhanh nhất: người mới hoàn toàn đi 📘 Học bài; người đã có nền đi 🔁 Ôn luyện; ▶ Hôm nay dành cho người có kiến thức nhưng còn lủng. Não gợi ý đường hợp với bạn.']},
   {v:99,d:'2026-10-18',t:'▶ Hôm nay: một nút cho cả Học bài và Ôn luyện',items:[
     '▶ Hôm nay ở đầu Học bài và Ôn luyện: não xếp 3–4 bước mỗi buổi (ôn đến hạn, bài cần học, chỗ còn thiếu nhất, một bài dùng thật) và ghi rõ vì sao. Bạn chỉ cần bấm.',
     'Ôn luyện mà đúng dưới 50% ở bài chưa học: não hiểu là bạn chưa có kiến thức đó và đưa về 📘 Học bài. Người đã có nền thì não cho vượt nhanh ở Ôn luyện.',
@@ -6973,10 +6974,19 @@ function dayPlan(){ const L=ndLv(), t=today(), out=[], p=dayParts(L), us=UNITS.f
   if(use.length){ const lk=(st.nd||{}).uk||0, blockL=lq<80&&(ph||fn);   // thanh Học còn thiếu mà còn bài âm / chức năng → đưa trước; còn lại xoay vòng theo ngày
     out.push(blockL?use[0]:use[(lk+t)%use.length]); }
   return {L,steps:out,lq,mq}; }
-function dayHtml(where){ const P=dayPlan(), done=dayDone(), left=P.steps.filter(x=>!done.includes(x.k)), nx=left[0];
+// v162 (người sáng lập 18/10/2026): người mới hoàn toàn → 📘 Học bài nhanh nhất; người đã có nền → 🔁 Ôn luyện nhanh nhất;
+// ▶ Hôm nay dành cho người có kiến thức nhưng bị lủng. Não đoán đường hợp nhất từ các lượt vượt nhanh (ndBase) và bài "cần học trước" (ndNeed).
+function pathFit(){ const to=(st.nd||{}).to||[], need=UNITS.some(u=>U(u.id).ndNeed&&!U(u.id).passed), ok=to.filter(x=>x.s>=ND_NEED).length, bad=to.length-ok;
+  if(zeroStart()&&!ok) return 'lib';
+  if(to.length<2) return null;
+  if(ok&&(bad||need)) return 'day';
+  return ok?'nd':'lib'; }
+const PATH_TXT = {lib:'Bạn đang ở giai đoạn học mới: <b>📘 Học bài</b> là đường nhanh nhất.',nd:'Bạn đã có nền: <b>🔁 Ôn luyện</b> (▶ Ôn tiếp) là đường nhanh nhất.',day:'Bạn đã có kiến thức nhưng còn chỗ lủng: <b>▶ Hôm nay</b> hợp nhất, não đưa bạn qua lại đúng phần để vá.'};
+function dayHtml(where){ const P=dayPlan(), done=dayDone(), left=P.steps.filter(x=>!done.includes(x.k)), nx=left[0], fit=pathFit();
   const li=x=>`<li class="spread" style="gap:8px;align-items:flex-start"><span>${done.includes(x.k)?'✓':x===nx?'▶':'•'} <b>${x.t}</b> <span class="pill">${x.side}</span><br><span class="hint">${x.why}</span></span></li>`;
   return `<section class="panel stack dayplan" aria-label="Hôm nay"><h2>▶ Hôm nay · mục tiêu ${P.L}</h2>
-    <p class="hint">Não chọn bài cho bạn: chưa biết thì 📘 Học bài, đã biết thì 🔁 Ôn luyện vượt nhanh, sắp quên thì ôn. Bạn chỉ cần bấm nút.</p>
+    <p class="hint">Dành cho người đã có kiến thức nhưng còn lủng: não tìm chỗ hổng rồi đưa về đúng phần (chưa biết thì 📘 Học bài, đã biết thì 🔁 Ôn luyện, sắp quên thì ôn). Người mới hoàn toàn đi 📘 Học bài, người đã có nền đi 🔁 Ôn luyện là nhanh nhất.</p>
+    ${fit?`<p class="pathfit">${PATH_TXT[fit]}</p>`:''}
     <ol class="stack" style="gap:8px;list-style:none;padding:0;margin:0">${P.steps.map(li).join('')}</ol>
     ${nx?`<div class="row"><button class="btn primary big" ${nx.at} data-day="${nx.k}">▶ ${where==='lib'||where==='nd'?'Làm bước kế':'Hôm nay'}</button></div>`
       :`<p><b>Xong các bước hôm nay.</b> Mai quay lại để não đo phần nhớ (🔁 Nhớ cần làm đúng lại sau ≥ 3 ngày).</p>`}</section>`; }
@@ -7051,7 +7061,7 @@ function viewND(){
   const bp=o=>o&&o.n?[o.best>=.8?'good':'accent',(o.best>=.8?'Đạt':'Đang luyện')+' · '+pct(o.best)]:null;
   const ra=UNITS.filter(u=>u.level===L&&unlocked(u)&&raOk(u)).reverse().slice(0,12).map(u=>card(`data-act="rago" data-uid="${u.id}"`,'mic',`<span lang="en">${esc(u.reading.title)}</span>`,`${uname(u)} · phiên âm, nối âm, âm cuối, ngữ điệu`,bp(st.pron['ra:'+u.id]))).join('');
   return `<section class="stack"><span class="eyebrow">🔁 Ôn luyện</span><h1>Ôn luyện</h1>
-    <p class="muted">Đọc hoặc nghe nguyên một bài, rồi trả lời câu hỏi. Có câu hiểu bài và câu nghĩa từ của unit. Đúng ≥ 80% (không xem nghĩa) ở 2 ngày khác nhau là qua unit đó. Não chọn bài bạn chưa qua hoặc đang quên. (📘 Học bài: học mới tới vững; 🔁 Ôn luyện: làm rồi ôn lại.)</p></section>
+    <p class="muted">Người đã có nền: đây là đường nhanh nhất. Đọc hoặc nghe nguyên một bài, rồi trả lời câu hỏi. Có câu hiểu bài và câu nghĩa từ của unit. Đúng ≥ 80% (không xem nghĩa) ở 2 ngày khác nhau là qua unit đó. Não chọn bài bạn chưa qua hoặc đang quên. (📘 Học bài: học mới tới vững; 🔁 Ôn luyện: làm rồi ôn lại.)</p></section>
   <div class="row" role="group" aria-label="Cấp" style="gap:6px">${['A1','A2'].map(l=>`<button class="btn small ${l===L?'primary':''}" data-act="ndlv" data-v="${l}" aria-pressed="${l===L}">${l}</button>`).join('')}</div>
   ${partsHtml(L,'nd')}
   ${dayHtml('nd')}

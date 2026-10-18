@@ -138,3 +138,23 @@ test('v161 Nói theo đề A1 / A2 ở Học bài: ý tìm bằng từ khoá tro
   expect(r.off).toEqual([]);
   expect(errors).toEqual([]);
 });
+
+test('v162 ba đường: người mới → Học bài nhanh nhất; có nền → Ôn luyện nhanh nhất; có kiến thức nhưng lủng → ▶ Hôm nay (não gợi ý theo lượt vượt nhanh)', async ({ page, errors }) => {
+  await open(page, 'nd');
+  await expect(page.locator('#app')).toContainText('Người đã có nền: đây là đường nhanh nhất');
+  await expect(page.locator('#app .dayplan')).toContainText('Dành cho người đã có kiến thức nhưng còn lủng');
+  const fit = (to: Array<{ d: number; s: number }>, zero = false) => page.evaluate(([x, z]) => { const w = window as any, st = w.eval('st'); st.nd.to = x;
+    if (z) st.e.diag = { day: 0, u: 0, g: 0, n: 0 }; else delete st.e.diag; return w.eval('pathFit()'); }, [to, zero] as const);
+  expect(await fit([], true)).toBe('lib');
+  expect(await fit([])).toBe(null);
+  expect(await fit([{ d: 1, s: 0.9 }, { d: 2, s: 0.85 }])).toBe('nd');
+  expect(await fit([{ d: 1, s: 0.2 }, { d: 2, s: 0.3 }])).toBe('lib');
+  expect(await fit([{ d: 1, s: 0.9 }, { d: 2, s: 0.3 }, { d: 3, s: 0.8 }])).toBe('day');
+  await page.evaluate(() => (window as any).eval('render()'));
+  await expect(page.locator('#app .pathfit')).toContainText('▶ Hôm nay');
+  await page.evaluate(() => (window as any).eval("go('lib')"));
+  await expect(page.locator('#app')).toContainText('Người mới hoàn toàn: đây là đường nhanh nhất');
+  const ax = await new AxeBuilder({ page }).include('#app .dayplan').withTags(AXE).analyze();
+  expect(ax.violations.map(v => v.id)).toEqual([]);
+  expect(errors).toEqual([]);
+});
