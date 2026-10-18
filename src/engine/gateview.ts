@@ -9,7 +9,7 @@ import { bandToCefr } from '../exam/scales.ts';
 import type { GwTask, WsOut } from './gatews.ts';
 
 export interface GateRun { goal: string; form: string; groups: Group[]; gi: number; given: Record<string, string | undefined>; plays: number; t0: number; skipL: boolean; res: GateResult | null;
-  ws?: { tasks: GwTask[]; i: number; out: WsOut[]; key: string; draft: string };   // v140 phần Viết + Nói sau Đọc + Nghe
+  ws?: { tasks: GwTask[]; i: number; out: WsOut[]; key: string; draft: string; typed?: boolean };   // v140 phần Viết + Nói sau Đọc + Nghe
   up?: string;                                                                          // v140 cấp mới sau khi qua (đã tự lên)
   gen?: { seed: number; ws: GwTask[]; sol: number };                                    // v141 bài sinh theo tiêu chí: hạt, Viết / Nói, số vững lúc làm
   try?: string }   // v141 Thử sức một kỹ năng (voc, gra, pro, lis, spk, rd, wr): cùng màn làm bài, không lưu vào thi chuyển cấp
@@ -65,23 +65,26 @@ export function viewGateRun(c: ECtx, r: GateRun): string {
     ${groupForm(c, g, 'gtnext', r.gi + 1 < n ? 'Phần tiếp' : r.try ? 'Xong' : 'Xong Đọc + Nghe', r.plays, g.kind === 'listening' ? 'gtskip' : '')}`;
 }
 
-// v140 phần Viết / Nói: một bài mỗi màn. Viết: gõ bài. Nói: bấm 🎙 nói (máy nghe được thì chép lời), không thì nói to rồi gõ lại.
-// Sau đó tự đánh dấu ý đã có. Không chấm ngay, không hiện mẫu trong lúc làm.
+// v140 phần Viết / Nói: một bài mỗi màn. Viết: gõ bài. Nói: bấm 🎙 nói, máy chép lời suốt lúc nói tới khi bấm ⏹ Dừng.
+// v161 không còn tự đánh dấu ý: máy tìm ý bằng từ khoá (gatews.ts ideaHits). Máy nghe được thì ô lời nói chỉ để xem (chấm theo lời máy chép);
+// máy không nghe được thì gõ lại lời đã nói, kết quả ghi "gõ lại". Không chấm ngay, không hiện mẫu trong lúc làm.
 export function viewGateWs(c: ECtx, r: GateRun, mic: { has: boolean; busy: boolean; heard: string }): string {
-  const esc = c.host.esc, ws = r.ws!, t = ws.tasks[ws.i]!, n = ws.tasks.length, sp = t.kind === 's';
-  const draft = sp && mic.heard ? mic.heard : ws.draft;
+  const esc = c.host.esc, ws = r.ws!, t = ws.tasks[ws.i]!, n = ws.tasks.length, sp = t.kind === 's', lock = sp && mic.has && !ws.typed;
+  const draft = sp && mic.heard && !ws.typed ? mic.heard : ws.draft;
   return `<section class="stack"><span class="eyebrow">${esc(head(r))} · ${sp ? 'Nói' : 'Viết'} · bài ${ws.i + 1}/${n}</span>
     <div class="bar" role="progressbar" aria-label="Tiến độ Viết + Nói" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${ws.i}"><i style="width:${Math.round((ws.i / n) * 100)}%"></i></div></section>
     <section class="panel stack"><h2>${sp ? '🗣️' : '✍️'} ${esc(t.vi)} <span class="hint" lang="en">${esc(t.en)}</span></h2>
       <p lang="en"><b>${esc(t.p)}</b></p><p class="hint">${esc(t.pv)}</p>
-      <p class="hint">${sp ? `Nói ít nhất ${t.min} từ.` : `Viết ${t.min}–${t.max} từ.`} Cụm có thể dùng: ${t.u.map(([e]) => `<span lang="en">${esc(e)}</span>`).join(' · ')}</p></section>
+      <p class="hint">${sp ? `Nói ít nhất ${t.min} từ.` : `Viết ${t.min}–${t.max} từ.`} Cụm có thể dùng: ${t.u.map(([e]) => `<span lang="en">${esc(e)}</span>`).join(' · ')}</p>
+      <p class="hint">Bài cần có đủ các ý: ${t.c.map(x => esc(x)).join(' · ')}. Máy tìm ý trong bài của bạn.</p></section>
     <form class="panel stack" data-eform="gtws">
-      ${sp ? `<div class="row">${mic.has ? `<button type="button" class="btn${mic.busy ? '' : ' primary'}" data-e="gtmic"${mic.busy ? ' disabled' : ''}>${mic.busy ? '🎙 Đang nghe…' : '🎙 Nói'}</button>` : ''}</div>
-        <p class="hint">${mic.has ? 'Bấm 🎙 rồi nói câu trả lời; máy chép lại lời bạn vào ô dưới (sửa được).' : 'Máy này chưa nghe được giọng nói: hãy nói to câu trả lời, rồi gõ lại vào ô dưới.'}</p>` : ''}
-      <label class="stack" style="gap:4px"><b>${sp ? 'Lời bạn đã nói' : 'Bài viết của bạn'}</b><textarea class="field" name="t" rows="${sp ? 5 : 7}" lang="en" spellcheck="false">${esc(draft)}</textarea></label>
-      <fieldset class="stack" style="border:0;padding:0;margin:0;gap:6px"><legend><b>Bài của bạn đã có những ý này chưa?</b> (tự đánh dấu)</legend>
-        ${t.c.map((x, k) => `<label class="chip opt-row"><input type="checkbox" name="c${k}" value="1"> ${esc(x)}</label>`).join('')}</fieldset>
-      <div class="row"><button class="btn primary">${ws.i + 1 < n ? 'Bài tiếp' : 'Nộp bài'}</button></div></form>`;
+      ${lock ? `<div class="row">${mic.busy ? '<button type="button" class="btn primary" data-e="gtstop">⏹ Dừng</button>' : `<button type="button" class="btn primary" data-e="gtmic">🎙 ${mic.heard ? 'Nói lại' : 'Nói'}</button>`}</div>
+        <p class="hint">Bấm 🎙 rồi trả lời liền mạch; máy chép lời bạn tới khi bấm ⏹ Dừng. Bài chấm theo lời máy chép.</p>
+        ${mic.busy ? `<p class="asrlive" id="asrlive" lang="en" aria-live="polite">${esc(mic.heard) || '…'}</p>` : ''}
+        <button type="button" class="btn ghost small" data-e="gttype">Máy không nghe được? Gõ lại lời đã nói</button>`
+      : sp ? `<p class="hint">${mic.has ? 'Bạn chọn gõ lại: hãy nói to câu trả lời, rồi gõ lại vào ô dưới. Kết quả ghi "gõ lại".' : 'Máy này chưa nghe được giọng nói: hãy nói to câu trả lời, rồi gõ lại vào ô dưới. Kết quả ghi "gõ lại".'}</p>` : ''}
+      <label class="stack" style="gap:4px"><b>${sp ? 'Lời bạn đã nói' : 'Bài viết của bạn'}</b><textarea class="field" name="t" rows="${sp ? 5 : 7}" lang="en" spellcheck="false"${lock ? ' readonly' : ''}>${esc(draft)}</textarea></label>
+      <div class="row"><button class="btn primary"${lock && mic.busy ? ' disabled' : ''}>${ws.i + 1 < n ? 'Bài tiếp' : 'Nộp bài'}</button></div></form>`;
 }
 
 // Phần thấp hơn ngưỡng (đọc / nghe) → gợi ý game luyện đúng kỹ năng đó. Chỉ gợi ý, không tự đổi lộ trình.
@@ -89,12 +92,12 @@ const weak = (r: GateResult): string => {
   const thr = GATE_THR[r.goal] ?? 2.75, w = (['R', 'L'] as const).filter(k => r.sk[k] && r.sk[k]!.theta < thr);
   return w.length ? ` Phần còn thấp: ${w.map(k => (k === 'R' ? 'đọc (chơi thêm 🔍 Thám tử)' : 'nghe (chơi thêm 📻 Đài Phố Chữ, ☕ Quán)')).join(', ')}.` : '';
 };
-// v140 Viết + Nói: % tiêu chí (luật + tự đánh dấu); v158 mỗi bài ≥ GATE.ws mới đậu.
+// v140 Viết + Nói: % tiêu chí; v158 mỗi bài ≥ GATE.ws mới đậu; v161 ý do máy tìm (✓ / ✗ từng ý).
 const wsBox = (r: GateResult): string => {
-  const ws = r.ws ?? [];
+  const ws = r.ws ?? [], esc = (x: string) => x.replace(/[&<>"']/g, ch => `&#${ch.charCodeAt(0)};`);
   if (!ws.length) return '';
-  return `<ul class="stack" style="list-style:none;padding:0;margin:0;gap:4px">${ws.map(x => `<li>${x.pct >= GATE.ws ? '✓' : '✗'} ${x.kind === 'w' ? '✍️ Viết' : '🗣️ Nói'}: ${pc(x.pct)} tiêu chí, ${x.words} từ (cần ≥ ${pc(GATE.ws)})</li>`).join('')}</ul>
-    <p class="hint">Viết / Nói chấm bằng luật (độ dài, từ nối, cụm của bài…) và ý bạn tự đánh dấu; chưa người thật kiểm.</p>`;
+  return `<ul class="stack" style="list-style:none;padding:0;margin:0;gap:4px">${ws.map(x => `<li>${x.pct >= GATE.ws ? '✓' : '✗'} ${x.kind === 'w' ? '✍️ Viết' : '🗣️ Nói'}${x.typed ? ' (gõ lại, chưa máy nghe)' : ''}: ${pc(x.pct)} tiêu chí, ${x.words} từ (cần ≥ ${pc(GATE.ws)})${x.ideas ? `<br><span class="hint">Ý: ${x.ideas.map(([vi, ok]) => `${ok ? '✓' : '✗'} ${esc(vi)}`).join(' · ')}</span>` : ''}</li>`).join('')}</ul>
+    <p class="hint">Viết = một nửa ý máy tìm thấy + một nửa luật (độ dài, từ nối, cụm của bài…). Nói = ý máy tìm thấy trong lời chép + đủ số từ. Máy chỉ tìm từ khoá của ý, chưa người thật kiểm.</p>`;
 };
 function resultBox(c: ECtx, r: GateResult): string {
   const lv = LV(r.goal), sk = (k: 'R' | 'L', vi: string) => { const s = r.sk[k]; return s ? `<div class="stat"><b>${s.ok}/${s.n}</b><span class="muted">${vi} · ≈ ${bandToCefr(s.theta)}</span></div>` : ''; };
@@ -124,7 +127,7 @@ export function viewGateEnd(c: ECtx, r: GateRun): string {
 // v141 kết quả Thử sức: đúng x/y (hoặc % tiêu chí Viết / Nói), không phải kết luận; làm lại là bài mới; học tiếp ở app.
 function viewTryEnd(c: ECtx, r: GateRun): string {
   const esc = c.host.esc, res = r.res!, sk = r.try!, pct = res.n ? Math.round((res.ok / res.n) * 100) : 0;
-  const ws = res.ws?.length ? `<p>${res.ws.map(w => `${w.kind === 'w' ? '✍️ Viết' : '🗣️ Nói'}: ${pc(w.pct)} tiêu chí, ${w.words} từ`).join(' · ')} <span class="hint">(chấm bằng luật + tự đánh dấu, tham khảo)</span></p>` : '';
+  const ws = res.ws?.length ? `<p>${res.ws.map(w => `${w.kind === 'w' ? '✍️ Viết' : '🗣️ Nói'}: ${pc(w.pct)} tiêu chí, ${w.words} từ`).join(' · ')} <span class="hint">(chấm bằng luật + ý máy tìm, tham khảo)</span></p>` : '';
   const review = r.groups.map(g => g.items.map(it => {
     const given = r.given[it.id], ok = given === it.ans, o = (it.opts ?? g.options ?? []).find(x => x.k === it.ans);
     return `<li><span class="pill${ok ? ' good' : ''}">${ok ? '✓' : given ? '✕' : '–'}</span> <b lang="en">${esc(it.q)}</b> → <span lang="en">${esc(o?.t ?? String(it.ans))}</span><br><span class="hint">${esc(it.why)}</span></li>`;

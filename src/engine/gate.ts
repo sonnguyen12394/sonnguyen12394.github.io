@@ -3,7 +3,7 @@
 // luyện tập / xếp lớp / game; mỗi đề chơi một lần. P(đậu) = xác suất năng lực ≥ ngưỡng của cấp, ước lượng IRT 3PL (src/exam/irt.ts)
 // kèm sai số; đậu khi P ≥ 80% (READY_P). Độ khó câu là ước tính của người soạn (chưa hiệu chỉnh bằng dữ liệu), nên P là ước tính.
 // v158 (người sáng lập 17/10/2026, đánh giá theo vai chuyên gia: "đạt cấp" phải gồm 4 kỹ năng): Viết + Nói VÀO phán quyết. Đậu khi Đọc + Nghe
-// qua (IRT như trên) VÀ mỗi bài Viết / Nói ≥ GATE.ws tiêu chí (gatews.ts wsPct: 60% luật + 40% ý tự đánh dấu; 60% = đạt phần lớn tiêu chí).
+// qua (IRT như trên) VÀ mỗi bài Viết / Nói ≥ GATE.ws tiêu chí (gatews.ts wsPct, v161: Viết 50% ý máy tìm + 50% luật, Nói 70% ý + 30% số từ; 60% = đạt phần lớn tiêu chí).
 
 import { estimate, type Response } from '../exam/irt.ts';
 import type { WsOut } from './gatews.ts';
@@ -13,7 +13,7 @@ import type { WsOut } from './gatews.ts';
 // Mở thi khi Học ≥ 80% VÀ Nhớ ≥ 50% (Học quan trọng hơn, Nhớ không bù cho Học).
 // v158 người sáng lập 17/10/2026: chỉ cần tỉ lệ hoàn thành bài học cao, Nhớ 50% cũng được (trước là 70%).
 export const GATE = { open: 0.8, ready: 0.8, sd: 1.5, learn: 0.8, mem: 0.5, memDays: 3, memWord: 0.7, ws: 0.6, memTry: 0.7 } as const;
-export interface GateParts { learn: number; mem: number; total: number }
+export interface GateParts { learn: number; mem: number; total: number; miss?: string[] }   // v161 miss: nút chưa qua (▶ Hôm nay của app chọn cặp âm / chức năng còn thiếu)
 // Ngưỡng trên thang band của bộ chấm (src/exam/scales.ts CEFR_TABLE: A1 từ band 1, A2 từ band 3, B1 từ band 4; làm tròn 0,5 nên ngưỡng thật là −0,25).
 export const GATE_THR: Record<string, number> = { 'cefr-a1': 0.75, 'cefr-a2': 2.75, 'cefr-b1': 3.75 };
 // v141 bài sinh theo tiêu chí (testgen.ts) cho các cấp này: mỗi lần làm là bài mới; bộ cố định dưới đây chỉ còn là nguồn câu có sẵn.
@@ -104,7 +104,7 @@ export function sanitizeGate(x: unknown): GateSave | undefined {
     if (typeof r.sol === 'number') out.done[k]!.sol = Math.round(num(r.sol, 0, 1e5));
     if (typeof r.seed === 'number') out.done[k]!.seed = Math.round(num(r.seed, 0, 4294967295));
     if (Array.isArray(r.ws)) { const ws = r.ws.filter((w): w is Record<string, unknown> => !!w && typeof w === 'object' && typeof w.id === 'string' && /^[a-z0-9-]{2,30}$/.test(w.id) && (w.kind === 'w' || w.kind === 's')).slice(0, 6)
-      .map(w => ({ id: String(w.id), kind: w.kind as 'w' | 's', pct: num(w.pct, 0, 1), words: Math.round(num(w.words, 0, 999)) })); if (ws.length) out.done[k]!.ws = ws; }
+      .map(w => ({ id: String(w.id), kind: w.kind as 'w' | 's', pct: num(w.pct, 0, 1), words: Math.round(num(w.words, 0, 999)), ...(w.typed === true ? { typed: true } : {}), ...(Array.isArray(w.ideas) ? { ideas: (w.ideas as unknown[]).filter((x): x is [string, boolean] => Array.isArray(x) && typeof x[0] === 'string').slice(0, 8).map(x => [String(x[0]).slice(0, 80), !!x[1]] as [string, boolean]) } : {}) })); if (ws.length) out.done[k]!.ws = ws; }
   }
   if (o.cert === 1) out.cert = 1;
   if (o.rev && typeof o.rev === 'object') { const rv: Record<string, GateRev> = {}; for (const [id, v] of Object.entries(o.rev as Record<string, unknown>).slice(-REV_MAX)) { if (!/^[a-z0-9-]{2,60}$/.test(id) || !v || typeof v !== 'object') continue; const x = v as Record<string, unknown>;

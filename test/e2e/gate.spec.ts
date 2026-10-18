@@ -10,6 +10,19 @@ const BANNED = /(?<![\p{L}])(thi|kiểm tra|bài dò|chẩn đoán|làm bài)(?!
 // Chỉ quét khung màn hình (nhãn, tiêu đề, nút, lời dẫn), không quét nội dung câu học (nghĩa tiếng Việt của từ "test" là "bài kiểm tra").
 const chrome = (page: Page) => page.locator('#app .eyebrow, #app h1, #app h3, #app button, #app .muted, #app .hint').allInnerTexts().then(x => x.join('\n').replace(/thi chuyển cấp/gi, ''));
 
+// v161 Viết / Nói: máy tìm ý bằng từ khoá (không tự đánh dấu). Test viết bài từ chính từ khoá của bài (EM.peek().kw);
+// bài Nói chọn "gõ lại" (máy test không nói được), kết quả ghi "gõ lại".
+async function wsAnswer(page: Page): Promise<void> {
+  const ws = page.locator('form[data-eform="gtws"]');
+  const kw: string[][][] = await page.evaluate(() => (window as any).eval('EM').peek()?.kw ?? []);
+  const typeBtn = ws.locator('[data-e="gttype"]');
+  if (await typeBtn.count()) { await typeBtn.click(); await expect(ws.locator('textarea')).not.toHaveAttribute('readonly'); }
+  const word = (g: string[]): string => g[0] === '@past' ? 'visited my aunt and walked' : /^@n\d+$/.test(g[0]!) ? g.slice(1, 1 + Number(g[0]!.slice(2))).join(', ') : (g.find(x => x !== '@num') ?? '3').replace(/\$$/, '');
+  const text = kw.map(idea => `I said ${idea.map(word).join(' and ')} then.`).join(' ') + ' Then I went home because it was late. In the end I was very happy.';
+  await ws.locator('textarea').fill(text);
+  await ws.getByRole('button').last().click();
+}
+
 async function setup(page: Page, q = ''): Promise<void> {
   await page.goto('/' + q);
   await page.waitForFunction(() => (window as any).ELREADY === true);
@@ -58,19 +71,19 @@ test('Thi chuyển cấp: Đọc + Nghe bằng câu lạ, rồi Viết + Nói; k
     for (let k = 0; k < await fs.count(); k++) await fs.nth(k).locator('input[type="radio"]').first().check();
     await form.getByRole('button').last().click();
   }
-  // v140 phần Viết (2 bài) + Nói (1 bài): gõ bài, tự đánh dấu ý; không chấm ngay.
+  // v140 phần Viết (2 bài) + Nói (1 bài): gõ bài; v161 không còn ô tự đánh dấu, máy tìm ý; không chấm ngay.
   for (let k = 0; k < 3; k++) {
     const ws = page.locator('form[data-eform="gtws"]');
     await expect(ws).toBeVisible();
     expect(await chrome(page)).not.toMatch(BANNED);
     if (k === 0) { const r = await new AxeBuilder({ page }).include('#app').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze(); expect(r.violations.map(v => v.id)).toEqual([]); await noHorizontalScroll(page); }
-    await ws.locator('textarea').fill('Hi Sam! Could I borrow your bike on Saturday, because I need it to visit my grandmother in the countryside? I will give it back on Sunday evening. Thank you so much! Best wishes, Linh.');
-    await ws.locator('input[type="checkbox"]').first().check();
-    await ws.getByRole('button').last().click();
+    await expect(ws.locator('input[type="checkbox"]')).toHaveCount(0);
+    await wsAnswer(page);
   }
   await expect(page.getByRole('heading', { name: /Đã làm xong bài|Lên cấp B1!/ })).toBeVisible();
   await expect(page.locator('.gres')).toContainText('khả năng qua');
-  await expect(page.locator('.gres')).toContainText(/Viết: \d+% tiêu chí[\s\S]*Nói: \d+% tiêu chí/);
+  await expect(page.locator('.gres')).toContainText(/Viết: \d+% tiêu chí[\s\S]*Nói \(gõ lại, chưa máy nghe\): \d+% tiêu chí/);
+  await expect(page.locator('.gres')).toContainText('Ý: ✓');   // v161 ✓ / ✗ từng ý máy tìm thấy
   await expect(page.locator('.gres')).toContainText('Đọc + Nghe');   // v158 từng kỹ năng ✓ / ✗
   await expect(page.getByText('Xem chữa bài Đọc + Nghe từng câu')).toBeVisible();
   await page.screenshot({ path: 'test-results/gate-end.png', fullPage: true });
@@ -105,12 +118,7 @@ test('v140 qua thi chuyển cấp A1 (làm đúng hết) → tự lên cấp A2:
     for (const [id, k] of Object.entries(keys)) await form.locator(`input[name="${id}"][value="${k}"]`).check();
     await form.getByRole('button').last().click();
   }
-  for (let k = 0; k < 3; k++) {
-    const ws = page.locator('form[data-eform="gtws"]');
-    await ws.locator('textarea').fill('Hi Ana! Can you water my plants this weekend, please? I will be back on Sunday evening. Thank you very much, you are a great neighbour! See you soon.');
-    for (const c of await ws.locator('input[type="checkbox"]').all()) await c.check();   // v158 Viết / Nói vào phán quyết: đủ ý mới đạt ≥ 60%
-    await ws.getByRole('button').last().click();
-  }
+  for (let k = 0; k < 3; k++) await wsAnswer(page);   // v158 Viết / Nói vào phán quyết: đủ ý mới đạt ≥ 60% (v161 máy tìm ý)
   await expect(page.getByRole('heading', { name: '🎉 Lên cấp A2!' })).toBeVisible();
   expect(await page.evaluate(() => (window as any).eval('st').e.goals[0].id)).toBe('cefr-a2');
   await page.getByRole('button', { name: /🎯 Xem mục tiêu A2/ }).click();
@@ -138,7 +146,7 @@ test('v141 bài sinh theo tiêu chí: hai lần mở ra hai bài khác nhau; đ�
       for (const [id, k] of Object.entries(keys)) await form.locator(`input[name="${id}"][value="${k}"]`).check();
       await form.getByRole('button').last().click();
     }
-    for (let k = 0; k < 3; k++) { const ws = page.locator('form[data-eform="gtws"]'); await ws.locator('textarea').fill('I usually play football at the weekend with my friends, and last weekend we went to the park. Next month I am going to visit my aunt.'); await ws.getByRole('button').last().click(); }
+    for (let k = 0; k < 3; k++) await wsAnswer(page);
     await expect(page.locator('.gres')).toBeVisible();
     await page.evaluate(() => (window as any).eval("go('play')"));
     return { titles, first };

@@ -9,7 +9,7 @@
 
 import type { Group, Item } from '../exam/content.ts';
 import type { GwTask } from './gatews.ts';
-import { NAMES, DAYS, TIMES, AM_END, PLACES, THINGS, COLOURS, SHOPS, ITEMS, EVENTS, SUBJECTS, TRANSPORT, FOODS, TOWNS, RELS, ACTS, WSITS, STORIES, SPEAK, SPEAK_U } from './testbank.ts';
+import { NAMES, DAYS, TIMES, AM_END, PLACES, THINGS, COLOURS, SHOPS, ITEMS, EVENTS, SUBJECTS, TRANSPORT, FOODS, TOWNS, RELS, ACTS, WSITS, STORIES, SPEAK, SPEAK_U, WSIT_K, STORY_K, SPEAK_K } from './testbank.ts';
 
 import { GEN_LV } from './gate.ts';
 
@@ -170,16 +170,16 @@ export function genForm(x: GenIn): GenOut {
   const minW = lv === 'A1' ? 20 : 25, minS = lv === 'A1' ? 25 : 35;
   if (parts.w) {
     const s = pick(r, WSITS), n = pick(r, NAMES), [xe, xv] = pick(r, s.x), f = (t: string) => t.replace(/\{N\}/g, n).replace(/\{X\}/g, xe).replace(/\{XV\}/g, xv);
-    ws.push({ id: `${id}-w1`, kind: 'w', lv, en: s.en, vi: s.vi, p: f(s.p) + ` Write ${minW} words or more.`, pv: f(s.pv), c: s.c, u: s.u, min: minW, max: minW + 45, par: 1, reg: 'i' });
+    ws.push({ id: `${id}-w1`, kind: 'w', lv, en: s.en, vi: s.vi, p: f(s.p) + ` Write ${minW} words or more.`, pv: f(s.pv), c: s.c, k: WSIT_K[s.en] ?? [], u: s.u, min: minW, max: minW + 45, par: 1, reg: 'i' });
     if (parts.w > 1) {
       const st = pick(r, STORIES), n2 = pick(r, NAMES), g = (t: string) => t.replace(/\{N\}/g, n2);
       ws.push({ id: `${id}-w2`, kind: 'w', lv, en: st.en, vi: st.vi, p: `Write the story from these three scenes. Scene 1: ${g(st.s[0])} Scene 2: ${g(st.s[1])} Scene 3: ${g(st.s[2])} Write ${minS} words or more.`,
-        pv: `Kể lại câu chuyện theo ba cảnh (≥ ${minS} từ): ${st.v.map(g).join('; ')}.`, c: ['Cảnh 1', 'Cảnh 2', 'Cảnh 3', 'Dùng thì quá khứ'], u: [['One day', 'Một hôm'], ['Then', 'Sau đó'], ['suddenly', 'bỗng nhiên'], ['In the end', 'Cuối cùng']], min: minS, max: minS + 55, par: 1, reg: 'i' });
+        pv: `Kể lại câu chuyện theo ba cảnh (≥ ${minS} từ): ${st.v.map(g).join('; ')}.`, c: ['Cảnh 1', 'Cảnh 2', 'Cảnh 3', 'Dùng thì quá khứ'], k: [...(STORY_K[st.en] ?? [[], [], []]), [['@past']]], u: [['One day', 'Một hôm'], ['Then', 'Sau đó'], ['suddenly', 'bỗng nhiên'], ['In the end', 'Cuối cùng']], min: minS, max: minS + 55, par: 1, reg: 'i' });
     }
   }
   if (parts.s) {
     const qs = (['now', 'past', 'future', 'opinion'] as const).map(k => pick(r, SPEAK[k]));
-    ws.push({ id: `${id}-s1`, kind: 's', lv, en: 'About You', vi: 'Về bạn', p: `Answer these questions. ${qs.map(q => q[0]).join(' ')}`, pv: `Trả lời: ${qs.map(q => q[1].toLowerCase()).join('; ')}.`, c: qs.map(q => q[1]), u: SPEAK_U, min: lv === 'A1' ? 20 : 30, max: 200, par: 1, reg: 'i' });
+    ws.push({ id: `${id}-s1`, kind: 's', lv, en: 'About You', vi: 'Về bạn', p: `Answer these questions. ${qs.map(q => q[0]).join(' ')}`, pv: `Trả lời: ${qs.map(q => q[1].toLowerCase()).join('; ')}.`, c: qs.map(q => q[1]), k: qs.map(q => SPEAK_K[q[0]] ?? []), u: SPEAK_U, min: lv === 'A1' ? 20 : 30, max: 200, par: 1, reg: 'i' });
   }
   return { id, goal: x.goal, seed: x.seed, groups, ws, bankIds };
 }

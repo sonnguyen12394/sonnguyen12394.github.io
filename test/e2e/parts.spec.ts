@@ -73,14 +73,15 @@ test('câu đúng ghi nguồn theo nơi học; Mục tiêu tách nhờ game / nh
   expect(errors).toEqual([]);
 });
 
-test('tab 📘 Học bài: việc nên làm + 7 kỹ năng + tự chọn bài; Ôn tập đã chuyển sang 🔁 Ôn luyện (v153)', async ({ page, errors }) => {
+test('tab 📘 Học bài: ▶ Hôm nay + tự học tiếp + 7 kỹ năng + tự chọn bài; Ôn tập đã chuyển sang 🔁 Ôn luyện (v153)', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await seed(page);
   await page.evaluate(() => (window as any).eval('emLoad()'));
   await toLobby(page, false);
   await navTo(page, 'Học');
   await expect(page.getByRole('heading', { name: '📘 Học bài', level: 1 })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Việc nên làm' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Hoặc tự học tiếp' })).toBeVisible();
+  await expect(page.locator('#app .dayplan')).toContainText('▶ Hôm nay');   // v161 một nút, một não cho Học bài + Ôn luyện
   await expect(page.locator('#app .lskrow')).toHaveCount(7);
   for (const t of [/Bài học theo chủ đề/, /Kỹ năng/, /Sổ từ/]) await expect(page.getByRole('button', { name: t })).toBeVisible();
   await noHorizontalScroll(page);
