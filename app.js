@@ -2156,9 +2156,9 @@ for(const c of CANDO) if(c.lv==='A1'&&RPG_CD[c.id]) c.ref=[...(c.ref||[]).filter
 const rpgCard = id => { const S=RPG[id], x=(st.rpg||{})[id]; return `<button class="unit morei" data-act="rpggo" data-v="${id}"><span class="no">${S.ic}</span><span class="t"><strong>${esc(S.vi)}</strong><span class="muted">Máy nghe bạn nói, mỗi lần một tình huống mới</span>${x?`<span class="pill ${x.best>=.8?'good':'accent'}" style="justify-self:start">${x.best>=.8?'Đạt':'Đang luyện'} · ${pct(x.best)}</span>`:''}</span></button>`; };
 function rpgRng(seed){ let a=seed>>>0||1; const f=()=>{ a=(a+0x6d2b79f5)>>>0; let t=a; t=Math.imul(t^(t>>>15),t|1); t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296; };
   return {pick:xs=>xs[Math.floor(f()*xs.length)], int:(lo,hi)=>lo+Math.floor(f()*(hi-lo+1))}; }
-function startRpg(id){ const S=RPG[id]; if(!S) return; const seed=((Date.now()^Math.random()*1e9)>>>0)||1;
+function startRpg(id,nd){ const S=RPG[id]; if(!S) return; const seed=((Date.now()^Math.random()*1e9)>>>0)||1;
   for(const k of Object.keys(spkTyped)) delete spkTyped[k]; asrReset();
-  go('rpg',{rpg:{id,seed,lines:S.make(rpgRng(seed)),i:0,res:[],done:false}}); rpgAuto(); }
+  go('rpg',{rpg:{id,seed,lines:S.make(rpgRng(seed)),i:0,res:[],done:false,nd:!!nd}}); rpgAuto(); }   // nd: mở từ Ôn luyện (gắn TRƯỚC khi vẽ để thanh dưới sáng đúng tab)
 function rpgAuto(){ const R=ui.rpg, l=R&&R.lines[R.i]; if(l&&!l.vi&&HAS_TTS) say(l.t,false,l.s==='B'?1:0); }
 const rpgKey = R => 'rpg'+R.seed%1e6+'-'+R.i;
 function rpgCheck(){ const R=ui.rpg, l=R.lines[R.i], key=rpgKey(R), heard=spkHeard(key); if(!heard) return toast('Bấm 🎙 Nói và nói câu của bạn trước nhé.');
@@ -5459,7 +5459,7 @@ document.addEventListener('click',e=>{
     case 'spkgo': return spkGo(d.k,d.t||'');
     case 'spkstop': return spkStop(d.k);
     case 'spktype': { const el=document.getElementById('spkin-'+d.k), v=String(el&&el.value||'').trim(); if(!v) return toast('Gõ câu bạn vừa nói trước nhé.'); spkTyped[d.k]=v; return render(); }
-    case 'rpggo': { const nd=ui.view==='nd'||(ui.rpg&&ui.rpg.nd); startRpg(d.v); if(nd&&ui.rpg) ui.rpg.nd=true; return; }
+    case 'rpggo': return startRpg(d.v,ui.view==='nd'||(ui.view==='rpg'&&!!(ui.rpg&&ui.rpg.nd)));
     case 'rpgcheck': return rpgCheck();
     case 'rpgnext': case 'rpgstep': return rpgStep();
     case 'rpgsay': { const l=ui.rpg&&ui.rpg.lines[ui.rpg.i]; if(l) say(l.t,false,l.s==='B'?1:0); return; }
