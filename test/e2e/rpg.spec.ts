@@ -109,16 +109,19 @@ test('v160 ✍️ viết theo tình huống: đủ ý + đủ từ → đạt; t
   expect(errors).toEqual([]);
 });
 
-test('v160 ▶ Ôn tiếp tự chọn loại bài: chưa đạt đóng vai → đưa đóng vai; không lặp một loại quá 2 lần liền; đóng vai + viết đã đạt → đưa bài đọc', async ({ page, errors }) => {
+test('v160 → v163 ▶ Ôn tiếp tự chọn loại bài: bài đọc theo chỗ thiếu trước, không lặp một loại quá 2 lần liền (xen đóng vai / viết / nói theo đề chưa đạt)', async ({ page, errors }) => {
   await open(page);
-  await page.evaluate(() => { const w = window as any; w.eval("ui.ndLv='A1'"); w.eval("go('nd')"); });
+  await page.evaluate(() => { const w = window as any; w.eval("ui.ndLv='A1'"); w.eval('st').nd.lk = ['read', 'read']; w.eval("go('nd')"); });
   await expect(page.locator('#app [aria-label="Ôn tiếp"]')).toContainText('🎭 Đóng vai');
   await page.locator('#app [data-act="ndnext"]').first().click();
   expect(await page.evaluate(() => (window as any).eval('ui').view)).toBe('rpg');
   const r = await page.evaluate(() => { const w = window as any, st = w.eval('st'), plan = w.eval('ndPlan');
-    st.nd.lk = ['rpg', 'rpg']; const a = plan('A1').k;
-    st.rpg = Object.fromEntries(Object.keys(w.eval('RPG')).map((k: string) => [k, { best: 1 }])); st.wrg = Object.fromEntries(Object.keys(w.eval('WRG')).map((k: string) => [k, { best: 1 }])); st.nd.lk = [];
-    return { a, b: plan('A1').k }; });
-  expect(r).toEqual({ a: 'wrg', b: 'read' });
+    st.nd.lk = []; const a = plan('A1').k;
+    st.nd.lk = ['read', 'read']; const b = plan('A1').k;
+    st.rpg = Object.fromEntries(Object.keys(w.eval('RPG')).map((k: string) => [k, { best: 1 }])); st.wrg = Object.fromEntries(Object.keys(w.eval('WRG')).map((k: string) => [k, { best: 1 }]));
+    const c = plan('A1').k;   // v162 còn Nói theo đề chưa đạt → đưa Nói theo đề
+    for (const t of w.eval('STASKS')) st.stask[t.id] = [{ day: 0, s: 1, w: 30 }];
+    return { a, b, c, d: plan('A1').k }; });
+  expect(r).toEqual({ a: 'read', b: 'rpg', c: 'stk', d: 'read' });
   expect(errors).toEqual([]);
 });

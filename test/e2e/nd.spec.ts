@@ -16,6 +16,7 @@ async function open(page: Page): Promise<void> {
   // v160 ▶ Ôn tiếp chọn cả loại bài: các test đọc / nghe ở đây coi như đóng vai + viết đã đạt để não đưa bài đọc.
   await page.evaluate(() => { const w = window as any, st = w.eval('st'); st.onboarded = true;
     st.rpg = Object.fromEntries(Object.keys(w.eval('RPG')).map((k: string) => [k, { best: 1, n: 1, days: [] }])); st.wrg = Object.fromEntries(Object.keys(w.eval('WRG')).map((k: string) => [k, { best: 1, n: 1 }]));
+    for (const t of w.eval('STASKS')) st.stask[t.id] = [{ day: 0, s: 1, w: 30 }];   // v162 Nói theo đề cũng coi như đạt
     w.eval('save()'); w.eval("go('nd')"); });
 }
 const snap = (page: Page) => page.evaluate(() => { const w = window as any, st = w.eval('st'), t = w.eval('today()');

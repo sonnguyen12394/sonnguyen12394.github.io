@@ -32,10 +32,13 @@ test('Viết IELTS Academic: biểu đồ, nộp hai Task, bài mẫu band, tự
 
 test('Nói IELTS: 3 phần, thẻ đề Part 2, bài mẫu, tự chấm cả bài', async ({ page, errors }) => {
   await openApp(page);
+  // WebKit trên CI: bấm trúng lúc app vẽ lại (máy nạp xong) thì mất lượt bấm → chờ máy nạp, bấm lại nếu chưa sang màn.
+  await page.waitForFunction(() => (window as unknown as { ELREADY?: boolean }).ELREADY === true);
   await page.evaluate(() => (window as unknown as { startVx: (m: string, ex: string) => void }).startVx('s', 'ielts-gt'));
   await expect(page.getByRole('heading', { name: 'Thi thử Nói IELTS' })).toBeVisible();
-  await page.getByRole('button', { name: 'Bắt đầu Part 1' }).click();
-  await page.getByRole('button', { name: 'Sang Part 2' }).click();
+  const p2 = page.getByRole('button', { name: 'Sang Part 2' });
+  await expect(async () => { const b1 = page.getByRole('button', { name: 'Bắt đầu Part 1' }); if (await b1.isVisible()) await b1.click(); await expect(p2).toBeVisible({ timeout: 3000 }); }).toPass({ timeout: 20000 });
+  await p2.click();
   await expect(page.getByText('You should say:')).toBeVisible();
   await page.getByRole('button', { name: 'Sang Part 3' }).click();
   await page.getByRole('button', { name: 'Xong, xem kết quả' }).click();
