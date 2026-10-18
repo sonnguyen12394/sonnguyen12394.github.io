@@ -8,7 +8,7 @@ const m = /const v=\{(thi:viewThi[^}]*)\}\[ui\.view\]/.exec(src);
 const ALL = m?.[1] ? m[1].split(',').map(p => p.split(':')[0]!.trim()) : [];
 // Màn cần ngữ cảnh (một unit, một lượt luyện, một đề cụ thể…): luôn mở qua hành động riêng, không mở thẳng.
 const CONTEXT = new Set(['shadow', 'exam', 'wtask', 'stask', 'lread', 'dlg', 'fn', 'quiz', 'rp', 'story1', 'game', 'word', 'sound', 'unit',
-  'learn', 'session', 'summary', 'gpoint', 'gsess', 'gsum', 'read', 'speak', 'write']);
+  'learn', 'session', 'summary', 'gpoint', 'gsess', 'gsum', 'read', 'speak', 'write', 'ra', 'rpg']);
 const VIEWS = ALL.filter(v => !CONTEXT.has(v));
 
 test('mọi màn mở được, không lỗi', async ({ page, errors }) => {

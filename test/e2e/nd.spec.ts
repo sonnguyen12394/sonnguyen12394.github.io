@@ -13,7 +13,10 @@ async function open(page: Page): Promise<void> {
   await page.goto('/');
   await page.waitForFunction(() => (window as any).ELREADY === true);
   await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
-  await page.evaluate(() => { const w = window as any, st = w.eval('st'); st.onboarded = true; w.eval('save()'); w.eval("go('nd')"); });
+  // v160 ▶ Ôn tiếp chọn cả loại bài: các test đọc / nghe ở đây coi như đóng vai + viết đã đạt để não đưa bài đọc.
+  await page.evaluate(() => { const w = window as any, st = w.eval('st'); st.onboarded = true;
+    st.rpg = Object.fromEntries(Object.keys(w.eval('RPG')).map((k: string) => [k, { best: 1, n: 1, days: [] }])); st.wrg = Object.fromEntries(Object.keys(w.eval('WRG')).map((k: string) => [k, { best: 1, n: 1 }]));
+    w.eval('save()'); w.eval("go('nd')"); });
 }
 const snap = (page: Page) => page.evaluate(() => { const w = window as any, st = w.eval('st'), t = w.eval('today()');
   return { led: st.e.ev.led.length, xp: st.xp, ok: (st.daily[t] || {}).ok || 0, nd: (st.nd.d[t] || {}).n || 0 }; });

@@ -16,6 +16,14 @@ async function open(page: Page, gp: Record<string, unknown>): Promise<number> {
   await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
   return page.evaluate(g => { const w = window as any, st = w.eval('st'); st.onboarded = true; w.eval('save()'); w.eval('ui').gp = g; w.eval("go('gp')"); return st.e.ev.led.length; }, gp);
 }
+// Gõ vào ô và chờ app ghi nhận (ui.gp.typed): ngay sau "Bài mới" app có thể vẽ lại một lần, cú gõ rơi vào ô cũ thì gõ lại.
+async function typeIn(page: Page, text: string): Promise<void> {
+  await expect(async () => {
+    await page.locator('#gptyped').fill(text);
+    await expect.poll(() => page.evaluate(() => (window as any).eval('ui').gp.typed as string), { timeout: 500 }).toBe(text);
+    await expect(page.locator('#gptyped')).toHaveValue(text, { timeout: 500 });
+  }).toPass({ timeout: 10000 });
+}
 const lines = (page: Page) => page.evaluate(() => (window as any).eval('ui').gp.text.lines as Array<{ en: string; vi: string }>);
 
 test('Phát âm: bài mới chạy trên màn Đọc to (có nghĩa từng câu), tới màn kết, lưu điểm theo cấp × bậc; không ghi bằng chứng', async ({ page, errors }) => {
@@ -46,7 +54,7 @@ test('Anh → Việt: xem nghĩa + nghĩa từng từ, tự chấm từng câu, 
     await page.locator('[data-act="gpnext"]').click();
   }
   await expect(page.locator('#app h1')).toHaveText('100%');
-  await expect(page.locator('#app')).toContainText('Thử bậc Khó');
+  await expect(page.locator('#app')).toContainText('Bài sau máy cho lên bậc');   // v160 bậc máy tự chọn
   let other = false;
   for (let k = 0; k < 4 && !other; k++) { await page.locator('[data-act="gpnew"]').first().click(); other = JSON.stringify(await lines(page)) !== JSON.stringify(a); }
   expect(other).toBe(true);
@@ -63,12 +71,12 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.locator('[data-act="gpnew"]').click();
     const a = await lines(page);
     await expect(page.locator('#app .prompt')).toHaveText(a[0]!.vi);
-    await page.locator('#gptyped').fill(a[0]!.en);
+    await typeIn(page, a[0]!.en);
     await page.locator('[data-act="gpcheck"]').click();
     await expect(page.locator('#app .fb strong')).toContainText('(100%)');
     await page.locator('[data-act="gpnext"]').click();
     const words = a[1]!.en.split(/\s+/);
-    await page.locator('#gptyped').fill(words.slice(0, Math.max(1, words.length - 2)).join(' '));
+    await typeIn(page, words.slice(0, Math.max(1, words.length - 2)).join(' '));
     await page.locator('[data-act="gpcheck"]').click();
     await expect(page.locator('#app .fb .asr-miss').first()).toBeVisible();
     await expect(page.locator('#app .pn')).toBeVisible();
