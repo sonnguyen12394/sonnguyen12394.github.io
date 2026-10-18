@@ -1,10 +1,10 @@
 // Service worker của English Ladder: lưu app để chạy offline. index.html lấy từ mạng trước (có bản mới thì dùng ngay),
 // mất mạng thì dùng bản đã lưu; tệp tĩnh khác lấy từ bộ nhớ trước. Đổi VERSION khi phát hành để xoá bộ nhớ cũ.
-const VERSION = 'vl-v101';
-const CORE = ['./', 'index.html', 'app.js?v=101', 'x/core.bab9480a1f.js', 'x/exam.2f7ff713c6.js', 'x/engine.c579764891.js', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];
+const VERSION = 'vl-v102';
+const CORE = ['./', 'index.html', 'app.js?v=102', 'x/core.bab9480a1f.js', 'x/exam.2f7ff713c6.js', 'x/engine.c579764891.js', 'manifest.webmanifest', 'privacy.html', 'icons/icon-192.png', 'icons/icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 const META = 'el-meta';   // trạng thái nhắc học do app ghi (service worker không đọc được localStorage); không xoá khi đổi bản
-const DATA = 'el-data';   // chi tiết bài học theo cấp (data/lv-<cấp>.<băm>.json): tên có băm nội dung nên giữ qua các bản; app tự dọn tệp cũ
+const DATA = 'el-data';   // chi tiết bài học theo cấp (data/lv-<cấp>.<băm>.json; kho bài Ôn luyện data/rd-<cấp>.<băm>.json): tên có băm nội dung nên giữ qua các bản; app tự dọn tệp cũ
 const X = 'el-x';         // nội dung ôn thi (data/exam/*.json) và âm thanh bài nghe (a/*.mp3)
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION && k !== META && k !== DATA && k !== X).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
@@ -18,7 +18,7 @@ self.addEventListener('fetch', e => {
     e.respondWith(caches.open(X).then(c => c.match(r).then(x => x || fetch(r).then(res => { if (res.ok && res.status === 200) c.put(r, res.clone()); return res; }))));
     return;
   }
-  if (/\/data\/lv-[^/]+\.json$/.test(path)) {
+  if (/\/data\/(lv|rd)-[^/]+\.json$/.test(path)) {
     e.respondWith(caches.open(DATA).then(c => c.match(r).then(x => x || fetch(r).then(res => { if (res.ok) c.put(r, res.clone()); return res; }))));
     return;
   }
