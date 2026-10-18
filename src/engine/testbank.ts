@@ -2,6 +2,8 @@
 // chuỗi cảnh kể chuyện, câu hỏi Nói. Người sáng lập 16/10/2026: bài sinh theo tiêu chí, không dùng bộ soạn sẵn (học tủ được).
 // Mọi từ ở đây thuộc A1–A2 (danh sách từ của app); thêm từ thì giữ cùng cấp.
 
+import { KW, type Kw } from './gatews.ts';
+
 export const NAMES = ['Anna', 'Ben', 'Lan', 'Minh', 'Sara', 'Tom', 'Kim', 'Nam', 'Lucy', 'Jack', 'Mai', 'Hoa', 'Peter', 'Emma', 'Sam', 'Linh'];
 export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 // Giờ có am / pm, theo thứ tự trong ngày: chỉ số 0–8 là buổi sáng, 9–20 là chiều tối (khuôn chọn ba giờ cùng một buổi).
@@ -61,5 +63,43 @@ export const SPEAK: Record<'now' | 'past' | 'future' | 'opinion', Array<[string,
   past: [['What did you do last weekend?', 'Cuối tuần trước làm gì'], ['Tell me about a place you visited last year.', 'Một nơi đã đến năm ngoái'], ['What did you have for dinner yesterday?', 'Tối qua ăn gì'], ['Tell me about your last holiday.', 'Kỳ nghỉ gần nhất']],
   future: [['What are you going to do next weekend?', 'Cuối tuần tới sẽ làm gì'], ['What would you like to learn next year?', 'Năm tới muốn học gì'], ['Where would you like to travel in the future?', 'Sau này muốn đi đâu'], ['What are your plans for next month?', 'Kế hoạch tháng tới']],
   opinion: [['Do you prefer the city or the countryside? Why?', 'Thành phố hay nông thôn, vì sao'], ['Do you prefer going out or staying at home? Why?', 'Đi chơi hay ở nhà, vì sao'], ['Is it better to travel by bus or by bike? Why?', 'Xe buýt hay xe đạp, vì sao'], ['Do you like watching films at home or at the cinema? Why?', 'Xem phim ở nhà hay rạp, vì sao']],
+};
+// v161 từ khoá của từng ý (gatews.ts ideaHits): máy chấm ý, không tự đánh dấu. Khoá theo tên tình huống / tên chuyện / câu hỏi
+// (không đổi mảng gốc để hạt cũ sinh đúng bài cũ). Do AI soạn, chưa người thật soát.
+export const WSIT_K: Record<string, Kw[]> = {
+  'Borrowing Something': [[['borrow', 'lend', 'use your', 'can i have', 'could i have']], [KW.why], [KW.back, KW.day]],
+  'An Invitation': [[['would you like', 'do you want', 'come with', 'join', "let's", 'lets', 'want to come', 'invite', 'how about', 'can you come']], [KW.time], [KW.bring]],
+  'Changing a Plan': [[KW.sorry], [['because', 'have to', 'must', 'ill$', 'sick', 'work', 'busy', 'as i$', 'since', 'need to']], [['how about', 'what about', 'can we', 'could we', 'shall we', 'another day', 'instead', 'next', "let's", 'lets', 'are you free'], ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'tomorrow', 'weekend', 'next week', 'another day', 'day']]],
+  'A Thank-you Note': [[['thank']], [['like', 'love', 'beautiful', 'nice', 'great', 'favourite', 'favorite', 'lovely', 'useful', 'cute', 'perfect', 'wonderful', 'colour', 'color', 'soft', 'warm', 'interesting']], [['use', 'wear', 'read', 'drink', 'play', 'going to', 'will', "i'll", 'every day', 'tomorrow', 'weekend']]],
+  'Asking for Help': [[['homework']], [['lesson', 'class'], ['when', 'what time', 'what day', 'next']], [['buy', 'get', 'find'], ['book']]],
+  'A Message to a Neighbour': [[['water'], ['plant', 'flower', 'garden', 'tree']], [KW.back, KW.day], [['thank']]],
+};
+export const STORY_K: Record<string, [Kw, Kw, Kw]> = {
+  'The Lost Dog': [[['dog', 'puppy'], ['park']], [['phone', 'call', 'number', 'collar', 'rang']], [['man', 'owner'], ['happy', 'glad', 'smile', 'thank', 'pleased', 'delighted']]],
+  'The Rainy Bus Stop': [[['bus'], ['rain']], [['umbrella']], [['same', 'together'], ['building', 'office', 'company', 'work']]],
+  'The Birthday Cake': [[['cake'], ['make', 'made', 'making', 'bake', 'baked', 'birthday']], [['fell', 'fall', 'drop', 'floor']], [['bought', 'buy', 'new', 'another'], ['love', 'happy', 'like', 'glad', 'thank', 'pleased', 'smile']]],
+  'The Wrong Train': [[['train'], ['cousin', 'visit']], [['wrong', 'different', 'another', 'other']], [['phone', 'call', 'rang'], ['car', 'drove', 'came', 'pick']]],
+  'The Found Wallet': [[['wallet', 'purse'], ['found', 'find', 'table', 'cafe']], [['waiter', 'gave', 'give']], [['owner', 'man', 'woman', 'came back', 'next day'], ['thank', 'happy', 'glad', 'pleased']]],
+  'The First Swim': [[['afraid', 'scared', 'fear', 'nervous', 'frightened'], ['water', 'pool', 'swim']], [['teacher', 'coach', 'help']], [['swim', 'swam'], ['big', 'across', 'weeks', 'later', 'finally']]],
+  'The Picnic': [[['picnic'], ['river']], [['wind', 'windy'], ['blew', 'blow', 'away', 'food', 'hat', 'fly', 'flew']], [['restaurant', 'cafe'], ['laugh', 'fun', 'happy', 'smile', 'enjoy']]],
+};
+export const SPEAK_K: Record<string, Kw> = {
+  'What do you usually do at the weekend?': [['weekend', 'saturday', 'sunday', 'usually', 'often', 'always', 'sometimes'], KW.act],
+  'How do you go to work or school?': [['by', 'walk', 'drive', 'ride', 'take'], KW.transport],
+  'What do you like doing in the evening?': [['like', 'love', 'enjoy', 'usually', 'often', 'evening', 'night'], KW.act],
+  'Who do you live with?': [KW.family],
+  'What food do you like best?': [KW.food],
+  'What did you do last weekend?': [['@past']],
+  'Tell me about a place you visited last year.': [['went', 'visited', 'travelled', 'traveled', 'was$', 'stayed', 'saw', 'spent']],
+  'What did you have for dinner yesterday?': [['had', 'ate', 'cooked', 'made', 'bought', 'ordered'], KW.food],
+  'Tell me about your last holiday.': [['@past']],
+  'What are you going to do next weekend?': [KW.future],
+  'What would you like to learn next year?': [['learn', 'study', 'course', 'class']],
+  'Where would you like to travel in the future?': [['go to', 'visit', 'travel', 'fly to', 'see', 'like to go', 'want to go']],
+  'What are your plans for next month?': [KW.future],
+  'Do you prefer the city or the countryside? Why?': [['city', 'countryside', 'country', 'village', 'town'], KW.because],
+  'Do you prefer going out or staying at home? Why?': [['go out', 'going out', 'stay', 'home', 'outside'], KW.because],
+  'Is it better to travel by bus or by bike? Why?': [['bus', 'bike', 'bicycle', 'cycling'], KW.because],
+  'Do you like watching films at home or at the cinema? Why?': [['home', 'cinema', 'theatre', 'theater'], KW.because],
 };
 export const SPEAK_U: Array<[string, string]> = [['I usually', 'Tôi thường'], ['Last weekend, I', 'Cuối tuần trước tôi'], ['I’m going to', 'Tôi sẽ'], ['I prefer … because', 'Tôi thích … hơn vì']];

@@ -39,7 +39,8 @@ export interface EHost {
   asr?(key: string, target: string, other?: string, label?: string): string;   // nút "🎙 Nói" + kết quả (HTML của app, asrBox)
   asrRes?(key: string): { p: number; k: string } | null;   // tỉ lệ từ máy nghe ra (câu) hoặc 1 / 0 (một từ của cặp âm)
   asrOff?(): void;
-  asrHear?(key: string): void;                       // v84 Robot: nghe tự do một lệnh
+  asrHear?(key: string, long?: boolean): void;       // v84 Robot: nghe tự do một lệnh; v161 long: chép liền tới khi asrStop (Nói của Thi chuyển cấp)
+  asrStop?(key: string): void;
   asrHeard?(key: string): { heard: string; alts: string[] } | null;
   asrBusy?(key: string): boolean | string;           // đang nghe (true) / lỗi (chuỗi) / không (false)
   dialogs?(lv: string): Dialog[];                    // v81 Karaoke: hội thoại ở một cấp

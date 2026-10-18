@@ -83,7 +83,7 @@ import { roteNodes } from './rote.ts';
 import { viewLrRun } from './lrview.ts';
 import { viewTreasureCard, viewTreasureIntro, viewTreasureDone, CHEST_COINS } from './treasureview.ts';
 import { viewGateHome, viewGateRun, viewGateEnd, viewGateWs, viewCert, viewGateRev, type GateRun, type GateRevRun } from './gateview.ts';
-import { GATE_WS, NEXT_LV, wsPct, wordsOf as gwWords } from './gatews.ts';
+import { GATE_WS, NEXT_LV, wsPct, ideaHits, wordsOf as gwWords } from './gatews.ts';
 import { genForm, TRY_PARTS, type NodePool } from './testgen.ts';
 import { gateScore, gateState, gatePassAll, revBad, REV_MAX, lastP, CES_MIN, GATE, GATE_FORMS, GEN_LV, USED_MAX, TRY_MAX, type GateAns, type GateParts } from './gate.ts';
 import type { LrApi } from '../exam/main.ts';
@@ -118,7 +118,7 @@ export interface EngineModule {
   health?(gid: string): { solid: string[]; fading: string[]; lost: string[]; open: string[]; vi: Record<string, string> } | null;   // v152 sức khoẻ kiến thức (Nói & Đọc)   // v151 nút u: / g: của mục tiêu cấp gid còn chưa vững (🗣 Nói & Đọc chọn bài nhắm chỗ thiếu)
   peek(): Peek | null;   // câu đang hiện (chỉ đọc) cho bot mô phỏng người học (tools/learners): bot "biết" đáp án chỉ khi nó biết nút đó
 }
-export interface Peek { keys?: Record<string, string>; run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[]; bonus?: string[] }
+export interface Peek { keys?: Record<string, string>; run: string; node: string; level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[]; game?: string; gap?: string; tiles?: string[]; order?: number[]; groups?: Array<{ node: string; tiles: number[]; solved: boolean }>; robot?: { r: number; c: number; items: Array<{ r: number; c: number; en: string; target: boolean; got: boolean }> }; hinted?: string[]; bonus?: string[]; kw?: string[][][] }
 
 let bound = false;
 
@@ -1559,14 +1559,14 @@ export function init(host: EHost): EngineModule {
     for (const x of v.ev.led) { if (!seen.has(x.node)) continue; const good = !!x.ok && !x.asst; span(first, okLast, x.node, x.day, good);
       const m = x.node.startsWith('u:') ? /^(?:w|nd):([^:]+):/.exec(String(x.item ?? '')) : null; if (m) span(wf, wl, x.node + '|' + m[1], x.day, good); }
     const memOk = (k: string, fm: Map<string, number>, lm: Map<string, number>) => { const f = fm.get(k), l = lm.get(k); return f !== undefined && l !== undefined && l - f >= GATE.memDays; };
-    let learn = 0, mem = 0;
+    let learn = 0, mem = 0; const miss: string[] = [];
     for (const r of nodes) {
-      if (host.lessonDone ? host.lessonDone(r.node) : nodeStat(host, v, r.node, r.level as Level).pass) learn++;
+      if (host.lessonDone ? host.lessonDone(r.node) : nodeStat(host, v, r.node, r.level as Level).pass) learn++; else miss.push(r.node);
       const ws = r.node.startsWith('u:') && host.unitWords ? host.unitWords(r.node.slice(2)) : null;
       const held = ws && ws.length ? ws.filter(w => memOk(r.node + '|' + w, wf, wl)).length / ws.length >= GATE.memWord : memOk(r.node, first, okLast);
       if (held && (recallOf(host, v, r.node) ?? 0) >= 0.9) mem++;
     }
-    return { learn, mem, total: nodes.length };
+    return { learn, mem, total: nodes.length, miss };
   }
   function goalOf(v: EState) { const ix = loaded(); return ix ? v.goals.map(sg => ix.goal.get(sg.id)).find(Boolean) ?? null : null; }
   // v115 khu truyện = cấp: chương cuối khu cuối (Rừng Trúc) là trận cổng của đích, nếu đích có cổng. Hai khu đầu giữ điều kiện kỹ năng vững
@@ -1946,6 +1946,18 @@ export function init(host: EHost): EngineModule {
   }
 
   const act: Record<string, (el: HTMLElement) => void> = {
+    // v161 nút 🎙 / ⏹ / gõ lại của bài Nói (trước v161 gtmic nằm nhầm ở forms nên nút 🎙 không chạy).
+    gtmic(el) {
+      const ws = gtRun?.ws; if (!ws) return;
+      const ta = el.closest('form')?.querySelector('textarea') as HTMLTextAreaElement | null; if (ta) ws.draft = ta.value;
+      ws.key = `gtws:${ws.i}:${Date.now() % 1e6}`; host.asrHear?.(ws.key, true); host.render();
+    },
+    gtstop() { const ws = gtRun?.ws; if (ws?.key) host.asrStop?.(ws.key); host.render(); },
+    gttype(el) {
+      const ws = gtRun?.ws; if (!ws) return;
+      if (ws.key) { ws.draft = host.asrHeard?.(ws.key)?.heard ?? ''; host.asrStop?.(ws.key); }
+      ws.typed = true; host.render();
+    },
     ...fc.acts,
     ...vc.acts,
     ...bag.acts,
@@ -2300,20 +2312,17 @@ export function init(host: EHost): EngineModule {
       while (r.skipL && r.gi < r.groups.length && r.groups[r.gi]!.kind === 'listening') r.gi++;
       if (r.gi >= r.groups.length) gtAfterRL(); else { host.render(); window.scrollTo?.(0, 0); }
     },
-    // v140 một bài Viết / Nói của thi chuyển cấp: lưu % tiêu chí (luật Viết của app + ý tự đánh dấu), sang bài kế; hết bài thì chấm.
+    // v140 một bài Viết / Nói của thi chuyển cấp: lưu % tiêu chí, sang bài kế; hết bài thì chấm. v161 ý do máy tìm (không tự đánh dấu);
+    // Nói chấm theo lời máy chép (máy nghe được và không chọn gõ lại), ô chữ chỉ để xem.
     gtws(f) {
       const r = gtRun, ws = r?.ws; if (!r || !ws || r.res) return;
-      const t = ws.tasks[ws.i]!, d = new FormData(f), text = String(d.get('t') ?? '').slice(0, 3000), words = gwWords(text);
-      const self = t.c.map((_, k) => d.get(`c${k}`) === '1');
-      const checks = t.kind === 'w' && text.trim() ? host.wcheckT?.(t, text)?.checks ?? [] : [];
-      ws.out.push({ id: t.id, kind: t.kind, pct: text.trim() ? wsPct(t, words, checks, self) : 0, words });
-      ws.i++; ws.key = ''; ws.draft = '';
+      const t = ws.tasks[ws.i]!, d = new FormData(f), sp = t.kind === 's', heard = sp && !ws.typed && host.hasAsr?.() ? (ws.key ? host.asrHeard?.(ws.key)?.heard ?? '' : '') : null;
+      const text = (heard ?? String(d.get('t') ?? '')).slice(0, 3000), words = gwWords(text);
+      if (sp && ws.key) host.asrStop?.(ws.key);
+      const checks = t.kind === 'w' && text.trim() ? host.wcheckT?.(t, text)?.checks ?? [] : [], hit = ideaHits(t, text);
+      ws.out.push({ id: t.id, kind: t.kind, pct: text.trim() ? wsPct(t, text, checks) : 0, words, ...(sp && heard === null ? { typed: true } : {}), ideas: t.c.map((vi, k) => [vi, !!hit[k]] as [string, boolean]) });
+      ws.i++; ws.key = ''; ws.draft = ''; ws.typed = false;
       if (ws.i >= ws.tasks.length) gtFinish(); else { host.render(); window.scrollTo?.(0, 0); }
-    },
-    gtmic(el) {
-      const ws = gtRun?.ws; if (!ws) return;
-      const ta = el.closest('form')?.querySelector('textarea') as HTMLTextAreaElement | null; if (ta) ws.draft = ta.value;
-      ws.key = `gtws:${ws.i}:${Date.now() % 1e6}`; host.asrHear?.(ws.key); host.render();
     },
     lrnext(f) {
       if (!lrApi) return;
@@ -2541,6 +2550,8 @@ export function init(host: EHost): EngineModule {
     peek() {
       // v140 thi chuyển cấp: đáp án nhóm câu đang làm (keys: mã câu → phương án đúng) cho bot / test e2e; Viết / Nói không có đáp án.
       if (gtRun && !gtRun.res && !gtRun.ws) { const g = gtRun.groups[gtRun.gi]; if (g) return { run: 'gate', node: '', level: 0, id: g.id, prompt: g.title, keys: Object.fromEntries(g.items.map(it => [it.id, String(it.ans)])) }; }
+      // v161 Viết / Nói: từ khoá của từng ý (kw) để bot / test viết bài có đủ ý; máy chấm ý bằng chính các từ khoá này.
+      if (gtRun && !gtRun.res && gtRun.ws) { const t = gtRun.ws.tasks[gtRun.ws.i]; if (t) return { run: 'gatews', node: '', level: 0, id: t.id, prompt: t.p, kw: t.k ?? [] }; }
       { const bp = bag.peek(); if (bp) return bp; }
       { const vp = vc.peek(); if (vp || vc.active()) return vp; }
       const of = (run: string, node: string, q: { level: number; id: string; prompt: string; opts?: string[]; ans?: number; accept?: string[] } | null | undefined, x: Partial<Peek> = {}): Peek | null =>

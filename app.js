@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 98;
+const STATE_V = 18, APP_VERSION = 99;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1075,7 +1075,7 @@ function sanitizeState(x){
   const dims = (d,keys) => Object.fromEntries(keys.map(k=>[k,numIn(obj(d)[k],0,1)]));
   const srs = v => ({stage:Math.round(numIn(v.stage,0,30,0)),due:v.due==null?null:Math.round(numIn(v.due,0,1e6,0)),ivl:numIn(v.ivl,0,3650,0),ease:numIn(v.ease,EASE.min,EASE.max,EASE.start),learned:!!v.learned,...(v.lp>0?{lp:Math.round(numIn(v.lp,0,1e4,0))}:{}),...(v.ld>0?{ld:Math.round(numIn(v.ld,0,1e6,0))}:{}),...(v.fs!=null?{fs:numIn(v.fs,.1,36500,1),fd:numIn(v.fd,1,10,5),fl:Math.round(numIn(v.fl,0,1e6,0))}:{})});
   x.words=pick(x.words,k=>!!WORD[k],v=>({...srs(v),d:dims(v.d,['rec','rcl','spl','ctx','col'])}));
-  x.units=pick(x.units,k=>UNITS.some(u=>u.id===k),v=>({learned:!!v.learned,practiced:Math.round(numIn(v.practiced,0,1e4,0)),best:numIn(v.best,0,1),passed:!!v.passed,skipped:!!v.skipped,speak:Math.round(numIn(v.speak,0,1e4,0)),written:!!v.written,read:numIn(v.read,0,1),listen:numIn(v.listen,0,1),...(v.pd!=null?{pd:Math.round(numIn(v.pd,0,1e6,0))}:{})}));
+  x.units=pick(x.units,k=>UNITS.some(u=>u.id===k),v=>({learned:!!v.learned,practiced:Math.round(numIn(v.practiced,0,1e4,0)),best:numIn(v.best,0,1),passed:!!v.passed,skipped:!!v.skipped,speak:Math.round(numIn(v.speak,0,1e4,0)),written:!!v.written,read:numIn(v.read,0,1),listen:numIn(v.listen,0,1),...(v.pd!=null?{pd:Math.round(numIn(v.pd,0,1e6,0))}:{}),...(v.ndPass!=null?{ndPass:Math.round(numIn(v.ndPass,0,1e6,0))}:{}),...(v.ndNeed!=null?{ndNeed:Math.round(numIn(v.ndNeed,0,1e6,0))}:{}),...(v.ndLow?{ndLow:Math.round(numIn(v.ndLow,0,99,0))}:{})}));
   x.gram=pick(x.gram,k=>!!GPT[k],v=>({...srs(v),d:dims(v.d,['cho','typ','fix','ord']),practiced:Math.round(numIn(v.practiced,0,1e4,0)),best:numIn(v.best,0,1),passed:!!v.passed,skipped:!!v.skipped}));
   const lvFix=v=>({best:numIn(v.best,0,1),passed:!!v.passed,tried:!!v.tried,last:v.last==null?undefined:numIn(v.last,0,1e6),est:v.est&&typeof v.est==='object'?{k:numIn(v.est.k,0,1e4,0),n:numIn(v.est.n,1,1e4,1),day:numIn(v.est.day,0,1e6,0),kind:v.est.kind==='place'?'place':'lrev'}:undefined});
   x.levels=pick(x.levels,k=>LVS.includes(k),lvFix); x.glevels=pick(x.glevels,k=>LVS.includes(k),lvFix);
@@ -2481,9 +2481,47 @@ function stPhase(ph){ const S=ui.stk, t=STK[S.id]; S.phase=ph;
 // v159 chấm bài nói theo lời chép (không AI chấm nội dung): đủ số từ, dùng cụm hữu ích của bài, ý đã nói (tự đánh dấu). Đạt ≥ 60% như Viết / Nói
 // của Thi chuyển cấp. Phát âm không chấm ở bài dài 30 giây (mô hình trên điện thoại quá nặng); chấm ở các lượt đóng vai ngắn.
 const ST_MINW = {A1:20,A2:35}, ST_OK = 0.6;
-function stScore(t,text,ck){ const w=wc(text), minW=ST_MINW[t.lv]||50, low=' '+String(text).toLowerCase().replace(/[’]/g,"'")+' ';
-  const used=t.u.filter(([e])=>low.includes(e.toLowerCase().replace(/[’]/g,"'"))).length, ideas=t.c.length?ck.filter(Boolean).length/t.c.length:0;
-  return {w,minW,used,ideas,s:Math.round((0.3*Math.min(1,w/minW)+0.3*Math.min(1,used/2)+0.4*ideas)*100)/100}; }
+// v161 (người sáng lập 18/10/2026 "làm cả ba sửa"): ý của bài nói A1 / A2 do máy tìm bằng từ khoá trong lời chép, bỏ tự đánh dấu.
+// Cùng luật với gatews.ts ideaHits (engine nạp động nên app giữ bản riêng): một ý = các nhóm, mọi nhóm phải có một từ khớp; khớp đầu từ,
+// đuôi "$" = cả từ; '@num' = có con số; nhóm ['@past'] = ≥ 2 động từ quá khứ; ['@ing'] = có "is / are / am …ing". B1 trở lên giữ tự đánh dấu.
+const KWA = {
+  fam:['mother','father','mum','mom','dad','parent','wife','husband','son','daughter','brother','sister','grand','family','friend','children','child','uncle','aunt','cousin'],
+  act:['go','went','play','watch','read','cook','visit','meet','sleep','relax','swim','shop','clean','study','walk','run','listen','see','stay','work','ride','eat','drink','dance','sing','draw','chat','talk','travel','learn','help','make','buy'],
+  food:['rice','bread','pho$','noodle','egg','milk','coffee','tea$','banana','apple','cake','sandwich','soup','fruit','juice','banh','chicken','fish','beef','pork','meat','vegetable','salad','pizza','pasta','burger','spring roll','cheese','bun$','chocolate','ice cream','tofu','shrimp','seafood','hot pot','curry','sushi','potato'],
+  why:['because','so$','since','as it','as i$','cause'],
+  like:['like','love','enjoy','favourite','favorite','prefer','great','nice','beautiful','lovely','interesting','fun','good','happy'],
+  tr:['bus','bike','bicycle','motorbike','motorcycle','scooter','car','taxi','train','plane','flew','fly','foot','walk','grab','metro','drive','drove','boat'],
+  job:['work','job','student','study','school','university','teacher','doctor','engineer','office','company','nurse','worker','manager','driver'],
+};
+const STK_K = {
+  'a1-s1':[[['name','i am',"i'm",'call me'],['@num','years old']],[['from','live in','live on','hometown','city','town','village']],[KWA.job],[['like','love','enjoy','hobby','favourite','favorite','free time']]],
+  'a1-s2':[[['live in','live on','near','street','district','village','town','city','centre','center']],[['@num'],['room']],[['favourite','favorite','like','love','best'],['room','kitchen','living','garden','balcony'],KWA.why]],
+  'a1-s3':[[KWA.food],[['breakfast','lunch','dinner','morning','evening','weekend','every','sometimes','often','usually','when','tet$','birthday','sunday','saturday']],[['cook','make','buy','bought','restaurant','market','shop','mother','mum','mom','father','dad','grand']]],
+  'a1-s4':[[['name','called','friend is'],['@num','years old','same age']],[['tall','short','long','hair','eyes','thin','slim','big','small','pretty','beautiful','handsome','glasses','wear','look']],[['together','we$','with me'],KWA.act]],
+  'a1-s5':[[['sunny','rain','hot','cold','warm','cool','cloudy','windy','weather','snow']],[['like','love','enjoy','want','usually','often'],KWA.act],[['spring','summer','autumn','fall$','winter','season']]],
+  'a2-s1':[[['went','visited','travelled','traveled','go to','trip','holiday'],['last','ago','year','summer','winter','month','@num']],[['with','alone','myself'],[...KWA.fam,...KWA.tr,'alone','myself']],[['@past']],[KWA.why]],
+  'a2-s2':[[['morning','get up','wake','breakfast']],[['afternoon','lunch','after that','after work','office','school','from']],[['evening','night']],[['like','love','enjoy','favourite','favorite','best'],KWA.why]],
+  'a2-s3':[[['like','love','enjoy','hate',"don't",'dont','not really'],['shop']],[['market','mall','supermarket','shop','store','online','centre','center','street'],['buy','bought','clothes','food','shoes','book','fruit','vegetable','thing','phone','bag']],[['online','internet','app$','shop','store'],KWA.why]],
+  'a2-s4':[[KWA.fam],[['kind','hard','work','friendly','patient','funny','clever','strong','generous','helpful','quiet','busy','honest','brave','teacher','doctor','farmer','cook','job']],[['for example','once','one day','when i was','last year','always','every day','every morning']],[['admire','because','respect','proud']]],
+  'a2-s5':[[['saturday']],[['sunday']],[[...KWA.fam,'alone','myself','with']],[['looking forward',"can't wait",'cant wait','excited','hope','most','really want']]],
+  'a1-s6':[[['name','called','friend is'],['@num','years old','same age']],[KWA.job],[['together','we$','with me'],KWA.act],[KWA.why]],
+  'a1-s7':[[['live in','from','city','town','village','north','south','centre','center','near','province']],[['big','small','large','little','busy','quiet']],[['there is','there are',"there's",'theres']],[KWA.like]],
+  'a1-s8':[[['saturday']],[['sunday']],[['with','alone','myself'],[...KWA.fam,'alone','myself']],[['feel','happy','tired','relaxed','great','fun','good','bored','nice','love','enjoy']]],
+  'a2-s6':[[['photo','picture','market','see']],[['@ing']],[['red$','blue','green','yellow','orange','white','black','brown','pink','purple','colour','color','fruit','vegetable','fish','flower','clothes','food']],[['in the middle','on the left','on the right','in front','behind','next to','near','at the back','in the background','between']],[['think','maybe','perhaps','probably','looks','seems','feel','might']]],
+  'a2-s7':[[['festival','tet$','mid autumn','moon','new year'],['august','month','lunar','january','february','september','autumn','spring','every year','@num','time']],[['people','children','families','family','we$'],[...KWA.act,'give','light','carry','decorate','lantern']],[['mooncake','moon cake','cake','food','banh','sticky rice','candy','sweet','fruit','eat']],[['like','love','enjoy','remember','favourite','favorite','happy','beautiful','fun','when i was']]],
+  'a2-s8':[[['going to','gonna']],[[...KWA.why,'want to','so that','to improve','to get']],[['hope']],[['difficult','hard','not easy','problem','challenge','worried','afraid']]],
+};
+const KW_PAST = new Set('was were went saw had did made got came took gave found bought ate drank met left felt thought told said ran sat stood fell lost wore won swam sang began brought caught taught knew grew drove rode wrote spent paid slept woke sent kept heard became forgot flew blew broke chose hid hit put cut let shut threw understood'.split(' '));
+const KW_NOT_ED = new Set(['need','feed','speed','bed','red','seed','weed','shed','bread','head','ahead','indeed','hundred','used','tired','interested','excited','bored','married','crowded']);
+function kwHits(k,text){ const h=spkNorm(String(text).normalize('NFD').replace(/[\u0300-\u036f]/g,'')), ws=h.trim().split(' ');
+  const has=w=>w.endsWith('$')?h.includes(spkNorm(w.slice(0,-1))):h.includes(' '+spkNorm(w).trim());
+  const gOk=g=>g[0]==='@past'?ws.filter(w=>KW_PAST.has(w)||(w.length>3&&w.endsWith('ed')&&!KW_NOT_ED.has(w))).length>=2
+    :g[0]==='@ing'?/ (is|are|am|'s|'re|'m) \w+ing /.test(h.replace(/(\w)'(s|re|m) /g,"$1 '$2 "))
+    :g.some(w=>w==='@num'?/ \d+ /.test(h):has(w));
+  return k.map(idea=>idea.length>0&&idea.every(gOk)); }
+function stScore(t,text,ck){ const w=wc(text), minW=ST_MINW[t.lv]||50, low=' '+String(text).toLowerCase().replace(/[’]/g,"'")+' ', K=STK_K[t.id];
+  const used=t.u.filter(([e])=>low.includes(e.toLowerCase().replace(/[’]/g,"'"))).length, hit=K?kwHits(K,text):null, ideas=t.c.length?(hit||ck).filter(Boolean).length/t.c.length:0;
+  return {w,minW,used,ideas,hit,s:Math.round((0.3*Math.min(1,w/minW)+0.3*Math.min(1,used/2)+0.4*ideas)*100)/100}; }
 function viewSTask(){
   const S=ui.stk, t=STK[S.id], hist=st.stask[t.id]||[];
   const brief=`<section class="panel stack"><p lang="en" style="font-size:17px">${esc(t.p)}</p><p class="hint">${esc(t.pv)}</p><h3>Gợi ý ý</h3>${t.c.map(c=>`<p>• ${esc(c)}</p>`).join('')}${phraseList(t.u)}</section>`;
@@ -2500,8 +2538,9 @@ function viewSTask(){
       <p class="num">${sc.w} từ (cần ${sc.minW}) · dùng ${sc.used} cụm hữu ích của bài (cần 2)</p>
       <div class="row">${REC.url?'<button class="btn" data-act="recplay">▶ Nghe giọng bạn</button>':''}${HAS_TTS?`<button class="btn" data-say="${esc(t.m)}">${SPK} Nghe câu trả lời mẫu</button>`:''}</div>
       <details><summary>Xem câu trả lời mẫu</summary><p lang="en" style="margin-top:6px">${esc(t.m)}</p></details></section>
-    <section class="panel stack"><h3>Bạn đã nói những ý này chưa?</h3>${t.c.map((c,k)=>`<label class="row" style="gap:8px;flex-wrap:nowrap;align-items:flex-start"><input type="checkbox" data-stck="${k}" ${S.ck[k]?'checked':''}> <span>${esc(c)}</span></label>`).join('')}
-      <p class="hint">Điểm: ${pct(sc.s)} (đủ từ 30% · cụm hữu ích 30% · ý đã nói 40%), đạt từ ${pct(ST_OK)}. Máy chấm theo lời chép, chưa người thật kiểm.</p>
+    <section class="panel stack">${sc.hit?`<h3>Ý máy tìm thấy trong lời bạn</h3>${t.c.map((c,k)=>`<p>${sc.hit[k]?'✓':'✗'} ${esc(c)}</p>`).join('')}`
+      :`<h3>Bạn đã nói những ý này chưa?</h3>${t.c.map((c,k)=>`<label class="row" style="gap:8px;flex-wrap:nowrap;align-items:flex-start"><input type="checkbox" data-stck="${k}" ${S.ck[k]?'checked':''}> <span>${esc(c)}</span></label>`).join('')}`}
+      <p class="hint">Điểm: ${pct(sc.s)} (đủ từ 30% · cụm hữu ích 30% · ý đã nói 40%), đạt từ ${pct(ST_OK)}. Máy chấm theo lời chép${sc.hit?', ý tìm bằng từ khoá':''}, chưa người thật kiểm.</p>
       ${cdStatus(done,done?[]:['Đạt ≥ '+pct(ST_OK)+' ở một lần nói'])}
       <div class="row"><button class="btn primary" data-act="stsave" ${text?'':'disabled'}>Lưu kết quả</button><button class="btn" data-act="stagain">Nói lại</button></div></section>`;
 }
@@ -2697,10 +2736,12 @@ function viewLib(){
   // v153 (người sáng lập 17/10/2026): Học bài = học mới tới vững; não điều phối theo học (không đẩy ôn lên đầu). Việc ôn ở 🔁 Ôn luyện.
   let ma=null; try{ ma=mainAction({learn:true}); }catch(e){ ma=null; }
   const due=dueWords().length+dueG().length;
-  const todo=`<section class="panel stack lnext" aria-labelledby="ln-h"><h2 id="ln-h">Việc nên làm</h2>${ma?`<p><b>${ma.h}</b></p><p class="hint">${ma.p}</p><div class="row">${ma.btn}</div>`:''}
+  // v161 nút chính là ▶ Hôm nay (dayHtml, một não cho cả Học bài + Ôn luyện); khối này còn để tự học tiếp.
+  const todo=`<section class="panel stack lnext" aria-labelledby="ln-h"><h2 id="ln-h">Hoặc tự học tiếp</h2>${ma?`<p><b>${ma.h}</b></p><p class="hint">${ma.p}</p><div class="row">${String(ma.btn).replace('btn primary big','btn')}</div>`:''}
     ${due?`<p class="hint">Có ${due} mục đến hạn ôn → <button class="btn small" data-go="nd">${ico('repeat')} Ôn luyện</button></p>`:''}</section>`;
   return `<section class="stack"><span class="eyebrow">Học bài</span><h1>📘 Học bài</h1><p class="muted">Học mới từ đầu tới cuối, tới khi vững và qua cấp. Mọi câu đúng ở đây đều tính vào 🎯 Mục tiêu. Ôn lại những gì đã học: 🔁 Ôn luyện.</p></section>
   ${partsHtml(currentUnit().level==='A1'?'A1':'A2','lib')}
+  ${dayHtml('lib')}
   ${todo}
   ${libSkills()}
   <h2>Tự chọn bài</h2>
@@ -5061,6 +5102,11 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:99,d:'2026-10-18',t:'▶ Hôm nay: một nút cho cả Học bài và Ôn luyện',items:[
+    '▶ Hôm nay ở đầu Học bài và Ôn luyện: não xếp 3–4 bước mỗi buổi (ôn đến hạn, bài cần học, chỗ còn thiếu nhất, một bài dùng thật) và ghi rõ vì sao. Bạn chỉ cần bấm.',
+    'Ôn luyện mà đúng dưới 50% ở bài chưa học: não hiểu là bạn chưa có kiến thức đó và đưa về 📘 Học bài. Người đã có nền thì não cho vượt nhanh ở Ôn luyện.',
+    'Thi chuyển cấp: Viết và Nói không còn tự đánh dấu ý. Máy tìm ý trong bài của bạn; Nói chấm theo lời máy chép tới khi bấm ⏹ Dừng. Sửa nút 🎙 của bài Nói chưa chạy.',
+    'Còn cặp âm hoặc chức năng giao tiếp chưa qua thì ▶ Hôm nay đưa vào, vì thanh 📘 Học cần cả hai loại này. Nói theo đề A1 / A2 ở Học bài cũng do máy tìm ý.']},
   {v:98,d:'2026-10-18',t:'▶ Ôn tiếp tự chọn bài; ✍️ Viết theo tình huống',items:[
     '▶ Ôn tiếp tự chọn loại bài theo chỗ còn thiếu của mục tiêu: bài đọc / nghe, 🎭 đóng vai hoặc ✍️ viết; không lặp một loại quá 2 lần liền.',
     '✍️ Viết theo tình huống: tin nhắn mời bạn, xin lỗi, bưu thiếp, kể một ngày. Máy chấm ý, độ dài và hình thức; đạt từ 60%.',
@@ -5377,7 +5423,7 @@ function next(){
   const V=verdict(s.res);
   if(s.kind==='test'){
     const us=U(s.uid), was=us.passed, u=UNITS.find(x=>x.id===s.uid); s.stars0=uStars(u);
-    us.best=Math.max(us.best??0,V.score); if(V.pass){ us.passed=true; us.pd??=today(); ndPassMark('u',s.uid); }
+    us.best=Math.max(us.best??0,V.score); if(V.pass){ us.passed=true; us.pd??=today(); delete us.ndNeed; us.ndLow=0; ndPassMark('u',s.uid); }   // v161 qua ở Học bài thì hết "cần học trước"
     if(V.pass&&!was){ addXP(50); celebrate('🏆',`Qua ${uname(u)} · ${u.title}`,`${pct(V.score)} bài kiểm tra, +50 XP. Bạn đã qua ${passedUnits()} unit. Unit tiếp theo đã mở.`); }
   }
   if(s.kind==='lrev'){ const lv=LV(s.lvl); lv.best=Math.max(lv.best??0,V.score); lv.last=today(); if(V.pass) lv.passed=true; }
@@ -5387,7 +5433,7 @@ function next(){
   // Thi xếp lớp đạt: unit có câu trả lời sai vẫn để học (không coi cả cấp là xong khi còn chỗ hổng đã thấy).
   // v156 (người sáng lập 17/10/2026): vượt cả cấp chỉ đánh dấu unit CÓ câu được hỏi và đúng hết; unit chưa được hỏi giữ nguyên (vượt riêng ở ⚡).
   if(s.kind==='place'&&V.pass){ const miss=new Set(s.res.filter(x=>!x.correct).map(x=>UNIT_OF[x.wid].id)), asked=new Set(s.res.map(x=>UNIT_OF[x.wid].id)); s.miss=0; s.unasked=0; s.skip=0;
-    CONTENT.levels.find(x=>x.id===s.lvl).units.forEach(u=>{ const us=U(u.id); if(us.passed) return; if(miss.has(u.id)){ s.miss++; return; } if(!asked.has(u.id)){ s.unasked++; return; } us.passed=true; us.skipped=true; us.pd??=today(); s.skip++; ndPassMark('u',u.id); }); }
+    CONTENT.levels.find(x=>x.id===s.lvl).units.forEach(u=>{ const us=U(u.id); if(us.passed) return; if(miss.has(u.id)){ s.miss++; return; } if(!asked.has(u.id)){ s.unasked++; return; } us.passed=true; us.skipped=true; us.pd??=today(); delete us.ndNeed; s.skip++; ndPassMark('u',u.id); }); }
   runActive(s.res); clearRun(); save(); checkBadges(); go('summary',{summary:{kind:s.kind,uid:s.uid,lvl:s.lvl,res:s.res,before:s.before,bst:s.bst||{},xp:s.xp||0,combo:s.bestCombo||0,gold:!!s.goldHit,stars0:s.stars0,miss:s.miss||0,unasked:s.unasked||0,skip:s.skip||0,cal:s.cal||null,wins:s.wins||null},sess:null});
 }
 function learnDone(uid){
@@ -5465,6 +5511,7 @@ function gAct(d){
 document.addEventListener('click',e=>{
   const t=e.target.closest('button'); if(!t) return;
   const d=t.dataset;
+  if(d.day) dayMark(d.day);   // v161 ▶ Hôm nay: ô đã bấm trong ngày
   if(d.say){ say(d.say,d.slow==='1',+(d.v||0)); return; }
   if(d.act==='celok') return celClose();
   if(d.trypick!=null){ if(ui.tryPick==null){ ui.tryPick=+d.trypick; evc('try'); save(); } return render(); }
@@ -5517,6 +5564,10 @@ document.addEventListener('click',e=>{
     case 'phdt': PH.dtype=d.v; return render();
     case 'ndlv': ui.ndLv=d.v==='A1'?'A1':'A2'; return render();
     case 'ndshow': ui.ndShow=ui.ndShow===d.v?null:d.v; return render();
+    case 'dayreview': { const due=dueWords().sort((a,b)=>mastery(a.id)-mastery(b.id)).slice(0,DAY_DUE); if(!due.length) return render(); return startSession('review',reviewItems(due),null); }
+    case 'dayread': { const n=st.nd||(st.nd={d:{}}); n.lk=[...(n.lk||[]),'read'].slice(-3); save(); return ndRead(d.v,HAS_TTS&&n.rl===false); }
+    case 'dayrpg': { const n=st.nd||(st.nd={d:{}}); n.uk=(n.uk||0)+1; save(); return startRpg(d.v,true); }
+    case 'daywrg': { const n=st.nd||(st.nd={d:{}}); n.uk=(n.uk||0)+1; save(); return startWrg(d.v,true); }
     case 'ndquick': case 'ndnext': return ndNext(d.v==='A1'||d.v==='A2'?d.v:(ui.read&&ui.read.uid?UNITS.find(x=>x.id===ui.read.uid).level:ndLv()));   // v157: Ôn nhanh = ▶ Ôn tiếp
     case 'spkgo': return spkGo(d.k,d.t||'');
     case 'spkstop': return spkStop(d.k);
@@ -6785,14 +6836,14 @@ const ND_PASS = 0.8, ND_GOK = 2, ND_VQ = 4, ND_DAYS = 2;
 const ndUp = uid => (((st.nd||{}).up||{})[uid]||[]);
 function ndPick(L){ const us=UNITS.filter(u=>u.level===L&&u.reading); if(!us.length) return null;
   const H=ndHealth(L), k=u=>H?H.kind.get('u:'+u.id):null, seen=(st.nd||{}).seen||{}, t=today(), fresh=u=>seen[u.id]!==t;
-  const pick=(f,why)=>{ const x=us.find(u=>fresh(u)&&f(u)); return x?{u:x,why}:null; };   // bài đã làm hôm nay thì để ngày khác
+  const pick=(f,why)=>{ const x=us.find(u=>fresh(u)&&!U(u.id).ndNeed&&f(u)); return x?{u:x,why}:null; };   // bài đã làm hôm nay thì để ngày khác; v161 bài "cần học trước" để Học bài
   return pick(u=>k(u)==='lost','đã quên')||pick(u=>k(u)==='fading','đang phai')
     ||pick(u=>!U(u.id).passed&&ndUp(u.id).some(d=>d<t),'lượt 2')||ndGramPick(us,fresh)||pick(u=>!U(u.id).passed,'chưa qua')
-    ||{u:shuffle(us.filter(fresh))[0]||shuffle(us)[0],why:'ôn lại'}; }
+    ||{u:shuffle(us.filter(u=>fresh(u)&&!U(u.id).ndNeed))[0]||shuffle(us)[0],why:'ôn lại'}; }
 // v160 ngữ pháp còn thiếu nhiều (> 30% điểm của cấp chưa qua): chọn unit chưa qua có bài đọc chứa nhiều điểm ngữ pháp chưa qua nhất.
 function ndGramPick(us,fresh){ const L=us[0]&&us[0].level, gl=GRAMMAR.levels.find(x=>x.id===L); if(!gl) return null;
   const miss=gl.points.filter(p=>!G(p.id).passed).length/Math.max(1,gl.points.length); if(miss<=.3) return null;
-  const c=us.filter(u=>fresh(u)&&!U(u.id).passed).map(u=>({u,n:readingGram(u).filter(p=>p.level===L&&!G(p.id).passed&&(p.mc||[]).length).length})).filter(x=>x.n>0);
+  const c=us.filter(u=>fresh(u)&&!U(u.id).passed&&!U(u.id).ndNeed).map(u=>({u,n:readingGram(u).filter(p=>p.level===L&&!G(p.id).passed&&(p.mc||[]).length).length})).filter(x=>x.n>0);
   if(!c.length) return null; c.sort((a,b)=>b.n-a.n); return {u:c[0].u,why:`ngữ pháp còn thiếu: bài có ${c[0].n} điểm chưa qua`}; }
 // Câu ngữ pháp của bài: điểm ngữ pháp bài đọc dùng (readingGram), cấp không cao hơn unit; ưu tiên điểm chưa qua; lấy 1 câu trong ngân hàng mc.
 function ndGQ(u){ const L=LVS.indexOf(u.level), ps=readingGram(u).filter(p=>LVS.indexOf(p.level)<=L&&(p.mc||[]).length);
@@ -6825,6 +6876,52 @@ function ndNext(L){ const o=ndPlan(L); if(!o) return; const n=st.nd||(st.nd={d:{
   if(o.k==='rpg') return startRpg(o.id,true);
   if(o.k==='wrg') return startWrg(o.id,true);
   ndRead(o.u.id,HAS_TTS&&n.rl===false); }
+// ---- v161 ▶ Hôm nay: một não điều phối Học bài + Ôn luyện (người sáng lập 18/10/2026: một nút; não tự cân ôn / mới) ----
+// Ôn luyện: người có nền nhớ lại nhanh, vượt nhanh bài. Học bài: người chưa có kiến thức đó; ôn mà dưới 50% thì não đưa về học (ndNeed).
+const ND_NEED = 0.5, DAY_DUE = 12;
+const zeroStart = () => { const d=st.e&&st.e.diag; return !!d&&!d.n&&!d.u&&!d.g; };   // chọn "Tôi chưa biết gì tiếng Anh"
+// Có nền? 3 lượt vượt nhanh gần nhất: ≥ 2 lượt đạt ≥ 50% → có ('yes'); ≥ 2 lượt dưới 50% → chưa ('no'); chưa đủ → null (thử thêm).
+function ndBase(){ const to=(st.nd||{}).to||[]; if(!to.length) return zeroStart()?'no':null;
+  const ok=to.filter(x=>x.s>=ND_NEED).length, bad=to.length-ok; return ok>=2?'yes':bad>=2?'no':null; }
+function dayParts(L){ try{ return EM&&EM.parts?EM.parts('cefr-'+L.toLowerCase()):null; }catch(e){ return null; } }
+function dayDone(){ const n=st.nd||(st.nd={d:{}}), t=today(); if(!n.day||n.day.d!==t) n.day={d:t,done:[]}; return n.day.done; }
+function dayMark(k){ const d=dayDone(); if(!d.includes(k)) d.push(k); save(); }
+const LIB = '📘 Học bài', NDT = '🔁 Ôn luyện';
+// Bước của buổi: k (ô), side, t (việc), why (lý do), at (thuộc tính nút). Tính lại mỗi lần vẽ; chỉ lưu ô đã bấm trong ngày.
+function dayPlan(){ const L=ndLv(), t=today(), out=[], p=dayParts(L), us=UNITS.filter(u=>u.level===L);
+  const pc=v=>p&&p.total?Math.round(100*v/p.total):0, lq=p?pc(p.learn):0, mq=p?pc(p.mem):0;
+  const dw=dueWords().length, dg=dueG().length;
+  if(dw||dg) out.push({k:'due',side:NDT,t:dw?`Ôn ${Math.min(dw,DAY_DUE)} từ đến hạn`:`Ôn ${dg} bài ngữ pháp đến hạn`,why:'đúng lúc sắp quên thì nhớ lâu nhất',at:dw?'data-act="dayreview"':'data-act="greview"'});
+  const nd=us.find(u=>U(u.id).ndNeed&&!U(u.id).passed)||us.find(u=>U(u.id).ndNeed);
+  if(nd) out.push({k:'need',side:LIB,t:`Học ${uname(nd)} · ${esc(nd.title)}`,why:'Ôn luyện đúng dưới 50%: cần học kiến thức này trước',at:`data-unit="${nd.id}"`});
+  // Chỗ thiếu lớn nhất: Nhớ còn xa 50% hơn Học còn xa 80% → bài đang phai / đã quên; ngược lại → bài mới (có nền: vượt nhanh ở Ôn luyện).
+  const gl=p?Math.max(0,.8-p.learn/p.total)/.8:1, gm=p?Math.max(0,.5-p.mem/p.total)/.5:0, why=p?`📘 Học ${lq}% (cần 80%) · 🔁 Nhớ ${mq}% (cần 50%)`:'';
+  const pk=ndPick(L), fade=pk&&(pk.why==='đã quên'||pk.why==='đang phai')?pk:null;
+  const fresh=u=>((st.nd||{}).seen||{})[u.id]!==t, newRd=us.find(u=>u.reading&&!U(u.id).passed&&!U(u.id).ndNeed&&fresh(u)&&ndUp(u.id).some(d=>d<t))||us.find(u=>u.reading&&!U(u.id).passed&&!U(u.id).ndNeed&&fresh(u));
+  const base=ndBase(), cur=currentUnit();
+  const mem=fade?{k:'gap',side:NDT,t:`Đọc / nghe lại ${uname(fade.u)} · ${esc(fade.u.title)}`,why:`${fade.why}; ${why}`,at:`data-act="dayread" data-v="${fade.u.id}"`}:null;
+  const fast=newRd&&base!=='no'?{k:'gap',side:NDT,t:`Vượt nhanh ${uname(newRd)} · ${esc(newRd.title)}`,why:`${base==='yes'?'bạn có nền: đọc hiểu đạt là qua unit':'thử xem bạn đã biết chưa; dưới 50% thì về Học bài'}; ${why}`,at:`data-act="dayread" data-v="${newRd.id}"`}:null;
+  const learn=cur&&!U(cur.id).passed?{k:'gap',side:LIB,t:`${U(cur.id).learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,why:`${base==='no'?'học từ đầu tới vững':'bài mới'}; ${why}`,at:`data-unit="${cur.id}"`}:null;
+  const gap=gm>gl?(mem||fast||learn):(fast||learn||mem);
+  if(gap) out.push(gap);
+  // Một bài dùng thật hoặc bài còn chặn 📘 Học (cặp âm, chức năng giao tiếp: Ôn luyện không qua được hai loại này).
+  const miss=(p&&p.miss)||[], ph=miss.find(n=>n.startsWith('ph:')&&SND[n.slice(3)]), fn=miss.find(n=>n.startsWith('fn:')&&FN[n.slice(3)]);
+  const rp=L==='A1'?Object.keys(RPG).find(id=>{ const x=(st.rpg||{})[id]; return !(x&&x.best>=.8)&&!(x&&x.day===t); }):null;
+  const wr=Object.keys(WRG).find(id=>{ const x=(st.wrg||{})[id]; return !(x&&x.best>=WRG_OK)&&!(x&&x.day===t); });
+  const use=[ph&&{k:'use',side:LIB,t:`🗣 Cặp âm ${esc(SND[ph.slice(3)].a)} – ${esc(SND[ph.slice(3)].b)} (${esc(SND[ph.slice(3)].title)})`,why:'cặp âm chưa qua: thanh 📘 Học cần cả bài âm',at:`data-snd="${ph.slice(3)}"`},
+    fn&&{k:'use',side:LIB,t:`💬 ${esc(FN[fn.slice(3)].vi)}`,why:'chức năng giao tiếp chưa qua: thanh 📘 Học cần cả bài này',at:`data-fn="${fn.slice(3)}"`},
+    rp&&{k:'use',side:NDT,t:`🎭 Đóng vai: ${esc(RPG[rp].vi)}`,why:'Nói của Thi chuyển cấp: làm được việc thật bằng lời',at:`data-act="dayrpg" data-v="${rp}"`},
+    wr&&{k:'use',side:NDT,t:`✍️ Viết: ${esc(WRG[wr].vi)}`,why:'Viết của Thi chuyển cấp: đủ ý, đủ từ',at:`data-act="daywrg" data-v="${wr}"`}].filter(Boolean);
+  if(use.length){ const lk=(st.nd||{}).uk||0, blockL=lq<80&&(ph||fn);   // thanh Học còn thiếu mà còn bài âm / chức năng → đưa trước; còn lại xoay vòng theo ngày
+    out.push(blockL?use[0]:use[(lk+t)%use.length]); }
+  return {L,steps:out,lq,mq}; }
+function dayHtml(where){ const P=dayPlan(), done=dayDone(), left=P.steps.filter(x=>!done.includes(x.k)), nx=left[0];
+  const li=x=>`<li class="spread" style="gap:8px;align-items:flex-start"><span>${done.includes(x.k)?'✓':x===nx?'▶':'•'} <b>${x.t}</b> <span class="pill">${x.side}</span><br><span class="hint">${x.why}</span></span></li>`;
+  return `<section class="panel stack dayplan" aria-label="Hôm nay"><h2>▶ Hôm nay · mục tiêu ${P.L}</h2>
+    <p class="hint">Não chọn bài cho bạn: chưa biết thì 📘 Học bài, đã biết thì 🔁 Ôn luyện vượt nhanh, sắp quên thì ôn. Bạn chỉ cần bấm nút.</p>
+    <ol class="stack" style="gap:8px;list-style:none;padding:0;margin:0">${P.steps.map(li).join('')}</ol>
+    ${nx?`<div class="row"><button class="btn primary big" ${nx.at} data-day="${nx.k}">▶ ${where==='lib'||where==='nd'?'Làm bước kế':'Hôm nay'}</button></div>`
+      :`<p><b>Xong các bước hôm nay.</b> Mai quay lại để não đo phần nhớ (🔁 Nhớ cần làm đúng lại sau ≥ 3 ngày).</p>`}</section>`; }
 function ndReadDone(){ const R=ui.read, u=UNITS.find(x=>x.id===R.uid), r=u.reading, s=U(u.id), k=R.listen?'listen':'read', ch='nd:rd:'+u.id, t=today();
   const ok=r.qs.map((q,i)=>R.order[i][R.picks[i]]===q.a), hint=R.peek||undefined;
   ok.forEach((c,i)=>{ eEv({node:'u:'+u.id,level:2,ok:c,g:1/R.order[i].length,item:'nd:'+u.id+':'+k+':'+i,qt:'mcq',ctx:'nd',src:'read',ch,hint}); ndLog('rd',c); });
@@ -6837,6 +6934,14 @@ function ndReadDone(){ const R=ui.read, u=UNITS.find(x=>x.id===R.uid), r=u.readi
   if(good&&!ups.includes(t)) ups.push(t);
   const pass=good&&ups.length>=ND_DAYS, up=pass&&!was;
   if(up){ s.passed=true; s.ndPass=t; ndPassMark('u',u.id); }
+  // v161 (người sáng lập 18/10/2026): "chỉ ôn luyện mà chưa học kiến thức đó thì không bao giờ qua được nên cần quay lại học".
+  // Dưới ND_NEED (50%) là thiếu kiến thức, không phải quên: unit chưa qua → cần học trước ở 📘 Học bài; unit đã qua mà 2 lần liền dưới 50% → học lại.
+  // Lượt vượt nhanh (unit chưa học, chưa qua) ghi vào n0.to để não biết người học có nền hay chưa (ndBase).
+  let need=false; const sc=n/of;
+  if(!R.peek){
+    if(!was&&!s.learned){ const to=n0.to||(n0.to=[]); to.push({d:t,s:Math.round(sc*100)/100}); if(to.length>3) to.shift(); }
+    if(sc<ND_NEED){ if(!was){ s.ndNeed=t; need=true; } else { s.ndLow=(s.ndLow||0)+1; if(s.ndLow>=2){ s.ndNeed=t; need=true; } } }
+    else s.ndLow=0; }
   const gok=n0.gok||(n0.gok={});
   const g=(R.gq||[]).map((q,j)=>{ const c=q.order[R.gp[j]]===q.a, P=G(q.gid);
     eEv({node:'g:'+q.gid,level:2,ok:c,g:1/q.order.length,item:'nd:g:'+q.gid+':'+u.id,qt:'mcq',ctx:'nd',src:'gram',ch,hint}); ndLog('rd',c);
@@ -6845,13 +6950,14 @@ function ndReadDone(){ const R=ui.read, u=UNITS.find(x=>x.id===R.uid), r=u.readi
     if(c&&list.length>=ND_GOK&&!P.passed){ P.passed=true; P.ndPass=t; ndPassMark('g',q.gid); gu=true; }
     if(!c&&P.learned) P.due=t+1;
     return {gid:q.gid,ok:c,n:list.length,up:gu}; });
-  R.res={n,of,good,days:ups.length,pass,up,was,g}; R.done=true; sfx(good?'ok':'bad'); save(); render(); window.scrollTo(0,0); }
+  R.res={n,of,good,days:ups.length,pass,up,was,g,need}; R.done=true; sfx(good?'ok':'bad'); save(); render(); window.scrollTo(0,0); }
 function ndReadRes(R,u){ const x=R.res; if(!x) return ''; const fb=x.good||x.was?'good':'bad';
   return `<div class="fb ${fb}" role="status"><strong>Đúng ${x.n}/${x.of} câu (hiểu bài + nghĩa từ)</strong>
     <span>${x.up?`Qua ${uname(u)} nhờ đọc hiểu (đạt ở ${ND_DAYS} ngày khác nhau): thanh 📘 Học tăng; từ của unit vào lịch ôn sau 3 ngày.`
       :x.was?`Đã qua ${uname(u)} từ trước; lần này là bằng chứng nhớ (🔁 Nhớ).`
       :R.peek?'Lượt này đã xem nghĩa nên không tính qua unit. Làm lại bài khác mà không xem nghĩa nhé.'
       :x.good?`Đạt lượt ${x.days}/${ND_DAYS}. Quay lại vào một ngày khác (${HAS_TTS?'lần sau nghe thay vì đọc, hoặc ngược lại':'đọc lại'}) để qua unit.`
+      :x.need?`Bài này bạn cần học trước: đúng dưới ${pct(ND_NEED)} là còn thiếu kiến thức, ôn lại chưa giúp được. Não sẽ đưa ${uname(u)} vào 📘 Học bài; qua bài cuối unit ở đó thì unit quay lại vòng ôn.`
       :'Cần đúng ≥ 80% (không xem nghĩa) để tính một lượt đạt. Chưa qua thì học lại ở 📘 Học bài.'}</span>
     ${x.g.length?`<span>${x.g.map(q=>`Ngữ pháp · ${esc(GPT[q.gid].vi)}: ${q.ok?'✓':'✗'}${q.up?' → qua bài này (đúng ở 2 bài khác nhau)':q.ok&&!G(q.gid).passed?` (đúng ở ${q.n}/${ND_GOK} bài khác nhau)`:''}`).join('<br>')}</span>`:''}
     <span class="hint">Điểm máy tự chấm, chưa người thật kiểm.</span></div>
@@ -6890,7 +6996,8 @@ function viewND(){
     <p class="muted">Đọc hoặc nghe nguyên một bài, rồi trả lời câu hỏi. Có câu hiểu bài và câu nghĩa từ của unit. Đúng ≥ 80% (không xem nghĩa) ở 2 ngày khác nhau là qua unit đó. Não chọn bài bạn chưa qua hoặc đang quên. (📘 Học bài: học mới tới vững; 🔁 Ôn luyện: làm rồi ôn lại.)</p></section>
   <div class="row" role="group" aria-label="Cấp" style="gap:6px">${['A1','A2'].map(l=>`<button class="btn small ${l===L?'primary':''}" data-act="ndlv" data-v="${l}" aria-pressed="${l===L}">${l}</button>`).join('')}</div>
   ${partsHtml(L,'nd')}
-  ${nx?`<section class="panel stack ndgo" aria-label="Ôn tiếp"><button class="btn primary big" data-act="ndnext" data-v="${L}">▶ Ôn tiếp</button>
+  ${dayHtml('nd')}
+  ${nx?`<section class="panel stack ndgo" aria-label="Ôn tiếp"><h2>Hoặc tự ôn thêm</h2><div class="row"><button class="btn" data-act="ndnext" data-v="${L}">▶ Ôn tiếp</button></div>
     <p class="hint">Bài kế: ${ndPlanTxt(nx)}. Máy tự chọn loại bài (đọc / nghe, đóng vai, viết) và độ khó theo chỗ còn thiếu của mục tiêu.</p></section>`:''}
   ${(()=>{ const miss=L==='A1'?Object.keys(RPG).filter(id=>!(((st.rpg||{})[id]||{}).best>=.8)):[];   // v159 đề xuất đúng bài còn thiếu cho mục tiêu
     return miss.length?`<section class="panel stack" aria-label="Đóng vai còn thiếu"><h2>🎭 Đóng vai còn thiếu cho mục tiêu ${L}</h2><p class="hint">Mục tiêu A1 cần làm được các việc thật này bằng lời nói. Máy chép lời bạn nói; làm đúng việc ≥ 80% số lượt là đạt.</p><div class="units">${miss.map(rpgCard).join('')}</div></section>`:''; })()}
@@ -9486,7 +9593,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.ab9de3c61d.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.c579764891.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
@@ -9532,8 +9639,10 @@ const EHOST = {
   asr:(key,target,other,label)=>asrBox(key,target,other,label),
   asrRes:key=>ASR.key===key&&ASR.res?{p:ASR.res.word?(ASR.res.k==='ok'?1:0):ASR.res.p,k:ASR.res.k||''}:null,
   asrOff:()=>{ try{ asrReset(); }catch(e){} },
-  asrHear:key=>asrStart(key,'*',''),
-  asrHeard:key=>ASR.key===key&&ASR.res&&ASR.res.free?{heard:ASR.res.heard,alts:ASR.res.alts.slice(0,5)}:null,
+  // v161 long: Nói của Thi chuyển cấp chép liền (bật lại sau mỗi lần ngừng) tới khi asrStop; lúc đang nghe trả chữ tạm để hiện.
+  asrHear:(key,long)=>{ ASR.halt=false; ASR.long=!!long; asrStart(key,'*','',long?{quiet:true,keep:()=>!ASR.halt&&ASR.key===key}:undefined); },
+  asrStop:key=>{ if(ASR.key!==key) return; ASR.halt=true; spkStop(key); },
+  asrHeard:key=>ASR.key===key&&ASR.res&&ASR.res.free?{heard:ASR.res.heard,alts:ASR.res.alts.slice(0,5)}:ASR.key===key&&ASR.long&&ASR.on&&ASR.live?{heard:ASR.live,alts:[]}:null,
   asrBusy:key=>ASR.key===key&&ASR.on?true:ASR.key===key&&ASR.err?ASR.err:false,
   dialogs:lv=>DIALOGUES.filter(d=>d.lv===lv&&d.lines.some(l=>l.s==='B')).map(d=>({id:d.id,lv:d.lv,title:d.title,vi:d.vi,place:d.place||'',fn:d.fn||[],names:d.names||{A:'A',B:'B'},lines:d.lines.map(l=>({s:l.s,t:l.t,vi:l.vi||''})),rp:(st.dlg[d.id]||{}).rp||null})),
   // Kết quả đóng vai (như nút "Dễ / Được / Khó" của màn Đóng vai): giữ mức tốt nhất, tính vào Can-Do nói.
