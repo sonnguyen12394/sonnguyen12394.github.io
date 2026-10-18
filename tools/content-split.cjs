@@ -3,10 +3,10 @@
 //   node tools/content-split.cjs split   app.js đầy đủ → app.js (khung mọi cấp + chi tiết A1) + data/lv-<cấp>.<băm>.json
 //   node tools/content-split.cjs join    ngược lại: ghép data/*.json vào app.js để có lại bản đầy đủ (sửa nội dung rồi split lại)
 // Khung (luôn nằm trong app.js): unit {id,no,title,vi,words}, từ {id,word,pos,ipa,pic,vi,forms,family,…}.
-// Chi tiết (tải sau, theo cấp): unit {reading,guided}, từ {en,ex,exVi,ex2,ex2Vi,cloze,col,why,tip}.
+// Chi tiết (tải sau, theo cấp): unit {reading,guided,reads (v164 kho bài Ôn luyện)}, từ {en,ex,exVi,ex2,ex2Vi,cloze,col,why,tip}.
 const fs = require('fs'), path = require('path'), vm = require('vm'), crypto = require('crypto');
 const ROOT = path.join(__dirname, '..'), APP = path.join(ROOT, 'app.js'), DATA = path.join(ROOT, 'data');
-const U_DETAIL = ['reading', 'guided'], W_DETAIL = ['en', 'ex', 'exVi', 'ex2', 'ex2Vi', 'cloze', 'col', 'why', 'tip'];
+const U_DETAIL = ['reading', 'guided', 'reads'], W_DETAIL = ['en', 'ex', 'exVi', 'ex2', 'ex2Vi', 'cloze', 'col', 'why', 'tip'];
 const INLINE = [];   // v45 (engine M1): cả A1 cũng tải theo cấp; app.js chỉ còn khung, màn chào vẽ sẵn trong index.html
 
 const src = fs.readFileSync(APP, 'utf8');
