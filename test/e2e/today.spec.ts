@@ -123,7 +123,7 @@ test('v161 còn cặp âm / chức năng giao tiếp chưa qua mà thanh 📘 H�
     for (const n of miss) { const [k, id] = [n.slice(0, n.indexOf(':')), n.slice(n.indexOf(':') + 1)]; if (k === 'ph') st.sounds[id] = { best: 1 }; if (k === 'fn') st.fn[id] = { best: 1 }; } w.eval('save()'); });
   const b = (await plan(page)).find(x => x.k === 'use')!;
   expect(b.side).toBe('🔁 Ôn luyện');
-  expect(b.at).toMatch(/data-act="day(rpg|wrg)"/);
+  expect(b.at).toMatch(/data-act="day(rpg|wrg|stk)"/);   // v162 thêm Nói theo đề
   expect(errors).toEqual([]);
 });
 

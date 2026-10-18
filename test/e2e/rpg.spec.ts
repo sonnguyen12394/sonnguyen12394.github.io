@@ -118,7 +118,9 @@ test('v160 ▶ Ôn tiếp tự chọn loại bài: chưa đạt đóng vai → �
   const r = await page.evaluate(() => { const w = window as any, st = w.eval('st'), plan = w.eval('ndPlan');
     st.nd.lk = ['rpg', 'rpg']; const a = plan('A1').k;
     st.rpg = Object.fromEntries(Object.keys(w.eval('RPG')).map((k: string) => [k, { best: 1 }])); st.wrg = Object.fromEntries(Object.keys(w.eval('WRG')).map((k: string) => [k, { best: 1 }])); st.nd.lk = [];
-    return { a, b: plan('A1').k }; });
-  expect(r).toEqual({ a: 'wrg', b: 'read' });
+    const c = plan('A1').k;   // v162 còn Nói theo đề chưa đạt → đưa Nói theo đề
+    for (const t of w.eval('STASKS')) st.stask[t.id] = [{ day: 0, s: 1, w: 30 }];
+    return { a, c, b: plan('A1').k }; });
+  expect(r).toEqual({ a: 'wrg', c: 'stk', b: 'read' });
   expect(errors).toEqual([]);
 });
