@@ -139,22 +139,57 @@ test('v161 Nói theo đề A1 / A2 ở Học bài: ý tìm bằng từ khoá tro
   expect(errors).toEqual([]);
 });
 
-test('v162 ba đường: người mới → Học bài nhanh nhất; có nền → Ôn luyện nhanh nhất; có kiến thức nhưng lủng → ▶ Hôm nay (não gợi ý theo lượt vượt nhanh)', async ({ page, errors }) => {
+test('v162 → v163 ba đường: lời giới thiệu (người mới → Học bài nhanh nhất; có nền → Ôn luyện); não tự quyết, không còn dòng bắt chọn đường', async ({ page, errors }) => {
   await open(page, 'nd');
   await expect(page.locator('#app')).toContainText('Người đã có nền: đây là đường nhanh nhất');
   await expect(page.locator('#app .dayplan')).toContainText('Dành cho người đã có kiến thức nhưng còn lủng');
-  const fit = (to: Array<{ d: number; s: number }>, zero = false) => page.evaluate(([x, z]) => { const w = window as any, st = w.eval('st'); st.nd.to = x;
-    if (z) st.e.diag = { day: 0, u: 0, g: 0, n: 0 }; else delete st.e.diag; return w.eval('pathFit()'); }, [to, zero] as const);
-  expect(await fit([], true)).toBe('lib');
-  expect(await fit([])).toBe(null);
-  expect(await fit([{ d: 1, s: 0.9 }, { d: 2, s: 0.85 }])).toBe('nd');
-  expect(await fit([{ d: 1, s: 0.2 }, { d: 2, s: 0.3 }])).toBe('lib');
-  expect(await fit([{ d: 1, s: 0.9 }, { d: 2, s: 0.3 }, { d: 3, s: 0.8 }])).toBe('day');
-  await page.evaluate(() => (window as any).eval('render()'));
-  await expect(page.locator('#app .pathfit')).toContainText('▶ Hôm nay');
+  await expect(page.locator('#app .pathfit')).toHaveCount(0);
+  expect(await page.evaluate(() => typeof (window as any).pathFit)).toBe('undefined');
   await page.evaluate(() => (window as any).eval("go('lib')"));
   await expect(page.locator('#app')).toContainText('Người mới hoàn toàn: đây là đường nhanh nhất');
   const ax = await new AxeBuilder({ page }).include('#app .dayplan').withTags(AXE).analyze();
   expect(ax.violations.map(v => v.id)).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
+test('v163 một não, ba cách nhìn: từ đến hạn → bước đầu của cả ▶ Hôm nay và ▶ Ôn tiếp là ôn; bài chưa biết → Học bài đưa đúng bài đó trước bài mới', async ({ page, errors }) => {
+  await open(page, 'nd');
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), U = w.eval('U');
+    for (const x of w.eval('ALL_WORDS').slice(0, 5)) { const s = W(x.id); s.learned = true; s.due = t - 1; }
+    const a = { day: w.eval('dayPlan()').steps[0].k, nd: w.eval('ndPlan')('A1').k };
+    for (const x of w.eval('ALL_WORDS').slice(0, 5)) W(x.id).due = t + 9;
+    const u = w.eval('UNITS').filter((x: any) => x.level === 'A1')[6]; U(u.id).ndNeed = t;
+    const m = w.eval('mainAction')({ learn: true }), d = w.eval('dayPlan()').steps.find((s: any) => s.k === 'need');
+    return { a, h: m.h, btn: m.btn, need: d && d.at, uid: u.id, pick: w.eval('ndPick')('A1').u.id }; });
+  expect(r.a).toEqual({ day: 'due', nd: 'due' });
+  expect(r.btn).toContain(`data-unit="${r.uid}"`); expect(r.h).toContain('Học');
+  expect(r.need).toBe(`data-unit="${r.uid}"`);
+  expect(r.pick).not.toBe(r.uid);   // Ôn luyện thôi đưa bài chưa biết
+  expect(errors).toEqual([]);
+});
+
+test('v163 "gần được" (50–80%) 2 lần ở 2 ngày khác nhau → não chuyển bài sang Học bài; cùng ngày chỉ tính 1 lần', async ({ page, errors }) => {
+  await open(page, 'nd');
+  const uid = await page.evaluate(() => (window as any).eval('UNITS').filter((u: any) => u.level === 'A1' && u.reading)[5].id as string);
+  const mid = async () => {
+    await page.evaluate((u: string) => (window as any).eval('ndRead')(u, false), uid);
+    const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read, u = w.eval('UNITS').find((x: any) => x.id === R.uid);
+      return { q: u.reading.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
+    const n = R.q.length + R.v.length, wrong = Math.ceil(n * 0.3);   // ≈ 70% đúng
+    let k0 = 0;
+    for (const [i, k] of R.q.entries()) await page.locator(`[data-rpick="${i}:${k0++ < wrong ? (k + 1) % 3 : k}"]`).click();
+    for (const [j, k] of R.v.entries()) await page.locator(`[data-ndv="${j}:${k}"]`).click();
+    for (const [j, k] of R.g.entries()) await page.locator(`[data-ndg="${j}:${k}"]`).click();
+    await page.locator('[data-act="rsubmit"]').click();
+    return page.evaluate(() => { const r = (window as any).eval('ui').read.res; return r.n / r.of; });
+  };
+  const s1 = await mid(); expect(s1).toBeGreaterThanOrEqual(0.5); expect(s1).toBeLessThan(0.8);
+  await mid();   // cùng ngày: không tính thêm
+  expect(await page.evaluate((u: string) => [(window as any).eval('U')(u).ndMid, !!(window as any).eval('U')(u).ndNeed], uid)).toEqual([1, false]);
+  await page.evaluate(() => { const st = (window as any).eval('st'); st.offset = (st.offset || 0) + 1; });
+  await mid();
+  expect(await page.evaluate((u: string) => [(window as any).eval('U')(u).ndMid, !!(window as any).eval('U')(u).ndNeed], uid)).toEqual([2, true]);
+  await expect(page.locator('#app .fb')).toContainText('2 lần chỉ gần được');
+  await expect(page.locator(`#app [data-unit="${uid}"]`, { hasText: 'Học lại bài này' })).toBeVisible();
   expect(errors).toEqual([]);
 });

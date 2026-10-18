@@ -110,7 +110,7 @@ test('v162 Ôn luyện có 🗣️ Nói theo đề: đóng vai + viết đã đ�
   await open(page);
   await page.evaluate(() => { const w = window as any, st = w.eval('st');
     st.rpg = Object.fromEntries(Object.keys(w.eval('RPG')).map((k: string) => [k, { best: 1 }])); st.wrg = Object.fromEntries(Object.keys(w.eval('WRG')).map((k: string) => [k, { best: 1 }]));
-    st.nd.lk = []; w.eval('save()'); w.eval("go('nd')"); });
+    st.nd.lk = ['read', 'read']; w.eval('save()'); w.eval("go('nd')"); });   // v163 bài đọc đi trước; vừa đọc 2 bài liền thì xen bài khác loại
   expect(await page.evaluate(() => (window as any).eval('ndPlan')('A1').k)).toBe('stk');
   await expect(page.locator('#app [aria-label="Ôn tiếp"]')).toContainText('🗣️ Nói theo đề');
   await page.locator('#app [data-act="ndnext"]').click();
