@@ -182,6 +182,8 @@ test('kết quả phát âm cũ vẫn giữ: bản cũ đã đạt bộ cặp â
   // Ghi trạng thái "bản cũ" trước khi app chạy (app tự lưu khi rời trang nên không ghi đè sau khi đã mở).
   const raw = await page.evaluate((k: string) => { const w = window as any; w.eval('save()'); const r = JSON.parse(localStorage.getItem('vocab-ladder-v1')!);
     r.onboarded = true; r.sounds = { [k]: { best: 1, n: 1, last: 1 } }; delete r.ndfz; delete r.nd; return JSON.stringify(r); }, id);
+  // chờ tải xong chi tiết bài học: tải lại giữa lúc đang tải thì WebKit báo lỗi "access control checks" (lượt tải bị huỷ)
+  await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
   await page.addInitScript((r: string) => { if (!sessionStorage.getItem('nd-seeded')) { sessionStorage.setItem('nd-seeded', '1'); localStorage.setItem('vocab-ladder-v1', r); } }, raw);
   await page.reload();
   await page.waitForFunction(() => (window as any).ELREADY === true);
