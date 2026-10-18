@@ -2550,7 +2550,8 @@ function wtMissing(id){ const t=WT[id], s=st.wtask[id]||{}, miss=[];
   const ck=writeChecks(t,s.text), must=ck.slice(0,2).filter(x=>!x[0]), rest=ck.slice(2).filter(x=>!x[0]);
   if(must.length) miss.push('Độ dài và số đoạn theo yêu cầu'); if(rest.length>1) miss.push(`Máy kiểm tra: còn ${rest.length} mục chưa đạt (tối đa 1)`);
   // v160 bỏ bắt buộc tự chấm 4 tiêu chí (người sáng lập không muốn tự chấm): máy kiểm hình thức + đánh dấu đủ ý bài cần có. Tự chấm vẫn làm được, chỉ để tham khảo.
-  if((s.cks||[]).length<t.c.length) miss.push('Đánh dấu đủ các ý bài cần có');
+  const selfOk=WRUB.every((_,i)=>((s.self||[])[i]||0)>=SELF_OK);   // bài đã tự chấm đạt theo cách cũ (và trò Thư) vẫn tính
+  if((s.cks||[]).length<t.c.length&&!selfOk) miss.push('Đánh dấu đủ các ý bài cần có');
   return miss; }
 const wtDone = id => !wtMissing(id).length;
 const stDone = id => (st.stask[id]||[]).some(h=>h.s>=ST_OK||SRUB.every((_,i)=>(h.self||[])[i]>=SELF_OK));   // v159 máy chấm theo lời chép; lần tự chấm cũ vẫn giữ
