@@ -180,10 +180,11 @@ test('v148 như ELSA web: nhận diện tự tắt khi ngừng nhịp thì tự 
   expect(errors).toEqual([]);
 });
 
-test('v150 câu ngẫu nhiên theo cấp × bậc; câu tiếp theo trong cùng bài', async ({ page, errors }) => {
+test('v150 câu ngẫu nhiên theo cấp × bậc (v160 bậc máy tự chọn); câu tiếp theo trong cùng bài', async ({ page, errors }) => {
   await open(page);
   await page.evaluate(() => (window as any).eval("go('phon')"));
-  await page.locator('[data-act="phtier"][data-v="1"]').click();
+  await expect(page.locator('[data-act="phtier"]')).toHaveCount(0);   // v160 không còn nút chọn bậc
+  await page.locator('[data-act="phnew"]').click();
   const s1 = await page.locator('#phsent').inputValue();
   expect(s1).not.toBe('Hanoi has four seasons.');
   expect((s1.match(/[A-Za-z0-9'’-]+/g) || []).length).toBeLessThanOrEqual(10);
@@ -196,5 +197,15 @@ test('v150 câu ngẫu nhiên theo cấp × bậc; câu tiếp theo trong cùng 
   await page.locator('[data-act="phnext"]').click();
   await expect(page.locator('#phsent')).not.toHaveValue(before);
   await expect(page.locator('#app .fb strong', { hasText: 'Điểm phát âm' })).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+test('v160 bậc tự động: 3 câu liền ≥ 80 điểm thì lên câu dài hơn, 2 câu liền < 50 thì xuống; Bài luyện theo cấp lên bậc khi đạt ≥ 80%', async ({ page, errors }) => {
+  await open(page);
+  const r = await page.evaluate(() => { const w = window as any, ad = w.eval('phTierAdapt'), PH = w.eval('PH'), st = w.eval('st'); PH.lv = 'A1'; PH.tier = 1;
+    ad(90); ad(85); const a = PH.tier; ad(88); const b = PH.tier; ad(30); ad(20); const c = PH.tier;
+    const G = { lv: 'A1', mode: 'e2v' }, auto = w.eval('gpAutoTier'), t0 = auto(G); st.pron['gp:A1:1:e2v'] = { best: 0.85, n: 1 }; const t1 = auto(G);
+    st.pron['gp:A1:2:e2v'] = { best: 0.3, n: 2, low: 2 }; const t2 = auto(G); return { a, b, c, t0, t1, t2 }; });
+  expect(r).toEqual({ a: 1, b: 2, c: 1, t0: 1, t1: 2, t2: 1 });
   expect(errors).toEqual([]);
 });

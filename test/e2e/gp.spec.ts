@@ -46,7 +46,7 @@ test('Anh → Việt: xem nghĩa + nghĩa từng từ, tự chấm từng câu, 
     await page.locator('[data-act="gpnext"]').click();
   }
   await expect(page.locator('#app h1')).toHaveText('100%');
-  await expect(page.locator('#app')).toContainText('Thử bậc Khó');
+  await expect(page.locator('#app')).toContainText('Bài sau máy cho lên bậc');   // v160 bậc máy tự chọn
   let other = false;
   for (let k = 0; k < 4 && !other; k++) { await page.locator('[data-act="gpnew"]').first().click(); other = JSON.stringify(await lines(page)) !== JSON.stringify(a); }
   expect(other).toBe(true);
