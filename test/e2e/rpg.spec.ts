@@ -87,8 +87,9 @@ test('v159 khuôn tình huống: 100 hạt × mọi tình huống, câu mẫu lu
 
 test('v160 ✍️ viết theo tình huống: đủ ý + đủ từ → đạt; thiếu ý → chưa đạt; 100 hạt × mọi khuôn, bài mẫu luôn đạt; Can-Do viết lời mời có ref máy chấm', async ({ page, errors }) => {
   await open(page);
+  // WRG.gap cần từ đang thiếu của người học (não chỉ đưa khi có ≥ 3): 100 hạt kiểm riêng ở readgap.spec.ts
   const bad = await page.evaluate(() => { const w = window as any, WRG = w.eval('WRG'), rng = w.eval('rpgRng'), sc = w.eval('wrgScore'), out: string[] = [];
-    for (const [id, S] of Object.entries<any>(WRG)) for (let seed = 1; seed <= 100; seed++) { const t = S.make(rng(seed * 7919)), r = sc(t, t.m); if (r.s < 0.6 || r.pts.some((x: boolean) => !x)) out.push(`${id}#${seed}: ${t.m}`); }
+    for (const [id, S] of Object.entries<any>(WRG).filter(([k]) => k !== 'gap')) for (let seed = 1; seed <= 100; seed++) { const t = S.make(rng(seed * 7919)), r = sc(t, t.m); if (r.s < 0.6 || r.pts.some((x: boolean) => !x)) out.push(`${id}#${seed}: ${t.m}`); }
     return out.slice(0, 5); });
   expect(bad).toEqual([]);
   await page.evaluate(() => (window as any).eval("startWrg('invite')"));

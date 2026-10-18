@@ -87,8 +87,8 @@ async function ndRead(page: Page, uid: string, listen = false): Promise<void> {
 }
 // chọn đáp án qua giao diện: đúng hết, hoặc sai ở các câu hiểu có chỉ số trong `bad`
 async function answer(page: Page, bad: number[] = [], gBad = false): Promise<void> {
-  const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read, u = w.eval('UNITS').find((x: any) => x.id === R.uid);
-    return { q: u.reading.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
+  const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read;
+    return { q: R.rd.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
   for (const [i, k] of R.q.entries()) await page.locator(`[data-rpick="${i}:${bad.includes(i) ? (k + 1) % 3 : k}"]`).click();
   for (const [j, k] of R.v.entries()) await page.locator(`[data-ndv="${j}:${k}"]`).click();   // v158 nghĩa từ trong bài
   for (const [j, k] of R.g.entries()) await page.locator(`[data-ndg="${j}:${gBad ? (k + 1) % 2 : k}"]`).click();

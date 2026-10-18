@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 101;
+const STATE_V = 18, APP_VERSION = 102;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -6239,7 +6239,7 @@ const ygLink = word => /^[A-Za-z][A-Za-z '-]*$/.test(word||'')&&!IN_VIEWER
    kết hợp từ, giải thích lỗi, mẹo) nằm ở data/lv-<cấp>.<băm>.json, tải ngầm ngay sau khi mở (cấp đang học trước).
    DETAIL_HASH do tools/content-split.cjs ghi; rỗng = app.js đầy đủ (chưa tách) và mọi thứ sẵn sàng ngay.
    Hai lớp an toàn khi chưa tải xong: (1) chặn nút cần chi tiết rồi tự bấm lại khi xong, (2) màn cần chi tiết hiện "đang tải". */
-const DETAIL_HASH = {"A1":"e94d99ec83","A2":"567e2d4556","B1":"9e936381dc","B2":"7f68e836a4","C1":"dfa2839b17","C2":"823bc2456d"};
+const DETAIL_HASH = {"A1":"9b29f18bb3","A2":"17b279279d","B1":"9e936381dc","B2":"7f68e836a4","C1":"dfa2839b17","C2":"823bc2456d"};
 const DETAIL = {ready:new Set(CONTENT.levels.map(L=>L.id).filter(id=>!DETAIL_HASH[id])), p:{}, err:'', waiting:null};
 const detailAll = () => DETAIL.ready.size>=CONTENT.levels.length;
 const UNIT_BY_ID = Object.fromEntries(UNITS.map(u=>[u.id,u]));

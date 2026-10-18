@@ -21,8 +21,8 @@ type Step = { k: string; side: string; t: string; at: string };
 const plan = (page: Page): Promise<Step[]> => page.evaluate(() => (window as any).eval('dayPlan()').steps.map((x: any) => ({ k: x.k, side: x.side, t: x.t, at: x.at })));
 // Trả lời sai hết câu hiểu bài + nghĩa từ (dưới 50%).
 async function answerAllWrong(page: Page): Promise<void> {
-  const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read, u = w.eval('UNITS').find((x: any) => x.id === R.uid);
-    return { q: u.reading.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
+  const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read;
+    return { q: R.rd.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
   for (const [i, k] of R.q.entries()) await page.locator(`[data-rpick="${i}:${(k + 1) % 3}"]`).click();
   for (const [j, k] of R.v.entries()) await page.locator(`[data-ndv="${j}:${(k + 1) % 3}"]`).click();
   for (const [j, k] of R.g.entries()) await page.locator(`[data-ndg="${j}:${(k + 1) % 2}"]`).click();
@@ -173,8 +173,8 @@ test('v163 "gần được" (50–80%) 2 lần ở 2 ngày khác nhau → não c
   const uid = await page.evaluate(() => (window as any).eval('UNITS').filter((u: any) => u.level === 'A1' && u.reading)[5].id as string);
   const mid = async () => {
     await page.evaluate((u: string) => (window as any).eval('ndRead')(u, false), uid);
-    const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read, u = w.eval('UNITS').find((x: any) => x.id === R.uid);
-      return { q: u.reading.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
+    const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read;
+      return { q: R.rd.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
     const n = R.q.length + R.v.length, wrong = Math.ceil(n * 0.3);   // ≈ 70% đúng
     let k0 = 0;
     for (const [i, k] of R.q.entries()) await page.locator(`[data-rpick="${i}:${k0++ < wrong ? (k + 1) % 3 : k}"]`).click();
