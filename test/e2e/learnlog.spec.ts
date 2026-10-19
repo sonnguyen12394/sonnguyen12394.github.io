@@ -25,7 +25,8 @@ test('v165 ghi dữ liệu học: mặc định tắt (không gửi gì); bật 
   await page.evaluate(() => (window as any).eval('logFlush()'));
   await expect.poll(() => sent.flatMap(b => b.evs).length).toBeGreaterThanOrEqual(4);
   const evs = sent.flatMap(b => b.evs);
-  expect(sent.every(b => b.k === key && /^[a-z0-9]{6,16}$/.test(b.dev) && b.v === 103)).toBe(true);
+  const v = await page.evaluate(() => (window as any).eval('APP_VERSION'));
+  expect(sent.every(b => b.k === key && /^[a-z0-9]{6,16}$/.test(b.dev) && b.v === v)).toBe(true);
   expect(evs.map(e => e.k)).toEqual(expect.arrayContaining(['snap', 'evc', 'ans', 'go']));
   const ans = evs.find(e => e.k === 'ans');
   expect(ans).toMatchObject({ node: 'u:a1-u1', ok: 0, giv: 'brekfast', rt: 4200, item: 'w:breakfast:rcl' });

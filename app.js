@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 103;
+const STATE_V = 18, APP_VERSION = 104;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -4362,6 +4362,75 @@ function logPanel(){ const s=syncGet(), on=!!(s&&s.log), n=logQ().length;
     <p class="note">Khi bật: mỗi câu trả lời (đúng / sai, câu bạn gõ, thời gian), màn đã mở và chỉ số trong ngày (hai thanh Học / Nhớ, chặng ⚡, chỗ lủng) được gửi lên máy chủ theo mã đồng bộ, để sau này phân tích cách bạn học. Không có tên, email hay tài khoản. App chỉ gửi, không đọc lại được.</p>
     ${on?`<p class="note">Đang bật · ${n?`${n} dòng chờ gửi`:'đã gửi hết'}. Xoá: nút "Xoá tiến độ trên máy chủ" ở phần đồng bộ xoá luôn nhật ký này.</p><div class="row"><button class="btn" data-act="lognow">Gửi ngay</button><button class="btn ghost" data-act="logoff">Tắt ghi dữ liệu</button></div>`
       :`<div class="row"><button class="btn primary" data-act="logon">Bật ghi dữ liệu học</button></div>${s?'':'<p class="hint">Bật sẽ tạo mã đồng bộ nếu chưa có.</p>'}`}</section>`; }
+// ---- v166 💬 Góp ý mọi màn (người sáng lập 19/10/2026: "trong quá trình học muốn có nút góp ý để gửi ý kiến cũng như hình ảnh nếu cần, rồi sẽ tổng hợp lại xử lý").
+// Nút 💬 trên thanh đầu trang mở một tấm nổi ĐÈ lên màn đang học (không go(): không mất câu đang làm, không dừng đồng hồ).
+// Tự kèm bối cảnh (màn, câu đang làm, bản app, máy); tối đa 3 ảnh, nén JPEG ≤ 1280 px ở máy. Ảnh lên kho riêng tư el-gopy (chỉ tải lên),
+// không được thì gửi kèm dạng data URL. Nội dung qua el_gopy_post (supabase/migrations/20261019100000_gopy.sql). Mất mạng: hàng chờ, gửi bù.
+// Không cần mã đồng bộ; có mã thì nối với nhật ký học (kid). Đọc / xử lý: docs/GOP-Y.md.
+const GY_LS = KEY+'-gopy', GY_SENT = KEY+'-gopy-sent', GY_IMG_N = 3, GY_PX = 1280;
+const GY_KIND = [['loi','🐞 Lỗi'],['kho','🤔 Khó hiểu'],['y','💡 Ý tưởng'],['khac','📝 Khác']];
+const GY = {open:false,kind:'loi',txt:'',imgs:[],ctx:null,busy:false,msg:''};
+const gyLS = (k,v) => { try{ if(v===undefined){ const x=JSON.parse(localStorage.getItem(k)||'[]'); return Array.isArray(x)?x:[]; } v.length?localStorage.setItem(k,JSON.stringify(v)):localStorage.removeItem(k); return true; }catch(e){ return v===undefined?[]:false; } };
+function gyCtx(){ const s=ui.view==='session'&&ui.sess?ui.sess:null, g=ui.view==='gsess'&&ui.gs?ui.gs:null, q=s?s.q[s.i]:g?g.q[g.i]:null, h=document.querySelector('#app h1');
+  const it=q?(q.wid?'w:'+q.wid+':'+q.dim:q.gid?'g:'+q.gid+':'+q.dim:null):ui.fix&&ui.fix.q[ui.fix.i]?'fx:'+ui.fix.q[ui.fix.i].k+':'+ui.fix.q[ui.fix.i].id:null;
+  return {view:ui.view,h1:h?h.textContent.trim().slice(0,120):null,unit:ui.unitId||null,gp:ui.gpId||null,sk:s?s.kind:g?'g'+g.kind:null,item:it,
+    prompt:q?String(q.prompt||q.masked||(q.wid&&WORD[q.wid]?WORD[q.wid].word:'')||'').slice(0,200):null,read:ui.read&&ui.view==='read'?ui.read.uid:null,
+    path:(st.fast||{}).path||null,lv:ndLv(),day:today(),ua:String(navigator.userAgent||'').slice(0,160),scr:innerWidth+'x'+innerHeight}; }
+function gyOpen(){ GY.open=true; GY.ctx=gyCtx(); GY.msg=''; gyDraw(); setTimeout(()=>{ const t=document.getElementById('gytxt'); t&&t.focus&&t.focus(); },30); }
+function gyClose(){ GY.open=false; const el=document.getElementById('gysheet'); if(el) el.remove(); }
+function gyDraw(){ let el=document.getElementById('gysheet'); if(!GY.open){ if(el) el.remove(); return; }
+  const t=document.getElementById('gytxt'); if(t) GY.txt=t.value;
+  if(!el){ el=document.createElement('div'); el.id='gysheet'; el.className='gysheet'; document.body.appendChild(el); }
+  const c=GY.ctx||{}, q=gyLS(GY_LS).length;
+  el.innerHTML=`<div class="gybox" role="dialog" aria-modal="true" aria-labelledby="gy-t"><div class="spread"><h2 id="gy-t">💬 Góp ý</h2><button class="btn ghost small" data-act="gyclose" aria-label="Đóng góp ý">✕</button></div>
+    <div class="row" role="group" aria-label="Loại góp ý" style="gap:6px">${GY_KIND.map(([k,l])=>`<button class="btn small ${GY.kind===k?'primary':''}" data-act="gykind" data-v="${k}" aria-pressed="${GY.kind===k}">${l}</button>`).join('')}</div>
+    <label class="hint" for="gytxt">Bạn thấy gì? (không ghi tên, số điện thoại)</label>
+    <textarea id="gytxt" class="field" rows="4" maxlength="4000" style="font:400 15px/1.5 var(--body);width:100%">${esc(GY.txt)}</textarea>
+    <div class="row" style="gap:8px;align-items:center"><label class="btn small" for="gyfile">📷 Thêm ảnh</label><input id="gyfile" type="file" accept="image/*" multiple hidden><span class="hint">${GY.imgs.length}/${GY_IMG_N} ảnh · ảnh chụp màn hình rất có ích</span></div>
+    ${GY.imgs.length?`<div class="row" style="gap:6px">${GY.imgs.map((u,i)=>`<span class="gyth"><img src="${u}" alt="Ảnh ${i+1}"><button class="btn ghost small" data-act="gyrm" data-v="${i}" aria-label="Bỏ ảnh ${i+1}">✕</button></span>`).join('')}</div>`:''}
+    <p class="hint">Gửi kèm: màn “${esc(c.h1||(c.sk&&(KIND_LABEL[c.sk]||KIND_LABEL[c.sk.slice(1)]))||c.view||'')}”${c.item?`, câu đang làm (${esc(c.item)})`:''}, bản ${APP_VERSION}, loại máy. Điểm này giúp sửa đúng chỗ.</p>
+    ${GY.msg?`<p class="fb neutral" role="status"><span>${esc(GY.msg)}</span></p>`:''}
+    <div class="row"><button class="btn primary" data-act="gysend" ${GY.busy?'disabled':''}>${GY.busy?'Đang gửi…':'Gửi góp ý'}</button>${q?`<span class="hint">${q} góp ý chờ gửi (mất mạng)</span>`:''}</div></div>`;
+  const f=el.querySelector('#gyfile'); if(f) f.onchange=()=>gyAddImgs(f.files); }
+// Nén ảnh ở máy: cạnh dài ≤ 1280 px, JPEG 0,72 (ảnh chụp màn hình iPhone ~ 150–300 KB).
+function gyShrink(file,px=GY_PX,qual=.72){ return new Promise(res=>{ const r=new FileReader(); r.onerror=()=>res(null);
+  r.onload=()=>{ const im=new Image(); im.onerror=()=>res(null); im.onload=()=>{ const k=Math.min(1,px/Math.max(im.width,im.height)), cv=document.createElement('canvas');
+      cv.width=Math.max(1,Math.round(im.width*k)); cv.height=Math.max(1,Math.round(im.height*k)); cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height); res(cv.toDataURL('image/jpeg',qual)); }; im.src=r.result; };
+  r.readAsDataURL(file); }); }
+async function gyAddImgs(files){ const t=document.getElementById('gytxt'); if(t) GY.txt=t.value;
+  for(const f of [...(files||[])]){ if(GY.imgs.length>=GY_IMG_N){ GY.msg=`Tối đa ${GY_IMG_N} ảnh.`; break; } if(!/^image\//.test(f.type||'')) continue; const u=await gyShrink(f); if(u) GY.imgs.push(u); }
+  gyDraw(); }
+async function gySend(){ const t=document.getElementById('gytxt'), txt=String(t?t.value:GY.txt).trim(); GY.txt=txt;
+  if(!txt) { GY.msg='Gõ vài chữ mô tả trước nhé (ảnh thôi thì khó hiểu ý).'; return gyDraw(); }
+  const item={id:Math.random().toString(36).slice(2,12),kind:GY.kind,txt:txt.slice(0,4000),ctx:GY.ctx||gyCtx(),imgs:GY.imgs.slice(0,GY_IMG_N),t:Date.now()};
+  const q=gyLS(GY_LS); q.push(item); if(!gyLS(GY_LS,q)){ q[q.length-1]={...item,imgs:[]}; gyLS(GY_LS,q); }   // đầy bộ nhớ: giữ chữ, bỏ ảnh
+  try{ logEv('evc',{e:'gopy:'+item.kind}); }catch(e){}
+  GY.busy=true; gyDraw(); await gyFlush(); GY.busy=false;
+  const left=gyLS(GY_LS).some(x=>x.id===item.id);
+  GY.txt=''; GY.imgs=[]; gyClose(); toast(left?'Đã lưu góp ý trên máy. Có mạng app sẽ tự gửi.':'Đã gửi góp ý. Cảm ơn bạn!'); }
+const GY_BASE = () => SYNC.url.replace(/\/rest\/v1\/rpc\/$/,'');
+async function gyUpload(u){ const d=new Date(), path=`${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}/${(Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)).slice(0,20)}.jpg`;
+  const b=await (await fetch(u)).blob();
+  const r=await fetch(GY_BASE()+'/storage/v1/object/el-gopy/'+path,{method:'POST',headers:{apikey:SYNC.key,'Content-Type':'image/jpeg'},body:b});
+  return r.ok?path:null; }
+let _gyBusy=false;
+async function gyFlush(){ if(_gyBusy||IN_VIEWER) return; const q=gyLS(GY_LS); if(!q.length) return; _gyBusy=true;
+  for(const it of q){ try{ const imgs=[], imgd=[];
+      for(const u of it.imgs||[]){ let p=null; try{ p=await gyUpload(u); }catch(e){} if(p) imgs.push(p); else { const x=u.length>690000?await gyShrinkUrl(u):u; if(x&&x.length<=690000) imgd.push(x); } }
+      const s=syncGet(), body={k:s?s.k:null,dev:logDev(),kind:it.kind,txt:it.txt,ctx:it.ctx||{},imgs,imgd,v:APP_VERSION};
+      let id=await syncRpc('el_gopy_post',body); if(!(+id>0)&&imgd.length) id=await syncRpc('el_gopy_post',{...body,imgd:[],txt:it.txt+' [ảnh không gửi được]'});
+      if(!(+id>0)){ gyLS(GY_LS,gyLS(GY_LS).filter(x=>x.id!==it.id)); continue; }   // máy chủ từ chối (sai dạng / quá nhiều trong giờ): bỏ, không thử mãi
+      if(+id>0){ gyLS(GY_LS,gyLS(GY_LS).filter(x=>x.id!==it.id)); const sent=gyLS(GY_SENT); sent.push({id:+id,t:it.t,kind:it.kind,txt:it.txt.slice(0,80),n:(it.imgs||[]).length}); gyLS(GY_SENT,sent.slice(-50)); }
+    }catch(e){ break; } }
+  _gyBusy=false; }
+// Ảnh dự phòng quá lớn để gửi kèm: nén thêm (900 px, JPEG 0,6).
+function gyShrinkUrl(u){ return new Promise(res=>{ const im=new Image(); im.onerror=()=>res(u.slice(0,0)); im.onload=()=>{ const k=Math.min(1,900/Math.max(im.width,im.height)), cv=document.createElement('canvas');
+  cv.width=Math.round(im.width*k); cv.height=Math.round(im.height*k); cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height); res(cv.toDataURL('image/jpeg',.6)); }; im.src=u; }); }
+function gySentHtml(){ const s=gyLS(GY_SENT), q=gyLS(GY_LS); if(!s.length&&!q.length) return '';
+  return `<section class="panel stack" aria-label="Góp ý đã gửi"><h3>Góp ý đã gửi</h3>${q.length?`<p class="note">${q.length} góp ý chờ gửi (mất mạng). <button class="btn small" data-act="gyflush">Gửi lại</button></p>`:''}
+    <ul class="stack" style="gap:4px;list-style:none;padding:0">${s.slice(-10).reverse().map(x=>`<li class="hint">#${x.id} · ${esc((GY_KIND.find(k=>k[0]===x.kind)||['',''])[1])} · ${esc(x.txt)}${x.n?` · ${x.n} ảnh`:''}</li>`).join('')}</ul></section>`; }
+if(typeof window!=='undefined'){ window.addEventListener('online',()=>{ try{ gyFlush(); logFlush(); }catch(e){} }); setTimeout(()=>{ try{ gyFlush(); }catch(e){} },8000); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&GY.open) gyClose(); });
 /*</SYNC>*/
 // Lời nhắc qua Google Calendar: mở trang tạo sự kiện lặp lại hằng ngày (không cần tải file).
 function gcalLink(){
@@ -4853,7 +4922,9 @@ const FB = {
   exam:['IELTS','VSTEP','Thi tốt nghiệp THPT','Chứng chỉ khác','Không thi, học để dùng'],
 };
 function viewFeedback(){ const last=(EV().fb||[]).slice(-1)[0], ck=(k,t)=>`<label class="chip"><input type="checkbox" name="${k}" value="${esc(t)}"> ${esc(t)}</label>`;
-  return `<section class="stack"><span class="eyebrow">Góp ý</span><h1>Giúp app hiểu bạn hơn</h1><p class="muted note">1 phút. Câu trả lời lưu trên máy này; chỉ đến tay người làm app khi bạn tự gửi <b>dữ liệu học ẩn danh</b> (bên dưới).${last?` Lần góp ý gần nhất: ${dayLabel(last.day)}.`:''}</p></section>
+  return `<section class="panel stack"><h2>💬 Gặp lỗi hay chỗ khó hiểu?</h2><p class="note">Bấm 💬 trên thanh đầu trang ở bất kỳ màn nào: gõ vài chữ, thêm ảnh chụp màn hình. App tự kèm màn và câu đang làm.</p><div class="row"><button class="btn primary" data-act="gyopen">💬 Góp ý kèm ảnh</button></div></section>
+  ${gySentHtml()}
+  <section class="stack"><span class="eyebrow">Góp ý</span><h1>Giúp app hiểu bạn hơn</h1><p class="muted note">1 phút. Câu trả lời lưu trên máy này; chỉ đến tay người làm app khi bạn tự gửi <b>dữ liệu học ẩn danh</b> (bên dưới).${last?` Lần góp ý gần nhất: ${dayLabel(last.day)}.`:''}</p></section>
   <form class="panel stack" data-form="feedback">
     <fieldset class="stack" style="border:0;padding:0;margin:0;gap:6px"><legend><b>App có giúp bạn tiến bộ không?</b></legend><div class="row">${[1,2,3,4,5].map(n=>`<label class="chip"><input type="radio" name="rate" value="${n}"> ${n}</label>`).join('')}<span class="hint">1 = không, 5 = rất nhiều</span></div></fieldset>
     <fieldset class="stack" style="border:0;padding:0;margin:0;gap:6px"><legend><b>Bạn thích điều gì nhất?</b></legend><div class="chips">${FB.like.map(t=>ck('like',t)).join('')}</div></fieldset>
@@ -5172,6 +5243,9 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:104,d:'2026-10-19',t:'💬 Góp ý ngay khi đang học, kèm ảnh',items:[
+    'Nút 💬 trên thanh đầu trang, có ở mọi màn: chọn loại (lỗi, khó hiểu, ý tưởng), gõ vài chữ, thêm tới 3 ảnh (ảnh chụp màn hình rất có ích).',
+    'App tự kèm màn và câu đang làm để sửa đúng chỗ. Mất mạng thì lưu trên máy, có mạng tự gửi. Không cần tài khoản.']},
   {v:103,d:'2026-10-19',t:'Ghi dữ liệu học để phân tích (tự bật)',items:[
     'Tôi → Cài đặt → "Ghi dữ liệu học": mỗi câu trả lời, màn đã mở và chỉ số trong ngày được gửi lên máy chủ theo mã đồng bộ, để sau này phân tích cách học.',
     'Không có tên, email hay tài khoản. App chỉ gửi, không đọc lại được. Mặc định tắt; tắt lúc nào cũng được.']},
@@ -5880,6 +5954,12 @@ document.addEventListener('click',e=>{
     case 'asr': return asrStart(d.k,d.t,d.o);
     case 'syncon': return syncEnable();
     case 'logon': return logEnable();   // v165 nhật ký học
+    case 'gyopen': return gyOpen();   // v166 💬 góp ý
+    case 'gyclose': return gyClose();
+    case 'gykind': { const t=document.getElementById('gytxt'); if(t) GY.txt=t.value; GY.kind=d.v; return gyDraw(); }
+    case 'gyrm': GY.imgs.splice(+d.v,1); return gyDraw();
+    case 'gysend': return gySend();
+    case 'gyflush': return gyFlush().then(()=>render());
     case 'logoff': return logDisable();
     case 'lognow': return logFlush().then(()=>{ toast(logQ().length?'Chưa gửi được, app sẽ thử lại sau.':'Đã gửi hết dữ liệu học.'); render(); });
     case 'syncnow': SYNC_ST.err=''; { const x=syncGet(); if(x){ x.dirty=true; syncSet(x); } } render(); return syncNow();
