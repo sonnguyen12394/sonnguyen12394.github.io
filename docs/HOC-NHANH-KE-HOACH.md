@@ -1,6 +1,6 @@
-# ⚡ Học nhanh: kế hoạch (chờ người sáng lập duyệt)
+# ⚡ Học nhanh: kế hoạch và bản đã làm
 
-Soạn 19/10/2026. **Chưa sửa mã.** Tự soạn, chưa người thật kiểm.
+Soạn 19/10/2026. **Đã làm ở v164 (bản 102)**, xem §9 cho chỗ khác kế hoạch ban đầu. Tự soạn, chưa người thật kiểm.
 
 ## 1. Quyết định đã chốt (người sáng lập, 19/10/2026)
 
@@ -106,3 +106,17 @@ Mỗi PR chạy đủ `check`, `test`, `content`, `build`, `fresh` + e2e bị �
 1. Ngưỡng gợi ý đường nhanh: 40% (đề xuất) hay khác?
 2. Tên tab: "⚡ Học nhanh" (đề xuất)?
 3. Có giữ "📖 Đọc / nghe lại" cho unit đã quên trong Học nhanh không? Đề xuất: không, gộp vào ôn đến hạn.
+
+## 9. Bản đã làm (v164) — khác kế hoạch ở đâu
+
+Người sáng lập chọn mặc định ở §8 (ngưỡng 40%, tên "⚡ Học nhanh", gộp đọc lại vào ôn) và thêm yêu cầu: **làm cho người học lâu năm nhưng mất gốc, không học lại từ đầu**.
+
+- **Đo nền không làm riêng.** Mỗi cấp có 87 unit; bài đo 30 câu chỉ chạm 30 unit, còn lại vẫn phải đo lại. Nên đo nền = **chặng đầu tiên** của Vượt chặng. Mỗi chặng 10 unit × 2 câu (1 câu gõ từ theo nghĩa + 1 câu dùng trong câu), nên đo tới đâu là qua luôn tới đó.
+- **Người mất gốc thường nhận ra được nhưng không tự viết ra được**, nên chặng dùng phần lớn câu tự gõ.
+- **Mục tiêu A2 gồm cả nút A1** (265 nút: 174 unit, 58 điểm ngữ pháp, chức năng, âm), nên đường nhanh đi A1 rồi A2. Người có nền vượt A1 nhanh: 13 chặng × khoảng 8 phút.
+- **Vá kèm gốc A1:** sai điểm A2 thì hỏi lại điểm A1 nền của nó trước (bảng `G_ROOT`, soạn tay). Gốc đúng thì bỏ qua ngay, sai thì xem thẻ gốc rồi làm lại.
+- **Câu tự gõ trong đọc / nghe nguyên bài: chưa làm.** Chặng đã có câu tự gõ; bài đọc giữ trắc nghiệm.
+- **Bot mô phỏng (P5): chưa làm.** Đo bằng người thật theo §7.
+
+**Ước tính (suy luận, chưa đo):** đi đường nhanh, người có nền vượt hết 27 chặng A1 + A2 mất khoảng 3,5 giờ, cộng thời gian vá. Học bài cho 174 unit lâu hơn nhiều lần. Số thật phải đo theo §7.
+

@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 101;
+const STATE_V = 18, APP_VERSION = 102;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1058,7 +1058,10 @@ function migrate(x){
   x.rid||=newRid(); x.me||={}; x.ev||={}; x.oral||={};
   for(const k of ['cando','dlg','fn','pron','wtask','stask','lread','lis','shadow','rx','pv','med','sp','pa']) x[k]||={};
   // v149 🗣 Nói & Đọc (người sáng lập 17/10/2026: thôi tính tất cả): chụp một lần kết quả phát âm đã có; Can-Do chỉ đọc bản chụp này.
-  x.nd||={d:{}}; x.nd.d||={}; if(!x.rpg||typeof x.rpg!=='object'||Array.isArray(x.rpg)) x.rpg={}; if(!x.wrg||typeof x.wrg!=='object'||Array.isArray(x.wrg)) x.wrg={}; if(!x.ndfz) x.ndfz={sounds:JSON.parse(JSON.stringify(x.sounds||{})),pron:JSON.parse(JSON.stringify(x.pron||{}))};
+  x.nd||={d:{}}; x.nd.d||={};
+  { const F=x.fast&&typeof x.fast==='object'&&!Array.isArray(x.fast)?x.fast:{};   // v164 ⚡ Học nhanh (không tra GPT ở đây: migrate chạy trước khi khai báo ngữ pháp)
+    x.fast={path:F.path==='fast'||F.path==='normal'?F.path:null,ch:F.ch&&typeof F.ch==='object'&&!Array.isArray(F.ch)?F.ch:{},
+      gap:Array.isArray(F.gap)?F.gap.filter(g=>g&&(g.k==='w'||g.k==='g')&&typeof g.id==='string').map(g=>({k:g.k,id:g.id,u:typeof g.u==='string'?g.u:null,d:Math.round(numIn(g.d,0,1e6,0)),...(g.root?{root:true,of:String(g.of||'')}:{})})).slice(0,600):[]}; } if(!x.rpg||typeof x.rpg!=='object'||Array.isArray(x.rpg)) x.rpg={}; if(!x.wrg||typeof x.wrg!=='object'||Array.isArray(x.wrg)) x.wrg={}; if(!x.ndfz) x.ndfz={sounds:JSON.parse(JSON.stringify(x.sounds||{})),pron:JSON.parse(JSON.stringify(x.pron||{}))};
   if(!Array.isArray(x.exam)) x.exam=[];
   x.xpd||={}; x.rec||={combo:0}; x.cos||={own:[],skin:'',acc:''}; x.cos.sk||=[];
   x.xp??=0; x.freeze||={n:0,used:[],earned:0}; x.games||={speed:0,match:0,ch:[]}; x.story||={}; x.sounds||={}; x.gram||={}; x.glevels||={}; x.gwrite||={}; x.flags||=[]; x.hist||={}; x.badges||=[];
@@ -1075,7 +1078,7 @@ function sanitizeState(x){
   const dims = (d,keys) => Object.fromEntries(keys.map(k=>[k,numIn(obj(d)[k],0,1)]));
   const srs = v => ({stage:Math.round(numIn(v.stage,0,30,0)),due:v.due==null?null:Math.round(numIn(v.due,0,1e6,0)),ivl:numIn(v.ivl,0,3650,0),ease:numIn(v.ease,EASE.min,EASE.max,EASE.start),learned:!!v.learned,...(v.lp>0?{lp:Math.round(numIn(v.lp,0,1e4,0))}:{}),...(v.ld>0?{ld:Math.round(numIn(v.ld,0,1e6,0))}:{}),...(v.fs!=null?{fs:numIn(v.fs,.1,36500,1),fd:numIn(v.fd,1,10,5),fl:Math.round(numIn(v.fl,0,1e6,0))}:{})});
   x.words=pick(x.words,k=>!!WORD[k],v=>({...srs(v),d:dims(v.d,['rec','rcl','spl','ctx','col'])}));
-  x.units=pick(x.units,k=>UNITS.some(u=>u.id===k),v=>({learned:!!v.learned,practiced:Math.round(numIn(v.practiced,0,1e4,0)),best:numIn(v.best,0,1),passed:!!v.passed,skipped:!!v.skipped,speak:Math.round(numIn(v.speak,0,1e4,0)),written:!!v.written,read:numIn(v.read,0,1),listen:numIn(v.listen,0,1),...(v.pd!=null?{pd:Math.round(numIn(v.pd,0,1e6,0))}:{}),...(v.ndPass!=null?{ndPass:Math.round(numIn(v.ndPass,0,1e6,0))}:{}),...(v.ndNeed!=null?{ndNeed:Math.round(numIn(v.ndNeed,0,1e6,0))}:{}),...(v.ndLow?{ndLow:Math.round(numIn(v.ndLow,0,99,0))}:{}),...(v.ndMid?{ndMid:Math.round(numIn(v.ndMid,0,99,0)),ndMidDay:Math.round(numIn(v.ndMidDay,0,1e6,0))}:{})}));
+  x.units=pick(x.units,k=>UNITS.some(u=>u.id===k),v=>({learned:!!v.learned,practiced:Math.round(numIn(v.practiced,0,1e4,0)),best:numIn(v.best,0,1),passed:!!v.passed,skipped:!!v.skipped,speak:Math.round(numIn(v.speak,0,1e4,0)),written:!!v.written,read:numIn(v.read,0,1),listen:numIn(v.listen,0,1),...(v.pd!=null?{pd:Math.round(numIn(v.pd,0,1e6,0))}:{}),...(v.ndPass!=null?{ndPass:Math.round(numIn(v.ndPass,0,1e6,0))}:{}),...(v.ndNeed!=null?{ndNeed:Math.round(numIn(v.ndNeed,0,1e6,0))}:{}),...(v.ndLow?{ndLow:Math.round(numIn(v.ndLow,0,99,0))}:{}),...(v.ndMid?{ndMid:Math.round(numIn(v.ndMid,0,99,0)),ndMidDay:Math.round(numIn(v.ndMidDay,0,1e6,0))}:{}),...(v.fq!=null?{fq:Math.round(numIn(v.fq,0,1e6,0))}:{}),...(v.fast!=null?{fast:Math.round(numIn(v.fast,0,1e6,0))}:{})}));
   x.gram=pick(x.gram,k=>!!GPT[k],v=>({...srs(v),d:dims(v.d,['cho','typ','fix','ord']),practiced:Math.round(numIn(v.practiced,0,1e4,0)),best:numIn(v.best,0,1),passed:!!v.passed,skipped:!!v.skipped}));
   const lvFix=v=>({best:numIn(v.best,0,1),passed:!!v.passed,tried:!!v.tried,last:v.last==null?undefined:numIn(v.last,0,1e6),est:v.est&&typeof v.est==='object'?{k:numIn(v.est.k,0,1e4,0),n:numIn(v.est.n,1,1e4,1),day:numIn(v.est.day,0,1e6,0),kind:v.est.kind==='place'?'place':'lrev'}:undefined});
   x.levels=pick(x.levels,k=>LVS.includes(k),lvFix); x.glevels=pick(x.glevels,k=>LVS.includes(k),lvFix);
@@ -1615,7 +1618,7 @@ function go(view,extra={}){ if(view==='aim'){ view='goal'; extra={...extra,er:'a
 /* ---------- Điều hướng: nút Quay lại của điện thoại/trình duyệt, hộp thoại, lượt dở ----------
    Mỗi lần go() ghi một mục lịch sử (history.pushState) nên nút Back về đúng màn trước, không thoát app.
    Màn “tạm” (đang làm lượt, kết quả, học thẻ…) không dựng lại được khi quay lại thì về màn cha gần nhất. */
-const TRANSIENT = {shadow:'talk',exam:'thi',vx:'thi',wtask:'talk',stask:'talk',lread:'talk',quiz:'talk',rp:'talk',dlg:'talk',fn:'talk',gsess:'gpoint',summary:'unit',gsum:'gpoint',learn:'unit',read:'unit',speak:'unit',write:'unit',sound:'sounds',game:'games',story1:'stories',word:'words',welcome:'path',oral:'review'};
+const TRANSIENT = {fix:'nd',fastsum:'nd',shadow:'talk',exam:'thi',vx:'thi',wtask:'talk',stask:'talk',lread:'talk',quiz:'talk',rp:'talk',dlg:'talk',fn:'talk',gsess:'gpoint',summary:'unit',gsum:'gpoint',learn:'unit',read:'unit',speak:'unit',write:'unit',sound:'sounds',game:'games',story1:'stories',word:'words',welcome:'path',oral:'review'};
 const histState = () => ({view:ui.view,unitId:ui.unitId,gpId:ui.gpId,wordId:ui.wordId,dlgId:ui.dlgId,fnId:ui.fnId,xr:ui.xr});
 let _hist=null;
 function pushHist(){
@@ -2552,7 +2555,7 @@ function stScore(t,text,ck){ const w=wc(text), minW=ST_MINW[t.lv]||50, low=' '+S
 function viewSTask(){
   const S=ui.stk, t=STK[S.id], hist=st.stask[t.id]||[];
   const brief=`<section class="panel stack"><p lang="en" style="font-size:17px">${esc(t.p)}</p><p class="hint">${esc(t.pv)}</p><h3>Gợi ý ý</h3>${t.c.map(c=>`<p>• ${esc(c)}</p>`).join('')}${phraseList(t.u)}</section>`;
-  const head=`<button class="btn ghost back" data-go="${S.nd?'nd':'talk'}">← ${S.nd?'Ôn luyện':'Giao tiếp'}</button><section class="stack"><span class="eyebrow">${t.lv} · Nói · chuẩn bị ${t.prep} giây · nói ${t.speak} giây</span><h1>${esc(t.vi)} <span class="muted" style="font-weight:400">· <span lang="en">${esc(t.en)}</span></span></h1></section>`;
+  const head=`<button class="btn ghost back" data-go="${S.nd?'nd':'talk'}">← ${S.nd?'Học nhanh':'Giao tiếp'}</button><section class="stack"><span class="eyebrow">${t.lv} · Nói · chuẩn bị ${t.prep} giây · nói ${t.speak} giây</span><h1>${esc(t.vi)} <span class="muted" style="font-weight:400">· <span lang="en">${esc(t.en)}</span></span></h1></section>`;
   if(S.phase==='brief') return `${head}${brief}<p class="muted">Đọc đề và gợi ý, rồi bấm bắt đầu. ${HAS_REC?'Khi hết giờ chuẩn bị, app tự ghi âm lúc bạn nói.':'Máy này không ghi âm được; hãy nói to và tự đánh giá.'}</p>
     <div class="row"><button class="btn primary big" data-act="stprep">⏱ Chuẩn bị ${t.prep} giây</button><button class="btn" data-act="stspeak">Nói ngay</button></div>${hist.length?`<p class="hint">Bạn đã làm đề này ${hist.length} lần.</p>`:''}`;
   if(S.phase==='prep'||S.phase==='speak') return `${head}<section class="panel stack" style="text-align:center;justify-items:center"><span class="eyebrow">${S.phase==='prep'?'Chuẩn bị':'Đang nói'}${S.phase==='speak'&&REC.on?' · ● đang ghi âm':''}</span>
@@ -2712,7 +2715,7 @@ const CD_REF={u:'unit',ul:'unit của cấp',g:'bài ngữ pháp',gl:'bài ngữ
 // Thanh điều hướng: trên máy tính là hàng tab ở đầu trang; trên điện thoại (≤ 640px) là thanh dưới đáy. Cả hai dùng chung một cách tính mục đang mở.
 // v117 (SCORECARD nhóm L): 4 tab, mỗi tab trả lời một câu hỏi khác nhau: Hôm nay (app chọn việc cho bạn) · Ôn tập (phần sắp quên) ·
 // Thư viện (bạn tự chọn: bài học, kỹ năng, sổ từ; v130: mọi trò chơi nằm trên Bản đồ Phố Chữ ở tab Hôm nay) · Tôi (tiến độ, mục tiêu, cài đặt). Trước đây Chơi / Học / Kỹ năng đều là "học".
-const BNAV=[['thi','Ôn thi','exam'],['play','Chơi','home'],['lib','Học bài','book'],['nd','Ôn luyện','repeat'],['aim','Mục tiêu','trophy'],['more','Tôi','user']];   // v149 🗣 Nói & Đọc: con đường thứ ba
+const BNAV=[['thi','Ôn thi','exam'],['play','Chơi','home'],['lib','Học bài','book'],['nd','Học nhanh','bolt'],['aim','Mục tiêu','trophy'],['more','Tôi','user']];   // v149 🗣 Nói & Đọc: con đường thứ ba
 // v138 ba phần (docs/DOI-CHIEU-GAME-APP.md, SPEC khối 16/10/2026): ⚔️ Chơi (sảnh, trận, lò rèn) · 📘 Học (app cũ: việc nên làm, ôn tập,
 // thư viện, 7 kỹ năng) · 🎯 Mục tiêu (A1 / A2 cần đạt gì; chơi hay học đều đổ vào đây). Thay "hai lối + nút đổi lối" (v136).
 const ico = n => `<svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${n}"/></svg>`;
@@ -2724,7 +2727,7 @@ function navActive(){
   if(v==='rpg') return ui.rpg&&ui.rpg.nd?'nd':'lib';   // v159
   if(v==='wrg') return ui.wrg&&ui.wrg.nd?'nd':'lib';   // v160
   if(v==='stask') return ui.stk&&ui.stk.nd?'nd':'lib';   // v162
-  if(['nd','ndx','shadow','sounds','sound','ra','gp','paste','phon','pdx'].includes(v)||(v==='quiz'&&ui.qz&&ND_QZ.has(ui.qz.kind))) return 'nd';   // v149
+  if(['nd','ndx','fix','fastsum','shadow','sounds','sound','ra','gp','paste','phon','pdx'].includes(v)||(v==='session'&&kind==='fast')||(v==='gsess'&&ui.gs&&ui.gs.kind==='fast')||(v==='quiz'&&ui.qz&&ND_QZ.has(ui.qz.kind))) return 'nd';   // v149
   if(['talk','dlg','fn','rp','wtask','stask','lread'].includes(v)||(v==='quiz'&&ui.qz)){ const n=(ui.qz&&ui.qz.meta&&ui.qz.meta.nav)||'lib'; return n==='talk'||n==='path'?'lib':n; }
   if(['thi','exam','vx'].includes(v)) return 'thi';
   if(kind==='review'||['review','oral'].includes(v)||(v==='gsess'&&ui.gs&&ui.gs.kind==='review')) return 'nd';   // v153 ôn tập thuộc 🔁 Ôn luyện (người sáng lập 17/10/2026: mọi việc ôn về một chỗ)
@@ -2734,7 +2737,7 @@ function navActive(){
 function renderChrome(){
   const due=dueWords().length, gdue=dueG().length, active=navActive();
 
-  const badge = k => k==='nd'&&due+gdue ? `<span class="badge" aria-label="${due+gdue} mục đến hạn ôn">${due+gdue}</span>` : '';
+  const badge = k => k===((st.fast||{}).path==='normal'?'lib':'nd')&&due+gdue ? `<span class="badge" aria-label="${due+gdue} mục đến hạn ôn">${due+gdue}</span>` : '';
   featCheck(); const NAV=BNAV.filter(([k])=>featOn(k));
   document.getElementById('nav').innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${badge(k)}</button>`).join('');
   const bn=document.getElementById('bnav');
@@ -2766,8 +2769,8 @@ function viewLib(){
   const due=dueWords().length+dueG().length;
   // v161 nút chính là ▶ Hôm nay (dayHtml, một não cho cả Học bài + Ôn luyện); khối này còn để tự học tiếp.
   const todo=`<section class="panel stack lnext" aria-labelledby="ln-h"><h2 id="ln-h">Hoặc tự học tiếp</h2>${ma?`<p><b>${ma.h}</b></p><p class="hint">${ma.p}</p><div class="row">${String(ma.btn).replace('btn primary big','btn')}</div>`:''}
-    ${due?`<p class="hint">Có ${due} mục đến hạn ôn → <button class="btn small" data-go="nd">${ico('repeat')} Ôn luyện</button></p>`:''}</section>`;
-  return `<section class="stack"><span class="eyebrow">Học bài</span><h1>📘 Học bài</h1><p class="muted">Người mới hoàn toàn: đây là đường nhanh nhất. Học mới từ đầu tới cuối, tới khi vững và qua cấp. Mọi câu đúng ở đây đều tính vào 🎯 Mục tiêu. Ôn lại những gì đã học: 🔁 Ôn luyện.</p></section>
+    ${due?`<p class="hint">Có ${due} mục đến hạn ôn → <button class="btn small" data-go="nd">${ico('bolt')} Học nhanh</button></p>`:''}</section>`;
+  return `<section class="stack"><span class="eyebrow">Học bài</span><h1>📘 Học bài</h1><p class="muted">Người mới hoàn toàn: đây là đường nhanh nhất. Học mới từ đầu tới cuối, tới khi vững và qua cấp. Mọi câu đúng ở đây đều tính vào 🎯 Mục tiêu. Ôn lại những gì đã học: ⚡ Học nhanh.</p></section>
   ${partsHtml(currentUnit().level==='A1'?'A1':'A2','lib')}
   ${dayHtml('lib')}
   ${todo}
@@ -2870,7 +2873,7 @@ function viewHelp(){
   </section>
   <section class="panel stack" id="changelog"><h3>Nhật ký thay đổi</h3><p class="hint">Bản phát hành đang dùng: ${APP_VERSION}. Mỗi lần cập nhật, tiến độ của bạn được giữ nguyên.</p>${clHtml(CHANGELOG)}</section>`;
 }
-// Học nhanh 5 phút: tối đa 10 câu, ưu tiên từ đến hạn (yếu nhất trước), rồi từ đã học yếu nhất. Chưa học gì thì trả null (vào học unit).
+// Luyện nhanh 5 phút (v164 đổi tên: "⚡ Học nhanh" nay là đường cho người có nền): tối đa 10 câu, ưu tiên từ đến hạn (yếu nhất trước), rồi từ đã học yếu nhất. Chưa học gì thì trả null (vào học unit).
 function quickItems(){
   const t=today(), due=dueWords().sort((a,b)=>mastery(a.id)-mastery(b.id)).slice(0,10);
   const more=ALL_WORDS.filter(w=>W(w.id).learned&&!due.includes(w)).sort((a,b)=>mastery(a.id)-mastery(b.id)).slice(0,10-due.length);
@@ -2889,12 +2892,12 @@ const daysAway = () => { if(!st.days.length) return 0; return today()-Math.max(.
 function mainAction(o){ const learn=!!(o&&o.learn);   // v153 learn: não ở 📘 Học bài, bỏ hai nhánh ôn (lâu không vào, từ đến hạn)
   const r=loadRun(), due=dueWords().length, away=daysAway(), cur=currentUnit(), s=U(cur.id);
   if(r) return {h:'Bạn đang làm dở một lượt',p:runLabel(r),btn:`<button class="btn primary big" data-act="resume">▶ Làm tiếp</button>`};
-  if(away>=3&&!learn) return {h:`Chào mừng bạn quay lại sau ${away} ngày!`,p:'Bắt đầu nhẹ nhàng: 10 câu ôn những từ bạn yếu nhất, khoảng 5 phút.',btn:`<button class="btn primary big" data-act="quick">⚡ Học nhanh 5 phút</button>`};
+  if(away>=3&&!learn) return {h:`Chào mừng bạn quay lại sau ${away} ngày!`,p:'Bắt đầu nhẹ nhàng: 10 câu ôn những từ bạn yếu nhất, khoảng 5 phút.',btn:`<button class="btn primary big" data-act="quick">⚡ Luyện nhanh 5 phút</button>`};
   if(due&&!learn) return {h:`${due} từ đến hạn ôn`,p:`Ôn đúng lúc sắp quên thì nhớ lâu nhất. Mỗi từ được hỏi đúng kỹ năng bạn đang yếu. ${info('due')}`,btn:`<button class="btn primary big" data-act="review">Ôn ${Math.min(due,REVIEW_BATCH)} từ</button>`};
   if(!s.learned&&newCapHit()&&ALL_WORDS.some(w=>W(w.id).learned)) return {h:'Hôm nay đã đủ từ mới',p:`Bạn đã học ${newToday()} từ mới hôm nay. Luyện cho chắc những từ vừa học sẽ giúp nhớ lâu hơn học thêm. ${info('newmax')}`,btn:`<button class="btn primary big" data-act="quick">⚡ Luyện 5 phút</button>`};
   // v162 Học bài một mình: hết unit mới (hoặc từ đến hạn dồn nhiều) thì luyện lại unit cũ có nhiều từ đến hạn nhất (ôn lồng, vẫn là bài Học bài).
   // v163 cách nhìn Học bài: bài Ôn luyện báo "chưa biết" (T5) đi trước bài mới, vì không học thì không qua được.
-  if(learn){ const nu=actsOf(cur.level==='A1'?'A1':'A2').need; if(nu&&!U(nu.id).passed) return {h:`Học ${uname(nu)} · ${esc(nu.title)}`,p:U(nu.id).ndMid>=ND_MID?'Ôn luyện 2 lần chỉ gần được: học bài này sẽ nhanh hơn ôn lại.':'Ôn luyện đúng dưới 50%: học kiến thức này trước rồi ôn sau.',btn:`<button class="btn primary big" data-unit="${nu.id}">Học bài này</button>`,eng:true}; }
+  if(learn){ const nu=actsOf(cur.level==='A1'?'A1':'A2').need; if(nu&&!U(nu.id).passed) return {h:`Học ${uname(nu)} · ${esc(nu.title)}`,p:'Học nhanh đúng dưới 50%: học kiến thức này trước rồi ôn sau.',btn:`<button class="btn primary big" data-unit="${nu.id}">Học bài này</button>`,eng:true}; }
   if(learn){ const od=oldUnitDue(); if(od&&(s.passed||due>=BACKLOG)) return {h:`Luyện lại ${uname(od.u)} · ${esc(od.u.title)}`,p:`${od.n} từ của unit này đến lúc gọi lại. Gọi lại đúng lúc sắp quên thì thanh 🔁 Nhớ lên.`,btn:`<button class="btn primary big" data-act="practice" data-u="${od.u.id}">Luyện lại</button>`,eng:true}; }   // eng: các lớp bọc sau (cân kỹ năng) không thay bước này
   // v48 (engine M4): có mục tiêu thì bước tiếp theo do lộ trình của engine chọn (đường đi tối thiểu), không theo thứ tự unit.
   try{ const en=EM&&EM.next({learn}); if(en) return {...en,eng:true}; }catch(e){}
@@ -2933,7 +2936,7 @@ function todayPanel(){
     <div class="stack" style="gap:8px">${plan.map(r=>r.h).join('')||'<p class="muted">Không còn việc nào ngoài nút chính ở trên. Làm xong mục tiêu câu hôm nay là đủ.</p>'}</div>
     <p class="hint">🎁 ${rest.length?`Nhiệm vụ thưởng: ${rest.map(k=>{ const Q=QUESTS[k], v=Math.min(Q.v(),Q.n()); return `${q.done.includes(k)?'✅':''}${Q.t()} <span class="num">${v}/${Q.n()}</span>`; }).join(' · ')}. `:''}${chestReady()?'':q.chest?'Đã mở rương hôm nay.':`Xong cả ${q.list.length} nhiệm vụ để mở rương.`}</p>
     <div class="row">${chestReady()?'<button class="btn" data-act="chest">🎁 Mở rương hôm nay</button>':''}
-      ${m.btn.includes('data-act="quick"')?'':`<button class="btn" data-act="quick">⚡ Học nhanh 5 phút</button>`}${due>=BACKLOG?'<button class="btn" data-act="spread">Dàn đều bài ôn</button>':''}</div>
+      ${m.btn.includes('data-act="quick"')?'':`<button class="btn" data-act="quick">⚡ Luyện nhanh 5 phút</button>`}${due>=BACKLOG?'<button class="btn" data-act="spread">Dàn đều bài ôn</button>':''}</div>
     ${due>=BACKLOG?`<p class="hint">Bài ôn đang dồn ${due} từ. Nên ôn trước khi học unit mới, hoặc bấm “Dàn đều bài ôn” để chia ra các ngày sau.</p>`:''}
   </details>`:''}`;
 }
@@ -3142,7 +3145,7 @@ function viewSession(){
   </section>
   <p class="hint kbd-hint">Phím tắt: 1–4 để chọn, 0 = chưa biết, Enter để tiếp tục.</p>`;
 }
-const KIND_LABEL={quick:'Học nhanh',practice:'Luyện tập',review:'Ôn tập',test:'Thử thách cuối unit',remedy:'Luyện điểm yếu',place:'Vượt cấp',lrev:'Tổng kết cấp độ',qplace:'Xếp lớp nhanh'};
+const KIND_LABEL={fast:'⚡ Học nhanh · vượt chặng',quick:'Luyện nhanh',practice:'Luyện tập',review:'Ôn tập',test:'Thử thách cuối unit',remedy:'Luyện điểm yếu',place:'Vượt cấp',lrev:'Tổng kết cấp độ',qplace:'Xếp lớp nhanh'};
 const TYPE_NAME={cfs:'Phân biệt từ dễ nhầm',sns:'Nghĩa của từ trong câu',pcl:'Điền từ vào đoạn văn',fam:'Họ từ',fmt:'Họ từ · tự gõ',sen:'Câu → nghĩa',rec:'Từ → nghĩa',lis:'Nghe chọn từ',rcl:'Nghĩa → từ',rct:'Nghĩa → tự gõ từ',spl:'Chính tả',dic:'Nghe chép',ctx:'Điền chỗ trống',ctt:'Tự gõ từ vào câu',ord:'Sắp xếp câu',col:'Kết hợp từ'};
 const rightAnswer = ex => ex.opts ? ex.opts[ex.ans] : ex.ans;
 // Giải thích riêng cho phương án sai người học đã chọn/gõ:
@@ -3198,7 +3201,7 @@ function spellDiff(a,b){
   if(!miss) return `Thừa chữ “${extra}” ở vị trí thứ ${i+1}: ${b}.`;
   return `Chữ “${extra}” ở vị trí thứ ${i+1} phải là “${miss}”: ${b}.`;
 }
-const TEST_KINDS = ['test','place','lrev','qplace'];   // bài kiểm tra: không hiện đáp án từng câu, không hỏi lại
+const TEST_KINDS = ['test','place','lrev','qplace','fast'];   // v164 fast: vượt chặng ⚡ Học nhanh   // bài kiểm tra: không hiện đáp án từng câu, không hỏi lại
 
 function viewSummary(){
   if(ui.summary&&ui.summary.kind==='qplace') return viewQPSummary(ui.summary);
@@ -3212,7 +3215,7 @@ function viewSummary(){
   if(r.kind==='test'||r.kind==='place'){
     const what = L ? `Level ${L.id}` : uname(u);
     head = V.pass
-      ? `<span class="pill good">Đạt</span><h1>${pct(score)} — ${what} ${r.miss||r.unasked?'gần xong':'đã qua'}</h1><p class="muted">${r.kind==='place'?`Đã vượt ${r.skip||0} unit (có câu được hỏi và đúng hết). ${r.miss?`${r.miss} unit có câu sai vẫn để mở để học. `:''}${r.unasked?`${r.unasked} unit chưa được hỏi: vượt riêng ở 🔁 Ôn luyện → ⚡ Vượt bài. `:''}`:r.miss?`${r.miss} unit có câu bạn trả lời sai vẫn để mở để học; các unit còn lại của ${what} được tính là xong. `:''}${nextU?`${uname(nextU)} · ${esc(nextU.title)} đã mở khoá.`:'Bạn đã hoàn thành toàn bộ nội dung hiện có.'}</p>`
+      ? `<span class="pill good">Đạt</span><h1>${pct(score)} — ${what} ${r.miss||r.unasked?'gần xong':'đã qua'}</h1><p class="muted">${r.kind==='place'?`Đã vượt ${r.skip||0} unit (có câu được hỏi và đúng hết). ${r.miss?`${r.miss} unit có câu sai vẫn để mở để học. `:''}${r.unasked?`${r.unasked} unit chưa được hỏi: vượt riêng ở ⚡ Học nhanh. `:''}`:r.miss?`${r.miss} unit có câu bạn trả lời sai vẫn để mở để học; các unit còn lại của ${what} được tính là xong. `:''}${nextU?`${uname(nextU)} · ${esc(nextU.title)} đã mở khoá.`:'Bạn đã hoàn thành toàn bộ nội dung hiện có.'}</p>`
       : `<span class="pill bad">Chưa đạt</span><h1>${pct(score)} — ${why}</h1><p class="muted">${L?`Hãy học ${L.id} theo từng unit; các từ bạn vừa làm sai sẽ được ưu tiên khi luyện.`:'Luyện lại các từ và kỹ năng bạn làm sai, rồi thi lại.'}</p>`;
   } else if(r.kind==='lrev'){
     head = V.pass
@@ -3312,8 +3315,8 @@ function viewRead(){
   const nd=!!R.nd, shut=nd&&!R.done, gq=R.gq||[], vq=R.vq||[], gAll=Object.keys(R.gp||{}).length===gq.length&&Object.keys(R.vp||{}).length===vq.length;
   const vi=shut&&!R.peek?`<div class="row"><button class="btn ghost small" data-act="ndpeek">Xem bản dịch</button><span class="hint">Xem thì lượt này không tính qua unit.</span></div>`
     :`<details ${R.listen||R.peek?'open':''}><summary>Xem bản dịch</summary><p class="vi" style="margin-top:8px">${esc(r.vi)}</p></details>`;
-  return `${nd?'<button class="btn ghost back" data-go="nd">← Ôn luyện</button>':`<button class="btn ghost back" data-unit="${u.id}">← ${uname(u)}</button>`}
-  <section class="stack"><span class="eyebrow">${nd?'🔁 Ôn luyện · ':''}${R.listen?'Nghe hiểu':'Đọc hiểu'} · ${uname(u)}</span><h1><span lang="en">${esc(r.title)}</span>${r.tvi&&!shut?` <span class="muted" style="font-weight:400">· ${esc(r.tvi)}</span>`:''}</h1></section>
+  return `${nd?'<button class="btn ghost back" data-go="nd">← Học nhanh</button>':`<button class="btn ghost back" data-unit="${u.id}">← ${uname(u)}</button>`}
+  <section class="stack"><span class="eyebrow">${nd?'⚡ Học nhanh · ':''}${R.listen?'Nghe hiểu':'Đọc hiểu'} · ${uname(u)}</span><h1><span lang="en">${esc(r.title)}</span>${r.tvi&&!shut?` <span class="muted" style="font-weight:400">· ${esc(r.tvi)}</span>`:''}</h1></section>
   ${nd?shut&&!Object.keys(R.picks).length&&HAS_TTS?`<div class="row"><button class="btn ghost small" data-act="ndswap">${R.listen?'Đổi sang đọc':'Đổi sang nghe'}</button></div>`:'':needsLine(u)}
   ${hide?`<article class="card">
     <p class="transcript hide" aria-hidden="true">&nbsp;</p>
@@ -4232,7 +4235,8 @@ function mergeState(a,b){
   x.games={...a.games,speed:Math.max(a.games.speed||0,b.games.speed||0),match:[a.games.match,b.games.match].filter(Boolean).sort((p,q)=>p-q)[0]||0,ch:[...(a.games.ch||[]),...(b.games.ch||[])].sort((p,q)=>q.day-p.day).slice(0,10)};
   x.start=Math.min(a.start??1e9,b.start??1e9); x.onboarded=true; x.money=moneyMerge(a.money,b.money); if(!(a.me&&a.me.who)&&b.me) x.me=b.me;
   for(const k of ['story','cando','dlg','fn','pron','lread','sounds','wtask','stask','oral','gwrite','lis','shadow','rx','pv','med','sp','pa']) x[k]={...(b[k]||{}),...(a[k]||{})};
-  x.nd={d:{...((b.nd||{}).d||{}),...((a.nd||{}).d||{})}}; if(a.ndfz||b.ndfz){ const fa=a.ndfz||{}, fb=b.ndfz||{}; x.ndfz={sounds:{...(fb.sounds||{}),...(fa.sounds||{})},pron:{...(fb.pron||{}),...(fa.pron||{})}}; }
+  x.nd={d:{...((b.nd||{}).d||{}),...((a.nd||{}).d||{})}};
+  if(a.fast||b.fast){ const fa=a.fast||{}, fb=b.fast||{}, gk=g=>g.k+':'+g.id, ga=new Set((fa.gap||[]).map(gk)); x.fast={path:fa.path||fb.path||null,ch:{...(fb.ch||{}),...(fa.ch||{})},gap:[...(fa.gap||[]),...(fb.gap||[]).filter(g=>!ga.has(gk(g)))]}; }   // v164 if(a.ndfz||b.ndfz){ const fa=a.ndfz||{}, fb=b.ndfz||{}; x.ndfz={sounds:{...(fb.sounds||{}),...(fa.sounds||{})},pron:{...(fb.pron||{}),...(fa.pron||{})}}; }
   { const seen=new Set(); x.exam=[...(a.exam||[]),...(b.exam||[])].filter(e=>{ const k=JSON.stringify(e); return seen.has(k)?false:seen.add(k); }).sort((p,q)=>q.day-p.day).slice(0,10); }
   x.app={seen:Math.max((a.app||{}).seen||0,(b.app||{}).seen||0),vh:((a.app||{}).vh||[]).slice()};
   x.e=typeof ELCORE!=='undefined'?ELCORE.merge(a.e,b.e):EM?EM.merge(a.e,b.e):((a.e&&(a.e.goals||[]).length?a.e:b.e)||{});   // engine: hợp mục tiêu hai máy
@@ -4558,7 +4562,7 @@ function viewGSum(){
   const pts=[...new Set(r.res.map(x=>x.gid))], missed=pts.filter(id=>r.res.some(x=>x.gid===id&&!x.correct)), wrong=r.res.filter(x=>!x.correct);
   let head;
   if(r.kind==='test'||r.kind==='place'){ const what=L?`Ngữ pháp ${L.id}`:gname(p);
-    head=V.pass?`<span class="pill good">Đạt</span><h1>${pct(score)} — ${what} ${r.kind==='place'&&(missed.length||r.unasked)?'gần xong':'hoàn thành'}</h1><p class="muted">${r.kind==='place'?`Đã vượt ${pts.length-missed.length} bài (được hỏi và đúng hết). ${missed.length?`${missed.length} bài có câu sai vẫn để mở. `:''}${r.unasked?`${r.unasked} bài chưa được hỏi: vượt riêng ở 🔁 Ôn luyện → ⚡ Vượt bài.`:''}`:nextP?`${gname(nextP)} · ${esc(nextP.vi)} đã mở khoá.`:'Bạn đã hoàn thành toàn bộ ngữ pháp hiện có.'}</p>`
+    head=V.pass?`<span class="pill good">Đạt</span><h1>${pct(score)} — ${what} ${r.kind==='place'&&(missed.length||r.unasked)?'gần xong':'hoàn thành'}</h1><p class="muted">${r.kind==='place'?`Đã vượt ${pts.length-missed.length} bài (được hỏi và đúng hết). ${missed.length?`${missed.length} bài có câu sai vẫn để mở. `:''}${r.unasked?`${r.unasked} bài chưa được hỏi: vượt riêng ở ⚡ Học nhanh.`:''}`:nextP?`${gname(nextP)} · ${esc(nextP.vi)} đã mở khoá.`:'Bạn đã hoàn thành toàn bộ ngữ pháp hiện có.'}</p>`
       :`<span class="pill bad">Chưa đạt</span><h1>${pct(score)} — ${why}</h1><p class="muted">${L?`Hãy học ngữ pháp ${L.id} theo từng bài.`:'Đọc lại bài, luyện các câu sai rồi thi lại.'}</p>`; }
   else if(r.kind==='lrev') head=V.pass?`<span class="pill good">Đã nắm ngữ pháp ${L.id}</span><h1>${pct(score)} — bạn vẫn nhớ ngữ pháp ${L.id}</h1>`:`<span class="pill bad">Chưa nắm chắc ngữ pháp ${L.id}</span><h1>${pct(score)} — ${why}</h1><p class="muted">Các bài bạn làm sai được đưa lại vào lịch ôn từ ngày mai.</p>`;
   else head=`<span class="eyebrow">Ngữ pháp · ${KIND_LABEL[r.kind]}</span><h1>${ok}/${total} câu đúng lần đầu</h1>`;
@@ -4610,7 +4614,7 @@ function render(){
   if((ui.view==='session'&&ui.sess)||(ui.view==='gsess'&&ui.gs)) saveRun();
   applySkin(); applyA2(); renderChrome();
   if((ui.view==='path'||ui.view==='play'||(ui.view==='goal'&&ui.er==='aim'))&&!st.onboarded&&!ALL_WORDS.some(w=>(st.words[w.id]||{}).learned)) ui.view='welcome';
-  const v={thi:viewThi,rpg:viewRpg,wrg:viewWrg,lib:viewLib,nd:viewND,ndx:viewNdx,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,ra:viewRA,phon:viewPhon,paste:viewPaste,gp:viewGP,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
+  const v={thi:viewThi,rpg:viewRpg,wrg:viewWrg,lib:viewLib,nd:viewND,ndx:viewNdx,fix:viewFix,fastsum:viewFastSum,goal:viewGoalE,play:viewPlay,ei:viewEi,conv:viewConv,install:viewInstall,about:viewAbout,prea1:viewPreA1,pvlist:viewPvList,spk:viewSpk,pdx:viewPdx,vx:viewVx,med:viewMed,shadow:viewShadow,ra:viewRA,phon:viewPhon,paste:viewPaste,gp:viewGP,exam:viewExam,league:viewLeague,oral:viewOral,feedback:viewFeedback,cefr:viewCefr,wtask:viewWTask,stask:viewSTask,lread:viewLRead,talk:viewTalk,dlg:viewDlg,fn:viewFn,quiz:viewQuiz,rp:viewRP,closet:viewCloset,class:viewClass,more:viewMore,help:viewHelp,stories:viewStories,story1:viewStory,games:viewGames,game:viewGame,words:viewWords,word:viewWord,sounds:viewSounds,sound:viewSound,welcome:viewWelcome,settings:viewSettings,path:viewPath,unit:viewUnit,learn:viewLearn,session:viewSession,summary:viewSummary,grammar:viewGPath,gpoint:viewGPoint,gsess:viewGSess,gsum:viewGSum,read:viewRead,review:viewReview,progress:viewProgress,speak:viewSpeak,write:viewWrite,arch:viewArch}[ui.view]||viewPath;
   // Ranh giới lỗi: một màn lỗi không làm trắng trang; người học có lối thoát, lỗi được đếm (không kèm nội dung) để sửa.
   let html; try{ html=(typeof DETAIL!=='undefined'&&!detailAll()&&!DETAIL_SAFE_VIEW.has(ui.view))?`<p class="muted" role="status" style="padding:40px 0;text-align:center">Đang tải bài học…</p>`:v(); }catch(e){ html=errorView(e); }
   // v99: mục thu gọn (details.gall: Luyện tập, Leo tháp…) giữ trạng thái mở qua các lần vẽ lại #app (trước đây vẽ lại là đóng sập).
@@ -4807,7 +4811,7 @@ function awayAsk(gap){ const e=EV(); if(e.asked===today()) return; e.asked=today
   modal({ic:'👋',title:`Bạn nghỉ ${gap} ngày. Vì sao vậy?`,sub:'Chọn một ý để app biết cách giúp bạn học đều hơn. Câu trả lời chỉ lưu trên máy này, nằm trong dữ liệu học ẩn danh nếu bạn tự gửi.',
     buttons:[...AWAY_WHY.map((t,i)=>({label:t,act:'away',attr:`data-why="${i}" data-gap="${gap}"`})),{label:'Bỏ qua',act:'mclose'}]}); }
 function awaySave(i,gap){ const a=EV().away||=[]; a.push({d:today()-st.start,gap,why:AWAY_WHY[i]}); if(a.length>30) a.shift(); closeModal(); save();
-  toast(['Bận việc','Quên mất'].includes(AWAY_WHY[i])?'Thử ⚡ Học nhanh 5 phút, và đặt lời nhắc trong Cài đặt.':AWAY_WHY[i]==='Bài ôn dồn nhiều quá'?'Bấm “Dàn đều bài ôn” ở trang chủ để chia ra các ngày sau.':AWAY_WHY[i]==='Khó quá'?'Có thể hạ mục tiêu ngày hoặc làm Kiểm tra nhanh để chọn lại cấp.':'Cảm ơn bạn! Góp ý thêm ở ☰ Thêm → Góp ý.'); }
+  toast(['Bận việc','Quên mất'].includes(AWAY_WHY[i])?'Thử ⚡ Luyện nhanh 5 phút, và đặt lời nhắc trong Cài đặt.':AWAY_WHY[i]==='Bài ôn dồn nhiều quá'?'Bấm “Dàn đều bài ôn” ở trang chủ để chia ra các ngày sau.':AWAY_WHY[i]==='Khó quá'?'Có thể hạ mục tiêu ngày hoặc làm Kiểm tra nhanh để chọn lại cấp.':'Cảm ơn bạn! Góp ý thêm ở ☰ Thêm → Góp ý.'); }
 // Góp ý: đánh giá, điều thích, điều khó chịu, app từng dùng, sẵn sàng trả phí, ý kiến tự do.
 const FB = {
   like:['Giải thích bằng tiếng Việt','Ôn đúng lúc sắp quên','Mọi bài học miễn phí','Không cần tài khoản','XP, nhiệm vụ, linh vật','Ngữ pháp','Phát âm','Hội thoại, giao tiếp','Dự báo ngày xong'],
@@ -5135,6 +5139,12 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:102,d:'2026-10-19',t:'⚡ Học nhanh: cho người học lâu năm nhưng mất gốc',items:[
+    'Tab 🔁 Ôn luyện đổi thành ⚡ Học nhanh. Học bài và ôn là một vòng (đường thường); Học nhanh là đường riêng cho người không muốn học lại từ đầu.',
+    'Vượt chặng: mỗi chặng 10 unit (hoặc 7 bài ngữ pháp), khoảng 8 phút, phần lớn câu tự gõ. Đúng hết thì qua, không học lại. Chặng đầu tiên cũng là 🧭 Đo nền.',
+    '🩹 Vá chỗ lủng: chỉ học lại đúng từ / bài ngữ pháp làm sai: thẻ ngắn rồi một câu tự gõ. Sai bài A2 thì máy hỏi lại cả phần gốc A1 bên dưới; gốc còn vững thì bỏ qua ngay.',
+    'Đọc / nghe nguyên bài: đạt ≥ 80% là qua unit ngay, không cần quay lại ngày thứ hai. Chỗ đã qua được hỏi lại sau 3 ngày (thanh 🔁 Nhớ).',
+    '▶ Hôm nay theo đường bạn đang đi (đổi được bất cứ lúc nào). Nút cũ "Học nhanh 5 phút" đổi tên thành "Luyện nhanh 5 phút".']},
   {v:101,d:'2026-10-18',t:'Một não cho cả Học bài, Ôn luyện và ▶ Hôm nay',items:[
     'Não xếp mỗi bài vào một trạng thái (chưa gặp, gần được, chưa biết, đang học dở, sắp quên, đã quên…) rồi chọn việc. ▶ Hôm nay, Học bài và ▶ Ôn tiếp dùng chung một luật nên không còn đưa bài trái nhau.',
     'Thứ tự chung: ôn từ đến hạn → bài chưa biết → chỗ thiếu lớn nhất của mục tiêu → một bài Viết / Nói.',
@@ -5388,7 +5398,7 @@ const TET_DAYS = ['2027-02-06','2028-01-26','2029-02-13','2030-02-03','2031-01-2
 function seasonNudge(){ if(!st.onboarded) return ''; const t=today(), d=new Date(t*86400000), md=(d.getUTCMonth()+1)*100+d.getUTCDate(), y=d.getUTCFullYear(), hide=st.set.seasonHide||'';
   const line=(id,ic,b,m,btn)=>hide===id+y?'':`<div class="spread slim"><span>${ic} <b>${b}</b> <span class="muted">${m}</span></span><span class="row" style="gap:4px">${btn}<button class="btn small ghost" data-act="seasonhide" data-s="${id}${y}" aria-label="Ẩn nhắc này">Ẩn</button></span></div>`;
   const tet=TET_DAYS.map(dayOfStr).find(x=>Math.abs(t-x)<=7);
-  if(tet!=null) return line('tet','🧧',t<tet?`Còn ${tet-t} ngày tới Tết.`:'Đang Tết.',`Mỗi ngày một lượt Học nhanh 5 phút là đủ giữ nhịp${FZ().n?`; bạn có ${FZ().n} ngày nghỉ phép`:''}.`,`<button class="btn small" data-act="quick">⚡ Học nhanh</button>`);
+  if(tet!=null) return line('tet','🧧',t<tet?`Còn ${tet-t} ngày tới Tết.`:'Đang Tết.',`Mỗi ngày một lượt Luyện nhanh 5 phút là đủ giữ nhịp${FZ().n?`; bạn có ${FZ().n} ngày nghỉ phép`:''}.`,`<button class="btn small" data-act="quick">⚡ Học nhanh</button>`);
   if(md>=415&&md<=630&&(st.me.who==='school'||st.me.deadline!=null)) return line('thpt','📝',st.me.deadline!=null&&st.me.deadline>=t?`Còn ${st.me.deadline-t} ngày tới hạn chót của bạn.`:'Mùa thi tốt nghiệp THPT.',st.me.deadline!=null&&st.me.deadline>=t?'Ưu tiên ôn từ đến hạn và làm bài kiểm tra unit.':'Đặt hạn chót để app dự báo bạn có kịp không.',`<button class="btn small" data-go="settings">${st.me.deadline!=null?'Xem dự báo':'Đặt hạn chót'}</button>`);
   if(md>=901&&md<=920) return line('nam','🎒','Năm học mới.','Đặt mục tiêu mỗi ngày vừa sức để học đều cả năm.',`<button class="btn small" data-go="settings">Đặt mục tiêu</button>`);
   return ''; }
@@ -5463,6 +5473,7 @@ function next(){
   if(s.i<s.q.length) return render();
   if(s.uid && s.kind==='practice') U(s.uid).practiced++;
   evc('d:'+s.kind);
+  if(s.kind==='fast') return fastDone(s,false);   // v164 vượt chặng ⚡ Học nhanh
   const V=verdict(s.res);
   if(s.kind==='test'){
     const us=U(s.uid), was=us.passed, u=UNITS.find(x=>x.id===s.uid); s.stars0=uStars(u);
@@ -5526,6 +5537,7 @@ function gNext(){
   ui.flagOpen=false;
   const s=ui.gs; s.i++; s.ans=null; s.ord=[];
   if(s.i<s.q.length) return render();
+  if(s.kind==='fast') return fastDone(s,true);   // v164
   if(s.gid&&s.kind==='practice') G(s.gid).practiced++;
   const V=verdict(s.res,GDIMS);
   if(s.kind==='test'){ const g=G(s.gid), was=g.passed; s.stars0=gStars(GPT[s.gid]); g.best=Math.max(g.best??0,V.score); if(V.pass){ g.passed=true; ndPassMark('g',s.gid); } if(V.pass&&!was){ addXP(40); celebrate('🧩',`Qua bài ngữ pháp: ${GPT[s.gid].vi}`,`${pct(V.score)} đúng, +40 XP.`); } }
@@ -5606,6 +5618,12 @@ document.addEventListener('click',e=>{
     case 'phplay': { try{ PH.url&&new Audio(PH.url).play(); }catch(e){} return; }
     case 'phdt': PH.dtype=d.v; return render();
     case 'ndlv': ui.ndLv=d.v==='A1'?'A1':'A2'; return render();
+    case 'fastgo': return fastStart(d.v);   // v164 ⚡ Học nhanh
+    case 'fixgo': return fixStart();
+    case 'fixq': if(ui.fix){ ui.fix.stage='q'; render(); } return;
+    case 'fixok': return fixAnswer();
+    case 'fixnext': return fixNext();
+    case 'fastpath': { FST().path=d.v==='normal'?'normal':'fast'; save(); return ui.view==='fastsum'?go(d.v==='normal'?'lib':'nd'):render(); }
     case 'ndshow': ui.ndShow=ui.ndShow===d.v?null:d.v; return render();
     case 'dayreview': { const due=dueWords().sort((a,b)=>mastery(a.id)-mastery(b.id)).slice(0,DAY_DUE); if(!due.length) return render(); return startSession('review',reviewItems(due),null); }
     case 'dayread': { const n=st.nd||(st.nd={d:{}}); n.lk=[...(n.lk||[]),'read'].slice(-3); save(); return ndRead(d.v,HAS_TTS&&n.rl===false); }
@@ -5970,13 +5988,13 @@ function shNext(){ const S=ui.sh, x=S.q[S.i], sc=shScore();
   save(); checkBadges(); render(); window.scrollTo(0,0);
   if(first) celebrate('🗣️','Nói nhại '+S.L+' đạt!',`Máy nghe ra trung bình ${pct(avg)} số từ.`); }
 function viewShadow(){
-  const S=ui.sh, back=`<div class="spread"><button class="btn ghost back" data-go="nd">← Ôn luyện</button><span class="num muted">🗣 Nói nhại ${S.L} · ${Math.min(S.i+1,S.q.length)}/${S.q.length}</span></div>`;
+  const S=ui.sh, back=`<div class="spread"><button class="btn ghost back" data-go="nd">← Học nhanh</button><span class="num muted">🗣 Nói nhại ${S.L} · ${Math.min(S.i+1,S.q.length)}/${S.q.length}</span></div>`;
   if(S.done){ const best=((st.shadow||{})[S.L]||{}).best||0;
     return `${back}<section class="panel stack" style="text-align:center;justify-items:center">${mascot(S.avg>=.8?'party':'happy',84)}<h1>${pct(S.avg)} từ được nghe ra</h1>
       <p class="muted">Điểm cao nhất ${S.L}: ${pct(best)}. ${S.avg>=.8?'Rất rõ! Thử ẩn chữ để luyện nghe và nhớ câu.':'Nghe chậm từng câu, chú ý âm cuối và trọng âm, rồi làm lượt mới.'}</p></section>
       ${pnMissSum(S.res)}
       <section class="panel stack"><h3>Từng câu</h3>${S.res.map(r=>`<p><span lang="en">${esc(r.t)}</span><br><span class="hint">${r.p==null?'Bỏ qua':r.asr?`Máy nghe ra ${pct(r.p)} số từ`:`Tự chấm: ${pct(r.p)}`}</span></p>`).join('')}</section>
-      <div class="row endrow"><button class="btn primary" data-act="shnew">Lượt mới</button><button class="btn" data-go="nd">Về Ôn luyện</button></div>`; }
+      <div class="row endrow"><button class="btn primary" data-act="shnew">Lượt mới</button><button class="btn" data-go="nd">Về Học nhanh</button></div>`; }
   const x=S.q[S.i], sc=shScore(), recBtns=!HAS_REC?'':REC.on?'<button class="btn" data-act="recstop">■ Dừng ghi âm</button>':`<button class="btn" data-act="recstart">● Ghi âm</button>${REC.url?'<button class="btn" data-act="recplay">▶ Nghe giọng bạn</button>':''}`;
   return `${back}<div class="bar"><i style="width:${S.i/S.q.length*100}%"></i></div>
   <section class="q"><p class="eyebrow">Nghe câu mẫu rồi nói lại y như vậy: cùng tốc độ, cùng ngữ điệu</p>
@@ -6583,7 +6601,7 @@ function pasteGo(){
 }
 function viewPaste(){
   const P=PN(), res=ui.pasteRes, txt=ui.pasteTxt!=null?ui.pasteTxt:pasteLoad(), tgt=pasteTgt(), FV=(P&&P.FORM_VI)||{};
-  const head=`<button class="btn ghost back" data-go="nd">← Ôn luyện</button>
+  const head=`<button class="btn ghost back" data-go="nd">← Học nhanh</button>
   <section class="stack"><span class="eyebrow">📋 Bài của bạn</span><h1>Phân tích bài dán vào</h1>
     <p class="muted">Dán một bài nói hoặc bài viết tiếng Anh. App tách từng câu: phiên âm, cách đọc, nghĩa từng từ và gợi ý ngữ pháp. Chạy ngay trên máy, không gửi chữ đi đâu.</p></section>
   <section class="panel stack"><label for="pastebox" class="hint">Bài tiếng Anh (tối đa ${PASTE_MAX} ký tự, ${PASTE_SENTS} câu)</label>
@@ -6653,7 +6671,7 @@ function viewGP(){
   const G=ui.gp||(ui.gp={lv:pasteTgt()==='A1'?'A1':'A2',tier:1,mode:'say',kind:'read'}), T=TG();
   const seg=(act,cur,opts)=>`<div class="row" role="group" style="gap:6px">${Object.entries(opts).map(([k,l])=>`<button class="btn small ${String(cur)===k?'primary':''}" data-act="${act}" data-v="${k}" aria-pressed="${String(cur)===k}">${l}</button>`).join('')}</div>`;
   const best=gpBest(G);
-  const setup=`<button class="btn ghost back" data-go="nd">← Ôn luyện</button>
+  const setup=`<button class="btn ghost back" data-go="nd">← Học nhanh</button>
   <section class="stack"><span class="eyebrow">📝 Bài luyện theo cấp</span><h1>Bài mới mỗi lần, dễ tới khó</h1>
     <p class="muted">Chọn cấp và cách luyện; bậc khó máy tự chọn theo điểm của bạn. App ghép bài mới từ khuôn có sẵn bản dịch, hoặc lấy một bài có sẵn của app. Chỉ để luyện, không tính vào mức thuộc.</p></section>
   <section class="panel stack"><h3 class="h4">Cấp</h3>${seg('gplv',G.lv,{A1:'A1',A2:'A2'})}
@@ -6849,12 +6867,12 @@ function ndxAnswer(){ const X=ui.ndx, it=X&&X.q[X.i]; if(!it||X.ans) return; con
 const ndHome = r => { const n=r.node||'', u=r.wid?UNIT_OF[r.wid]:n.startsWith('u:')?UNITS.find(x=>'u:'+x.id===n):null, gid=r.gid||(n.startsWith('g:')?n.slice(2):null), ph=n.startsWith('ph:')?n.slice(3):null;
   return u?`<button class="btn small" data-unit="${u.id}">📘 Học lại bài này</button>`:gid&&GPT[gid]?`<button class="btn small" data-gp="${gid}">📘 Học lại bài này</button>`:ph&&SND[ph]?`<button class="btn small" data-snd="${ph}">🗣 Luyện cặp âm</button>`:''; };
 function ndxNext(){ const X=ui.ndx; X.i++; X.ans=null; X.draft=''; if(X.i>=X.q.length) X.done=true; render(); window.scrollTo(0,0); }
-function viewNdx(){ const X=ui.ndx; if(!X) return viewND(); const back=`<div class="spread"><button class="btn ghost back" data-go="nd">← Ôn luyện</button><span class="num muted">✍️ ${Math.min(X.i+1,X.q.length)}/${X.q.length}</span></div>`;
+function viewNdx(){ const X=ui.ndx; if(!X) return viewND(); const back=`<div class="spread"><button class="btn ghost back" data-go="nd">← Học nhanh</button><span class="num muted">✍️ ${Math.min(X.i+1,X.q.length)}/${X.q.length}</span></div>`;
   if(X.done){ const ok=X.res.filter(r=>r.ok).length, bad=X.res.filter(r=>!r.ok);
     return `${back}<section class="panel stack" style="text-align:center;justify-items:center">${mascot(ok===X.res.length?'party':'happy',84)}<h1>Đúng ${ok}/${X.res.length}</h1>
-      <p class="muted">Câu đúng được cộng vào 🎯 Mục tiêu (nguồn Ôn luyện). ${bad.length?`${bad.length} câu sai đã vào lịch ôn (🔁 Ôn luyện) từ ngày mai.`:'Không có câu nào phải ôn.'}</p></section>
-      ${bad.length?`<section class="panel stack"><h3>Chỗ bị quên</h3><p class="hint">Đã vào lịch ôn (🔁 Ôn luyện) từ ngày mai. Muốn ôn ngay: bấm “📘 Học lại bài này” để về đúng bài.</p>${bad.map(r=>`<div class="spread" style="gap:8px;align-items:flex-start"><p><b lang="en">${esc(r.ans)}</b> ${r.k==='w'?`(${esc(r.vi)})`:`· ${esc(r.title)}`}<br><span class="hint" lang="en">${esc(r.line)}</span></p>${ndHome(r)}</div>`).join('')}</section>`:''}
-      <div class="row endrow"><button class="btn primary" data-act="gpnew">Bài mới</button><button class="btn" data-go="nd">Về Ôn luyện</button></div>`; }
+      <p class="muted">Câu đúng được cộng vào 🎯 Mục tiêu (nguồn Học nhanh). ${bad.length?`${bad.length} câu sai đã vào lịch ôn (⚡ Học nhanh) từ ngày mai.`:'Không có câu nào phải ôn.'}</p></section>
+      ${bad.length?`<section class="panel stack"><h3>Chỗ bị quên</h3><p class="hint">Đã vào lịch ôn (⚡ Học nhanh) từ ngày mai. Muốn ôn ngay: bấm “📘 Học lại bài này” để về đúng bài.</p>${bad.map(r=>`<div class="spread" style="gap:8px;align-items:flex-start"><p><b lang="en">${esc(r.ans)}</b> ${r.k==='w'?`(${esc(r.vi)})`:`· ${esc(r.title)}`}<br><span class="hint" lang="en">${esc(r.line)}</span></p>${ndHome(r)}</div>`).join('')}</section>`:''}
+      <div class="row endrow"><button class="btn primary" data-act="gpnew">Bài mới</button><button class="btn" data-go="nd">Về Học nhanh</button></div>`; }
   const it=X.q[X.i], A=X.ans;
   return `${back}<div class="bar"><i style="width:${X.i/X.q.length*100}%"></i></div>
   <section class="panel stack"><div class="spread"><span class="eyebrow">${it.k==='w'?`Từ vựng · nghĩa: ${esc(it.vi)}`:`Ngữ pháp · ${esc(it.title)}`}</span><span class="pill ${it.kind==='open'?'accent':'good'}">${it.kind==='open'?'Mới':it.kind==='lost'?'Ôn lại · đã quên':it.kind==='fading'?'Ôn lại · đang phai':'Ôn lại'}</span></div>
@@ -6865,7 +6883,7 @@ function viewNdx(){ const X=ui.ndx; if(!X) return viewND(); const back=`<div cla
       <div class="row"><button class="btn primary" data-act="ndxnext">${X.i+1<X.q.length?'Câu tiếp':'Xem kết quả'}</button></div>`
       :`<div class="row"><button class="btn primary" data-act="ndxok">Trả lời</button></div>`}</section>`; }
 // v149 🗣 Nói & Đọc: con đường thứ ba (người sáng lập 17/10/2026). Gom luyện nói, đọc to, phát âm; chỉ theo dõi riêng, không tính vào 🎯 Mục tiêu.
-const ndHint = what => `<p class="fb neutral" role="note"><span>${what}: đã chuyển sang <button class="btn small" data-go="nd">🔁 Ôn luyện</button></span></p>`;
+const ndHint = what => `<p class="fb neutral" role="note"><span>${what}: đã chuyển sang <button class="btn small" data-go="nd">⚡ Học nhanh</button></span></p>`;
 const ndLv = () => ui.ndLv||(talkLv()==='A1'?'A1':'A2');
 // v156 qua bài cuối / vượt: từ của unit (hoặc điểm ngữ pháp) chưa có lịch thì đánh dấu đã học, hạn ôn = hôm nay + 3 → vào Ôn thẻ, có đường chắc cho thanh 🔁 Nhớ.
 function ndPassMark(k,id){ const t=today()+3;
@@ -6876,7 +6894,8 @@ function ndPassMark(k,id){ const t=today()+3;
 // v158 (đánh giá theo vai chuyên gia, người sáng lập duyệt 17/10/2026): 3 câu hiểu chỉ chạm ~30% số từ của unit và 2/3 đáp án chép được từ bài.
 // Nên: thêm câu nghĩa từ của unit trong ngữ cảnh (tối đa ND_VQ từ); đáp án hiểu viết lại theo cách khác với bài + 1 câu ý chính / suy luận;
 // qua unit cần ≥ 80% (hiểu + nghĩa từ, không xem nghĩa) ở 2 lượt KHÁC NGÀY. Đã xem nghĩa thì câu ghi có trợ giúp (không tính Nhớ, không qua).
-const ND_PASS = 0.8, ND_GOK = 2, ND_VQ = 4, ND_DAYS = 2;
+// v164 ⚡ Học nhanh (người sáng lập 19/10/2026): qua ngay khi đạt (ND_DAYS = 1); bước xác nhận là 🔁 Nhớ (đúng lại sau ≥ 3 ngày). Câu sai → hàng vá.
+const ND_PASS = 0.8, ND_GOK = 2, ND_VQ = 4, ND_DAYS = 1;
 const ndUp = uid => (((st.nd||{}).up||{})[uid]||[]);
 function ndPick(L){ const us=UNITS.filter(u=>u.level===L&&u.reading); if(!us.length) return null;
   const H=ndHealth(L), k=u=>H?H.kind.get('u:'+u.id):null, seen=(st.nd||{}).seen||{}, t=today(), fresh=u=>seen[u.id]!==t;
@@ -6942,7 +6961,7 @@ function ndNext(L){ const o=ndPlan(L); if(!o) return; const n=st.nd||(st.nd={d:{
   ndRead(o.u.id,HAS_TTS&&n.rl===false); }
 // ---- v161 ▶ Hôm nay: một não điều phối Học bài + Ôn luyện (người sáng lập 18/10/2026: một nút; não tự cân ôn / mới) ----
 // Ôn luyện: người có nền nhớ lại nhanh, vượt nhanh bài. Học bài: người chưa có kiến thức đó; ôn mà dưới 50% thì não đưa về học (ndNeed).
-const ND_NEED = 0.5, DAY_DUE = 12, ND_MID = 2;
+const ND_NEED = 0.5, DAY_DUE = 12;   // v164 bỏ ND_MID
 const zeroStart = () => { const d=st.e&&st.e.diag; return !!d&&!d.n&&!d.u&&!d.g; };   // chọn "Tôi chưa biết gì tiếng Anh"
 // Có nền? 3 lượt vượt nhanh gần nhất: ≥ 2 lượt đạt ≥ 50% → có ('yes'); ≥ 2 lượt dưới 50% → chưa ('no'); chưa đủ → null (thử thêm).
 function ndBase(){ const to=(st.nd||{}).to||[]; if(!to.length) return zeroStart()?'no':null;
@@ -6950,7 +6969,7 @@ function ndBase(){ const to=(st.nd||{}).to||[]; if(!to.length) return zeroStart(
 function dayParts(L){ try{ return EM&&EM.parts?EM.parts('cefr-'+L.toLowerCase()):null; }catch(e){ return null; } }
 function dayDone(){ const n=st.nd||(st.nd={d:{}}), t=today(); if(!n.day||n.day.d!==t) n.day={d:t,done:[]}; return n.day.done; }
 function dayMark(k){ const d=dayDone(); if(!d.includes(k)) d.push(k); save(); }
-const LIB = '📘 Học bài', NDT = '🔁 Ôn luyện';
+const LIB = '📘 Học bài', NDT = '⚡ Học nhanh';
 // Bước của buổi: k (ô), side, t (việc), why (lý do), at (thuộc tính nút). Tính lại mỗi lần vẽ; chỉ lưu ô đã bấm trong ngày.
 // v163 (người sáng lập 18/10/2026: "não phải tự đánh giá"; liệt kê trường hợp cho bớt phức tạp): MỘT chỗ đọc tình trạng (actsOf),
 // ba cách nhìn dùng chung: ▶ Hôm nay (dayPlan, cả hai phần), 📘 Học bài (mainAction learn), 🔁 Ôn luyện (ndPlan). Bảng trạng thái T1–T9: SPEC mục v163.
@@ -6966,16 +6985,22 @@ function actsOf(L){ L=L||ndLv(); const t=today(), p=dayParts(L), us=UNITS.filter
   const miss=(p&&p.miss)||[], ph=miss.find(n=>n.startsWith('ph:')&&SND[n.slice(3)]), fn=miss.find(n=>n.startsWith('fn:')&&FN[n.slice(3)]);
   const rp=L==='A1'?Object.keys(RPG).find(id=>{ const x=(st.rpg||{})[id]; return !(x&&x.best>=.8)&&!(x&&x.day===t); }):null;
   const wr=Object.keys(WRG).find(id=>{ const x=(st.wrg||{})[id]; return !(x&&x.best>=WRG_OK)&&!(x&&x.day===t); });
-  return {L,t,p,lq,mq,gl,gm,memFirst:gm>=gl,why,dw:dueWords().length,dg:dueG().length,need,pk,fade,newRd,base:ndBase(),cur,od,ph,fn,rp,wr,sk:ndStk(L)}; }
+  return {L,t,p,lq,mq,gl,gm,memFirst:gm>=gl,why,dw:dueWords().length,dg:dueG().length,need,pk,fade,newRd,base:ndBase(),cur,od,ph,fn,rp,wr,sk:ndStk(L),
+    path:FST().path,gd:gapDue().length,ch:fastNext(L)}; }   // v164 đường đang đi (⚡ / 📘), chỗ lủng đến hạn vá, chặng kế
 function dayPlan(){ const A=actsOf(), out=[], {L,why,base,cur,od}=A;
   if(A.dw||A.dg) out.push({k:'due',side:NDT,t:A.dw?`Ôn ${Math.min(A.dw,DAY_DUE)} từ đến hạn`:`Ôn ${A.dg} bài ngữ pháp đến hạn`,why:'đúng lúc sắp quên thì nhớ lâu nhất',at:A.dw?'data-act="dayreview"':'data-act="greview"'});
-  if(A.need) out.push({k:'need',side:LIB,t:`Học ${uname(A.need)} · ${esc(A.need.title)}`,why:U(A.need.id).ndMid>=ND_MID?'2 lần ở Ôn luyện chỉ gần được: học bài này sẽ nhanh hơn':'Ôn luyện đúng dưới 50%: cần học kiến thức này trước',at:`data-unit="${A.need.id}"`});
+  if(A.need) out.push({k:'need',side:LIB,t:`Học ${uname(A.need)} · ${esc(A.need.title)}`,why:'Học nhanh đúng dưới 50%: cần học kiến thức này trước',at:`data-unit="${A.need.id}"`});
+  if(A.gd) out.push({k:'fix',side:NDT,t:`🩹 Vá ${Math.min(A.gd,FAST_FIX_N)} chỗ lủng`,why:'chỉ học lại đúng chỗ làm sai, không học lại cả bài',at:'data-act="fixgo"'});   // v164
   const mem=A.fade?{k:'gap',side:NDT,t:`Đọc / nghe lại ${uname(A.fade.u)} · ${esc(A.fade.u.title)}`,why:`${A.fade.why}; ${why}`,at:`data-act="dayread" data-v="${A.fade.u.id}"`}:null;
-  const fast=A.newRd&&base!=='no'?{k:'gap',side:NDT,t:`Vượt nhanh ${uname(A.newRd)} · ${esc(A.newRd.title)}`,why:`${base==='yes'?'bạn có nền: đọc hiểu đạt là qua unit':'thử xem bạn đã biết chưa; dưới 50% thì về Học bài'}; ${why}`,at:`data-act="dayread" data-v="${A.newRd.id}"`}:null;
+  const rd=A.newRd&&(A.path==='fast'||(A.path==null&&base!=='no'))?{k:'gap',side:NDT,t:`Vượt nhanh ${uname(A.newRd)} · ${esc(A.newRd.title)}`,why:`${base==='yes'?'bạn có nền: đọc hiểu đạt là qua unit':'thử xem bạn đã biết chưa; dưới 50% thì về Học bài'}; ${why}`,at:`data-act="dayread" data-v="${A.newRd.id}"`}:null;
+  // v164 ⚡ vượt chặng: đường ⚡ (hoặc chưa chọn đường mà chưa rõ là người mới hoàn toàn) → chặng kế; chặng đầu tiên = 🧭 Đo nền.
+  const chunk=A.ch&&A.path!=='normal'&&!(A.path==null&&base==='no')?{k:'gap',side:NDT,t:`⚡ ${esc(fastName(A.ch))}`,why:`${A.path?'làm bài trước: đúng thì qua, sai thì chỉ vá chỗ đó':'🧭 đo nền: một chặng khoảng 8 phút để biết bạn có nền tới đâu'}; ${why}`,at:`data-act="fastgo" data-v="${A.ch.key}"`}:null;
+  const fast=chunk||rd;
   const learn=cur&&!U(cur.id).passed?{k:'gap',side:LIB,t:`${U(cur.id).learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,why:`${base==='no'?'học từ đầu tới vững':'bài mới'}; ${why}`,at:`data-unit="${cur.id}"`}
     :od?{k:'gap',side:LIB,t:`Luyện lại ${uname(od.u)} · ${esc(od.u.title)}`,why:`${od.n} từ đến lúc gọi lại; ${why}`,at:`data-act="practice" data-u="${od.u.id}"`}:null;
   const learnFirst=cur&&U(cur.id).learned&&!U(cur.id).passed;   // T6 đang học dở: học tiếp trước khi vượt nhanh bài khác
-  const gap=A.memFirst?(mem||(learnFirst?learn:fast)||learn||fast):((learnFirst?learn:fast)||learn||fast||mem);
+  const main=A.path==='fast'?(fast||learn):((learnFirst?learn:fast)||learn||fast);   // v164 đường ⚡: vượt / vá trước học mới
+  const gap=A.memFirst?(mem||main):(main||mem);
   if(gap) out.push(gap);
   const use=useActs(A);
   if(use.length){ const lk=(st.nd||{}).uk||0, blockL=A.lq<80&&(A.ph||A.fn);   // thanh Học còn thiếu mà còn bài âm / chức năng → đưa trước; còn lại xoay vòng theo ngày
@@ -6990,10 +7015,14 @@ function useActs(A){ const {ph,fn,rp,wr,sk}=A;
     sk&&{k:'use',side:NDT,t:`🗣️ Nói theo đề: ${esc(STK[sk].vi)}`,why:'Nói của Thi chuyển cấp: trả lời liền mạch, đủ ý',at:`data-act="daystk" data-v="${sk}"`}].filter(Boolean); }
 // v162 người mới hoàn toàn → 📘 Học bài nhanh nhất; có nền → 🔁 Ôn luyện nhanh nhất; ▶ Hôm nay cho người có kiến thức nhưng lủng.
 // v163 bỏ dòng gợi ý đường (pathFit): não tự quyết từng bước, không bắt người học chọn đường.
+// v164 đường đang đi + nút đổi (người học đổi bất cứ lúc nào; chưa chọn thì não thử một chặng ⚡ để đo nền).
+function dayPathHtml(){ const p=FST().path, oth=p==='normal'?'fast':'normal';
+  return `<p class="row" style="gap:6px;align-items:center"><span>Đường đang đi: <b>${p==='fast'?FASTT:p==='normal'?LIB:'chưa chọn'}</b>${p?'':' (não thử một chặng ⚡ để đo nền)'}</span><button class="btn small ghost" data-act="fastpath" data-v="${p?oth:'normal'}">Đổi sang ${p==='normal'?FASTT:LIB}</button>${p?'':`<button class="btn small ghost" data-act="fastpath" data-v="fast">Chọn ${FASTT}</button>`}</p>`; }
 function dayHtml(where){ const P=dayPlan(), done=dayDone(), left=P.steps.filter(x=>!done.includes(x.k)), nx=left[0];
   const li=x=>`<li class="spread" style="gap:8px;align-items:flex-start"><span>${done.includes(x.k)?'✓':x===nx?'▶':'•'} <b>${x.t}</b> <span class="pill">${x.side}</span><br><span class="hint">${x.why}</span></span></li>`;
   return `<section class="panel stack dayplan" aria-label="Hôm nay"><h2>▶ Hôm nay · mục tiêu ${P.L}</h2>
-    <p class="hint">Dành cho người đã có kiến thức nhưng còn lủng: não tìm chỗ hổng rồi đưa về đúng phần (chưa biết thì 📘 Học bài, đã biết thì 🔁 Ôn luyện, sắp quên thì ôn). Người mới hoàn toàn đi 📘 Học bài, người đã có nền đi 🔁 Ôn luyện là nhanh nhất.</p>
+    <p class="hint">Một não cho cả hai đường. 📘 Học bài: học từ đầu, học mới và ôn đi cùng nhau. ⚡ Học nhanh: cho người đã học lâu nhưng mất gốc: làm bài trước, đúng thì qua, sai chỗ nào chỉ vá chỗ đó. Sắp quên thì ôn, ở đường nào cũng vậy.</p>
+    ${dayPathHtml()}
     <ol class="stack" style="gap:8px;list-style:none;padding:0;margin:0">${P.steps.map(li).join('')}</ol>
     ${nx?`<div class="row"><button class="btn primary big" ${nx.at} data-day="${nx.k}">▶ ${where==='lib'||where==='nd'?'Làm bước kế':'Hôm nay'}</button></div>`
       :`<p><b>Xong các bước hôm nay.</b> Mai quay lại để não đo phần nhớ (🔁 Nhớ cần làm đúng lại sau ≥ 3 ngày).</p>`}</section>`; }
@@ -7002,7 +7031,7 @@ function ndReadDone(){ const R=ui.read, u=UNITS.find(x=>x.id===R.uid), r=u.readi
   ok.forEach((c,i)=>{ eEv({node:'u:'+u.id,level:2,ok:c,g:1/R.order[i].length,item:'nd:'+u.id+':'+k+':'+i,qt:'mcq',ctx:'nd',src:'read',ch,hint}); ndLog('rd',c); });
   const vok=(R.vq||[]).map((q,j)=>{ const c=q.order[R.vp[j]]===q.a, w=W(q.wid);
     eEv({node:'u:'+u.id,level:2,ok:c,g:1/q.order.length,item:'nd:'+q.wid+':rv',qt:'mcq',ctx:'nd',src:'vocab',ch,hint}); ndLog('rd',c);
-    if(!c&&w.learned) w.due=t+1; return c; });
+    if(!c&&w.learned) w.due=t+1; if(!c&&!R.peek) gapAdd('w',q.wid,u.id); return c; });   // v164 nghĩa từ sai → vá đúng từ đó
   const n=ok.filter(Boolean).length+vok.filter(Boolean).length, of=ok.length+vok.length;
   s[k]=Math.max(s[k]??0,ok.filter(Boolean).length/ok.length);
   const good=!R.peek&&n/of>=ND_PASS, was=!!s.passed, n0=st.nd||(st.nd={d:{}}), ups=(n0.up||(n0.up={}))[u.id]||(n0.up[u.id]=[]);
@@ -7017,29 +7046,30 @@ function ndReadDone(){ const R=ui.read, u=UNITS.find(x=>x.id===R.uid), r=u.readi
     if(!was&&!s.learned){ const to=n0.to||(n0.to=[]); to.push({d:t,s:Math.round(sc*100)/100}); if(to.length>3) to.shift(); }
     if(sc<ND_NEED){ if(!was){ s.ndNeed=t; need=true; } else { s.ndLow=(s.ndLow||0)+1; if(s.ndLow>=2){ s.ndNeed=t; need=true; } } }
     else s.ndLow=0;
-    // v163 T4 "gần được" (50–80%, unit chưa qua): 2 lần ở 2 ngày khác nhau vẫn chưa ≥ 80% → về Học bài (người sáng lập chọn 2 lần)
-    if(!was&&sc>=ND_NEED&&sc<ND_PASS&&s.ndMidDay!==t){ s.ndMid=(s.ndMid||0)+1; s.ndMidDay=t; if(s.ndMid>=ND_MID){ s.ndNeed=t; need=true; } } }
+    // v164 bỏ luật "gần được 2 lần → Học bài" (v163 T4): gần được (50–80%) thì câu sai vào hàng vá; vá hết chỗ lủng của unit → qua unit (fq).
+    if(!was&&sc>=ND_NEED&&sc<ND_PASS) s.fq=t; }
   const gok=n0.gok||(n0.gok={});
   const g=(R.gq||[]).map((q,j)=>{ const c=q.order[R.gp[j]]===q.a, P=G(q.gid);
     eEv({node:'g:'+q.gid,level:2,ok:c,g:1/q.order.length,item:'nd:g:'+q.gid+':'+u.id,qt:'mcq',ctx:'nd',src:'gram',ch,hint}); ndLog('rd',c);
     const list=gok[q.gid]||(gok[q.gid]=[]); let gu=false;
     if(c&&!R.peek&&!list.includes(u.id)) list.push(u.id);
     if(c&&list.length>=ND_GOK&&!P.passed){ P.passed=true; P.ndPass=t; ndPassMark('g',q.gid); gu=true; }
-    if(!c&&P.learned) P.due=t+1;
+    if(!c&&P.learned) P.due=t+1; if(!c&&!R.peek) gapAdd('g',q.gid);   // v164 ngữ pháp sai → vá điểm đó (+ hỏi lại gốc A1)
     return {gid:q.gid,ok:c,n:list.length,up:gu}; });
-  R.res={n,of,good,days:ups.length,pass,up,was,g,need}; R.done=true; sfx(good?'ok':'bad'); save(); render(); window.scrollTo(0,0); }
+  const gaps=R.peek?0:(R.vq||[]).filter((q,j)=>q.order[R.vp[j]]!==q.a).length+g.filter(q=>!q.ok).length;
+  R.res={n,of,good,days:ups.length,pass,up,was,g,need,gaps}; R.done=true; sfx(good?'ok':'bad'); save(); render(); window.scrollTo(0,0); }
 function ndReadRes(R,u){ const x=R.res; if(!x) return ''; const fb=x.good||x.was?'good':'bad';
   return `<div class="fb ${fb}" role="status"><strong>Đúng ${x.n}/${x.of} câu (hiểu bài + nghĩa từ)</strong>
-    <span>${x.up?`Qua ${uname(u)} nhờ đọc hiểu (đạt ở ${ND_DAYS} ngày khác nhau): thanh 📘 Học tăng; từ của unit vào lịch ôn sau 3 ngày.`
+    <span>${x.up?`Qua ${uname(u)} nhờ đọc hiểu: thanh 📘 Học tăng; từ của unit vào lịch ôn sau 3 ngày (đúng lại khi đó thì thanh 🔁 Nhớ lên).`
       :x.was?`Đã qua ${uname(u)} từ trước; lần này là bằng chứng nhớ (🔁 Nhớ).`
       :R.peek?'Lượt này đã xem nghĩa nên không tính qua unit. Làm lại bài khác mà không xem nghĩa nhé.'
       :x.good?`Đạt lượt ${x.days}/${ND_DAYS}. Quay lại vào một ngày khác (${HAS_TTS?'lần sau nghe thay vì đọc, hoặc ngược lại':'đọc lại'}) để qua unit.`
-      :x.need&&U(u.id).ndMid>=ND_MID&&x.n/x.of>=ND_NEED?`Đã ${ND_MID} lần chỉ gần được (dưới ${pct(ND_PASS)}): học bài này ở 📘 Học bài sẽ nhanh hơn ôn lại. Não sẽ đưa ${uname(u)} vào 📘 Học bài; qua bài cuối unit ở đó thì unit quay lại vòng ôn.`
       :x.need?`Bài này bạn cần học trước: đúng dưới ${pct(ND_NEED)} là còn thiếu kiến thức, ôn lại chưa giúp được. Não sẽ đưa ${uname(u)} vào 📘 Học bài; qua bài cuối unit ở đó thì unit quay lại vòng ôn.`
-      :'Cần đúng ≥ 80% (không xem nghĩa) để tính một lượt đạt. Chưa qua thì học lại ở 📘 Học bài.'}</span>
+      :x.gaps?`Gần được. ${x.gaps} chỗ sai đã vào 🩹 Vá chỗ lủng: vá hết chỗ lủng từ của unit này là qua unit, không phải học lại cả bài.`
+      :'Cần đúng ≥ 80% (không xem nghĩa) để qua unit. Đọc lại vào ngày khác, hoặc học ở 📘 Học bài.'}</span>
     ${x.g.length?`<span>${x.g.map(q=>`Ngữ pháp · ${esc(GPT[q.gid].vi)}: ${q.ok?'✓':'✗'}${q.up?' → qua bài này (đúng ở 2 bài khác nhau)':q.ok&&!G(q.gid).passed?` (đúng ở ${q.n}/${ND_GOK} bài khác nhau)`:''}`).join('<br>')}</span>`:''}
     <span class="hint">Điểm máy tự chấm, chưa người thật kiểm.</span></div>
-    <div class="row"><button class="btn primary" data-act="ndnext">▶ Ôn tiếp</button>${raOk(u)?`<button class="btn" data-act="rago" data-uid="${u.id}">📖 Đọc to bài này</button>`:''}${x.good||x.was?'':ndHome({node:'u:'+u.id})}<button class="btn" data-go="nd">Về Ôn luyện</button></div>`; }
+    <div class="row">${x.gaps&&gapDue().length?'<button class="btn primary" data-act="fixgo">🩹 Vá ngay</button>':''}<button class="btn ${x.gaps&&gapDue().length?'':'primary'}" data-act="ndnext">▶ Ôn tiếp</button>${raOk(u)?`<button class="btn" data-act="rago" data-uid="${u.id}">📖 Đọc to bài này</button>`:''}${x.good||x.was?'':ndHome({node:'u:'+u.id})}<button class="btn" data-go="nd">Về Học nhanh</button></div>`; }
 // v153 Ôn thẻ đến hạn (chuyển từ 📘 Học bài sang đây: mọi việc ôn về một chỗ, người sáng lập 17/10/2026).
 function ndDueHtml(){ const dw=dueWords().length, dg=dueG().length;
   return `<section class="panel stack" aria-label="Ôn thẻ đến hạn"><h2>Ôn thẻ đến hạn</h2>
@@ -7048,8 +7078,8 @@ function ndDueHtml(){ const dw=dueWords().length, dg=dueG().length;
 // v156 hai thanh của Mục tiêu; v157 có ở cả 📘 Học bài và 🔁 Ôn luyện (người sáng lập 17/10/2026), lời khuyên theo từng nơi.
 function partsHtml(L,where){ let p=null; try{ p=EM&&EM.parts?EM.parts('cefr-'+L.toLowerCase()):null; }catch(e){ p=null; } if(!p||!p.total) return '';
   const lq=Math.round(100*p.learn/p.total), mq=Math.round(100*p.mem/p.total), lib=where==='lib';
-  const next=lq<80?(lib?'Thiếu 📘 Học: học tiếp bài kế và qua bài cuối mỗi unit. Đã biết sẵn thì 🔁 Ôn luyện → ▶ Ôn tiếp: hiểu bài ≥ 80% ở 2 ngày khác nhau là qua unit.':'Thiếu 📘 Học: ▶ Ôn tiếp, đọc / nghe bài; đúng ≥ 80% (không xem nghĩa) ở 2 ngày khác nhau là qua unit.')
-    :mq<50?(lib?'Thiếu 🔁 Nhớ: học đều mỗi ngày. Lượt luyện ở Học bài tự xen từ cũ đến lúc gọi lại (🔁 Ôn lại từ unit trước); làm đúng lại sau ≥ 3 ngày là thanh Nhớ lên. Ôn nhanh hơn: 🔁 Ôn luyện.':'Thiếu 🔁 Nhớ: ôn thẻ đến hạn và ▶ Ôn tiếp mỗi ngày; bằng chứng nhớ cần làm đúng lại sau ≥ 3 ngày.')
+  const next=lq<80?(lib?'Thiếu 📘 Học: học tiếp bài kế và qua bài cuối mỗi unit. Đã học lâu mà mất gốc thì ⚡ Học nhanh: vượt chặng, đúng là qua, sai chỉ vá chỗ đó.':'Thiếu 📘 Học: ⚡ vượt chặng kế (đúng hết là qua unit), rồi 🩹 vá chỗ lủng.')
+    :mq<50?(lib?'Thiếu 🔁 Nhớ: học đều mỗi ngày. Lượt luyện ở Học bài tự xen từ cũ đến lúc gọi lại (🔁 Ôn lại từ unit trước); làm đúng lại sau ≥ 3 ngày là thanh Nhớ lên. Ôn nhanh hơn: ⚡ Học nhanh.':'Thiếu 🔁 Nhớ: ôn thẻ đến hạn và ▶ Ôn tiếp mỗi ngày; bằng chứng nhớ cần làm đúng lại sau ≥ 3 ngày.')
     :'Đủ cả hai: Thi chuyển cấp '+L+' đã mở ở 🎯 Mục tiêu.';
   const bar=(lb,v)=>`<div class="spread"><span>${lb}</span><b class="num">${v}%</b></div><div class="bar" role="progressbar" aria-label="${lb}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${v}"><i style="width:${v}%"></i></div>`;
   return `<section class="panel stack" aria-label="Học và Nhớ ${L}"><h2>Mục tiêu ${L}</h2>
@@ -7065,24 +7095,139 @@ function ndHealthHtml(){ const rows=['A1','A2'].map(l=>({l,H:ndHealth(l)})).filt
       <div class="row" style="gap:6px"><button class="btn small" data-act="ndquick" data-v="${l}">▶ Ôn tiếp ${l}</button>${fd+lo?`<button class="btn small" data-act="ndshow" data-v="${l}" aria-expanded="${sh}">${sh?'Ẩn':'Xem'} chỗ đã quên / đang phai</button>`:''}</div>
       ${sh?`<ul class="stack" style="gap:6px;list-style:none;padding:0">${list.map(n=>`<li class="spread" style="gap:8px"><span>${h.lost.includes(n)?'🔴':'🟡'} ${esc(h.vi[n]||n)}</span>${ndHome({node:n})}</li>`).join('')}</ul>`:''}</div>`; }).join('')}
     <p class="hint">Đang phai: đã vững nhưng khả năng nhớ dưới 90%. Đã quên: từng vững, nay sai lại. Ước tính của máy, chưa người thật kiểm.</p></section>`; }
+// ---- v164 ⚡ Học nhanh (người sáng lập 19/10/2026): cho người học tiếng Anh lâu năm nhưng mất gốc, không muốn học lại từ đầu.
+// Học bài + ôn là một vòng (đường thường); Học nhanh làm bài TRƯỚC, đúng thì qua, sai chỗ nào chỉ vá đúng chỗ đó. ▶ Hôm nay là não chung.
+// Vượt chặng: 10 unit (2 câu / unit, 1 câu tự gõ) hoặc 7 điểm ngữ pháp (2 câu tự gõ / điểm). Unit / điểm đúng hết → qua (tạm vững),
+// từ vào lịch ôn sau 3 ngày (🔁 Nhớ chỉ lên khi đúng lại sau ≥ 3 ngày = bước xác nhận). Sai → vào hàng vá (st.fast.gap).
+// Chặng đầu tiên là 🧭 Đo nền: qua < 40% số unit / điểm thì gợi ý 📘 Học bài. Chi tiết: docs/HOC-NHANH-KE-HOACH.md.
+const FAST_CH = 10, FAST_GCH = 7, FAST_LOW = 0.4, FAST_FIX_N = 8, FASTT = '⚡ Học nhanh';
+// Gốc A1 của điểm ngữ pháp (soạn tay, quyết định kỹ thuật v164): người mất gốc sai điểm A2 thường vì hổng điểm nền A1 bên dưới.
+// Engine chỉ có cạnh "thứ tự bài" (soft), không có cạnh gốc thật. Sai điểm X → vá X, và hỏi lại gốc của X trước (đúng thì bỏ qua, sai thì vá gốc).
+const G_ROOT = {'g-a1-07':['g-a1-01'],'g-a1-09':['g-a1-08'],'g-a1-11':['g-a1-09'],'g-a1-20':['g-a1-01'],'g-a1-22':['g-a1-01'],'g-a1-24':['g-a1-23'],'g-a1-25':['g-a1-01'],
+  'g-a2-01':['g-a1-28'],'g-a2-02':['g-a1-28'],'g-a2-03':['g-a1-28'],'g-a2-04':['g-a1-28'],'g-a2-05':['g-a1-08','g-a1-20'],'g-a2-06':['g-a1-20'],'g-a2-07':['g-a1-12'],'g-a2-08':['g-a1-25'],
+  'g-a2-09':['g-a1-22','g-a1-20'],'g-a2-10':['g-a1-23'],'g-a2-11':['g-a1-23'],'g-a2-12':['g-a1-23'],'g-a2-13':['g-a1-23','g-a1-24'],'g-a2-14':['g-a1-09'],'g-a2-15':['g-a1-12'],
+  'g-a2-16':['g-a1-12'],'g-a2-17':['g-a1-12','g-a1-22'],'g-a2-18':['g-a1-18','g-a1-19'],'g-a2-19':['g-a1-28'],'g-a2-20':['g-a1-26'],'g-a2-21':['g-a1-21'],'g-a2-22':['g-a1-08'],
+  'g-a2-23':['g-a1-08'],'g-a2-24':['g-a1-18'],'g-a2-25':['g-a1-02','g-a1-17'],'g-a2-26':['g-a1-03'],'g-a2-27':['g-a1-27'],'g-a2-28':['g-a1-14'],'g-a2-29':['g-a1-14'],'g-a2-30':['g-a1-28']};
+const FST = () => { const F=st.fast||(st.fast={}); F.ch||={}; F.gap=(F.gap||[]).filter(x=>x&&(x.k==='w'?WORD[x.id]:GPT[x.id])); return F; };
+const fastLvs = L => L==='A1'?['A1']:['A1','A2'];   // mục tiêu A2 gồm cả nút A1: vượt A1 trước (nhanh với người có nền), rồi A2
+// Chặng của một cấp, theo thứ tự làm: 2 chặng từ rồi 1 chặng ngữ pháp.
+function fastChunks(L){ const us=UNITS.filter(u=>u.level===L), ps=GPOINTS.filter(p=>p.level===L), w=[], g=[];
+  for(let i=0;i*FAST_CH<us.length;i++) w.push({key:`w:${L}:${i}`,L,k:'w',i,us:us.slice(i*FAST_CH,(i+1)*FAST_CH)});
+  for(let i=0;i*FAST_GCH<ps.length;i++) g.push({key:`g:${L}:${i}`,L,k:'g',i,ps:ps.slice(i*FAST_GCH,(i+1)*FAST_GCH)});
+  const out=[]; w.forEach((c,i)=>{ out.push(c); if(i%2===1&&g.length) out.push(g.shift()); }); return out.concat(g); }
+const fastLeft = c => c.k==='w'?c.us.filter(u=>!U(u.id).passed):c.ps.filter(p=>!G(p.id).passed);
+const fastName = c => c.k==='w'?`Chặng từ ${c.L} · Unit ${c.us[0].no}–${c.us[c.us.length-1].no}`:`Chặng ngữ pháp ${c.L} · Bài ${c.ps[0].no}–${c.ps[c.ps.length-1].no}`;
+function fastNext(L){ const F=FST(); for(const l of fastLvs(L)) for(const c of fastChunks(l)) if(!F.ch[c.key]&&fastLeft(c).length) return c; return null; }
+function fastStart(key){ const c=fastLvs('A2').flatMap(fastChunks).find(x=>x.key===key); if(!c) return; const left=fastLeft(c);
+  if(!left.length){ FST().ch[key]={d:today(),ok:0,n:0}; save(); return render(); }
+  const F=FST(); if(!F.path) F.path='fast'; save();
+  if(c.k==='w'){ const items=[]; for(const u of left){ const [a,b]=shuffle(u.words);
+      items.push(Object.assign(build(a,'rcl',{test:true}),{fk:key}),Object.assign(build(b,'ctx',{test:true,noOrder:true,noAudio:true}),{fk:key})); }
+    return startSession('fast',spread(items),null,c.L); }
+  const used=new Set(), items=[]; for(const p of left){ items.push(Object.assign(gbuild(p,'typ',{test:true,used}),{fk:key}),Object.assign(gbuild(p,(p.fx||[]).length?'fix':'typ',{test:true,used}),{fk:key})); }
+  return gStart('fast',gspread(items),null,c.L); }
+// Hàng vá: {k:'w'|'g', id, u (unit của từ), d (ngày sớm nhất được vá), root (gốc A1: hỏi trước, đúng thì bỏ qua), of (điểm sinh ra gốc)}.
+function gapAdd(k,id,u){ const F=FST(), t=today(), has=(k2,i2)=>F.gap.some(x=>x.k===k2&&x.id===i2);
+  if(k==='g') for(const r of G_ROOT[id]||[]) if(!has('g',r)&&GPT[r]) F.gap.push({k:'g',id:r,d:t,root:true,of:id});
+  if(!has(k,id)) F.gap.push({k,id,u:u||null,d:t}); }
+const gapDue = () => FST().gap.filter(x=>x.d<=today());
+function fastDone(s,g){ const F=FST(), t=today(), key=(s.q.find(x=>x.fk)||{}).fk, by=new Map();
+  for(const r of s.res){ const id=g?r.gid:UNIT_OF[r.wid].id; if(!by.has(id)) by.set(id,[]); by.get(id).push(r); }
+  let pass=0; const gaps=[];
+  for(const [id,rs] of by){ const bad=rs.filter(r=>!r.correct);
+    if(!bad.length){ pass++; const x=g?G(id):U(id); if(!x.passed){ x.passed=true; x.skipped=true; if(!g){ x.fast=t; x.pd??=t; delete x.ndNeed; } ndPassMark(g?'g':'u',id); } continue; }
+    if(g){ gapAdd('g',id); gaps.push({k:'g',id}); } else { U(id).fq=t; for(const r of bad){ gapAdd('w',r.wid,id); gaps.push({k:'w',id:r.wid}); } } }
+  if(key) F.ch[key]={d:t,ok:pass,n:by.size}; const first=Object.keys(F.ch).length===1;
+  runActive(s.res); clearRun(); save(); checkBadges();
+  go('fastsum',{fsum:{key,L:s.lvl,g:!!g,pass,n:by.size,gaps,first,res:s.res},sess:null,gs:null}); }
+function viewFastSum(){ const R=ui.fsum; if(!R) return viewND(); const r=R.n?R.pass/R.n:0, low=r<FAST_LOW, nx=fastNext(ndLv()), what=R.g?'điểm ngữ pháp':'unit';
+  return `<section class="stack" style="text-align:center;justify-items:center">${mascot(r>=.8?'party':'happy',84)}<span class="eyebrow">${FASTT}${R.first?' · 🧭 Đo nền':''}</span>
+    <h1>Qua ${R.pass}/${R.n} ${what}</h1>
+    <p class="muted">${R.pass?`Bạn đã biết sẵn ${R.pass} ${what}: không phải học lại. Từ / bài của chúng vào lịch ôn sau 3 ngày để chắc là còn nhớ (thanh 🔁 Nhớ).`:'Chặng này bạn chưa có nền.'}
+      ${R.gaps.length?` ${R.gaps.length} chỗ sai đã vào <b>Vá chỗ lủng</b>: chỉ học lại đúng chỗ đó.`:''}</p></section>
+  ${low&&R.first?`<section class="panel stack"><h2>Gợi ý đường</h2><p>Qua dưới ${pct(FAST_LOW)}: đoạn đầu này bạn còn hổng nhiều. Học từ đầu ở 📘 Học bài có thể nhanh hơn vá từng chỗ.</p>
+    <div class="row"><button class="btn primary" data-act="fastpath" data-v="normal">Đi 📘 Học bài</button><button class="btn" data-act="fastpath" data-v="fast">Vẫn đi ⚡ Học nhanh</button></div></section>`:''}
+  ${R.gaps.length?`<section class="panel stack"><h2>Chỗ cần vá</h2><ul class="stack" style="gap:4px;list-style:none;padding:0">${R.gaps.slice(0,12).map(x=>`<li>${x.k==='w'?`<b lang="en">${esc(WORD[x.id].word)}</b> · ${esc(WORD[x.id].vi)}`:`🧩 ${esc(GPT[x.id].vi)}`}</li>`).join('')}</ul>
+    ${R.g&&R.gaps.some(x=>(G_ROOT[x.id]||[]).length)?'<p class="hint">Sai điểm nào thì máy hỏi lại cả phần gốc A1 bên dưới; gốc còn vững thì bỏ qua ngay.</p>':''}</section>`:''}
+  <div class="row endrow">${R.gaps.length?'<button class="btn primary" data-act="fixgo">🩹 Vá ngay</button>':''}${nx?`<button class="btn ${R.gaps.length?'':'primary'}" data-act="fastgo" data-v="${nx.key}">▶ ${esc(fastName(nx))}</button>`:''}<button class="btn" data-go="nd">Về Học nhanh</button></div>
+  <p class="hint" style="text-align:center">Điểm máy tự chấm, chưa người thật kiểm.</p>`; }
+// Vá chỗ lủng: mỗi chỗ một thẻ ngắn (nghĩa, phát âm, câu ví dụ, mẹo / công thức) rồi một câu tự gõ. Gốc A1: hỏi trước, đúng thì bỏ qua.
+// Đúng → hết lủng: vào lịch ôn sau 3 ngày; unit hết chỗ lủng (đã đo nhanh) → qua unit; điểm ngữ pháp hết lủng → qua điểm. Sai → vá lại ngày mai.
+function fixStart(){ const q=gapDue().slice(0,FAST_FIX_N).map(x=>({...x})); if(!q.length) return toast('Hôm nay không còn chỗ nào cần vá.');
+  ui.fix={q,i:0,stage:q[0].root?'q':'card',ans:null,res:[],ex:null}; fixQ(); go('fix',{fix:ui.fix}); }
+function fixQ(){ const X=ui.fix, it=X&&X.q[X.i]; if(!it) return;
+  if(it.k==='w'){ const w=WORD[it.id], [en,vi]=[w.ex,w.exVi], m=en.match(stemRe(w));
+    X.ex={prompt:m?en.slice(0,m.index)+'_____'+en.slice(m.index+m[1].length):null,vi,ans:m?m[1]:w.word,accept:[w.word,...(m?[m[1]]:[])]}; }
+  else { const ex=gbuild(GPT[it.id],'typ',{test:true}); X.ex={prompt:ex.prompt,ans:ex.ans,accept:ex.accept,g:true}; } }
+function fixCard(it){ if(it.k==='w'){ const w=WORD[it.id];
+    return `<h2><span lang="en">${esc(w.word)}</span> <span class="muted" style="font-weight:400">${esc(w.ipa||'')}</span> <button class="btn small ghost" data-say="${esc(w.word)}" aria-label="Nghe">${SPK}</button></h2>
+      <p><b>${esc(w.vi)}</b>${w.pos?` <span class="hint">(${esc(w.pos)})</span>`:''}</p><p lang="en">${esc(w.ex)} <button class="btn small ghost" data-say="${esc(w.ex)}" aria-label="Nghe câu">${SPK}</button></p><p class="hint">${esc(w.exVi)}</p>
+      ${w.tip?`<p class="fb neutral" role="note"><span>💡 ${esc(w.tip)}</span></p>`:''}`; }
+  const p=GPT[it.id]; return `<h2>🧩 ${esc(p.vi)}</h2>${it.root?`<p class="hint">Phần gốc A1 của: ${esc(GPT[it.of].vi)}</p>`:''}
+    <ul class="stack" style="gap:4px">${(p.form||[]).map(f=>`<li>${esc(f)}</li>`).join('')}</ul>
+    ${(p.ex||[]).slice(0,2).map(e=>`<p><span lang="en">${esc(e[0])}</span><br><span class="hint">${esc(e[1])}</span></p>`).join('')}
+    ${p.note?`<p class="fb neutral" role="note"><span>💡 ${esc(p.note)}</span></p>`:''}`; }
+function fixAnswer(){ const X=ui.fix, it=X&&X.q[X.i]; if(!it||X.ans) return; const el=document.getElementById('fixin'), v=String(el?el.value:'').trim();
+  if(!v) return toast('Gõ câu trả lời của bạn trước nhé.');
+  const ok=X.ex.g?gOk(v,X.ex.accept):X.ex.accept.some(a=>norm(a)===norm(v)||(norm(a).length>=5&&lev(norm(a),norm(v))===1&&!isKnownWord(v)));
+  X.ans={v,ok}; const t=today(), F=FST(), s=it.k==='w'?W(it.id):G(it.id), node=it.k==='w'?'u:'+(it.u||UNIT_OF[it.id].id):'g:'+it.id;
+  eEv({node,level:3,ok,g:0,item:'fx:'+it.k+':'+it.id,qt:'typed',ctx:'nd',src:it.k==='w'?'vocab':'gram',ch:'fx:'+it.id,given:v});
+  ndLog('x',ok); sfx(ok?'ok':'bad');
+  const retry=!ok&&it.root&&X.stage==='q'&&!it.taught;   // gốc trả lời sai ở lượt hỏi trước → dạy thẻ rồi hỏi lại một lần
+  if(ok||!retry){ X.res.push({...it,ok}); const g=F.gap.find(x=>x.k===it.k&&x.id===it.id);
+    if(ok){ F.gap=F.gap.filter(x=>x!==g);
+      if(!s.learned) Object.assign(s,{learned:true,stage:0,ivl:3,ease:EASE.start,due:t+3}); else srsStep(s,true,true);
+      if(it.k==='g'&&!it.root&&!s.passed){ s.passed=true; s.skipped=true; ndPassMark('g',it.id); }
+      if(it.k==='w'&&it.u){ const us=U(it.u); if(!us.passed&&us.fq&&!F.gap.some(x=>x.k==='w'&&x.u===it.u)){ us.passed=true; us.skipped=true; us.fast=t; us.pd??=t; delete us.ndNeed; ndPassMark('u',it.u); X.up=(X.up||[]).concat(it.u); } } }
+    else { if(g) g.d=t+1; if(s.learned) srsStep(s,false,true); } }
+  save(); render(); }
+function fixNext(){ const X=ui.fix, it=X.q[X.i];
+  if(X.ans&&!X.ans.ok&&it.root&&X.stage==='q'&&!it.taught){ it.taught=true; X.stage='card'; X.ans=null; return render(); }
+  X.i++; X.ans=null; if(X.i>=X.q.length){ X.done=true; return render(); } X.stage=X.q[X.i].root?'q':'card'; fixQ(); render(); window.scrollTo(0,0); }
+function viewFix(){ const X=ui.fix; if(!X) return viewND(); const back=`<div class="spread"><button class="btn ghost back" data-go="nd">← Học nhanh</button><span class="num muted">🩹 ${Math.min(X.i+1,X.q.length)}/${X.q.length}</span></div>`;
+  if(X.done){ const ok=X.res.filter(r=>r.ok).length, left=gapDue().length+FST().gap.filter(x=>x.d>today()).length;
+    return `${back}<section class="panel stack" style="text-align:center;justify-items:center">${mascot(ok===X.res.length?'party':'happy',84)}<h1>Vá xong ${ok}/${X.res.length} chỗ</h1>
+      <p class="muted">${(X.up||[]).length?`Qua thêm ${X.up.length} unit nhờ vá hết chỗ lủng. `:''}Chỗ đã vá vào lịch ôn sau 3 ngày. ${left?`Còn ${left} chỗ (chỗ sai hôm nay vá lại từ ngày mai).`:'Không còn chỗ nào cần vá.'}</p></section>
+      <div class="row endrow">${gapDue().length?'<button class="btn primary" data-act="fixgo">Vá tiếp</button>':''}<button class="btn ${gapDue().length?'':'primary'}" data-go="nd">Về Học nhanh</button></div>`; }
+  const it=X.q[X.i], A=X.ans, E=X.ex, card=X.stage==='card';
+  return `${back}<div class="bar"><i style="width:${X.i/X.q.length*100}%"></i></div>
+  <section class="panel stack"><span class="eyebrow">🩹 Vá chỗ lủng · ${it.k==='w'?'Từ vựng':'Ngữ pháp'}${it.root?' · gốc A1':''}</span>
+  ${card?`${fixCard(it)}<div class="row"><button class="btn primary" data-act="fixq">Làm câu</button></div>`
+  :`${it.root&&!it.taught?`<p class="hint">Kiểm phần gốc: ${esc(GPT[it.id].vi)}. Đúng thì bỏ qua, không phải học.</p>`:''}
+    ${E.g?`<p class="hint">Gõ dạng đúng vào chỗ trống (cả câu hoặc chỉ phần còn thiếu).</p><h2 lang="en" style="font:400 20px/1.5 var(--display)">${esc(E.prompt)}</h2>`
+      :`<p class="hint">Gõ từ tiếng Anh nghĩa là “${esc(WORD[it.id].vi)}”.</p>${E.prompt?`<h2 lang="en" style="font:400 20px/1.5 var(--display)">${esc(E.prompt)}</h2><p class="hint">${esc(E.vi)}</p>`:''}`}
+    <label class="hint" for="fixin">Câu trả lời</label><input id="fixin" lang="en" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(A?A.v:'')}" ${A?'disabled':''}>
+    ${A?`<div class="fb ${A.ok?'good':'bad'}" role="status"><strong>${A.ok?'Đúng':'Chưa đúng'}</strong><span>Đáp án: <b lang="en">${esc(E.ans)}</b></span>${A.ok?'':it.root&&!it.taught?'<span>Xem lại phần gốc rồi làm lại.</span>':'<span>Chỗ này vá lại từ ngày mai.</span>'}</div>
+      <div class="row"><button class="btn primary" data-act="fixnext">${!A.ok&&it.root&&!it.taught?'Xem phần gốc':X.i+1<X.q.length?'Chỗ tiếp':'Xem kết quả'}</button></div>`
+      :`<div class="row"><button class="btn primary" data-act="fixok">Trả lời</button></div>`}`}</section>`; }
+// Bảng ⚡ trong tab: tiến độ chặng theo cấp + nút chặng kế + hàng vá.
+function fastHtml(L){ const F=FST(), nx=fastNext(L), gd=gapDue().length, gl=F.gap.length;
+  const row=l=>{ const cs=fastChunks(l), done=cs.filter(c=>F.ch[c.key]||!fastLeft(c).length).length; return `<div class="spread"><span>${l}</span><span class="hint num">${done}/${cs.length} chặng</span></div><div class="bar" role="progressbar" aria-label="Chặng ${l}" aria-valuemin="0" aria-valuemax="${cs.length}" aria-valuenow="${done}"><i style="width:${done/cs.length*100}%"></i></div>`; };
+  return `<section class="panel stack fastp" aria-label="Vượt chặng"><h2>⚡ Vượt chặng</h2>
+    <p class="hint">Làm bài trước: đúng thì qua, không học lại. Mỗi chặng khoảng 8 phút, phần lớn là câu tự gõ. ${Object.keys(F.ch).length?'':'Chặng đầu tiên cũng là 🧭 Đo nền: máy biết bạn có nền tới đâu.'}</p>
+    ${fastLvs(L).map(row).join('')}
+    <div class="row">${nx?`<button class="btn primary" data-act="fastgo" data-v="${nx.key}">▶ ${esc(fastName(nx))}</button>`:'<span>Đã vượt hết các chặng của mục tiêu.</span>'}</div></section>
+  ${gl?`<section class="panel stack" aria-label="Vá chỗ lủng"><h2>🩹 Vá chỗ lủng</h2><p>${gd?`<b class="num">${gd}</b> chỗ cần vá hôm nay`:'Hôm nay đã vá xong'}${gl>gd?` · ${gl-gd} chỗ vá lại từ ngày mai`:''}.</p>
+    <p class="hint">Chỉ học lại đúng từ / điểm ngữ pháp bạn làm sai: thẻ ngắn rồi một câu tự gõ.</p>${gd?'<div class="row"><button class="btn primary" data-act="fixgo">🩹 Vá ngay</button></div>':''}</section>`:''}`; }
 function viewND(){
   const L=ndLv(), S=ndStats(), pd=(st.me||{}).pdx, nx=ndPlan(L);
   const card=(attr,ic,t,sub,pill)=>`<button class="unit morei" ${attr}><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${sub}</span>${pill?`<span class="pill ${pill[0]}" style="justify-self:start">${pill[1]}</span>`:''}</span></button>`;
   const bp=o=>o&&o.n?[o.best>=.8?'good':'accent',(o.best>=.8?'Đạt':'Đang luyện')+' · '+pct(o.best)]:null;
   const ra=UNITS.filter(u=>u.level===L&&unlocked(u)&&raOk(u)).reverse().slice(0,12).map(u=>card(`data-act="rago" data-uid="${u.id}"`,'mic',`<span lang="en">${esc(u.reading.title)}</span>`,`${uname(u)} · phiên âm, nối âm, âm cuối, ngữ điệu`,bp(st.pron['ra:'+u.id]))).join('');
-  return `<section class="stack"><span class="eyebrow">🔁 Ôn luyện</span><h1>Ôn luyện</h1>
-    <p class="muted">Người đã có nền: đây là đường nhanh nhất. Đọc hoặc nghe nguyên một bài, rồi trả lời câu hỏi. Có câu hiểu bài và câu nghĩa từ của unit. Đúng ≥ 80% (không xem nghĩa) ở 2 ngày khác nhau là qua unit đó. Não chọn bài bạn chưa qua hoặc đang quên. (📘 Học bài: học mới tới vững; 🔁 Ôn luyện: làm rồi ôn lại.)</p></section>
+  return `<section class="stack"><span class="eyebrow">⚡ Học nhanh</span><h1>Học nhanh</h1>
+    <p class="muted">Cho người đã học tiếng Anh lâu nhưng mất gốc, không muốn học lại từ đầu. Làm bài trước: đúng thì qua, không học lại. Sai chỗ nào thì chỉ vá đúng chỗ đó (từ, điểm ngữ pháp, và phần gốc A1 bên dưới). Chỗ đã qua sẽ được hỏi lại sau 3 ngày để chắc là còn nhớ.</p></section>
   <div class="row" role="group" aria-label="Cấp" style="gap:6px">${['A1','A2'].map(l=>`<button class="btn small ${l===L?'primary':''}" data-act="ndlv" data-v="${l}" aria-pressed="${l===L}">${l}</button>`).join('')}</div>
   ${partsHtml(L,'nd')}
   ${dayHtml('nd')}
-  ${nx?`<section class="panel stack ndgo" aria-label="Ôn tiếp"><h2>Hoặc tự ôn thêm</h2><div class="row"><button class="btn" data-act="ndnext" data-v="${L}">▶ Ôn tiếp</button></div>
+  ${fastHtml(L)}
+  ${nx?`<section class="panel stack ndgo" aria-label="Ôn tiếp"><h2>📖 Đọc / nghe nguyên bài</h2><div class="row"><button class="btn" data-act="ndnext" data-v="${L}">▶ Ôn tiếp</button></div>
     <p class="hint">Bài kế: ${ndPlanTxt(nx)}. Máy tự chọn loại bài (đọc / nghe, đóng vai, viết) và độ khó theo chỗ còn thiếu của mục tiêu.</p></section>`:''}
   ${(()=>{ const miss=L==='A1'?Object.keys(RPG).filter(id=>!(((st.rpg||{})[id]||{}).best>=.8)):[];   // v159 đề xuất đúng bài còn thiếu cho mục tiêu
     return miss.length?`<section class="panel stack" aria-label="Đóng vai còn thiếu"><h2>🎭 Đóng vai còn thiếu cho mục tiêu ${L}</h2><p class="hint">Mục tiêu A1 cần làm được các việc thật này bằng lời nói. Máy chép lời bạn nói; làm đúng việc ≥ 80% số lượt là đạt.</p><div class="units">${miss.map(rpgCard).join('')}</div></section>`:''; })()}
   ${ndDueHtml()}
   ${ndHealthHtml()}
   <details class="panel ndph" ${ui.ndPh?'open':''}><summary><h2 style="display:inline">🗣 Luyện phát âm</h2> <span class="hint">nói nhại, đọc to, cặp âm, chấm từng âm</span></summary>
-    <p class="hint">Nghe cặp âm, chấm từng âm, đọc to / nói nhại (máy nghe ra ≥ 80%) được cộng vào 🎯 Mục tiêu (nguồn Ôn luyện). Điểm máy chấm là ước tính, chưa người thật kiểm.</p>
+    <p class="hint">Nghe cặp âm, chấm từng âm, đọc to / nói nhại (máy nghe ra ≥ 80%) được cộng vào 🎯 Mục tiêu (nguồn Học nhanh). Điểm máy chấm là ước tính, chưa người thật kiểm.</p>
     <div class="units">${card(`data-act="shgo" data-lv="${L}"`,'mic','Nói nhại',`Nghe câu mẫu rồi nói lại; ${HAS_ASR?'máy tô từ nghe ra và chưa nghe ra':'ghi âm rồi tự so'} · ${SH_N} câu`,bp((st.shadow||{})[L]))
     +card(`data-act="gp" data-lv="${L}" data-kind="talk" data-mode="say"`,'mic','📝 Bài nói theo cấp','Bài nói mới mỗi lần, dễ tới khó: luyện phát âm hoặc dịch hai chiều',null)
     +card(`data-act="gp" data-lv="${L}" data-kind="read" data-mode="say"`,'read','📝 Bài đọc to theo cấp','Bài đọc mới mỗi lần: đọc to, dịch Anh → Việt, Việt → Anh',null)
@@ -7092,13 +7237,13 @@ function viewND(){
     +card(`data-act="csgo" data-lv="${L}"`,'ear','Nối âm, dạng yếu, ngữ điệu','Câu thoại cấp này: chỗ nối âm, từ đọc lướt, lên / xuống giọng · 10 câu',bp(st.pron['cs-'+L]))
     +(HAS_ASR?card('data-act="pdxgo"','ear','Dò phát âm (26 cặp âm)','Nói mỗi cặp một từ; app lập hồ sơ các âm bạn đang lẫn',pd?[pd.bad.length?'accent':'good',pd.bad.length?`Đang lẫn ${pd.bad.length} cặp`:'Không lẫn cặp nào']:null):'')
     +card('data-act="paste"','read','📋 Dán bài của bạn','Bài nói / viết bất kỳ: tách từng câu, phiên âm, nghĩa từng từ, ngữ pháp, đọc to',null)+ra}</div></details>
-  <section class="panel stack" aria-label="Theo dõi Ôn luyện"><h2>Theo dõi riêng</h2>
+  <section class="panel stack" aria-label="Theo dõi Học nhanh"><h2>Theo dõi riêng</h2>
     <div class="row" style="gap:16px;flex-wrap:wrap"><span>Hôm nay <b class="num">${S.today}</b> câu</span><span>7 ngày <b class="num">${S.week}</b> câu</span><span>Luyện liền <b class="num">${S.run}</b> ngày</span>${S.p!=null?`<span>Máy nghe ra <b class="num">${pct(S.p)}</b> từ (7 ngày)</span>`:''}${S.ph?`<span>Chấm từng âm gần nhất <b class="num">${S.ph.s}/100</b></span>`:''}</div>
-    <p class="hint">Lối đi tắt "làm rồi ôn lại": câu đúng được cộng vào 🎯 Mục tiêu (nguồn Ôn luyện); câu sai vào lịch ôn. Không tính mục tiêu ngày / XP của Học bài.</p></section>`;
+    <p class="hint">Lối đi tắt "làm rồi ôn lại": câu đúng được cộng vào 🎯 Mục tiêu (nguồn Học nhanh); câu sai vào lịch ôn. Không tính mục tiêu ngày / XP của Học bài.</p></section>`;
 }
 function viewPhon(){
   const ok=typeof ELCORE!=='undefined'&&ELCORE.gop&&typeof Worker!=='undefined', R=PH.res, n=pnNote(PH.sent);
-  const head=`<button class="btn ghost back" data-go="nd">← Ôn luyện</button>
+  const head=`<button class="btn ghost back" data-go="nd">← Học nhanh</button>
   <section class="stack"><span class="eyebrow">🧪 Thử nghiệm</span><h1>Chấm từng âm trên máy</h1>
     <p class="muted">Giống ELSA: máy chấm từng âm trong câu bạn nói (xanh đúng, vàng gần đúng, đỏ sai hoặc thiếu). Mô hình chạy ngay trên điện thoại, âm thanh không gửi đi đâu.</p>
     <p class="hint">Lưu ý: lần đầu phải tải mô hình vài trăm MB (nên dùng Wi-Fi). Trên iPhone có thể chậm hoặc trang bị tải lại nếu máy thiếu bộ nhớ. Điểm là ước tính, kém chính xác hơn ELSA, chưa người thật kiểm. Không tính vào mức thuộc.</p></section>`;
@@ -7266,7 +7411,7 @@ QZ.cs={bag:'pron',bump:'sound',gen:ref=>csItems(ref.slice(3))};
 QZ.pv={bag:'pv',bump:'talk',gen:L=>pvItems(L)};
 QZ.qpx={bag:'lis',bump:'read',gen:()=>qpxItems()};
 const startRx = L => startQuiz('rx',L,rxItems(L),{title:'Phản xạ hội thoại '+L,label:'Phản xạ',eyebrow:L+' · Phản xạ hội thoại',back:'talk',backExtra:{talkLv:L},backLabel:'Về Kỹ năng'});
-const startCs = L => startQuiz('cs','cs-'+L,csItems(L),{title:'Nối âm, ngữ điệu '+L,label:'Nói tự nhiên',eyebrow:L+' · Nối âm, dạng yếu, ngữ điệu',back:'nd',backLabel:'Về Ôn luyện'});
+const startCs = L => startQuiz('cs','cs-'+L,csItems(L),{title:'Nối âm, ngữ điệu '+L,label:'Nói tự nhiên',eyebrow:L+' · Nối âm, dạng yếu, ngữ điệu',back:'nd',backLabel:'Về Học nhanh'});
 const startPv = L => startQuiz('pv',L,pvItems(L),{title:'Cụm từ '+L,label:'Cụm động từ & thành ngữ',eyebrow:L+' · Cụm động từ & thành ngữ',back:'review',backLabel:'Về Ôn tập'});
 const startQpx = () => startQuiz('qpx','qpx',qpxItems(),{title:'Kiểm tra thêm',label:'Kiểm tra đầu vào',eyebrow:'Ngữ pháp và nghe',back:'path',backLabel:'Về Lộ trình'});
 
@@ -7377,7 +7522,7 @@ function startPdx(){ if(!HAS_ASR) return toast('Trình duyệt này chưa có m�
 function pdxNext(skip){ const P=ui.pdx, x=P.q[P.i], r=ASR.key==='pdx'+P.i&&ASR.res; P.res.push({id:x.id,k:skip||!r?'skip':r.k,w:x.w,o:x.o,heard:r&&r.heard||''}); asrReset(); P.i++;
   if(P.i>=P.q.length){ P.done=true; const g=k=>P.res.filter(z=>z.k===k).map(z=>z.id); (st.me||(st.me={})).pdx={day:today(),bad:g('other'),unc:g('unclear'),ok:g('ok')}; evc('d:pdx'); ndLog('pdx',true); }
   render(); window.scrollTo(0,0); }
-function viewPdx(){ const P=ui.pdx; if(!P) return viewND(); const top=`<div class="spread"><button class="btn ghost back" data-go="nd">← Ôn luyện</button><span class="num muted">🎯 Kiểm tra phát âm · ${Math.min(P.i+1,P.q.length)}/${P.q.length}</span></div>`;
+function viewPdx(){ const P=ui.pdx; if(!P) return viewND(); const top=`<div class="spread"><button class="btn ghost back" data-go="nd">← Học nhanh</button><span class="num muted">🎯 Kiểm tra phát âm · ${Math.min(P.i+1,P.q.length)}/${P.q.length}</span></div>`;
   if(P.done){ const by=k=>P.res.filter(z=>z.k===k), bad=by('other'), unc=by('unclear'), ok=by('ok');
     const row=z=>{ const s=SND[z.id]; return `<button class="unit morei" data-snd="${z.id}"><span class="no">${ico('ear')}</span><span class="t"><strong>${esc(s.a)} – ${esc(s.b)} · <span lang="en">${esc(s.title)}</span></strong><span class="muted">Bạn nói “<span lang="en">${esc(z.w)}</span>”${z.k==='other'?`, máy nghe thành “<span lang="en">${esc(z.o)}</span>”`:z.heard?`, máy nghe được “<span lang="en">${esc(z.heard)}</span>”`:''} · bấm để luyện</span></span></button>`; };
     return `${top}<section class="stack"><span class="eyebrow">Hồ sơ phát âm của bạn</span><h1>${ok.length}/${P.res.length} cặp âm máy nghe ra đúng</h1>
@@ -9671,7 +9816,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.c579764891.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.dd113770cc.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

@@ -169,3 +169,11 @@ Người sáng lập (17/10/2026) tách mọi chức năng luyện nói, đọc 
 - **Bản 99 (v161): một nút ▶ Hôm nay** ở đầu cả 📘 Học bài và 🔁 Ôn luyện (`dayPlan`): não tự chọn bước và cân ôn / mới. Ranh giới hai phần: Ôn luyện cho người có nền vượt nhanh; ôn dưới 50% là chưa có kiến thức → `ndNeed`, não đưa về Học bài unit đó. `ndBase` đoán người học có nền hay chưa từ 3 lượt vượt nhanh gần nhất. Thi chuyển cấp: ý Viết / Nói do máy tìm bằng từ khoá, bỏ tự đánh dấu. SPEC khối 17/10/2026, mục v161.
 - **Bản 100 (v162): mỗi phần tự đi được tới Thi chuyển cấp.** Học bài: ôn lồng `mixDue` (từ đến hạn của unit cũ xen vào lượt luyện) để có 🔁 Nhớ mà không cần tab Ôn luyện. Ôn luyện: `ndGPlan` bảo đảm mọi điểm ngữ pháp ra ở ≥ 2 bài đọc; thêm Nói theo đề và viết chuyện 3 cảnh. ▶ Hôm nay vẫn là đường nhanh nhất (dùng cả hai). SPEC khối 17/10/2026, mục v162.
 - **Bản 101 (v163): một não, ba cách nhìn.** `actsOf` đọc tình trạng một lần; ▶ Hôm nay / Học bài / ▶ Ôn tiếp dùng chung thứ tự (đến hạn → chưa biết → chỗ thiếu lớn nhất → dùng thật). Trạng thái T1–T9 (SPEC mục v163); "gần được" 2 lần → Học bài.
+
+## 8. ⚡ Học nhanh cho người mất gốc (v164, APP_VERSION 102)
+
+Người sáng lập (19/10/2026): học và ôn là một vòng; ▶ Hôm nay chọn việc; cần một đường nhanh hơn cho người học lâu năm nhưng mất gốc, không học lại từ đầu.
+- Tab 🔁 Ôn luyện thành **⚡ Học nhanh**: vượt chặng (10 unit / 7 điểm ngữ pháp, phần lớn câu tự gõ), đúng hết thì qua; sai thì **🩹 vá chỗ lủng** đúng từ / điểm đó, kèm hỏi lại gốc A1 của điểm A2.
+- Chặng đầu tiên là 🧭 Đo nền; qua < 40% thì gợi ý 📘 Học bài.
+- Khó khăn nhắm tới: **K2** (học trước quên sau: chỗ qua được hỏi lại sau 3 ngày) và nỗi chán phải học lại cái đã biết của người mất gốc. Chi tiết: SPEC khối 19/10/2026, `docs/HOC-NHANH-KE-HOACH.md`. Chưa người thật kiểm.
+
