@@ -15,6 +15,14 @@ Project Supabase `english-ladder`:
 - Kho ảnh riêng tư `el-gopy` (Storage): app chỉ tải lên, không đọc, không liệt kê. Xem ảnh: Supabase → Storage → `el-gopy` → thư mục theo tháng.
 - App chỉ ghi (`el_gopy_post`, kiểm loại, độ dài, ≤ 3 ảnh, ≤ 30 góp ý / giờ / máy). Migration: `supabase/migrations/20261019100000_gopy.sql`.
 
+## 🔐 Quản lý trong app (v168)
+- Tôi → Góp ý → **🔐 Quản lý góp ý**. Lần đầu nhập **khoá quản trị** `ELA-…` (người làm app giữ; máy chủ chỉ lưu băm trong bảng `el_admin`). Khoá nhớ trên máy đó tới khi bấm "Quên khoá trên máy này".
+- Lọc theo **loại** (🐞 / 🤔 / 💡 / 📝) và **trạng thái** (🆕 Mới · 🔧 Đang xử lý · ✅ Xong · 🚫 Bỏ · 🗑 Đã xoá); mỗi nút có số đếm.
+- Mỗi góp ý: nội dung, ngày, bản app, màn / câu đang làm, ảnh (link có hạn 1 giờ do hàm `el-gopy-img` cấp), ghi chú xử lý.
+- Nút nhanh: Đang xử lý / Xong / Bỏ / Xoá. **Xoá** = chuyển vào 🗑 Đã xoá (khôi phục được bằng ↩). ✏️ Sửa chi tiết: trạng thái, loại, nội dung, ghi chú. ➕ Thêm góp ý tay.
+- Máy chủ: `supabase/migrations/20261019110000_gopy_admin.sql` (`el_admin_ok`, `el_gopy_list`, `el_gopy_set`, `el_gopy_add`), hàm `supabase/functions/el-gopy-img`.
+- Đổi khoá (khi lộ): chạy `insert into el_admin (h) values (encode(extensions.digest('<khoá mới>', 'sha256'), 'hex'));` rồi xoá dòng băm cũ trong bảng `el_admin`.
+
 ## Xử lý (gợi ý mỗi tuần một lần)
 1. Lấy góp ý mới:
    ```sql
