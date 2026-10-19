@@ -32,8 +32,12 @@ test('mục tiêu CEFR A1: "Chưa đạt A1 vì còn thiếu…" và màn Vì sa
     w.eval("go('goal',{er:'goal/cefr-a1'})");
   });
   await expect(page.getByText(/Chưa đạt A1 vì còn thiếu/)).toBeVisible({ timeout: 15000 });
-  await page.getByRole('button', { name: 'Vì sao?', exact: true }).first().click();
-  await expect(page.getByRole('heading', { name: /Vì sao chưa đạt/ })).toBeVisible();
+  // Màn mục tiêu còn vẽ lại khi engine nạp xong (đồ thị, readiness): bấm lúc đó thì nút cũ bị thay, cú bấm mất → CI lúc đỏ lúc xanh. Bấm lại tới khi sang màn Vì sao.
+  await expect(async () => {
+    const h = page.getByRole('heading', { name: /Vì sao chưa đạt/ });
+    if (!(await h.isVisible())) await page.getByRole('button', { name: 'Vì sao?', exact: true }).first().click({ timeout: 3000 });
+    await expect(h).toBeVisible({ timeout: 3000 });
+  }).toPass({ timeout: 20000 });
   await expect(page.getByRole('heading', { name: /Còn thiếu \d+ năng lực/ })).toBeVisible();
   expect(errors).toEqual([]);
 });
