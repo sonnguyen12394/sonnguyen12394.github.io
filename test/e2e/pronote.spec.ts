@@ -24,7 +24,8 @@ const fakeMiss = (page: Page, key: string, target: string, skip: number) => page
 
 test('Nói nhại: câu có phiên âm từng từ, ↗ / ↘, mẹo; ẩn / hiện phiên âm; từ máy chưa nghe ra có mẹo; không ghi bằng chứng', async ({ page, errors }) => {
   const led0 = await open(page);
-  await page.evaluate(() => (window as any).eval("startShadow('A1')"));
+  // câu cố định: startShadow bốc ngẫu nhiên, câu nhiều tên riêng / số chỉ có 1 từ có phiên âm (.pnw) nên test từng chập chờn
+  await page.evaluate(() => { const w = window as any; w.eval("startShadow('A1')"); w.eval('ui').sh.q[0] = { t: 'I would like a cup of coffee, please.', vi: 'Tôi muốn một tách cà phê.', v: 0 }; w.eval('render()'); });
   const pn = page.locator('#app .pn');
   await expect(pn).toBeVisible();
   expect(await pn.locator('.pnw').count()).toBeGreaterThan(2);
