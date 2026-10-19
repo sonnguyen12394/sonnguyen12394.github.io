@@ -116,7 +116,7 @@ test('v162 Ôn luyện có 🗣️ Nói theo đề: đóng vai + viết đã đ�
   await page.locator('#app [data-act="ndnext"]').click();
   expect(await page.evaluate(() => (window as any).eval('ui').view)).toBe('stask');
   await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
-  await expect(page.locator('#app .back')).toHaveText('← Ôn luyện');
+  await expect(page.locator('#app .back')).toHaveText('← Học nhanh');
   const ax = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(ax.violations.map(v => v.id)).toEqual([]);
   await noHorizontalScroll(page);

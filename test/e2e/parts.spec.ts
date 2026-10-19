@@ -24,14 +24,14 @@ const answer = (page: Page, item: string, ctx: string) => page.evaluate(([it, cx
 
 test.describe('mở app (home: false)', () => {
   test.use({ home: false });
-  test('mở app vào 🎯 Mục tiêu; thanh = Chơi · Học bài · Ôn luyện · Mục tiêu · Tôi; A1 / A2 đổi được; WCAG', async ({ page, errors }) => {
+  test('mở app vào 🎯 Mục tiêu; thanh = Chơi · Học bài · Học nhanh · Mục tiêu · Tôi; A1 / A2 đổi được; WCAG', async ({ page, errors }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await seed(page);
     // Chờ bài học chi tiết tải xong rồi mới tải lại trang: tải lại giữa chừng thì Safari báo lỗi fetch bị cắt ngang (CI WebKit).
     await page.waitForFunction(() => (window as any).eval('detailAll()'), null, { timeout: 30000 });
     await page.reload();
     await expect(page.getByRole('heading', { name: /Cần đạt ở mỗi cấp/ })).toBeVisible({ timeout: 20000 });
-    await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học bài', 'Ôn luyện', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
+    await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học bài', 'Học nhanh', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
     await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Mục tiêu');
     await expect(page.locator('#app .cmprow')).toHaveCount(7);
     await expect(page.locator('#app')).toContainText(/Cần đạt để qua A2 · \d+\/361 phần đã vững/);
@@ -87,6 +87,6 @@ test('tab 📘 Học bài: ▶ Hôm nay + tự học tiếp + 7 kỹ năng + t�
   await noHorizontalScroll(page);
   await expect(page.locator('#app .lnext [data-go="review"]')).toHaveCount(0);
   await page.evaluate(() => (window as any).eval("go('review')"));
-  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Ôn luyện');
+  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Học nhanh');   // v164 tab nd = ⚡ Học nhanh
   expect(errors).toEqual([]);
 });
