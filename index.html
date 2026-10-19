@@ -289,7 +289,7 @@ td.w{font:600 16px/1.2 var(--display)}
 .cell{display:inline-block;min-width:38px;text-align:center;padding:4px 6px;border-radius:5px;font:500 12px/1 var(--mono);font-variant-numeric:tabular-nums;background:color-mix(in srgb,var(--accent) calc(var(--p) * 42%),var(--surface-2))}
 .cell.na{background:none;color:var(--muted)}
 .num{font:500 13px/1 var(--mono);font-variant-numeric:tabular-nums}
-select{font:inherit;max-width:100%;min-width:0;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+select{font:inherit;font-size:16px;max-width:100%;min-width:0;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
 
 /* Speaking */
 .sp-steps{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
@@ -533,6 +533,9 @@ body.lesson .sess-top .back::before{content:'✕';font-size:22px;line-height:1;c
 body.lesson .bar{height:14px;border-radius:99px;background:var(--line)}
 body.lesson .bar i{border-radius:99px;background:var(--good);background-image:linear-gradient(transparent 22%,rgb(255 255 255 / .35) 22% 42%,transparent 42%)}
 body.lesson .q{background:none;border:0;padding:6px 2px}
+/* v170 góp ý người học (iPhone): chữ trong câu hỏi to hơn; ô gõ ≥ 16px để iPhone không tự phóng to rồi kẹt ở đó */
+.q .vi,.q .hint,.q .muted,.q .chipbtn{font-size:16px}.q .eyebrow{font-size:13px}.q .fb{font-size:16px}
+:where(input:not([type=checkbox],[type=radio],[type=range]),textarea,select){font-size:16px}
 /* Bảng kết quả trượt lên từ đáy; nút Tiếp tục luôn dưới ngón cái */
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:8;max-height:72vh;overflow:auto;display:grid;gap:10px;padding:18px 16px calc(16px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:3px solid var(--line);box-shadow:0 -8px 24px rgb(0 0 0 / .12);animation:sheetup .22s ease-out}
 .sheet>*{max-width:720px;width:100%;margin:0 auto}
@@ -1303,4 +1306,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.bab9480a1f.js" defer></script><script src="app.js?v=107" defer></script>
+<script src="x/core.bab9480a1f.js" defer></script><script src="app.js?v=108" defer></script>
