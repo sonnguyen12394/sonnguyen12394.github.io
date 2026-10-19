@@ -31,6 +31,8 @@ test('sảnh: ⚔️ là nút chính duy nhất; vào trận luyện tay, chạy
   // Hạt trận cố định: với hạt theo giờ, bot né giỏi thua Luyện tay 1 khoảng 5–6% số lần (mô phỏng 160 trận), làm CI lúc đỏ lúc xanh.
   // Hạt 20 thắng ở mọi độ trễ bật bot đã thử (0 / 1 / 3 / 6 giây đứng yên), máu còn ≥ 79%.
   await page.addInitScript(() => { (window as any).__elFightSeed = 20; });
+  // Trận chạy theo khung hình thật (tối đa 0,1 giây trận mỗi khung × tốc độ): máy CI bận thì cùng một trận tốn lâu hơn 60 giây của cả test → nới riêng test này.
+  test.setTimeout(150_000);
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
   await expect(page.locator('#app .btn.primary')).toHaveCount(1);
@@ -44,7 +46,7 @@ test('sảnh: ⚔️ là nút chính duy nhất; vào trận luyện tay, chạy
   await ready(page);
   // Bot né giỏi điều khiển thay, tăng tốc mô phỏng để test chạy nhanh (luật vẫn là bước cố định của fight.ts).
   await page.evaluate(() => { const r = document.getElementById('whfx') as any; r._auto('good'); r._speed(30); });
-  await expect(page.locator('.cbend')).toContainText('Thắng Luyện tay 1', { timeout: 60000 });
+  await expect(page.locator('.cbend')).toContainText('Thắng Luyện tay 1', { timeout: 120_000 });
   await expect(page.locator('.cbend')).toContainText(/\+(3\d|4\d) 🪙/);
   const cb = await cbs(page);
   expect(cb.clr).toEqual(['k1-l1']);
