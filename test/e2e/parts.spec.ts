@@ -87,6 +87,6 @@ test('tab 📘 Học bài: ▶ Hôm nay + tự học tiếp + 7 kỹ năng + t�
   await noHorizontalScroll(page);
   await expect(page.locator('#app .lnext [data-go="review"]')).toHaveCount(0);
   await page.evaluate(() => (window as any).eval("go('review')"));
-  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Học nhanh');   // v164 tab nd = ⚡ Học nhanh
+  await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Học nhanh');   // v165 tab nd = ⚡ Học nhanh
   expect(errors).toEqual([]);
 });

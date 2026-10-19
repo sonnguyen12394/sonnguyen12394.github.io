@@ -1,4 +1,4 @@
--- v166 💬 Góp ý mọi màn (người sáng lập 19/10/2026: "trong quá trình học muốn có nút góp ý để gửi ý kiến cũng như hình ảnh nếu cần, rồi sẽ tổng hợp lại xử lý").
+-- v167 💬 Góp ý mọi màn (người sáng lập 19/10/2026: "trong quá trình học muốn có nút góp ý để gửi ý kiến cũng như hình ảnh nếu cần, rồi sẽ tổng hợp lại xử lý").
 -- Bảng el_gopy: mỗi góp ý một dòng, kèm bối cảnh màn / câu đang làm (ctx), ảnh ở kho riêng tư el-gopy (imgs = đường dẫn),
 -- ảnh dự phòng dạng data URL khi tải ảnh lên kho không được (imgd). App chỉ GHI (el_gopy_post); đọc / xử lý: chủ dự án (docs/GOP-Y.md).
 create table if not exists public.el_gopy (

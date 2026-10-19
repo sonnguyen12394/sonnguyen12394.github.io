@@ -8,6 +8,7 @@ import Ajv from 'ajv';
 import { checkAll, checkMock, levelReport, suggestVariants } from '../src/content/check.ts';
 import { expandPart, isMockPart, type MockTest } from '../src/exam/mock.ts';
 import { QT } from '../src/exam/content.ts';
+import { checkData } from './reads-check.ts';
 import type { Group } from '../src/exam/content.ts';
 import { validate as validateGraph } from '../src/engine/graph.ts';
 import type { Node, Edge, Goal } from '../src/engine/types.ts';
@@ -74,6 +75,8 @@ for (const f of walk(DIR).filter(p => !p.includes('/types/') && p !== MOCK_INDEX
   }
 }
 const issues = [...checkAll(groups, list), ...checkMock(tests, groups)];
+// v164 kho bài đọc thêm của Ôn luyện (data/lv-A1 / lv-A2: units[uid].reads)
+{ const r = checkData(); for (const e of r.errs) issues.push({ where: 'reads', msg: e }); console.log(`reads: ${r.n} bài Ôn luyện`); }
 // Mỗi dạng câu có bài luyện phải có bài học (6.2)
 for (const q of new Set(groups.filter(g => g.mode === 'practice').map(g => g.qtype))) if (!typeIds.has(q)) issues.push({ where: q, msg: 'dạng câu có bài luyện nhưng chưa có bài học (content/exam/types)' });
 for (const i of issues) console.error(`✗ ${i.where}: ${i.msg}`);

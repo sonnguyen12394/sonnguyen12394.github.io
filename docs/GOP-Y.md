@@ -1,4 +1,4 @@
-# 💬 Góp ý: gửi và xử lý (v166)
+# 💬 Góp ý: gửi và xử lý (v167)
 
 Soạn 19/10/2026. Người sáng lập: "trong quá trình học muốn có nút góp ý để gửi ý kiến cũng như hình ảnh nếu cần, rồi sẽ tổng hợp lại xử lý". Tự soạn, chưa người thật kiểm.
 

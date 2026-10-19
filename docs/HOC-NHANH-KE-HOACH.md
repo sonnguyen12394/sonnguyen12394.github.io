@@ -1,6 +1,6 @@
 # ⚡ Học nhanh: kế hoạch và bản đã làm
 
-Soạn 19/10/2026. **Đã làm ở v164 (bản 102)**, xem §9 cho chỗ khác kế hoạch ban đầu. Tự soạn, chưa người thật kiểm.
+Soạn 19/10/2026. **Đã làm ở v165 (bản 103)**, xem §9 cho chỗ khác kế hoạch ban đầu. Tự soạn, chưa người thật kiểm.
 
 ## 1. Quyết định đã chốt (người sáng lập, 19/10/2026)
 
@@ -107,7 +107,7 @@ Mỗi PR chạy đủ `check`, `test`, `content`, `build`, `fresh` + e2e bị �
 2. Tên tab: "⚡ Học nhanh" (đề xuất)?
 3. Có giữ "📖 Đọc / nghe lại" cho unit đã quên trong Học nhanh không? Đề xuất: không, gộp vào ôn đến hạn.
 
-## 9. Bản đã làm (v164) — khác kế hoạch ở đâu
+## 9. Bản đã làm (v165) — khác kế hoạch ở đâu
 
 Người sáng lập chọn mặc định ở §8 (ngưỡng 40%, tên "⚡ Học nhanh", gộp đọc lại vào ôn) và thêm yêu cầu: **làm cho người học lâu năm nhưng mất gốc, không học lại từ đầu**.
 

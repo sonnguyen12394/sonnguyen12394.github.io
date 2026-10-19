@@ -83,8 +83,8 @@ test('v162 Ôn luyện một mình: mọi điểm ngữ pháp A1 / A2 có mặt 
   expect(units).toHaveLength(2);
   for (const uid of units) {
     await page.evaluate((u: string) => { const w = window as any; w.eval('ndRead')(u, false); const R = w.eval('ui').read; R.gq = R.gq.filter((q: any) => q.gid === 'g-a1-03'); w.eval('render()'); }, uid);
-    const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read, u = w.eval('UNITS').find((x: any) => x.id === R.uid);
-      return { q: u.reading.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
+    const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read;
+      return { q: R.rd.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
     for (const [i, k] of R.q.entries()) await page.locator(`[data-rpick="${i}:${k}"]`).click();
     for (const [j, k] of R.v.entries()) await page.locator(`[data-ndv="${j}:${k}"]`).click();
     for (const [j, k] of R.g.entries()) await page.locator(`[data-ndg="${j}:${k}"]`).click();

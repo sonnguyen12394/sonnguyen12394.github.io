@@ -1,4 +1,4 @@
--- v165 Nhật ký học để phân tích (người sáng lập 19/10/2026: "lưu dữ liệu tất cả thao tác hoặc chỉ số khi học của tôi khi test để sau này phân tích").
+-- v166 Nhật ký học để phân tích (người sáng lập 19/10/2026: "lưu dữ liệu tất cả thao tác hoặc chỉ số khi học của tôi khi test để sau này phân tích").
 -- Chỉ ghi khi người học tự bật "Ghi dữ liệu học" (cần mã đồng bộ ELK-…). Không tài khoản, không email: kid = băm SHA-256 của mã, như sync_blob.
 -- App chỉ GHI qua el_log_post (security definer); không có quyền đọc bảng. Đọc để phân tích: bảng điều khiển Supabase / SQL của chủ dự án.
 create table if not exists public.el_log (

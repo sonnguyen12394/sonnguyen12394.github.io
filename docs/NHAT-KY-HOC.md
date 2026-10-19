@@ -1,4 +1,4 @@
-# Nhật ký học: ghi và phân tích (v165)
+# Nhật ký học: ghi và phân tích (v166)
 
 Soạn 19/10/2026. Người sáng lập: "lưu dữ liệu tất cả thao tác hoặc chỉ số khi học của tôi khi test để sau này phân tích". Tự soạn, chưa người thật kiểm.
 

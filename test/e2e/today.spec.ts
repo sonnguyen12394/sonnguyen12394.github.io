@@ -21,8 +21,8 @@ type Step = { k: string; side: string; t: string; at: string };
 const plan = (page: Page): Promise<Step[]> => page.evaluate(() => (window as any).eval('dayPlan()').steps.map((x: any) => ({ k: x.k, side: x.side, t: x.t, at: x.at })));
 // Trả lời sai hết câu hiểu bài + nghĩa từ (dưới 50%).
 async function answerAllWrong(page: Page): Promise<void> {
-  const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read, u = w.eval('UNITS').find((x: any) => x.id === R.uid);
-    return { q: u.reading.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
+  const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read;
+    return { q: R.rd.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
   for (const [i, k] of R.q.entries()) await page.locator(`[data-rpick="${i}:${(k + 1) % 3}"]`).click();
   for (const [j, k] of R.v.entries()) await page.locator(`[data-ndv="${j}:${(k + 1) % 3}"]`).click();
   for (const [j, k] of R.g.entries()) await page.locator(`[data-ndg="${j}:${(k + 1) % 2}"]`).click();
@@ -102,14 +102,14 @@ test('v161 có nền hay chưa: 2 / 3 lượt vượt nhanh đạt → bài mớ
     if (z) st.e.diag = { day: w.eval('today()'), u: 0, g: 0, n: 0 }; else delete st.e.diag;
     const g = w.eval('dayPlan()').steps.find((s: any) => s.k === 'gap'); return { base: w.eval('ndBase()'), side: g.side, t: g.t }; }, [to, zero] as const);
   const yes = await gap([{ d: 1, s: 0.9 }, { d: 2, s: 0.7 }, { d: 3, s: 0.2 }]);
-  expect(yes).toMatchObject({ base: 'yes', side: '⚡ Học nhanh' }); expect(yes.t).toContain('Chặng');   // v164 chưa chọn đường: chặng ⚡ (đo nền)
+  expect(yes).toMatchObject({ base: 'yes', side: '⚡ Học nhanh' }); expect(yes.t).toContain('Chặng');   // v165 chưa chọn đường: chặng ⚡ (đo nền)
   const no = await gap([{ d: 1, s: 0.3 }, { d: 2, s: 0.1 }]);
   expect(no).toMatchObject({ base: 'no', side: '📘 Học bài' });
   const zero = await gap([], true);
   expect(zero).toMatchObject({ base: 'no', side: '📘 Học bài' });
   const unknown = await gap([]);
   expect(unknown).toMatchObject({ base: null, side: '⚡ Học nhanh' });   // chưa biết: thử một chặng ⚡ (đo nền)
-  // v164 đi đường ⚡ mà hết chặng → đọc / nghe nguyên bài để vượt unit còn lại
+  // v165 đi đường ⚡ mà hết chặng → đọc / nghe nguyên bài để vượt unit còn lại
   const rd = await page.evaluate(() => { const w = window as any; w.eval('st').fast = { path: 'fast', ch: Object.fromEntries(['A1', 'A2'].flatMap(l => w.eval('fastChunks')(l).map((c: any) => [c.key, { d: 1, ok: 0, n: 0 }]))), gap: [] };
     const g = w.eval('dayPlan()').steps.find((s: any) => s.k === 'gap'); return { side: g.side, t: g.t }; });
   expect(rd.side).toBe('⚡ Học nhanh'); expect(rd.t).toContain('Vượt nhanh');
@@ -143,9 +143,9 @@ test('v161 Nói theo đề A1 / A2 ở Học bài: ý tìm bằng từ khoá tro
   expect(errors).toEqual([]);
 });
 
-test('v162 → v164 hai đường: lời giới thiệu (người mới → Học bài; học lâu mà mất gốc → ⚡ Học nhanh); không còn dòng gợi ý đường cũ', async ({ page, errors }) => {
+test('v162 → v165 hai đường: lời giới thiệu (người mới → Học bài; học lâu mà mất gốc → ⚡ Học nhanh); không còn dòng gợi ý đường cũ', async ({ page, errors }) => {
   await open(page, 'nd');
-  await expect(page.locator('#app')).toContainText('mất gốc, không muốn học lại từ đầu');   // v164 ⚡ Học nhanh
+  await expect(page.locator('#app')).toContainText('mất gốc, không muốn học lại từ đầu');   // v165 ⚡ Học nhanh
   await expect(page.locator('#app .dayplan')).toContainText('Một não cho cả hai đường');
   await expect(page.locator('#app .pathfit')).toHaveCount(0);
   expect(await page.evaluate(() => typeof (window as any).pathFit)).toBe('undefined');
@@ -172,13 +172,13 @@ test('v163 một não, ba cách nhìn: từ đến hạn → bước đầu củ
   expect(errors).toEqual([]);
 });
 
-test('v164 "gần được" (50–80%): không còn đếm 2 lần → Học bài (bỏ ND_MID); unit đánh dấu đã đo nhanh (vá hết chỗ lủng là qua)', async ({ page, errors }) => {
+test('v165 "gần được" (50–80%): không còn đếm 2 lần → Học bài (bỏ ND_MID); unit đánh dấu đã đo nhanh (vá hết chỗ lủng là qua)', async ({ page, errors }) => {
   await open(page, 'nd');
   const uid = await page.evaluate(() => (window as any).eval('UNITS').filter((u: any) => u.level === 'A1' && u.reading)[5].id as string);
   const mid = async () => {
     await page.evaluate((u: string) => (window as any).eval('ndRead')(u, false), uid);
-    const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read, u = w.eval('UNITS').find((x: any) => x.id === R.uid);
-      return { q: u.reading.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
+    const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read;
+      return { q: R.rd.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)) }; });
     const n = R.q.length + R.v.length, wrong = Math.ceil(n * 0.3);   // ≈ 70% đúng
     let k0 = 0;
     for (const [i, k] of R.q.entries()) await page.locator(`[data-rpick="${i}:${k0++ < wrong ? (k + 1) % 3 : k}"]`).click();

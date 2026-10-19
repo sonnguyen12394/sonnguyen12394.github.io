@@ -1,11 +1,11 @@
 import { test, expect, closeModal } from './fixtures.ts';
 
-// v165 Nhật ký học (người sáng lập 19/10/2026): tự bật ở Cài đặt; mỗi câu trả lời (eEv), đổi màn, sự kiện app, chỉ số trong ngày
+// v166 Nhật ký học (người sáng lập 19/10/2026): tự bật ở Cài đặt; mỗi câu trả lời (eEv), đổi màn, sự kiện app, chỉ số trong ngày
 // được gửi theo lô qua el_log_post với mã đồng bộ ẩn danh. Tắt thì không ghi, hàng chờ xoá.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 test.use({ future: false });
 
-test('v165 ghi dữ liệu học: mặc định tắt (không gửi gì); bật → gửi snap + câu trả lời + đổi màn theo mã đồng bộ; tắt → thôi ghi', async ({ page, errors }) => {
+test('v166 ghi dữ liệu học: mặc định tắt (không gửi gì); bật → gửi snap + câu trả lời + đổi màn theo mã đồng bộ; tắt → thôi ghi', async ({ page, errors }) => {
   const sent: any[] = [];
   await page.route(/supabase\.co\/rest\/v1\/rpc\/el_log_post/, async r => { sent.push(JSON.parse(r.request().postData() || '{}')); await r.fulfill({ status: 200, contentType: 'application/json', body: '3' }); });
   await page.goto('/');
@@ -44,7 +44,7 @@ test('v165 ghi dữ liệu học: mặc định tắt (không gửi gì); bật 
   expect(errors).toEqual([]);
 });
 
-test('v165 mất mạng: câu trả lời nằm trong hàng chờ, có mạng lại thì gửi bù', async ({ page, errors }) => {
+test('v166 mất mạng: câu trả lời nằm trong hàng chờ, có mạng lại thì gửi bù', async ({ page, errors }) => {
   let fail = true; const sent: any[] = [];
   await page.route(/supabase\.co\/rest\/v1\/rpc\/el_log_post/, async r => { if (fail) return r.fulfill({ status: 503, body: '' }); sent.push(JSON.parse(r.request().postData() || '{}')); await r.fulfill({ status: 200, contentType: 'application/json', body: '1' }); });
   await page.goto('/');

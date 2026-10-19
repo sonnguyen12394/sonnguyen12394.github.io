@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { test, expect, closeModal } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
-// v166 💬 Góp ý mọi màn (người sáng lập 19/10/2026): nút trên thanh đầu trang, tấm nổi đè lên màn đang học (không mất câu đang làm),
+// v167 💬 Góp ý mọi màn (người sáng lập 19/10/2026): nút trên thanh đầu trang, tấm nổi đè lên màn đang học (không mất câu đang làm),
 // loại + chữ + tối đa 3 ảnh (nén ở máy), tự kèm bối cảnh; ảnh lên kho el-gopy, nội dung qua el_gopy_post; mất mạng thì gửi bù.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 test.use({ future: false });
@@ -19,7 +19,7 @@ async function open(page: Page): Promise<void> {
   await closeModal(page);
 }
 
-test('v166 góp ý giữa lượt: tấm nổi không mất câu đang làm; loại + chữ + ảnh; kèm bối cảnh; ảnh lên kho, nội dung qua el_gopy_post; WCAG AA, 390 px', async ({ page, errors }) => {
+test('v167 góp ý giữa lượt: tấm nổi không mất câu đang làm; loại + chữ + ảnh; kèm bối cảnh; ảnh lên kho, nội dung qua el_gopy_post; WCAG AA, 390 px', async ({ page, errors }) => {
   const rpc: any[] = [], up: string[] = [];
   await page.route(/\/storage\/v1\/object\/el-gopy\//, async r => { up.push(r.request().url()); await r.fulfill({ status: 200, contentType: 'application/json', body: '{"Key":"x"}' }); });
   await page.route(/rest\/v1\/rpc\/el_gopy_post/, async r => { rpc.push(JSON.parse(r.request().postData() || '{}')); await r.fulfill({ status: 200, contentType: 'application/json', body: '42' }); });
@@ -53,7 +53,7 @@ test('v166 góp ý giữa lượt: tấm nổi không mất câu đang làm; lo�
   expect(errors).toEqual([]);
 });
 
-test('v166 kho ảnh lỗi → ảnh gửi kèm dạng data URL; mất mạng → lưu trên máy, có mạng gửi bù; thiếu chữ thì nhắc', async ({ page, errors }) => {
+test('v167 kho ảnh lỗi → ảnh gửi kèm dạng data URL; mất mạng → lưu trên máy, có mạng gửi bù; thiếu chữ thì nhắc', async ({ page, errors }) => {
   let down = true; const rpc: any[] = [];
   await page.route(/\/storage\/v1\/object\/el-gopy\//, r => r.fulfill({ status: 403, body: '{}' }));
   await page.route(/rest\/v1\/rpc\/el_gopy_post/, async r => { if (down) return r.fulfill({ status: 503, body: '' }); rpc.push(JSON.parse(r.request().postData() || '{}')); await r.fulfill({ status: 200, contentType: 'application/json', body: '7' }); });

@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { test, expect, noHorizontalScroll } from './fixtures.ts';
 import type { Page } from '@playwright/test';
 
-// v164 ⚡ Học nhanh (người sáng lập 19/10/2026): cho người học lâu năm nhưng mất gốc, không muốn học lại từ đầu.
+// v165 ⚡ Học nhanh (người sáng lập 19/10/2026): cho người học lâu năm nhưng mất gốc, không muốn học lại từ đầu.
 // Vượt chặng (làm bài trước, đúng hết là qua) → câu sai vào hàng vá → vá đúng chỗ (kèm gốc A1 của điểm ngữ pháp). ▶ Hôm nay theo đường đang đi.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 test.use({ future: false });
@@ -25,7 +25,7 @@ async function finish(page: Page, g: boolean, badIdx: number[] = []): Promise<vo
 }
 const F = (page: Page) => page.evaluate(() => JSON.parse(JSON.stringify((window as any).eval('FST()'))));
 
-test('v164 tab ⚡ Học nhanh: thanh dưới, lời giới thiệu cho người mất gốc, bảng Vượt chặng; chưa chọn đường → ▶ Hôm nay đưa chặng đo nền; WCAG AA, 390 px', async ({ page, errors }) => {
+test('v165 tab ⚡ Học nhanh: thanh dưới, lời giới thiệu cho người mất gốc, bảng Vượt chặng; chưa chọn đường → ▶ Hôm nay đưa chặng đo nền; WCAG AA, 390 px', async ({ page, errors }) => {
   await open(page);
   await expect(page.locator('#bnav [data-go="nd"]')).toContainText('Học nhanh');
   await expect(page.getByRole('heading', { name: 'Học nhanh', level: 1 })).toBeVisible();
@@ -42,7 +42,7 @@ test('v164 tab ⚡ Học nhanh: thanh dưới, lời giới thiệu cho người
   expect(errors).toEqual([]);
 });
 
-test('v164 vượt chặng từ: unit đúng hết → qua (tạm vững, từ vào lịch ôn +3 ngày); câu sai → vá đúng từ đó; chặng đầu ghi đường ⚡', async ({ page, errors }) => {
+test('v165 vượt chặng từ: unit đúng hết → qua (tạm vững, từ vào lịch ôn +3 ngày); câu sai → vá đúng từ đó; chặng đầu ghi đường ⚡', async ({ page, errors }) => {
   await open(page);
   await page.locator('#app .fastp [data-act="fastgo"]').click();
   const q = await page.evaluate(() => { const s = (window as any).eval('ui').sess; return { kind: s.kind, n: s.q.length, w: s.q.map((x: any) => x.wid) }; });
@@ -66,7 +66,7 @@ test('v164 vượt chặng từ: unit đúng hết → qua (tạm vững, từ v
   expect(errors).toEqual([]);
 });
 
-test('v164 vá chỗ lủng: thẻ ngắn rồi một câu tự gõ; đúng → hết lủng, unit qua; sai → vá lại từ ngày mai', async ({ page, errors }) => {
+test('v165 vá chỗ lủng: thẻ ngắn rồi một câu tự gõ; đúng → hết lủng, unit qua; sai → vá lại từ ngày mai', async ({ page, errors }) => {
   await open(page);
   const u = await page.evaluate(() => { const w = window as any, u = w.eval('UNITS').find((x: any) => x.id === 'a1-u1');
     w.eval('U')(u.id).fq = w.eval('today()'); w.eval('gapAdd')('w', u.words[0].id, u.id); w.eval('gapAdd')('w', u.words[1].id, u.id); w.eval('save()'); w.eval('render()');
@@ -104,7 +104,7 @@ test('v164 vá chỗ lủng: thẻ ngắn rồi một câu tự gõ; đúng → 
   expect(errors).toEqual([]);
 });
 
-test('v164 chặng ngữ pháp: điểm đúng hết → qua; sai điểm A2 → vá điểm đó và hỏi lại gốc A1 trước (gốc đúng thì bỏ qua, không phải học)', async ({ page, errors }) => {
+test('v165 chặng ngữ pháp: điểm đúng hết → qua; sai điểm A2 → vá điểm đó và hỏi lại gốc A1 trước (gốc đúng thì bỏ qua, không phải học)', async ({ page, errors }) => {
   await open(page);
   await page.evaluate(() => (window as any).eval("fastStart('g:A2:0')"));
   const n = await page.evaluate(() => (window as any).eval('ui').gs.q.length);
@@ -138,7 +138,7 @@ test('v164 chặng ngữ pháp: điểm đúng hết → qua; sai điểm A2 →
   expect(errors).toEqual([]);
 });
 
-test('v164 ▶ Hôm nay theo đường: 📘 → không đưa chặng; ⚡ → chặng trước học mới; có chỗ lủng → bước vá; đổi đường bằng nút', async ({ page, errors }) => {
+test('v165 ▶ Hôm nay theo đường: 📘 → không đưa chặng; ⚡ → chặng trước học mới; có chỗ lủng → bước vá; đổi đường bằng nút', async ({ page, errors }) => {
   await open(page, 'lib');
   const steps = () => page.evaluate(() => (window as any).eval('dayPlan()').steps.map((x: any) => x.k + '|' + x.at));
   await page.evaluate(() => { const w = window as any; w.eval('FST()').path = 'normal'; w.eval('render()'); });
@@ -160,7 +160,7 @@ test('v164 ▶ Hôm nay theo đường: 📘 → không đưa chặng; ⚡ → c
   expect(errors).toEqual([]);
 });
 
-test('v164 đọc / nghe nguyên bài: đạt ≥ 80% là qua ngay (không cần ngày thứ hai); nghĩa từ sai → vào hàng vá', async ({ page, errors }) => {
+test('v165 đọc / nghe nguyên bài: đạt ≥ 80% là qua ngay (không cần ngày thứ hai); nghĩa từ sai → vào hàng vá', async ({ page, errors }) => {
   await open(page, 'nd', 'A1');
   const uid = 'a1-u2';
   await page.evaluate((u: string) => (window as any).eval('ndRead')(u, false), uid);
@@ -177,7 +177,7 @@ test('v164 đọc / nghe nguyên bài: đạt ≥ 80% là qua ngay (không cần
   expect(errors).toEqual([]);
 });
 
-test('v164 dữ liệu: st.fast qua tải lại (làm sạch) và gộp hai máy giữ chặng + hàng vá', async ({ page, errors }) => {
+test('v165 dữ liệu: st.fast qua tải lại (làm sạch) và gộp hai máy giữ chặng + hàng vá', async ({ page, errors }) => {
   await open(page);
   const r = await page.evaluate(() => { const w = window as any, mig = w.eval('migrate'), merge = w.eval('mergeState'), st = w.eval('st');
     const a = JSON.parse(JSON.stringify(st)), b = JSON.parse(JSON.stringify(st));
