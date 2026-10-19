@@ -27,8 +27,8 @@ jobs:
         run: npm run fresh
 
   e2e:
-    # 16/10/2026 người sáng lập dùng Cốc Cốc trên iPhone (mọi trình duyệt iPhone đều chạy lõi WebKit như Safari): CI tạm chỉ chạy
-    # dự án ios-safari (iPhone 13, WebKit) cho nhanh. Chạy lại cả ba trình duyệt: bỏ "--project=ios-safari", cài thêm chromium, timeout 40.
+    # Người sáng lập dùng Cốc Cốc trên iPhone (lõi WebKit như Safari); 19/10/2026 chốt: mọi lần kiểm chỉ chạy dự án ios-safari (iPhone 13, WebKit).
+    # Chỉ khi người sáng lập yêu cầu chạy lại cả ba trình duyệt: bỏ "--project=ios-safari", cài thêm chromium, timeout 40.
     name: Test giao diện (iPhone WebKit, như Cốc Cốc trên iPhone)
     runs-on: ubuntu-latest
     timeout-minutes: 25
