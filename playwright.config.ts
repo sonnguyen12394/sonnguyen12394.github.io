@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
-// Test giao diện: Chrome Android (Pixel 7), Safari iOS (iPhone 13, WebKit) và máy tính (Chrome).
-// PW_NO_WEBKIT=1 bỏ dự án iPhone (máy soạn không có WebKit). Từ 16/10/2026 CI chỉ chạy --project=ios-safari (người sáng lập dùng Cốc Cốc trên iPhone = WebKit).
+// Test giao diện: người sáng lập 19/10/2026 chốt mọi lần kiểm chỉ chạy trên iPhone, dự án ios-safari (iPhone 13, WebKit = Cốc Cốc trên iPhone),
+// cả máy soạn lẫn CI: `npm run e2e` (= --project=ios-safari). Hai dự án Chrome (Pixel 7, máy tính) giữ lại chỉ để bật lại khi người sáng lập yêu cầu.
 const projects = [
   { name: 'android-chrome', use: { ...devices['Pixel 7'] } },
   { name: 'desktop-chrome', use: { ...devices['Desktop Chrome'] } },

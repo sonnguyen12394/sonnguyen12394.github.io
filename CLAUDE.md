@@ -15,9 +15,10 @@ Game nhập vai cho người Việt học tiếng Anh: trận đấu kiểu Chao
 - Trận đấu không ghi bằng chứng; lượt rèn là lượt đo (không ép giờ).
 - Không nạp để mạnh, không quay thưởng, không cường hoá hỏng mất đồ, không ưu đãi ép giờ.
 - Điểm tự chấm chỉ tham khảo; ghi "đã / chưa người thật kiểm".
+- Kiểm giao diện chỉ trên iPhone (WebKit, `npm run e2e`), không dùng Chrome thay (người sáng lập 19/10/2026; xem mục Lệnh).
 - Viết tiếng Việt có dấu, câu ngắn; màn chơi không dùng chữ "thi / đề / kiểm tra" (ngoại lệ duy nhất: "Thi chuyển cấp", người sáng lập đặt 16/10/2026; test `engine-wording` bỏ qua cụm này).
 
 ## Lệnh
 `npm ci` · `npm run check` · `npm test` · `npm run content` · `npm run build` · `npm run fresh` · `npm run e2e` · `npm run sim` · `npm run fightsim` (bảng tỉ lệ thắng trận theo tay né × chênh bậc; thêm `-- 40 nv` cho bảng nhân vật) · `npm run testgen` (in bài thi chuyển cấp sinh theo tiêu chí; `-- --blind` / `-- --score` cho phép thử "không có bài"). Tăng `APP_VERSION` trong `app.js` khi phát hành. `app.js` ≈ 3,2 MB: dùng grep, không đọc cả tệp. Tệp build trong `x/` phải commit.
 
-Trình duyệt test (16/10/2026, người sáng lập dùng Cốc Cốc trên iPhone, tức lõi WebKit): CI tạm chỉ chạy e2e dự án `ios-safari` (`--project=ios-safari`). Máy soạn không có WebKit thì chạy Chrome Android + máy tính (`PW_NO_WEBKIT=1`) để kiểm trước; lỗi chỉ có ở WebKit do CI bắt. Cách chạy lại đủ ba trình duyệt ghi trong `.github/workflows/ci.yml`.
+Trình duyệt test (người sáng lập 19/10/2026: "chỉ test trên iPhone cho những lần kiểm sau"): mọi lần kiểm giao diện (e2e) chỉ chạy dự án `ios-safari` (iPhone 13, lõi WebKit, như Cốc Cốc trên iPhone), cả trên máy soạn lẫn CI. Không kiểm bằng Chrome Android / máy tính, kể cả khi máy soạn thiếu WebKit. Lệnh: `npm run e2e` (đã gắn `--project=ios-safari`). Máy soạn không có WebKit: thử `npx playwright install webkit` (phiên cloud cần cho phép `cdn.playwright.dev` và `playwright.download.prss.microsoft.com` trong Network access của môi trường); không cài được thì đẩy lên nhánh để CI chạy WebKit, chờ kết quả rồi mới gộp. Lighthouse trong CI (đo tốc độ bằng Chromium) vẫn giữ: là bước đo hiệu năng, không phải kiểm theo máy.
