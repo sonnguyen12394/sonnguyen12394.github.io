@@ -27,7 +27,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     await open(page);
     await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
-    await expect(page.getByRole('heading', { name: 'Ôn luyện', level: 1 })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Học nhanh', level: 1 })).toBeVisible();
     await expect(page.locator('#app [data-act="ndnext"]')).toBeVisible();   // v157 ▶ Ôn tiếp
     // bấm thật để mở; vẽ lại màn (như khi engine tải xong) thì mục vẫn mở
     await expect(async () => { await page.locator('#app details.ndph:not([open]) summary').click({ timeout: 2000 }); }).toPass().catch(() => {});
@@ -98,7 +98,7 @@ test('v157 ▶ Ôn tiếp: đọc nguyên bài, không lộ nghĩa; đúng hết
   await open(page);
   await page.evaluate(() => { const w = window as any; w.eval("ui.ndLv='A1'"); w.eval('render()'); });
   await page.locator('#app [data-act="ndnext"]').click();
-  await expect(page.locator('#app .eyebrow').first()).toContainText('🔁 Ôn luyện');
+  await expect(page.locator('#app .eyebrow').first()).toContainText('⚡ Học nhanh');
   const uid = await page.evaluate(() => (window as any).eval('ui').read.uid as string);
   expect(uid.startsWith('a1-')).toBe(true);
   await expect(page.locator('#app .reading mark[title]')).toHaveCount(0);   // không lộ nghĩa
@@ -108,12 +108,7 @@ test('v157 ▶ Ôn tiếp: đọc nguyên bài, không lộ nghĩa; đúng hết
   const led0 = await page.evaluate(() => (window as any).eval('st').e.ev.led.length as number);
   const s0 = await snap(page);
   expect(await page.evaluate(() => (window as any).eval('ui').read.vq.length as number)).toBeGreaterThan(0);   // v158 có câu nghĩa từ
-  await answer(page);
-  // v158: lượt đạt đầu tiên chưa qua unit; cần lượt đạt thứ hai vào ngày khác
-  await expect(page.locator('#app .fb.good')).toContainText('Đạt lượt 1/2');
-  expect(await page.evaluate((u: string) => !!(window as any).eval('U')(u).passed, uid)).toBe(false);
-  await page.evaluate((u: string) => { const w = window as any; w.eval('st').nd.up[u] = [w.eval('today()') - 1]; w.eval('ndRead')(u, false); }, uid);
-  await answer(page);
+  await answer(page);   // v164: đạt một lượt là qua ngay (v158 cần lượt thứ hai ngày khác); xác nhận là 🔁 Nhớ sau 3 ngày
   await expect(page.locator('#app .fb.good')).toContainText('nhờ đọc hiểu');
   await expect(page.locator('#app [data-act="rago"]', { hasText: 'Đọc to bài này' })).toBeVisible();   // v158 nối sang đọc to
   const r = await page.evaluate((u: string) => { const w = window as any, st = w.eval('st'), U = w.eval('U'), W = w.eval('W'), t = w.eval('today()'), led = st.e.ev.led;
@@ -126,7 +121,7 @@ test('v157 ▶ Ôn tiếp: đọc nguyên bài, không lộ nghĩa; đúng hết
   await page.locator('#app [data-act="ndnext"]').click();
   expect(await page.evaluate(() => (window as any).eval('ui').read.uid as string)).not.toBe(uid);
   await page.evaluate(() => (window as any).eval("go('aim')"));
-  await expect(page.locator('#app .cmpleg')).toContainText('nhờ Ôn luyện');
+  await expect(page.locator('#app .cmpleg')).toContainText('nhờ Học nhanh');
   expect(errors).toEqual([]);
 });
 

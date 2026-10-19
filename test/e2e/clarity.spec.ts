@@ -69,10 +69,10 @@ test('L7: từ màn đầu, một chạm vào "Chơi tiếp" là vào game có c
   expect(errors).toEqual([]);
 });
 
-test('L6 (v138 ba phần): Chơi · Học bài · Ôn luyện · Mục tiêu · Tôi không trùng nghĩa; Học → Bản đồ Phố Chữ; bấm Chơi về bản đồ', async ({ page, errors }) => {
+test('L6 (v138 ba phần): Chơi · Học bài · Học nhanh · Mục tiêu · Tôi không trùng nghĩa; Học → Bản đồ Phố Chữ; bấm Chơi về bản đồ', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await lobby(page);
-  await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học bài', 'Ôn luyện', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
+  await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học bài', 'Học nhanh', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
   await page.locator('#bnav button[data-go="lib"]').click();
   await expect(page.getByRole('heading', { name: '📘 Học bài', level: 1 })).toBeVisible();
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();

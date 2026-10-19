@@ -38,7 +38,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await expect(box.locator('[data-day]')).toHaveCount(1);
     const a = await plan(page);
     expect(a.length).toBeGreaterThanOrEqual(2);
-    for (const s of a) expect(['📘 Học bài', '🔁 Ôn luyện']).toContain(s.side);
+    for (const s of a) expect(['📘 Học bài', '⚡ Học nhanh']).toContain(s.side);
     const ax = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
     expect(ax.violations.map(v => v.id)).toEqual([]);
     await noHorizontalScroll(page);
@@ -57,7 +57,7 @@ test('v161 có từ đến hạn → bước 1 là ôn (tối đa 12 từ); bấ
   await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), ws = w.eval('ALL_WORDS').slice(0, 15);
     for (const x of ws) { const s = W(x.id); s.learned = true; s.due = t - 1; } w.eval('save()'); w.eval('render()'); });
   const a = await plan(page);
-  expect(a[0]!.k).toBe('due'); expect(a[0]!.side).toBe('🔁 Ôn luyện'); expect(a[0]!.t).toContain('Ôn 12 từ');
+  expect(a[0]!.k).toBe('due'); expect(a[0]!.side).toBe('⚡ Học nhanh'); expect(a[0]!.t).toContain('Ôn 12 từ');
   await page.locator('#app .dayplan [data-day="due"]').click();
   expect(await page.evaluate(() => (window as any).eval('st').nd.day.done)).toEqual(['due']);
   expect(await page.evaluate(() => (window as any).eval('ui').view)).not.toBe('nd');
@@ -102,13 +102,17 @@ test('v161 có nền hay chưa: 2 / 3 lượt vượt nhanh đạt → bài mớ
     if (z) st.e.diag = { day: w.eval('today()'), u: 0, g: 0, n: 0 }; else delete st.e.diag;
     const g = w.eval('dayPlan()').steps.find((s: any) => s.k === 'gap'); return { base: w.eval('ndBase()'), side: g.side, t: g.t }; }, [to, zero] as const);
   const yes = await gap([{ d: 1, s: 0.9 }, { d: 2, s: 0.7 }, { d: 3, s: 0.2 }]);
-  expect(yes).toMatchObject({ base: 'yes', side: '🔁 Ôn luyện' }); expect(yes.t).toContain('Vượt nhanh');
+  expect(yes).toMatchObject({ base: 'yes', side: '⚡ Học nhanh' }); expect(yes.t).toContain('Chặng');   // v165 chưa chọn đường: chặng ⚡ (đo nền)
   const no = await gap([{ d: 1, s: 0.3 }, { d: 2, s: 0.1 }]);
   expect(no).toMatchObject({ base: 'no', side: '📘 Học bài' });
   const zero = await gap([], true);
   expect(zero).toMatchObject({ base: 'no', side: '📘 Học bài' });
   const unknown = await gap([]);
-  expect(unknown).toMatchObject({ base: null, side: '🔁 Ôn luyện' });   // chưa biết: thử vượt nhanh một lần
+  expect(unknown).toMatchObject({ base: null, side: '⚡ Học nhanh' });   // chưa biết: thử một chặng ⚡ (đo nền)
+  // v165 đi đường ⚡ mà hết chặng → đọc / nghe nguyên bài để vượt unit còn lại
+  const rd = await page.evaluate(() => { const w = window as any; w.eval('st').fast = { path: 'fast', ch: Object.fromEntries(['A1', 'A2'].flatMap(l => w.eval('fastChunks')(l).map((c: any) => [c.key, { d: 1, ok: 0, n: 0 }]))), gap: [] };
+    const g = w.eval('dayPlan()').steps.find((s: any) => s.k === 'gap'); return { side: g.side, t: g.t }; });
+  expect(rd.side).toBe('⚡ Học nhanh'); expect(rd.t).toContain('Vượt nhanh');
   expect(errors).toEqual([]);
 });
 
@@ -122,7 +126,7 @@ test('v161 còn cặp âm / chức năng giao tiếp chưa qua mà thanh 📘 H�
   await page.evaluate(() => { const w = window as any, st = w.eval('st'), miss = w.eval('EM').parts('cefr-a1').miss;
     for (const n of miss) { const [k, id] = [n.slice(0, n.indexOf(':')), n.slice(n.indexOf(':') + 1)]; if (k === 'ph') st.sounds[id] = { best: 1 }; if (k === 'fn') st.fn[id] = { best: 1 }; } w.eval('save()'); });
   const b = (await plan(page)).find(x => x.k === 'use')!;
-  expect(b.side).toBe('🔁 Ôn luyện');
+  expect(b.side).toBe('⚡ Học nhanh');
   expect(b.at).toMatch(/data-act="day(rpg|wrg|stk)"/);   // v162 thêm Nói theo đề
   expect(errors).toEqual([]);
 });
@@ -139,10 +143,10 @@ test('v161 Nói theo đề A1 / A2 ở Học bài: ý tìm bằng từ khoá tro
   expect(errors).toEqual([]);
 });
 
-test('v162 → v163 ba đường: lời giới thiệu (người mới → Học bài nhanh nhất; có nền → Ôn luyện); não tự quyết, không còn dòng bắt chọn đường', async ({ page, errors }) => {
+test('v162 → v165 hai đường: lời giới thiệu (người mới → Học bài; học lâu mà mất gốc → ⚡ Học nhanh); không còn dòng gợi ý đường cũ', async ({ page, errors }) => {
   await open(page, 'nd');
-  await expect(page.locator('#app')).toContainText('Người đã có nền: đây là đường nhanh nhất');
-  await expect(page.locator('#app .dayplan')).toContainText('Dành cho người đã có kiến thức nhưng còn lủng');
+  await expect(page.locator('#app')).toContainText('mất gốc, không muốn học lại từ đầu');   // v165 ⚡ Học nhanh
+  await expect(page.locator('#app .dayplan')).toContainText('Một não cho cả hai đường');
   await expect(page.locator('#app .pathfit')).toHaveCount(0);
   expect(await page.evaluate(() => typeof (window as any).pathFit)).toBe('undefined');
   await page.evaluate(() => (window as any).eval("go('lib')"));
@@ -168,7 +172,7 @@ test('v163 một não, ba cách nhìn: từ đến hạn → bước đầu củ
   expect(errors).toEqual([]);
 });
 
-test('v163 "gần được" (50–80%) 2 lần ở 2 ngày khác nhau → não chuyển bài sang Học bài; cùng ngày chỉ tính 1 lần', async ({ page, errors }) => {
+test('v165 "gần được" (50–80%): không còn đếm 2 lần → Học bài (bỏ ND_MID); unit đánh dấu đã đo nhanh (vá hết chỗ lủng là qua)', async ({ page, errors }) => {
   await open(page, 'nd');
   const uid = await page.evaluate(() => (window as any).eval('UNITS').filter((u: any) => u.level === 'A1' && u.reading)[5].id as string);
   const mid = async () => {
@@ -184,12 +188,10 @@ test('v163 "gần được" (50–80%) 2 lần ở 2 ngày khác nhau → não c
     return page.evaluate(() => { const r = (window as any).eval('ui').read.res; return r.n / r.of; });
   };
   const s1 = await mid(); expect(s1).toBeGreaterThanOrEqual(0.5); expect(s1).toBeLessThan(0.8);
-  await mid();   // cùng ngày: không tính thêm
-  expect(await page.evaluate((u: string) => [(window as any).eval('U')(u).ndMid, !!(window as any).eval('U')(u).ndNeed], uid)).toEqual([1, false]);
+  const r = await page.evaluate((u: string) => { const w = window as any, U = w.eval('U')(u); return { ndMid: U.ndMid || 0, need: !!U.ndNeed, fq: U.fq === w.eval('today()'), passed: !!U.passed }; }, uid);
+  expect(r).toEqual({ ndMid: 0, need: false, fq: true, passed: false });
   await page.evaluate(() => { const st = (window as any).eval('st'); st.offset = (st.offset || 0) + 1; });
   await mid();
-  expect(await page.evaluate((u: string) => [(window as any).eval('U')(u).ndMid, !!(window as any).eval('U')(u).ndNeed], uid)).toEqual([2, true]);
-  await expect(page.locator('#app .fb')).toContainText('2 lần chỉ gần được');
-  await expect(page.locator(`#app [data-unit="${uid}"]`, { hasText: 'Học lại bài này' })).toBeVisible();
+  expect(await page.evaluate((u: string) => !!(window as any).eval('U')(u).ndNeed, uid)).toBe(false);   // 2 lần gần được vẫn không đẩy về Học bài
   expect(errors).toEqual([]);
 });
