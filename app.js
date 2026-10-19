@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 106;
+const STATE_V = 18, APP_VERSION = 107;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -4456,34 +4456,32 @@ function gySentHtml(){ const s=gyLS(GY_SENT), q=gyLS(GY_LS); if(!s.length&&!q.le
 if(typeof window!=='undefined'){ window.addEventListener('online',()=>{ try{ gyFlush(); logFlush(); }catch(e){} }); setTimeout(()=>{ try{ gyFlush(); }catch(e){} },8000); }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&GY.open) gyClose(); });
 // ---- v168 🔐 Quản lý góp ý (người sáng lập 19/10/2026: "cần 1 mục danh sách góp ý thể hiện chi tiết từng loại góp ý để dễ quản lý xoá sửa thêm").
-// Chỉ mở được bằng KHOÁ QUẢN TRỊ ELA-… (máy chủ giữ băm; app thường vẫn không đọc được el_gopy). Khoá lưu ở máy này (localStorage), không nằm trong tiến độ / sao lưu.
+// v169 (người sáng lập 19/10/2026: "bỏ key đi, cho phép quyền xoá hẳn"; đã được báo rủi ro: ai mở web cũng xem / xoá được): không còn khoá quản trị.
+// Xoá hẳn (góp ý + ảnh, không khôi phục) chỉ từ mục 🗑 Đã xoá, bấm 2 lần; chạy ở hàm el-gopy-img (op purge).
 // Danh sách theo loại × trạng thái, xem chi tiết (bối cảnh, ảnh qua link có hạn 1 giờ từ hàm el-gopy-img), sửa trạng thái / loại / nội dung / ghi chú,
 // thêm góp ý tay, "xoá" = trạng thái 'xoa' (ẩn, khôi phục được). Máy chủ: supabase/migrations/20261019110000_gopy_admin.sql.
-const GA_LS = KEY+'-admin', GA_ST = [['moi','🆕 Mới'],['dang','🔧 Đang xử lý'],['xong','✅ Xong'],['bo','🚫 Bỏ'],['xoa','🗑 Đã xoá']];
-const GA = {rows:null,count:{},st:null,kd:null,err:'',busy:false,urls:{},add:false};
-const gaKey = () => { try{ return localStorage.getItem(GA_LS)||''; }catch(e){ return ''; } };
+const GA_ST = [['moi','🆕 Mới'],['dang','🔧 Đang xử lý'],['xong','✅ Xong'],['bo','🚫 Bỏ'],['xoa','🗑 Đã xoá']];
+const GA = {rows:null,count:{},st:null,kd:null,err:'',busy:false,urls:{},add:false,purge:null};
 const gaKind = k => (GY_KIND.find(x=>x[0]===k)||[k,k])[1], gaStat = k => (GA_ST.find(x=>x[0]===k)||[k,k])[1];
-async function gaLoad(){ const k=gaKey(); if(!k||IN_VIEWER) return; GA.busy=true; GA.err=''; render();
-  try{ const r=await syncRpc('el_gopy_list',{k,st:GA.st,kd:GA.kd}); if(!r){ GA.err='Khoá quản trị không đúng hoặc đã bị đổi.'; GA.rows=null; } else { GA.rows=r.rows||[]; GA.count=r.count||{}; gaImgs(); } }
+async function gaLoad(){ if(IN_VIEWER) return; GA.busy=true; GA.err=''; render();
+  try{ const r=await syncRpc('el_gopy_list',{k:null,st:GA.st,kd:GA.kd}); if(!r){ GA.err='Máy chủ không trả danh sách.'; GA.rows=null; } else { GA.rows=r.rows||[]; GA.count=r.count||{}; gaImgs(); } }
   catch(e){ GA.err='Chưa kết nối được máy chủ. Thử lại khi có mạng.'; }
   GA.busy=false; render(); }
 async function gaImgs(){ const paths=[...new Set((GA.rows||[]).flatMap(x=>x.imgs||[]))].filter(p=>!GA.urls[p]); if(!paths.length) return;
-  try{ const r=await fetch(GY_BASE()+'/functions/v1/el-gopy-img',{method:'POST',headers:{apikey:SYNC.key,'Content-Type':'application/json'},body:JSON.stringify({key:gaKey(),paths})});
+  try{ const r=await fetch(GY_BASE()+'/functions/v1/el-gopy-img',{method:'POST',headers:{apikey:SYNC.key,'Content-Type':'application/json'},body:JSON.stringify({paths})});
     if(r.ok){ const j=await r.json(); Object.assign(GA.urls,j.urls||{}); render(); } }catch(e){} }
-async function gaLogin(){ const el=document.getElementById('gakey'), k=String(el?el.value:'').trim().toUpperCase().replace(/\s+/g,'');
-  if(!/^ELA-[0-9A-HJKMNP-TV-Z]{4}(-[0-9A-HJKMNP-TV-Z]{4}){4}$/.test(k)) return toast('Khoá quản trị có dạng ELA-XXXX-XXXX-XXXX-XXXX-XXXX.');
-  let ok=false; try{ ok=await syncRpc('el_admin_ok',{k}); }catch(e){ return toast('Chưa kết nối được máy chủ.'); }
-  if(ok!==true) return toast('Khoá quản trị không đúng.');
-  try{ localStorage.setItem(GA_LS,k); }catch(e){} await gaLoad(); }
-function gaLogout(){ try{ localStorage.removeItem(GA_LS); }catch(e){} GA.rows=null; GA.urls={}; toast('Đã quên khoá quản trị trên máy này.'); render(); }
-async function gaSet(id,o){ let r=false; try{ r=await syncRpc('el_gopy_set',{k:gaKey(),gid:id,st:o.st??null,nt:o.nt??null,kd:o.kd??null,tx:o.tx??null}); }catch(e){}
+// Xoá hẳn: chỉ góp ý đang ở 🗑 Đã xoá; lần bấm đầu đổi nút thành "Bấm lần nữa", lần hai mới xoá (không dùng hộp confirm của trình duyệt).
+async function gaPurge(id){ if(GA.purge!==id){ GA.purge=id; return render(); } GA.purge=null;
+  let ok=false; try{ const r=await fetch(GY_BASE()+'/functions/v1/el-gopy-img',{method:'POST',headers:{apikey:SYNC.key,'Content-Type':'application/json'},body:JSON.stringify({op:'purge',id})}); ok=r.ok&&!!(await r.json()).ok; }catch(e){}
+  toast(ok?`Đã xoá hẳn góp ý #${id} (kể cả ảnh).`:'Chưa xoá được. Thử lại khi có mạng.'); await gaLoad(); }
+async function gaSet(id,o){ let r=false; try{ r=await syncRpc('el_gopy_set',{k:null,gid:id,st:o.st??null,nt:o.nt??null,kd:o.kd??null,tx:o.tx??null}); }catch(e){}
   toast(r?(o.st==='xoa'?'Đã chuyển vào 🗑 Đã xoá (khôi phục được).':'Đã lưu.'):'Chưa lưu được.'); await gaLoad(); }
 async function gaSave(id){ const v=x=>{ const el=document.getElementById(x+'-'+id); return el?el.value:null; };
   const tx=String(v('gatx')||'').trim(); if(!tx) return toast('Nội dung không được để trống.');
   return gaSet(id,{st:v('gast'),kd:v('gakd'),tx,nt:String(v('gant')||'')}); }
 async function gaAdd(){ const kd=(document.getElementById('ganew-kd')||{}).value||'y', tx=String((document.getElementById('ganew-tx')||{}).value||'').trim(), nt=String((document.getElementById('ganew-nt')||{}).value||'').trim();
   if(!tx) return toast('Gõ nội dung góp ý trước nhé.');
-  let id=0; try{ id=await syncRpc('el_gopy_add',{k:gaKey(),kd,tx,nt:nt||null}); }catch(e){}
+  let id=0; try{ id=await syncRpc('el_gopy_add',{k:null,kd,tx,nt:nt||null}); }catch(e){}
   toast(+id>0?`Đã thêm góp ý #${id}.`:'Chưa thêm được.'); if(+id>0) GA.add=false; await gaLoad(); }
 const gaDate = x => { try{ const d=new Date(x); return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }catch(e){ return ''; } };
 function gaCard(x){ const c=x.ctx||{}, imgs=[...(x.imgs||[]).map(p=>GA.urls[p]||null),...(x.imgd||[])], opt=(L,v)=>L.map(([k,l])=>`<option value="${k}" ${k===v?'selected':''}>${esc(l)}</option>`).join('');
@@ -4493,26 +4491,23 @@ function gaCard(x){ const c=x.ctx||{}, imgs=[...(x.imgs||[]).map(p=>GA.urls[p]||
     <p class="hint">${esc(gaDate(x.at))}${x.app_v?` · bản ${x.app_v}`:''}${c.h1||c.view?` · màn “${esc(c.h1||c.view)}”`:''}${c.item?` · câu ${esc(c.item)}`:''}${c.prompt?` · “${esc(c.prompt)}”`:''}${c.src==='admin'?' · thêm tay':''}${c.scr?` · ${esc(c.scr)}`:''}</p>
     ${imgs.length?`<div class="row" style="gap:6px">${imgs.map((u,i)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener" class="gyth"><img src="${esc(u)}" alt="Ảnh ${i+1} của góp ý #${x.id}"></a>`:`<span class="hint">ảnh ${i+1}: đang lấy link…</span>`).join('')}</div>`:''}
     ${x.note?`<p class="fb neutral" role="note"><span>📝 ${esc(x.note)}</span></p>`:''}
-    <div class="row" style="gap:6px">${quick.map(([k,l])=>`<button class="btn small ${k==='xoa'?'ghost':''}" data-act="gaquick" data-id="${x.id}" data-v="${k}">${l}</button>`).join('')}</div>
+    <div class="row" style="gap:6px">${quick.map(([k,l])=>`<button class="btn small ${k==='xoa'?'ghost':''}" data-act="gaquick" data-id="${x.id}" data-v="${k}">${l}</button>`).join('')}${x.status==='xoa'?`<button class="btn small ${GA.purge===x.id?'primary':'ghost'}" data-act="gapurge" data-id="${x.id}">${GA.purge===x.id?'Bấm lần nữa để xoá hẳn':'💥 Xoá hẳn'}</button>`:''}</div>
     <details><summary>✏️ Sửa chi tiết</summary><div class="stack" style="gap:6px;margin-top:6px">
       <div class="row" style="gap:6px"><label class="hint" for="gast-${x.id}">Trạng thái</label><select id="gast-${x.id}" class="field">${opt(GA_ST,x.status)}</select>
         <label class="hint" for="gakd-${x.id}">Loại</label><select id="gakd-${x.id}" class="field">${opt(GY_KIND,x.kind)}</select></div>
       <label class="hint" for="gatx-${x.id}">Nội dung</label><textarea id="gatx-${x.id}" class="field" rows="3" maxlength="4000">${esc(x.txt)}</textarea>
       <label class="hint" for="gant-${x.id}">Ghi chú xử lý</label><textarea id="gant-${x.id}" class="field" rows="2" maxlength="2000">${esc(x.note||'')}</textarea>
       <div class="row"><button class="btn primary small" data-act="gasave" data-id="${x.id}">Lưu</button></div></div></details></article>`; }
-function viewGyAdmin(){ const back='<button class="btn ghost back" data-go="feedback">← Góp ý</button>', k=gaKey();
-  const head=`${back}<section class="stack"><span class="eyebrow">🔐 Quản trị</span><h1>Quản lý góp ý</h1></section>`;
+function viewGyAdmin(){ const back='<button class="btn ghost back" data-go="feedback">← Góp ý</button>';
+  const head=`${back}<section class="stack"><span class="eyebrow">🗂 Quản trị</span><h1>Quản lý góp ý</h1></section>`;
   if(IN_VIEWER) return head+'<p class="hint">Trình xem artifact chặn kết nối mạng. Mở bản web của app.</p>';
-  if(!k) return `${head}<section class="panel stack"><p>Nhập khoá quản trị (ELA-…) để xem và xử lý góp ý. Khoá chỉ lưu trên máy này.</p>
-    <label class="hint" for="gakey">Khoá quản trị</label><input id="gakey" class="field" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ELA-XXXX-XXXX-XXXX-XXXX-XXXX" style="font:500 15px/1.3 var(--mono)">
-    <div class="row"><button class="btn primary" data-act="galogin">Mở</button></div></section>`;
   if(GA.rows==null&&!GA.busy&&!GA.err) setTimeout(gaLoad,0);
   const C=GA.count||{}, n=(kd,st)=>Object.entries(C).filter(([key])=>{ const [a,b]=key.split(':'); return (!kd||a===kd)&&(st?b===st:b!=='xoa'); }).reduce((t,[,v])=>t+v,0);
   const chip=(act,v,cur,l,cnt)=>`<button class="btn small ${cur===v?'primary':''}" data-act="${act}" data-v="${v||''}" aria-pressed="${cur===v}">${l} <span class="num">${cnt}</span></button>`;
   return `${head}
   <section class="panel stack" aria-label="Lọc góp ý"><div class="row" role="group" aria-label="Loại" style="gap:6px">${chip('gakd',null,GA.kd,'Tất cả',n(null,GA.st))}${GY_KIND.map(([kk,l])=>chip('gakd',kk,GA.kd,l,n(kk,GA.st))).join('')}</div>
     <div class="row" role="group" aria-label="Trạng thái" style="gap:6px">${chip('gast',null,GA.st,'Chưa xoá',n(GA.kd,null))}${GA_ST.map(([kk,l])=>chip('gast',kk,GA.st,l,n(GA.kd,kk))).join('')}</div>
-    <div class="row" style="gap:6px"><button class="btn small" data-act="ganew">➕ Thêm góp ý</button><button class="btn small ghost" data-act="garef" ${GA.busy?'disabled':''}>${GA.busy?'Đang tải…':'↻ Làm mới'}</button><button class="btn small ghost" data-act="galogout">Quên khoá trên máy này</button></div></section>
+    <div class="row" style="gap:6px"><button class="btn small" data-act="ganew">➕ Thêm góp ý</button><button class="btn small ghost" data-act="garef" ${GA.busy?'disabled':''}>${GA.busy?'Đang tải…':'↻ Làm mới'}</button></div></section>
   ${GA.add?`<section class="panel stack" aria-label="Thêm góp ý"><h2>➕ Thêm góp ý</h2><label class="hint" for="ganew-kd">Loại</label><select id="ganew-kd" class="field">${GY_KIND.map(([kk,l])=>`<option value="${kk}">${esc(l)}</option>`).join('')}</select>
     <label class="hint" for="ganew-tx">Nội dung</label><textarea id="ganew-tx" class="field" rows="3" maxlength="4000"></textarea><label class="hint" for="ganew-nt">Ghi chú (không bắt buộc)</label><textarea id="ganew-nt" class="field" rows="2" maxlength="2000"></textarea>
     <div class="row"><button class="btn primary" data-act="gaadd">Thêm</button><button class="btn ghost" data-act="ganew">Huỷ</button></div></section>`:''}
@@ -5010,7 +5005,7 @@ const FB = {
   exam:['IELTS','VSTEP','Thi tốt nghiệp THPT','Chứng chỉ khác','Không thi, học để dùng'],
 };
 function viewFeedback(){ const last=(EV().fb||[]).slice(-1)[0], ck=(k,t)=>`<label class="chip"><input type="checkbox" name="${k}" value="${esc(t)}"> ${esc(t)}</label>`;
-  return `<section class="panel stack"><h2>💬 Gặp lỗi hay chỗ khó hiểu?</h2><p class="note">Bấm 💬 trên thanh đầu trang ở bất kỳ màn nào: gõ vài chữ, thêm ảnh chụp màn hình. App tự kèm màn và câu đang làm.</p><div class="row"><button class="btn primary" data-act="gyopen">💬 Góp ý kèm ảnh</button><button class="btn ghost small" data-go="gyadmin">🔐 Quản lý góp ý</button></div></section>
+  return `<section class="panel stack"><h2>💬 Gặp lỗi hay chỗ khó hiểu?</h2><p class="note">Bấm 💬 trên thanh đầu trang ở bất kỳ màn nào: gõ vài chữ, thêm ảnh chụp màn hình. App tự kèm màn và câu đang làm.</p><div class="row"><button class="btn primary" data-act="gyopen">💬 Góp ý kèm ảnh</button><button class="btn ghost small" data-go="gyadmin">🗂 Quản lý góp ý</button></div></section>
   ${gySentHtml()}
   <section class="stack"><span class="eyebrow">Góp ý</span><h1>Giúp app hiểu bạn hơn</h1><p class="muted note">1 phút. Câu trả lời lưu trên máy này; chỉ đến tay người làm app khi bạn tự gửi <b>dữ liệu học ẩn danh</b> (bên dưới).${last?` Lần góp ý gần nhất: ${dayLabel(last.day)}.`:''}</p></section>
   <form class="panel stack" data-form="feedback">
@@ -5331,6 +5326,9 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:107,d:'2026-10-19',t:'Quản lý góp ý không cần khoá, có xoá hẳn',items:[
+    'Tôi → Góp ý → 🗂 Quản lý góp ý mở thẳng, không phải nhập khoá.',
+    'Trong mục 🗑 Đã xoá có nút 💥 Xoá hẳn (bấm 2 lần): xoá luôn góp ý và ảnh khỏi máy chủ, không khôi phục được.']},
   {v:106,d:'2026-10-19',t:'🔐 Quản lý góp ý',items:[
     'Tôi → Góp ý → 🔐 Quản lý góp ý (cần khoá quản trị): danh sách theo loại và trạng thái, xem chi tiết kèm ảnh và màn / câu đang làm.',
     'Đổi trạng thái (mới, đang xử lý, xong, bỏ), sửa nội dung, ghi chú, thêm góp ý tay; xoá là chuyển vào 🗑 Đã xoá, khôi phục được.']},
@@ -6049,8 +6047,7 @@ document.addEventListener('click',e=>{
     case 'syncon': return syncEnable();
     case 'logon': return logEnable();   // v166 nhật ký học
     case 'gyopen': return gyOpen();   // v167 💬 góp ý
-    case 'galogin': return gaLogin();   // v168 🔐 quản lý góp ý
-    case 'galogout': return gaLogout();
+    case 'gapurge': return gaPurge(+d.id);   // v169 xoá hẳn (từ 🗑 Đã xoá)
     case 'garef': return gaLoad();
     case 'gakd': GA.kd=d.v||null; return gaLoad();
     case 'gast': GA.st=d.v||null; return gaLoad();
