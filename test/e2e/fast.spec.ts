@@ -66,6 +66,29 @@ test('v165 vượt chặng từ: unit đúng hết → qua (tạm vững, từ v
   expect(errors).toEqual([]);
 });
 
+test('v170 góp ý người học: chặng ⚡ báo đúng / sai + âm thanh ngay từng câu, không có nút "Tôi chưa biết" / "Mình đang đoán"; ô gõ màn vá ≥ 16px (iPhone không tự phóng to)', async ({ page, errors }) => {
+  await open(page);
+  await page.evaluate(() => { const w = window as any; w.__sfx = []; w.eval('sfx = k => { window.__sfx.push(k); }'); });
+  await page.locator('#app .fastp [data-act="fastgo"]').click();
+  await expect(page.locator('#app [data-act="dunno"]')).toHaveCount(0);
+  await expect(page.locator('#app [data-act="guess"]')).toHaveCount(0);
+  await page.evaluate(() => { const w = window as any; w.eval('answer')(false, {}); });
+  await expect(page.locator('#app .fb.bad')).toContainText('Đáp án');
+  await expect(page.locator('#app .fb.bad')).toContainText('Vá chỗ lủng');
+  await expect(page.locator('#app .fb.bad')).not.toContainText('hỏi lại cuối lượt');
+  expect(await page.evaluate(() => (window as any).__sfx)).toEqual(['bad']);
+  await page.evaluate(() => { const w = window as any; w.eval('next')(); w.eval('answer')(true, {}); });
+  await expect(page.locator('#app .fb.good')).toBeVisible();
+  expect(await page.evaluate(() => (window as any).__sfx)).toEqual(['bad', 'ok']);
+  await page.evaluate(() => { const w = window as any; w.eval('next')(); });
+  await finish(page, false);
+  await page.locator('#app [data-act="fixgo"]').first().click();
+  await page.locator('#app [data-act="fixq"]').click();
+  const fs = await page.locator('#fixin').evaluate(e => parseFloat(getComputedStyle(e).fontSize));
+  expect(fs).toBeGreaterThanOrEqual(16);
+  expect(errors).toEqual([]);
+});
+
 test('v165 vá chỗ lủng: thẻ ngắn rồi một câu tự gõ; đúng → hết lủng, unit qua; sai → vá lại từ ngày mai', async ({ page, errors }) => {
   await open(page);
   const u = await page.evaluate(() => { const w = window as any, u = w.eval('UNITS').find((x: any) => x.id === 'a1-u1');

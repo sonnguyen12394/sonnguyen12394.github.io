@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 107;
+const STATE_V = 18, APP_VERSION = 108;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -3109,7 +3109,7 @@ function viewLearn(){
 }
 
 function viewSession(){
-  const s=ui.sess, ex=s.q[s.i], w=WORD[ex.wid], d=DIM[ex.dim], reveal=!TEST_KINDS.includes(s.kind), a=s.ans;
+  const s=ui.sess, ex=s.q[s.i], w=WORD[ex.wid], d=DIM[ex.dim], reveal=revealOf(s), a=s.ans;
   if(!a&&!ex._t0) ex._t0=Date.now();   // mốc tính thời gian trả lời (answerMs)
   const label=KIND_LABEL[s.kind];
   const typeName=TYPE_NAME[ex.type];
@@ -3155,7 +3155,7 @@ function viewSession(){
         <details class="fbmore"><summary>Xem ví dụ và mẹo nhớ</summary><span lang="en">${highlight(w.ex,w)}</span>
         <span class="hint">${esc(w.exVi||'')}</span>
         ${tipBox(w)}
-        <span class="hint"><span lang="en">${esc(w.word)}</span> (${esc(w.pos)}): ${esc(w.vi)}.</span></details>${a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${UNIT_OF[ex.wid]?microBox('u:'+UNIT_OF[ex.wid].id,ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3):''}</div>`;
+        <span class="hint"><span lang="en">${esc(w.word)}</span> (${esc(w.pos)}): ${esc(w.vi)}.</span></details>${s.kind==='fast'?'<span class="hint">Chỗ này vào 🩹 Vá chỗ lủng: chỉ học lại đúng chỗ này.</span>':a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${s.kind!=='fast'&&UNIT_OF[ex.wid]?microBox('u:'+UNIT_OF[ex.wid].id,ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3):''}</div>`;
     }
     fb+=xpFloat(s);
     fb+=`<div class="row"><button class="btn primary" data-act="next" id="nextbtn">${s.i+1<s.q.length?'Tiếp tục':'Xem kết quả'} <span class="hint" style="color:inherit;opacity:.7">Enter</span></button>${flagBox()}</div>`;
@@ -3165,7 +3165,7 @@ function viewSession(){
   ${goldTag(s)}<section class="q">
     ${ex.mix?`<p class="hint">🔁 Ôn lại từ ${esc(uname(UNIT_OF[ex.wid]))}: từ bạn học trước đây, đến lúc gọi lại.</p>`:''}
     ${body}
-    ${a?'':`<div class="row minor"><button class="chipbtn" data-act="dunno" title="Tính như trả lời sai, nhưng xem ngay đáp án (phím 0)">Tôi chưa biết</button><button class="chipbtn" data-act="guess" aria-pressed="${!!s.guess}" title="Đánh dấu khi bạn không chắc: lịch ôn sẽ hỏi lại sớm hơn">🤔 Mình đang đoán</button></div>`}
+    ${a||s.kind==='fast'?'':`<div class="row minor"><button class="chipbtn" data-act="dunno" title="Tính như trả lời sai, nhưng xem ngay đáp án (phím 0)">Tôi chưa biết</button></div>`}
     ${fb}
   </section>
   <p class="hint kbd-hint">Phím tắt: 1–4 để chọn, 0 = chưa biết, Enter để tiếp tục.</p>`;
@@ -3226,7 +3226,9 @@ function spellDiff(a,b){
   if(!miss) return `Thừa chữ “${extra}” ở vị trí thứ ${i+1}: ${b}.`;
   return `Chữ “${extra}” ở vị trí thứ ${i+1} phải là “${miss}”: ${b}.`;
 }
-const TEST_KINDS = ['test','place','lrev','qplace','fast'];   // v165 fast: vượt chặng ⚡ Học nhanh   // bài kiểm tra: không hiện đáp án từng câu, không hỏi lại
+const TEST_KINDS = ['test','place','lrev','qplace','fast'];
+// v170 góp ý người học: chặng ⚡ vẫn chấm như bài đo (không hỏi lại, không kháng nghị) nhưng báo đúng / sai + âm thanh ngay từng câu; câu sai vào hàng vá.
+const revealOf = s => !TEST_KINDS.includes(s.kind) || s.kind==='fast';   // v165 fast: vượt chặng ⚡ Học nhanh   // bài kiểm tra: không hiện đáp án từng câu, không hỏi lại
 
 function viewSummary(){
   if(ui.summary&&ui.summary.kind==='qplace') return viewQPSummary(ui.summary);
@@ -3611,7 +3613,7 @@ function viewGames(){
     <p class="muted">Bạn làm ${CH_N} câu, app tạo một mã. Gửi mã cho bạn bè (Zalo, email…); bạn ấy dán mã vào đây để làm đúng ${CH_N} câu đó rồi so điểm. Không cần tài khoản hay mạng.</p>
     <div class="setrow"><label for="chname">Tên hiện trong mã</label><input id="chname" class="field" style="font-size:16px;padding:7px 10px" maxlength="24" value="${esc(st.set.name||'')}" placeholder="Tên của bạn"></div>
     <div class="row"><select id="chlvl" aria-label="Cấp độ thách đấu">${CONTENT.levels.filter(L=>L.units.length).map(L=>`<option value="${L.id}" ${L.id===lv?'selected':''}>${L.id} · ${esc(L.vi)}</option>`).join('')}</select><button class="btn primary" data-act="chnew">Tạo thách đấu</button></div>
-    <form class="stack" data-form="chjoin" style="gap:8px"><textarea class="field" rows="2" style="font:400 12px/1.4 var(--mono);width:100%" placeholder="Dán mã thách đấu (VLT1:…)" aria-label="Mã thách đấu"></textarea><div class="row"><button class="btn">Nhận thách đấu</button></div></form>
+    <form class="stack" data-form="chjoin" style="gap:8px"><textarea class="field" rows="2" style="font:400 16px/1.4 var(--mono);width:100%" placeholder="Dán mã thách đấu (VLT1:…)" aria-label="Mã thách đấu"></textarea><div class="row"><button class="btn">Nhận thách đấu</button></div></form>
     ${(G.ch||[]).length?`<div class="tablewrap"><table style="min-width:0"><thead><tr><th>Ngày</th><th>Cấp</th><th>Bạn</th><th>Đối thủ</th></tr></thead><tbody>${G.ch.map(c=>`<tr><td class="num">${dayLabel(c.day)}</td><td>${esc(c.L)}</td><td class="num">${esc(c.me)}/${CH_N}</td><td>${c.name?`${esc(c.name)} · ${esc(c.them)}/${CH_N} ${c.me>c.them?'🏅':c.me===c.them?'🤝':''}`:'<span class="muted">chờ bạn bè</span>'}</td></tr>`).join('')}</tbody></table></div>`:''}
   </section>`;
 }
@@ -3638,7 +3640,7 @@ function viewGame(){
   if(g.kind==='ch'){
     if(g.done) return `${back}<section class="panel stack"><span class="eyebrow">Thách đấu ${g.L}</span><h1>${g.score}/${CH_N} câu đúng</h1>
       ${g.from?`<p class="${g.score>g.from.s?'':'muted'}">${esc(g.from.n)}: ${esc(g.from.s)}/${CH_N} → ${g.score>g.from.s?'bạn thắng! 🏅':g.score===g.from.s?'hoà 🤝':'bạn thua, thử lại lần sau nhé.'}</p>`:''}
-      <p>Gửi mã này cho bạn bè${g.from?' (để báo kết quả)':''}:</p><textarea class="field" readonly rows="2" style="font:400 12px/1.4 var(--mono);width:100%" aria-label="Mã thách đấu" onfocus="this.select()">${esc(g.code)}</textarea>
+      <p>Gửi mã này cho bạn bè${g.from?' (để báo kết quả)':''}:</p><textarea class="field" readonly rows="2" style="font:400 16px/1.4 var(--mono);width:100%" aria-label="Mã thách đấu" onfocus="this.select()">${esc(g.code)}</textarea>
       <div class="row"><button class="btn primary" data-act="chshare">📤 Gửi lời thách đấu</button><button class="btn" data-act="chcopy">Chỉ sao chép mã</button><button class="btn" data-act="gameexit">Xong</button></div></section>`;
     const q=g.q[g.i], w=WORD[q.wid];
     return `${back}<section class="q"><div class="spread"><span class="pill accent">🤝 Thách đấu ${g.L}${g.from?` với ${esc(g.from.n)}`:''}</span><span class="num muted">${g.i+1}/${CH_N} · ${g.score} đúng</span></div>
@@ -4347,7 +4349,7 @@ function syncPanel(){
   if(IN_VIEWER&&!s) return `<section class="panel stack">${head}<p class="note">Trình xem artifact chặn kết nối mạng, nên đồng bộ chỉ có ở <a href="${esc(WEB_URL)}" target="_blank" rel="noopener">bản web của app</a>. Chuyển tiến độ sang đó bằng mã sao lưu ở trên.</p></section>`;
   if(!s) return `<section class="panel stack">${head}
     <div class="row"><button class="btn primary" data-act="syncon">Bật đồng bộ</button></div>
-    <form class="row" data-form="syncjoin" style="gap:8px"><input class="field" style="font:500 15px/1.3 var(--mono);flex:1 1 240px" placeholder="ELK-XXXX-XXXX-XXXX-XXXX-XXXX" aria-label="Mã đồng bộ" autocomplete="off" autocapitalize="characters"><button class="btn">Dùng mã đã có</button></form></section>`;
+    <form class="row" data-form="syncjoin" style="gap:8px"><input class="field" style="font:500 16px/1.3 var(--mono);flex:1 1 240px" placeholder="ELK-XXXX-XXXX-XXXX-XXXX-XXXX" aria-label="Mã đồng bộ" autocomplete="off" autocapitalize="characters"><button class="btn">Dùng mã đã có</button></form></section>`;
   return `<section class="panel stack">${head}
     <div class="setrow"><span>Mã đồng bộ của bạn</span><code class="num" style="font-size:15px;user-select:all">${esc(s.k)}</code></div>
     <p class="note">${SYNC_ST.busy?'Đang đồng bộ…':SYNC_ST.err?`<span class="warnt">${esc(SYNC_ST.err)}</span>`:ago==null?'Chưa đồng bộ lần nào.':`Đồng bộ gần nhất: ${ago<1?'vừa xong':ago<60?ago+' phút trước':Math.round(ago/60)+' giờ trước'}${s.dirty?' · còn thay đổi chưa gửi':''}.`}</p>
@@ -4409,7 +4411,7 @@ function gyDraw(){ let el=document.getElementById('gysheet'); if(!GY.open){ if(e
   el.innerHTML=`<div class="gybox" role="dialog" aria-modal="true" aria-labelledby="gy-t"><div class="spread"><h2 id="gy-t">💬 Góp ý</h2><button class="btn ghost small" data-act="gyclose" aria-label="Đóng góp ý">✕</button></div>
     <div class="row" role="group" aria-label="Loại góp ý" style="gap:6px">${GY_KIND.map(([k,l])=>`<button class="btn small ${GY.kind===k?'primary':''}" data-act="gykind" data-v="${k}" aria-pressed="${GY.kind===k}">${l}</button>`).join('')}</div>
     <label class="hint" for="gytxt">Bạn thấy gì? (không ghi tên, số điện thoại)</label>
-    <textarea id="gytxt" class="field" rows="4" maxlength="4000" style="font:400 15px/1.5 var(--body);width:100%">${esc(GY.txt)}</textarea>
+    <textarea id="gytxt" class="field" rows="4" maxlength="4000" style="font:400 16px/1.5 var(--body);width:100%">${esc(GY.txt)}</textarea>
     <div class="row" style="gap:8px;align-items:center"><label class="btn small" for="gyfile">📷 Thêm ảnh</label><input id="gyfile" type="file" accept="image/*" multiple hidden><span class="hint">${GY.imgs.length}/${GY_IMG_N} ảnh · ảnh chụp màn hình rất có ích</span></div>
     ${GY.imgs.length?`<div class="row" style="gap:6px">${GY.imgs.map((u,i)=>`<span class="gyth"><img src="${u}" alt="Ảnh ${i+1}"><button class="btn ghost small" data-act="gyrm" data-v="${i}" aria-label="Bỏ ảnh ${i+1}">✕</button></span>`).join('')}</div>`:''}
     <p class="hint">Gửi kèm: màn “${esc(c.h1||(c.sk&&(KIND_LABEL[c.sk]||KIND_LABEL[c.sk.slice(1)]))||c.view||'')}”${c.item?`, câu đang làm (${esc(c.item)})`:''}, bản ${APP_VERSION}, loại máy. Điểm này giúp sửa đúng chỗ.</p>
@@ -4578,8 +4580,8 @@ function viewSettings0(){
     <h3 style="margin-top:6px">Chuyển sang máy khác bằng mã</h3>
     <p class="note">Không muốn dùng file? Sao chép mã sao lưu, gửi cho chính mình (Zalo, email…), rồi dán vào ô dưới đây trên máy kia.</p>
     <div class="row"><button class="btn" data-act="copycode">Sao chép mã sao lưu</button></div>
-    ${ui.backupCode?`<textarea class="field" readonly rows="3" style="font:400 12px/1.4 var(--mono);width:100%" aria-label="Mã sao lưu" onfocus="this.select()">${esc(ui.backupCode)}</textarea>`:''}
-    <form class="stack" data-form="restorecode" style="gap:8px"><textarea class="field" rows="3" style="font:400 12px/1.4 var(--mono);width:100%" placeholder="Dán mã sao lưu (VL1:… hoặc VL2:…)" aria-label="Dán mã sao lưu"></textarea>
+    ${ui.backupCode?`<textarea class="field" readonly rows="3" style="font:400 16px/1.4 var(--mono);width:100%" aria-label="Mã sao lưu" onfocus="this.select()">${esc(ui.backupCode)}</textarea>`:''}
+    <form class="stack" data-form="restorecode" style="gap:8px"><textarea class="field" rows="3" style="font:400 16px/1.4 var(--mono);width:100%" placeholder="Dán mã sao lưu (VL1:… hoặc VL2:…)" aria-label="Dán mã sao lưu"></textarea>
     <div class="row"><button class="btn">Khôi phục bằng mã</button></div></form></section>
   ${syncPanel()}
   ${logPanel()}
@@ -4704,7 +4706,7 @@ function viewGPoint(){
       ${checked?`<p class="hint">Câu mẫu: ${p.ex.map(e=>`<span lang="en">${esc(e[0])}</span>`).join(' · ')}</p>`:''}</form></section>`;
 }
 function viewGSess(){
-  const s=ui.gs, ex=s.q[s.i], p=GPT[ex.gid], d=GDIM[ex.dim], reveal=!TEST_KINDS.includes(s.kind), a=s.ans;
+  const s=ui.gs, ex=s.q[s.i], p=GPT[ex.gid], d=GDIM[ex.dim], reveal=revealOf(s), a=s.ans;
   if(!a&&!ex._t0) ex._t0=Date.now();
   const opts=()=>`<div class="opts">${ex.opts.map((o,i)=>{ let cls=''; if(a){ if(reveal){ if(i===ex.ans) cls='right'; else if(i===a.picked) cls='wrong'; } else if(i===a.picked) cls='chosen'; }
     return `<button class="opt ${cls}" data-gpick="${i}" ${a?'disabled':''}><kbd>${i+1}</kbd><span lang="en">${esc(o)}</span></button>`;}).join('')}</div>`;
@@ -4729,13 +4731,13 @@ function viewGSess(){
       const close=a.text!=null&&ex.accept&&lev(gcanon(a.text),gcanon(closest(a.text,ex.accept)))<=2;
       fb=`<div class="fb bad" role="status"><strong>${a.dunno?'Chưa biết — xem đáp án và nhớ lại nhé':`Chưa đúng${close?' — gần đúng, chỉ sai 1–2 chữ':''}`}</strong>${a.text!=null?`<span>Bạn viết: <s lang="en">${esc(a.text)}</s></span>`:''}
         <span>Đáp án: <b lang="en">${esc(gRight(ex))}</b></span>${why?`<p class="why"><b>Vì sao sai:</b> ${esc(why)}</p>`:''}
-        <span class="hint">Nhắc lại: <span lang="en">${esc(p.form[0])}</span> — xem đủ công thức trong bài học.</span>${a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${microBox('g:'+ex.gid,{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2)}</div>`; }
+        <span class="hint">Nhắc lại: <span lang="en">${esc(p.form[0])}</span> — xem đủ công thức trong bài học.</span>${s.kind==='fast'?'<span class="hint">Chỗ này vào 🩹 Vá chỗ lủng: chỉ học lại đúng chỗ này.</span>':a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${s.kind==='fast'?'':microBox('g:'+ex.gid,{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2)}</div>`; }
     fb+=xpFloat(s);
     fb+=`<div class="row"><button class="btn primary" data-act="gnext" id="gnextbtn">${s.i+1<s.q.length?'Tiếp tục':'Xem kết quả'} <span class="hint" style="color:inherit;opacity:.7">Enter</span></button>${flagBox()}</div>`;
   }
   return `<div class="sess-top ${s.kind==='test'?'boss':''}"><div class="spread"><button class="btn ghost back" data-act="gquit">✕ Thoát</button><span class="row" style="gap:4px 10px">${juice(s)}<span class="num muted">${s.kind==='test'?'⚔️ Thử thách cuối bài':'Ngữ pháp · '+KIND_LABEL[s.kind]} · ${s.i+1}/${s.q.length}</span></span></div>
     <div class="bar ${s.combo>=3?'hot':''}"><i style="width:${(s.i/s.q.length)*100}%"></i></div></div>
-  ${goldTag(s)}<section class="q"><p class="eyebrow">${esc(p.vi)}</p>${body}${a?'':dunnoBtn}${fb}</section>
+  ${goldTag(s)}<section class="q"><p class="eyebrow">${esc(p.vi)}</p>${body}${a||s.kind==='fast'?'':dunnoBtn}${fb}</section>
   <p class="hint kbd-hint">Phím tắt: 1–4 để chọn, 0 = chưa biết, Enter để tiếp tục.</p>`;
 }
 function viewGSum(){
@@ -4897,7 +4899,7 @@ function viewWelcome(){
     <p class="hint">Chưa hợp với trẻ dưới 10 tuổi: cần tự đọc giải thích tiếng Việt và gõ chữ tiếng Anh. Nội dung đang được giáo viên duyệt dần; thấy câu sai, bấm báo lỗi ngay trong câu hỏi.</p></section>
   <details class="panel"><summary>Đã học ở máy khác hoặc đường link khác? Chuyển tiến độ sang đây</summary>
     <div class="stack" style="margin-top:10px"><p class="muted">Ở máy/link cũ: Cài đặt → Sao lưu → <b>Sao chép mã sao lưu</b>, rồi dán vào đây. Tiến độ lưu riêng theo từng trình duyệt và từng đường link.</p>
-    <form class="stack" data-form="restorecode" style="gap:8px"><textarea class="field" rows="3" style="font:400 12px/1.4 var(--mono);width:100%" placeholder="Dán mã sao lưu (VL1:… hoặc VL2:…)" aria-label="Mã sao lưu"></textarea><div class="row"><button class="btn">Khôi phục</button></div></form></div></details>`;
+    <form class="stack" data-form="restorecode" style="gap:8px"><textarea class="field" rows="3" style="font:400 16px/1.4 var(--mono);width:100%" placeholder="Dán mã sao lưu (VL1:… hoặc VL2:…)" aria-label="Mã sao lưu"></textarea><div class="row"><button class="btn">Khôi phục</button></div></form></div></details>`;
   if(step===1) return `<section class="stack"><span class="eyebrow">Chào mừng · bước 2/3</span>${dots}<h1>Mục tiêu và thời gian của bạn</h1>${WHO_PITCH[st.me.who]?`<p class="muted note">${esc(WHO_PITCH[st.me.who].p)}</p>`:''}</section>
   <section class="panel stack">${profileFields()}${srcField()}</section>
   <section class="panel stack"><h3>Dự báo</h3><p>${etaLine()}</p><p class="note">${promiseLine(15)}</p>
@@ -5014,7 +5016,7 @@ function viewFeedback(){ const last=(EV().fb||[]).slice(-1)[0], ck=(k,t)=>`<labe
     <fieldset class="stack" style="border:0;padding:0;margin:0;gap:6px"><legend><b>Điều gì làm bạn khó chịu hoặc muốn bỏ?</b></legend><div class="chips">${FB.pain.map(t=>ck('pain',t)).join('')}</div></fieldset>
     <fieldset class="stack" style="border:0;padding:0;margin:0;gap:6px"><legend><b>Bạn từng học từ vựng bằng gì?</b></legend><div class="chips">${FB.apps.map(t=>ck('apps',t)).join('')}</div></fieldset>
     <fieldset class="stack" style="border:0;padding:0;margin:0;gap:6px"><legend><b>Bạn đang ôn kỳ thi nào?</b></legend><div class="chips">${FB.exam.map(t=>`<label class="chip"><input type="radio" name="exam" value="${esc(t)}"> ${esc(t)}</label>`).join('')}</div></fieldset>
-    <label class="stack" style="gap:4px"><b>Điều bạn muốn nói thêm (không ghi tên, số điện thoại)</b><textarea class="field" name="text" rows="3" maxlength="600" style="font:400 15px/1.5 var(--body)"></textarea></label>
+    <label class="stack" style="gap:4px"><b>Điều bạn muốn nói thêm (không ghi tên, số điện thoại)</b><textarea class="field" name="text" rows="3" maxlength="600" style="font:400 16px/1.5 var(--body)"></textarea></label>
     <div class="row"><button class="btn primary">Lưu góp ý</button></div></form>
   ${researchPanel()}`; }
 function fbSave(f){ const g=n=>[...f.querySelectorAll(`input[name="${n}"]`)].filter(i=>i.checked).map(i=>i.value), r=g('rate')[0];
@@ -5326,6 +5328,7 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:108,d:'2026-10-19',t:'Sửa theo góp ý khi học',items:['⚡ Vượt chặng: báo đúng / sai và có âm thanh ngay sau mỗi câu. Câu sai vẫn vào Vá chỗ lủng.','Bỏ nút “Mình đang đoán”. Ở chặng ⚡ không còn nút “Tôi chưa biết”.','iPhone: chạm vào ô gõ không còn bị phóng to màn hình.','Chữ trong câu hỏi to hơn, dễ đọc hơn.']},
   {v:107,d:'2026-10-19',t:'Quản lý góp ý không cần khoá, có xoá hẳn',items:[
     'Tôi → Góp ý → 🗂 Quản lý góp ý mở thẳng, không phải nhập khoá.',
     'Trong mục 🗑 Đã xoá có nút 💥 Xoá hẳn (bấm 2 lần): xoá luôn góp ý và ảnh khỏi máy chủ, không khôi phục được.']},
@@ -5655,7 +5658,7 @@ function answer(correct,extra={}){
   if(!s.retried.has(k0)&&!extra.dunno){ evCal(ex.guess,correct); const c=s.cal||={sure:[0,0],guess:[0,0]}, x=c[ex.guess?'guess':'sure']; x[0]++; if(correct) x[1]++; }
   s.ans={correct,...extra}; s.snap={w:JSON.stringify(W(ex.wid)),res:s.res.length,q:s.q.length}; const ms=answerMs(ex), due=W(ex.wid).learned&&W(ex.wid).due!=null&&W(ex.wid).due<=today(), first=!s.retried.has(k0); evTime(ex.type,ms);
   if(due){ bump('review'); if(first&&!s.retried.has('r:'+ex.wid)){ s.retried.add('r:'+ex.wid); evRecall(W(ex.wid),correct,ex); evLog(W(ex.wid),ex,correct,ms,true); if(!ex.opts&&!ex.guess&&!extra.dunno&&(W(ex.wid).ivl||1)>=3) srsCal(); } }
-  else if(first&&!extra.dunno) evLog(W(ex.wid),ex,correct,ms,false); s.wrongRun=correct?0:(s.wrongRun||0)+1; ex._given=extra.text??(extra.picked!=null&&ex.opts?ex.opts[extra.picked]:undefined); ex._rt=ms; grade(ex,correct); if(!TEST_KINDS.includes(s.kind)) sfx(correct?'ok':'bad');
+  else if(first&&!extra.dunno) evLog(W(ex.wid),ex,correct,ms,false); s.wrongRun=correct?0:(s.wrongRun||0)+1; ex._given=extra.text??(extra.picked!=null&&ex.opts?ex.opts[extra.picked]:undefined); ex._rt=ms; grade(ex,correct); if(revealOf(s)) sfx(correct?'ok':'bad');
   const key=ex.wid+'|'+ex.dim;
   if(!s.retried.has(key)) evItem(ex.type,UNIT_OF[ex.wid].level,correct);
   if(!s.retried.has(key)) s.res.push({wid:ex.wid,dim:ex.dim,type:ex.type,correct,right:rightAnswer(ex),given:extra.text??(extra.picked!=null?ex.opts[extra.picked]:null)});
@@ -5726,7 +5729,7 @@ function gAnswer(correct,extra={}){
   s.ans={correct,...extra}; s.snap={w:JSON.stringify(G(ex.gid)),res:s.res.length,q:s.q.length}; s.wrongRun=correct?0:(s.wrongRun||0)+1;
   const g=G(ex.gid), old=g.d[ex.dim]??0;
   g.d[ex.dim]=old+stepOf(ex.type,correct)*((correct?1:0)-old);
-  srsStep(g,correct,G_TYPED.includes(ex.type)); bump('gram'); if(correct&&G_TYPED.includes(ex.type)) bump('typed'); tally(correct, xpFor(xpKind(s.kind)+':g:'+ex.gid+':'+ex.key,G_TYPED.includes(ex.type)?15:10,correct,extra.dunno)); if(!TEST_KINDS.includes(s.kind)) sfx(correct?'ok':'bad');
+  srsStep(g,correct,G_TYPED.includes(ex.type)); bump('gram'); if(correct&&G_TYPED.includes(ex.type)) bump('typed'); tally(correct, xpFor(xpKind(s.kind)+':g:'+ex.gid+':'+ex.key,G_TYPED.includes(ex.type)?15:10,correct,extra.dunno)); if(revealOf(s)) sfx(correct?'ok':'bad');
   const key=ex.gid+'|'+ex.dim+'|'+ex.key, given=extra.text??(extra.picked!=null?ex.opts[extra.picked]:null);
   if(!s.retried.has(key)){ evItem(ex.type,GPT[ex.gid].level,correct);
     eEv({node:'g:'+ex.gid,level:{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'g:'+key,qt:ex.type,ctx:ex.dim,src:'gram',ch:'g:'+ex.gid,given:given==null?undefined:String(given),rt:answerMs(ex)||undefined}); }
@@ -6693,7 +6696,7 @@ function viewMed(){ const m=MED[ui.medId]; if(!m) return viewTalk();
     <p class="muted"><b>Người đọc:</b> ${esc(m.who)} · <b>Văn phong:</b> ${esc(REG_VI[m.reg])}</p><p>${esc(m.ctx)}</p></section>
   <section class="panel stack"><span class="eyebrow">Văn bản tiếng Việt</span><p style="font-size:17px">${esc(m.src)}</p></section>
   <section class="stack"><label for="medin"><b>Bài của bạn</b> <span class="muted">(${m.min}–${m.max} từ tiếng Anh)</span></label>
-    <textarea id="medin" class="field" rows="6" lang="en" spellcheck="true" style="width:100%;font:inherit" placeholder="Viết cho ${esc(m.who.split(',')[0])}…">${esc(text)}</textarea>
+    <textarea id="medin" class="field" rows="6" lang="en" spellcheck="true" style="width:100%;font:inherit;font-size:16px" placeholder="Viết cho ${esc(m.who.split(',')[0])}…">${esc(text)}</textarea>
     <div class="row"><button class="btn primary" data-act="medcheck">Kiểm tra ý</button>${r.n?`<span class="muted num">Điểm ý cao nhất: ${pct(r.best||0)}</span>`:''}</div></section>
   ${ck?`<section class="panel stack"><h3>${ck.ok?'✅ Đạt: đủ ý cho người đọc':'Chưa đạt'}</h3>
     <p class="muted num">${ck.hit.filter(Boolean).length}/${m.ideas.length} ý · ${ck.n} từ</p>
@@ -7107,7 +7110,7 @@ function viewNdx(){ const X=ui.ndx; if(!X) return viewND(); const back=`<div cla
   <section class="panel stack"><div class="spread"><span class="eyebrow">${it.k==='w'?`Từ vựng · nghĩa: ${esc(it.vi)}`:`Ngữ pháp · ${esc(it.title)}`}</span><span class="pill ${it.kind==='open'?'accent':'good'}">${it.kind==='open'?'Mới':it.kind==='lost'?'Ôn lại · đã quên':it.kind==='fading'?'Ôn lại · đang phai':'Ôn lại'}</span></div>
     <h2 lang="en" style="font:400 20px/1.5 var(--display)">${esc(it.prompt)}</h2>
     <p class="hint">${it.k==='w'?'Điền từ còn thiếu (đúng dạng như trong bài).':'Câu này có lỗi: gõ lại câu đúng.'}</p>
-    <label class="hint" for="ndxin">Câu trả lời</label><input id="ndxin" lang="en" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(A?A.v:(X.draft||''))}" ${A?'disabled':''}>
+    <label class="hint" for="ndxin">Câu trả lời</label><input id="ndxin" class="field" lang="en" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(A?A.v:(X.draft||''))}" ${A?'disabled':''}>
     ${A?`<div class="fb ${A.ok?'good':'bad'}" role="status"><strong>${A.ok?'Đúng':'Chưa đúng'}</strong><span>Đáp án: <b lang="en">${esc(it.ans)}</b>${it.k==='w'?`<br><span lang="en">${esc(it.line)}</span>`:''}</span>${A.ok?'':'<span>Đã đưa vào lịch ôn từ ngày mai.</span>'}</div>
       <div class="row"><button class="btn primary" data-act="ndxnext">${X.i+1<X.q.length?'Câu tiếp':'Xem kết quả'}</button></div>`
       :`<div class="row"><button class="btn primary" data-act="ndxok">Trả lời</button></div>`}</section>`; }
@@ -7456,7 +7459,7 @@ function viewFix(){ const X=ui.fix; if(!X) return viewND(); const back=`<div cla
   :`${it.root&&!it.taught?`<p class="hint">Kiểm phần gốc: ${esc(GPT[it.id].vi)}. Đúng thì bỏ qua, không phải học.</p>`:''}
     ${E.g?`<p class="hint">Gõ dạng đúng vào chỗ trống (cả câu hoặc chỉ phần còn thiếu).</p><h2 lang="en" style="font:400 20px/1.5 var(--display)">${esc(E.prompt)}</h2>`
       :`<p class="hint">Gõ từ tiếng Anh nghĩa là “${esc(WORD[it.id].vi)}”.</p>${E.prompt?`<h2 lang="en" style="font:400 20px/1.5 var(--display)">${esc(E.prompt)}</h2><p class="hint">${esc(E.vi)}</p>`:''}`}
-    <label class="hint" for="fixin">Câu trả lời</label><input id="fixin" lang="en" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(A?A.v:'')}" ${A?'disabled':''}>
+    <label class="hint" for="fixin">Câu trả lời</label><input id="fixin" class="field" lang="en" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(A?A.v:'')}" ${A?'disabled':''}>
     ${A?`<div class="fb ${A.ok?'good':'bad'}" role="status"><strong>${A.ok?'Đúng':'Chưa đúng'}</strong><span>Đáp án: <b lang="en">${esc(E.ans)}</b></span>${A.ok?'':it.root&&!it.taught?'<span>Xem lại phần gốc rồi làm lại.</span>':'<span>Chỗ này vá lại từ ngày mai.</span>'}</div>
       <div class="row"><button class="btn primary" data-act="fixnext">${!A.ok&&it.root&&!it.taught?'Xem phần gốc':X.i+1<X.q.length?'Chỗ tiếp':'Xem kết quả'}</button></div>`
       :`<div class="row"><button class="btn primary" data-act="fixok">Trả lời</button></div>`}`}</section>`; }
@@ -7892,7 +7895,7 @@ function viewVx(){ const V=ui.vx; if(!V) return viewGames?viewGames():viewTalk()
       <div class="row"><button class="btn primary" data-act="vxstep" data-s="w1">Bắt đầu Bài 1</button></div>`;
     if(V.step==='w1'||V.step==='w2'){ const t=V.step==='w1'?VX_W1[V.w1]:VX_W2[V.w2];
       return `${top}<section class="stack"><span class="eyebrow">${V.step==='w1'?'Bài 1 · Thư/email':'Bài 2 · Bài luận'}</span><p style="font-size:17px">${esc(t.p)}</p></section>
-        <textarea id="vxin" class="field" rows="${V.step==='w1'?10:16}" lang="en" spellcheck="false" style="width:100%;font:inherit" aria-label="Bài viết">${esc(V.text[V.step]||'')}</textarea>
+        <textarea id="vxin" class="field" rows="${V.step==='w1'?10:16}" lang="en" spellcheck="false" style="width:100%;font:inherit;font-size:16px" aria-label="Bài viết">${esc(V.text[V.step]||'')}</textarea>
         <p class="hint num"><span id="vxwc">${wcount(V.text[V.step]||'')}</span> từ · cần ≥ ${VX_WMIN[V.step]} · cách đoạn bằng một dòng trống</p>
         <div class="row"><button class="btn primary" data-act="vxstep" data-s="${V.step==='w1'?'w2':'wres'}">${V.step==='w1'?'Nộp Bài 1, sang Bài 2':'Nộp bài'}</button></div>`; }
     const part=k=>{ const text=V.text[k]||'', c=vxWChecks(k,text), t=k==='w1'?VX_W1[V.w1]:VX_W2[V.w2];
@@ -7971,7 +7974,7 @@ function viewIx(V){ if(!WS){ wsLoad().then(()=>{ if(ui.view==='vx') render(); })
     if(V.step==='w1'||V.step==='w2'){ const t=V.step==='w1'?t1:t2;
       return `${top}<section class="stack"><span class="eyebrow">${V.step==='w1'?'Task 1':'Task 2'} · ${name}</span><p lang="en" style="font-size:17px;white-space:pre-wrap">${esc(t.p)}</p><p class="hint">${esc(t.vi)}</p>
         ${V.step==='w1'&&t.svg?`<figure class="panel" style="margin:0" role="img" aria-label="${esc(t.alt)}">${t.svg}</figure>`:''}</section>
-        <textarea id="vxin" class="field" rows="${V.step==='w1'?10:16}" lang="en" spellcheck="false" style="width:100%;font:inherit" aria-label="Bài viết">${esc(V.text[V.step]||'')}</textarea>
+        <textarea id="vxin" class="field" rows="${V.step==='w1'?10:16}" lang="en" spellcheck="false" style="width:100%;font:inherit;font-size:16px" aria-label="Bài viết">${esc(V.text[V.step]||'')}</textarea>
         <p class="hint num"><span id="vxwc">${wcount(V.text[V.step]||'')}</span> từ · cần ≥ ${IX_WMIN[V.step]} · cách đoạn bằng một dòng trống</p>
         <div class="row"><button class="btn primary" data-act="vxstep" data-s="${V.step==='w1'?'w2':'wres'}">${V.step==='w1'?'Nộp Task 1, sang Task 2':'Nộp bài'}</button></div>`; }
     const part=k=>{ const text=V.text[k]||'', c=vxWChecks(k,text,IX_WMIN[k]), t=k==='w1'?t1:t2, pe=perfEst(text,'W');
