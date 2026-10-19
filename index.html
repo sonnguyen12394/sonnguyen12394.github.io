@@ -75,6 +75,8 @@ nav button[aria-current="page"]{color:var(--ink);background:var(--accent-soft)}
 @media (min-width:700px){.gysheet{align-items:center}}
 .gyfab{display:none;position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:19px;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer;align-items:center;justify-content:center;opacity:.85}
 body.lesson .gyfab,body.bare .gyfab{display:flex}
+/* màn hẹp: thanh đầu trang một dòng (nowrap) không còn chỗ, nút 💬 nổi ngay trên thanh điều hướng dưới */
+@media (max-width:640px){.gybtn{display:none}.gyfab{display:flex;bottom:calc(72px + env(safe-area-inset-bottom,0px))}body.lesson .gyfab,body.bare .gyfab{bottom:calc(14px + env(safe-area-inset-bottom,0px))}body.stage .gyfab{display:none}}
 .clock{margin-left:auto;display:flex;align-items:center;gap:8px;font:500 12px/1 var(--mono);color:var(--muted)}
 .clock b{color:var(--ink);font-weight:600}
 

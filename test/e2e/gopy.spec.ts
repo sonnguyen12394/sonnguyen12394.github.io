@@ -5,7 +5,7 @@ import type { Page } from '@playwright/test';
 // v167 💬 Góp ý mọi màn (người sáng lập 19/10/2026): nút trên thanh đầu trang, tấm nổi đè lên màn đang học (không mất câu đang làm),
 // loại + chữ + tối đa 3 ảnh (nén ở máy), tự kèm bối cảnh; ảnh lên kho el-gopy, nội dung qua el_gopy_post; mất mạng thì gửi bù.
 /* eslint-disable @typescript-eslint/no-explicit-any */
-test.use({ future: false });
+test.use({ future: false, serviceWorkers: 'block' });   // WebKit: trang có service worker thì page.route không chặn được lời gọi → gửi thật lên Supabase
 const AXE = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
 // ảnh PNG 2×2 hợp lệ
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFklEQVR4nGP8z8DwnwEIGBkZGBgYGAAiqgMBWOYYkwAAAABJRU5ErkJggg==', 'base64');
@@ -58,7 +58,8 @@ test('v167 kho ảnh lỗi → ảnh gửi kèm dạng data URL; mất mạng �
   await page.route(/\/storage\/v1\/object\/el-gopy\//, r => r.fulfill({ status: 403, body: '{}' }));
   await page.route(/rest\/v1\/rpc\/el_gopy_post/, async r => { if (down) return r.fulfill({ status: 503, body: '' }); rpc.push(JSON.parse(r.request().postData() || '{}')); await r.fulfill({ status: 200, contentType: 'application/json', body: '7' }); });
   await open(page);
-  await page.locator('header .gybtn').click();
+  await expect(page.locator('header .gybtn')).toBeHidden();   // màn hẹp: thanh đầu trang một dòng → nút nổi trên thanh điều hướng dưới
+  await page.locator('.gyfab').click();
   await page.locator('#gysheet [data-act="gysend"]').click();
   await expect(page.locator('#gysheet')).toContainText('Gõ vài chữ');
   await page.locator('#gytxt').fill('Nút này không bấm được');

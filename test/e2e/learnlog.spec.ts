@@ -3,7 +3,7 @@ import { test, expect, closeModal } from './fixtures.ts';
 // v166 Nhật ký học (người sáng lập 19/10/2026): tự bật ở Cài đặt; mỗi câu trả lời (eEv), đổi màn, sự kiện app, chỉ số trong ngày
 // được gửi theo lô qua el_log_post với mã đồng bộ ẩn danh. Tắt thì không ghi, hàng chờ xoá.
 /* eslint-disable @typescript-eslint/no-explicit-any */
-test.use({ future: false });
+test.use({ future: false, serviceWorkers: 'block' });   // WebKit: trang có service worker thì page.route không chặn được lời gọi → gửi thật lên Supabase
 
 test('v166 ghi dữ liệu học: mặc định tắt (không gửi gì); bật → gửi snap + câu trả lời + đổi màn theo mã đồng bộ; tắt → thôi ghi', async ({ page, errors }) => {
   const sent: any[] = [];

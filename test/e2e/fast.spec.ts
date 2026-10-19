@@ -165,12 +165,12 @@ test('v165 đọc / nghe nguyên bài: đạt ≥ 80% là qua ngay (không cần
   const uid = 'a1-u2';
   await page.evaluate((u: string) => (window as any).eval('ndRead')(u, false), uid);
   const R = await page.evaluate(() => { const w = window as any, R = w.eval('ui').read, u = w.eval('UNITS').find((x: any) => x.id === R.uid);
-    return { q: u.reading.qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)), wid: R.vq[0] && R.vq[0].wid }; });
+    return { uid: R.uid, q: (R.rd || u.reading).qs.map((q: any, i: number) => R.order[i].indexOf(q.a)), g: R.gq.map((q: any) => q.order.indexOf(q.a)), v: R.vq.map((q: any) => q.order.indexOf(q.a)), wid: R.vq[0] && R.vq[0].wid }; });   // v164 kho bài: bài có thể thuộc unit khác
   for (const [i, k] of R.q.entries()) await page.locator(`[data-rpick="${i}:${k}"]`).click();
   for (const [j, k] of R.v.entries()) await page.locator(`[data-ndv="${j}:${j === 0 && R.v.length >= 4 ? (k + 1) % 3 : k}"]`).click();
   for (const [j, k] of R.g.entries()) await page.locator(`[data-ndg="${j}:${k}"]`).click();
   await page.locator('[data-act="rsubmit"]').click();
-  const r = await page.evaluate((u: string) => { const w = window as any; return { passed: w.eval('U')(u).passed, gap: w.eval('FST()').gap.map((x: any) => x.id) }; }, uid);
+  const r = await page.evaluate((u: string) => { const w = window as any; return { passed: w.eval('U')(u).passed, gap: w.eval('FST()').gap.map((x: any) => x.id) }; }, R.uid);
   if (R.v.length >= 4) { expect(r.gap).toContain(R.wid); }
   expect(r.passed).toBe(true);
   await expect(page.locator('#app .fb.good')).toContainText('nhờ đọc hiểu');
