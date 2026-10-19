@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 102;
+const STATE_V = 18, APP_VERSION = 103;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1194,7 +1194,8 @@ function itemCv(item){ if(!item||typeof ELCORE==='undefined'||!ELCORE.contentHas
   if(m&&WORD[m[1]]) raw=JSON.stringify(WORD[m[1]]);
   else if(g&&GPT[g[1]]){ const L={cho:'mc',typ:'ty',fix:'fx',ord:'or'}[g[2]], x=(GPT[g[1]][L]||[])[+g[4]]; if(x!==undefined&&!(g[2]==='ord'&&g[3]==='d')) raw=JSON.stringify(x); }
   return raw?(_cv[item]='h'+ELCORE.contentHash(raw)):null; }
-function eEv(e){ try{ if(typeof ELCORE!=='undefined'&&e.node&&!/undefined$/.test(e.node)) ELCORE.ev(st,{cv:itemCv(e.item)||'a'+APP_VERSION,...e},today()); }catch(x){ try{ console.warn('eEv',x); }catch(y){} } }
+function eEv(e){ try{ if(typeof ELCORE!=='undefined'&&e.node&&!/undefined$/.test(e.node)) ELCORE.ev(st,{cv:itemCv(e.item)||'a'+APP_VERSION,...e},today()); }catch(x){ try{ console.warn('eEv',x); }catch(y){} }
+  try{ if(typeof logEv==='function') logEv('ans',{node:e.node,lv:e.level,ok:e.ok?1:0,item:e.item,qt:e.qt,ctx:e.ctx,src:e.src,g:e.g,rt:e.rt,giv:e.given!=null?String(e.given).slice(0,120):(e.text!=null?String(e.text).slice(0,120):undefined),hint:e.hint?1:undefined,sk:(ui.sess&&ui.view==='session'?ui.sess.kind:ui.gs&&ui.view==='gsess'?'g'+ui.gs.kind:ui.view)}); }catch(x){} }   // v165 nhật ký học
 function markActive(){ const t=today(); if(!st.days.includes(t)){ st.days.push(t); try{ ui.streakUp=streak(); }catch(e){} } }
 function streak(){ const set=new Set([...st.days,...((st.freeze&&st.freeze.used)||[])]); let n=0,t=today(); if(!set.has(t)) t--; while(set.has(t)){n++;t--;} return n; }
 
@@ -1614,7 +1615,7 @@ const HOME_AIM = (()=>{ try{ return localStorage.getItem('el-home')!=='play'; }c
 const ui = { view:HOME_AIM?'goal':'play', er:HOME_AIM?'aim':undefined, unitId:null, sess:null, summary:null, learn:null, speak:null, filter:'learned', wb:{q:'',lv:'',st:'',ty:'',n:60}, openLv:{}, allUnits:{} };
 function go(view,extra={}){ if(view==='aim'){ view='goal'; extra={...extra,er:'aim'}; }   // v138 tab 🎯 Mục tiêu = route aim của engine
   if(!('allGames' in extra)){ ui.allGames=0; if(view==='play'&&EM&&EM.mapReset) try{ EM.mapReset(); }catch(e){} }   // v117: bấm tab Hôm nay = về màn một việc; v130: về bản đồ (đóng bảng, thôi danh sách)
-  if(view!=='game') stopTimer(); if(view!=='exam') exStop(); if(!['summary','gsum','quiz','session','gsess'].includes(view)) ui.streakUp=null; const nh=extra._nohist; delete extra._nohist; Object.assign(ui,{view},extra); sayStop(); recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
+  if(view!=='game') stopTimer(); if(view!=='exam') exStop(); if(!['summary','gsum','quiz','session','gsess'].includes(view)) ui.streakUp=null; const nh=extra._nohist; delete extra._nohist; try{ if(view!==ui.view) logEv('go',{v:view,from:ui.view}); }catch(e){} Object.assign(ui,{view},extra); sayStop(); recReset(); asrReset(); render(); if(!nh) pushHist(); window.scrollTo(0,0); }
 /* ---------- Điều hướng: nút Quay lại của điện thoại/trình duyệt, hộp thoại, lượt dở ----------
    Mỗi lần go() ghi một mục lịch sử (history.pushState) nên nút Back về đúng màn trước, không thoát app.
    Màn “tạm” (đang làm lượt, kết quả, học thẻ…) không dựng lại được khi quay lại thì về màn cha gần nhất. */
@@ -4330,6 +4331,37 @@ function syncPanel(){
     <div class="row"><button class="btn" data-act="syncnow" ${SYNC_ST.busy?'disabled':''}>Đồng bộ ngay</button><button class="btn" data-act="synclink">Sao chép link cho máy khác</button></div>
     <div class="row"><button class="btn ghost" data-act="syncoff">Tắt trên máy này</button><button class="btn ghost" data-act="syncwipe">Xoá tiến độ trên máy chủ</button></div></section>`;
 }
+// ---- v165 Nhật ký học để phân tích (người sáng lập 19/10/2026: "lưu dữ liệu tất cả thao tác hoặc chỉ số khi học của tôi khi test để sau này phân tích").
+// Chỉ khi người học tự bật "Ghi dữ liệu học" (cần mã đồng bộ; không tài khoản, không email). Ghi: mỗi câu trả lời (từ eEv: nút, mức, đúng / sai,
+// câu gõ, thời gian), đổi màn, sự kiện app (evc), chỉ số mỗi ngày (snap). Hàng chờ ở localStorage (mất mạng không mất), gửi theo lô qua el_log_post
+// (supabase/migrations/20261019090000_learn_log.sql): máy chủ chỉ nhận ghi, app không đọc lại được. Đọc để phân tích: docs/NHAT-KY-HOC.md.
+const LLOG_LS = KEY+'-logq', LLOG_DEV = KEY+'-dev', LLOG_CAP = 5000, LLOG_BATCH = 200, LLOG_WAIT = 20000;
+const logOn = () => { const s=syncGet(); return !!(s&&s.log); };
+function logDev(){ try{ let d=localStorage.getItem(LLOG_DEV)||''; if(!/^[a-z0-9]{6,16}$/.test(d)){ d=(Math.random().toString(36).slice(2)+'00000000').slice(0,10); localStorage.setItem(LLOG_DEV,d); } return d; }catch(e){ return 'nodevice0'; } }
+function logQ(){ try{ const q=JSON.parse(localStorage.getItem(LLOG_LS)||'[]'); return Array.isArray(q)?q:[]; }catch(e){ return []; } }
+function logQSet(q){ try{ q.length?localStorage.setItem(LLOG_LS,JSON.stringify(q.slice(-LLOG_CAP))):localStorage.removeItem(LLOG_LS); }catch(e){} }
+let _logT=null, _logBusy=false;
+function logEv(k,o){ try{ if(!logOn()) return; const q=logQ(), t=today(); if(st.logSnap!==t){ st.logSnap=t; q.push({k:'snap',t:Date.now(),dy:t,...logSnap()}); }
+  q.push({k,t:Date.now(),dy:t,...o}); logQSet(q); clearTimeout(_logT); _logT=setTimeout(()=>logFlush(),LLOG_WAIT); }catch(e){} }
+// Chỉ số trong ngày: hai thanh A1 / A2, đường + chặng + chỗ lủng của ⚡ Học nhanh, ôn đến hạn, unit / ngữ pháp đã qua, XP, chuỗi ngày.
+function logSnap(){ const o={}; try{ for(const L of ['A1','A2']){ const p=EM&&EM.parts?EM.parts('cefr-'+L.toLowerCase()):null; if(p&&p.total) o[L]={learn:p.learn,mem:p.mem,total:p.total}; } }catch(e){}
+  try{ const F=st.fast||{}; o.fast={path:F.path||null,ch:Object.keys(F.ch||{}).length,gap:(F.gap||[]).length}; }catch(e){}
+  try{ o.due=dueWords().length; o.gdue=dueG().length; o.units=UNITS.filter(u=>(st.units[u.id]||{}).passed).length; o.gram=GPOINTS.filter(p=>(st.gram[p.id]||{}).passed).length; o.xp=st.xp; o.streak=streak(); }catch(e){}
+  return o; }
+async function logFlush(leaving){ const s=syncGet(); if(!s||!s.log||_logBusy||IN_VIEWER) return; let q=logQ(); if(!q.length) return; _logBusy=true;
+  try{ while(q.length){ const b=q.slice(0,leaving?60:LLOG_BATCH), body={k:s.k,dev:logDev(),evs:b,v:APP_VERSION};
+      if(leaving){ fetch(SYNC.url+'el_log_post',{method:'POST',keepalive:true,headers:{apikey:SYNC.key,'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(()=>{}); logQSet(logQ().slice(b.length)); break; }
+      await syncRpc('el_log_post',body); q=logQ().slice(b.length); logQSet(q); } }catch(e){}
+  _logBusy=false; }
+if(typeof document!=='undefined') document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') logFlush(true); });   // đóng / chuyển app: gửi nốt
+async function logEnable(){ if(IN_VIEWER) return toast('Trình xem artifact chặn kết nối mạng. Mở bản web của app để ghi dữ liệu học.');
+  if(!syncGet()) await syncEnable(); const s=syncGet(); if(!s) return; s.log=true; syncSet(s); logEv('evc',{e:'log:on'}); await logFlush(); toast('Đã bật ghi dữ liệu học. Mỗi câu trả lời và chỉ số trong ngày được gửi lên máy chủ theo mã đồng bộ.'); render(); }
+function logDisable(){ const s=syncGet(); if(s){ s.log=false; syncSet(s); } logQSet([]); toast('Đã tắt ghi dữ liệu học. Dữ liệu đã gửi vẫn ở máy chủ cho tới khi bạn xoá.'); render(); }
+function logPanel(){ const s=syncGet(), on=!!(s&&s.log), n=logQ().length;
+  return `<section class="panel stack" aria-label="Ghi dữ liệu học"><h3>Ghi dữ liệu học để phân tích</h3>
+    <p class="note">Khi bật: mỗi câu trả lời (đúng / sai, câu bạn gõ, thời gian), màn đã mở và chỉ số trong ngày (hai thanh Học / Nhớ, chặng ⚡, chỗ lủng) được gửi lên máy chủ theo mã đồng bộ, để sau này phân tích cách bạn học. Không có tên, email hay tài khoản. App chỉ gửi, không đọc lại được.</p>
+    ${on?`<p class="note">Đang bật · ${n?`${n} dòng chờ gửi`:'đã gửi hết'}. Xoá: nút "Xoá tiến độ trên máy chủ" ở phần đồng bộ xoá luôn nhật ký này.</p><div class="row"><button class="btn" data-act="lognow">Gửi ngay</button><button class="btn ghost" data-act="logoff">Tắt ghi dữ liệu</button></div>`
+      :`<div class="row"><button class="btn primary" data-act="logon">Bật ghi dữ liệu học</button></div>${s?'':'<p class="hint">Bật sẽ tạo mã đồng bộ nếu chưa có.</p>'}`}</section>`; }
 /*</SYNC>*/
 // Lời nhắc qua Google Calendar: mở trang tạo sự kiện lặp lại hằng ngày (không cần tải file).
 function gcalLink(){
@@ -4399,6 +4431,7 @@ function viewSettings0(){
     <form class="stack" data-form="restorecode" style="gap:8px"><textarea class="field" rows="3" style="font:400 12px/1.4 var(--mono);width:100%" placeholder="Dán mã sao lưu (VL1:… hoặc VL2:…)" aria-label="Dán mã sao lưu"></textarea>
     <div class="row"><button class="btn">Khôi phục bằng mã</button></div></form></section>
   ${syncPanel()}
+  ${logPanel()}
   ${homePanel()}
   <section class="panel spread"><p class="note" style="flex:1 1 220px">Bản phát hành <b class="num">${APP_VERSION}</b> · ${CHANGELOG[0].d.split('-').reverse().join('/')} · dữ liệu tiến độ v${STATE_V}</p><button class="btn small" data-act="whatsnew">🆕 Có gì mới</button></section>
   ${researchPanel()}
@@ -4775,7 +4808,7 @@ function viewOral(){ const O=ui.oral; if(!O) return viewReview();
     :`<div class="row"><button class="btn primary" data-act="oralshow">Xem đáp án</button></div>`}</section>`; }
 // Sự kiện nghiên cứu (chỉ đếm, không lưu nội dung): lượt bắt đầu/xong, chỗ thoát giữa lượt, tỉ lệ nhớ theo khoảng ôn, lý do nghỉ, góp ý.
 const EV = () => st.ev||={};
-function evc(k,n=1){ const c=EV().c||={}; c[k]=(c[k]||0)+n; }
+function evc(k,n=1){ const c=EV().c||={}; c[k]=(c[k]||0)+n; try{ logEv('evc',{e:k}); }catch(e){} }   // v165 nhật ký học
 // Phân tích câu hỏi: tỉ lệ đúng lần đầu theo dạng bài × cấp (độ khó thật của từng dạng; research-report.js đánh dấu quá dễ/quá khó).
 // Độ tự tin: tỉ lệ đúng khi chắc và khi tự nhận là đoán (người học biết mình nhớ hay đoán).
 function evCal(guess,correct){ const c=EV().cal||={sure:[0,0],guess:[0,0]}, x=c[guess?'guess':'sure']; x[0]++; if(correct) x[1]++; }
@@ -5139,6 +5172,9 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:103,d:'2026-10-19',t:'Ghi dữ liệu học để phân tích (tự bật)',items:[
+    'Tôi → Cài đặt → "Ghi dữ liệu học": mỗi câu trả lời, màn đã mở và chỉ số trong ngày được gửi lên máy chủ theo mã đồng bộ, để sau này phân tích cách học.',
+    'Không có tên, email hay tài khoản. App chỉ gửi, không đọc lại được. Mặc định tắt; tắt lúc nào cũng được.']},
   {v:102,d:'2026-10-19',t:'⚡ Học nhanh: cho người học lâu năm nhưng mất gốc',items:[
     'Tab 🔁 Ôn luyện đổi thành ⚡ Học nhanh. Học bài và ôn là một vòng (đường thường); Học nhanh là đường riêng cho người không muốn học lại từ đầu.',
     'Vượt chặng: mỗi chặng 10 unit (hoặc 7 bài ngữ pháp), khoảng 8 phút, phần lớn câu tự gõ. Đúng hết thì qua, không học lại. Chặng đầu tiên cũng là 🧭 Đo nền.',
@@ -5843,6 +5879,9 @@ document.addEventListener('click',e=>{
     case 'recstart': return recStart();
     case 'asr': return asrStart(d.k,d.t,d.o);
     case 'syncon': return syncEnable();
+    case 'logon': return logEnable();   // v165 nhật ký học
+    case 'logoff': return logDisable();
+    case 'lognow': return logFlush().then(()=>{ toast(logQ().length?'Chưa gửi được, app sẽ thử lại sau.':'Đã gửi hết dữ liệu học.'); render(); });
     case 'syncnow': SYNC_ST.err=''; { const x=syncGet(); if(x){ x.dirty=true; syncSet(x); } } render(); return syncNow();
     case 'synclink': { const x=syncGet(); if(!x) return; const l=syncLink(x.k); try{ navigator.clipboard.writeText(l).then(()=>toast('Đã sao chép link. Mở link này trên máy kia (đừng chia sẻ công khai).'),()=>modal({ic:'🔗',title:'Link cho máy khác',sub:l})); }catch(e){ modal({ic:'🔗',title:'Link cho máy khác',sub:l}); } return; }
     case 'syncoff': if(t.dataset.confirm!=='1'){ t.dataset.confirm='1'; t.textContent='Bấm lần nữa để tắt'; return; } return syncOff();
