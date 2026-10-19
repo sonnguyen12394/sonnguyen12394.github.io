@@ -15,13 +15,13 @@ Project Supabase `english-ladder`:
 - Kho ảnh riêng tư `el-gopy` (Storage): app chỉ tải lên, không đọc, không liệt kê. Xem ảnh: Supabase → Storage → `el-gopy` → thư mục theo tháng.
 - App chỉ ghi (`el_gopy_post`, kiểm loại, độ dài, ≤ 3 ảnh, ≤ 30 góp ý / giờ / máy). Migration: `supabase/migrations/20261019100000_gopy.sql`.
 
-## 🔐 Quản lý trong app (v168)
-- Tôi → Góp ý → **🔐 Quản lý góp ý**. Lần đầu nhập **khoá quản trị** `ELA-…` (người làm app giữ; máy chủ chỉ lưu băm trong bảng `el_admin`). Khoá nhớ trên máy đó tới khi bấm "Quên khoá trên máy này".
+## 🗂 Quản lý trong app (v168, v169 bỏ khoá)
+- Tôi → Góp ý → **🗂 Quản lý góp ý**. Từ v169 (người sáng lập 19/10/2026) **không cần khoá**: ai mở web cũng xem / sửa / xoá được. Người sáng lập đã được báo rủi ro (lộ ảnh / nội dung, mất dữ liệu khi có người khác dùng app); muốn bật lại khoá thì khôi phục kiểm `el_admin_ok` trong ba hàm SQL và hàm `el-gopy-img`.
 - Lọc theo **loại** (🐞 / 🤔 / 💡 / 📝) và **trạng thái** (🆕 Mới · 🔧 Đang xử lý · ✅ Xong · 🚫 Bỏ · 🗑 Đã xoá); mỗi nút có số đếm.
 - Mỗi góp ý: nội dung, ngày, bản app, màn / câu đang làm, ảnh (link có hạn 1 giờ do hàm `el-gopy-img` cấp), ghi chú xử lý.
-- Nút nhanh: Đang xử lý / Xong / Bỏ / Xoá. **Xoá** = chuyển vào 🗑 Đã xoá (khôi phục được bằng ↩). ✏️ Sửa chi tiết: trạng thái, loại, nội dung, ghi chú. ➕ Thêm góp ý tay.
-- Máy chủ: `supabase/migrations/20261019110000_gopy_admin.sql` (`el_admin_ok`, `el_gopy_list`, `el_gopy_set`, `el_gopy_add`), hàm `supabase/functions/el-gopy-img`.
-- Đổi khoá (khi lộ): chạy `insert into el_admin (h) values (encode(extensions.digest('<khoá mới>', 'sha256'), 'hex'));` rồi xoá dòng băm cũ trong bảng `el_admin`.
+- Nút nhanh: Đang xử lý / Xong / Bỏ / Xoá. **Xoá** = chuyển vào 🗑 Đã xoá (khôi phục bằng ↩). Trong 🗑 Đã xoá có **💥 Xoá hẳn** (bấm 2 lần): xoá góp ý và ảnh khỏi máy chủ, không khôi phục được.
+- ✏️ Sửa chi tiết: trạng thái, loại, nội dung, ghi chú. ➕ Thêm góp ý tay.
+- Máy chủ: `supabase/migrations/20261019110000_gopy_admin.sql`, `20261019120000_gopy_nokey.sql`; hàm `supabase/functions/el-gopy-img` (link ảnh + op `purge`).
 
 ## Xử lý (gợi ý mỗi tuần một lần)
 1. Lấy góp ý mới:
