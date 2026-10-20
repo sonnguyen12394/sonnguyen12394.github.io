@@ -1188,9 +1188,9 @@ function reviewItems(ws){ return spread(ws.flatMap(w=>{ const d=weakestDims(w.id
 // Giai đoạn ôn (≥ 80%): lịch thường (mức nhớ 0,9) và từ nào khả năng nhớ đã dưới 0,9 cũng tính là đến hạn (đẩy 🔁 Nhớ lên 50%).
 // Mô phỏng npm run gatesim (cách F): thời gian ngẫu nhiên thì ngang cách B (v172) với người nhớ TB, nhanh hơn 25–33% với người hay quên.
 const LEARN_K = 3.3;   // interval(s, 0,75) / interval(s, 0,9) của FSRS
-const LPH = {k:'', v:false};
-function learnPh2(){ try{ const L=ndLv(), k=today()+'|'+L+'|'+UNITS.filter(u=>U(u.id).passed).length+'|'+GPOINTS.filter(p=>G(p.id).passed).length;
-    if(LPH.k!==k){ const p=dayParts(L); if(!p||!p.total) return false; LPH.k=k; LPH.v=p.learn/p.total>=.8; } return LPH.v; }catch(e){ return false; } }
+const LPH = {k:'', v:false, nil:false, at:0};
+function learnPh2(){ try{ const L=ndLv(), k=today()+'|'+L+'|'+(EM&&EM.parts?1:0)+'|'+UNITS.filter(u=>U(u.id).passed).length+'|'+GPOINTS.filter(p=>G(p.id).passed).length;
+    if(LPH.k!==k||LPH.nil&&Date.now()-LPH.at>5000){ const p=dayParts(L); Object.assign(LPH,{k,at:Date.now(),nil:!p||!p.total,v:!!p&&p.total>0&&p.learn/p.total>=.8}); } return LPH.v; }catch(e){ return false; } }   // lưu cả khi chưa có số (EM.parts tốn: không tính lại mỗi lần vẽ; chưa có số thì thử lại sau 5 giây)
 function dueWords(){ const t=today(), ph2=learnPh2(), F=ph2&&typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
   return ALL_WORDS.filter(w=>{const s=W(w.id); if(!s.learned||s.due==null) return false; return s.due<=t||!!F&&s.fs!=null&&s.fl!=null&&F.retrievability(Math.max(0,t-s.fl),s.fs)<0.9;}); }
 // Bằng chứng mastery cho engine (docs/SPEC.md §2): ghi ngay vào st.e qua lõi dùng chung, kể cả khi mô-đun engine chưa tải.
