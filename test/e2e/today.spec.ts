@@ -52,7 +52,7 @@ for (const scheme of ['light', 'dark'] as const) {
   });
 }
 
-test('v172 giai đoạn học (📘 Học < 80%): bài mới trước, ôn vừa đủ 12 từ yếu nhất, một lượt / ngày; nợ ôn nhiều vẫn mở bài mới', async ({ page, errors }) => {
+test('v172 → v173 giai đoạn học (📘 Học < 80%): bài mới trước rồi ôn từ đến hạn (tới 5 lượt / ngày); nợ ôn nhiều vẫn mở bài mới', async ({ page, errors }) => {
   await open(page, 'nd');
   const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), ws = w.eval('ALL_WORDS').filter((x: any) => w.eval('UNIT_OF')[x.id].level === 'A2').slice(0, 45);
     for (const x of ws) { const s = W(x.id); s.learned = true; s.due = t - 1; } w.eval('save()');
@@ -60,11 +60,26 @@ test('v172 giai đoạn học (📘 Học < 80%): bài mới trước, ôn vừa
   expect(r.lq).toBeLessThan(80);
   expect(r.steps[0]!.at).toBe(`data-unit="${r.cur}"`);   // bài mới đứng đầu dù còn 45 từ đến hạn
   const due = r.steps.find((s: any) => s.k === 'due')!;
-  expect(due.side).toBe('📘 Học bài'); expect(due.t).toContain('Ôn 12 từ yếu nhất');
+  expect(due.side).toBe('📘 Học bài'); expect(due.t).toContain('Ôn 12 từ đến hạn (còn 45 từ)');
   expect(r.steps.findIndex((s: any) => s.k === 'due')).toBeGreaterThan(0);
   await page.evaluate(() => (window as any).eval('render()'));
   await expect(page.locator('#app .dayplan [data-day]')).toHaveAttribute('data-day', 'gap');
-  expect(await page.evaluate(() => { const w = window as any; w.eval('dayMark')('due'); return w.eval('st').nd.day.done; })).toEqual(['due']);   // một lượt là đủ
+  expect(await page.evaluate(() => { const w = window as any; w.eval('dayMark')('due'); return w.eval('st').nd.day.done; })).toEqual([]);   // còn lượt ôn
+  expect(errors).toEqual([]);
+});
+
+test('v173 lịch ôn theo giai đoạn: giai đoạn học giãn × 3,3 (mức nhớ 0,75); giai đoạn ôn lịch thường và từ đã phai dưới 0,9 cũng đến hạn', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), step = w.eval('srsStep'), LPH = w.eval('LPH');
+    const [a, b, c] = w.eval('ALL_WORDS').slice(0, 3).map((x: any) => x.id);
+    const s1 = W(a); s1.learned = true; s1.due = null; step(s1, true, true);
+    w.dayParts = () => ({ learn: 90, mem: 10, total: 100, miss: [] }); LPH.k = '';   // giả lập 📘 Học 90%
+    const s2 = W(b); s2.learned = true; s2.due = null; step(s2, true, true);
+    const s3 = W(c); Object.assign(s3, { learned: true, due: t + 20, fs: 3, fl: t - 10 });   // lịch còn xa nhưng đã phai
+    return { learnIvl: s1.ivl, revIvl: s2.ivl, faded: w.eval('dueWords()').some((x: any) => x.id === c), ph2: w.eval('learnPh2()') }; });
+  expect(r.revIvl).toBe(3);
+  expect(r.learnIvl).toBe(10);
+  expect(r).toMatchObject({ faded: true, ph2: true });
   expect(errors).toEqual([]);
 });
 

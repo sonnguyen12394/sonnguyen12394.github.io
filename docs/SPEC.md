@@ -1,5 +1,12 @@
 # English Ladder — Master Spec v2
 
+> **20/10/2026 — Thời gian học ngẫu nhiên; lịch ôn theo giai đoạn (v173, bản 111; thay "ôn 12 từ / ngày" của v172).** Người sáng lập: "người học bỏ ra bao lâu không quan trọng, tính theo kiểu ngẫu nhiên không có mốc cố định; có mốc cố định 2 trường hợp xem". `npm run gatesim`: thời gian ngẫu nhiên (20% ngày nghỉ, còn lại 5–60 phút, TB ≈ 25 phút) + cố định 30 / 45 phút; 5 cách × 4 kiểu người học.
+> - Kết quả (ngày tới Thi chuyển cấp, ngẫu nhiên): A2 người nhớ TB: B (v172) 318, **F 313**, D 292, A 728. A2 người hay quên: B 709, **F 534**, C 521. A1 nhớ TB: B 126, F 137; hay quên: B 189, F 181. Cố định 30 phút, người nhớ TB: F chậm hơn B 17%; người hay quên F nhanh hơn B 25%.
+> - Tách người hay quên bằng tỉ lệ quên khi ôn không đáng tin (mô phỏng: 23% so với 29%). Chọn **F làm mặc định chung** (an toàn nhất khi thời gian không đều):
+>   - Giai đoạn học (📘 Học < 80%, `learnPh2()` sai): bài mới đứng đầu ▶ Hôm nay; sau đó ôn hết từ đến hạn (tới 5 lượt × 12 từ) nhưng lịch ôn giãn × `LEARN_K` = 3,3 (mức nhớ 0,75 của FSRS), nên ôn ít.
+>   - Giai đoạn ôn (📘 Học ≥ 80%): lịch thường; `dueWords()` tính cả từ có khả năng nhớ dưới 0,9 (lịch giãn để lại); ôn đứng đầu; nợ ôn ≥ 40 thì chưa mở unit mới.
+> - Hệ quả người học thấy: trong giai đoạn học, thanh 🔁 Nhớ lên chậm (đúng ý đồ); nó lên nhanh ở giai đoạn ôn. Chưa người thật kiểm.
+
 > **20/10/2026 — Các trường hợp học / ôn và phương án (phân tích, giữ v172).** Người sáng lập: "ôn quá nhiều thì tốn thời gian không học được; học lên cao quên chỗ nào thì ôn nhanh lại chỗ lủng; đưa ra các trường hợp rồi tính phương án để rút ngắn thời gian tới Thi chuyển cấp". `npm run gatesim` (FSRS thật, luật Nhớ thật, số câu mỗi unit đếm từ app.js ≈ 53 câu / 10 từ; learner giả lập, chưa người thật kiểm) so 5 cách × 4 kiểu người học × 15 / 30 / 45 phút / ngày: A ôn trước (v171), B học trước + ôn 12 từ / ngày (v172), C ôn thưa (mức nhớ 0,75 khi học, 0,9 khi ôn dồn), D không ôn khi học, E chỉ ôn đủ unit để qua Nhớ 50%.
 > - **B (đang dùng) nhanh nhất hoặc ngang D ở mọi trường hợp**; A chậm gấp 1,9–2,5 lần; E chậm hơn B và nhớ kém (nhớ TB lúc mở 0,78–0,90) nên loại. C chỉ hơn B ở người hay quên với 30 phút / ngày (A2: 489 so với 557 ngày).
 > - Người mới, nhớ TB, nghỉ 1 ngày / tuần, cách B: A1 257 / 118 / 80 ngày (15 / 30 / 45 phút / ngày); A2 699 / 261 / 172 ngày. Nhớ TB mọi từ của cấp lúc mở ≈ 0,91–0,93 (đủ sức làm bài).

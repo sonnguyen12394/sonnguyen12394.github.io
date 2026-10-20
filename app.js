@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 110;
+const STATE_V = 18, APP_VERSION = 111;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1183,7 +1183,16 @@ const currentUnit = () => (goalUnits()||UNITS).find(u=>unlocked(u)&&!U(u.id).pas
 // câu thêm không đổi lịch ôn (noSrs), để quên chính tả không xoá mất bằng chứng đã nhớ nghĩa.
 const LONG_IVL = 21;
 function reviewItems(ws){ return spread(ws.flatMap(w=>{ const d=weakestDims(w.id), a=build(w,d[0]); return (W(w.id).ivl||1)>=LONG_IVL ? [a,Object.assign(build(w,d[1],{test:true}),{noSrs:true})] : [a]; })); }
-function dueWords(){ const t=today(); return ALL_WORDS.filter(w=>{const s=W(w.id);return s.learned&&s.due!=null&&s.due<=t;}); }
+// v173 (người sáng lập 20/10/2026: "ôn quá nhiều thì không học được; quên chỗ nào ôn nhanh lại chỗ đó"; thời gian học mỗi ngày ngẫu nhiên):
+// hai giai đoạn theo thanh 📘 Học của mục tiêu. Giai đoạn học (< 80%): lịch ôn giãn theo mức nhớ 0,75 (khoảng cách × LEARN_K) → ôn ít, đủ giữ nền.
+// Giai đoạn ôn (≥ 80%): lịch thường (mức nhớ 0,9) và từ nào khả năng nhớ đã dưới 0,9 cũng tính là đến hạn (đẩy 🔁 Nhớ lên 50%).
+// Mô phỏng npm run gatesim (cách F): thời gian ngẫu nhiên thì ngang cách B (v172) với người nhớ TB, nhanh hơn 25–33% với người hay quên.
+const LEARN_K = 3.3;   // interval(s, 0,75) / interval(s, 0,9) của FSRS
+const LPH = {k:'', v:false};
+function learnPh2(){ try{ const L=ndLv(), k=today()+'|'+L+'|'+UNITS.filter(u=>U(u.id).passed).length+'|'+GPOINTS.filter(p=>G(p.id).passed).length;
+    if(LPH.k!==k){ const p=dayParts(L); if(!p||!p.total) return false; LPH.k=k; LPH.v=p.learn/p.total>=.8; } return LPH.v; }catch(e){ return false; } }
+function dueWords(){ const t=today(), ph2=learnPh2(), F=ph2&&typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
+  return ALL_WORDS.filter(w=>{const s=W(w.id); if(!s.learned||s.due==null) return false; return s.due<=t||!!F&&s.fs!=null&&s.fl!=null&&F.retrievability(Math.max(0,t-s.fl),s.fs)<0.9;}); }
 // Bằng chứng mastery cho engine (docs/SPEC.md §2): ghi ngay vào st.e qua lõi dùng chung, kể cả khi mô-đun engine chưa tải.
 // v53: phiên bản nội dung mặc định của câu học nền = số bản phát hành (nội dung nằm trong app.js / data/lv-*); câu thi có băm riêng.
 // v67 (C56): phiên bản nội dung TỪNG câu = băm nội dung câu (khớp content/engine/content-map.json); không tìm được câu thì dùng số bản app.
@@ -1230,7 +1239,8 @@ function fsrsKeep(w,c){ w.fs=+c.s.toFixed(3); w.fd=+c.d.toFixed(3); w.fl=c.last;
 function srsStep(w,correct,typed){
   if(!w.learned) return;
   const t=today(), F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
-  if(w.due==null){ if(correct){ w.stage=0; if(F){ const c=F.newCard(typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.max(1,c.due-t); } else w.ivl=1; w.due=t+w.ivl; } return; }   // lịch ôn bắt đầu từ lần đầu tự nhớ ra đúng, không phải lúc xem thẻ
+  const pk=learnPh2()?1:LEARN_K;   // v173 giai đoạn học: lịch giãn
+  if(w.due==null){ if(correct){ w.stage=0; if(F){ const c=F.newCard(typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.max(1,Math.round((c.due-t)*pk)); } else w.ivl=1; w.due=t+w.ivl; } return; }   // lịch ôn bắt đầu từ lần đầu tự nhớ ra đúng, không phải lúc xem thẻ
   if(w.due<=t&&w.fl!=null&&EM&&EM.hlog){ const gap=t-w.fl; try{ if(gap>=30) EM.hlog('r30',!!correct); else if(gap>=7) EM.hlog('r7',!!correct); }catch(e){} }   // v122 Bảng đo H (H6 nhớ trễ)
   if(!correct){                                         // quên → độ bền giảm theo FSRS, ôn lại ngày mai
     if(w.due<=t){ w.lp=(w.lp||0)+1; w.ld=t; }          // số lần quên khi đến hạn (forgetting patterns, docs/DANH-GIA-DU-LIEU-HOC.md); ld = ngày quên gần nhất (Goal Achieved CEFR: không quên trong 14 ngày)
@@ -1239,7 +1249,7 @@ function srsStep(w,correct,typed){
   } else if(w.due<=t){                                  // nhớ khi đến hạn → giãn ra theo độ bền mới
     // Tự gõ đúng là bằng chứng nhớ chắc (điểm 3 = "được"); chọn đúng trắc nghiệm có thể do đoán (điểm 2 = "khó").
     w.stage++;
-    if(F){ const c=F.review(fsrsCard(w,t),typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.min(MAX_IVL,Math.max(1,Math.round(F.interval(c.s)*srsK()))); }
+    if(F){ const c=F.review(fsrsCard(w,t),typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.min(MAX_IVL,Math.max(1,Math.round(F.interval(c.s)*srsK()*pk))); }
     else w.ivl=Math.min(MAX_IVL,Math.max(1,Math.round((w.ivl||1)*2.5*srsK())));
     w.due=t+w.ivl;
   }
@@ -7225,14 +7235,13 @@ const ND_NEED = 0.5, DAY_DUE = 12;   // v165 bỏ ND_MID
 // Giai đoạn ôn (📘 Học ≥ 80%): ôn đứng đầu, lặp tới hết từ đến hạn (tối đa DAY_ROUNDS lượt); nợ ôn ≥ BACKLOG thì chưa mở unit mới.
 // Mô phỏng (npm run gatesim, cùng thời gian học mỗi ngày): tới Thi chuyển cấp nhanh hơn ôn-trước khoảng 2 lần, đổi lại tỉ lệ quên khi ôn cao hơn.
 const DAY_ROUNDS = 5;
-let DAY_PH2 = false;   // giai đoạn ôn (dayPlan ghi lại để dayMark biết số lượt ôn / ngày)
 const zeroStart = () => { const d=st.e&&st.e.diag; return !!d&&!d.n&&!d.u&&!d.g; };   // chọn "Tôi chưa biết gì tiếng Anh"
 // Có nền? 3 lượt vượt nhanh gần nhất: ≥ 2 lượt đạt ≥ 50% → có ('yes'); ≥ 2 lượt dưới 50% → chưa ('no'); chưa đủ → null (thử thêm).
 function ndBase(){ const to=(st.nd||{}).to||[]; if(!to.length) return zeroStart()?'no':null;
   const ok=to.filter(x=>x.s>=ND_NEED).length, bad=to.length-ok; return ok>=2?'yes':bad>=2?'no':null; }
 function dayParts(L){ try{ return EM&&EM.parts?EM.parts('cefr-'+L.toLowerCase()):null; }catch(e){ return null; } }
 function dayDone(){ const n=st.nd||(st.nd={d:{}}), t=today(); if(!n.day||n.day.d!==t) n.day={d:t,done:[]}; return n.day.done; }
-function dayMark(k){ const d=dayDone(); if(k==='due'){ const n=st.nd.day; n.rv=(n.rv||0)+1; if(n.rv<(DAY_PH2?DAY_ROUNDS:1)){ save(); return; } } if(!d.includes(k)) d.push(k); save(); }   // v171 bước ôn: tới DAY_ROUNDS lượt / ngày mới tính là xong
+function dayMark(k){ const d=dayDone(); if(k==='due'){ const n=st.nd.day; n.rv=(n.rv||0)+1; if(n.rv<DAY_ROUNDS){ save(); return; } } if(!d.includes(k)) d.push(k); save(); }   // v171 bước ôn: tới DAY_ROUNDS lượt / ngày mới tính là xong
 const LIB = '📘 Học bài', NDT = '⚡ Học nhanh';
 // Bước của buổi: k (ô), side, t (việc), why (lý do), at (thuộc tính nút). Tính lại mỗi lần vẽ; chỉ lưu ô đã bấm trong ngày.
 // v163 (người sáng lập 18/10/2026: "não phải tự đánh giá"; liệt kê trường hợp cho bớt phức tạp): MỘT chỗ đọc tình trạng (actsOf),
@@ -7255,10 +7264,10 @@ function actsOf(L){ L=L||ndLv(); const t=today(), p=dayParts(L), us=UNITS.filter
   return {L,t,p,lq,mq,gl,gm,memFirst:gm>=gl,why,dw:dueWords().length,dg:dueG().length,need,pk,fade,newRd,base:ndBase(),cur,od,ph,fn,rp,wr,sk:ndStk(L),
     path:FST().path||'normal',gd:gapDue().length,ch:fastNext(L)}; }   // v165 đường đang đi (⚡ / 📘), chỗ lủng đến hạn vá, chặng kế
 function dayPlan(){ const A=actsOf(), out=[], {L,why,base,cur,od}=A;
-  const ph2=DAY_PH2=A.lq>=80;   // v172 giai đoạn ôn
+  const ph2=A.lq>=80;   // v172 giai đoạn ôn
   const brake=ph2&&A.dw>=BACKLOG&&cur&&!U(cur.id).learned;   // v171 nợ ôn nhiều: ôn trước, chưa mở unit mới (giữ thanh 🔁 Nhớ)
-  const due=A.dw||A.dg?{k:'due',side:LIB,t:A.dw?(ph2?`Ôn ${Math.min(A.dw,DAY_DUE)} từ đến hạn${A.dw>DAY_DUE?` (còn ${A.dw} từ)`:''}`:`Ôn ${Math.min(A.dw,DAY_DUE)} từ yếu nhất`):`Ôn ${A.dg} bài ngữ pháp đến hạn`,
-    why:!ph2?'ôn vừa đủ để giữ nền; học hết bài trước, 📘 Học ≥ 80% thì mới ôn mạnh':brake?`còn nhiều từ đến hạn: ôn trước, chưa mở bài mới để thanh 🔁 Nhớ không tụt`:'giai đoạn ôn: ôn tới hết từ đến hạn để 🔁 Nhớ lên 50%',at:A.dw?'data-act="dayreview"':'data-act="greview"'}:null;
+  const due=A.dw||A.dg?{k:'due',side:LIB,t:A.dw?`Ôn ${Math.min(A.dw,DAY_DUE)} từ đến hạn${A.dw>DAY_DUE?` (còn ${A.dw} từ)`:''}`:`Ôn ${A.dg} bài ngữ pháp đến hạn`,
+    why:!ph2?'giai đoạn học: lịch ôn giãn, chỉ ôn từ sắp quên để giữ nền; 📘 Học ≥ 80% thì mới ôn mạnh':brake?`còn nhiều từ đến hạn: ôn trước, chưa mở bài mới để thanh 🔁 Nhớ không tụt`:'giai đoạn ôn: ôn tới hết từ đến hạn để 🔁 Nhớ lên 50%',at:A.dw?'data-act="dayreview"':'data-act="greview"'}:null;
   if(due&&ph2) out.push(due);
   if(A.need) out.push({k:'need',side:LIB,t:`Học ${uname(A.need)} · ${esc(A.need.title)}`,why:'Học nhanh đúng dưới 50%: cần học kiến thức này trước',at:`data-unit="${A.need.id}"`});
   if(A.gd&&A.path==='fast') out.push({k:'fix',side:NDT,t:`🩹 Vá ${Math.min(A.gd,FAST_FIX_N)} chỗ lủng`,why:'chỉ học lại đúng chỗ làm sai, không học lại cả bài',at:'data-act="fixgo"'});   // v165
@@ -7293,7 +7302,7 @@ function dayPathHtml(){ const p=FST().path==='fast'?'fast':'normal';   // v171 c
 function dayHtml(where){ const P=dayPlan(), done=dayDone(), left=P.steps.filter(x=>!done.includes(x.k)), nx=left[0];
   const li=x=>`<li class="spread" style="gap:8px;align-items:flex-start"><span>${done.includes(x.k)?'✓':x===nx?'▶':'•'} <b>${x.t}</b> <span class="pill">${x.side}</span><br><span class="hint">${x.why}</span></span></li>`;
   return `<section class="panel stack dayplan" aria-label="Hôm nay"><h2>▶ Hôm nay · mục tiêu ${P.L}</h2>
-    <p class="hint">Làm lần lượt từ trên xuống. Trước hết học cho hết bài (📘 Học ≥ 80%), mỗi ngày ôn vừa đủ; sau đó đẩy mạnh ôn để 🔁 Nhớ lên 50% (nhớ lại được sau ≥ 3 ngày và chưa quên).</p>
+    <p class="hint">Làm lần lượt từ trên xuống. Trước hết học cho hết bài (📘 Học ≥ 80%): bài mới trước, rồi ôn những từ sắp quên (lịch giãn, ôn ít). Sau đó đẩy mạnh ôn để 🔁 Nhớ lên 50% (nhớ lại được sau ≥ 3 ngày và chưa quên).</p>
     ${dayPathHtml()}
     <ol class="stack" style="gap:8px;list-style:none;padding:0;margin:0">${P.steps.map(li).join('')}</ol>
     ${nx?`<div class="row"><button class="btn primary big" ${nx.at} data-day="${nx.k}">▶ ${where==='lib'||where==='nd'?'Làm bước kế':'Hôm nay'}</button></div>`

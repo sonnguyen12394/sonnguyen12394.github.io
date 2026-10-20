@@ -7,7 +7,7 @@
 // Learner giả lập, không thay người thật. Dùng: npm run gatesim
 import { newCard, review, retrievability, interval } from '../../src/exam/fsrs.ts';
 
-export type Strat = 'A ôn trước' | 'B học trước' | 'C ôn thưa' | 'D không ôn' | 'E ôn thưa + chọn unit';
+export type Strat = 'A ôn trước' | 'B học trước' | 'C ôn thưa' | 'D không ôn' | 'E ôn thưa + chọn unit' | 'F học trước + ôn thưa';
 export type Who = { name: string; ms: number; known: number; acc: number; off: number };
 export const LV = { A1: { NU: 87, NG: 28, NP: 15, TOT: 130 }, A2: { NU: 174, NG: 58, NP: 33, TOT: 265 } };
 type Lv = typeof LV.A1;
@@ -16,6 +16,10 @@ type Lv = typeof LV.A1;
 let PER_WORD = 5.3;
 const unitCost = (L: Lv, known: number) => 10 * (PER_WORD - 2.3 * known) + 30 * L.NG / L.NU + 20 * L.NP / L.NU;
 
+// Thời gian ngẫu nhiên (người sáng lập 20/10/2026: "không có mốc cố định"): mỗi ngày 20% nghỉ, còn lại 5–60 phút đều nhau (TB ≈ 26 phút).
+// Cùng dãy ngày cho mọi cách (băm theo ngày) để so công bằng. B < 0 = chế độ ngẫu nhiên.
+export const dayMins = (t: number) => { let h = (t + 1) * 2654435761 % 4294967296; h = (h ^ (h >>> 13)) * 1274126177 % 4294967296; const x = (h >>> 0) / 4294967296;
+  return x < 0.2 ? 0 : 5 + (x - 0.2) / 0.8 * 55; };
 export function run(L: Lv, B: number, s: Strat, who: Who, rLearn = 0.75) {
   let rnd = 11; const r = () => ((rnd = (rnd * 1103515245 + 12345) % 2147483648) / 2147483648);
   type Wd = { u: number; s: number; d: number; last: number; due: number; first: number; good: number };
@@ -28,9 +32,10 @@ export function run(L: Lv, B: number, s: Strat, who: Who, rLearn = 0.75) {
   const memOf = (t: number) => { let m = 0; for (let u = 0; u < lu; u++) { const ws = words.slice(u * 10, u * 10 + 10);
     if (ws.filter(w => w.good - w.first >= 3).length >= 7 && ws.reduce((a, w) => a + R(w, t), 0) / 10 >= 0.9) m++; } return m; };
   for (let t = 0; t < 900; t++) {
-    if (t % 7 >= 7 - who.off) continue;
-    let budget = B; const ph2 = learnOf(lu) >= 0.8 || lu >= L.NU;
-    const rr = !ph2 && (s === 'C ôn thưa' || s === 'E ôn thưa + chọn unit') ? rLearn : 0.9;
+    if (B >= 0 && t % 7 >= 7 - who.off) continue;   // ngẫu nhiên: ngày nghỉ đã nằm trong dayMins
+    let budget = B < 0 ? Math.round(dayMins(t) * 2) : B;
+    if (!budget) continue; const ph2 = learnOf(lu) >= 0.8 || lu >= L.NU;
+    const rr = !ph2 && (s === 'C ôn thưa' || s === 'E ôn thưa + chọn unit' || s === 'F học trước + ôn thưa') ? rLearn : 0.9;
     // giai đoạn ôn: đến hạn = tới lịch HOẶC nhớ đã dưới 0,9 (lịch cũ theo mức nhớ thấp hơn)
     const reviewDue = (cap: number, pick?: (w: Wd) => boolean) => { const due = words.filter(w => (w.due <= t || ph2 && R(w, t) < 0.9) && (!pick || pick(w))).sort((a, b) => R(a, t) - R(b, t));
       for (const w of due.slice(0, cap)) { if (budget < 1.3) break; budget -= 1.3; q += 1.3; rev(w, t, rr); } return due.length; };
@@ -44,6 +49,7 @@ export function run(L: Lv, B: number, s: Strat, who: Who, rLearn = 0.75) {
       if (s === 'A ôn trước') { const left = reviewDue(60); if (left < 40) learn(1); }
       else if (s === 'B học trước') { learn(2); reviewDue(12); }
       else if (s === 'D không ôn') learn(9);
+      else if (s === 'F học trước + ôn thưa') { learn(1); reviewDue(999); learn(1); }   // bài mới trước, thời gian còn lại ôn hết đến hạn theo mức nhớ 0,75
       else { reviewDue(999); learn(9); }   // C / E: ôn hết đến hạn theo mức nhớ thấp (rLearn), phần còn lại học mới
     } else if (s === 'E ôn thưa + chọn unit') {
       // chỉ ôn các unit dễ đạt Nhớ nhất cho tới khi đủ 55% nút; còn lại để sau Thi chuyển cấp
@@ -62,7 +68,7 @@ const WHO: Who[] = [
   { name: 'mất gốc (biết 40% từ)', ms: 1, known: 0.4, acc: 0.9, off: 1 },
   { name: 'mới, nghỉ 2 ngày/tuần', ms: 1, known: 0, acc: 0.9, off: 2 },
 ];
-const STR: Strat[] = ['A ôn trước', 'B học trước', 'C ôn thưa', 'D không ôn', 'E ôn thưa + chọn unit'];
+const STR: Strat[] = ['A ôn trước', 'B học trước', 'C ôn thưa', 'D không ôn', 'F học trước + ôn thưa'];   // E (chỉ ôn đủ 50%) đã loại: chậm hơn và nhớ kém
 // Thêm cột: số ngày tới 📘 Học 80% của B (phần còn lại là giai đoạn ôn dồn).
 if (import.meta.url === `file://${process.argv[1]}` && process.argv[2] === 'cost') {
   // Rút gọn bài học: số câu / từ mới (5,3 = luồng hiện tại) → số ngày của B (người mới, nhớ TB, nghỉ 1 ngày / tuần)
@@ -71,8 +77,8 @@ if (import.meta.url === `file://${process.argv[1]}` && process.argv[2] === 'cost
     console.log(String(c).replace('.', ',').padEnd(10) + ([['A1', 60], ['A1', 90], ['A2', 60], ['A2', 90]] as const).map(([l, b]) => String(run(LV[l], b, 'B học trước', WHO[0]!).days).padEnd(10)).join('')); }
 } else if (import.meta.url === `file://${process.argv[1]}`) {
   console.log('Số ngày tới mở Thi chuyển cấp (nhớ TB mọi từ của cấp lúc mở). "—" = quá 900 ngày.');
-  for (const lv of ['A1', 'A2'] as const) for (const B of [30, 60, 90]) {
-    console.log(`\n${lv} · ~${B / 2} phút/ngày`.padEnd(26) + STR.map(s => s.padEnd(22)).join(''));
+  for (const lv of ['A1', 'A2'] as const) for (const B of [-1, 60, 90]) {
+    console.log(`\n${lv} · ${B < 0 ? 'ngẫu nhiên (TB ~26 phút)' : `cố định ${B / 2} phút/ngày`}`.padEnd(26) + STR.map(s => s.padEnd(22)).join(''));
     for (const w of WHO) console.log(w.name.padEnd(25) + STR.map(s => { const x = run(LV[lv], B, s, w); return (x.days ? `${x.days} (${x.recall.toFixed(2).replace('.', ',')})` : '—').padEnd(22); }).join(''));
   }
 }
