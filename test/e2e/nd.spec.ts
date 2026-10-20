@@ -243,11 +243,9 @@ test('v153 đổi tên + Ôn tập về Ôn luyện: Học bài không còn nút
   await expect(page.locator('#app [aria-label="Ôn thẻ đến hạn"] [data-act="review"]')).toBeVisible();
   await page.locator('#bnav [data-go="lib"]').click();
   await expect(page.getByRole('heading', { name: '📘 Học bài', level: 1 })).toBeVisible();
-  await expect(page.locator('#app .lnext [data-go="review"]')).toHaveCount(0);
-  await expect(page.locator('#app .lnext')).toContainText('mục đến hạn ôn');
-  await expect(page.locator('#app .lnext b').first()).not.toContainText('đến hạn ôn');
-  await page.locator('#app .lnext [data-go="nd"]').click();
-  await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
+  // v175 bỏ khối "Hoặc tự học tiếp" (não thứ hai); việc ôn nằm trong ▶ Hôm nay
+  await expect(page.locator('#app .lnext')).toHaveCount(0);
+  await expect(page.locator('#app .dayplan')).toContainText('Ôn 1 từ đến hạn');
   await page.evaluate(() => (window as any).eval("go('review')"));
   await expect(page.locator('#bnav [data-go="nd"]')).toHaveAttribute('aria-current', 'page');
   expect(errors).toEqual([]);

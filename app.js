@@ -1003,10 +1003,12 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 112;
+const STATE_V = 18, APP_VERSION = 113;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
-const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
+// v175 (người sáng lập 20/10/2026, sau buổi học thử: "tự chỉnh sửa lại hết"): bỏ năng lượng ở mọi lượt học. Hết năng lượng chặn học ngay ngày đầu, trái luật
+// "không ưu đãi ép giờ" và phá cách "ưu tiên học". Rỗng = không lượt nào tốn năng lượng, không ô quảng cáo Super (giữ mã để đo / bật lại nếu cần).
+const EN_COST = new Set();
 const realDay = () => Math.floor(Date.now()/86400000);
 const SETTINGS = () => ({newMax:20,goal:20,rate:0.9,voice:'',demo:false,remind:'20:00',path:'',sfx:true,music:true,focus:false,door:'game'});
 // v149 🗣 Nói & Đọc: con đường thứ ba, song song ⚔️ Chơi và 📘 Học, có bảng theo dõi riêng (st.nd.d[ngày]); không mục tiêu ngày / chuỗi / XP của Học.
@@ -1260,7 +1262,7 @@ function grade(ex,correct){
   w.d[ex.dim] = old + a*((correct?1:0)-old);   // trung bình trượt: đúng kéo về 1, sai kéo về 0
   // Tự nhớ ra/viết ra đúng thì chắc chắn nhận ra được nghĩa: kéo kỹ năng nhận ra theo (không ngược lại).
   if(correct&&typed&&ex.dim!=='rec'&&!ex.guess){ const r=w.d.rec??0; w.d.rec=r+a*(1-r); }
-  if(old<HARD&&w.d[ex.dim]>=HARD&&['rcl','spl','ctx'].includes(ex.dim)&&W(ex.wid).learned) toast(`💪 Lên độ khó: lần sau “${WORD[ex.wid].word}” (${DIM[ex.dim].vi}) sẽ là câu tự gõ.`);
+  if(old<HARD&&w.d[ex.dim]>=HARD&&['rcl','spl','ctx'].includes(ex.dim)&&W(ex.wid).learned) toastLater(`💪 Lên độ khó: lần sau “${WORD[ex.wid].word}” (${DIM[ex.dim].vi}) sẽ là câu tự gõ.`);
   if(!ex.noSrs) srsStep(w,correct,typed&&!ex.guess);
   eEv({node:'u:'+(UNIT_OF[ex.wid]||{}).id,level:ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3,ok:correct,g:ex.opts?1/ex.opts.length:0,item:'w:'+ex.wid+':'+ex.dim,qt:ex.opts?'mcq':'typed',ctx:ex.dim,w:correct&&ex.guess?.5:1,src:'vocab',retry:!!ex.retry,ch:'u:'+((UNIT_OF[ex.wid]||{}).id||''),given:ex._given,rt:ex._rt||undefined});
   if(correct&&typed) bump('typed');
@@ -1302,7 +1304,7 @@ function tally(correct,xp,side){ st.stats.a++; if(correct) st.stats.c++; const h
   let n=xp??(correct?10:2); const S=runOf();
   if(S){ if(correct&&S.gold===S.i&&!S.goldHit){ n*=2; S.goldHit=true; }
     S.xp=(S.xp||0)+n; S.last=n; S.combo=correct?(S.combo||0)+1:0; S.bestCombo=Math.max(S.bestCombo||0,S.combo);
-    if(S.combo>(st.rec.combo||0)){ st.rec.combo=S.combo; if(S.combo>=10&&S.combo%5===0) toast(`Kỷ lục mới: ${S.combo} câu đúng liên tiếp!`); } }
+    if(S.combo>(st.rec.combo||0)){ st.rec.combo=S.combo; if(S.combo>=10&&S.combo%5===0) toastLater(`Kỷ lục mới: ${S.combo} câu đúng liên tiếp!`); } }
   addXP(n); if(hit) toast(`Đạt mục tiêu hôm nay: ${goal()} câu đúng! Chuỗi ${streak()} ngày.`); earnFreeze(); questCheck(); save(); }
 // Số từ và bài ngữ pháp đã thuộc, ghi theo ngày để vẽ biểu đồ tiến bộ theo tuần.
 function snapHist(){ st.hist[today()]=[ALL_WORDS.filter(w=>isMastered(w.id)).length, GPOINTS.filter(p=>gMastered(p.id)).length, cdDone(), recalledN()]; }
@@ -1404,11 +1406,15 @@ function build(w,dim,opt={}){
         const vs=[w.vi,...w.senses.map(x=>x.vi)].filter(v=>v!==ans), fill=others(w,3).map(x=>x.vi).filter(v=>v!==ans&&!vs.includes(v));
         return mcq('sns','rec',w,sent,ans,[...vs,...fill].slice(0,3),{sense:k});
       }
-      if(Math.random()<.25){   // hiểu câu: chọn bản dịch đúng của câu ví dụ; nhiễu là bản dịch câu của từ khác (chắc chắn sai)
-        const [se,sv]=exPick(w); return mcq('sen','rec',w,se,sv,others(w,3).map(x=>x.exVi));
+      if(Math.random()<.15){   // hiểu câu: chọn bản dịch đúng của câu ví dụ; nhiễu là bản dịch câu của từ khác (chắc chắn sai)
+        // v175 (học thử: "Can you help me?" chọn được nhờ chữ "help"): nhiễu ưu tiên câu của từ CÙNG unit (cùng chủ đề, khó đoán bằng một chữ quen); giảm tần suất .25 → .15
+        const [se,sv]=exPick(w), same=shuffle(UNIT_OF[w.id].words.filter(x=>x.id!==w.id&&x.exVi&&x.exVi!==sv)).slice(0,3), rest=others(w,3).filter(x=>!same.includes(x));
+        return mcq('sen','rec',w,se,sv,[...same,...rest].slice(0,3).map(x=>x.exVi));
       }
       if(canSay(w.word) && !opt.noAudio && Math.random()<.35)
         return mcq('lis','rec',w,'Nghe và chọn từ bạn nghe được',w.word,others(w,3).map(x=>x.word),{audio:w.word});
+      // v175 (học thử): Pre-A1 / A1 / A2 chọn nghĩa tiếng Việt (định nghĩa tiếng Anh khó hơn chính từ cần học); từ B1 trở lên giữ định nghĩa tiếng Anh
+      if(/^(Pre-A1|A1|A2)$/.test(UNIT_OF[w.id].level)&&w.vi) return mcq('rec','rec',w,w.word,w.vi,others(w,3).map(x=>x.vi).filter(v=>v&&v!==w.vi).slice(0,3));
       return mcq('rec','rec',w,w.word,w.en,others(w,3).map(x=>x.en));
     case 'rcl':
       if(hard) return {type:'rct',dim:'rcl',wid:w.id,ans:w.word};
@@ -1735,6 +1741,9 @@ function resumeRun(){ const r=loadRun(); if(!r) return; const s={...r.s,retried:
 const runLabel = r => { const u=r.k==='s'&&r.s.uid&&UNITS.find(x=>x.id===r.s.uid), p=r.k==='g'&&r.s.gid&&GPT[r.s.gid];
   return `${r.k==='s'?KIND_LABEL[r.s.kind]||'Luyện tập':'Ngữ pháp · '+(KIND_LABEL[r.s.kind]||'Luyện tập')}${u?' · '+uname(u):p?' · '+gname(p):''} · đã làm ${r.s.i}/${r.s.q.length} câu`; };
 
+// v175 (học thử: thông báo đè ✕ và thanh tiến độ khi đang làm bài): thông báo tự sinh trong lượt học chờ tới khi ra khỏi lượt.
+function toastLater(msg){ if(document.body.classList.contains('lesson')){ (toast.q||(toast.q=[])).push(msg); return; } toast(msg); }
+function toastFlush(){ if(toast.q&&toast.q.length&&!document.body.classList.contains('lesson')) toast(toast.q.splice(0).slice(-2).join(' · ')); }
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true,2600); }
 const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const pct = x => Math.round(x*100)+'%';
@@ -2817,7 +2826,7 @@ function renderChrome(){
   const bn=document.getElementById('bnav');
   if(bn){ bn.style.gridTemplateColumns=`repeat(${NAV.length},1fr)`; } if(bn) bn.innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}><span class="bi">${ico(ic)}</span><span>${l}</span>${badge(k)}</button>`).join('');
   // v117: hai con số, có chữ đi kèm (chuỗi ngày, câu đúng hôm nay / mục tiêu ngày). Năng lượng chỉ hiện khi đang thiếu (lúc đó mới cần biết).
-  const enLow=!FOCUS()&&(money().s||enNow()<EN.cap);   // Super vẫn hiện (người học đã bật, cần thấy trạng thái)
+  const enLow=EN_COST.size>0&&!FOCUS()&&(money().s||enNow()<EN.cap);   // Super vẫn hiện (người học đã bật, cần thấy trạng thái)
   const er=EM&&EM.res?(()=>{ try{ return EM.res(); }catch(e){ return null; } })():null;   // v131 thanh tài nguyên: xu chung của phố (engine)
   document.getElementById('clock').innerHTML = `${er&&!FOCUS()?`<span class="clxu" title="Xu của phố: tiêu ở Bảng tin phố">🪙 <b>${er.coins}</b> · </span>`:''}${FOCUS()?'':`<span title="Chuỗi ngày học liên tiếp">${ico('flame')} <b>${streak()}</b> ngày</span> · `}<span title="Câu đúng hôm nay / mục tiêu ngày">hôm nay <b>${Math.min(goalCount(),goal())}/${goal()}</b> câu</span>${enLow?enPill():''}${st.set.demo?` · ngày ${dayNo(today())} <button class="btn small" data-act="nextday" title="Chế độ demo: tua nhanh thời gian để thử lịch ôn">+1 ngày</button>`:''}`;
 }
@@ -2837,25 +2846,19 @@ function libSkills(){
 }
 function viewLib(){
   const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
-  // v138 tab 📘 Học = app cũ: việc chính hôm nay (mainAction, như trang chủ cũ) + ôn tập + 7 kỹ năng + tự chọn bài.
-  // v153 (người sáng lập 17/10/2026): Học bài = học mới tới vững; não điều phối theo học (không đẩy ôn lên đầu). Việc ôn ở 🔁 Ôn luyện.
-  let ma=null; try{ ma=mainAction({learn:true}); }catch(e){ ma=null; }
-  const due=dueWords().length+dueG().length;
-  // v161 nút chính là ▶ Hôm nay (dayHtml, một não cho cả Học bài + Ôn luyện); khối này còn để tự học tiếp.
-  const todo=`<section class="panel stack lnext" aria-labelledby="ln-h"><h2 id="ln-h">Hoặc tự học tiếp</h2>${ma?`<p><b>${ma.h}</b></p><p class="hint">${ma.p}</p><div class="row">${String(ma.btn).replace('btn primary big','btn')}</div>`:''}
-    ${due?`<p class="hint">Có ${due} mục đến hạn ôn → <button class="btn small" data-go="nd">${ico('bolt')} Học nhanh</button></p>`:''}</section>`;
-  return `<section class="stack"><span class="eyebrow">Học bài</span><h1>📘 Học bài</h1><p class="muted">Người mới hoàn toàn: đây là đường nhanh nhất. Học mới từ đầu tới cuối, tới khi vững và qua cấp. Mọi câu đúng ở đây đều tính vào 🎯 Mục tiêu. Ôn lại những gì đã học: ⚡ Học nhanh.</p></section>
-  ${partsHtml(currentUnit().level==='A1'?'A1':'A2','lib')}
+  // v175 (học thử 20/10/2026): ▶ Hôm nay lên đầu (nút bấm thấy ngay, không phải cuộn); bỏ khối "Hoặc tự học tiếp" (não thứ hai, đưa bài khác ▶ Hôm nay);
+  // kỹ năng theo mục tiêu (số 188 / 70 / … của engine) thu vào mục chi tiết để bớt rối số.
+  return `<section class="stack"><span class="eyebrow">Học bài</span><h1>📘 Học bài</h1><p class="muted">Học từ đầu tới cuối, ôn đi kèm. Làm theo ▶ Hôm nay là đi tới Thi chuyển cấp.</p></section>
   ${dayHtml('lib')}
-  ${todo}
-  ${libSkills()}
+  ${partsHtml(currentUnit().level==='A1'?'A1':'A2','lib')}
   <h2>Tự chọn bài</h2>
   <div class="units">
-    ${it('play','map','Bản đồ Phố Chữ','Mọi trò chơi, truyện Phố Chữ và Đấu trường (thử thách, thi thử) trên một bản đồ')}
-    ${it('path','book','Bài học theo chủ đề','Từ vựng và ngữ pháp theo unit, từ Pre-A1 tới C2')}
+    ${it('path','book','Bài học theo chủ đề','Mọi unit từ Pre-A1 tới C2: học, luyện, thử thách cuối unit')}
     ${it('talk','mic','Kỹ năng','Nghe, nói, đọc, viết và hội thoại theo cấp của bạn')}
     ${it('words','read','Sổ từ','Tra mọi từ đã học và chưa học: tìm không dấu, lọc theo cấp, từ hay quên')}
-  </div>`;
+    ${it('play','map','Bản đồ Phố Chữ','Mọi trò chơi, truyện Phố Chữ và Đấu trường trên một bản đồ')}
+  </div>
+  <details class="panel"><summary>Kỹ năng theo mục tiêu (chi tiết)</summary>${libSkills()}</details>`;
 }
 function viewMore(){
   const it=(go,ic,t,d)=>`<button class="unit morei" data-go="${go}"><span class="no">${ico(ic)}</span><span class="t"><strong>${t}</strong><span class="muted">${d}</span></span></button>`;
@@ -2967,16 +2970,16 @@ function mainAction(o){ const learn=!!(o&&o.learn);   // v153 learn: não ở �
   const r=loadRun(), due=dueWords().length, away=daysAway(), cur=currentUnit(), s=U(cur.id);
   if(r) return {h:'Bạn đang làm dở một lượt',p:runLabel(r),btn:`<button class="btn primary big" data-act="resume">▶ Làm tiếp</button>`};
   if(away>=3&&!learn) return {h:`Chào mừng bạn quay lại sau ${away} ngày!`,p:'Bắt đầu nhẹ nhàng: 10 câu ôn những từ bạn yếu nhất, khoảng 5 phút.',btn:`<button class="btn primary big" data-act="quick">⚡ Luyện nhanh 5 phút</button>`};
-  if(due&&!learn) return {h:`${due} từ đến hạn ôn`,p:`Ôn đúng lúc sắp quên thì nhớ lâu nhất. Mỗi từ được hỏi đúng kỹ năng bạn đang yếu. ${info('due')}`,btn:`<button class="btn primary big" data-act="review">Ôn ${Math.min(due,REVIEW_BATCH)} từ</button>`};
+  if(due&&!learn&&learnPh2()) return {h:`${due} từ đến hạn ôn`,p:`Ôn đúng lúc sắp quên thì nhớ lâu nhất. Mỗi từ được hỏi đúng kỹ năng bạn đang yếu. ${info('due')}`,btn:`<button class="btn primary big" data-act="review">Ôn ${Math.min(due,REVIEW_BATCH)} từ</button>`};
   if(!s.learned&&newCapHit()&&ALL_WORDS.some(w=>W(w.id).learned)) return {h:'Hôm nay đã đủ từ mới',p:`Bạn đã học ${newToday()} từ mới hôm nay. Luyện cho chắc những từ vừa học sẽ giúp nhớ lâu hơn học thêm. ${info('newmax')}`,btn:`<button class="btn primary big" data-act="quick">⚡ Luyện 5 phút</button>`};
   // v162 Học bài một mình: hết unit mới (hoặc từ đến hạn dồn nhiều) thì luyện lại unit cũ có nhiều từ đến hạn nhất (ôn lồng, vẫn là bài Học bài).
   // v163 cách nhìn Học bài: bài Ôn luyện báo "chưa biết" (T5) đi trước bài mới, vì không học thì không qua được.
   if(learn){ const nu=actsOf(cur.level==='A1'?'A1':'A2').need; if(nu&&!U(nu.id).passed) return {h:`Học ${uname(nu)} · ${esc(nu.title)}`,p:'Học nhanh đúng dưới 50%: học kiến thức này trước rồi ôn sau.',btn:`<button class="btn primary big" data-unit="${nu.id}">Học bài này</button>`,eng:true}; }
   if(learn){ const od=oldUnitDue(); if(od&&(s.passed||due>=BACKLOG&&actsOf(cur.level==='A1'?'A1':'A2').lq>=80)) return {h:`Luyện lại ${uname(od.u)} · ${esc(od.u.title)}`,p:`${od.n} từ của unit này đến lúc gọi lại. Gọi lại đúng lúc sắp quên thì thanh 🔁 Nhớ lên.`,btn:`<button class="btn primary big" data-act="practice" data-u="${od.u.id}">Luyện lại</button>`,eng:true}; }   // eng: các lớp bọc sau (cân kỹ năng) không thay bước này
   // v48 (engine M4): có mục tiêu thì bước tiếp theo do lộ trình của engine chọn (đường đi tối thiểu), không theo thứ tự unit.
-  try{ const en=EM&&EM.next({learn}); if(en) return {...en,eng:true}; }catch(e){}
+  if(FST().path==='fast') try{ const en=EM&&EM.next({learn}); if(en) return {...en,eng:true}; }catch(e){}   // v175 đường 📘: bước kế = unit kế (cùng ▶ Hôm nay), không lộ trình riêng của engine
   const cd=unitCando(cur), why=cd?` Unit này giúp bạn đạt: “${esc(cdSay(cd))}”.`:'';
-  return {h:`${s.learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,p:(s.learned?(learn?'':'Chưa có từ nào đến hạn ôn. ')+'Học tiếp unit này: luyện rồi vượt thử thách cuối unit để mở unit sau.':'Học 10 từ mới, luyện, rồi làm bài kiểm tra để mở unit sau.')+why,btn:`<button class="btn primary big" data-unit="${cur.id}">${s.learned?'Tiếp tục':'Bắt đầu học'}</button>`};
+  return {h:`${s.learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,p:(s.learned?(learn?'':'Chưa có từ nào đến hạn ôn. ')+'Học tiếp unit này: luyện rồi vượt thử thách cuối unit để mở unit sau.':'Học 10 từ mới, luyện, rồi qua thử thách cuối unit để mở unit sau.')+why,btn:`<button class="btn primary big" data-unit="${cur.id}">${s.learned?'Tiếp tục':'Bắt đầu học'}</button>`};
 }
 // Trang chủ theo 5 câu hỏi của người học: dải “Bạn đang ở đâu” (hereStrip) → một việc chính → còn thiếu gì (nextLine) → kế hoạch hôm nay.
 // Kế hoạch: tối đa 4 việc có số phút; nhiệm vụ ngày trùng với một việc thì gộp vào dòng đó (không hiện hai lần).
@@ -3165,7 +3168,7 @@ function viewSession(){
   let body='';
   const opts = () => `<div class="opts">${ex.opts.map((o,i)=>{
       let cls=''; if(a){ if(reveal){ if(i===ex.ans) cls='right'; else if(i===a.picked) cls='wrong'; } else if(i===a.picked) cls='chosen'; }
-      return `<button class="opt ${cls}" data-pick="${i}" ${a?'disabled':''}><kbd>${i+1}</kbd><span lang="${ex.type==='sen'||ex.type==='sns'?'vi':'en'}">${esc(o)}</span></button>`;}).join('')}</div>`;
+      return `<button class="opt ${cls}" data-pick="${i}" ${a?'disabled':''}><kbd>${i+1}</kbd><span lang="${ex.type==='sen'||ex.type==='sns'||ex.type==='rec'&&o===w.vi||ex.type==='rec'&&ex.opts[ex.ans]===w.vi?'vi':'en'}">${esc(o)}</span></button>`;}).join('')}</div>`;
   const field = () => `<form data-form="type" class="row" style="flex-wrap:nowrap"><input id="typ-${s.i}" class="field ${a?(reveal?(a.correct?'right':'wrong'):''):''}" lang="en" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" ${a?'disabled':''} value="${a?esc(a.text):''}" aria-label="Nhập từ"><button class="btn primary" ${a?'disabled':''}>Kiểm tra</button></form>`;
   const clue = x => `<p class="hint">Gợi ý: bắt đầu bằng “<b lang="en">${esc(x[0])}</b>”, ${[...x].length} chữ cái.</p>`;
   if(ex.type==='fam'||ex.type==='fmt'){ const [fp,fw,fvi]=ex.form;
@@ -3204,7 +3207,7 @@ function viewSession(){
         <details class="fbmore"><summary>Xem ví dụ và mẹo nhớ</summary><span lang="en">${highlight(w.ex,w)}</span>
         <span class="hint">${esc(w.exVi||'')}</span>
         ${tipBox(w)}
-        <span class="hint"><span lang="en">${esc(w.word)}</span> (${esc(w.pos)}): ${esc(w.vi)}.</span></details>${s.kind==='fast'?'<span class="hint">Chỗ này vào 🩹 Vá chỗ lủng: chỉ học lại đúng chỗ này.</span>':a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${s.kind!=='fast'&&UNIT_OF[ex.wid]?microBox('u:'+UNIT_OF[ex.wid].id,ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3):''}</div>`;
+        <span class="hint"><span lang="en">${esc(w.word)}</span> (${esc(w.pos)}): ${esc(w.vi)}.</span></details>${s.kind==='fast'?'<span class="hint">Chỗ này vào 🩹 Vá chỗ lủng: chỉ học lại đúng chỗ này.</span>':a.appealed||TEST_KINDS.includes(s.kind)?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${!TEST_KINDS.includes(s.kind)&&UNIT_OF[ex.wid]?microBox('u:'+UNIT_OF[ex.wid].id,ex.dim==='rec'?(ex.opts?1:2):ex.dim==='ctx'||ex.dim==='col'?4:3):''}</div>`;
     }
     fb+=xpFloat(s);
     fb+=`<div class="row"><button class="btn primary" data-act="next" id="nextbtn">${s.i+1<s.q.length?'Tiếp tục':'Xem kết quả'} <span class="hint" style="color:inherit;opacity:.7">Enter</span></button>${flagBox()}</div>`;
@@ -3250,7 +3253,7 @@ function explainWrong(ex,w,given){
     if(g===norm(w.word)) return `“${w.word}” là từ gốc (${w.pos}), chưa đổi sang dạng được hỏi.`;
   }
   if(w.why){ const k=Object.keys(w.why).find(k=>norm(k)===g); if(k) return enrichWhy(w,k,w.why[k]); }
-  const o=ALL_WORDS.find(x=>x.id!==w.id&&(norm(x.word)===g||norm(x.en)===g||norm(x.exVi||'')===g));
+  const o=ALL_WORDS.find(x=>x.id!==w.id&&(norm(x.word)===g||norm(x.en)===g||norm(x.exVi||'')===g||ex.type==='rec'&&norm(x.vi||'')===g));   // v175 rec A1–A2: phương án là nghĩa tiếng Việt
   if(o){
     if(ex.type==='sen') return `Đó là nghĩa của câu “${o.ex}” (dùng từ ${o.word}).`;
     if(ex.type==='rec') return `Đó là nghĩa của từ “${o.word}” (${o.vi}).`;
@@ -3277,7 +3280,7 @@ function spellDiff(a,b){
 }
 const TEST_KINDS = ['test','place','lrev','qplace','fast'];
 // v170 góp ý người học: chặng ⚡ vẫn chấm như bài đo (không hỏi lại, không kháng nghị) nhưng báo đúng / sai + âm thanh ngay từng câu; câu sai vào hàng vá.
-const revealOf = s => !TEST_KINDS.includes(s.kind) || s.kind==='fast';   // v165 fast: vượt chặng ⚡ Học nhanh   // bài kiểm tra: không hiện đáp án từng câu, không hỏi lại
+const revealOf = s => !TEST_KINDS.includes(s.kind) || s.kind==='fast' || s.kind==='test';   // v175 thử thách cuối unit / bài ngữ pháp cũng báo đúng / sai + âm thanh (góp ý #6); vẫn chấm như bài đo: không hỏi lại, không kháng nghị   // v165 fast: vượt chặng ⚡ Học nhanh   // bài kiểm tra: không hiện đáp án từng câu, không hỏi lại
 
 function viewSummary(){
   if(ui.summary&&ui.summary.kind==='qplace') return viewQPSummary(ui.summary);
@@ -3863,7 +3866,7 @@ function questsToday(){
 function questCheck(){
   const q=questsToday(); let fresh=[];
   q.list.forEach(k=>{ const Q=QUESTS[k]; if(!q.done.includes(k)&&Q.v()>=Q.n()){ q.done.push(k); fresh.push(Q.t()); addXP(QUEST_XP); } });
-  if(fresh.length){ sfx('win'); toast('Hoàn thành nhiệm vụ: '+fresh.join(' · ')+` (+${QUEST_XP} XP)`); }
+  if(fresh.length){ sfx('win'); toastLater('Hoàn thành nhiệm vụ: '+fresh.join(' · ')+` (+${QUEST_XP} XP)`); }
 }
 const chestReady = () => { const q=questsToday(); return q.done.length===q.list.length&&!q.chest; };
 // Rương: XP ngẫu nhiên, 25% được thêm 1 ngày nghỉ phép, kèm một mẹo từ vựng ngẫu nhiên trong những từ đã học.
@@ -4782,7 +4785,7 @@ function viewGSess(){
       const close=a.text!=null&&ex.accept&&lev(gcanon(a.text),gcanon(closest(a.text,ex.accept)))<=2;
       fb=`<div class="fb bad" role="status"><strong>${a.dunno?'Chưa biết — xem đáp án và nhớ lại nhé':`Chưa đúng${close?' — gần đúng, chỉ sai 1–2 chữ':''}`}</strong>${a.text!=null?`<span>Bạn viết: <s lang="en">${esc(a.text)}</s></span>`:''}
         <span>Đáp án: <b lang="en">${esc(gRight(ex))}</b></span>${why?`<p class="why"><b>Vì sao sai:</b> ${esc(why)}</p>`:''}
-        <span class="hint">Nhắc lại: <span lang="en">${esc(p.form[0])}</span> — xem đủ công thức trong bài học.</span>${s.kind==='fast'?'<span class="hint">Chỗ này vào 🩹 Vá chỗ lủng: chỉ học lại đúng chỗ này.</span>':a.appealed?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${s.kind==='fast'?'':microBox('g:'+ex.gid,{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2)}</div>`; }
+        <span class="hint">Nhắc lại: <span lang="en">${esc(p.form[0])}</span> — xem đủ công thức trong bài học.</span>${s.kind==='fast'?'<span class="hint">Chỗ này vào 🩹 Vá chỗ lủng: chỉ học lại đúng chỗ này.</span>':a.appealed||TEST_KINDS.includes(s.kind)?'':'<span class="hint">Câu này sẽ được hỏi lại cuối lượt.</span>'}${appealBox(a)}${TEST_KINDS.includes(s.kind)?'':microBox('g:'+ex.gid,{cho:2,typ:3,ord:3,fix:4}[ex.dim]||2)}</div>`; }
     fb+=xpFloat(s);
     fb+=`<div class="row"><button class="btn primary" data-act="gnext" id="gnextbtn">${s.i+1<s.q.length?'Tiếp tục':'Xem kết quả'} <span class="hint" style="color:inherit;opacity:.7">Enter</span></button>${flagBox()}</div>`;
   }
@@ -4810,7 +4813,7 @@ function viewGSum(){
     ${(r.kind==='test'||r.kind==='place')&&V.pass&&nextP?`<button class="btn primary" data-gp="${nextP.id}">Sang ${gname(nextP)}</button>`:''}
     ${r.kind==='place'&&V.pass?(()=>{const i=GRAMMAR.levels.indexOf(L), n=GRAMMAR.levels.slice(i+1).find(x=>x.points.length);return n?`<button class="btn" data-act="gplace" data-l="${n.id}">Thi vượt cấp ngữ pháp ${n.id}</button>`:''})():''}
     ${r.kind==='review'&&dueG().length?`<button class="btn" data-act="greview">Ôn tiếp ${dueG().length} bài</button>`:''}
-    ${r.kind==='practice'&&p&&!G(p.id).passed?`<button class="btn primary" data-act="gtest" data-g="${p.id}">Làm bài kiểm tra</button>`:''}
+    ${r.kind==='practice'&&p&&!G(p.id).passed?`<button class="btn primary" data-act="gtest" data-g="${p.id}">Làm thử thách cuối bài</button>`:''}
     ${p?`<button class="btn" data-gp="${p.id}">Về bài học</button>`:''}<button class="btn" data-go="grammar">Ngữ pháp</button>${msBtn(r,V.pass)}</div>
   ${rewardHero(r,{stars:p&&r.kind==='test'?gStars(p):null,good:(r.kind==='test'||r.kind==='place'||r.kind==='lrev')?V.pass:score>=.7})}
   <section class="stats"><div class="stat"><b>${pct(score)}</b><span>Độ chính xác lần đầu</span></div><div class="stat"><b>${pts.length}</b><span>Bài ngữ pháp đã luyện</span></div><div class="stat"><b>${dueG().length}</b><span>Bài đến hạn ôn còn lại</span></div>${p?`<div class="stat"><b>${pct(gmastery(p.id))}</b><span>Mức thuộc ${gname(p)}</span></div>`:''}</section>
@@ -4864,6 +4867,7 @@ function render(){
   document.querySelectorAll('#app details.gall').forEach(d=>{ d.dataset.gv=ui.view; if(GALL_OPEN.has(gallKey(d))) d.open=true; });
   countUp();
   try{ lessonChrome(); }catch(e){}
+  try{ toastFlush(); }catch(e){}   // v175
   if(ui.view==='session'){
     const s=ui.sess, ex=s.q[s.i];
     if((ex.type==='lis'||ex.type==='dic')&&!s.ans&&s.played!==s.i){ s.played=s.i; say(ex.audio); }
@@ -5119,7 +5123,7 @@ function wStage(id){ const w=st.words[id]; if(!w||!w.learned) return 0; if(isMas
 const ladderHtml = (names,k,label) => `<div class="stages" role="img" aria-label="${esc(label)}: ${names[k]}">${names.map((t,i)=>`<span class="${i<k?'done':i===k?'now':''}">${i<k?'✓ ':''}${t}</span>`).join('')}</div>`;
 function uStage(u){ const s=U(u.id); if(!s.passed) return s.learned?1:0; if(s.skipped&&!s.learned) return 3; if(!unitSolid(u)) return 2;
   return u.words.filter(w=>isMastered(w.id)).length>=.8*u.words.length?4:3; }
-const STAGE_NEXT=['Học 10 thẻ từ để bắt đầu.','Luyện rồi qua bài kiểm tra để sang “Đã qua”.','Ôn đúng ≥ 80% số từ ở lần ôn sau (từ ngày mai) để sang “Vững”.','Ôn đúng hạn thêm vài lần: từ nhớ được sau nhiều tuần là “Đã thuộc”.','Giữ bằng các lần ôn đến hạn.'];
+const STAGE_NEXT=['Học 10 thẻ từ để bắt đầu.','Luyện rồi qua thử thách cuối unit để sang “Đã qua”.','Ôn đúng ≥ 80% số từ ở lần ôn sau (từ ngày mai) để sang “Vững”.','Ôn đúng hạn thêm vài lần: từ nhớ được sau nhiều tuần là “Đã thuộc”.','Giữ bằng các lần ôn đến hạn.'];
 function stageBar(u){ const k=uStage(u);
   return `<div class="stack" style="gap:4px"><div class="stages" role="img" aria-label="${esc(uname(u))}: ${STAGES[k]}">${STAGES.map((t,i)=>`<span class="${i<k?'done':i===k?'now':''}">${i<k?'✓ ':''}${t}</span>`).join('')}</div><span class="hint">${k<4?'Bước tiếp: ':''}${STAGE_NEXT[k]} ${info('stages')}</span></div>`; }
 // Tầng Cấp: vị trí trong cấp đang học, số unit đã qua/vững, % tới cấp mục tiêu (nếu có).
@@ -5348,7 +5352,7 @@ async function shareText(text,src){ const t=`${text}\n${HOME_URL}`; evc('share')
 const chText = g => `${g.name?g.name+' thách':'Mình thách'} bạn 15 câu từ vựng ${g.L}: được ${g.score}/${CH_N}. Mở ${APP_NAME} → Thêm → Thử thách → Thách đấu bạn bè, dán mã này:\n${g.code}`;
 function msText(r){ const G=r.gid!==undefined, V=G?verdict(r.res,GDIMS):verdict(r.res), cd=`Đã làm được ${cdDone()}/${CANDO.length} câu “Tôi có thể…” của khung CEFR.`;
   if(r.gid&&r.kind==='test'){ const p=GPT[r.gid]; return `Mình vừa qua bài ngữ pháp “${p.vi}” (${p.level}) trên ${APP_NAME}: ${pct(V.score)} đúng. ${cd}`; }
-  if(r.kind==='test'){ const u=UNITS.find(x=>x.id===r.uid); return `Mình vừa qua ${uname(u)} · ${u.title} (${u.level}) trên ${APP_NAME}: ${pct(V.score)} bài kiểm tra. ${cd}`; }
+  if(r.kind==='test'){ const u=UNITS.find(x=>x.id===r.uid); return `Mình vừa qua ${uname(u)} · ${u.title} (${u.level}) trên ${APP_NAME}: ${pct(V.score)} thử thách cuối unit. ${cd}`; }
   if(r.kind==='place') return `Mình vừa thi vượt cấp ${G?'ngữ pháp ':''}${r.lvl} trên ${APP_NAME}: ${pct(V.score)} đúng. ${cd}`;
   if(r.kind==='lrev') return `Mình vừa nắm chắc ${G?'ngữ pháp':'từ vựng'} ${r.lvl} trên ${APP_NAME}: ${pct(V.score)} bài tổng kết. ${cd}`;
   return `Mình đang học tiếng Anh trên ${APP_NAME}. ${cd}`; }
@@ -5736,7 +5740,7 @@ function next(){
     const us=U(s.uid), was=us.passed, u=UNITS.find(x=>x.id===s.uid); s.stars0=uStars(u);
     trkTest(s.uid,V.pass);   // v174 số lần làm bài cuối unit
     us.best=Math.max(us.best??0,V.score); if(V.pass){ us.passed=true; us.pd??=today(); delete us.ndNeed; us.ndLow=0; us.ndMid=0; ndPassMark('u',s.uid); }   // v161 qua ở Học bài thì hết "cần học trước"
-    if(V.pass&&!was){ addXP(50); celebrate('🏆',`Qua ${uname(u)} · ${u.title}`,`${pct(V.score)} bài kiểm tra, +50 XP. Bạn đã qua ${passedUnits()} unit. Unit tiếp theo đã mở.`); }
+    if(V.pass&&!was){ addXP(50); celebrate('🏆',`Qua ${uname(u)} · ${u.title}`,`${pct(V.score)} thử thách cuối unit, +50 XP. Bạn đã qua ${passedUnits()} unit. Unit tiếp theo đã mở.`); }
   }
   if(s.kind==='lrev'){ const lv=LV(s.lvl); lv.best=Math.max(lv.best??0,V.score); lv.last=today(); if(V.pass) lv.passed=true; }
   if(s.kind==='place') LV(s.lvl).tried=true;
@@ -5824,7 +5828,6 @@ function gAct(d){
 document.addEventListener('click',e=>{
   const t=e.target.closest('button'); if(!t) return;
   const d=t.dataset;
-  if(d.day) dayMark(d.day);   // v161 ▶ Hôm nay: ô đã bấm trong ngày
   if(d.say){ say(d.say,d.slow==='1',+(d.v||0)); return; }
   if(d.act==='celok') return celClose();
   if(d.trypick!=null){ if(ui.tryPick==null){ ui.tryPick=+d.trypick; evc('try'); save(); } return render(); }
@@ -7283,6 +7286,7 @@ const zeroStart = () => { const d=st.e&&st.e.diag; return !!d&&!d.n&&!d.u&&!d.g;
 function ndBase(){ const to=(st.nd||{}).to||[]; if(!to.length) return zeroStart()?'no':null;
   const ok=to.filter(x=>x.s>=ND_NEED).length, bad=to.length-ok; return ok>=2?'yes':bad>=2?'no':null; }
 function dayParts(L){ try{ return EM&&EM.parts?EM.parts('cefr-'+L.toLowerCase()):null; }catch(e){ return null; } }
+const dayRev = () => ((TRK().rd[today()]||[])[0]||0);   // v175 số câu ôn đến hạn đã làm hôm nay
 function dayDone(){ const n=st.nd||(st.nd={d:{}}), t=today(); if(!n.day||n.day.d!==t) n.day={d:t,done:[]}; return n.day.done; }
 function dayMark(k){ const d=dayDone(); if(k==='due'){ const n=st.nd.day; n.rv=(n.rv||0)+1; if(n.rv<DAY_ROUNDS){ save(); return; } } if(!d.includes(k)) d.push(k); save(); }   // v171 bước ôn: tới DAY_ROUNDS lượt / ngày mới tính là xong
 const LIB = '📘 Học bài', NDT = '⚡ Học nhanh';
@@ -7308,6 +7312,9 @@ function actsOf(L){ L=L||ndLv(); const t=today(), p=dayParts(L), us=UNITS.filter
     path:FST().path||'normal',gd:gapDue().length,ch:fastNext(L)}; }   // v165 đường đang đi (⚡ / 📘), chỗ lủng đến hạn vá, chặng kế
 function dayPlan(){ const A=actsOf(), out=[], {L,why,base,cur,od}=A;
   const ph2=A.lq>=80;   // v172 giai đoạn ôn
+  // v175 (học thử): bước không còn đánh dấu "xong" khi bấm; tự đổi theo việc đã làm thật. Ôn đủ DAY_ROUNDS × DAY_DUE câu đến hạn trong ngày thì thôi đưa ôn.
+  const run=loadRun(); if(run) out.push({k:'run',side:LIB,t:`Làm tiếp: ${esc(runLabel(run))}`,why:'đang làm dở; làm tiếp không mất câu đã trả lời',at:'data-act="resume"'});
+  if(dayRev()>=DAY_ROUNDS*DAY_DUE){ A.dw=0; A.dg=0; }
   const brake=ph2&&A.dw>=BACKLOG&&cur&&!U(cur.id).learned;   // v171 nợ ôn nhiều: ôn trước, chưa mở unit mới (giữ thanh 🔁 Nhớ)
   const due=A.dw||A.dg?{k:'due',side:LIB,t:A.dw?`Ôn ${Math.min(A.dw,DAY_DUE)} từ đến hạn${A.dw>DAY_DUE?` (còn ${A.dw} từ)`:''}`:`Ôn ${A.dg} bài ngữ pháp đến hạn`,
     why:!ph2?'giai đoạn học: lịch ôn giãn, chỉ ôn từ sắp quên để giữ nền; 📘 Học ≥ 80% thì mới ôn mạnh':brake?`còn nhiều từ đến hạn: ôn trước, chưa mở bài mới để thanh 🔁 Nhớ không tụt`:'giai đoạn ôn: ôn tới hết từ đến hạn để 🔁 Nhớ lên 50%',at:A.dw?'data-act="dayreview"':'data-act="greview"'}:null;
@@ -7357,7 +7364,7 @@ function trkStats(){ const T=TRK(), t=today(), L=ndLv(), D=T.d, last=n=>Array.fr
   const due7=dd(t-7).due, top=(m,k)=>Object.entries(T[m]).filter(([id,a])=>a[1]>=2&&k(id)).sort((a,b)=>b[1][1]-a[1][1]||b[1][1]/b[1][0]-a[1][1]/a[1][0]);
   return {T,t,L,snaps,cur,lp,mp,sl,sm,n14:s14.length,ph2:learnPh2(),
     m7:sum(w7,'m')/7/60, m30:sum(w30,'m')/30/60, d7:w7.filter(d=>(dd(d).m||0)>=60).length, rev:sum(w30,'mr'), all:sum(w30,'m'),
-    up7:passedIn(7), up28:passedIn(28)/4, uq:us.length?us.reduce((a,[,x])=>a+x[0],0)/us.length:null, umin:us.length?us.reduce((a,[,x])=>a+x[1],0)/us.length/60:null, un:us.length,
+    up7:passedIn(7), wk:Math.min(4,Math.max(1,Math.ceil((t-Math.min(t,...Object.keys(D).map(Number))+1)/7))), up28:0, uq:us.length?us.reduce((a,[,x])=>a+x[0],0)/us.length:null, umin:us.length?us.reduce((a,[,x])=>a+x[1],0)/us.length/60:null, un:us.length,
     fp:fp.length?fp.filter(a=>a[3]===1).length/fp.length:null, fpn:fp.length, rd, r7:T.r7, r30:T.r30, due:dueWords().length, due7,
     dueRow:last(7).map(d=>dd(d).due), tw:top('w',id=>WORD[id]).slice(0,10), tg:top('g',id=>GPT[id]).slice(0,5),
     dims:Object.entries(T.dim).filter(([k,a])=>DIM[k]&&a[0]>=10).map(([k,a])=>({k,n:a[0],r:a[1]/a[0]})).sort((a,b)=>a.r-b.r)}; }
@@ -7372,6 +7379,7 @@ function trkChart(S){ const W=320, H=130, P=24, t=S.t, x=d=>P+(W-P-6)*(d-(t-29))
 const trkNo = why => `<span class="muted">chưa đủ dữ liệu${why?` (${why})`:''}</span>`;
 const trkP = (a,b) => b?Math.round(100*a/b)+'%':'—';
 function viewTrack(){ const S=trkStats(), f1=v=>(Math.round(v*10)/10).toString().replace('.',',');
+  S.up28=UNITS.filter(u=>{ const x=st.units[u.id]; return x&&x.passed&&x.pd!=null&&x.pd>S.t-7*S.wk; }).length/S.wk;   // v175 chia theo số tuần đã học (≤ 4), không chia 4 khi mới học vài ngày
   const eta=(()=>{ if(!S.cur) return trkNo('mở Học bài để app chụp số mỗi ngày');
     if(S.n14<5) return trkNo(`cần ≥ 5 ngày có số trong 14 ngày, đang có ${S.n14}`);
     const l=S.lp(S.cur), m=S.mp(S.cur), when=n=>dayLabel(S.t+Math.ceil(n));
@@ -7399,22 +7407,24 @@ function viewTrack(){ const S=trkStats(), f1=v=>(Math.round(v*10)/10).toString()
     row(5,'Thời gian ôn / tổng',S.all>=3600?`<b>${trkP(S.rev,S.all)}</b> ôn · ${trkP(S.all-S.rev,S.all)} học mới (30 ngày)`:trkNo('cần ≥ 60 phút ghi được'))])}
     <p class="hint">Phút học: tính khoảng giữa hai lần chạm, tối đa 2 phút (để lâu hơn là đang nghỉ).</p></section>
   <section class="panel stack" aria-label="Học bài mới"><h2>C. Học bài mới</h2>${tbl([
-    row(6,'Unit qua / tuần',`<b>${S.up7}</b> tuần này · TB ${f1(S.up28)} / tuần (4 tuần)`),
+    row(6,'Unit qua / tuần',`<b>${S.up7}</b> tuần này · TB ${f1(S.up28)} / tuần (${S.wk} tuần)`),
     row(7,'Một unit tốn',S.un>=3?`<b>${Math.round(S.uq)} câu</b> · ${f1(S.umin)} phút (${S.un} unit; mô phỏng giả định ${TRK_UNIT_Q} câu)`:trkNo(`cần ≥ 3 unit đã qua có số, đang có ${S.un}`)),
     row(8,'Qua bài cuối unit ngay lần đầu',S.fpn>=3?`<b>${pct(S.fp)}</b> (${S.fpn} unit)${S.fp<.6?' · thấp: nên luyện thêm trước khi làm bài cuối unit':''}`:trkNo(`cần ≥ 3 unit, đang có ${S.fpn}`))])}</section>
   <section class="panel stack" aria-label="Nhớ và chỗ yếu"><h2>D. Nhớ và chỗ yếu</h2>
     <p><b>9.</b> Nhớ khi ôn đến hạn: ${rdv}</p>
     <p><b>10.</b> ${rr(S.r7,'Gặp lại sau ≥ 7 ngày')} · ${rr(S.r30,'sau ≥ 30 ngày')}</p>
-    <p><b>11.</b> Nợ ôn: <b>${S.due}</b> từ đến hạn${S.due7!=null?` (7 ngày trước: ${S.due7})${dueTrend}`:''}. <span class="hint">7 ngày: ${S.dueRow.map(v=>v==null?'·':v).join(' · ')}</span></p>
+    <p><b>11.</b> Nợ ôn: <b>${S.due}</b> từ đến hạn${S.due7!=null?` (7 ngày trước: ${S.due7})${dueTrend}`:''}. <span class="hint">7 ngày qua: ${S.dueRow.map(v=>v==null?'–':v).join(', ')} (– = chưa có số)</span></p>
     <p><b>12.</b> Chỗ sai nhiều nhất</p>${tw}${tg}<p>Kỹ năng từ: ${dims}</p></section>`; }
-function dayHtml(where){ const P=dayPlan(), done=dayDone(), left=P.steps.filter(x=>!done.includes(x.k)), nx=left[0];
-  const li=x=>`<li class="spread" style="gap:8px;align-items:flex-start"><span>${done.includes(x.k)?'✓':x===nx?'▶':'•'} <b>${x.t}</b> <span class="pill">${x.side}</span><br><span class="hint">${x.why}</span></span></li>`;
+function dayHtml(where){ const P=dayPlan(), nx=P.steps[0], t=today(), up=UNITS.filter(u=>{ const x=st.units[u.id]; return x&&x.pd===t; }).length, rv=dayRev(), q=(TRK().d[t]||{}).q||0;
+  // v175: mỗi bước có nút riêng (bước đầu là nút lớn); dòng "Đã làm hôm nay" thay dấu ✓ cũ (dấu ✓ cũ tính xong ngay khi bấm mở).
+  const li=x=>`<li class="spread" style="gap:8px;align-items:flex-start"><span>${x===nx?'▶':'•'} <b>${x.t}</b> <span class="pill">${x.side}</span><br><span class="hint">${x.why}</span></span>${x===nx?'':`<button class="btn small" ${x.at}>Làm</button>`}</li>`;
+  const did=q?`<p class="hint" role="status">Đã làm hôm nay: ${q} câu${up?` · qua ${up} unit`:''}${rv?` · ôn ${rv} từ đến hạn`:''}.${up&&!P.steps.some(x=>x.k==='due')?' <b>Đủ phần chính hôm nay</b>; còn sức thì làm tiếp bước kế.':''}</p>`:'';
   return `<section class="panel stack dayplan" aria-label="Hôm nay"><h2>▶ Hôm nay · mục tiêu ${P.L}</h2>
-    <p class="hint">Làm lần lượt từ trên xuống. Trước hết học cho hết bài (📘 Học ≥ 80%): bài mới trước, rồi ôn những từ sắp quên (lịch giãn, ôn ít). Sau đó đẩy mạnh ôn để 🔁 Nhớ lên 50% (nhớ lại được sau ≥ 3 ngày và chưa quên).</p>
-    ${dayPathHtml()}
+    <p class="hint">Làm từ trên xuống. Đang ở giai đoạn ${P.lq>=80?'<b>ôn</b> (📘 Học ≥ 80%): ôn trước để 🔁 Nhớ lên 50%.':'<b>học</b>: bài mới trước, rồi ôn những từ sắp quên.'}</p>
+    ${FST().path==='fast'||where==='nd'?dayPathHtml():''}${did}
     <ol class="stack" style="gap:8px;list-style:none;padding:0;margin:0">${P.steps.map(li).join('')}</ol>
-    ${nx?`<div class="row"><button class="btn primary big" ${nx.at} data-day="${nx.k}">▶ ${where==='lib'||where==='nd'?'Làm bước kế':'Hôm nay'}</button></div>`
-      :`<p><b>Xong các bước hôm nay.</b> Mai quay lại để não đo phần nhớ (🔁 Nhớ cần làm đúng lại sau ≥ 3 ngày).</p>`}</section>`; }
+    ${nx?`<div class="row"><button class="btn primary big" ${nx.at}>▶ ${where==='lib'||where==='nd'?'Làm bước kế':'Hôm nay'}</button></div>`
+      :`<p><b>Xong các bước hôm nay.</b> Mai quay lại để ôn (🔁 Nhớ cần nhớ lại đúng sau ≥ 3 ngày).</p>`}</section>`; }
 function ndReadDone(){ const R=ui.read, u=UNITS.find(x=>x.id===R.uid), r=R.rd||u.reading, s=U(u.id), k=R.listen?'listen':'read', ch='nd:rd:'+u.id, t=today();
   const ok=r.qs.map((q,i)=>R.order[i][R.picks[i]]===q.a), hint=R.peek||undefined;
   ok.forEach((c,i)=>{ eEv({node:'u:'+u.id,level:2,ok:c,g:1/R.order[i].length,item:'nd:'+u.id+':'+k+':'+i,qt:'mcq',ctx:'nd',src:'read',ch,hint}); ndLog('rd',c); });
@@ -7470,11 +7480,12 @@ function ndDueHtml(){ const dw=dueWords().length, dg=dueG().length;
 // v156 hai thanh của Mục tiêu; v157 có ở cả 📘 Học bài và 🔁 Ôn luyện (người sáng lập 17/10/2026), lời khuyên theo từng nơi.
 function partsHtml(L,where){ let p=null; try{ p=EM&&EM.parts?EM.parts('cefr-'+L.toLowerCase()):null; }catch(e){ p=null; } if(!p||!p.total) return '';
   const lq=Math.round(100*p.learn/p.total), mq=Math.round(100*p.mem/p.total), lib=where==='lib';
-  const next=lq<80?(lib?'Thiếu 📘 Học: học tiếp bài kế và qua bài cuối mỗi unit. Đã học lâu mà mất gốc thì ⚡ Học nhanh: vượt chặng, đúng là qua, sai chỉ vá chỗ đó.':'Thiếu 📘 Học: ⚡ vượt chặng kế (đúng hết là qua unit), rồi 🩹 vá chỗ lủng.')
-    :mq<50?(lib?'Thiếu 🔁 Nhớ: học đều mỗi ngày. Lượt luyện ở Học bài tự xen từ cũ đến lúc gọi lại (🔁 Ôn lại từ unit trước); làm đúng lại sau ≥ 3 ngày là thanh Nhớ lên. Ôn nhanh hơn: ⚡ Học nhanh.':'Thiếu 🔁 Nhớ: ôn thẻ đến hạn và ▶ Ôn tiếp mỗi ngày; bằng chứng nhớ cần làm đúng lại sau ≥ 3 ngày.')
+  const next=lq<80?(lib?'Thiếu 📘 Học: làm theo ▶ Hôm nay, học tiếp bài kế và qua thử thách cuối mỗi unit.':'Thiếu 📘 Học: ⚡ vượt chặng kế (đúng hết là qua unit), rồi 🩹 vá chỗ lủng.')
+    :mq<50?(lib?'Thiếu 🔁 Nhớ: làm hết bước ôn ở ▶ Hôm nay mỗi ngày; nhớ lại đúng sau ≥ 3 ngày là thanh Nhớ lên.':'Thiếu 🔁 Nhớ: ôn thẻ đến hạn và ▶ Ôn tiếp mỗi ngày; bằng chứng nhớ cần làm đúng lại sau ≥ 3 ngày.')
     :'Đủ cả hai: Thi chuyển cấp '+L+' đã mở ở 🎯 Mục tiêu.';
   const bar=(lb,v)=>`<div class="spread"><span>${lb}</span><b class="num">${v}%</b></div><div class="bar" role="progressbar" aria-label="${lb}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${v}"><i style="width:${v}%"></i></div>`;
-  return `<section class="panel stack" aria-label="Học và Nhớ ${L}"><h2>Mục tiêu ${L}</h2>
+  const g0=(((st.e||{}).goals||[])[0]||{}).id, inA2=L==='A1'&&g0==='cefr-a2';   // v175 chọn đích A2 mà đang học A1: nói rõ vì sao
+  return `<section class="panel stack" aria-label="Học và Nhớ ${L}"><h2>${inA2?'Chặng A1 của đích A2':'Mục tiêu '+L}</h2>${inA2?'<p class="hint">Đích của bạn là A2. A2 gồm cả kiến thức A1, nên học hết A1 trước (Thi chuyển cấp A1), rồi sang A2.</p>':''}
     ${bar('📘 Học',lq)}${bar('🔁 Nhớ',mq)}
     <p class="hint num">Học ${p.learn}/${p.total} (cần 80%) · Nhớ ${p.mem}/${p.total} (cần 50%). Thi chuyển cấp mở khi đủ cả hai.</p><p>${next}</p></section>`; }
 // v152 Sức khoẻ kiến thức mỗi cấp (A1, A2): vững · đang phai · đã quên · chưa học; Ôn nhanh; xem chỗ đã quên (nút về đúng bài trong 📘 Học).
@@ -8721,7 +8732,7 @@ viewWelcome = function(){ const h=_viewWelcome30();
   const restore=(/<details class="panel"><summary>Đã học ở máy khác[\s\S]*?<\/details>/.exec(h)||[''])[0].replace('<details class="panel">','<details class="panel hello-more">').replace(/<summary>[^<]*<\/summary>/,'<summary>Đã học trên máy khác? Chuyển tiến độ</summary>');
   // v35: cùng bố cục với màn chào tĩnh trong index.html (vẽ trước khi app.js nạp xong), nên khi app vẽ lại không xô lệch bố cục.
   return `<section class="hello"><h1>${FUTURE()?'Ôn IELTS và VSTEP miễn phí':'Tiếng Anh từ con số 0 tới C2'}</h1>
-    <p class="muted">${FUTURE()?'Biết band ước tính từng kỹ năng, học theo kế hoạch tới ngày thi.':'Chơi game leo tháp: mỗi đòn đánh là một câu tiếng Anh. App tự tìm chỗ bạn còn thiếu và chỉ cho học đúng phần đó, tới khi có bằng chứng bạn đạt cấp.'}<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
+    <p class="muted">${FUTURE()?'Biết band ước tính từng kỹ năng, học theo kế hoạch tới ngày thi.':'Học theo bài, ôn đúng lúc sắp quên, chơi game để rèn đồ. App tự tìm chỗ bạn còn thiếu và chỉ cho học đúng phần đó, tới khi có bằng chứng bạn đạt cấp.'}<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
   <p class="hint hello-trust">Bản thử chưa thu tiền · Không quảng cáo bên thứ ba · Không bán dữ liệu · <button class="linkbtn" data-go="about">Về app</button></p>
   <div class="actbar hello-act">${helloActs()}</div>
   ${restore}`; };
@@ -10469,6 +10480,7 @@ if(st.onboarded&&!(st.e&&(st.e.goals||[]).length)&&ALL_WORDS.some(w=>(st.words[w
 const _gap=st.onboarded?daysAway():0;
 if(!LOAD_ISSUE) appOpen();
 applyFreeze();
+try{ if(st.onboarded&&loadRun()&&ui.view==='goal') ui.view='lib'; }catch(e){}   // v175 đang làm dở: mở vào Học bài (bước ▶ Làm tiếp)
 render();
 window.ELREADY=true; clipsLoad();
 if(window.ELPEND){ const p=window.ELPEND; window.ELPEND=null; setTimeout(()=>{ const b=document.querySelector(p.act?`#app [data-act="${p.act}"]`:`#app [data-go="${p.go}"]`); if(b) b.click(); },0); }

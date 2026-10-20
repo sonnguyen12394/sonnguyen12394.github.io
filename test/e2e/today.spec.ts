@@ -35,7 +35,7 @@ for (const scheme of ['light', 'dark'] as const) {
     await open(page, 'nd');
     const box = page.locator('#app .dayplan');
     await expect(box).toContainText('▶ Hôm nay · mục tiêu A1');
-    await expect(box.locator('[data-day]')).toHaveCount(1);
+    await expect(box.locator('.btn.primary.big')).toHaveCount(1);
     const a = await plan(page);
     expect(a.length).toBeGreaterThanOrEqual(2);
     for (const s of a) expect(['📘 Học bài', '⚡ Học nhanh']).toContain(s.side);
@@ -63,8 +63,8 @@ test('v172 → v173 giai đoạn học (📘 Học < 80%): bài mới trước r
   expect(due.side).toBe('📘 Học bài'); expect(due.t).toContain('Ôn 12 từ đến hạn (còn 45 từ)');
   expect(r.steps.findIndex((s: any) => s.k === 'due')).toBeGreaterThan(0);
   await page.evaluate(() => (window as any).eval('render()'));
-  await expect(page.locator('#app .dayplan [data-day]')).toHaveAttribute('data-day', 'gap');
-  expect(await page.evaluate(() => { const w = window as any; w.eval('dayMark')('due'); return w.eval('st').nd.day.done; })).toEqual([]);   // còn lượt ôn
+  await expect(page.locator('#app .dayplan .btn.primary.big')).toHaveAttribute('data-unit', r.cur);
+  await expect(page.locator('#app .dayplan li [data-act="dayreview"]')).toHaveText('Làm');   // v175 bước nào cũng có nút
   expect(errors).toEqual([]);
 });
 
@@ -91,13 +91,13 @@ test('v172 giai đoạn ôn (📘 Học ≥ 80%): ôn đứng đầu, lặp tớ
     const a = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.t + '|' + s.at);
     for (const x of ws.slice(0, 10)) W(x.id).due = t + 3;
     const b = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at);
-    const done = [0, 1, 2, 3].map(() => { w.eval('dayMark')('due'); return w.eval('st').nd.day.done.length; });
-    w.eval('dayMark')('due');
-    return { a, b, done, end: w.eval('st').nd.day.done, cur: w.eval('currentUnit()').id }; });
+    w.eval('TRK()').rd[t] = [60, 50, 54];   // v175 đã ôn đủ 5 lượt × 12 câu hôm nay → thôi đưa ôn
+    const c = w.eval('dayPlan()').steps.map((s: any) => s.k);
+    return { a, b, c, cur: w.eval('currentUnit()').id }; });
   expect(r.a[0]).toContain('due|Ôn 12 từ đến hạn (còn 40 từ)');
   expect(r.a.some((s: string) => s.includes(`data-unit="${r.cur}"`))).toBe(false);
   expect(r.b.some((s: string) => s.includes(`data-unit="${r.cur}"`))).toBe(true);
-  expect(r.done).toEqual([0, 0, 0, 0]); expect(r.end).toEqual(['due']);
+  expect(r.c).not.toContain('due');
   expect(errors).toEqual([]);
 });
 
@@ -117,8 +117,8 @@ test('v161 Ôn luyện dưới 50% ở unit chưa học → "cần học trướ
   // vượt nhanh rớt được ghi để não biết người học có nền hay chưa
   expect(await page.evaluate(() => (window as any).eval('st').nd.to.length)).toBe(1);
   // bấm ▶ ở bước "cần học" → mở đúng unit ở Học bài
-  await page.evaluate(() => { const w = window as any; w.eval('st').nd.day = { d: w.eval('today()'), done: ['due', 'gap', 'use'].filter(k => k !== 'need') }; w.eval("go('nd')"); });
-  await page.locator('#app .dayplan [data-day="need"]').click();
+  await page.evaluate(() => (window as any).eval("go('nd')"));
+  await page.locator(`#app .dayplan [data-unit="${uid}"]`).first().click();
   expect(await page.evaluate(() => (window as any).eval('ui').unitId)).toBe(uid);
   // qua bài cuối unit ở Học bài → hết "cần học trước", unit quay lại vòng ôn
   const cleared = await page.evaluate((u: string) => { const w = window as any;
@@ -181,11 +181,11 @@ test('v161 Nói theo đề A1 / A2 ở Học bài: ý tìm bằng từ khoá tro
 test('v162 → v165 hai đường: lời giới thiệu (người mới → Học bài; học lâu mà mất gốc → ⚡ Học nhanh); không còn dòng gợi ý đường cũ', async ({ page, errors }) => {
   await open(page, 'nd');
   await expect(page.locator('#app')).toContainText('mất gốc, không muốn học lại từ đầu');   // v165 ⚡ Học nhanh
-  await expect(page.locator('#app .dayplan')).toContainText('Trước hết học cho hết bài');
+  await expect(page.locator('#app .dayplan')).toContainText('Đang ở giai đoạn');
   await expect(page.locator('#app .pathfit')).toHaveCount(0);
   expect(await page.evaluate(() => typeof (window as any).pathFit)).toBe('undefined');
   await page.evaluate(() => (window as any).eval("go('lib')"));
-  await expect(page.locator('#app')).toContainText('Người mới hoàn toàn: đây là đường nhanh nhất');
+  await expect(page.locator('#app')).toContainText('Làm theo ▶ Hôm nay là đi tới Thi chuyển cấp');
   const ax = await new AxeBuilder({ page }).include('#app .dayplan').withTags(AXE).analyze();
   expect(ax.violations.map(v => v.id)).toEqual([]);
   expect(errors).toEqual([]);
@@ -228,5 +228,28 @@ test('v165 "gần được" (50–80%): không còn đếm 2 lần → Học bà
   await page.evaluate(() => { const st = (window as any).eval('st'); st.offset = (st.offset || 0) + 1; });
   await mid();
   expect(await page.evaluate((u: string) => !!(window as any).eval('U')(u).ndNeed, uid)).toBe(false);   // 2 lần gần được vẫn không đẩy về Học bài
+  expect(errors).toEqual([]);
+});
+
+test('v175 học thử: bấm mở bước không tính là xong; học xong unit thì unit kế hiện ngay (nhiều unit / ngày); có lượt dở → bước "Làm tiếp" đứng đầu; không còn năng lượng', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const cur = await page.evaluate(() => (window as any).eval('currentUnit()').id as string);
+  await page.locator('#app .dayplan .btn.primary.big').click();   // mở unit rồi quay lại
+  expect(await page.evaluate(() => (window as any).eval('ui').unitId)).toBe(cur);
+  await page.evaluate(() => (window as any).eval("go('lib')"));
+  await expect(page.locator('#app .dayplan .btn.primary.big')).toHaveAttribute('data-unit', cur);
+  await expect(page.locator('#app .dayplan')).not.toContainText('Xong các bước hôm nay');
+  // qua unit → unit kế là bước đầu; dòng "Đã làm hôm nay" ghi số unit qua
+  const nx = await page.evaluate((u: string) => { const w = window as any, t = w.eval('today()'); Object.assign(w.eval('U')(u), { learned: true, passed: true, pd: t }); w.eval('TRK()').d[t] = { m: 600, mr: 0, q: 30 }; w.eval('render()'); return w.eval('currentUnit()').id as string; }, cur);
+  expect(nx).not.toBe(cur);
+  await expect(page.locator('#app .dayplan .btn.primary.big')).toHaveAttribute('data-unit', nx);
+  await expect(page.locator('#app .dayplan')).toContainText('Đã làm hôm nay: 30 câu · qua 1 unit');
+  // lượt dở → "Làm tiếp" đứng đầu
+  await page.evaluate(() => { const w = window as any, u = w.eval('UNITS')[0]; w.eval('U')(u.id).learned = true; w.eval('startSession')('practice', w.eval('practiceItems')(u.words), u.id); w.eval('answer')(true, {}); w.eval('next')(); w.eval("go('lib')"); });
+  await expect(page.locator('#app .dayplan .btn.primary.big')).toHaveAttribute('data-act', 'resume');
+  // không còn năng lượng: luyện nhiều lượt liền không bị chặn
+  const blocked = await page.evaluate(() => { const w = window as any, u = w.eval('UNITS')[0]; for (let i = 0; i < 8; i++) w.eval('startSession')('practice', w.eval('practiceItems')(u.words), u.id); return !document.getElementById('modal')!.hidden; });
+  expect(blocked).toBe(false);
+  expect(await page.evaluate(() => (window as any).eval('EN_COST').size)).toBe(0);
   expect(errors).toEqual([]);
 });

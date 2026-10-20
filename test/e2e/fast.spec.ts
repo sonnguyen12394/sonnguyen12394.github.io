@@ -165,6 +165,7 @@ test('v165 ▶ Hôm nay theo đường: 📘 → không đưa chặng; ⚡ → c
   const steps = () => page.evaluate(() => (window as any).eval('dayPlan()').steps.map((x: any) => x.k + '|' + x.at));
   await page.evaluate(() => { const w = window as any; w.eval('FST()').path = 'normal'; w.eval('render()'); });
   expect((await steps()).some((s: string) => s.includes('fastgo'))).toBe(false);
+  await page.evaluate(() => (window as any).eval("go('nd')"));   // v175 nút đổi đường hiện ở tab ⚡ (Học bài chỉ hiện khi đang đi ⚡)
   await page.locator('#app .dayplan [data-act="fastpath"][data-v="fast"]').click();
   expect(await page.evaluate(() => (window as any).eval('FST()').path)).toBe('fast');
   const s1 = await steps();
