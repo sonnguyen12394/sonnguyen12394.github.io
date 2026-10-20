@@ -21,6 +21,7 @@
     "sim": "node --experimental-strip-types --no-warnings tools/sim/run.ts",
     "score": "node --experimental-strip-types --no-warnings tools/score/score.ts",
     "fightsim": "node --experimental-strip-types --no-warnings tools/sim/fight.ts",
+    "gatesim": "node --experimental-strip-types --no-warnings tools/sim/gate.ts",
     "testgen": "node --experimental-strip-types --no-warnings tools/testgen-sample.ts"
   },
   "devDependencies": {

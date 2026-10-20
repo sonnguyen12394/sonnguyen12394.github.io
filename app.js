@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 108;
+const STATE_V = 18, APP_VERSION = 109;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -2762,7 +2762,7 @@ function navActive(){
 function renderChrome(){
   const due=dueWords().length, gdue=dueG().length, active=navActive();
 
-  const badge = k => k===((st.fast||{}).path==='normal'?'lib':'nd')&&due+gdue ? `<span class="badge" aria-label="${due+gdue} mục đến hạn ôn">${due+gdue}</span>` : '';
+  const badge = k => k===((st.fast||{}).path==='fast'?'nd':'lib')&&due+gdue ? `<span class="badge" aria-label="${due+gdue} mục đến hạn ôn">${due+gdue}</span>` : '';
   featCheck(); const NAV=BNAV.filter(([k])=>featOn(k));
   document.getElementById('nav').innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${badge(k)}</button>`).join('');
   const bn=document.getElementById('bnav');
@@ -7219,13 +7219,17 @@ function ndNext(L){ const o=ndPlan(L); if(!o) return; const n=st.nd||(st.nd={d:{
 // ---- v161 ▶ Hôm nay: một não điều phối Học bài + Ôn luyện (người sáng lập 18/10/2026: một nút; não tự cân ôn / mới) ----
 // Ôn luyện: người có nền nhớ lại nhanh, vượt nhanh bài. Học bài: người chưa có kiến thức đó; ôn mà dưới 50% thì não đưa về học (ndNeed).
 const ND_NEED = 0.5, DAY_DUE = 12;   // v165 bỏ ND_MID
+// v171 (người sáng lập 20/10/2026: "cứ theo học chính thống, học nhanh tính sau"; mục tiêu 📘 Học 80% · 🔁 Nhớ 50%): ôn theo kịp lịch.
+// Mô phỏng FSRS: học 1 unit / ngày cần ôn khoảng 40 từ / ngày; chỉ 12 từ (+ 4 từ ôn lồng mỗi lượt luyện) thì 🔁 Nhớ kẹt quanh 10–30%.
+// Nên bước ôn ở ▶ Hôm nay lặp tới hết từ đến hạn (tối đa DAY_ROUNDS lượt × DAY_DUE từ / ngày); nợ ôn ≥ BACKLOG (40, cùng ngưỡng của mainAction) thì chưa mở unit mới.
+const DAY_ROUNDS = 5;
 const zeroStart = () => { const d=st.e&&st.e.diag; return !!d&&!d.n&&!d.u&&!d.g; };   // chọn "Tôi chưa biết gì tiếng Anh"
 // Có nền? 3 lượt vượt nhanh gần nhất: ≥ 2 lượt đạt ≥ 50% → có ('yes'); ≥ 2 lượt dưới 50% → chưa ('no'); chưa đủ → null (thử thêm).
 function ndBase(){ const to=(st.nd||{}).to||[]; if(!to.length) return zeroStart()?'no':null;
   const ok=to.filter(x=>x.s>=ND_NEED).length, bad=to.length-ok; return ok>=2?'yes':bad>=2?'no':null; }
 function dayParts(L){ try{ return EM&&EM.parts?EM.parts('cefr-'+L.toLowerCase()):null; }catch(e){ return null; } }
 function dayDone(){ const n=st.nd||(st.nd={d:{}}), t=today(); if(!n.day||n.day.d!==t) n.day={d:t,done:[]}; return n.day.done; }
-function dayMark(k){ const d=dayDone(); if(!d.includes(k)) d.push(k); save(); }
+function dayMark(k){ const d=dayDone(); if(k==='due'){ const n=st.nd.day; n.rv=(n.rv||0)+1; if(n.rv<DAY_ROUNDS){ save(); return; } } if(!d.includes(k)) d.push(k); save(); }   // v171 bước ôn: tới DAY_ROUNDS lượt / ngày mới tính là xong
 const LIB = '📘 Học bài', NDT = '⚡ Học nhanh';
 // Bước của buổi: k (ô), side, t (việc), why (lý do), at (thuộc tính nút). Tính lại mỗi lần vẽ; chỉ lưu ô đã bấm trong ngày.
 // v163 (người sáng lập 18/10/2026: "não phải tự đánh giá"; liệt kê trường hợp cho bớt phức tạp): MỘT chỗ đọc tình trạng (actsOf),
@@ -7246,17 +7250,18 @@ function actsOf(L){ L=L||ndLv(); const t=today(), p=dayParts(L), us=UNITS.filter
   const tgN=[...ndTargets(L).keys()].filter(id=>{ const w=WORD[id]; return w&&/^(noun|verb|adj)/.test(w.pos||'')&&w.ex; }).length, gx=(st.wrg||{}).gap, wrG=tgN>=3&&!(gx&&gx.day===t)?'gap':null;
   const wr=wrT&&wrG?(((st.nd||{}).wk||0)%2?wrG:wrT):(wrT||wrG);
   return {L,t,p,lq,mq,gl,gm,memFirst:gm>=gl,why,dw:dueWords().length,dg:dueG().length,need,pk,fade,newRd,base:ndBase(),cur,od,ph,fn,rp,wr,sk:ndStk(L),
-    path:FST().path,gd:gapDue().length,ch:fastNext(L)}; }   // v165 đường đang đi (⚡ / 📘), chỗ lủng đến hạn vá, chặng kế
+    path:FST().path||'normal',gd:gapDue().length,ch:fastNext(L)}; }   // v165 đường đang đi (⚡ / 📘), chỗ lủng đến hạn vá, chặng kế
 function dayPlan(){ const A=actsOf(), out=[], {L,why,base,cur,od}=A;
-  if(A.dw||A.dg) out.push({k:'due',side:NDT,t:A.dw?`Ôn ${Math.min(A.dw,DAY_DUE)} từ đến hạn`:`Ôn ${A.dg} bài ngữ pháp đến hạn`,why:'đúng lúc sắp quên thì nhớ lâu nhất',at:A.dw?'data-act="dayreview"':'data-act="greview"'});
+  const brake=A.dw>=BACKLOG&&cur&&!U(cur.id).learned;   // v171 nợ ôn nhiều: ôn trước, chưa mở unit mới (giữ thanh 🔁 Nhớ)
+  if(A.dw||A.dg) out.push({k:'due',side:LIB,t:A.dw?`Ôn ${Math.min(A.dw,DAY_DUE)} từ đến hạn${A.dw>DAY_DUE?` (còn ${A.dw} từ)`:''}`:`Ôn ${A.dg} bài ngữ pháp đến hạn`,why:brake?`còn nhiều từ đến hạn: ôn trước, chưa mở bài mới để thanh 🔁 Nhớ không tụt`:'đúng lúc sắp quên thì nhớ lâu nhất',at:A.dw?'data-act="dayreview"':'data-act="greview"'});
   if(A.need) out.push({k:'need',side:LIB,t:`Học ${uname(A.need)} · ${esc(A.need.title)}`,why:'Học nhanh đúng dưới 50%: cần học kiến thức này trước',at:`data-unit="${A.need.id}"`});
-  if(A.gd) out.push({k:'fix',side:NDT,t:`🩹 Vá ${Math.min(A.gd,FAST_FIX_N)} chỗ lủng`,why:'chỉ học lại đúng chỗ làm sai, không học lại cả bài',at:'data-act="fixgo"'});   // v165
+  if(A.gd&&A.path==='fast') out.push({k:'fix',side:NDT,t:`🩹 Vá ${Math.min(A.gd,FAST_FIX_N)} chỗ lủng`,why:'chỉ học lại đúng chỗ làm sai, không học lại cả bài',at:'data-act="fixgo"'});   // v165
   const mem=A.fade?{k:'gap',side:NDT,t:`Đọc / nghe lại ${uname(A.fade.u)} · ${esc(A.fade.u.title)}`,why:`${A.fade.why}; ${why}`,at:`data-act="dayread" data-v="${A.fade.u.id}"`}:null;
   const rd=A.newRd&&(A.path==='fast'||(A.path==null&&base!=='no'))?{k:'gap',side:NDT,t:`Vượt nhanh ${uname(A.newRd)} · ${esc(A.newRd.title)}`,why:`${base==='yes'?'bạn có nền: đọc hiểu đạt là qua unit':'thử xem bạn đã biết chưa; dưới 50% thì về Học bài'}; ${why}`,at:`data-act="dayread" data-v="${A.newRd.id}"`}:null;
   // v165 ⚡ vượt chặng: đường ⚡ (hoặc chưa chọn đường mà chưa rõ là người mới hoàn toàn) → chặng kế; chặng đầu tiên = 🧭 Đo nền.
   const chunk=A.ch&&A.path!=='normal'&&!(A.path==null&&base==='no')?{k:'gap',side:NDT,t:`⚡ ${esc(fastName(A.ch))}`,why:`${A.path?'làm bài trước: đúng thì qua, sai thì chỉ vá chỗ đó':'🧭 đo nền: một chặng khoảng 8 phút để biết bạn có nền tới đâu'}; ${why}`,at:`data-act="fastgo" data-v="${A.ch.key}"`}:null;
   const fast=chunk||rd;
-  const learn=cur&&!U(cur.id).passed?{k:'gap',side:LIB,t:`${U(cur.id).learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,why:`${base==='no'?'học từ đầu tới vững':'bài mới'}; ${why}`,at:`data-unit="${cur.id}"`}
+  const learn=cur&&!U(cur.id).passed&&!brake?{k:'gap',side:LIB,t:`${U(cur.id).learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,why:`${base==='no'?'học từ đầu tới vững':'bài mới'}; ${why}`,at:`data-unit="${cur.id}"`}
     :od?{k:'gap',side:LIB,t:`Luyện lại ${uname(od.u)} · ${esc(od.u.title)}`,why:`${od.n} từ đến lúc gọi lại; ${why}`,at:`data-act="practice" data-u="${od.u.id}"`}:null;
   const learnFirst=cur&&U(cur.id).learned&&!U(cur.id).passed;   // T6 đang học dở: học tiếp trước khi vượt nhanh bài khác
   const main=A.path==='fast'?(fast||learn):((learnFirst?learn:fast)||learn||fast);   // v165 đường ⚡: vượt / vá trước học mới
@@ -7276,12 +7281,12 @@ function useActs(A){ const {ph,fn,rp,wr,sk}=A;
 // v162 người mới hoàn toàn → 📘 Học bài nhanh nhất; có nền → 🔁 Ôn luyện nhanh nhất; ▶ Hôm nay cho người có kiến thức nhưng lủng.
 // v163 bỏ dòng gợi ý đường (pathFit): não tự quyết từng bước, không bắt người học chọn đường.
 // v165 đường đang đi + nút đổi (người học đổi bất cứ lúc nào; chưa chọn thì não thử một chặng ⚡ để đo nền).
-function dayPathHtml(){ const p=FST().path, oth=p==='normal'?'fast':'normal';
-  return `<p class="row" style="gap:6px;align-items:center"><span>Đường đang đi: <b>${p==='fast'?FASTT:p==='normal'?LIB:'chưa chọn'}</b>${p?'':' (não thử một chặng ⚡ để đo nền)'}</span><button class="btn small ghost" data-act="fastpath" data-v="${p?oth:'normal'}">Đổi sang ${p==='normal'?FASTT:LIB}</button>${p?'':`<button class="btn small ghost" data-act="fastpath" data-v="fast">Chọn ${FASTT}</button>`}</p>`; }
+function dayPathHtml(){ const p=FST().path==='fast'?'fast':'normal';   // v171 chưa chọn = 📘 Học bài
+  return `<p class="row" style="gap:6px;align-items:center"><span>Đường đang đi: <b>${p==='fast'?FASTT:LIB}</b></span><button class="btn small ghost" data-act="fastpath" data-v="${p==='fast'?'normal':'fast'}">Đổi sang ${p==='fast'?LIB:FASTT}</button></p>`; }
 function dayHtml(where){ const P=dayPlan(), done=dayDone(), left=P.steps.filter(x=>!done.includes(x.k)), nx=left[0];
   const li=x=>`<li class="spread" style="gap:8px;align-items:flex-start"><span>${done.includes(x.k)?'✓':x===nx?'▶':'•'} <b>${x.t}</b> <span class="pill">${x.side}</span><br><span class="hint">${x.why}</span></span></li>`;
   return `<section class="panel stack dayplan" aria-label="Hôm nay"><h2>▶ Hôm nay · mục tiêu ${P.L}</h2>
-    <p class="hint">Một não cho cả hai đường. 📘 Học bài: học từ đầu, học mới và ôn đi cùng nhau. ⚡ Học nhanh: cho người đã học lâu nhưng mất gốc: làm bài trước, đúng thì qua, sai chỗ nào chỉ vá chỗ đó. Sắp quên thì ôn, ở đường nào cũng vậy.</p>
+    <p class="hint">Làm lần lượt từ trên xuống. Ôn từ đến hạn trước, rồi mới học bài mới: 🔁 Nhớ chỉ lên khi bạn nhớ lại được sau ≥ 3 ngày và chưa quên.</p>
     ${dayPathHtml()}
     <ol class="stack" style="gap:8px;list-style:none;padding:0;margin:0">${P.steps.map(li).join('')}</ol>
     ${nx?`<div class="row"><button class="btn primary big" ${nx.at} data-day="${nx.k}">▶ ${where==='lib'||where==='nd'?'Làm bước kế':'Hôm nay'}</button></div>`
@@ -7383,7 +7388,7 @@ const fastName = c => c.k==='w'?`Chặng từ ${c.L} · Unit ${c.us[0].no}–${c
 function fastNext(L){ const F=FST(); for(const l of fastLvs(L)) for(const c of fastChunks(l)) if(!F.ch[c.key]&&fastLeft(c).length) return c; return null; }
 function fastStart(key){ const c=fastLvs('A2').flatMap(fastChunks).find(x=>x.key===key); if(!c) return; const left=fastLeft(c);
   if(!left.length){ FST().ch[key]={d:today(),ok:0,n:0}; save(); return render(); }
-  const F=FST(); if(!F.path) F.path='fast'; save();
+  save();   // v171 làm một chặng không tự đổi đường; đổi bằng nút ở ▶ Hôm nay
   if(c.k==='w'){ const items=[]; for(const u of left){ const [a,b]=shuffle(u.words);
       items.push(Object.assign(build(a,'rcl',{test:true}),{fk:key}),Object.assign(build(b,'ctx',{test:true,noOrder:true,noAudio:true}),{fk:key})); }
     return startSession('fast',spread(items),null,c.L); }

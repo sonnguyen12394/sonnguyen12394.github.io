@@ -25,7 +25,7 @@ async function finish(page: Page, g: boolean, badIdx: number[] = []): Promise<vo
 }
 const F = (page: Page) => page.evaluate(() => JSON.parse(JSON.stringify((window as any).eval('FST()'))));
 
-test('v165 tab ⚡ Học nhanh: thanh dưới, lời giới thiệu cho người mất gốc, bảng Vượt chặng; chưa chọn đường → ▶ Hôm nay đưa chặng đo nền; WCAG AA, 390 px', async ({ page, errors }) => {
+test('v165 tab ⚡ Học nhanh: thanh dưới, lời giới thiệu cho người mất gốc, bảng Vượt chặng; chưa chọn đường → ▶ Hôm nay theo 📘 Học bài (v171); WCAG AA, 390 px', async ({ page, errors }) => {
   await open(page);
   await expect(page.locator('#bnav [data-go="nd"]')).toContainText('Học nhanh');
   await expect(page.getByRole('heading', { name: 'Học nhanh', level: 1 })).toBeVisible();
@@ -33,8 +33,7 @@ test('v165 tab ⚡ Học nhanh: thanh dưới, lời giới thiệu cho người
   await expect(page.locator('#app .fastp')).toContainText('Đo nền');
   await expect(page.locator('#app .fastp [data-act="fastgo"]')).toContainText('Chặng từ A1 · Unit 1–10');
   const st = await page.evaluate(() => (window as any).eval('dayPlan()').steps.map((x: any) => ({ k: x.k, at: x.at, why: x.why })));
-  const ch = st.find((x: any) => /fastgo/.test(x.at));
-  expect(ch, 'chưa chọn đường: có bước vượt chặng').toBeTruthy(); expect(ch.why).toContain('đo nền');
+  expect(st.some((x: any) => /fastgo/.test(x.at)), 'v171 chưa chọn đường = 📘 Học bài: không đưa chặng').toBe(false);
   await expect(page.locator('#app .dayplan')).toContainText('Đường đang đi');
   await noHorizontalScroll(page);
   const ax = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
@@ -42,7 +41,7 @@ test('v165 tab ⚡ Học nhanh: thanh dưới, lời giới thiệu cho người
   expect(errors).toEqual([]);
 });
 
-test('v165 vượt chặng từ: unit đúng hết → qua (tạm vững, từ vào lịch ôn +3 ngày); câu sai → vá đúng từ đó; chặng đầu ghi đường ⚡', async ({ page, errors }) => {
+test('v165 vượt chặng từ: unit đúng hết → qua (tạm vững, từ vào lịch ôn +3 ngày); câu sai → vá đúng từ đó; làm chặng không tự đổi đường (v171)', async ({ page, errors }) => {
   await open(page);
   await page.locator('#app .fastp [data-act="fastgo"]').click();
   const q = await page.evaluate(() => { const s = (window as any).eval('ui').sess; return { kind: s.kind, n: s.q.length, w: s.q.map((x: any) => x.wid) }; });
@@ -59,7 +58,7 @@ test('v165 vượt chặng từ: unit đúng hết → qua (tạm vững, từ v
     return { bad: U(bad).passed, fq: U(bad).fq === t, ok: U(ok.id).passed, skipped: U(ok.id).skipped, due: W(ok.words[5].id).due - t, nPass: us.filter((u: any) => U(u.id).passed).length }; }, q.w[0]);
   expect(r).toMatchObject({ bad: false, fq: true, ok: true, skipped: true, due: 3, nPass: 9 });
   const f = await F(page);
-  expect(f.path).toBe('fast'); expect(f.ch['w:A1:0']).toMatchObject({ ok: 9, n: 10 });
+  expect(f.path).toBeUndefined();   // v171 làm chặng không tự đổi đường expect(f.ch['w:A1:0']).toMatchObject({ ok: 9, n: 10 });
   expect(f.gap).toEqual([expect.objectContaining({ k: 'w', id: q.w[0] })]);
   // chặng kế là chặng khác
   await expect(page.locator('#app [data-act="fastgo"]')).toContainText('Unit 11–20');
