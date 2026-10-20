@@ -1,5 +1,11 @@
 # English Ladder — Master Spec v2
 
+> **20/10/2026 — Các trường hợp học / ôn và phương án (phân tích, giữ v172).** Người sáng lập: "ôn quá nhiều thì tốn thời gian không học được; học lên cao quên chỗ nào thì ôn nhanh lại chỗ lủng; đưa ra các trường hợp rồi tính phương án để rút ngắn thời gian tới Thi chuyển cấp". `npm run gatesim` (FSRS thật, luật Nhớ thật, số câu mỗi unit đếm từ app.js ≈ 53 câu / 10 từ; learner giả lập, chưa người thật kiểm) so 5 cách × 4 kiểu người học × 15 / 30 / 45 phút / ngày: A ôn trước (v171), B học trước + ôn 12 từ / ngày (v172), C ôn thưa (mức nhớ 0,75 khi học, 0,9 khi ôn dồn), D không ôn khi học, E chỉ ôn đủ unit để qua Nhớ 50%.
+> - **B (đang dùng) nhanh nhất hoặc ngang D ở mọi trường hợp**; A chậm gấp 1,9–2,5 lần; E chậm hơn B và nhớ kém (nhớ TB lúc mở 0,78–0,90) nên loại. C chỉ hơn B ở người hay quên với 30 phút / ngày (A2: 489 so với 557 ngày).
+> - Người mới, nhớ TB, nghỉ 1 ngày / tuần, cách B: A1 257 / 118 / 80 ngày (15 / 30 / 45 phút / ngày); A2 699 / 261 / 172 ngày. Nhớ TB mọi từ của cấp lúc mở ≈ 0,91–0,93 (đủ sức làm bài).
+> - **Đòn bẩy lớn nhất là số phút / ngày**, rồi tới độ dài bài: rút từ 5,3 xuống 3,4 câu / từ chỉ bớt khoảng 20% (A1 30 phút: 118 → 95 ngày; `node … tools/sim/gate.ts cost`). Rút gọn bài là quyết định của người sáng lập, chưa làm.
+> - "Quên thì vá chỗ lủng": đã có ở dạng ôn lồng (`mixDue`, 4 từ cũ mỗi lượt luyện; sai thì về lịch ôn ngày mai). Vá theo gốc kiến thức (`G_ROOT`) thuộc ⚡ Học nhanh, để sau.
+
 > **20/10/2026 — Ưu tiên học, đi hết bài rồi mới đẩy mạnh ôn (v172, bản 110; thay phần "ôn trước" của khối v171 ngay dưới).** Người sáng lập: "ưu tiên học; việc ôn lên % nhớ có thời hạn lặp lại, nên học và ôn vừa đủ để nhớ kiến thức đủ đi hết các unit rồi mới đẩy mạnh ôn luyện". ▶ Hôm nay có hai giai đoạn theo thanh 📘 Học của mục tiêu:
 > - **Giai đoạn học (📘 Học < 80%):** bài mới đứng đầu; ôn vừa đủ **1 lượt 12 từ yếu nhất / ngày**, đứng sau bài mới; không phanh học mới; bài mới trước "Đọc / nghe lại". Nút chính của Học bài không đổi sang "Luyện lại" khi nợ ôn ≥ 40.
 > - **Giai đoạn ôn (📘 Học ≥ 80%):** ôn đứng đầu, lặp tới hết từ đến hạn (tối đa 5 lượt × 12 từ / ngày, `DAY_ROUNDS`); nợ ôn ≥ `BACKLOG` (40) thì chưa mở unit mới, đưa "Luyện lại" unit cũ.
