@@ -12,8 +12,8 @@ import type { WsOut } from './gatews.ts';
 // v154 (người sáng lập 17/10/2026): Mục tiêu tách hai thanh. 📘 Học = đã qua bài cuối của bài học; 🔁 Nhớ = nhớ ra sau ≥ 3 ngày và chưa phai.
 // Mở thi khi Học ≥ 80% VÀ Nhớ ≥ 50% (Học quan trọng hơn, Nhớ không bù cho Học).
 // v158 người sáng lập 17/10/2026: chỉ cần tỉ lệ hoàn thành bài học cao, Nhớ 50% cũng được (trước là 70%).
-export const GATE = { open: 0.8, ready: 0.8, sd: 1.5, learn: 0.8, mem: 0.5, memDays: 3, memWord: 0.7, ws: 0.6, memTry: 0.7 } as const;
-export interface GateParts { learn: number; mem: number; total: number; miss?: string[] }   // v161 miss: nút chưa qua (▶ Hôm nay của app chọn cặp âm / chức năng còn thiếu)
+export const GATE = { open: 0.8, ready: 0.8, sd: 1.5, learn: 1, mem: 0.8, memDays: 3, memWord: 0.7, ws: 0.6, memTry: 0.7 } as const;
+export interface GateParts { learn: number; mem: number; total: number; miss?: string[]; rv?: string[] }   // v161 miss: nút chưa qua (▶ Hôm nay của app chọn cặp âm / chức năng còn thiếu)
 // Ngưỡng trên thang band của bộ chấm (src/exam/scales.ts CEFR_TABLE: A1 từ band 1, A2 từ band 3, B1 từ band 4; làm tròn 0,5 nên ngưỡng thật là −0,25).
 export const GATE_THR: Record<string, number> = { 'cefr-a1': 0.75, 'cefr-a2': 2.75, 'cefr-b1': 3.75 };
 // v141 bài sinh theo tiêu chí (testgen.ts) cho các cấp này: mỗi lần làm là bài mới; bộ cố định dưới đây chỉ còn là nguồn câu có sẵn.

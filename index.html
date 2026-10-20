@@ -75,6 +75,8 @@ nav button[aria-current="page"]{color:var(--ink);background:var(--accent-soft)}
 @media (min-width:700px){.gysheet{align-items:center}}
 .gyfab{display:none;position:fixed;right:14px;bottom:calc(14px + var(--abh,0px) + env(safe-area-inset-bottom,0px));z-index:40;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:19px;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer;align-items:center;justify-content:center;opacity:.85}
 body.lesson .gyfab,body.bare .gyfab{display:flex}
+/* v175 (học thử): tấm đúng / sai hiện thì ẩn 💬 (đè nút TIẾP TỤC); tấm đã có "Báo lỗi câu này" */
+body:has(.sheet) .gyfab{display:none!important}
 /* màn hẹp: thanh đầu trang một dòng (nowrap) không còn chỗ, nút 💬 nổi ngay trên thanh điều hướng dưới */
 @media (max-width:640px){.gybtn{display:none}.gyfab{display:flex;bottom:calc(72px + var(--abh,0px) + env(safe-area-inset-bottom,0px))}body.lesson .gyfab,body.bare .gyfab{bottom:calc(14px + var(--abh,0px) + env(safe-area-inset-bottom,0px))}body.stage .gyfab{display:none}}
 .clock{margin-left:auto;display:flex;align-items:center;gap:8px;font:500 12px/1 var(--mono);color:var(--muted)}
@@ -1289,7 +1291,7 @@ span.bkslot:empty{border-style:dashed;opacity:.4;cursor:default}
 </div></header>
 <button class="gyfab" data-act="gyopen" aria-label="Góp ý" title="Góp ý (kèm ảnh)">💬</button>
 <main id="app"><div id="boot-hello" hidden><section class="hello"><h1>Tiếng Anh từ con số 0 tới C2</h1>
-<p class="muted">Học tiếng Anh để rèn đồ cho Chiến Binh Chữ: đồ mạnh nhờ năng lực tiếng Anh thật. App tự tìm chỗ bạn còn thiếu và chỉ cho học đúng phần đó, tới khi có bằng chứng bạn đạt cấp.<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
+<p class="muted">Học theo bài, ôn đúng lúc sắp quên, chơi game để rèn đồ. App tự tìm chỗ bạn còn thiếu và chỉ cho học đúng phần đó, tới khi có bằng chứng bạn đạt cấp.<br>Giải thích bằng tiếng Việt, không cần tài khoản.</p></section>
 <p class="hint hello-trust">Bản thử chưa thu tiền · Không quảng cáo bên thứ ba · Không bán dữ liệu · <button class="linkbtn" data-go="about">Về app</button></p>
 <div class="actbar hello-act"><button class="btn primary" data-act="startplay">Bắt đầu</button><button class="btn" data-act="startpa">Mới tinh: khởi động Pre-A1</button></div></div>
 <p id="boot-wait" class="muted" style="padding:40px 0;text-align:center" role="status">Đang mở English Ladder…</p>
@@ -1306,4 +1308,4 @@ try{ if(!localStorage.getItem('vocab-ladder-v1')){ document.body.classList.add('
 <div class="cel" id="celebrate" hidden></div>
 <div class="cel" id="modal" hidden></div>
 
-<script src="x/core.bab9480a1f.js" defer></script><script src="app.js?v=113" defer></script>
+<script src="x/core.bab9480a1f.js" defer></script><script src="app.js?v=115" defer></script>
