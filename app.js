@@ -1378,7 +1378,8 @@ function others(w,n){
 // Câu ngữ cảnh cho bài kết hợp từ: câu ví dụ có chứa nguyên cụm đúng, che cụm đó. Không có ngữ cảnh thì hai cách nói
 // đều tự nhiên dễ cùng đúng (import from / import of), nên có câu thì luôn hiện (22% thẻ).
 function colCtx(w){ const ok=w.col.ok.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  for(const x of [w.ex,w.ex2]){ if(!x) continue; const m=x.match(new RegExp('(^|[^A-Za-z])('+ok+')(?![A-Za-z])','i')); if(m) return x.slice(0,m.index+m[1].length)+'___'+x.slice(m.index+m[1].length+m[2].length); }
+  for(const x of [w.ex,w.ex2]){ if(!x) continue; const m=x.match(new RegExp('(^|[^A-Za-z])('+ok+')(?![A-Za-z])','i')); if(!m) continue;
+    const r=x.slice(0,m.index+m[1].length)+'___'+x.slice(m.index+m[1].length+m[2].length); if(r.replace('___','').replace(/[^A-Za-z]/g,'').length>=3) return r; }   // v175 cụm = cả câu thì không có ngữ cảnh (đề chỉ còn một gạch trống)
   return ''; }
 function mcq(type,dim,w,prompt,correct,wrongs,extra={}){
   const opts=shuffle([correct,...wrongs]);
@@ -1434,7 +1435,8 @@ function build(w,dim,opt={}){
       }
       if(!opt.noOrder && !opt.test && Math.random()<.25){
         const toks=exPick(w)[0].split(' ');
-        return {type:'ord',dim:'ctx',wid:w.id,tokens:shuffle(toks.map((t,i)=>({t,i}))),ans:toks.join(' ')};
+        let tk=shuffle(toks.map((t,i)=>({t,i}))); for(let k=0;k<6&&tk.every((x,i)=>x.t===toks[i]);k++) tk=shuffle(tk);   // v175 không để sẵn đúng thứ tự
+        return {type:'ord',dim:'ctx',wid:w.id,tokens:tk,ans:toks.join(' ')};
       }
       const xs=exPick(w)[0], m=xs.match(stemRe(w));
       if(hard && m && Math.random()<(opt.test?.5:.6))
@@ -7310,6 +7312,7 @@ function actsOf(L){ L=L||ndLv(); const t=today(), p=dayParts(L), us=UNITS.filter
   const tgN=[...ndTargets(L).keys()].filter(id=>{ const w=WORD[id]; return w&&/^(noun|verb|adj)/.test(w.pos||'')&&w.ex; }).length, gx=(st.wrg||{}).gap, wrG=tgN>=3&&!(gx&&gx.day===t)?'gap':null;
   const wr=wrT&&wrG?(((st.nd||{}).wk||0)%2?wrG:wrT):(wrT||wrG);
   return {L,t,p,lq,mq,gl,gm,memFirst:gm>=gl,why,dw:dueWords().length,dg:dueG().length,need,pk,fade,newRd,base:ndBase(),cur,od,ph,fn,rp,wr,sk:ndStk(L),
+    gn:GPOINTS.find(p=>p.level===L&&!G(p.id).passed&&gUnlocked(p))||null,   // v175 bài ngữ pháp kế của cấp
     path:FST().path||'normal',gd:gapDue().length,ch:fastNext(L)}; }   // v165 đường đang đi (⚡ / 📘), chỗ lủng đến hạn vá, chặng kế
 function dayPlan(){ const A=actsOf(), out=[], {L,why,base,cur,od}=A;
   const ph2=A.lq>=80;   // v172 giai đoạn ôn
@@ -7327,17 +7330,24 @@ function dayPlan(){ const A=actsOf(), out=[], {L,why,base,cur,od}=A;
   // v165 ⚡ vượt chặng: đường ⚡ (hoặc chưa chọn đường mà chưa rõ là người mới hoàn toàn) → chặng kế; chặng đầu tiên = 🧭 Đo nền.
   const chunk=A.ch&&A.path!=='normal'&&!(A.path==null&&base==='no')?{k:'gap',side:NDT,t:`⚡ ${esc(fastName(A.ch))}`,why:`${A.path?'làm bài trước: đúng thì qua, sai thì chỉ vá chỗ đó':'🧭 đo nền: một chặng khoảng 8 phút để biết bạn có nền tới đâu'}; ${why}`,at:`data-act="fastgo" data-v="${A.ch.key}"`}:null;
   const fast=chunk||rd;
-  const learn=cur&&!U(cur.id).passed&&!brake?{k:'gap',side:LIB,t:`${U(cur.id).learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,why:`${base==='no'?'học từ đầu tới vững':'bài mới'}; ${why}`,at:`data-unit="${cur.id}"`}
+  const cap=!!cur&&!U(cur.id).learned&&newCapHit();   // v175 (học thử): đã đủ từ mới / ngày thì không đưa unit mới (bấm vào chỉ gặp hộp "đã đủ từ mới")
+  const learn=cur&&!U(cur.id).passed&&!brake&&!cap?{k:'gap',side:LIB,t:`${U(cur.id).learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,why:`${base==='no'?'học từ đầu tới vững':'bài mới'}; ${why}`,at:`data-unit="${cur.id}"`}
     :od?{k:'gap',side:LIB,t:`Luyện lại ${uname(od.u)} · ${esc(od.u.title)}`,why:`${od.n} từ đến lúc gọi lại; ${why}`,at:`data-act="practice" data-u="${od.u.id}"`}:null;
   const learnFirst=cur&&U(cur.id).learned&&!U(cur.id).passed;   // T6 đang học dở: học tiếp trước khi vượt nhanh bài khác
   const main=A.path==='fast'?(fast||learn):((learnFirst?learn:fast)||learn||fast);   // v165 đường ⚡: vượt / vá trước học mới
   const gap=ph2&&A.memFirst?(mem||main):(main||mem);   // v172 giai đoạn học: bài mới trước đọc lại
+  // v175 (học thử: ▶ Hôm nay chưa từng đưa bài ngữ pháp, nên 📘 Học A1 kẹt ở 78% = 87 unit + 7 cặp âm + 8 chức năng trên 130):
+  // bước ngữ pháp đi đều cùng unit: tỉ lệ bài ngữ pháp đã qua thấp hơn tỉ lệ unit đã qua thì đứng trước bài mới.
+  const gn=A.gn, gram=gn?{k:'gram',side:LIB,t:`🧩 Ngữ pháp: ${esc(gn.title)} · ${esc(gn.vi)}`,why:'bài ngữ pháp: thanh 📘 Học cần cả ngữ pháp (học, luyện, qua bài cuối)',at:`data-gp="${gn.id}"`}:null;
+  const lvU=UNITS.filter(u=>u.level===L), lvG=GPOINTS.filter(p=>p.level===L), gBehind=gram&&lvG.filter(p=>G(p.id).passed).length/lvG.length<lvU.filter(u=>U(u.id).passed).length/lvU.length;
+  if(gram&&(gBehind||!gap)) out.push(gram);
   if(gap) out.push(gap);
+  if(gram&&!gBehind&&gap) out.push(gram);
   if(due&&!ph2) out.push(due);   // v172 giai đoạn học: ôn vừa đủ sau bài mới
   const use=useActs(A);
   if(use.length){ const lk=(st.nd||{}).uk||0, blockL=A.lq<80&&(A.ph||A.fn);   // thanh Học còn thiếu mà còn bài âm / chức năng → đưa trước; còn lại xoay vòng theo ngày
     out.push(blockL?use[0]:use[(lk+A.t)%use.length]); }
-  return {L,steps:out,lq:A.lq,mq:A.mq}; }
+  return {L,steps:out,lq:A.lq,mq:A.mq,cap}; }
 // Bài dùng thật (K1 / K2) + bài còn chặn 📘 Học (cặp âm, chức năng giao tiếp: Ôn luyện không qua được hai loại này).
 function useActs(A){ const {ph,fn,rp,wr,sk}=A;
   return [ph&&{k:'use',side:LIB,t:`🗣 Cặp âm ${esc(SND[ph.slice(3)].a)} – ${esc(SND[ph.slice(3)].b)} (${esc(SND[ph.slice(3)].title)})`,why:'cặp âm chưa qua: thanh 📘 Học cần cả bài âm',at:`data-snd="${ph.slice(3)}"`},
@@ -7419,7 +7429,7 @@ function viewTrack(){ const S=trkStats(), f1=v=>(Math.round(v*10)/10).toString()
 function dayHtml(where){ const P=dayPlan(), nx=P.steps[0], t=today(), up=UNITS.filter(u=>{ const x=st.units[u.id]; return x&&x.pd===t; }).length, rv=dayRev(), q=(TRK().d[t]||{}).q||0;
   // v175: mỗi bước có nút riêng (bước đầu là nút lớn); dòng "Đã làm hôm nay" thay dấu ✓ cũ (dấu ✓ cũ tính xong ngay khi bấm mở).
   const li=x=>`<li class="spread" style="gap:8px;align-items:flex-start"><span>${x===nx?'▶':'•'} <b>${x.t}</b> <span class="pill">${x.side}</span><br><span class="hint">${x.why}</span></span>${x===nx?'':`<button class="btn small" ${x.at}>Làm</button>`}</li>`;
-  const did=q?`<p class="hint" role="status">Đã làm hôm nay: ${q} câu${up?` · qua ${up} unit`:''}${rv?` · ôn ${rv} từ đến hạn`:''}.${up&&!P.steps.some(x=>x.k==='due')?' <b>Đủ phần chính hôm nay</b>; còn sức thì làm tiếp bước kế.':''}</p>`:'';
+  const did=(P.cap?`<p class="hint" role="status">${newCapBase()?`Đã học đủ ${st.set.newMax} từ mới hôm nay (đổi trong Cài đặt)`:'Hôm nay ôn đã chiếm phần lớn thời gian bạn có'}: tạm dừng bài mới, mai học tiếp. Hôm nay ôn và luyện cho chắc.</p>`:'')+(q?`<p class="hint" role="status">Đã làm hôm nay: ${q} câu${up?` · qua ${up} unit`:''}${rv?` · ôn ${rv} từ đến hạn`:''}.${up&&!P.steps.some(x=>x.k==='due')?' <b>Đủ phần chính hôm nay</b>; còn sức thì làm tiếp bước kế.':''}</p>`:'');
   return `<section class="panel stack dayplan" aria-label="Hôm nay"><h2>▶ Hôm nay · mục tiêu ${P.L}</h2>
     <p class="hint">Làm từ trên xuống. Đang ở giai đoạn ${P.lq>=80?'<b>ôn</b> (📘 Học ≥ 80%): ôn trước để 🔁 Nhớ lên 50%.':'<b>học</b>: bài mới trước, rồi ôn những từ sắp quên.'}</p>
     ${FST().path==='fast'||where==='nd'?dayPathHtml():''}${did}
@@ -9365,7 +9375,7 @@ const _cvAnswer0 = cvAnswer; cvAnswer = function(text){ const C=ui.cv; if(!C||C.
 { const _vs0=viewSummary; viewSummary=function(){ const h=_vs0(), r=ui.summary; return r&&EN_COST.has(r.kind)?h+adPanel(r):h; };
   const _vg0=viewGSum; viewGSum=function(){ const h=_vg0(), r=ui.gsum; return r&&EN_COST.has(r.kind)?h+adPanel(r):h; };
   const _st0=viewSettings0; viewSettings0=function(){ return _st0()+moneyPanel(); };
-  const _go0=go; go=function(view,extra={}){ const L=extra&&extra.learn; if(view==='learn'&&L&&!L.i&&!extra._nohist&&!U(L.uid).learned&&!enSpend('learn')) return; return _go0(view,extra); };
+  const _go0=go; go=function(view,extra={}){ const L=extra&&extra.learn; if(view==='learn'&&L&&!L.i&&!extra._nohist&&!U(L.uid).learned&&EN_COST.has('learn')&&!enSpend('learn')) return; return _go0(view,extra); };   // v175 học thẻ unit mới cũng không tốn năng lượng (EN_COST rỗng)
   ['enrev','supersim','supertoggle'].forEach(a=>DETAIL_SAFE_ACT.add(a)); }
 DETAIL_SAFE_VIEW.add('conv'); TRANSIENT.conv='talk'; ['cvgo','cvquit','cvplay','cvshow','cvvi','cvhint','cvagain'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('button'); if(!b) return; const d=b.dataset;

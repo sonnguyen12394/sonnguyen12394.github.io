@@ -248,7 +248,10 @@ test('v175 học thử: bấm mở bước không tính là xong; học xong uni
   await page.evaluate(() => { const w = window as any, u = w.eval('UNITS')[0]; w.eval('U')(u.id).learned = true; w.eval('startSession')('practice', w.eval('practiceItems')(u.words), u.id); w.eval('answer')(true, {}); w.eval('next')(); w.eval("go('lib')"); });
   await expect(page.locator('#app .dayplan .btn.primary.big')).toHaveAttribute('data-act', 'resume');
   // không còn năng lượng: luyện nhiều lượt liền không bị chặn
-  const blocked = await page.evaluate(() => { const w = window as any, u = w.eval('UNITS')[0]; for (let i = 0; i < 8; i++) w.eval('startSession')('practice', w.eval('practiceItems')(u.words), u.id); return !document.getElementById('modal')!.hidden; });
+  const blocked = await page.evaluate(() => { const w = window as any, u = w.eval('UNITS')[0], m = w.eval('money()'); m.e = 0; m.t = Date.now();
+    for (let i = 0; i < 8; i++) w.eval('startSession')('practice', w.eval('practiceItems')(u.words), u.id);
+    const u2 = w.eval('UNITS').find((x: any) => !w.eval('U')(x.id).learned); w.eval('go')('learn', { learn: { uid: u2.id, i: 0 } });   // học thẻ unit mới cũng không bị chặn
+    return !document.getElementById('modal')!.hidden || w.eval('ui').view !== 'learn'; });
   expect(blocked).toBe(false);
   expect(await page.evaluate(() => (window as any).eval('EN_COST').size)).toBe(0);
   expect(errors).toEqual([]);
