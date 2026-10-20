@@ -4532,6 +4532,8 @@ async function gaSet(id,o){ let r=false; try{ r=await syncRpc('el_gopy_set',{k:n
 async function gaSave(id){ const v=x=>{ const el=document.getElementById(x+'-'+id); return el?el.value:null; };
   const tx=String(v('gatx')||'').trim(); if(!tx) return toast('Nội dung không được để trống.');
   return gaSet(id,{st:v('gast'),kd:v('gakd'),tx,nt:String(v('gant')||'')}); }
+// v175: danh sách / ảnh tải xong thì màn vẽ lại; giữ loại, nội dung, ghi chú đang gõ ở form Thêm (trước bị về 🐞 Lỗi: test gyadmin chập chờn).
+const gaNew = () => { const v=id=>{ const el=document.getElementById(id); return el?String(el.value||''):''; }; return {kd:v('ganew-kd'),tx:v('ganew-tx'),nt:v('ganew-nt')}; };
 async function gaAdd(){ const kd=(document.getElementById('ganew-kd')||{}).value||'y', tx=String((document.getElementById('ganew-tx')||{}).value||'').trim(), nt=String((document.getElementById('ganew-nt')||{}).value||'').trim();
   if(!tx) return toast('Gõ nội dung góp ý trước nhé.');
   let id=0; try{ id=await syncRpc('el_gopy_add',{k:null,kd,tx,nt:nt||null}); }catch(e){}
@@ -4561,9 +4563,9 @@ function viewGyAdmin(){ const back='<button class="btn ghost back" data-go="feed
   <section class="panel stack" aria-label="Lọc góp ý"><div class="row" role="group" aria-label="Loại" style="gap:6px">${chip('gakd',null,GA.kd,'Tất cả',n(null,GA.st))}${GY_KIND.map(([kk,l])=>chip('gakd',kk,GA.kd,l,n(kk,GA.st))).join('')}</div>
     <div class="row" role="group" aria-label="Trạng thái" style="gap:6px">${chip('gast',null,GA.st,'Chưa xoá',n(GA.kd,null))}${GA_ST.map(([kk,l])=>chip('gast',kk,GA.st,l,n(GA.kd,kk))).join('')}</div>
     <div class="row" style="gap:6px"><button class="btn small" data-act="ganew">➕ Thêm góp ý</button><button class="btn small ghost" data-act="garef" ${GA.busy?'disabled':''}>${GA.busy?'Đang tải…':'↻ Làm mới'}</button></div></section>
-  ${GA.add?`<section class="panel stack" aria-label="Thêm góp ý"><h2>➕ Thêm góp ý</h2><label class="hint" for="ganew-kd">Loại</label><select id="ganew-kd" class="field">${GY_KIND.map(([kk,l])=>`<option value="${kk}">${esc(l)}</option>`).join('')}</select>
-    <label class="hint" for="ganew-tx">Nội dung</label><textarea id="ganew-tx" class="field" rows="3" maxlength="4000"></textarea><label class="hint" for="ganew-nt">Ghi chú (không bắt buộc)</label><textarea id="ganew-nt" class="field" rows="2" maxlength="2000"></textarea>
-    <div class="row"><button class="btn primary" data-act="gaadd">Thêm</button><button class="btn ghost" data-act="ganew">Huỷ</button></div></section>`:''}
+  ${GA.add?(nw=>`<section class="panel stack" aria-label="Thêm góp ý"><h2>➕ Thêm góp ý</h2><label class="hint" for="ganew-kd">Loại</label><select id="ganew-kd" class="field">${GY_KIND.map(([kk,l])=>`<option value="${kk}"${nw.kd===kk?' selected':''}>${esc(l)}</option>`).join('')}</select>
+    <label class="hint" for="ganew-tx">Nội dung</label><textarea id="ganew-tx" class="field" rows="3" maxlength="4000">${esc(nw.tx)}</textarea><label class="hint" for="ganew-nt">Ghi chú (không bắt buộc)</label><textarea id="ganew-nt" class="field" rows="2" maxlength="2000">${esc(nw.nt)}</textarea>
+    <div class="row"><button class="btn primary" data-act="gaadd">Thêm</button><button class="btn ghost" data-act="ganew">Huỷ</button></div></section>`)(gaNew()):''}
   ${GA.err?`<p class="fb bad" role="status"><span>${esc(GA.err)}</span></p>`:''}
   ${GA.rows?(GA.rows.length?GA.rows.map(gaCard).join(''):'<p class="hint">Không có góp ý nào ở mục này.</p>'):GA.busy?'<p class="hint">Đang tải…</p>':''}`; }
 /*</SYNC>*/
