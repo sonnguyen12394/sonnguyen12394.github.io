@@ -1,5 +1,11 @@
 # English Ladder — Master Spec v2
 
+> **20/10/2026 — Chuẩn mở Thi chuyển cấp: 📘 Học 100% · 🔁 Nhớ 80% (v176, bản 114; thay 80% / 50%).** Người sáng lập: "đẩy lên học 100% và nhớ 100% làm chuẩn"; sau khi xem mô phỏng chọn phương án 1: Học 100% · Nhớ 80% + ôn cặp âm / chức năng giao tiếp.
+> - Vì sao không Nhớ 100%: Nhớ đòi mọi phần đang ≥ 0,9 cùng lúc, lịch ôn để mức nhớ chạm 0,9 rồi mới ôn nên luôn có phần vừa tụt; cặp âm / chức năng giao tiếp (15/130 phần A1) trước đây không có lịch ôn → Nhớ tối đa ~88%. Mô phỏng (`npm run gatesim`, learner giả lập): Nhớ 90–100% không đạt trong 900 ngày; Nhớ 80% không tốn thêm ngày so với 50% khi Học 100%.
+> - `GATE.learn` 1, `GATE.mem` 0,8 (engine) = `GATE_LEARN` 100, `GATE_MEM` 80 (app.js, mọi chữ "cần …%", ngày dự kiến ở 📊 Theo dõi học).
+> - **Giai đoạn ôn bắt đầu khi 📘 Học đủ 100%** (`learnPh2`, `dayPlan` ph2). Mô phỏng: chuyển ở 80% thì A1 263 ngày (thời gian ngẫu nhiên), người hay quên không đạt; chuyển ở 100% thì 186 / 252 ngày; A2 778 → 417 ngày.
+> - **Ôn cặp âm / chức năng giao tiếp:** engine `partsOf` trả thêm `rv` (đã học, chưa tính Nhớ, cách lần gặp đầu ≥ 3 ngày hoặc đã phai); ▶ Hôm nay có bước "🔁 Ôn cặp âm … / 🔁 Ôn: …". Chưa người thật kiểm.
+
 > **20/10/2026 — Sửa theo buổi học thử (v175, bản 113).** Claude đóng vai người học khó tính, học Unit 1 → ôn trên iPhone (WebKit); người sáng lập: "tự chỉnh sửa lại hết đi". Chưa người thật kiểm.
 > - **Bỏ năng lượng ở mọi lượt học** (`EN_COST` rỗng): trước đây hết 5 lượt là chặn học 2 giờ ngay ngày đầu, có nút "Bật Super" (trái luật "không ưu đãi ép giờ", phá cách "ưu tiên học"). Thanh đầu không hiện ⚡, không ô quảng cáo Super.
 > - **▶ Hôm nay không còn đánh dấu "xong" khi bấm** (bỏ `dayMark` lúc bấm): bước tự đổi theo việc đã làm thật; qua unit thì unit kế hiện ngay (học nhiều unit / ngày); ôn thôi đưa khi đã ôn `DAY_ROUNDS × DAY_DUE` câu trong ngày (`dayRev`). Bước nào cũng có nút; dòng "Đã làm hôm nay" (câu, unit qua, từ ôn). Có lượt dở → bước "▶ Làm tiếp" đứng đầu; mở app khi có lượt dở → vào Học bài.

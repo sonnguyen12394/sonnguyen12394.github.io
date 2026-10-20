@@ -259,8 +259,8 @@ test('v154 Mục tiêu có hai thanh Học / Nhớ; qua bài cuối unit làm th
   const learn0 = await page.locator('#app [aria-label="Học và Nhớ"] [role="progressbar"]').first().getAttribute('aria-valuenow');
   await page.evaluate(() => { const w = window as any; w.eval('U')(w.eval('UNITS')[0].id).passed = true; w.eval('save()'); w.eval('render()'); });
   await expect(page.locator('#app [aria-label="Học và Nhớ"] [role="progressbar"]').first()).not.toHaveAttribute('aria-valuenow', learn0!);
-  await expect(page.locator('#app [aria-label="Học và Nhớ"]')).toContainText('cần 50%');
-  await expect(page.locator('#app')).toContainText('Mở khi 📘 Học ≥ 80% và 🔁 Nhớ ≥ 50%');
+  await expect(page.locator('#app [aria-label="Học và Nhớ"]')).toContainText('cần 80%');   // v176 Nhớ cần 80%
+  await expect(page.locator('#app')).toContainText('Mở khi 📘 Học ≥ 100% và 🔁 Nhớ ≥ 80%');
   const r = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(r.violations.map(v => v.id)).toEqual([]);
   expect(errors).toEqual([]);
@@ -275,7 +275,7 @@ test('v157 Học bài hiện hai thanh Học / Nhớ; Ôn luyện gọn: không 
   await expect(page.locator('#app details.ndph')).not.toHaveAttribute('open', '');
   await page.locator('#bnav [data-go="lib"]').click();
   const box = page.locator('#app [aria-label^="Học và Nhớ"]');
-  await expect(box).toContainText('cần 80%');
+  await expect(box).toContainText('cần 100%');
   await expect(box.locator('[role="progressbar"]')).toHaveCount(2);
   const ax = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(ax.violations.map(v => v.id)).toEqual([]);
@@ -297,7 +297,7 @@ test('v156 vượt cả từ vựng A1: chỉ unit được hỏi và đúng h�
   await page.evaluate(() => { const w = window as any; w.eval("ui.ndLv='A1'"); w.eval("go('nd')"); });
   await page.waitForFunction(() => { const w = window as any, EM = w.eval('EM'); return !!(EM && EM.parts && EM.parts('cefr-a1')); }, null, { timeout: 30000 });
   await page.evaluate(() => (window as any).eval('render()'));
-  await expect(page.locator('#app [aria-label="Học và Nhớ A1"]')).toContainText('cần 80%');
+  await expect(page.locator('#app [aria-label="Học và Nhớ A1"]')).toContainText('cần 100%');
   await expect(page.locator('#app details.ndph [data-act="ndfn"]')).toBeAttached();
   const ax = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(ax.violations.map(v => v.id)).toEqual([]);

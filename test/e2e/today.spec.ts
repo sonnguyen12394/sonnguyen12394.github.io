@@ -73,7 +73,7 @@ test('v173 lịch ôn theo giai đoạn: giai đoạn học giãn × 3,3 (mức 
   const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), step = w.eval('srsStep'), LPH = w.eval('LPH');
     const [a, b, c] = w.eval('ALL_WORDS').slice(0, 3).map((x: any) => x.id);
     const s1 = W(a); s1.learned = true; s1.due = null; step(s1, true, true);
-    w.dayParts = () => ({ learn: 90, mem: 10, total: 100, miss: [] }); LPH.k = '';   // giả lập 📘 Học 90%
+    w.dayParts = () => ({ learn: 100, mem: 10, total: 100, miss: [] }); LPH.k = '';   // giả lập 📘 Học 100% (v176 giai đoạn ôn)
     const s2 = W(b); s2.learned = true; s2.due = null; step(s2, true, true);
     const s3 = W(c); Object.assign(s3, { learned: true, due: t + 20, fs: 3, fl: t - 10 });   // lịch còn xa nhưng đã phai
     return { learnIvl: s1.ivl, revIvl: s2.ivl, faded: w.eval('dueWords()').some((x: any) => x.id === c), ph2: w.eval('learnPh2()') }; });
@@ -83,10 +83,10 @@ test('v173 lịch ôn theo giai đoạn: giai đoạn học giãn × 3,3 (mức 
   expect(errors).toEqual([]);
 });
 
-test('v172 giai đoạn ôn (📘 Học ≥ 80%): ôn đứng đầu, lặp tới 5 lượt / ngày; nợ ôn ≥ 40 từ (BACKLOG) thì chưa mở unit mới mà luyện lại unit cũ', async ({ page, errors }) => {
+test('v172 → v176 giai đoạn ôn (📘 Học 100%): ôn đứng đầu, lặp tới 5 lượt / ngày; nợ ôn ≥ 40 từ (BACKLOG) thì chưa mở unit mới mà luyện lại unit cũ', async ({ page, errors }) => {
   await open(page, 'lib');
   const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), ws = w.eval('ALL_WORDS').filter((x: any) => w.eval('UNIT_OF')[x.id].level === 'A2').slice(0, 40);
-    w.dayParts = () => ({ learn: 90, mem: 10, total: 100, miss: [] });   // giả lập 📘 Học 90%
+    w.dayParts = () => ({ learn: 100, mem: 10, total: 100, miss: [] });   // giả lập 📘 Học 100% (v176 giai đoạn ôn)
     for (const x of ws) { const s = W(x.id); s.learned = true; s.due = t - 1; }
     const a = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.t + '|' + s.at);
     for (const x of ws.slice(0, 10)) W(x.id).due = t + 3;
@@ -242,7 +242,7 @@ test('v175 học thử: bấm mở bước không tính là xong; học xong uni
   // qua unit → unit kế là bước đầu; dòng "Đã làm hôm nay" ghi số unit qua
   const nx = await page.evaluate((u: string) => { const w = window as any, t = w.eval('today()'); Object.assign(w.eval('U')(u), { learned: true, passed: true, pd: t }); w.eval('TRK()').d[t] = { m: 600, mr: 0, q: 30 }; w.eval('render()'); return w.eval('currentUnit()').id as string; }, cur);
   expect(nx).not.toBe(cur);
-  await expect(page.locator('#app .dayplan .btn.primary.big')).toHaveAttribute('data-unit', nx);
+  await expect(page.locator(`#app .dayplan [data-unit="${nx}"]`).first()).toBeVisible();   // v175 bài ngữ pháp có thể đứng trước (đi đều cùng unit)
   await expect(page.locator('#app .dayplan')).toContainText('Đã làm hôm nay: 30 câu · qua 1 unit');
   // lượt dở → "Làm tiếp" đứng đầu
   await page.evaluate(() => { const w = window as any, u = w.eval('UNITS')[0]; w.eval('U')(u.id).learned = true; w.eval('startSession')('practice', w.eval('practiceItems')(u.words), u.id); w.eval('answer')(true, {}); w.eval('next')(); w.eval("go('lib')"); });
@@ -254,5 +254,22 @@ test('v175 học thử: bấm mở bước không tính là xong; học xong uni
     return !document.getElementById('modal')!.hidden || w.eval('ui').view !== 'learn'; });
   expect(blocked).toBe(false);
   expect(await page.evaluate(() => (window as any).eval('EN_COST').size)).toBe(0);
+  expect(errors).toEqual([]);
+});
+
+test('v176 chuẩn Học 100% · Nhớ 80%: thanh ghi "cần 100%" / "cần 80%"; cặp âm / chức năng đã học, đến lúc ôn → bước 🔁 Ôn trong ▶ Hôm nay; Học 90% vẫn là giai đoạn học', async ({ page, errors }) => {
+  await open(page, 'lib');
+  await expect(page.locator('#app [aria-label="Học và Nhớ A1"]')).toContainText('cần 100%');
+  await expect(page.locator('#app [aria-label="Học và Nhớ A1"]')).toContainText('cần 80%');
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()');
+    const parts = w.eval('EM').parts('cefr-a1'), ph = parts.miss.find((n: string) => n.startsWith('ph:'));
+    w.eval('st').sounds[ph.slice(3)] = { best: 1 };   // đã qua bài âm
+    w.eval('eEv')({ node: ph, level: 2, ok: true, item: 'snd:' + ph, qt: 'mcq' });
+    w.eval('st').offset = (w.eval('st').offset || 0) + 4; w.eval('LPH').k = '';   // 4 ngày sau
+    const steps = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at);
+    w.dayParts = () => ({ learn: 90, mem: 10, total: 100, miss: [], rv: [] }); w.eval('LPH').k = '';
+    return { ph, steps, ph2: w.eval('learnPh2()'), t }; });
+  expect(r.steps.some((s: string) => s === `rv|data-snd="${r.ph.slice(3)}"`)).toBe(true);
+  expect(r.ph2).toBe(false);   // v176 giai đoạn ôn chỉ khi Học đủ 100%
   expect(errors).toEqual([]);
 });
