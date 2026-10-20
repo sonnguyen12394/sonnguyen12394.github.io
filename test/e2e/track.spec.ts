@@ -72,7 +72,7 @@ test('v174 đủ dữ liệu: ngày dự kiến theo tốc độ 14 ngày; nhớ
     w.dayParts = () => ({ learn: 46, mem: 15, total: 130, miss: [] });   // số hôm nay khớp đường đã có
     w.eval("go('track')"); });
   const app = page.locator('#app');
-  await expect(app).toContainText('📘 Học đạt 80% khoảng');
+  await expect(app).toContainText('📘 Học đạt 100% khoảng');   // v176
   await expect(app).toContainText('Bạn quên nhanh hơn dự đoán');
   await expect(app.locator('ol li').first()).toContainText('sai 4/5');
   await expect(app).toContainText('Nhớ ra từ 45% (yếu nhất)');
