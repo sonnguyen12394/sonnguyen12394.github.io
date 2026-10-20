@@ -52,35 +52,37 @@ for (const scheme of ['light', 'dark'] as const) {
   });
 }
 
-test('v161 → v171 có từ đến hạn → bước 1 là ôn (mỗi lượt 12 từ); còn từ đến hạn thì bước ôn vẫn đứng đầu (tới 5 lượt / ngày); hết thì bước kế sáng lên', async ({ page, errors }) => {
+test('v172 giai đoạn học (📘 Học < 80%): bài mới trước, ôn vừa đủ 12 từ yếu nhất, một lượt / ngày; nợ ôn nhiều vẫn mở bài mới', async ({ page, errors }) => {
   await open(page, 'nd');
-  await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), ws = w.eval('ALL_WORDS').slice(0, 15);
-    for (const x of ws) { const s = W(x.id); s.learned = true; s.due = t - 1; } w.eval('save()'); w.eval('render()'); });
-  const a = await plan(page);
-  expect(a[0]!.k).toBe('due'); expect(a[0]!.side).toBe('📘 Học bài'); expect(a[0]!.t).toContain('Ôn 12 từ'); expect(a[0]!.t).toContain('còn 15 từ');
-  await page.locator('#app .dayplan [data-day="due"]').click();
-  expect(await page.evaluate(() => { const d = (window as any).eval('st').nd.day; return { done: d.done, rv: d.rv }; })).toEqual({ done: [], rv: 1 });
-  expect(await page.evaluate(() => (window as any).eval('ui').view)).not.toBe('nd');
-  await page.evaluate(() => (window as any).eval("go('nd')"));
-  await expect(page.locator('#app .dayplan [data-day]')).toHaveAttribute('data-day', 'due');   // còn từ đến hạn: ôn tiếp
-  await page.evaluate(() => { const w = window as any, t = w.eval('today()'); for (const x of w.eval('ALL_WORDS').slice(0, 15)) w.eval('W')(x.id).due = t + 3; w.eval('render()'); });
-  await expect(page.locator('#app .dayplan [data-day]')).not.toHaveAttribute('data-day', 'due');   // hết từ đến hạn: bước kế
-  // đủ 5 lượt trong ngày thì bước ôn tính là xong
-  expect(await page.evaluate(() => { const w = window as any; for (let i = 0; i < 4; i++) w.eval('dayMark')('due'); return w.eval('st').nd.day.done; })).toEqual(['due']);
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), ws = w.eval('ALL_WORDS').filter((x: any) => w.eval('UNIT_OF')[x.id].level === 'A2').slice(0, 45);
+    for (const x of ws) { const s = W(x.id); s.learned = true; s.due = t - 1; } w.eval('save()');
+    const p = w.eval('dayPlan()'); return { lq: p.lq, steps: p.steps.map((s: any) => ({ k: s.k, t: s.t, side: s.side, at: s.at })), cur: w.eval('currentUnit()').id }; });
+  expect(r.lq).toBeLessThan(80);
+  expect(r.steps[0]!.at).toBe(`data-unit="${r.cur}"`);   // bài mới đứng đầu dù còn 45 từ đến hạn
+  const due = r.steps.find((s: any) => s.k === 'due')!;
+  expect(due.side).toBe('📘 Học bài'); expect(due.t).toContain('Ôn 12 từ yếu nhất');
+  expect(r.steps.findIndex((s: any) => s.k === 'due')).toBeGreaterThan(0);
+  await page.evaluate(() => (window as any).eval('render()'));
+  await expect(page.locator('#app .dayplan [data-day]')).toHaveAttribute('data-day', 'gap');
+  expect(await page.evaluate(() => { const w = window as any; w.eval('dayMark')('due'); return w.eval('st').nd.day.done; })).toEqual(['due']);   // một lượt là đủ
   expect(errors).toEqual([]);
 });
 
-test('v171 nợ ôn ≥ 40 từ (BACKLOG) → ▶ Hôm nay chưa mở unit mới mà luyện lại unit cũ (ôn trước để 🔁 Nhớ không tụt); dưới ngưỡng thì có bài mới', async ({ page, errors }) => {
+test('v172 giai đoạn ôn (📘 Học ≥ 80%): ôn đứng đầu, lặp tới 5 lượt / ngày; nợ ôn ≥ 40 từ (BACKLOG) thì chưa mở unit mới mà luyện lại unit cũ', async ({ page, errors }) => {
   await open(page, 'lib');
   const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), ws = w.eval('ALL_WORDS').filter((x: any) => w.eval('UNIT_OF')[x.id].level === 'A2').slice(0, 40);
+    w.dayParts = () => ({ learn: 90, mem: 10, total: 100, miss: [] });   // giả lập 📘 Học 90%
     for (const x of ws) { const s = W(x.id); s.learned = true; s.due = t - 1; }
-    const a = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at);
+    const a = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.t + '|' + s.at);
     for (const x of ws.slice(0, 10)) W(x.id).due = t + 3;
     const b = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at);
-    return { a, b, cur: w.eval('currentUnit()').id }; });
-  expect(r.a[0]).toContain('due|');
+    const done = [0, 1, 2, 3].map(() => { w.eval('dayMark')('due'); return w.eval('st').nd.day.done.length; });
+    w.eval('dayMark')('due');
+    return { a, b, done, end: w.eval('st').nd.day.done, cur: w.eval('currentUnit()').id }; });
+  expect(r.a[0]).toContain('due|Ôn 12 từ đến hạn (còn 40 từ)');
   expect(r.a.some((s: string) => s.includes(`data-unit="${r.cur}"`))).toBe(false);
   expect(r.b.some((s: string) => s.includes(`data-unit="${r.cur}"`))).toBe(true);
+  expect(r.done).toEqual([0, 0, 0, 0]); expect(r.end).toEqual(['due']);
   expect(errors).toEqual([]);
 });
 
@@ -164,7 +166,7 @@ test('v161 Nói theo đề A1 / A2 ở Học bài: ý tìm bằng từ khoá tro
 test('v162 → v165 hai đường: lời giới thiệu (người mới → Học bài; học lâu mà mất gốc → ⚡ Học nhanh); không còn dòng gợi ý đường cũ', async ({ page, errors }) => {
   await open(page, 'nd');
   await expect(page.locator('#app')).toContainText('mất gốc, không muốn học lại từ đầu');   // v165 ⚡ Học nhanh
-  await expect(page.locator('#app .dayplan')).toContainText('Ôn từ đến hạn trước, rồi mới học bài mới');
+  await expect(page.locator('#app .dayplan')).toContainText('Trước hết học cho hết bài');
   await expect(page.locator('#app .pathfit')).toHaveCount(0);
   expect(await page.evaluate(() => typeof (window as any).pathFit)).toBe('undefined');
   await page.evaluate(() => (window as any).eval("go('lib')"));
@@ -178,7 +180,7 @@ test('v163 một não, ba cách nhìn: từ đến hạn → bước đầu củ
   await open(page, 'nd');
   const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), U = w.eval('U');
     for (const x of w.eval('ALL_WORDS').slice(0, 5)) { const s = W(x.id); s.learned = true; s.due = t - 1; }
-    const a = { day: w.eval('dayPlan()').steps[0].k, nd: w.eval('ndPlan')('A1').k };
+    const a = { day: w.eval('dayPlan()').steps.some((x: any) => x.k === 'due') ? 'due' : '', nd: w.eval('ndPlan')('A1').k };   // v172 giai đoạn học: ôn sau bài mới
     for (const x of w.eval('ALL_WORDS').slice(0, 5)) W(x.id).due = t + 9;
     const u = w.eval('UNITS').filter((x: any) => x.level === 'A1')[6]; U(u.id).ndNeed = t;
     const m = w.eval('mainAction')({ learn: true }), d = w.eval('dayPlan()').steps.find((s: any) => s.k === 'need');
