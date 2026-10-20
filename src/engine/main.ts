@@ -1569,6 +1569,8 @@ export function init(host: EHost): EngineModule {
     return { learn, mem, total: nodes.length, miss };
   }
   function goalOf(v: EState) { const ix = loaded(); return ix ? v.goals.map(sg => ix.goal.get(sg.id)).find(Boolean) ?? null : null; }
+  // v175 (góp ý #14): chưa chọn đích thì đích hiện hành là cấp người học đang ở (A1 tới khi qua Thi chuyển cấp A1), một đích cho mọi màn.
+  const defGoal = (v: EState): string => goalOf(v)?.id ?? (Object.values(v.gg?.done ?? {}).some(r => r.goal === 'cefr-a1' && r.passed) ? 'cefr-a2' : 'cefr-a1');
   // v115 khu truyện = cấp: chương cuối khu cuối (Rừng Trúc) là trận cổng của đích, nếu đích có cổng. Hai khu đầu giữ điều kiện kỹ năng vững
   // (khu 1–2 tới sớm, gắn cổng ở đó sẽ chặn truyện hàng tuần; nút "Tới trận cổng" cũng chỉ mở cổng của đích hiện tại).
   function storyGate(v: EState): StoryGateOf {
@@ -1842,7 +1844,7 @@ export function init(host: EHost): EngineModule {
   }
   function cmpNow(v: EState, gid?: string, detail = false): { o: CmpOut; vi: string; id: string } | null {
     const ix = loaded(); if (!ix) return null;
-    const g = (gid ? ix.goal.get(gid) : null) ?? goalOf(v) ?? ix.goal.get('cefr-a2') ?? null; if (!g) return null;
+    const g = (gid ? ix.goal.get(gid) : null) ?? goalOf(v) ?? ix.goal.get(defGoal(v)) ?? null; if (!g) return null;
     const need = closure(ix, g.req, defaultLevel).map(r => ({ ...r, area: ix.node.get(r.node)?.area }));
     const solid = (n: string, l: number): boolean => { const s = nodeStat(host, v, n, l as Level); return s.pass && (n.startsWith('cd:') || s.state === 'mastered'); };
     const info = detail ? (n: string, l: number) => ({ vi: ix.node.get(n)?.vi ?? n, pct: nodeStat(host, v, n, l as Level).pct }) : undefined;
@@ -1853,7 +1855,7 @@ export function init(host: EHost): EngineModule {
     // v138 🎯 Mục tiêu: cấp A1 / A2 cần đạt gì (7 kỹ năng, nhờ game / nhờ app, nút học ở hai phần, trận cổng). 'cmp' (Đối chiếu cũ) dẫn về đây.
     aim: c => {
       if (!loaded()) { ensure(); return viewAim(c, null); }
-      const ix = loaded()!, cur = goalOf(c.e)?.id, lv: AimLv = aimLv ?? (cur === 'cefr-a1' ? 'A1' : 'A2'), id = AIM_LVS.find(([l]) => l === lv)![1];
+      const ix = loaded()!, cur = goalOf(c.e)?.id, lv: AimLv = aimLv ?? (defGoal(c.e) === 'cefr-a1' ? 'A1' : 'A2'), id = AIM_LVS.find(([l]) => l === lv)![1];
       const g = ix.goal.get(id), r = cmpNow(c.e, id, true); if (!g || !r) return viewAim(c, null);
       const sk = skillsOf(c.e, g), gs = gateState(id, sk.solid, sk.total, E().gg, host.today(), partsOf(c.e, g)), chosen = cur === id;
       return viewAim(c, { lv, o: r.o, chosen, gate: { has: gs.has, open: gs.open || (playtest() && gs.left.length > 0 && !gs.passed), passed: !!gs.passed, ratio: gs.ratio, wait: gs.wait, parts: gs.parts },
@@ -2040,7 +2042,7 @@ export function init(host: EHost): EngineModule {
     // v141 🎲 Thử sức một kỹ năng ở 🎯 Mục tiêu: bài ngắn sinh mới mỗi lần (ô TRY_PARTS của kỹ năng), cùng màn làm bài với thi chuyển cấp.
     trystart(el) {
       if (!loaded()) { ensure(); return; }
-      const sk = el.dataset.sk ?? '', parts = TRY_PARTS[sk], lv = isAimLv(el.dataset.lv) ? el.dataset.lv : (aimLv ?? (goalOf(V())?.id === 'cefr-a1' ? 'A1' : 'A2'));
+      const sk = el.dataset.sk ?? '', parts = TRY_PARTS[sk], lv = isAimLv(el.dataset.lv) ? el.dataset.lv : (aimLv ?? (defGoal(V()) === 'cefr-a1' ? 'A1' : 'A2'));
       const gid = AIM_LVS.find(([l]) => l === lv)?.[1]; if (!parts || !gid) return;
       const e = E(), seed = ((Date.now() ^ Math.imul(e.ev.led.length + 7, 2654435761)) >>> 0) || 1;
       const f = genForm({ goal: gid, seed, bank: [], used: new Set(), pools: genPools(gid), seen: (n, id) => seenHas(e.ev, n, id), parts, ...(['voc', 'gra', 'pro'].includes(sk) ? { areas: [sk] } : {}) });

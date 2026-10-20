@@ -34,6 +34,9 @@ test.describe('mở app (home: false)', () => {
     await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học bài', 'Học nhanh', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
     await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Mục tiêu');
     await expect(page.locator('#app .cmprow')).toHaveCount(7);
+    // v175 (góp ý #14): chưa chọn đích, chưa qua A1 → mở vào A1 (một đích cho mọi màn)
+    await expect(page.locator('#app')).toContainText(/Cần đạt để qua A1 · \d+\/186 phần đã vững/);
+    await page.locator('[data-e="aimlv"][data-lv="A2"]').click();
     await expect(page.locator('#app')).toContainText(/Cần đạt để qua A2 · \d+\/361 phần đã vững/);
     await expect(page.locator('#app [data-e="cblo"]')).toHaveCount(1);
     await expect(page.locator('#app [data-act="skgo"]')).toHaveCount(7);

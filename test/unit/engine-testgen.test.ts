@@ -86,3 +86,28 @@ test('v141 Thử sức: chỉ phần của kỹ năng, câu nút đúng kỹ nă
   assert.equal(genForm(base(9, { parts: { l1: 4 } })).groups[0]!.items.length, 4);
   assert.equal(rngOf(1)(), rngOf(1)());
 });
+
+test('v175 câu khuôn đúng ngữ pháp (góp ý #9): không "a + nguyên âm", không "There\'s no + danh từ số nhiều"', () => {
+  for (let s = 1; s <= 300; s++) {
+    for (const goal of ['cefr-a1', 'cefr-a2']) {
+      const f = genForm(base(s * 17, { goal }));
+      const txt = f.groups.flatMap(g => [...(g.paras ?? []), ...(g.script ?? []).map(l => l.t), ...g.items.map(i => i.q)]).join(' ');
+      assert.doesNotMatch(txt, /\ba [aeiou]/i, `hạt ${s}`);
+      assert.doesNotMatch(txt, /There's no \w+s\b/, `hạt ${s}`);
+    }
+  }
+});
+
+test('v175 bài đọc / nghe dài có ≥ 4 khung; hội thoại ngắn không luôn chốt ở câu cuối (góp ý #10)', () => {
+  const heads = new Set<string>(); let notLast = 0, n = 0;
+  for (let s = 1; s <= 120; s++) {
+    const f = genForm(base(s * 29, { goal: 'cefr-a1' }));
+    heads.add(f.groups.find(g => g.id.endsWith('-r2'))!.items[0]!.q.split(' ').slice(0, 3).join(' '));
+    for (const it of f.groups.find(g => g.id.endsWith('-l1'))!.items) {
+      const ans = it.opts!.find(o => o.k === it.ans)!.t.replace(/^by /, ''); n++;
+      if (!it.ev.s.includes(ans)) notLast++;
+    }
+  }
+  assert.ok(heads.size >= 4, [...heads].join(' | '));
+  assert.ok(notLast / n > 0.1, `đáp án không ở câu cuối: ${notLast}/${n}`);
+});
