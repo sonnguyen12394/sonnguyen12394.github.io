@@ -5205,7 +5205,7 @@ function learnCheckView(L){ const c=L.chk, w=WORD[c.wid], a=c.picked!=null;
 function learnCheckAnswer(k){ const L=ui.learn, c=L&&L.chk; if(!c||c.picked!=null) return; c.picked=k; grade(c,k===c.ans); sfx(k===c.ans?'ok':'bad'); render(); }
 const newToday = () => (st.nw&&st.nw.d===today()) ? st.nw.n : 0;
 const newCapBase = () => st.set.newMax>0 && newToday()>=st.set.newMax;
-const newCapHit = () => newCapBase() || loadHigh();   // v27: tạm dừng từ mới khi lượng ôn hôm nay > 60% thời gian người học có
+const newCapHit = () => newCapBase() || learnPh2() && loadHigh();   // v27: tạm dừng từ mới khi lượng ôn hôm nay > 60% thời gian người học có. v176 (học thử: 16 ngày liền không được học unit mới): chỉ ở giai đoạn ôn; giai đoạn học (ưu tiên học) chỉ giới hạn số từ mới / ngày
 // Unit vững: đã qua kiểm tra VÀ ≥ 80% số từ đã nhớ đúng ở một lần ôn sau ít nhất một ngày (bậc lịch ôn ≥ 1).
 function unitSolid(u){ return u.words.filter(w=>W(w.id).stage>=1).length >= Math.ceil(.8*u.words.length); }
 function calLine(c){ if(!c) return ''; const [sn,sc]=c.sure, [gn,gc]=c.guess; if(!gn) return '';

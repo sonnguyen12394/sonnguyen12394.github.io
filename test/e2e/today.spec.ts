@@ -273,3 +273,17 @@ test('v176 chuẩn Học 100% · Nhớ 80%: thanh ghi "cần 100%" / "cần 80%"
   expect(r.ph2).toBe(false);   // v176 giai đoạn ôn chỉ khi Học đủ 100%
   expect(errors).toEqual([]);
 });
+
+test('v176 giai đoạn học: nợ ôn nhiều (loadHigh) không chặn bài mới; chỉ giới hạn số từ mới / ngày; giai đoạn ôn thì chặn', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W');
+    for (const x of w.eval('ALL_WORDS').filter((x: any) => w.eval('UNIT_OF')[x.id].level === 'A2').slice(0, 80)) { const s = W(x.id); s.learned = true; s.due = t - 1; }
+    const a = { load: w.eval('loadHigh()'), cap: w.eval('newCapHit()'), unit: w.eval('dayPlan()').steps.some((s: any) => s.at === `data-unit="${w.eval('currentUnit()').id}"`) };
+    w.dayParts = () => ({ learn: 100, mem: 10, total: 100, miss: [], rv: [] }); w.eval('LPH').k = '';
+    return { a, capPh2: w.eval('newCapHit()') }; });
+  expect(r.a.load).toBe(true);
+  expect(r.a.cap).toBe(false);
+  expect(r.a.unit).toBe(true);
+  expect(r.capPh2).toBe(true);
+  expect(errors).toEqual([]);
+});
