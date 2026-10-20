@@ -233,6 +233,10 @@ test('v153 đổi tên + Ôn tập về Ôn luyện: Học bài không còn nút
   // một từ đã học đến hạn ôn
   await page.evaluate(() => { const w = window as any, st = w.eval('st'), id = w.eval('UNITS')[0].words[0].id, t = w.eval('today()');
     Object.assign(w.eval('W')(id), { learned: true, due: t, ivl: 1, stage: 1 }); w.eval('save()'); w.eval('render()'); });
+  // v171 đường mặc định 📘 Học bài: bước ôn thuộc Học bài nên chấm đỏ ở Học bài; đường ⚡ thì chấm đỏ ở Học nhanh
+  await expect(page.locator('#bnav [data-go="lib"] .badge')).toBeVisible();
+  await expect(page.locator('#bnav [data-go="nd"] .badge')).toHaveCount(0);
+  await page.evaluate(() => { const w = window as any; w.eval('FST()').path = 'fast'; w.eval('render()'); });
   await expect(page.locator('#bnav [data-go="nd"] .badge')).toBeVisible();
   await expect(page.locator('#bnav [data-go="lib"] .badge')).toHaveCount(0);
   await expect(page.locator('#app [aria-label="Ôn thẻ đến hạn"]')).toContainText('1');
