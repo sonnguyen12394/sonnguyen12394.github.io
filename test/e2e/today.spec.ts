@@ -93,11 +93,12 @@ test('v172 giai đoạn ôn (📘 Học ≥ 80%): ôn đứng đầu, lặp tớ
     const b = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at);
     const done = [0, 1, 2, 3].map(() => { w.eval('dayMark')('due'); return w.eval('st').nd.day.done.length; });
     w.eval('dayMark')('due');
-    return { a, b, done, end: w.eval('st').nd.day.done, cur: w.eval('currentUnit()').id }; });
+    const pend = w.eval('dayDone()').slice(); w.eval('st').stats.a += 3;   // v175: lượt thứ 5 chỉ ✓ khi đã làm (≥ 3 câu)
+    return { a, b, done, pend, end: w.eval('dayDone()'), cur: w.eval('currentUnit()').id }; });
   expect(r.a[0]).toContain('due|Ôn 12 từ đến hạn (còn 40 từ)');
   expect(r.a.some((s: string) => s.includes(`data-unit="${r.cur}"`))).toBe(false);
   expect(r.b.some((s: string) => s.includes(`data-unit="${r.cur}"`))).toBe(true);
-  expect(r.done).toEqual([0, 0, 0, 0]); expect(r.end).toEqual(['due']);
+  expect(r.done).toEqual([0, 0, 0, 0]); expect(r.pend).toEqual([]); expect(r.end).toEqual(['due']);
   expect(errors).toEqual([]);
 });
 

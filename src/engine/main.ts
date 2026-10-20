@@ -187,6 +187,10 @@ export function init(host: EHost): EngineModule {
       host.save(); host.render(); window.scrollTo?.(0, 0); return;
     }
     res.rl = res.passed; res.passed = gatePassAll(res.passed, res.ws);   // v158 Viết + Nói vào phán quyết
+    // v175 (góp ý #27): bỏ qua phần Nghe thì chưa kết luận (trước: qua chỉ nhờ Đọc, vẫn hiện "Đọc + Nghe: qua", tự lên cấp).
+    // Không tính là rớt (không bắt chờ), không lên cấp; lần sau làm bài mới có Nghe.
+    const noL = r.skipL && r.groups.some(g => g.kind === 'listening');
+    if (noL) { res.passed = false; res.rl = false; r.res = res; host.save(); host.render(); window.scrollTo?.(0, 0); return; }
     if (r.gen) { res.sol = r.gen.sol; res.seed = r.gen.seed; }   // v141 luật làm lại + chữa bài theo hạt
     r.res = res;
     // v140 qua thi chuyển cấp → tự lên cấp (người sáng lập 16/10/2026): cấp kế thành đích chính, 🎯 Mục tiêu theo đích mới.
