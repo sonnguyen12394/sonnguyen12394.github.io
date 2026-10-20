@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// v171–v173 Mô phỏng: cách cân học / ôn nào tới Thi chuyển cấp (📘 Học ≥ 80%, 🔁 Nhớ ≥ 50%) sớm nhất, CÙNG thời gian học mỗi ngày.
+// v171–v173 Mô phỏng: cách cân học / ôn nào tới Thi chuyển cấp (v176: 📘 Học 100%, 🔁 Nhớ 80%; GATE_SIM) sớm nhất, CÙNG thời gian học mỗi ngày.
 // FSRS thật của app (src/exam/fsrs.ts); luật Nhớ của partsOf: unit có ≥ 70% từ nhớ ra sau ≥ 3 ngày và nhớ trung bình ≥ 0,9.
 // Giả định (suy luận, chưa đo người thật): 1 từ mới ≈ 5,3 câu theo luồng bài của app (người đã biết từ: 3 câu), 1 lượt ôn ≈ 1,3 câu, 2 câu / phút;
 // ngữ pháp / âm / chức năng tốn thêm theo tỉ lệ unit; mỗi unit mới gặp lại 4 từ cũ (ôn lồng mixDue: quên thì vá ngay).
@@ -14,6 +14,8 @@ type Lv = typeof LV.A1;
 // Thời gian mỗi unit kể cả phần ngữ pháp / âm / chức năng đi kèm (câu).
 // Đếm từ app.js: 10 thẻ (≈ 0,5 câu / thẻ) + 9 câu xen thẻ + 1 lượt luyện 15 + 4 câu + bài cuối unit 20 câu ≈ 53 câu; từ đã biết ≈ 3 câu.
 let PER_WORD = 5.3;
+// v176 chuẩn mở Thi chuyển cấp (người sáng lập 20/10/2026): Học 100% · Nhớ 80%; giai đoạn ôn bắt đầu khi Học 100% (PH). Đổi để so chuẩn cũ 0,8 / 0,5.
+export const GATE_SIM = { HL: 1, NM: 0.8, PH: 1 }; const { HL, NM, PH } = GATE_SIM;
 const unitCost = (L: Lv, known: number) => 10 * (PER_WORD - 2.3 * known) + 30 * L.NG / L.NU + 20 * L.NP / L.NU;
 
 // Thời gian ngẫu nhiên (người sáng lập 20/10/2026: "không có mốc cố định"): mỗi ngày 20% nghỉ, còn lại 5–60 phút đều nhau (TB ≈ 26 phút).
@@ -34,7 +36,7 @@ export function run(L: Lv, B: number, s: Strat, who: Who, rLearn = 0.75) {
   for (let t = 0; t < 900; t++) {
     if (B >= 0 && t % 7 >= 7 - who.off) continue;   // ngẫu nhiên: ngày nghỉ đã nằm trong dayMins
     let budget = B < 0 ? Math.round(dayMins(t) * 2) : B;
-    if (!budget) continue; const ph2 = learnOf(lu) >= 0.8 || lu >= L.NU;
+    if (!budget) continue; const ph2 = learnOf(lu) >= PH || lu >= L.NU;
     const rr = !ph2 && (s === 'C ôn thưa' || s === 'E ôn thưa + chọn unit' || s === 'F học trước + ôn thưa') ? rLearn : 0.9;
     // giai đoạn ôn: đến hạn = tới lịch HOẶC nhớ đã dưới 0,9 (lịch cũ theo mức nhớ thấp hơn)
     const reviewDue = (cap: number, pick?: (w: Wd) => boolean) => { const due = words.filter(w => (w.due <= t || ph2 && R(w, t) < 0.9) && (!pick || pick(w))).sort((a, b) => R(a, t) - R(b, t));
@@ -56,7 +58,7 @@ export function run(L: Lv, B: number, s: Strat, who: Who, rLearn = 0.75) {
       const need = Math.ceil(0.65 * lu), rank = [...Array(lu).keys()].sort((a, b) => words.slice(b * 10, b * 10 + 10).reduce((x, w) => x + R(w, t), 0) - words.slice(a * 10, a * 10 + 10).reduce((x, w) => x + R(w, t), 0));
       const keep = new Set(rank.slice(0, need)); reviewDue(999, w => keep.has(w.u)); learn(1);
     } else { const left = reviewDue(60); if (left < 40) learn(1); }
-    if (learnOf(lu) >= 0.8 && (memOf(t) + Math.round(Math.min(L.NG, Math.round(lu * L.NG / L.NU)) * memOf(t) / Math.max(1, lu))) / L.TOT >= 0.5) {
+    if (learnOf(lu) >= HL && (memOf(t) + Math.round(Math.min(L.NG, Math.round(lu * L.NG / L.NU)) * memOf(t) / Math.max(1, lu))) / L.TOT >= NM) {
       res.days = t + 1; res.recall = Math.round(100 * words.reduce((a, w) => a + R(w, t), 0) / Math.max(1, words.length)) / 100; res.minutes = Math.round(q / 2); break; }
   }
   return res;

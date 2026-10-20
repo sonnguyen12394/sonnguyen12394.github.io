@@ -87,7 +87,7 @@ test('v141 Thử sức: chỉ phần của kỹ năng, câu nút đúng kỹ nă
   assert.equal(rngOf(1)(), rngOf(1)());
 });
 
-test('v175 câu khuôn đúng ngữ pháp (góp ý #9): không "a + nguyên âm", không "There\'s no + danh từ số nhiều"', () => {
+test('v178 câu khuôn đúng ngữ pháp (góp ý #9): không "a + nguyên âm", không "There\'s no + danh từ số nhiều"', () => {
   for (let s = 1; s <= 300; s++) {
     for (const goal of ['cefr-a1', 'cefr-a2']) {
       const f = genForm(base(s * 17, { goal }));
@@ -98,7 +98,7 @@ test('v175 câu khuôn đúng ngữ pháp (góp ý #9): không "a + nguyên âm"
   }
 });
 
-test('v175 bài đọc / nghe dài có ≥ 4 khung; hội thoại ngắn không luôn chốt ở câu cuối (góp ý #10)', () => {
+test('v178 bài đọc / nghe dài có ≥ 4 khung; hội thoại ngắn không luôn chốt ở câu cuối (góp ý #10)', () => {
   const heads = new Set<string>(); let notLast = 0, n = 0;
   for (let s = 1; s <= 120; s++) {
     const f = genForm(base(s * 29, { goal: 'cefr-a1' }));

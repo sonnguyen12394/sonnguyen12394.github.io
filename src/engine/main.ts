@@ -187,6 +187,10 @@ export function init(host: EHost): EngineModule {
       host.save(); host.render(); window.scrollTo?.(0, 0); return;
     }
     res.rl = res.passed; res.passed = gatePassAll(res.passed, res.ws);   // v158 Viết + Nói vào phán quyết
+    // v175 (góp ý #27): bỏ qua phần Nghe thì chưa kết luận (trước: qua chỉ nhờ Đọc, vẫn hiện "Đọc + Nghe: qua", tự lên cấp).
+    // Không tính là rớt (không bắt chờ), không lên cấp; lần sau làm bài mới có Nghe.
+    const noL = r.skipL && r.groups.some(g => g.kind === 'listening');
+    if (noL) { res.passed = false; res.rl = false; r.res = res; host.save(); host.render(); window.scrollTo?.(0, 0); return; }
     if (r.gen) { res.sol = r.gen.sol; res.seed = r.gen.seed; }   // v141 luật làm lại + chữa bài theo hạt
     r.res = res;
     // v140 qua thi chuyển cấp → tự lên cấp (người sáng lập 16/10/2026): cấp kế thành đích chính, 🎯 Mục tiêu theo đích mới.
@@ -1559,17 +1563,21 @@ export function init(host: EHost): EngineModule {
     for (const x of v.ev.led) { if (!seen.has(x.node)) continue; const good = !!x.ok && !x.asst; span(first, okLast, x.node, x.day, good);
       const m = x.node.startsWith('u:') ? /^(?:w|nd):([^:]+):/.exec(String(x.item ?? '')) : null; if (m) span(wf, wl, x.node + '|' + m[1], x.day, good); }
     const memOk = (k: string, fm: Map<string, number>, lm: Map<string, number>) => { const f = fm.get(k), l = lm.get(k); return f !== undefined && l !== undefined && l - f >= GATE.memDays; };
-    let learn = 0, mem = 0; const miss: string[] = [];
+    let learn = 0, mem = 0; const miss: string[] = [], rv: string[] = [], today = host.today();
     for (const r of nodes) {
-      if (host.lessonDone ? host.lessonDone(r.node) : nodeStat(host, v, r.node, r.level as Level).pass) learn++; else miss.push(r.node);
+      const done = host.lessonDone ? host.lessonDone(r.node) : nodeStat(host, v, r.node, r.level as Level).pass;
+      if (done) learn++; else miss.push(r.node);
       const ws = r.node.startsWith('u:') && host.unitWords ? host.unitWords(r.node.slice(2)) : null;
       const held = ws && ws.length ? ws.filter(w => memOk(r.node + '|' + w, wf, wl)).length / ws.length >= GATE.memWord : memOk(r.node, first, okLast);
-      if (held && (recallOf(host, v, r.node) ?? 0) >= 0.9) mem++;
+      const rc = recallOf(host, v, r.node) ?? 0;
+      if (held && rc >= 0.9) mem++;
+      // v176 cặp âm / chức năng giao tiếp không có thẻ ôn: đã học, chưa tính Nhớ, cách lần gặp đầu ≥ GATE.memDays (hoặc đã phai) → đến lúc ôn (▶ Hôm nay của app)
+      else if (done && /^(ph|fn):/.test(r.node)) { const f = first.get(r.node); if (f !== undefined && (today - f >= GATE.memDays || held)) rv.push(r.node); }
     }
-    return { learn, mem, total: nodes.length, miss };
+    return { learn, mem, total: nodes.length, miss, rv };
   }
   function goalOf(v: EState) { const ix = loaded(); return ix ? v.goals.map(sg => ix.goal.get(sg.id)).find(Boolean) ?? null : null; }
-  // v175 (góp ý #14): chưa chọn đích thì đích hiện hành là cấp người học đang ở (A1 tới khi qua Thi chuyển cấp A1), một đích cho mọi màn.
+  // v178 (góp ý #14): chưa chọn đích thì đích hiện hành là cấp người học đang ở (A1 tới khi qua Thi chuyển cấp A1), một đích cho mọi màn.
   const defGoal = (v: EState): string => goalOf(v)?.id ?? (Object.values(v.gg?.done ?? {}).some(r => r.goal === 'cefr-a1' && r.passed) ? 'cefr-a2' : 'cefr-a1');
   // v115 khu truyện = cấp: chương cuối khu cuối (Rừng Trúc) là trận cổng của đích, nếu đích có cổng. Hai khu đầu giữ điều kiện kỹ năng vững
   // (khu 1–2 tới sớm, gắn cổng ở đó sẽ chặn truyện hàng tuần; nút "Tới trận cổng" cũng chỉ mở cổng của đích hiện tại).

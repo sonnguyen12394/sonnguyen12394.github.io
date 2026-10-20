@@ -29,7 +29,7 @@ const num = (r: Rng, lo: number, hi: number, k: number): number[] => { const s =
 // Ba giờ tăng dần trong một khoảng của TIMES (giờ hẹn mới phải sau giờ bận, giờ đóng cửa sau giờ mở…).
 const tup = (r: Rng, lo?: number, hi?: number): [string, string, string] => { const am = r() < 0.5, a = lo ?? (am ? 0 : AM_END + 1), b = hi ?? (am ? AM_END : TIMES.length - 1); const ix = num(r, a, b, 3).sort((x, y) => x - y); return ix.map(i => TIMES[i]!) as [string, string, string]; };
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-// v175 (góp ý #9): mạo từ theo âm đầu, there is / are theo số của danh từ. Khuôn chỉ có từ thường (không có "hour", "uniform"…).
+// v178 (góp ý #9): mạo từ theo âm đầu, there is / are theo số của danh từ. Khuôn chỉ có từ thường (không có "hour", "uniform"…).
 export const an = (w: string) => (/^[aeiou]/i.test(w) ? 'an ' : 'a ') + w;
 const plural = (w: string) => /s$/.test(w);
 export const noneOf = (w: string) => (plural(w) ? `There aren't any ${w}` : `There's no ${w}`);
@@ -71,13 +71,13 @@ const talks: TFam[] = [
   r => { const a = pick(r, ['bus', 'train']), [b, c] = take(r, TRANSPORT.filter(t => t !== a), 2) as [string, string]; return { lines: [['A', `Did you come by ${a} today?`], ['B', `No, the ${a} was late, so I came by ${b}.`], ['A', 'And tomorrow?'], ['B', `Tomorrow I'll go by ${c}.`]], q: 'How did B come today?', ans: `by ${b}`, ds: [`by ${a}`, `by ${c}`], why: `"so I came by ${b}". ${a} bị trễ, ${c} là ngày mai.`, tag: 'cách đi' }; },
   r => { const [a, b, c] = take(r, FOODS, 3) as [string, string, string];
     if (r() < 0.5) return { lines: [['A', `Do you want ${a} for dinner?`], ['B', `No, I had ${a} for lunch. Can we have ${b}?`], ['A', `${noneOf(b)} at home. What about ${c}?`], ['B', `OK, ${c} then.`]], q: 'What will they have for dinner?', ans: c, ds: [a, b], why: `Chốt: "${c} then". Không có ${b}; ${a} đã ăn trưa.`, tag: 'món' };
-    // v175 (góp ý #10): đáp án nói đầu tiên, câu cuối là phương án nhiễu (không chọn được bằng mẹo "nói sau cùng")
+    // v178 (góp ý #10): đáp án nói đầu tiên, câu cuối là phương án nhiễu (không chọn được bằng mẹo "nói sau cùng")
     return { lines: [['A', `Shall we have ${a} for dinner?`], ['B', `Yes, good idea. I had ${b} for lunch, so not ${b}.`], ['A', `OK. And tomorrow we can have ${c}.`]], q: 'What will they have for dinner?', ans: a, ds: [b, c], why: `"Shall we have ${a}" → "Yes". ${b} là bữa trưa; ${c} là ngày mai.`, tag: 'món' }; },
 ];
 
 // ---------- Đọc phần 2 / Nghe phần 2: một câu chuyện, 3–4 câu hỏi (mỗi câu có đủ 3 giá trị trong bài) ----------
 interface Tale { paras: string[]; qs: Fact[]; script: Array<[string, string]> }
-// v175 (góp ý #10): bốn khung (chuyến đi, sinh nhật, lớp mới, đi mua sắm), câu chữ đổi theo biến thể: đáp án không nằm cố định sau
+// v178 (góp ý #10): bốn khung (chuyến đi, sinh nhật, lớp mới, đi mua sắm), câu chữ đổi theo biến thể: đáp án không nằm cố định sau
 // một cụm ("so we went by…", số đầu tiên…). Câu hỏi đầu của mỗi khung là câu A1 bỏ đi (A1 3 câu, A2 4 câu).
 type TaleFam = (r: Rng) => Tale;
 const trip: TaleFam = r => {

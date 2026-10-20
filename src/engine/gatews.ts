@@ -50,7 +50,7 @@ export const KW = {
   drink: ['coffee', 'tea$', 'juice', 'milk', 'water', 'smoothie', 'lemonade', 'cola', 'coke', 'soda', 'chocolate', 'latte', 'cappuccino', 'beer', 'drink'],
   colour: ['black', 'white', 'red$', 'blue', 'green', 'yellow', 'brown', 'pink', 'grey', 'gray', 'orange', 'purple', 'colour', 'color', 'dark', 'light'],
   bring: ['bring', 'take', 'carry', 'remember', "don't forget", 'dont forget'],
-  sorry: ['sorry', 'apologi'],
+  sorry: ['sorry', 'apologi', "i'm afraid", 'im afraid', 'unfortunately'],   // v175 góp ý #25: "I'm afraid I can't" cũng là xin lỗi
   why: ['because', 'so$', 'as i$', 'since', 'need', 'have to', 'must', 'want to', 'to go', 'to visit', 'to take', 'busy', 'ill$', 'sick', 'work'],
   back: ['back', 'return'],
   family: ['mother', 'father', 'mum', 'mom', 'dad', 'parent', 'wife', 'husband', 'son', 'daughter', 'brother', 'sister', 'grand', 'family', 'friend', 'alone', 'myself', 'children', 'child', 'uncle', 'aunt', 'cousin', 'roommate', 'flatmate'],

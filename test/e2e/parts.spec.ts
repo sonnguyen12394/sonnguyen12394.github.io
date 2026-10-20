@@ -73,15 +73,16 @@ test('câu đúng ghi nguồn theo nơi học; Mục tiêu tách nhờ game / nh
   expect(errors).toEqual([]);
 });
 
-test('tab 📘 Học bài: ▶ Hôm nay + tự học tiếp + 7 kỹ năng + tự chọn bài; Ôn tập đã chuyển sang 🔁 Ôn luyện (v153)', async ({ page, errors }) => {
+test('tab 📘 Học bài: ▶ Hôm nay đứng đầu + tự chọn bài + 7 kỹ năng trong mục chi tiết (v175 bỏ "Hoặc tự học tiếp")', async ({ page, errors }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await seed(page);
   await page.evaluate(() => (window as any).eval('emLoad()'));
   await toLobby(page, false);
   await navTo(page, 'Học');
   await expect(page.getByRole('heading', { name: '📘 Học bài', level: 1 })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Hoặc tự học tiếp' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Hoặc tự học tiếp' })).toHaveCount(0);
   await expect(page.locator('#app .dayplan')).toContainText('▶ Hôm nay');   // v161 một nút, một não cho Học bài + Ôn luyện
+  await page.getByText('Kỹ năng theo mục tiêu (chi tiết)').click();
   await expect(page.locator('#app .lskrow')).toHaveCount(7);
   for (const t of [/Bài học theo chủ đề/, /Kỹ năng/, /Sổ từ/]) await expect(page.getByRole('button', { name: t })).toBeVisible();
   await noHorizontalScroll(page);
@@ -91,7 +92,7 @@ test('tab 📘 Học bài: ▶ Hôm nay + tự học tiếp + 7 kỹ năng + t�
   expect(errors).toEqual([]);
 });
 
-test.describe('v175 đích mặc định (home: false)', () => {
+test.describe('v178 đích mặc định (home: false)', () => {
   test.use({ home: false });
   test('chưa chọn đích, chưa qua A1 → Mục tiêu và Kỹ năng của bạn theo A1 (góp ý #14)', async ({ page, errors }) => {
     await page.goto('/');

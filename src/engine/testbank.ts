@@ -71,7 +71,7 @@ export const WSIT_K: Record<string, Kw[]> = {
   'An Invitation': [[['would you like', 'do you want', 'come with', 'join', "let's", 'lets', 'want to come', 'invite', 'how about', 'can you come']], [KW.time], [KW.bring]],
   'Changing a Plan': [[KW.sorry], [['because', 'have to', 'must', 'ill$', 'sick', 'work', 'busy', 'as i$', 'since', 'need to']], [['how about', 'what about', 'can we', 'could we', 'shall we', 'another day', 'instead', 'next', "let's", 'lets', 'are you free'], ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'tomorrow', 'weekend', 'next week', 'another day', 'day']]],
   'A Thank-you Note': [[['thank']], [['like', 'love', 'beautiful', 'nice', 'great', 'favourite', 'favorite', 'lovely', 'useful', 'cute', 'perfect', 'wonderful', 'colour', 'color', 'soft', 'warm', 'interesting']], [['use', 'wear', 'read', 'drink', 'play', 'going to', 'will', "i'll", 'every day', 'tomorrow', 'weekend']]],
-  'Asking for Help': [[['homework']], [['lesson', 'class'], ['when', 'what time', 'what day', 'next']], [['buy', 'get', 'find'], ['book']]],
+  'Asking for Help': [[['homework', 'exercise', 'task', 'assignment']], [['lesson', 'class'], ['when', 'what time', 'what day', 'next']], [['buy', 'get', 'find', 'sell', 'shop', 'store', 'order'], ['book']]],   // v175 góp ý #25: "a shop that sells the book"
   'A Message to a Neighbour': [[['water'], ['plant', 'flower', 'garden', 'tree']], [KW.back, KW.day], [['thank']]],
 };
 export const STORY_K: Record<string, [Kw, Kw, Kw]> = {
