@@ -52,17 +52,18 @@ for (const scheme of ['light', 'dark'] as const) {
   });
 }
 
-test('v172 → v173 giai đoạn học (📘 Học < 80%): bài mới trước rồi ôn từ đến hạn (tới 5 lượt / ngày); nợ ôn nhiều vẫn mở bài mới', async ({ page, errors }) => {
+test('v172 → v176 giai đoạn học: bài mới trước rồi ôn (tới 5 lượt / ngày); nợ ôn ≥ 40 thì ôn đứng trước nhưng vẫn có bài mới', async ({ page, errors }) => {
   await open(page, 'nd');
   const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), ws = w.eval('ALL_WORDS').filter((x: any) => w.eval('UNIT_OF')[x.id].level === 'A2').slice(0, 45);
     for (const x of ws) { const s = W(x.id); s.learned = true; s.due = t - 1; } w.eval('save()');
     const p = w.eval('dayPlan()'); return { lq: p.lq, steps: p.steps.map((s: any) => ({ k: s.k, t: s.t, side: s.side, at: s.at })), cur: w.eval('currentUnit()').id }; });
   expect(r.lq).toBeLessThan(80);
-  expect(r.steps[0]!.at).toBe(`data-unit="${r.cur}"`);   // bài mới đứng đầu dù còn 45 từ đến hạn
+  expect(r.steps[0]!.k).toBe('due');   // v176 nợ ôn 45 ≥ 40: ôn trước
+  expect(r.steps.some((s: any) => s.at === `data-unit="${r.cur}"`)).toBe(true);   // vẫn có bài mới
   const due = r.steps.find((s: any) => s.k === 'due')!;
   expect(due.side).toBe('📘 Học bài'); expect(due.t).toContain('Ôn 12 từ đến hạn (còn 45 từ)');
-  expect(r.steps.findIndex((s: any) => s.k === 'due')).toBeGreaterThan(0);
-  await page.evaluate(() => (window as any).eval('render()'));
+  // dưới 40 từ đến hạn: bài mới đứng đầu, ôn đứng sau có nút riêng
+  await page.evaluate(() => { const w = window as any, t = w.eval('today()'); for (const x of w.eval('ALL_WORDS').filter((x: any) => w.eval('UNIT_OF')[x.id].level === 'A2').slice(0, 20)) w.eval('W')(x.id).due = t + 9; w.eval('render()'); });
   await expect(page.locator('#app .dayplan .btn.primary.big')).toHaveAttribute('data-unit', r.cur);
   await expect(page.locator('#app .dayplan li [data-act="dayreview"]')).toHaveText('Làm');   // v175 bước nào cũng có nút
   expect(errors).toEqual([]);
@@ -285,5 +286,22 @@ test('v176 giai đoạn học: nợ ôn nhiều (loadHigh) không chặn bài m�
   expect(r.a.cap).toBe(false);
   expect(r.a.unit).toBe(true);
   expect(r.capPh2).toBe(true);
+  expect(errors).toEqual([]);
+});
+
+test('v176 học hết unit A1 mà chưa qua Thi chuyển cấp A1 → vẫn ở A1, không đưa unit A2; giai đoạn học nợ ôn ≥ 40 → ôn trước bài mới', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), U = w.eval('U');
+    w.eval('ui').ndLv = null;
+    for (const u of w.eval('UNITS').filter((x: any) => x.level === 'A1')) Object.assign(U(u.id), { learned: true, passed: true, pd: t - 5 });
+    w.eval('LPH').k = '';
+    const a = { lv: w.eval('ndLv()'), cur: w.eval('currentUnit()').level, steps: w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at) };
+    for (const x of w.eval('ALL_WORDS').filter((x: any) => w.eval('UNIT_OF')[x.id].level === 'A2').slice(0, 45)) { const s = w.eval('W')(x.id); s.learned = true; s.due = t - 1; }
+    for (const u of w.eval('UNITS').filter((x: any) => x.level === 'A1').slice(40)) U(u.id).passed = false;   // còn unit A1 chưa qua
+    const b = w.eval('dayPlan()').steps.map((s: any) => s.k);
+    return { a, b }; });
+  expect(r.a.lv).toBe('A1'); expect(r.a.cur).toBe('A2');
+  expect(r.a.steps.some((s: string) => /data-unit="a2-/.test(s))).toBe(false);
+  expect(r.b.indexOf('due')).toBeLessThan(r.b.indexOf('gap'));
   expect(errors).toEqual([]);
 });
