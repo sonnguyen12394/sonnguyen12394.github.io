@@ -45,7 +45,7 @@ export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, t
   const open = st.open || (test && st.left.length > 0);
   const why = st.wait ? `Lần trước chưa qua. Mỗi lần là một bài mới hoàn toàn, nhưng cần học thêm rồi mới làm lại: ${waitTxt(st.wait)}.`
     : st.left.length === 0 ? 'Bạn đã dùng hết các bài thi chuyển cấp lạ của cấp này. Tí đang soạn thêm bài mới; trong lúc chờ, cứ luyện tiếp để vững hơn.'
-    : open ? `Đã mở. Bài gồm 4 phần: <b>Đọc</b> (biển báo, mẩu tin), <b>Nghe</b> (hội thoại ngắn), <b>Viết</b> (tin nhắn, chuyện ngắn) và <b>Nói</b> (trả lời câu hỏi về bạn), toàn câu bạn <b>chưa gặp bao giờ</b>. Mỗi bài làm một lần, không có đồng hồ, không hiện đáp án trong lúc làm. Đậu khi Đọc + Nghe qua <b>và</b> mỗi bài Viết / Nói đạt ≥ ${pc(GATE.ws)} tiêu chí.`
+    : open ? `Đã mở. Bài gồm 4 phần: <b>Đọc</b> (biển báo, mẩu tin), <b>Nghe</b> (hội thoại ngắn), <b>Viết</b> (tin nhắn, chuyện ngắn) và <b>Nói</b> (trả lời câu hỏi về bạn), sinh mới mỗi lần (phần Đọc, Nghe, Viết, Nói là bài lạ; vài câu từ vựng / ngữ pháp ngắn có thể giống câu bạn từng luyện). Mỗi bài làm một lần, không có đồng hồ, không hiện đáp án trong lúc làm. Đậu khi Đọc + Nghe qua <b>và</b> mỗi bài Viết / Nói đạt ≥ ${pc(GATE.ws)} tiêu chí.`
     : st.parts ? `Mở khi 📘 Học ≥ ${pc(GATE.learn)} (đã qua bài; bạn đang có ${pc(st.learn ?? 0)}) và 🔁 Nhớ ≥ ${pc(GATE.mem)} (nhớ ra sau ≥ ${GATE.memDays} ngày, chưa phai; bạn đang có ${pc(st.mem ?? 0)}).` + (st.gen ? ' Mỗi lần làm, máy sinh một bài mới theo tiêu chí của cấp.' : '') : `Mở khi bạn đã gần xong mục tiêu: ${pc(GATE.open)} kỹ năng của cấp đã vững thật (bạn đang có ${pc(st.ratio)}). ${st.gen ? 'Mỗi lần làm, máy sinh một bài mới theo tiêu chí của cấp, nên không học tủ được.' : `Bài dùng câu lạ, chỉ làm được ${st.left.length} lần, nên chỉ mở khi bạn có khả năng qua.`}`;
   return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${esc(lv)} · ${esc(vi)}</span><h1>${open ? 'Đã mở' : 'Chưa mở'}</h1>
     <p class="muted">${why}</p></section>
@@ -119,7 +119,7 @@ export function viewGateEnd(c: ECtx, r: GateRun): string {
   }).join('')).join('');
   return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${esc(LV(r.goal))}</span><h1>${res.passed ? (r.up ? `🎉 Lên cấp ${esc(LV(r.up))}!` : `🎉 Qua ${esc(LV(r.goal))}!`) : 'Đã làm xong bài'}</h1>${res.passed && r.up ? `<p class="muted">Bạn đã qua ${esc(LV(r.goal))}. Đích mới của bạn là ${esc(LV(r.up))}: 🎯 Mục tiêu đã chuyển sang cấp mới.</p>` : ''}</section>
     ${resultBox(c, res)}
-    ${r.skipL ? '<p class="hint">Bạn bỏ qua phần Nghe: kết luận chỉ dựa vào phần Đọc.</p>' : ''}
+    ${r.skipL ? '<p class="fb neutral" role="note"><span>Bạn bỏ qua phần Nghe nên <b>chưa kết luận</b> (không tính là rớt, không phải chờ). Thi chuyển cấp cần đủ Đọc, Nghe, Viết, Nói: lần sau vào lại khi nghe được (sẽ là bài mới).</span></p>' : ''}
     <details class="panel"><summary>Xem chữa bài Đọc + Nghe từng câu</summary><ul class="stack" style="list-style:none;padding:0;margin:8px 0 0;gap:8px">${review}</ul></details>
     <div class="row"><button class="btn primary" data-e="go" data-r="aim">🎯 Xem mục tiêu${r.up ? ` ${esc(LV(r.up))}` : ''}</button><button class="btn ghost" data-e="go" data-r="quest">⚔️ Về sảnh</button></div>`;
 }
