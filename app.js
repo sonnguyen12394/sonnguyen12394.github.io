@@ -2977,7 +2977,8 @@ function mainAction(o){ const learn=!!(o&&o.learn);   // v153 learn: não ở �
   if(learn){ const nu=actsOf(cur.level==='A1'?'A1':'A2').need; if(nu&&!U(nu.id).passed) return {h:`Học ${uname(nu)} · ${esc(nu.title)}`,p:'Học nhanh đúng dưới 50%: học kiến thức này trước rồi ôn sau.',btn:`<button class="btn primary big" data-unit="${nu.id}">Học bài này</button>`,eng:true}; }
   if(learn){ const od=oldUnitDue(); if(od&&(s.passed||due>=BACKLOG&&actsOf(cur.level==='A1'?'A1':'A2').lq>=80)) return {h:`Luyện lại ${uname(od.u)} · ${esc(od.u.title)}`,p:`${od.n} từ của unit này đến lúc gọi lại. Gọi lại đúng lúc sắp quên thì thanh 🔁 Nhớ lên.`,btn:`<button class="btn primary big" data-act="practice" data-u="${od.u.id}">Luyện lại</button>`,eng:true}; }   // eng: các lớp bọc sau (cân kỹ năng) không thay bước này
   // v48 (engine M4): có mục tiêu thì bước tiếp theo do lộ trình của engine chọn (đường đi tối thiểu), không theo thứ tự unit.
-  if(FST().path==='fast') try{ const en=EM&&EM.next({learn}); if(en) return {...en,eng:true}; }catch(e){}   // v175 đường 📘: bước kế = unit kế (cùng ▶ Hôm nay), không lộ trình riêng của engine
+  const g0=(((st.e||{}).goals||[])[0]||{}).id||'';   // v175 đích A1 / A2 đi đường 📘: bước kế = unit kế (cùng ▶ Hôm nay); đích khác (VSTEP, IELTS…) vẫn theo lộ trình engine
+  if(FST().path==='fast'||!/^cefr-a[12]$/.test(g0)) try{ const en=EM&&EM.next({learn}); if(en) return {...en,eng:true}; }catch(e){}
   const cd=unitCando(cur), why=cd?` Unit này giúp bạn đạt: “${esc(cdSay(cd))}”.`:'';
   return {h:`${s.learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,p:(s.learned?(learn?'':'Chưa có từ nào đến hạn ôn. ')+'Học tiếp unit này: luyện rồi vượt thử thách cuối unit để mở unit sau.':'Học 10 từ mới, luyện, rồi qua thử thách cuối unit để mở unit sau.')+why,btn:`<button class="btn primary big" data-unit="${cur.id}">${s.learned?'Tiếp tục':'Bắt đầu học'}</button>`};
 }
