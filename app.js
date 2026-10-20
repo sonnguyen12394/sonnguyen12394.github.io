@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 108;
+const STATE_V = 18, APP_VERSION = 111;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 const EN_COST = new Set(['practice','test','quick','remedy']);   // loại phiên tốn năng lượng (ôn đến hạn, kiểm tra cấp thì không)
@@ -1183,7 +1183,16 @@ const currentUnit = () => (goalUnits()||UNITS).find(u=>unlocked(u)&&!U(u.id).pas
 // câu thêm không đổi lịch ôn (noSrs), để quên chính tả không xoá mất bằng chứng đã nhớ nghĩa.
 const LONG_IVL = 21;
 function reviewItems(ws){ return spread(ws.flatMap(w=>{ const d=weakestDims(w.id), a=build(w,d[0]); return (W(w.id).ivl||1)>=LONG_IVL ? [a,Object.assign(build(w,d[1],{test:true}),{noSrs:true})] : [a]; })); }
-function dueWords(){ const t=today(); return ALL_WORDS.filter(w=>{const s=W(w.id);return s.learned&&s.due!=null&&s.due<=t;}); }
+// v173 (người sáng lập 20/10/2026: "ôn quá nhiều thì không học được; quên chỗ nào ôn nhanh lại chỗ đó"; thời gian học mỗi ngày ngẫu nhiên):
+// hai giai đoạn theo thanh 📘 Học của mục tiêu. Giai đoạn học (< 80%): lịch ôn giãn theo mức nhớ 0,75 (khoảng cách × LEARN_K) → ôn ít, đủ giữ nền.
+// Giai đoạn ôn (≥ 80%): lịch thường (mức nhớ 0,9) và từ nào khả năng nhớ đã dưới 0,9 cũng tính là đến hạn (đẩy 🔁 Nhớ lên 50%).
+// Mô phỏng npm run gatesim (cách F): thời gian ngẫu nhiên thì ngang cách B (v172) với người nhớ TB, nhanh hơn 25–33% với người hay quên.
+const LEARN_K = 3.3;   // interval(s, 0,75) / interval(s, 0,9) của FSRS
+const LPH = {k:'', v:false, nil:false, at:0};
+function learnPh2(){ try{ const L=ndLv(), k=today()+'|'+L+'|'+(EM&&EM.parts?1:0)+'|'+UNITS.filter(u=>U(u.id).passed).length+'|'+GPOINTS.filter(p=>G(p.id).passed).length;
+    if(LPH.k!==k||LPH.nil&&Date.now()-LPH.at>5000){ const p=dayParts(L); Object.assign(LPH,{k,at:Date.now(),nil:!p||!p.total,v:!!p&&p.total>0&&p.learn/p.total>=.8}); } return LPH.v; }catch(e){ return false; } }   // lưu cả khi chưa có số (EM.parts tốn: không tính lại mỗi lần vẽ; chưa có số thì thử lại sau 5 giây)
+function dueWords(){ const t=today(), ph2=learnPh2(), F=ph2&&typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
+  return ALL_WORDS.filter(w=>{const s=W(w.id); if(!s.learned||s.due==null) return false; return s.due<=t||!!F&&s.fs!=null&&s.fl!=null&&F.retrievability(Math.max(0,t-s.fl),s.fs)<0.9;}); }
 // Bằng chứng mastery cho engine (docs/SPEC.md §2): ghi ngay vào st.e qua lõi dùng chung, kể cả khi mô-đun engine chưa tải.
 // v53: phiên bản nội dung mặc định của câu học nền = số bản phát hành (nội dung nằm trong app.js / data/lv-*); câu thi có băm riêng.
 // v67 (C56): phiên bản nội dung TỪNG câu = băm nội dung câu (khớp content/engine/content-map.json); không tìm được câu thì dùng số bản app.
@@ -1230,7 +1239,8 @@ function fsrsKeep(w,c){ w.fs=+c.s.toFixed(3); w.fd=+c.d.toFixed(3); w.fl=c.last;
 function srsStep(w,correct,typed){
   if(!w.learned) return;
   const t=today(), F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
-  if(w.due==null){ if(correct){ w.stage=0; if(F){ const c=F.newCard(typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.max(1,c.due-t); } else w.ivl=1; w.due=t+w.ivl; } return; }   // lịch ôn bắt đầu từ lần đầu tự nhớ ra đúng, không phải lúc xem thẻ
+  const pk=learnPh2()?1:LEARN_K;   // v173 giai đoạn học: lịch giãn
+  if(w.due==null){ if(correct){ w.stage=0; if(F){ const c=F.newCard(typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.max(1,Math.round((c.due-t)*pk)); } else w.ivl=1; w.due=t+w.ivl; } return; }   // lịch ôn bắt đầu từ lần đầu tự nhớ ra đúng, không phải lúc xem thẻ
   if(w.due<=t&&w.fl!=null&&EM&&EM.hlog){ const gap=t-w.fl; try{ if(gap>=30) EM.hlog('r30',!!correct); else if(gap>=7) EM.hlog('r7',!!correct); }catch(e){} }   // v122 Bảng đo H (H6 nhớ trễ)
   if(!correct){                                         // quên → độ bền giảm theo FSRS, ôn lại ngày mai
     if(w.due<=t){ w.lp=(w.lp||0)+1; w.ld=t; }          // số lần quên khi đến hạn (forgetting patterns, docs/DANH-GIA-DU-LIEU-HOC.md); ld = ngày quên gần nhất (Goal Achieved CEFR: không quên trong 14 ngày)
@@ -1239,7 +1249,7 @@ function srsStep(w,correct,typed){
   } else if(w.due<=t){                                  // nhớ khi đến hạn → giãn ra theo độ bền mới
     // Tự gõ đúng là bằng chứng nhớ chắc (điểm 3 = "được"); chọn đúng trắc nghiệm có thể do đoán (điểm 2 = "khó").
     w.stage++;
-    if(F){ const c=F.review(fsrsCard(w,t),typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.min(MAX_IVL,Math.max(1,Math.round(F.interval(c.s)*srsK()))); }
+    if(F){ const c=F.review(fsrsCard(w,t),typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.min(MAX_IVL,Math.max(1,Math.round(F.interval(c.s)*srsK()*pk))); }
     else w.ivl=Math.min(MAX_IVL,Math.max(1,Math.round((w.ivl||1)*2.5*srsK())));
     w.due=t+w.ivl;
   }
@@ -2762,7 +2772,7 @@ function navActive(){
 function renderChrome(){
   const due=dueWords().length, gdue=dueG().length, active=navActive();
 
-  const badge = k => k===((st.fast||{}).path==='normal'?'lib':'nd')&&due+gdue ? `<span class="badge" aria-label="${due+gdue} mục đến hạn ôn">${due+gdue}</span>` : '';
+  const badge = k => k===((st.fast||{}).path==='fast'?'nd':'lib')&&due+gdue ? `<span class="badge" aria-label="${due+gdue} mục đến hạn ôn">${due+gdue}</span>` : '';
   featCheck(); const NAV=BNAV.filter(([k])=>featOn(k));
   document.getElementById('nav').innerHTML = NAV.map(([k,l,ic])=>`<button data-go="${k}" ${active===k?'aria-current="page"':''}>${ico(ic)}<span>${l}</span>${badge(k)}</button>`).join('');
   const bn=document.getElementById('bnav');
@@ -2923,7 +2933,7 @@ function mainAction(o){ const learn=!!(o&&o.learn);   // v153 learn: não ở �
   // v162 Học bài một mình: hết unit mới (hoặc từ đến hạn dồn nhiều) thì luyện lại unit cũ có nhiều từ đến hạn nhất (ôn lồng, vẫn là bài Học bài).
   // v163 cách nhìn Học bài: bài Ôn luyện báo "chưa biết" (T5) đi trước bài mới, vì không học thì không qua được.
   if(learn){ const nu=actsOf(cur.level==='A1'?'A1':'A2').need; if(nu&&!U(nu.id).passed) return {h:`Học ${uname(nu)} · ${esc(nu.title)}`,p:'Học nhanh đúng dưới 50%: học kiến thức này trước rồi ôn sau.',btn:`<button class="btn primary big" data-unit="${nu.id}">Học bài này</button>`,eng:true}; }
-  if(learn){ const od=oldUnitDue(); if(od&&(s.passed||due>=BACKLOG)) return {h:`Luyện lại ${uname(od.u)} · ${esc(od.u.title)}`,p:`${od.n} từ của unit này đến lúc gọi lại. Gọi lại đúng lúc sắp quên thì thanh 🔁 Nhớ lên.`,btn:`<button class="btn primary big" data-act="practice" data-u="${od.u.id}">Luyện lại</button>`,eng:true}; }   // eng: các lớp bọc sau (cân kỹ năng) không thay bước này
+  if(learn){ const od=oldUnitDue(); if(od&&(s.passed||due>=BACKLOG&&actsOf(cur.level==='A1'?'A1':'A2').lq>=80)) return {h:`Luyện lại ${uname(od.u)} · ${esc(od.u.title)}`,p:`${od.n} từ của unit này đến lúc gọi lại. Gọi lại đúng lúc sắp quên thì thanh 🔁 Nhớ lên.`,btn:`<button class="btn primary big" data-act="practice" data-u="${od.u.id}">Luyện lại</button>`,eng:true}; }   // eng: các lớp bọc sau (cân kỹ năng) không thay bước này
   // v48 (engine M4): có mục tiêu thì bước tiếp theo do lộ trình của engine chọn (đường đi tối thiểu), không theo thứ tự unit.
   try{ const en=EM&&EM.next({learn}); if(en) return {...en,eng:true}; }catch(e){}
   const cd=unitCando(cur), why=cd?` Unit này giúp bạn đạt: “${esc(cdSay(cd))}”.`:'';
@@ -7219,13 +7229,19 @@ function ndNext(L){ const o=ndPlan(L); if(!o) return; const n=st.nd||(st.nd={d:{
 // ---- v161 ▶ Hôm nay: một não điều phối Học bài + Ôn luyện (người sáng lập 18/10/2026: một nút; não tự cân ôn / mới) ----
 // Ôn luyện: người có nền nhớ lại nhanh, vượt nhanh bài. Học bài: người chưa có kiến thức đó; ôn mà dưới 50% thì não đưa về học (ndNeed).
 const ND_NEED = 0.5, DAY_DUE = 12;   // v165 bỏ ND_MID
+// v171 (người sáng lập 20/10/2026: "cứ theo học chính thống, học nhanh tính sau"; mục tiêu 📘 Học 80% · 🔁 Nhớ 50%).
+// v172 (người sáng lập 20/10/2026: "ưu tiên học; học và ôn vừa đủ để đi hết các unit rồi mới đẩy mạnh ôn"): hai giai đoạn.
+// Giai đoạn học (📘 Học < 80%): bài mới trước, ôn vừa đủ 1 lượt DAY_DUE từ yếu nhất / ngày, không phanh học mới.
+// Giai đoạn ôn (📘 Học ≥ 80%): ôn đứng đầu, lặp tới hết từ đến hạn (tối đa DAY_ROUNDS lượt); nợ ôn ≥ BACKLOG thì chưa mở unit mới.
+// Mô phỏng (npm run gatesim, cùng thời gian học mỗi ngày): tới Thi chuyển cấp nhanh hơn ôn-trước khoảng 2 lần, đổi lại tỉ lệ quên khi ôn cao hơn.
+const DAY_ROUNDS = 5;
 const zeroStart = () => { const d=st.e&&st.e.diag; return !!d&&!d.n&&!d.u&&!d.g; };   // chọn "Tôi chưa biết gì tiếng Anh"
 // Có nền? 3 lượt vượt nhanh gần nhất: ≥ 2 lượt đạt ≥ 50% → có ('yes'); ≥ 2 lượt dưới 50% → chưa ('no'); chưa đủ → null (thử thêm).
 function ndBase(){ const to=(st.nd||{}).to||[]; if(!to.length) return zeroStart()?'no':null;
   const ok=to.filter(x=>x.s>=ND_NEED).length, bad=to.length-ok; return ok>=2?'yes':bad>=2?'no':null; }
 function dayParts(L){ try{ return EM&&EM.parts?EM.parts('cefr-'+L.toLowerCase()):null; }catch(e){ return null; } }
 function dayDone(){ const n=st.nd||(st.nd={d:{}}), t=today(); if(!n.day||n.day.d!==t) n.day={d:t,done:[]}; return n.day.done; }
-function dayMark(k){ const d=dayDone(); if(!d.includes(k)) d.push(k); save(); }
+function dayMark(k){ const d=dayDone(); if(k==='due'){ const n=st.nd.day; n.rv=(n.rv||0)+1; if(n.rv<DAY_ROUNDS){ save(); return; } } if(!d.includes(k)) d.push(k); save(); }   // v171 bước ôn: tới DAY_ROUNDS lượt / ngày mới tính là xong
 const LIB = '📘 Học bài', NDT = '⚡ Học nhanh';
 // Bước của buổi: k (ô), side, t (việc), why (lý do), at (thuộc tính nút). Tính lại mỗi lần vẽ; chỉ lưu ô đã bấm trong ngày.
 // v163 (người sáng lập 18/10/2026: "não phải tự đánh giá"; liệt kê trường hợp cho bớt phức tạp): MỘT chỗ đọc tình trạng (actsOf),
@@ -7246,22 +7262,27 @@ function actsOf(L){ L=L||ndLv(); const t=today(), p=dayParts(L), us=UNITS.filter
   const tgN=[...ndTargets(L).keys()].filter(id=>{ const w=WORD[id]; return w&&/^(noun|verb|adj)/.test(w.pos||'')&&w.ex; }).length, gx=(st.wrg||{}).gap, wrG=tgN>=3&&!(gx&&gx.day===t)?'gap':null;
   const wr=wrT&&wrG?(((st.nd||{}).wk||0)%2?wrG:wrT):(wrT||wrG);
   return {L,t,p,lq,mq,gl,gm,memFirst:gm>=gl,why,dw:dueWords().length,dg:dueG().length,need,pk,fade,newRd,base:ndBase(),cur,od,ph,fn,rp,wr,sk:ndStk(L),
-    path:FST().path,gd:gapDue().length,ch:fastNext(L)}; }   // v165 đường đang đi (⚡ / 📘), chỗ lủng đến hạn vá, chặng kế
+    path:FST().path||'normal',gd:gapDue().length,ch:fastNext(L)}; }   // v165 đường đang đi (⚡ / 📘), chỗ lủng đến hạn vá, chặng kế
 function dayPlan(){ const A=actsOf(), out=[], {L,why,base,cur,od}=A;
-  if(A.dw||A.dg) out.push({k:'due',side:NDT,t:A.dw?`Ôn ${Math.min(A.dw,DAY_DUE)} từ đến hạn`:`Ôn ${A.dg} bài ngữ pháp đến hạn`,why:'đúng lúc sắp quên thì nhớ lâu nhất',at:A.dw?'data-act="dayreview"':'data-act="greview"'});
+  const ph2=A.lq>=80;   // v172 giai đoạn ôn
+  const brake=ph2&&A.dw>=BACKLOG&&cur&&!U(cur.id).learned;   // v171 nợ ôn nhiều: ôn trước, chưa mở unit mới (giữ thanh 🔁 Nhớ)
+  const due=A.dw||A.dg?{k:'due',side:LIB,t:A.dw?`Ôn ${Math.min(A.dw,DAY_DUE)} từ đến hạn${A.dw>DAY_DUE?` (còn ${A.dw} từ)`:''}`:`Ôn ${A.dg} bài ngữ pháp đến hạn`,
+    why:!ph2?'giai đoạn học: lịch ôn giãn, chỉ ôn từ sắp quên để giữ nền; 📘 Học ≥ 80% thì mới ôn mạnh':brake?`còn nhiều từ đến hạn: ôn trước, chưa mở bài mới để thanh 🔁 Nhớ không tụt`:'giai đoạn ôn: ôn tới hết từ đến hạn để 🔁 Nhớ lên 50%',at:A.dw?'data-act="dayreview"':'data-act="greview"'}:null;
+  if(due&&ph2) out.push(due);
   if(A.need) out.push({k:'need',side:LIB,t:`Học ${uname(A.need)} · ${esc(A.need.title)}`,why:'Học nhanh đúng dưới 50%: cần học kiến thức này trước',at:`data-unit="${A.need.id}"`});
-  if(A.gd) out.push({k:'fix',side:NDT,t:`🩹 Vá ${Math.min(A.gd,FAST_FIX_N)} chỗ lủng`,why:'chỉ học lại đúng chỗ làm sai, không học lại cả bài',at:'data-act="fixgo"'});   // v165
+  if(A.gd&&A.path==='fast') out.push({k:'fix',side:NDT,t:`🩹 Vá ${Math.min(A.gd,FAST_FIX_N)} chỗ lủng`,why:'chỉ học lại đúng chỗ làm sai, không học lại cả bài',at:'data-act="fixgo"'});   // v165
   const mem=A.fade?{k:'gap',side:NDT,t:`Đọc / nghe lại ${uname(A.fade.u)} · ${esc(A.fade.u.title)}`,why:`${A.fade.why}; ${why}`,at:`data-act="dayread" data-v="${A.fade.u.id}"`}:null;
   const rd=A.newRd&&(A.path==='fast'||(A.path==null&&base!=='no'))?{k:'gap',side:NDT,t:`Vượt nhanh ${uname(A.newRd)} · ${esc(A.newRd.title)}`,why:`${base==='yes'?'bạn có nền: đọc hiểu đạt là qua unit':'thử xem bạn đã biết chưa; dưới 50% thì về Học bài'}; ${why}`,at:`data-act="dayread" data-v="${A.newRd.id}"`}:null;
   // v165 ⚡ vượt chặng: đường ⚡ (hoặc chưa chọn đường mà chưa rõ là người mới hoàn toàn) → chặng kế; chặng đầu tiên = 🧭 Đo nền.
   const chunk=A.ch&&A.path!=='normal'&&!(A.path==null&&base==='no')?{k:'gap',side:NDT,t:`⚡ ${esc(fastName(A.ch))}`,why:`${A.path?'làm bài trước: đúng thì qua, sai thì chỉ vá chỗ đó':'🧭 đo nền: một chặng khoảng 8 phút để biết bạn có nền tới đâu'}; ${why}`,at:`data-act="fastgo" data-v="${A.ch.key}"`}:null;
   const fast=chunk||rd;
-  const learn=cur&&!U(cur.id).passed?{k:'gap',side:LIB,t:`${U(cur.id).learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,why:`${base==='no'?'học từ đầu tới vững':'bài mới'}; ${why}`,at:`data-unit="${cur.id}"`}
+  const learn=cur&&!U(cur.id).passed&&!brake?{k:'gap',side:LIB,t:`${U(cur.id).learned?'Học tiếp':'Bắt đầu'} ${uname(cur)} · ${esc(cur.title)}`,why:`${base==='no'?'học từ đầu tới vững':'bài mới'}; ${why}`,at:`data-unit="${cur.id}"`}
     :od?{k:'gap',side:LIB,t:`Luyện lại ${uname(od.u)} · ${esc(od.u.title)}`,why:`${od.n} từ đến lúc gọi lại; ${why}`,at:`data-act="practice" data-u="${od.u.id}"`}:null;
   const learnFirst=cur&&U(cur.id).learned&&!U(cur.id).passed;   // T6 đang học dở: học tiếp trước khi vượt nhanh bài khác
   const main=A.path==='fast'?(fast||learn):((learnFirst?learn:fast)||learn||fast);   // v165 đường ⚡: vượt / vá trước học mới
-  const gap=A.memFirst?(mem||main):(main||mem);
+  const gap=ph2&&A.memFirst?(mem||main):(main||mem);   // v172 giai đoạn học: bài mới trước đọc lại
   if(gap) out.push(gap);
+  if(due&&!ph2) out.push(due);   // v172 giai đoạn học: ôn vừa đủ sau bài mới
   const use=useActs(A);
   if(use.length){ const lk=(st.nd||{}).uk||0, blockL=A.lq<80&&(A.ph||A.fn);   // thanh Học còn thiếu mà còn bài âm / chức năng → đưa trước; còn lại xoay vòng theo ngày
     out.push(blockL?use[0]:use[(lk+A.t)%use.length]); }
@@ -7276,12 +7297,12 @@ function useActs(A){ const {ph,fn,rp,wr,sk}=A;
 // v162 người mới hoàn toàn → 📘 Học bài nhanh nhất; có nền → 🔁 Ôn luyện nhanh nhất; ▶ Hôm nay cho người có kiến thức nhưng lủng.
 // v163 bỏ dòng gợi ý đường (pathFit): não tự quyết từng bước, không bắt người học chọn đường.
 // v165 đường đang đi + nút đổi (người học đổi bất cứ lúc nào; chưa chọn thì não thử một chặng ⚡ để đo nền).
-function dayPathHtml(){ const p=FST().path, oth=p==='normal'?'fast':'normal';
-  return `<p class="row" style="gap:6px;align-items:center"><span>Đường đang đi: <b>${p==='fast'?FASTT:p==='normal'?LIB:'chưa chọn'}</b>${p?'':' (não thử một chặng ⚡ để đo nền)'}</span><button class="btn small ghost" data-act="fastpath" data-v="${p?oth:'normal'}">Đổi sang ${p==='normal'?FASTT:LIB}</button>${p?'':`<button class="btn small ghost" data-act="fastpath" data-v="fast">Chọn ${FASTT}</button>`}</p>`; }
+function dayPathHtml(){ const p=FST().path==='fast'?'fast':'normal';   // v171 chưa chọn = 📘 Học bài
+  return `<p class="row" style="gap:6px;align-items:center"><span>Đường đang đi: <b>${p==='fast'?FASTT:LIB}</b></span><button class="btn small ghost" data-act="fastpath" data-v="${p==='fast'?'normal':'fast'}">Đổi sang ${p==='fast'?LIB:FASTT}</button></p>`; }
 function dayHtml(where){ const P=dayPlan(), done=dayDone(), left=P.steps.filter(x=>!done.includes(x.k)), nx=left[0];
   const li=x=>`<li class="spread" style="gap:8px;align-items:flex-start"><span>${done.includes(x.k)?'✓':x===nx?'▶':'•'} <b>${x.t}</b> <span class="pill">${x.side}</span><br><span class="hint">${x.why}</span></span></li>`;
   return `<section class="panel stack dayplan" aria-label="Hôm nay"><h2>▶ Hôm nay · mục tiêu ${P.L}</h2>
-    <p class="hint">Một não cho cả hai đường. 📘 Học bài: học từ đầu, học mới và ôn đi cùng nhau. ⚡ Học nhanh: cho người đã học lâu nhưng mất gốc: làm bài trước, đúng thì qua, sai chỗ nào chỉ vá chỗ đó. Sắp quên thì ôn, ở đường nào cũng vậy.</p>
+    <p class="hint">Làm lần lượt từ trên xuống. Trước hết học cho hết bài (📘 Học ≥ 80%): bài mới trước, rồi ôn những từ sắp quên (lịch giãn, ôn ít). Sau đó đẩy mạnh ôn để 🔁 Nhớ lên 50% (nhớ lại được sau ≥ 3 ngày và chưa quên).</p>
     ${dayPathHtml()}
     <ol class="stack" style="gap:8px;list-style:none;padding:0;margin:0">${P.steps.map(li).join('')}</ol>
     ${nx?`<div class="row"><button class="btn primary big" ${nx.at} data-day="${nx.k}">▶ ${where==='lib'||where==='nd'?'Làm bước kế':'Hôm nay'}</button></div>`
@@ -7383,7 +7404,7 @@ const fastName = c => c.k==='w'?`Chặng từ ${c.L} · Unit ${c.us[0].no}–${c
 function fastNext(L){ const F=FST(); for(const l of fastLvs(L)) for(const c of fastChunks(l)) if(!F.ch[c.key]&&fastLeft(c).length) return c; return null; }
 function fastStart(key){ const c=fastLvs('A2').flatMap(fastChunks).find(x=>x.key===key); if(!c) return; const left=fastLeft(c);
   if(!left.length){ FST().ch[key]={d:today(),ok:0,n:0}; save(); return render(); }
-  const F=FST(); if(!F.path) F.path='fast'; save();
+  save();   // v171 làm một chặng không tự đổi đường; đổi bằng nút ở ▶ Hôm nay
   if(c.k==='w'){ const items=[]; for(const u of left){ const [a,b]=shuffle(u.words);
       items.push(Object.assign(build(a,'rcl',{test:true}),{fk:key}),Object.assign(build(b,'ctx',{test:true,noOrder:true,noAudio:true}),{fk:key})); }
     return startSession('fast',spread(items),null,c.L); }
