@@ -35,8 +35,7 @@ test('v177 #22 nút 💬 nổi không che nút ở thanh đáy (màn chào), 390
   const fab = page.locator('.gyfab'), bar = page.locator('#app .actbar').first();
   await expect(bar).toBeVisible();
   await expect(fab).toBeVisible();
-  const f = (await fab.boundingBox())!, b = (await bar.boundingBox())!;
-  expect(f.y + f.height).toBeLessThanOrEqual(b.y + 1);
+  await expect.poll(async () => { const f = (await fab.boundingBox())!, b = (await bar.boundingBox())!; return f.y + f.height - b.y; }).toBeLessThanOrEqual(1);
   expect(errors).toEqual([]);
 });
 

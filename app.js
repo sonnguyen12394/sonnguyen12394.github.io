@@ -4863,8 +4863,11 @@ function lessonChrome(){ const v=ui.view, app=document.getElementById('app'); if
   if(fb) sh.appendChild(fb); const xp=box.querySelector('.xpf'); if(xp) sh.appendChild(xp); sh.appendChild(row);
   nb.classList.add('big'); app.appendChild(sh); document.body.classList.add('has-sheet'); }
 // v175 (góp ý #22): nút 💬 nổi đè lên nút chính ở thanh đáy (Tiếp tục, Mới tinh…). Đo thanh đáy cố định đang hiện, đẩy nút 💬 lên trên nó.
-function gyLift(){ let h=0; document.querySelectorAll('#app .actbar, #app .sheet').forEach(e=>{ if(getComputedStyle(e).position==='fixed') h=Math.max(h,e.offsetHeight); });
-  document.documentElement.style.setProperty('--abh',h+'px'); }
+// Đo ở khung hình sau (requestAnimationFrame): không ép trình duyệt tính lại bố cục ngay trong lúc vẽ (giữ TBT của Lighthouse).
+let _gyRaf=0;
+function gyLift(){ if(_gyRaf||typeof requestAnimationFrame==='undefined') return; _gyRaf=requestAnimationFrame(()=>{ _gyRaf=0; let h=0;
+  document.querySelectorAll('#app .actbar, #app .sheet').forEach(e=>{ if(getComputedStyle(e).position==='fixed') h=Math.max(h,e.offsetHeight); });
+  document.documentElement.style.setProperty('--abh',h+'px'); }); }
 const GX_VIEWS=new Set(['more','games','league','closet','progress','cefr']);
 const GALL_OPEN=new Set(), gallKey=d=>d.dataset.gv+'|'+((d.querySelector('summary')||{}).textContent||'').trim().slice(0,8);
 function render(){
