@@ -34,9 +34,6 @@ test.describe('mở app (home: false)', () => {
     await expect(page.locator('#bnav button')).toHaveText(['Chơi', 'Học bài', 'Học nhanh', 'Mục tiêu', 'Tôi'].map(t => new RegExp(`^${t}`)));
     await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Mục tiêu');
     await expect(page.locator('#app .cmprow')).toHaveCount(7);
-    // v175 (góp ý #14): chưa chọn đích, chưa qua A1 → mở vào A1 (một đích cho mọi màn)
-    await expect(page.locator('#app')).toContainText(/Cần đạt để qua A1 · \d+\/186 phần đã vững/);
-    await page.locator('[data-e="aimlv"][data-lv="A2"]').click();
     await expect(page.locator('#app')).toContainText(/Cần đạt để qua A2 · \d+\/361 phần đã vững/);
     await expect(page.locator('#app [data-e="cblo"]')).toHaveCount(1);
     await expect(page.locator('#app [data-act="skgo"]')).toHaveCount(7);
@@ -92,4 +89,17 @@ test('tab 📘 Học bài: ▶ Hôm nay + tự học tiếp + 7 kỹ năng + t�
   await page.evaluate(() => (window as any).eval("go('review')"));
   await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Học nhanh');   // v165 tab nd = ⚡ Học nhanh
   expect(errors).toEqual([]);
+});
+
+test.describe('v175 đích mặc định (home: false)', () => {
+  test.use({ home: false });
+  test('chưa chọn đích, chưa qua A1 → Mục tiêu và Kỹ năng của bạn theo A1 (góp ý #14)', async ({ page, errors }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => (window as any).ELREADY === true);
+    await page.evaluate(() => { const w = window as any, st = w.eval('st'); st.onboarded = true; st.e.goals = []; w.eval('save()'); w.eval("go('goal')"); });
+    await expect(page.locator('#app')).toContainText(/Cần đạt để qua A1 · \d+\/186 phần đã vững/, { timeout: 20000 });
+    await page.evaluate(() => (window as any).eval("go('lib')"));
+    await expect(page.locator('#app .lsk')).toContainText('A1', { timeout: 20000 });
+    expect(errors).toEqual([]);
+  });
 });
