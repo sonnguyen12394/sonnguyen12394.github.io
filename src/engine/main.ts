@@ -1562,7 +1562,7 @@ export function init(host: EHost): EngineModule {
     const span = (fm: Map<string, number>, lm: Map<string, number>, k: string, day: number, good: boolean) => { const f = fm.get(k); if (f === undefined || day < f) fm.set(k, day); if (good) { const l = lm.get(k); if (l === undefined || day > l) lm.set(k, day); } };
     for (const x of v.ev.led) { if (!seen.has(x.node)) continue; const good = !!x.ok && !x.asst; span(first, okLast, x.node, x.day, good);
       const m = x.node.startsWith('u:') ? /^(?:w|nd):([^:]+):/.exec(String(x.item ?? '')) : null; if (m) span(wf, wl, x.node + '|' + m[1], x.day, good); }
-    // v180 (học thử: 72/87 unit nhớ ≥ 0,9 mà 🔁 Nhớ 3/130): sổ chỉ giữ LED_MAX lượt (~20 ngày học), lần gặp đầu bị cắt nên "cách lần đầu ≥ 3 ngày"
+    // v181 (học thử: 72/87 unit nhớ ≥ 0,9 mà 🔁 Nhớ 3/130): sổ chỉ giữ LED_MAX lượt (~20 ngày học), lần gặp đầu bị cắt nên "cách lần đầu ≥ 3 ngày"
     // không bao giờ đạt với nút ôn thưa. Ngày đầu lấy cả ở bảng tổng (agg d0, không bị cắt); từ của unit thêm bằng chứng từ thẻ FSRS (host.wordHeld).
     const d0 = new Map<string, number>();
     for (const part of Object.values(v.ev.agg)) for (const [ck, cell] of Object.entries(part ?? {})) { const n = ck.slice(0, ck.lastIndexOf('|')); if (!seen.has(n)) continue;

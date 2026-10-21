@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 118;
+const STATE_V = 18, APP_VERSION = 119;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 // v175 (người sáng lập 20/10/2026, sau buổi học thử: "tự chỉnh sửa lại hết"): bỏ năng lượng ở mọi lượt học. Hết năng lượng chặn học ngay ngày đầu, trái luật
@@ -1197,7 +1197,7 @@ function learnPh2(){ try{ const L=ndLv(), k=today()+'|'+L+'|'+(EM&&EM.parts?1:0)
 // v175 (góp ý #19): một luật "đến hạn" cho mọi chỗ (danh sách ôn, lịch FSRS, ghi nhận lượt ôn). Trước đây chỉ dueWords tính thẻ nhớ < 0,9
 // ở giai đoạn ôn, còn srsStep / grade / answer chỉ nhận due <= hôm nay: ôn đúng những thẻ đó không cập nhật lịch, thẻ ở lại danh sách mãi,
 // khả năng nhớ tiếp tục tụt nên 🔁 Nhớ không lên (playtest 44 ngày: ôn đúng 100%, Nhớ 23 → 5/130). Áp cho cả từ lẫn bài ngữ pháp.
-// v180 (học thử: giai đoạn ôn 145 ngày mà 🔁 Nhớ vẫn 0–2%): Nhớ tính theo unit (trung bình nhớ của unit ≥ 0,9), ôn từ yếu nhất rải khắp 87 unit thì
+// v181 (học thử: giai đoạn ôn 145 ngày mà 🔁 Nhớ vẫn 0–2%): Nhớ tính theo unit (trung bình nhớ của unit ≥ 0,9), ôn từ yếu nhất rải khắp 87 unit thì
 // không unit nào đạt. Giai đoạn ôn: ôn dồn theo unit, unit có nhiều từ đang nhớ chắc nhất trước (gần đạt nhất), trong unit từ yếu trước.
 function dueOrder(list){ const t=today(), F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
   if(!learnPh2()||!F) return list.sort((a,b)=>mastery(a.id)-mastery(b.id));
@@ -5418,6 +5418,7 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
+  {v:118,d:'2026-10-21',t:'Giai đoạn ôn: ôn không giới hạn',items:['Khi 📘 Học đã đủ 100%, ▶ Hôm nay cho ôn tới hết từ đến hạn (trước đây dừng sau 5 lượt × 12 từ mỗi ngày nên 🔁 Nhớ khó lên 80%).']},
   {v:117,d:'2026-10-21',t:'Cặp âm / giao tiếp lên đầu khi chỉ còn chúng',items:['Khi mọi unit đã qua mà 📘 Học còn thiếu cặp âm hoặc chức năng giao tiếp, ▶ Hôm nay đưa bài đó lên đầu (trước đây nằm cuối, ngày ít giờ không tới nên Học đứng yên).']},
   {v:115,d:'2026-10-20',t:'Sửa theo góp ý thử học tới A1',items:['🔁 Nhớ: ôn đúng những từ / bài ngữ pháp đang phai nay được ghi vào lịch ôn (trước đây ôn đúng mà Nhớ không lên). ▶ Hôm nay có thêm bước ôn ngữ pháp đến hạn.','Nút 💬 không còn che nút ở thanh đáy.','Máy chấm Viết / Nói nhận ý khi bạn tự diễn đạt ("I\'m afraid", "a bad cold", "a shop that sells…"); đề tiếng Anh nêu đủ chi tiết cần viết.','Thi chuyển cấp: bỏ qua phần Nghe thì chưa kết luận (không lên cấp, không phải chờ).','Sửa lỗi tiếng Anh trong nội dung (an umbrella, two milk teas, your party) và nhận thêm cách sửa câu đúng khác.']},
   {v:108,d:'2026-10-19',t:'Sửa theo góp ý khi học',items:['⚡ Vượt chặng: báo đúng / sai và có âm thanh ngay sau mỗi câu. Câu sai vẫn vào Vá chỗ lủng.','Bỏ nút “Mình đang đoán”. Ở chặng ⚡ không còn nút “Tôi chưa biết”.','iPhone: chạm vào ô gõ không còn bị phóng to màn hình.','Chữ trong câu hỏi to hơn, dễ đọc hơn.']},
@@ -7316,7 +7317,7 @@ const ND_NEED = 0.5, DAY_DUE = 12;   // v165 bỏ ND_MID
 // v171 (người sáng lập 20/10/2026: "cứ theo học chính thống, học nhanh tính sau"; mục tiêu 📘 Học 80% · 🔁 Nhớ 50%).
 // v172 (người sáng lập 20/10/2026: "ưu tiên học; học và ôn vừa đủ để đi hết các unit rồi mới đẩy mạnh ôn"): hai giai đoạn.
 // Giai đoạn học (📘 Học < 80%): bài mới trước, ôn vừa đủ 1 lượt DAY_DUE từ yếu nhất / ngày, không phanh học mới.
-// Giai đoạn ôn (📘 Học ≥ ${GATE_LEARN}%): ôn đứng đầu, lặp tới hết từ đến hạn (tối đa DAY_ROUNDS lượt); nợ ôn ≥ BACKLOG thì chưa mở unit mới.
+// Giai đoạn ôn (📘 Học ≥ ${GATE_LEARN}%): ôn đứng đầu, lặp tới hết từ đến hạn (v180: không giới hạn lượt; DAY_ROUNDS chỉ còn ở giai đoạn học); nợ ôn ≥ BACKLOG thì chưa mở unit mới.
 // Mô phỏng (npm run gatesim, cùng thời gian học mỗi ngày): tới Thi chuyển cấp nhanh hơn ôn-trước khoảng 2 lần, đổi lại tỉ lệ quên khi ôn cao hơn.
 const DAY_ROUNDS = 5;
 // v176 (người sáng lập 20/10/2026, chọn phương án 1): chuẩn mở Thi chuyển cấp 📘 Học 100% · 🔁 Nhớ 80% (trước 80 / 50); khớp GATE.learn / GATE.mem của engine.
@@ -7329,7 +7330,7 @@ function ndBase(){ const to=(st.nd||{}).to||[]; if(!to.length) return zeroStart(
 function dayParts(L){ try{ return EM&&EM.parts?EM.parts('cefr-'+L.toLowerCase()):null; }catch(e){ return null; } }
 const dayRev = () => ((TRK().rd[today()]||[])[0]||0);   // v175 số câu ôn đến hạn đã làm hôm nay
 function dayDone(){ const n=st.nd||(st.nd={d:{}}), t=today(); if(!n.day||n.day.d!==t) n.day={d:t,done:[]}; return n.day.done; }
-function dayMark(k){ const d=dayDone(); if(k==='due'){ const n=st.nd.day; n.rv=(n.rv||0)+1; if(n.rv<DAY_ROUNDS){ save(); return; } } if(!d.includes(k)) d.push(k); save(); }   // v171 bước ôn: tới DAY_ROUNDS lượt / ngày mới tính là xong
+function dayMark(k){ const d=dayDone(); if(k==='due'){ const n=st.nd.day; n.rv=(n.rv||0)+1; if(n.rv<DAY_ROUNDS||learnPh2()){ save(); return; } } if(!d.includes(k)) d.push(k); save(); }   // v171 bước ôn: tới DAY_ROUNDS lượt / ngày mới tính là xong
 const LIB = '📘 Học bài', NDT = '⚡ Học nhanh';
 // Bước của buổi: k (ô), side, t (việc), why (lý do), at (thuộc tính nút). Tính lại mỗi lần vẽ; chỉ lưu ô đã bấm trong ngày.
 // v163 (người sáng lập 18/10/2026: "não phải tự đánh giá"; liệt kê trường hợp cho bớt phức tạp): MỘT chỗ đọc tình trạng (actsOf),
@@ -7357,13 +7358,13 @@ function dayPlan(){ const A=actsOf(), out=[], {L,why,base,od}=A, cur=A.cur&&A.cu
   const ph2=A.lq>=GATE_LEARN;   // v172 giai đoạn ôn
   // v175 (học thử): bước không còn đánh dấu "xong" khi bấm; tự đổi theo việc đã làm thật. Ôn đủ DAY_ROUNDS × DAY_DUE câu đến hạn trong ngày thì thôi đưa ôn.
   const run=loadRun(); if(run) out.push({k:'run',side:LIB,t:`Làm tiếp: ${esc(runLabel(run))}`,why:'đang làm dở; làm tiếp không mất câu đã trả lời',at:'data-act="resume"'});
-  if(dayRev()>=DAY_ROUNDS*DAY_DUE) A.dw=0;   // v180 (học thử: 28 bài ngữ pháp 550 ngày không được ôn): trần lượt ôn chỉ tính từ; ngữ pháp vẫn được đưa
+  if(!ph2&&dayRev()>=DAY_ROUNDS*DAY_DUE) A.dw=0;   // v180 (người sáng lập 21/10/2026 "bỏ"): giai đoạn ôn không giới hạn lượt ôn / ngày; v181 (học thử: 28 bài ngữ pháp 550 ngày không được ôn) trần chỉ tính từ, ngữ pháp vẫn được đưa
   const brake=ph2&&A.dw>=BACKLOG&&cur&&!U(cur.id).learned;   // v171 nợ ôn nhiều: ôn trước, chưa mở unit mới (giữ thanh 🔁 Nhớ)
   const due=A.dw||A.dg?{k:'due',side:LIB,t:A.dw?`Ôn ${Math.min(A.dw,DAY_DUE)} từ đến hạn${A.dw>DAY_DUE?` (còn ${A.dw} từ)`:''}`:`Ôn ${A.dg} bài ngữ pháp đến hạn`,
     why:!ph2?`giai đoạn học: lịch ôn giãn, chỉ ôn từ sắp quên để giữ nền; 📘 Học ≥ ${GATE_LEARN}% thì mới ôn mạnh`:brake?`còn nhiều từ đến hạn: ôn trước, chưa mở bài mới để thanh 🔁 Nhớ không tụt`:`giai đoạn ôn: ôn tới hết từ đến hạn để 🔁 Nhớ lên ${GATE_MEM}%`,at:A.dw?'data-act="dayreview"':'data-act="greview"'}:null;
   const dueFirst=ph2||A.dw>=BACKLOG;   // v176 (học thử: nợ ôn 18 → 1 218 vì ngày ít thời gian chỉ kịp bài mới): giai đoạn học mà nợ ôn ≥ BACKLOG thì ôn trước, vẫn học mới sau
   if(due&&dueFirst) out.push(due);
-  const gdue=A.dw&&A.dg?{k:'gdue',side:LIB,t:`Ôn ${A.dg} bài ngữ pháp đến hạn`,why:'ngữ pháp cũng phai: ôn để 🔁 Nhớ giữ được (trước chỉ ôn từ)',at:'data-act="greview"'}:null; if(gdue&&dueFirst) out.push(gdue);   // v175 góp ý #19; v180 cả giai đoạn học (đi sau ôn từ)
+  const gdue=A.dw&&A.dg?{k:'gdue',side:LIB,t:`Ôn ${A.dg} bài ngữ pháp đến hạn`,why:'ngữ pháp cũng phai: ôn để 🔁 Nhớ giữ được (trước chỉ ôn từ)',at:'data-act="greview"'}:null; if(gdue&&dueFirst) out.push(gdue);   // v175 góp ý #19; v181 cả giai đoạn học (đi sau ôn từ)
   if(A.need) out.push({k:'need',side:LIB,t:`Học ${uname(A.need)} · ${esc(A.need.title)}`,why:'Học nhanh đúng dưới 50%: cần học kiến thức này trước',at:`data-unit="${A.need.id}"`});
   if(A.gd&&A.path==='fast') out.push({k:'fix',side:NDT,t:`🩹 Vá ${Math.min(A.gd,FAST_FIX_N)} chỗ lủng`,why:'chỉ học lại đúng chỗ làm sai, không học lại cả bài',at:'data-act="fixgo"'});   // v165
   const mem=A.fade?{k:'gap',side:NDT,t:`Đọc / nghe lại ${uname(A.fade.u)} · ${esc(A.fade.u.title)}`,why:`${A.fade.why}; ${why}`,at:`data-act="dayread" data-v="${A.fade.u.id}"`}:null;
@@ -7394,7 +7395,7 @@ function dayPlan(){ const A=actsOf(), out=[], {L,why,base,od}=A, cur=A.cur&&A.cu
     const st0=blockL?use[0]:use[(lk+A.t)%use.length], onlyPF=blockL&&A.p&&(A.p.miss||[]).length&&A.p.miss.every(n=>/^(ph|fn):/.test(n));
     // v179: chỉ còn cặp âm / chức năng chặn 📘 Học (mọi unit, ngữ pháp đã qua) → đưa lên đầu. Trước: luôn ở cuối, ngày ít giờ không tới,
     // mô phỏng v177: 📘 Học đứng 115/130 suốt 5+ ngày (thiếu 8 chức năng + 7 cặp âm) trong khi ngày nào cũng làm luyện lại / ôn từ.
-    // v180 (học thử: hết unit A1, 15 bài âm / chức năng không được gợi ý, 📘 Học kẹt 88% suốt 110 ngày): hết unit của cấp → đứng trước luyện lại / đọc lại
+    // v181 (học thử: hết unit A1, 15 bài âm / chức năng không được gợi ý, 📘 Học kẹt 88% suốt 110 ngày): hết unit của cấp → đứng trước luyện lại / đọc lại
     const iGap=blockL&&!cur?out.findIndex(x=>x.k==='gap'):-1;
     if(onlyPF) out.unshift(st0); else if(iGap>=0) out.splice(iGap,0,st0); else out.push(st0); }
   return {L,steps:out,lq:A.lq,mq:A.mq,cap}; }
@@ -10291,7 +10292,7 @@ const EHOST = {
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),
   // v154 thanh 📘 Học của Mục tiêu: đã qua bài cuối của bài học chứa nút (unit: thử thách cuối unit; ngữ pháp: bài cuối điểm; cặp âm / chức năng: đạt ≥ 80% một lượt).
   unitWords:id=>{ const u=UNITS.find(x=>x.id===id); return u?u.words.map(w=>w.id):[]; },   // v158 thanh Nhớ của unit theo từng từ
-  wordHeld:id=>{ const w=(st.words||{})[id]; return !!w&&w.learned&&(w.stage||0)>=1&&w.fs!=null&&w.fs>=3; },   // v180 bằng chứng Nhớ của từ không phụ thuộc sổ (sổ chỉ giữ ~20 ngày)
+  wordHeld:id=>{ const w=(st.words||{})[id]; return !!w&&w.learned&&(w.stage||0)>=1&&w.fs!=null&&w.fs>=3; },   // v181 bằng chứng Nhớ của từ không phụ thuộc sổ (sổ chỉ giữ ~20 ngày)
   lessonDone:n=>{ const [k,id]=[n.slice(0,n.indexOf(':')),n.slice(n.indexOf(':')+1)];
     if(k==='u') return !!(st.units[id]&&st.units[id].passed); if(k==='g') return !!(st.gram[id]&&st.gram[id].passed);
     if(k==='ph') return ((st.sounds||{})[id]||{}).best>=.8; if(k==='fn') return ((st.fn||{})[id]||{}).best>=.8; return false; },

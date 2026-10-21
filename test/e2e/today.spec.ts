@@ -87,7 +87,7 @@ test('v173 lịch ôn theo giai đoạn: giai đoạn học giãn × 3,3 (mức 
   expect(errors).toEqual([]);
 });
 
-test('v172 → v176 giai đoạn ôn (📘 Học 100%): ôn đứng đầu, lặp tới 5 lượt / ngày; nợ ôn ≥ 40 từ (BACKLOG) thì chưa mở unit mới mà luyện lại unit cũ', async ({ page, errors }) => {
+test('v172 → v176 giai đoạn ôn (📘 Học 100%): ôn đứng đầu, không giới hạn lượt (v180); nợ ôn ≥ 40 từ (BACKLOG) thì chưa mở unit mới mà luyện lại unit cũ', async ({ page, errors }) => {
   await open(page, 'lib');
   const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), ws = w.eval('ALL_WORDS').filter((x: any) => w.eval('UNIT_OF')[x.id].level === 'A2').slice(0, 40);
     w.dayParts = () => ({ learn: 100, mem: 10, total: 100, miss: [] });   // giả lập 📘 Học 100% (v176 giai đoạn ôn)
@@ -95,13 +95,13 @@ test('v172 → v176 giai đoạn ôn (📘 Học 100%): ôn đứng đầu, lặ
     const a = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.t + '|' + s.at);
     for (const x of ws.slice(0, 10)) W(x.id).due = t + 3;
     const b = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at);
-    w.eval('TRK()').rd[t] = [60, 50, 54];   // v175 đã ôn đủ 5 lượt × 12 câu hôm nay → thôi đưa ôn
+    w.eval('TRK()').rd[t] = [60, 50, 54];   // đã ôn 5 lượt × 12 câu hôm nay: v180 giai đoạn ôn vẫn đưa ôn (không giới hạn lượt)
     const c = w.eval('dayPlan()').steps.map((s: any) => s.k);
     return { a, b, c, cur: w.eval('currentUnit()').id }; });
   expect(r.a[0]).toContain('due|Ôn 12 từ đến hạn (còn 40 từ)');
   expect(r.a.some((s: string) => s.includes(`data-unit="${r.cur}"`))).toBe(false);
   expect(r.b.some((s: string) => s.includes(`data-unit="${r.cur}"`))).toBe(true);
-  expect(r.c).not.toContain('due');
+  expect(r.c).toContain('due');
   expect(errors).toEqual([]);
 });
 
@@ -323,7 +323,7 @@ test('v176 hết unit của cấp mà 📘 Học chưa đủ → bài âm / ch�
   expect(errors).toEqual([]);
 });
 
-test('v180 Nhớ của unit không phụ thuộc sổ (sổ chỉ giữ ~20 ngày): từ đã qua lần ôn đến hạn (thẻ FSRS) được tính', async ({ page, errors }) => {
+test('v181 Nhớ của unit không phụ thuộc sổ (sổ chỉ giữ ~20 ngày): từ đã qua lần ôn đến hạn (thẻ FSRS) được tính', async ({ page, errors }) => {
   await open(page, 'lib');
   const res = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), u = w.eval('UNITS').find((x: any) => x.level === 'A1');
     const held0 = w.eval('EHOST').wordHeld(u.words[0].id);
@@ -335,7 +335,7 @@ test('v180 Nhớ của unit không phụ thuộc sổ (sổ chỉ giữ ~20 ngà
   expect(errors).toEqual([]);
 });
 
-test('v180 ôn ngữ pháp đến hạn có ở cả giai đoạn học và vẫn được đưa khi đã đủ lượt ôn từ', async ({ page, errors }) => {
+test('v181 ôn ngữ pháp đến hạn có ở cả giai đoạn học và vẫn được đưa khi đã đủ lượt ôn từ', async ({ page, errors }) => {
   await open(page, 'lib');
   const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), G = w.eval('G');
     for (const x of w.eval('ALL_WORDS').slice(0, 5)) Object.assign(W(x.id), { learned: true, due: t - 1 });
