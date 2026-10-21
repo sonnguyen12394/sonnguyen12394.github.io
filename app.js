@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 118;
+const STATE_V = 18, APP_VERSION = 119;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 // v175 (người sáng lập 20/10/2026, sau buổi học thử: "tự chỉnh sửa lại hết"): bỏ năng lượng ở mọi lượt học. Hết năng lượng chặn học ngay ngày đầu, trái luật
@@ -1197,6 +1197,13 @@ function learnPh2(){ try{ const L=ndLv(), k=today()+'|'+L+'|'+(EM&&EM.parts?1:0)
 // v175 (góp ý #19): một luật "đến hạn" cho mọi chỗ (danh sách ôn, lịch FSRS, ghi nhận lượt ôn). Trước đây chỉ dueWords tính thẻ nhớ < 0,9
 // ở giai đoạn ôn, còn srsStep / grade / answer chỉ nhận due <= hôm nay: ôn đúng những thẻ đó không cập nhật lịch, thẻ ở lại danh sách mãi,
 // khả năng nhớ tiếp tục tụt nên 🔁 Nhớ không lên (playtest 44 ngày: ôn đúng 100%, Nhớ 23 → 5/130). Áp cho cả từ lẫn bài ngữ pháp.
+// v181 (học thử: giai đoạn ôn 145 ngày mà 🔁 Nhớ vẫn 0–2%): Nhớ tính theo unit (trung bình nhớ của unit ≥ 0,9), ôn từ yếu nhất rải khắp 87 unit thì
+// không unit nào đạt. Giai đoạn ôn: ôn dồn theo unit, unit có nhiều từ đang nhớ chắc nhất trước (gần đạt nhất), trong unit từ yếu trước.
+function dueOrder(list){ const t=today(), F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
+  if(!learnPh2()||!F) return list.sort((a,b)=>mastery(a.id)-mastery(b.id));
+  const R=w=>{ const s=W(w.id); return s.fs!=null&&s.fl!=null?F.retrievability(Math.max(0,t-s.fl),s.fs):0; }, sc=new Map();
+  const uSc=u=>{ if(!sc.has(u.id)){ const ws=u.words.filter(w=>W(w.id).learned); sc.set(u.id,ws.length?ws.filter(w=>R(w)>=0.9).length/ws.length:0); } return sc.get(u.id); };
+  return list.sort((a,b)=>{ const ua=UNIT_OF[a.id], ub=UNIT_OF[b.id]; return ua===ub?R(a)-R(b):uSc(ub)-uSc(ua)||(ua.id<ub.id?-1:1); }); }
 function srsDue(s,t){ if(!s||!s.learned||s.due==null) return false; if(s.due<=t) return true;
   const F=s.fs!=null&&s.fl!=null&&typeof ELCORE!=='undefined'&&learnPh2()?ELCORE.fsrs:null; return !!F&&F.retrievability(Math.max(0,t-s.fl),s.fs)<0.9; }
 function dueWords(){ const t=today(); return ALL_WORDS.filter(w=>srsDue(W(w.id),t)); }
@@ -5916,7 +5923,7 @@ document.addEventListener('click',e=>{
     case 'fixnext': return fixNext();
     case 'fastpath': { FST().path=d.v==='normal'?'normal':'fast'; save(); return ui.view==='fastsum'?go(d.v==='normal'?'lib':'nd'):render(); }
     case 'ndshow': ui.ndShow=ui.ndShow===d.v?null:d.v; return render();
-    case 'dayreview': { const due=dueWords().sort((a,b)=>mastery(a.id)-mastery(b.id)).slice(0,DAY_DUE); if(!due.length) return render(); return startSession('review',reviewItems(due),null); }
+    case 'dayreview': { const due=dueOrder(dueWords()).slice(0,DAY_DUE); if(!due.length) return render(); return startSession('review',reviewItems(due),null); }
     case 'dayread': { const n=st.nd||(st.nd={d:{}}); n.lk=[...(n.lk||[]),'read'].slice(-3); save(); return ndRead(d.v,HAS_TTS&&n.rl===false); }
     case 'dayrpg': { const n=st.nd||(st.nd={d:{}}); n.uk=(n.uk||0)+1; save(); return startRpg(d.v,true); }
     case 'daystk': { const n=st.nd||(st.nd={d:{}}); n.uk=(n.uk||0)+1; save(); return startSTask(d.v,true); }
@@ -6110,7 +6117,7 @@ document.addEventListener('click',e=>{
     case 'ics': return downloadReminder();
     case 'report': return exportReport();
     case 'testvoice': return say('Hello! This is how I sound.');
-    case 'review': { const due=dueWords().sort((a,b)=>mastery(a.id)-mastery(b.id)).slice(0,REVIEW_BATCH); if(!due.length) return go('review'); return startSession('review',reviewItems(due),null); }
+    case 'review': { const due=dueOrder(dueWords()).slice(0,REVIEW_BATCH); if(!due.length) return go('review'); return startSession('review',reviewItems(due),null); }
     case 'next': return next();
     case 'flag': ui.flagOpen=true; return render();
     case 'appeal': return appeal();
@@ -7351,13 +7358,13 @@ function dayPlan(){ const A=actsOf(), out=[], {L,why,base,od}=A, cur=A.cur&&A.cu
   const ph2=A.lq>=GATE_LEARN;   // v172 giai đoạn ôn
   // v175 (học thử): bước không còn đánh dấu "xong" khi bấm; tự đổi theo việc đã làm thật. Ôn đủ DAY_ROUNDS × DAY_DUE câu đến hạn trong ngày thì thôi đưa ôn.
   const run=loadRun(); if(run) out.push({k:'run',side:LIB,t:`Làm tiếp: ${esc(runLabel(run))}`,why:'đang làm dở; làm tiếp không mất câu đã trả lời',at:'data-act="resume"'});
-  if(!ph2&&dayRev()>=DAY_ROUNDS*DAY_DUE){ A.dw=0; A.dg=0; }   // v180 (người sáng lập 21/10/2026 "bỏ"): giai đoạn ôn không giới hạn lượt ôn / ngày, ôn tới hết từ đến hạn
+  if(!ph2&&dayRev()>=DAY_ROUNDS*DAY_DUE) A.dw=0;   // v180 (người sáng lập 21/10/2026 "bỏ"): giai đoạn ôn không giới hạn lượt ôn / ngày; v181 (học thử: 28 bài ngữ pháp 550 ngày không được ôn) trần chỉ tính từ, ngữ pháp vẫn được đưa
   const brake=ph2&&A.dw>=BACKLOG&&cur&&!U(cur.id).learned;   // v171 nợ ôn nhiều: ôn trước, chưa mở unit mới (giữ thanh 🔁 Nhớ)
   const due=A.dw||A.dg?{k:'due',side:LIB,t:A.dw?`Ôn ${Math.min(A.dw,DAY_DUE)} từ đến hạn${A.dw>DAY_DUE?` (còn ${A.dw} từ)`:''}`:`Ôn ${A.dg} bài ngữ pháp đến hạn`,
     why:!ph2?`giai đoạn học: lịch ôn giãn, chỉ ôn từ sắp quên để giữ nền; 📘 Học ≥ ${GATE_LEARN}% thì mới ôn mạnh`:brake?`còn nhiều từ đến hạn: ôn trước, chưa mở bài mới để thanh 🔁 Nhớ không tụt`:`giai đoạn ôn: ôn tới hết từ đến hạn để 🔁 Nhớ lên ${GATE_MEM}%`,at:A.dw?'data-act="dayreview"':'data-act="greview"'}:null;
   const dueFirst=ph2||A.dw>=BACKLOG;   // v176 (học thử: nợ ôn 18 → 1 218 vì ngày ít thời gian chỉ kịp bài mới): giai đoạn học mà nợ ôn ≥ BACKLOG thì ôn trước, vẫn học mới sau
   if(due&&dueFirst) out.push(due);
-  if(ph2&&A.dw&&A.dg) out.push({k:'gdue',side:LIB,t:`Ôn ${A.dg} bài ngữ pháp đến hạn`,why:'ngữ pháp cũng phai: ôn để 🔁 Nhớ giữ được (trước chỉ ôn từ)',at:'data-act="greview"'});   // v175 góp ý #19
+  const gdue=A.dw&&A.dg?{k:'gdue',side:LIB,t:`Ôn ${A.dg} bài ngữ pháp đến hạn`,why:'ngữ pháp cũng phai: ôn để 🔁 Nhớ giữ được (trước chỉ ôn từ)',at:'data-act="greview"'}:null; if(gdue&&dueFirst) out.push(gdue);   // v175 góp ý #19; v181 cả giai đoạn học (đi sau ôn từ)
   if(A.need) out.push({k:'need',side:LIB,t:`Học ${uname(A.need)} · ${esc(A.need.title)}`,why:'Học nhanh đúng dưới 50%: cần học kiến thức này trước',at:`data-unit="${A.need.id}"`});
   if(A.gd&&A.path==='fast') out.push({k:'fix',side:NDT,t:`🩹 Vá ${Math.min(A.gd,FAST_FIX_N)} chỗ lủng`,why:'chỉ học lại đúng chỗ làm sai, không học lại cả bài',at:'data-act="fixgo"'});   // v165
   const mem=A.fade?{k:'gap',side:NDT,t:`Đọc / nghe lại ${uname(A.fade.u)} · ${esc(A.fade.u.title)}`,why:`${A.fade.why}; ${why}`,at:`data-act="dayread" data-v="${A.fade.u.id}"`}:null;
@@ -7379,6 +7386,7 @@ function dayPlan(){ const A=actsOf(), out=[], {L,why,base,od}=A, cur=A.cur&&A.cu
   if(gap) out.push(gap);
   if(gram&&!gBehind&&gap) out.push(gram);
   if(due&&!dueFirst) out.push(due);   // v172 giai đoạn học: ôn vừa đủ sau bài mới
+  if(gdue&&!dueFirst) out.push(gdue);
   // v176 (chuẩn Nhớ 80%): cặp âm / chức năng giao tiếp không có thẻ ôn → bước ôn lại riêng khi engine báo đến lúc (làm đúng lại sau ≥ 3 ngày, chưa phai)
   const rn=A.rv[0]; if(rn){ const ph=rn.startsWith('ph:'), id=rn.slice(3);
     out.push({k:'rv',side:LIB,t:ph?`🔁 Ôn cặp âm ${esc(SND[id].a)} – ${esc(SND[id].b)}`:`🔁 Ôn: ${esc(FN[id].vi)}`,why:`ôn lại để thanh 🔁 Nhớ tính phần này (còn ${A.rv.length} bài âm / giao tiếp đến lúc ôn)`,at:ph?`data-snd="${id}"`:`data-fn="${id}"`}); }
@@ -7387,7 +7395,14 @@ function dayPlan(){ const A=actsOf(), out=[], {L,why,base,od}=A, cur=A.cur&&A.cu
     const st0=blockL?use[0]:use[(lk+A.t)%use.length], onlyPF=blockL&&A.p&&(A.p.miss||[]).length&&A.p.miss.every(n=>/^(ph|fn):/.test(n));
     // v179: chỉ còn cặp âm / chức năng chặn 📘 Học (mọi unit, ngữ pháp đã qua) → đưa lên đầu. Trước: luôn ở cuối, ngày ít giờ không tới,
     // mô phỏng v177: 📘 Học đứng 115/130 suốt 5+ ngày (thiếu 8 chức năng + 7 cặp âm) trong khi ngày nào cũng làm luyện lại / ôn từ.
-    if(onlyPF) out.unshift(st0); else out.push(st0); }
+    // v181 (học thử: hết unit A1, 15 bài âm / chức năng không được gợi ý, 📘 Học kẹt 88% suốt 110 ngày): hết unit của cấp → đứng trước luyện lại / đọc lại
+    const iGap=blockL&&!cur?out.findIndex(x=>x.k==='gap'):-1;
+    if(onlyPF) out.unshift(st0); else if(iGap>=0) out.splice(iGap,0,st0); else out.push(st0); }
+  // v181 (học thử: giai đoạn ôn ngày nào cũng ~100 từ đến hạn, nút chính luôn là ôn từ → 28 bài ngữ pháp + 15 bài âm / giao tiếp, 1/3 thanh 🔁 Nhớ, không tới lượt):
+  // giai đoạn ôn, ôn ngữ pháp và âm / giao tiếp (ít, mỗi bài một lượt) đứng trước ôn từ
+  if(ph2){ const iD=out.findIndex(x=>x.k==='due'); if(iD>=0){ const sm=out.filter((x,i)=>i>iD&&(x.k==='gdue'||x.k==='rv')); if(sm.length){ const rest=out.filter(x=>!sm.includes(x)); rest.splice(iD,0,...sm); out.length=0; out.push(...rest); } } }
+  // v181 (học thử: Học 100% · Nhớ 82% mà ▶ Hôm nay vẫn chỉ đưa ôn, Thi chuyển cấp nằm ở 🎯 Mục tiêu): đủ chuẩn thì bước Thi chuyển cấp lên đầu
+  if(A.lq>=GATE_LEARN&&A.mq>=GATE_MEM&&!gatePassed('cefr-'+L.toLowerCase())) out.unshift({k:'gate',side:'🎯 Mục tiêu',t:`🚪 Thi chuyển cấp ${L} đã mở`,why:`đủ 📘 Học ${A.lq}% · 🔁 Nhớ ${A.mq}%: làm bài để lên cấp (ôn vẫn làm được sau)`,at:'data-e="go" data-r="gate"'});
   return {L,steps:out,lq:A.lq,mq:A.mq,cap}; }
 // Bài dùng thật (K1 / K2) + bài còn chặn 📘 Học (cặp âm, chức năng giao tiếp: Ôn luyện không qua được hai loại này).
 function useActs(A){ const {ph,fn,rp,wr,sk}=A;
@@ -10272,7 +10287,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.5d6bd21b07.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.3809e318df.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),
@@ -10282,6 +10297,7 @@ const EHOST = {
   fetchJson:u=>fetch(u).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r.json(); }),
   // v154 thanh 📘 Học của Mục tiêu: đã qua bài cuối của bài học chứa nút (unit: thử thách cuối unit; ngữ pháp: bài cuối điểm; cặp âm / chức năng: đạt ≥ 80% một lượt).
   unitWords:id=>{ const u=UNITS.find(x=>x.id===id); return u?u.words.map(w=>w.id):[]; },   // v158 thanh Nhớ của unit theo từng từ
+  wordHeld:id=>{ const w=(st.words||{})[id]; return !!w&&w.learned&&(w.stage||0)>=1&&w.fs!=null&&w.fs>=3; },   // v181 bằng chứng Nhớ của từ không phụ thuộc sổ (sổ chỉ giữ ~20 ngày)
   lessonDone:n=>{ const [k,id]=[n.slice(0,n.indexOf(':')),n.slice(n.indexOf(':')+1)];
     if(k==='u') return !!(st.units[id]&&st.units[id].passed); if(k==='g') return !!(st.gram[id]&&st.gram[id].passed);
     if(k==='ph') return ((st.sounds||{})[id]||{}).best>=.8; if(k==='fn') return ((st.fn||{})[id]||{}).best>=.8; return false; },

@@ -76,8 +76,11 @@ test('v173 lịch ôn theo giai đoạn: giai đoạn học giãn × 3,3 (mức 
     const s1 = W(a); s1.learned = true; s1.due = null; step(s1, true, true);
     w.dayParts = () => ({ learn: 100, mem: 10, total: 100, miss: [] }); LPH.k = '';   // giả lập 📘 Học 100% (v176 giai đoạn ôn)
     const s2 = W(b); s2.learned = true; s2.due = null; step(s2, true, true);
-    const s3 = W(c); Object.assign(s3, { learned: true, due: t + 20, fs: 3, fl: t - 10 });   // lịch còn xa nhưng đã phai
-    return { learnIvl: s1.ivl, revIvl: s2.ivl, faded: w.eval('dueWords()').some((x: any) => x.id === c), ph2: w.eval('learnPh2()') }; });
+    const s3 = W(c); Object.assign(s3, { learned: true, due: t + 20, fs: 3, fd: 5, fl: t - 10 });   // lịch còn xa nhưng đã phai
+    const faded = w.eval('dueWords()').some((x: any) => x.id === c);
+    step(s3, true, true);   // v177 ôn đúng từ đã phai: lịch phải giãn theo độ bền mới, hết "đến hạn"
+    return { learnIvl: s1.ivl, revIvl: s2.ivl, faded, fl3: s3.fl === t, fs3: s3.fs > 3, still: w.eval('dueWords()').some((x: any) => x.id === c), ph2: w.eval('learnPh2()') }; });
+  expect(r).toMatchObject({ fl3: true, fs3: true, still: false });
   expect(r.revIvl).toBe(3);
   expect(r.learnIvl).toBe(10);
   expect(r).toMatchObject({ faded: true, ph2: true });
@@ -303,5 +306,68 @@ test('v176 học hết unit A1 mà chưa qua Thi chuyển cấp A1 → vẫn ở
   expect(r.a.lv).toBe('A1'); expect(r.a.cur).toBe('A2');
   expect(r.a.steps.some((s: string) => /data-unit="a2-/.test(s))).toBe(false);
   expect(r.b.indexOf('due')).toBeLessThan(r.b.indexOf('gap'));
+  expect(errors).toEqual([]);
+});
+
+test('v176 hết unit của cấp mà 📘 Học chưa đủ → bài âm / chức năng còn thiếu đứng trước "Luyện lại unit cũ"', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), U = w.eval('U');
+    w.eval('ui').ndLv = null;
+    for (const u of w.eval('UNITS').filter((x: any) => x.level === 'A1')) Object.assign(U(u.id), { learned: true, passed: true, pd: t - 5 });
+    for (const x of w.eval('ALL_WORDS').filter((x: any) => w.eval('UNIT_OF')[x.id].level === 'A1').slice(0, 10)) { const s = w.eval('W')(x.id); s.learned = true; s.due = t - 1; }
+    w.eval('LPH').k = '';
+    return w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at); });
+  const iUse = r.findIndex((s: string) => /^use\|data-(snd|fn)=/.test(s)), iGap = r.findIndex((s: string) => s.startsWith('gap|'));
+  expect(iUse).toBeGreaterThanOrEqual(0);
+  if (iGap >= 0) expect(iUse).toBeLessThan(iGap);
+  expect(errors).toEqual([]);
+});
+
+test('v181 Nhớ của unit không phụ thuộc sổ (sổ chỉ giữ ~20 ngày): từ đã qua lần ôn đến hạn (thẻ FSRS) được tính', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const res = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), u = w.eval('UNITS').find((x: any) => x.level === 'A1');
+    const held0 = w.eval('EHOST').wordHeld(u.words[0].id);
+    for (const x of u.words) Object.assign(W(x.id), { learned: true, stage: 2, fs: 30, fd: 5, fl: t - 1, due: t + 20 });
+    return { held0, held1: u.words.every((x: any) => w.eval('EHOST').wordHeld(x.id)), rc: w.eval('EHOST').recall('u:' + u.id) }; });
+  expect(res.held0).toBe(false);
+  expect(res.held1).toBe(true);
+  expect(res.rc).toBeGreaterThan(0.9);
+  expect(errors).toEqual([]);
+});
+
+test('v181 ôn ngữ pháp đến hạn có ở cả giai đoạn học và vẫn được đưa khi đã đủ lượt ôn từ', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), G = w.eval('G');
+    for (const x of w.eval('ALL_WORDS').slice(0, 5)) Object.assign(W(x.id), { learned: true, due: t - 1 });
+    for (const p of w.eval('GPOINTS').slice(0, 3)) Object.assign(G(p.id), { learned: true, due: t - 1 });
+    const a = w.eval('dayPlan()').steps.map((s: any) => s.k);
+    w.eval('TRK()').rd[t] = [60, 50, 54];   // đủ 5 lượt ôn từ hôm nay
+    const b = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at);
+    return { a, b }; });
+  expect(r.a).toContain('gdue');
+  expect(r.b.some((s: string) => s.includes('greview'))).toBe(true);
+  expect(errors).toEqual([]);
+});
+
+test('v181 giai đoạn ôn: ôn ngữ pháp và âm / giao tiếp đứng trước ôn từ (từ đến hạn nhiều không chặn hai phần này)', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), G = w.eval('G');
+    w.dayParts = () => ({ learn: 100, mem: 10, total: 100, miss: [], rv: ['fn:a1-likes'] }); w.eval('LPH').k = '';
+    for (const x of w.eval('ALL_WORDS').slice(0, 60)) Object.assign(W(x.id), { learned: true, due: t - 1 });
+    for (const p of w.eval('GPOINTS').slice(0, 3)) Object.assign(G(p.id), { learned: true, due: t - 1 });
+    return w.eval('dayPlan()').steps.map((s: any) => s.k); });
+  const iD = r.indexOf('due');
+  expect(iD).toBeGreaterThan(0);
+  expect(r.indexOf('gdue')).toBeLessThan(iD);
+  if (r.includes('rv')) expect(r.indexOf('rv')).toBeLessThan(iD);
+  expect(errors).toEqual([]);
+});
+
+test('v181 đủ 📘 Học 100% · 🔁 Nhớ 80% → bước Thi chuyển cấp lên đầu ▶ Hôm nay', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const r = await page.evaluate(() => { const w = window as any;
+    w.dayParts = () => ({ learn: 100, mem: 85, total: 100, miss: [], rv: [] }); w.eval('LPH').k = '';
+    return w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at); });
+  expect(r[0]).toBe('gate|data-e="go" data-r="gate"');
   expect(errors).toEqual([]);
 });
