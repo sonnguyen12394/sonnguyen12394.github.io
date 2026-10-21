@@ -33,6 +33,7 @@ test('v162 Học bài một mình: lượt luyện unit mới xen ≤ 4 từ đ�
   for (const u of us.slice(0, 3)) {
     await page.evaluate((id: string) => { const w = window as any; for (const x of w.eval('UNITS').find((y: any) => y.id === id).words) { const s = w.eval('W')(x.id); s.learned = true; } }, u);
     expect(await runPractice(page, u)).toEqual([]);
+    await page.evaluate((id: string) => { const w = window as any; Object.assign(w.eval('U')(id), { passed: true, pd: w.eval('today()') }); }, u);   // v182 Nhớ chỉ tính bài đã học xong (mốc pd)
   }
   // 4 ngày sau: mọi từ của 3 unit đó đến hạn; chỉ dùng lượt luyện của unit MỚI ở Học bài
   await page.evaluate(() => { const w = window as any, st = w.eval('st'); st.offset = (st.offset || 0) + 4; w.eval('save()'); });
