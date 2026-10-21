@@ -46,9 +46,9 @@ test('M1 M2 M4 M5 C1: sân khấu sảnh có nhân vật + Tí; thanh trên có 
   await expect(page.getByRole('heading', { name: /Tạo nhân vật của bạn/ })).toBeVisible();
   const fig = page.locator('.mkstage .eqfig');
   const before = await fig.innerHTML();
-  const h = (await E(page)).av?.look?.h ?? 0;
-  await page.locator(`[data-e="bgavset"][data-k="h"][data-v="${(h + 1) % 6}"]`).click();
-  expect(await fig.innerHTML()).not.toEqual(before);
+  // Kiểu tóc ban đầu ngẫu nhiên và có thể chưa lưu: bấm một kiểu khác kiểu đang được chọn trên màn (trước: đoán từ bản lưu, có lúc trùng → hình không đổi).
+  await page.locator('[data-e="bgavset"][data-k="h"][aria-pressed="false"]').first().click();
+  await expect.poll(() => fig.innerHTML()).not.toEqual(before);
   await page.locator('[data-e="bgavdone"]').click();
   expect((await E(page)).av.made).toBe(true);
   await expect(page.locator('.eqslot')).toHaveCount(7);

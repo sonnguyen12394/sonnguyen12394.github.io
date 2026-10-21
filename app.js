@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 116;
+const STATE_V = 18, APP_VERSION = 117;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 // v175 (người sáng lập 20/10/2026, sau buổi học thử: "tự chỉnh sửa lại hết"): bỏ năng lượng ở mọi lượt học. Hết năng lượng chặn học ngay ngày đầu, trái luật
@@ -5411,7 +5411,7 @@ function flyerDownload(){ evc('share:flyer'); save(); download(`gioi-thieu-${APP
    Nhật ký thay đổi cho người học, “Có gì mới” một lần mỗi bản, phiên bản trong dữ liệu ẩn danh, thử nghiệm chia nhóm theo rid
    (không server), nhắc theo mùa học bằng nội dung sẵn có. Mỗi bản phát hành: tăng APP_VERSION + sw.js VERSION + thêm mục CHANGELOG. */
 const CHANGELOG = [
-  {v:116,d:'2026-10-21',t:'Cặp âm / giao tiếp lên đầu khi chỉ còn chúng',items:['Khi mọi unit đã qua mà 📘 Học còn thiếu cặp âm hoặc chức năng giao tiếp, ▶ Hôm nay đưa bài đó lên đầu (trước đây nằm cuối, ngày ít giờ không tới nên Học đứng yên).']},
+  {v:117,d:'2026-10-21',t:'Cặp âm / giao tiếp lên đầu khi chỉ còn chúng',items:['Khi mọi unit đã qua mà 📘 Học còn thiếu cặp âm hoặc chức năng giao tiếp, ▶ Hôm nay đưa bài đó lên đầu (trước đây nằm cuối, ngày ít giờ không tới nên Học đứng yên).']},
   {v:115,d:'2026-10-20',t:'Sửa theo góp ý thử học tới A1',items:['🔁 Nhớ: ôn đúng những từ / bài ngữ pháp đang phai nay được ghi vào lịch ôn (trước đây ôn đúng mà Nhớ không lên). ▶ Hôm nay có thêm bước ôn ngữ pháp đến hạn.','Nút 💬 không còn che nút ở thanh đáy.','Máy chấm Viết / Nói nhận ý khi bạn tự diễn đạt ("I\'m afraid", "a bad cold", "a shop that sells…"); đề tiếng Anh nêu đủ chi tiết cần viết.','Thi chuyển cấp: bỏ qua phần Nghe thì chưa kết luận (không lên cấp, không phải chờ).','Sửa lỗi tiếng Anh trong nội dung (an umbrella, two milk teas, your party) và nhận thêm cách sửa câu đúng khác.']},
   {v:108,d:'2026-10-19',t:'Sửa theo góp ý khi học',items:['⚡ Vượt chặng: báo đúng / sai và có âm thanh ngay sau mỗi câu. Câu sai vẫn vào Vá chỗ lủng.','Bỏ nút “Mình đang đoán”. Ở chặng ⚡ không còn nút “Tôi chưa biết”.','iPhone: chạm vào ô gõ không còn bị phóng to màn hình.','Chữ trong câu hỏi to hơn, dễ đọc hơn.']},
   {v:107,d:'2026-10-19',t:'Quản lý góp ý không cần khoá, có xoá hẳn',items:[
@@ -7384,7 +7384,7 @@ function dayPlan(){ const A=actsOf(), out=[], {L,why,base,od}=A, cur=A.cur&&A.cu
   const use=useActs(A);
   if(use.length){ const lk=(st.nd||{}).uk||0, blockL=A.lq<GATE_LEARN&&(A.ph||A.fn);   // thanh Học còn thiếu mà còn bài âm / chức năng → đưa trước; còn lại xoay vòng theo ngày
     const st0=blockL?use[0]:use[(lk+A.t)%use.length], onlyPF=blockL&&A.p&&(A.p.miss||[]).length&&A.p.miss.every(n=>/^(ph|fn):/.test(n));
-    // v178: chỉ còn cặp âm / chức năng chặn 📘 Học (mọi unit, ngữ pháp đã qua) → đưa lên đầu. Trước: luôn ở cuối, ngày ít giờ không tới,
+    // v179: chỉ còn cặp âm / chức năng chặn 📘 Học (mọi unit, ngữ pháp đã qua) → đưa lên đầu. Trước: luôn ở cuối, ngày ít giờ không tới,
     // mô phỏng v177: 📘 Học đứng 115/130 suốt 5+ ngày (thiếu 8 chức năng + 7 cặp âm) trong khi ngày nào cũng làm luyện lại / ôn từ.
     if(onlyPF) out.unshift(st0); else out.push(st0); }
   return {L,steps:out,lq:A.lq,mq:A.mq,cap}; }

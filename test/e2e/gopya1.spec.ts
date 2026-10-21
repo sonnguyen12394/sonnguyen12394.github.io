@@ -57,7 +57,7 @@ test('v177 #23 #25 máy chấm: cách sửa đúng khác; Viết / Nói tự di�
   expect(errors).toEqual([]);
 });
 
-test('v178 chỉ còn cặp âm / chức năng chặn 📘 Học → bước đó lên đầu ▶ Hôm nay', async ({ page, errors }) => {
+test('v179 chỉ còn cặp âm / chức năng chặn 📘 Học → bước đó lên đầu ▶ Hôm nay', async ({ page, errors }) => {
   await open(page);
   const r = await page.evaluate(() => {
     const w = window as any, ev = (x: string) => w.eval(x);
