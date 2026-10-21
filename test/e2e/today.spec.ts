@@ -362,3 +362,12 @@ test('v181 giai đoạn ôn: ôn ngữ pháp và âm / giao tiếp đứng trư�
   if (r.includes('rv')) expect(r.indexOf('rv')).toBeLessThan(iD);
   expect(errors).toEqual([]);
 });
+
+test('v181 đủ 📘 Học 100% · 🔁 Nhớ 80% → bước Thi chuyển cấp lên đầu ▶ Hôm nay', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const r = await page.evaluate(() => { const w = window as any;
+    w.dayParts = () => ({ learn: 100, mem: 85, total: 100, miss: [], rv: [] }); w.eval('LPH').k = '';
+    return w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at); });
+  expect(r[0]).toBe('gate|data-e="go" data-r="gate"');
+  expect(errors).toEqual([]);
+});

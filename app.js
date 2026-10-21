@@ -7401,6 +7401,8 @@ function dayPlan(){ const A=actsOf(), out=[], {L,why,base,od}=A, cur=A.cur&&A.cu
   // v181 (học thử: giai đoạn ôn ngày nào cũng ~100 từ đến hạn, nút chính luôn là ôn từ → 28 bài ngữ pháp + 15 bài âm / giao tiếp, 1/3 thanh 🔁 Nhớ, không tới lượt):
   // giai đoạn ôn, ôn ngữ pháp và âm / giao tiếp (ít, mỗi bài một lượt) đứng trước ôn từ
   if(ph2){ const iD=out.findIndex(x=>x.k==='due'); if(iD>=0){ const sm=out.filter((x,i)=>i>iD&&(x.k==='gdue'||x.k==='rv')); if(sm.length){ const rest=out.filter(x=>!sm.includes(x)); rest.splice(iD,0,...sm); out.length=0; out.push(...rest); } } }
+  // v181 (học thử: Học 100% · Nhớ 82% mà ▶ Hôm nay vẫn chỉ đưa ôn, Thi chuyển cấp nằm ở 🎯 Mục tiêu): đủ chuẩn thì bước Thi chuyển cấp lên đầu
+  if(A.lq>=GATE_LEARN&&A.mq>=GATE_MEM&&!gatePassed('cefr-'+L.toLowerCase())) out.unshift({k:'gate',side:'🎯 Mục tiêu',t:`🚪 Thi chuyển cấp ${L} đã mở`,why:`đủ 📘 Học ${A.lq}% · 🔁 Nhớ ${A.mq}%: làm bài để lên cấp (ôn vẫn làm được sau)`,at:'data-e="go" data-r="gate"'});
   return {L,steps:out,lq:A.lq,mq:A.mq,cap}; }
 // Bài dùng thật (K1 / K2) + bài còn chặn 📘 Học (cặp âm, chức năng giao tiếp: Ôn luyện không qua được hai loại này).
 function useActs(A){ const {ph,fn,rp,wr,sk}=A;
