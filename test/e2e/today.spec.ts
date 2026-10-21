@@ -305,3 +305,17 @@ test('v176 học hết unit A1 mà chưa qua Thi chuyển cấp A1 → vẫn ở
   expect(r.b.indexOf('due')).toBeLessThan(r.b.indexOf('gap'));
   expect(errors).toEqual([]);
 });
+
+test('v176 hết unit của cấp mà 📘 Học chưa đủ → bài âm / chức năng còn thiếu đứng trước "Luyện lại unit cũ"', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), U = w.eval('U');
+    w.eval('ui').ndLv = null;
+    for (const u of w.eval('UNITS').filter((x: any) => x.level === 'A1')) Object.assign(U(u.id), { learned: true, passed: true, pd: t - 5 });
+    for (const x of w.eval('ALL_WORDS').filter((x: any) => w.eval('UNIT_OF')[x.id].level === 'A1').slice(0, 10)) { const s = w.eval('W')(x.id); s.learned = true; s.due = t - 1; }
+    w.eval('LPH').k = '';
+    return w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at); });
+  const iUse = r.findIndex((s: string) => /^use\|data-(snd|fn)=/.test(s)), iGap = r.findIndex((s: string) => s.startsWith('gap|'));
+  expect(iUse).toBeGreaterThanOrEqual(0);
+  if (iGap >= 0) expect(iUse).toBeLessThan(iGap);
+  expect(errors).toEqual([]);
+});

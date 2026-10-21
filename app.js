@@ -7356,7 +7356,10 @@ function dayPlan(){ const A=actsOf(), out=[], {L,why,base,od}=A, cur=A.cur&&A.cu
     out.push({k:'rv',side:LIB,t:ph?`🔁 Ôn cặp âm ${esc(SND[id].a)} – ${esc(SND[id].b)}`:`🔁 Ôn: ${esc(FN[id].vi)}`,why:`ôn lại để thanh 🔁 Nhớ tính phần này (còn ${A.rv.length} bài âm / giao tiếp đến lúc ôn)`,at:ph?`data-snd="${id}"`:`data-fn="${id}"`}); }
   const use=useActs(A);
   if(use.length){ const lk=(st.nd||{}).uk||0, blockL=A.lq<GATE_LEARN&&(A.ph||A.fn);   // thanh Học còn thiếu mà còn bài âm / chức năng → đưa trước; còn lại xoay vòng theo ngày
-    out.push(blockL?use[0]:use[(lk+A.t)%use.length]); }
+    const u=blockL?use[0]:use[(lk+A.t)%use.length];
+    // v176 (học thử: hết unit A1 thì "Luyện lại unit cũ" đứng trước mãi, 15 bài âm / chức năng không được học, 📘 Học kẹt 88% suốt 110 ngày):
+    // hết unit của cấp mà Học chưa đủ → bài âm / chức năng còn thiếu đứng trước luyện lại / đọc lại (sau ôn đến hạn nếu ôn đứng trước)
+    if(blockL&&!cur){ const i=out.findIndex(x=>x.k==='gap'); if(i>=0) out.splice(i,0,u); else out.push(u); } else out.push(u); }
   return {L,steps:out,lq:A.lq,mq:A.mq,cap}; }
 // Bài dùng thật (K1 / K2) + bài còn chặn 📘 Học (cặp âm, chức năng giao tiếp: Ôn luyện không qua được hai loại này).
 function useActs(A){ const {ph,fn,rp,wr,sk}=A;
