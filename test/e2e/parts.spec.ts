@@ -91,3 +91,16 @@ test('tab 📘 Học bài: ▶ Hôm nay đứng đầu + tự chọn bài + 7 k�
   await expect(page.locator('#bnav button[aria-current="page"]')).toContainText('Học nhanh');   // v165 tab nd = ⚡ Học nhanh
   expect(errors).toEqual([]);
 });
+
+test.describe('v178 đích mặc định (home: false)', () => {
+  test.use({ home: false });
+  test('chưa chọn đích, chưa qua A1 → Mục tiêu và Kỹ năng của bạn theo A1 (góp ý #14)', async ({ page, errors }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => (window as any).ELREADY === true);
+    await page.evaluate(() => { const w = window as any, st = w.eval('st'); st.onboarded = true; st.e.goals = []; w.eval('save()'); w.eval("go('goal')"); });
+    await expect(page.locator('#app')).toContainText(/Cần đạt để qua A1 · \d+\/186 phần đã vững/, { timeout: 20000 });
+    await page.evaluate(() => (window as any).eval("go('lib')"));
+    await expect(page.locator('#app .lsk')).toContainText('A1', { timeout: 20000 });
+    expect(errors).toEqual([]);
+  });
+});
