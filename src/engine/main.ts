@@ -1568,17 +1568,19 @@ export function init(host: EHost): EngineModule {
     for (const part of Object.values(v.ev.agg)) for (const [ck, cell] of Object.entries(part ?? {})) { const n = ck.slice(0, ck.lastIndexOf('|')); if (!seen.has(n)) continue;
       for (const a of Object.values(cell ?? {})) if (typeof a?.d0 === 'number' && a.n > 0) { const f = d0.get(n); if (f === undefined || a.d0 < f) d0.set(n, a.d0); } }
     for (const [n, d] of d0) { const f = first.get(n); if (f === undefined || d < f) first.set(n, d); }
-    const memOk = (k: string, fm: Map<string, number>, lm: Map<string, number>) => { const f = fm.get(k), l = lm.get(k); return f !== undefined && l !== undefined && l - f >= GATE.memDays; };
+    // v182: mốc tính là ngày HỌC XONG bài (host.doneDay; bản lưu cũ chưa có thì lần gặp đầu): câu đúng trong lúc còn học không tính là nhớ.
+    const memOk = (k: string, fm: Map<string, number>, lm: Map<string, number>, base?: number | null) => { const f = base ?? fm.get(k), l = lm.get(k); return f !== undefined && l !== undefined && l - f >= GATE.memDays; };
     let learn = 0, mem = 0; const miss: string[] = [], rv: string[] = [], today = host.today();
     for (const r of nodes) {
       const done = host.lessonDone ? host.lessonDone(r.node) : nodeStat(host, v, r.node, r.level as Level).pass;
       if (done) learn++; else miss.push(r.node);
       const ws = r.node.startsWith('u:') && host.unitWords ? host.unitWords(r.node.slice(2)) : null;
-      const held = ws && ws.length ? ws.filter(w => memOk(r.node + '|' + w, wf, wl) || !!host.wordHeld?.(w)).length / ws.length >= GATE.memWord : memOk(r.node, first, okLast);
+      const dd = host.doneDay?.(r.node) ?? null;
+      const held = !!done && (ws && ws.length ? ws.filter(w => memOk(r.node + '|' + w, wf, wl, dd) || !!host.wordHeld?.(w)).length / ws.length >= GATE.memWord : memOk(r.node, first, okLast, dd));
       const rc = recallOf(host, v, r.node) ?? 0;
       if (held && rc >= 0.9) mem++;
       // v176 cặp âm / chức năng giao tiếp không có thẻ ôn: đã học, chưa tính Nhớ, cách lần gặp đầu ≥ GATE.memDays (hoặc đã phai) → đến lúc ôn (▶ Hôm nay của app)
-      else if (done && /^(ph|fn):/.test(r.node)) { const f = first.get(r.node); if (f !== undefined && (today - f >= GATE.memDays || held)) rv.push(r.node); }
+      else if (done && /^(ph|fn):/.test(r.node)) { const f = dd ?? first.get(r.node); if (f !== undefined && (today - f >= GATE.memDays || held)) rv.push(r.node); }
     }
     return { learn, mem, total: nodes.length, miss, rv };
   }
