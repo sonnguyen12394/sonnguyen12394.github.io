@@ -1,5 +1,10 @@
 # English Ladder — Master Spec v2
 
+> **21/10/2026 — Giai đoạn ôn: ôn đúng từ đã phai thì giãn lịch (v177, bản 115).** Người học thử (tự chạy) ở giai đoạn ôn: 📘 Học 100% nhưng 🔁 Nhớ đứng 0–2% suốt 145 ngày, nợ ôn ~600 dù ôn đúng nhiều.
+> - Gốc: `dueWords` (v173) tính từ nhớ < 0,9 là đến hạn, nhưng `srsStep` chỉ cập nhật FSRS khi `w.due <= hôm nay`; từ có lịch xa (giãn × `LEARN_K`) ôn đúng mà không được ghi → mãi < 0,9, mãi "đến hạn".
+> - Sửa: `srsStep` coi "giai đoạn ôn và nhớ < 0,9" là đến hạn (cả `trkDue`, H6, đếm quên). `dueOrder`: giai đoạn ôn ôn theo unit gần đạt trước (tỉ lệ từ ≥ 0,9 cao trước), trong unit từ phai nhiều trước, để Nhớ của unit lên nhanh.
+> - Test: `today.spec.ts` (v173 … ôn đúng từ đã phai: `fl` = hôm nay, `fs` tăng, hết đến hạn).
+
 > **20/10/2026 — Chuẩn mở Thi chuyển cấp: 📘 Học 100% · 🔁 Nhớ 80% (v176, bản 114; thay 80% / 50%).** Người sáng lập: "đẩy lên học 100% và nhớ 100% làm chuẩn"; sau khi xem mô phỏng chọn phương án 1: Học 100% · Nhớ 80% + ôn cặp âm / chức năng giao tiếp.
 > - Vì sao không Nhớ 100%: Nhớ đòi mọi phần đang ≥ 0,9 cùng lúc, lịch ôn để mức nhớ chạm 0,9 rồi mới ôn nên luôn có phần vừa tụt; cặp âm / chức năng giao tiếp (15/130 phần A1) trước đây không có lịch ôn → Nhớ tối đa ~88%. Mô phỏng (`npm run gatesim`, learner giả lập): Nhớ 90–100% không đạt trong 900 ngày; Nhớ 80% không tốn thêm ngày so với 50% khi Học 100%.
 > - `GATE.learn` 1, `GATE.mem` 0,8 (engine) = `GATE_LEARN` 100, `GATE_MEM` 80 (app.js, mọi chữ "cần …%", ngày dự kiến ở 📊 Theo dõi học).

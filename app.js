@@ -1003,7 +1003,7 @@ const LEVEL_REVIEW = 30;               // số câu tối đa của bài tổng 
 const KEY='vocab-ladder-v1';
 // Vận hành (vai trò 13, docs/DANH-GIA-VAN-HANH.md, docs/VAN-HANH.md): STATE_V = phiên bản cấu trúc tiến độ (migrate), APP_VERSION = số bản phát hành
 // (phải khớp VERSION 'vl-v<N>' trong sw.js và mục đầu CHANGELOG; check-engine kiểm).
-const STATE_V = 18, APP_VERSION = 114;
+const STATE_V = 18, APP_VERSION = 115;
 // Năng lượng (M7, xem KIẾM TIỀN GIẢ LẬP): khai báo sớm vì sanitizeState dùng khi nạp bản lưu.
 const EN = {cap:5, cost:1, regenMin:120};   // tham số cấu hình: dung lượng, chi phí mỗi bài, phút hồi 1 lượt
 // v175 (người sáng lập 20/10/2026, sau buổi học thử: "tự chỉnh sửa lại hết"): bỏ năng lượng ở mọi lượt học. Hết năng lượng chặn học ngay ngày đầu, trái luật
@@ -1194,6 +1194,13 @@ const LEARN_K = 3.3;   // interval(s, 0,75) / interval(s, 0,9) của FSRS
 const LPH = {k:'', v:false, nil:false, at:0};
 function learnPh2(){ try{ const L=ndLv(), k=today()+'|'+L+'|'+(EM&&EM.parts?1:0)+'|'+UNITS.filter(u=>U(u.id).passed).length+'|'+GPOINTS.filter(p=>G(p.id).passed).length;
     if(LPH.k!==k||LPH.nil&&Date.now()-LPH.at>5000){ const p=dayParts(L); Object.assign(LPH,{k,at:Date.now(),nil:!p||!p.total,v:!!p&&p.total>0&&p.learn/p.total>=GATE_LEARN/100}); } return LPH.v; }catch(e){ return false; } }   // lưu cả khi chưa có số (EM.parts tốn: không tính lại mỗi lần vẽ; chưa có số thì thử lại sau 5 giây)
+// v176 (học thử: giai đoạn ôn 145 ngày mà 🔁 Nhớ vẫn 0–2%): Nhớ tính theo unit (trung bình nhớ của unit ≥ 0,9), ôn từ yếu nhất rải khắp 87 unit thì
+// không unit nào đạt. Giai đoạn ôn: ôn dồn theo unit, unit có nhiều từ đang nhớ chắc nhất trước (gần đạt nhất), trong unit từ yếu trước.
+function dueOrder(list){ const t=today(), F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
+  if(!learnPh2()||!F) return list.sort((a,b)=>mastery(a.id)-mastery(b.id));
+  const R=w=>{ const s=W(w.id); return s.fs!=null&&s.fl!=null?F.retrievability(Math.max(0,t-s.fl),s.fs):0; }, sc=new Map();
+  const uSc=u=>{ if(!sc.has(u.id)){ const ws=u.words.filter(w=>W(w.id).learned); sc.set(u.id,ws.length?ws.filter(w=>R(w)>=0.9).length/ws.length:0); } return sc.get(u.id); };
+  return list.sort((a,b)=>{ const ua=UNIT_OF[a.id], ub=UNIT_OF[b.id]; return ua===ub?R(a)-R(b):uSc(ub)-uSc(ua)||(ua.id<ub.id?-1:1); }); }
 function dueWords(){ const t=today(), ph2=learnPh2(), F=ph2&&typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
   return ALL_WORDS.filter(w=>{const s=W(w.id); if(!s.learned||s.due==null) return false; return s.due<=t||!!F&&s.fs!=null&&s.fl!=null&&F.retrievability(Math.max(0,t-s.fl),s.fs)<0.9;}); }
 // ---- v174 📊 Theo dõi học (người sáng lập 20/10/2026: "thiết kế 1 mục để theo dõi việc học ... nhiều thông tin đánh giá chính xác"; làm đủ 12 chỉ số, đặt ở Mục tiêu) ----
@@ -1281,13 +1288,14 @@ function srsStep(w,correct,typed){
   const t=today(), F=typeof ELCORE!=='undefined'?ELCORE.fsrs:null;
   const pk=learnPh2()?1:LEARN_K;   // v173 giai đoạn học: lịch giãn
   if(w.due==null){ if(correct){ w.stage=0; if(F){ const c=F.newCard(typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.max(1,Math.round((c.due-t)*pk)); } else w.ivl=1; w.due=t+w.ivl; } return; }   // lịch ôn bắt đầu từ lần đầu tự nhớ ra đúng, không phải lúc xem thẻ
-  if(F&&w.due<=t&&w.fs!=null&&w.fl!=null) try{ trkDue(t,F.retrievability(Math.max(0,t-w.fl),w.fs),!!correct,t-w.fl); }catch(e){}   // v174 nhớ thật so với máy dự đoán
-  if(w.due<=t&&w.fl!=null&&EM&&EM.hlog){ const gap=t-w.fl; try{ if(gap>=30) EM.hlog('r30',!!correct); else if(gap>=7) EM.hlog('r7',!!correct); }catch(e){} }   // v122 Bảng đo H (H6 nhớ trễ)
+  const dn=w.due<=t||!!(F&&learnPh2()&&w.fs!=null&&w.fl!=null&&F.retrievability(Math.max(0,t-w.fl),w.fs)<0.9);   // v177 giai đoạn ôn: nhớ < 0,9 cũng là đến hạn (khớp dueWords), ôn đúng phải giãn lịch
+  if(F&&dn&&w.fs!=null&&w.fl!=null) try{ trkDue(t,F.retrievability(Math.max(0,t-w.fl),w.fs),!!correct,t-w.fl); }catch(e){}   // v174 nhớ thật so với máy dự đoán
+  if(dn&&w.fl!=null&&EM&&EM.hlog){ const gap=t-w.fl; try{ if(gap>=30) EM.hlog('r30',!!correct); else if(gap>=7) EM.hlog('r7',!!correct); }catch(e){} }   // v122 Bảng đo H (H6 nhớ trễ)
   if(!correct){                                         // quên → độ bền giảm theo FSRS, ôn lại ngày mai
-    if(w.due<=t){ w.lp=(w.lp||0)+1; w.ld=t; }          // số lần quên khi đến hạn (forgetting patterns, docs/DANH-GIA-DU-LIEU-HOC.md); ld = ngày quên gần nhất (Goal Achieved CEFR: không quên trong 14 ngày)
+    if(dn){ w.lp=(w.lp||0)+1; w.ld=t; }          // số lần quên khi đến hạn (forgetting patterns, docs/DANH-GIA-DU-LIEU-HOC.md); ld = ngày quên gần nhất (Goal Achieved CEFR: không quên trong 14 ngày)
     if(F) fsrsKeep(w,F.review(fsrsCard(w,t),1,t));
     w.stage=Math.max(0,w.stage-2); w.ivl=1; w.due=t+1;
-  } else if(w.due<=t){                                  // nhớ khi đến hạn → giãn ra theo độ bền mới
+  } else if(dn){                                  // nhớ khi đến hạn → giãn ra theo độ bền mới
     // Tự gõ đúng là bằng chứng nhớ chắc (điểm 3 = "được"); chọn đúng trắc nghiệm có thể do đoán (điểm 2 = "khó").
     w.stage++;
     if(F){ const c=F.review(fsrsCard(w,t),typed?3:2,t); fsrsKeep(w,c); w.ivl=Math.min(MAX_IVL,Math.max(1,Math.round(F.interval(c.s)*srsK()*pk))); }
@@ -5889,7 +5897,7 @@ document.addEventListener('click',e=>{
     case 'fixnext': return fixNext();
     case 'fastpath': { FST().path=d.v==='normal'?'normal':'fast'; save(); return ui.view==='fastsum'?go(d.v==='normal'?'lib':'nd'):render(); }
     case 'ndshow': ui.ndShow=ui.ndShow===d.v?null:d.v; return render();
-    case 'dayreview': { const due=dueWords().sort((a,b)=>mastery(a.id)-mastery(b.id)).slice(0,DAY_DUE); if(!due.length) return render(); return startSession('review',reviewItems(due),null); }
+    case 'dayreview': { const due=dueOrder(dueWords()).slice(0,DAY_DUE); if(!due.length) return render(); return startSession('review',reviewItems(due),null); }
     case 'dayread': { const n=st.nd||(st.nd={d:{}}); n.lk=[...(n.lk||[]),'read'].slice(-3); save(); return ndRead(d.v,HAS_TTS&&n.rl===false); }
     case 'dayrpg': { const n=st.nd||(st.nd={d:{}}); n.uk=(n.uk||0)+1; save(); return startRpg(d.v,true); }
     case 'daystk': { const n=st.nd||(st.nd={d:{}}); n.uk=(n.uk||0)+1; save(); return startSTask(d.v,true); }
@@ -6083,7 +6091,7 @@ document.addEventListener('click',e=>{
     case 'ics': return downloadReminder();
     case 'report': return exportReport();
     case 'testvoice': return say('Hello! This is how I sound.');
-    case 'review': { const due=dueWords().sort((a,b)=>mastery(a.id)-mastery(b.id)).slice(0,REVIEW_BATCH); if(!due.length) return go('review'); return startSession('review',reviewItems(due),null); }
+    case 'review': { const due=dueOrder(dueWords()).slice(0,REVIEW_BATCH); if(!due.length) return go('review'); return startSession('review',reviewItems(due),null); }
     case 'next': return next();
     case 'flag': ui.flagOpen=true; return render();
     case 'appeal': return appeal();

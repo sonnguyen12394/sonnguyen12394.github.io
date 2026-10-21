@@ -76,8 +76,11 @@ test('v173 lịch ôn theo giai đoạn: giai đoạn học giãn × 3,3 (mức 
     const s1 = W(a); s1.learned = true; s1.due = null; step(s1, true, true);
     w.dayParts = () => ({ learn: 100, mem: 10, total: 100, miss: [] }); LPH.k = '';   // giả lập 📘 Học 100% (v176 giai đoạn ôn)
     const s2 = W(b); s2.learned = true; s2.due = null; step(s2, true, true);
-    const s3 = W(c); Object.assign(s3, { learned: true, due: t + 20, fs: 3, fl: t - 10 });   // lịch còn xa nhưng đã phai
-    return { learnIvl: s1.ivl, revIvl: s2.ivl, faded: w.eval('dueWords()').some((x: any) => x.id === c), ph2: w.eval('learnPh2()') }; });
+    const s3 = W(c); Object.assign(s3, { learned: true, due: t + 20, fs: 3, fd: 5, fl: t - 10 });   // lịch còn xa nhưng đã phai
+    const faded = w.eval('dueWords()').some((x: any) => x.id === c);
+    step(s3, true, true);   // v177 ôn đúng từ đã phai: lịch phải giãn theo độ bền mới, hết "đến hạn"
+    return { learnIvl: s1.ivl, revIvl: s2.ivl, faded, fl3: s3.fl === t, fs3: s3.fs > 3, still: w.eval('dueWords()').some((x: any) => x.id === c), ph2: w.eval('learnPh2()') }; });
+  expect(r).toMatchObject({ fl3: true, fs3: true, still: false });
   expect(r.revIvl).toBe(3);
   expect(r.learnIvl).toBe(10);
   expect(r).toMatchObject({ faded: true, ph2: true });
