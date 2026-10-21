@@ -56,3 +56,20 @@ test('v177 #23 #25 máy chấm: cách sửa đúng khác; Viết / Nói tự di�
   expect(r.st).toBeGreaterThanOrEqual(0.9);   // trước v177: 0,7 vì không dùng đúng cụm mẫu
   expect(errors).toEqual([]);
 });
+
+test('v178 chỉ còn cặp âm / chức năng chặn 📘 Học → bước đó lên đầu ▶ Hôm nay', async ({ page, errors }) => {
+  await open(page);
+  const r = await page.evaluate(() => {
+    const w = window as any, ev = (x: string) => w.eval(x);
+    ev('st').onboarded = true;
+    const ph = Object.keys(ev('SND'))[0];
+    w.dayParts = () => ({ learn: 115, mem: 22, total: 130, miss: ['ph:' + ph], rv: [] });   // mọi unit đã qua, còn một cặp âm
+    const a = ev('dayPlan()').steps.map((s: any) => s.k + '|' + s.at);
+    w.dayParts = () => ({ learn: 100, mem: 22, total: 130, miss: ['u:' + ev('UNITS')[0].id, 'ph:' + ph], rv: [] });   // còn unit chưa qua
+    const b = ev('dayPlan()').steps.map((s: any) => s.k + '|' + s.at);
+    return { a0: a[0], ph, bLast: b[b.length - 1] };
+  });
+  expect(r.a0).toContain(`data-snd="${r.ph}"`);
+  expect(r.bLast).toContain(`data-snd="${r.ph}"`);
+  expect(errors).toEqual([]);
+});
