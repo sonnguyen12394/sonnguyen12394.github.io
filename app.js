@@ -7398,6 +7398,9 @@ function dayPlan(){ const A=actsOf(), out=[], {L,why,base,od}=A, cur=A.cur&&A.cu
     // v181 (học thử: hết unit A1, 15 bài âm / chức năng không được gợi ý, 📘 Học kẹt 88% suốt 110 ngày): hết unit của cấp → đứng trước luyện lại / đọc lại
     const iGap=blockL&&!cur?out.findIndex(x=>x.k==='gap'):-1;
     if(onlyPF) out.unshift(st0); else if(iGap>=0) out.splice(iGap,0,st0); else out.push(st0); }
+  // v181 (học thử: giai đoạn ôn ngày nào cũng ~100 từ đến hạn, nút chính luôn là ôn từ → 28 bài ngữ pháp + 15 bài âm / giao tiếp, 1/3 thanh 🔁 Nhớ, không tới lượt):
+  // giai đoạn ôn, ôn ngữ pháp và âm / giao tiếp (ít, mỗi bài một lượt) đứng trước ôn từ
+  if(ph2){ const iD=out.findIndex(x=>x.k==='due'); if(iD>=0){ const sm=out.filter((x,i)=>i>iD&&(x.k==='gdue'||x.k==='rv')); if(sm.length){ const rest=out.filter(x=>!sm.includes(x)); rest.splice(iD,0,...sm); out.length=0; out.push(...rest); } } }
   return {L,steps:out,lq:A.lq,mq:A.mq,cap}; }
 // Bài dùng thật (K1 / K2) + bài còn chặn 📘 Học (cặp âm, chức năng giao tiếp: Ôn luyện không qua được hai loại này).
 function useActs(A){ const {ph,fn,rp,wr,sk}=A;

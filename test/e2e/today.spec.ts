@@ -348,3 +348,17 @@ test('v181 ôn ngữ pháp đến hạn có ở cả giai đoạn học và vẫ
   expect(r.b.some((s: string) => s.includes('greview'))).toBe(true);
   expect(errors).toEqual([]);
 });
+
+test('v181 giai đoạn ôn: ôn ngữ pháp và âm / giao tiếp đứng trước ôn từ (từ đến hạn nhiều không chặn hai phần này)', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), G = w.eval('G');
+    w.dayParts = () => ({ learn: 100, mem: 10, total: 100, miss: [], rv: ['fn:a1-likes'] }); w.eval('LPH').k = '';
+    for (const x of w.eval('ALL_WORDS').slice(0, 60)) Object.assign(W(x.id), { learned: true, due: t - 1 });
+    for (const p of w.eval('GPOINTS').slice(0, 3)) Object.assign(G(p.id), { learned: true, due: t - 1 });
+    return w.eval('dayPlan()').steps.map((s: any) => s.k); });
+  const iD = r.indexOf('due');
+  expect(iD).toBeGreaterThan(0);
+  expect(r.indexOf('gdue')).toBeLessThan(iD);
+  if (r.includes('rv')) expect(r.indexOf('rv')).toBeLessThan(iD);
+  expect(errors).toEqual([]);
+});
