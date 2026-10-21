@@ -30,12 +30,12 @@ export function viewAim(c: ECtx, x: AimIn | null): string {
   const esc = c.host.esc;
   const tabs = `<div class="row aimtabs" role="group" aria-label="Cấp">${AIM_LVS.map(([l]) => `<button class="btn small${x?.lv === l ? ' primary' : ''}" data-e="aimlv" data-lv="${l}" aria-pressed="${x?.lv === l}">${l}</button>`).join('')}</div>`;
   const head = `<section class="stack"><span class="eyebrow">Mục tiêu</span><h1>🎯 Cần đạt ở mỗi cấp</h1>
-    <p class="hint">⚔️ Chơi và 📘 Học đều đổ vào đây. Một phần chỉ tính là vững khi bạn làm đúng nhiều lần, cách ngày.</p>${tabs}</section>`;
+    <p class="hint">⚔️ Chơi và 📘 Học đều đổ vào đây. Một phần chỉ tính là vững khi bạn làm đúng nhiều lần, cách ngày. "Vững" là mức dùng thành thạo, cao hơn chuẩn mở Thi chuyển cấp (📘 Học · 🔁 Nhớ), nên qua cấp rồi vẫn có thể còn phần chưa vững.</p>${tabs}</section>`;
   if (!x) return `${head}<p class="muted" role="status">Đang tải bản đồ năng lực…</p>`;
   const o = x.o, p = pct(o.solid, o.total), id = AIM_LVS.find(([l]) => l === x.lv)![1];
   const rows = o.rows.filter(r => r.total).map(r => {
     const seg = (cls: string, n: number) => (n ? `<i class="${cls}" style="width:${pct(n, r.total)}%"></i>` : '');
-    const game = r.pull ? `<button class="btn small" data-e="cblo" data-g="${esc(x.forge)}">⚔️ Rèn ở game</button>` : '<span class="hint aimlock">🔒 game chưa có lò</span>';
+    const game = r.pull ? `<button class="btn small" data-e="cblo" data-g="${esc(x.forge)}">⚔️ Rèn ở game</button>` : '';   // v182 (học thử: "🔒 game chưa có lò" là chữ của người làm game, người học không hiểu) bỏ nhãn khoá
     // v139 bấm dòng kỹ năng → mở danh sách từng phần cần đạt (details/summary: bấm được, đọc được bằng trình đọc màn hình).
     const items = r.items ?? [], open = items.filter(i => !i.solid), done = items.filter(i => i.solid);
     const src = (i: AimItem) => { const k = [i.g ? '⚔️' : '', i.a ? '📘' : '', i.n ? '⚡' : ''].filter(Boolean); return k.length > 1 ? ' · ' + k.join('') : i.g ? ' · ⚔️ nhờ game' : i.a ? ' · 📘 nhờ Học bài' : i.n ? ' · ⚡ nhờ Học nhanh' : ''; };

@@ -4861,7 +4861,8 @@ if(typeof window!=='undefined'&&typeof window.addEventListener==='function'){ wi
 const YAY = ['Tuyệt!','Chính xác!','Giỏi lắm!','Đúng rồi!','Xuất sắc!'];
 function lessonChrome(){ const v=ui.view, app=document.getElementById('app'); if(!app||!document.body) return;
   const act=app.querySelector('[aria-label="Việc tiếp theo"], .endrow');
-  const on=['session','gsess','learn','oral','shadow'].includes(v)||(v==='quiz'&&ui.qz&&!ui.qz.done)||(v==='sound'&&ui.snd&&!ui.snd.done)||(['summary','gsum'].includes(v)||(v==='quiz'&&ui.qz&&ui.qz.done))&&!!act;
+  const on=['session','gsess','learn','oral','shadow'].includes(v)||(v==='quiz'&&ui.qz&&!ui.qz.done)||(v==='sound'&&ui.snd&&!ui.snd.done)||(['summary','gsum'].includes(v)||(v==='quiz'&&ui.qz&&ui.qz.done))&&!!act
+    ||!!app.querySelector('form[data-eform="gtnext"],form[data-eform="gtws"]');   // v182 (học thử: ô đáp án cuối trang sát thanh đáy, bấm nhầm sang ⚔️ Chơi giữa bài): đang làm Thi chuyển cấp thì ẩn thanh đáy
   document.body.classList.toggle('lesson',!!on); document.body.classList.remove('has-sheet','has-act'); if(!on) return;
   if(act&&['summary','gsum','quiz'].includes(v)){ act.classList.add('actbar'); document.body.classList.add('has-act'); }
   const nb=app.querySelector('#nextbtn,#gnextbtn,#qznextbtn,#snextbtn'); if(!nb) return;
@@ -7554,7 +7555,7 @@ function partsHtml(L,where){ let p=null; try{ p=EM&&EM.parts?EM.parts('cefr-'+L.
   const bar=(lb,v)=>`<div class="spread"><span>${lb}</span><b class="num">${v}%</b></div><div class="bar" role="progressbar" aria-label="${lb}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${v}"><i style="width:${v}%"></i></div>`;
   const g0=(((st.e||{}).goals||[])[0]||{}).id, inA2=L==='A1'&&g0==='cefr-a2';   // v175 chọn đích A2 mà đang học A1: nói rõ vì sao
   return `<section class="panel stack" aria-label="Học và Nhớ ${L}"><h2>${inA2?'Chặng A1 của đích A2':'Mục tiêu '+L}</h2>${inA2?'<p class="hint">Đích của bạn là A2. A2 gồm cả kiến thức A1, nên học hết A1 trước (Thi chuyển cấp A1), rồi sang A2.</p>':''}
-    ${bar('📘 Học',lq)}${bar('🔁 Nhớ',mq)}
+    ${bar('📘 Học',lq)}${bar('🔁 Nhớ',mq)}${lq<GATE_LEARN&&mq<GATE_MEM?`<p class="hint">🔁 Nhớ chỉ tính bài đã học xong và ôn đúng lại sau ≥ 3 ngày, nên lúc đang học thanh này thấp là bình thường. Học xong hết bài, app chuyển sang ôn và thanh Nhớ lên nhanh.</p>`:''}
     <p class="hint num">Học ${p.learn}/${p.total} (cần ${GATE_LEARN}%) · Nhớ ${p.mem}/${p.total} (cần ${GATE_MEM}%). Thi chuyển cấp mở khi đủ cả hai.</p><p>${next}</p></section>`; }
 // v152 Sức khoẻ kiến thức mỗi cấp (A1, A2): vững · đang phai · đã quên · chưa học; Ôn nhanh; xem chỗ đã quên (nút về đúng bài trong 📘 Học).
 function ndHealthHtml(){ const rows=['A1','A2'].map(l=>({l,H:ndHealth(l)})).filter(x=>x.H); if(!rows.length) return '';
@@ -8890,7 +8891,7 @@ const _viewUnit31 = viewUnit; viewUnit = function(){ let h=_viewUnit31();
   const m=/<div class="row slim" style="gap:8px"><span>👉 Bước tiếp theo: <b>[^<]*<\/b><\/span><button class="btn small" (data-act="(learn|practice|test)" data-u="[^"]+")>Làm ngay<\/button><\/div>/.exec(h);
   if(m){ const nx=`<div class="nextstep">${m[2]==='learn'?`<span class="nx-ti">${mascot('happy',56)}</span>`:''}<button class="btn primary big" ${m[1]}>${UNIT_NEXT[m[2]]}</button></div>`;
     const k=h.indexOf('<section class="steps">'); h=h.replace(m[0],'');
-    const k2=h.indexOf('<section class="steps">'); h=h.slice(0,k2)+nx+h.slice(k2).replace(/<section class="steps">([\s\S]*?)<\/section>/,(s,x)=>`<section class="steps">${x.replace(/class="btn primary"/g,'class="btn"')}</section>`); }
+    const k2=h.indexOf('<section class="steps">'); h=h.slice(0,k2)+nx+h.slice(k2).replace(/<section class="steps">([\s\S]*?)<\/section>/,(s,x)=>`<section class="steps">${x.replace(/class="btn primary"/g,'class="btn"').replace(new RegExp('<button class="btn[^"]*" '+m[1]+'[^>]*>[^<]*</button>'),'<span class="hint">👆 Nút xanh ở trên</span>')}</section>`); }   // v182 (học thử: 2 nút cùng việc) bước đang làm không lặp nút
   const extra=[/<section class="stack"><h3>Ngữ pháp nên học cùng<\/h3>[\s\S]*?<\/div><\/section>/, /<section class="stack"><h3>Dùng từ của unit này trong giao tiếp<\/h3>[\s\S]*?<\/div><\/section>/].map(re=>{ const x=re.exec(h); if(x) h=h.replace(x[0],''); return x?x[0].replace('<section class="stack"><h3>','<section class="stack" style="gap:8px"><h3 style="font-size:15px">'):''; }).join('');
   if(extra) h=h.replace('<section class="stack">\n    <div class="spread"><h2>Từ trong unit</h2>',`<details class="panel stack"><summary><h3>Học thêm cùng unit này</h3></summary><div class="stack">${extra}</div></details>\n  <section class="stack">\n    <div class="spread"><h2>Từ trong unit</h2>`);
   return h; };
@@ -10287,7 +10288,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closes
 DETAIL_SAFE_VIEW.add('thi'); DETAIL_SAFE_GO.add('thi'); ['xstart','xmretry'].forEach(a=>DETAIL_SAFE_ACT.add(a));
 /* ================== ENGINE HỌC THEO MỤC TIÊU (src/engine, docs/SPEC.md) ==================
    Cùng khuôn với phần ôn thi: mô-đun TypeScript build ra x/engine.<băm>.js, nạp động; tiến độ ở st.e. */
-const ENGINE_JS = 'x/engine.0b1cd20b41.js';   // tools/build.mjs ghi
+const ENGINE_JS = 'x/engine.b8f734c16b.js';   // tools/build.mjs ghi
 const EHOST = {
   backupNag:f=>backupNag(!!f),   // v111: nhắc sao lưu ở màn kết game (engine)
   lr:()=>xmLoad().then(m=>m.lr),

@@ -1965,6 +1965,11 @@ export function init(host: EHost): EngineModule {
 
   const act: Record<string, (el: HTMLElement) => void> = {
     // v161 nút 🎙 / ⏹ / gõ lại của bài Nói (trước v161 gtmic nằm nhầm ở forms nên nút 🎙 không chạy).
+    // v182 đang làm Thi chuyển cấp thì thanh đáy ẩn: nút Tạm dừng giữ bài làm dở (cả chữ đang gõ), về 🎯 Mục tiêu; vào lại làm tiếp.
+    gtpause() {
+      const ws = gtRun?.ws, ta = document.querySelector('#app form[data-eform="gtws"] textarea') as HTMLTextAreaElement | null; if (ws && ta) ws.draft = ta.value;
+      host.go('aim');
+    },
     gtmic(el) {
       const ws = gtRun?.ws; if (!ws) return;
       const ta = el.closest('form')?.querySelector('textarea') as HTMLTextAreaElement | null; if (ta) ws.draft = ta.value;
