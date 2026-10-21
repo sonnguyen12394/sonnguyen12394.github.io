@@ -13,6 +13,8 @@ export const PLACES = ['the station', 'the library', 'the park', 'the cinema', '
 export const THINGS = ['umbrella', 'jacket', 'bag', 'phone', 'wallet', 'watch', 'hat', 'scarf', 'notebook', 'water bottle'];
 export const COLOURS = ['red', 'blue', 'green', 'black', 'white', 'yellow', 'brown', 'grey'];
 export const SHOPS = ['Green Café', 'City Books', 'Sun Pharmacy', 'Fresh Market', 'Star Bakery', 'Blue Sky Shoes'];
+// v182 (soát CEFR: "Blue Sky Shoes" bán sách, cà phê) bảng giá hàng lẫn loại thì ở nơi bán đủ thứ, không gắn tên cửa hàng chuyên.
+export const MARKETS = ['Fresh Market', 'the town market', 'City Mall', 'the school fair'];
 export const ITEMS = ['T-shirt', 'lunch box', 'book', 'football', 'pizza', 'cinema ticket', 'pair of socks', 'cup of coffee'];
 export const EVENTS = ['football match', 'birthday party', 'English class', 'concert', 'school trip', 'dance lesson', 'meeting', 'cooking class'];
 export const SUBJECTS = ['Maths', 'English', 'Art', 'Music', 'History', 'Science'];

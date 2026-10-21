@@ -32,7 +32,7 @@ test('v138 Mục tiêu: 7 kỹ năng, mỗi kỹ năng có "📘 Học ở app";
   assert.equal((h.match(/class="cmprow/g) ?? []).length, 7);
   assert.equal((h.match(/data-act="skgo"/g) ?? []).length, 7);
   assert.equal((h.match(/data-e="cblo" data-g="wheel"/g) ?? []).length, 1);
-  assert.equal((h.match(/🔒 game chưa có lò/g) ?? []).length, 6);
+  assert.equal((h.match(/🔒 game chưa có lò/g) ?? []).length, 0);   // v182 bỏ nhãn khoá (chữ của người làm game)
   assert.match(h, /Cần đạt để qua A2<\/b> · 0\/361 phần đã vững/);
   assert.match(h, /data-e="aimlv" data-lv="A1" aria-pressed="false"/);
   assert.match(h, /data-r="goal\/cefr-a2"/);

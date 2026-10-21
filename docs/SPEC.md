@@ -1,5 +1,10 @@
 # English Ladder — Master Spec v2
 
+> **21/10/2026 — 🔁 Nhớ tính sau ngày học xong; sửa giao diện + nội dung theo học thử (v182, bản 120).** Người sáng lập: "học cũng lên thanh nhớ vì nó mới học xong nội dung đó"; "những vấn đề còn lại tìm vai trò chuyên gia phù hợp tự xử lý".
+> - **Nhớ (khoa học học tập):** trước đây mốc là lần GẶP đầu, nên câu đúng trong lúc còn học (thẻ ngày 0, thử thách ngày 3) đã tính là nhớ. Nay mốc là ngày HỌC XONG bài (`pd`: unit qua thử thách, ngữ pháp qua bài cuối, cặp âm / chức năng đạt ≥ 80%; `host.doneDay`), chỉ câu đúng ≥ `GATE.memDays` ngày sau mốc mới tính; bài chưa học xong không tính Nhớ. Thẻ từ (`wordHeld`) cũng cần lần ôn cuối ≥ 3 ngày sau `pd`. Bản lưu cũ chưa có `pd`: dùng lần gặp đầu như trước. Test `nd.spec` v182.
+> - **Giao diện:** đang làm Thi chuyển cấp thì ẩn thanh đáy (trước: ô đáp án sát thanh đáy, bấm nhầm sang ⚔️ Chơi) + nút ✕ Tạm dừng (`gtpause`, giữ cả chữ đang gõ); thanh Nhớ lúc đang học có dòng giải thích vì sao thấp; bỏ nhãn "🔒 game chưa có lò"; Mục tiêu nói rõ "vững" cao hơn chuẩn mở cổng; số kỹ thuật ở kết quả vào mục "Cách chấm (chi tiết)"; trang unit không lặp nút cùng việc ("👆 Nút xanh ở trên").
+> - **Nội dung CEFR:** bảng giá ở chợ / hội chợ (`MARKETS`, không gắn cửa hàng giày); hội thoại Nghe dùng mẫu khoá A1 đã dạy (Can we… / I'd like… / going to) thay Shall we / I'll / will. #11 Viết A1 kể chuyện bằng quá khứ: GIỮ, vì khoá A1 có dạy quá khứ đơn (g-a1-22…24) và going to (g-a1-25). Bài Nghe có ghi âm `gt-a1-1-l1` còn "I'll take": chưa đổi (phải ghi âm lại).
+
 > **21/10/2026 — Giai đoạn ôn: ôn dồn theo unit gần đạt (v181, bản 119).** Người học thử (tự chạy) ở giai đoạn ôn: 📘 Học 100% nhưng 🔁 Nhớ đứng 0–2% suốt 145 ngày. Gốc trùng #19 (v177, `srsDue`).
 > - Thêm `dueOrder`: giai đoạn ôn ôn theo unit gần đạt trước (tỉ lệ từ ≥ 0,9 cao trước), trong unit từ phai nhiều trước. Nhớ tính theo unit, ôn rải khắp 87 unit thì không unit nào đạt.
 > - Test: `today.spec.ts` (v173 … ôn đúng từ đã phai: `fl` = hôm nay, `fs` tăng, hết đến hạn).
