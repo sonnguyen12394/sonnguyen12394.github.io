@@ -63,6 +63,10 @@ test('Thi chuyển cấp: Đọc + Nghe bằng câu lạ, rồi Viết + Nói; k
     expect(await chrome(page)).not.toMatch(BANNED);
     await expect(page.locator('.fb')).toHaveCount(0);   // không phản hồi đúng / sai trong trận
     if (i === 0) {
+      await expect(page.locator('#bnav')).toBeHidden();   // v182 đang làm bài: ẩn thanh đáy (không bấm nhầm sang tab khác)
+      await page.locator('[data-e="gtpause"]').click();   // tạm dừng rồi vào lại: còn nguyên phần đang làm
+      await page.getByRole('button', { name: /Vào thi chuyển cấp A2/ }).first().click();
+      await expect(form).toBeVisible();
       const r = await new AxeBuilder({ page }).include('#app').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
       expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
       await noHorizontalScroll(page);

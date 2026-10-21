@@ -45,7 +45,7 @@ export function viewGateHome(c: ECtx, goal: string, vi: string, solid: number, t
   const open = st.open || (test && st.left.length > 0);
   const why = st.wait ? `Lần trước chưa qua. Mỗi lần là một bài mới hoàn toàn, nhưng cần học thêm rồi mới làm lại: ${waitTxt(st.wait)}.`
     : st.left.length === 0 ? 'Bạn đã dùng hết các bài thi chuyển cấp lạ của cấp này. Tí đang soạn thêm bài mới; trong lúc chờ, cứ luyện tiếp để vững hơn.'
-    : open ? `Đã mở. Bài gồm 4 phần: <b>Đọc</b> (biển báo, mẩu tin), <b>Nghe</b> (hội thoại ngắn), <b>Viết</b> (tin nhắn, chuyện ngắn) và <b>Nói</b> (trả lời câu hỏi về bạn), sinh mới mỗi lần (phần Đọc, Nghe, Viết, Nói là bài lạ; vài câu từ vựng / ngữ pháp ngắn có thể giống câu bạn từng luyện). Mỗi bài làm một lần, không có đồng hồ, không hiện đáp án trong lúc làm. Đậu khi Đọc + Nghe qua <b>và</b> mỗi bài Viết / Nói đạt ≥ ${pc(GATE.ws)} tiêu chí.`
+    : open ? `Đã mở. Bài gồm 4 phần: <b>Đọc</b> (biển báo, mẩu tin), <b>Nghe</b> (hội thoại ngắn), <b>Viết</b> (tin nhắn, chuyện ngắn) và <b>Nói</b> (trả lời câu hỏi về bạn), sinh mới mỗi lần hoặc lấy từ kho bài có ghi âm mà bạn chưa làm (phần Đọc, Nghe, Viết, Nói là bài lạ; vài câu từ vựng / ngữ pháp ngắn có thể giống câu bạn từng luyện). Mỗi bài làm một lần, không có đồng hồ, không hiện đáp án trong lúc làm. Đậu khi Đọc + Nghe qua <b>và</b> mỗi bài Viết / Nói đạt ≥ ${pc(GATE.ws)} tiêu chí.`
     : st.parts ? `Mở khi 📘 Học ≥ ${pc(GATE.learn)} (đã qua bài; bạn đang có ${pc(st.learn ?? 0)}) và 🔁 Nhớ ≥ ${pc(GATE.mem)} (nhớ ra sau ≥ ${GATE.memDays} ngày, chưa phai; bạn đang có ${pc(st.mem ?? 0)}).` + (st.gen ? ' Mỗi lần làm, máy sinh một bài mới theo tiêu chí của cấp.' : '') : `Mở khi bạn đã gần xong mục tiêu: ${pc(GATE.open)} kỹ năng của cấp đã vững thật (bạn đang có ${pc(st.ratio)}). ${st.gen ? 'Mỗi lần làm, máy sinh một bài mới theo tiêu chí của cấp, nên không học tủ được.' : `Bài dùng câu lạ, chỉ làm được ${st.left.length} lần, nên chỉ mở khi bạn có khả năng qua.`}`;
   return `<section class="stack"><span class="eyebrow">🚪 Thi chuyển cấp ${esc(lv)} · ${esc(vi)}</span><h1>${open ? 'Đã mở' : 'Chưa mở'}</h1>
     <p class="muted">${why}</p></section>
@@ -59,7 +59,7 @@ const back = () => '<div class="row"><button class="btn ghost" data-e="go" data-
 
 export function viewGateRun(c: ECtx, r: GateRun): string {
   const g = r.groups[r.gi]!, n = r.groups.length;
-  return `<section class="stack"><span class="eyebrow">${c.host.esc(head(r))} · ${g.kind === 'listening' ? 'Nghe' : 'Đọc'} · phần ${r.gi + 1}/${n}</span>
+  return `<section class="stack"><div class="row"><button class="btn ghost back" data-e="gtpause">✕ Tạm dừng</button></div><span class="eyebrow">${c.host.esc(head(r))} · ${g.kind === 'listening' ? 'Nghe' : 'Đọc'} · phần ${r.gi + 1}/${n}</span>
     <div class="bar" role="progressbar" aria-label="Tiến độ thi chuyển cấp" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${r.gi}"><i style="width:${Math.round((r.gi / n) * 100)}%"></i></div>
     <p class="hint">Không có đáp án trong lúc chơi. Không chắc thì cứ để trống, đừng đoán bừa.</p></section>
     ${groupForm(c, g, 'gtnext', r.gi + 1 < n ? 'Phần tiếp' : r.try ? 'Xong' : 'Xong Đọc + Nghe', r.plays, g.kind === 'listening' ? 'gtskip' : '')}`;
@@ -71,7 +71,7 @@ export function viewGateRun(c: ECtx, r: GateRun): string {
 export function viewGateWs(c: ECtx, r: GateRun, mic: { has: boolean; busy: boolean; heard: string }): string {
   const esc = c.host.esc, ws = r.ws!, t = ws.tasks[ws.i]!, n = ws.tasks.length, sp = t.kind === 's', lock = sp && mic.has && !ws.typed;
   const draft = sp && mic.heard && !ws.typed ? mic.heard : ws.draft;
-  return `<section class="stack"><span class="eyebrow">${esc(head(r))} · ${sp ? 'Nói' : 'Viết'} · bài ${ws.i + 1}/${n}</span>
+  return `<section class="stack"><div class="row"><button class="btn ghost back" data-e="gtpause">✕ Tạm dừng</button></div><span class="eyebrow">${esc(head(r))} · ${sp ? 'Nói' : 'Viết'} · bài ${ws.i + 1}/${n}</span>
     <div class="bar" role="progressbar" aria-label="Tiến độ Viết + Nói" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${ws.i}"><i style="width:${Math.round((ws.i / n) * 100)}%"></i></div></section>
     <section class="panel stack"><h2>${sp ? '🗣️' : '✍️'} ${esc(t.vi)} <span class="hint" lang="en">${esc(t.en)}</span></h2>
       <p lang="en"><b>${esc(t.p)}</b></p><p class="hint">${esc(t.pv)}</p>
@@ -97,14 +97,16 @@ const wsBox = (r: GateResult): string => {
   const ws = r.ws ?? [], esc = (x: string) => x.replace(/[&<>"']/g, ch => `&#${ch.charCodeAt(0)};`);
   if (!ws.length) return '';
   return `<ul class="stack" style="list-style:none;padding:0;margin:0;gap:4px">${ws.map(x => `<li>${x.pct >= GATE.ws ? '✓' : '✗'} ${x.kind === 'w' ? '✍️ Viết' : '🗣️ Nói'}${x.typed ? ' (gõ lại, chưa máy nghe)' : ''}: ${pc(x.pct)} tiêu chí, ${x.words} từ (cần ≥ ${pc(GATE.ws)})${x.ideas ? `<br><span class="hint">Ý: ${x.ideas.map(([vi, ok]) => `${ok ? '✓' : '✗'} ${esc(vi)}`).join(' · ')}</span>` : ''}</li>`).join('')}</ul>
-    <p class="hint">Viết = một nửa ý máy tìm thấy + một nửa luật (độ dài, từ nối, cụm của bài…). Nói = ý máy tìm thấy trong lời chép + đủ số từ. Máy chỉ tìm từ khoá của ý, chưa người thật kiểm.</p>`;
+    <p class="hint">Máy chấm theo từ khoá của ý, chưa người thật kiểm.</p>`;
 };
+// v182 (học thử: kết quả nhiều số kỹ thuật) cách chấm Viết / Nói nằm trong mục "Cách chấm (chi tiết)".
+const WS_HOW = '<p class="hint">Viết = một nửa ý máy tìm thấy + một nửa luật (độ dài, từ nối, cụm của bài…). Nói = ý máy tìm thấy trong lời chép + đủ số từ.</p>';
 function resultBox(c: ECtx, r: GateResult): string {
   const lv = LV(r.goal), sk = (k: 'R' | 'L', vi: string) => { const s = r.sk[k]; return s ? `<div class="stat"><b>${s.ok}/${s.n}</b><span class="muted">${vi} · ≈ ${bandToCefr(s.theta)}</span></div>` : ''; };
   return `<section class="panel stack gres${r.passed ? ' ok' : ''}"><h3>${r.passed ? `✓ Qua ${lv}` : `Chưa qua ${lv}`}</h3>
     <div class="me-stats me3">${sk('R', 'đọc')}${sk('L', 'nghe')}<div class="stat"><b>${pc(r.p)}</b><span class="muted">khả năng qua</span></div></div>
     ${r.ws?.length ? `<p>${(r.rl ?? r.passed) ? '✓' : '✗'} 📖🎧 Đọc + Nghe: ${(r.rl ?? r.passed) ? 'qua' : 'chưa qua'} (cần khả năng qua ≥ ${pc(GATE.ready)})</p>` : ''}
-    <p class="hint">Ước tính năng lực ${String(Math.round(r.lo * 10) / 10).replace('.', ',')}–${String(Math.round(r.hi * 10) / 10).replace('.', ',')} trên thang của app (80% tin cậy); ngưỡng ${lv} là ${String(GATE_THR[r.goal]).replace('.', ',')}. Độ khó câu là ước tính của người soạn, chưa hiệu chỉnh bằng dữ liệu nhiều người.</p>
+    <details class="hint"><summary>Cách chấm (chi tiết)</summary><p class="hint">Ước tính năng lực ${String(Math.round(r.lo * 10) / 10).replace('.', ',')}–${String(Math.round(r.hi * 10) / 10).replace('.', ',')} trên thang của app (80% tin cậy); ngưỡng ${lv} là ${String(GATE_THR[r.goal]).replace('.', ',')}. Độ khó câu là ước tính của người soạn, chưa hiệu chỉnh bằng dữ liệu nhiều người.</p>${r.ws?.length ? WS_HOW : ''}</details>
     ${wsBox(r)}
     ${r.passed ? '' : `<p class="muted">Không sao: bài mở lại khi bạn vững hơn, với một bài mới hoàn toàn.${weak(r)}</p>`}</section>`;
 }

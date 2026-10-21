@@ -187,12 +187,12 @@ test('kết quả phát âm cũ vẫn giữ: bản cũ đã đạt bộ cặp â
 });
 
 // v152 Nói & Đọc = ôn nhanh cho người đã học: sức khoẻ kiến thức theo cấp, não ưu tiên chỗ đang phai, chỗ quên có nút về đúng bài trong 📘 Học.
-test('v158 thanh 🔁 Nhớ của unit tính theo từng từ: ≥ 70% số từ nhớ lại sau ≥ 3 ngày mới tính unit; 5/10 từ thì chưa', async ({ page, errors }) => {
+test('v158 thanh 🔁 Nhớ của unit tính theo từng từ: ≥ 70% số từ nhớ lại sau ≥ 3 ngày (v182: tính từ ngày học xong) mới tính unit; 5/10 từ thì chưa', async ({ page, errors }) => {
   await open(page);
   await page.waitForFunction(() => { const w = window as any, EM = w.eval('EM'); return !!(EM && EM.parts && EM.parts('cefr-a1')); }, null, { timeout: 30000 });
   const r = await page.evaluate(() => { const w = window as any, st = w.eval('st'), t = w.eval('today()'), EL = w.eval('ELCORE'), EM = w.eval('EM');
     const L = w.eval('CONTENT').levels.find((l: any) => l.id === 'A1'), mem = () => EM.parts('cefr-a1').mem;
-    const seed = (u: any, k: number) => { for (const x of u.words.slice(0, k)) for (const d of [t - 5, t - 1, t]) EL.ev(st, { node: 'u:' + u.id, level: 3, ok: true, g: 0, item: 'w:' + x.id + ':rcl', qt: 'typed', ctx: 'rcl', src: 'vocab', ch: 'u:' + u.id }, d); };
+    const seed = (u: any, k: number) => { Object.assign(w.eval('U')(u.id), { learned: true, passed: true, pd: t - 5 }); for (const x of u.words.slice(0, k)) for (const d of [t - 5, t - 1, t]) EL.ev(st, { node: 'u:' + u.id, level: 3, ok: true, g: 0, item: 'w:' + x.id + ':rcl', qt: 'typed', ctx: 'rcl', src: 'vocab', ch: 'u:' + u.id }, d); };
     const m0 = mem(); seed(L.units[1], Math.floor(L.units[1].words.length / 2)); const m1 = mem();
     seed(L.units[2], L.units[2].words.length); const m2 = mem(); return { half: m1 - m0, full: m2 - m1 }; });
   expect(r.half).toBe(0);
@@ -301,5 +301,23 @@ test('v156 vượt cả từ vựng A1: chỉ unit được hỏi và đúng h�
   await expect(page.locator('#app details.ndph [data-act="ndfn"]')).toBeAttached();
   const ax = await new AxeBuilder({ page }).include('#app').withTags(AXE).analyze();
   expect(ax.violations.map(v => v.id)).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
+test('v182 câu đúng trong lúc còn học không lên 🔁 Nhớ: chỉ tính câu đúng ≥ 3 ngày sau ngày học xong (pd)', async ({ page, errors }) => {
+  await open(page);
+  await page.waitForFunction(() => { const w = window as any, EM = w.eval('EM'); return !!(EM && EM.parts && EM.parts('cefr-a1')); }, null, { timeout: 30000 });
+  const r = await page.evaluate(() => { const w = window as any, st = w.eval('st'), t = w.eval('today()'), EL = w.eval('ELCORE'), EM = w.eval('EM');
+    const u = w.eval('CONTENT').levels.find((l: any) => l.id === 'A1').units[3], mem = () => EM.parts('cefr-a1').mem;
+    const m0 = mem();
+    for (const x of u.words) for (const d of [t - 5, t - 1, t]) EL.ev(st, { node: 'u:' + u.id, level: 3, ok: true, g: 0, item: 'w:' + x.id + ':rcl', qt: 'typed', ctx: 'rcl', src: 'vocab', ch: 'u:' + u.id }, d);
+    Object.assign(w.eval('U')(u.id), { learned: true, passed: true, pd: t });   // học trải 5 ngày, hôm nay mới qua thử thách cuối unit
+    const m1 = mem();
+    w.eval('U')(u.id).pd = t - 3;
+    for (const x of u.words) EL.ev(st, { node: 'u:' + u.id, level: 3, ok: true, g: 0, item: 'w:' + x.id + ':rcl', qt: 'typed', ctx: 'rcl', src: 'vocab', ch: 'u:' + u.id }, t);   // ôn đúng 3 ngày sau khi học xong
+    const m2 = mem(); return { learning: m1 - m0, after: m2 - m0, fresh: w.eval('EHOST').doneDay('u:' + u.id) === t - 3 }; });
+  expect(r.learning).toBe(0);
+  expect(r.after).toBe(1);
+  expect(r.fresh).toBe(true);
   expect(errors).toEqual([]);
 });
