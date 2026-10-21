@@ -15,6 +15,7 @@ export interface EHost {
   ico(name: string): string;
   fetchJson(url: string): Promise<unknown>;
   unitWords?(uid: string): string[];   // v158 id các từ của unit: thanh Nhớ của nút u: tính theo từng từ
+  wordHeld?(id: string): boolean;     // v180 từ đã nhớ qua ít nhất một lần ôn đến hạn (thẻ FSRS: stage ≥ 1, độ bền ≥ GATE.memDays); sổ bị cắt không mất bằng chứng
   lessonDone?(node: string): boolean;   // v154 thanh Học của Mục tiêu: đã qua bài cuối của bài học chứa nút này (unit / điểm ngữ pháp / cặp âm / chức năng)
   cando(id: string): { p: number; m: number; lb: number; k: number; need: number } | null;   // tiến độ Can-Do tính từ bằng chứng (app.js cdProg)
   dayInfo(): { reviewItems: number; reviewMins: number; mins: number; perfDue: boolean; lost?: number | null };   // lost: Σ(1 − R) FSRS trên thẻ đến hạn   // ôn đến hạn, phút học mỗi ngày, đã có bài làm thật trong 7 ngày chưa

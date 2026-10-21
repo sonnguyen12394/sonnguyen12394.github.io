@@ -3,6 +3,8 @@
 > **21/10/2026 — Giai đoạn ôn: ôn dồn theo unit gần đạt (v180, bản 118).** Người học thử (tự chạy) ở giai đoạn ôn: 📘 Học 100% nhưng 🔁 Nhớ đứng 0–2% suốt 145 ngày. Gốc trùng #19 (v177, `srsDue`).
 > - Thêm `dueOrder`: giai đoạn ôn ôn theo unit gần đạt trước (tỉ lệ từ ≥ 0,9 cao trước), trong unit từ phai nhiều trước. Nhớ tính theo unit, ôn rải khắp 87 unit thì không unit nào đạt.
 > - Test: `today.spec.ts` (v173 … ôn đúng từ đã phai: `fl` = hôm nay, `fs` tăng, hết đến hạn).
+> - **Nhớ không lên dù đã nhớ (gốc thứ hai):** sổ bằng chứng chỉ giữ `LED_MAX` 2 000 lượt (~20 ngày học); lần gặp đầu bị cắt nên "đúng cách lần đầu ≥ 3 ngày" không bao giờ đạt với từ ôn thưa. Người học thử: 72/87 unit nhớ ≥ 0,9 mà 🔁 Nhớ 3/130. Sửa `partsOf`: ngày đầu lấy cả `agg.d0` (không bị cắt); từ của unit thêm bằng chứng thẻ FSRS `host.wordHeld` (stage ≥ 1, độ bền ≥ 3 ngày). Cùng bản lưu: Nhớ 3 → 72/130.
+> - **Ngữ pháp không được ôn:** bước ôn ngữ pháp chỉ có ở giai đoạn ôn và bị xoá khi đủ 5 lượt ôn từ → 28 bài ngữ pháp 550 ngày không ôn lần nào (nhớ 0,03). Nay có ở cả hai giai đoạn (đi sau ôn từ), trần lượt chỉ tính từ.
 
 > **20/10/2026 — Soát nội dung A1 theo CEFR (v178, bản 116).** Người sáng lập: đóng vai người thiết kế nội dung CEFR, học tới Thi chuyển cấp A1, góp ý bằng ảnh vào 💬 (góp ý #9–#17), rồi "tự sửa xong đẩy lên web khỏi hỏi". Đã sửa:
 > - **#9** khuôn sinh bài (`testgen.ts`): mạo từ theo âm đầu (`an`), "There aren't any + số nhiều" (`noneOf`). Test quét 300 hạt × 2 cấp.

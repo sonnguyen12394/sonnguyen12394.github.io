@@ -322,3 +322,29 @@ test('v176 hết unit của cấp mà 📘 Học chưa đủ → bài âm / ch�
   if (iGap >= 0) expect(iUse).toBeLessThan(iGap);
   expect(errors).toEqual([]);
 });
+
+test('v180 Nhớ của unit không phụ thuộc sổ (sổ chỉ giữ ~20 ngày): từ đã qua lần ôn đến hạn (thẻ FSRS) được tính', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const res = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), u = w.eval('UNITS').find((x: any) => x.level === 'A1');
+    const held0 = w.eval('EHOST').wordHeld(u.words[0].id);
+    for (const x of u.words) Object.assign(W(x.id), { learned: true, stage: 2, fs: 30, fd: 5, fl: t - 1, due: t + 20 });
+    return { held0, held1: u.words.every((x: any) => w.eval('EHOST').wordHeld(x.id)), rc: w.eval('EHOST').recall('u:' + u.id) }; });
+  expect(res.held0).toBe(false);
+  expect(res.held1).toBe(true);
+  expect(res.rc).toBeGreaterThan(0.9);
+  expect(errors).toEqual([]);
+});
+
+test('v180 ôn ngữ pháp đến hạn có ở cả giai đoạn học và vẫn được đưa khi đã đủ lượt ôn từ', async ({ page, errors }) => {
+  await open(page, 'lib');
+  const r = await page.evaluate(() => { const w = window as any, t = w.eval('today()'), W = w.eval('W'), G = w.eval('G');
+    for (const x of w.eval('ALL_WORDS').slice(0, 5)) Object.assign(W(x.id), { learned: true, due: t - 1 });
+    for (const p of w.eval('GPOINTS').slice(0, 3)) Object.assign(G(p.id), { learned: true, due: t - 1 });
+    const a = w.eval('dayPlan()').steps.map((s: any) => s.k);
+    w.eval('TRK()').rd[t] = [60, 50, 54];   // đủ 5 lượt ôn từ hôm nay
+    const b = w.eval('dayPlan()').steps.map((s: any) => s.k + '|' + s.at);
+    return { a, b }; });
+  expect(r.a).toContain('gdue');
+  expect(r.b.some((s: string) => s.includes('greview'))).toBe(true);
+  expect(errors).toEqual([]);
+});
