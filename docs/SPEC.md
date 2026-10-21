@@ -1,5 +1,7 @@
 # English Ladder — Master Spec v2
 
+> **21/10/2026 — Giai đoạn ôn: ôn không giới hạn (v180, bản 118).** Người sáng lập: "bỏ và khỏi thử lại" (đề xuất của Claude sau mô phỏng v179: ở giai đoạn ôn 🔁 Nhớ đứng 41–48/130 từ ngày 50 tới 73 vì ▶ Hôm nay dừng sau 5 lượt × 12 từ dù còn ~200 từ đến hạn). Giai đoạn ôn (📘 Học ≥ `GATE_LEARN`) không còn trần `DAY_ROUNDS`: `dayPlan` không ẩn bước ôn khi `dayRev()` đủ 60 câu, `dayMark('due')` không tính xong. Giai đoạn học giữ trần 5 lượt (v173). Chưa chạy lại mô phỏng (theo lời người sáng lập), chưa người thật kiểm.
+
 > **20/10/2026 — Soát nội dung A1 theo CEFR (v178, bản 116).** Người sáng lập: đóng vai người thiết kế nội dung CEFR, học tới Thi chuyển cấp A1, góp ý bằng ảnh vào 💬 (góp ý #9–#17), rồi "tự sửa xong đẩy lên web khỏi hỏi". Đã sửa:
 > - **#9** khuôn sinh bài (`testgen.ts`): mạo từ theo âm đầu (`an`), "There aren't any + số nhiều" (`noneOf`). Test quét 300 hạt × 2 cấp.
 > - **#10** Đọc / Nghe dài: 4 khung (`trip`, `party`, `klass`, `shop`), mỗi khung 2 biến thể câu chữ; hội thoại ngắn có biến thể đáp án nói đầu, câu cuối là bẫy. Test: ≥ 4 khung, > 10% câu đáp án không ở câu cuối.
